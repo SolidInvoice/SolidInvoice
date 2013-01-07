@@ -1,0 +1,52 @@
+jms_security_extra:
+    secure_all_services: false
+    expressions: true
+
+security:
+    acl:
+        connection: default
+    encoders:
+        CSBill\UserBundle\Entity\User:
+            id: csbill.user.password_encoder
+
+    role_hierarchy:
+        ROLE_ADMIN:       ~
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_CLIENT:      ROLE_USER
+        ROLE_USER: ~
+
+    providers:
+        main:
+            entity: { class: CSBillUserBundle:User }
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        installer:
+            pattern:  ^/install(.*)
+            security: false
+            anonymous: ~
+
+        login:
+            pattern:  ^/login$
+            security: false
+
+        main:
+            remember_me:
+                key:      "%secret%"
+                lifetime: 3600
+                path:     /
+                domain:   ~ # Defaults to the current domain from $_SERVER
+            pattern:    ^/
+            form_login:
+                check_path: /login_check
+                login_path: /login
+            logout:
+                path:   /logout
+                target: /
+
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }

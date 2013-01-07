@@ -1,0 +1,31 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends "CSCoreBundle::layout.html.twig" %}
+
+{% block title %}{{ "CSBill Installation Success"|trans }}{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+	<fieldset>
+		<legend>
+			<h1>{{ "Success"|trans }}</h1>
+		</legend>
+
+		<div class="well">
+			<h3>{{ "You have successfully installed CSBill!"|trans }}</h3>
+			<hr />
+			<div class="clear">
+				<a href="#" class="btn">{{ "Log In"|trans }}</a>
+			</div>
+		</div>
+	</fieldset>
+{% endblock %}

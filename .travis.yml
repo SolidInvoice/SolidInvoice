@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 5.3.3
+  - 5.3
+  - 5.4
+
+services: mysql
+  
+before_script:
+    - mysql -e 'create database csbill;'
+    - composer install
+    - php app/console app:install --accept --database_host=localhost --database_user=root --database_password= --database_port=3306 --database_name=csbill --email_address=test@example.com --password=test
+
+script: phpunit -c app --coverage-clover "clover"
+
+after_success:
+    - curl -sL https://bit.ly/artifact-uploader | php

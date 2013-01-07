@@ -1,0 +1,13 @@
+web/bundles/
+app/bootstrap.php.cache
+app/cache/*
+app/logs/*
+build/
+vendor
+bin
+composer.phar
+
+# eclipse files
+.buildpath
+.project
+.settings

@@ -1,0 +1,59 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends "CSCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block header %}
+	<nav class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="brand" href="#">{{ "CSBill Installation"|trans }}</a>
+			</div>
+		</div>
+	</nav>
+{% endblock header %}
+
+{% block body %}
+	{{ parent() }}
+
+	<hr />
+{% endblock body %}
+
+{% block script %}
+	<script>
+		$(function(){
+			{{ block('script') }}
+		});
+	</script>
+{% endblock %}
+
+{% block footer %}
+	<small>Powered by <a href="#">CSBill</a>
+{% endblock footer %}
+
+{% block sidebar %}
+	<div class="well">
+		<ul class="nav nav-list">
+			<li class="nav-header">
+				{{ "Installation Progress"|trans }}
+			</li>
+			{% set link = true %}
+			{% for key, progress in installer.steps %}
+				<li{% if installer.active is sameas(progress) %} {% set link = false %} class="active"{% endif %}>
+					{% if link %}
+						<a href="{{ path('_installer_step', {'step' : progress}) }}">{{ installer.step(progress).title|trans }}</a>
+					{% else %}
+						<a href="#">{{ installer.step(progress).title|trans }}</a>
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock sidebar %}

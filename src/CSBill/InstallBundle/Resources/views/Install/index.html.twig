@@ -1,0 +1,47 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends "CSBillInstallBundle::layout.html.twig" %}
+
+{% block title %}{{ "CSBill Installation"|trans }} - {{ step.title|trans }}{% endblock %}
+
+{% block body %}
+	<fieldset>
+		<legend>
+			<h1>{{ step.title|trans }}</h1>
+		</legend>
+
+		{% if step.errors|length %}
+			{% for error in step.errors %}
+				<div class="alert alert-danger">
+			        	<button class="close" data-dismiss="alert">x</button>
+			        	{{ error|trans }}
+			        </div>
+			{% endfor %}
+		{% endif %}
+
+		<form action="{{ path("_installer") }}" method="post">
+			<div class="row-fluid well">
+
+				{% include step.view %}
+
+				{% if step is not first_install_step %}
+					<div class="control-group pull-left" id="restart_button">
+						<a href="{{ path("_installer_restart") }}" class="btn" title="{{ "Restart the installation process"|trans }}">{{ "Restart"|trans }}</a>
+					</div>
+				{% endif %}
+
+				<div class="control-group pull-right" id="next_button">
+					<input type="submit" class="btn" value="{{ "Next"|trans }}" />
+				</div>
+			</div>
+		</form>
+	</fieldset>
+{% endblock body %}
