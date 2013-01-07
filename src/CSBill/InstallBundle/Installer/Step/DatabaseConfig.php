@@ -120,7 +120,13 @@ class DatabaseConfig extends Step
 
         $this->writeConfigFile($request);
 
-        $this->executeMigrations();
+        try {
+        	$this->executeMigrations();
+        } catch (\RuntimeException $e)
+        {
+        	// if we get an exception here, it most probably means that the application is already installed
+        	return;
+        }
     }
 
     /**
