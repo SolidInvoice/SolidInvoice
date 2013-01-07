@@ -56,9 +56,7 @@ class InstallCommand extends ContainerAwareCommand
             // if we get an exception here, the application isn't installed yet
         }
 
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        $options = $this->getArgumentOptions();
+        $options = $this->getArgumentOptions($input);
 
         // only current supported driver is mysql
         $options['database_driver'] = 'pdo_mysql';
@@ -82,9 +80,11 @@ class InstallCommand extends ContainerAwareCommand
         }
     }
 
-    protected function getArgumentOptions()
+    protected function getArgumentOptions(InputInterface $input)
     {
     	$options = array();
+
+    	$dialog = $this->getHelperSet()->get('dialog');
 
     	foreach ($this->getDefinition()->getOptions() as $argument) {
     		$name = $argument->getName();
