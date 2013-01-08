@@ -8,18 +8,17 @@
  # file that was distributed with this source code.
 #}
 
-{% extends "CSCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
 {% set title = app_name ~ " Installation" %}
 
 {% block header %}
 	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : title|trans} %}
 {% endblock header %}
 
-{% block body %}
-	{{ parent() }}
-
-	<hr />
-{% endblock body %}
+{% block title %}
+	{{ title }}
+{% endblock title %}
 
 {% block script %}
 	<script>
@@ -28,10 +27,6 @@
 		});
 	</script>
 {% endblock %}
-
-{% block footer %}
-	<small>Powered by <a href="#">CSBill</a>
-{% endblock footer %}
 
 {% block sidebar %}
 	<div class="well">
