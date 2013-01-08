@@ -1,0 +1,4 @@
+_dashboard:
+    pattern:  /dashboard
+    defaults: { _controller: CSBillCoreBundle:Dashboard:index }
+    

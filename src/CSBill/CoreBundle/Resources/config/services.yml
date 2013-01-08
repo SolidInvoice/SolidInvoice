@@ -1,0 +1,7 @@
+parameters:
+#    cs_bill_core.example.class: CSBill\CoreBundle\Example
+
+services:
+#    cs_bill_core.example:
+#        class: %cs_bill_core.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

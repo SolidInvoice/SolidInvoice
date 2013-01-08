@@ -2,6 +2,9 @@
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #    prefix:   /_internal
+cs_bill_core:
+    resource: "@CSBillCoreBundle/Resources/config/routing.yml"
+    prefix:   /
 
 CSBillInstallBundle:
     resource: "@CSBillInstallBundle/Controller/"
