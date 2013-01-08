@@ -104,8 +104,6 @@ class DatabaseConfig extends Step
             }
         }
 
-        $this->params = $request;
-
         return count($this->getErrors()) === 0;
     }
 
@@ -118,7 +116,7 @@ class DatabaseConfig extends Step
     {
         $this->root_dir = $this->get('kernel')->getRootDir();
 
-        $this->writeConfigFile($request);
+        $config = array_intersect_key($request, $this->params);
 
         try {
         	$this->executeMigrations();
@@ -127,6 +125,7 @@ class DatabaseConfig extends Step
         	// if we get an exception here, it most probably means that the application is already installed
         	return;
         }
+        $this->writeConfigFile($config);
     }
 
     /**
