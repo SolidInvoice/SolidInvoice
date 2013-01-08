@@ -134,19 +134,4 @@ abstract class Step implements StepInterface, \ArrayAccess
     {
         $this->errors = array();
     }
-
-    /**
-     * @param array $request
-     */
-    abstract public function validate(array $request);
-
-    /**
-     * @param array $request
-     */
-	abstract public function process(array $request);
-
-	/**
-	 * (non-phpdoc)
-	 */
-	abstract public function start();
 }
