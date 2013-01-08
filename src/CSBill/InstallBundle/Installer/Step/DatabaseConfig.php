@@ -118,14 +118,9 @@ class DatabaseConfig extends Step
 
         $config = array_intersect_key($request, $this->params);
 
-        try {
-        	$this->executeMigrations();
-        } catch (\RuntimeException $e)
-        {
-        	// if we get an exception here, it most probably means that the application is already installed
-        	return;
-        }
         $this->writeConfigFile($config);
+
+		$this->executeMigrations();
     }
 
     /**
