@@ -10,6 +10,8 @@
 
 namespace CSBill\InstallBundle\Command;
 
+use CSBill\InstallBundle\Exception\ApplicationInstalledException;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,20 +42,12 @@ class InstallCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
 
-        try {
-            if ($container->get('database_connection')->connect()) {
-                try {
-                    $repository = $container->get('doctrine.orm.entity_manager')->getRepository('CSUserBundle:User');
-
                     if (count($repository->findAll()) > 0) {
-                        $output->writeln('<error>ERROR: The application is already installed.</error>');
+        $installer = $container->get('csbill.installer');
 
-                        return;
-                    }
-                } catch (\Exception $e) {}
-            }
-        } catch (\PDOException $e) {
-            // if we get an exception here, the application isn't installed yet
+        if($installer->isInstalled())
+        {
+        	throw new ApplicationInstalledException();
         }
 
         $options = $this->getArgumentOptions($input, $output);
@@ -62,15 +56,21 @@ class InstallCommand extends ContainerAwareCommand
         $options['database_driver'] = 'pdo_mysql';
 
         $installer = $container->get('csbill.installer');
+        $progress = $this->getHelperSet()->get('progress');
+
+        $progress->start($output, count($installer->getSteps()));
 
         do {
             $step = $installer->getStep();
 
             $response = $installer->validateStep($options);
+        	$progress->advance();
 
             $output->writeln(sprintf('Installation: %s', $step->title));
 
         } while ($response !== false && stripos($response->getTargetUrl(), 'success') === false);
+
+        $progress->finish();
 
         if (!$response) {
             $errors = $step->getErrors();
