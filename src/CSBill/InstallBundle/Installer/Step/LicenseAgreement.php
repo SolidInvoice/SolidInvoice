@@ -49,7 +49,7 @@ class LicenseAgreement extends Step
             return true;
         }
 
-        $this->addError('Please accept the license agreement');
+        $this->addError('Please accept the license agreement before installing the application');
 
         return false;
     }
