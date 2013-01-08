@@ -10,8 +10,9 @@
 
 {% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
 
-
-{% block title %}{{ "Login"|trans }}{% endblock %}
+{% block title %}
+	{{ "Login"|trans }}
+{% endblock title %}
 
 {% block header %}
 	<nav class="navbar navbar-fixed-top navbar-inverse">
@@ -21,9 +22,9 @@
 			</div>
 		</div>
 	</nav>
-{% endblock %}
+{% endblock header %}
 
-{% block container %}
+{% block content %}
 	<fieldset>
 	    <div class="row">
 			<div class="offset2 span8">
@@ -73,4 +74,4 @@
 			</div>
 		</div>
 	</fieldset>
-{% endblock %}
+{% endblock content %}
