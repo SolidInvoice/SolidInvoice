@@ -32,7 +32,8 @@ class PasswordEncoder extends Pbkdf2PasswordEncoder
      */
     public function __construct($algorithm = 'sha512', $encodeHashAsBase64 = true, $iterations = 10, $length = 40)
     {
-    	$this->supportedPhp = version_compare(PHP_VERSION, '5.3.7', '>');
+    	// Use the build in pashword hash api if using php >= 5.5
+    	$this->supportedPhp = version_compare(PHP_VERSION, '5.5.0', '>=');
 
         parent::__construct($algorithm, $encodeHashAsBase64, $iterations, $length);
     }
@@ -54,6 +55,6 @@ class PasswordEncoder extends Pbkdf2PasswordEncoder
     		return password_verify($encoded, $raw);
     	}
 
-    	return parent::isPasswordValid($encoded. $raw, $salt);
+    	return parent::isPasswordValid($encoded, $raw, $salt);
     }
 }
