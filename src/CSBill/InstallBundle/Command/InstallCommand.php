@@ -42,7 +42,6 @@ class InstallCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
 
-                    if (count($repository->findAll()) > 0) {
         $installer = $container->get('csbill.installer');
 
         if($installer->isInstalled())
@@ -55,7 +54,6 @@ class InstallCommand extends ContainerAwareCommand
         // only current supported driver is mysql
         $options['database_driver'] = 'pdo_mysql';
 
-        $installer = $container->get('csbill.installer');
         $progress = $this->getHelperSet()->get('progress');
 
         $progress->start($output, count($installer->getSteps()));
