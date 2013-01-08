@@ -9,15 +9,10 @@
 #}
 
 {% extends "CSCoreBundle:Layout:one_column_left.html.twig" %}
+{% set title = app_name ~ " Installation" %}
 
 {% block header %}
-	<nav class="navbar navbar-fixed-top navbar-inverse">
-		<div class="navbar-inner">
-			<div class="container-fluid">
-				<a class="brand" href="#">{{ "CSBill Installation"|trans }}</a>
-			</div>
-		</div>
-	</nav>
+	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : title|trans} %}
 {% endblock header %}
 
 {% block body %}
