@@ -1,12 +1,8 @@
-# Internal routing configuration to handle ESI
-#_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal
 cs_bill_core:
     resource: "@CSBillCoreBundle/Resources/config/routing.yml"
     prefix:   /
 
-CSBillInstallBundle:
+cs_bill_install:
     resource: "@CSBillInstallBundle/Controller/"
     type:     annotation
     prefix:   /install
