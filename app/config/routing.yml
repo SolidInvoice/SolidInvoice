@@ -11,9 +11,10 @@ CSBillInstallBundle:
     type:     annotation
     prefix:   /install
     
-CSBillUserBundle:
-    resource: "@CSBillUserBundle/Controller/"
-    type:     annotation
+cs_bill_user:
+    resource: "@CSBillUserBundle/Resources/config/routing.yml"
+    #resource: "@CSBillUserBundle/Controller/"
+    #type:     annotation
     
 cs_client_bundle:
     resource: "@CSClientBundle/Resources/config/routing.yml"

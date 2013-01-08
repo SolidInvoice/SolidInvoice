@@ -19,8 +19,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 class LoginController extends Controller
 {
     /**
-     * @Route("/login", name="_login")
-     * @Template()
+     * Page for login
      */
     public function loginAction()
     {
@@ -31,14 +30,14 @@ class LoginController extends Controller
             $this->get('request')->getSession()->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
-        return array(
+        return $this->render('CSBillUserBundle:Login:login.html.twig', array(
             'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
             'error'         => $error,
-        );
+        ));
     }
 
     /**
-     * @Route("/login_check", name="_security_check")
+     * Authenticates the user
      */
     public function securityCheckAction()
     {
@@ -46,7 +45,7 @@ class LoginController extends Controller
     }
 
     /**
-     * @Route("/logout", name="_logout")
+     * Log user out
      */
     public function logoutAction()
     {
