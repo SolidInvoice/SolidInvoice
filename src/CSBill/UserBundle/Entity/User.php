@@ -312,11 +312,11 @@ class User implements AdvancedUserInterface, EquatableInterface, \Serializable
 
     public function serialize()
     {
-        return json_encode(array($this->id, $this->username, $this->salt, $this->password, $this->email, $this->active, $this->created, $this->updated, $this->deleted));
+        return json_encode(array($this->id, $this->username, $this->salt, $this->password, $this->email, $this->active));
     }
 
     public function unserialize($object)
     {
-        return list($this->id, $this->username, $this->salt, $this->password, $this->email, $this->active, $this->created, $this->updated, $this->deleted) = json_decode($object);
+        return list($this->id, $this->username, $this->salt, $this->password, $this->email, $this->active) = json_decode($object);
     }
 }
