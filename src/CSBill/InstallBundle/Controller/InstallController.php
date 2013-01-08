@@ -11,6 +11,9 @@
 namespace CSBill\InstallBundle\Controller;
 
 use CS\CoreBundle\Controller\Controller;
+
+use CSBill\InstallBundle\Exception\ApplicationInstalledException;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,6 +29,11 @@ class InstallController extends Controller
         $request = $this->getRequest();
 
         $installer = $this->get('csbill.installer');
+
+        if($installer->isInstalled())
+        {
+        	throw new ApplicationInstalledException();
+        }
 
         if ($request->isMethod('POST')) {
             $response = $installer->validateStep($request->request->all());
