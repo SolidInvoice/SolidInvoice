@@ -61,12 +61,13 @@ class InstallCommand extends ContainerAwareCommand
         $progress->start($output, count($installer->getSteps()));
 
         do {
-            $step = $installer->getStep();
+        	$step = $installer->getStep();
 
-            $response = $installer->validateStep($options);
         	$progress->advance();
 
-            $output->writeln(sprintf('Installation: %s', $step->title));
+        	$output->writeln(sprintf("\tInstallation: %s", $step->title));
+
+            $response = $installer->validateStep($options);
 
         } while ($response !== false && stripos($response->getTargetUrl(), 'success') === false);
 
