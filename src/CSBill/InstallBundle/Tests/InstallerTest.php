@@ -63,7 +63,7 @@ class InstallControllerTest extends WebTestCase
                            'database_host' 		=> 'localhost',
                            'database_user' 		=> 'root',
                            'database_password' 	=> '',
-                           'database_name' 		=> 'csbill',
+                           'database_name' 		=> 'csbill_test',
                            'database_port' 		=> '3306',
                            'database_driver' 	=> 'pdo_mysql',
                        );
