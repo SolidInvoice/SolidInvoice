@@ -61,7 +61,7 @@ class User implements AdvancedUserInterface, EquatableInterface, \Serializable
     /**
      * @var string $password
      *
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
     protected $password;
