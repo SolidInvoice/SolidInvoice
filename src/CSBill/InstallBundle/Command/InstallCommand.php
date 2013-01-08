@@ -118,7 +118,12 @@ class InstallCommand extends ContainerAwareCommand
     					$value = $argument->getDefault();
 
     					do {
-    						$value = $dialog->ask($output, '<question>'.$argument->getDescription().'</question>', $value);
+    						$description = $argument->getDescription();
+
+    						$func = strpos($description, 'password') !== false ? 'askHiddenResponse' : 'ask';
+
+    						$value = $dialog->{$func}($output, '<question>'.$description.'</question>', $value);
+
     					} while ($value === null);
     				}
 
