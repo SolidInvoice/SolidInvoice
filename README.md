@@ -1,9 +1,11 @@
 CSBill
 ======
 
-[![Build Status](https://secure.travis-ci.org/pierredup/CSBill.png?branch=master)](http://travis-ci.org/pierredup/CSBill)
+[![Build Status](https://travis-ci.org/CustomScripts/CSBill.png?branch=master)](https://travis-ci.org/CustomScripts/CSBill)
 
 Open-Source General Billing Manager
+
+CSBill is an open-source application that allows you to manage clients and contacts and send invoices and quotes.
 
 Requirements
 ------------
@@ -55,16 +57,17 @@ Now you have a fully working copy of CSBill, which you can use to modify or dig 
 #### Lesscss
 
 The stylesheets is built with [lesscss][3], so you need nodejs and less installed in your system to be able to parse the less files to CSS.
+(This is only for the development version. Once a stable version is released, it will included the pre-compiled css file)
 
 Features
 --------
 
 Some of the basic features included in CSBill is:
 
-* Client Management
-* Project Management
+* Clients & Contacts management
 * Send Quotes
 * Send Invoices
+* More to come
 
 *Note:* This list is only the planned features so far. Some (or all) of the mentioned features may not be complete or even started. As the features grow, the list will be updated to include the actual features available.
 
@@ -74,7 +77,7 @@ Contributing
 
 If you wish to contribute to CSBill, please fork it, make your changes, and submit a pull request.
 
-All pull requests **must** pass the unit tests, unless specified. If a pull request does not pass existing unit tests, then new unit tests must acompany the pull request, with a description as to why the unit tests fail.
+Where possible, pull requests need to have unit tests available, and the unit tests should not fail.
 
 All pull requests must conform to the standards of coding currently in the application. Pull requests that do not follow standards, won't be denied, but we will ask you to change the code before we accept the pull request.
 
