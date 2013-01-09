@@ -16,7 +16,7 @@ class InstallControllerTest extends WebTestCase
 {
     public function testInstall()
     {
-        $client = static::createClient();
+    	static::createClient();
 
         $installer = static::$kernel->getContainer()->get('csbill.installer');
 
