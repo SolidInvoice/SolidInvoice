@@ -37,7 +37,9 @@ class SystemInformation extends Step
      * @var array $params
      */
     public $params = array(	'email_address' => '',
-                            'password'		=> '');
+                            'password'		=> '',
+    						'username'		=> ''
+    						);
 
     /**
      * Validate user and company info
@@ -53,6 +55,10 @@ class SystemInformation extends Step
 
         if (empty($request['password'])) {
             $this->addError('Please enter a password');
+        }
+
+        if (empty($request['username'])) {
+        	$this->addError('Please enter a username');
         }
 
         $this->params = $request;
@@ -73,7 +79,7 @@ class SystemInformation extends Step
 
         $password = $encoder->encodePassword($request['password'], $user->getSalt());
 
-        $user->setUsername('admin')
+        $user->setUsername($request['username'])
              ->setEmail($request['email_address'])
              ->setPassword($password);
 

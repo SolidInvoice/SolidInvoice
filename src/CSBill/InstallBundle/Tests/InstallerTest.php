@@ -98,8 +98,9 @@ class InstallControllerTest extends WebTestCase
 
        	// System Config - succeed
        	$options = array(
-               'email_address' 	=> 'test@example.com',
-               'password' 		=> 'test',
+				'email_address' => 'test@test.com',
+				'password' 		=> 'test',
+				'username' 		=> 'test',
        	);
 
        	$response = $installer->validateStep($options);

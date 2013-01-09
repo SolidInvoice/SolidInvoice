@@ -11,7 +11,7 @@ before_script:
     - mysql -e 'create database csbill;'
     - mysql -e 'create database csbill_test;'
     - composer install
-    - php app/console app:install --accept --database_host=localhost --database_user=root --database_password= --database_port=3306 --database_name=csbill --email_address=test@example.com --password=test
+    - php app/console app:install --accept --database_host=localhost --database_user=root --database_password= --database_port=3306 --database_name=csbill --username=admin --email_address=test@example.com --password=test
 
 script: phpunit -c app --coverage-clover "clover"
 
