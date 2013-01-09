@@ -17,10 +17,8 @@ class DefaultControllerTest extends WebTestCase
 {
     public function testIndex()
     {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/dashboard');
-
-        $this->assertTrue($crawler->filter('html:contains("")')->count() > 0);
+    	$this->markTestIncomplete(
+    			'This test has not been implemented yet.'
+    	);
     }
 }
