@@ -15,14 +15,14 @@ use Symfony\Component\Security\Core\Encoder\Pbkdf2PasswordEncoder;
 
 class PasswordEncoder extends Pbkdf2PasswordEncoder
 {
-	/**
-	 * Is the current version of php supported for the password hash api?
-	 *
-	 * @var bool $supportedPhp
-	 */
-	protected $supportedPhp;
+    /**
+     * Is the current version of php supported for the password hash api?
+     *
+     * @var bool $supportedPhp
+     */
+    protected $supportedPhp;
 
-	/**
+    /**
      * Constructor.
      *
      * @param string  $algorithm          The digest algorithm to use
@@ -32,29 +32,27 @@ class PasswordEncoder extends Pbkdf2PasswordEncoder
      */
     public function __construct($algorithm = 'sha512', $encodeHashAsBase64 = true, $iterations = 10, $length = 40)
     {
-    	// Use the build in pashword hash api if using php >= 5.5
-    	$this->supportedPhp = version_compare(PHP_VERSION, '5.5.0', '>=');
+        // Use the build in pashword hash api if using php >= 5.5
+        $this->supportedPhp = version_compare(PHP_VERSION, '5.5.0', '>=');
 
         parent::__construct($algorithm, $encodeHashAsBase64, $iterations, $length);
     }
 
     public function encodePassword($raw, $salt)
     {
-    	if($this->supportedPhp)
-    	{
-    		return password_hash($raw, PASSWORD_BCRYPT);
-    	}
+        if ($this->supportedPhp) {
+            return password_hash($raw, PASSWORD_BCRYPT);
+        }
 
-    	return parent::encodePassword($raw, $salt);
+        return parent::encodePassword($raw, $salt);
     }
 
     public function isPasswordValid($encoded, $raw, $salt)
     {
-    	if($this->supportedPhp)
-    	{
-    		return password_verify($encoded, $raw);
-    	}
+        if ($this->supportedPhp) {
+            return password_verify($encoded, $raw);
+        }
 
-    	return parent::isPasswordValid($encoded, $raw, $salt);
+        return parent::isPasswordValid($encoded, $raw, $salt);
     }
 }

@@ -15,11 +15,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CSBillCoreBundle extends Bundle
 {
-	/**
-	 * Extends the CSCoreBundle, so we can override some of the features specific to this application
-	 */
-	public function getParent()
-	{
-		return 'CSCoreBundle';
-	}
+    /**
+     * Extends the CSCoreBundle, so we can override some of the features specific to this application
+     */
+    public function getParent()
+    {
+        return 'CSCoreBundle';
+    }
 }

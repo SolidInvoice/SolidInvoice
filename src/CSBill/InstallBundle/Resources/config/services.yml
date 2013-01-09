@@ -1,16 +1,16 @@
-parameters: 
+parameters:
     csbill.installer.check.class : CSBill\InstallBundle\Listener\RequestListener
     csbill.installer.class: CSBill\InstallBundle\Installer\Installer
-    csbill.twig.install_extension.class: CSBill\InstallBundle\Twig\InstallExtension  
+    csbill.twig.install_extension.class: CSBill\InstallBundle\Twig\InstallExtension
 
 services:
     csbill.installer.check:
-        class: %csbill.installer.check.class% 
+        class: %csbill.installer.check.class%
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 0 }
         calls:
             - [ setContainer, [ @service_container ] ]
-            
+
     csbill.installer:
         class: %csbill.installer.class%
         arguments: [ @service_container ]

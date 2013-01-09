@@ -38,8 +38,8 @@ class SystemInformation extends Step
      */
     public $params = array(	'email_address' => '',
                             'password'		=> '',
-    						'username'		=> ''
-    						);
+                            'username'		=> ''
+                            );
 
     /**
      * Validate user and company info
@@ -58,7 +58,7 @@ class SystemInformation extends Step
         }
 
         if (empty($request['username'])) {
-        	$this->addError('Please enter a username');
+            $this->addError('Please enter a username');
         }
 
         $this->params = $request;

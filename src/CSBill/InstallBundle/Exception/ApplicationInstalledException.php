@@ -12,8 +12,8 @@ namespace CSBill\InstallBundle\Exception;
 
 class ApplicationInstalledException extends \Exception
 {
-	public function __construct()
-	{
-		parent::__construct('Application is already installed');
-	}
+    public function __construct()
+    {
+        parent::__construct('Application is already installed');
+    }
 }

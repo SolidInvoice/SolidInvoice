@@ -11,7 +11,6 @@
 namespace CSBill\InstallBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use CSBill\InstallBundle\Installer\Installer;
@@ -40,12 +39,12 @@ class RequestListener
      * @var array $core_routes
      */
     protected $core_routes = array(	Installer::INSTALLER_ROUTE,
-    								Installer::INSTALLER_SUCCESS_ROUTE,
-    								Installer::INSTALLER_RESTART_ROUTE,
-    								'_installer_step',
-    								'_profiler',
-    								'_wdt'
-    							  );
+                                    Installer::INSTALLER_SUCCESS_ROUTE,
+                                    Installer::INSTALLER_RESTART_ROUTE,
+                                    '_installer_step',
+                                    '_profiler',
+                                    '_wdt'
+                                  );
 
     /**
      * @DI\Observe("kernel.request", priority = 10)
@@ -60,13 +59,13 @@ class RequestListener
 
         if (!in_array($route, $this->core_routes) && !in_array(true, $map) && $event->getRequestType() === HttpKernel::MASTER_REQUEST) {
 
-        	$installer = $this->container->get('csbill.installer');
+            $installer = $this->container->get('csbill.installer');
 
-        	if(!$installer->isInstalled())
-        	{
-        		$response = $installer->getRedirectResponse();
-        		return $event->setResponse($response);
-        	}
+            if (!$installer->isInstalled()) {
+                $response = $installer->getRedirectResponse();
+
+                return $event->setResponse($response);
+            }
 
             return null;
         }

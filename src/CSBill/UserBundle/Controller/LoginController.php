@@ -12,8 +12,6 @@
 namespace CSBill\UserBundle\Controller;
 
 use CS\CoreBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Security\Core\SecurityContext;
 
 class LoginController extends Controller

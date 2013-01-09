@@ -11,7 +11,7 @@
 namespace CSBill\InstallBundle\Installer;
 
 use Symfony\Component\DependencyInjection\ContainerInterface,
-	Symfony\Component\HttpFoundation\RedirectResponse;
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Doctrine\Common\Util\Inflector;
 
@@ -20,9 +20,9 @@ use Doctrine\Common\Util\Inflector;
  */
 class Installer
 {
-	const INSTALLER_ROUTE = '_installer';
-	const INSTALLER_SUCCESS_ROUTE = '_installer_success';
-	const INSTALLER_RESTART_ROUTE = '_installer_restart';
+    const INSTALLER_ROUTE = '_installer';
+    const INSTALLER_SUCCESS_ROUTE = '_installer_success';
+    const INSTALLER_RESTART_ROUTE = '_installer_restart';
 
     /**
      * @var Container $container
@@ -72,14 +72,14 @@ class Installer
     /**
      * Initialized the current step, and set the session data
      *
-     * @param string $step
+     * @param  string $step
      * @return void
      */
     public function setStep($step)
     {
-    	$this->step($step);
+        $this->step($step);
 
-    	$this->setSession('step', $step);
+        $this->setSession('step', $step);
     }
 
     /**
@@ -103,19 +103,17 @@ class Installer
             $key++;
 
             try {
-            	$step = $this->getStep($key);
-            } catch (\OutOfRangeException $e)
-            {
-            	$route = $this->getContainer()->get('router')->generate(self::INSTALLER_SUCCESS_ROUTE);
+                $step = $this->getStep($key);
+            } catch (\OutOfRangeException $e) {
+                $route = $this->getContainer()->get('router')->generate(self::INSTALLER_SUCCESS_ROUTE);
 
-            	return new RedirectResponse($route);
+                return new RedirectResponse($route);
             }
 
             $this->setStep($step);
 
             // save all the request data in the session so we can use it later
             //$this->setSession($session, $options);
-
             return $this->getRedirectResponse();
         }
 
@@ -133,13 +131,13 @@ class Installer
      */
     public function restart()
     {
-    	$session = $this->getContainer()->get('session');
+        $session = $this->getContainer()->get('session');
 
-    	$keys = $session->all();
+        $keys = $session->all();
 
-    	array_walk($keys, function($value, $key) use ($session){
-    		$session->remove($key);
-    	});
+        array_walk($keys, function($value, $key) use ($session) {
+            $session->remove($key);
+        });
     }
 
     /**
@@ -149,9 +147,9 @@ class Installer
      */
     public function getRedirectResponse()
     {
-    	$route = $this->getContainer()->get('router')->generate(self::INSTALLER_ROUTE);
+        $route = $this->getContainer()->get('router')->generate(self::INSTALLER_ROUTE);
 
-    	return new RedirectResponse($route);
+        return new RedirectResponse($route);
     }
 
     /**
@@ -258,20 +256,18 @@ class Installer
      */
     public function getStep($key = null)
     {
-    	if(is_null($key))
-    	{
-    		// get necessary information for current step
-    		$this->step->start();
+        if (is_null($key)) {
+            // get necessary information for current step
+            $this->step->start();
 
-    		return $this->step;
-    	}
+            return $this->step;
+        }
 
-    	if(isset($this->steps[$key]))
-    	{
-    		return $this->steps[$key];
-    	}
+        if (isset($this->steps[$key])) {
+            return $this->steps[$key];
+        }
 
-    	throw new \OutOfRangeException('Invalid step requested');
+        throw new \OutOfRangeException('Invalid step requested');
     }
 
     /**
@@ -281,36 +277,36 @@ class Installer
      */
     public function isInstalled()
     {
-    	// first we check if we can connect to the database
-    	try {
-    		$this->container->get('database_connection')->connect();
-    	} catch (\PDOException $e) {
-    		// TODO: if we can't connect to the database, check if the application is installed or not.
-    		// If not, go to the installer. If application is already installed, then just display an error message
-    		return false;
-    	}
+        // first we check if we can connect to the database
+        try {
+            $this->container->get('database_connection')->connect();
+        } catch (\PDOException $e) {
+            // TODO: if we can't connect to the database, check if the application is installed or not.
+            // If not, go to the installer. If application is already installed, then just display an error message
+            return false;
+        }
 
-    	// TODO: check (settings table|composer.lock file) for current installed version. If version can't be found, run installer
-    	// if version is older than available version, go to upgrade page (unless automatic update is activiated)
-    	// (Should we automatically take user to upgrade page, or just notify that a new version is available?)
+        // TODO: check (settings table|composer.lock file) for current installed version. If version can't be found, run installer
+        // if version is older than available version, go to upgrade page (unless automatic update is activiated)
+        // (Should we automatically take user to upgrade page, or just notify that a new version is available?)
 
-    	/**
-    	 * Temporary Implemation
-    	 */
+        /**
+         * Temporary Implemation
+         */
 
-    	// check if the users table exists. If not, go to installer
-    	$repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('CSBillUserBundle:User');
+        // check if the users table exists. If not, go to installer
+        $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('CSBillUserBundle:User');
 
-    	try {
-    		$users = $repository->createQueryBuilder('u')->setMaxResults(1)->getQuery()->execute();
+        try {
+            $users = $repository->createQueryBuilder('u')->setMaxResults(1)->getQuery()->execute();
 
-    		if (count($users) === 0) {
-    			throw new \RuntimeException('The users table does not exist');
-    		}
-    	} catch (\Exception $e) {
-    		return false;
-    	}
+            if (count($users) === 0) {
+                throw new \RuntimeException('The users table does not exist');
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
 
-    	return true;
+        return true;
     }
 }

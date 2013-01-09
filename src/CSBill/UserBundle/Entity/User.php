@@ -15,13 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface,
-	Symfony\Component\Security\Core\User\EquatableInterface,
-	Symfony\Component\Security\Core\Util\StringUtils,
-	Symfony\Component\Security\Core\User\UserInterface;
+    Symfony\Component\Security\Core\User\EquatableInterface,
+    Symfony\Component\Security\Core\Util\StringUtils,
+    Symfony\Component\Security\Core\User\UserInterface;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 
 /**
  * CS\UserBundle\Entity\User
@@ -240,7 +239,7 @@ class User implements AdvancedUserInterface, EquatableInterface, \Serializable
 
     public function isEqualTo(UserInterface $user)
     {
-    	return StringUtils::equals($this->username, $user->getUsername());
+        return StringUtils::equals($this->username, $user->getUsername());
     }
 
     /**

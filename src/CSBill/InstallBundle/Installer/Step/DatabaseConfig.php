@@ -120,7 +120,7 @@ class DatabaseConfig extends Step
 
         $this->writeConfigFile($config);
 
-		$this->executeMigrations();
+        $this->executeMigrations();
     }
 
     /**

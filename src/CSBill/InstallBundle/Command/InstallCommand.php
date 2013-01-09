@@ -45,9 +45,8 @@ class InstallCommand extends ContainerAwareCommand
 
         $installer = $container->get('csbill.installer');
 
-        if($installer->isInstalled())
-        {
-        	throw new ApplicationInstalledException();
+        if ($installer->isInstalled()) {
+            throw new ApplicationInstalledException();
         }
 
         $options = $this->getArgumentOptions($input, $output);
@@ -60,11 +59,11 @@ class InstallCommand extends ContainerAwareCommand
         $progress->start($output, count($installer->getSteps()));
 
         do {
-        	$step = $installer->getStep();
+            $step = $installer->getStep();
 
-        	$progress->advance();
+            $progress->advance();
 
-        	$output->writeln(sprintf("\tInstallation: %s", $step->title));
+            $output->writeln(sprintf("\tInstallation: %s", $step->title));
 
             $response = $installer->validateStep($options);
 
@@ -82,60 +81,60 @@ class InstallCommand extends ContainerAwareCommand
 
     protected function getArgumentOptions(InputInterface $input, OutputInterface $output)
     {
-    	$options = array();
+        $options = array();
 
-    	$dialog = $this->getHelperSet()->get('dialog');
+        $dialog = $this->getHelperSet()->get('dialog');
 
-    	foreach ($this->getDefinition()->getOptions() as $argument) {
-    		$name = $argument->getName();
+        foreach ($this->getDefinition()->getOptions() as $argument) {
+            $name = $argument->getName();
 
-    		if (in_array($name, $this->invalid_options)) {
-    			continue;
-    		}
+            if (in_array($name, $this->invalid_options)) {
+                continue;
+            }
 
-    		if (!$argument->acceptValue()) {
-    			if ($input->hasParameterOption('--'.$name)) {
-    				$options[$name] = 'y';
-    			} else {
-    				do {
-    					$value = $dialog->ask($output, '<question>'.$argument->getDescription().'</question>', $input->getParameterOption('--'.$name));
+            if (!$argument->acceptValue()) {
+                if ($input->hasParameterOption('--'.$name)) {
+                    $options[$name] = 'y';
+                } else {
+                    do {
+                        $value = $dialog->ask($output, '<question>'.$argument->getDescription().'</question>', $input->getParameterOption('--'.$name));
 
-    					if ($value === 'n') {
-    						return;
-    					} elseif ($value !== 'y') {
-    						$output->writeln("<comment>Please only enter 'y' or 'n'</comment>");
-    					}
-    				} while ($value !== 'y');
+                        if ($value === 'n') {
+                            return;
+                        } elseif ($value !== 'y') {
+                            $output->writeln("<comment>Please only enter 'y' or 'n'</comment>");
+                        }
+                    } while ($value !== 'y');
 
-    				$options[$name] = $value;
-    			}
-    		} else {
+                    $options[$name] = $value;
+                }
+            } else {
 
-    			if (!$input->getParameterOption('--'.$name)) {
+                if (!$input->getParameterOption('--'.$name)) {
 
-    				if ($input->hasParameterOption('--'.$name.'=')) {
-    					$value = '';
-    				} else {
-    					$value = $argument->getDefault();
+                    if ($input->hasParameterOption('--'.$name.'=')) {
+                        $value = '';
+                    } else {
+                        $value = $argument->getDefault();
 
-    					do {
-    						$description = $argument->getDescription();
+                        do {
+                            $description = $argument->getDescription();
 
-    						$func = strpos($description, 'password') !== false ? 'askHiddenResponse' : 'ask';
+                            $func = strpos($description, 'password') !== false ? 'askHiddenResponse' : 'ask';
 
-    						$value = $dialog->{$func}($output, '<question>'.$description.'</question>', $value);
+                            $value = $dialog->{$func}($output, '<question>'.$description.'</question>', $value);
 
-    					} while ($value === null);
-    				}
+                        } while ($value === null);
+                    }
 
-    			} else {
-    				$value = $input->getOption($name);
-    			}
+                } else {
+                    $value = $input->getOption($name);
+                }
 
-    			$options[$name] = $value;
-    		}
-    	}
+                $options[$name] = $value;
+            }
+        }
 
-    	return $options;
+        return $options;
     }
 }

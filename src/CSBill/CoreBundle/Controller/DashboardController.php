@@ -15,9 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DashboardController extends Controller
 {
-	/**
-	 * Homepage action
-	 */
+    /**
+     * Homepage action
+     */
     public function indexAction()
     {
         return $this->render('CSBillCoreBundle:Dashboard:index.html.twig');

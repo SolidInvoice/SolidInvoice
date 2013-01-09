@@ -14,65 +14,65 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class InstallControllerTest extends WebTestCase
 {
-	/*protected function setUp()
-	{
-		parent::setUp();
-
-		$installer = static::$kernel->getContainer()->get('csbill.installer');
-
-		if ($installer->isInstalled()) {
-			$this->markTestSkipped(
-					'The application is already installed'
-			);
-		}
-	}*/
-
-    public function testInstall()
+    /*protected function setUp()
     {
-    	static::createClient();
+        parent::setUp();
 
         $installer = static::$kernel->getContainer()->get('csbill.installer');
 
-		// License Agreement - fail
-      	$step = $installer->getStep();
+        if ($installer->isInstalled()) {
+            $this->markTestSkipped(
+                    'The application is already installed'
+            );
+        }
+    }*/
 
-      	$options = array('accept' => 'n');
+    public function testInstall()
+    {
+        static::createClient();
 
-		$response = $installer->validateStep($options);
+        $installer = static::$kernel->getContainer()->get('csbill.installer');
 
-		$this->assertFalse($response);
-		$this->assertGreaterThan(0, count($step->getErrors()));
+        // License Agreement - fail
+          $step = $installer->getStep();
 
-       	// License Agreement - succeed
-       	$options = array('accept' => 'y');
+          $options = array('accept' => 'n');
 
-       	$response = $installer->validateStep($options);
+        $response = $installer->validateStep($options);
 
-       	$this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
-       	$this->assertCount(0, $step->getErrors());
+        $this->assertFalse($response);
+        $this->assertGreaterThan(0, count($step->getErrors()));
 
-       	// System Check
-       	$step = $installer->getStep();
+           // License Agreement - succeed
+           $options = array('accept' => 'y');
 
-       	$options = array();
+           $response = $installer->validateStep($options);
 
-       	$response = $installer->validateStep($options);
+           $this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
+           $this->assertCount(0, $step->getErrors());
 
-       	$this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
-       	$this->assertCount(0, $step->getErrors());
+           // System Check
+           $step = $installer->getStep();
 
-       	// Database Config - fail
-       	$step = $installer->getStep();
+           $options = array();
 
-       	$options = array();
+           $response = $installer->validateStep($options);
 
-       	$response = $installer->validateStep($options);
+           $this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
+           $this->assertCount(0, $step->getErrors());
 
-       	$this->assertFalse($response);
-       	$this->assertGreaterThan(0, $step->getErrors());
+           // Database Config - fail
+           $step = $installer->getStep();
 
-       	// Database Config - succeed
-       	$options = array(
+           $options = array();
+
+           $response = $installer->validateStep($options);
+
+           $this->assertFalse($response);
+           $this->assertGreaterThan(0, $step->getErrors());
+
+           // Database Config - succeed
+           $options = array(
                            'database_host' 		=> 'localhost',
                            'database_user' 		=> 'root',
                            'database_password' 	=> '',
@@ -81,31 +81,31 @@ class InstallControllerTest extends WebTestCase
                            'database_driver' 	=> 'pdo_mysql',
                        );
 
-       	$response = $installer->validateStep($options);
+           $response = $installer->validateStep($options);
 
-       	$this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
-       	$this->assertCount(0, $step->getErrors());
+           $this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
+           $this->assertCount(0, $step->getErrors());
 
-       	// System Config - fail
-       	$step = $installer->getStep();
+           // System Config - fail
+           $step = $installer->getStep();
 
-       	$options = array();
+           $options = array();
 
-       	$response = $installer->validateStep($options);
+           $response = $installer->validateStep($options);
 
-       	$this->assertFalse($response);
-       	$this->assertGreaterThan(0, count($step->getErrors()));
+           $this->assertFalse($response);
+           $this->assertGreaterThan(0, count($step->getErrors()));
 
-       	// System Config - succeed
-       	$options = array(
-				'email_address' => 'test@test.com',
-				'password' 		=> 'test',
-				'username' 		=> 'test',
-       	);
+           // System Config - succeed
+           $options = array(
+                'email_address' => 'test@test.com',
+                'password' 		=> 'test',
+                'username' 		=> 'test',
+           );
 
-       	$response = $installer->validateStep($options);
+           $response = $installer->validateStep($options);
 
-       	$this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
-       	$this->assertCount(0, $step->getErrors());
+           $this->assertInstanceOf('\Symfony\Component\HttpFoundation\RedirectResponse', $response);
+           $this->assertCount(0, $step->getErrors());
     }
 }

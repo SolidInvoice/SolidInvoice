@@ -30,9 +30,8 @@ class InstallController extends Controller
 
         $installer = $this->get('csbill.installer');
 
-        if($installer->isInstalled())
-        {
-        	throw new ApplicationInstalledException();
+        if ($installer->isInstalled()) {
+            throw new ApplicationInstalledException();
         }
 
         if ($request->isMethod('POST')) {
@@ -53,11 +52,11 @@ class InstallController extends Controller
      */
     public function stepAction($step)
     {
-    	$installer = $this->get('csbill.installer');
+        $installer = $this->get('csbill.installer');
 
-    	$installer->setStep($step);
+        $installer->setStep($step);
 
-    	return $installer->getRedirectResponse();
+        return $installer->getRedirectResponse();
     }
 
     /**
@@ -65,11 +64,11 @@ class InstallController extends Controller
      */
     public function restartAction()
     {
-    	$installer = $this->get('csbill.installer');
+        $installer = $this->get('csbill.installer');
 
-    	$installer->restart();
+        $installer->restart();
 
-    	return $installer->getRedirectResponse();
+        return $installer->getRedirectResponse();
     }
 
     /**
