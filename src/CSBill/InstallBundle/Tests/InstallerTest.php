@@ -14,6 +14,19 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class InstallControllerTest extends WebTestCase
 {
+	/*protected function setUp()
+	{
+		parent::setUp();
+
+		$installer = static::$kernel->getContainer()->get('csbill.installer');
+
+		if ($installer->isInstalled()) {
+			$this->markTestSkipped(
+					'The application is already installed'
+			);
+		}
+	}*/
+
     public function testInstall()
     {
     	static::createClient();
