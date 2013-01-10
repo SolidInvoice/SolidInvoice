@@ -12,6 +12,8 @@
 namespace CSBill\CoreBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use CSBill\CoreBundle\DependencyInjection\Compiler\MenuCompilerPass;
 
 class CSBillCoreBundle extends Bundle
 {
@@ -21,5 +23,17 @@ class CSBillCoreBundle extends Bundle
     public function getParent()
     {
         return 'CSCoreBundle';
+    }
+
+    /**
+     * (non-phpdoc)
+     *
+     * @param ContainerBuilder $container
+     */
+    public function build(ContainerBuilder $container)
+    {
+    	parent::build($container);
+
+    	$container->addCompilerPass(new MenuCompilerPass());
     }
 }

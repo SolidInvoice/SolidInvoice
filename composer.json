@@ -22,6 +22,7 @@
         "customscripts/client-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master"
+        "knplabs/knp-menu-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

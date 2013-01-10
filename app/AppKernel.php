@@ -22,6 +22,7 @@ class AppKernel extends Kernel
 
         	new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
         	new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+        	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
         	new CS\CoreBundle\CSCoreBundle(),
         	new CS\ClientBundle\CSClientBundle(),
