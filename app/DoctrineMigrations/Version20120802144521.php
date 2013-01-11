@@ -2,8 +2,8 @@
 
 namespace Application\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration,
-    Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Auto-generated Migration: Please modify to your need!

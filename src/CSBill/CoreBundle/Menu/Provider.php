@@ -46,6 +46,7 @@ class Provider implements MenuProviderInterface
      * Checks if the storage has builders for the specified menu
      *
      * @param string $name
+     * @param array $options
      */
     public function has($name, array $options = array())
     {

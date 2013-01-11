@@ -30,6 +30,7 @@ class MenuExtension extends Twig_Extension
 
     /**
      * Sets the renderer for the menu
+     *
      * @param RendererInterface $renderer
      */
     public function setRenderer(RendererInterface $renderer)
@@ -39,6 +40,7 @@ class MenuExtension extends Twig_Extension
 
     /**
      * Sets the provider for the menu
+     *
      * @param MenuProviderInterface $provider
      */
     public function setProvider(MenuProviderInterface $provider)
@@ -60,6 +62,7 @@ class MenuExtension extends Twig_Extension
      * Renders a menu in a specific location
      *
      * @param  string $location The location on the page to render the menu
+     * @param array $options
      * @return string
      */
     public function renderMenu($location, array $options = array())

@@ -17,6 +17,7 @@ interface MenuStorageInterface
      * Checks if the storage has a builder for the specified menu
      *
      * @param string $name
+     * @return boolean
      */
     public function has($name);
 
@@ -24,6 +25,7 @@ interface MenuStorageInterface
      * Returns the builder for the specified menu from the storage
      *
      * @param string $name
+     * @return \SplObjectStorage
      */
     public function get($name);
 }
