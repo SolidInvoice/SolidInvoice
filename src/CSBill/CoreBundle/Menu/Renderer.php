@@ -68,6 +68,8 @@ class Renderer extends ListRenderer
 	{
 		$menu = $this->factory->createItem('root');
 
+		$menu->setChildrenAttributes(array('class' => 'nav nav-list'));
+
 		foreach($storage as $builder)
 		{
 			$builder->invoke($menu, $options);
