@@ -7,23 +7,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CustomScripts/CSClientBundle.git",
-                "reference": "6f5eac9e28b2d4942a840381a67c8a5cb1533b28"
+                "reference": "84b018d9a6cc1fc94fdd14ee80f57290d23705e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/CustomScripts/CSClientBundle/archive/6f5eac9e28b2d4942a840381a67c8a5cb1533b28.zip",
-                "reference": "6f5eac9e28b2d4942a840381a67c8a5cb1533b28",
+                "url": "https://github.com/CustomScripts/CSClientBundle/archive/84b018d9a6cc1fc94fdd14ee80f57290d23705e1.zip",
+                "reference": "84b018d9a6cc1fc94fdd14ee80f57290d23705e1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "customscripts/core-bundle": "dev-master"
+                "customscripts/core-bundle": "dev-master",
+                "customscripts/datagrid-bundle": "dev-master"
             },
             "suggest": {
                 "doctrine/doctrine-fixtures-bundle": "Load fixtures for bundle"
             },
-            "time": "2012-12-20 09:31:09",
-            "type": "library",
+            "time": "2013-01-10 10:48:02",
+            "type": "symfony-bundle",
             "autoload": {
                 "psr-0": {
                     "CS": "src/"
@@ -52,19 +53,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CustomScripts/CSCoreBundle.git",
-                "reference": "847367bd89203b8d346a9e7f8e2731926822872d"
+                "reference": "1d9d2efbeeb0d5e7844dde598470a99d84de92bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/CustomScripts/CSCoreBundle/archive/847367bd89203b8d346a9e7f8e2731926822872d.zip",
-                "reference": "847367bd89203b8d346a9e7f8e2731926822872d",
+                "url": "https://github.com/CustomScripts/CSCoreBundle/archive/1d9d2efbeeb0d5e7844dde598470a99d84de92bc.zip",
+                "reference": "1d9d2efbeeb0d5e7844dde598470a99d84de92bc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.3",
+                "symfony/symfony": "2.2.*"
             },
-            "time": "2012-12-20 11:39:32",
-            "type": "library",
+            "time": "2013-01-10 10:45:47",
+            "type": "symfony-bundle",
             "autoload": {
                 "psr-0": {
                     "CS": "src/"
@@ -83,7 +85,51 @@
             "description": "Core Bundle for all Symfony2 Development",
             "homepage": "http://customscripts.co.za",
             "keywords": [
+                "core",
                 "core-bundle"
+            ]
+        },
+        {
+            "name": "customscripts/datagrid-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/CustomScripts/CSDataGridBundle",
+                "reference": "f8a667a6fed52a1a0f786fcc6245863833c72516"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/CustomScripts/CSDataGridBundle/archive/f8a667a6fed52a1a0f786fcc6245863833c72516.zip",
+                "reference": "f8a667a6fed52a1a0f786fcc6245863833c72516",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "customscripts/core-bundle": "dev-master"
+            },
+            "time": "2013-01-10 10:55:23",
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "CS": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre du Plessis",
+                    "email": "info@customscripts.co.za"
+                }
+            ],
+            "description": "DataGrid Bundle for Symfony2 Applications",
+            "homepage": "http://customscripts.co.za",
+            "keywords": [
+                "grid",
+                "data grid",
+                "Data Grid bundle"
             ]
         },
         {
