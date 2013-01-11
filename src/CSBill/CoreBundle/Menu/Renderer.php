@@ -61,7 +61,8 @@ class Renderer extends ListRenderer
     /**
      * Renders a menu at a specific location
      *
-     * @param string $location The location to render the menu
+     * @param string $location
+     * @param array $options
      */
     public function build($storage, array $options = array())
     {
@@ -70,7 +71,7 @@ class Renderer extends ListRenderer
         $menu->setChildrenAttributes(array('class' => 'nav nav-list'));
 
         foreach ($storage as $builder) {
-            $builder->invoke($menu, $options);
+            $builder->setContainer($this->container)->invoke($menu, $options);
         }
 
         return $this->render($menu, $options);

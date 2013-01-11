@@ -12,6 +12,8 @@
 namespace CSBill\CoreBundle\Menu\Builder;
 
 use Knp\Menu\ItemInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 final class MenuBuilder
 {
@@ -38,9 +40,25 @@ final class MenuBuilder
     }
 
     /**
+     * Sets an instance of the container on the menu builder
+     *
+     * @param ContainerInterface $container
+     * @return MenuBuilder
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+    	if($this->class instanceof ContainerAwareInterface)
+    	{
+    		$this->class->setContainer($container);
+    	}
+
+    	return $this;
+    }
+
+    /**
      * Invokes the builder class to add items to the menu
      *
-     * @param MenuItem $menu
+     * @param ItemInterface $menu
      * @param array    $options
      *
      * @return mixed
