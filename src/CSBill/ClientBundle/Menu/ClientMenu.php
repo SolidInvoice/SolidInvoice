@@ -13,8 +13,9 @@ namespace CSBill\ClientBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use CSBill\CoreBundle\Menu\Builder\BuilderInterface;
+use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
 
-class ClientMenu implements BuilderInterface
+class ClientMenu extends AuthenticatedMenu
 {
     public function topMenu(ItemInterface $menu)
     {
