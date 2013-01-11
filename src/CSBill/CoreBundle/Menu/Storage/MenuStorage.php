@@ -36,7 +36,10 @@ class MenuStorage implements MenuStorageInterface
 	 */
 	public function get($name)
 	{
-		$this->list[$name] = new \SplObjectStorage;
+		if(!$this->has($name))
+		{
+			$this->list[$name] = new \SplObjectStorage;
+		}
 
 		return $this->list[$name];
 	}
