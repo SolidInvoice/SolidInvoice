@@ -26,12 +26,10 @@ security:
 
         installer:
             pattern:  ^/install(.*)
-            security: false
             anonymous: ~
 
         login:
             pattern:  ^/login$
-            security: false
 
         main:
             remember_me:
