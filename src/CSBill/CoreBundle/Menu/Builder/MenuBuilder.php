@@ -47,6 +47,9 @@ final class MenuBuilder
      */
     public function invoke(ItemInterface $menu, array $options = array())
     {
-        return $this->class->{$this->method}($menu, $options);
+    	if($this->class->validate())
+    	{
+    		$this->class->{$this->method}($menu, $options);
+    	}
     }
 }
