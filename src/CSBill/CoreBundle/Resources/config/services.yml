@@ -8,11 +8,11 @@ services:
     cs_bill_core.menu.renderer:
         class: %cs_bill_core.menu.renderer.class%
         arguments: [@service_container, @knp_menu.factory]
-        
+
     cs_bill_core.menu.provider:
         class: %cs_bill_core.menu.provider.class%
         arguments: [@cs_bill_core.menu.storage]
-        
+
     cs_bill_core.menu.storage:
         class: %cs_bill_core.menu_storage.class%
 

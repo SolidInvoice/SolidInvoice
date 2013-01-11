@@ -18,56 +18,56 @@ use Knp\Menu\Provider\MenuProviderInterface;
 
 class MenuExtension extends Twig_Extension
 {
-	/**
-	 * @var RendererInterface $renderer
-	 */
-	protected $renderer;
+    /**
+     * @var RendererInterface $renderer
+     */
+    protected $renderer;
 
-	/**
-	 * @var MenuProviderInterface $provider
-	 */
-	protected $provider;
+    /**
+     * @var MenuProviderInterface $provider
+     */
+    protected $provider;
 
-	/**
-	 * Sets the renderer for the menu
-	 * @param RendererInterface $renderer
-	 */
-	public function setRenderer(RendererInterface $renderer)
-	{
-		$this->renderer = $renderer;
-	}
+    /**
+     * Sets the renderer for the menu
+     * @param RendererInterface $renderer
+     */
+    public function setRenderer(RendererInterface $renderer)
+    {
+        $this->renderer = $renderer;
+    }
 
-	/**
-	 * Sets the provider for the menu
-	 * @param MenuProviderInterface $provider
-	 */
-	public function setProvider(MenuProviderInterface $provider)
-	{
-		$this->provider = $provider;
-	}
+    /**
+     * Sets the provider for the menu
+     * @param MenuProviderInterface $provider
+     */
+    public function setProvider(MenuProviderInterface $provider)
+    {
+        $this->provider = $provider;
+    }
 
-	/**
-	 * (non-phpdoc)
-	 */
-	public function getFunctions()
-	{
-		return array(
-					'cs_menu' => new Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html')))
-				);
-	}
+    /**
+     * (non-phpdoc)
+     */
+    public function getFunctions()
+    {
+        return array(
+                    'cs_menu' => new Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html')))
+                );
+    }
 
-	/**
-	 * Renders a menu in a specific location
-	 *
-	 * @param string $location The location on the page to render the menu
-	 * @return string
-	 */
-	public function renderMenu($location, array $options = array())
-	{
-		$menu = $this->provider->get($location);
+    /**
+     * Renders a menu in a specific location
+     *
+     * @param  string $location The location on the page to render the menu
+     * @return string
+     */
+    public function renderMenu($location, array $options = array())
+    {
+        $menu = $this->provider->get($location);
 
-		return $this->renderer->build($menu, $options);
-	}
+        return $this->renderer->build($menu, $options);
+    }
 
     /**
      * (non-phpdoc)

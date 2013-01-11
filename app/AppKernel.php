@@ -20,18 +20,18 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
-        	new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-        	new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-        	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-        	new CS\CoreBundle\CSCoreBundle(),
-        	new CS\DataGridBundle\CSDataGridBundle(),
-        	new CS\ClientBundle\CSClientBundle(),
+            new CS\CoreBundle\CSCoreBundle(),
+            new CS\DataGridBundle\CSDataGridBundle(),
+            new CS\ClientBundle\CSClientBundle(),
 
-			new CSBill\CoreBundle\CSBillCoreBundle(),
-        	new CSBill\InstallBundle\CSBillInstallBundle(),
-        	new CSBill\UserBundle\CSBillUserBundle(),
-        	new CSBill\ClientBundle\CSBillClientBundle(),
+            new CSBill\CoreBundle\CSBillCoreBundle(),
+            new CSBill\InstallBundle\CSBillInstallBundle(),
+            new CSBill\UserBundle\CSBillUserBundle(),
+            new CSBill\ClientBundle\CSBillClientBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

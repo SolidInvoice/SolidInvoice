@@ -11,19 +11,19 @@
 
 namespace CSBill\CoreBundle\Menu\Storage;
 
-interface MenuStorageInterface {
+interface MenuStorageInterface
+{
+    /**
+     * Checks if the storage has a builder for the specified menu
+     *
+     * @param string $name
+     */
+    public function has($name);
 
-	/**
-	 * Checks if the storage has a builder for the specified menu
-	 *
-	 * @param string $name
-	 */
-	public function has($name);
-
-	/**
-	 * Returns the builder for the specified menu from the storage
-	 *
-	 * @param string $name
-	 */
-	public function get($name);
+    /**
+     * Returns the builder for the specified menu from the storage
+     *
+     * @param string $name
+     */
+    public function get($name);
 }

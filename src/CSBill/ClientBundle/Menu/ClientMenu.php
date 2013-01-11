@@ -14,10 +14,10 @@ namespace CSBill\ClientBundle\Menu;
 use Knp\Menu\ItemInterface;
 use CSBill\CoreBundle\Menu\Builder\BuilderInterface;
 
-class ClientMenu implements BuilderInterface {
-
-	public function topMenu(ItemInterface $menu)
-	{
-		$menu->addChild('Clients', array('route' => '_clients_index'));
-	}
+class ClientMenu implements BuilderInterface
+{
+    public function topMenu(ItemInterface $menu)
+    {
+        $menu->addChild('Clients', array('route' => '_clients_index'));
+    }
 }

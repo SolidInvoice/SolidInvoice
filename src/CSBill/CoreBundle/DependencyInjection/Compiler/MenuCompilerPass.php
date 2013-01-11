@@ -17,28 +17,28 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class MenuCompilerPass implements CompilerPassInterface
 {
-	/**
-	 * (non-phpdoc)
-	 *
-	 * @param ContainerBuilder $container
-	 */
-	public function process(ContainerBuilder $container)
-	{
-		if (!$container->hasDefinition('cs_bill_core.menu.provider')) {
-			return;
-		}
+    /**
+     * (non-phpdoc)
+     *
+     * @param ContainerBuilder $container
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('cs_bill_core.menu.provider')) {
+            return;
+        }
 
-		$definition = $container->getDefinition('cs_bill_core.menu.provider');
+        $definition = $container->getDefinition('cs_bill_core.menu.provider');
 
-		$taggedServices = $container->findTaggedServiceIds('cs_core.menu');
+        $taggedServices = $container->findTaggedServiceIds('cs_core.menu');
 
-		foreach ($taggedServices as $id => $tagAttributes) {
-			foreach ($tagAttributes as $attributes) {
-				$definition->addMethodCall(
-						'addBuilder',
-						array(new Reference($id), $attributes["menu"], $attributes["method"])
-				);
-			}
-		}
-	}
+        foreach ($taggedServices as $id => $tagAttributes) {
+            foreach ($tagAttributes as $attributes) {
+                $definition->addMethodCall(
+                        'addBuilder',
+                        array(new Reference($id), $attributes["menu"], $attributes["method"])
+                );
+            }
+        }
+    }
 }

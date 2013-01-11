@@ -11,6 +11,6 @@
 
 namespace CSBill\CoreBundle\Menu\Builder;
 
-interface BuilderInterface {
-
+interface BuilderInterface
+{
 }
