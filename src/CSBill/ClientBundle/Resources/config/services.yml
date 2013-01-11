@@ -1,0 +1,8 @@
+parameters:
+    cs_bill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
+
+services:
+    cs_bill_client.menu:
+        class: %cs_bill_client.menu.class%
+        tags:
+            - { name: cs_core.menu, menu: top, method: topMenu }
