@@ -62,7 +62,7 @@ class MenuExtension extends Twig_Extension
      * Renders a menu in a specific location
      *
      * @param  string $location The location on the page to render the menu
-     * @param array $options
+     * @param  array  $options
      * @return string
      */
     public function renderMenu($location, array $options = array())

@@ -42,32 +42,30 @@ final class MenuBuilder
     /**
      * Sets an instance of the container on the menu builder
      *
-     * @param ContainerInterface $container
+     * @param  ContainerInterface $container
      * @return MenuBuilder
      */
     public function setContainer(ContainerInterface $container)
     {
-    	if($this->class instanceof ContainerAwareInterface)
-    	{
-    		$this->class->setContainer($container);
-    	}
+        if ($this->class instanceof ContainerAwareInterface) {
+            $this->class->setContainer($container);
+        }
 
-    	return $this;
+        return $this;
     }
 
     /**
      * Invokes the builder class to add items to the menu
      *
      * @param ItemInterface $menu
-     * @param array    $options
+     * @param array         $options
      *
      * @return mixed
      */
     public function invoke(ItemInterface $menu, array $options = array())
     {
-    	if($this->class->validate())
-    	{
-    		$this->class->{$this->method}($menu, $options);
-    	}
+        if ($this->class->validate()) {
+            $this->class->{$this->method}($menu, $options);
+        }
     }
 }
