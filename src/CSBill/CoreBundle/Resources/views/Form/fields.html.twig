@@ -1,0 +1,124 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_widget_compound %}
+{% spaceless %}
+    <div {{ block('widget_container_attributes') }}>
+		<fieldset>
+			{{ block('form_rows') }}
+			{{ form_rest(form) }}
+		</fieldset>
+    </div>
+{% endspaceless %}
+{% endblock form_widget_compound %}
+
+{% block widget_attributes %}
+{% spaceless %}
+    id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} data-pattern="{{ pattern }}"{% endif %}
+    {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+{% endspaceless %}
+{% endblock widget_attributes %}
+
+{% block form_row %}
+{% spaceless %}
+    <div class="control-group{{ errors|length > 0 ? ' error' : '' }} {{ form.vars.attr.class|default('') }}">
+
+     {#
+        {% if 'checkbox' in form.vars.types %}
+			{{ form_widget(form) }}
+			{{ form_label(form, label|default(null)) }}
+		{% else %}
+			{{ form_label(form, label|default(null)) }}
+			{{ form_widget(form) }}
+		{% endif %}
+    #}
+
+        {{ form_label(form, label|default(null)) }}
+		{{ form_widget(form) }}
+
+        {#
+			If the child is a compound form, the errors are rendered inside
+			the container. See also block form_rows.
+        #}
+
+        {% if not compound %}
+            {{ form_errors(form) }}
+        {% endif %}
+    </div>
+{% endspaceless %}
+{% endblock form_row %}
+
+{% block form_rows %}
+{% spaceless %}
+    {{ form_errors(form) }}
+    {% for child in form %}
+		{% if prototype is defined %}
+			<div class="content">
+		{% endif %}
+        {{ form_row(child) }}
+        {% if prototype is defined %}
+			</div>
+		{% endif %}
+    {% endfor %}
+{% endspaceless %}
+{% endblock form_rows %}
+
+{% block form_errors %}
+	{% spaceless %}
+		{% if errors|length > 0 %}
+			<span class="help-inline">
+				{% for error in errors %}
+					{{
+						error.messagePluralization is null
+							? error.messageTemplate|trans(error.messageParameters, 'validators')
+							: error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+					}}
+					<br />
+				{% endfor %}
+			</span>
+		{% endif %}
+	{% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_label %}
+{% spaceless %}
+
+	{% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+
+    {% if not compound %}
+		{% if required %}
+			{% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+		{% endif %}
+
+        {% set label_attr = label_attr|merge({'for': id}) %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
+    {% else %}
+		{% if prototype is defined %}
+			<legend><h2{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</h2></legend>
+		{% endif %}
+    {% endif %}
+{% endspaceless %}
+{% endblock form_label %}
+
+{% block collection_widget %}
+	<div class="form-collection">
+    	{{ parent() }}
+    </div>
+
+    <script type="text/javascript">
+		$(function(){
+				$('#{{ form.vars.id }}').formCollection({'label' : '{{ form.vars.label|default(form.vars.name)|humanize }}'});
+			});
+    </script>
+{% endblock collection_widget %}

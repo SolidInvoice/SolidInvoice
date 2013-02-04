@@ -21,6 +21,9 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form:
+        resources:
+            - 'CSBillCoreBundle:Form:fields.html.twig'
     globals:
         app_name: CSBill
 
