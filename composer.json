@@ -1,6 +1,20 @@
 {
     "name": "customscripts/csbill",
     "description": "General Billing Application",
+    "type": "application",
+    "keywords": [
+        "billing",
+        "general billing",
+        "open-source billing"
+    ],
+    "homepage": "http://customscripts.co.za",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pierre du Plessis",
+            "email": "info@customscripts.co.za"
+        }
+    ],
     "autoload": {
         "psr-0": { "": "src/" }
     },
@@ -8,11 +22,11 @@
         "php": ">=5.3.3",
         "symfony/symfony": "2.2.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "1.0.*",
+        "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.*",
         "symfony/assetic-bundle": "2.1.*",
         "symfony/swiftmailer-bundle": "2.2.*",
-        "symfony/monolog-bundle": "2.1.*",
+        "symfony/monolog-bundle": "2.2.*",
         "sensio/distribution-bundle": "2.2.*",
         "sensio/framework-extra-bundle": "2.2.*",
         "sensio/generator-bundle": "2.2.*",
