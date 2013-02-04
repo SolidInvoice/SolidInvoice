@@ -1,6 +1,0 @@
-parameters:
-    csbill.user.password_encoder.class: CSBill\UserBundle\Security\Encoder\PasswordEncoder
-
-services:
-    csbill.user.password_encoder:
-        class: %csbill.user.password_encoder.class%

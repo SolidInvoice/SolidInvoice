@@ -19,6 +19,7 @@
         "jms/security-extra-bundle": "1.4.*",
         "jms/di-extra-bundle": "1.3.*",
         "customscripts/core-bundle": "dev-master",
+        "customscripts/user-bundle": "dev-master",
 		"customscripts/client-bundle": "dev-master",
 		"doctrine/doctrine-migrations-bundle": "dev-master",
 		"doctrine/doctrine-fixtures-bundle": "dev-master",

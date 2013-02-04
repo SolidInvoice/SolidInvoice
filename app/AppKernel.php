@@ -25,12 +25,12 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             new CS\CoreBundle\CSCoreBundle(),
+        	new CS\UserBundle\CSUserBundle(),
             new CS\DataGridBundle\CSDataGridBundle(),
             new CS\ClientBundle\CSClientBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
-            new CSBill\UserBundle\CSBillUserBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
         );
 

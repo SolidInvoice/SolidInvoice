@@ -133,6 +133,48 @@
             ]
         },
         {
+            "name": "customscripts/user-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/CustomScripts/CSUserBundle",
+                "reference": "3f91f9f42c0280ff83ae906c5aa971993a6f6ad5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/CustomScripts/CSUserBundle/archive/3f91f9f42c0280ff83ae906c5aa971993a6f6ad5.zip",
+                "reference": "3f91f9f42c0280ff83ae906c5aa971993a6f6ad5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "customscripts/core-bundle": "dev-master"
+            },
+            "time": "2013-01-21 13:55:04",
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "CS": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre du Plessis",
+                    "email": "info@customscripts.co.za"
+                }
+            ],
+            "description": "Bundle for general user management",
+            "homepage": "http://customscripts.co.za",
+            "keywords": [
+                "user",
+                "user-bundle"
+            ]
+        },
+        {
             "name": "doctrine/common",
             "version": "2.3.x-dev",
             "source": {
@@ -1852,6 +1894,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "customscripts/core-bundle": 20,
+        "customscripts/user-bundle": 20,
         "customscripts/client-bundle": 20,
         "doctrine/doctrine-migrations-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
