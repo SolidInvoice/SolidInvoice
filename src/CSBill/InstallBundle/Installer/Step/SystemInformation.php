@@ -85,7 +85,7 @@ class SystemInformation extends Step
 
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $role = $em->getRepository('CSBillUserBundle:Role')->findOneByName('super_admin');
+        $role = $em->getRepository('CSUserBundle:Role')->findOneByName('super_admin');
 
         $user->addRole($role);
 
