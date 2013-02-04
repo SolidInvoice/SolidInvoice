@@ -6,8 +6,8 @@ security:
     acl:
         connection: default
     encoders:
-        CSBill\UserBundle\Entity\User:
-            id: csbill.user.password_encoder
+        CS\UserBundle\Entity\User:
+            id: cs.user.password_encoder
 
     role_hierarchy:
         ROLE_ADMIN:       ~
@@ -17,7 +17,7 @@ security:
 
     providers:
         main:
-            entity: { class: CSBillUserBundle:User }
+            entity: { class: CSUserBundle:User }
 
     firewalls:
         dev:
