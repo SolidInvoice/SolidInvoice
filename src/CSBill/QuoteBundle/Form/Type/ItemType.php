@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle\Form\Type;
+namespace CSBill\QuoteBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,7 +44,7 @@ class ItemType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'CS\QuoteBundle\Entity\Item'
+                'data_class' => 'CSBill\QuoteBundle\Entity\Item'
         ));
     }
 }

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle;
+namespace CSBill\QuoteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class CSQuoteBundle extends Bundle
+class CSBillQuoteBundle extends Bundle
 {
 }

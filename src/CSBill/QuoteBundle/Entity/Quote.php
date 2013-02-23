@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle\Entity;
+namespace CSBill\QuoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use CS\ClientBundle\Entity\Client;
 
 /**
- * CS\ClientBundle\Entity\Quote
+ * CSBill\ClientBundle\Entity\Quote
  *
  * @ORM\Table(name="quotes")
  * @ORM\Entity()

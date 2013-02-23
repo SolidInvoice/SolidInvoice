@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle\Entity;
+namespace CSBill\QuoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * CS\QuoteBundle\Entity\Item
+ * CSBill\QuoteBundle\Entity\Item
  *
  * @ORM\Table(name="quote_items")
  * @ORM\Entity()

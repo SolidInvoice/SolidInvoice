@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle\Controller;
+namespace CSBill\QuoteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,11 +22,6 @@ use CS\QuoteBundle\Entity\Quote;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/", name="_quote_index")
-     * @Template()
-     * @Menu("CSQuoteBundle:Main:quotesindex", block="sidebar")
-     */
     public function indexAction()
     {
         $grid = $this->get('grid')->create(new Grid);
@@ -34,12 +29,6 @@ class DefaultController extends Controller
         return array('grid' => $grid);
     }
 
-    /**
-     * Controller action to add a new quote
-     *
-     * @Route("/add", name="_quote_add")
-     * @Template()
-     */
     public function addAction()
     {
         $request = $this->getRequest();

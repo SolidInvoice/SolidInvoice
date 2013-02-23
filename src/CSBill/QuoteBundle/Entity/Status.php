@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle\Entity;
+namespace CSBill\QuoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * CS\QuoteBundle\Entity\Status
+ * CSBill\QuoteBundle\Entity\Status
  *
  * @ORM\Table(name="quote_status")
  * @ORM\Entity()

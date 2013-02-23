@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle\Menu;
+namespace CSBill\QuoteBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 
