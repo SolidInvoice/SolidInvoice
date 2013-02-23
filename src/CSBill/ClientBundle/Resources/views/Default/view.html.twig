@@ -1,0 +1,58 @@
+{#
+ #
+ # This file is part of the CSClientBundle package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends "CSCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block title %}{{ client.name }}{% endblock title %}
+
+{% block sidebar %}
+	{{ menu('clients_view') }}
+{% endblock sidebar %}
+
+{% block heading %}
+	<fieldset>
+		<legend>
+			<h3>
+				{{ client.name }} <small><label class="label label-{{ client_status_label(client) }}">{{ client.status }}</label></small>
+			</h3>
+		</legend>
+	</fieldset>
+{% endblock heading %}
+
+{% block content %}
+	<div class="row-fluid">
+		{{ client.website }}
+
+		<div class="pull-right">
+			<a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn"><i class="icon-edit"></i> {{ "edit"|trans }}</a>
+		</div>
+
+		<div class="span6">
+			<h3>{{ "contacts" }}</h3>
+
+			{% for contact in client.contacts %}
+				<div class="span5">
+					<h4>{{ contact.firstname }} {{ contact.lastname }}</h4>
+
+					{% for contact_details in contact.details %}
+						<strong>{{ contact_details.type|title }}</strong>: {{ contact_details.value }}
+
+					{% endfor %}
+				</div>
+			{% endfor %}
+
+			{#<br class="clearfix" />
+			<div class="pull-right">
+				<i class="icon-plus-sign"></i> <a href="#">Add Contact</a>
+			</div>#}
+		</div>
+	</div>
+
+{% endblock content %}

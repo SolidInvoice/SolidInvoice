@@ -1,0 +1,19 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% set parent = "CSCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+
+{% block title %}{{ 'clients'|trans }}{% endblock title %}
+
+{% block sidebar %}
+	{{ menu('clients_index') }}
+{% endblock sidebar %}
