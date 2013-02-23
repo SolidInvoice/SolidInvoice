@@ -16,9 +16,9 @@ use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
 class GlobalExtension extends Twig_Extension
 {
-	/**
-	 * @var ContainerInterface $container
-	 */
+    /**
+     * @var ContainerInterface $container
+     */
     protected $container;
 
     /**
@@ -28,7 +28,7 @@ class GlobalExtension extends Twig_Extension
      */
     public function setContainer(ContainerInterface $container)
     {
-    	$this->container = $container;
+        $this->container = $container;
     }
 
     /**
@@ -72,8 +72,8 @@ class GlobalExtension extends Twig_Extension
     /**
      * {inhertitDoc}
      */
-	public function getName()
-	{
-		return 'csbill_core.twig.globals';
-	}
+    public function getName()
+    {
+        return 'csbill_core.twig.globals';
+    }
  }

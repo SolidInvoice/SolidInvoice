@@ -56,35 +56,34 @@ class Grid extends BaseGrid
         $collection->move('status', 25);
 
         $collection['client']->setCallback(function($row) {
-        	return '<a href="#">'.$row->getClient().'</a>';
+            return '<a href="#">'.$row->getClient().'</a>';
         });
 
         $collection['total']->setLabel('Amount');
 
         $collection['status']->setCallback(function($row) {
 
-        	$status = (string) $row->getStatus();
+            $status = (string) $row->getStatus();
 
-        	$label = '';
+            $label = '';
 
-        	switch(strtolower($status))
-        	{
-        		case "pending":
-        			$label = "info";
-        		break;
-        	}
-			return '<span class="label label-'.$label.'">'.$status.'</span>';
+            switch (strtolower($status)) {
+                case "pending":
+                    $label = "info";
+                break;
+            }
+
+            return '<span class="label label-'.$label.'">'.$status.'</span>';
         });
 
         $collection->add("items", 30, function($row) {
-        	$content = '';
+            $content = '';
 
-        	foreach($row->getItems() as $item)
-        	{
-        		$content .= "<div>".$item->getName()."</div>";
-        	}
+            foreach ($row->getItems() as $item) {
+                $content .= "<div>".$item->getName()."</div>";
+            }
 
-        	return $content;
+            return $content;
         });
     }
 

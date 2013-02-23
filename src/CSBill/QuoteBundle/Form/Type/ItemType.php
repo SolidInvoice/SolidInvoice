@@ -15,14 +15,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use CS\ClientBundle\Form\Type\ContactType;
-
 class ItemType extends AbstractType
 {
-	/**
-	 * (non-PHPdoc)
-	 * @see Symfony\Component\Form.AbstractType::buildForm()
-	 */
+    /**
+     * (non-PHPdoc)
+     * @see Symfony\Component\Form.AbstractType::buildForm()
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name');

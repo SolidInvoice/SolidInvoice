@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -138,14 +137,14 @@ class Item
     /**
      * Set the price
      *
-     * @param float $price
+     * @param  float $price
      * @return Item
      */
     public function setPrice($price)
     {
-    	$this->price = $price;
+        $this->price = $price;
 
-    	return $this;
+        return $this;
     }
 
     /**
@@ -155,20 +154,20 @@ class Item
      */
     public function getPrice()
     {
-    	return $this->price;
+        return $this->price;
     }
 
     /**
      * Set the qty
      *
-     * @param integer $qty
+     * @param  integer $qty
      * @return Item
      */
     public function setQty($qty)
     {
-    	$this->qty = $qty;
+        $this->qty = $qty;
 
-    	return $this;
+        return $this;
     }
 
     /**
@@ -178,7 +177,7 @@ class Item
      */
     public function getQty()
     {
-    	return $this->qty;
+        return $this->qty;
     }
 
     /**

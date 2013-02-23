@@ -29,7 +29,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-    	$grid = $this->get('grid')->create(new Grid);
+        $grid = $this->get('grid')->create(new Grid);
 
         return array('grid' => $grid);
     }
@@ -42,22 +42,20 @@ class DefaultController extends Controller
      */
     public function addAction()
     {
-    	$request = $this->getRequest();
+        $request = $this->getRequest();
 
-    	$quote = new Quote;
+        $quote = new Quote;
 
-    	$form = $this->createForm(new QuoteType(), $quote);
+        $form = $this->createForm(new QuoteType(), $quote);
 
-    	if($request->getMethod() === 'POST')
-    	{
-    		$form->bind($request);
+        if ($request->getMethod() === 'POST') {
+            $form->bind($request);
 
-    		if($form->isValid())
-    		{
+            if ($form->isValid()) {
 
-    		}
-    	}
+            }
+        }
 
-    	return array('form' => $form->createView());
+        return array('form' => $form->createView());
     }
 }

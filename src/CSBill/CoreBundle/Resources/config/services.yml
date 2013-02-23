@@ -5,7 +5,7 @@ parameters:
     csbill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
     csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
-    
+
 services:
     csbill_core.menu.factory:
         class: %csbill_core.menu.factory.class%
@@ -28,7 +28,7 @@ services:
             - [ setProvider, [ @csbill_core.menu.provider ] ]
         tags:
             - { name: twig.extension }
-            
+
     csbill_core.twig.gobals:
         class: %csbill_core.twig.globals.class%
         calls:

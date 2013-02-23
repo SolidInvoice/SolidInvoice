@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -156,9 +155,9 @@ class Quote
      */
     public function setClient(Client $client)
     {
-    	$this->client = $client;
+        $this->client = $client;
 
-    	return $this;
+        return $this;
     }
 
     /**
@@ -168,20 +167,20 @@ class Quote
      */
     public function getClient()
     {
-    	return $this->client;
+        return $this->client;
     }
 
     /**
      * Set total
      *
-     * @param float $total
+     * @param  float $total
      * @return Quote
      */
     public function setTotal($total)
     {
-    	$this->total = $total;
+        $this->total = $total;
 
-    	return $this;
+        return $this;
     }
 
     /**
@@ -191,7 +190,7 @@ class Quote
      */
     public function getTotal()
     {
-    	return $this->total;
+        return $this->total;
     }
 
     /**
@@ -202,9 +201,9 @@ class Quote
      */
     public function setDue(\DateTime $due)
     {
-    	$this->due = $due;
+        $this->due = $due;
 
-    	return $this;
+        return $this;
     }
 
     /**
@@ -214,7 +213,7 @@ class Quote
      */
     public function getDue()
     {
-    	return $this->due;
+        return $this->due;
     }
 
     /**
@@ -289,7 +288,7 @@ class Quote
     /**
      * Add item
      *
-     * @param  Item $item
+     * @param  Item  $item
      * @return Quote
      */
     public function addItem(Item $item)
@@ -303,7 +302,7 @@ class Quote
     /**
      * Removes an item
      *
-     * @param  Item $item
+     * @param  Item  $item
      * @return Quote
      */
     public function removeItem(Item $item)

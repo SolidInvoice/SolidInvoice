@@ -195,7 +195,7 @@ class Status
     /**
      * Add quote
      *
-     * @param  Quote $quote
+     * @param  Quote  $quote
      * @return Status
      */
     public function addQuote(Quote $quote)
