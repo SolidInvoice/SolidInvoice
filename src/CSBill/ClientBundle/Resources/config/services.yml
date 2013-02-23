@@ -6,3 +6,6 @@ services:
         class: %cs_bill_client.menu.class%
         tags:
             - { name: cs_core.menu, menu: top, method: topMenu }
+            - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
+            - { name: cs_core.menu, menu: clients_view, method: clientsMenu }
+            - { name: cs_core.menu, menu: clients_add, method: clientsMenu }

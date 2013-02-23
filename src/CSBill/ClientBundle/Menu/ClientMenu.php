@@ -16,8 +16,24 @@ use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
 
 class ClientMenu extends AuthenticatedMenu
 {
+	/**
+	 * Renders the top menu for clients
+	 *
+	 * @param ItemInterface $menu
+	 */
     public function topMenu(ItemInterface $menu)
     {
         $menu->addChild('Clients', array('route' => '_clients_index'));
+    }
+
+    /**
+     * Renders the client index menu
+     *
+     * @param ItemInterface $menu
+     */
+    public function clientsMenu(ItemInterface $menu)
+    {
+    	$menu->addChild('List Clients', array('route' => '_clients_index'));
+    	$menu->addChild('Add Client', array('route' => '_clients_add'));
     }
 }
