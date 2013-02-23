@@ -13,7 +13,7 @@ namespace CSBill\InstallBundle\Installer\Step;
 use Symfony\Component\Process\Process;
 
 use CSBill\InstallBundle\Installer\Step;
-use CSBill\UserBundle\Entity\User;
+use CS\UserBundle\Entity\User;
 
 class SystemInformation extends Step
 {
