@@ -1,0 +1,98 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends 'APYDataGridBundle::blocks.html.twig' %}
+
+{# Remove the filters in the grid #}
+{% block grid_filters %}{% endblock %}
+
+{# ------------------------------------------------------ grid ------------------------------------------------------ #}
+{% block grid %}
+	<div class="grid">
+		{% if grid.totalCount > 0 or grid.isFiltered or grid.noDataMessage is sameas(false) %}
+			<form id="{{ grid.hash }}" action="{{ grid.routeUrl }}" method="post">
+
+				<div class="grid_header">
+					{% if grid.massActions|length > 0 %}
+						{{ grid_actions(grid) }}
+					{% endif %}
+				</div>
+
+				<div class="grid_body">
+					<table class="table table-bordered table-striped table-hover">
+						{% if grid.isTitleSectionVisible %}
+							{{ grid_titles(grid) }}
+						{% endif %}
+
+						{% if grid.isFilterSectionVisible %}
+							{{ grid_filters(grid) }}
+						{% endif %}
+
+						{{ grid_rows(grid) }}
+					</table>
+				</div>
+
+				<div class="grid_footer">
+					{% if grid.isPagerSectionVisible %}
+						{{ grid_pager(grid) }}
+					{% endif %}
+
+					{% if grid.exports|length > 0 %}
+						{{ grid_exports(grid) }}
+					{% endif %}
+
+					{% if grid.tweaks|length > 0 %}
+						{{ grid_tweaks(grid) }}
+					{% endif %}
+				</div>
+
+				{% if withjs %}
+					{{ grid_scripts(grid) }}
+				{% endif %}
+
+			</form>
+		{% else %}
+    		{{ grid_no_data(grid) }}
+		{% endif %}
+	</div>
+{% endblock grid %}
+
+{# -------------------------------------------------- grid_search -------------------------------------------------- #}
+{% block grid_search %}
+	{% if grid.isFilterSectionVisible %}
+    	<div class="grid-search hide" id="{{ grid.hash }}_grid_search">
+    		<br /><br /><br />
+        	<form id="{{ grid.hash }}_search" action="{{ grid.routeUrl }}" method="post" class="form-inline">
+
+	        	<div class="control-group">
+	        		{% for column in grid.columns %}
+	            		{% if column.visible(true) and column.isFilterable %}
+	                		{% set columnTitle = grid.prefixTitle ~ column.title %}
+	                		{% if column.filterable %}
+	                			<div class="{{ cycle(['odd', 'even'], loop.index) }}">
+		                			<div class="controls">
+		                				<label class="control-label">{{ columnTitle|trans }}</label>
+		                				{{ grid_filter(column, grid, false)|raw }}
+		                			</div>
+	                			</div>
+	                		{% endif %}
+	                	{% endif %}
+	                {% endfor %}
+
+	                <div class="grid-search-action">
+	                	<a href="#" class="grid-search-submit btn btn-primary" onclick="$('#{{ grid.hash }}_search').submit()"><i class="icon-search"></i> {{ 'Search'|trans }}</a>
+	                	<input type="button" class="grid-search-reset btn" value="{{ 'Reset'|trans }}" onclick="return {{ grid.hash }}_reset();"/>
+	                	&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="grid-simple-search">Simple Search</a>
+	                </div>
+	            </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock grid_search %}

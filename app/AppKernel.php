@@ -23,15 +23,16 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+        	new APY\DataGridBundle\APYDataGridBundle(),
 
             new CS\CoreBundle\CSCoreBundle(),
         	new CS\UserBundle\CSUserBundle(),
-            new CS\DataGridBundle\CSDataGridBundle(),
             new CS\ClientBundle\CSClientBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
+        	new CSBill\DataGridBundle\CSBillDataGridBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
