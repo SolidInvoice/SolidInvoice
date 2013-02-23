@@ -10,6 +10,17 @@
 
 {% extends 'CSCoreBundle::layout.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	{% stylesheets
+		'@CSBillCoreBundle/Resources/public/less/styles.less'
+		filter="less, cssrewrite,?yui_css"
+		output="app.css"
+	%}
+		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+	{% endstylesheets %}
+{% endblock stylesheets %}
+
 {% block header %}
 	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : app_name} %}
 {% endblock header %}
