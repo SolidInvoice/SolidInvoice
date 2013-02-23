@@ -1,16 +1,18 @@
-cs_bill_core:
+csbill_core:
     resource: "@CSBillCoreBundle/Resources/config/routing.yml"
     prefix:   /
 
 csbill_install:
-    resource: "@CSUserBundle/Resources/config/routing.yml"
+    resource: "@CSBillInstallBundle/Resources/config/routing.yml"
     prefix:   /install
 
 cs_user:
     resource: "@CSUserBundle/Resources/config/routing.yml"
 
 cs_client_bundle:
+    prefix:   /clients
     resource: "@CSClientBundle/Resources/config/routing.yml"
 
 csbill_quote_bundle:
+    prefix: /quotes
     resource: "@CSBillQuoteBundle/Resources/config/routing.yml"

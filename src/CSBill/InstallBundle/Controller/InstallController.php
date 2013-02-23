@@ -11,19 +11,11 @@
 namespace CSBill\InstallBundle\Controller;
 
 use CS\CoreBundle\Controller\Controller;
-
 use CSBill\InstallBundle\Exception\ApplicationInstalledException;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class InstallController extends Controller
 {
-    /**
-     * @Route("/", name="_installer")
-     */
     public function indexAction()
     {
         $request = $this->getRequest();
@@ -47,9 +39,6 @@ class InstallController extends Controller
         return $this->render('CSBillInstallBundle:Install:index.html.twig', array('step' => $step, 'installer' => $installer));
     }
 
-    /**
-     * @Route("/step/{step}", name="_installer_step")
-     */
     public function stepAction($step)
     {
         $installer = $this->get('csbill.installer');
@@ -59,9 +48,6 @@ class InstallController extends Controller
         return $installer->getRedirectResponse();
     }
 
-    /**
-     * @Route("/restart", name="_installer_restart")
-     */
     public function restartAction()
     {
         $installer = $this->get('csbill.installer');
@@ -71,12 +57,8 @@ class InstallController extends Controller
         return $installer->getRedirectResponse();
     }
 
-    /**
-     * @Route("/success", name="_installer_success")
-     * @Template()
-     */
     public function successAction()
     {
-        return array();
+        return $this->render('CSBillInstallBundle:Install:success.html.twig');
     }
 }

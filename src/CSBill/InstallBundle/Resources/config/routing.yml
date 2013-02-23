@@ -1,0 +1,15 @@
+_installer:
+    pattern: /
+    defaults: { _controller: CSBillInstallBundle:Install:index }
+    
+_installer_step:
+    pattern: /step/{step}
+    defaults: { _controller: CSBillInstallBundle:Install:step }
+    
+_installer_restart:
+    pattern: /restart
+    defaults: { _controller: CSBillInstallBundle:Install:restart }
+    
+_installer_success:
+    pattern: /success
+    defaults: { _controller: CSBillInstallBundle:Install:success }

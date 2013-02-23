@@ -8,13 +8,13 @@
  # file that was distributed with this source code.
 #}
 
-{% extends "CSCoreBundle::layout.html.twig" %}
+{% extends "CSCoreBundle:Layout:single_column.html.twig" %}
 
 {% block title %}{{ "CSBill Installation Success"|trans }}{% endblock %}
 
 {% block sidebar %}{% endblock %}
 
-{% block content %}
+{% block body %}
 	<fieldset>
 		<legend>
 			<h1>{{ "Success"|trans }}</h1>
