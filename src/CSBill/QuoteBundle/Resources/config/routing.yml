@@ -1,0 +1,3 @@
+_quotes_index:
+    pattern:   /quotes
+    defaults:  { _controller: CSBillQuoteBundle:Default:index }
