@@ -198,7 +198,7 @@ class Status
      */
     public function addQuote(Quote $quote)
     {
-        $this->quote[] = $quote;
+        $this->quotes[] = $quote;
         $quote->setStatus($this);
 
         return $this;
