@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         	new APY\DataGridBundle\APYDataGridBundle(),
+        	new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
             new CS\CoreBundle\CSCoreBundle(),
         	new CS\UserBundle\CSUserBundle(),
