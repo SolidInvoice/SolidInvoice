@@ -24,11 +24,11 @@ class MenuCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('cs_bill_core.menu.provider')) {
+        if (!$container->hasDefinition('csbill_core.menu.provider')) {
             return;
         }
 
-        $definition = $container->getDefinition('cs_bill_core.menu.provider');
+        $definition = $container->getDefinition('csbill_core.menu.provider');
 
         $taggedServices = $container->findTaggedServiceIds('cs_core.menu');
 

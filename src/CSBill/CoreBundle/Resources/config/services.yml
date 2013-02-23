@@ -1,25 +1,37 @@
 parameters:
-    cs_bill_core.menu.renderer.class: CSBill\CoreBundle\Menu\Renderer
-    cs_bill_core.menu.provider.class: CSBill\CoreBundle\Menu\Provider
-    cs_bill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
-    cs_bill_core.menu_storage.class: CSBill\CoreBundle\Menu\Storage\MenuStorage
-
+    csbill_core.menu.renderer.class: CSBill\CoreBundle\Menu\Renderer
+    csbill_core.menu.provider.class: CSBill\CoreBundle\Menu\Provider
+    csbill_core.menu_storage.class: CSBill\CoreBundle\Menu\Storage\MenuStorage
+    csbill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
+    csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
+    csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
+    
 services:
-    cs_bill_core.menu.renderer:
-        class: %cs_bill_core.menu.renderer.class%
-        arguments: [@service_container, @knp_menu.factory]
+    csbill_core.menu.factory:
+        class: %csbill_core.menu.factory.class%
+        arguments: [@router]
+    csbill_core.menu.renderer:
+        class: %csbill_core.menu.renderer.class%
+        arguments: [@service_container, @csbill_core.menu.factory]
 
-    cs_bill_core.menu.provider:
-        class: %cs_bill_core.menu.provider.class%
-        arguments: [@cs_bill_core.menu.storage]
+    csbill_core.menu.provider:
+        class: %csbill_core.menu.provider.class%
+        arguments: [@csbill_core.menu.storage]
 
-    cs_bill_core.menu.storage:
-        class: %cs_bill_core.menu_storage.class%
+    csbill_core.menu.storage:
+        class: %csbill_core.menu_storage.class%
 
-    cs_bill_core.twig.menu:
-        class: %cs_bill_core.twig.menu.class%
+    csbill_core.twig.menu:
+        class: %csbill_core.twig.menu.class%
         calls:
-            - [ setRenderer, [ @cs_bill_core.menu.renderer ] ]
-            - [ setProvider, [ @cs_bill_core.menu.provider ] ]
+            - [ setRenderer, [ @csbill_core.menu.renderer ] ]
+            - [ setProvider, [ @csbill_core.menu.provider ] ]
+        tags:
+            - { name: twig.extension }
+            
+    csbill_core.twig.gobals:
+        class: %csbill_core.twig.globals.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
         tags:
             - { name: twig.extension }
