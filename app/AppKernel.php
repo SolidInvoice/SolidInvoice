@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
         	new CSBill\DataGridBundle\CSBillDataGridBundle(),
+        	new CSBill\QuoteBundle\CSBillQuoteBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
