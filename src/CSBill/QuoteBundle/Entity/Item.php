@@ -13,9 +13,7 @@ namespace CSBill\QuoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -92,14 +90,6 @@ class Item
      * @ORM\ManyToOne(targetEntity="Quote", inversedBy="items")
      */
     private $quote;
-
-    /**
-     * Constructer
-     */
-    public function __construct()
-    {
-        $this->quotes = new ArrayCollection;
-    }
 
     /**
      * Get id

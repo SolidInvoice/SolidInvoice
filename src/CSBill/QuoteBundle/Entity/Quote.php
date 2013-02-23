@@ -13,11 +13,8 @@ namespace CSBill\QuoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Gedmo\Mapping\Annotation as Gedmo;
-
 use CS\ClientBundle\Entity\Client;
 
 /**
@@ -294,7 +291,7 @@ class Quote
     public function addItem(Item $item)
     {
         $this->items[] = $item;
-        $contact->setQuote($this);
+        $item->setQuote($this);
 
         return $this;
     }
