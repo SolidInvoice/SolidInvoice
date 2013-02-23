@@ -54,7 +54,7 @@ class MenuExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-                    'cs_menu' => new Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html')))
+                    'menu' => new Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html')))
                 );
     }
 
@@ -77,6 +77,6 @@ class MenuExtension extends Twig_Extension
      */
     public function getName()
     {
-        return 'cs_core.twig.menu';
+        return 'csbill_core.twig.menu';
     }
 }
