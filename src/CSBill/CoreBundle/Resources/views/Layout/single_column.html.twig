@@ -9,3 +9,12 @@
 #}
 
 {% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
+
+{% block body %}
+	<div class="row-fluid">
+		<section class="span12 content">
+			{{ block('heading') }}
+			{{ block('content') }}
+		</section>
+	</div>
+{% endblock body %}

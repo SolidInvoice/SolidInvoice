@@ -10,16 +10,17 @@
 
 {% extends "CSBillCoreBundle:Layout:default.html.twig" %}
 
-{% block content %}
+{% block body %}
 	<div class="row-fluid">
 		<aside class="span3">
 			{{ block('sidebar') }}
 		</aside>
 
 		<section class="span9 content">
-			{{ block('body') }}
+			{{ block('heading') }}
+			{{ block('content') }}
 		</section>
 	</div>
 
 	<hr />
-{% endblock content %}
+{% endblock body %}

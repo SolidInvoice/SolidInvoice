@@ -10,6 +10,14 @@
 
 {% extends 'CSCoreBundle::layout.html.twig' %}
 
+{% block heading %}
+	<fieldset>
+		<legend>
+			<h3>{{ block('title') }}</h3>
+		</legend>
+	</fieldset>
+{% endblock %}
+
 {% block stylesheets %}
 	{{ parent() }}
 	{% stylesheets
