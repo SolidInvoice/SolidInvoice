@@ -1,0 +1,45 @@
+inherit: true 
+
+filter:               
+    paths: [src/*] # Example: [src/*, tests/*]
+tools:                
+    # Runs the JSHint static analysis tool.
+    js_hint: true
+
+    # Runs the PHP Mess Detector (http://phpmd.org).
+    php_mess_detector:    
+        extensions:           
+            - php
+        enabled:              true 
+        filter:               
+            paths:                [src/*] 
+        config:               
+            rulesets:             
+                - codesize
+                - controversial
+                - design
+                - naming
+                - unusedcode
+
+    # Runs the PHP CS Fixer (http://http://cs.sensiolabs.org/).
+    php_cs_fixer:         
+        extensions:           
+            - php
+        enabled:              false 
+        config:               
+            level:                all # Allowed Values: "psr0", "psr1", "psr2", "all"
+
+    # Runs Scrutinizer's PHP Analyzer Tool
+    php_analyzer:         
+        extensions:           
+            - php
+        enabled:              true 
+
+    # Runs PHP Code Sniffer
+    php_code_sniffer:     
+        extensions:           
+            - php
+        enabled:              true 
+        config:               
+            # Built-in standards: PEAR, PHPCS, PSR1, PSR2, Squiz, Zend
+            standard:             PSR2 
