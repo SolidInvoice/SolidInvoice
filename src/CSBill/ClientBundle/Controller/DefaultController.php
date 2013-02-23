@@ -11,22 +11,17 @@
 
 namespace CSBill\ClientBundle\Controller;
 
-//use CS\CoreBundle\Controller\Controller;
 use CS\ClientBundle\Controller\DefaultController as BaseController;
 use CS\ClientBundle\DataGrid\Grid;
-use CS\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Client;
 use CS\ClientBundle\Model\Status;
-
 use CSBill\DataGridBundle\Grid\Filters;
-
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
-
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-
 use Doctrine\ORM\QueryBuilder as QB;
 
 class DefaultController extends BaseController

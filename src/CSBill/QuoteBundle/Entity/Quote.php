@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
-use CS\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Client;
 
 /**
  * CSBill\ClientBundle\Entity\Quote
@@ -47,7 +47,7 @@ class Quote
     /**
      * @var Client $client
      *
-     * @ORM\ManyToOne(targetEntity="CS\ClientBundle\Entity\Client", inversedBy="quotes")
+     * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\Valid()
      */
     private $client;
