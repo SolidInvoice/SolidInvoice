@@ -16,6 +16,6 @@ class AuthenticatedMenu extends ContainerAware implements BuilderInterface
             return false;
         }
 
-        return $security->isGranted('IS_AUTHENTICATED_FULLY');
+        return $security->isGranted('IS_AUTHENTICATED_REMEMBERED');
     }
 }
