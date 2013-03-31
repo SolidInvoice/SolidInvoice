@@ -11,5 +11,6 @@ parameters:
     mailer_user: null
     mailer_password: null
 
-    locale: en
+    locale: en_US
+    currency: ZAR
     secret: f3eeaeacfbc4c54c9e49737958edef5c
