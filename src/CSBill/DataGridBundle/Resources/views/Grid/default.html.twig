@@ -11,6 +11,7 @@
 {% extends parent is defined ? parent : 'CSBillCoreBundle:Layout:single_column.html.twig' %}
 
 {% block javascripts %}
+	{{ parent() }}
 	{% javascripts
 		"@CSBillDataGridBundle/Resources/public/js/grid.js"
 	%}
@@ -39,14 +40,9 @@
 
 		<div>
 			<form action="{{ path(app.request.get('_route'), query) }}" method="post" class="form-search form-inline">
-				<div class="input-prepend">
-					<div class="add-on">
-						<i class="icon-search"></i>
-					</div>
-					<input name="search" placeholder="{{ "Search"|trans }}" type="text" id="search" class="search-query" value="{{ app.request.get('search') ?: '' }}" />
-				</div>
+				<input name="search" placeholder="{{ "Search"|trans }}" type="text" id="search" class="search-query" value="{{ app.request.get('search') ?: '' }}" />
 
-				<button type="submit" class="btn"><i class="icon-search" style="display: none;"></i> {{ "Search"|trans }}</button>
+				<button type="submit" class="btn"><i class="icon-search"></i> {{ "Search"|trans }}</button>
 				<br />
 				<a href="#" id="grid-advanced-search">{{ "Advanced Search"|trans }}</a>
 			</form>
