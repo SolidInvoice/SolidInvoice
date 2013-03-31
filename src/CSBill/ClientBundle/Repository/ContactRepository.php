@@ -9,10 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace CSBill\ClientBundle;
+namespace CSBill\ClientBundle\Repository;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Doctrine\ORM\EntityRepository;
 
-class CSBillClientBundle extends Bundle
-{
-}
+/**
+ * ContactRepository
+ *
+ * Custom Repository class for managing contacts
+ */
+class ContactRepository extends EntityRepository {}

@@ -11,8 +11,7 @@
 
 namespace CSBill\ClientBundle\Controller;
 
-use CS\ClientBundle\Controller\DefaultController as BaseController;
-use CS\ClientBundle\DataGrid\Grid;
+use CS\CoreBundle\Controller\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CS\ClientBundle\Model\Status;
 use CSBill\DataGridBundle\Grid\Filters;

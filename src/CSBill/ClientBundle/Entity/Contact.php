@@ -14,19 +14,17 @@ namespace CSBill\ClientBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use APY\DataGridBundle\Grid\Mapping as GRID;
-use CSBill\QuoteBundle\Entity\Quote;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="clients")
- * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ClientRepository")
- * @UniqueEntity("name")
+ * CSBill\ClientBundle\Entity\Contact
+ *
+ * @ORM\Table(name="contacts")
+ * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deleted")
  */
-class Client
+class Contact implements \serializable
 {
     /**
      * @var integer $id
@@ -38,48 +36,42 @@ class Client
     private $id;
 
     /**
-     * @var string $name
+     * @var string $firstname
      *
-     * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
+     * @ORM\Column(name="firstname", type="string", length=125, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      */
-    private $name;
+    private $firstname;
 
     /**
-     * @var string $website
+     * @var string $lastname
      *
-     * @ORM\Column(name="website", type="string", length=125, nullable=true)
-     * @Assert\Url()
+     * @ORM\Column(name="lastname", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
      */
-    private $website;
+    private $lastname;
 
     /**
-     * @var Status $status
+     * @var Client $client
      *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="clients", cascade={"ALL"})
-     * @Assert\Valid()
-     * @GRID\Column(field="status.name", filter="source", filter="select", selectFrom="source", title="status")
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts", cascade={"ALL"})
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
      */
-    private $status;
+    private $client;
 
     /**
-     * @var ArrayCollection $contacts
+     * @var ArrayCollection $details
      *
-     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"ALL"})
-     * @ORM\OrderBy({"firstname" = "ASC"})
+     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="contact", cascade={"ALL"})
+     *
+     * @Assert\Count(
+     *      min = "1",
+     *      minMessage = "You must add al least one contact detail for each contact"
+     * )
      * @Assert\Valid()
      */
-    private $contacts;
-
-    /**
-     * @var ArrayCollection $quotes
-     *
-     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client")
-     * @Assert\Valid()
-     */
-    private $quotes;
+    private $details;
 
     /**
      * @var DateTIme $created
@@ -112,8 +104,7 @@ class Client
      */
     public function __construct()
     {
-        $this->contacts = new ArrayCollection;
-        $this->quotes = new ArrayCollection;
+        $this->details = new ArrayCollection;
     }
 
     /**
@@ -127,146 +118,109 @@ class Client
     }
 
     /**
-     * Set name
+     * Set firstname
      *
-     * @param  string $name
-     * @return Client
+     * @param  string  $firstname
+     * @return Contact
      */
-    public function setName($name)
+    public function setFirstname($firstname)
     {
-        $this->name = $name;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get firstname
      *
      * @return string
      */
-    public function getName()
+    public function getFirstname()
     {
-        return $this->name;
+        return $this->firstname;
     }
 
     /**
-     * Set status
+     * Set lastname
      *
-     * @param  string $status
-     * @return Client
+     * @param  string  $lastname
+     * @return Contact
      */
-    public function setStatus($status)
+    public function setLastname($lastname)
     {
-        $this->status = $status;
+        $this->lastname = $lastname;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get lastname
      *
      * @return string
      */
-    public function getStatus()
+    public function getLastname()
     {
-        return $this->status;
+        return $this->lastname;
     }
 
     /**
-     * Set website
+     * Set client
      *
-     * @param  string $website
-     * @return Client
+     * @param  Client  $client
+     * @return Contact
      */
-    public function setWebsite($website)
+    public function setClient(Client $client)
     {
-        $this->website = $website;
+        $this->client = $client;
 
         return $this;
     }
 
     /**
-     * Get website
+     * Get client
      *
-     * @return string
+     * @return Client
      */
-    public function getWebsite()
+    public function getClient()
     {
-        return $this->website;
+        return $this->client;
     }
 
     /**
-     * Add contact
+     * Add detail
      *
-     * @param  Contact $contact
-     * @return Client
+     * @param  ContactDetail $detail
+     * @return Contact
      */
-    public function addContact(Contact $contact)
+    public function addDetail(ContactDetail $detail)
     {
-        $this->contacts[] = $contact;
-        $contact->setClient($this);
+        $this->details[] = $detail;
+        $detail->setContact($this);
 
         return $this;
     }
 
     /**
-     * Removes a contact
+     * Removes detail from the current contact
      *
-     * @param  Contact $contact
-     * @return Client
+     * @param  ContactDetail $detail
+     * @return Contact
      */
-    public function removeContact(Contact $contact)
+    public function removeDetail(ContactDetail $detail)
     {
-        $this->contacts->removeElement($contact);
+        $this->details->removeElement($detail);
 
         return $this;
     }
 
     /**
-     * Get contacts
+     * Get details
      *
      * @return ArrayCollection
      */
-    public function getContacts()
+    public function getDetails()
     {
-        return $this->contacts;
-    }
-
-    /**
-     * Add quote
-     *
-     * @param  Quote  $quote
-     * @return Client
-     */
-    public function addQuote(Quote $quote)
-    {
-        $this->quotes[] = $quote;
-        $quote->setClient($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove quote
-     *
-     * @param  Quote  $quote
-     * @return Client
-     */
-    public function removeQuote(Quote $quote)
-    {
-        $this->quotes->removeElement($quote);
-
-        return $this;
-    }
-
-    /**
-     * Get quotes
-     *
-     * @return ArrayCollection
-     */
-    public function getQuotes()
-    {
-        return $this->quotes;
+        return $this->details;
     }
 
     /**
@@ -338,13 +292,18 @@ class Client
         return $this->created;
     }
 
-    /**
-     * Return the client name as a string
-     *
-     * @return string
-     */
+    public function serialize()
+    {
+        return serialize(array($this->id, $this->firstname, $this->lastname));
+    }
+
+    public function unserialize($serialized)
+    {
+        list($this->id, $this->firstname, $this->lastname) = unserialize($serialized);
+    }
+
     public function __toString()
     {
-        return $this->getName();
+        return $this->firstname . ' ' . $this->lastname;
     }
 }

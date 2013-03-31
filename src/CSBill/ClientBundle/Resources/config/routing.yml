@@ -1,0 +1,21 @@
+_clients_index:
+    pattern:   /
+    defaults:  { _controller: CSBillClientBundle:Default:index }
+
+_clients_add:
+    pattern:   /add
+    defaults:  { _controller: CSBillClientBundle:Default:add }
+
+_clients_edit:
+    pattern:   /edit/{id}
+    defaults:  { _controller: CSBillClientBundle:Default:edit }
+
+_clients_view:
+    pattern:   /view/{id}
+    defaults:  { _controller: CSBillClientBundle:Default:view }
+
+_clients_info:
+    pattern:   /ajax/info/{id}
+    defaults:  { _controller: CSBillClientBundle:Ajax:info }
+    options:
+        expose: true

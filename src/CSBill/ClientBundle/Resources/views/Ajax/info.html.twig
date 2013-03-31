@@ -1,0 +1,28 @@
+<div class="row-fluid">
+    <fieldset>
+        <legend>
+            <h4>
+                {{ client.name }}
+                <small>
+                    (<a href="#" class="client-select-change">{{ "Change"|trans }}</a>)
+                </small>
+            </h4>
+        </legend>
+
+        {% if form is defined %}
+            {{ form_errors(form.users) }}
+            {{ form_row(form.users) }}
+        {% else %}
+            <ul class="unstyled">
+                {% for contact in client.contacts %}
+                    <li>
+                        <div class="checkbox">
+                            <input type="checkbox" name="quote[users][]" value="{{ contact.id }}" id="client-contact-{{ contact.id }}" />
+                            <label for="client-contact-{{ contact.id }}">{{ contact.firstname }} {{ contact.lastname }}</label>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </fieldset>
+</div>

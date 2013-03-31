@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>clients</source>
+                <target>Clients</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>add_client</source>
+                <target>Add Client</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>save</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>contact_details</source>
+                <target>Contact Details</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>client_saved</source>
+                <target>Client Successfully Saved!</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>view_client</source>
+                <target>View Client</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>website</source>
+                <target>Website</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>all_clients</source>
+                <target>All Clients</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>active_clients</source>
+                <target>Active Clients</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>inactive_clients</source>
+                <target>In-Active Clients</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>status</source>
+                <target>Status</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>edit</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>contacts</source>
+                <target>Contacts</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
