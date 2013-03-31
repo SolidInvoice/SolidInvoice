@@ -1,9 +1,22 @@
 parameters:
-    cs_bill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
-
+    csbill_client.status.class: CSBill\ClientBundle\Model\Status
+    csbill_client.twig.status.class: CSBill\ClientBundle\Twig\Extension\ClientStatus
+    csbill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
+    
 services:
-    cs_bill_client.menu:
-        class: %cs_bill_client.menu.class%
+    csbill_client.status:
+        class: %csbill_client.status.class%
+        public: false
+
+    csbill_client.twig.status:
+        class: %csbill_client.twig.status.class%
+        calls:
+            - [setStatusClass, [@csbill_client.status]]
+        tags:
+            - { name: twig.extension }
+
+    csbill_client.menu:
+        class: %csbill_client.menu.class%
         tags:
             - { name: cs_core.menu, menu: top, method: topMenu }
             - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
