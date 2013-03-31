@@ -29,6 +29,23 @@
 	{% endstylesheets %}
 {% endblock stylesheets %}
 
+{% block javascripts %}
+    {% javascripts
+        "@CSCoreBundle/Resources/public/js/bootstrap.min.js"
+        "@CSCoreBundle/Resources/public/js/underscore.js"
+        "@CSCoreBundle/Resources/public/js/backbone.js"
+        "@CSCoreBundle/Resources/public/js/plugins.js"
+        "@CSCoreBundle/Resources/public/js/plugins/*.js"
+        "@CSCoreBundle/Resources/public/js/script.js"
+        "@FOSJsRoutingBundle/Resources/public/js/router.js"
+        filter="?yui_js"
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData", "_format" : "js"}) }}"></script>
+{% endblock %}
+
 {% block header %}
 	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : app_name} %}
 {% endblock header %}

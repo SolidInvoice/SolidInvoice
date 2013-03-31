@@ -42,6 +42,7 @@
         "zendframework/zend-stdlib" : "dev-master",
         "pagerfanta/pagerfanta" : "dev-master",
         "stof/doctrine-extensions-bundle": "dev-master"
+        "friendsofsymfony/jsrouting-bundle": "1.1.*",
     },
     "scripts": {
         "post-install-cmd": [
