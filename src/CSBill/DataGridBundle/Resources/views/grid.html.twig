@@ -68,7 +68,6 @@
 {% block grid_search %}
 	{% if grid.isFilterSectionVisible %}
     	<div class="grid-search hide" id="{{ grid.hash }}_grid_search">
-    		<br /><br /><br />
         	<form id="{{ grid.hash }}_search" action="{{ grid.routeUrl }}" method="post" class="form-inline">
 
 	        	<div class="control-group">
@@ -96,3 +95,33 @@
         </div>
     {% endif %}
 {% endblock grid_search %}
+
+{# --------------------------------------------------- grid_actions ------------------------------------------------- #}
+{% block grid_actions %}
+<div class="mass-actions form-horizontal">
+	<span class="grid_massactions_helper">
+	    <a href="#" onclick="return {{ grid.hash }}_markVisible(true);">{{ 'Select visible'|trans }}</a> |
+	    <a href="#" onclick="return {{ grid.hash }}_markVisible(false);">{{ 'Deselect visible'|trans }}</a> |
+	    <a href="#" onclick="return {{ grid.hash }}_markAll(true);">{{ 'Select all'|trans }}</a> |
+	    <a href="#" onclick="return {{ grid.hash }}_markAll(false);">{{ 'Deselect all'|trans }}</a>
+	</span>
+
+	{% spaceless %}
+	 <div class="pull-right grid_massactions">
+	     <label class="control-label">{{ 'Action'|trans }}</label>
+	     <div class="controls">
+	      <input type="hidden" id="{{ grid.hash }}_mass_action_all" name="{{ grid.hash }}[{{ constant('APY\\DataGridBundle\\Grid\\Grid::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED') }}]" value="0"/>
+	      <select name="{{ grid.hash }}[{{ constant('APY\\DataGridBundle\\Grid\\Grid::REQUEST_QUERY_MASS_ACTION') }}]">
+	          <option value="-1"></option>
+	          {% for key, massAction in grid.massActions %}
+	          <option value="{{ key }}">{{ massAction.title|trans }}</option>
+	          {% endfor %}
+	      </select>
+	      <button type="submit" class="btn">{{ 'Submit'|trans }}</button>
+	  </div>
+	 </div>
+	{% endspaceless %}
+	</div>
+</div>
+<span class="mass-actions-selected" id="{{ grid.hash }}_mass_action_selected"></span>
+{% endblock grid_actions %}
