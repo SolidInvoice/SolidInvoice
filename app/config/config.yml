@@ -32,7 +32,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ CSCoreBundle, CSBillCoreBundle, CSBillDataGridBundle ]
+    bundles:        [ CSCoreBundle, CSBillCoreBundle, CSBillDataGridBundle, CSBillQuoteBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -114,7 +114,11 @@ apy_data_grid:
         options:            #all options of pager fanta view constructor
            prev_message : «
            next_message : »
-           
+
 stof_doctrine_extensions:
     default_locale: en_US
     orm: ~
+
+jms_di_extra:
+    locations:
+        all_bundles: true
