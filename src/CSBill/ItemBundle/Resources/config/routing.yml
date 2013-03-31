@@ -1,0 +1,3 @@
+csbill_item_index:
+    pattern:  /
+    defaults: { _controller: CSBillItemBundle:Default:index }
