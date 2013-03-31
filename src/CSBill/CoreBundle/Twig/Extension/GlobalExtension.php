@@ -39,8 +39,9 @@ class GlobalExtension extends Twig_Extension
     public function getGlobals()
     {
         return array(
-                    'sessionId' 		=> session_id(),
-                    'query'				=> $this->getQuery(),
+                    'sessionId'         => session_id(),
+                    'query'             => $this->getQuery(),
+                    'currency'          => $this->container->get('currency')
             );
     }
 
