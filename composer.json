@@ -34,14 +34,13 @@
         "jms/di-extra-bundle": "1.3.*",
         "customscripts/core-bundle": "dev-master",
         "customscripts/user-bundle": "dev-master",
-		"customscripts/client-bundle": "dev-master",
 		"doctrine/doctrine-migrations-bundle": "dev-master",
 		"doctrine/doctrine-fixtures-bundle": "dev-master",
         "knplabs/knp-menu-bundle": "dev-master",
-        
+        "apy/datagrid-bundle" : "dev-master",
         "zendframework/zend-stdlib" : "dev-master",
         "pagerfanta/pagerfanta" : "dev-master",
-        "stof/doctrine-extensions-bundle": "dev-master"
+        "stof/doctrine-extensions-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "jms/debugging-bundle": "dev-master"
     },
