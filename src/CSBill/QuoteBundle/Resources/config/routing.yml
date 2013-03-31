@@ -1,7 +1,7 @@
 _quotes_index:
     pattern:   /
     defaults:  { _controller: CSBillQuoteBundle:Default:index }
-    
+
 _quotes_create:
     pattern:   /create
     defaults:  { _controller: CSBillQuoteBundle:Default:create }

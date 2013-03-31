@@ -111,28 +111,28 @@ class DefaultController extends Controller
      */
     public function addAction()
     {
-    	$client = new Client;
+        $client = new Client;
 
-    	$form = $this->createForm(new ClientType, $client);
+        $form = $this->createForm(new ClientType, $client);
 
-    	$request = $this->getRequest();
+        $request = $this->getRequest();
 
-    	if ($request->getMethod() === 'POST') {
-    		$form->bind($request);
+        if ($request->getMethod() === 'POST') {
+            $form->bind($request);
 
-    		if ($form->isValid()) {
-    			$em = $this->get('doctrine.orm.entity_manager');
+            if ($form->isValid()) {
+                $em = $this->get('doctrine.orm.entity_manager');
 
-    			$em->persist($client);
-    			$em->flush();
+                $em->persist($client);
+                $em->flush();
 
-    			$this->flash($this->trans('client_saved'), 'success');
+                $this->flash($this->trans('client_saved'), 'success');
 
-    			return $this->redirect($this->generateUrl('_clients_index'));
-    		}
-    	}
+                return $this->redirect($this->generateUrl('_clients_index'));
+            }
+        }
 
-    	return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
+        return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -142,9 +142,9 @@ class DefaultController extends Controller
      */
     public function editAction(Client $client)
     {
-    	$form = $this->createForm(new ClientType, $client);
+        $form = $this->createForm(new ClientType, $client);
 
-    	return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
+        return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -154,6 +154,6 @@ class DefaultController extends Controller
      */
     public function viewAction(Client $client)
     {
-    	return $this->render('CSBillClientBundle:Default:view.html.twig', array('client' => $client));
+        return $this->render('CSBillClientBundle:Default:view.html.twig', array('client' => $client));
     }
 }

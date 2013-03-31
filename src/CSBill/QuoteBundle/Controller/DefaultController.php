@@ -13,7 +13,6 @@ namespace CSBill\QuoteBundle\Controller;
 use CS\CoreBundle\Controller\Controller;
 use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Entity\Quote;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
@@ -21,7 +20,6 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
 
 use Symfony\Component\HttpFoundation\Response;
-use CSBill\QuoteBundle\Grid\DataGrid;
 
 class DefaultController extends Controller
 {
@@ -112,7 +110,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                if($request->request->get('save') === 'draft') {
+                if ($request->request->get('save') === 'draft') {
                     $quote->setDraft(1);
                 }
 
@@ -124,7 +122,7 @@ class DefaultController extends Controller
                 $em->flush();
 
                 // TODO : we need to send the quote to the client if it is not saved as a draft
-                if($request->request->get('save') === 'send') {
+                if ($request->request->get('save') === 'send') {
                     $this->get('some.service.id')->sendQuote($quote);
                 }
 

@@ -2,7 +2,7 @@ parameters:
     csbill_client.status.class: CSBill\ClientBundle\Model\Status
     csbill_client.twig.status.class: CSBill\ClientBundle\Twig\Extension\ClientStatus
     csbill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
-    
+
 services:
     csbill_client.status:
         class: %csbill_client.status.class%

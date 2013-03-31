@@ -11,22 +11,22 @@
 {% extends 'CSCoreBundle::layout.html.twig' %}
 
 {% block heading %}
-	<fieldset>
-		<legend>
-			<h3>{{ block('title') }}</h3>
-		</legend>
-	</fieldset>
+    <fieldset>
+        <legend>
+            <h3>{{ block('title') }}</h3>
+        </legend>
+    </fieldset>
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	{% stylesheets
-		'@CSBillCoreBundle/Resources/public/less/styles.less'
-		filter="less, cssrewrite,?yui_css"
-		output="app.css"
-	%}
-		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
-	{% endstylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        'bundles/csbillcore/css/*.css'
+        'bundles/csbillcore/less/styles.less'
+        filter="less, cssrewrite,?yui_css"
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+    {% endstylesheets %}
 {% endblock stylesheets %}
 
 {% block javascripts %}
@@ -64,10 +64,14 @@
 {% endblock %}
 
 {% block header %}
-	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : app_name} %}
+    {% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : app_name} %}
 {% endblock header %}
 
 {% block footer %}
-	<hr />
-	<small>{{ "Powered by"|trans }} <a href="#">{{ app_name }}</a>
+    <hr />
+    <small>{{ "Powered by"|trans }} <a href="#">{{ app_name }}</a>
 {% endblock footer %}
+
+{% block body_bottom %}
+    {{ block('script') }}
+{% endblock %}

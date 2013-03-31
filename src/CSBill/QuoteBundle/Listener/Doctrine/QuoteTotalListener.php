@@ -16,15 +16,15 @@ use CSBill\QuoteBundle\Entity\Quote;
  *
  * @author pierre
  */
-class QuoteTotalListener {
-
+class QuoteTotalListener
+{
     public function postLoad(LifecycleEventArgs $event)
     {
         $em = $event->getEntityManager();
         $entity = $event->getEntity();
 
-        if($entity instanceof Quote) {
-            if(count($entity->getUsers()) > 0) {
+        if ($entity instanceof Quote) {
+            if (count($entity->getUsers()) > 0) {
                 $contacts = $em->getRepository('CSBillClientBundle:Contact')->findById(array_map(function($item){ return $item->getId(); }, $entity->getUsers()->toArray()));
                 $entity->setUsers($contacts);
             }

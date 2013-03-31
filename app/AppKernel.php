@@ -23,20 +23,20 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-        	new APY\DataGridBundle\APYDataGridBundle(),
-        	new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new APY\DataGridBundle\APYDataGridBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
             new CS\CoreBundle\CSCoreBundle(),
-        	new CS\UserBundle\CSUserBundle(),
-            new CS\ClientBundle\CSClientBundle(),
+            new CS\UserBundle\CSUserBundle(),
+            //new CS\DataGridBundle\CSDataGridBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
-        	new CSBill\DataGridBundle\CSBillDataGridBundle(),
-        	new CSBill\QuoteBundle\CSBillQuoteBundle(),
+            new CSBill\DataGridBundle\CSBillDataGridBundle(),
+            new CSBill\QuoteBundle\CSBillQuoteBundle(),
+            new CSBill\ItemBundle\CSBillItemBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

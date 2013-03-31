@@ -360,10 +360,11 @@ class Quote
     /**
      * Set Draft
      *
-     * @param int|bool $draft
+     * @param  int|bool $draft
      * @return Quote
      */
-    public function setDraft($draft) {
+    public function setDraft($draft)
+    {
         $this->draft = (bool) $draft;
 
         return $this;
@@ -386,9 +387,9 @@ class Quote
      */
     public function updateTotal()
     {
-        if(count($this->items)) {
+        if (count($this->items)) {
             $total = 0;
-            foreach($this->items as $item) {
+            foreach ($this->items as $item) {
                 $item->setQuote($this);
                 $total += ($item->getPrice() * $item->getQty());
             }

@@ -17,9 +17,9 @@ use CSBill\ClientBundle\Entity\Status;
 
 class LoadStatus implements FixtureInterface
 {
-	/*
-	 * (non-phpdoc)
-	 */
+    /*
+     * (non-phpdoc)
+     */
     public function load(ObjectManager $manager)
     {
         // Active

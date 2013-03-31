@@ -18,41 +18,40 @@ namespace CSBill\ClientBundle\Model;
  *
  * @author Pierre du Plessis
  */
-class Status {
+class Status
+{
+    /**
+     * Contains a list of all the statuses and their corresponding labels
+     *
+     * @var array
+     */
+    protected $statusLabels = array(
+                                    'active' 	=> 'success',
+                                    'inactive' 	=> 'warning'
+            );
 
-	/**
-	 * Contains a list of all the statuses and their corresponding labels
-	 *
-	 * @var array
-	 */
-	protected $statusLabels = array(
-									'active' 	=> 'success',
-									'inactive' 	=> 'warning'
-			);
+    /**
+     * Converts a status into a label
+     *
+     * @param  string $status
+     * @return string
+     */
+    public function getStatusLabel($status)
+    {
+        if (isset($this->statusLabels[$status])) {
+            return $this->statusLabels[$status];
+        }
 
-	/**
-	 * Converts a status into a label
-	 *
-	 * @param string $status
-	 * @return string
-	 */
-	public function getStatusLabel($status)
-	{
-		if(isset($this->statusLabels[$status]))
-		{
-			return $this->statusLabels[$status];
-		}
+        return 'inverse';
+    }
 
-		return 'inverse';
-	}
-
-	/**
-	 * Return an array of all the available statuses
-	 *
-	 * @return array
-	 */
-	public function getStatusList()
-	{
-		return array_keys($this->statusLabels);
-	}
+    /**
+     * Return an array of all the available statuses
+     *
+     * @return array
+     */
+    public function getStatusList()
+    {
+        return array_keys($this->statusLabels);
+    }
 }

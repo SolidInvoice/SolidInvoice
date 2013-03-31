@@ -5,7 +5,7 @@ namespace CSBill\QuoteBundle\Grid;
 use CS\DataGridBundle\AbstractGrid;
 use CS\DataGridBundle\Adapter\DoctrineEntity;
 
-class Datagrid extends AbstractGrid
+class DataGrid extends AbstractGrid
 {
     public function getSource()
     {

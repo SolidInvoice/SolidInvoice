@@ -4,8 +4,8 @@ namespace CSBill\CoreBundle\Util;
 
 use NumberFormatter;
 
-class Currency {
-
+class Currency
+{
     protected $formatter;
 
     protected $locale;
@@ -35,9 +35,9 @@ class Currency {
 
         preg_match('/^([^\s\xc2\xa0]*)[\s\xc2\xa0]*123(?:[,.]0+)?[\s\xc2\xa0]*([^\s\xc2\xa0]*)$/u', $pattern, $matches);
 
-        if(!empty($matches[1])) {
+        if (!empty($matches[1])) {
             return $matches[1];
-        } else if(!empty($matches[2])) {
+        } elseif (!empty($matches[2])) {
             return $matches[2];
         }
 

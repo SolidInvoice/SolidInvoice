@@ -7,8 +7,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
-class Money extends BaseType {
-
+class Money extends BaseType
+{
     protected $currency;
 
     public function __construct($currency)
