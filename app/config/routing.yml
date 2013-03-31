@@ -9,10 +9,11 @@ csbill_install:
 cs_user:
     resource: "@CSUserBundle/Resources/config/routing.yml"
 
-cs_client_bundle:
+csbill_client:
     prefix:   /clients
-    resource: "@CSClientBundle/Resources/config/routing.yml"
+    resource: "@CSBillClientBundle/Resources/config/routing.yml"
 
 csbill_quote_bundle:
     prefix: /quotes
-    resource: "@CSBillQuoteBundle/Resources/config/routing.yml"
+    resource: "@CSBillQuoteBundle/Resources/config/routing.yml"fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
