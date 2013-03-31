@@ -13,7 +13,13 @@ csbill_client:
     prefix:   /clients
     resource: "@CSBillClientBundle/Resources/config/routing.yml"
 
-csbill_quote_bundle:
+csbill_quote:
     prefix: /quotes
-    resource: "@CSBillQuoteBundle/Resources/config/routing.yml"fos_js_routing:
+    resource: "@CSBillQuoteBundle/Resources/config/routing.yml"
+
+csbill_item:
+    resource: "@CSBillItemBundle/Resources/config/routing.yml"
+    prefix:   /items
+
+fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
