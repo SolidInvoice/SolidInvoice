@@ -13,7 +13,7 @@ namespace CSBill\ClientBundle\Controller;
 
 use CS\CoreBundle\Controller\Controller;
 use CSBill\ClientBundle\Entity\Client;
-use CS\ClientBundle\Model\Status;
+use CSBill\ClientBundle\Model\Status;
 use CSBill\DataGridBundle\Grid\Filters;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Row;
@@ -22,8 +22,9 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Doctrine\ORM\QueryBuilder as QB;
+use CSBill\ClientBundle\Form\Type\ClientType;
 
-class DefaultController extends BaseController
+class DefaultController extends Controller
 {
     /**
      * List all the clients
@@ -32,7 +33,7 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $source = new Entity('CSClientBundle:Client');
+        $source = new Entity('CSBillClientBundle:Client');
 
         // Get a Grid instance
         $grid = $this->get('grid');
@@ -97,7 +98,62 @@ class DefaultController extends BaseController
 
         $grid->addMassAction(new DeleteMassAction());
 
+        $grid->hideColumns(array('updated', 'deleted'));
+
         // Return the response of the grid to the template
-        return $grid->getGridResponse('CSClientBundle:Default:index.html.twig', array('filters' => $filters));
+        return $grid->getGridResponse('CSBillClientBundle:Default:index.html.twig', array('filters' => $filters));
+    }
+
+    /**
+     * Adds a new client
+     *
+     * @return Response
+     */
+    public function addAction()
+    {
+    	$client = new Client;
+
+    	$form = $this->createForm(new ClientType, $client);
+
+    	$request = $this->getRequest();
+
+    	if ($request->getMethod() === 'POST') {
+    		$form->bind($request);
+
+    		if ($form->isValid()) {
+    			$em = $this->get('doctrine.orm.entity_manager');
+
+    			$em->persist($client);
+    			$em->flush();
+
+    			$this->flash($this->trans('client_saved'), 'success');
+
+    			return $this->redirect($this->generateUrl('_clients_index'));
+    		}
+    	}
+
+    	return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
+     * Edit a client
+     *
+     * @return Response
+     */
+    public function editAction(Client $client)
+    {
+    	$form = $this->createForm(new ClientType, $client);
+
+    	return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
+     * View a client
+     *
+     * @return Response
+     */
+    public function viewAction(Client $client)
+    {
+    	return $this->render('CSBillClientBundle:Default:view.html.twig', array('client' => $client));
     }
 }
