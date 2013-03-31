@@ -43,6 +43,7 @@
         "pagerfanta/pagerfanta" : "dev-master",
         "stof/doctrine-extensions-bundle": "dev-master"
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
+        "jms/debugging-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
