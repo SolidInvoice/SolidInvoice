@@ -44,6 +44,23 @@
     {% endjavascripts %}
 
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData", "_format" : "js"}) }}"></script>
+
+    <script type="text/javascript">
+        accounting.settings = {
+                currency: {
+                    symbol : "{{ currency.currencySymbol }}",
+                    format: "%s%v", // TODO : set format. controls output: %s = symbol, %v = value/number (can be object: see below)
+                    decimal : "{{ currency.decimalSeparator }}",  // decimal point separator
+                    thousand: "{{ currency.thousandSeparator }}",  // thousands separator
+                    precision : 2   // decimal places
+                },
+                number: {
+                    precision : 0,  // default precision on numbers is 0
+                    thousand: "{{ currency.thousandSeparator }}",
+                    decimal : "{{ currency.decimalSeparator }}"
+                }
+            };
+    </script>
 {% endblock %}
 
 {% block header %}
