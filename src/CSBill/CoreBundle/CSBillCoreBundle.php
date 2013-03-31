@@ -13,7 +13,7 @@ namespace CSBill\CoreBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use CSBill\CoreBundle\DependencyInjection\Compiler\MenuCompilerPass;
+use CSBill\CoreBundle\DependencyInjection\Compiler;
 
 class CSBillCoreBundle extends Bundle
 {
@@ -34,6 +34,7 @@ class CSBillCoreBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new MenuCompilerPass());
+        $container->addCompilerPass(new Compiler\MenuCompilerPass());
+        $container->addCompilerPass(new Compiler\FormCompilerPass());
     }
 }
