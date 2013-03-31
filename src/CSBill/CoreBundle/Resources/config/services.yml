@@ -5,6 +5,8 @@ parameters:
     csbill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
     csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
+    csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
+    csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
 
 services:
     csbill_core.menu.factory:
@@ -35,3 +37,10 @@ services:
             - [ setContainer, [ @service_container ] ]
         tags:
             - { name: twig.extension }
+
+    csbill_core.currency:
+        class: %csbill_core.currrency.class%
+        arguments: [%locale%, %currency%]
+
+    currency:
+        alias: csbill_core.currency
