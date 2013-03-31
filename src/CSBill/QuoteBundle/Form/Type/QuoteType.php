@@ -14,6 +14,10 @@ namespace CSBill\QuoteBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Form;
+use Doctrine\Common\Collections\ArrayCollection;
+use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 
 class QuoteType extends AbstractType
 {
@@ -23,12 +27,15 @@ class QuoteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('client');
-        $builder->add('status', null, array('required' => true));
+        $builder->add('client', null, array('attr' => array('class' => 'chosen'), 'empty_value' => '--select--'));
+        $builder->add('status', null, array('required' => true, 'empty_value' => '--select--'));
+        $builder->add('discount', 'percent', array('mapped' => false));
         $builder->add('items', 'collection', array('type' => new ItemType(),
                                                       'allow_add' => true,
-                                                      'allow_delete' => true,
-                                                      'by_reference' => false));
+                                                      'allow_delete' => true
+                ));
+
+        $builder->addEventSubscriber(new QuoteUsersSubscriber());
     }
 
     /**

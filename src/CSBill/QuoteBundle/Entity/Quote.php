@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use CSBill\ClientBundle\Entity\Client;
+use APY\DataGridBundle\Grid\Mapping as Grid;
 
 /**
  * CSBill\ClientBundle\Entity\Quote
@@ -24,6 +25,7 @@ use CSBill\ClientBundle\Entity\Client;
  * @ORM\Entity()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Quote
 {
@@ -40,7 +42,8 @@ class Quote
      * @var Status $status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="quotes")
-     * @Assert\Valid()
+     * @Assert\NotBlank
+     * @Grid\Column(name="status", field="status.name")
      */
     private $status;
 
@@ -48,7 +51,8 @@ class Quote
      * @var Client $client
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
-     * @Assert\Valid()
+     * @Assert\NotBlank
+     * @Grid\Column(name="clients", field="client.name")
      */
     private $client;
 
@@ -60,10 +64,17 @@ class Quote
     private $total;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="draft", type="boolean")
+     */
+    private $draft;
+
+    /**
      * @var DateTime $due
      *
-     * @ORM\Column(name="due", type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @ORM\Column(name="due", type="date", nullable=true)
+     * @Assert\DateTime
      */
     private $due;
 
@@ -72,7 +83,7 @@ class Quote
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime()
+     * @Assert\DateTime
      */
     private $created;
 
@@ -81,7 +92,7 @@ class Quote
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime()
+     * @Assert\DateTime
      */
     private $updated;
 
@@ -89,7 +100,7 @@ class Quote
      * @var DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @Assert\DateTime
      */
     private $deleted;
 
@@ -97,11 +108,19 @@ class Quote
      * @var ArrayCollection $items
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"ALL"})
-     * @Orm\OrderBy({"name" = "ASC"})
-     * @Assert\Valid()
-     * @Assert\Count(min=1)
+     * @Orm\OrderBy({"description" = "ASC"})
+     * @Assert\Valid
+     * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
      */
     private $items;
+
+    /**
+     * @ORM\Column(name="users", type="array", nullable=false)
+     * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
+     *
+     * @var array
+     */
+    private $users;
 
     /**
      * Constructer
@@ -109,6 +128,25 @@ class Quote
     public function __construct()
     {
         $this->items = new ArrayCollection;
+        $this->users = new ArrayCollection;
+        $this->draft = 0;
+    }
+
+    /**
+     * Return users array
+     *
+     * @return multitype:array
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    public function setUsers(array $users = array())
+    {
+        $this->users = new ArrayCollection($users);
+
+        return $this;
     }
 
     /**
@@ -317,5 +355,47 @@ class Quote
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * Set Draft
+     *
+     * @param int|bool $draft
+     * @return Quote
+     */
+    public function setDraft($draft) {
+        $this->draft = (bool) $draft;
+
+        return $this;
+    }
+
+    /**
+     * Is the current quote a draft
+     *
+     * @return integer
+     */
+    public function isDraft()
+    {
+        return $this->draft;
+    }
+
+    /**
+     * PrePersist listener to update the quote total
+     *
+     * @ORM\PrePersist
+     */
+    public function updateTotal()
+    {
+        if(count($this->items)) {
+            $total = 0;
+            foreach($this->items as $item) {
+                $item->setQuote($this);
+                $total += ($item->getPrice() * $item->getQty());
+            }
+
+            $this->setTotal($total);
+        } else {
+            $this->setTotal(0);
+        }
     }
 }

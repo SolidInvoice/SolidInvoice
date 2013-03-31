@@ -35,25 +35,26 @@ class Item
     private $id;
 
     /**
-     * @var string $name
+     * @var string $description
      *
-     * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\MaxLength(125)
+     * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank
      */
-    private $name;
+    private $description;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="price", type="float")
+     * @ORM\Column(name="price", type="decimal", scale=2)
+     * @Assert\NotBlank
      */
     private $price;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="qty", type="integer")
+     * @ORM\Column(name="qty", type="float")
+     * @Assert\NotBlank
      */
     private $qty;
 
@@ -62,7 +63,7 @@ class Item
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime()
+     * @Assert\DateTime
      */
     private $created;
 
@@ -71,7 +72,7 @@ class Item
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime()
+     * @Assert\DateTime
      */
     private $updated;
 
@@ -79,7 +80,7 @@ class Item
      * @var string $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @Assert\DateTime
      */
     private $deleted;
 
@@ -101,26 +102,26 @@ class Item
     }
 
     /**
-     * Set name
+     * Set description
      *
-     * @param  string $name
+     * @param  string $description
      * @return Item
      */
-    public function setName($name)
+    public function setDescription($description)
     {
-        $this->name = $name;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get description
      *
      * @return string
      */
-    public function getName()
+    public function getDescription()
     {
-        return $this->name;
+        return $this->description;
     }
 
     /**
@@ -268,6 +269,6 @@ class Item
      */
     public function __toString()
     {
-        return ucwords($this->getName());
+        return $this->getDescription();
     }
 }

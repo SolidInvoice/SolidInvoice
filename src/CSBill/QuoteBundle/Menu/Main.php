@@ -12,22 +12,31 @@
 namespace CSBill\QuoteBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
 
 /**
  * Menu ietms for quotes
  */
-class Main
+class Main extends AuthenticatedMenu
 {
     /**
      * Menu builder for the quotes index
      *
-     * @return \Knp\Menu\ItemInterface
+     * @param $menu \Knp\Menu\ItemInterface
      */
-    public function quotesindexMenu(ItemInterface $menu, array $parameters)
+    public function topMenu(ItemInterface $menu, array $parameters = array())
     {
-        $menu->addChild('List Quotes', array('route' => '_quote_index'));
-        $menu->addChild('Add Quote', array('route' => '_quote_add'));
+        $menu->addChild('Quotes', array('route' => '_quotes_index'));
+    }
 
-        return $menu;
+    /**
+     * Renders the quote index menu
+     *
+     * @param ItemInterface $menu
+     */
+    public function quotesMenu(ItemInterface $menu)
+    {
+        $menu->addChild('List Quotes', array('route' => '_quotes_index'));
+        $menu->addChild('Create Quote', array('route' => '_quotes_create'));
     }
 }

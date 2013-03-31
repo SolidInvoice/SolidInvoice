@@ -42,7 +42,7 @@ class Status
      *
      * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
      * @Assert\NotBlank()
-     * @Assert\MaxLength(125)
+     * @Assert\Length(max=125)
      */
     private $name;
 
