@@ -132,7 +132,7 @@
 
 {% block percent_widget %}
 {% spaceless %}
-    {% set type = type|default('text') %}
+    {% set type = type|default('number') %}
 
     <div class="input-append">
         {{ block('form_widget_simple') }} <div class="add-on">%</div>
