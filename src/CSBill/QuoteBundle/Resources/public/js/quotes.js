@@ -48,6 +48,10 @@
 
                         row.fadeIn(150, this.setEvents);
 
+                        var rowTotal = $('.quote-item-total', row);
+
+                        rowTotal.val(accounting.formatMoney(rowTotal.val() || 0, ''));
+
                         return this;
                     },
                     "createField" : function(item) {
@@ -121,7 +125,10 @@
 
         $('.quote-item-price, .quote-item-total', Quote.el).each(function(){
             var $this = $(this);
-            $this.val(accounting.formatMoney($this.val(), ''));
+
+            if($this.val() !== '') {
+                $this.val(accounting.formatMoney($this.val(), ''));
+            }
 
             Quote.calcTotal(this);
         });
@@ -142,6 +149,10 @@
             $(this).parents('tr').fadeOut(function(){
                 $(this).remove();
                 Quote.updateTotal();
+
+                if($(Quote.rowElement, Quote.el).length === 0) {
+                    Quote.addRow();
+                }
             });
         });
 
