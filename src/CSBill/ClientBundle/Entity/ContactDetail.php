@@ -40,6 +40,13 @@ class ContactDetail
     private $value;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_primary", type="boolean", nullable=true)
+     */
+    private $primary;
+
+    /**
      * @var Contact $contact
      *
      * @ORM\ManyToOne(targetEntity="Contact", inversedBy="details")
@@ -132,5 +139,33 @@ class ContactDetail
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set the contact detail as primary
+     *
+     * @param int|bool $primary
+     * @return ContactDetail
+     */
+    public function setPrimary($primary)
+    {
+        $this->primary = (bool) $primary;
+
+        return $this;
+    }
+
+    /**
+     * Is the contact detail primary
+     *
+     * @return bool
+     */
+    public function isPrimary()
+    {
+        return (bool) $this->primary;
+    }
+
+    public function __toString()
+    {
+        return $this->value;
     }
 }

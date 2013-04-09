@@ -21,6 +21,7 @@ class ContactDetailType extends AbstractType
     {
         $builder->add('type', null, array('attr' => array('class' => 'pull-left')));
         $builder->add('value');
+        $builder->add('primary');
     }
 
     public function getName()
