@@ -20,7 +20,7 @@ use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\QueryBuilder as QB;
 use CSBill\ClientBundle\Form\Type\ClientType;
 
@@ -77,7 +77,7 @@ class DefaultController extends Controller
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $grid->getColumn('status.name')->manipulateRenderCell(function($value, Row $row, Router $router) use ($statuses) {
+        $grid->getColumn('status.name')->manipulateRenderCell(function($value, Row $row, RouterInterface $router) use ($statuses) {
             return '<label class="label label-'.$statuses->getStatusLabel($value).'">'.$value.'</label>';
         })->setSafe(false);
 
