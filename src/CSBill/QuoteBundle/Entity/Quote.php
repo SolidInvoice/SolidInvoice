@@ -107,7 +107,7 @@ class Quote
     /**
      * @var ArrayCollection $items
      *
-     * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"ALL"})
+     * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist"})
      * @Orm\OrderBy({"description" = "ASC"})
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
