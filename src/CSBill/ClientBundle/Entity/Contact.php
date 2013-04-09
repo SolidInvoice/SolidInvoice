@@ -282,6 +282,20 @@ class Contact implements \serializable
         return $this;
     }
 
+    public function getDetail($type)
+    {
+        if(count($this->details) > 0) {
+            foreach($this->details as $detail) {
+                if(strtolower((string) $detail->getType()) === strtolower($type)) {
+                    return $detail;
+                }
+            }
+        }
+
+        // TODO : throw exception
+        return null;
+    }
+
     /**
      * Get created
      *
