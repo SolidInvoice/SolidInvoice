@@ -1,5 +1,6 @@
 parameters:
     csbill_quote.menu.class: CSBill\QuoteBundle\Menu\Main
+    csbill_quote.billing.email.class: CSBill\QuoteBundle\Service\Email
 
 services:
     csbill_quote.menu:
@@ -9,3 +10,10 @@ services:
             - { name: cs_core.menu, menu: quotes_index, method: quotesMenu }
             #- { name: cs_core.menu, menu: clients_view, method: clientsMenu }
             - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
+
+    billing.email:
+        class: %csbill_quote.billing.email.class%
+        arguments: [@mailer, @settings]
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
+            - [setTemplating, [@templating]]
