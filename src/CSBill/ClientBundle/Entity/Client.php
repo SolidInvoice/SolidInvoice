@@ -58,7 +58,7 @@ class Client
     /**
      * @var Status $status
      *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="clients", cascade={"ALL"})
+     * @ORM\ManyToOne(targetEntity="Status", inversedBy="clients")
      * @Assert\Valid()
      * @GRID\Column(field="status.name", filter="source", filter="select", selectFrom="source", title="status")
      */
@@ -67,7 +67,7 @@ class Client
     /**
      * @var ArrayCollection $contacts
      *
-     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"ALL"})
+     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"firstname" = "ASC"})
      * @Assert\Valid()
      */

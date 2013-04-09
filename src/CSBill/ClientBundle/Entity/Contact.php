@@ -55,7 +55,7 @@ class Contact implements \serializable
     /**
      * @var Client $client
      *
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts", cascade={"ALL"})
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts")
      * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
      */
     private $client;
@@ -63,7 +63,7 @@ class Contact implements \serializable
     /**
      * @var ArrayCollection $details
      *
-     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="contact", cascade={"ALL"})
+     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="contact")
      *
      * @Assert\Count(
      *      min = "1",

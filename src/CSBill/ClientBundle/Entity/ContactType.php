@@ -44,7 +44,7 @@ class ContactType
     /**
      * @var ArrayCollection $details
      *
-     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="type", cascade="ALL")
+     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="type")
      */
     private $details;
 

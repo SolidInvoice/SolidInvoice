@@ -46,7 +46,7 @@ class Status
     /**
      * @var ArrayCollection $clients
      *
-     * @ORM\OneToMany(targetEntity="Client", mappedBy="status", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Client", mappedBy="status")
      * @Assert\Valid()
      */
     private $clients;

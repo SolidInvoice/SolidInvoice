@@ -42,7 +42,7 @@ class ContactDetail
     /**
      * @var Contact $contact
      *
-     * @ORM\ManyToOne(targetEntity="Contact", inversedBy="details", cascade="ALL")
+     * @ORM\ManyToOne(targetEntity="Contact", inversedBy="details")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
      */
     private $contact;
@@ -50,7 +50,7 @@ class ContactDetail
     /**
      * @var ContactType $type
      *
-     * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details", cascade="ALL")
+     * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
      * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
      */
     private $type;
