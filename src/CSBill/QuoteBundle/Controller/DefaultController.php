@@ -13,12 +13,14 @@ namespace CSBill\QuoteBundle\Controller;
 use CS\CoreBundle\Controller\Controller;
 use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Entity\Quote;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use CSBill\QuoteBundle\Model\Status;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
+use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -66,12 +68,14 @@ class DefaultController extends Controller
             }
         });*/
 
+        $statuses = new Status;
+
         // Attach the source to the grid
         $grid->setSource($source);
 
-        /*$grid->getColumn('status.name')->manipulateRenderCell(function($value, Row $row, Router $router) use ($statuses) {
+        $grid->getColumn('status.name')->manipulateRenderCell(function($value, Row $row, RouterInterface $router) use ($statuses) {
             return '<label class="label label-'.$statuses->getStatusLabel($value).'">'.$value.'</label>';
-        })->setSafe(false);*/
+        })->setSafe(false);
 
         // Custom actions column in the wanted position
         $viewColumn = new ActionsColumn('info_column', $this->get('translator')->trans('Info'));
@@ -121,9 +125,9 @@ class DefaultController extends Controller
                 $em->persist($quote);
                 $em->flush();
 
-                // TODO : we need to send the quote to the client if it is not saved as a draft
                 if ($request->request->get('save') === 'send') {
-                    $this->get('some.service.id')->sendQuote($quote);
+                    $quote->setDraft(0);
+                    $this->get('billing.email')->sendQuote($quote);
                 }
 
                 return $this->redirect($this->generateUrl('_quotes_index'));
