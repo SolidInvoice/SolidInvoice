@@ -7,6 +7,7 @@ parameters:
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
     csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
+    csbill_core.settings.class: CSBill\CoreBundle\Manager\SettingsManager
 
 services:
     csbill_core.menu.factory:
@@ -44,3 +45,7 @@ services:
 
     currency:
         alias: csbill_core.currency
+
+    settings:
+        class: %csbill_core.settings.class%
+        arguments: [@doctrine]

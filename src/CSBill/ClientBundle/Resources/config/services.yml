@@ -2,6 +2,7 @@ parameters:
     csbill_client.status.class: CSBill\ClientBundle\Model\Status
     csbill_client.twig.status.class: CSBill\ClientBundle\Twig\Extension\ClientStatus
     csbill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
+    validator.contact_details.primary.class: CSBill\ClientBundle\Validator\Constraints\ContactDetailPrimaryValidator
 
 services:
     csbill_client.status:
@@ -22,3 +23,8 @@ services:
             - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
             - { name: cs_core.menu, menu: clients_view, method: clientsMenu }
             - { name: cs_core.menu, menu: clients_add, method: clientsMenu }
+
+    validator.contact_details.primary:
+        class: %validator.contact_details.primary.class%
+        tags:
+            - { name: validator.constraint_validator, alias: contact_detail_primary }

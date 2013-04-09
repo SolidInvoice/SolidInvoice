@@ -14,6 +14,7 @@ namespace CSBill\ClientBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use CSBill\ClientBundle\Validator\Constraints as CSBillAssert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -70,6 +71,7 @@ class Contact implements \serializable
      *      minMessage = "You must add al least one contact detail for each contact"
      * )
      * @Assert\Valid()
+     * @CSBillAssert\ContactDetailPrimary
      */
     private $details;
 
