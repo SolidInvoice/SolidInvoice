@@ -11,14 +11,9 @@
 
 namespace CSBill\ClientBundle\Model;
 
-/**
- * This class converts a client status into a label for use with twitter bootstrap
- *
- * E.G it will convert 'active' into 'success', so it can be used with then class 'label-success'
- *
- * @author Pierre du Plessis
- */
-class Status
+use CSBill\CoreBundle\Model\Status as AbstractStatus;
+
+class Status extends AbstractStatus
 {
     /**
      * Contains a list of all the statuses and their corresponding labels
@@ -26,32 +21,7 @@ class Status
      * @var array
      */
     protected $statusLabels = array(
-                                    'active' 	=> 'success',
-                                    'inactive' 	=> 'warning'
+                                    'active'     => 'success',
+                                    'inactive'     => 'warning'
             );
-
-    /**
-     * Converts a status into a label
-     *
-     * @param  string $status
-     * @return string
-     */
-    public function getStatusLabel($status)
-    {
-        if (isset($this->statusLabels[$status])) {
-            return $this->statusLabels[$status];
-        }
-
-        return 'inverse';
-    }
-
-    /**
-     * Return an array of all the available statuses
-     *
-     * @return array
-     */
-    public function getStatusList()
-    {
-        return array_keys($this->statusLabels);
-    }
 }
