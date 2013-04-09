@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CS\QuoteBundle\DataGrid;
+namespace CSBill\QuoteBundle\DataGrid;
 
 use CS\DataGridBundle\Grid\BaseGrid;
 use CS\DataGridBundle\Grid\Column\ColumnCollection;

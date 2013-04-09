@@ -4,7 +4,6 @@ namespace CSBill\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use CSBill\CoreBundle\Util\ArrayUtil;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class SettingsRepository extends EntityRepository
 {
@@ -17,9 +16,9 @@ class SettingsRepository extends EntityRepository
     {
         $sections = $this->getSections();
 
-        if(count($sections) > 0) {
+        if (count($sections) > 0) {
             $settings = array();
-            foreach($sections as $section) {
+            foreach ($sections as $section) {
                 $settings[$section] = $this->getSettingsBySection($section);
             }
         }
@@ -30,8 +29,8 @@ class SettingsRepository extends EntityRepository
     /**
      * Gets section specific settings
      *
-     * @param string $section
-     * @param bool $combineArray Should the settings be returned as a key => value array
+     * @param  string $section
+     * @param  bool   $combineArray Should the settings be returned as a key => value array
      * @return array
      */
     public function getSettingsBySection($section, $combineArray = true)
@@ -46,7 +45,7 @@ class SettingsRepository extends EntityRepository
                     ->useQueryCache(true)
                     ->useResultCache(true, (60 * 60 * 24 * 7), 'app_config_section['.$section.']'); // we cache the config result, as the cache is cleared as soon as the config settings is changed
 
-        if($combineArray) {
+        if ($combineArray) {
             $result = $query->getArrayResult();
 
             return array_combine(ArrayUtil::column($result, 'key'), ArrayUtil::column($result, 'value'));

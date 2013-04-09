@@ -12,8 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("key")
  * @Gedmo\Loggable()
  */
-class Setting {
-
+class Setting
+{
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -64,7 +64,7 @@ class Setting {
     /**
      * Set key
      *
-     * @param string $key
+     * @param  string  $key
      * @return Setting
      */
     public function setKey($key)
@@ -87,7 +87,7 @@ class Setting {
     /**
      * Set value
      *
-     * @param mixed $value
+     * @param  mixed   $value
      * @return Setting
      */
     public function setValue($value)
@@ -110,7 +110,7 @@ class Setting {
     /**
      * Set description
      *
-     * @param string $description
+     * @param  string  $description
      * @return Setting
      */
     public function setDescription($description)
@@ -133,7 +133,7 @@ class Setting {
     /**
      * Set section
      *
-     * @param mixed $section
+     * @param  mixed   $section
      * @return Setting
      */
     public function setSection($section)

@@ -7,8 +7,8 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ContactDetailPrimary extends Constraint {
-
+class ContactDetailPrimary extends Constraint
+{
     public $message = 'This contact should have at least 1 primary email address';
 
     public function validatedBy()

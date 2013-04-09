@@ -9,19 +9,19 @@ class ArrayUtil
     /**
      * Returns a specific column from an array
      *
-     * @param array $array
-     * @param string $column
+     * @param  array      $array
+     * @param  string     $column
      * @throws \Exception
      * @return array
      */
     public static function column(array $array, $column)
     {
-        if(!is_array($array) || empty($array)) {
+        if (!is_array($array) || empty($array)) {
             throw new \Exception("Array cannot be empty");
         }
 
         // Forward-compatible with PHP 5.5
-        if(function_exists('array_column')) {
+        if (function_exists('array_column')) {
             return array_column($array, $column);
         }
 

@@ -5,13 +5,12 @@ namespace CSBill\QuoteBundle\Service;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\CoreBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\Mapping\StaticReflectionService;
 use Swift_Mailer;
 
-class Email {
-
+class Email
+{
     protected $mailer;
 
     protected $templating;
@@ -53,7 +52,7 @@ class Email {
 
         $users = array();
 
-        foreach($object->getUsers() as $user) {
+        foreach ($object->getUsers() as $user) {
             $users[(string) $user->getDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
         }
 

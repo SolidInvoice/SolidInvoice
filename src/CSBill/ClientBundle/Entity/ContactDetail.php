@@ -144,7 +144,7 @@ class ContactDetail
     /**
      * Set the contact detail as primary
      *
-     * @param int|bool $primary
+     * @param  int|bool      $primary
      * @return ContactDetail
      */
     public function setPrimary($primary)

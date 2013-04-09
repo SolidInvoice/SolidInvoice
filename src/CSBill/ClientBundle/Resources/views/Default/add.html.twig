@@ -13,18 +13,18 @@
 {% block title %}{{ 'add_client'|trans }}{% endblock %}
 
 {% block sidebar %}
-	{{ menu('clients_add') }}
+    {{ menu('clients_add') }}
 {% endblock sidebar %}
 
 {% block content %}
     <form action="{{ path("_clients_add") }}" method="post"{{ form_enctype(form) }}>
 
-    	{{ form_widget(form) }}
+        {{ form_widget(form) }}
 
-    	<div class="control-group">
-    		<div class="controls">
-    			<input type="submit" value="{{ "save"|trans }}" class="btn" />
-    		</div>
-    	</div>
+        <div class="control-group">
+            <div class="controls">
+                <input type="submit" value="{{ "save"|trans }}" class="btn" />
+            </div>
+        </div>
     </form>
 {% endblock %}

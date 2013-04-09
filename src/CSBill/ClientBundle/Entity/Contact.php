@@ -286,9 +286,9 @@ class Contact implements \serializable
 
     public function getDetail($type)
     {
-        if(count($this->details) > 0) {
-            foreach($this->details as $detail) {
-                if(strtolower((string) $detail->getType()) === strtolower($type)) {
+        if (count($this->details) > 0) {
+            foreach ($this->details as $detail) {
+                if (strtolower((string) $detail->getType()) === strtolower($type)) {
                     return $detail;
                 }
             }
