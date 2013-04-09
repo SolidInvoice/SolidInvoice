@@ -263,6 +263,16 @@ class Item
     }
 
     /**
+     * Get the line item total
+     *
+     * @return float
+     */
+    public function getTotal()
+    {
+        return $this->qty * $this->price;
+    }
+
+    /**
      * Return the item as a string
      *
      * @return string
