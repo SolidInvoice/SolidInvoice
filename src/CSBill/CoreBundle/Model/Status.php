@@ -50,7 +50,7 @@ class Status
      */
     public function getHtml($status)
     {
-        $status = str_replace(array('-', '_'), ' ', strtolower($status));
+        $status = str_replace(array('-', '_'), ' ', strtolower((string) $status));
         return '<label class="label label-'.$this->getStatusLabel($status).'">'.ucwords($status).'</label>';
     }
 
