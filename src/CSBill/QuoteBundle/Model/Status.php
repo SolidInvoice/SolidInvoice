@@ -21,7 +21,10 @@ class Status extends AbstractStatus
      * @var array
      */
     protected $statusLabels = array(
-                                    'paid'     => 'success',
-                                    'pending'     => 'warning'
+                                    'draft'     => 'draft',
+                                    'pending'   => 'warning',
+                                    'accepted'  => 'success',
+                                    'declined'  => 'danger',
+                                    'cancelled' => 'inverse'
             );
 }
