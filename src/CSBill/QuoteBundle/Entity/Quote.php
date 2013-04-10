@@ -64,6 +64,13 @@ class Quote
     private $total;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="discount", type="float")
+     */
+    private $discount;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="draft", type="boolean")
@@ -226,6 +233,29 @@ class Quote
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set discount
+     *
+     * @param float $discount
+     * @return Quote
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return float
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 
     /**
