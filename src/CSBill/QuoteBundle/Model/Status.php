@@ -24,7 +24,7 @@ class Status extends AbstractStatus
                                     'draft'     => 'draft',
                                     'pending'   => 'warning',
                                     'accepted'  => 'success',
-                                    'declined'  => 'danger',
+                                    'declined'  => 'important',
                                     'cancelled' => 'inverse'
             );
 }
