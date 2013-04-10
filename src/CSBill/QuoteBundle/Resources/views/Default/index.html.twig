@@ -8,7 +8,7 @@
  # file that was distributed with this source code.
 #}
 
-{% set parent = "CSCoreBundle:Layout:one_column_left.html.twig" %}
+{% set parent = "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
 
@@ -18,9 +18,8 @@
     {{ menu('quotes_index') }}
 {% endblock sidebar %}
 
-{% block contents %}
+{% block content %}
 
-    {{ render_grid(grid) }}
     {#<div class="row-fluid">
         <div class="well well-small span3 text-center" style="
     color: #468847; background-color: #dff0d8; border: 1px solid #d6e9c6;
@@ -34,46 +33,13 @@
             <h3>R560</h3>Outstanding</div>
     </div>#}
 
+    {{ parent() }}
+
     <div class="row-fluid">
-        <table class="table table-bordered table-hover table-striped">
-            <thead>
-                <th>#</th>
-                <th>Client</th>
-                <th>Date Dute</th>
-                <th>Status</th>
-                <th>Amount</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <a href="#">1</a>
-                    </td>
-                    <td>
-                        <a href="#">Some Client Name</a>
-                    </td>
-                    <td>
-                        27 July 2013
-                    </td>
-                    <td>
-                        <label class="label label-info">Pending</label>
-                    </td>
-                    <td>
-                        R568.00
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-    </div>
-
-    {#<div class="row-fluid">
         <h5>{{ "Quote Status Legend"|trans }}</h5>
 
-        <span class="label">Cancelled</span>
-        <span class="label label-info">Pending</span>
-        <span class="label label-warning">On Hold</span>
-        <span class="label label-success">Accepted</span>
-        <span class="label label-important">Overdue</span>
-        <span class="label label-inverse">Declined</span>
-    </div>#}
+        {% for status in status_list %}
+            {{ status|raw }}
+        {% endfor %}
+    </div>
 {% endblock %}

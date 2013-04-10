@@ -96,8 +96,10 @@ class DefaultController extends Controller
 
         $grid->hideColumns(array('updated', 'deleted'));
 
+        $statusList = $this->getDoctrine()->getManager()->getRepository('CSBillQuoteBundle:Status')->findAll();
+
         // Return the response of the grid to the template
-        return $grid->getGridResponse('CSBillQuoteBundle:Default:index.html.twig');
+        return $grid->getGridResponse('CSBillQuoteBundle:Default:index.html.twig', array('status_list' => $statusList));
     }
 
     public function createAction()
