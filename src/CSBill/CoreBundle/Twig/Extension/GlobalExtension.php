@@ -11,6 +11,7 @@
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use Twig_Extension;
+use Twig_Filter_Method;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
@@ -43,6 +44,24 @@ class GlobalExtension extends Twig_Extension
                     'query'             => $this->getQuery(),
                     'currency'          => $this->container->get('currency')
             );
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Twig_Extension::getFilters()
+     */
+    public function getFilters()
+    {
+        return array('percentage' => new Twig_Filter_Method($this, 'percentage'));
+    }
+
+    public function percentage($amount, $percentage = 0)
+    {
+        if($percentage > 0) {
+            return ($amount * $percentage) / 100;
+        }
+
+        return 0;
     }
 
     /**
