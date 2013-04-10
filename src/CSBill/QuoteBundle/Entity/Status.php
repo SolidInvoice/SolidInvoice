@@ -11,6 +11,7 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
+use CSBill\QuoteBundle\Model\Status as StatusLabel;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -221,6 +222,8 @@ class Status
      */
     public function __toString()
     {
-        return ucwords($this->getName());
+        $status = new StatusLabel;
+
+        return $status->getHtml($this->name);
     }
 }

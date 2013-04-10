@@ -74,7 +74,7 @@ class DefaultController extends Controller
         $grid->setSource($source);
 
         $grid->getColumn('status.name')->manipulateRenderCell(function($value, Row $row, RouterInterface $router) use ($statuses) {
-            return '<label class="label label-'.$statuses->getStatusLabel($value).'">'.$value.'</label>';
+            return $statuses->getHtml($value);
         })->setSafe(false);
 
         // Custom actions column in the wanted position

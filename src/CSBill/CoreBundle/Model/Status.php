@@ -43,6 +43,18 @@ class Status
     }
 
     /**
+     * Returns the HTML to display the status
+     *
+     * @param string $status
+     * @return string
+     */
+    public function getHtml($status)
+    {
+        $status = str_replace(array('-', '_'), ' ', strtolower($status));
+        return '<label class="label label-'.$this->getStatusLabel($status).'">'.ucwords($status).'</label>';
+    }
+
+    /**
      * Return an array of all the available statuses
      *
      * @return array
