@@ -42,7 +42,6 @@ class Quote
      * @var Status $status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="quotes")
-     * @Assert\NotBlank
      * @Grid\Column(name="status", field="status.name", filter="select", selectFrom="source")
      */
     private $status;
