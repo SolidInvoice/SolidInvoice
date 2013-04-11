@@ -13,6 +13,7 @@ namespace CSBill\CoreBundle\Twig\Extension;
 use Twig_Extension;
 use Twig_Test_Function;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use CSBill\InstallBundle\Installer\Installer;
 
 class BillingExtension extends Twig_Extension
 {
@@ -20,6 +21,11 @@ class BillingExtension extends Twig_Extension
      * @var ManagerRegistry $doctrine
      */
     protected $doctrine;
+
+    /**
+     * @var Installer $installer
+     */
+    protected $installer;
 
     /**
      * Sets the doctrine instance
@@ -32,6 +38,16 @@ class BillingExtension extends Twig_Extension
     }
 
     /**
+     * Sets the installer
+     *
+     * @param Installer $installer
+     */
+    public function setInstaller(Installer $installer)
+    {
+        $this->installer = $installer;
+    }
+
+    /**
      * Get status tests
      *
      * This checks is a quote/invoice has a specific status
@@ -40,16 +56,18 @@ class BillingExtension extends Twig_Extension
      */
     public function getTests()
     {
-        // test if a quote/invoice is a specific status
-        $statusList = $this->doctrine->getRepository('CSBillQuoteBundle:Status')->findList();
-
         $tests = array();
 
-        if(is_array($statusList) && count($statusList) > 0) {
-            foreach($statusList as $status) {
-                $tests[$status] = new Twig_Test_Function(function($a) use ($status) {
-                    return strtolower($a->getStatus()->getName()) === strtolower($status);
-                });
+        if($this->installer->isInstalled()) {
+            // test if a quote/invoice is a specific status
+            $statusList = $this->doctrine->getRepository('CSBillQuoteBundle:Status')->findList();
+
+            if(is_array($statusList) && count($statusList) > 0) {
+                foreach($statusList as $status) {
+                    $tests[$status] = new Twig_Test_Function(function($a) use ($status) {
+                        return strtolower($a->getStatus()->getName()) === strtolower($status);
+                    });
+                }
             }
         }
 

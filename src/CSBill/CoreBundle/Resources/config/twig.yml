@@ -23,5 +23,6 @@ services:
         class: %csbill_core.twig.billing.class%
         calls:
             - [ setDoctrine, [ @doctrine ] ]
+            - [ setInstaller, [ @csbill.installer ] ]
         tags:
             - { name: twig.extension }
