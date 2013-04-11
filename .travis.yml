@@ -13,9 +13,8 @@ matrix:
     - php: 5.5
   
 before_script:
-    - mysql -e 'create database csbill_test;'
     - mysql -e 'create database csbill;'
     - composer install
-    - php app/console app:install --accept --database_host=localhost --database_user=root --database_password= --database_port=3306 --database_name=csbill_test --username=admin --email_address=test@example.com --password=test
+    - php app/console app:install --accept --database_host=localhost --database_user=root --database_password= --database_port=3306 --database_name=csbill --username=admin --email_address=test@example.com --password=test
 
 script: phpunit -c app
