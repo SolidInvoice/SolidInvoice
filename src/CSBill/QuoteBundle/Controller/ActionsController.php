@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints\Email;
 use CS\CoreBundle\Controller\Controller;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Model\Status;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ActionsController extends Controller
 {
@@ -52,7 +51,7 @@ class ActionsController extends Controller
     {
         $this->get('billing.email')->sendQuote($quote);
 
-        if(strtolower($quote->getStatus()->getName()) === 'draft') {
+        if (strtolower($quote->getStatus()->getName()) === 'draft') {
             $this->setQuoteStatus($quote, 'pending');
         }
 

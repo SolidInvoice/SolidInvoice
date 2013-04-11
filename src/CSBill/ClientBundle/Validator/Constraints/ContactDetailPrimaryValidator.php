@@ -15,7 +15,7 @@ class ContactDetailPrimaryValidator extends ConstraintValidator
             $type = (string) $val->getType();
 
             if (in_array($type, $types)) {
-                if((bool) $val->isPrimary()) {
+                if ((bool) $val->isPrimary()) {
                     unset($types[array_search($type, $types)]);
                 }
             }
@@ -23,7 +23,7 @@ class ContactDetailPrimaryValidator extends ConstraintValidator
 
         unset($type);
 
-        if(!empty($types)) {
+        if (!empty($types)) {
             foreach ($types as $type) {
                 $this->context->addViolation('This contact should have at least one primary ' . $type, array());
             }

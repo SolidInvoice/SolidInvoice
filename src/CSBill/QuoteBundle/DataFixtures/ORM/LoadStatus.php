@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CSBull\QuoteBundle\DataFixtures\ORM;
+namespace CSBill\QuoteBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -27,7 +27,7 @@ class LoadStatus implements FixtureInterface
                             'cancelled',
                             );
 
-        foreach($statusList as $status) {
+        foreach ($statusList as $status) {
             $entity = new Status;
             $entity->setName($status);
             $manager->persist($entity);

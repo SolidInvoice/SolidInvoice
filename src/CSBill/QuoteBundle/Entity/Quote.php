@@ -229,7 +229,7 @@ class Quote
     /**
      * Set discount
      *
-     * @param float $discount
+     * @param  float $discount
      * @return Quote
      */
     public function setDiscount($discount)

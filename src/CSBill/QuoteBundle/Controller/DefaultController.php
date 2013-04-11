@@ -122,7 +122,7 @@ class DefaultController extends Controller
 
                 if ($request->request->get('save') === 'draft') {
                     $status = $statusRepository->findOneByName('draft');
-                } else if ($request->request->get('save') === 'send') {
+                } elseif ($request->request->get('save') === 'send') {
                     $status = $statusRepository->findOneByName('pending');
                 }
 
@@ -162,7 +162,7 @@ class DefaultController extends Controller
 
                 if ($request->request->get('save') === 'draft') {
                     $status = $statusRepository->findOneByName('draft');
-                } else if ($request->request->get('save') === 'send') {
+                } elseif ($request->request->get('save') === 'send') {
                     $status = $statusRepository->findOneByName('pending');
                 }
 
@@ -187,7 +187,7 @@ class DefaultController extends Controller
     /**
      * View a Quote
      *
-     * @param Quote $quote
+     * @param  Quote    $quote
      * @return Response
      */
     public function viewAction(Quote $quote)

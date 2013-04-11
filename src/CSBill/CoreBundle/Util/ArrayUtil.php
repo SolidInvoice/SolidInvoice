@@ -29,7 +29,7 @@ class ArrayUtil
 
         $return = array_map(function($item) use ($column, $accessor) {
 
-            if(is_array($item) || $item instanceof \ArrayAccess) {
+            if (is_array($item) || $item instanceof \ArrayAccess) {
                 $column = '['.$column.']';
             }
 
