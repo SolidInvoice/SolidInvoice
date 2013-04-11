@@ -1,0 +1,27 @@
+parameters:
+    csbill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
+    csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
+    csbill_core.twig.billing.class: CSBill\CoreBundle\Twig\Extension\BillingExtension
+
+services:
+    csbill_core.twig.menu:
+        class: %csbill_core.twig.menu.class%
+        calls:
+            - [ setRenderer, [ @csbill_core.menu.renderer ] ]
+            - [ setProvider, [ @csbill_core.menu.provider ] ]
+        tags:
+            - { name: twig.extension }
+
+    csbill_core.twig.gobals:
+        class: %csbill_core.twig.globals.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: twig.extension }
+
+    csbill_core.twig.billing:
+        class: %csbill_core.twig.billing.class%
+        calls:
+            - [ setDoctrine, [ @doctrine ] ]
+        tags:
+            - { name: twig.extension }
