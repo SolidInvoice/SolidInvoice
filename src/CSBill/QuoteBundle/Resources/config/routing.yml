@@ -5,3 +5,20 @@ _quotes_index:
 _quotes_create:
     pattern:   /create
     defaults:  { _controller: CSBillQuoteBundle:Default:create }
+# Actions routes
+
+_accept_quote:
+    pattern:   /action/accept/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Actions:accept }
+
+_decline_quote:
+    pattern:   /action/decline/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Actions:decline }
+
+_cancel_quote:
+    pattern:   /action/cancel/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Actions:cancel }
+
+_send_quote:
+    pattern:   /action/send/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Actions:send }
