@@ -116,19 +116,33 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                if ($request->request->get('save') === 'draft') {
-                    $quote->setDraft(1);
-                }
-
                 $em = $this->get('doctrine')->getManager();
 
-                $this->flash($this->trans('Quote created successfully'), 'success');
+                $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
+
+                if ($request->request->get('save') === 'draft') {
+                    $status = $statusRepository->findOneByName('draft');
+                } else if ($request->request->get('save') === 'send') {
+                    $status = $statusRepository->findOneByName('pending');
+                }
+
+                $quote->setStatus($status);
 
                 $em->persist($quote);
                 $em->flush();
 
                 if ($request->request->get('save') === 'send') {
-                    $quote->setDraft(0);
+                    $this->get('billing.email')->sendQuote($quote);
+                }
+
+                $this->flash($this->trans('Quote created successfully'), 'success');
+
+                return $this->redirect($this->generateUrl('_quotes_index'));
+        return $this->render('CSBillQuoteBundle:Default:create.html.twig', array('form' => $form->createView()));
+                $em->persist($quote);
+                $em->flush();
+
+                if ($request->request->get('save') === 'send') {
                     $this->get('billing.email')->sendQuote($quote);
                 }
 
