@@ -12,6 +12,10 @@
 
 {% block title %}{{ "Edit Quote"|trans }}{% endblock %}
 
+{% block sidebar %}
+    {{ menu('quotes_edit') }}
+{% endblock sidebar %}
+
 {% block form_buttons %}
     <div class="span2">
         <button type="submit" class="btn btn-success" name="save" value="send">{{ "Save and Send"|trans }}</button>
