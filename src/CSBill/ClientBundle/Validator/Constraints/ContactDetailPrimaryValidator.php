@@ -12,44 +12,26 @@ class ContactDetailPrimaryValidator extends ConstraintValidator
         $types = $this->getRequiredTypes();
 
         foreach ($value as $val) {
-
-            // skip contact details that are loaded form the database (some very werid bug, not sure where it comes from)
-            if ($val->getId()) {
-                continue;
-            }
-
             $type = (string) $val->getType();
 
-            if (isset($types[$type])) {
-                $types[$type][] = (bool) $val->isPrimary();
+            if (in_array($type, $types)) {
+                if((bool) $val->isPrimary()) {
+                    unset($types[array_search($type, $types)]);
+                }
             }
         }
 
         unset($type);
 
-        foreach (array_keys($types) as $type) {
-            $values = array_filter($types[$type], function($item){
-                return $item === true;
-            });
-
-            if (count($values) > 0) {
-                $this->context->addViolation('There should be at least one primary ' . $type, array());
+        if(!empty($types)) {
+            foreach ($types as $type) {
+                $this->context->addViolation('This contact should have at least one primary ' . $type, array());
             }
-        }
-
-        $error = false;
-
-        if ($error) {
-            $this->context->addViolationAt('[0].type', $constraint->message, array());
-            \Debug::dump($this->context->getClassName());
-            \Debug::dump($this->context->getPropertyName());
-            \Debug::dump($this->context->getPropertyPath());
-            \Debug::dump($this->context);
         }
     }
 
     protected function getRequiredTypes()
     {
-        return array('email' => array());
+        return array('email');
     }
 }
