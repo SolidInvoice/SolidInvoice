@@ -71,13 +71,6 @@ class Quote
     private $discount;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="draft", type="boolean")
-     */
-    private $draft;
-
-    /**
      * @var DateTime $due
      *
      * @ORM\Column(name="due", type="date", nullable=true)
@@ -136,7 +129,6 @@ class Quote
     {
         $this->items = new ArrayCollection;
         $this->users = new ArrayCollection;
-        $this->draft = 0;
     }
 
     /**
@@ -385,29 +377,6 @@ class Quote
     public function getItems()
     {
         return $this->items;
-    }
-
-    /**
-     * Set Draft
-     *
-     * @param  int|bool $draft
-     * @return Quote
-     */
-    public function setDraft($draft)
-    {
-        $this->draft = (bool) $draft;
-
-        return $this;
-    }
-
-    /**
-     * Is the current quote a draft
-     *
-     * @return integer
-     */
-    public function isDraft()
-    {
-        return $this->draft;
     }
 
     /**
