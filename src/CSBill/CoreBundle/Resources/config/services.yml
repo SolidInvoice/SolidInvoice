@@ -1,9 +1,10 @@
+imports:
+    - { resource: twig.yml }
+
 parameters:
     csbill_core.menu.renderer.class: CSBill\CoreBundle\Menu\Renderer
     csbill_core.menu.provider.class: CSBill\CoreBundle\Menu\Provider
     csbill_core.menu_storage.class: CSBill\CoreBundle\Menu\Storage\MenuStorage
-    csbill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
-    csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
     csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
@@ -23,21 +24,6 @@ services:
 
     csbill_core.menu.storage:
         class: %csbill_core.menu_storage.class%
-
-    csbill_core.twig.menu:
-        class: %csbill_core.twig.menu.class%
-        calls:
-            - [ setRenderer, [ @csbill_core.menu.renderer ] ]
-            - [ setProvider, [ @csbill_core.menu.provider ] ]
-        tags:
-            - { name: twig.extension }
-
-    csbill_core.twig.gobals:
-        class: %csbill_core.twig.globals.class%
-        calls:
-            - [ setContainer, [ @service_container ] ]
-        tags:
-            - { name: twig.extension }
 
     csbill_core.currency:
         class: %csbill_core.currrency.class%
