@@ -1,4 +1,8 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "e5d9103e3f0f43532d6d1658c87a13b6",
     "packages": [
         {
@@ -66,12 +70,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CustomScripts/CSCoreBundle.git",
-                "reference": "7328a9faf77e91877b6e336697b704951ff918e7"
+                "reference": "0597c40ac82d0d2a90e23f741a819684aac4d722"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CustomScripts/CSCoreBundle/zipball/7328a9faf77e91877b6e336697b704951ff918e7",
-                "reference": "7328a9faf77e91877b6e336697b704951ff918e7",
+                "url": "https://api.github.com/repos/CustomScripts/CSCoreBundle/zipball/0597c40ac82d0d2a90e23f741a819684aac4d722",
+                "reference": "0597c40ac82d0d2a90e23f741a819684aac4d722",
                 "shasum": ""
             },
             "require": {
@@ -100,7 +104,7 @@
                 "core",
                 "core-bundle"
             ],
-            "time": "2013-03-29 09:06:42"
+            "time": "2013-04-11 07:58:41"
         },
         {
             "name": "customscripts/user-bundle",
