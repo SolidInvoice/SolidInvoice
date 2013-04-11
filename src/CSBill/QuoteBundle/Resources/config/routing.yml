@@ -5,6 +5,10 @@ _quotes_index:
 _quotes_create:
     pattern:   /create
     defaults:  { _controller: CSBillQuoteBundle:Default:create }
+
+_quotes_edit:
+    pattern:   /edit/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Default:edit }
 # Actions routes
 
 _accept_quote:

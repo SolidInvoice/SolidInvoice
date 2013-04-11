@@ -88,7 +88,7 @@ class DefaultController extends Controller
         $editColumn = new ActionsColumn('edit_column', $this->get('translator')->trans('Edit'));
         $grid->addColumn($editColumn, 200);
 
-        $editAction = new RowAction($this->get('translator')->trans('Edit'), '_clients_edit');
+        $editAction = new RowAction($this->get('translator')->trans('Edit'), '_quotes_edit');
         $editAction->setColumn('edit_column');
         $grid->addRowAction($editAction);
 
@@ -138,7 +138,36 @@ class DefaultController extends Controller
                 $this->flash($this->trans('Quote created successfully'), 'success');
 
                 return $this->redirect($this->generateUrl('_quotes_index'));
+            }
+        }
+
         return $this->render('CSBillQuoteBundle:Default:create.html.twig', array('form' => $form->createView()));
+    }
+
+    public function editAction(Quote $quote)
+    {
+        $request = $this->getRequest();
+
+        $form = $this->createForm(new QuoteType(), $quote);
+
+        if ($request->getMethod() === 'POST') {
+
+            $form->bind($request);
+
+            if ($form->isValid()) {
+
+                $em = $this->get('doctrine')->getManager();
+
+                $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
+
+                if ($request->request->get('save') === 'draft') {
+                    $status = $statusRepository->findOneByName('draft');
+                } else if ($request->request->get('save') === 'send') {
+                    $status = $statusRepository->findOneByName('pending');
+                }
+
+                $quote->setStatus($status);
+
                 $em->persist($quote);
                 $em->flush();
 
@@ -146,10 +175,13 @@ class DefaultController extends Controller
                     $this->get('billing.email')->sendQuote($quote);
                 }
 
+                $this->flash($this->trans('Quote edited successfully'), 'success');
+
                 return $this->redirect($this->generateUrl('_quotes_index'));
             }
         }
 
-        return $this->render('CSBillQuoteBundle:Default:create.html.twig', array('form' => $form->createView()));
+        return $this->render('CSBillQuoteBundle:Default:edit.html.twig', array('form' => $form->createView()));
+    }
     }
 }
