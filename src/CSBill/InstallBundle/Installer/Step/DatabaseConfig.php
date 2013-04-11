@@ -52,12 +52,12 @@ class DatabaseConfig extends Step
      *
      * @var array $params
      */
-    public $params = array(	'database_driver' 	=> '',
-                            'database_host' 	=> '',
-                            'database_user' 	=> '',
+    public $params = array( 'database_driver'     => '',
+                            'database_host'     => '',
+                            'database_user'     => '',
                             'database_password' => '',
-                            'database_port' 	=> 3306,
-                            'database_name' 	=> '');
+                            'database_port'     => 3306,
+                            'database_name'     => '');
 
     /**
      * Validates that the databse exists, and we are able to connect to it
@@ -121,6 +121,7 @@ class DatabaseConfig extends Step
         $this->writeConfigFile($config);
 
         $this->executeMigrations();
+        $this->executeFixtures();
     }
 
     /**
