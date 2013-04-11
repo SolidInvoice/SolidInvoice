@@ -22,7 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * CSBill\QuoteBundle\Entity\Status
  *
  * @ORM\Table(name="quote_status")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\StatusRepository")
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deleted")
