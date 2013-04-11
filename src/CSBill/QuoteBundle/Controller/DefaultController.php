@@ -81,7 +81,7 @@ class DefaultController extends Controller
         $viewColumn = new ActionsColumn('info_column', $this->get('translator')->trans('Info'));
         $grid->addColumn($viewColumn, 100);
 
-        $viewAction = new RowAction($this->get('translator')->trans('View'), '_clients_view');
+        $viewAction = new RowAction($this->get('translator')->trans('View'), '_quotes_view');
         $viewAction->setColumn('info_column');
         $grid->addRowAction($viewAction);
 
@@ -183,5 +183,15 @@ class DefaultController extends Controller
 
         return $this->render('CSBillQuoteBundle:Default:edit.html.twig', array('form' => $form->createView()));
     }
+
+    /**
+     * View a Quote
+     *
+     * @param Quote $quote
+     * @return Response
+     */
+    public function viewAction(Quote $quote)
+    {
+        return $this->render('CSBillQuoteBundle:Default:view.html.twig', array('quote' => $quote));
     }
 }

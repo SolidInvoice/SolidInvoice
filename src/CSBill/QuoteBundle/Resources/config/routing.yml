@@ -9,6 +9,11 @@ _quotes_create:
 _quotes_edit:
     pattern:   /edit/{id}
     defaults:  { _controller: CSBillQuoteBundle:Default:edit }
+
+_quotes_view:
+    pattern:   /view/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Default:view }
+
 # Actions routes
 
 _accept_quote:
