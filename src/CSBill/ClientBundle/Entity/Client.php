@@ -70,6 +70,7 @@ class Client
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"firstname" = "ASC"})
      * @Assert\Valid()
+     * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
      */
     private $contacts;
 
