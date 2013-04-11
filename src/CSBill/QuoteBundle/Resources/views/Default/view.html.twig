@@ -41,6 +41,10 @@
                         <a href="{{ path('_cancel_quote', {'id' : quote.id}) }}" class="btn btn-inverse">{{ "Cancel"|trans }}</a>
                     </div>
                 {% endif %}
+
+                <div class="btn-group">
+                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn">{{ "Edit"|trans }}</a>
+                </div>
             </div>
         </div>
     </div>
