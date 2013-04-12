@@ -15,6 +15,7 @@ use Knp\Menu\Renderer\ListRenderer;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Silex\Voter\RouteVoter;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
@@ -55,7 +56,63 @@ class Renderer extends ListRenderer
             // We are most probably running from the command line, which means there is no 'request' service. We just gracefully continue
         }
 
-        parent::__construct($matcher, array('currentClass' => 'active'));
+        parent::__construct($matcher, array('allow_safe_labels' => true, 'currentClass' => 'active'));
+    }
+
+    /**
+     * Renders all of the children of this menu.
+     *
+     * This calls ->renderItem() on each menu item, which instructs each
+     * menu item to render themselves as an <li> tag (with nested ul if it
+     * has children).
+     * This method updates the depth for the children.
+     *
+     * @param ItemInterface $item
+     * @param array         $options The options to render the item.
+     *
+     * @return string
+     */
+    protected function renderChildren(ItemInterface $item, array $options)
+    {
+        // render children with a depth - 1
+        if (null !== $options['depth']) {
+            $options['depth'] = $options['depth'] - 1;
+        }
+
+        $html = '';
+        foreach ($item->getChildren() as $child) {
+            if($child->isDivider()) {
+                $html .= $this->renderDivider($child, $options);
+            } else {
+                $html .= $this->renderItem($child, $options);
+            }
+        }
+
+        return $html;
+    }
+
+    protected function renderLabel(ItemInterface $item, array $options)
+    {
+        $icon = '';
+        if($item->getExtra('icon')) {
+            $icon = $this->renderIcon($item->getExtra('icon'));
+        }
+
+        if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
+            return $icon . $item->getLabel();
+        }
+
+        return $icon . $this->escape($item->getLabel());
+    }
+
+    protected function renderIcon($icon)
+    {
+        return sprintf('<i class="%s"></i> ', $icon);
+    }
+
+    protected function renderDivider(ItemInterface $item, array $options = array())
+    {
+        return $this->format('<li'.$this->renderHtmlAttributes(array('class' => 'divider' . $item->getExtra('divider'))).'>', 'li', $item->getLevel(), $options);
     }
 
     /**
@@ -68,8 +125,12 @@ class Renderer extends ListRenderer
     {
         $menu = $this->factory->createItem('root');
 
-        // TODO : this should be set per menu, instead of globally
-        $menu->setChildrenAttributes(array('class' => 'nav nav-list'));
+        if(isset($options['attr'])) {
+            $menu->setChildrenAttributes($options['attr']);
+        } else {
+            // TODO : this should be set per menu, instead of globally
+            $menu->setChildrenAttributes(array('class' => 'nav nav-list'));
+        }
 
         foreach ($storage as $builder) {
             $builder->setContainer($this->container)->invoke($menu, $options);

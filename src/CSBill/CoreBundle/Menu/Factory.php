@@ -12,7 +12,17 @@
 namespace CSBill\CoreBundle\Menu;
 
 use Knp\Menu\Silex\RouterAwareFactory;
+use CSBill\CoreBundle\Menu\MenuItem;
 
 class Factory extends RouterAwareFactory
 {
+    public function createItem($name, array $options = array())
+    {
+        $item = new MenuItem($name, $this);
+
+        $options = $this->buildOptions($options);
+        $this->configureItem($item, $options);
+
+        return $item;
+    }
 }
