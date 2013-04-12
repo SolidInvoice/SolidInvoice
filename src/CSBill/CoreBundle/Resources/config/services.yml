@@ -6,6 +6,7 @@ parameters:
     csbill_core.menu.provider.class: CSBill\CoreBundle\Menu\Provider
     csbill_core.menu_storage.class: CSBill\CoreBundle\Menu\Storage\MenuStorage
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
+    csbill_core.menu.top.class: CSBill\CoreBundle\Menu\Main
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
     csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
     csbill_core.settings.class: CSBill\CoreBundle\Manager\SettingsManager
@@ -14,6 +15,7 @@ services:
     csbill_core.menu.factory:
         class: %csbill_core.menu.factory.class%
         arguments: [@router]
+
     csbill_core.menu.renderer:
         class: %csbill_core.menu.renderer.class%
         arguments: [@service_container, @csbill_core.menu.factory]
@@ -24,6 +26,11 @@ services:
 
     csbill_core.menu.storage:
         class: %csbill_core.menu_storage.class%
+
+    csbill_core.menu.top:
+        class: %csbill_core.menu.top.class%
+        tags:
+            - { name: cs_core.menu, menu: top_right, method: topMenu }
 
     csbill_core.currency:
         class: %csbill_core.currrency.class%
