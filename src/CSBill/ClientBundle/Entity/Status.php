@@ -47,7 +47,6 @@ class Status
      * @var ArrayCollection $clients
      *
      * @ORM\OneToMany(targetEntity="Client", mappedBy="status")
-     * @Assert\Valid()
      */
     private $clients;
 
