@@ -3,7 +3,7 @@
 namespace CSBill\QuoteBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use CSBill\CoreBundle\Util\ArrayUtil;
+use CS\CoreBundle\Util\ArrayUtil;
 
 class StatusRepository extends EntityRepository
 {
