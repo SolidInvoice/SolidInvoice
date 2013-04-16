@@ -29,6 +29,7 @@ class AppKernel extends Kernel
 
             new CS\CoreBundle\CSCoreBundle(),
             new CS\UserBundle\CSUserBundle(),
+            new CS\SettingsBundle\CSSettingsBundle(),
             //new CS\DataGridBundle\CSDataGridBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
@@ -37,6 +38,7 @@ class AppKernel extends Kernel
             new CSBill\DataGridBundle\CSBillDataGridBundle(),
             new CSBill\QuoteBundle\CSBillQuoteBundle(),
             new CSBill\ItemBundle\CSBillItemBundle(),
+            new CSBill\SettingsBundle\CSBillSettingsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

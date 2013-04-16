@@ -43,7 +43,8 @@
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "jms/debugging-bundle": "dev-master",
         "knplabs/knp-menu": "dev-master",
-        "knplabs/knp-menu-bundle": "dev-master"
+        "knplabs/knp-menu-bundle": "dev-master",
+        "customscripts/settings-bundle": "dev-master"
     },
     "repositories": [
         {

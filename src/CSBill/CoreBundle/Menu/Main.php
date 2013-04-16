@@ -36,6 +36,8 @@ class Main extends AuthenticatedMenu
         $topMenu->setAttributes(array('class' => 'dropdown'));
         $topMenu->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
 
+
+        $topMenu->addChild('Settings', array('route' => '_settings', 'extras' => array('icon' => 'icon-cog')));
         $topMenu->addDivider();
         $topMenu->addChild('Logout', array('uri' => '_logout', 'extras' => array('icon' => 'icon-off')));
 

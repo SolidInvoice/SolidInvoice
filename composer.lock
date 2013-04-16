@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e5d9103e3f0f43532d6d1658c87a13b6",
+    "hash": "2e4fafcde1331344d85d0a85064b314c",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -70,12 +70,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CustomScripts/CSCoreBundle.git",
-                "reference": "0597c40ac82d0d2a90e23f741a819684aac4d722"
+                "reference": "022a60e28e5ef48c526eaae1f5a92f7e0c1339d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CustomScripts/CSCoreBundle/zipball/0597c40ac82d0d2a90e23f741a819684aac4d722",
-                "reference": "0597c40ac82d0d2a90e23f741a819684aac4d722",
+                "url": "https://api.github.com/repos/CustomScripts/CSCoreBundle/zipball/022a60e28e5ef48c526eaae1f5a92f7e0c1339d7",
+                "reference": "022a60e28e5ef48c526eaae1f5a92f7e0c1339d7",
                 "shasum": ""
             },
             "require": {
@@ -104,7 +104,49 @@
                 "core",
                 "core-bundle"
             ],
-            "time": "2013-04-11 07:58:41"
+            "time": "2013-04-13 10:38:17"
+        },
+        {
+            "name": "customscripts/settings-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CustomScripts/SettingsBundle.git",
+                "reference": "17b4dde25a0185ab2f4f974a0b17342de19a13cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CustomScripts/SettingsBundle/zipball/17b4dde25a0185ab2f4f974a0b17342de19a13cf",
+                "reference": "17b4dde25a0185ab2f4f974a0b17342de19a13cf",
+                "shasum": ""
+            },
+            "require": {
+                "customscripts/core-bundle": "dev-master",
+                "php": ">=5.3.3",
+                "symfony/framework-bundle": "2.2.*@dev"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "CS": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre du Plessis",
+                    "email": "info@customscripts.co.za"
+                }
+            ],
+            "description": "Manage application settings",
+            "homepage": "http://github.com/CustomScripts/SettingsBundle",
+            "keywords": [
+                "Settings"
+            ],
+            "time": "2013-04-13 10:59:59"
         },
         {
             "name": "customscripts/user-bundle",
@@ -2207,7 +2249,8 @@
         "stof/doctrine-extensions-bundle": 20,
         "jms/debugging-bundle": 20,
         "knplabs/knp-menu": 20,
-        "knplabs/knp-menu-bundle": 20
+        "knplabs/knp-menu-bundle": 20,
+        "customscripts/settings-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"
