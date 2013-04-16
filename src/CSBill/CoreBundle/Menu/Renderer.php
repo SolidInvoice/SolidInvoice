@@ -81,7 +81,7 @@ class Renderer extends ListRenderer
 
         $html = '';
         foreach ($item->getChildren() as $child) {
-            if($child->isDivider()) {
+            if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {
                 $html .= $this->renderItem($child, $options);
@@ -94,7 +94,7 @@ class Renderer extends ListRenderer
     protected function renderLabel(ItemInterface $item, array $options)
     {
         $icon = '';
-        if($item->getExtra('icon')) {
+        if ($item->getExtra('icon')) {
             $icon = $this->renderIcon($item->getExtra('icon'));
         }
 
@@ -125,7 +125,7 @@ class Renderer extends ListRenderer
     {
         $menu = $this->factory->createItem('root');
 
-        if(isset($options['attr'])) {
+        if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
         } else {
             // TODO : this should be set per menu, instead of globally

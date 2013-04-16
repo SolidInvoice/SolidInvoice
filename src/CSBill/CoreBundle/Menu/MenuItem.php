@@ -10,7 +10,7 @@ class MenuItem extends BaseItem
     {
         $name = uniqid();
 
-        if(!empty($type)) {
+        if (!empty($type)) {
             $type = '-'.$type;
         }
 

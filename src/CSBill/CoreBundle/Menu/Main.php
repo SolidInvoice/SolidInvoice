@@ -11,8 +11,6 @@
 
 namespace CSBill\CoreBundle\Menu;
 
-use Symfony\Component\Security\Core\SecurityContext;
-
 use Knp\Menu\ItemInterface;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
 
@@ -35,7 +33,6 @@ class Main extends AuthenticatedMenu
 
         $topMenu->setAttributes(array('class' => 'dropdown'));
         $topMenu->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
-
 
         $topMenu->addChild('Settings', array('route' => '_settings', 'extras' => array('icon' => 'icon-cog')));
         $topMenu->addDivider();
