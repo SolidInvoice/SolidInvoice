@@ -59,6 +59,10 @@
         {% if not compound %}
             {{ form_errors(form) }}
         {% endif %}
+
+        {% if help is defined %}
+            <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
+        {% endif %}
     </div>
 {% endspaceless %}
 {% endblock form_row %}

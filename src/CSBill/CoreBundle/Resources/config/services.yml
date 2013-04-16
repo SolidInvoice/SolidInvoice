@@ -9,6 +9,7 @@ parameters:
     csbill_core.menu.top.class: CSBill\CoreBundle\Menu\Main
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
     csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
+    csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
 
 services:
     csbill_core.menu.factory:
@@ -38,3 +39,7 @@ services:
     currency:
         alias: csbill_core.currency
 
+    csbill_core.form.help.extension:
+        class: %csbill_core.form.help.extension.class%
+        tags:
+            - { name: form.type_extension, alias: field}
