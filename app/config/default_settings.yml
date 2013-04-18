@@ -1,0 +1,9 @@
+cs_bill_settings:
+    system:
+        children:
+            general:
+                settings:
+                    - { key: 'app_name', 'value' : 'CSBill'}
+    quote:
+        settings:
+        - { key: email_subject, value: "New Quotation - #{id}"}

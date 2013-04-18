@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: doctrine_extensions.yml }
+    - { resource: default_settings.yml }
 
 framework:
     esi:             ~
