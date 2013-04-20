@@ -26,5 +26,7 @@ services:
 
     validator.contact_details.primary:
         class: %validator.contact_details.primary.class%
+        calls:
+            - [setContainer, [@service_container]]
         tags:
             - { name: validator.constraint_validator, alias: contact_detail_primary }

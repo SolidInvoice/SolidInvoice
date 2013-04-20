@@ -4,9 +4,19 @@ namespace CSBill\ClientBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use CS\CoreBundle\Util\ArrayUtil;
 
-class ContactDetailPrimaryValidator extends ConstraintValidator
+class ContactDetailPrimaryValidator extends ConstraintValidator implements ContainerAwareInterface
 {
+    protected $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     public function validate($value, Constraint $constraint)
     {
         $types = $this->getRequiredTypes();
@@ -32,6 +42,10 @@ class ContactDetailPrimaryValidator extends ConstraintValidator
 
     protected function getRequiredTypes()
     {
-        return array('email');
+        $em = $this->container->get('doctrine')->getManager();
+
+        $types = $em->getRepository('CSBillClientBundle:ContactType')->findByRequired(1);
+
+        return Arrayutil::column($types, 'name');
     }
 }

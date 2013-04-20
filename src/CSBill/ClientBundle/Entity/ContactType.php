@@ -42,6 +42,13 @@ class ContactType
     private $name;
 
     /**
+     * @var bool $required
+     *
+     * @ORM\Column(name="required", type="boolean", nullable=false)
+     */
+    private $required;
+
+    /**
      * @var ArrayCollection $details
      *
      * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="type")
@@ -54,6 +61,7 @@ class ContactType
     public function __construct()
     {
         $this->detail = new ArrayCollection;
+        $this->required = 0;
     }
 
     /**
@@ -87,6 +95,29 @@ class ContactType
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set the contact type required
+     *
+     * @param bool $required
+     * @return ContactType
+     */
+    public function setRequired($required)
+    {
+        $this->required = (bool) $required;
+
+        return $this;
+    }
+
+    /**
+     * returns if the contact type is required
+     *
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return $this->required;
     }
 
     /**
