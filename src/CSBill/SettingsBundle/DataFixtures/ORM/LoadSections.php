@@ -42,25 +42,25 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Load sections into the database
      *
-     * @param array $sections
+     * @param array   $sections
      * @param Section $parent
-     * @param string $reference
+     * @param string  $reference
      */
     protected function loadSections(array $sections = array(), Section $parent = null, $reference = null)
     {
-        if(!empty($sections)) {
-            foreach($sections as $section => $settings) {
+        if (!empty($sections)) {
+            foreach ($sections as $section => $settings) {
 
                 $sectionEntity = new Section();
                 $sectionEntity->setName($section);
 
-                if($parent !== null) {
+                if ($parent !== null) {
                     $sectionEntity->setParent($parent);
                 }
 
                 $referenceKey = implode('.', array_filter(array($reference, $section)));
 
-                if(is_array($settings) && isset($settings['children'])) {
+                if (is_array($settings) && isset($settings['children'])) {
                     $this->loadSections($settings['children'], $sectionEntity, $referenceKey);
                 }
 

@@ -283,7 +283,7 @@ class Client
     /**
      * Add invoice
      *
-     * @param  Invoice  $invoice
+     * @param  Invoice $invoice
      * @return Client
      */
     public function addInvoice(Invoice $invoice)
@@ -297,7 +297,7 @@ class Client
     /**
      * Remove invoice
      *
-     * @param  Invoice  $invoice
+     * @param  Invoice $invoice
      * @return Client
      */
     public function removeInvoice(Invoice $invoice)

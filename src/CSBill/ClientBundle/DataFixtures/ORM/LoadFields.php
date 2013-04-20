@@ -26,7 +26,7 @@ class LoadFields implements FixtureInterface
                         'phone' => 0,
                         'address' => 0);
 
-        foreach($fields as $field => $required) {
+        foreach ($fields as $field => $required) {
             $entity = new ContactType();
             $entity->setName($field)
                    ->setRequired($required);

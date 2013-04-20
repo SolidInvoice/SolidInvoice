@@ -194,7 +194,7 @@ class Status
     /**
      * Add invoice
      *
-     * @param  Invoice  $invoice
+     * @param  Invoice $invoice
      * @return Status
      */
     public function addInvoice(Invoice $invoice)

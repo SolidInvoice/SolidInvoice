@@ -43,28 +43,28 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Load settings into the database
      *
-     * @param array $settings
+     * @param array  $settings
      * @param string $reference
      */
     protected function loadSettings(array $settings = array(), $reference = null)
     {
-        if(!empty($settings)) {
-            foreach($settings as $section => $setting) {
+        if (!empty($settings)) {
+            foreach ($settings as $section => $setting) {
 
-                if(!is_array($setting)) {
+                if (!is_array($setting)) {
                     continue;
                 }
 
                 $referenceKey = implode('.', array_filter(array($reference, $section)));
 
-                if(isset($setting['settings']) && !empty($setting['settings'])) {
+                if (isset($setting['settings']) && !empty($setting['settings'])) {
 
                     $referenceObject = $this->getReference('settings.'.$referenceKey);
 
                     $this->saveSettings($setting['settings'], $referenceObject);
                 }
 
-                if(isset($setting['children'])) {
+                if (isset($setting['children'])) {
                     $this->loadSettings($setting['children'], implode('.', array_filter(array($reference, $section))));
                 }
             }
@@ -74,21 +74,21 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Save the settings to the db
      *
-     * @param array $settings
+     * @param array   $settings
      * @param Section $section
      */
     protected function saveSettings(array $settings, Section $section)
     {
-        if(!empty($settings)) {
-            foreach($settings as $setting) {
+        if (!empty($settings)) {
+            foreach ($settings as $setting) {
                 $entity = new Setting();
                 $entity->setKey($setting['key']);
 
-                if(isset($setting['value'])) {
+                if (isset($setting['value'])) {
                     $entity->setValue($setting['value']);
                 }
 
-                if(isset($setting['description'])) {
+                if (isset($setting['description'])) {
                     $entity->setDescription($setting['description']);
                 }
 

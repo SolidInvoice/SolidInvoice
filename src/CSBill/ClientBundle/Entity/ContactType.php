@@ -100,7 +100,7 @@ class ContactType
     /**
      * Set the contact type required
      *
-     * @param bool $required
+     * @param  bool        $required
      * @return ContactType
      */
     public function setRequired($required)

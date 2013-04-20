@@ -160,7 +160,7 @@ class Invoice
     /**
      * Set status
      *
-     * @param  Status $status
+     * @param  Status  $status
      * @return Invoice
      */
     public function setStatus(Status $status)
@@ -183,7 +183,7 @@ class Invoice
     /**
      * Set client
      *
-     * @param  Client $client
+     * @param  Client  $client
      * @return Invoice
      */
     public function setClient(Client $client)
@@ -206,7 +206,7 @@ class Invoice
     /**
      * Set total
      *
-     * @param  float $total
+     * @param  float   $total
      * @return Invoice
      */
     public function setTotal($total)
@@ -229,7 +229,7 @@ class Invoice
     /**
      * Set discount
      *
-     * @param  float $discount
+     * @param  float   $discount
      * @return Invoice
      */
     public function setDiscount($discount)
@@ -344,7 +344,7 @@ class Invoice
     /**
      * Add item
      *
-     * @param  Item  $item
+     * @param  Item    $item
      * @return Invoice
      */
     public function addItem(Item $item)
@@ -358,7 +358,7 @@ class Invoice
     /**
      * Removes an item
      *
-     * @param  Item  $item
+     * @param  Item    $item
      * @return Invoice
      */
     public function removeItem(Item $item)

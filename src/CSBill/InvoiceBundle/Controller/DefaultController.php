@@ -187,7 +187,7 @@ class DefaultController extends Controller
     /**
      * View a Invoice
      *
-     * @param  Invoice    $invoice
+     * @param  Invoice  $invoice
      * @return Response
      */
     public function viewAction(Invoice $invoice)
