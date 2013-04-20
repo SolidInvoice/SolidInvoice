@@ -1,0 +1,195 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% form_theme form _self %}
+
+{% use 'CSCoreBundle:Form:fields.html.twig' %}
+
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block title %}{{ "Create Invoice"|trans }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('invoices_create') }}
+{% endblock sidebar %}
+
+{% set items = form.items.vars.prototype|keys %}
+
+{% block form_row %}
+    {% if prototype is not defined %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <form {{ form_enctype(form) }} action="{{ path(app.request.get('_route'), query) }}" method="post" id="invoice-create-form">
+
+        {{ form_errors(form) }}
+
+        <div class="row-fluid">
+            <div class="span6">
+                {{ block('form_client') }}
+            </div>
+            <div class="span6">
+                {{ block('form_discount') }}
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            {{ block('form_items') }}
+        </div>
+
+        <div class="row-fluid">
+            <a href="#" class="add-item"><i class="icon-plus-sign"></i> {{ "Add Item"|trans }}</a>
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="row-fluid form-actions">
+            {{ block('form_buttons') }}
+        </div>
+    </form>
+{% endblock content %}
+
+{% block form_client %}
+    {{ form_row(form.client) }}
+
+    <div id="{{ form.client.vars.id }}-container">
+        {% if form.client.vars.data %}
+            {% include "CSBillClientBundle:Ajax:info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
+        {% endif %}
+    </div>
+{% endblock form_client %}
+
+{% block form_discount %}
+    {#{{ form_row(form.status) }}#}
+    {{ form_row(form.discount) }}
+{% endblock form_discount %}
+
+{% block form_items %}
+    <table id="invoice-rows" class="table">
+        <thead>
+            <tr>
+                {% for item in items %}
+                    <th>{{ item|trans|title }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for item in form.items %}
+                <tr>
+                    {% for key,field in item.children|keys %}
+                        <td>
+                            {% set error = form_errors(item[field]) %}
+
+                            {% if error|trim is not empty %}
+                                <div class="control-group error">
+                                    {{ form_widget(item[field]) }}
+                                    {{ error|raw }}
+                                </div>
+                            {% else %}
+                                {{ form_widget(item[field]) }}
+                            {% endif %}
+                            <br />
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" align="right" style="text-align:right">
+                    <strong>{{ "Sub-Total"|trans }}</strong>
+                </td>
+                <td colspan="2" align="left">
+                    <div class="invoice-sub-total"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" align="right" style="text-align:right">
+                    <strong>{{ "Discount"|trans }}</strong>
+                </td>
+                <td colspan="2" align="left">
+                    <span class="text-error invoice-discount"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" align="right" style="text-align:right">
+                    <strong>{{ "Total"|trans }}</strong>
+                </td>
+                <td colspan="2" align="left">
+                    <div class="invoice-total"></div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+{% endblock form_items %}
+
+{% block form_buttons %}
+    <div class="span2">
+        <button type="submit" class="btn btn-success" name="save" value="send">{{ "Save and Send"|trans }}</button>
+    </div>
+    <div class="span2">
+        <button type="submit" class="btn btn-primary" name="save" value="draft"}>{{ "Save as Draft"|trans }}</button>
+    </div>
+{% endblock form_buttons %}
+
+{% block script %}
+{% spaceless %}
+    <script type="text/javascript">
+
+        {% if form.client.vars.data %}
+            $('#{{ form.client.vars.id }}').parents('div.control-group').hide();
+        {% endif %}
+
+        $('#{{ form.client.vars.id }}').on('change', function(){
+            var client_select = $(this).parents('div.control-group'),
+                client_id = $(':selected', this).val();
+
+            // TODO : show ajax loader
+            $('#{{ form.client.vars.id }}-container').load(Routing.generate('_clients_info', {"id" : client_id}), function(a) {
+                client_select.hide();
+            });
+        });
+
+        $('#invoice-create-form').on('click', '.client-select-change', function(evt) {
+            evt.preventDefault();
+            $('#{{ form.client.vars.id }}-container').html('');
+            $('#{{ form.client.vars.id }}').parents('div.control-group').show();
+        });
+
+        Invoice.setSelector($('#invoice-rows'));
+        {% for item in items %}
+            {% set field = form.items.vars.prototype[item] %}
+            Invoice.addTemplate('{{ item }}', '{{ form_widget(field) }}');
+            Invoice.addField("{{ item }}");
+        {% endfor %}
+
+        Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="icon-trash"></i></a>');
+        Invoice.addField("trash");
+
+        {% if form.items|length == 0 %}
+            Invoice.addRow();
+        {% endif %}
+    </script>
+{% endspaceless %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+       "@CSBillInvoiceBundle/Resources/public/js/invoices.js"
+       filter="?yui_js"
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

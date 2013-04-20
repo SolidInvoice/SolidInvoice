@@ -1,0 +1,45 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% set parent = "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+
+{% block title %}{{ "Invoices"|trans }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('invoices_index') }}
+{% endblock sidebar %}
+
+{% block content %}
+
+    {#<div class="row-fluid">
+        <div class="well well-small span3 text-center" style="
+    color: #468847; background-color: #dff0d8; border: 1px solid #d6e9c6;
+">
+            <h3>R560</h3>Income
+        </div><div class="well well-small span3 text-center" style="
+    color: #b94a48;
+    background-color: pink;
+    border: #b94a48;
+">
+            <h3>R560</h3>Outstanding</div>
+    </div>#}
+
+    {{ parent() }}
+
+    <div class="row-fluid">
+        <h5>{{ "Invoice Status Legend"|trans }}</h5>
+
+        {% for status in status_list %}
+            {{ status|raw }}
+        {% endfor %}
+    </div>
+{% endblock %}

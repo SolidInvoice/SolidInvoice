@@ -1,0 +1,18 @@
+<table>
+{% for item in invoice.items %}
+    <tr>
+        <td>
+            {{ item.description }}
+        </td>
+        <td>
+            {{ item.price }}
+        </td>
+        <td>
+            {{ item.qty }}
+        </td>
+        <td>
+            {{ item.price * item.qty }}
+        </td>
+    </tr>
+{% endfor %}
+</table>

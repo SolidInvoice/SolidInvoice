@@ -1,0 +1,26 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends "CSBillInvoiceBundle:Default:create.html.twig" %}
+
+{% block title %}{{ "Edit Invoice"|trans }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('invoices_edit') }}
+{% endblock sidebar %}
+
+{% block form_buttons %}
+    <div class="span2">
+        <button type="submit" class="btn btn-success" name="save" value="send">{{ "Save and Send"|trans }}</button>
+    </div>
+    <div class="span2">
+        <button type="submit" class="btn btn-primary" name="save" value="draft"}>{{ "Save"|trans }}</button>
+    </div>
+{% endblock form_buttons %}

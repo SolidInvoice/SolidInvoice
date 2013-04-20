@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ CSCoreBundle, CSBillCoreBundle, CSBillDataGridBundle, CSBillQuoteBundle ]
+    bundles:        [ CSCoreBundle, CSBillCoreBundle, CSBillDataGridBundle, CSBillQuoteBundle, CSBillInvoiceBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

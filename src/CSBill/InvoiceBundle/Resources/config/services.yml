@@ -1,0 +1,12 @@
+parameters:
+    csbill_invoice.menu.class: CSBill\InvoiceBundle\Menu\Main
+
+services:
+    csbill_invoice.menu:
+        class: %csbill_invoice.menu.class%
+        tags:
+            - { name: cs_core.menu, menu: top, method: topMenu }
+            - { name: cs_core.menu, menu: invoices_index,  method: invoicesMenu }
+            - { name: cs_core.menu, menu: invoices_view,   method: invoicesMenu }
+            - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
+            - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }

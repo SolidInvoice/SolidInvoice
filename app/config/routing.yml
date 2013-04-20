@@ -21,6 +21,10 @@ csbill_quote:
     prefix: /quotes
     resource: "@CSBillQuoteBundle/Resources/config/routing.yml"
 
+csbill_invoice:
+    prefix: /invoices
+    resource: "@CSBillInvoiceBundle/Resources/config/routing.yml"
+
 csbill_item:
     resource: "@CSBillItemBundle/Resources/config/routing.yml"
     prefix:   /items

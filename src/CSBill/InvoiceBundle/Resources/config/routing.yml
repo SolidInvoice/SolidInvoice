@@ -1,0 +1,15 @@
+_invoices_index:
+    pattern:   /
+    defaults:  { _controller: CSBillInvoiceBundle:Default:index }
+
+_invoices_create:
+    pattern:   /create
+    defaults:  { _controller: CSBillInvoiceBundle:Default:create }
+
+_invoices_edit:
+    pattern:   /edit/{id}
+    defaults:  { _controller: CSBillInvoiceBundle:Default:edit }
+
+_invoices_view:
+    pattern:   /view/{id}
+    defaults:  { _controller: CSBillInvoiceBundle:Default:view }

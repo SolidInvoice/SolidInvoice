@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use APY\DataGridBundle\Grid\Mapping as GRID;
 use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -83,6 +84,14 @@ class Client
     private $quotes;
 
     /**
+     * @var ArrayCollection $invoices
+     *
+     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client")
+     * @Assert\Valid()
+     */
+    private $invoices;
+
+    /**
      * @var DateTIme $created
      *
      * @ORM\Column(name="created", type="datetime")
@@ -115,6 +124,7 @@ class Client
     {
         $this->contacts = new ArrayCollection;
         $this->quotes = new ArrayCollection;
+        $this->invoices = new ArrayCollection;
     }
 
     /**
@@ -268,6 +278,43 @@ class Client
     public function getQuotes()
     {
         return $this->quotes;
+    }
+
+    /**
+     * Add invoice
+     *
+     * @param  Invoice  $invoice
+     * @return Client
+     */
+    public function addInvoice(Invoice $invoice)
+    {
+        $this->invoices[] = $invoice;
+        $invoice->setClient($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove invoice
+     *
+     * @param  Invoice  $invoice
+     * @return Client
+     */
+    public function removeInvoice(Invoice $invoice)
+    {
+        $this->invoices->removeElement(invoice);
+
+        return $this;
+    }
+
+    /**
+     * Get invoices
+     *
+     * @return ArrayCollection
+     */
+    public function getInvoices()
+    {
+        return $this->invoices;
     }
 
     /**

@@ -1,0 +1,148 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block title %}{{ "Invoice #%id"|trans|replace({"%id" : invoice.id}) }} {{ invoice.status|raw }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('invoices_view') }}
+{% endblock sidebar %}
+
+
+{% block content %}
+
+    {# TODO : add toolbar #}
+    <div class="row-fluid">
+        <div class="pull-right">
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    {% if invoice is pending or invoice is draft %}
+                        <a href="{{ path('_accept_invoice', {'id' : invoice.id}) }}" class="btn btn-success">{{ "Accept"|trans }}</a>
+                    {% endif %}
+
+                    {% if invoice is not accepted and invoice is not declined and invoice is not cancelled %}
+                        <a href="{{ path('_decline_invoice', {'id' : invoice.id}) }}" class="btn btn-danger">{{ "Decline"|trans }}</a>
+                    {% endif %}
+                </div>
+                <div class="btn-group">
+                    <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">{{ "Send"|trans }}</a>
+                </div>
+
+                {% if invoice is draft or invoice is pending %}
+                    <div class="btn-group">
+                        <a href="{{ path('_cancel_invoice', {'id' : invoice.id}) }}" class="btn btn-inverse">{{ "Cancel"|trans }}</a>
+                    </div>
+                {% endif %}
+
+                <div class="btn-group">
+                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn">{{ "Edit"|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6">
+            <h4>{{ invoice.client }}</h4>
+
+            <ul class="unstyled">
+                {% for user in invoice.users %}
+                    <li>{{ user }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        {{ "Code"|trans }}
+                    </th>
+                    <th>
+                        {{ "Description"|trans }}
+                    </th>
+                    <th>
+                        {{ "Price"|trans }}
+                    </th>
+                    <th>
+                        {{ "Qty"|trans }}
+                    </th>
+                    <th>
+                        {{ "Tax"|trans }}
+                    </th>
+                    <th>
+                        {{ "Total"|trans }}
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in invoice.items %}
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            {{ item.description }}
+                        </td>
+                        <td>
+                            {{ item.price }}
+                        </td>
+                        <td>
+                            {{ item.qty }}
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            {{ currency.format(item.total) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+            {% set discount = invoice.total|percentage(invoice.discount) %}
+            <tfoot>
+                <tr>
+                    <td colspan="5" align="right" style="text-align:right">
+                        <strong>{{ "Sub-Total"|trans }}</strong>
+                    </td>
+                    <td colspan="2" align="left">
+                        <div class="invoice-sub-total">
+                            {{ currency.format(invoice.total + discount) }}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" align="right" style="text-align:right">
+                        <strong>{{ "Discount"|trans }}</strong>
+                    </td>
+                    <td colspan="2" align="left">
+                        <span class="text-error invoice-discount">
+                            {{ currency.format(-discount) }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" align="right" style="text-align:right">
+                        <strong>{{ "Total"|trans }}</strong>
+                    </td>
+                    <td colspan="2" align="left">
+                        <div class="invoice-total">
+                            {{ currency.format(invoice.total) }}
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock content %}

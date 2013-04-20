@@ -18,7 +18,7 @@ namespace CSBill\CoreBundle\Model;
  *
  * @author Pierre du Plessis
  */
-class Status
+abstract class Status
 {
     /**
      * Contains a list of all the statuses and their corresponding labels

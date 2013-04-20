@@ -35,6 +35,17 @@ class Email
         return $this;
     }
 
+    public function sendInvoice(Invoice $invoice)
+    {
+        $htmlTemplate = 'CSBillInvoiceBundle:Email:invoice.html.twig';
+
+        $message = $this->_createMessage($invoice, $htmlTemplate);
+
+        $sent = $this->mailer->send($message);
+
+        return $sent;
+    }
+
     public function sendQuote(Quote $quote)
     {
         $htmlTemplate = 'CSBillQuoteBundle:Email:quote.html.twig';

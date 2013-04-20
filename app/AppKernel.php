@@ -37,6 +37,7 @@ class AppKernel extends Kernel
             new CSBill\ClientBundle\CSBillClientBundle(),
             new CSBill\DataGridBundle\CSBillDataGridBundle(),
             new CSBill\QuoteBundle\CSBillQuoteBundle(),
+            new CSBill\InvoiceBundle\CSBillInvoiceBundle(),
             new CSBill\ItemBundle\CSBillItemBundle(),
             new CSBill\SettingsBundle\CSBillSettingsBundle(),
         );

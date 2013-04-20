@@ -53,7 +53,7 @@ class DatabaseConfig extends Step
      * @var array $params
      */
     public $params = array( 'database_driver'     => '',
-                            'database_host'     => '',
+                            'database_host'     => 'localhost',
                             'database_user'     => '',
                             'database_password' => '',
                             'database_port'     => 3306,
