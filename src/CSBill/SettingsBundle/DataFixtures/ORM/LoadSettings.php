@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CSBill\ClientBundle\DataFixtures\ORM;
+namespace CSBill\SettingsBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
