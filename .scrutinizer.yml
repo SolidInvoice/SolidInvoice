@@ -57,8 +57,8 @@ tools:
                     enabled:              true
     
                     # Allows checks to be a bit more lenient in tests.
-                    lenient_in_tests:     true
-                    test_classes:
+                    #lenient_in_tests:     true
+                    #test_classes:
     
                         # Default:
                         - PHPUnit_Framework_TestCase
