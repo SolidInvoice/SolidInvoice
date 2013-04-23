@@ -64,7 +64,7 @@ class Contact implements \serializable
     /**
      * @var ArrayCollection $details
      *
-     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="contact")
+     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="contact", cascade={"persist"})
      *
      * @Assert\Count(
      *      min = "1",
