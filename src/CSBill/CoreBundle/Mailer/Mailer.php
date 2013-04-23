@@ -3,7 +3,7 @@
 namespace CSBill\CoreBundle\Mailer;
 
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Entity\Invoice;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
 use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
 use CSBill\CoreBundle\Mailer\Events\MailerEvent;
