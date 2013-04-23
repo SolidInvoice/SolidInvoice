@@ -44,6 +44,10 @@ class Configuration implements ConfigurationInterface
                                                     ->children()
                                                         ->scalarNode('key')->isRequired()->end()
                                                         ->scalarNode('value')->end()
+                                                        ->scalarNode('type')->end()
+                                                        ->arrayNode('options')
+                                                            ->prototype('scalar')->end()
+                                                        ->end()
                                                         ->scalarNode('description')->end()
                                                     ->end()
                                                 ->end()
@@ -56,6 +60,10 @@ class Configuration implements ConfigurationInterface
                                         ->children()
                                             ->scalarNode('key')->isRequired()->end()
                                             ->scalarNode('value')->end()
+                                            ->scalarNode('type')->end()
+                                            ->arrayNode('options')
+                                                ->prototype('scalar')->end()
+                                            ->end()
                                             ->scalarNode('description')->end()
                                         ->end()
                                     ->end()
@@ -68,6 +76,10 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->scalarNode('key')->isRequired()->end()
                                 ->scalarNode('value')->end()
+                                ->scalarNode('type')->end()
+                                ->arrayNode('options')
+                                    ->prototype('scalar')->end()
+                                ->end()
                                 ->scalarNode('description')->end()
                             ->end()
                         ->end()
@@ -76,30 +88,6 @@ class Configuration implements ConfigurationInterface
             ->end()
             ;
 
-        return $treeBuilder;
-
-        $rootNode
-            ->children()
-                ->arrayNode('quote')
-                    ->children()
-                        ->arrayNode('settings')
-                            ->requiresAtLeastOneElement()
-                            ->prototype('array')
-                                ->children()
-                                     //->useAttributeAsKey('key')
-                                    ->scalarNode('key')->isRequired()->end()
-                                    ->scalarNode('value')->end()
-                                    ->scalarNode('description')->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
         return $treeBuilder;
     }
 }
