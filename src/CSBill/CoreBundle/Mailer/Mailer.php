@@ -28,6 +28,9 @@ class Mailer
      */
     protected $templating;
 
+    /**
+     * @var SecurityContextInterface
+     */
     protected $security;
 
     /**
@@ -142,10 +145,10 @@ class Mailer
     {
         $message = \Swift_Message::newInstance();
 
-        $fromAddress = $this->settings->get('email.from_address');
+        $fromAddress = (string) $this->settings->get('email.from_address');
 
-        if(null !== $fromAddress) {
-            $fromName = $this->settings->get('email.from_name');
+        if(!empty($fromAddress)) {
+            $fromName = (string) $this->settings->get('email.from_name');
 
             $message->setFrom($fromAddress, $fromName);
         } else {
@@ -171,11 +174,6 @@ class Mailer
             $textTemplate = $event->getTextTemplate();
         }
 
-        if($this->settings->get('email.format') === 'html') {
-            $message->setBody($htmlTemplate, 'text/html')
-                    ->addPart($textTemplate, 'text/plain');
-        } else {
-            $message->setBody($textTemplate, 'text/plain');
         $format = (string) $this->settings->get('email.format');
 
         switch($format) {
