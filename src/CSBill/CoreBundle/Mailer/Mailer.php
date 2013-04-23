@@ -8,6 +8,7 @@ use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
 use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
 use CSBill\CoreBundle\Mailer\Events\MailerEvent;
 use CSBill\CoreBundle\Mailer\MailerInterface;
+use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use CS\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -175,6 +176,25 @@ class Mailer
                     ->addPart($textTemplate, 'text/plain');
         } else {
             $message->setBody($textTemplate, 'text/plain');
+        $format = (string) $this->settings->get('email.format');
+
+        switch($format) {
+            case 'html' :
+                $message->setBody($htmlTemplate, 'text/html');
+            break;
+
+            case 'text' :
+                $message->setBody($textTemplate, 'text/plain');
+            break;
+
+            case 'both' :
+                $message->setBody($htmlTemplate, 'text/html')
+                        ->addPart($textTemplate, 'text/plain');
+            break;
+
+            default :
+                throw new UnexpectedFormatException($format);
+            break;
         }
 
         $mailerEvent = new MailerEvent;

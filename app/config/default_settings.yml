@@ -14,4 +14,4 @@ cs_bill_settings:
         settings:
             - { key: from_name, value: ""}
             - { key: from_address, value: ""}
-            - { key: format, value: "html", type: "radio", options: ["html", "text"], description: "In what format should emails be sent."}
+            - { key: format, value: "both", type: "radio", options: ["html", "text", "both"], description: "In what format should emails be sent."}
