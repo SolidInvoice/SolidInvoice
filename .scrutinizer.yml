@@ -61,7 +61,7 @@ tools:
                     #test_classes:
     
                         # Default:
-                        - PHPUnit_Framework_TestCase
+                        #- PHPUnit_Framework_TestCase
                 foreach:
                     value_as_reference:   true
                     traversable:          true
