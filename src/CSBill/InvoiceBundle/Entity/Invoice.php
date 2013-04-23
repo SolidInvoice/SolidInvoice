@@ -65,7 +65,7 @@ class Invoice
     /**
      * @var float
      *
-     * @ORM\Column(name="discount", type="float")
+     * @ORM\Column(name="discount", type="float", nullable=true)
      */
     private $discount;
 
