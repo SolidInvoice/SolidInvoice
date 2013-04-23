@@ -22,9 +22,19 @@ class ActionsController extends Controller
     {
         $this->setQuoteStatus($quote, 'accepted');
 
-        // TODO : create invoice from quote
+        $invoice = $this->get('invoice.manager')->createFromQuote($quote);
 
-        $this->flash($this->trans('Quote Accepted'), 'success');
+        $em = $this->getEm();
+
+        $em->persist($invoice);
+        $em->flush();
+
+        $this->get('billing.mailer')->sendInvoice($invoice);
+
+        // TODO : we should be able to specify if the new invoice must be emailed or not
+        // TODO : we should set a default due date for invoices
+
+        $this->flash($this->trans('Quote Accepted and invoice created'), 'success');
 
         return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
