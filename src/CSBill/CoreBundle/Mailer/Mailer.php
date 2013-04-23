@@ -12,6 +12,7 @@ use CS\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Swift_Mailer;
 
 class Mailer
@@ -25,6 +26,8 @@ class Mailer
      * @var EngineInterface
      */
     protected $templating;
+
+    protected $security;
 
     /**
      * @var EventDispatcherInterface
@@ -55,6 +58,16 @@ class Mailer
         $this->dispatcher = $eventDispatcher;
 
         return $this;
+    }
+
+    /**
+     * Set the security instance
+     *
+     * @param SecurityContextInterface $security
+     */
+    public function setSecurity(SecurityContextInterface $security)
+    {
+        $this->security = $security;
     }
 
     /**
@@ -134,6 +147,13 @@ class Mailer
             $fromName = $this->settings->get('email.from_name');
 
             $message->setFrom($fromAddress, $fromName);
+        } else {
+            // if a from address is not specified in the config, then we use the currently logged-in users address
+            $token = $this->security->getToken();
+
+            $user = $token->getUser();
+
+            $message->setFrom($user->getEmail());
         }
 
         $message->setSubject($subject)
