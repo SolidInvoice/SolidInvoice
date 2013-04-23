@@ -49,7 +49,7 @@ class ActionsController extends Controller
 
     public function sendAction(Quote $quote)
     {
-        $this->get('billing.email')->sendQuote($quote);
+        $this->get('billing.mailer')->sendQuote($quote);
 
         if (strtolower($quote->getStatus()->getName()) === 'draft') {
             $this->setQuoteStatus($quote, 'pending');

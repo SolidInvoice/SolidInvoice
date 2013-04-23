@@ -10,6 +10,7 @@ parameters:
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
     csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
     csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
+    csbill_core.billing.mailer.class: CSBill\CoreBundle\Mailer\Mailer
 
 services:
     csbill_core.menu.factory:
@@ -43,3 +44,10 @@ services:
         class: %csbill_core.form.help.extension.class%
         tags:
             - { name: form.type_extension, alias: field}
+
+    billing.mailer:
+        class: %csbill_core.billing.mailer.class%
+        arguments: [@mailer, @settings]
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
+            - [setTemplating, [@templating]]

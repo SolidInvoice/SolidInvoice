@@ -132,7 +132,7 @@ class DefaultController extends Controller
                 $em->flush();
 
                 if ($request->request->get('save') === 'send') {
-                    $this->get('billing.email')->sendInvoice($invoice);
+                    $this->get('billing.mailer')->sendInvoice($invoice);
                 }
 
                 $this->flash($this->trans('Invoice created successfully'), 'success');
@@ -172,7 +172,7 @@ class DefaultController extends Controller
                 $em->flush();
 
                 if ($request->request->get('save') === 'send') {
-                    $this->get('billing.email')->sendInvoice($invoice);
+                    $this->get('billing.mailer')->sendInvoice($invoice);
                 }
 
                 $this->flash($this->trans('Invoice edited successfully'), 'success');

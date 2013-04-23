@@ -132,7 +132,7 @@ class DefaultController extends Controller
                 $em->flush();
 
                 if ($request->request->get('save') === 'send') {
-                    $this->get('billing.email')->sendQuote($quote);
+                    $this->get('billing.mailer')->sendQuote($quote);
                 }
 
                 $this->flash($this->trans('Quote created successfully'), 'success');
@@ -172,7 +172,7 @@ class DefaultController extends Controller
                 $em->flush();
 
                 if ($request->request->get('save') === 'send') {
-                    $this->get('billing.email')->sendQuote($quote);
+                    $this->get('billing.mailer')->sendQuote($quote);
                 }
 
                 $this->flash($this->trans('Quote edited successfully'), 'success');

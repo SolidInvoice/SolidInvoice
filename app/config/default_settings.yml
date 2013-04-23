@@ -6,4 +6,12 @@ cs_bill_settings:
                     - { key: 'app_name', 'value' : 'CSBill'}
     quote:
         settings:
-        - { key: email_subject, value: "New Quotation - #{id}"}
+            - { key: email_subject, value: "New Quotation - #{id}", description: "To include the id of the quote in the subject, add the placeholder {id} where you want the id"}
+    invoice:
+        settings:
+            - { key: email_subject, value: "New Invoice - #{id}", description: "To include the id of the invoice in the subject, add the placeholder {id} where you want the id"}
+    email:
+        settings:
+            - { key: from_name, value: ""}
+            - { key: from_address, value: ""}
+            - { key: format, value: "html", description: "In what format should emails be sent. Valid values are 'html' and 'text'"}
