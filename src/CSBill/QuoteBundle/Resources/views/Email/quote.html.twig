@@ -1,18 +1,12 @@
-<table>
-{% for item in quote.items %}
-    <tr>
-        <td>
-            {{ item.description }}
-        </td>
-        <td>
-            {{ item.price }}
-        </td>
-        <td>
-            {{ item.qty }}
-        </td>
-        <td>
-            {{ item.price * item.qty }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+{% spaceless %}<div style="width: 900px">
+<div style="text-align:center" align="center">
+    <p>
+        <div style="font-size: 80%; color: #999999">
+            {% set quotePath = url("_quotes_view", {"id" : quote.id}) %}
+            {{ "View this quote online at: %url%"|trans|replace({"%url%" : '<a href="' ~ quotePath ~ '">' ~ quotePath ~ '</a>'})|raw }}
+        </div>
+    </p>
+</div>
+
+{% include "CSBillQuoteBundle::quote_template.html.twig" %}
+</div>{% endspaceless %}
