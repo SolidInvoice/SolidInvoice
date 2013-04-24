@@ -65,6 +65,13 @@ class Invoice
     /**
      * @var float
      *
+     * @ORM\Column(name="base_total", type="float")
+     */
+    private $baseTotal;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="discount", type="float", nullable=true)
      */
     private $discount;
@@ -224,6 +231,29 @@ class Invoice
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set base total
+     *
+     * @param  float   $baseTotal
+     * @return Invoice
+     */
+    public function setBaseTotal($baseTotal)
+    {
+        $this->baseTotal = $baseTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get base total
+     *
+     * @return float
+     */
+    public function getBaseTotal()
+    {
+        return $this->baseTotal;
     }
 
     /**
@@ -392,9 +422,16 @@ class Invoice
                 $total += ($item->getPrice() * $item->getQty());
             }
 
+            $this->setBaseTotal($total);
+
+            if($this->discount > 0) {
+                $total -= ($total * $this->discount) / 100;
+            }
+
             $this->setTotal($total);
         } else {
-            $this->setTotal(0);
+            $this->setBaseTotal(0)
+                 ->setTotal(0);
         }
     }
 }

@@ -65,6 +65,13 @@ class Quote
     /**
      * @var float
      *
+     * @ORM\Column(name="base_total", type="float")
+     */
+    private $baseTotal;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="discount", type="float", nullable=true)
      */
     private $discount;
@@ -227,6 +234,29 @@ class Quote
     }
 
     /**
+     * Set base total
+     *
+     * @param  float   $baseTotal
+     * @return Invoice
+     */
+    public function setBaseTotal($baseTotal)
+    {
+        $this->baseTotal = $baseTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get base total
+     *
+     * @return float
+     */
+    public function getBaseTotal()
+    {
+        return $this->baseTotal;
+    }
+
+    /**
      * Set discount
      *
      * @param  float $discount
@@ -385,16 +415,23 @@ class Quote
      */
     public function updateTotal()
     {
-        if (count($this->items)) {
+    if (count($this->items)) {
             $total = 0;
             foreach ($this->items as $item) {
                 $item->setQuote($this);
                 $total += ($item->getPrice() * $item->getQty());
             }
 
+            $this->setBaseTotal($total);
+
+            if($this->discount > 0) {
+                $total -= ($total * $this->discount) / 100;
+            }
+
             $this->setTotal($total);
         } else {
-            $this->setTotal(0);
+            $this->setBaseTotal(0)
+                 ->setTotal(0);
         }
     }
 }
