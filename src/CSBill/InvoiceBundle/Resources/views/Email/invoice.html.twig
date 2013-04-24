@@ -1,18 +1,13 @@
-<table>
-{% for item in invoice.items %}
-    <tr>
-        <td>
-            {{ item.description }}
-        </td>
-        <td>
-            {{ item.price }}
-        </td>
-        <td>
-            {{ item.qty }}
-        </td>
-        <td>
-            {{ item.price * item.qty }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+{% spaceless %}<div style="width: 900px">
+    <div style="text-align:center" align="center">
+        <p>
+            <div style="font-size: 80%; color: #999999">
+                {% set invoicePath = url("_invoices_view", {"id" : invoice.id}) %}
+                {{ "View this invoice online at: %url%"|trans|replace({"%url%" : '<a href="' ~ invoicePath ~ '">' ~ invoicePath ~ '</a>'})|raw }}
+            </div>
+        </p>
+    </div>
+
+    {% include "CSBillInvoiceBundle::invoice_template.html.twig" %}
+
+</div>{% endspaceless %}
