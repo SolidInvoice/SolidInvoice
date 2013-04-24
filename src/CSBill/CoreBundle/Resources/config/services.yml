@@ -11,6 +11,9 @@ parameters:
     csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
     csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
     csbill_core.billing.mailer.class: CSBill\CoreBundle\Mailer\Mailer
+    csbill_core.form.type.image_upload.class: CSBill\CoreBundle\Form\Type\ImageUpload
+    csbill_core.security.encryption.class: CSBill\CoreBundle\Security\Encryption
+    csbill_core.session.request.listener.class: CSBill\CoreBundle\Listener\SessionRequestListener
 
 services:
     csbill_core.menu.factory:
@@ -52,3 +55,24 @@ services:
             - [setEventDispatcher, [@event_dispatcher]]
             - [setTemplating, [@templating]]
             - [setSecurity, [@security.context]]
+
+    csbill_core.form.type.image_upload:
+        class: %csbill_core.form.type.image_upload.class%
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: form.type, alias: image_upload }
+
+    csbill_core.security.encryption:
+        class: %csbill_core.security.encryption.class%
+        arguments: [%kernel.secret%]
+
+    security.encryption:
+        alias: csbill_core.security.encryption
+
+    csbill_core.session.request.listener:
+        class: %csbill_core.session.request.listener.class%
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 200 }

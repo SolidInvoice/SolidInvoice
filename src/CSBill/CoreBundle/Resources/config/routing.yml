@@ -8,3 +8,7 @@ _home:
         _controller: FrameworkBundle:Redirect:redirect
         route: _dashboard
         permanent: true
+
+_image_upload:
+    pattern:  /upload
+    defaults: { _controller: CSBillCoreBundle:Upload:imageUpload }
