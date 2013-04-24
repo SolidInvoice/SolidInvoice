@@ -6,6 +6,7 @@ build/
 vendor
 bin
 composer.phar
+web/uploads/*
 
 # eclipse files
 .buildpath
