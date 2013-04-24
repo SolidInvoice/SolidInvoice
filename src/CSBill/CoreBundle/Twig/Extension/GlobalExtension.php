@@ -41,7 +41,8 @@ class GlobalExtension extends Twig_Extension
     {
         return array(
                     'query'             => $this->getQuery(),
-                    'currency'          => $this->container->get('currency')
+                    'currency'          => $this->container->get('currency'),
+                    'settings'          => $this->container->get('settings')
             );
     }
 
