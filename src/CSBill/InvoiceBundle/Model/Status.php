@@ -23,8 +23,8 @@ class Status extends AbstractStatus
     protected $statusLabels = array(
                                     'draft'     => 'draft',
                                     'pending'   => 'warning',
-                                    'accepted'  => 'success',
-                                    'declined'  => 'important',
+                                    'paid'      => 'success',
+                                    'overdue'   => 'important',
                                     'cancelled' => 'inverse'
             );
 }
