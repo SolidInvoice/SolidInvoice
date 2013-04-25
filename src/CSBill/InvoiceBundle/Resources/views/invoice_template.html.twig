@@ -55,7 +55,7 @@
     </thead>
     <tbody>
         {% for item in invoice.items %}
-            <tr>
+            <tr{% if loop.index is odd %} style="background-color:#f5f5f5"{% endif %}>
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
                     {{ item.description }}
                 </td>
@@ -79,7 +79,7 @@
                     <b>{{ "Discount"|trans }}</b>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    <b>{{ currency.format(invoice.baseTotal | percentage(invoice.discount)) }}</b>
+                    <span style="color:#b94a48">{{ currency.format(invoice.baseTotal | percentage(invoice.discount)) }}</span>
                 </td>
             </tr>
         {% endif %}
@@ -89,7 +89,7 @@
                 <b>{{ "Total"|trans }}</b>
             </td>
             <td style="border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                <b>{{ currency.format(invoice.total) }}</b>
+                {{ currency.format(invoice.total) }}
             </td>
         </tr>
     </tfoot>
