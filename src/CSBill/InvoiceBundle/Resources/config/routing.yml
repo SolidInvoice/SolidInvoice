@@ -13,3 +13,13 @@ _invoices_edit:
 _invoices_view:
     pattern:   /view/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Default:view }
+
+# Actions routes
+
+_cancel_invoice:
+    pattern:   /action/cancel/{id}
+    defaults:  { _controller: CSBillInvoiceBundle:Actions:cancel }
+
+_send_invoice:
+    pattern:   /action/send/{id}
+    defaults:  { _controller: CSBillInvoiceBundle:Actions:send }
