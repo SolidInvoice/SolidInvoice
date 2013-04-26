@@ -12,3 +12,6 @@ web/uploads/*
 .buildpath
 .project
 .settings
+
+#phpstorm files
+.idea
