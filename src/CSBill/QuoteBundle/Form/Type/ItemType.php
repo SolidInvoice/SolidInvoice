@@ -23,10 +23,10 @@ class ItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code', null, array('mapped' => false, 'attr' => array('class' => 'input-mini quote-item-code')));
+        //$builder->add('code', null, array('mapped' => false, 'attr' => array('class' => 'input-mini quote-item-code')));
         $builder->add('description', 'textarea', array('attr' => array('class' => 'input-medium quote-item-name')));
         $builder->add('price', 'money', array('attr' => array('class' => 'input-small quote-item-price')));
-        $builder->add('tax', null, array('mapped' => false, 'attr' => array('class' => 'input-small')));
+        //$builder->add('tax', null, array('mapped' => false, 'attr' => array('class' => 'input-small')));
         $builder->add('qty', 'number', array('data' => 1, 'attr' => array('class' => 'input-mini quote-item-qty')));
         $builder->add('total', 'money', array('mapped' => false, 'attr' => array('class' => 'input-small quote-item-total', 'disabled' => true, 'readonly' => true)));
     }
