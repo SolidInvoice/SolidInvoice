@@ -10,7 +10,7 @@ services:
             - { name: cs_core.menu, menu: invoices_index,  method: invoicesMenu }
             - { name: cs_core.menu, menu: invoices_view,   method: invoicesMenu }
             - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
-            - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
+            - { name: cs_core.menu, menu: invoices_edit, method: invoicesMenu }
 
     invoice.manager:
         class: %csbill_invoice.manager.class%

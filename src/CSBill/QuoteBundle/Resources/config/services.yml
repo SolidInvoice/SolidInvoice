@@ -9,4 +9,4 @@ services:
             - { name: cs_core.menu, menu: quotes_index,  method: quotesMenu }
             - { name: cs_core.menu, menu: quotes_view,   method: quotesMenu }
             - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
-            - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
+            - { name: cs_core.menu, menu: quotes_edit, method: quotesMenu }
