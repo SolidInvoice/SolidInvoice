@@ -37,7 +37,7 @@
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "apy/datagrid-bundle" : "dev-master",
-        "zendframework/zend-stdlib" : "dev-master",
+        "zendframework/zend-stdlib" : "2.1.*",
         "pagerfanta/pagerfanta" : "dev-master",
         "stof/doctrine-extensions-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",

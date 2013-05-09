@@ -2510,7 +2510,7 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Stdlib",
             "source": {
                 "type": "git",
@@ -2565,7 +2565,6 @@
         "doctrine/doctrine-migrations-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
         "apy/datagrid-bundle": 20,
-        "zendframework/zend-stdlib": 20,
         "pagerfanta/pagerfanta": 20,
         "stof/doctrine-extensions-bundle": 20,
         "jms/debugging-bundle": 20,
