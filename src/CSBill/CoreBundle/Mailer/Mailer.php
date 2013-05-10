@@ -12,7 +12,7 @@ use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use CS\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\Event;
+use CSBill\CoreBundle\Mailer\Events\MessageEventInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Swift_Mailer;
 
@@ -34,6 +34,11 @@ class Mailer implements MailerInterface
     protected $security;
 
     /**
+     * @var \CS\SettingsBundle\Manager\SettingsManager
+     */
+    protected $settings;
+
+    /**
      * @var EventDispatcherInterface
      */
     protected $dispatcher;
@@ -53,6 +58,7 @@ class Mailer implements MailerInterface
         $this->templating = $templating;
     }
 
+    /**
     /**
      * (non-PHPdoc)
      * @see CSBill\CoreBundle\Service.MailerInterface::setEventDispatcher()
@@ -91,6 +97,7 @@ class Mailer implements MailerInterface
         $users = array();
 
         foreach ($invoice->getUsers() as $user) {
+            /** @var \CSBill\ClientBundle\Entity\Contact $user */
             $users[(string) $user->getDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
         }
 
@@ -104,6 +111,7 @@ class Mailer implements MailerInterface
 
     /**
      * Emails a quote to the customers
+     *
      * @param Quote $quote
      * @return boolean If the email was successfully sent
      */
@@ -118,6 +126,7 @@ class Mailer implements MailerInterface
         $users = array();
 
         foreach ($quote->getUsers() as $user) {
+            /** @var \CSBill\ClientBundle\Entity\Contact $user */
             $users[(string) $user->getDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
         }
 
@@ -141,7 +150,16 @@ class Mailer implements MailerInterface
         return str_replace('{id}', $id, $this->settings->get($settingsKey));
     }
 
-    protected function sendMessage($subject, $users, $htmlTemplate = null, $textTemplate = null, Event $event = null)
+    /**
+     * @param string $subject
+     * @param string|array $users
+     * @param string|null $htmlTemplate
+     * @param string|null $textTemplate
+     * @param MessageEventInterface $event
+     * @return int
+     * @throws Exception\UnexpectedFormatException
+     */
+    protected function sendMessage($subject, $users, $htmlTemplate = null, $textTemplate = null, MessageEventInterface $event = null)
     {
         $message = \Swift_Message::newInstance();
 
@@ -186,13 +204,12 @@ class Mailer implements MailerInterface
             break;
 
             case 'both' :
-                $message->setBody($htmlTemplate, 'text/html')
-                        ->addPart($textTemplate, 'text/plain');
+                $message->setBody($htmlTemplate, 'text/html');
+                $message->addPart($textTemplate, 'text/plain');
             break;
 
             default :
                 throw new UnexpectedFormatException($format);
-            break;
         }
 
         $mailerEvent = new MailerEvent;
@@ -203,6 +220,11 @@ class Mailer implements MailerInterface
         return $this->mailer->send($message);
     }
 
+    /**
+     * @param $template
+     * @param array $parameters
+     * @return null|string
+     */
     protected function getTemplate($template, array $parameters = array())
     {
         return $this->templating->exists($template) ? $this->templating->render($template, $parameters) : null;
