@@ -22,7 +22,7 @@ use APY\DataGridBundle\Grid\Mapping as Grid;
  * CSBill\InvoiceBundle\Entity\Invoice
  *
  * @ORM\Table(name="invoices")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deleted")
  * @ORM\HasLifecycleCallbacks()
@@ -109,6 +109,14 @@ class Invoice
      * @Assert\DateTime
      */
     private $deleted;
+
+    /**
+     * @var DateTime $paidDate
+     *
+     * @ORM\Column(name="paid_date", type="datetime", nullable=true)
+     * @Assert\DateTime
+     */
+    private $paidDate;
 
     /**
      * @var ArrayCollection $items
@@ -369,6 +377,29 @@ class Invoice
     public function getDeleted()
     {
         return $this->created;
+    }
+
+    /**
+     * Set paidDate
+     *
+     * @param  \DateTime $paidDate
+     * @return Invoice
+     */
+    public function setPaidDate(\DateTime $paidDate)
+    {
+        $this->paidDate = $paidDate;
+
+        return $this;
+    }
+
+    /**
+     * Get paidDate
+     *
+     * @return \DateTime
+     */
+    public function getPaidDate()
+    {
+        return $this->paidDate;
     }
 
     /**

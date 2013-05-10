@@ -27,6 +27,16 @@ class ActionsController extends Controller
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }
 
+    public function payAction(Invoice $invoice)
+    {
+        $this->setInvoiceStatus($invoice, 'paid');
+        $invoice->setPaidDate(new \DateTime('NOW'));
+
+        $this->flash($this->trans('Invoice Paid'), 'success');
+
+        return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
+    }
+
     public function sendAction(Invoice $invoice)
     {
         $this->get('billing.mailer')->sendInvoice($invoice);

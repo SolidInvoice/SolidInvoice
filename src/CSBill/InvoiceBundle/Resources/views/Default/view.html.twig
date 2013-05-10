@@ -10,7 +10,7 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block title %}{{ "Invoice #%id"|trans|replace({"%id" : invoice.id}) }} {{ invoice.status|raw }}{% endblock %}
+{% block title %}{{ "Invoice #%id"|trans|replace({"%id" : invoice.id}) }} {{ status_label(invoice.status) }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_view') }}
@@ -23,16 +23,10 @@
     <div class="row-fluid">
         <div class="pull-right">
             <div class="btn-toolbar">
-                {#<div class="btn-group">
-                    {% if invoice is pending or invoice is draft %}
-                        <a href="{{ path('_accept_invoice', {'id' : invoice.id}) }}" class="btn btn-success">{{ "Accept"|trans }}</a>
-                    {% endif %}
-
-                    {% if invoice is not accepted and invoice is not declined and invoice is not cancelled %}
-                        <a href="{{ path('_decline_invoice', {'id' : invoice.id}) }}" class="btn btn-danger">{{ "Decline"|trans }}</a>
-                    {% endif %}
-                </div>#}
                 <div class="btn-group">
+                    {% if invoice is not paid %}
+                        <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" class="btn btn-success">{{ "Mark Paid"|trans }}</a>
+                    {% endif %}
                     <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">{{ "Send"|trans }}</a>
                 </div>
 
