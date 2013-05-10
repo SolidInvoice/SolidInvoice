@@ -20,7 +20,7 @@
 	<fieldset>
 		<legend>
 			<h3>
-				{{ client.name }} <small><label class="label label-{{ client_status_label(client) }}">{{ client.status }}</label></small>
+				{{ client.name }} <small>{{ status_label(client.status) }}</small>
 			</h3>
 		</legend>
 	</fieldset>
