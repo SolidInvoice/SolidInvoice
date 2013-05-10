@@ -11,191 +11,33 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
-use CSBill\QuoteBundle\Model\Status as StatusLabel;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+use CSBill\CoreBundle\Entity\Status as BaseStatus;
 
 /**
  * CSBill\QuoteBundle\Entity\Status
  *
- * @ORM\Table(name="quote_status")
- * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\StatusRepository")
- * @UniqueEntity("name")
- * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @ORM\Entity
  */
-class Status
+class Status extends BaseStatus
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=125)
-     */
-    private $name;
-
-    /**
-     * @var string $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime()
-     */
-    private $created;
-
-    /**
-     * @var string $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime()
-     */
-    private $updated;
-
-    /**
-     * @var string $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
-    private $deleted;
-
-    /**
-     * @var ArrayCollection $quotes
-     *
+     * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Quote", mappedBy="status")
-     * @Assert\Valid()
      */
-    private $quotes;
+    protected $quotes;
 
-    /**
-     * Constructer
-     */
     public function __construct()
     {
-        $this->quotes = new ArrayCollection;
+        parent::__construct();
+
+        $this->quotes = new ArrayCollection();
     }
 
     /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param  string $name
-     * @return Status
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return Status
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param  \DateTime $updated
-     * @return Status
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param  \DateTime $deleted
-     * @return Status
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Add quote
-     *
-     * @param  Quote  $quote
-     * @return Status
+     * @param Quote $quote
+     * @return $this
      */
     public function addQuote(Quote $quote)
     {
@@ -206,24 +48,21 @@ class Status
     }
 
     /**
-     * Get quotes
-     *
+     * @param Quote $quote
+     * @return $this
+     */
+    public function removeQuote(Quote $quote)
+    {
+        $this->quotes->removeElement($quote);
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getQuotes()
     {
         return $this->quotes;
-    }
-
-    /**
-     * Return the status as a string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        $status = new StatusLabel;
-
-        return $status->getHtml($this->name);
     }
 }

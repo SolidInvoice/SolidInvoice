@@ -37,9 +37,9 @@
 
     <div class="row-fluid">
         <h5>{{ "Invoice Status Legend"|trans }}</h5>
+            {% for status in status_list %}
+                {{ status_label(status) }}
+            {% endfor %}
 
-        {% for status in status_list %}
-            {{ status|raw }}
-        {% endfor %}
     </div>
 {% endblock %}

@@ -2,6 +2,7 @@ parameters:
     csbill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
     csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
     csbill_core.twig.billing.class: CSBill\CoreBundle\Twig\Extension\BillingExtension
+    csbill_core.twig.status.class: CSBill\CoreBundle\Twig\Extension\StatusExtension
 
 services:
     csbill_core.twig.menu:
@@ -24,5 +25,10 @@ services:
         calls:
             - [ setDoctrine, [ @doctrine ] ]
             - [ setInstaller, [ @csbill.installer ] ]
+        tags:
+            - { name: twig.extension }
+
+    csbill_core.twig.status:
+        class: %csbill_core.twig.status.class%
         tags:
             - { name: twig.extension }

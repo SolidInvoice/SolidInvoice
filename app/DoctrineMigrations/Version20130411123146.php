@@ -25,10 +25,8 @@ class Version20130411123146 extends AbstractMigration
         $this->addSql("CREATE TABLE contacts (id INT AUTO_INCREMENT NOT NULL, client_id INT DEFAULT NULL, firstname VARCHAR(125) NOT NULL, lastname VARCHAR(125) DEFAULT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, deleted DATETIME DEFAULT NULL, INDEX IDX_3340157319EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE contact_details (id INT AUTO_INCREMENT NOT NULL, contact_id INT DEFAULT NULL, contact_type_id INT DEFAULT NULL, value LONGTEXT NOT NULL, is_primary TINYINT(1) DEFAULT NULL, INDEX IDX_E8092A0BE7A1254A (contact_id), INDEX IDX_E8092A0B5F63AD12 (contact_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE contact_types (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(45) NOT NULL, UNIQUE INDEX UNIQ_741A993F5E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
-        $this->addSql("CREATE TABLE client_status (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(125) NOT NULL, UNIQUE INDEX UNIQ_2EA62EAF5E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE quote_items (id INT AUTO_INCREMENT NOT NULL, quote_id INT DEFAULT NULL, description LONGTEXT NOT NULL, price NUMERIC(10, 2) NOT NULL, qty DOUBLE PRECISION NOT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, deleted DATETIME DEFAULT NULL, INDEX IDX_ECE1642CDB805178 (quote_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE quotes (id INT AUTO_INCREMENT NOT NULL, status_id INT DEFAULT NULL, client_id INT DEFAULT NULL, total DOUBLE PRECISION NOT NULL, discount DOUBLE PRECISION NOT NULL, due DATE DEFAULT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, deleted DATETIME DEFAULT NULL, users LONGTEXT NOT NULL COMMENT '(DC2Type:array)', INDEX IDX_A1B588C56BF700BD (status_id), INDEX IDX_A1B588C519EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
-        $this->addSql("CREATE TABLE quote_status (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(125) NOT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, deleted DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_41B8CB5F5E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE acl_classes (id INT UNSIGNED AUTO_INCREMENT NOT NULL, class_type VARCHAR(200) NOT NULL, UNIQUE INDEX UNIQ_69DD750638A36066 (class_type), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE acl_security_identities (id INT UNSIGNED AUTO_INCREMENT NOT NULL, identifier VARCHAR(200) NOT NULL, username TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_8835EE78772E836AF85E0677 (identifier, username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE acl_object_identities (id INT UNSIGNED AUTO_INCREMENT NOT NULL, parent_object_identity_id INT UNSIGNED DEFAULT NULL, class_id INT UNSIGNED NOT NULL, object_identifier VARCHAR(100) NOT NULL, entries_inheriting TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_9407E5494B12AD6EA000B10 (object_identifier, class_id), INDEX IDX_9407E54977FA751A (parent_object_identity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
@@ -36,12 +34,10 @@ class Version20130411123146 extends AbstractMigration
         $this->addSql("CREATE TABLE acl_entries (id INT UNSIGNED AUTO_INCREMENT NOT NULL, class_id INT UNSIGNED NOT NULL, object_identity_id INT UNSIGNED DEFAULT NULL, security_identity_id INT UNSIGNED NOT NULL, field_name VARCHAR(50) DEFAULT NULL, ace_order SMALLINT UNSIGNED NOT NULL, mask INT NOT NULL, granting TINYINT(1) NOT NULL, granting_strategy VARCHAR(30) NOT NULL, audit_success TINYINT(1) NOT NULL, audit_failure TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_46C8B806EA000B103D9AB4A64DEF17BCE4289BF4 (class_id, object_identity_id, field_name, ace_order), INDEX IDX_46C8B806EA000B103D9AB4A6DF9183C9 (class_id, object_identity_id, security_identity_id), INDEX IDX_46C8B806EA000B10 (class_id), INDEX IDX_46C8B8063D9AB4A6 (object_identity_id), INDEX IDX_46C8B806DF9183C9 (security_identity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3A76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE");
         $this->addSql("ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3D60322AC FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE");
-        $this->addSql("ALTER TABLE clients ADD CONSTRAINT FK_C82E746BF700BD FOREIGN KEY (status_id) REFERENCES client_status (id)");
         $this->addSql("ALTER TABLE contacts ADD CONSTRAINT FK_3340157319EB6921 FOREIGN KEY (client_id) REFERENCES clients (id)");
         $this->addSql("ALTER TABLE contact_details ADD CONSTRAINT FK_E8092A0BE7A1254A FOREIGN KEY (contact_id) REFERENCES contacts (id)");
         $this->addSql("ALTER TABLE contact_details ADD CONSTRAINT FK_E8092A0B5F63AD12 FOREIGN KEY (contact_type_id) REFERENCES contact_types (id)");
         $this->addSql("ALTER TABLE quote_items ADD CONSTRAINT FK_ECE1642CDB805178 FOREIGN KEY (quote_id) REFERENCES quotes (id)");
-        $this->addSql("ALTER TABLE quotes ADD CONSTRAINT FK_A1B588C56BF700BD FOREIGN KEY (status_id) REFERENCES quote_status (id)");
         $this->addSql("ALTER TABLE quotes ADD CONSTRAINT FK_A1B588C519EB6921 FOREIGN KEY (client_id) REFERENCES clients (id)");
         $this->addSql("ALTER TABLE acl_object_identities ADD CONSTRAINT FK_9407E54977FA751A FOREIGN KEY (parent_object_identity_id) REFERENCES acl_object_identities (id)");
         $this->addSql("ALTER TABLE acl_object_identity_ancestors ADD CONSTRAINT FK_825DE2993D9AB4A6 FOREIGN KEY (object_identity_id) REFERENCES acl_object_identities (id) ON UPDATE CASCADE ON DELETE CASCADE");
@@ -62,9 +58,7 @@ class Version20130411123146 extends AbstractMigration
         $this->addSql("ALTER TABLE quotes DROP FOREIGN KEY FK_A1B588C519EB6921");
         $this->addSql("ALTER TABLE contact_details DROP FOREIGN KEY FK_E8092A0BE7A1254A");
         $this->addSql("ALTER TABLE contact_details DROP FOREIGN KEY FK_E8092A0B5F63AD12");
-        $this->addSql("ALTER TABLE clients DROP FOREIGN KEY FK_C82E746BF700BD");
         $this->addSql("ALTER TABLE quote_items DROP FOREIGN KEY FK_ECE1642CDB805178");
-        $this->addSql("ALTER TABLE quotes DROP FOREIGN KEY FK_A1B588C56BF700BD");
         $this->addSql("ALTER TABLE acl_entries DROP FOREIGN KEY FK_46C8B806EA000B10");
         $this->addSql("ALTER TABLE acl_entries DROP FOREIGN KEY FK_46C8B806DF9183C9");
         $this->addSql("ALTER TABLE acl_object_identities DROP FOREIGN KEY FK_9407E54977FA751A");
@@ -81,10 +75,8 @@ class Version20130411123146 extends AbstractMigration
         $this->addSql("DROP TABLE contacts");
         $this->addSql("DROP TABLE contact_details");
         $this->addSql("DROP TABLE contact_types");
-        $this->addSql("DROP TABLE client_status");
         $this->addSql("DROP TABLE quote_items");
         $this->addSql("DROP TABLE quotes");
-        $this->addSql("DROP TABLE quote_status");
         $this->addSql("DROP TABLE acl_classes");
         $this->addSql("DROP TABLE acl_security_identities");
         $this->addSql("DROP TABLE acl_object_identities");

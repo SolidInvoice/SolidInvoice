@@ -17,19 +17,20 @@ use CSBill\QuoteBundle\Entity\Status;
 
 class LoadStatus implements FixtureInterface
 {
+    protected $statusList = array( 'draft'     => 'draft',
+                                   'pending'   => 'warning',
+                                   'accepted'  => 'success',
+                                   'declined'  => 'important',
+                                   'cancelled' => 'inverse'
+                                  );
+
     public function load(ObjectManager $manager)
     {
-        $statusList = array(
-                            'pending',
-                            'accepted',
-                            'declined',
-                            'draft',
-                            'cancelled',
-                            );
-
-        foreach ($statusList as $status) {
+        foreach ($this->statusList as $status => $label) {
             $entity = new Status;
-            $entity->setName($status);
+            $entity->setName($status)
+                   ->setLabel($label);
+
             $manager->persist($entity);
         }
 

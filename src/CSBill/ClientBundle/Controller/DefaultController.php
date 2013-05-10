@@ -45,16 +45,17 @@ class DefaultController extends Controller
 
         $filters->add('all_clients', null, true, array('active_class' => 'label label-info', 'default_class' => 'label'));
 
-        // TODO : get status from database
-        $statuses = new Status;
-        foreach ($statuses->getStatusList() as $status) {
-            $filters->add($status.'_clients', function(QB $qb) use ($status) {
-                $alias = $qb->getRootAlias();
+        $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
+
+        foreach ($statusList as $status) {
+            $filters->add($status->getName().'_clients', function(QB $qb) use ($status) {
+                $aliases = $qb->getRootAliases();
+                $alias = $aliases[0];
 
                 $qb->join($alias.'.status', 's')
                    ->andWhere('s.name = :status_name')
-                   ->setParameter('status_name', $status);
-            }, false, array('active_class' => 'label label-' . $statuses->getStatusLabel($status), 'default_class' => 'label'));
+                   ->setParameter('status_name', $status->getName());
+            }, false, array('active_class' => 'label label-' . $status->getLabel(), 'default_class' => 'label'));
         }
 
         $search = $this->getRequest()->get('search');
@@ -76,10 +77,6 @@ class DefaultController extends Controller
 
         // Attach the source to the grid
         $grid->setSource($source);
-
-        $grid->getColumn('status.name')->manipulateRenderCell(function($value, Row $row, RouterInterface $router) use ($statuses) {
-            return '<label class="label label-'.$statuses->getStatusLabel($value).'">'.$value.'</label>';
-        })->setSafe(false);
 
         // Custom actions column in the wanted position
         $viewColumn = new ActionsColumn('info_column', $this->get('translator')->trans('Info'));

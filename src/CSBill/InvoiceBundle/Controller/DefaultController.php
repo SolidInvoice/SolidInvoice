@@ -13,7 +13,6 @@ namespace CSBill\InvoiceBundle\Controller;
 use CS\CoreBundle\Controller\Controller;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Model\Status;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
@@ -68,14 +67,10 @@ class DefaultController extends Controller
             }
         });*/
 
-        $statuses = new Status;
 
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $grid->getColumn('status.name')->manipulateRenderCell(function($value, Row $row, RouterInterface $router) use ($statuses) {
-            return $statuses->getHtml($value);
-        })->setSafe(false);
 
         // Custom actions column in the wanted position
         $viewColumn = new ActionsColumn('info_column', $this->get('translator')->trans('Info'));
@@ -93,10 +88,10 @@ class DefaultController extends Controller
         $grid->addRowAction($editAction);
 
         $grid->addMassAction(new DeleteMassAction());
+        $statusList = $this->getRepository('CSBillInvoiceBundle:Status')->findAll();
 
         $grid->hideColumns(array('updated', 'deleted'));
 
-        $statusList = $this->getDoctrine()->getManager()->getRepository('CSBillInvoiceBundle:Status')->findAll();
 
         // Return the response of the grid to the template
         return $grid->getGridResponse('CSBillInvoiceBundle:Default:index.html.twig', array('status_list' => $statusList));

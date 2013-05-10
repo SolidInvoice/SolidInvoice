@@ -17,8 +17,6 @@ class Version20130420113454 extends AbstractMigration
         
         $this->addSql("CREATE TABLE invoices (id INT AUTO_INCREMENT NOT NULL, status_id INT DEFAULT NULL, client_id INT DEFAULT NULL, total DOUBLE PRECISION NOT NULL, discount DOUBLE PRECISION NOT NULL, due DATE DEFAULT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, deleted DATETIME DEFAULT NULL, users LONGTEXT NOT NULL COMMENT '(DC2Type:array)', INDEX IDX_6A2F2F956BF700BD (status_id), INDEX IDX_6A2F2F9519EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE invoice_items (id INT AUTO_INCREMENT NOT NULL, invoice_id INT DEFAULT NULL, description LONGTEXT NOT NULL, price NUMERIC(10, 2) NOT NULL, qty DOUBLE PRECISION NOT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, deleted DATETIME DEFAULT NULL, INDEX IDX_DCC4B9F82989F1FD (invoice_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
-        $this->addSql("CREATE TABLE invoice_status (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(125) NOT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, deleted DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_C036F84F5E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
-        $this->addSql("ALTER TABLE invoices ADD CONSTRAINT FK_6A2F2F956BF700BD FOREIGN KEY (status_id) REFERENCES invoice_status (id)");
         $this->addSql("ALTER TABLE invoices ADD CONSTRAINT FK_6A2F2F9519EB6921 FOREIGN KEY (client_id) REFERENCES clients (id)");
         $this->addSql("ALTER TABLE invoice_items ADD CONSTRAINT FK_DCC4B9F82989F1FD FOREIGN KEY (invoice_id) REFERENCES invoices (id)");
     }
@@ -29,9 +27,7 @@ class Version20130420113454 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
         
         $this->addSql("ALTER TABLE invoice_items DROP FOREIGN KEY FK_DCC4B9F82989F1FD");
-        $this->addSql("ALTER TABLE invoices DROP FOREIGN KEY FK_6A2F2F956BF700BD");
         $this->addSql("DROP TABLE invoices");
         $this->addSql("DROP TABLE invoice_items");
-        $this->addSql("DROP TABLE invoice_status");
     }
 }

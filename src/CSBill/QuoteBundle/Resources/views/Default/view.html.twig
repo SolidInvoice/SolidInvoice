@@ -10,7 +10,7 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block title %}{{ "Quote #%id"|trans|replace({"%id" : quote.id}) }} {{ quote.status|raw }}{% endblock %}
+{% block title %}{{ "Quote #%id"|trans|replace({"%id" : quote.id}) }} {{ status_label(quote.status) }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('quotes_view') }}

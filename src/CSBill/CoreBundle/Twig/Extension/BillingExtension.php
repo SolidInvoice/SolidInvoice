@@ -10,6 +10,7 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
+use CS\CoreBundle\Util\ArrayUtil;
 use Twig_Extension;
 use Twig_Test_Function;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -60,7 +61,10 @@ class BillingExtension extends Twig_Extension
 
         if ($this->installer->isInstalled()) {
             // test if a quote/invoice is a specific status
-            $statusList = $this->doctrine->getRepository('CSBillQuoteBundle:Status')->findList();
+            $statusList = array_unique(array_merge(
+                                        ArrayUtil::column($this->doctrine->getRepository('CSBillQuoteBundle:Status')->findAll(), 'name'),
+                                        ArrayUtil::column($this->doctrine->getRepository('CSBillInvoiceBundle:Status')->findAll(), 'name')
+                            ));
 
             if (is_array($statusList) && count($statusList) > 0) {
                 foreach ($statusList as $status) {

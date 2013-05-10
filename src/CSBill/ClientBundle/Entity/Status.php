@@ -11,91 +11,33 @@
 
 namespace CSBill\ClientBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping as ORM;
+use CSBill\CoreBundle\Entity\Status as BaseStatus;
 
 /**
  * CSBill\ClientBundle\Entity\Status
  *
- * @ORM\Table(name="client_status")
- * @ORM\Entity()
- * @UniqueEntity("name")
+ * @ORM\Entity
  */
-class Status
+class Status extends BaseStatus
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=125)
-     */
-    private $name;
-
-    /**
-     * @var ArrayCollection $clients
-     *
+     * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Client", mappedBy="status")
      */
-    private $clients;
+    protected $clients;
 
-    /**
-     * Constructer
-     */
     public function __construct()
     {
-        $this->clients = new ArrayCollection;
+        parent::__construct();
+
+        $this->clients = new ArrayCollection();
     }
 
     /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param  string $name
-     * @return Status
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Add client
-     *
-     * @param  Client $client
-     * @return Status
+     * @param Client $client
+     * @return $this
      */
     public function addClient(Client $client)
     {
@@ -106,22 +48,21 @@ class Status
     }
 
     /**
-     * Get clients
-     *
+     * @param Client $client
+     * @return $this
+     */
+    public function removeClient(Client $client)
+    {
+        $this->clients->removeElement($client);
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getClients()
     {
         return $this->clients;
-    }
-
-    /**
-     * Return the status as a string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return ucwords($this->getName());
     }
 }

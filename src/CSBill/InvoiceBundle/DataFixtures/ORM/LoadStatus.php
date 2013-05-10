@@ -18,14 +18,19 @@ use CSBill\InvoiceBundle\Model\Status as StatusModel;
 
 class LoadStatus implements FixtureInterface
 {
+    protected $statusList = array( 'draft'     => 'draft',
+                                   'pending'   => 'warning',
+                                   'paid'      => 'success',
+                                   'overdue'   => 'important',
+                                   'cancelled' => 'inverse');
+
     public function load(ObjectManager $manager)
     {
-        $model = new StatusModel;
-        $statusList = $model->getStatusList();
-
-        foreach ($statusList as $status) {
+        foreach ($this->statusList as $status => $label) {
             $entity = new Status;
-            $entity->setName($status);
+            $entity->setName($status)
+                   ->setLabel($label);
+
             $manager->persist($entity);
         }
 

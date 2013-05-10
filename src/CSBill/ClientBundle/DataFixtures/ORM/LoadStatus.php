@@ -24,12 +24,15 @@ class LoadStatus implements FixtureInterface
     {
         // Active
         $active = new Status();
-        $active->setName('active');
+        $active->setName('active')
+               ->setLabel('success');
         $manager->persist($active);
 
         // InActive
         $inActive = new Status();
-        $inActive->setName('inactive');
+        $inActive->setName('inactive')
+                 ->setLabel('warning');
+
         $manager->persist($inActive);
 
         // flush client statuses
