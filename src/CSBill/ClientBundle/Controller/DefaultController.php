@@ -13,10 +13,8 @@ namespace CSBill\ClientBundle\Controller;
 
 use CS\CoreBundle\Controller\Controller;
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Model\Status;
 use CSBill\DataGridBundle\Grid\Filters;
 use APY\DataGridBundle\Grid\Source\Entity;
-use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
@@ -29,7 +27,7 @@ class DefaultController extends Controller
     /**
      * List all the clients
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
@@ -37,8 +35,6 @@ class DefaultController extends Controller
 
         // Get a Grid instance
         $grid = $this->get('grid');
-
-        $request = $this->getRequest();
 
         // TODO : get better way of adding filters & search instead of defining it in the controller like this
         $filters = new Filters($this->getRequest());
@@ -68,9 +64,9 @@ class DefaultController extends Controller
             }
 
             if ($search) {
-                $alias = $qb->getRootAlias();
+                $aliases = $qb->getRootAliases();
 
-                $qb->andWhere($alias.'.name LIKE :search')
+                $qb->andWhere($aliases[0].'.name LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });
@@ -79,21 +75,26 @@ class DefaultController extends Controller
         $grid->setSource($source);
 
         // Custom actions column in the wanted position
-        $viewColumn = new ActionsColumn('info_column', $this->get('translator')->trans('Info'));
-        $grid->addColumn($viewColumn, 100);
+        //$viewColumn = new ActionsColumn('info_column', $this->get('translator')->trans('Info'));
+        //$grid->addColumn($viewColumn, 100);
 
         $viewAction = new RowAction($this->get('translator')->trans('View'), '_clients_view');
-        $viewAction->setColumn('info_column');
-        $grid->addRowAction($viewAction);
+        $viewAction->setAttributes(array('class' => 'btn'));
+        //$viewAction->setColumn('info_column');
+        //$grid->addRowAction($viewAction);
 
-        $editColumn = new ActionsColumn('edit_column', $this->get('translator')->trans('Edit'));
-        $grid->addColumn($editColumn, 200);
+        //$editColumn = new ActionsColumn('edit_column', $this->get('translator')->trans('Edit'));
+        //$grid->addColumn($editColumn, 200);
 
         $editAction = new RowAction($this->get('translator')->trans('Edit'), '_clients_edit');
-        $editAction->setColumn('edit_column');
-        $grid->addRowAction($editAction);
+        $editAction->setAttributes(array('class' => 'btn'));
+        //$editAction->setColumn('edit_column');
+        //$grid->addRowAction($editAction);
 
-        $grid->addMassAction(new DeleteMassAction());
+        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
+        $grid->addColumn($actionsRow, 100);
+
+        //$grid->addMassAction(new DeleteMassAction());
 
         $grid->hideColumns(array('updated', 'deleted'));
 
@@ -104,7 +105,7 @@ class DefaultController extends Controller
     /**
      * Adds a new client
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction()
     {
@@ -135,7 +136,8 @@ class DefaultController extends Controller
     /**
      * Edit a client
      *
-     * @return Response
+     * @param Client $client
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Client $client)
     {
@@ -147,7 +149,8 @@ class DefaultController extends Controller
     /**
      * View a client
      *
-     * @return Response
+     * @param Client $client
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewAction(Client $client)
     {
