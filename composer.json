@@ -7,7 +7,7 @@
         "general billing",
         "open-source billing"
     ],
-    "homepage": "http://customscripts.co.za",
+    "homepage": "http://csbill.github.io",
     "license": "MIT",
     "authors": [
         {
@@ -36,9 +36,9 @@
         "customscripts/user-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "apy/datagrid-bundle" : "dev-master",
-        "zendframework/zend-stdlib" : "2.1.*",
-        "pagerfanta/pagerfanta" : "dev-master",
+        "apy/datagrid-bundle": "dev-master",
+        "zendframework/zend-stdlib": "2.1.*",
+        "pagerfanta/pagerfanta": "1.0.*",
         "stof/doctrine-extensions-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "jms/debugging-bundle": "dev-master",

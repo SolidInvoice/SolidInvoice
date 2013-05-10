@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "2e4fafcde1331344d85d0a85064b314c",
+    "hash": "cdca5e3d57fe76d4ece0dde43c5e5758",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -112,18 +112,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CustomScripts/SettingsBundle.git",
-                "reference": "74dbbb509aa3c406c14abd8fe79f59c8086494c4"
+                "reference": "d2a1c4a56f53e5c9893df61164b9533a99fbe3d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CustomScripts/SettingsBundle/zipball/74dbbb509aa3c406c14abd8fe79f59c8086494c4",
-                "reference": "74dbbb509aa3c406c14abd8fe79f59c8086494c4",
+                "url": "https://api.github.com/repos/CustomScripts/SettingsBundle/zipball/d2a1c4a56f53e5c9893df61164b9533a99fbe3d4",
+                "reference": "d2a1c4a56f53e5c9893df61164b9533a99fbe3d4",
                 "shasum": ""
             },
             "require": {
                 "customscripts/core-bundle": "dev-master",
                 "php": ">=5.3.3",
-                "symfony/framework-bundle": "2.2.*@dev"
+                "symfony/framework-bundle": "2.2.*@dev",
+                "zendframework/zend-config": "2.1.*"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -146,7 +147,7 @@
             "keywords": [
                 "Settings"
             ],
-            "time": "2013-04-23 10:09:48"
+            "time": "2013-05-10 10:23:05"
         },
         {
             "name": "customscripts/user-bundle",
@@ -1123,20 +1124,23 @@
         },
         {
             "name": "jdorn/sql-formatter",
-            "version": "v1.2.0",
+            "version": "v1.2.9",
             "source": {
                 "type": "git",
-                "url": "git://github.com/jdorn/sql-formatter.git",
-                "reference": "v1.2.0"
+                "url": "https://github.com/jdorn/sql-formatter.git",
+                "reference": "v1.2.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/jdorn/sql-formatter/archive/v1.2.0.zip",
-                "reference": "v1.2.0",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/v1.2.9",
+                "reference": "v1.2.9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
             "extra": {
@@ -1151,7 +1155,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL"
+                "MIT"
             ],
             "authors": [
                 {
@@ -1166,7 +1170,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2012-12-22 21:46:50"
+            "time": "2013-04-26 18:42:52"
         },
         {
             "name": "jms/aop-bundle",
@@ -1601,7 +1605,7 @@
                     "Knp\\Bundle\\MenuBundle": ""
                 }
             },
-            "time": "2013-03-18 17:08:00"
+            "time": "2013-05-01 01:55:58"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1738,16 +1742,16 @@
         },
         {
             "name": "pagerfanta/pagerfanta",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/whiteoctober/Pagerfanta.git",
-                "reference": "48ed04c9797e96c70cfc514d0dc0ded8546f2b55"
+                "reference": "v1.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/48ed04c9797e96c70cfc514d0dc0ded8546f2b55",
-                "reference": "48ed04c9797e96c70cfc514d0dc0ded8546f2b55",
+                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/v1.0.0",
+                "reference": "v1.0.0",
                 "shasum": ""
             },
             "require": {
@@ -1796,7 +1800,7 @@
                 "paginator",
                 "paging"
             ],
-            "time": "2013-04-16 21:43:21"
+            "time": "2013-04-24 11:35:36"
         },
         {
             "name": "phpoption/phpoption",
@@ -2509,6 +2513,48 @@
             "time": "2013-04-08 12:40:11"
         },
         {
+            "name": "zendframework/zend-config",
+            "version": "2.1.5",
+            "target-dir": "Zend/Config",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendConfig.git",
+                "reference": "release-2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendConfig/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Config\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides a nested object property based user interface for accessing this configuration data within application code",
+            "keywords": [
+                "config",
+                "zf2"
+            ],
+            "time": "2013-02-20 08:29:59"
+        },
+        {
             "name": "zendframework/zend-stdlib",
             "version": "2.1.5",
             "target-dir": "Zend/Stdlib",
@@ -2565,7 +2611,6 @@
         "doctrine/doctrine-migrations-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
         "apy/datagrid-bundle": 20,
-        "pagerfanta/pagerfanta": 20,
         "stof/doctrine-extensions-bundle": 20,
         "jms/debugging-bundle": 20,
         "knplabs/knp-menu": 20,
