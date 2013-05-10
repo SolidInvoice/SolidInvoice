@@ -2,10 +2,10 @@
 
 namespace CSBill\CoreBundle\Mailer;
 
-use CSBill\CoreBundle\Manager\SettingsManager;
+use CS\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Swfit_Mailer;
+use Swift_Mailer;
 
 interface MailerInterface
 {

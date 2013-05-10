@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Swift_Mailer;
 
-class Mailer
+class Mailer implements MailerInterface
 {
     /**
      * @var Swift_Mailer
@@ -38,7 +38,7 @@ class Mailer
      */
     protected $dispatcher;
 
-    public function __construct($mailer, SettingsManager $settings)
+    public function __construct(Swift_Mailer $mailer, SettingsManager $settings)
     {
         $this->mailer = $mailer;
         $this->settings = $settings;
