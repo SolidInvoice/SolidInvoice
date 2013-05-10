@@ -62,12 +62,17 @@ class DefaultController extends Controller
 
         $statusList = $this->getRepository('CSBillInvoiceBundle:Status')->findAll();
 
+        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
 
+        $totalIncome = $invoiceRepository->getTotalIncome();
+        $totalOutstanding = $invoiceRepository->getTotalOutstanding();
 
         // Return the response of the grid to the template
         return $grid->getGridResponse('CSBillInvoiceBundle:Default:index.html.twig',
                     array(
                             'status_list'       => $statusList,
+                            'total_income'      => $totalIncome,
+                            'total_outstanding' => $totalOutstanding
                         )
                 );
     }

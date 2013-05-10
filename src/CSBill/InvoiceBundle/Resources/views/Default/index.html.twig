@@ -8,38 +8,52 @@
  # file that was distributed with this source code.
 #}
 
-{% set parent = "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+{% set parent = "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
 {% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
 
 {% block title %}{{ "Invoices"|trans }}{% endblock %}
 
-{% block sidebar %}
+{% block sidebar_left %}
     {{ menu('invoices_index') }}
-{% endblock sidebar %}
+{% endblock sidebar_left %}
 
 {% block content %}
-
-    {#<div class="row-fluid">
-        <div class="well well-small span3 text-center" style="
-    color: #468847; background-color: #dff0d8; border: 1px solid #d6e9c6;
-">
-            <h3>R560</h3>Income
-        </div><div class="well well-small span3 text-center" style="
-    color: #b94a48;
-    background-color: pink;
-    border: #b94a48;
-">
-            <h3>R560</h3>Outstanding</div>
-    </div>#}
-
-    {{ parent() }}
-
     <div class="row-fluid">
-        <h5>{{ "Invoice Status Legend"|trans }}</h5>
+        {{ parent() }}
+
+        <div class="row-fluid">
+            <h5>{{ "Invoice Status Legend"|trans }}</h5>
+
             {% for status in status_list %}
                 {{ status_label(status) }}
             {% endfor %}
-
+        </div>
     </div>
-{% endblock %}
+{% endblock content %}
+
+{% block sidebar_right %}
+    <div class="row-fluid">
+        <div class="well well-small text-center">
+            <a class="btn btn-large" href="{{ path("_invoices_create") }}">
+                <i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}
+            </a>
+        </div>
+        <div class="well well-small text-center income-block">
+            <h3>{{ total_income|currency }}</h3>
+            {{ "Income"|trans }}
+        </div>
+        <div class="well well-small text-center outstanding-block">
+            <h3>{{ total_outstanding|currency }}</h3>
+            {{ "Outstanding"|trans }}
+        </div>
+
+        <ul class="unstyled">
+            {% for status in status_list %}
+                <li>
+                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} Invoices
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock sidebar_right %}
