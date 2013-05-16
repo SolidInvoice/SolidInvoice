@@ -62,6 +62,14 @@
                 <source>contacts</source>
                 <target>Contacts</target>
             </trans-unit>
+            <trans-unit id="16">
+                <source>invoices</source>
+                <target>Invoices</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>quotes</source>
+                <target>Quotes</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
