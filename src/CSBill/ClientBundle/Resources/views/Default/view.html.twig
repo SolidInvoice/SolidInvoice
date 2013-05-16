@@ -77,6 +77,17 @@
 
 {% block sidebar_right %}
 
+    <div class="well well-small">
+        <div class="text-center">
+            <ul class="nav client-action-buttons">
+                <li>
+                    <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-large"><i class="icon-file-alt"></i> {{ "Create Quote"|trans }}</a>
+                </li>
+                <li>
+                    <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-large"><i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}</a>
+                </li>
+            </ul>
+        </div>
         <div class="row-fluid">
             <div class="span6 text-success text-center">
                 <h3>{{ invoice_manager.totalIncome(client)|currency }}</h3>
