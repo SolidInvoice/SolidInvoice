@@ -54,7 +54,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param mixed $object
+     * @param  mixed  $object
      * @return string
      */
     public function getStatusLabel($object)
@@ -65,7 +65,7 @@ class StatusExtension extends \Twig_Extension
     /**
      * Return the status converted into a label string
      *
-     * @param mixed $object
+     * @param  mixed  $object
      * @return string
      */
     public function renderStatusLabel($object)

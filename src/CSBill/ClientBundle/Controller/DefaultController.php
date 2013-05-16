@@ -18,7 +18,6 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
-use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\QueryBuilder as QB;
 use CSBill\ClientBundle\Form\Type\ClientType;
 
@@ -136,7 +135,7 @@ class DefaultController extends Controller
     /**
      * Edit a client
      *
-     * @param Client $client
+     * @param  Client                                     $client
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Client $client)
@@ -166,7 +165,7 @@ class DefaultController extends Controller
     /**
      * View a client
      *
-     * @param Client $client
+     * @param  Client                                     $client
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewAction(Client $client)

@@ -12,7 +12,7 @@ interface MailerInterface
     /**
      * Constructor
      *
-     * @param Swift_Mailer $mailer
+     * @param Swift_Mailer    $mailer
      * @param SettingsManager $settings
      */
     public function __construct(Swift_Mailer $mailer, SettingsManager $settings);

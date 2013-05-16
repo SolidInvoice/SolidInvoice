@@ -83,7 +83,7 @@ class Mailer implements MailerInterface
     /**
      * Emails an invoice to the customers
      *
-     * @param Invoice $invoice
+     * @param  Invoice $invoice
      * @return boolean If the email was successfully sent
      */
     public function sendInvoice(Invoice $invoice)
@@ -112,7 +112,7 @@ class Mailer implements MailerInterface
     /**
      * Emails a quote to the customers
      *
-     * @param Quote $quote
+     * @param  Quote   $quote
      * @return boolean If the email was successfully sent
      */
     public function sendQuote(Quote $quote)
@@ -141,8 +141,8 @@ class Mailer implements MailerInterface
     /**
      * Get the subject for an email
      *
-     * @param string $settingsKey
-     * @param integer $id
+     * @param  string  $settingsKey
+     * @param  integer $id
      * @return string
      */
     public function getSubject($settingsKey, $id = null)
@@ -151,11 +151,11 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * @param string $subject
-     * @param string|array $users
-     * @param string|null $htmlTemplate
-     * @param string|null $textTemplate
-     * @param MessageEventInterface $event
+     * @param  string                              $subject
+     * @param  string|array                        $users
+     * @param  string|null                         $htmlTemplate
+     * @param  string|null                         $textTemplate
+     * @param  MessageEventInterface               $event
      * @return int
      * @throws Exception\UnexpectedFormatException
      */
@@ -165,7 +165,7 @@ class Mailer implements MailerInterface
 
         $fromAddress = (string) $this->settings->get('email.from_address');
 
-        if(!empty($fromAddress)) {
+        if (!empty($fromAddress)) {
             $fromName = (string) $this->settings->get('email.from_name');
 
             $message->setFrom($fromAddress, $fromName);
@@ -181,7 +181,7 @@ class Mailer implements MailerInterface
         $message->setSubject($subject)
                 ->setTo($users);
 
-        if(null !== $event) {
+        if (null !== $event) {
             $event->setHtmlTemplate($htmlTemplate);
             $event->setTextTemplate($textTemplate);
             $event->setMessage($message);
@@ -194,7 +194,7 @@ class Mailer implements MailerInterface
 
         $format = (string) $this->settings->get('email.format');
 
-        switch($format) {
+        switch ($format) {
             case 'html' :
                 $message->setBody($htmlTemplate, 'text/html');
             break;
@@ -216,13 +216,12 @@ class Mailer implements MailerInterface
         $mailerEvent->setMessage($message);
         $this->dispatcher->dispatch(MailerEvents::MAILER_SEND, $mailerEvent);
 
-
         return $this->mailer->send($message);
     }
 
     /**
      * @param $template
-     * @param array $parameters
+     * @param  array       $parameters
      * @return null|string
      */
     protected function getTemplate($template, array $parameters = array())

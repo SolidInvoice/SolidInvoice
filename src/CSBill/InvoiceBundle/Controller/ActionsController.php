@@ -10,8 +10,6 @@
 
 namespace CSBill\InvoiceBundle\Controller;
 
-use Symfony\Component\Validator\Constraints\Email;
-
 use CS\CoreBundle\Controller\Controller;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Status;

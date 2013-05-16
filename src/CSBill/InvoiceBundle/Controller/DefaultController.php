@@ -16,7 +16,6 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Response;
 use CSBill\ClientBundle\Entity\Client;
 

@@ -10,8 +10,6 @@
 
 namespace CSBill\QuoteBundle\Controller;
 
-use Symfony\Component\Validator\Constraints\Email;
-
 use CS\CoreBundle\Controller\Controller;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Model\Status;

@@ -124,7 +124,7 @@ class SettingsLoader implements SettingsLoaderInterface
     }
 
     /**
-     * @param array $parameters
+     * @param  array $parameters
      * @return int
      */
     protected function dumpParameters(array $parameters = array())

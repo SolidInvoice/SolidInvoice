@@ -22,7 +22,7 @@ class AjaxController extends Controller
     /**
      * Get client info
      *
-     * @param Client $client
+     * @param  Client                                     $client
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function infoAction(Client $client)
@@ -33,7 +33,7 @@ class AjaxController extends Controller
     /**
      * Add a new contact to a client
      *
-     * @param Client $client
+     * @param  Client                                     $client
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addcontactAction(Client $client)
@@ -45,10 +45,10 @@ class AjaxController extends Controller
 
         $request = $this->getRequest();
 
-        if($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
             $form->bind($request);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $em = $this->getEm();
 
                 $em->persist($contact);

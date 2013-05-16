@@ -57,7 +57,7 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * @param int|float $amount
+     * @param  int|float $amount
      * @return string
      */
     public function formatCurrency($amount)
@@ -66,8 +66,8 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * @param int|float $amount
-     * @param int $percentage
+     * @param  int|float $amount
+     * @param  int       $percentage
      * @return float|int
      */
     public function formatPercentage($amount, $percentage = 0)

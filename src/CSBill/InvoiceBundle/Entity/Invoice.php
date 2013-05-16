@@ -455,7 +455,7 @@ class Invoice
 
             $this->setBaseTotal($total);
 
-            if($this->discount > 0) {
+            if ($this->discount > 0) {
                 $total -= ($total * $this->discount) / 100;
             }
 

@@ -27,7 +27,7 @@ class InvoiceManager extends ContainerAware
     /**
      * Create an invoice from a quote
      *
-     * @param Quote $quote
+     * @param  Quote   $quote
      * @return Invoice
      */
     public function createFromQuote(Quote $quote)
@@ -42,15 +42,15 @@ class InvoiceManager extends ContainerAware
 
         $this->copyFieldValues($quote, $invoice);
 
-        foreach($metadata->getAssociationNames() as $mappingField) {
-            if('status' === $mappingField) {
+        foreach ($metadata->getAssociationNames() as $mappingField) {
+            if ('status' === $mappingField) {
                 continue;
             }
 
-            if('items' === $mappingField) {
+            if ('items' === $mappingField) {
                 $items = $metadata->getFieldValue($quote, $mappingField);
 
-                foreach($items as $item) {
+                foreach ($items as $item) {
                     $invoiceItem = new Item;
                     $this->copyFieldValues($item, $invoiceItem);
                     $invoice->addItem($invoiceItem);
@@ -67,8 +67,8 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
-     * @param null $status
-     * @param Client $client
+     * @param  null   $status
+     * @param  Client $client
      * @return int
      */
     public function getCount($status = null, Client $client = null)
@@ -77,7 +77,7 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
-     * @param Client $client
+     * @param  Client $client
      * @return int
      */
     public function getTotalIncome(Client $client = null)
@@ -86,7 +86,7 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
-     * @param Client $client
+     * @param  Client $client
      * @return int
      */
     public function getTotalOutstanding(Client $client = null)
@@ -106,9 +106,9 @@ class InvoiceManager extends ContainerAware
         $metadata = $em->getClassMetadata(get_class($object));
         $cloneMetadata = $em->getClassMetadata(get_class($clone));
 
-        foreach($metadata->getFieldNames() as $field) {
-            if($cloneMetadata->hasField($field)) {
-                if(in_array($field, array('created', 'updated', 'id'), true)) {
+        foreach ($metadata->getFieldNames() as $field) {
+            if ($cloneMetadata->hasField($field)) {
+                if (in_array($field, array('created', 'updated', 'id'), true)) {
                     continue;
                 }
 
