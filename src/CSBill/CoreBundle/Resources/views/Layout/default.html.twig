@@ -60,6 +60,14 @@
                     decimal : "{{ currency.decimalSeparator }}"
                 }
             };
+
+        {% set script = block("script") %}
+
+        {% if script %}
+            $(function(){
+                {{ script|raw }}
+            });
+        {% endif %}
     </script>
 {% endblock %}
 
@@ -71,7 +79,3 @@
     <hr />
     <small>{{ "Powered by"|trans }} <a href="#">{{ app_name }}</a>
 {% endblock footer %}
-
-{% block body_bottom %}
-    {{ block('script') }}
-{% endblock %}

@@ -145,42 +145,39 @@
 
 {% block script %}
 {% spaceless %}
-    <script type="text/javascript">
+    {% if form.client.vars.data %}
+        $('#{{ form.client.vars.id }}').parents('div.control-group').hide();
+    {% endif %}
 
-        {% if form.client.vars.data %}
-            $('#{{ form.client.vars.id }}').parents('div.control-group').hide();
-        {% endif %}
+    $('#{{ form.client.vars.id }}').on('change', function(){
+        var client_select = $(this).parents('div.control-group'),
+            client_id = $(':selected', this).val();
 
-        $('#{{ form.client.vars.id }}').on('change', function(){
-            var client_select = $(this).parents('div.control-group'),
-                client_id = $(':selected', this).val();
-
-            // TODO : show ajax loader
-            $('#{{ form.client.vars.id }}-container').load(Routing.generate('_clients_info', {"id" : client_id}), function(a) {
-                client_select.hide();
-            });
+        // TODO : show ajax loader
+        $('#{{ form.client.vars.id }}-container').load(Routing.generate('_clients_info', {"id" : client_id}), function(a) {
+            client_select.hide();
         });
+    });
 
-        $('#quote-create-form').on('click', '.client-select-change', function(evt) {
-            evt.preventDefault();
-            $('#{{ form.client.vars.id }}-container').html('');
-            $('#{{ form.client.vars.id }}').parents('div.control-group').show();
-        });
+    $('#quote-create-form').on('click', '.client-select-change', function(evt) {
+        evt.preventDefault();
+        $('#{{ form.client.vars.id }}-container').html('');
+        $('#{{ form.client.vars.id }}').parents('div.control-group').show();
+    });
 
-        Quote.setSelector($('#quote-rows'));
-        {% for item in items %}
-            {% set field = form.items.vars.prototype[item] %}
-            Quote.addTemplate('{{ item }}', '{{ form_widget(field) }}');
-            Quote.addField("{{ item }}");
-        {% endfor %}
+    Quote.setSelector($('#quote-rows'));
+    {% for item in items %}
+        {% set field = form.items.vars.prototype[item] %}
+        Quote.addTemplate('{{ item }}', '{{ form_widget(field) }}');
+        Quote.addField("{{ item }}");
+    {% endfor %}
 
-        Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="icon-trash"></i></a>');
-        Quote.addField("trash");
+    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="icon-trash"></i></a>');
+    Quote.addField("trash");
 
-        {% if form.items|length == 0 %}
-            Quote.addRow();
-        {% endif %}
-    </script>
+    {% if form.items|length == 0 %}
+        Quote.addRow();
+    {% endif %}
 {% endspaceless %}
 {% endblock %}
 
