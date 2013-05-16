@@ -8,13 +8,13 @@
  # file that was distributed with this source code.
 #}
 
-{% extends "CSCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
 {% block title %}{{ client.name }}{% endblock title %}
 
-{% block sidebar %}
+{% block sidebar_left %}
 	{{ menu('clients_view') }}
-{% endblock sidebar %}
+{% endblock sidebar_left %}
 
 {% block heading %}
 	<fieldset>
@@ -56,3 +56,7 @@
 	</div>
 
 {% endblock content %}
+
+{% block sidebar_right %}
+
+{% endblock sidebar_right %}
