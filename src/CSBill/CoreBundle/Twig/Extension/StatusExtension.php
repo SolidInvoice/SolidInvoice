@@ -39,8 +39,27 @@ class StatusExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-                    new \Twig_SimpleFunction('status_label', array($this, 'getStatusLabel'), array('is_safe' => array('html')))
+                    new \Twig_SimpleFunction('status_label', array($this, 'renderStatusLabel'), array('is_safe' => array('html')))
                 );
+    }
+
+    /**
+     * @return array|void
+     */
+    public function getFilters()
+    {
+        return array(
+                new \Twig_SimpleFilter('status', array($this, 'getStatusLabel'), array('is_safe' => array('html')))
+        );
+    }
+
+    /**
+     * @param mixed $object
+     * @return string
+     */
+    public function getStatusLabel($object)
+    {
+        return $this->renderStatusLabel($object->getStatus());
     }
 
     /**
@@ -49,7 +68,7 @@ class StatusExtension extends \Twig_Extension
      * @param mixed $object
      * @return string
      */
-    public function getStatusLabel($object)
+    public function renderStatusLabel($object)
     {
         return $this->environment->render('CSBillCoreBundle:Status:label.html.twig', array('entity' => $object));
     }
