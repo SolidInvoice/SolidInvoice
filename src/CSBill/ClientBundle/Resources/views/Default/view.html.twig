@@ -77,4 +77,37 @@
 
 {% block sidebar_right %}
 
+        <div class="row-fluid">
+            <div class="span6 text-success text-center">
+                <h3>{{ invoice_manager.totalIncome(client)|currency }}</h3>
+                {{ "Income"|trans }}
+            </div>
+            <div class="span6 text-error text-center">
+                <h3>{{ invoice_manager.totalOutstanding(client)|currency }}</h3>
+                {{ "Outstanding"|trans }}
+            </div>
+        </div>
+        <br class="clearfix" />
+        <div class="row-fluid">
+            <ul class="nav nav-list">
+                <li>
+                    <label class="badge badge-info">{{ client.quotes|length }}</label> {{ "{0} Quotes|{1} Quote|]1,Inf] Quotes"|transchoice(client.quotes|length) }}
+                </li>
+                <li>
+                    <label class="badge badge-info">{{ client.invoices|length }}</label> {{ "{0} Invoices|{1} Invoice|]1,Inf] Invoices"|transchoice(client.invoices|length) }}
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <label class="badge badge-important">
+                        {{ invoice_manager.count('pending', client) }}
+                    </label> {{ "Outstanding Invoices"|trans }}
+                </li>
+                <li>
+                    <label class="badge badge-success">
+                        {{ invoice_manager.count('paid', client) }}
+                    </label> {{ "Paid Invoices"|trans }}
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock sidebar_right %}
