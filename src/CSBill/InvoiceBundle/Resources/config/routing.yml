@@ -3,8 +3,10 @@ _invoices_index:
     defaults:  { _controller: CSBillInvoiceBundle:Default:index }
 
 _invoices_create:
-    pattern:   /create
-    defaults:  { _controller: CSBillInvoiceBundle:Default:create }
+    pattern:   /create/{client}
+    defaults:
+        _controller: CSBillInvoiceBundle:Default:create
+        client: null
 
 _invoices_edit:
     pattern:   /edit/{id}

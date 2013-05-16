@@ -18,6 +18,7 @@ use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Response;
+use CSBill\ClientBundle\Entity\Client;
 
 class DefaultController extends Controller
 {
@@ -50,11 +51,12 @@ class DefaultController extends Controller
                 );
     }
 
-    public function createAction()
+    public function createAction(Client $client = null)
     {
         $request = $this->getRequest();
 
         $invoice = new Invoice;
+        $invoice->setClient($client);
 
         $form = $this->createForm(new InvoiceType(), $invoice);
 
@@ -64,7 +66,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                $em = $this->get('doctrine')->getManager();
+                $em = $this->getEm();
 
                 $statusRepository = $this->getRepository('CSBillInvoiceBundle:Status');
 

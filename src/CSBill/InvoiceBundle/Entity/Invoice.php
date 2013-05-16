@@ -201,7 +201,7 @@ class Invoice
      * @param  Client  $client
      * @return Invoice
      */
-    public function setClient(Client $client)
+    public function setClient(Client $client = null)
     {
         $this->client = $client;
 
