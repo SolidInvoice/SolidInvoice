@@ -2,17 +2,33 @@
 
 namespace CSBill\InvoiceBundle\Manager;
 
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
-class InvoiceManager extends ContainerAware {
+class InvoiceManager extends ContainerAware
+{
+    /**
+     * @var \CSBill\InvoiceBundle\Repository\InvoiceRepository
+     */
+    protected $repository;
+
+    /**
+     * @param RegistryInterface $doctrine
+     */
+    public function __construct(RegistryInterface $doctrine)
+    {
+        $this->repository = $doctrine->getRepository('CSBillInvoiceBundle:Invoice');
+    }
 
     /**
      * Create an invoice from a quote
      *
      * @param Quote $quote
+     * @return Invoice
      */
     public function createFromQuote(Quote $quote)
     {
@@ -50,6 +66,39 @@ class InvoiceManager extends ContainerAware {
         return $invoice;
     }
 
+    /**
+     * @param null $status
+     * @param Client $client
+     * @return int
+     */
+    public function getCount($status = null, Client $client = null)
+    {
+        return $this->repository->getCountByStatus($status, $client);
+    }
+
+    /**
+     * @param Client $client
+     * @return int
+     */
+    public function getTotalIncome(Client $client = null)
+    {
+        return $this->repository->getTotalIncome($client);
+    }
+
+    /**
+     * @param Client $client
+     * @return int
+     */
+    public function getTotalOutstanding(Client $client = null)
+    {
+        return $this->repository->getTotalOutstanding($client);
+    }
+
+    /**
+     * Copy all the fields from one entity to another
+     * @param $object
+     * @param $clone
+     */
     protected function copyFieldValues($object, $clone)
     {
         $em = $this->container->get('doctrine')->getManager();
