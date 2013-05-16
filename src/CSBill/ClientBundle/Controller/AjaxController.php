@@ -19,7 +19,8 @@ class AjaxController extends Controller
     /**
      * Get client info
      *
-     * @return Response
+     * @param Client $client
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function infoAction(Client $client)
     {

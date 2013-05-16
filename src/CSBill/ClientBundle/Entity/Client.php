@@ -94,7 +94,7 @@ class Client
     private $invoices;
 
     /**
-     * @var DateTIme $created
+     * @var \DateTIme $created
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -103,7 +103,7 @@ class Client
     private $created;
 
     /**
-     * @var DateTime $updated
+     * @var \DateTime $updated
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -112,7 +112,7 @@ class Client
     private $updated;
 
     /**
-     * @var DateTime $deleted
+     * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
      * @Assert\DateTime()
