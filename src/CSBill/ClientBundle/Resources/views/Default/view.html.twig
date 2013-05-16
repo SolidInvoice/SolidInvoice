@@ -61,6 +61,16 @@
 
             <div id="contacts-ajax-modal" class="modal hide fade" tabindex="-1" data-target="{{ path("_clients_add_contact", {"id" : client.id}) }}"></div>
 		</div>
+
+        <div class="span6">
+            <div class="row-fluid">
+                {% include "CSBillClientBundle::invoice_list.html.twig" %}
+            </div>
+
+            <div class="row-fluid">
+                {% include "CSBillClientBundle::quote_list.html.twig" %}
+            </div>
+        </div>
 	</div>
 
 {% endblock content %}
