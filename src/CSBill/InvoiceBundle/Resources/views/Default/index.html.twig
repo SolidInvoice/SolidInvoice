@@ -34,26 +34,34 @@
 
 {% block sidebar_right %}
     <div class="row-fluid">
-        <div class="well well-small text-center">
-            <a class="btn btn-large" href="{{ path("_invoices_create") }}">
-                <i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}
-            </a>
-        </div>
-        <div class="well well-small text-center income-block">
-            <h3>{{ invoice_manager.totalIncome|currency }}</h3>
-            {{ "Income"|trans }}
-        </div>
-        <div class="well well-small text-center outstanding-block">
-            <h3>{{ invoice_manager.totalOutstanding|currency }}</h3>
-            {{ "Outstanding"|trans }}
-        </div>
-
-        <ul class="unstyled">
-            {% for status in status_list %}
+        <div class="well well-small">
+            <ul class="nav">
                 <li>
-                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} {{ "Invoices"|trans }}
+                    <a class="btn btn-large" href="{{ path("_invoices_create") }}">
+                        <i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}
+                    </a>
                 </li>
-            {% endfor %}
-        </ul>
+            </ul>
+            <div class="row-fluid">
+                <div class="span6 text-center text-success">
+                    <h3>{{ invoice_manager.totalIncome|currency }}</h3>
+                    {{ "Income"|trans }}
+                </div>
+                <div class="span6 text-center text-error">
+                    <h3>{{ invoice_manager.totalOutstanding|currency }}</h3>
+                    {{ "Outstanding"|trans }}
+                </div>
+            </div>
+            <br class="clearfix" />
+            <div class="row-fluid">
+                <ul class="nav nav-list">
+                    {% for status in status_list %}
+                        <li>
+                            <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} {{ "Invoices"|trans }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 {% endblock sidebar_right %}
