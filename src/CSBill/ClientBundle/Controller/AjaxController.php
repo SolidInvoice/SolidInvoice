@@ -13,9 +13,12 @@ namespace CSBill\ClientBundle\Controller;
 
 use CS\CoreBundle\Controller\Controller;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Contact;
+use CSBill\ClientBundle\Form\Type\ContactType;
 
 class AjaxController extends Controller
 {
+
     /**
      * Get client info
      *
@@ -25,5 +28,36 @@ class AjaxController extends Controller
     public function infoAction(Client $client)
     {
         return $this->render('CSBillClientBundle:Ajax:info.html.twig', array('client' => $client));
+    }
+
+    /**
+     * Add a new contact to a client
+     *
+     * @param Client $client
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addcontactAction(Client $client)
+    {
+        $contact = new Contact();
+        $contact->setClient($client);
+
+        $form = $this->createForm(new ContactType(), $contact);
+
+        $request = $this->getRequest();
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $form->bind($request);
+
+            if($form->isValid()) {
+                $em = $this->getEm();
+
+                $em->persist($contact);
+                $em->flush();
+
+                return $this->render('CSBillClientBundle:Ajax:contact_add.html.twig', array('contact' => $contact));
+            }
+        }
+
+        return $this->render('CSBillClientBundle:Ajax:contact_add.html.twig', array('form' => $form->createView(), 'client' => $client));
     }
 }

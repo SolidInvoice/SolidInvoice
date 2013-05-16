@@ -1,0 +1,28 @@
+{% if contact is defined %}
+
+    <div class="modal-body">
+        <div class="alert alert-success">
+            <h3><i class="icon-ok"></i> {{ "Success"|trans }}</h3>
+            {{ "The contact was saved successfully"|trans }}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button data-dismiss="modal" class="btn">{{ "Close"|trans }}</button>
+    </div>
+{% else %}
+    <form action="{{ path("_clients_add_contact", {"id" : client.id}) }}" method="post">
+
+        <div class="modal-header">
+            <h3>{{ "Add Contact"|trans }}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button data-dismiss="modal" class="btn">{{ "Close"|trans }}</button>
+            <button type="submit" class="btn btn-info">{{ "Save"|trans }}</button>
+        </div>
+    </form>
+{% endif %}

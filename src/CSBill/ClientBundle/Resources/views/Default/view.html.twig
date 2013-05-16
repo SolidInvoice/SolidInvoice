@@ -86,6 +86,9 @@
                 <li>
                     <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-large"><i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}</a>
                 </li>
+                <li>
+                    <a href="#" class="btn btn-large add-contact-button" data-id="{{ client.id }}"><i class="icon-user"></i> {{ "Add Contact"|trans }}</a>
+                </li>
             </ul>
         </div>
         <div class="row-fluid">
