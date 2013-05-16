@@ -40,18 +40,18 @@
             </a>
         </div>
         <div class="well well-small text-center income-block">
-            <h3>{{ total_income|currency }}</h3>
+            <h3>{{ invoice_manager.totalIncome|currency }}</h3>
             {{ "Income"|trans }}
         </div>
         <div class="well well-small text-center outstanding-block">
-            <h3>{{ total_outstanding|currency }}</h3>
+            <h3>{{ invoice_manager.totalOutstanding|currency }}</h3>
             {{ "Outstanding"|trans }}
         </div>
 
         <ul class="unstyled">
             {% for status in status_list %}
                 <li>
-                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} Invoices
+                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} {{ "Invoices"|trans }}
                 </li>
             {% endfor %}
         </ul>
