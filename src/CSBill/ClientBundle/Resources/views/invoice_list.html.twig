@@ -1,0 +1,23 @@
+<legend><h3>{{ "invoices"|trans }}</h3></legend>
+
+{% for invoice in client.invoices %}
+    <div class="row-fluid">
+        <div class="span2">
+            {{ status_label(invoice.status) }}
+        </div>
+        <div class="span2">
+            {{ invoice.id }}
+        </div>
+        <div class="span3">
+            {{ invoice.created|date }}
+        </div>
+        <div class="span3">
+            {{ invoice.total|currency }}
+        </div>
+        <div class="span2">
+            <a href="{{ path("_invoices_view", {"id" : invoice.id}) }}" class="btn"><i class="icon-eye-open"></i> {{ "view"|trans }}</a>
+        </div>
+    </div>
+{% else %}
+    <span class="muted">{{ "This client does not have any invoices yet."|trans }} <a href="{{ path("_invoices_create", {"client" : client.id}) }}">{{ "Create one now."|trans }}</a></span>
+{% endfor %}

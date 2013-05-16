@@ -1,0 +1,23 @@
+<legend><h3>{{ "quotes"|trans }}</h3></legend>
+
+{% for quote in client.quotes %}
+    <div class="row-fluid">
+        <div class="span2">
+            {{ status_label(quote.status) }}
+        </div>
+        <div class="span2">
+            {{ quote.id }}
+        </div>
+        <div class="span3">
+            {{ quote.created|date }}
+        </div>
+        <div class="span3">
+            {{ quote.total|currency }}
+        </div>
+        <div class="span2">
+            <a href="#" class="btn"><i class="icon-eye-open"></i> View</a>
+        </div>
+    </div>
+{% else %}
+    <span class="muted">{{ "This client does not have any quotes yet."|trans }} <a href="{{ path("_quotes_create", {"client" : client.id}) }}">{{ "Create one now."|trans }}</a></span>
+{% endfor %}
