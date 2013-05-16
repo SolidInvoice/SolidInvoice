@@ -68,7 +68,7 @@ class Client
     /**
      * @var ArrayCollection $contacts
      *
-     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"}, fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"firstname" = "ASC"})
      * @Assert\Valid()
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
@@ -78,7 +78,7 @@ class Client
     /**
      * @var ArrayCollection $quotes
      *
-     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY")
      * @Assert\Valid()
      */
     private $quotes;
@@ -86,7 +86,7 @@ class Client
     /**
      * @var ArrayCollection $invoices
      *
-     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY")
      * @Assert\Valid()
      */
     private $invoices;
@@ -123,8 +123,8 @@ class Client
     public function __construct()
     {
         $this->contacts = new ArrayCollection;
-        $this->quotes = new ArrayCollection;
-        $this->invoices = new ArrayCollection;
+        $this->quotes = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     /**
