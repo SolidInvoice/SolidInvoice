@@ -190,10 +190,10 @@ class Quote
     /**
      * Set client
      *
-     * @param  Client $client
+     * @param  Client|null $client
      * @return Quote
      */
-    public function setClient(Client $client)
+    public function setClient(Client $client = null)
     {
         $this->client = $client;
 

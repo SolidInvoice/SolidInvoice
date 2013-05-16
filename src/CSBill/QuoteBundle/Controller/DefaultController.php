@@ -18,6 +18,7 @@ use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Response;
+use CSBill\ClientBundle\Entity\Client;
 
 class DefaultController extends Controller
 {
@@ -48,11 +49,12 @@ class DefaultController extends Controller
         return $grid->getGridResponse('CSBillQuoteBundle:Default:index.html.twig', array('status_list' => $statusList));
     }
 
-    public function createAction()
+    public function createAction(Client $client = null)
     {
         $request = $this->getRequest();
 
         $quote = new Quote;
+        $quote->setClient($client);
 
         $form = $this->createForm(new QuoteType(), $quote);
 

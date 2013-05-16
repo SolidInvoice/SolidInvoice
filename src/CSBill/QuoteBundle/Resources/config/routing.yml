@@ -3,8 +3,10 @@ _quotes_index:
     defaults:  { _controller: CSBillQuoteBundle:Default:index }
 
 _quotes_create:
-    pattern:   /create
-    defaults:  { _controller: CSBillQuoteBundle:Default:create }
+    pattern:   /create/{client}
+    defaults:
+        _controller: CSBillQuoteBundle:Default:create
+        client: null
 
 _quotes_edit:
     pattern:   /edit/{id}
