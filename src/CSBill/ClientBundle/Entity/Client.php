@@ -79,6 +79,7 @@ class Client
      * @var ArrayCollection $quotes
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"created" = "ASC"})
      * @Assert\Valid()
      */
     private $quotes;
@@ -87,6 +88,7 @@ class Client
      * @var ArrayCollection $invoices
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"created" = "ASC"})
      * @Assert\Valid()
      */
     private $invoices;
