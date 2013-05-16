@@ -39,9 +39,10 @@ class GlobalExtension extends Twig_Extension
     public function getGlobals()
     {
         return array(
-                    'query'     => $this->getQuery(),
-                    'currency'  => $this->container->get('currency'),
-                    'settings'  => $this->container->get('settings')->getSettings()
+                    'query'            => $this->getQuery(),
+                    'currency'         => $this->container->get('currency'),
+                    'settings'         => $this->container->get('settings')->getSettings(),
+                    'invoice_manager'  => $this->container->get('invoice.manager')
             );
     }
 
