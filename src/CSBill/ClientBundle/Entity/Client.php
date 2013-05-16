@@ -304,7 +304,7 @@ class Client
      */
     public function removeInvoice(Invoice $invoice)
     {
-        $this->invoices->removeElement(invoice);
+        $this->invoices->removeElement($invoice);
 
         return $this;
     }
