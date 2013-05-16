@@ -143,7 +143,24 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(new ClientType, $client);
 
-        return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
+        $request = $this->getRequest();
+
+        if ($request->getMethod() === 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->persist($client);
+                $em->flush();
+
+                $this->flash($this->trans('client_saved'), 'success');
+
+                return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
+            }
+        }
+
+        return $this->render('CSBillClientBundle:Default:edit.html.twig', array('client' => $client, 'form' => $form->createView()));
     }
 
     /**

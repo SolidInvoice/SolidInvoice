@@ -1,0 +1,30 @@
+{#
+ #
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block title %}{{ 'edit_client'|trans }} - {{ client }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('clients_edit') }}
+{% endblock sidebar %}
+
+{% block content %}
+    <form action="{{ path("_clients_edit", {"id" : client.id}) }}" method="post"{{ form_enctype(form) }}>
+
+        {{ form_widget(form) }}
+
+        <div class="control-group">
+            <div class="controls">
+                <input type="submit" value="{{ "save"|trans }}" class="btn" />
+            </div>
+        </div>
+    </form>
+{% endblock %}
