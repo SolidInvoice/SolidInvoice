@@ -23,6 +23,7 @@
     {% stylesheets
         'bundles/csbillcore/css/*.css'
         'bundles/csbillcore/less/styles.less'
+        'bundles/csbillclient/less/*.less'
         filter="less, cssrewrite,?yui_css"
     %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
@@ -36,6 +37,7 @@
         "@CSCoreBundle/Resources/public/js/backbone.js"
         "@CSCoreBundle/Resources/public/js/plugins.js"
         "@CSCoreBundle/Resources/public/js/plugins/*.js"
+        "@CSBillClientBundle/Resources/public/js/*.js"
         "@CSCoreBundle/Resources/public/js/script.js"
         "@FOSJsRoutingBundle/Resources/public/js/router.js"
         filter="?yui_js"
