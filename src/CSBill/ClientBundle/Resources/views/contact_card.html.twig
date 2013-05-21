@@ -1,0 +1,17 @@
+<div class="well well-small contact-card" data-id="{{ contact.id }}">
+    <h4><i class="icon-user"></i> {{ contact.firstname }} {{ contact.lastname }}</h4>
+
+    <dl class="dl-horizontal">
+        {% for contact_details in contact.details if contact_details.primary %}
+            <dt>{{ contact_details.type|title }}:</dt>
+            <dd>{{ contact_details.value|nl2br }}</dd>
+        {% endfor %}
+    </dl>
+
+    <div class="pull-right contact-actions">
+        <a href="{{ path('_clients_edit_contact', {'id' : contact.id}) }}" rel="tooltip" title="{{ "Edit this contact"|trans }}" class="text-info edit-contact"><i class="icon-pencil"></i></a>
+        <a href="#" rel="tooltip" title="{{ "Delete this contact"|trans }}" class="text-error delete-contact"><i class="icon-trash"></i></a>
+    </div>
+
+    <br class="clearfix" />
+</div>

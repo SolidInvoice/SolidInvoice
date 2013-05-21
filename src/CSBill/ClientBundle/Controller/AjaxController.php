@@ -15,6 +15,7 @@ use CS\CoreBundle\Controller\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Type\ContactType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
 {
@@ -59,5 +60,16 @@ class AjaxController extends Controller
         }
 
         return $this->render('CSBillClientBundle:Ajax:contact_add.html.twig', array('form' => $form->createView(), 'client' => $client));
+
+    /**
+     * Renders a contact card
+     *
+     * @param  Contact                                    $contact
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function contactcardAction(Contact $contact)
+    {
+        return new JsonResponse(array('content' => $this->renderView('CSBillClientBundle::contact_card.html.twig', array('contact' => $contact))));
+    }
     }
 }
