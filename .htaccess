@@ -2,5 +2,11 @@
     RewriteEngine On
 
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^css(.*)$ web/css/$1 [L]
+    RewriteRule ^images(.*)$ web/images/$1 [L]
+    RewriteRule ^js(.*)$ web/js/$1 [L]
+    RewriteRule ^uploads(.*)$ web/uploads/$1 [L]
+    RewriteRule ^bundles(.*)$ web/bundles/$1 [L]
+    RewriteRule ^swf(.*)$ web/swf/$1 [L]
     RewriteRule ^(.*)$ web/app.php [QSA,L]
 </IfModule>
