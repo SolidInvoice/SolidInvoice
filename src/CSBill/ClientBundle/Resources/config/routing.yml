@@ -21,7 +21,7 @@ _clients_info:
         expose: true
 
 _clients_add_contact:
-    pattern:   /ajax/contatcs/add/{id}
+    pattern:   /ajax/contacts/add/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:addcontact }
     options:
         expose: true
