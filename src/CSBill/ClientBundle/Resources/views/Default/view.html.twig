@@ -75,7 +75,7 @@
                     <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-large"><i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}</a>
                 </li>
                 <li>
-                    <a href="#" class="btn btn-large add-contact-button" data-id="{{ client.id }}"><i class="icon-user"></i> {{ "Add Contact"|trans }}</a>
+                    <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-large add-contact-button" data-id="{{ client.id }}"><i class="icon-user"></i> {{ "Add Contact"|trans }}</a>
                 </li>
             </ul>
         </div>
@@ -93,19 +93,19 @@
         <div class="row-fluid">
             <ul class="nav nav-list">
                 <li>
-                    <label class="badge badge-info">{{ client.quotes|length }}</label> {{ "{0} Quotes|{1} Quote|]1,Inf] Quotes"|transchoice(client.quotes|length) }}
+                    <label rel="tooltip" title="{{ "Total quotes for this client"|trans }}" class="badge badge-info">{{ client.quotes|length }}</label> {{ "{0} Quotes|{1} Quote|]1,Inf] Quotes"|transchoice(client.quotes|length) }}
                 </li>
                 <li>
-                    <label class="badge badge-info">{{ client.invoices|length }}</label> {{ "{0} Invoices|{1} Invoice|]1,Inf] Invoices"|transchoice(client.invoices|length) }}
+                    <label rel="tooltip" title="{{ "Total invoices for this client"|trans }}" class="badge badge-info">{{ client.invoices|length }}</label> {{ "{0} Invoices|{1} Invoice|]1,Inf] Invoices"|transchoice(client.invoices|length) }}
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <label class="badge badge-important">
+                    <label class="badge badge-important" rel="tooltip" title="{{ "Total number of outstanding invoices for this client"|trans }}">
                         {{ invoice_manager.count('pending', client) }}
                     </label> {{ "Outstanding Invoices"|trans }}
                 </li>
                 <li>
-                    <label class="badge badge-success">
+                    <label class="badge badge-success" rel="tooltip" title="{{ "Total number of paid invoices for this client"|trans }}">
                         {{ invoice_manager.count('paid', client) }}
                     </label> {{ "Paid Invoices"|trans }}
                 </li>
