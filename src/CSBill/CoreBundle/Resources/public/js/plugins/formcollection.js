@@ -24,9 +24,9 @@
 
             this.$el.before(add_link);
 
-            if(this.$el.find('fieldset:first').children().length > 0)
-            {
-                this.$el.find('fieldset:first').prepend($this.legend({"label" : $this.options.label, "counter" : ++$this.counter}));
+            if(this.$el.find('fieldset:first').children().length > 0) {
+                var options = {"heading" : 3, "label" : $this.options.label, "counter" : ++$this.counter};
+                this.$el.find('fieldset:first').prepend($this.legend(options));
             }
 
             return this;
@@ -36,30 +36,24 @@
         },
         "addForm" : function($this, l) {
 
+            var total = this.$el.hasClass('child') ? $('.content', this.$el).length : 0;
+
+            total += this.$el.siblings('.child').length;
+
             var prototype  = this.$el.attr('data-prototype'),
-                form = $(prototype.replace(/__name__/g, this.$el.siblings('.child').length)),
+                form = $(prototype.replace(/__name__/g, total)),
                 parents = this.$el.parents('.form-collection').length,
-                heading = this.heading + (parents === 2 ? 3 : parents),
-                scripts = new Array();
-
-            console.log(prototype);
-
+                heading = this.heading + (parents === 2 ? 3 : parents);
 
             form.find('fieldset:first').prepend(this.legend({"heading" : heading, "label" : this.options.label, "counter" : ++this.counter}));
 
             var div = $('<div />').addClass('child');
 
-            if(parents !== 2)
-            {
+            if(parents !== 2) {
                 div.addClass('well');
             }
 
             div.append(form);
-
-            /*if(typeof form[1] !== undefined)
-               {
-                scripts.push($(form[1]).html());
-               }*/
 
             var view = new FormCollectionView({"el" : div}),
                 el = view.render().el;
@@ -70,11 +64,6 @@
                 head = $('<h' + (heading + 1) + ' />').html(legend.children().first().html());
 
             legend.html(head);
-
-            /*for(var i = 0; i < scripts.length; i++)
-            {
-                $.globalEval(scripts[i]);
-            }*/
 
             return view;
         }

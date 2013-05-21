@@ -147,6 +147,7 @@
 {% block collection_widget %}
 {% spaceless %}
     <div class="form-collection">
+        {% set attr = attr|merge({'class': 'child well' }) %}
         {{ parent() }}
     </div>
 
