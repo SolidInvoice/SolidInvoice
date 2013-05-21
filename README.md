@@ -1,7 +1,7 @@
 CSBill
 ======
 
-[![Build Status](https://travis-ci.org/CustomScripts/CSBill.png?branch=master)](https://travis-ci.org/CustomScripts/CSBill)
+[![Build Status](https://travis-ci.org/CSBill/CSBill.png?branch=master)](https://travis-ci.org/CSBill/CSBill)
 
 Open-Source General Billing Manager
 
