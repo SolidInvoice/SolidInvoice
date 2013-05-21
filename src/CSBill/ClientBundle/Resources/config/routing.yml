@@ -34,5 +34,9 @@ _clients_contact_card:
     options:
         expose: true
 
+_clients_delete_contact:
+    pattern:   /ajax/contacts/delete/{id}
+    defaults:  { _controller: CSBillClientBundle:Ajax:deletecontact }
+    methods: POST
     options:
         expose: true

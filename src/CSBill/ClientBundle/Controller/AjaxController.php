@@ -124,5 +124,19 @@ class AjaxController extends Controller
     {
         return new JsonResponse(array('content' => $this->renderView('CSBillClientBundle::contact_card.html.twig', array('contact' => $contact))));
     }
+
+    /**
+     * Deletes a contact
+     *
+     * @param Contact $contact
+     * @return JsonResponse
+     */
+    public function deletecontactAction(Contact $contact)
+    {
+        $em = $this->getEm();
+        $em->remove($contact);
+        $em->flush();
+
+        return new JsonResponse(array("status" => "success"));
     }
 }

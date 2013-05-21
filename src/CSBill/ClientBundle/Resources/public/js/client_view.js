@@ -54,14 +54,33 @@ $(function(){
         };
 
         $('.edit-contact').ajaxModal('#contacts-ajax-modal', contactEdit);
-            evt.preventDefault();
-            modal.modal('loading');
 
-            $.post(form.attr('action'), form.serialize()).done(function(data) {
-                modal.modal('loading');
-                setTimeout(function(){
-                    modal.html(data);
-                }, 350);
+        /**
+         * DELETE CONTACT
+         */
+        $('body').on('click', '.delete-contact', function(evt) {
+            evt.preventDefault();
+
+            var contact = $(this).parents('.contact-card'),
+                contactId = contact.data('id');
+
+            bootbox.confirm('<i class="icon-exclamation-sign icon-2x"></i> Are you sure you want to delete this contact?', function(bool) {
+                if (true === bool) {
+                    setTimeout(function() {
+                        $('body').modalmanager('loading');
+                    }, 300);
+
+                    $.post(Routing.generate("_clients_delete_contact", {"id" : contactId}), function() {
+                        $('body').modalmanager('loading');
+                        var div = $('<div class="alert alert-success clearfix">Contact removed successfully!</div>');
+                        contact.replaceWith(div);
+                        setTimeout(function() {
+                            div.fadeOut('slow', function() {
+                                $(this).remove();
+                            });
+                        }, 3000);
+                    });
+                }
             });
 
             return false;
