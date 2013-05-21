@@ -2,53 +2,61 @@
     "use strict";
 
     var AjaxModal = function(modal, trigger, route, callback) {
-        //this.$content   = null;
         this.$modal     = modal;
         this.$route     = route;
         this.$callback  = callback;
+        this.$trigger   = trigger;
 
         var parent = this;
 
-        $(trigger).on('click', function(evt) {
-            evt.preventDefault();
-
-            //if (null === parent.$content) {
-                // create the backdrop and wait for next modal to be triggered
-                $('body').modalmanager('loading');
-
-                var modalLoader = parent.$modal;
-
-                /*if (parent.$modal.find('.modal-body').length > 0) {
-                    modalLoader = $('.modal-body', parent.$modal);
-                }*/
-
-                modalLoader.load(parent.$route, function() {
-                    //parent.$content = content;
-                    parent.$modal.modal();
-
-                    if(undefined !== parent.$callback && $.isFunction(parent.$callback)) {
-                        parent.$callback.apply(this);
-                    }
-                });
-            /*} else {
-                parent.$modal.modal();
-            }*/
-        });
-    }
-
-    $.fn.ajaxModal = function(trigger, route, callback) {
-
-        if($.isFunction(route) && callback === undefined) {
-            callback = route;
-            if($(this).data('target')) {
-               route = $(this).data('target');
-            }
+        // if we don't have a valid route, just return
+        if (!route) {
+            return;
         }
 
-        var $modal = $(this);
+        trigger.on('click', function(evt) {
+            evt.preventDefault();
 
-        $(trigger).each(function(){
-            return new AjaxModal($modal, $(this), route, callback);
+            // create the backdrop and wait for next modal to be triggered
+            $('body').modalmanager('loading');
+
+            var modalLoader = parent.$modal;
+
+            $.getJSON(parent.$route, function(data) {
+
+                if (data.content !== undefined) {
+                    modalLoader.html(data.content);
+                }
+
+                parent.$modal.modal();
+
+                if (undefined !== parent.$callback && $.isFunction(parent.$callback)) {
+                    parent.$callback.apply(parent);
+                }
+            });
         });
-    }
+    };
+
+    $.fn.ajaxModal = function(modal, route, callback) {
+        var $modal = $(modal);
+
+        $(this).each(function() {
+
+            var trigger = $(this);
+
+            if ($.isFunction(route) && callback === undefined) {
+                this.callback = route;
+                if (trigger.data('target')) {
+                    this.route = trigger.data('target');
+                } else if (trigger.attr('href')) {
+                    this.route = trigger.attr('href');
+                }
+            } else {
+                this.route = route;
+                this.callback = callback;
+            }
+
+            return new AjaxModal($modal, trigger, this.route, this.callback);
+        });
+    };
 })(window.jQuery);

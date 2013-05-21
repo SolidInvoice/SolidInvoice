@@ -28,7 +28,7 @@ class AjaxController extends Controller
      */
     public function infoAction(Client $client)
     {
-        return $this->render('CSBillClientBundle:Ajax:info.html.twig', array('client' => $client));
+        return new JsonResponse(array("content" => $this->renderView('CSBillClientBundle:Ajax:info.html.twig', array('client' => $client))));
     }
 
     /**
@@ -46,6 +46,8 @@ class AjaxController extends Controller
 
         $request = $this->getRequest();
 
+        $response = array();
+
         if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
             $form->bind($request);
 
@@ -55,11 +57,20 @@ class AjaxController extends Controller
                 $em->persist($contact);
                 $em->flush();
 
-                return $this->render('CSBillClientBundle:Ajax:contact_add.html.twig', array('contact' => $contact));
+                return new JsonResponse(array(
+                    "status"    => "success",
+                    "content"   => $this->renderView('CSBillClientBundle:Ajax:contact_add.html.twig', array('contact' => $contact)),
+                    "id"        => $contact->getId()
+                ));
+            } else {
+                $response['status'] = 'failure';
             }
         }
 
-        return $this->render('CSBillClientBundle:Ajax:contact_add.html.twig', array('form' => $form->createView(), 'client' => $client));
+        $response["content"] = $this->renderView('CSBillClientBundle:Ajax:contact_add.html.twig', array('form' => $form->createView(), 'client' => $client));
+
+        return new JsonResponse($response);
+    }
 
     /**
      * Edits a contact

@@ -1,11 +1,52 @@
-$(function(){
-    $('#contacts-ajax-modal').ajaxModal('.add-contact-button', function(){
+(function($) {
+    "use strict";
 
-        var modal = $(this);
+    $(function() {
 
-        $(this).on('submit', 'form', function(evt) {
+        /**
+         * ADD CONTACT
+         */
+        $('.add-contact-button').ajaxModal('#contacts-ajax-modal', function() {
 
-            var form = $(this);
+            var modal = $(this.$modal),
+                addContact = function(evt) {
+
+                    var form = $(this);
+
+                    evt.preventDefault();
+
+                    modal.modal('loading');
+
+                    $.ajax({
+                        "url": form.attr('action'),
+                        "dataType" : "json",
+                        "data" : form.serialize(),
+                        "method": "post",
+                        "success" : function(data) {
+
+                            if ('success' === data.status && undefined !== data.id) {
+                                $.getJSON(Routing.generate('_clients_contact_card', {"id" : data.id}), function(data) {
+
+                                    var content = $(data.content).hide();
+
+                                    $('#client-contacts-list').append(content);
+                                    content.fadeIn(function(){
+                                        $('.edit-contact', this).ajaxModal('#contacts-ajax-modal', contactEdit);
+                                    });
+                                });
+                            }
+
+                            modal.modal('loading');
+                            setTimeout(function() {
+                                modal.html(data.content);
+                                $('form', modal).on('submit', addContact);
+                            }, 350);
+                        }
+                    });
+                };
+
+            $('form', modal).on('submit', addContact);
+        });
 
         /**
          * EDIT CONTACT
@@ -82,8 +123,7 @@ $(function(){
                     });
                 }
             });
-
-            return false;
         });
     });
-});
+
+})(window.jQuery);
