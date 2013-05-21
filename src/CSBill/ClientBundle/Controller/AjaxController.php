@@ -62,6 +62,59 @@ class AjaxController extends Controller
         return $this->render('CSBillClientBundle:Ajax:contact_add.html.twig', array('form' => $form->createView(), 'client' => $client));
 
     /**
+     * Edits a contact
+     *
+     * @param  Contact                                    $contact
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editcontactAction(Contact $contact)
+    {
+        $form = $this->createForm(new ContactType(), $contact);
+
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+
+            $originalContactDetails = $contact->getDetails()->toArray();
+
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em = $this->getEm();
+
+                // filter $originalTags to contain tags no longer present
+                foreach ($contact->getDetails() as $detail) {
+                    /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
+                    foreach ($originalContactDetails as $key => $toDel) {
+                        /** @var \CSBill\ClientBundle\Entity\ContactDetail $toDel */
+                        if ($toDel->getId() === $detail->getId()) {
+                            unset($originalContactDetails[$key]);
+                        }
+                    }
+                }
+
+                // remove the relationship between the tag and the Task
+                foreach ($originalContactDetails as $detail) {
+                    // remove the Task from the Tag
+                    $contact->removeDetail($detail);
+                }
+
+                $em->persist($contact);
+                $em->flush();
+
+                return new JsonResponse(array(
+                            "content" => $this->renderView('CSBillClientBundle:Ajax:contact_edit.html.twig', array('success' => true)),
+                            "status" => "success"
+                        ));
+            }
+        }
+
+        return new JsonResponse(array(
+                    "content" => $this->renderView('CSBillClientBundle:Ajax:contact_edit.html.twig', array('form' => $form->createView(), 'contact' => $contact))
+                ));
+    }
+
+    /**
      * Renders a contact card
      *
      * @param  Contact                                    $contact

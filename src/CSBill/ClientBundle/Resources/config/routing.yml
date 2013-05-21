@@ -23,6 +23,11 @@ _clients_info:
 _clients_add_contact:
     pattern:   /ajax/contacts/add/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:addcontact }
+
+_clients_edit_contact:
+    pattern:   /ajax/contacts/edit/{id}
+    defaults:  { _controller: CSBillClientBundle:Ajax:editcontact }
+
 _clients_contact_card:
     pattern:   /ajax/contacts/card/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:contactcard }
