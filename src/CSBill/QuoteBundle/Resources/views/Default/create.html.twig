@@ -150,11 +150,15 @@
     {% endif %}
 
     $('#{{ form.client.vars.id }}').on('change', function(){
+
+        $('body').modalmanager('loading');
+
         var client_select = $(this).parents('div.control-group'),
             client_id = $(':selected', this).val();
 
-        // TODO : show ajax loader
-        $('#{{ form.client.vars.id }}-container').load(Routing.generate('_clients_info', {"id" : client_id}), function(a) {
+        $.getJSON(Routing.generate('_clients_info', {"id" : client_id}), function(data) {
+            $('#{{ form.client.vars.id }}-container').html(data.content);
+            $('body').modalmanager('loading');
             client_select.hide();
         });
     });
