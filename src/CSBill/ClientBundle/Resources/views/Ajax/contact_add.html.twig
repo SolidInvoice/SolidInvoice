@@ -1,6 +1,6 @@
 {% if contact is defined %}
 
-    <div class="modal-body">
+    <div class="modal-body" data-id="{{ contact.id }}">
         <div class="alert alert-success">
             <h3><i class="icon-ok"></i> {{ "Success"|trans }}</h3>
             {{ "The contact was saved successfully"|trans }}
