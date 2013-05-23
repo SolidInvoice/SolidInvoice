@@ -34,23 +34,29 @@
 
 {% block sidebar_right %}
     <div class="row-fluid">
-        <div class="well well-small text-center">
-            <a class="btn btn-large" href="{{ path("_quotes_create") }}">
-                <i class="icon-file-alt"></i> {{ "Create Quote"|trans }}
-            </a>
-        </div>
-        </div>
-
-        <ul class="unstyled">
-            {% for status in status_list %}
+        <div class="well well-small">
+            <ul class="nav">
                 <li>
-                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.quotes|length }}</label>
-
-                    {% transchoice status.quotes|length with {'%name%': status.name|title} %}
-                        {0} %name% Quotes|{1} %name% Quote|]1,Inf] %name% Quotes
-                    {% endtranschoice %}
+                    <a class="btn btn-large" href="{{ path("_quotes_create") }}">
+                        <i class="icon-file-alt"></i> {{ "Create Quote"|trans }}
+                    </a>
                 </li>
-            {% endfor %}
-        </ul>
+            </ul>
+
+            <div class="row-fluid">
+                <ul class="nav nav-list">
+                    {% for status in status_list %}
+                        <li>
+                            <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.quotes|length }}</label>
+
+                            {% transchoice status.quotes|length with {'%name%': status.name|title} %}
+                            {0} %name% Quotes|{1} %name% Quote|]1,Inf] %name% Quotes
+                            {% endtranschoice %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
     </div>
 {% endblock sidebar_right %}
