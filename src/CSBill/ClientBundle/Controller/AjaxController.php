@@ -150,4 +150,21 @@ class AjaxController extends Controller
 
         return new JsonResponse(array("status" => "success"));
     }
+
+    /**
+     * Deletes a client
+     *
+     * @param Client $client
+     * @return JsonResponse
+     */
+    public function deleteclientAction(Client $client)
+    {
+        $em = $this->getEm();
+        $em->remove($client);
+        $em->flush();
+
+        $this->flash($this->trans('The client was deleted successfully'));
+
+        return new JsonResponse(array("status" => "success"));
+    }
 }

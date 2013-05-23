@@ -1,6 +1,8 @@
 _clients_index:
     pattern:   /
     defaults:  { _controller: CSBillClientBundle:Default:index }
+    options:
+        expose: true
 
 _clients_add:
     pattern:   /add
@@ -13,6 +15,11 @@ _clients_edit:
 _clients_view:
     pattern:   /view/{id}
     defaults:  { _controller: CSBillClientBundle:Default:view }
+
+_clients_delete:
+    pattern:   /ajax/delete/{id}
+    defaults:  { _controller: CSBillClientBundle:Ajax:deleteclient }
+    methods: post
 
 _clients_info:
     pattern:   /ajax/info/{id}

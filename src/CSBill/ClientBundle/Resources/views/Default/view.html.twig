@@ -38,7 +38,7 @@
 
             <div class="pull-right">
                 <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn"><i class="icon-edit"></i> {{ "edit"|trans }}</a>
-                <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-danger"><i class="icon-trash"></i> {{ "Delete"|trans }}</a>
+                <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client"><i class="icon-trash"></i> {{ "Delete"|trans }}</a>
             </div>
         </div>
         <div class="row-fluid">
