@@ -14,7 +14,7 @@ namespace CSBill\ClientBundle\Controller;
 use CS\CoreBundle\Controller\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
-use CSBill\ClientBundle\Form\Type\ContactType;
+use CSBill\ClientBundle\Form\Contact as ContactForm;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
@@ -42,7 +42,7 @@ class AjaxController extends Controller
         $contact = new Contact();
         $contact->setClient($client);
 
-        $form = $this->createForm(new ContactType(), $contact);
+        $form = $this->createForm(new ContactForm(), $contact);
 
         $request = $this->getRequest();
 
@@ -80,7 +80,7 @@ class AjaxController extends Controller
      */
     public function editcontactAction(Contact $contact)
     {
-        $form = $this->createForm(new ContactType(), $contact);
+        $form = $this->createForm(new ContactForm(), $contact);
 
         $request = $this->getRequest();
 

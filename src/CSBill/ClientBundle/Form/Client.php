@@ -9,30 +9,36 @@
  * file that was distributed with this source code.
  */
 
-namespace CSBill\ClientBundle\Form\Type;
+namespace CSBill\ClientBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ContactDetailType extends AbstractType
+use CSBill\ClientBundle\Form\Contact;
+
+class Client extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type', null, array('attr' => array('class' => 'pull-left')));
-        $builder->add('value');
-        $builder->add('primary');
+        $builder->add('name');
+        $builder->add('website');
+        $builder->add('status', null, array('required' => true));
+        $builder->add('contacts', 'collection', array('type' => new Contact(),
+                                                      'allow_add' => true,
+                                                      'allow_delete' => true,
+                                                      'by_reference' => false));
     }
 
     public function getName()
     {
-        return 'contact_detail';
+        return 'client';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'CSBill\ClientBundle\Entity\ContactDetail'
+                'data_class' => 'CSBill\ClientBundle\Entity\Client'
         ));
     }
 }

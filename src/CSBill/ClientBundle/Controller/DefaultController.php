@@ -19,7 +19,7 @@ use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
 use Doctrine\ORM\QueryBuilder as QB;
-use CSBill\ClientBundle\Form\Type\ClientType;
+use CSBill\ClientBundle\Form\Client as ClientForm;
 
 class DefaultController extends Controller
 {
@@ -110,7 +110,7 @@ class DefaultController extends Controller
     {
         $client = new Client;
 
-        $form = $this->createForm(new ClientType, $client);
+        $form = $this->createForm(new ClientForm, $client);
 
         $request = $this->getRequest();
 
@@ -140,7 +140,7 @@ class DefaultController extends Controller
      */
     public function editAction(Client $client)
     {
-        $form = $this->createForm(new ClientType, $client);
+        $form = $this->createForm(new ClientForm, $client);
 
         $request = $this->getRequest();
 
