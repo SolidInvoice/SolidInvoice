@@ -17,7 +17,6 @@ use CSBill\DataGridBundle\Grid\Filters;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Action\DeleteMassAction;
 use Doctrine\ORM\QueryBuilder as QB;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 
@@ -73,27 +72,14 @@ class DefaultController extends Controller
         // Attach the source to the grid
         $grid->setSource($source);
 
-        // Custom actions column in the wanted position
-        //$viewColumn = new ActionsColumn('info_column', $this->get('translator')->trans('Info'));
-        //$grid->addColumn($viewColumn, 100);
-
         $viewAction = new RowAction($this->get('translator')->trans('View'), '_clients_view');
         $viewAction->setAttributes(array('class' => 'btn'));
-        //$viewAction->setColumn('info_column');
-        //$grid->addRowAction($viewAction);
-
-        //$editColumn = new ActionsColumn('edit_column', $this->get('translator')->trans('Edit'));
-        //$grid->addColumn($editColumn, 200);
 
         $editAction = new RowAction($this->get('translator')->trans('Edit'), '_clients_edit');
         $editAction->setAttributes(array('class' => 'btn'));
-        //$editAction->setColumn('edit_column');
-        //$grid->addRowAction($editAction);
 
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);
-
-        //$grid->addMassAction(new DeleteMassAction());
 
         $grid->hideColumns(array('updated', 'deleted'));
 
