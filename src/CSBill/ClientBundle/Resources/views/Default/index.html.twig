@@ -8,12 +8,26 @@
  # file that was distributed with this source code.
 #}
 
-{% set parent = "CSCoreBundle:Layout:one_column_left.html.twig" %}
+{% set parent = "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
 {% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
 
 {% block title %}{{ 'clients'|trans }}{% endblock title %}
 
-{% block sidebar %}
+{% block sidebar_left %}
     {{ menu('clients_index') }}
-{% endblock sidebar %}
+{% endblock sidebar_left %}
+
+{% block sidebar_right %}
+    <div class="row-fluid">
+        <div class="well well-small">
+            <ul class="nav">
+                <li>
+                    <a class="btn btn-large" href="{{ path("_clients_add") }}">
+                        <i class="icon-user"></i> {{ "Create Client"|trans }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock sidebar_right %}
