@@ -1,5 +1,5 @@
 {
-    "name": "customscripts/csbill",
+    "name": "csbill/csbill",
     "description": "General Billing Application",
     "type": "application",
     "keywords": [
@@ -12,7 +12,7 @@
     "authors": [
         {
             "name": "Pierre du Plessis",
-            "email": "info@customscripts.co.za"
+            "email": "csbill@customscripts.co.za"
         }
     ],
     "autoload": {
@@ -32,38 +32,19 @@
         "sensio/generator-bundle": "2.2.*",
         "jms/security-extra-bundle": "1.4.*",
         "jms/di-extra-bundle": "1.3.*",
-        "customscripts/core-bundle": "dev-master",
-        "customscripts/user-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "apy/datagrid-bundle": "dev-master",
+        "doctrine/doctrine-fixtures-bundle": "2.1.x-dev",
+        "apy/datagrid-bundle": "2.1.*@dev",
         "zendframework/zend-stdlib": "2.1.*",
         "pagerfanta/pagerfanta": "1.0.*",
-        "stof/doctrine-extensions-bundle": "dev-master",
+        "stof/doctrine-extensions-bundle": "1.1.x-dev",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "jms/debugging-bundle": "dev-master",
-        "knplabs/knp-menu": "dev-master",
-        "knplabs/knp-menu-bundle": "dev-master",
+        "knplabs/knp-menu-bundle": "2.0.x-dev",
+        "customscripts/core-bundle": "dev-master",
+        "customscripts/user-bundle": "dev-master",
         "customscripts/settings-bundle": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "knplabs/knp-menu-bundle",
-                "version": "dev-master",
-                "source": {
-                    "url": "https://github.com/KnpLabs/KnpMenuBundle",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "autoload": {
-                    "psr-0": { "Knp\\Bundle\\MenuBundle": "" }
-                },
-                "target-dir": "Knp/Bundle/MenuBundle"
-            }
-        }
-    ],
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -81,12 +62,12 @@
     "config": {
         "bin-dir": "bin"
     },
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "branch-alias": {
-            "dev-master": "2.2-dev"
+            "dev-master": "0.1.0-dev"
         }
     }
 }
