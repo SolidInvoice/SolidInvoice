@@ -10,18 +10,29 @@ use CS\CoreBundle\Util\ArrayUtil;
 
 class ContactDetailPrimaryValidator extends ConstraintValidator implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
+    /**
+     * @param mixed $value
+     * @param Constraint $constraint
+     */
     public function validate($value, Constraint $constraint)
     {
         $types = $this->getRequiredTypes();
 
         foreach ($value as $val) {
+            /** @var \CSBill\ClientBundle\Entity\ContactDetail $val */
             $type = (string) $val->getType();
 
             if (in_array($type, $types)) {
@@ -40,6 +51,9 @@ class ContactDetailPrimaryValidator extends ConstraintValidator implements Conta
         }
     }
 
+    /**
+     * @return array
+     */
     protected function getRequiredTypes()
     {
         $em = $this->container->get('doctrine')->getManager();
