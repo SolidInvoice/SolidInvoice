@@ -96,6 +96,9 @@ class DefaultController extends Controller
     {
         $client = new Client;
 
+        // set all new clients default to active
+        $client->setStatus($this->getRepository('CSBillClientBundle:Status')->findOneByName('active'));
+
         $form = $this->createForm(new ClientForm, $client);
 
         $request = $this->getRequest();
