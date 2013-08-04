@@ -2,4 +2,33 @@
  ***************/
 form {
   margin: 0;
+
+  .btn-group > .btn:first-child {
+    min-width: 130px;
+  }
+
+  .btn .caret {
+    float: right;
+
+    &.dropdown-toggle {
+      min-width: 100px;
+    }
+  }
+
+  .btn-remove {
+
+    margin: 10px 15px;
+
+    &.trash {
+      margin: 5px;
+    }
+  }
+
+  .input-prepend {
+    .checkbox {
+      &.inline {
+        padding: 0px 25px;
+      }
+    }
+  }
 }
