@@ -21,9 +21,9 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-        'bundles/csbillcore/css/*.css'
-        'bundles/csbillcore/less/styles.less'
-        'bundles/csbillclient/less/*.less'
+        '@CSCoreBundle/Resources/public/css/*.css'
+        '@CSCoreBundle/Resources/public/less/styles.less'
+        '@CSClientBundle/Resources/public/less/*.less'
         filter="less, cssrewrite,?yui_css"
     %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
