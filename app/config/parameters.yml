@@ -1,10 +1,10 @@
 parameters:
     database_driver: pdo_mysql
-    database_host: localhost
+    database_host: %database.host%
     database_port: 3306
-    database_name: csbill
-    database_user: root
-    database_password: ~
+    database_name: %database.name%
+    database_user: %database.name%
+    database_password: %database.name%
 
     mailer_transport: smtp
     mailer_host: 127.0.0.1

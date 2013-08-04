@@ -1,0 +1,28 @@
+web1:
+  shared_writable_dirs:
+      - app/cache
+      - app/logs
+
+  document_root: web
+  default_gateway: app.php
+  index_list: [app.php]
+
+  php_version: 5.3.27
+  php_extensions:
+    - intl
+    - mbstring
+    - xsl
+    - apc
+    - mysql
+    - posix
+    - iconv
+    - tokenizer
+    - xml
+    - pdo_mysql
+    - memcached
+  php_session_autostart: Off
+  php_short_open_tag: Off
+  magic_quotes_gpc: Off
+
+  after_build:
+      - "if [ ! -f composer.phar ]; then curl -s http://getcomposer.org/installer | php; fi; php composer.phar self-update; php composer.phar install --no-dev -n --prefer-dist -o"
