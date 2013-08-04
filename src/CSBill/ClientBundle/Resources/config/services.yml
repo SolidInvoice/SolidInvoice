@@ -17,3 +17,8 @@ services:
             - [setContainer, [@service_container]]
         tags:
             - { name: validator.constraint_validator, alias: contact_detail_primary }
+
+    csbill_client.contact.form.type:
+        class: CSBill\ClientBundle\Form\Type\ContactType
+        tags:
+            - { name: form.type, alias: contacts }

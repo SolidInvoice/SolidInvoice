@@ -14,7 +14,7 @@ namespace CSBill\ClientBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
+use CSBill\ClientBundle\Form\Type\ContactType;
 use CSBill\ClientBundle\Form\Contact;
 
 class Client extends AbstractType
@@ -23,11 +23,12 @@ class Client extends AbstractType
     {
         $builder->add('name');
         $builder->add('website');
-        $builder->add('status', null, array('required' => true));
-        $builder->add('contacts', 'collection', array('type' => new Contact(),
-                                                      'allow_add' => true,
-                                                      'allow_delete' => true,
-                                                      'by_reference' => false));
+        $builder->add('contacts', 'contacts', array(
+                                                    'type' => new Contact(),
+                                                    'allow_add' => true,
+                                                    'allow_delete' => true,
+                                                    'by_reference' => false,
+                                                    ));
     }
 
     public function getName()

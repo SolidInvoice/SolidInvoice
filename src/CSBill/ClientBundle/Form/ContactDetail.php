@@ -20,7 +20,7 @@ class ContactDetail extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('type', null, array('attr' => array('class' => 'pull-left')));
-        $builder->add('value');
+        $builder->add('value', 'text');
         $builder->add('primary');
     }
 
@@ -32,7 +32,8 @@ class ContactDetail extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'CSBill\ClientBundle\Entity\ContactDetail'
+                'data_class' => 'CSBill\ClientBundle\Entity\ContactDetail',
+                'csrf_protection'=> false
         ));
     }
 }

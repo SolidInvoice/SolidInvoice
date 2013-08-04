@@ -8,6 +8,8 @@
  # file that was distributed with this source code.
 #}
 
+{% import "CSBillCoreBundle:Form:macro.html.twig" as _macro %}
+
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block title %}{{ 'add_client'|trans }}{% endblock %}
@@ -19,7 +21,32 @@
 {% block content %}
     <form action="{{ path("_clients_add") }}" method="post"{{ form_enctype(form) }}>
 
-        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+
+        <div class="row-fluid">
+            <div class="span6">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="span6">
+                {{ form_row(form.website) }}
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <legend>
+                <h3>{{ "Contacts"|trans }}</h3>
+            </legend>
+
+            <div class="client_contacts" data-prototype="{{ _macro.widget_prototype(form.contacts, 'Remove Contact')|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.name }}">
+                {% for widget in form.contacts.children %}
+                    {{ _macro.widget_prototype(widget, 'Remove Contact') }}
+                {% endfor %}
+            </div>
+
+            <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link"><i class="icon-plus-sign"></i> Add Contact</a>
+        </div>
+
+        {{ form_row(form._token) }}
 
         <div class="control-group">
             <div class="controls">
