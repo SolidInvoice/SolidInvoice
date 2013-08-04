@@ -19,12 +19,12 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
     {% stylesheets
+        '@CSBillCoreBundle/Resources/public/less/styles.less'
         '@CSCoreBundle/Resources/public/css/*.css'
-        '@CSCoreBundle/Resources/public/less/styles.less'
+        '@CSBillCoreBundle/Resources/public/less/styles.less'
         '@CSBillClientBundle/Resources/public/less/*.less'
-        filter="less, cssrewrite,?yui_css"
+        filter="less, cssrewrite, ?yui_css"
     %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
     {% endstylesheets %}
