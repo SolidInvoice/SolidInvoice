@@ -1,0 +1,15 @@
+{% macro widget_prototype(widget, remove_text, attr = {}) %}
+    {% if widget.vars.prototype is defined %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+    {% endif %}
+
+    <div data-content="{{ name }}">
+        <a href="#" class="{{ attr.trash.class is defined ? attr.trash.class : "pull-right" }} btn-remove" data-related="{{ name }}"><i class="icon-trash"></i> {{ remove_text }}</a>
+
+        {{ form_row(form) }}
+    </div>
+{% endmacro %}
