@@ -42,6 +42,10 @@ class DefaultController extends Controller
 
         $grid->hideColumns(array('updated', 'deleted', 'users', 'due', 'baseTotal'));
 
+        $grid->setPermanentFilters(array(
+            'client.name' => array('operator' => 'isNotNull')
+        ));
+
         $statusList = $this->getRepository('CSBillQuoteBundle:Status')->findAll();
 
         // Return the response of the grid to the template
