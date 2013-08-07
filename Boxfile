@@ -23,6 +23,23 @@ web1:
   php_session_autostart: Off
   php_short_open_tag: Off
   magic_quotes_gpc: Off
+  php_date_timezone: UTC
 
   after_build:
       - "if [ ! -f composer.phar ]; then curl -s http://getcomposer.org/installer | php; fi; php composer.phar self-update; php composer.phar install --no-dev -n --prefer-dist -o"
+      - "echo 'parameters:' >> app/config/parameters.yml"
+      - "echo ' database_driver: pdo_mysql' >> app/config/parameters.yml"
+      - "echo ' database_host: %database.host%' >> app/config/parameters.yml"
+      - "echo ' database_port: 3306' >> app/config/parameters.yml"
+      - "echo ' database_name: %database.name%' >> app/config/parameters.yml"
+      - "echo ' database_user: %database.user%' >> app/config/parameters.yml"
+      - "echo ' database_password: %database.password%' >> app/config/parameters.yml"
+      - "echo ' mailer_transport: smtp' >> app/config/parameters.yml"
+      - "echo ' mailer_host: localhost' >> app/config/parameters.yml"
+      - "echo ' mailer_user: ~' >> app/config/parameters.yml"
+      - "echo ' mailer_password: ~' >> app/config/parameters.yml"
+      - "echo ' locale: en' >> app/config/parameters.yml"
+      - "echo ' currency: USD' >> app/config/parameters.yml"
+      - "echo ' secret: [secret]' >> app/config/parameters.yml"
+db1:
+    type: mysql
