@@ -20,10 +20,9 @@
 
 {% block stylesheets %}
     {% stylesheets
-        '@CSBillCoreBundle/Resources/public/less/styles.less'
-        '@CSCoreBundle/Resources/public/css/*.css'
-        '@CSBillCoreBundle/Resources/public/less/styles.less'
-        '@CSBillClientBundle/Resources/public/less/*.less'
+        'bundles/csbillcore/less/styles.less'
+        'bundles/csbillcore/css/*.css'
+        'bundles/csbillclient//less/*.less'
         filter="less, cssrewrite, ?yui_css"
     %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
