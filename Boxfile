@@ -3,6 +3,11 @@ web1:
       - app/cache
       - app/logs
 
+  apache_access_log: false
+  apache_error_log: true
+  php_error_log: true
+  php_fpm_log: true
+
   document_root: web
   default_gateway: app.php
   index_list: [app.php]
