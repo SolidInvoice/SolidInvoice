@@ -13,10 +13,6 @@ web1:
     - mbstring
     - xsl
     - apc
-    - mysql
-    - posix
-    - iconv
-    - xml
     - pdo_mysql
     - memcached
     - zip
@@ -26,7 +22,7 @@ web1:
   php_date_timezone: UTC
 
   after_build:
-      - "if [ ! -f composer.phar ]; then curl -s http://getcomposer.org/installer | php; fi; php composer.phar self-update; php composer.phar install --no-dev -n --prefer-dist -o"
+      - "if [ ! -f composer.phar ]; then curl -s http://getcomposer.org/installer | php; fi; php composer.phar install --no-dev -n --prefer-dist -o"
       - "echo 'parameters:' >> app/config/parameters.yml"
       - "echo ' database_driver: pdo_mysql' >> app/config/parameters.yml"
       - "echo ' database_host: %database.host%' >> app/config/parameters.yml"
