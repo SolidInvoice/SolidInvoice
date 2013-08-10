@@ -21,7 +21,7 @@ class Main extends AuthenticatedMenu
      *
      * @param $menu \Knp\Menu\ItemInterface
      */
-    public function topMenu(ItemInterface $menu, array $parameters = array())
+    public function topMenu(ItemInterface $menu)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
 
