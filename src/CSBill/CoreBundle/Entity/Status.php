@@ -206,6 +206,6 @@ class Status
      */
     public function __toString()
     {
-        return ucwords($this->getName());
+        return $this->name;
     }
 }
