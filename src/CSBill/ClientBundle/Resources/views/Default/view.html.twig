@@ -102,21 +102,21 @@
         <div class="row-fluid">
             <ul class="nav nav-list">
                 <li>
-                    <label rel="tooltip" title="{{ "Total quotes for this client"|trans }}" class="badge badge-info">{{ client.quotes|length }}</label> {{ "{0} Quotes|{1} Quote|]1,Inf] Quotes"|transchoice(client.quotes|length) }}
+                    <span rel="tooltip" title="{{ "Total quotes for this client"|trans }}" class="badge badge-info">{{ client.quotes|length }}</span> {{ "{0} Quotes|{1} Quote|]1,Inf] Quotes"|transchoice(client.quotes|length) }}
                 </li>
                 <li>
-                    <label rel="tooltip" title="{{ "Total invoices for this client"|trans }}" class="badge badge-info">{{ client.invoices|length }}</label> {{ "{0} Invoices|{1} Invoice|]1,Inf] Invoices"|transchoice(client.invoices|length) }}
+                    <span rel="tooltip" title="{{ "Total invoices for this client"|trans }}" class="badge badge-info">{{ client.invoices|length }}</span> {{ "{0} Invoices|{1} Invoice|]1,Inf] Invoices"|transchoice(client.invoices|length) }}
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <label class="badge badge-important" rel="tooltip" title="{{ "Total number of outstanding invoices for this client"|trans }}">
+                    <span class="badge badge-important" rel="tooltip" title="{{ "Total number of outstanding invoices for this client"|trans }}">
                         {{ invoice_manager.count('pending', client) }}
-                    </label> {{ "Outstanding Invoices"|trans }}
+                    </span> {{ "Outstanding Invoices"|trans }}
                 </li>
                 <li>
-                    <label class="badge badge-success" rel="tooltip" title="{{ "Total number of paid invoices for this client"|trans }}">
+                    <span class="badge badge-success" rel="tooltip" title="{{ "Total number of paid invoices for this client"|trans }}">
                         {{ invoice_manager.count('paid', client) }}
-                    </label> {{ "Paid Invoices"|trans }}
+                    </span> {{ "Paid Invoices"|trans }}
                 </li>
             </ul>
         </div>
