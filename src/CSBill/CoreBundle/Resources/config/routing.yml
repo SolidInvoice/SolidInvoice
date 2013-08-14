@@ -12,3 +12,11 @@ _home:
 _image_upload:
     pattern:  /upload
     defaults: { _controller: CSBillCoreBundle:Upload:imageUpload }
+
+_view_external:
+    pattern:  /view/{type}/{uuid}
+    defaults:
+        _controller: CSBillCoreBundle:View:view
+    requirements:
+        type: (quote|invoice)
+        uuid: "[a-zA-Z0-9-]{36}"

@@ -13,6 +13,7 @@ namespace CSBill\QuoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use CSBill\ClientBundle\Entity\Client;
@@ -37,6 +38,13 @@ class Quote
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var Uuid $uuid
+     *
+     * @ORM\Column(name="uuid", type="uuid", length=36)
+     */
+    private $uuid;
 
     /**
      * @var Status $status
@@ -135,18 +143,42 @@ class Quote
     {
         $this->items = new ArrayCollection;
         $this->users = new ArrayCollection;
+        $this->setUuid(Uuid::uuid1());
+    }
+
+    /**
+     * @return Uuid
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param Uuid $uuid
+     * @return $this
+     */
+    public function setUuid(Uuid $uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 
     /**
      * Return users array
      *
-     * @return multitype:array
+     * @return ArrayCollection
      */
     public function getUsers()
     {
         return $this->users;
     }
 
+    /**
+     * @param array $users
+     * @return $this
+     */
     public function setUsers(array $users = array())
     {
         $this->users = new ArrayCollection($users);

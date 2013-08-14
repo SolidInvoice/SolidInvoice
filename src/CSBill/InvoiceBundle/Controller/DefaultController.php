@@ -40,7 +40,7 @@ class DefaultController extends Controller
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'deleted', 'users', 'paidDate', 'due', 'baseTotal'));
+        $grid->hideColumns(array('updated', 'deleted', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));
 
         $statusList = $this->getRepository('CSBillInvoiceBundle:Status')->findAll();
 

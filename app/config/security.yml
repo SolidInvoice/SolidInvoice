@@ -28,6 +28,11 @@ security:
             pattern:  ^/install(.*)
             anonymous: ~
 
+        external:
+            pattern:  ^/view/(quote|invoice)/([a-zA-Z0-9-]{36})
+            anonymous: true
+            context: frontend
+
         login:
             pattern:  ^/login$
             anonymous: ~
@@ -39,6 +44,7 @@ security:
                 path:     /
                 domain:   ~ # Defaults to the current domain from $_SERVER
             pattern:    ^/
+            context: frontend
             form_login:
                 check_path: /login_check
                 login_path: /login
@@ -49,3 +55,4 @@ security:
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
+        - { path: ^/view/(quote|invoice)/([a-zA-Z0-9-]), roles: IS_AUTHENTICATED_ANONYMOUSLY }

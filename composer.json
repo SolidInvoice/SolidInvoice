@@ -43,7 +43,9 @@
         "knplabs/knp-menu-bundle": "2.0.x-dev",
         "customscripts/core-bundle": "dev-master",
         "customscripts/user-bundle": "dev-master",
-        "customscripts/settings-bundle": "dev-master"
+        "customscripts/settings-bundle": "dev-master",
+        "rhumsaa/uuid": "~2.4",
+        "moontoast/math": "~1.1"
     },
     "scripts": {
         "post-install-cmd": [
