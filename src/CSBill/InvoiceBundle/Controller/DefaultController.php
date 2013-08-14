@@ -21,6 +21,11 @@ use CSBill\ClientBundle\Entity\Client;
 
 class DefaultController extends Controller
 {
+    /**
+     * List all the invoices
+     *
+     * @return Response
+     */
     public function indexAction()
     {
         $source = new Entity('CSBillInvoiceBundle:Invoice');
@@ -50,6 +55,10 @@ class DefaultController extends Controller
                 );
     }
 
+    /**
+     * @param Client $client
+     * @return Response
+     */
     public function createAction(Client $client = null)
     {
         $request = $this->getRequest();
@@ -65,24 +74,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                $em = $this->getEm();
-
-                $statusRepository = $this->getRepository('CSBillInvoiceBundle:Status');
-
-                if ($request->request->get('save') === 'draft') {
-                    $status = $statusRepository->findOneByName('draft');
-                } elseif ($request->request->get('save') === 'send') {
-                    $status = $statusRepository->findOneByName('pending');
-                }
-
-                $invoice->setStatus($status);
-
-                $em->persist($invoice);
-                $em->flush();
-
-                if ($request->request->get('save') === 'send') {
-                    $this->get('billing.mailer')->sendInvoice($invoice);
-                }
+                $this->saveInvoice($invoice);
 
                 $this->flash($this->trans('Invoice created successfully'), 'success');
 
@@ -93,6 +85,10 @@ class DefaultController extends Controller
         return $this->render('CSBillInvoiceBundle:Default:create.html.twig', array('form' => $form->createView()));
     }
 
+    /**
+     * @param Invoice $invoice
+     * @return Response
+     */
     public function editAction(Invoice $invoice)
     {
         $request = $this->getRequest();
@@ -105,24 +101,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                $em = $this->get('doctrine')->getManager();
-
-                $statusRepository = $this->getRepository('CSBillInvoiceBundle:Status');
-
-                if ($request->request->get('save') === 'draft') {
-                    $status = $statusRepository->findOneByName('draft');
-                } elseif ($request->request->get('save') === 'send') {
-                    $status = $statusRepository->findOneByName('pending');
-                }
-
-                $invoice->setStatus($status);
-
-                $em->persist($invoice);
-                $em->flush();
-
-                if ($request->request->get('save') === 'send') {
-                    $this->get('billing.mailer')->sendInvoice($invoice);
-                }
+                $this->saveInvoice($invoice);
 
                 $this->flash($this->trans('Invoice edited successfully'), 'success');
 
@@ -142,5 +121,40 @@ class DefaultController extends Controller
     public function viewAction(Invoice $invoice)
     {
         return $this->render('CSBillInvoiceBundle:Default:view.html.twig', array('invoice' => $invoice));
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @param bool $email
+     */
+    private function saveInvoice(Invoice $invoice, $email = false)
+    {
+        $em = $this->get('doctrine')->getManager();
+
+        $statusRepository = $this->getRepository('CSBillInvoiceBundle:Status');
+
+        switch ($this->getRequest()->request->get('save')) {
+            case 'send' :
+                $status = 'pending';
+                $email = true;
+                break;
+
+            case 'draft' :
+            default :
+                $status = 'draft';
+                break;
+        }
+
+        /** @var \CSBill\InvoiceBundle\Entity\Status $invoiceStatus */
+        $invoiceStatus = $statusRepository->findOneBy(array('name' => $status));
+
+        $invoice->setStatus($invoiceStatus);
+
+        $em->persist($invoice);
+        $em->flush();
+
+        if (true === $email) {
+            $this->get('billing.mailer')->sendInvoice($invoice);
+        }
     }
 }

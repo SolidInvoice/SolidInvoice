@@ -21,6 +21,11 @@ use CSBill\ClientBundle\Entity\Client;
 
 class DefaultController extends Controller
 {
+    /**
+     * List all the available quotes
+     *
+     * @return Response
+     */
     public function indexAction()
     {
         $source = new Entity('CSBillQuoteBundle:Quote');
@@ -52,6 +57,12 @@ class DefaultController extends Controller
         return $grid->getGridResponse('CSBillQuoteBundle:Default:index.html.twig', array('status_list' => $statusList));
     }
 
+    /**
+     * Create a new Quote
+     *
+     * @param Client $client
+     * @return Response
+     */
     public function createAction(Client $client = null)
     {
         $request = $this->getRequest();
@@ -67,24 +78,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                $em = $this->get('doctrine')->getManager();
-
-                $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
-
-                if ($request->request->get('save') === 'draft') {
-                    $status = $statusRepository->findOneByName('draft');
-                } elseif ($request->request->get('save') === 'send') {
-                    $status = $statusRepository->findOneByName('pending');
-                }
-
-                $quote->setStatus($status);
-
-                $em->persist($quote);
-                $em->flush();
-
-                if ($request->request->get('save') === 'send') {
-                    $this->get('billing.mailer')->sendQuote($quote);
-                }
+                $this->saveQuote($quote);
 
                 $this->flash($this->trans('Quote created successfully'), 'success');
 
@@ -95,6 +89,12 @@ class DefaultController extends Controller
         return $this->render('CSBillQuoteBundle:Default:create.html.twig', array('form' => $form->createView()));
     }
 
+    /**
+     * Edit a quote
+     *
+     * @param Quote $quote
+     * @return Response
+     */
     public function editAction(Quote $quote)
     {
         $request = $this->getRequest();
@@ -107,24 +107,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                $em = $this->get('doctrine')->getManager();
-
-                $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
-
-                if ($request->request->get('save') === 'draft') {
-                    $status = $statusRepository->findOneByName('draft');
-                } elseif ($request->request->get('save') === 'send') {
-                    $status = $statusRepository->findOneByName('pending');
-                }
-
-                $quote->setStatus($status);
-
-                $em->persist($quote);
-                $em->flush();
-
-                if ($request->request->get('save') === 'send') {
-                    $this->get('billing.mailer')->sendQuote($quote);
-                }
+                $this->saveQuote($quote);
 
                 $this->flash($this->trans('Quote edited successfully'), 'success');
 
@@ -144,5 +127,41 @@ class DefaultController extends Controller
     public function viewAction(Quote $quote)
     {
         return $this->render('CSBillQuoteBundle:Default:view.html.twig', array('quote' => $quote));
+    }
+
+    /**
+     * @param Quote $quote
+     * @param bool $email
+     */
+    private function saveQuote(Quote $quote, $email = false)
+    {
+        $em = $this->get('doctrine')->getManager();
+
+        $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
+
+        switch($this->getRequest()->request->get('save')) {
+
+            case 'send' :
+                $status = 'pending';
+                $email = true;
+                break;
+
+            case 'draft' :
+            default :
+                $status = 'draft';
+                break;
+        }
+
+        /** @var \CSBill\QuoteBundle\Entity\Status $quoteStatus */
+        $quoteStatus = $statusRepository->findOneBy(array('name' => $status));
+
+        $quote->setStatus($quoteStatus);
+
+        $em->persist($quote);
+        $em->flush();
+
+        if (true === $email) {
+            $this->get('billing.mailer')->sendQuote($quote);
+        }
     }
 }
