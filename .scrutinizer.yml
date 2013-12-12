@@ -10,7 +10,7 @@ tools:
 
     php_cpd: true
 
-    php_code_coverage: true
+    #php_code_coverage: true
 
     # Runs the PHP Mess Detector (http://phpmd.org).
     php_mess_detector:    
