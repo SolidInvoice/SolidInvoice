@@ -131,3 +131,15 @@ tools:
         config:               
             # Built-in standards: PEAR, PHPCS, PSR1, PSR2, Squiz, Zend
             standard:             PSR2 
+            
+    php_pdepend:
+        command:              pdepend
+        configuration_file:   ~
+        suffixes:
+            # Default:
+            - php
+        excluded_dirs:
+
+            # Default:
+            - vendor
+        enabled:              true
