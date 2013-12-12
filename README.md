@@ -1,8 +1,8 @@
-[![Stories in Ready](https://badge.waffle.io/csbill/csbill.png?label=ready)](https://waffle.io/csbill/csbill)  
 CSBill
 ======
 
 [![Build Status](https://travis-ci.org/CSBill/CSBill.png?branch=master)](https://travis-ci.org/CSBill/CSBill)
+[![Stories in Ready](https://badge.waffle.io/csbill/csbill.png?label=ready)](https://waffle.io/csbill/csbill)  
 
 Open-Source General Billing Manager
 
