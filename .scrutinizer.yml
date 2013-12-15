@@ -10,7 +10,8 @@ tools:
 
     php_cpd: true
 
-    php_code_coverage: true
+    #php_code_coverage: true
+    external_code_coverage: true
 
     # Runs the PHP Mess Detector (http://phpmd.org).
     php_mess_detector:    
@@ -131,3 +132,15 @@ tools:
         config:               
             # Built-in standards: PEAR, PHPCS, PSR1, PSR2, Squiz, Zend
             standard:             PSR2 
+            
+    php_pdepend:
+        command:              pdepend
+        configuration_file:   ~
+        suffixes:
+            # Default:
+            - php
+        excluded_dirs:
+
+            # Default:
+            - vendor
+        enabled:              true

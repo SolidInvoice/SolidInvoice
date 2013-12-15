@@ -17,4 +17,7 @@ before_script:
     - composer install
     - php app/console app:install --accept --database_host=localhost --database_user=root --database_password= --database_port=3306 --database_name=csbill --username=admin --email_address=test@example.com --password=test
 
-script: phpunit -c app
+script:
+    - phpunit -c app --coverage-clover=coverage.clover
+    - wget https://scrutinizer-ci.com/ocular.phar
+    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
