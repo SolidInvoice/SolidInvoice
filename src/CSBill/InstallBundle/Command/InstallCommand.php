@@ -31,7 +31,7 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('database_user', null, InputOption::VALUE_REQUIRED, 'What is your database username? ')
             ->addOption('database_host', null, InputOption::VALUE_REQUIRED, 'What is your database host? [localhost] ', 'localhost')
             ->addOption('database_name', null, InputOption::VALUE_REQUIRED, 'What is the name of the database you want to use? [csbill]', 'csbill')
-            ->addOption('database_password', null, InputOption::VALUE_REQUIRED, 'What is your database password? ', '')
+            ->addOption('database_password', null, InputOption::VALUE_OPTIONAL, 'What is your database password? ', '')
             ->addOption('database_port', null, InputOption::VALUE_REQUIRED, 'What is the port your database runs on? [3306]', 3306)
             ->addOption('username', null, InputOption::VALUE_REQUIRED, 'Please enter a username for the administrator? [admin]', 'admin')
             ->addOption('email_address', null, InputOption::VALUE_REQUIRED, 'What is the email address of the administrator? ')
