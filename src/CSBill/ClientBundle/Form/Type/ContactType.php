@@ -27,16 +27,6 @@ class ContactType extends AbstractType
     }
 
     /**
-     * @param FormView $view
-     * @param FormInterface $form
-     * @param array $options
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options = array())
-    {
-        $view->vars['allow_delete'] = $options['allow_delete'];
-    }
-
-    /**
      * @return string
      */
     public function getName()

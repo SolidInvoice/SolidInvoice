@@ -19,6 +19,7 @@
 {% endblock sidebar %}
 
 {% block content %}
+
     <form action="{{ path("_clients_add") }}" method="post"{{ form_enctype(form) }}>
 
         {{ form_errors(form) }}
@@ -37,9 +38,16 @@
                 <h3>{{ "Contacts"|trans }}</h3>
             </legend>
 
-            <div class="client_contacts" data-prototype="{{ _macro.widget_prototype(form.contacts, 'Remove Contact')|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.name }}">
+            {% set prototypeForm %}
+                {{ _macro.widget_prototype(form.contacts, 'Delete', {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
+            {% endset %}
+
+            <div class="client_contacts" data-prototype="{{ prototypeForm|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.vars.name }}">
                 {% for widget in form.contacts.children %}
-                    {{ _macro.widget_prototype(widget, 'Remove Contact') }}
+                    {% set delete = loop.index0 != 0 %}
+                    {{ _macro.widget_prototype(widget, 'Delete', {'trash' : {'class' : 'pull-right btn btn-danger'}}, delete) }}
+                {% else %}
+                    {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
                 {% endfor %}
             </div>
 

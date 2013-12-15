@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * CSBill\ClientBundle\Entity\ContactType
  *
  * @ORM\Table(name="contact_types")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactTypeRepository")
  */
 class ContactType
 {
@@ -42,11 +42,27 @@ class ContactType
     private $name;
 
     /**
+     * @var string $type
+     *
+     * @ORM\Column(name="type", type="string", length=45)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=45)
+     */
+    private $type = 'text';
+
+    /**
+     * @var array $options
+     *
+     * @ORM\Column(name="field_options", type="array", nullable=true)
+     */
+    private $options;
+
+    /**
      * @var bool $required
      *
      * @ORM\Column(name="required", type="boolean", nullable=false)
      */
-    private $required;
+    private $required = false;
 
     /**
      * @var ArrayCollection $details
@@ -61,7 +77,6 @@ class ContactType
     public function __construct()
     {
         $this->detail = new ArrayCollection;
-        $this->required = 0;
     }
 
     /**
@@ -142,6 +157,44 @@ class ContactType
     public function getDetails()
     {
         return $this->detail;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
     }
 
     /**

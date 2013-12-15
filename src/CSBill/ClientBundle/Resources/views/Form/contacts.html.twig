@@ -11,16 +11,43 @@
         </div>
     </div>
 
-    <div class="row-fluid">
-        <div class="client_contact_details" data-prototype="{{ _macro.widget_prototype(form.details, '', {"trash" : {"class" : "trash pull-left"}})|escape }}" data-prototype-name="{{ form.details.vars.prototype.name }}">
-            {% for widget in form.details.children %}
-                {{ _macro.widget_prototype(widget, '', {"trash" : {"class" : "trash pull-left"}}) }}
-            {% endfor %}
-        </div>
+    <div class="collection-container">
 
-        <a href="#" data-target="client_contact_details" class="btn-add add_form_collection_link"><i class="icon-plus-sign"></i> {{ "Add Contact Detail"|trans }}</a>
+        {% for item in contact_types %}
+
+            {% set child_form = _macro.widget_prototype(widget=form['details_' ~ item.name], attr={"trash" : {"class" : "trash pull-left"}}) %}
+
+            {{ form_errors(form['details_' ~ item.name]) }}
+
+            <div class="row-fluid">
+                <div class="client_contact_details" data-prototype="{{ child_form|escape }}" data-prototype-name="{{ form['details_' ~ item.name].vars.prototype.vars.name }}" data-type="{{ item.name }}">
+                    <div class="row-fluid">
+                        {% for widget in form['details_' ~ item.name].children %}
+                            {{ _macro.widget_prototype(widget=widget, attr={"trash" : {"class" : "trash pull-left"}}) }}
+                        {% else %}
+                            {% if item.required %}
+                                {{ child_form|replace({'__contact_details_prototype__' : loop.index0})|raw }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
+    <div class="input-prepend child contact-type-list">
+        <div class="btn-group">
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span>{{ "Add Info"|trans }}</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu btn-add contact_details_collection" data-target="client_contact_details">
+                {% for type in contact_types %}
+                    <li data-value="{{ type.id }}" data-type="{{ type.name }}"><a href="#">{{ type.name|title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
     {{ form_errors(form) }}
 </div>

@@ -1,28 +1,6 @@
-<div class="input-prepend child">
-    <div class="btn-group">
-        <button class="btn dropdown-toggle" data-toggle="dropdown">
-            <span>{{ "Choose Type"|trans }}</span>
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            {% for group_label, choice in form.type.vars.choices %}
-                <li data-value="{{ choice.value }}"><a href="#">{{ choice.label|humanize }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    {{ form_widget(form.value) }}
-    <input type="hidden" name="{{ form.type.vars.full_name }}" value="{{ form.type.vars.value }}" id="{{ form.type.vars.id }}" />
-
-    <label class="checkbox inline">
-        {{ form_widget(form.primary) }}
-        {{ form.primary.vars.name|humanize }}
-    </label>
+<div class="child">
+    {{ form_widget(form.type) }}
+    {{ form_row(form.value) }}
 </div>
 
 {{ form_errors(form) }}
-
-<script type="text/javascript">
-    $(function(){
-        $("#{{ form.type.vars.id }}").dropdownSelect({"value" : "{{ form.type.vars.value }}", "input" : "#{{ form.type.vars.id }}"});
-    });
-</script>

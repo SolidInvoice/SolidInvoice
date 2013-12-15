@@ -60,7 +60,7 @@
             {{ form_errors(form) }}
         {% endif %}
 
-        {% if help is defined %}
+        {% if help is defined and help is not empty %}
             <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
         {% endif %}
     </div>

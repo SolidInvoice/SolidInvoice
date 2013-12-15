@@ -14,7 +14,6 @@ namespace CSBill\ClientBundle\Controller;
 use CS\CoreBundle\Controller\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
-use CSBill\ClientBundle\Form\Contact as ContactForm;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
@@ -35,36 +34,39 @@ class AjaxController extends Controller
      * Add a new contact to a client
      *
      * @param  Client                                     $client
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addcontactAction(Client $client)
     {
+        $request = $this->getRequest();
+
+        if(!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
         $contact = new Contact();
         $contact->setClient($client);
 
-        $form = $this->createForm(new ContactForm(), $contact);
-
-        $request = $this->getRequest();
+        $form = $this->createForm('contact', $contact);
 
         $response = array();
 
-        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
-            $form->bind($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $em = $this->getEm();
+        if ($form->isValid()) {
+            $entityManager = $this->getEm();
 
-                $em->persist($contact);
-                $em->flush();
+            $entityManager->persist($contact);
+            $entityManager->flush();
 
-                return new JsonResponse(array(
-                    "status"    => "success",
-                    "content"   => $this->renderView('CSBillClientBundle:Ajax:contact_add.html.twig', array('contact' => $contact)),
-                    "id"        => $contact->getId()
-                ));
-            } else {
-                $response['status'] = 'failure';
-            }
+            return new JsonResponse(array(
+                "status"    => "success",
+                "content"   => $this->renderView('CSBillClientBundle:Ajax:contact_add.html.twig', array('contact' => $contact)),
+                "id"        => $contact->getId()
+            ));
+        } else {
+            $response['status'] = 'failure';
         }
 
         $response["content"] = $this->renderView('CSBillClientBundle:Ajax:contact_add.html.twig', array('form' => $form->createView(), 'client' => $client));
@@ -76,48 +78,56 @@ class AjaxController extends Controller
      * Edits a contact
      *
      * @param  Contact                                    $contact
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editcontactAction(Contact $contact)
     {
-        $form = $this->createForm(new ContactForm(), $contact);
-
         $request = $this->getRequest();
 
-        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+        if(!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
 
-            $originalContactDetails = $contact->getDetails()->toArray();
+        $originalContactDetails = $contact->getDetails()->toArray();
 
-            $form->bind($request);
+        $form = $this->createForm('contact', $contact);
 
-            if ($form->isValid()) {
-                $em = $this->getEm();
+        if($request->isMethod('POST')) {
+            $contact->getDetails()->clear();
+        }
 
-                // filter $originalTags to contain tags no longer present
-                foreach ($contact->getDetails() as $detail) {
-                    /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
-                    foreach ($originalContactDetails as $key => $toDel) {
-                        /** @var \CSBill\ClientBundle\Entity\ContactDetail $toDel */
-                        if ($toDel->getId() === $detail->getId()) {
-                            unset($originalContactDetails[$key]);
-                        }
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $entityManager = $this->getEm();
+
+            foreach ($contact->getDetails() as $detail) {
+                /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
+                foreach ($originalContactDetails as $key => $toDel) {
+                    //var_dump($toDel->getId(), $detail->getId());
+                    /** @var \CSBill\ClientBundle\Entity\ContactDetail $toDel */
+                    if ($toDel->getId() === $detail->getId()) {
+                        unset($originalContactDetails[$key]);
                     }
                 }
-
-                // remove the relationship between the tag and the Task
-                foreach ($originalContactDetails as $detail) {
-                    // remove the Task from the Tag
-                    $contact->removeDetail($detail);
-                }
-
-                $em->persist($contact);
-                $em->flush();
-
-                return new JsonResponse(array(
-                            "content" => $this->renderView('CSBillClientBundle:Ajax:contact_edit.html.twig', array('success' => true)),
-                            "status" => "success"
-                        ));
             }
+
+            unset($detail);
+
+            foreach ($originalContactDetails as $detail) {
+                $contact->removeDetail($detail);
+                $entityManager->remove($detail);
+            }
+
+            $entityManager->persist($contact);
+            $entityManager->flush();
+
+            return new JsonResponse(array(
+                        "content" => $this->renderView('CSBillClientBundle:Ajax:contact_edit.html.twig', array('success' => true)),
+                        "status" => "success"
+                    ));
         }
 
         return new JsonResponse(array(
@@ -144,9 +154,9 @@ class AjaxController extends Controller
      */
     public function deletecontactAction(Contact $contact)
     {
-        $em = $this->getEm();
-        $em->remove($contact);
-        $em->flush();
+        $entityMnager = $this->getEm();
+        $entityMnager->remove($contact);
+        $entityMnager->flush();
 
         return new JsonResponse(array("status" => "success"));
     }

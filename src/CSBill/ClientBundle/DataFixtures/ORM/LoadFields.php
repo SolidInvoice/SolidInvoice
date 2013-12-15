@@ -22,16 +22,31 @@ class LoadFields implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $fields = array('email' => 1,
-                        'phone' => 0,
-                        'address' => 0);
+        $email = new ContactType();
+        $email->setName('email')
+              ->setType('email')
+              ->setRequired(true)
+              ->setOptions(array(
+                'constraints' => array(
+                    'email'
+                )
+            ));
+        $manager->persist($email);
 
-        foreach ($fields as $field => $required) {
-            $entity = new ContactType();
-            $entity->setName($field)
-                   ->setRequired($required);
-            $manager->persist($entity);
-        }
+        $mobile = new ContactType();
+        $mobile->setName('mobile')
+               ->setType('text');
+        $manager->persist($mobile);
+
+        $phone = new ContactType();
+        $phone->setName('phone')
+              ->setType('text');
+        $manager->persist($phone);
+
+        $address = new ContactType();
+        $address->setName('address')
+                ->setType('textarea');
+        $manager->persist($address);
 
         // flush client contact types
         $manager->flush();

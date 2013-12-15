@@ -14,7 +14,6 @@ namespace CSBill\ClientBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use CSBill\ClientBundle\Validator\Constraints as CSBillAssert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -65,18 +64,13 @@ class Contact implements \serializable
      * @var ArrayCollection $details
      *
      * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="contact", cascade={"persist"})
-     *
-     * @Assert\Count(
-     *      min = "1",
-     *      minMessage = "You must add al least one contact detail for each contact"
-     * )
      * @Assert\Valid()
-     * @CSBillAssert\ContactDetailPrimary
+     * @Assert\Count(min=1, minMessage="You need to add at least one email address")
      */
     private $details;
 
     /**
-     * @var DateTIme $created
+     * @var \DateTIme $created
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -85,7 +79,7 @@ class Contact implements \serializable
     private $created;
 
     /**
-     * @var DateTime $updated
+     * @var \DateTime $updated
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -94,7 +88,7 @@ class Contact implements \serializable
     private $updated;
 
     /**
-     * @var DateTime $deleted
+     * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
      * @Assert\DateTime()
@@ -107,6 +101,37 @@ class Contact implements \serializable
     public function __construct()
     {
         $this->details = new ArrayCollection;
+    }
+
+    public function __set($key, $value)
+    {
+        if(is_array($value)) {
+            foreach($value as $element) {
+                if($element instanceof ContactDetail) {
+                    $this->addDetail($element);
+                }
+            }
+        }
+    }
+
+    public function __get($key)
+    {
+        if('details_' === substr($key, 0, 8)) {
+
+            $details = array();
+
+            $type = substr($key, 8);
+
+            foreach ($this->details as $detail) {
+                if (strtolower((string) $detail->getType()) === strtolower($type)) {
+                    $details[] = $detail;
+                }
+            }
+
+            return $details;
+        }
+
+        return null;
     }
 
     /**
@@ -284,6 +309,10 @@ class Contact implements \serializable
         return $this;
     }
 
+    /**
+     * @param $type
+     * @return null|ContactDetail
+     */
     public function getDetail($type)
     {
         if (count($this->details) > 0) {
@@ -294,7 +323,6 @@ class Contact implements \serializable
             }
         }
 
-        // TODO : throw exception
         return null;
     }
 
@@ -308,16 +336,25 @@ class Contact implements \serializable
         return $this->created;
     }
 
+    /**
+     * @return string
+     */
     public function serialize()
     {
         return serialize(array($this->id, $this->firstname, $this->lastname));
     }
 
+    /**
+     * @param string $serialized
+     */
     public function unserialize($serialized)
     {
         list($this->id, $this->firstname, $this->lastname) = unserialize($serialized);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->firstname . ' ' . $this->lastname;

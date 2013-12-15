@@ -103,19 +103,17 @@ class DefaultController extends Controller
 
         $request = $this->getRequest();
 
-        if ($request->getMethod() === 'POST') {
-            $form->bind($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $em = $this->get('doctrine.orm.entity_manager');
+        if ($form->isValid()) {
+            $entityManager = $this->getEm();
 
-                $em->persist($client);
-                $em->flush();
+            $entityManager->persist($client);
+            $entityManager->flush();
 
-                $this->flash($this->trans('client_saved'), 'success');
+            $this->flash($this->trans('client_saved'), 'success');
 
-                return $this->redirect($this->generateUrl('_clients_index'));
-            }
+            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
         }
 
         return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
@@ -133,19 +131,61 @@ class DefaultController extends Controller
 
         $request = $this->getRequest();
 
-        if ($request->getMethod() === 'POST') {
-            $form->bind($request);
+        $originalContactsDetails = array();
+        $originalContacts = array();
 
-            if ($form->isValid()) {
-                $em = $this->get('doctrine.orm.entity_manager');
+        if($request->isMethod('POST')) {
+            $originalContacts = $client->getContacts()->toArray();
 
-                $em->persist($client);
-                $em->flush();
-
-                $this->flash($this->trans('client_saved'), 'success');
-
-                return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
+            foreach($originalContacts as $contact) {
+                $originalContactsDetails[$contact->getId()] = $contact->getDetails()->toArray();
+                $contact->getDetails()->clear();
             }
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $entityManager = $this->getEm();
+
+            foreach ($client->getContacts() as $originalContact) {
+                foreach ($originalContacts as $key => $toDel) {
+                    if ($toDel->getId() === $originalContact->getId()) {
+                        unset($originalContacts[$key]);
+                    }
+                }
+            }
+
+            unset($contact);
+
+            foreach ($originalContacts as $contact) {
+                $entityManager->remove($contact);
+                $client->removeContact($contact);
+            }
+
+            unset($contact);
+
+            foreach($client->getContacts() as $contact) {
+                foreach ($contact->getDetails() as $originalContactDetail) {
+                    foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
+                        if ($toDel->getId() === $originalContactDetail->getId()) {
+                            unset($originalContactsDetails[$contact->getId()][$key]);
+                        }
+                    }
+                }
+
+                foreach ($originalContactsDetails[$contact->getId()] as $contactDetail) {
+                    $entityManager->remove($contactDetail);
+                    $contact->removeDetail($contactDetail);
+                }
+            }
+
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+            $this->flash($this->trans('client_saved'), 'success');
+
+            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
         }
 
         return $this->render('CSBillClientBundle:Default:edit.html.twig', array('client' => $client, 'form' => $form->createView()));

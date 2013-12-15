@@ -23,11 +23,13 @@ class Client extends AbstractType
     {
         $builder->add('name');
         $builder->add('website');
-        $builder->add('contacts', 'contacts', array(
-                                                    'type' => new Contact(),
+        $builder->add('contacts', new ContactType(), array(
+                                                    'type' => 'contact',
                                                     'allow_add' => true,
                                                     'allow_delete' => true,
                                                     'by_reference' => false,
+                                                    'prototype' => true,
+                                                    'prototype_name' => '__contact_prototype__'
                                                     ));
     }
 

@@ -1,6 +1,9 @@
 parameters:
     csbill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
-    validator.contact_details.primary.class: CSBill\ClientBundle\Validator\Constraints\ContactDetailPrimaryValidator
+    csbill_client.contact_type.repository.class: CSBill\ClientBundle\Repository\ContactTypeRepository
+    csbill_client.contact_types.subscriber.class: CSBill\ClientBundle\EventListener\ClientDetailsSubscriber
+    csbill_client.contact_types.twig.extension.class: CSBill\ClientBundle\Twig\Extension\ContactTypesExtension
+    csbill_client.contact.form.type.class: CSBill\ClientBundle\Form\Contact
 
 services:
     csbill_client.menu:
@@ -11,14 +14,31 @@ services:
             - { name: cs_core.menu, menu: clients_view, method: clientsMenu }
             - { name: cs_core.menu, menu: clients_add, method: clientsMenu }
 
-    validator.contact_details.primary:
-        class: %validator.contact_details.primary.class%
-        calls:
-            - [setContainer, [@service_container]]
-        tags:
-            - { name: validator.constraint_validator, alias: contact_detail_primary }
-
     csbill_client.contact.form.type:
-        class: CSBill\ClientBundle\Form\Type\ContactType
+        class: %csbill_client.contact.form.type.class%
+        arguments: [@doctrine.orm.entity_manager, @csbill_client.contact_type.values]
         tags:
-            - { name: form.type, alias: contacts }
+            - { name: form.type, alias: contact }
+
+    csbill_client.contact_types.twig.extension:
+        class: %csbill_client.contact_types.twig.extension.class%
+        arguments: [@csbill_client.contact_type.values]
+        tags:
+            - { name: twig.extension }
+
+    csbill_client.contact_type.repository:
+        class: %csbill_client.contact_type.repository.class%
+        factory_service: doctrine
+        factory_method:  getRepository
+        arguments:
+            - "CSBillClientBundle:ContactType"
+
+    csbill_client.contact_type.values:
+        class: %csbill_client.contact_type.repository.class%
+        factory_service: csbill_client.contact_type.repository
+        factory_method:  findAll
+
+    csbill_client.contact_types.subscriber:
+        class: %csbill_client.contact_types.subscriber.class%
+        tags:
+            - { name: doctrine.event_subscriber}

@@ -47,7 +47,7 @@ services:
     csbill_core.form.help.extension:
         class: %csbill_core.form.help.extension.class%
         tags:
-            - { name: form.type_extension, alias: field}
+            - { name: form.type_extension, alias: form}
 
     billing.mailer:
         class: %csbill_core.billing.mailer.class%

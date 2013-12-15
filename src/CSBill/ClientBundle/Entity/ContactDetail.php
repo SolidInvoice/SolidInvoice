@@ -12,7 +12,6 @@
 namespace CSBill\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * CSBill\ClientBundle\Entity\ContactDetail
@@ -35,7 +34,6 @@ class ContactDetail
      * @var string $value
      *
      * @ORM\Column(name="value", type="text", nullable=false)
-     * @Assert\NotBlank()
      */
     private $value;
 
@@ -164,6 +162,9 @@ class ContactDetail
         return (bool) $this->primary;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->value;
