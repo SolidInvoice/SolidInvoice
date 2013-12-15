@@ -10,14 +10,18 @@ framework:
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: %kernel.debug%
-    form:            true
-    csrf_protection: true
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
     validation:      { enable_annotations: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
     default_locale:  %locale%
-    trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    trusted_proxies: ~
     session:         ~
+    fragments:       ~
+    http_method_override: true
 
 # Twig Configuration
 twig:
@@ -33,7 +37,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ CSCoreBundle, CSBillCoreBundle, CSBillDataGridBundle, CSBillQuoteBundle, CSBillInvoiceBundle ]
+    bundles:        [ CSCoreBundle, CSBillCoreBundle, CSBillClientBundle, CSBillDataGridBundle, CSBillQuoteBundle, CSBillInvoiceBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

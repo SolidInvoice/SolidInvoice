@@ -17,7 +17,12 @@ use Symfony\Component\HttpFoundation\Request;
 }*/
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
+
+use Symfony\Component\Debug\Debug;
+
 require_once __DIR__.'/../app/AppKernel.php';
+
+Debug::enable();
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
