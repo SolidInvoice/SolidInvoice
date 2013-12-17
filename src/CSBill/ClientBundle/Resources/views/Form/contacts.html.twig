@@ -15,7 +15,7 @@
 
         {% for item in contact_types %}
 
-            {% set child_form = _macro.widget_prototype(widget=form['details_' ~ item.name], attr={"trash" : {"class" : "trash pull-left"}}) %}
+            {% set child_form = _macro.widget_prototype(form['details_' ~ item.name], '', {"trash" : {"class" : "trash pull-left"}}) %}
 
             {{ form_errors(form['details_' ~ item.name]) }}
 
@@ -23,7 +23,7 @@
                 <div class="client_contact_details" data-prototype="{{ child_form|escape }}" data-prototype-name="{{ form['details_' ~ item.name].vars.prototype.vars.name }}" data-type="{{ item.name }}">
                     <div class="row-fluid">
                         {% for widget in form['details_' ~ item.name].children %}
-                            {{ _macro.widget_prototype(widget=widget, attr={"trash" : {"class" : "trash pull-left"}}) }}
+                            {{ _macro.widget_prototype(widget, '', {"trash" : {"class" : "trash pull-left"}}) }}
                         {% else %}
                             {% if item.required %}
                                 {{ child_form|replace({'__contact_details_prototype__' : loop.index0})|raw }}
