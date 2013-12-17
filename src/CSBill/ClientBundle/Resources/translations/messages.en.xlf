@@ -70,6 +70,10 @@
                 <source>quotes</source>
                 <target>Quotes</target>
             </trans-unit>
+            <trans-unit id="18">
+                <source>view</source>
+                <target>View</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -119,8 +119,8 @@ apy_data_grid:
         enable: true    #default false
         view_class: Pagerfanta\View\TwitterBootstrapView
         options:            #all options of pager fanta view constructor
-           prev_message : «
-           next_message : »
+           prev_message : « Prev
+           next_message : Next »
 
 stof_doctrine_extensions:
     default_locale: en_US
