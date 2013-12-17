@@ -5,20 +5,20 @@
 </legend>
 
 {% for invoice in client.invoices %}
-    <div class="row-fluid">
-        <div class="span2">
+    <div class="row">
+        <div class="col-lg-2 col-md-2">
             {{ status_label(invoice.status) }}
         </div>
-        <div class="span2">
+        <div class="col-lg-2 col-md-2">
             {{ invoice.id }}
         </div>
-        <div class="span3">
+        <div class="col-lg-3 col-md-3">
             {{ invoice.created|date }}
         </div>
-        <div class="span3">
+        <div class="col-lg-3 col-md-3">
             {{ invoice.total|currency }}
         </div>
-        <div class="span2">
+        <div class="col-lg-2 col-md-2">
             <a href="{{ path("_invoices_view", {"id" : invoice.id}) }}" class="btn"><i class="icon-eye-open"></i> {{ "view"|trans }}</a>
         </div>
     </div>
