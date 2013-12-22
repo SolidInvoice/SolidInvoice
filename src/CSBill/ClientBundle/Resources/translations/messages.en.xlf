@@ -74,6 +74,74 @@
                 <source>view</source>
                 <target>View</target>
             </trans-unit>
+            <trans-unit id="19">
+                <source>delete</source>
+                <target>Delete</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>add_contact</source>
+                <target>Add Contact</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>edit_client</source>
+                <target>Edit Client</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>no_quotes</source>
+                <target>This client does not have any quotes yet.</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>no_invoices</source>
+                <target>This client does not have any invoices yet.</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>create_now</source>
+                <target>Create one now.</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>create_quote</source>
+                <target>Create Quote</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>create_invoice</source>
+                <target>Create Invoice</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>income</source>
+                <target>Income</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>outstanding</source>
+                <target>Outstanding</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>total_quotes</source>
+                <target>Total quotes for this client</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>total_invoices</source>
+                <target>Total invoices for this client</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>total_outstanding</source>
+                <target>Total number of outstanding invoices for this client</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>total_paid</source>
+                <target>Total number of paid invoices for this client</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>outstanding_invoices</source>
+                <target>Outstanding Invoices</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>paid_invoices</source>
+                <target>Paid Invoices</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>number_quotes</source>
+                <target>{0} Quotes|{1} Quote|]1,Inf] Quotes</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

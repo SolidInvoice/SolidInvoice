@@ -9,7 +9,7 @@
         <div class="col-lg-2 col-md-2">
             {{ status_label(invoice.status) }}
         </div>
-        <div class="col-lg-2 col-md-2">
+        <div class="col-lg-1 col-md-1">
             {{ invoice.id }}
         </div>
         <div class="col-lg-3 col-md-3">
@@ -23,5 +23,5 @@
         </div>
     </div>
 {% else %}
-    <span class="muted">{{ "This client does not have any invoices yet."|trans }} <a href="{{ path("_invoices_create", {"client" : client.id}) }}">{{ "Create one now."|trans }}</a></span>
+    <span class="muted">{{ "no_invoices"|trans }} <a href="{{ path("_invoices_create", {"client" : client.id}) }}">{{ "create_now"|trans }}</a></span>
 {% endfor %}
