@@ -36,7 +36,7 @@
 
 {% block form_row %}
 {% spaceless %}
-    <div class="control-group{{ errors|length > 0 ? ' error' : '' }} {{ form.vars.attr.class|default('') }}">
+    <div class="form-group{{ errors|length > 0 ? ' has-error' : '' }} {{ form.vars.attr.class|default('') }}">
 
      {#
         {% if 'checkbox' in form.vars.types %}
@@ -219,6 +219,21 @@
         </script>
     {% endspaceless %}
 {% endblock image_upload_widget %}
+
+{% block form_widget_simple %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endspaceless %}
+{% endblock form_widget_simple %}
+
+{% block textarea_widget %}
+    {% spaceless %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+        <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+    {% endspaceless %}
+{% endblock textarea_widget %}
 
 {% block contact_detail_widget %}
     {% include "CSBillClientBundle:Form:contact_details.html.twig" %}
