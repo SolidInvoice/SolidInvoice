@@ -1,146 +1,77 @@
-inherit: true 
-
-filter:               
-    paths: [src/*] # Example: [src/*, tests/*]
+filter:
+    excluded_paths:
+        - 'vendor/*'
+    paths:
+        - src
 tools:
-    sensiolabs_security_checker: true
-
-    # Runs the JSHint static analysis tool.
-    js_hint: true
-
-    php_cpd: true
-
-    #php_code_coverage: true
-    external_code_coverage: true
-
-    # Runs the PHP Mess Detector (http://phpmd.org).
-    php_mess_detector:    
-        extensions:           
-            - php
-        enabled:              true 
-        filter:               
-            paths:                [src/*] 
-        config:               
-            rulesets:             
-                - codesize
-                - controversial
-                - design
-                - naming
-                - unusedcode
-
-    # Runs the PHP CS Fixer (http://http://cs.sensiolabs.org/).
-    php_cs_fixer:         
-        extensions:           
-            - php
-        enabled:              false 
-        config:               
-            level:                all # Allowed Values: "psr0", "psr1", "psr2", "all"
-
-    # Runs Scrutinizer's PHP Analyzer Tool
-    php_analyzer:         
-        extensions:           
-            - php
-        enabled:              true
+    php_mess_detector:
+        filter:
+            excluded_paths: ['vendor/*']
+    php_cpd:
+        filter:
+            excluded_paths: ['vendor/*']
+    php_pdepend: true
+    js_hint:
+        filter:
+            excluded_paths: ['vendor/*']
+    php_cs_fixer:
+        filter:
+            excluded_paths: ['vendor/*']
         config:
-            check_access_control:
-                enabled:              true
-            basic_semantic_checks:
-                enabled:              true
-            simplify_boolean_return:
-                enabled:              true
-            dead_assignments:
-                enabled:              true
-            typo_checks:
-                enabled:              true
-            check_usage_context:
-                enabled:              true
-                method_call_on_non_object:
-                    enabled:              true
-    
-                    # Allows checks to be a bit more lenient in tests.
-                    #lenient_in_tests:     true
-                    #test_classes:
-    
-                        # Default:
-                        #- PHPUnit_Framework_TestCase
-                foreach:
-                    value_as_reference:   true
-                    traversable:          true
-                missing_argument:     true
-                argument_type_checks:  strict # Allowed Values: "disabled", "lenient", "strict"
-            parameter_reference_check:
-                enabled:              true
-            phpunit_checks:
-                enabled:              true
-            precedence_checks:
-                enabled:              true
-                assignment_in_condition:  true
-                comparison_of_bit_result:  true
-            reflection_checks:
-                enabled:              true
-            checkstyle:
-                enabled:              true
-                no_trailing_whitespace:  true
-                naming:
-                    enabled:              true
-                    local_variable:       ^[a-z][a-zA-Z0-9]*$
-                    abstract_class_name:  ^Abstract|Factory$
-                    utility_class_name:   Utils?$
-                    constant_name:        ^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$
-                    property_name:        ^[a-z][a-zA-Z0-9]*$
-                    method_name:          ^(?:[a-z]|__)[a-zA-Z0-9]*$
-                    parameter_name:       ^[a-z][a-zA-Z0-9]*$
-                    interface_name:       ^[A-Z][a-zA-Z0-9]*Interface$
-                    type_name:            ^[A-Z][a-zA-Z0-9]*$
-                    exception_name:       ^[A-Z][a-zA-Z0-9]*Exception$
-                    isser_method_name:    ^(?:is|has|should|may|supports)
-            suspicious_code:
-                enabled:              true
-                overriding_parameter:  true
-                overriding_closure_use:  true
-                parameter_closure_use_conflict:  true
-                parameter_multiple_times:  true
-                non_existent_class_in_instanceof_check:  true
-                non_existent_class_in_catch_clause:  true
-                assignment_of_null_return:  true
-                non_commented_switch_fallthrough:  true
-                non_commented_empty_catch_block:  true
-                overriding_private_members:  true
-                use_statement_alias_conflict:  true
-                precedence_in_condition_assignment:  true
-            unreachable_code:
-                enabled:              true
-            check_variables:
-                enabled:              true
-            doc_comment_fixes:
-                enabled:              true
-            reflection_fixes:
-                enabled:              true
-            use_statement_fixes:
-                enabled:              true
-                remove_unused:        true
-    
-                # Whether you would like multiple imports in one USE statement to be preserved, e.g. ``use A, B;``.
-                preserve_multiple:    false
-                order_alphabetically:  false
-
-    # Runs PHP Code Sniffer
-    php_code_sniffer:     
-        extensions:           
-            - php
-        enabled:              true 
-        config:               
-            # Built-in standards: PEAR, PHPCS, PSR1, PSR2, Squiz, Zend
-            standard:             PSR2 
-            
-    php_pdepend:
-        command:              pdepend
-        configuration_file:   ~
-        suffixes:
-            # Default:
-            - php
-        excluded_dirs:
-
-            # Default:
-            - vendor
-        enabled:              true
+            level: all
+    php_analyzer:
+        filter:
+            excluded_paths: ['vendor/*']
+        config:
+            parameter_reference_check: { enabled: true }
+            checkstyle: { enabled: true, no_trailing_whitespace: true, naming: { enabled: true, local_variable: '^[a-z][a-zA-Z0-9]*$', abstract_class_name: ^Abstract|Factory$, utility_class_name: 'Utils?$', constant_name: '^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$', property_name: '^[a-z][a-zA-Z0-9]*$', method_name: '^(?:[a-z]|__)[a-zA-Z0-9]*$', parameter_name: '^[a-z][a-zA-Z0-9]*$', interface_name: '^[A-Z][a-zA-Z0-9]*Interface$', type_name: '^[A-Z][a-zA-Z0-9]*$', exception_name: '^[A-Z][a-zA-Z0-9]*Exception$', isser_method_name: '^(?:is|has|should|may|supports)' } }
+            unreachable_code: { enabled: true }
+            check_access_control: { enabled: true }
+            typo_checks: { enabled: true }
+            check_variables: { enabled: true }
+            suspicious_code: { enabled: true, overriding_parameter: true, overriding_closure_use: true, parameter_closure_use_conflict: true, parameter_multiple_times: true, non_existent_class_in_instanceof_check: true, non_existent_class_in_catch_clause: true, assignment_of_null_return: true, non_commented_switch_fallthrough: true, non_commented_empty_catch_block: true, overriding_private_members: true, use_statement_alias_conflict: true, precedence_in_condition_assignment: true }
+            dead_assignments: { enabled: true }
+            verify_php_doc_comments: { enabled: true, parameters: true, return: true, suggest_more_specific_types: true, ask_for_return_if_not_inferrable: true, ask_for_param_type_annotation: true }
+            loops_must_use_braces: { enabled: true }
+            check_usage_context: { enabled: true, method_call_on_non_object: { enabled: true, ignore_null_pointer: true }, foreach: { value_as_reference: true, traversable: true }, missing_argument: true, argument_type_checks: lenient }
+            simplify_boolean_return: { enabled: true }
+            phpunit_checks: { enabled: true }
+            reflection_checks: { enabled: true }
+            precedence_checks: { enabled: true, assignment_in_condition: true, comparison_of_bit_result: true }
+            basic_semantic_checks: { enabled: true }
+            unused_code: { enabled: true }
+            deprecation_checks: { enabled: true }
+            useless_function_calls: { enabled: true }
+            metrics_lack_of_cohesion_methods: { enabled: true }
+            metrics_coupling: { enabled: true, stable_code: { namespace_prefixes: {  }, classes: {  } } }
+            doctrine_parameter_binding: { enabled: true }
+            doctrine_entity_manager_injection: { enabled: true }
+            symfony_request_injection: { enabled: true }
+            doc_comment_fixes: { enabled: true }
+            reflection_fixes: { enabled: true }
+            use_statement_fixes: { enabled: true, remove_unused: true, preserve_multiple: false, order_alphabetically: false }
+    php_code_sniffer:
+        filter:
+            excluded_paths: ['vendor/*']
+        config:
+            standard: PSR2
+    sensiolabs_security_checker:
+        filter:
+            excluded_paths: ['vendor/*']
+    php_loc: true
+    php_hhvm:
+        filter:
+            excluded_paths: ['vendor/*']
+        config:
+            bad_php_include_file: true
+            php_include_file_not_found: true
+            unknown_class: true
+            unknown_base_class: true
+            unknown_function: true
+            use_evaluation: true
+            use_undeclared_global_variable: true
+            unknown_object_method: true
+            unknown_trait: true
+    external_code_coverage:
+        filter:
+            excluded_paths: ['vendor/*']
