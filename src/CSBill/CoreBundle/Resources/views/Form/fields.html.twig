@@ -12,7 +12,7 @@
 
 {% block money_widget %}
 {% spaceless %}
-    <div class="input-{{ money_addon_class }}">{{ parent() }}</div>
+    <div class="{{ money_addon_class }}">{{ parent() }}</div>
 {% endspaceless %}
 {% endblock money_widget %}
 
@@ -140,8 +140,8 @@
 {% spaceless %}
     {% set type = type|default('number') %}
 
-    <div class="input-append">
-        {{ block('form_widget_simple') }} <div class="add-on">%</div>
+    <div class="input-group">
+        {{ block('form_widget_simple') }} <div class="input-group-addon">%</div>
     </div>
 {% endspaceless %}
 {% endblock percent_widget %}
