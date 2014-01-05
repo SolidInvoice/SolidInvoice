@@ -17,10 +17,10 @@ use CSBill\QuoteBundle\Entity\Status;
 
 class LoadStatus implements FixtureInterface
 {
-    protected $statusList = array( 'draft'     => 'draft',
+    protected $statusList = array( 'draft'     => 'default',
                                    'pending'   => 'warning',
                                    'accepted'  => 'success',
-                                   'declined'  => 'important',
+                                   'declined'  => 'danger',
                                    'cancelled' => 'inverse'
                                   );
 
