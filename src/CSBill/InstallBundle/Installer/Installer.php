@@ -10,9 +10,8 @@
 
 namespace CSBill\InstallBundle\Installer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface,
-    Symfony\Component\HttpFoundation\RedirectResponse;
-
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Doctrine\Common\Util\Inflector;
 
 /**
@@ -25,21 +24,26 @@ class Installer
     const INSTALLER_RESTART_ROUTE = '_installer_restart';
 
     /**
-     * @var Container $container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
      * Default available steps
      *
-     * @param array $steps
+     * @var array
      */
-    protected $steps = array('license_agreement', 'system_check', 'database_config', 'system_information');
+    protected $steps = array(
+        'license_agreement',
+        'system_check',
+        'database_config',
+        'system_information'
+    );
 
     /**
      * Object instance of current step
      *
-     * @param Step $step
+     * @var Step
      */
     protected $step;
 
@@ -85,6 +89,7 @@ class Installer
     /**
      * Validte the current installation step to ensure paramaters are met
      *
+     * @param $options
      * @return RedirectResponse|false
      */
     public function validateStep($options)
@@ -131,13 +136,7 @@ class Installer
      */
     public function restart()
     {
-        $session = $this->getContainer()->get('session');
-
-        $keys = $session->all();
-
-        array_walk($keys, function ($value, $key) use ($session) {
-            $session->remove($key);
-        });
+        $this->getContainer()->get('session')->clear();
     }
 
     /**
@@ -166,7 +165,9 @@ class Installer
     /**
      * Sets session data for specific key in installation process
      *
-     * @return Installer
+     * @param string $key
+     * @param mixed  $value
+     *                      @return $this
      */
     public function setSession($key, $value)
     {
@@ -179,7 +180,7 @@ class Installer
     /**
      * Gets the service container
      *
-     * @return Container
+     * @return ContainerInterface
      */
     public function getContainer()
     {
@@ -222,7 +223,7 @@ class Installer
     /**
      * Creates an instance of the necessary step class
      *
-     * @param  string $step
+     * @param  string $step_name
      * @return string
      */
     public function step($step_name = null)
@@ -231,6 +232,7 @@ class Installer
 
         $class = __NAMESPACE__.'\\Step\\'.$step;
 
+        /** @var Step step */
         $this->step = new $class;
 
         $this->step->setContainer($this->getContainer());
@@ -252,6 +254,8 @@ class Installer
     /**
      * Get the current installation step
      *
+     * @param  string               $key
+     * @throws \OutOfRangeException
      * @return string
      */
     public function getStep($key = null)
@@ -286,7 +290,11 @@ class Installer
             return false;
         }
 
-        // TODO: check (settings table|composer.lock file) for current installed version. If version can't be found, run installer
+        /*
+            TODO: check (settings table|composer.lock file) for current installed version.
+            If version can't be found, run installer
+        */
+
         // if version is older than available version, go to upgrade page (unless automatic update is activiated)
         // (Should we automatically take user to upgrade page, or just notify that a new version is available?)
 

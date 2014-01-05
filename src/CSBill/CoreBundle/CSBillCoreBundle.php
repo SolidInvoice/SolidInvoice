@@ -17,7 +17,7 @@ use CSBill\CoreBundle\DependencyInjection\Compiler;
 
 class CSBillCoreBundle extends Bundle
 {
-    CONST VERSION = '0.1.0-dev';
+    const VERSION = '0.1.0-dev';
 
     /**
      * Extends the CSCoreBundle, so we can override some of the features specific to this application

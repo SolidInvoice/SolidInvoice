@@ -193,7 +193,7 @@
 		// Default decimal point comes from settings, but could be set to eg. "," in opts:
 		decimal = decimal || lib.settings.number.decimal;
 
-		 // Build regex to strip out everything except digits, decimal point and minus sign:
+		// Build regex to strip out everything except digits, decimal point and minus sign:
 		var regex = new RegExp("[^0-9-" + decimal + "]", ["g"]),
 			unformatted = parseFloat(
 				("" + value)

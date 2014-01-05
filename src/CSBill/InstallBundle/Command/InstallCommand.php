@@ -20,22 +20,67 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 class InstallCommand extends ContainerAwareCommand
 {
-    protected $invalid_options = array('help', 'quiet', 'verbose', 'version', 'ansi', 'no-ansi', 'no-interaction', 'shell', 'process-isolation', 'env', 'no-debug');
+    protected $invalid_options = array(
+        'help',
+        'quiet',
+        'verbose',
+        'version',
+        'ansi',
+        'no-ansi',
+        'no-interaction',
+        'shell',
+        'process-isolation',
+        'env',
+        'no-debug'
+    );
 
     protected function configure()
     {
         $this
             ->setName('app:install')
             ->setDescription('Install the application')
-            ->addOption('accept', null, InputOption::VALUE_NONE, 'Do you accept the terms and conditions? (y/n) ')
-            ->addOption('database_user', null, InputOption::VALUE_REQUIRED, 'What is your database username? ')
-            ->addOption('database_host', null, InputOption::VALUE_REQUIRED, 'What is your database host? [localhost] ', 'localhost')
-            ->addOption('database_name', null, InputOption::VALUE_REQUIRED, 'What is the name of the database you want to use? [csbill]', 'csbill')
-            ->addOption('database_password', null, InputOption::VALUE_OPTIONAL, 'What is your database password? ', '')
-            ->addOption('database_port', null, InputOption::VALUE_REQUIRED, 'What is the port your database runs on? [3306]', 3306)
-            ->addOption('username', null, InputOption::VALUE_REQUIRED, 'Please enter a username for the administrator? [admin]', 'admin')
-            ->addOption('email_address', null, InputOption::VALUE_REQUIRED, 'What is the email address of the administrator? ')
-            ->addOption('password', null, InputOption::VALUE_REQUIRED, 'Please enter a password for the administrator ')
+            ->addOption(
+                'accept',
+                null,
+                InputOption::VALUE_NONE,
+                'Do you accept the terms and conditions? (y/n) '
+            )
+            ->addOption(
+                'database_user',
+                null, InputOption::VALUE_REQUIRED,
+                'What is your database username? ')
+            ->addOption(
+                'database_host',
+                null, InputOption::VALUE_REQUIRED,
+                'What is your database host? [localhost] ',
+                'localhost')
+            ->addOption(
+                'database_name',
+                null, InputOption::VALUE_REQUIRED,
+                'What is the name of the database you want to use? [csbill]',
+                'csbill')
+            ->addOption(
+                'database_password',
+                null, InputOption::VALUE_OPTIONAL,
+               'What is your database password? ', '')
+            ->addOption(
+                'database_port',
+                null, InputOption::VALUE_REQUIRED,
+                'What is the port your database runs on? [3306]',
+                3306)
+            ->addOption(
+                'username',
+                null, InputOption::VALUE_REQUIRED,
+                'Please enter a username for the administrator? [admin]',
+                'admin')
+            ->addOption(
+                'email_address',
+                null, InputOption::VALUE_REQUIRED,
+                'What is the email address of the administrator? ')
+            ->addOption(
+                'password',
+                null, InputOption::VALUE_REQUIRED,
+                'Please enter a password for the administrator ')
         ;
     }
 
@@ -97,7 +142,11 @@ class InstallCommand extends ContainerAwareCommand
                     $options[$name] = 'y';
                 } else {
                     do {
-                        $value = $dialog->ask($output, '<question>'.$argument->getDescription().'</question>', $input->getParameterOption('--'.$name));
+                        $value = $dialog->ask(
+                            $output,
+                            '<question>'.$argument->getDescription().'</question>',
+                            $input->getParameterOption('--'.$name)
+                        );
 
                         if ($value === 'n') {
                             return;

@@ -68,7 +68,7 @@ class Client
     /**
      * @var ArrayCollection $contacts
      *
-     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"}, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\OrderBy({"firstname" = "ASC"})
      * @Assert\Valid()
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
@@ -165,7 +165,7 @@ class Client
     /**
      * Set status
      *
-     * @param  string $status
+     * @param  Status $status
      * @return Client
      */
     public function setStatus($status)

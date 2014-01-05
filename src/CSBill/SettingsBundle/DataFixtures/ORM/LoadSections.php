@@ -34,7 +34,7 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
      * (non-PHPdoc)
      * @see Symfony\Component\DependencyInjection.ContainerAwareInterface::setContainer()
      */
-    public function setContainer(ContainerInterface $container = NULL)
+    public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
@@ -46,7 +46,7 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
      * @param Section $parent
      * @param string  $reference
      */
-    protected function loadSections(array $sections = array(), Section $parent = null, $reference = null)
+    protected function loadSettingsSections(array $sections = array(), Section $parent = null, $reference = null)
     {
         if (!empty($sections)) {
             foreach ($sections as $section => $settings) {
@@ -61,7 +61,7 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
                 $referenceKey = implode('.', array_filter(array($reference, $section)));
 
                 if (is_array($settings) && isset($settings['children'])) {
-                    $this->loadSections($settings['children'], $sectionEntity, $referenceKey);
+                    $this->loadSettingsSections($settings['children'], $sectionEntity, $referenceKey);
                 }
 
                 $this->addReference('settings.'.$referenceKey, $sectionEntity);
@@ -80,7 +80,7 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
 
         $this->em = $manager;
 
-        $this->loadSections($defaultSettings);
+        $this->loadSettingsSections($defaultSettings);
 
         $this->em->flush();
     }

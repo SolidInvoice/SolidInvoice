@@ -14,7 +14,7 @@ class Version20130813212934 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+
         $this->addSql("ALTER TABLE ext_log_entries CHANGE object_id object_id VARCHAR(64) DEFAULT NULL");
         $this->addSql("CREATE INDEX log_version_lookup_idx ON ext_log_entries (object_id, object_class, version)");
         $this->addSql("ALTER TABLE quotes ADD uuid VARCHAR(36) NOT NULL COMMENT '(DC2Type:uuid)'");
@@ -25,7 +25,7 @@ class Version20130813212934 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+
         $this->addSql("DROP INDEX log_version_lookup_idx ON ext_log_entries");
         $this->addSql("ALTER TABLE ext_log_entries CHANGE object_id object_id VARCHAR(32) DEFAULT NULL");
         $this->addSql("ALTER TABLE invoices DROP uuid");

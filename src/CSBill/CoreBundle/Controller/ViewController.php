@@ -22,21 +22,20 @@ class ViewController extends BaseController
     public function viewAction($type, $uuid)
     {
         switch ($type) {
-            case 'quote';
+            case 'quote':
                 $repository = $this->getRepository('CSBillQuoteBundle:Quote');
                 $route = '_quotes_view';
                 $template = 'CSBillQuoteBundle::quote_template.html.twig';
-            break;
+                break;
 
-            case 'invoice';
+            case 'invoice':
                 $repository = $this->getRepository('CSBillInvoiceBundle:Invoice');
                 $route = '_invoices_view';
                 $template = 'CSBillInvoiceBundle::invoice_template.html.twig';
-            break;
+                break;
 
             default:
                 throw $this->createNotFoundException();
-            break;
         }
 
         $entity = $repository->findOneBy(array('uuid' => Uuid::fromString($uuid)));

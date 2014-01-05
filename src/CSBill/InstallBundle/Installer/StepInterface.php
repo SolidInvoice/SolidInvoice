@@ -13,11 +13,13 @@ namespace CSBill\InstallBundle\Installer;
 interface StepInterface
 {
     /**
+     * @param  array   $request
      * @return boolean
      */
     public function validate(array $request);
 
     /**
+     * @param  array $request
      * @return void
      */
     public function process(array $request);

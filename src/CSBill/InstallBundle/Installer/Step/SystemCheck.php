@@ -54,13 +54,11 @@ class SystemCheck extends Step
     {
         $this->start();
 
-        $error = false;
-
         foreach ($this->check['recommended']['values'] as $value) {
             if (substr(trim($value), 0, 2) !== 'OK') {
                 $value = str_replace(array('ERROR', 'WARNING'), '', $value);
                 $this->addError(sprintf('The following requirement were not met: %s', $value));
-                $this->addError('Please make sure all the requirements are met before continuing with the installation');
+                $this->addError('Please ensure all the requirements are met before continuing with the installation');
 
                 return false;
             }
@@ -73,11 +71,15 @@ class SystemCheck extends Step
      * Not implemented
      * @param array $request
      */
-    public function process(array $request) {}
+    public function process(array $request)
+    {
+
+    }
 
     /**
      * Checks the system to make sure it meets the minimum requirements
      *
+     * @throws \RuntimeException
      * @return void
      */
     public function start()
@@ -110,6 +112,9 @@ class SystemCheck extends Step
      */
     public function getOutput($output = array(), $header = '')
     {
+        $heading = null;
+        $content = null;
+
         while (($line = next($output)) !== false) {
             if (strpos(strtolower($line), strtolower($header)) !== false) {
                 $content = array();
@@ -118,8 +123,6 @@ class SystemCheck extends Step
                 do {
                     $line = next($output);
                 } while (substr($line, 0, 1) === '*');
-
-                $line = next($output);
 
                 $line = next($output);
 

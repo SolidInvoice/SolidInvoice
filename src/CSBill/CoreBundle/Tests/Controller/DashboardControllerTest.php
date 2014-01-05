@@ -18,7 +18,7 @@ class DefaultControllerTest extends WebTestCase
     public function testIndex()
     {
         $this->markTestIncomplete(
-                'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 }

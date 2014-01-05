@@ -3,7 +3,7 @@
  */
 (function($, Backbone, _){
 
-    var ExposeTranslation = window.ExposeTranslation || {'get' : function(key){ return key; }}
+    var ExposeTranslation = window.ExposeTranslation || {'get' : function(key){ return key; }};
 
     var MasterView = Backbone.View.extend({
         "tagName"    : "div",

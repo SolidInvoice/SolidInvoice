@@ -36,7 +36,13 @@ class InstallController extends Controller
 
         $step = $installer->getStep();
 
-        return $this->render('CSBillInstallBundle:Install:index.html.twig', array('step' => $step, 'installer' => $installer));
+        return $this->render(
+            'CSBillInstallBundle:Install:index.html.twig',
+            array(
+                'step' => $step,
+                'installer' => $installer
+            )
+        );
     }
 
     public function stepAction($step)

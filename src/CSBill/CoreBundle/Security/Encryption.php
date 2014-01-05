@@ -17,11 +17,23 @@ class Encryption
 
     public function encrypt($data)
     {
-        return trim(base64_encode(mcrypt_encrypt(self::CIPHER, $this->salt, $data, self::MODE, mcrypt_create_iv(mcrypt_get_iv_size(self::CIPHER, self::MODE), MCRYPT_RAND))));
+        return trim(base64_encode(mcrypt_encrypt(
+            self::CIPHER,
+            $this->salt,
+            $data,
+            self::MODE,
+            mcrypt_create_iv(mcrypt_get_iv_size(self::CIPHER, self::MODE), MCRYPT_RAND)
+        )));
     }
 
     public function decrypt($data)
     {
-        return trim(mcrypt_decrypt(self::CIPHER, $this->salt, base64_decode($data), self::MODE, mcrypt_create_iv(mcrypt_get_iv_size(self::CIPHER, self::MODE), MCRYPT_RAND)));
+        return trim(mcrypt_decrypt(
+            self::CIPHER,
+            $this->salt,
+            base64_decode($data),
+            self::MODE,
+            mcrypt_create_iv(mcrypt_get_iv_size(self::CIPHER, self::MODE), MCRYPT_RAND)
+        ));
     }
 }

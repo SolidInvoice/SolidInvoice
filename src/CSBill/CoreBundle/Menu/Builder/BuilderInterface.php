@@ -14,7 +14,9 @@ namespace CSBill\CoreBundle\Menu\Builder;
 interface BuilderInterface
 {
     /**
-     * This method is called before the menu is build to validate that the menu should be displayed. From here you can check for specific permissions etc. If this method returns false, then the menu function isn't called
+     * This method is called before the menu is build to validate that the menu should be displayed.
+     * From here you can check for specific permissions etc.
+     * If this method returns false, then the menu function isn't called
      */
     public function validate();
 }

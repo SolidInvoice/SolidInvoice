@@ -56,7 +56,11 @@ class InvoiceManager extends ContainerAware
                     $invoice->addItem($invoiceItem);
                 }
             } else {
-                $invoiceMetadata->setFieldValue($invoice, $mappingField, $metadata->getFieldValue($quote, $mappingField));
+                $invoiceMetadata->setFieldValue(
+                    $invoice,
+                    $mappingField,
+                    $metadata->getFieldValue($quote, $mappingField)
+                );
             }
         }
 

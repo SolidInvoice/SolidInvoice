@@ -7,7 +7,6 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
 use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
 use CSBill\CoreBundle\Mailer\Events\MailerEvent;
-use CSBill\CoreBundle\Mailer\MailerInterface;
 use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use CS\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
@@ -89,8 +88,17 @@ class Mailer implements MailerInterface
     public function sendInvoice(Invoice $invoice)
     {
         // TODO : this needs to come from settings or somewhere so it can be extended
-        $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', array('invoice' => $invoice));
-        $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', array('invoice' => $invoice));
+        $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig',
+            array(
+                'invoice' => $invoice
+            )
+        );
+
+        $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig',
+            array(
+                'invoice' => $invoice
+            )
+        );
 
         $subject = $this->getSubject('invoice.email_subject', $invoice->getId());
 
@@ -159,7 +167,13 @@ class Mailer implements MailerInterface
      * @return int
      * @throws Exception\UnexpectedFormatException
      */
-    protected function sendMessage($subject, $users, $htmlTemplate = null, $textTemplate = null, MessageEventInterface $event = null)
+    protected function sendMessage(
+        $subject,
+        $users,
+        $htmlTemplate = null,
+        $textTemplate = null,
+        MessageEventInterface $event = null
+    )
     {
         $message = \Swift_Message::newInstance();
 
@@ -195,20 +209,20 @@ class Mailer implements MailerInterface
         $format = (string) $this->settings->get('email.format');
 
         switch ($format) {
-            case 'html' :
+            case 'html':
                 $message->setBody($htmlTemplate, 'text/html');
-            break;
+                break;
 
-            case 'text' :
+            case 'text':
                 $message->setBody($textTemplate, 'text/plain');
-            break;
+                break;
 
-            case 'both' :
+            case 'both':
                 $message->setBody($htmlTemplate, 'text/html');
                 $message->addPart($textTemplate, 'text/plain');
-            break;
+                break;
 
-            default :
+            default:
                 throw new UnexpectedFormatException($format);
         }
 

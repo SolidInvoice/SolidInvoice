@@ -76,7 +76,7 @@ class ContactType
      */
     public function __construct()
     {
-        $this->detail = new ArrayCollection;
+        $this->details = new ArrayCollection;
     }
 
     /**
@@ -156,7 +156,7 @@ class ContactType
      */
     public function getDetails()
     {
-        return $this->detail;
+        return $this->details;
     }
 
     /**

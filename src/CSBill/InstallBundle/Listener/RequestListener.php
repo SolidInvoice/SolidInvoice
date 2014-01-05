@@ -54,17 +54,20 @@ class RequestListener
         $route = $event->getRequest()->get('_route');
 
         $map = array_map(function ($route) use ($event) {
-                return strpos($event->getRequest()->getPathInfo(), $route);
-            }, $this->core_paths);
+            return strpos($event->getRequest()->getPathInfo(), $route);
+        }, $this->core_paths);
 
-        if (!in_array($route, $this->core_routes) && !in_array(true, $map) && $event->getRequestType() === HttpKernel::MASTER_REQUEST) {
+        if (
+            !in_array($route, $this->core_routes) &&
+            !in_array(true, $map) && $event->getRequestType() === HttpKernel::MASTER_REQUEST
+        ) {
 
             $installer = $this->container->get('csbill.installer');
 
             if (!$installer->isInstalled()) {
                 $response = $installer->getRedirectResponse();
 
-                return $event->setResponse($response);
+                $event->setResponse($response);
             }
 
             return null;

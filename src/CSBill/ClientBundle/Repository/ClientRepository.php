@@ -18,4 +18,7 @@ use Doctrine\ORM\EntityRepository;
  *
  * Custom Repository class for managing clients
  */
-class ClientRepository extends EntityRepository {}
+class ClientRepository extends EntityRepository
+{
+
+}

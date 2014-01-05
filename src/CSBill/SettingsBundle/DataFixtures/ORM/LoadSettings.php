@@ -46,7 +46,7 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
      * @param array  $settings
      * @param string $reference
      */
-    protected function loadSettings(array $settings = array(), $reference = null)
+    protected function loadSettingValues(array $settings = array(), $reference = null)
     {
         if (!empty($settings)) {
             foreach ($settings as $section => $setting) {
@@ -65,7 +65,7 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
                 }
 
                 if (isset($setting['children'])) {
-                    $this->loadSettings($setting['children'], implode('.', array_filter(array($reference, $section))));
+                    $this->loadSettingValues($setting['children'], implode('.', array_filter(array($reference, $section))));
                 }
             }
         }
@@ -106,6 +106,7 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
             }
         }
     }
+
     /**
      * {@inheritDoc}
      */
@@ -115,7 +116,7 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
 
         $settings = $this->container->getParameter('system.settings.default');
 
-        $this->loadSettings($settings);
+        $this->loadSettingValues($settings);
 
         $this->em->flush();
     }

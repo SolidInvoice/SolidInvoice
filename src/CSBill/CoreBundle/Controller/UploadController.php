@@ -28,9 +28,15 @@ class UploadController extends Controller
                 $file_name = uniqid().'.'.$file->guessExtension();
 
                 if ($file->move($path, $file_name)) {
-                    $data = array('status' => 'success', 'file' => $file_name);
+                    $data = array(
+                        'status' => 'success',
+                        'file' => $file_name
+                    );
                 } else {
-                    $data = array('status' => 'error', 'message' => $this->trans('There was an error uploading the file'));
+                    $data = array(
+                        'status' => 'error',
+                        'message' => $this->trans('There was an error uploading the file')
+                    );
                 }
             }
         }

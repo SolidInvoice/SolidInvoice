@@ -2,7 +2,7 @@ filter:
     excluded_paths:
         - 'vendor/*'
     paths:
-        - src
+        - 'src/*'
 tools:
     php_mess_detector:
         filter:

@@ -10,14 +10,14 @@
 
 namespace CSBill\InstallBundle\Installer;
 
-use CSBill\InstallBundle\Installer\StepInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use JMS\DiExtraBundle\Annotation as DI;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Abstract class to implement ArrayAccess and set default functionality
  */
-abstract class Step implements StepInterface, \ArrayAccess
+abstract class Step implements StepInterface, ContainerAwareInterface, \ArrayAccess
 {
     /**
      * Contains all errors for current step
@@ -29,7 +29,7 @@ abstract class Step implements StepInterface, \ArrayAccess
     /**
      * Contains an instance of the service container
      *
-     * @var Container $container
+     * @var ContainerInterface $container
      *
      * @DI\Inject("service_container")
      */
@@ -38,10 +38,10 @@ abstract class Step implements StepInterface, \ArrayAccess
     /**
      * Set the instance of the service container
      *
-     * @param  Container $container
+     * @param  ContainerInterface $container
      * @return Step
      */
-    public function setContainer(Container $container)
+    public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
 

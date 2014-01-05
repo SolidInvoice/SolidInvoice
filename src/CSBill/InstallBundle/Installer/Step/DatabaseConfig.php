@@ -137,8 +137,8 @@ class DatabaseConfig extends Step
     /**
      * Writes all the configuration values to the paramaters file
      *
-     * @param  array          $params
-     * @throws ParseException
+     * @param  array             $params
+     * @throws \RuntimeException
      * @return void;
      */
     public function writeConfigFile($params = array())
@@ -150,7 +150,11 @@ class DatabaseConfig extends Step
         try {
             $value = $yaml->parse(file_get_contents($config));
         } catch (ParseException $e) {
-            throw new \RuntimeException("Unable to parse the YAML string: %s. Your installation might be corrupt.", $e->getMessage());
+            throw new \RuntimeException(
+                "Unable to parse the YAML string: %s. Your installation might be corrupt.",
+                $e->getCode(),
+                $e
+            );
         }
 
         foreach ($params as $key => $param) {
@@ -158,8 +162,9 @@ class DatabaseConfig extends Step
             $value['parameters'][$key] = $param;
         }
 
-        // sets a unique value for the secret token
-        // We do this when writing the database configuration, as this is the only time (for now) that we modify the parameters.yml file
+        // Sets a unique value for the secret token.
+        // We do this when writing the database configuration,
+        // as this is the only time (for now) that we modify the parameters.yml file.
         // We still need to add an extra step so we can write smtp settings
         $value['parameters']['secret'] = md5(uniqid(php_uname('n'), true));
 
@@ -178,7 +183,7 @@ class DatabaseConfig extends Step
      */
     public function executeMigrations()
     {
-        $this->_runProcess(sprintf('php %s/console doctrine:migrations:migrate --no-interaction', $this->root_dir));
+        $this->runProcess(sprintf('php %s/console doctrine:migrations:migrate --no-interaction', $this->root_dir));
     }
 
     /**
@@ -188,16 +193,17 @@ class DatabaseConfig extends Step
      */
     public function executeFixtures()
     {
-        $this->_runProcess(sprintf('php %s/console doctrine:fixtures:load', $this->root_dir));
+        $this->runProcess(sprintf('php %s/console doctrine:fixtures:load', $this->root_dir));
     }
 
     /**
      * Runs a specific command with the Process Component
      *
-     * @param  string $command The command that needs to be run
-     * @return string The output of the processed command
+     * @param  string            $command The command that needs to be run
+     * @throws \RuntimeException
+     * @return string            The output of the processed command
      */
-    private function _runProcess($command = '')
+    private function runProcess($command = '')
     {
         $process = new Process($command);
         $process->setTimeout(3600);

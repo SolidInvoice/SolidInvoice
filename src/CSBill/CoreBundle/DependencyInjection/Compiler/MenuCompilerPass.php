@@ -35,8 +35,8 @@ class MenuCompilerPass implements CompilerPassInterface
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
                 $definition->addMethodCall(
-                        'addBuilder',
-                        array(new Reference($id), $attributes["menu"], $attributes["method"])
+                    'addBuilder',
+                    array(new Reference($id), $attributes["menu"], $attributes["method"])
                 );
             }
         }

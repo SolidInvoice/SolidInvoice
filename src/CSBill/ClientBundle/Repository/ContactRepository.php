@@ -18,4 +18,7 @@ use Doctrine\ORM\EntityRepository;
  *
  * Custom Repository class for managing contacts
  */
-class ContactRepository extends EntityRepository {}
+class ContactRepository extends EntityRepository
+{
+
+}

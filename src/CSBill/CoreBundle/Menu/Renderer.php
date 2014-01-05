@@ -53,7 +53,8 @@ class Renderer extends ListRenderer
             $voter->setRequest($request);
             $matcher->addVoter($voter);
         } catch (InactiveScopeException $e) {
-            // We are most probably running from the command line, which means there is no 'request' service. We just gracefully continue
+            // We are most probably running from the command line, which means there is no 'request' service.
+            // We just gracefully continue
         }
 
         parent::__construct($matcher, array('allow_safe_labels' => true, 'currentClass' => 'active'));
@@ -113,7 +114,14 @@ class Renderer extends ListRenderer
 
     protected function renderDivider(ItemInterface $item, array $options = array())
     {
-        return $this->format('<li'.$this->renderHtmlAttributes(array('class' => 'divider' . $item->getExtra('divider'))).'>', 'li', $item->getLevel(), $options);
+        return $this->format(
+            '<li'.$this->renderHtmlAttributes(
+                array(
+                    'class' => 'divider' . $item->getExtra('divider'))
+            ).'>',
+            'li',
+            $item->getLevel(),
+            $options);
     }
 
     /**

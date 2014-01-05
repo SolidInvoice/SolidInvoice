@@ -11,15 +11,12 @@
 
 namespace CSBill\InstallBundle\Twig;
 
-use Twig_Extension,
-    Twig_Test_Method;
-
-use Doctrine\Common\Util\Inflector,
-    Doctrine\Common\Util\ClassUtils;
-
-use CSBill\InstallBundle\Installer\StepInterface,
-    CSBill\InstallBundle\Installer\Installer;
-
+use Twig_Extension;
+use Twig_Test_Method;
+use Doctrine\Common\Util\Inflector;
+use Doctrine\Common\Util\ClassUtils;
+use CSBill\InstallBundle\Installer\StepInterface;
+use CSBill\InstallBundle\Installer\Installer;
 use Symfony\Component\Security\Core\Util\StringUtils;
 
 class InstallExtension extends Twig_Extension

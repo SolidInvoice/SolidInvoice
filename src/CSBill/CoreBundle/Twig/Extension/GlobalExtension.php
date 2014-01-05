@@ -92,7 +92,7 @@ class GlobalExtension extends Twig_Extension
 
             $params = array_merge($request->query->all(), $request->attributes->all());
 
-            foreach ($params as $key => $param) {
+            foreach (array_keys($params) as $key) {
                 if (substr($key, 0, 1) == '_') {
                     unset($params[$key]);
                 }
@@ -111,4 +111,4 @@ class GlobalExtension extends Twig_Extension
     {
         return 'csbill_core.twig.globals';
     }
- }
+}

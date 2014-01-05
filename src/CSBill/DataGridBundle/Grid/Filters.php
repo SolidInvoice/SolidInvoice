@@ -3,7 +3,6 @@
 namespace CSBill\DataGridBundle\Grid;
 
 use Symfony\Component\HttpFoundation\Request;
-//use Zend\StdLib\CallbackHandler;
 
 class Filters implements \Iterator
 {

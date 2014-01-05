@@ -39,7 +39,15 @@ class DefaultController extends Controller
         // TODO : get better way of adding filters & search instead of defining it in the controller like this
         $filters = new Filters($request);
 
-        $filters->add('all_clients', null, true, array('active_class' => 'label label-info', 'default_class' => 'label label-default'));
+        $filters->add(
+            'all_clients',
+            null,
+            true,
+            array(
+                'active_class' => 'label label-info',
+                'default_class' => 'label label-default'
+            )
+        );
 
         $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
 
@@ -51,7 +59,13 @@ class DefaultController extends Controller
                 $queryBuilder->join($alias.'.status', 's')
                    ->andWhere('s.name = :status_name')
                    ->setParameter('status_name', $status->getName());
-            }, false, array('active_class' => 'label label-' . $status->getLabel(), 'default_class' => 'label label-default'));
+            },
+                false,
+                array(
+                    'active_class' => 'label label-' . $status->getLabel(),
+                    'default_class' => 'label label-default'
+                )
+            );
         }
 
         $search = $request->get('search');
@@ -191,7 +205,12 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
         }
 
-        return $this->render('CSBillClientBundle:Default:edit.html.twig', array('client' => $client, 'form' => $form->createView()));
+        return $this->render('CSBillClientBundle:Default:edit.html.twig',
+            array(
+                'client' => $client,
+                'form' => $form->createView()
+            )
+        );
     }
 
     /**

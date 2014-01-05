@@ -2,6 +2,7 @@
 
 namespace CSBill\QuoteBundle\Form\EventListener;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,7 +13,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData', FormEvents::PRE_BIND => 'preSetData');
+        return array(FormEvents::PRE_SET_DATA => 'preSetData', FormEvents::PRE_SUBMIT => 'preSetData');
     }
 
     public function preSetData(FormEvent $event)
@@ -31,20 +32,21 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         }
 
         if (!empty($client_id)) {
-            $factory = $form->getConfig()->getFormFactory();
-            $form->add('users', 'entity', array(
-                                                'constraints' => array(
-                                                                        new NotBlank()
-                                                                        ),
-                                                'multiple' => true,
-                                                'expanded' => true,
-                                                'class' => 'CSBillClientBundle:Contact',
-                                                'query_builder' => function ($repo) use ($client_id) {
-                                                                        $qb = $repo->createQueryBuilder('c')->where('c.client = :client')->setParameter('client', $client_id);
-
-                                                                        return $qb;
-                                                                    }
-                                                ));
+            $form->add(
+                'users',
+                'entity',
+                array(
+                    'constraints' => array(
+                        new NotBlank()
+                    ),
+                    'multiple' => true,
+                    'expanded' => true,
+                    'class' => 'CSBillClientBundle:Contact',
+                    'query_builder' => function (EntityRepository $repo) use ($client_id) {
+                        return $repo->createQueryBuilder('c')->where('c.client = :client')->setParameter('client', $client_id);
+                    }
+                )
+            );
         }
     }
 }

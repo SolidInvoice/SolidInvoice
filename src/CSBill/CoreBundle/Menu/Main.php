@@ -19,7 +19,7 @@ class Main extends AuthenticatedMenu
     /**
      * Menu builder for the quotes index
      *
-     * @param $menu \Knp\Menu\ItemInterface
+     * @param ItemInterface $menu
      */
     public function topMenu(ItemInterface $menu)
     {
@@ -27,7 +27,17 @@ class Main extends AuthenticatedMenu
 
         $username = $user->getUsername() . ' <b class="caret"></b>';
 
-        $menu->addChild($username, array('uri' => '#', 'allow_safe_labels' => true, 'extras' => array('safe_label' => true, 'icon' => 'icon-user')));
+        $menu->addChild(
+            $username,
+            array(
+                'uri' => '#',
+                'allow_safe_labels' => true,
+                'extras' => array(
+                    'safe_label' => true,
+                    'icon' => 'icon-user'
+                )
+            )
+        );
 
         $topMenu = $menu[$username];
 

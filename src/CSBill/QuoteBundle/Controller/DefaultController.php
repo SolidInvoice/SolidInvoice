@@ -54,7 +54,12 @@ class DefaultController extends Controller
         $statusList = $this->getRepository('CSBillQuoteBundle:Status')->findAll();
 
         // Return the response of the grid to the template
-        return $grid->getGridResponse('CSBillQuoteBundle:Default:index.html.twig', array('status_list' => $statusList));
+        return $grid->getGridResponse(
+            'CSBillQuoteBundle:Default:index.html.twig',
+            array(
+                'status_list' => $statusList
+            )
+        );
     }
 
     /**
@@ -141,13 +146,13 @@ class DefaultController extends Controller
 
         switch ($this->getRequest()->request->get('save')) {
 
-            case 'send' :
+            case 'send':
                 $status = 'pending';
                 $email = true;
                 break;
 
-            case 'draft' :
-            default :
+            case 'draft':
+            default:
                 $status = 'draft';
                 break;
         }

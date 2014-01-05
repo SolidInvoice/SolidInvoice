@@ -447,7 +447,7 @@ class Quote
      */
     public function updateTotal()
     {
-    if (count($this->items)) {
+        if (count($this->items)) {
             $total = 0;
             foreach ($this->items as $item) {
                 $item->setQuote($this);

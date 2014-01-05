@@ -70,11 +70,11 @@ class Contact extends AbstractType
         }
 
         $types = $this->types;
-        $callback = array($this, 'humanize');
+        $that = $this;
 
         $builder->addEventListener(
             FormEvents::SUBMIT,
-            function (FormEvent $event) use ($types, $callback) {
+            function (FormEvent $event) use ($types, $that) {
 
                 $details = $event->getData()->getDetails();
 
@@ -89,9 +89,9 @@ class Contact extends AbstractType
                     if ($type->isRequired()) {
                         if (!in_array($type->getName(), $detailTypes)) {
                             $error = sprintf(
-                                        '%s is required',
-                                        call_user_func($callback, $type->getName())
-                                    );
+                                '%s is required',
+                                $that->humanize($type->getName())
+                            );
                             $event->getForm()->addError(new FormError($error));
                         }
                     }

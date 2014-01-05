@@ -39,8 +39,13 @@ class StatusExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-                    new \Twig_SimpleFunction('status_label', array($this, 'renderStatusLabel'), array('is_safe' => array('html')))
-                );
+            new \Twig_SimpleFunction(
+                'status_label',
+                array($this, 'renderStatusLabel'),
+                array('is_safe' => array('html')
+                )
+            )
+        );
     }
 
     /**
@@ -49,7 +54,12 @@ class StatusExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-                new \Twig_SimpleFilter('status', array($this, 'getStatusLabel'), array('is_safe' => array('html')))
+            new \Twig_SimpleFilter(
+                'status',
+                array($this, 'getStatusLabel'),
+                array('is_safe' => array('html')
+                )
+            )
         );
     }
 
