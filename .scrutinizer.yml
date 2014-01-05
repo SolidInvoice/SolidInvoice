@@ -3,6 +3,10 @@ filter:
         - 'vendor/*'
     paths:
         - 'src/*'
+
+before_commands:
+    - composer install
+
 tools:
     php_mess_detector:
         filter:
