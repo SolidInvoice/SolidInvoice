@@ -1,9 +1,11 @@
 {% spaceless %}
 <table style="width: 100%; background-color: #4a78d4">
     <tr>
-        <td width="0%" valign="middle" style="vertical-align:middle; padding: 20px">
-            <img src="{{ app.request.uriForPath('/uploads/' ~ settings.system.general.logo) }}" />
-        </td>
+        {% if settings.system.general.logo.value is not empty %}
+            <td width="0%" valign="middle" style="vertical-align:middle; padding: 20px">
+                <img src="{{ app.request.uriForPath('/uploads/' ~ settings.system.general.logo) }}" />
+            </td>
+        {% endif %}
         <td align="right" width="50%" valign="middle" style="vertical-align:middle; padding: 20px">
             <h1 style="font-size: 60px; color: #FFFFFF">{{ "Invoice"|trans }}</h1>
         </td>
