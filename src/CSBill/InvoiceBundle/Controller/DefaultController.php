@@ -56,7 +56,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param Client $client
+     * @param  Client   $client
      * @return Response
      */
     public function createAction(Client $client = null)
@@ -86,7 +86,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param Invoice $invoice
+     * @param  Invoice  $invoice
      * @return Response
      */
     public function editAction(Invoice $invoice)
@@ -125,7 +125,7 @@ class DefaultController extends Controller
 
     /**
      * @param Invoice $invoice
-     * @param bool $email
+     * @param bool    $email
      */
     private function saveInvoice(Invoice $invoice, $email = false)
     {

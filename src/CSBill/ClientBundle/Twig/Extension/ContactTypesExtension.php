@@ -22,4 +22,4 @@ class ContactTypesExtension extends \Twig_Extension
     {
         return 'client_contact_types_extension';
     }
-} 
+}

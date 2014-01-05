@@ -19,7 +19,7 @@ class ContactDetailsFactory
 
     /**
      * @param Installer $installer
-     * @param Registry $doctrine
+     * @param Registry  $doctrine
      */
     public function __construct(Installer $installer, Registry $doctrine)
     {
@@ -32,7 +32,7 @@ class ContactDetailsFactory
      */
     public function getDetails()
     {
-        if($this->intaller->isInstalled()) {
+        if ($this->intaller->isInstalled()) {
             $repository = $this->doctrine->getRepository('CSBillClientBundle:ContactType');
 
             return $repository->findAll();
@@ -40,4 +40,4 @@ class ContactDetailsFactory
 
         return array();
     }
-} 
+}

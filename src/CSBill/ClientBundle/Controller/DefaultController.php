@@ -26,7 +26,7 @@ class DefaultController extends Controller
     /**
      * List all the clients
      *
-     * @param Request $request
+     * @param  Request                                    $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -44,7 +44,7 @@ class DefaultController extends Controller
         $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
 
         foreach ($statusList as $status) {
-            $filters->add($status->getName().'_clients', function(QueryBuilder $queryBuilder) use ($status) {
+            $filters->add($status->getName().'_clients', function (QueryBuilder $queryBuilder) use ($status) {
                 $aliases = $queryBuilder->getRootAliases();
                 $alias = $aliases[0];
 
@@ -56,7 +56,7 @@ class DefaultController extends Controller
 
         $search = $request->get('search');
 
-        $source->manipulateQuery(function(QueryBuilder $queryBuilder) use ($search, $filters) {
+        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search, $filters) {
 
             if ($filters->isFilterActive()) {
                 $filter = $filters->getActiveFilter();
@@ -136,10 +136,10 @@ class DefaultController extends Controller
         $originalContactsDetails = array();
         $originalContacts = array();
 
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             $originalContacts = $client->getContacts()->toArray();
 
-            foreach($originalContacts as $contact) {
+            foreach ($originalContacts as $contact) {
                 /** @var \CSBill\ClientBundle\Entity\Contact $contact */
                 $originalContactsDetails[$contact->getId()] = $contact->getDetails()->toArray();
                 $contact->getDetails()->clear();
@@ -168,7 +168,7 @@ class DefaultController extends Controller
 
             unset($contact);
 
-            foreach($client->getContacts() as $contact) {
+            foreach ($client->getContacts() as $contact) {
                 foreach ($contact->getDetails() as $originalContactDetail) {
                     foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
                         if ($toDel->getId() === $originalContactDetail->getId()) {

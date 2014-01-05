@@ -156,7 +156,7 @@ class Quote
 
     /**
      * @param Uuid $uuid
-     * @return $this
+     *                   @return $this
      */
     public function setUuid(Uuid $uuid)
     {
@@ -177,7 +177,7 @@ class Quote
 
     /**
      * @param array $users
-     * @return $this
+     *                     @return $this
      */
     public function setUsers(array $users = array())
     {

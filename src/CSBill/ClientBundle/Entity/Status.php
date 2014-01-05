@@ -35,7 +35,7 @@ class Status extends BaseStatus
 
     /**
      * @param Client $client
-     * @return $this
+     *                       @return $this
      */
     public function addClient(Client $client)
     {
@@ -47,7 +47,7 @@ class Status extends BaseStatus
 
     /**
      * @param Client $client
-     * @return $this
+     *                       @return $this
      */
     public function removeClient(Client $client)
     {

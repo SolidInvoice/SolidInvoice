@@ -33,7 +33,7 @@ class ContactDetail extends AbstractType
 
     /**
      * @param EntityManager $entityManager
-     * @param ContactType $type
+     * @param ContactType   $type
      */
     public function __construct(EntityManager $entityManager, ContactType $type)
     {
@@ -53,7 +53,7 @@ class ContactDetail extends AbstractType
 
         $contstraints = $this->buildConstraints();
 
-        if($this->type->isRequired()) {
+        if ($this->type->isRequired()) {
             $contstraints[] = new Constraints\NotBlank();
         }
 
@@ -81,7 +81,7 @@ class ContactDetail extends AbstractType
     }
 
     /**
-     * @param string $text
+     * @param  string $text
      * @return string
      */
     private function humanize($text)
@@ -98,10 +98,10 @@ class ContactDetail extends AbstractType
 
         $constraints = array();
 
-        if(is_array($options) && array_key_exists('constraints', $options)) {
-            foreach($options['constraints'] as $constraint) {
+        if (is_array($options) && array_key_exists('constraints', $options)) {
+            foreach ($options['constraints'] as $constraint) {
                 $constraint = str_replace(' ', '', $this->humanize($constraint));
-                if(class_exists($class = sprintf('Symfony\Component\Validator\Constraints\\%s', $constraint))) {
+                if (class_exists($class = sprintf('Symfony\Component\Validator\Constraints\\%s', $constraint))) {
                     $constraints[] = new $class;
                 }
             }

@@ -53,7 +53,7 @@ class RequestListener
     {
         $route = $event->getRequest()->get('_route');
 
-        $map = array_map(function($route) use ($event) {
+        $map = array_map(function ($route) use ($event) {
                 return strpos($event->getRequest()->getPathInfo(), $route);
             }, $this->core_paths);
 

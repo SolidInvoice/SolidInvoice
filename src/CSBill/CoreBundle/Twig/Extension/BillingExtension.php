@@ -68,7 +68,7 @@ class BillingExtension extends Twig_Extension
 
             if (is_array($statusList) && count($statusList) > 0) {
                 foreach ($statusList as $status) {
-                    $tests[$status] = new Twig_Test_Function(function($a) use ($status) {
+                    $tests[$status] = new Twig_Test_Function(function ($a) use ($status) {
                         return strtolower($a->getStatus()->getName()) === strtolower($status);
                     });
                 }

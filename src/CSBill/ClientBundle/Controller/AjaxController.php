@@ -33,7 +33,7 @@ class AjaxController extends Controller
     /**
      * Add a new contact to a client
      *
-     * @param  Client                                     $client
+     * @param  Client                                                        $client
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -41,7 +41,7 @@ class AjaxController extends Controller
     {
         $request = $this->getRequest();
 
-        if(!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
 
@@ -77,7 +77,7 @@ class AjaxController extends Controller
     /**
      * Edits a contact
      *
-     * @param  Contact                                    $contact
+     * @param  Contact                                                       $contact
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -85,7 +85,7 @@ class AjaxController extends Controller
     {
         $request = $this->getRequest();
 
-        if(!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
 
@@ -93,7 +93,7 @@ class AjaxController extends Controller
 
         $form = $this->createForm('contact', $contact);
 
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             $contact->getDetails()->clear();
         }
 
@@ -149,7 +149,7 @@ class AjaxController extends Controller
     /**
      * Deletes a contact
      *
-     * @param Contact $contact
+     * @param  Contact      $contact
      * @return JsonResponse
      */
     public function deletecontactAction(Contact $contact)
@@ -164,7 +164,7 @@ class AjaxController extends Controller
     /**
      * Deletes a client
      *
-     * @param Client $client
+     * @param  Client       $client
      * @return JsonResponse
      */
     public function deleteclientAction(Client $client)

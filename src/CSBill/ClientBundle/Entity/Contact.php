@@ -105,9 +105,9 @@ class Contact implements \serializable
 
     public function __set($key, $value)
     {
-        if(is_array($value)) {
-            foreach($value as $element) {
-                if($element instanceof ContactDetail) {
+        if (is_array($value)) {
+            foreach ($value as $element) {
+                if ($element instanceof ContactDetail) {
                     $this->addDetail($element);
                 }
             }
@@ -116,7 +116,7 @@ class Contact implements \serializable
 
     public function __get($key)
     {
-        if('details_' === substr($key, 0, 8)) {
+        if ('details_' === substr($key, 0, 8)) {
 
             $details = array();
 

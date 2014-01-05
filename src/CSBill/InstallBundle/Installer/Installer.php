@@ -135,7 +135,7 @@ class Installer
 
         $keys = $session->all();
 
-        array_walk($keys, function($value, $key) use ($session) {
+        array_walk($keys, function ($value, $key) use ($session) {
             $session->remove($key);
         });
     }

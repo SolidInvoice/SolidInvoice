@@ -25,7 +25,7 @@ class QuoteTotalListener
 
         if ($entity instanceof Quote) {
             if (count($entity->getUsers()) > 0) {
-                $contacts = $em->getRepository('CSBillClientBundle:Contact')->findById(array_map(function($item){ return $item->getId(); }, $entity->getUsers()->toArray()));
+                $contacts = $em->getRepository('CSBillClientBundle:Contact')->findById(array_map(function ($item) { return $item->getId(); }, $entity->getUsers()->toArray()));
                 $entity->setUsers($contacts);
             }
         }

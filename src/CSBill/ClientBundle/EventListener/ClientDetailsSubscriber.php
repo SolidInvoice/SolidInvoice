@@ -26,14 +26,14 @@ class ClientDetailsSubscriber implements EventSubscriber
         }
 
         if ($entity instanceof Contact) {
-            if(count($entity->getDetails()) > 0) {
+            if (count($entity->getDetails()) > 0) {
                 $primaryType = array();
 
-                foreach($entity->getDetails() as $detail) {
+                foreach ($entity->getDetails() as $detail) {
                     /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
                     $type = $detail->getType();
 
-                    if(!array_key_exists($type->getName(), $primaryType)) {
+                    if (!array_key_exists($type->getName(), $primaryType)) {
                         $detail->setPrimary(true);
                         $primaryType[$type->getName()] = $type;
                     }
@@ -47,23 +47,23 @@ class ClientDetailsSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if($entity instanceof Contact) {
+        if ($entity instanceof Contact) {
 
             $primaryType = array();
 
-            foreach($entity->getDetails() as $detail) {
+            foreach ($entity->getDetails() as $detail) {
                 $type = $detail->getType();
 
-                if($detail->isPrimary()) {
+                if ($detail->isPrimary()) {
                     $primaryType[$type->getName()] = $type;
                     continue;
                 }
 
-                if(!array_key_exists($type->getName(), $primaryType)) {
+                if (!array_key_exists($type->getName(), $primaryType)) {
                     $detail->setPrimary(true);
                     $primaryType[$type->getName()] = $type;
                 }
             }
         }
     }
-} 
+}

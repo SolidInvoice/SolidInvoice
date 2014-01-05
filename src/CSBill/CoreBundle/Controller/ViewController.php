@@ -41,13 +41,13 @@ class ViewController extends BaseController
 
         $entity = $repository->findOneBy(array('uuid' => Uuid::fromString($uuid)));
 
-        if(null === $entity) {
+        if (null === $entity) {
             throw $this->createNotFoundException();
         }
 
         $security = $this->get('security.context');
 
-        if(true === $security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (true === $security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->redirect($this->generateUrl($route, array('id' => $entity->getId())));
         }
 

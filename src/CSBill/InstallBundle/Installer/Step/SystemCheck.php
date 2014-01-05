@@ -73,7 +73,7 @@ class SystemCheck extends Step
      * Not implemented
      * @param array $request
      */
-    public function process(array $request){}
+    public function process(array $request) {}
 
     /**
      * Checks the system to make sure it meets the minimum requirements

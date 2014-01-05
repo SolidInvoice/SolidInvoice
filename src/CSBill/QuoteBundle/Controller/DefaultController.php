@@ -60,7 +60,7 @@ class DefaultController extends Controller
     /**
      * Create a new Quote
      *
-     * @param Client $client
+     * @param  Client   $client
      * @return Response
      */
     public function createAction(Client $client = null)
@@ -92,7 +92,7 @@ class DefaultController extends Controller
     /**
      * Edit a quote
      *
-     * @param Quote $quote
+     * @param  Quote    $quote
      * @return Response
      */
     public function editAction(Quote $quote)
@@ -131,7 +131,7 @@ class DefaultController extends Controller
 
     /**
      * @param Quote $quote
-     * @param bool $email
+     * @param bool  $email
      */
     private function saveQuote(Quote $quote, $email = false)
     {
@@ -139,7 +139,7 @@ class DefaultController extends Controller
 
         $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
 
-        switch($this->getRequest()->request->get('save')) {
+        switch ($this->getRequest()->request->get('save')) {
 
             case 'send' :
                 $status = 'pending';

@@ -34,7 +34,7 @@ class Contact extends AbstractType
 
     /**
      * @param EntityManager $entityManager
-     * @param array $types
+     * @param array         $types
      */
     public function __construct(EntityManager $entityManager, array $types)
     {
@@ -44,14 +44,14 @@ class Contact extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('firstname');
         $builder->add('lastname');
 
-        foreach($this->types as $item) {
+        foreach ($this->types as $item) {
             /** @var \CSBill\ClientBundle\Entity\ContactType $item */
             $builder->add(
                 'details_' . $item->getName(),
@@ -74,20 +74,20 @@ class Contact extends AbstractType
 
         $builder->addEventListener(
             FormEvents::SUBMIT,
-            function(FormEvent $event) use($types, $callback) {
+            function (FormEvent $event) use ($types, $callback) {
 
                 $details = $event->getData()->getDetails();
 
                 $detailTypes = array();
 
-                foreach($details as $detail) {
+                foreach ($details as $detail) {
                     $type = $detail->getType()->getName();
                     $detailTypes[] = $type;
                 }
 
-                foreach($types as $type) {
-                    if($type->isRequired()) {
-                        if(!in_array($type->getName(), $detailTypes)) {
+                foreach ($types as $type) {
+                    if ($type->isRequired()) {
+                        if (!in_array($type->getName(), $detailTypes)) {
                             $error = sprintf(
                                         '%s is required',
                                         call_user_func($callback, $type->getName())
@@ -114,7 +114,7 @@ class Contact extends AbstractType
     }
 
     /**
-     * @param string $text
+     * @param  string $text
      * @return string
      */
     private function humanize($text)

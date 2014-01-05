@@ -58,7 +58,7 @@ class LicenseAgreement extends Step
      * Not implemented
      * @param array $request
      */
-    public function process(array $request){}
+    public function process(array $request) {}
 
     /**
      * Reads through all the files in the root directory to find the license file so it can be shown to the user
@@ -70,7 +70,7 @@ class LicenseAgreement extends Step
         $root_dir = dirname($this->get('kernel')->getRootDir());
 
         $finder = new Finder();
-        $finder->files()->in($root_dir)->depth('== 0')->filter(function(\SplFileInfo $file){
+        $finder->files()->in($root_dir)->depth('== 0')->filter(function (\SplFileInfo $file) {
 
                 $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
 

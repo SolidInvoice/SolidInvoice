@@ -119,8 +119,8 @@ class Renderer extends ListRenderer
     /**
      * Renders a menu at a specific location
      *
-     * @param \SplObjectStorage $storage
-     * @param array  $options
+     * @param  \SplObjectStorage $storage
+     * @param  array             $options
      * @return string
      */
     public function build(\SplObjectStorage $storage, array $options = array())

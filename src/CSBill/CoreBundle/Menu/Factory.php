@@ -36,8 +36,8 @@ class Factory extends MenuFactory
     }
 
     /**
-     * @param string $name
-     * @param array $options
+     * @param  string                      $name
+     * @param  array                       $options
      * @return MenuItem|\Knp\Menu\MenuItem
      */
     public function createItem($name, array $options = array())
