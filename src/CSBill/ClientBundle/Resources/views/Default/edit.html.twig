@@ -19,45 +19,47 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <form action="{{ path("_clients_edit", {"id" : client.id}) }}" method="post"{{ form_enctype(form) }}>
+    <form action="{{ path("_clients_edit", {"id" : client.id}) }}" method="post"{{ form_enctype(form) }} role="form">
 
         {{ form_errors(form) }}
 
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
                 {{ form_row(form.name) }}
             </div>
-            <div class="span6">
+            <div class="col-lg-6 col-md-6">
                 {{ form_row(form.website) }}
             </div>
         </div>
 
-        <div class="row-fluid">
+        <div class="row">
             <legend>
-                <h3>{{ "Contacts"|trans }}</h3>
+                <h3>{{ "contacts"|trans }}</h3>
             </legend>
 
             {% set prototypeForm %}
-            {{ _macro.widget_prototype(form.contacts, 'Delete', {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
+            {{ _macro.widget_prototype(form.contacts, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
             {% endset %}
 
             <div class="client_contacts" data-prototype="{{ prototypeForm|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.vars.name }}">
                 {% for widget in form.contacts.children %}
                     {% set delete = loop.index0 != 0 %}
-                    {{ _macro.widget_prototype(widget, 'Delete', {'trash' : {'class' : 'pull-right btn btn-danger'}}, delete) }}
+                    {{ _macro.widget_prototype(widget, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}, delete) }}
                 {% else %}
                     {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
                 {% endfor %}
             </div>
 
-            <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link"><i class="icon-plus-sign"></i> Add Contact</a>
+            <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link"><i class="icon-plus-sign"></i> {{ "add_contact"|trans }}</a>
         </div>
 
         {{ form_row(form._token) }}
 
+        <br class="clear" />
+
         <div class="control-group">
             <div class="controls">
-                <input type="submit" value="{{ "save"|trans }}" class="btn" />
+                <button type="submit" class="btn btn-success"><i class="icon-save"></i> {{ "save"|trans }}</button>
             </div>
         </div>
     </form>

@@ -1,22 +1,18 @@
-<nav class="navbar navbar-fixed-top navbar-inverse">
-    <div class="navbar-inner">
-        <div class="container">
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#top_menu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
 
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
+        <a class="navbar-brand" href="{{ url('_dashboard') }}">{{ title }}</a>
+    </div>
 
-              <a class="brand" href="{{ url('_dashboard') }}">{{ title }}</a>
+    <div class="collapse navbar-collapse" id="top_menu">
+        {{ menu('top', {'attr' : {'class' : 'nav navbar-nav'}}) }}
 
-            <div class="nav-collapse">
-                {{ menu('top', {'attr' : {'class' : 'nav'}}) }}
-
-                <div class="pull-right">
-                    {{ menu('top_right', {'attr' : {'class' : 'nav'}}) }}
-                </div>
-            </div>
-        </div>
+        {{ menu('top_right', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
     </div>
 </nav>

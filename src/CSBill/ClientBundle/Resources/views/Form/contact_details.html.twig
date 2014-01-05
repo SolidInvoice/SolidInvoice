@@ -1,6 +1,7 @@
-<div class="child">
-    {{ form_widget(form.type) }}
-    {{ form_row(form.value) }}
+<div class="child row">
+    <div class="col-lg-6 col-md-6">
+        {{ form_widget(form.type) }}
+        {{ form_row(form.value) }}
+        {{ form_errors(form) }}
+    </div>
 </div>
-
-{{ form_errors(form) }}

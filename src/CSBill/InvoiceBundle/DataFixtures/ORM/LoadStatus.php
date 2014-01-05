@@ -17,10 +17,10 @@ use CSBill\InvoiceBundle\Entity\Status;
 
 class LoadStatus implements FixtureInterface
 {
-    protected $statusList = array( 'draft'     => 'draft',
+    protected $statusList = array( 'draft'     => 'default',
                                    'pending'   => 'warning',
                                    'paid'      => 'success',
-                                   'overdue'   => 'important',
+                                   'overdue'   => 'danger',
                                    'cancelled' => 'inverse');
 
     public function load(ObjectManager $manager)

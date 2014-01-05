@@ -19,44 +19,35 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-    <div class="row-fluid">
-        {{ parent() }}
 
-        <div class="row-fluid">
-            <h5>{{ "Quote Status Legend"|trans }}</h5>
+    {{ parent() }}
 
-            {% for status in status_list %}
-                {{ status_label(status) }}
-            {% endfor %}
-        </div>
+    <div class="row">
+        <h5>{{ "Quote Status Legend"|trans }}</h5>
+
+        {% for status in status_list %}
+            {{ status_label(status) }}
+        {% endfor %}
     </div>
+
 {% endblock content %}
 
 {% block sidebar_right %}
-    <div class="row-fluid">
-        <div class="well well-small">
-            <ul class="nav">
+    <div class="well well-small">
+        <a class="btn btn-lg btn-default" href="{{ path("_quotes_create") }}">
+            <i class="icon-file-alt"></i> {{ "Create Quote"|trans }}
+        </a>
+
+        <ul class="nav nav-list">
+            {% for status in status_list %}
                 <li>
-                    <a class="btn btn-large" href="{{ path("_quotes_create") }}">
-                        <i class="icon-file-alt"></i> {{ "Create Quote"|trans }}
-                    </a>
+                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.quotes|length }}</label>
+
+                    {% transchoice status.quotes|length with {'%name%': status.name|title} %}
+                    {0} %name% Quotes|{1} %name% Quote|]1,Inf] %name% Quotes
+                    {% endtranschoice %}
                 </li>
-            </ul>
-
-            <div class="row-fluid">
-                <ul class="nav nav-list">
-                    {% for status in status_list %}
-                        <li>
-                            <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.quotes|length }}</label>
-
-                            {% transchoice status.quotes|length with {'%name%': status.name|title} %}
-                            {0} %name% Quotes|{1} %name% Quote|]1,Inf] %name% Quotes
-                            {% endtranschoice %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-        </div>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock sidebar_right %}

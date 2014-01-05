@@ -17,17 +17,19 @@ use CSBill\DataGridBundle\Grid\Filters;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
-use Doctrine\ORM\QueryBuilder as QB;
+use Doctrine\ORM\QueryBuilder;
 use CSBill\ClientBundle\Form\Client as ClientForm;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
     /**
      * List all the clients
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $source = new Entity('CSBillClientBundle:Client');
 
@@ -35,36 +37,36 @@ class DefaultController extends Controller
         $grid = $this->get('grid');
 
         // TODO : get better way of adding filters & search instead of defining it in the controller like this
-        $filters = new Filters($this->getRequest());
+        $filters = new Filters($request);
 
-        $filters->add('all_clients', null, true, array('active_class' => 'label label-info', 'default_class' => 'label'));
+        $filters->add('all_clients', null, true, array('active_class' => 'label label-info', 'default_class' => 'label label-default'));
 
         $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
 
         foreach ($statusList as $status) {
-            $filters->add($status->getName().'_clients', function(QB $qb) use ($status) {
-                $aliases = $qb->getRootAliases();
+            $filters->add($status->getName().'_clients', function(QueryBuilder $queryBuilder) use ($status) {
+                $aliases = $queryBuilder->getRootAliases();
                 $alias = $aliases[0];
 
-                $qb->join($alias.'.status', 's')
+                $queryBuilder->join($alias.'.status', 's')
                    ->andWhere('s.name = :status_name')
                    ->setParameter('status_name', $status->getName());
-            }, false, array('active_class' => 'label label-' . $status->getLabel(), 'default_class' => 'label'));
+            }, false, array('active_class' => 'label label-' . $status->getLabel(), 'default_class' => 'label label-default'));
         }
 
-        $search = $this->getRequest()->get('search');
+        $search = $request->get('search');
 
-        $source->manipulateQuery(function(QB $qb) use ($search, $filters) {
+        $source->manipulateQuery(function(QueryBuilder $queryBuilder) use ($search, $filters) {
 
             if ($filters->isFilterActive()) {
                 $filter = $filters->getActiveFilter();
-                $filter($qb);
+                $filter($queryBuilder);
             }
 
             if ($search) {
-                $aliases = $qb->getRootAliases();
+                $aliases = $queryBuilder->getRootAliases();
 
-                $qb->andWhere($aliases[0].'.name LIKE :search')
+                $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });
@@ -72,11 +74,11 @@ class DefaultController extends Controller
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $viewAction = new RowAction($this->get('translator')->trans('View'), '_clients_view');
-        $viewAction->setAttributes(array('class' => 'btn'));
+        $viewAction = new RowAction($this->get('translator')->trans('view'), '_clients_view');
+        //$viewAction->setAttributes(array('class' => 'btn'));
 
-        $editAction = new RowAction($this->get('translator')->trans('Edit'), '_clients_edit');
-        $editAction->setAttributes(array('class' => 'btn'));
+        $editAction = new RowAction($this->get('translator')->trans('edit'), '_clients_edit');
+        //$editAction->setAttributes(array('class' => 'btn'));
 
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);
@@ -138,6 +140,7 @@ class DefaultController extends Controller
             $originalContacts = $client->getContacts()->toArray();
 
             foreach($originalContacts as $contact) {
+                /** @var \CSBill\ClientBundle\Entity\Contact $contact */
                 $originalContactsDetails[$contact->getId()] = $contact->getDetails()->toArray();
                 $contact->getDetails()->clear();
             }

@@ -1,12 +1,14 @@
 {% import "CSBillCoreBundle:Form:macro.html.twig" as _macro %}
 
+<br class="clear" />
+
 <div class="well">
 
-    <div class="child row-fluid">
-        <div class="span6">
+    <div class="child row">
+        <div class="col-lg-6 col-md-6">
             {{ form_row(form.firstname) }}
         </div>
-        <div class="span6">
+        <div class="col-lg-6 col-md-6">
             {{ form_row(form.lastname) }}
         </div>
     </div>
@@ -15,31 +17,31 @@
 
         {% for item in contact_types %}
 
-            {% set child_form = _macro.widget_prototype(widget=form['details_' ~ item.name], attr={"trash" : {"class" : "trash pull-left"}}) %}
+            {% set child_form = _macro.widget_prototype(form['details_' ~ item.name], '', {"trash" : {"class" : "trash pull-left"}}) %}
 
             {{ form_errors(form['details_' ~ item.name]) }}
 
-            <div class="row-fluid">
+            <div class="row">
                 <div class="client_contact_details" data-prototype="{{ child_form|escape }}" data-prototype-name="{{ form['details_' ~ item.name].vars.prototype.vars.name }}" data-type="{{ item.name }}">
-                    <div class="row-fluid">
-                        {% for widget in form['details_' ~ item.name].children %}
-                            {{ _macro.widget_prototype(widget=widget, attr={"trash" : {"class" : "trash pull-left"}}) }}
-                        {% else %}
-                            {% if item.required %}
-                                {{ child_form|replace({'__contact_details_prototype__' : loop.index0})|raw }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                    {% for widget in form['details_' ~ item.name].children %}
+                        {{ _macro.widget_prototype(widget, '', {"trash" : {"class" : "trash pull-left"}}) }}
+                    {% else %}
+                        {% if item.required %}
+                            {{ child_form|replace({'__contact_details_prototype__' : loop.index0})|raw }}
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         {% endfor %}
     </div>
 
-    <div class="input-prepend child contact-type-list">
+    <div class="child contact-type-list">
         <div class="btn-group">
-            <button class="btn dropdown-toggle" data-toggle="dropdown">
-                <span>{{ "Add Info"|trans }}</span>
-                <span class="caret"></span>
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span>
+                    <i class="icon-plus-sign"></i> {{ "Add Info"|trans }}
+                    <span class="caret"></span>
+                </span>
             </button>
             <ul class="dropdown-menu btn-add contact_details_collection" data-target="client_contact_details">
                 {% for type in contact_types %}

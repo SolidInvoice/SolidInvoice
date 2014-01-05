@@ -16,39 +16,34 @@
     {{ menu('quotes_view') }}
 {% endblock sidebar %}
 
-
 {% block content %}
-
     {# TODO : add toolbar #}
-    <div class="row-fluid">
-        <div class="pull-right">
-            <div class="btn-toolbar">
-                <div class="btn-group">
-                    {% if quote is pending or quote is draft %}
-                        <a href="{{ path('_accept_quote', {'id' : quote.id}) }}" class="btn btn-success">{{ "Accept"|trans }}</a>
-                    {% endif %}
-
-                    {% if quote is not accepted and quote is not declined and quote is not cancelled %}
-                        <a href="{{ path('_decline_quote', {'id' : quote.id}) }}" class="btn btn-danger">{{ "Decline"|trans }}</a>
-                    {% endif %}
-                </div>
-                <div class="btn-group">
-                    <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">{{ "Send"|trans }}</a>
-                </div>
-
-                {% if quote is draft or quote is pending %}
-                    <div class="btn-group">
-                        <a href="{{ path('_cancel_quote', {'id' : quote.id}) }}" class="btn btn-inverse">{{ "Cancel"|trans }}</a>
-                    </div>
+    <div class="pull-right">
+        <div class="btn-toolbar">
+            <div class="btn-group">
+                {% if quote is pending or quote is draft %}
+                    <a href="{{ path('_accept_quote', {'id' : quote.id}) }}" class="btn btn-success">{{ "Accept"|trans }}</a>
                 {% endif %}
 
+                {% if quote is not accepted and quote is not declined and quote is not cancelled %}
+                    <a href="{{ path('_decline_quote', {'id' : quote.id}) }}" class="btn btn-danger">{{ "Decline"|trans }}</a>
+                {% endif %}
+            </div>
+            <div class="btn-group">
+                <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">{{ "Send"|trans }}</a>
+            </div>
+
+            {% if quote is draft or quote is pending %}
                 <div class="btn-group">
-                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn">{{ "Edit"|trans }}</a>
+                    <a href="{{ path('_cancel_quote', {'id' : quote.id}) }}" class="btn btn-warning">{{ "Cancel"|trans }}</a>
                 </div>
+            {% endif %}
+
+            <div class="btn-group">
+                <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-default">{{ "Edit"|trans }}</a>
             </div>
         </div>
     </div>
-    <div class="row-fluid">
-        {% include "CSBillQuoteBundle::quote_template.html.twig" %}
-    </div>
+
+    {% include "CSBillQuoteBundle::quote_template.html.twig" %}
 {% endblock content %}

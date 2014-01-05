@@ -55,8 +55,6 @@ class Money extends BaseType
             self::$patterns[$locale] = array();
         }
 
-        $addonClass = "";
-
         if (!isset(self::$patterns[$locale][$currency])) {
             $pattern = $this->currency->format(123);
 
@@ -68,12 +66,13 @@ class Money extends BaseType
 
             preg_match('/^([^\s\xc2\xa0]*)[\s\xc2\xa0]*123(?:[,.]0+)?[\s\xc2\xa0]*([^\s\xc2\xa0]*)$/u', $pattern, $matches);
 
+            self::$patterns[$locale][$currency]['class'] = "input-group";
+
             if (!empty($matches[1])) {
-                self::$patterns[$locale][$currency]['pattern'] = '<div class="add-on">'.$matches[1].'</div> {{ widget }}';
-                self::$patterns[$locale][$currency]['class'] = "prepend";
+                self::$patterns[$locale][$currency]['pattern'] = '<div class="input-group-addon">'.$matches[1].'</div> {{ widget }}';
+
             } elseif (!empty($matches[2])) {
-                self::$patterns[$locale][$currency]['pattern'] = '{{ widget }} <div class="add-on">'.$matches[2].'</div>';
-                self::$patterns[$locale][$currency]['class'] = "append";
+                self::$patterns[$locale][$currency]['pattern'] = '{{ widget }} <div class="input-group-addon">'.$matches[2].'</div>';
             } else {
                 self::$patterns[$locale][$currency]['pattern'] = '{{ widget }}';
                 self::$patterns[$locale][$currency]['class'] = "";

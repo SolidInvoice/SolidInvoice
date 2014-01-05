@@ -11,12 +11,12 @@
 {% extends "CSBillCoreBundle:Layout:default.html.twig" %}
 
 {% block body %}
-	<div class="row-fluid">
-		<aside class="span2">
+	<div class="row">
+		<aside class="col-lg-2 col-md-2">
 			{{ block('sidebar') }}
 		</aside>
 
-		<section class="span10 content">
+		<section class="col-lg-10 col-md-10 content">
 			{{ block('heading') }}
 			{{ block('content') }}
 		</section>

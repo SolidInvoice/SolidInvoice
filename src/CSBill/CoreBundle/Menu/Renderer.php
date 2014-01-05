@@ -81,6 +81,7 @@ class Renderer extends ListRenderer
 
         $html = '';
         foreach ($item->getChildren() as $child) {
+            /** @var \CSBill\CoreBundle\Menu\MenuItem $child */
             if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {
@@ -118,10 +119,11 @@ class Renderer extends ListRenderer
     /**
      * Renders a menu at a specific location
      *
-     * @param string $location
+     * @param \SplObjectStorage $storage
      * @param array  $options
+     * @return string
      */
-    public function build($storage, array $options = array())
+    public function build(\SplObjectStorage $storage, array $options = array())
     {
         $menu = $this->factory->createItem('root');
 
@@ -129,10 +131,11 @@ class Renderer extends ListRenderer
             $menu->setChildrenAttributes($options['attr']);
         } else {
             // TODO : this should be set per menu, instead of globally
-            $menu->setChildrenAttributes(array('class' => 'nav nav-list'));
+            $menu->setChildrenAttributes(array('class' => 'nav nav-pills nav-stacked'));
         }
 
         foreach ($storage as $builder) {
+            /** @var \CSBill\CoreBundle\Menu\Builder\MenuBuilder $builder */
             $builder->setContainer($this->container)->invoke($menu, $options);
         }
 

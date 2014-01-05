@@ -19,49 +19,44 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-    <div class="row-fluid">
-        {{ parent() }}
 
-        <div class="row-fluid">
-            <h5>{{ "Invoice Status Legend"|trans }}</h5>
+    {{ parent() }}
 
-            {% for status in status_list %}
-                {{ status_label(status) }}
-            {% endfor %}
-        </div>
-    </div>
+    <h5>{{ "Invoice Status Legend"|trans }}</h5>
+
+    {% for status in status_list %}
+        {{ status_label(status) }}
+    {% endfor %}
 {% endblock content %}
 
 {% block sidebar_right %}
-    <div class="row-fluid">
-        <div class="well well-small">
-            <ul class="nav">
-                <li>
-                    <a class="btn btn-large" href="{{ path("_invoices_create") }}">
-                        <i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}
-                    </a>
-                </li>
-            </ul>
-            <div class="row-fluid">
-                <div class="span6 text-center text-success">
-                    <h3>{{ invoice_manager.totalIncome|currency }}</h3>
-                    {{ "Income"|trans }}
-                </div>
-                <div class="span6 text-center text-error">
-                    <h3>{{ invoice_manager.totalOutstanding|currency }}</h3>
-                    {{ "Outstanding"|trans }}
-                </div>
+    <div class="well well-small">
+        <ul class="nav">
+            <li>
+                <a class="btn btn-lg btn-default" href="{{ path("_invoices_create") }}">
+                    <i class="icon-file-alt"></i> {{ "Create Invoice"|trans }}
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 text-center text-success">
+                <h3>{{ invoice_manager.totalIncome|currency }}</h3>
+                {{ "Income"|trans }}
             </div>
-            <br class="clearfix" />
-            <div class="row-fluid">
-                <ul class="nav nav-list">
-                    {% for status in status_list %}
-                        <li>
-                            <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} {{ "Invoices"|trans }}
-                        </li>
-                    {% endfor %}
-                </ul>
+            <div class="col-lg-6 col-md-6 text-center text-error">
+                <h3>{{ invoice_manager.totalOutstanding|currency }}</h3>
+                {{ "Outstanding"|trans }}
             </div>
         </div>
+
+        <br class="clearfix" />
+
+        <ul class="nav nav-list">
+            {% for status in status_list %}
+                <li>
+                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} {{ "Invoices"|trans }}
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock sidebar_right %}
