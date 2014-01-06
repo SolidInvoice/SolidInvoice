@@ -7,74 +7,18 @@ before_commands:
     - composer install
 
 tools:
-    php_mess_detector:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
-    php_cpd:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
+    php_mess_detector: true
+    php_cpd: true
     php_pdepend: true
-    js_hint:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
-    php_cs_fixer:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
-        config:
-            level: all
-    php_analyzer:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
-        config:
-            parameter_reference_check: { enabled: true }
-            checkstyle: { enabled: true, no_trailing_whitespace: true, naming: { enabled: true, local_variable: '^[a-z][a-zA-Z0-9]*$', abstract_class_name: ^Abstract|Factory$, utility_class_name: 'Utils?$', constant_name: '^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$', property_name: '^[a-z][a-zA-Z0-9]*$', method_name: '^(?:[a-z]|__)[a-zA-Z0-9]*$', parameter_name: '^[a-z][a-zA-Z0-9]*$', interface_name: '^[A-Z][a-zA-Z0-9]*Interface$', type_name: '^[A-Z][a-zA-Z0-9]*$', exception_name: '^[A-Z][a-zA-Z0-9]*Exception$', isser_method_name: '^(?:is|has|should|may|supports)' } }
-            unreachable_code: { enabled: true }
-            check_access_control: { enabled: true }
-            typo_checks: { enabled: true }
-            check_variables: { enabled: true }
-            suspicious_code: { enabled: true, overriding_parameter: true, overriding_closure_use: true, parameter_closure_use_conflict: true, parameter_multiple_times: true, non_existent_class_in_instanceof_check: true, non_existent_class_in_catch_clause: true, assignment_of_null_return: true, non_commented_switch_fallthrough: true, non_commented_empty_catch_block: true, overriding_private_members: true, use_statement_alias_conflict: true, precedence_in_condition_assignment: true }
-            dead_assignments: { enabled: true }
-            verify_php_doc_comments: { enabled: true, parameters: true, return: true, suggest_more_specific_types: true, ask_for_return_if_not_inferrable: true, ask_for_param_type_annotation: true }
-            loops_must_use_braces: { enabled: true }
-            check_usage_context: { enabled: true, method_call_on_non_object: { enabled: true, ignore_null_pointer: true }, foreach: { value_as_reference: true, traversable: true }, missing_argument: true, argument_type_checks: lenient }
-            simplify_boolean_return: { enabled: true }
-            phpunit_checks: { enabled: true }
-            reflection_checks: { enabled: true }
-            precedence_checks: { enabled: true, assignment_in_condition: true, comparison_of_bit_result: true }
-            basic_semantic_checks: { enabled: true }
-            unused_code: { enabled: true }
-            deprecation_checks: { enabled: true }
-            useless_function_calls: { enabled: true }
-            metrics_lack_of_cohesion_methods: { enabled: true }
-            metrics_coupling: { enabled: true, stable_code: { namespace_prefixes: {  }, classes: {  } } }
-            doctrine_parameter_binding: { enabled: true }
-            doctrine_entity_manager_injection: { enabled: true }
-            symfony_request_injection: { enabled: true }
-            doc_comment_fixes: { enabled: true }
-            reflection_fixes: { enabled: true }
-            use_statement_fixes: { enabled: true, remove_unused: true, preserve_multiple: false, order_alphabetically: false }
+    js_hint: true
+    php_cs_fixer: true
+    php_analyzer: true
     php_code_sniffer:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
         config:
             standard: PSR2
-    sensiolabs_security_checker:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
+    sensiolabs_security_checker: true
     php_loc: true
-    php_hhvm:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
-        config:
-            bad_php_include_file: true
-            php_include_file_not_found: true
-            unknown_class: true
-            unknown_base_class: true
-            unknown_function: true
-            use_evaluation: true
-            use_undeclared_global_variable: true
-            unknown_object_method: true
-            unknown_trait: true
+    php_hhvm: false
     external_code_coverage:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
+        config:
+            timeout: 300
