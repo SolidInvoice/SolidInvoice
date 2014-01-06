@@ -1,6 +1,5 @@
 filter:
-    excluded_paths:
-        - 'vendor/*'
+    excluded_paths: [vendor/*, web/*, app/*, bin/*]
     paths:
         - 'src/*'
 
@@ -10,22 +9,22 @@ before_commands:
 tools:
     php_mess_detector:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
     php_cpd:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
     php_pdepend: true
     js_hint:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
     php_cs_fixer:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
         config:
             level: all
     php_analyzer:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
         config:
             parameter_reference_check: { enabled: true }
             checkstyle: { enabled: true, no_trailing_whitespace: true, naming: { enabled: true, local_variable: '^[a-z][a-zA-Z0-9]*$', abstract_class_name: ^Abstract|Factory$, utility_class_name: 'Utils?$', constant_name: '^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$', property_name: '^[a-z][a-zA-Z0-9]*$', method_name: '^(?:[a-z]|__)[a-zA-Z0-9]*$', parameter_name: '^[a-z][a-zA-Z0-9]*$', interface_name: '^[A-Z][a-zA-Z0-9]*Interface$', type_name: '^[A-Z][a-zA-Z0-9]*$', exception_name: '^[A-Z][a-zA-Z0-9]*Exception$', isser_method_name: '^(?:is|has|should|may|supports)' } }
@@ -56,16 +55,16 @@ tools:
             use_statement_fixes: { enabled: true, remove_unused: true, preserve_multiple: false, order_alphabetically: false }
     php_code_sniffer:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
         config:
             standard: PSR2
     sensiolabs_security_checker:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
     php_loc: true
     php_hhvm:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
         config:
             bad_php_include_file: true
             php_include_file_not_found: true
@@ -78,4 +77,4 @@ tools:
             unknown_trait: true
     external_code_coverage:
         filter:
-            excluded_paths: ['vendor/*']
+            excluded_paths: [vendor/*, web/*, app/*, bin/*]
