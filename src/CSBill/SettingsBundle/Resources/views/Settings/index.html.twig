@@ -1,0 +1,47 @@
+{#
+ #
+ # This file is part of the CSBillSettingsBundle package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
+
+{% import "CSBillSettingsBundle::macros.html.twig" as _macro %}
+
+{% block title %}{{ "Settings"|trans }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-2 tabs-left">
+            <ul class="nav nav-tabs nav-stacked">
+                {% for section,setting in settings %}
+                    <li{{ loop.first ? ' class="active"' }}>
+                        <a href="#{{ section }}" data-toggle="tab">
+                            {{ section|trans|title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-lg-9 col-md-9">
+            <form method="post" {{ form_enctype(form) }}>
+                <div class="tab-content">
+                    {% for section,setting in settings %}
+                        <div class="tab-pane{{ loop.first ? ' active' }}" id="{{ section }}">
+                            {{ _macro.settings_section(section, setting, form) }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-info"><i class="icon-save"></i> {{ "Save"|trans }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

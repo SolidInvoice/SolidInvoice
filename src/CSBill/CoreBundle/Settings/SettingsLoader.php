@@ -2,8 +2,8 @@
 
 namespace CSBill\CoreBundle\Settings;
 
-use CS\SettingsBundle\Loader\SettingsLoaderInterface;
-use CS\SettingsBundle\Model\Setting;
+use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
+use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Locale\Stub\StubLocale;

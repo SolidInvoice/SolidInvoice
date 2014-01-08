@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the CSBill package.
+ * This file is part of the CSBillSettingsBundle package.
  *
  * (c) Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,16 +11,21 @@
 
 namespace CSBill\SettingsBundle;
 
+use CSBill\SettingsBundle\DependencyInjection\Compiler\SettingsLoaderCompilerPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * Class CSBillSettingsBundle
+ * @package CSBill\SettingsBundle
+ */
 class CSBillSettingsBundle extends Bundle
 {
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\HttpKernel\Bundle.Bundle::getParent()
+     * @param ContainerBuilder $container
      */
-    public function getParent()
+    public function build(ContainerBuilder $container)
     {
-        return 'CSSettingsBundle';
+        $container->addCompilerPass(new SettingsLoaderCompilerPass);
     }
 }

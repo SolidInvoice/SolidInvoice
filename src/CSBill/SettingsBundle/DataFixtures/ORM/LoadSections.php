@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the CSBill package.
+ * This file is part of the CSBillSettings package.
  *
  * (c) Pierre du Plessis <info@customscripts.co.za>
  *
@@ -16,7 +16,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CS\SettingsBundle\Entity\Section;
+use CSBill\SettingsBundle\Entity\Section;
 
 class LoadSections extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {

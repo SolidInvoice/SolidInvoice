@@ -29,8 +29,6 @@ class AppKernel extends Kernel
 
             new CS\CoreBundle\CSCoreBundle(),
             new CS\UserBundle\CSUserBundle(),
-            new CS\SettingsBundle\CSSettingsBundle(),
-            //new CS\DataGridBundle\CSDataGridBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),

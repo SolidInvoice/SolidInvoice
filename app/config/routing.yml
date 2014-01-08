@@ -1,5 +1,5 @@
-cs_settings:
-    resource: "@CSSettingsBundle/Resources/config/routing.yml"
+csbill_settings:
+    resource: "@CSBillSettingsBundle/Resources/config/routing.yml"
     prefix:   /
 
 csbill_core:
