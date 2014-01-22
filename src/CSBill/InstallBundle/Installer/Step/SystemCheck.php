@@ -10,85 +10,69 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Process\Process;
+use CSBill\InstallBundle\Installer\AbstractStep;
+use CSBill\InstallBundle\Installer\StepViewInterface;
 
-use CSBill\InstallBundle\Installer\Step;
-
-class SystemCheck extends Step
+class SystemCheck extends AbstractStep implements StepViewInterface
 {
+    /**
+     * @var array
+     */
+    protected static $checks;
+
+    /**
+     * @var array
+     */
+    protected $errors = array();
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    public function init()
+    {
+        if (null === self::$checks) {
+            self::$checks = $this->getSystemChecks();
+        }
+    }
+
     /**
      * The view to render for this installation step
      *
-     * @var string $view;
+     * @return string
      */
-    public $view = 'CSBillInstallBundle:Install:system_check.html.twig';
-
-    /**
-     * The title to display when this installation step is active
-     *
-     * @var string $title
-     */
-    public $title = 'System Check';
-
-    /**
-     * Contains an array of all the required and optional checks to see if it passed
-     *
-     * @var array $check
-     */
-    public $check;
-
-    /**
-     * The root directory of the application
-     *
-     * @var string
-     */
-    private $root_dir;
-
-    /**
-     * Validates that the system meets the minimum requirements
-     *
-     * @param  array   $request
-     * @return boolean
-     */
-    public function validate(array $request)
+    public function getTemplate()
     {
-        $this->start();
-
-        foreach ($this->check['recommended']['values'] as $value) {
-            if (substr(trim($value), 0, 2) !== 'OK') {
-                $value = str_replace(array('ERROR', 'WARNING'), '', $value);
-                $this->addError(sprintf('The following requirement were not met: %s', $value));
-                $this->addError('Please ensure all the requirements are met before continuing with the installation');
-
-                return false;
-            }
-        }
-
-        return true;
+        return 'CSBillInstallBundle:Install:system_check.html.twig';
     }
 
     /**
-     * Not implemented
-     * @param array $request
-     */
-    public function process(array $request)
-    {
-
-    }
-
-    /**
-     * Checks the system to make sure it meets the minimum requirements
-     *
+     * @return array
      * @throws \RuntimeException
-     * @return void
      */
-    public function start()
+    public function getViewVars()
     {
-        $this->root_dir = $this->get('kernel')->getRootDir();
+        return array(
+            'checks' => self::$checks,
+            'errors' => $this->errors
+        );
+    }
 
-        $process = new Process(sprintf('php %s/check.php', $this->root_dir));
+    /**
+     * @return array
+     * @throws \RuntimeException
+     */
+    public function getSystemChecks()
+    {
+        $rootDir = $this->get('kernel')->getRootDir();
+
+        $process = new Process(sprintf('php %s/check.php', $rootDir));
         $process->setTimeout(3600);
         $process->run();
+
         if (!$process->isSuccessful()) {
             throw new \RuntimeException($process->getErrorOutput());
         }
@@ -100,7 +84,44 @@ class SystemCheck extends Step
         $recommended = $this->getOutput($output, 'mandatory requirements');
         $optional = $this->getOutput($output, 'optional recommendations');
 
-        $this->check = array('recommended' => $recommended, 'optional' => $optional);
+        return array('recommended' => $recommended, 'optional' => $optional);
+    }
+
+    /**
+     * Validates that the system meets the minimum requirements
+     *
+     * @return boolean
+     */
+    public function isValid()
+    {
+        if ($this->request->isMethod('POST')) {
+            foreach (self::$checks['recommended']['values'] as $value) {
+                if (substr(trim($value), 0, 2) !== 'OK') {
+                    $value = str_replace(array('ERROR', 'WARNING'), '', $value);
+                    $this->errors[] = $value;
+                }
+            }
+
+            return count($this->errors) === 0;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process()
+    {
+        // noop
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function handleRequest(Request $request)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -112,6 +133,8 @@ class SystemCheck extends Step
      */
     public function getOutput($output = array(), $header = '')
     {
+        reset($output);
+
         $heading = null;
         $content = null;
 
@@ -127,9 +150,12 @@ class SystemCheck extends Step
                 $line = next($output);
 
                 do {
-                    $content[] = $line;
+                    if ($line !== '') {
+                        $content[] = $line;
+                    }
+
                     $line = next($output);
-                } while (substr(strtolower($line), 0, 2) !== '**' && $line);
+                } while (substr(strtolower($line), 0, 2) !== '**' && false !== $line);
             }
         }
 

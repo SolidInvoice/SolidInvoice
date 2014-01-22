@@ -86,6 +86,8 @@ class InstallCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        throw new \Exception('The install command is currently unavailable');
+
         $container = $this->getContainer();
 
         $installer = $container->get('csbill.installer');

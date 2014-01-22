@@ -8,7 +8,7 @@
  # file that was distributed with this source code.
 #}
 
-{% extends "CSCoreBundle:Layout:single_column.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
 {% block title %}{{ "CSBill Installation Success"|trans }}{% endblock %}
 
@@ -20,10 +20,8 @@
 
         <div class="well">
             <h3>{{ "You have successfully installed CSBill!"|trans }}</h3>
-            <hr />
-            <div class="clear">
-                <a href="{{ path('_login') }}" class="btn"><i class="icon-user"></i> {{ "Log In"|trans }}</a>
-            </div>
+
+            <a href="{{ path('_login') }}" class="btn-lg btn btn-success"><i class="icon-user"></i> {{ "Log in now"|trans }}</a>
         </div>
     </fieldset>
 {% endblock %}

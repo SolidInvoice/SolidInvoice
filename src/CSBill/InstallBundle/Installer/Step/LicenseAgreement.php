@@ -10,67 +10,27 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
+use CSBill\InstallBundle\Form\Step\LicenseAgreementForm;
 use Symfony\Component\Finder\Finder;
+use CSBill\InstallBundle\Installer\AbstractFormStep;
 
-use CSBill\InstallBundle\Installer\Step;
-
-class LicenseAgreement extends Step
+class LicenseAgreement extends AbstractFormStep
 {
     /**
-     * The view to render for this installation step
-     *
-     * @var string $view;
+     * @return LicenseAgreementForm
      */
-    public $view = 'CSBillInstallBundle:Install:license_agreement.html.twig';
-
-    /**
-     * The title to display when this installation step is active
-     *
-     * @var string $title
-     */
-    public $title = 'License Agreement';
-
-    /**
-     * The license agreement text
-     *
-     * @var string $license
-     */
-    public $license;
-
-    /**
-     * Validates that the user accepted the license agreement
-     *
-     * @param  array   $request
-     * @return boolean
-     */
-    public function validate(array $request)
+    public function getForm()
     {
-        if (isset($request['accept']) && $request['accept'] === 'y') {
-            return true;
-        }
-
-        $this->addError('Please accept the license agreement before installing the application');
-
-        return false;
+        return new LicenseAgreementForm();
     }
 
     /**
-     * Not implemented
-     *
-     * @param array $request
+     * @return array
      */
-    public function process(array $request)
+    public function getFormData()
     {
+        $license = '';
 
-    }
-
-    /**
-     * Reads through all the files in the root directory to find the license file so it can be shown to the user
-     *
-     * @return void
-     */
-    public function start()
-    {
         $root_dir = dirname($this->get('kernel')->getRootDir());
 
         $finder = new Finder();
@@ -84,9 +44,13 @@ class LicenseAgreement extends Step
 
         foreach ($finder as $file) {
             if (strtolower($file->getBasename()) === 'license') {
-                $this->license = $file->getContents();
+                $license = $file->getContents();
                 break;
             }
         }
+
+        return array(
+            'license_info' => $license
+        );
     }
 }

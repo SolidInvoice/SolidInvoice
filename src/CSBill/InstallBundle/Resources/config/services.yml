@@ -17,7 +17,6 @@ services:
 
     csbill.twig.install_extension:
         class: %csbill.twig.install_extension.class%
-        calls:
-            - [ setInstaller, [ @csbill.installer ] ]
+        arguments: [ @csbill.installer ]
         tags:
             - { name: twig.extension }

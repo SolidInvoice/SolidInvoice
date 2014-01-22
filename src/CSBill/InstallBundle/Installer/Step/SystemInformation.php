@@ -10,93 +10,84 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
-use Symfony\Component\Process\Process;
-
-use CSBill\InstallBundle\Installer\Step;
+use CSBill\InstallBundle\Form\Step\SystemInformationForm;
+use CSBill\InstallBundle\Installer\AbstractFormStep;
 use CS\UserBundle\Entity\User;
+use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Parser;
 
-class SystemInformation extends Step
+class SystemInformation extends AbstractFormStep
 {
     /**
-     * The view to render for this installation step
-     *
-     * @var string $view;
+     * @return SystemInformationForm|\Symfony\Component\Form\AbstractType
      */
-    public $view = 'CSBillInstallBundle:Install:system_information.html.twig';
-
-    /**
-     * The title to display when this installation step is active
-     *
-     * @var string $title
-     */
-    public $title = 'System Information';
-
-    /**
-     * Array containing all the parameters for the system and user information
-     *
-     * @var array $params
-     */
-    public $params = array(	'email_address' => '',
-                            'password'		=> '',
-                            'username'		=> ''
-                            );
-
-    /**
-     * Validate user and company info
-     *
-     * @param  array   $request
-     * @return boolean
-     */
-    public function validate(array $request)
+    public function getForm()
     {
-        if (empty($request['email_address'])) {
-            $this->addError('Please enter an email address');
-        }
-
-        if (empty($request['password'])) {
-            $this->addError('Please enter a password');
-        }
-
-        if (empty($request['username'])) {
-            $this->addError('Please enter a username');
-        }
-
-        $this->params = $request;
-
-        return count($this->getErrors()) === 0;
+        return new SystemInformationForm();
     }
 
     /**
      * Save system and user configuration values
-     *
-     * @param array $request
      */
-    public function process(array $request)
+    public function process()
     {
+        $form = $this->buildForm();
+        $data = $form->getData();
+
         $user = new User;
 
-        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
 
-        $password = $encoder->encodePassword($request['password'], $user->getSalt());
+        $password = $encoder->encodePassword($data['password'], $user->getSalt());
 
-        $user->setUsername($request['username'])
-             ->setEmail($request['email_address'])
+        $user->setUsername($data['username'])
+             ->setEmail($data['email_address'])
              ->setPassword($password);
 
-        $em = $this->get('doctrine.orm.entity_manager');
+        $em = $this->container->get('doctrine.orm.entity_manager');
 
-        $role = $em->getRepository('CSUserBundle:Role')->findOneByName('super_admin');
+        $role = $em->getRepository('CSUserBundle:Role')->findOneBy(array('name' => 'super_admin'));
 
         $user->addRole($role);
 
         $em->persist($user);
         $em->flush();
+
+
+        $this->saveConfig($data);
     }
 
     /**
-     * @return void
+     * @param array $data
+     * @throws \RuntimeException
+     * @TODO This section needs to move to a central location (along with databse config)
      */
-    public function start()
+    protected function saveConfig(array $data)
     {
+        $rootDir = $this->container->get('kernel')->getRootDir();
+
+        $config = $rootDir . '/config/parameters.yml';
+
+        $yaml = new Parser();
+
+        try {
+            $value = $yaml->parse(file_get_contents($config));
+        } catch (ParseException $e) {
+            throw new \RuntimeException(
+                "Unable to parse the YAML string: %s. Your installation might be corrupt.",
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $value['parameters']['locale'] = $data['locale'];
+        $value['parameters']['currency'] = $data['currency'];
+
+        $dumper = new Dumper();
+
+        $yaml = $dumper->dump($value, 2);
+
+        file_put_contents($config, $yaml);
     }
 }
