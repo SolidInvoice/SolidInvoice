@@ -13,7 +13,7 @@ html, body {
     &-warning,
     &-danger {
         text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-        .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075));
+        .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075););
 
         &:active,
         &.active {
@@ -168,10 +168,12 @@ html, body {
  */
 .navbar {
 
+    margin-bottom: auto;
+
     &-default {
         #gradient > .vertical(#ffffff, #f8f8f8, 0%, 100%);
         border-radius: 4px;
-        .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075));
+        .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075););
 
         .navbar-nav > .active > a {
             #gradient > .vertical(#ebebeb, #ebebeb, 0%, 100%);
@@ -185,7 +187,7 @@ html, body {
     }
 
     &-inverse {
-        #gradient > .vertical(#3c3c3c, #222222, 0%, 100%);
+        #gradient > .vertical(#3F3F3F, #222222, 0%, 100%);
 
         .navbar-nav {
             > .active > a {
@@ -215,7 +217,7 @@ html, body {
  */
 .alert {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-    .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05));
+    .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05););
 
     &-success {
         #gradient > .vertical(#dff0d8, #c8e5bc, 0%, 100%);
@@ -333,8 +335,57 @@ html, body {
 .well {
     #gradient > .vertical(#e8e8e8, #f5f5f5, 0%, 100%);
     border-color: #dcdcdc;
-    .box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1));
+    .box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1););
 }
 
 
 
+/**
+ * LAYOUT STYLE
+ */
+
+.content {
+    margin-top:  20px;
+}
+
+.container {
+    height: 100%;
+    > .row {
+        height: 100%;
+        aside {
+            height: 100%;
+        }
+    }
+}
+
+.left-sidebar {
+    background-color: #666666;
+    border-color: @navbar-inverse-border;
+    padding: 20px 0 0 0;
+
+    .nav {
+        border-top: 1px solid #4A4A4A;
+        border-bottom: 1px solid #858585;
+
+        li {
+            border-top: 1px solid #858585;
+            border-bottom: 1px solid #4A4A4A;
+
+            > a {
+                border-radius: 0;
+                color: #FFFFFF;
+                &:hover {
+                    background: #616161;
+                }
+            }
+
+            &.active {
+                > a {
+                    background: #FFFFFF;
+                    color: #428BCA;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
