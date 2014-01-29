@@ -8,26 +8,25 @@
  # file that was distributed with this source code.
 #}
 
-{% set parent = "CSBillCoreBundle:Layout:three_column.html.twig" %}
+{% set parent = "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
 
 {% block title %}{{ 'clients'|trans }}{% endblock title %}
 
-{% block sidebar_left %}
-    {{ menu('clients_index') }}
-{% endblock sidebar_left %}
+{% block heading %}
+    <fieldset class="page-heading">
+        <legend>
+            <div class="pull-right header-button">
+                <a class="btn btn-info" href="{{ path("_clients_add") }}">
+                    <i class="icon-user"></i> {{ "Create Client"|trans }}
+                </a>
+            </div>
+            <h3>{{ block('title') }}</h3>
+        </legend>
+    </fieldset>
+{% endblock %}
 
-{% block sidebar_right %}
-    <div class="row-fluid">
-        <div class="well well-small">
-            <ul class="nav">
-                <li>
-                    <a class="btn btn-default btn-lg" href="{{ path("_clients_add") }}">
-                        <i class="icon-user"></i> {{ "Create Client"|trans }}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-{% endblock sidebar_right %}
+{% block sidebar %}
+    {{ menu('clients_index') }}
+{% endblock sidebar %}

@@ -164,7 +164,7 @@ html, body {
 }
 
 /**
- * NAVBAR
+ * NAV
  */
 .navbar {
 
@@ -209,6 +209,20 @@ html, body {
     &-fixed-top,
     &-fixed-bottom {
         border-radius: 0;
+    }
+}
+
+.nav {
+    > li {
+        > a {
+            &.filter-header {
+                &:hover {
+                    background: none;
+                    cursor: default;
+                }
+            }
+        }
+
     }
 }
 
@@ -388,4 +402,32 @@ html, body {
             }
         }
     }
+}
+
+/**
+ * Header
+ */
+
+.page-heading {
+
+    margin-left: -5px;
+    margin-right: -25px;
+
+    legend {
+        #gradient > .vertical(#ffffff, #eeeeee, 0%, 100%);
+        border-bottom: 1px solid #cccccc;
+        margin-left: -10px;
+        padding: 0px 0px 10px 10px;
+
+        h3 {
+            font-weight: normal;
+            color: #2679B5;
+            font-size: 25px;
+            font-style: italic;
+        }
+    }
+}
+
+.header-button {
+    margin-right: 20px;
 }
