@@ -84,7 +84,7 @@ License
 
 CSBill is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
-Please see the [LICENSE](LICENSE.md) file for the full license.
+Please see the [LICENSE](LICENSE) file for the full license.
 
 
 [1]: http://symfony.com
