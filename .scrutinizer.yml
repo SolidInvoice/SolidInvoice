@@ -34,9 +34,7 @@ tools:
     sensiolabs_security_checker:
         filter:
             excluded_paths: [vendor/*, web/*, app/*, bin/*]
-    php_loc:
-        filter:
-            excluded_paths: [vendor/*, web/*, app/*, bin/*]
+    php_loc: true
     external_code_coverage:
         filter:
             excluded_paths: [vendor/*, web/*, app/*, bin/*]
