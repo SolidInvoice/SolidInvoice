@@ -34,7 +34,7 @@ To install the from source, you first need to clone the repository, then you nee
 
 To clone the repository, issue the following command. Remember to clone the repository to the path you want, that is accessible from Apache.
 
-    git clone https://github.com/CustomScripts/CSBill.git
+    git clone https://github.com/CSBill/CSBill.git
 
 Then go into the repository directory
 
