@@ -10,6 +10,7 @@
 
 namespace CSBill\InstallBundle\Listener;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,21 +52,21 @@ class RequestListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if ($event->getRequestType() !== HttpKernel::MASTER_REQUEST) {
+            return;
+        }
+
         $route = $event->getRequest()->get('_route');
 
         $map = array_map(function ($route) use ($event) {
             return strpos($event->getRequest()->getPathInfo(), $route);
         }, $this->core_paths);
 
-        if (
-            !in_array($route, $this->core_routes) &&
-            !in_array(true, $map) && $event->getRequestType() === HttpKernel::MASTER_REQUEST
-        ) {
-
+        if (!in_array($route, $this->core_routes) && !in_array(true, $map)) {
             $installer = $this->container->get('csbill.installer');
 
             if (!$installer->isInstalled()) {
-                $response = $installer->getRedirectResponse();
+                $response = new RedirectResponse($this->container->get('router')->generate(Installer::INSTALLER_ROUTE));
 
                 $event->setResponse($response);
             }

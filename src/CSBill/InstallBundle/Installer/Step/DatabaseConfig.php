@@ -14,124 +14,71 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Form\FormInterface;
+use CSBill\InstallBundle\Installer\AbstractFormStep;
+use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
 
-use CSBill\InstallBundle\Installer\Step;
-
-class DatabaseConfig extends Step
+class DatabaseConfig extends AbstractFormStep
 {
     /**
-     * The view to render for this installation step
+     * Array of currently implemented database drivers
      *
-     * @param string $view;
+     * @var array
      */
-    public $view = 'CSBillInstallBundle:Install:database_config.html.twig';
+    protected $implementedDrivers = array(
+        'mysql'
+    );
 
     /**
-     * The title to display when this installation step is active
-     *
-     * @var string $title
-     */
-    public $title = 'Database Configuration';
-
-    /**
-     * Array containing all the PDO drivers that is installed
-     *
-     * @var array $drivers
-     */
-    public $drivers;
-
-    /**
-     * The root directory of the application
-     *
      * @var string
      */
-    private $root_dir;
+    private $rootDir;
 
     /**
-     * Array containing all the parameters for the database config
-     *
-     * @var array $params
+     * @var array
      */
-    public $params = array( 'database_driver'     => '',
-                            'database_host'     => 'localhost',
-                            'database_user'     => '',
-                            'database_password' => '',
-                            'database_port'     => 3306,
-                            'database_name'     => '');
+    protected $drivers = array();
 
     /**
-     * Validates that the databse exists, and we are able to connect to it
-     *
-     * @param  array   $request
-     * @return boolean
+     * @return DatabaseConfigForm
      */
-    public function validate(array $request)
+    public function getForm()
     {
-        if (empty($request['database_driver'])) {
-            $this->addError('Please Choose a Database Driver');
-        }
+        return new DatabaseConfigForm();
+    }
 
-        if (empty($request['database_host'])) {
-            $this->addError('Please enter the hostname of the database');
-        }
+    /**
+     * @return array
+     */
+    public function getFormData()
+    {
+        $this->drivers = array_intersect($this->implementedDrivers, \PDO::getAvailableDrivers());
 
-        if (empty($request['database_user'])) {
-            $this->addError('Please enter the user name of the database');
-        }
-
-        /*if (empty($request['database_password'])) {
-            $this->addError('Please enter the password of the database');
-        }*/
-
-        if (empty($request['database_name'])) {
-            $this->addError('Please enter the name of the database. Note: The database should already exist');
-        }
-
-        if (count($this->getErrors()) === 0) {
-            $connectionFactory = $this->container->get('doctrine.dbal.connection_factory');
-            $connection = $connectionFactory->createConnection(array(
-                'driver' => $request['database_driver'],
-                'user' => $request['database_user'],
-                'password' => $request['database_password'],
-                'host' => $request['database_host'],
-                'dbname' => $request['database_name'],
-            ));
-
-            try {
-                $connection->connect();
-            } catch (\PDOException $e) {
-                $this->addError($e->getMessage());
-            }
-        }
-
-        return count($this->getErrors()) === 0;
+        return array(
+            'drivers'            => $this->drivers,
+            'host'               => 'localhost',
+            'port'               => 3306,
+            'connection_factory' => $this->get('doctrine.dbal.connection_factory')
+        );
     }
 
     /**
      * Writes the database configuration to the parameters.yml file, and runs all the database migrations and fixtures
-     *
-     * @param array $request
      */
-    public function process(array $request)
+    public function process()
     {
-        $this->root_dir = $this->get('kernel')->getRootDir();
+        $form = $this->buildForm();
+        $data = $form->getData();
 
-        $config = array_intersect_key($request, $this->params);
+        $data['driver'] = sprintf('pdo_%s', $this->drivers[$data['driver']]);
 
-        $this->writeConfigFile($config);
+        $this->rootDir = $this->get('kernel')->getRootDir();
 
+        $this->writeConfigFile($data);
+
+        // @TODO stream the response back to the user, so they can get feedback on the process running
         $this->executeMigrations();
         $this->executeFixtures();
-    }
-
-    /**
-     * Checks the system to make sure it meets the minimum requirements
-     *
-     * @return void
-     */
-    public function start()
-    {
-        $this->drivers = \PDO::getAvailableDrivers();
     }
 
     /**
@@ -143,7 +90,7 @@ class DatabaseConfig extends Step
      */
     public function writeConfigFile($params = array())
     {
-        $config = $this->get('kernel')->getRootDir().'/config/parameters.yml';
+        $config = $this->rootDir . '/config/parameters.yml';
 
         $yaml = new Parser();
 
@@ -158,6 +105,8 @@ class DatabaseConfig extends Step
         }
 
         foreach ($params as $key => $param) {
+            $key = sprintf('database_%s', $key);
+
             // sets the database details
             $value['parameters'][$key] = $param;
         }
@@ -166,34 +115,35 @@ class DatabaseConfig extends Step
         // We do this when writing the database configuration,
         // as this is the only time (for now) that we modify the parameters.yml file.
         // We still need to add an extra step so we can write smtp settings
-        $value['parameters']['secret'] = md5(uniqid(php_uname('n'), true));
+        // @TODO add a more secure random string generator for enhanced security
+        $value['parameters']['secret'] = md5(uniqid(php_uname(), true));
 
         $dumper = new Dumper();
 
-        $yaml = $dumper->dump($value);
+        $yaml = $dumper->dump($value, 2);
 
-        // TODO : check if we have permission to write to file, otherwise check if we can update permission on file
+        // @TODO : check if we have permission to write to file, otherwise check if we can update permission on file
         file_put_contents($config, $yaml);
     }
 
     /**
      * Executes all doctrine migrations to create database structure
      *
-     * @return void
+     * @return string
      */
     public function executeMigrations()
     {
-        $this->runProcess(sprintf('php %s/console doctrine:migrations:migrate --no-interaction', $this->root_dir));
+        return $this->runProcess(sprintf('php %s/console doctrine:migrations:migrate --no-interaction', $this->rootDir));
     }
 
     /**
      * Load all fictures
      *
-     * @return void
+     * @return string
      */
     public function executeFixtures()
     {
-        $this->runProcess(sprintf('php %s/console doctrine:fixtures:load', $this->root_dir));
+        return $this->runProcess(sprintf('php %s/console doctrine:fixtures:load --no-interaction', $this->rootDir));
     }
 
     /**
@@ -203,11 +153,12 @@ class DatabaseConfig extends Step
      * @throws \RuntimeException
      * @return string            The output of the processed command
      */
-    private function runProcess($command = '')
+    private function runProcess($command)
     {
         $process = new Process($command);
         $process->setTimeout(3600);
         $process->run();
+
         if (!$process->isSuccessful()) {
             throw new \RuntimeException($process->getErrorOutput());
         }

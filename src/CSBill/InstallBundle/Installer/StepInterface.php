@@ -10,22 +10,29 @@
 
 namespace CSBill\InstallBundle\Installer;
 
-interface StepInterface
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+interface StepInterface extends ContainerAwareInterface
 {
     /**
-     * @param  array   $request
-     * @return boolean
+     * @param Request $request
+     * @return mixed
      */
-    public function validate(array $request);
+    public function handleRequest(Request $request);
 
     /**
-     * @param  array $request
-     * @return void
+     * @return bool
      */
-    public function process(array $request);
+    public function isValid();
 
     /**
      * @return void
      */
-    public function start();
+    public function process();
+
+    /**
+     * Initializes the current step
+     */
+    public function init();
 }

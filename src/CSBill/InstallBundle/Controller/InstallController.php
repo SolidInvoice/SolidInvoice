@@ -13,33 +13,45 @@ namespace CSBill\InstallBundle\Controller;
 use CS\CoreBundle\Controller\Controller;
 use CSBill\InstallBundle\Exception\ApplicationInstalledException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class InstallController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $request = $this->getRequest();
-
         $installer = $this->get('csbill.installer');
 
         if ($installer->isInstalled()) {
             throw new ApplicationInstalledException();
         }
 
-        if ($request->isMethod('POST')) {
-            $response = $installer->validateStep($request->request->all());
+        $step = $installer->getCurrentStep();
 
-            if ($response instanceof RedirectResponse) {
-                return $response;
-            }
+        if (false === $installer->previousStepComplete()) {
+            $installer->setSession('current_step', $installer->currentStepIndex - 1);
+
+            return $this->redirect($this->generateUrl($installer::INSTALLER_ROUTE));
         }
 
-        $step = $installer->getStep();
+        $step->handleRequest($request);
+
+        if ($step->isValid()) {
+            $step->process();
+
+            if ($installer->isFinal()) {
+                return $this->redirect($this->generateUrl($installer::INSTALLER_SUCCESS_ROUTE));
+            }
+
+            $installer->advanceStep();
+
+            return $this->redirect($this->generateUrl($installer::INSTALLER_ROUTE));
+        }
 
         return $this->render(
             'CSBillInstallBundle:Install:index.html.twig',
             array(
                 'step' => $step,
+                'step_label' => $installer->currentStep['label'],
                 'installer' => $installer
             )
         );
@@ -49,9 +61,9 @@ class InstallController extends Controller
     {
         $installer = $this->get('csbill.installer');
 
-        $installer->setStep($step);
+        $installer->setSession('current_step', $step);
 
-        return $installer->getRedirectResponse();
+        return $this->redirect($this->generateUrl($installer::INSTALLER_ROUTE));
     }
 
     public function restartAction()
@@ -60,7 +72,7 @@ class InstallController extends Controller
 
         $installer->restart();
 
-        return $installer->getRedirectResponse();
+        return $this->redirect($this->generateUrl($installer::INSTALLER_ROUTE));
     }
 
     public function successAction()

@@ -9,7 +9,20 @@
 #}
 
 <div class="control-group">
-	{% for check in step.check %}
+    {% if errors is not empty %}
+        <div class="alert alert-danger">
+            <strong>The following requirements were not met:</strong>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            <br />
+            Please ensure your system meets the minimum requirements before proceeding.
+        </div>
+    {% endif %}
+
+	{% for check in checks %}
 		<h3>{{ check.heading }}</h3>
 
 		<div>

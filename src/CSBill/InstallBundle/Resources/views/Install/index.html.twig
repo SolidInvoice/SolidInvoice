@@ -10,39 +10,26 @@
 
 {% extends "CSBillInstallBundle::layout.html.twig" %}
 
-{% block title %}{{ "CSBill Installation"|trans }} - {{ step.title|trans }}{% endblock %}
+{% block title %}{{ "app_installation"|trans({"%app_name%" : app_name}) }} - {{ step_label|trans }}{% endblock %}
 
-{% block body %}
+{% block content %}
     <fieldset>
-        <legend>
-            <h1>{{ step.title|trans }}</h1>
-        </legend>
-
-        {% if step.errors|length %}
-            {% for error in step.errors %}
-                <div class="alert alert-danger">
-                        <button class="close" data-dismiss="alert">x</button>
-                        {{ error|trans }}
-                    </div>
-            {% endfor %}
-        {% endif %}
-
         <form action="{{ path("_installer") }}" method="post">
-            <div class="row-fluid">
-                <div class="span12 well">
-                    {% include step.view %}
+            <div class="row">
+                <div class="col-lg-12 col-md-12 well">
+                    {{ install_step(step) }}
 
-                    {% if step is not first_install_step %}
+                    {% if not is_first_install_step() %}
                         <div class="control-group pull-left" id="restart_button">
-                            <a href="{{ path("_installer_restart") }}" class="btn" title="{{ "Restart the installation process"|trans }}">{{ "Restart"|trans }}</a>
+                            <a href="{{ path("_installer_restart") }}" class="btn btn-warning" title="{{ "restart_installation"|trans }}">{{ "restart"|trans }}</a>
                         </div>
                     {% endif %}
 
                     <div class="control-group pull-right" id="next_button">
-                        <input type="submit" class="btn" value="{{ "Next"|trans }}" />
+                        <input type="submit" class="btn btn-primary" value="{{ "next"|trans }}" />
                     </div>
                 </div>
             </div>
         </form>
     </fieldset>
-{% endblock body %}
+{% endblock content %}

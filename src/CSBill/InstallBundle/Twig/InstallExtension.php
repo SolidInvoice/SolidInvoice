@@ -11,62 +11,89 @@
 
 namespace CSBill\InstallBundle\Twig;
 
+use CSBill\InstallBundle\Installer\StepFormInterface;
+use CSBill\InstallBundle\Installer\StepViewInterface;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 use Twig_Extension;
-use Twig_Test_Method;
-use Doctrine\Common\Util\Inflector;
-use Doctrine\Common\Util\ClassUtils;
+use Twig_Environment;
 use CSBill\InstallBundle\Installer\StepInterface;
 use CSBill\InstallBundle\Installer\Installer;
-use Symfony\Component\Security\Core\Util\StringUtils;
 
 class InstallExtension extends Twig_Extension
 {
     /**
-     * Contains an instance of the installer service
-     *
-     * @var Installer $installer
+     * @var Installer
      */
     protected $installer;
 
     /**
-     * Sets an instance of the installer service
-     *
+     * @var TwigEngine
+     */
+    protected $environment;
+
+    /**
      * @param Installer $installer
      */
-    public function setInstaller(Installer $installer)
+    public function __construct(Installer $installer)
     {
         $this->installer = $installer;
     }
 
     /**
-     * (non-phpdoc)
-     *
+     * @param Twig_Environment $environment
+     */
+    public function initRuntime(Twig_Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
      * @return array
      */
-    public function getTests()
+    public function getFunctions()
     {
-        return array('first_install_step' => new Twig_Test_Method($this, 'isFirstInstallStep'));
+        return array(
+            new \Twig_SimpleFunction('install_step', array($this, 'getInstallStep'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('is_first_install_step', array($this, 'isFirstInstallStep'))
+        );
+    }
+
+    /**
+     * @param StepInterface $step
+     *
+     * @return string
+     */
+    public function getInstallStep(StepInterface $step)
+    {
+        if ($step instanceof StepFormInterface) {
+            $form = $step->buildForm();
+
+            return $this->environment->render(
+                'CSBillInstallBundle:Install:form.html.twig',
+                array(
+                    'form' => $form->createView()
+                )
+            );
+        }
+
+        if ($step instanceof StepViewInterface) {
+            $template = $step->getTemplate();
+
+            return $this->environment->render($template, $step->getViewVars());
+        }
     }
 
     /**
      * Checks if the current installation step is the first step
      *
-     * @param  StepInterface $step
      * @return bool
      */
-    public function isFirstInstallStep(StepInterface $step)
+    public function isFirstInstallStep()
     {
-        $class_name = ClassUtils::newReflectionObject($step)->getShortName();
-        $step_name = Inflector::tableize($class_name);
-
-        $first_step = $this->installer->getStep(0);
-
-        return StringUtils::equals($step_name, $first_step);
+        return 0 === (int) $this->installer->getSession('current_step', PHP_INT_MAX);
     }
 
     /**
-     * (non-phpdoc)
-     *
      * @return string
      */
     public function getName()

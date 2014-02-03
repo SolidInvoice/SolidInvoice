@@ -10,7 +10,7 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% set title = app_name ~ " Installation" %}
+{% set title = "app_installation"|trans({"%app_name%" : app_name}) %}
 
 {% block header %}
 	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : title|trans} %}
@@ -32,16 +32,17 @@
 	<div class="well">
 		<ul class="nav nav-list">
 			<li class="nav-header">
-				{{ "Installation Progress"|trans }}
+				{{ "installation_progess"|trans }}
 			</li>
 			{% set link = true %}
-			{% for key, progress in installer.steps %}
-				<li{% if installer.active is sameas(progress) %} {% set link = false %} class="active"{% endif %}>
-					{% if link %}
-						<a href="{{ path('_installer_step', {'step' : progress}) }}">{{ installer.step(progress).title|trans }}</a>
-					{% else %}
-						<a href="#">{{ installer.step(progress).title|trans }}</a>
-					{% endif %}
+			{% for index, step in installer.steps %}
+                {% set class = not installer.stepComplete(index) ? 'disabled' %}
+                {% if installer.currentStep.label is sameas(step.label) %}
+                    {% set link = false %}
+                    {% set class = 'active' %}
+                {% endif %}
+				<li class="{{ class }}">
+                    <a href="{{ link ? path('_installer_step', {'step' : index}) : '#' }}">{{ step.label|trans }}</a>
 				</li>
 			{% endfor %}
 		</ul>
