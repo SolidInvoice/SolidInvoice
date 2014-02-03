@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button data-dismiss="modal" class="btn">{{ "Close"|trans }}</button>
+        <button data-dismiss="modal" class="btn btn-info">{{ "Close"|trans }}</button>
     </div>
 {% else %}
     <form action="{{ path("_clients_edit_contact", {"id" : contact.id}) }}" method="post">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn">{{ "Close"|trans }}</button>
+            <button data-dismiss="modal" class="btn btn-default">{{ "Close"|trans }}</button>
             <button type="submit" class="btn btn-info">{{ "Save"|trans }}</button>
         </div>
     </form>

@@ -24,8 +24,12 @@
                         "method": "post",
                         "success" : function(data) {
 
+                            var callback = function(func) {
+                                return func.call();
+                            };
+
                             if ('success' === data.status && undefined !== data.id) {
-                                $.getJSON(Routing.generate('_clients_contact_card', {"id" : data.id}), function(data) {
+                                var promise = $.getJSON(Routing.generate('_clients_contact_card', {"id" : data.id}), function(data) {
 
                                     var content = $(data.content).hide();
 
@@ -34,13 +38,16 @@
                                         $('.edit-contact', this).ajaxModal('#contacts-ajax-modal', contactEdit);
                                     });
                                 });
+
+                                callback = promise.done;
                             }
 
                             modal.modal('loading');
-                            setTimeout(function() {
+
+                            callback(function() {
                                 modal.html(data.content);
                                 $('form', modal).on('submit', addContact);
-                            }, 350);
+                            });
                         }
                     });
                 };
@@ -69,9 +76,13 @@
 
                             var contactCard = container.$trigger.parents('.contact-card');
 
+                            var callback = function(func) {
+                                return func.call();
+                            };
+
                             if ('success' === data.status) {
 
-                                $.getJSON(Routing.generate('_clients_contact_card', {"id" : contactCard.data('id')}), function(data) {
+                                var promise = $.getJSON(Routing.generate('_clients_contact_card', {"id" : contactCard.data('id')}), function(data) {
 
                                     var content = $(data.content).hide();
                                     contactCard.replaceWith(content);
@@ -80,13 +91,16 @@
                                         $('.edit-contact', this).ajaxModal('#contacts-ajax-modal', contactEdit);
                                     });
                                 });
+
+                                callback = promise.done;
                             }
 
                             modal.modal('loading');
-                            setTimeout(function() {
+
+                            callback(function() {
                                 modal.html(data.content);
                                 $('form', modal).on('submit', contactEditForm);
-                            }, 350);
+                            });
                         }
                     });
                 };
@@ -107,9 +121,7 @@
 
             bootbox.confirm('<i class="icon-exclamation-sign icon-2x"></i> Are you sure you want to delete this contact?', function(bool) {
                 if (true === bool) {
-                    setTimeout(function() {
-                        $('body').modalmanager('loading');
-                    }, 300);
+                    $('body').modalmanager('loading');
 
                     $.post(Routing.generate("_clients_delete_contact", {"id" : contactId}), function() {
                         $('body').modalmanager('loading');
