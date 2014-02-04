@@ -146,17 +146,6 @@
 {% endspaceless %}
 {% endblock percent_widget %}
 
-{% block collection_widget %}
-{% spaceless %}
-    <div class="form-collection">
-        {% set attr = attr|merge({'class': '`child' }) %}
-        {{ parent() }}
-    </div>
-
-    <script type="text/javascript">$(function(){$('#{{ form.vars.id }}').formCollection({ {% if prototype_name is defined %}'field' : '{{ prototype_name }}', {% endif %}'label' : '{{ form.vars.label|default(form.vars.name)|humanize }}'});});</script>
-{% endspaceless %}
-{% endblock collection_widget %}
-
 {% block image_upload_widget %}
     {% spaceless %}
 
