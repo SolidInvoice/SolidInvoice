@@ -10,6 +10,7 @@
 
 namespace CSBill\InvoiceBundle\Controller;
 
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
 
 class ActionsController extends BaseController

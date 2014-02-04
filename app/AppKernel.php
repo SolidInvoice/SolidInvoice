@@ -27,8 +27,6 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
-            new CS\UserBundle\CSUserBundle(),
-
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
@@ -37,6 +35,7 @@ class AppKernel extends Kernel
             new CSBill\InvoiceBundle\CSBillInvoiceBundle(),
             new CSBill\ItemBundle\CSBillItemBundle(),
             new CSBill\SettingsBundle\CSBillSettingsBundle(),
+            new CSBill\UserBundle\CSBillUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

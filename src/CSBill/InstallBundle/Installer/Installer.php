@@ -302,7 +302,7 @@ class Installer
          */
 
         // check if the users table exists. If not, go to installer
-        $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('CSUserBundle:User');
+        $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('CSBillUserBundle:User');
 
         try {
             $users = $repository->createQueryBuilder('u')->setMaxResults(1)->getQuery()->execute();

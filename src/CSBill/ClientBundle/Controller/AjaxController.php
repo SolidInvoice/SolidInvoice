@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CSBill\ClientBundle\BaseController;
+namespace CSBill\ClientBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\ClientBundle\Entity\Client;
@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends BaseController
 {
-
     /**
      * Get client info
      *

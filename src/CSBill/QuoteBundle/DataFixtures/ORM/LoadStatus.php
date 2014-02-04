@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the CSUserBundle package.
+ * This file is part of the CSQuoteBundle package.
  *
  * (c) Pierre du Plessis <info@customscripts.co.za>
  *

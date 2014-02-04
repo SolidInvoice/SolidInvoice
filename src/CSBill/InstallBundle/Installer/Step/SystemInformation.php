@@ -12,7 +12,7 @@ namespace CSBill\InstallBundle\Installer\Step;
 
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
-use CS\UserBundle\Entity\User;
+use CSBill\UserBundle\Entity\User;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
@@ -47,7 +47,7 @@ class SystemInformation extends AbstractFormStep
 
         $em = $this->container->get('doctrine.orm.entity_manager');
 
-        $role = $em->getRepository('CSUserBundle:Role')->findOneBy(array('name' => 'super_admin'));
+        $role = $em->getRepository('CSBillUserBundle:Role')->findOneBy(array('name' => 'super_admin'));
 
         $user->addRole($role);
 

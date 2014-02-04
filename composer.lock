@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b3882dd71acf8da84d54d6b99d4934cd",
+    "hash": "bc92e94a2d1996aec36a796ae40b5b59",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -63,90 +63,6 @@
                 "symfony"
             ],
             "time": "2014-01-22 19:49:30"
-        },
-        {
-            "name": "customscripts/core-bundle",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/CustomScripts/CSCoreBundle.git",
-                "reference": "14cf8782d70f1f02aec5544c8231e3dd9d7a22e6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/CustomScripts/CSCoreBundle/zipball/14cf8782d70f1f02aec5544c8231e3dd9d7a22e6",
-                "reference": "14cf8782d70f1f02aec5544c8231e3dd9d7a22e6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/framework-bundle": "~2.3"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "CS": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pierre du Plessis",
-                    "email": "info@customscripts.co.za"
-                }
-            ],
-            "description": "Core Bundle for all Symfony2 Development",
-            "homepage": "http://customscripts.co.za",
-            "keywords": [
-                "core",
-                "core-bundle"
-            ],
-            "time": "2013-08-14 19:06:09"
-        },
-        {
-            "name": "customscripts/user-bundle",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/CustomScripts/CSUserBundle.git",
-                "reference": "2155e3ea6c9024c1a8b1f5a4beeb7ede1550bee8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/CustomScripts/CSUserBundle/zipball/2155e3ea6c9024c1a8b1f5a4beeb7ede1550bee8",
-                "reference": "2155e3ea6c9024c1a8b1f5a4beeb7ede1550bee8",
-                "shasum": ""
-            },
-            "require": {
-                "customscripts/core-bundle": "dev-master",
-                "php": ">=5.3.3"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "CS": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pierre du Plessis",
-                    "email": "info@customscripts.co.za"
-                }
-            ],
-            "description": "Bundle for general user management",
-            "homepage": "http://customscripts.co.za",
-            "keywords": [
-                "user",
-                "user-bundle"
-            ],
-            "time": "2013-08-14 20:05:37"
         },
         {
             "name": "doctrine/annotations",
@@ -2879,6 +2795,48 @@
     ],
     "packages-dev": [
         {
+            "name": "customscripts/core-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CustomScripts/CSCoreBundle.git",
+                "reference": "14cf8782d70f1f02aec5544c8231e3dd9d7a22e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CustomScripts/CSCoreBundle/zipball/14cf8782d70f1f02aec5544c8231e3dd9d7a22e6",
+                "reference": "14cf8782d70f1f02aec5544c8231e3dd9d7a22e6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/framework-bundle": "~2.3"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "CS": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre du Plessis",
+                    "email": "info@customscripts.co.za"
+                }
+            ],
+            "description": "Core Bundle for all Symfony2 Development",
+            "homepage": "http://customscripts.co.za",
+            "keywords": [
+                "core",
+                "core-bundle"
+            ],
+            "time": "2013-08-14 19:06:09"
+        },
+        {
             "name": "jms/debugging-bundle",
             "version": "dev-master",
             "target-dir": "JMS/DebuggingBundle",
@@ -2930,8 +2888,6 @@
     "stability-flags": {
         "doctrine/doctrine-migrations-bundle": 20,
         "knplabs/knp-menu-bundle": 20,
-        "customscripts/core-bundle": 20,
-        "customscripts/user-bundle": 20,
         "jms/debugging-bundle": 20
     },
     "platform": {

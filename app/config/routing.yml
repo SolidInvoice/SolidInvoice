@@ -10,8 +10,8 @@ csbill_install:
     resource: "@CSBillInstallBundle/Resources/config/routing.yml"
     prefix:   /install
 
-cs_user:
-    resource: "@CSUserBundle/Resources/config/routing.yml"
+csbill_user:
+    resource: "@CSBillUserBundle/Resources/config/routing.yml"
 
 csbill_client:
     prefix:   /clients
