@@ -2,6 +2,11 @@ html, body {
     height: 100%;
 }
 
+body {
+    height: 100%;
+    padding-top: 50px;
+}
+
 /**
  * BUTTONS
  */
@@ -164,7 +169,7 @@ html, body {
 }
 
 /**
- * NAVBAR
+ * NAV
  */
 .navbar {
 
@@ -209,6 +214,20 @@ html, body {
     &-fixed-top,
     &-fixed-bottom {
         border-radius: 0;
+    }
+}
+
+.nav {
+    > li {
+        > a {
+            &.filter-header {
+                &:hover {
+                    background: none;
+                    cursor: default;
+                }
+            }
+        }
+
     }
 }
 
@@ -362,6 +381,7 @@ html, body {
     background-color: #666666;
     border-color: @navbar-inverse-border;
     padding: 20px 0 0 0;
+    position: fixed;
 
     .nav {
         border-top: 1px solid #4A4A4A;
@@ -389,3 +409,32 @@ html, body {
         }
     }
 }
+
+/**
+ * Header
+ */
+
+.page-heading {
+
+    margin-left: -5px;
+    margin-right: -28px;
+
+    legend {
+        #gradient > .vertical(#ffffff, #eeeeee, 0%, 100%);
+        border-bottom: 1px solid #cccccc;
+        margin-left: -10px;
+        padding: 0px 0px 10px 10px;
+
+        h3 {
+            font-weight: normal;
+            color: #2679B5;
+            font-size: 25px;
+            font-style: italic;
+        }
+    }
+}
+
+.header-button {
+    margin-right: 20px;
+}
+

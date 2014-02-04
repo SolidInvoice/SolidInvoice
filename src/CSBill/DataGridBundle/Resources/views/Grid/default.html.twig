@@ -20,8 +20,9 @@
 {% endblock javascripts %}
 
 {% block content %}
-    <div class="well">
-        <div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ 'search'|trans }}</div>
+        <div class="panel-body">
             {% if filters is defined %}
                 <div class="pull-right filter">
                     <ul class="nav nav-pills pull-left">
@@ -41,18 +42,20 @@
 
             <div>
                 <form action="{{ path(app.request.get('_route'), query) }}" method="post" class="form-search form-inline">
-                    <input name="search" placeholder="{{ "Search"|trans }}" type="text" id="search" class="search-query" value="{{ app.request.get('search') ?: '' }}" />
+                    <div class="input-group">
+                        <input name="search" placeholder="{{ "Search"|trans }}" type="text" id="search" class="search-query form-control" value="{{ app.request.get('search') ?: '' }}" />
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-info"><i class="icon-search"></i> {{ "search"|trans }}</button>
+                        </span>
+                    </div>
 
-                    <button type="submit" class="btn btn-default"><i class="icon-search"></i> {{ "Search"|trans }}</button>
                     <br />
                     <a href="#" id="grid-advanced-search">{{ "Advanced Search"|trans }}</a>
                 </form>
             </div>
-        </div>
-        <div class="row">
+
             {{ grid_search(grid, 'CSBillDataGridBundle::grid.html.twig') }}
         </div>
-
     </div>
 
 
