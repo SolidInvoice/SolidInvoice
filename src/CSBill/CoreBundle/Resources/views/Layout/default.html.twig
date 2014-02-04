@@ -8,7 +8,7 @@
  # file that was distributed with this source code.
 #}
 
-{% extends 'CSCoreBundle::layout.html.twig' %}
+{% extends 'CSBillCoreBundle:Layout:base.html.twig' %}
 
 {% block heading %}
     <fieldset>
@@ -18,32 +18,8 @@
     </fieldset>
 {% endblock %}
 
-{% block stylesheets %}
-    {% stylesheets
-        'bundles/csbillcore/less/styles.less'
-        'bundles/csbillcore/css/bootstrap-modal-bs3patch.css'
-        'bundles/csbillcore/css/*.css'
-        'bundles/csbillclient//less/*.less'
-        filter="less, cssrewrite, ?yui_css"
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
-    {% endstylesheets %}
-{% endblock stylesheets %}
-
 {% block javascripts %}
-    {% javascripts
-        "@CSBillCoreBundle/Resources/public/js/plugins/bootstrap.min.js"
-        "@CSCoreBundle/Resources/public/js/underscore.js"
-        "@CSCoreBundle/Resources/public/js/backbone.js"
-        "@CSCoreBundle/Resources/public/js/plugins.js"
-        "@CSCoreBundle/Resources/public/js/plugins/*.js"
-        "@CSBillClientBundle/Resources/public/js/*.js"
-        "@CSCoreBundle/Resources/public/js/script.js"
-        "@FOSJsRoutingBundle/Resources/public/js/router.js"
-        filter="?yui_js"
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ parent() }}
 
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData", "_format" : "js"}) }}"></script>
 

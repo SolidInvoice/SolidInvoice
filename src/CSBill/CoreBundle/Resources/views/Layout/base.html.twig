@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>{{ block('title') }}</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    {% block stylesheets %}
+        {% stylesheets
+            'bundles/csbillcore/less/styles.less'
+            'bundles/csbillcore/css/*.css'
+            'bundles/csbillclient//less/*.less'
+            filter="less, cssrewrite, ?yui_css"
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+        {% endstylesheets %}
+    {% endblock stylesheets %}
+
+    {% javascripts
+        "@CSBillCoreBundle/Resources/public/js/modernizr.min.js"
+        "@CSBillCoreBundle/Resources/public/js/jquery-1.11.0.min.js"
+        filter="?yui_js"
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+</head>
+<body>
+    {{ block('body_top') }}
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+    <header>
+        {{ block('header') }}
+    </header>
+
+    <div role="main" class="container">
+        {{ block('body') }}
+    </div>
+
+    <footer align="center">
+        {{ block('footer') }}
+    </footer>
+
+    {% block javascripts %}
+        {% javascripts
+            "@CSBillCoreBundle/Resources/public/js/plugins/bootstrap.min.js"
+            "@CSBillCoreBundle/Resources/public/js/plugins.js"
+            "@CSBillCoreBundle/Resources/public/js/plugins/*.js"
+            "@CSBillClientBundle/Resources/public/js/*.js"
+            "@CSBillCoreBundle/Resources/public/js/script.js"
+            "@FOSJsRoutingBundle/Resources/public/js/router.js"
+            filter="?yui_js"
+        %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock javascripts %}
+
+    {{ block('body_bottom') }}
+</body>
+</html>
