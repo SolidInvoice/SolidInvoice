@@ -135,10 +135,14 @@
 
 {% block form_buttons %}
     <div class="col-lg-2 col-md-2">
-        <button type="submit" class="btn btn-success" name="save" value="send">{{ "Save and Send"|trans }}</button>
+        <button type="submit" class="btn btn-success" name="save" value="send">
+            <i class="icon-envelope-alt"></i> {{ "Save and Send"|trans }}
+        </button>
     </div>
     <div class="col-lg-2 col-md-2">
-        <button type="submit" class="btn btn-primary" name="save" value="draft">{{ "Save as Draft"|trans }}</button>
+        <button type="submit" class="btn btn-primary" name="save" value="draft">
+            <i class="icon-save"></i> {{ "Save as Draft"|trans }}
+        </button>
     </div>
 {% endblock form_buttons %}
 
