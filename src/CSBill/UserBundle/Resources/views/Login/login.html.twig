@@ -17,7 +17,7 @@
 {% block content %}
 	<fieldset>
 	    <div class="row">
-			<div class=" col-lg-8 col-md-8">
+			<div class="col-lg-offset-2 col-md-offset-2 col-lg-8 col-md-8">
 			    {% if error %}
 			        <div class="alert alert-danger">
 			        	<button class="close" data-dismiss="alert">x</button>
@@ -26,32 +26,36 @@
 			    {% endif %}
 
 			    <div class="well">
-				    <form action="{{ path("_security_check") }}" method="post" id="login" class="form-vertical">
-				        <div class="input-prepend control-group">
-				            <label for="username" class="control-label">{{ "Username"|trans }}</label>
-				            <div class="controls">
-								<span class="add-on"><i class="icon-user"></i></span>
-								<input type="text" id="username" name="_username" placeholder="{{ "Username"|trans }}" value="{{ last_username }}" />
-							</div>
+				    <form action="{{ path("_security_check") }}" method="post" id="login" role="form">
+				        <div class="form-group">
+				            <label for="username">{{ "Username"|trans }}</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="icon-user"></i>
+                                </span>
+                                <input class="form-control" type="text" id="username" name="_username" placeholder="{{ "Username"|trans }}" value="{{ last_username }}" />
+                            </div>
 				        </div>
 
-				        <div class="input-prepend control-group">
-				            <label for="password" class="control-label">{{ "Password"|trans }}</label>
-				            <div class="controls">
-								<span class="add-on"><i class="icon-lock"></i></span>
-								<input type="password" id="password" placeholder="{{ "Password"|trans }}" name="_password" />
-							</div>
+				        <div class="form-group">
+				            <label for="password">{{ "Password"|trans }}</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="icon-lock"></i>
+                                </span>
+                                <input class="form-control" type="password" id="password" placeholder="{{ "Password"|trans }}" name="_password" />
+                            </div>
 				        </div>
 
-				        <div class="control-group checkbox">
-							<label for="remember_me" class="checkbox control-label">{{ "Keep me logged in"|trans }}</label>
-							<div class="controls">
-								<input type="checkbox" id="remember_me" name="_remember_me" checked />
-							</div>
+				        <div class="checkbox">
+							<label for="remember_me" class="checkbox-inline">
+                                <input type="checkbox" id="remember_me" name="_remember_me" checked />
+                                {{ "Keep me logged in"|trans }}
+                            </label>
 						</div>
 
     					<div class="clear">
-				        	<input type="submit" class="btn" value="{{ "Login"|trans }}" />
+				        	<input type="submit" class="btn btn-success" value="{{ "Login"|trans }}" />
 				        </div>
 				    </form>
 
