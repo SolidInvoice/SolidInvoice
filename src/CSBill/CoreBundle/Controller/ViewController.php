@@ -11,7 +11,6 @@
 
 namespace CSBill\CoreBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller as BaseController;
 use Rhumsaa\Uuid\Uuid;
 
 class ViewController extends BaseController

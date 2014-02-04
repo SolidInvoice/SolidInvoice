@@ -10,7 +10,7 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
-use CS\CoreBundle\Util\ArrayUtil;
+use CSBill\CoreBundle\Util\ArrayUtil;
 use Twig_Extension;
 use Twig_Test_Function;
 use Doctrine\Common\Persistence\ManagerRegistry;

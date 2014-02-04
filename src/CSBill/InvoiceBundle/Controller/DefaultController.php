@@ -10,7 +10,7 @@
 
 namespace CSBill\InvoiceBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller;
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -19,7 +19,7 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 use Symfony\Component\HttpFoundation\Response;
 use CSBill\ClientBundle\Entity\Client;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     /**
      * List all the invoices

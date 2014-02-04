@@ -20,14 +20,6 @@ class CSBillCoreBundle extends Bundle
     const VERSION = '0.1.0-dev';
 
     /**
-     * Extends the CSCoreBundle, so we can override some of the features specific to this application
-     */
-    public function getParent()
-    {
-        return 'CSCoreBundle';
-    }
-
-    /**
      * (non-phpdoc)
      *
      * @param ContainerBuilder $container

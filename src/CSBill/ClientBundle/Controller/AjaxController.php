@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace CSBill\ClientBundle\Controller;
+namespace CSBill\ClientBundle\BaseController;
 
-use CS\CoreBundle\Controller\Controller;
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AjaxController extends Controller
+class AjaxController extends BaseController
 {
 
     /**

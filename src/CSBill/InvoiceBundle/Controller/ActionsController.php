@@ -10,11 +10,9 @@
 
 namespace CSBill\InvoiceBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Model\Status;
 
-class ActionsController extends Controller
+class ActionsController extends BaseController
 {
     public function cancelAction(Invoice $invoice)
     {

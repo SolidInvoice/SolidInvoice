@@ -11,9 +11,7 @@
 
 namespace CSBill\CoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class DashboardController extends Controller
+class DashboardController extends BaseController
 {
     /**
      * Homepage action

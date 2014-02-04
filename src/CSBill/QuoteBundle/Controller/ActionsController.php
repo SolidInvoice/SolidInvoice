@@ -10,11 +10,10 @@
 
 namespace CSBill\QuoteBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller;
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Model\Status;
 
-class ActionsController extends Controller
+class ActionsController extends BaseController
 {
     public function acceptAction(Quote $quote)
     {

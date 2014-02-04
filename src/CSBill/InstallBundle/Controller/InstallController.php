@@ -10,12 +10,11 @@
 
 namespace CSBill\InstallBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller;
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InstallBundle\Exception\ApplicationInstalledException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class InstallController extends Controller
+class InstallController extends BaseController
 {
     public function indexAction(Request $request)
     {

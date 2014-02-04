@@ -12,7 +12,7 @@
 namespace CSBill\SettingsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use CS\CoreBundle\Util\ArrayUtil;
+use CSBill\CoreBundle\Util\ArrayUtil;
 
 /**
  * Class SettingsRepository

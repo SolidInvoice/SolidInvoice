@@ -11,7 +11,7 @@
 
 namespace CSBill\ClientBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller;
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\DataGridBundle\Grid\Filters;
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -21,7 +21,7 @@ use Doctrine\ORM\QueryBuilder;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     /**
      * List all the clients

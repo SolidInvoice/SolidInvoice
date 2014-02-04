@@ -2,11 +2,10 @@
 
 namespace CSBill\CoreBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\Image;
 
-class UploadController extends Controller
+class UploadController extends BaseController
 {
     public function imageUploadAction()
     {

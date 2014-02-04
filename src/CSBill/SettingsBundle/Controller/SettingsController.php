@@ -11,7 +11,7 @@
 
 namespace CSBill\SettingsBundle\Controller;
 
-use CS\CoreBundle\Controller\Controller;
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\SettingsBundle\Form\Type\SettingsType;
 use CSBill\SettingsBundle\Model\Setting;
 
@@ -19,7 +19,7 @@ use CSBill\SettingsBundle\Model\Setting;
  * Class SettingsController
  * @package CSBill\SettingsBundle\Controller
  */
-class SettingsController extends Controller
+class SettingsController extends BaseController
 {
     /**
      * Settings action
