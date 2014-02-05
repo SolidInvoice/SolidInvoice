@@ -6,16 +6,16 @@
      */
     $(document.body).on('click', '.contact_details_collection li', function(event) {
 
-        var value,
+        var $this = $(this),
+            value,
             collectionHolder,
             prototype,
             regex,
             form,
             prototype_name,
-            collectionContainer = $(this).closest('.contact-type-list').siblings('.collection-container');
+            collectionContainer = $this.closest('.contact-type-list').siblings('.collection-container');
 
-        collectionHolder = collectionContainer.find('.' + $(this).parents('ul').data('target'));
-        collectionHolder = collectionHolder.filter('[data-type=' + $(this).data('type')  + ']');
+        collectionHolder = collectionContainer.find('.' + $this.parents('ul').data('target') + '[data-type=' + $this.data('type')  + ']');
 
         value = $(this).data('value');
 
@@ -29,9 +29,9 @@
             }
 
             regex = new RegExp(prototype_name, "g");
-            form = $(prototype.replace(regex, collectionHolder.children().length - 1)).hide();
+            form = $(prototype.replace(regex, collectionHolder.children().length)).hide();
 
-            collectionContainer.append(form);
+            collectionHolder.append(form);
 
             form.slideDown();
         }
