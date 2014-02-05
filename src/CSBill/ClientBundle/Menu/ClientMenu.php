@@ -33,8 +33,8 @@ class ClientMenu extends AuthenticatedMenu
      */
     public function clientsMenu(ItemInterface $menu)
     {
-        $menu->addChild('List Clients', array('route' => '_clients_index'));
-        $menu->addChild('Add Client', array('route' => '_clients_add'));
+        $menu->addChild('List Clients', array('extras' => array('icon' => 'icon-file-alt'), 'route' => '_clients_index'));
+        $menu->addChild('Add Client', array('extras' => array('icon' => 'icon-user'), 'route' => '_clients_add'));
     }
 
     /**
@@ -47,8 +47,8 @@ class ClientMenu extends AuthenticatedMenu
         $request = $this->container->get('request');
 
         $this->clientsMenu($menu);
-        $menu->addChild('View Client', array('route' => '_clients_view', 'routeParameters' => array('id' => $request->get('id'))));
-        $menu->addChild('Create Invoice', array('route' => '_invoices_create', 'routeParameters' => array('client' => $request->get('id'))));
-        $menu->addChild('Create Quote', array('route' => '_quotes_create', 'routeParameters' => array('client' => $request->get('id'))));
+        $menu->addChild('View Client', array('extras' => array('icon' => 'icon-eye-open'), 'route' => '_clients_view', 'routeParameters' => array('id' => $request->get('id'))));
+        $menu->addChild('Create Invoice', array('extras' => array('icon' => 'icon-file-alt'), 'route' => '_invoices_create', 'routeParameters' => array('client' => $request->get('id'))));
+        $menu->addChild('Create Quote', array('extras' => array('icon' => 'icon-file-alt'), 'route' => '_quotes_create', 'routeParameters' => array('client' => $request->get('id'))));
     }
 }
