@@ -29,9 +29,11 @@
             }
 
             regex = new RegExp(prototype_name, "g");
-            form = prototype.replace(regex, collectionHolder.children().length - 1);
+            form = $(prototype.replace(regex, collectionHolder.children().length - 1)).hide();
 
             collectionContainer.append(form);
+
+            form.slideDown();
         }
     });
 
