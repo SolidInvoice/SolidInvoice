@@ -21,17 +21,16 @@
 
             {{ form_errors(form['details_' ~ item.name]) }}
 
-            <div class="row">
-                <div class="client_contact_details" data-prototype="{{ child_form|escape }}" data-prototype-name="{{ form['details_' ~ item.name].vars.prototype.vars.name }}" data-type="{{ item.name }}">
-                    {% for widget in form['details_' ~ item.name].children %}
-                        {{ _macro.widget_prototype(widget, '', {"trash" : {"class" : "trash pull-left"}}) }}
-                    {% else %}
-                        {% if item.required %}
-                            {{ child_form|replace({'__contact_details_prototype__' : loop.index0})|raw }}
-                        {% endif %}
-                    {% endfor %}
-                </div>
+            <div class="client_contact_details" data-prototype="{{ child_form|escape }}" data-prototype-name="{{ form['details_' ~ item.name].vars.prototype.vars.name }}" data-type="{{ item.name }}">
+                {% for widget in form['details_' ~ item.name].children %}
+                    {{ _macro.widget_prototype(widget, '', {"trash" : {"class" : "trash pull-left"}}) }}
+                {% else %}
+                    {% if item.required %}
+                        {{ child_form|replace({'__contact_details_prototype__' : loop.index0})|raw }}
+                    {% endif %}
+                {% endfor %}
             </div>
+
         {% endfor %}
     </div>
 
