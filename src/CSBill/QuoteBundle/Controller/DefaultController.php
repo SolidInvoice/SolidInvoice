@@ -17,6 +17,7 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use CSBill\ClientBundle\Entity\Client;
 
 class DefaultController extends BaseController
@@ -24,14 +25,24 @@ class DefaultController extends BaseController
     /**
      * List all the available quotes
      *
+     * @param Request $request
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $source = new Entity('CSBillQuoteBundle:Quote');
 
         // Get a Grid instance
         $grid = $this->get('grid');
+
+        $search = $request->get('search');
+
+        $source->manipulateQuery(function ($queryBuilder) use ($search) {
+            if ($search) {
+                $queryBuilder->andWhere('_client.name LIKE :search')
+                    ->setParameter('search', "%{$search}%");
+            }
+        });
 
         // Attach the source to the grid
         $grid->setSource($source);
