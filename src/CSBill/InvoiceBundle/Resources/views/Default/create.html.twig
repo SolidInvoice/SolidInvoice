@@ -33,26 +33,20 @@
 
         {{ form_errors(form) }}
 
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                {{ block('form_client') }}
-            </div>
-            <div class="col-lg-6 col-md-6">
-                {{ block('form_discount') }}
-            </div>
+        <div class="col-lg-6 col-md-6">
+            {{ block('form_client') }}
+        </div>
+        <div class="col-lg-6 col-md-6">
+            {{ block('form_discount') }}
         </div>
 
-        <div class="row">
-            {{ block('form_items') }}
-        </div>
+        {{ block('form_items') }}
 
-        <div class="row">
-            <a href="#" class="add-item"><i class="icon-plus-sign"></i> {{ "Add Item"|trans }}</a>
-        </div>
+        <a href="#" class="add-item"><i class="icon-plus-sign"></i> {{ "Add Item"|trans }}</a>
 
         {{ form_rest(form) }}
 
-        <div class="row form-actions">
+        <div class="form-actions">
             {{ block('form_buttons') }}
         </div>
     </form>
@@ -83,7 +77,6 @@
         </thead>
 
         <tbody>
-
             {% for item in form.items %}
                 <tr>
                     {% for key,field in item.children|keys %}
