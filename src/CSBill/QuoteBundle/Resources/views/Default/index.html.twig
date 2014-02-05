@@ -22,13 +22,11 @@
 
     {{ parent() }}
 
-    <div class="row">
-        <h5>{{ "Quote Status Legend"|trans }}</h5>
+    <h5>{{ "Quote Status Legend"|trans }}</h5>
 
-        {% for status in status_list %}
-            {{ status_label(status) }}
-        {% endfor %}
-    </div>
+    {% for status in status_list %}
+        {{ status_label(status) }}
+    {% endfor %}
 
 {% endblock content %}
 
