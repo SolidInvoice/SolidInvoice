@@ -92,7 +92,7 @@
                             {% set error = form_errors(item[field]) %}
 
                             {% if error|trim is not empty %}
-                                <div class="control-group error">
+                                <div class="control-group has-error">
                                     {{ form_widget(item[field]) }}
                                     {{ error|raw }}
                                 </div>
