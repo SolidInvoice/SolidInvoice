@@ -107,6 +107,11 @@ class DefaultController extends BaseController
             return $value;
         })->setSafe(false);
 
+        $grid->getColumn('status.name')->manipulateRenderCell(function($value, \APY\DataGridBundle\Grid\Row $row) {
+            $label = $row->getField('status.label');
+            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+        })->setSafe(false);
+
         // Return the response of the grid to the template
         return $grid->getGridResponse('CSBillClientBundle:Default:index.html.twig', array('filters' => $filters));
     }
