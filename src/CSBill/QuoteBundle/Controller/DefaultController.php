@@ -18,6 +18,7 @@ use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\QueryBuilder;
 use CSBill\ClientBundle\Entity\Client;
 
 class DefaultController extends BaseController
@@ -37,7 +38,7 @@ class DefaultController extends BaseController
 
         $search = $request->get('search');
 
-        $source->manipulateQuery(function ($queryBuilder) use ($search) {
+        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search) {
             if ($search) {
                 $queryBuilder->andWhere('_client.name LIKE :search')
                     ->setParameter('search', "%{$search}%");
