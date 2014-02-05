@@ -99,6 +99,14 @@ class DefaultController extends BaseController
 
         $grid->hideColumns(array('updated', 'deleted'));
 
+        $grid->getColumn('website')->manipulateRenderCell(function($value) {
+            if (!empty($value)) {
+                return '<a href="'. $value . '" target="_blank">' . $value . '<a>';
+            }
+
+            return $value;
+        })->setSafe(false);
+
         // Return the response of the grid to the template
         return $grid->getGridResponse('CSBillClientBundle:Default:index.html.twig', array('filters' => $filters));
     }
