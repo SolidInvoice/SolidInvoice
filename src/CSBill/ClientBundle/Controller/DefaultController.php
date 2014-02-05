@@ -106,18 +106,17 @@ class DefaultController extends BaseController
     /**
      * Adds a new client
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function addAction()
+    public function addAction(Request $request)
     {
         $client = new Client;
 
         // set all new clients default to active
-        $client->setStatus($this->getRepository('CSBillClientBundle:Status')->findOneByName('active'));
+        $client->setStatus($this->getRepository('CSBillClientBundle:Status')->findOneBy(array('name' => 'active')));
 
         $form = $this->createForm(new ClientForm, $client);
-
-        $request = $this->getRequest();
 
         $form->handleRequest($request);
 
@@ -138,14 +137,13 @@ class DefaultController extends BaseController
     /**
      * Edit a client
      *
+     * @param  Request                                    $request
      * @param  Client                                     $client
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Client $client)
+    public function editAction(Request $request, Client $client)
     {
         $form = $this->createForm(new ClientForm, $client);
-
-        $request = $this->getRequest();
 
         $originalContactsDetails = array();
         $originalContacts = array();
