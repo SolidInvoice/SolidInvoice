@@ -36,4 +36,19 @@ class ClientMenu extends AuthenticatedMenu
         $menu->addChild('List Clients', array('route' => '_clients_index'));
         $menu->addChild('Add Client', array('route' => '_clients_add'));
     }
+
+    /**
+     * Renders the client view menu
+     *
+     * @param ItemInterface $menu
+     */
+    public function clientViewMenu(ItemInterface $menu)
+    {
+        $request = $this->container->get('request');
+
+        $this->clientsMenu($menu);
+        $menu->addChild('View Client', array('route' => '_clients_view', 'routeParameters' => array('id' => $request->get('id'))));
+        $menu->addChild('Create Invoice', array('route' => '_invoices_create', 'routeParameters' => array('client' => $request->get('id'))));
+        $menu->addChild('Create Quote', array('route' => '_quotes_create', 'routeParameters' => array('client' => $request->get('id'))));
+    }
 }
