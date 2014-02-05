@@ -142,6 +142,10 @@
                 <source>number_quotes</source>
                 <target>{0} Quotes|{1} Quote|]1,Inf] Quotes</target>
             </trans-unit>
+            <trans-unit id="36">
+                <source>created</source>
+                <target>Created</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
