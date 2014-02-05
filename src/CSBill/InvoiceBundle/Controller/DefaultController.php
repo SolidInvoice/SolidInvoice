@@ -17,6 +17,8 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\QueryBuilder;
 use CSBill\ClientBundle\Entity\Client;
 
 class DefaultController extends BaseController
@@ -24,14 +26,24 @@ class DefaultController extends BaseController
     /**
      * List all the invoices
      *
+     * @param Request $request
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $source = new Entity('CSBillInvoiceBundle:Invoice');
 
         // Get a Grid instance
         $grid = $this->get('grid');
+
+        $search = $request->get('search');
+
+        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search) {
+            if ($search) {
+                $queryBuilder->andWhere('_client.name LIKE :search')
+                    ->setParameter('search', "%{$search}%");
+            }
+        });
 
         // Attach the source to the grid
         $grid->setSource($source);
