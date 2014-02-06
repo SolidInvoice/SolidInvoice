@@ -69,7 +69,7 @@ class Settings extends AbstractType
             $options['attr'] = array('class' => 'chosen');
         }
 
-        if('choice' === $type) {
+        if ('choice' === $type) {
             $settingOptions = $setting->getOptions();
 
             $options['choices'] = $settingOptions;

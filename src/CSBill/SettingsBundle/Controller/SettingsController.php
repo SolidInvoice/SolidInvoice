@@ -33,7 +33,7 @@ class SettingsController extends BaseController
 
         $settings = $manager->getSettings()->toArray();
 
-        array_walk_recursive($settings, function(Setting &$setting){
+        array_walk_recursive($settings, function (Setting &$setting) {
             $setting = $setting->getValue();
         });
 

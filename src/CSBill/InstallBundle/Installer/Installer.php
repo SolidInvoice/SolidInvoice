@@ -160,8 +160,8 @@ class Installer
     /**
      * Sets the instance of the container
      *
-     * @param  ContainerInterface $container
-     * @return $this
+     * @param ContainerInterface $container
+     *                                      @return $this
      */
     public function setContainer(ContainerInterface $container)
     {
@@ -256,7 +256,7 @@ class Installer
     }
 
     /**
-     * @param int $index
+     * @param  int  $index
      * @return bool
      */
     public function isStepComplete($index)

@@ -73,7 +73,7 @@ class DoctrineLoader implements SettingsLoaderInterface
      */
     public function getSettings()
     {
-        if(!$this->checkConnection()) {
+        if (!$this->checkConnection()) {
             return array();
         }
 
@@ -81,7 +81,7 @@ class DoctrineLoader implements SettingsLoaderInterface
     }
 
     /**
-     * @param array|\ArrayAccess $sections
+     * @param  array|\ArrayAccess $sections
      * @return array
      */
     protected function addSettings($sections)
@@ -120,7 +120,7 @@ class DoctrineLoader implements SettingsLoaderInterface
             /** @var \CSBill\SettingsBundle\Repository\SectionRepository $repository */
             $repository = $this->manager->getRepository('CSBillSettingsBundle:Section');
             $this->sections = $repository->getTopLevelSections();
-        } catch(DBALException $e) {
+        } catch (DBALException $e) {
             return false;
         } catch (\PDOException $e) {
             return false;

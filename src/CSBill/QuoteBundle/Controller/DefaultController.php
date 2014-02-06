@@ -26,7 +26,7 @@ class DefaultController extends BaseController
     /**
      * List all the available quotes
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function indexAction(Request $request)

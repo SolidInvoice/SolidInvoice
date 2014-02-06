@@ -38,7 +38,7 @@ class ArrayUtil
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        $return = array_map(function($item) use ($column, $accessor) {
+        $return = array_map(function ($item) use ($column, $accessor) {
 
             if (is_array($item) || $item instanceof \ArrayAccess) {
                 $column = '['.$column.']';
@@ -47,9 +47,8 @@ class ArrayUtil
             return $accessor->getValue($item, $column);
         }, $array);
 
-        return array_filter($return, function($item) {
+        return array_filter($return, function ($item) {
             return $item !== null;
         });
     }
 }
-

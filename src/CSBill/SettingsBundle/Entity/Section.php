@@ -84,7 +84,7 @@ class Section
      * Set name
      *
      * @param string $name
-     * @return $this
+     *                     @return $this
      */
     public function setName($name)
     {

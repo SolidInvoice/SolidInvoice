@@ -22,7 +22,7 @@ interface ManagerInterface
     public function addSettingsLoader(SettingsLoaderInterface $loader);
 
     /**
-     * @param  string|null                                          $setting
+     * @param  string|null                                              $setting
      * @return \Doctrine\Common\Collections\Collection|mixed|string
      * @throws \CSBill\SettingsBundle\Exception\InvalidSettingException
      */

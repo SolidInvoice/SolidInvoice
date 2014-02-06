@@ -28,7 +28,7 @@ class BaseController extends Base
     /**
      * Get a doctrine repository
      *
-     * @param string $repository
+     * @param  string                                        $repository
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     public function getRepository($repository)
@@ -40,7 +40,7 @@ class BaseController extends Base
      * Adds a message to the session flash
      *
      * @param string $message The message to add to the session flash
-     * @param string $type The flash message type (notice, success, error etc)
+     * @param string $type    The flash message type (notice, success, error etc)
      *
      * @return $this
      */
@@ -54,7 +54,7 @@ class BaseController extends Base
     /**
      * Translates a message
      *
-     * @param string $message
+     * @param  string $message
      * @return string
      */
     public function trans($message)
