@@ -155,7 +155,7 @@ class Invoice
     }
 
     /**
-     * @param Uuid $uuid
+     * @param  Uuid  $uuid
      * @return $this
      */
     public function setUuid(Uuid $uuid)
@@ -184,7 +184,7 @@ class Invoice
     }
 
     /**
-     * @param array $users
+     * @param  array $users
      * @return $this
      */
     public function setUsers(array $users = array())

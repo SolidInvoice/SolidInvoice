@@ -122,7 +122,6 @@ class AjaxController extends BaseController
             foreach ($contact->getDetails() as $detail) {
                 /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
                 foreach ($originalContactDetails as $key => $toDel) {
-                    //var_dump($toDel->getId(), $detail->getId());
                     /** @var \CSBill\ClientBundle\Entity\ContactDetail $toDel */
                     if ($toDel->getId() === $detail->getId()) {
                         unset($originalContactDetails[$key]);

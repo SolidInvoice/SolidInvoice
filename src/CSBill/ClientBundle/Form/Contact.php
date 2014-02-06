@@ -70,11 +70,10 @@ class Contact extends AbstractType
         }
 
         $types = $this->types;
-        $that = $this;
 
         $builder->addEventListener(
             FormEvents::SUBMIT,
-            function (FormEvent $event) use ($types, $that) {
+            function (FormEvent $event) use ($types) {
 
                 $details = $event->getData()->getDetails();
 
@@ -88,9 +87,10 @@ class Contact extends AbstractType
                 foreach ($types as $type) {
                     if ($type->isRequired()) {
                         if (!in_array($type->getName(), $detailTypes)) {
+                            $name = $type->getName();
                             $error = sprintf(
                                 '%s is required',
-                                $that->humanize($type->getName())
+                                ucwords(str_replace('_', ' ', $name))
                             );
                             $event->getForm()->addError(new FormError($error));
                         }
@@ -111,14 +111,5 @@ class Contact extends AbstractType
                 'data_class' => 'CSBill\ClientBundle\Entity\Contact',
                 'csrf_protection'=> false
         ));
-    }
-
-    /**
-     * @param  string $text
-     * @return string
-     */
-    private function humanize($text)
-    {
-        return ucwords(str_replace('_', ' ', $text));
     }
 }

@@ -73,10 +73,6 @@ class Settings extends AbstractType
             $settingOptions = $setting->getOptions();
 
             $options['choices'] = $settingOptions;
-
-            /*if (!empty($settingOptions)) {
-                $options['choices'] = array_combine($settingOptions, $settingOptions);
-            }*/
         }
 
         return $type;

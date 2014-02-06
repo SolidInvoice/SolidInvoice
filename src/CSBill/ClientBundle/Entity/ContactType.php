@@ -187,7 +187,7 @@ class ContactType
     }
 
     /**
-     * @param array $options
+     * @param  array $options
      * @return $this
      */
     public function setOptions(array $options)

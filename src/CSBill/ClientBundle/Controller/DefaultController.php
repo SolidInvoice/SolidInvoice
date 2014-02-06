@@ -36,7 +36,6 @@ class DefaultController extends BaseController
         // Get a Grid instance
         $grid = $this->get('grid');
 
-        // TODO : get better way of adding filters & search instead of defining it in the controller like this
         $filters = new Filters($request);
 
         $filters->add(
@@ -89,10 +88,8 @@ class DefaultController extends BaseController
         $grid->setSource($source);
 
         $viewAction = new RowAction($this->get('translator')->trans('view'), '_clients_view');
-        //$viewAction->setAttributes(array('class' => 'btn'));
 
         $editAction = new RowAction($this->get('translator')->trans('edit'), '_clients_edit');
-        //$editAction->setAttributes(array('class' => 'btn'));
 
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);

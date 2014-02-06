@@ -48,7 +48,8 @@ class RequestListener
                                   );
 
     /**
-     * @DI\Observe("kernel.request", priority = 10)
+     * @param  GetResponseEvent $event
+     * @return null
      */
     public function onKernelRequest(GetResponseEvent $event)
     {

@@ -13,7 +13,7 @@ namespace CSBill\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 
-class BaseController extends Base
+abstract class BaseController extends Base
 {
     /**
      * Return a instance of the doctrine entity manager

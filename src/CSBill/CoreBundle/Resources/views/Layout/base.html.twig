@@ -17,7 +17,7 @@
         {% stylesheets
             'bundles/csbillcore/less/styles.less'
             'bundles/csbillcore/css/*.css'
-            'bundles/csbillclient//less/*.less'
+            'bundles/csbillclient/less/*.less'
             filter="less, cssrewrite, ?yui_css"
         %}
             <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
@@ -25,8 +25,8 @@
     {% endblock stylesheets %}
 
     {% javascripts
-        "@CSBillCoreBundle/Resources/public/js/modernizr.min.js"
-        "@CSBillCoreBundle/Resources/public/js/jquery-1.11.0.min.js"
+        "js/modernizr.min.js"
+        "js/jquery-1.11.0.min.js"
         filter="?yui_js"
     %}
         <script src="{{ asset_url }}"></script>
@@ -51,9 +51,9 @@
 
     {% block javascripts %}
         {% javascripts
-            "@CSBillCoreBundle/Resources/public/js/plugins/bootstrap.min.js"
+            "js/plugins/bootstrap.min.js"
             "@CSBillCoreBundle/Resources/public/js/plugins.js"
-            "@CSBillCoreBundle/Resources/public/js/plugins/*.js"
+            "js/plugins/*.js"
             "@CSBillClientBundle/Resources/public/js/*.js"
             "@CSBillCoreBundle/Resources/public/js/script.js"
             "@FOSJsRoutingBundle/Resources/public/js/router.js"

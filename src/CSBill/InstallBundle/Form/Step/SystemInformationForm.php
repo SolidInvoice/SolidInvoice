@@ -24,9 +24,7 @@ class SystemInformationForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
-        //$languages = Intl::getLanguageBundle()->getLanguageNames();
         $locales = Intl::getLocaleBundle()->getLocaleNames();
-        //$region = Intl::getRegionBundle()->getCountryNames();
 
         $builder->add(
             'locale',

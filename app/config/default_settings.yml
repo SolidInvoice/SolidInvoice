@@ -3,16 +3,16 @@ cs_bill_settings:
         children:
             general:
                 settings:
-                    - { key: 'app_name', value : 'CSBill'}
-                    - { key: 'logo', value: "", type : 'image_upload'}
+                    - { name: 'app_name', value : 'CSBill'}
+                    - { name: 'logo', value: "", type : 'image_upload'}
     quote:
         settings:
-            - { key: email_subject, value: "New Quotation - #{id}", description: "To include the id of the quote in the subject, add the placeholder {id} where you want the id"}
+            - { name: email_subject, value: "New Quotation - #{id}", description: "To include the id of the quote in the subject, add the placeholder {id} where you want the id"}
     invoice:
         settings:
-            - { key: email_subject, value: "New Invoice - #{id}", description: "To include the id of the invoice in the subject, add the placeholder {id} where you want the id"}
+            - { name: email_subject, value: "New Invoice - #{id}", description: "To include the id of the invoice in the subject, add the placeholder {id} where you want the id"}
     email:
         settings:
-            - { key: from_name, value: ""}
-            - { key: from_address, value: ""}
-            - { key: format, value: "both", type: "radio", options: ["html", "text", "both"], description: "In what format should emails be sent."}
+            - { name: from_name, value: ""}
+            - { name: from_address, value: ""}
+            - { name: format, value: "both", type: "radio", options: ["html", "text", "both"], description: "In what format should emails be sent."}
