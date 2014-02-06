@@ -23,7 +23,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     /**
      * Searches for a user by username or email
      *
-     * @param string $username
+     * @param  string                    $username
      * @return UserInterface
      * @throws UsernameNotFoundException
      */

@@ -10,11 +10,13 @@ use Symfony\Component\Form\FormInterface;
 
 class Installation extends FormFlow
 {
-    public function getName() {
+    public function getName()
+    {
         return 'installation';
     }
 
-    public function saveCurrentStepData(FormInterface $form) {
+    public function saveCurrentStepData(FormInterface $form)
+    {
         $stepData = $this->retrieveStepData();
 
         var_dump($stepData, $this->getRequest()->request->get($form->getName(), array()));
@@ -25,7 +27,8 @@ class Installation extends FormFlow
         $this->saveStepData($stepData);
     }
 
-    protected function loadStepsConfig() {
+    protected function loadStepsConfig()
+    {
         return array(
             array(
                 'label' => 'license_agreement',
@@ -34,21 +37,21 @@ class Installation extends FormFlow
             /*array(
                 'label' => 'system_check',
                 'type' => new CreateVehicleStep2Form(),
-                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                'skip' => function ($estimatedCurrentStepNumber, FormFlowInterface $flow) {
                         return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
                     },
             ),
             array(
                 'label' => 'database',
                 'type' => new CreateVehicleStep2Form(),
-                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                'skip' => function ($estimatedCurrentStepNumber, FormFlowInterface $flow) {
                         return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
                     },
             ),
             array(
                 'label' => 'system_information',
                 'type' => new CreateVehicleStep2Form(),
-                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                'skip' => function ($estimatedCurrentStepNumber, FormFlowInterface $flow) {
                         return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
                     },
             ),*/
@@ -57,4 +60,4 @@ class Installation extends FormFlow
             ),
         );
     }
-} 
+}

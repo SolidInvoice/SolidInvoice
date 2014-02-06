@@ -23,7 +23,7 @@ class DatabaseConfigForm extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -88,7 +88,7 @@ class DatabaseConfigForm extends AbstractType
 
         $connectionFactory = $options['connection_factory'];
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use($connectionFactory, $drivers) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($connectionFactory, $drivers) {
             $form = $event->getForm();
 
             if ($form->isValid()) {
@@ -127,7 +127,8 @@ class DatabaseConfigForm extends AbstractType
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'database_config';
     }
 }

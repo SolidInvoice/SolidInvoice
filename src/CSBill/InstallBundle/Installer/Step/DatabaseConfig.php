@@ -14,7 +14,6 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Form\FormInterface;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
 use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
 

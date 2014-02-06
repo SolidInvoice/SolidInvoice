@@ -19,7 +19,7 @@ class LicenseAgreementForm extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -64,7 +64,8 @@ class LicenseAgreementForm extends AbstractType
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'license_agreement';
     }
 }

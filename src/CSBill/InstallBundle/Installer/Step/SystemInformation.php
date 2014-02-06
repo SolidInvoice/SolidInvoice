@@ -54,14 +54,13 @@ class SystemInformation extends AbstractFormStep
         $em->persist($user);
         $em->flush();
 
-
         $this->saveConfig($data);
     }
 
     /**
-     * @param array $data
+     * @param  array             $data
      * @throws \RuntimeException
-     * @TODO This section needs to move to a central location (along with databse config)
+     *                                @TODO This section needs to move to a central location (along with databse config)
      */
     protected function saveConfig(array $data)
     {

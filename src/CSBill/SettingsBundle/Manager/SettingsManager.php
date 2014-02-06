@@ -113,7 +113,7 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * @param  string|null                                          $setting
+     * @param  string|null                                              $setting
      * @return mixed|string
      * @throws \CSBill\SettingsBundle\Exception\InvalidSettingException
      */

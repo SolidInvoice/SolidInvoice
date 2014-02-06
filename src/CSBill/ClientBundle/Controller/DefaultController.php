@@ -99,7 +99,7 @@ class DefaultController extends BaseController
 
         $grid->hideColumns(array('updated', 'deleted'));
 
-        $grid->getColumn('website')->manipulateRenderCell(function($value) {
+        $grid->getColumn('website')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
                 return '<a href="'. $value . '" target="_blank">' . $value . '<a>';
             }
@@ -107,8 +107,9 @@ class DefaultController extends BaseController
             return $value;
         })->setSafe(false);
 
-        $grid->getColumn('status.name')->manipulateRenderCell(function($value, \APY\DataGridBundle\Grid\Row $row) {
+        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, \APY\DataGridBundle\Grid\Row $row) {
             $label = $row->getField('status.label');
+
             return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
         })->setSafe(false);
 
@@ -119,7 +120,7 @@ class DefaultController extends BaseController
     /**
      * Adds a new client
      *
-     * @param Request $request
+     * @param  Request                                                                                       $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction(Request $request)
