@@ -35,7 +35,7 @@ class Status extends BaseStatus
 
     /**
      * @param Quote $quote
-     *                     @return $this
+     * @return $this
      */
     public function addQuote(Quote $quote)
     {
@@ -47,7 +47,7 @@ class Status extends BaseStatus
 
     /**
      * @param Quote $quote
-     *                     @return $this
+     * @return $this
      */
     public function removeQuote(Quote $quote)
     {

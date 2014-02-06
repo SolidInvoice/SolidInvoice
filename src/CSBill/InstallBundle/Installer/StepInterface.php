@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 interface StepInterface extends ContainerAwareInterface
 {
     /**
-     * @param Request $request
+     * @param  Request $request
      * @return mixed
      */
     public function handleRequest(Request $request);

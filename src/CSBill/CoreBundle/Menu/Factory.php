@@ -12,7 +12,6 @@
 namespace CSBill\CoreBundle\Menu;
 
 use Knp\Menu\MenuFactory;
-use CSBill\CoreBundle\Menu\MenuItem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Knp\Menu\Silex\RoutingExtension;
 use Knp\Menu\Factory\CoreExtension;

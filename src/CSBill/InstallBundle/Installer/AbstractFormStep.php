@@ -10,7 +10,6 @@
 
 namespace CSBill\InstallBundle\Installer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

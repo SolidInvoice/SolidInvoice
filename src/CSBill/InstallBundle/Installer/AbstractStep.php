@@ -25,7 +25,7 @@ abstract class AbstractStep implements StepInterface
     /**
      * Set the instance of the service container
      *
-     * @param  ContainerInterface $container
+     * @param ContainerInterface $container
      * @return $this
      */
     public function setContainer(ContainerInterface $container = null)
@@ -57,15 +57,15 @@ abstract class AbstractStep implements StepInterface
     /**
      * {@inheritDoc}
      */
-    abstract function handleRequest(Request $request);
+    abstract public function handleRequest(Request $request);
 
     /**
      * {@inheritDoc}
      */
-    abstract function isValid();
+    abstract public function isValid();
 
     /**
      * {@inheritDoc}
      */
-    abstract function process();
+    abstract public function process();
 }

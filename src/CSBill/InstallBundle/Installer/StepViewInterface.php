@@ -11,7 +11,6 @@
 namespace CSBill\InstallBundle\Installer;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\Form\FormInterface;
 
 interface StepViewInterface extends ContainerAwareInterface
 {
