@@ -60,7 +60,7 @@ class SystemInformation extends AbstractFormStep
     /**
      * @param  array             $data
      * @throws \RuntimeException
-     *                                @TODO This section needs to move to a central location (along with databse config)
+     * @TODO This section needs to move to a central location (along with databse config)
      */
     protected function saveConfig(array $data)
     {

@@ -15,7 +15,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use CSBill\ClientBundle\Form\Type\ContactType;
-use CSBill\ClientBundle\Form\Contact;
 
 class Client extends AbstractType
 {

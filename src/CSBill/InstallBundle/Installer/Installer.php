@@ -161,7 +161,7 @@ class Installer
      * Sets the instance of the container
      *
      * @param ContainerInterface $container
-     *                                      @return $this
+     * @return $this
      */
     public function setContainer(ContainerInterface $container)
     {

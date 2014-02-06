@@ -35,7 +35,7 @@ class Status extends BaseStatus
 
     /**
      * @param Invoice $invoice
-     *                         @return $this
+     * @return $this
      */
     public function addInvoice(Invoice $invoice)
     {
@@ -47,7 +47,7 @@ class Status extends BaseStatus
 
     /**
      * @param Invoice $invoice
-     *                         @return $this
+     * @return $this
      */
     public function removeInvoice(Invoice $invoice)
     {

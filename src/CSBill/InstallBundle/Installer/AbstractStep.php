@@ -26,7 +26,7 @@ abstract class AbstractStep implements StepInterface
      * Set the instance of the service container
      *
      * @param ContainerInterface $container
-     *                                      @return $this
+     * @return $this
      */
     public function setContainer(ContainerInterface $container = null)
     {
