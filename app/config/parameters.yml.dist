@@ -13,4 +13,4 @@ parameters:
 
     locale: en_US
     currency: USD
-    secret: f3eeaeacfbc4c54c9e49737958edef5c
+    secret: SecretToken
