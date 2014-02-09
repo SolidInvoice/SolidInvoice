@@ -121,22 +121,7 @@ class AjaxController extends BaseController
 
             $entityManager = $this->getEm();
 
-            foreach ($contact->getDetails() as $detail) {
-                /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
-                foreach ($originalContactDetails as $key => $toDel) {
-                    /** @var \CSBill\ClientBundle\Entity\ContactDetail $toDel */
-                    if ($toDel->getId() === $detail->getId()) {
-                        unset($originalContactDetails[$key]);
-                    }
-                }
-            }
-
-            unset($detail);
-
-            foreach ($originalContactDetails as $detail) {
-                $contact->removeDetail($detail);
-                $entityManager->remove($detail);
-            }
+            $this->removeContactDetails($contact, $originalContactDetails);
 
             $entityManager->persist($contact);
             $entityManager->flush();
@@ -219,5 +204,31 @@ class AjaxController extends BaseController
         $this->flash($this->trans('client_delete_success'), 'success');
 
         return new JsonResponse(array("status" => "success"));
+    }
+
+    /**
+     * @param Contact $contact
+     * @param array   $originalContactDetails
+     */
+    private function removeContactDetails(Contact $contact, array $originalContactDetails)
+    {
+        $em = $this->getEm();
+
+        foreach ($contact->getDetails() as $detail) {
+            /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
+            foreach ($originalContactDetails as $key => $toDel) {
+                /** @var \CSBill\ClientBundle\Entity\ContactDetail $toDel */
+                if ($toDel->getId() === $detail->getId()) {
+                    unset($originalContactDetails[$key]);
+                }
+            }
+        }
+
+        unset($detail);
+
+        foreach ($originalContactDetails as $detail) {
+            $contact->removeDetail($detail);
+            $em->remove($detail);
+        }
     }
 }
