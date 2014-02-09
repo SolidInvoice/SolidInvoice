@@ -96,6 +96,12 @@ class DefaultController extends BaseController
      */
     public function createAction(Request $request, Client $client = null)
     {
+        $clients = $this->getRepository('CSBillClientBundle:Client');
+
+        if (!$clients->getTotalClients() > 0) {
+            return $this->render('CSBillQuoteBundle:Default:empty_clients.html.twig');
+        }
+
         $quote = new Quote;
         $quote->setClient($client);
 
@@ -104,7 +110,6 @@ class DefaultController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $action = $request->request->get('save');
             $this->saveQuote($quote, $action);
 

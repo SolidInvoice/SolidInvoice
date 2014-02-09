@@ -1,0 +1,14 @@
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block title %}{{ "quote_create"|trans }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('quotes_create') }}
+{% endblock sidebar %}
+
+{% block content %}
+    <div class="alert alert-warning">
+        <h4>
+            {{ "no_clients"|trans }} <a href="{{ url('_clients_add') }}">{{ "add_client"|trans }}</a></h4>
+    </div>
+{% endblock %}

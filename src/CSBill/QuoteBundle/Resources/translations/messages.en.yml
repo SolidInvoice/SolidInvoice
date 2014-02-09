@@ -5,6 +5,7 @@ quote_sent: Quote Sent
 quote_view: View Quote
 quote_edit: Edit Quote
 quote_delete: Delete Quote
+quote_create: Create Quote
 confirm_delete: Are you sure you want to delete this quote?
 quote_create_success: Quote created successfully
 quote_edit_success: Quote created successfully
@@ -13,3 +14,6 @@ client: Client
 total: Total
 discount: Discount
 search: Search
+choose_client: Choose a client
+no_clients: You have not created any clients yet.
+add_client: Please add one now

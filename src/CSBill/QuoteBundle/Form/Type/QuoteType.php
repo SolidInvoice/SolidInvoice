@@ -26,12 +26,17 @@ class QuoteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('client', null, array('attr' => array('class' => 'chosen'), 'empty_value' => '--select--'));
+        $builder->add('client', null, array('attr' => array('class' => 'chosen'), 'empty_value' => 'choose_client'));
         $builder->add('discount', 'percent');
-        $builder->add('items', 'collection', array('type' => new ItemType(),
-                                                      'allow_add' => true,
-                                                      'allow_delete' => true
-                ));
+        $builder->add(
+            'items',
+            'collection',
+            array(
+                'type' => new ItemType(),
+                'allow_add' => true,
+                'allow_delete' => true
+            )
+        );
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
     }
@@ -52,7 +57,7 @@ class QuoteType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'CSBill\QuoteBundle\Entity\Quote'
+            'data_class' => 'CSBill\QuoteBundle\Entity\Quote'
         ));
     }
 }

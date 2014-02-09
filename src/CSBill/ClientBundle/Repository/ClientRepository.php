@@ -20,6 +20,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClientRepository extends EntityRepository
 {
+    /**
+     * Gets total number of clients
+     *
+     * @return int
+     */
     public function getTotalClients()
     {
         $qb = $this->createQueryBuilder('c');
