@@ -76,55 +76,14 @@ class DefaultController extends BaseController
     {
         $form = $this->createForm(new ClientForm, $client);
 
-        $originalContactsDetails = array();
-        $originalContacts = array();
-
-        if ($request->isMethod('POST')) {
-            $originalContacts = $client->getContacts()->toArray();
-
-            foreach ($originalContacts as $contact) {
-                /** @var \CSBill\ClientBundle\Entity\Contact $contact */
-                $originalContactsDetails[$contact->getId()] = $contact->getDetails()->toArray();
-                $contact->getDetails()->clear();
-            }
-        }
+        $originalContactsDetails = $this->getClientContactDetails(Requet, $client);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $entityManager = $this->getEm();
 
-            foreach ($client->getContacts() as $originalContact) {
-                foreach ($originalContacts as $key => $toDel) {
-                    if ($toDel->getId() === $originalContact->getId()) {
-                        unset($originalContacts[$key]);
-                    }
-                }
-            }
-
-            unset($contact);
-
-            foreach ($originalContacts as $contact) {
-                $entityManager->remove($contact);
-                $client->removeContact($contact);
-            }
-
-            unset($contact);
-
-            foreach ($client->getContacts() as $contact) {
-                foreach ($contact->getDetails() as $originalContactDetail) {
-                    foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
-                        if ($toDel->getId() === $originalContactDetail->getId()) {
-                            unset($originalContactsDetails[$contact->getId()][$key]);
-                        }
-                    }
-                }
-
-                foreach ($originalContactsDetails[$contact->getId()] as $contactDetail) {
-                    $entityManager->remove($contactDetail);
-                    $contact->removeDetail($contactDetail);
-                }
-            }
+            $this->removeClientContacts($client, $originalContactsDetails);
 
             $entityManager->persist($client);
             $entityManager->flush();
@@ -268,5 +227,70 @@ class DefaultController extends BaseController
         }
 
         return $filters;
+    }
+
+    /**
+     * @param Client $client
+     * @param array $originalContactsDetails
+     */
+    private function removeClientContacts(Client $client, array $originalContactsDetails)
+    {
+        $entityManager = $this->getEm();
+
+        $originalContacts = $client->getContacts()->toArray();
+
+        foreach ($client->getContacts() as $originalContact) {
+            foreach ($originalContacts as $key => $toDel) {
+                if ($toDel->getId() === $originalContact->getId()) {
+                    unset($originalContacts[$key]);
+                }
+            }
+        }
+
+        unset($contact);
+
+        foreach ($originalContacts as $contact) {
+            $entityManager->remove($contact);
+            $client->removeContact($contact);
+        }
+
+        unset($contact);
+
+        foreach ($client->getContacts() as $contact) {
+            foreach ($contact->getDetails() as $originalContactDetail) {
+                foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
+                    if ($toDel->getId() === $originalContactDetail->getId()) {
+                        unset($originalContactsDetails[$contact->getId()][$key]);
+                    }
+                }
+            }
+
+            foreach ($originalContactsDetails[$contact->getId()] as $contactDetail) {
+                $entityManager->remove($contactDetail);
+                $contact->removeDetail($contactDetail);
+            }
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Client $client
+     * @return array
+     */
+    private function getClientContactDetails(Request $request, Client $client)
+    {
+        $originalContactsDetails = array();
+
+        if ($request->isMethod('POST')) {
+            $originalContacts = $client->getContacts()->toArray();
+
+            foreach ($originalContacts as $contact) {
+                /** @var \CSBill\ClientBundle\Entity\Contact $contact */
+                $originalContactsDetails[$contact->getId()] = $contact->getDetails()->toArray();
+                $contact->getDetails()->clear();
+            }
+        }
+
+        return $originalContactsDetails;
     }
 }
