@@ -14,8 +14,6 @@ namespace CSBill\InvoiceBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Form;
-use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 
 class InvoiceType extends AbstractType
