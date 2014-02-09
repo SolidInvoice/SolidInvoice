@@ -35,6 +35,7 @@ class DefaultController extends BaseController
 
         // Get a Grid instance
         $grid = $this->get('grid');
+        $translator = $this->get('translator');
 
         $filters = new Filters($request);
 
@@ -51,14 +52,15 @@ class DefaultController extends BaseController
         $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
 
         foreach ($statusList as $status) {
-            $filters->add($status->getName().'_clients', function (QueryBuilder $queryBuilder) use ($status) {
-                $aliases = $queryBuilder->getRootAliases();
-                $alias = $aliases[0];
+            $filters->add(
+                $status->getName() . '_clients', function (QueryBuilder $queryBuilder) use ($status) {
+                    $aliases = $queryBuilder->getRootAliases();
+                    $alias = $aliases[0];
 
-                $queryBuilder->join($alias.'.status', 's')
-                   ->andWhere('s.name = :status_name')
-                   ->setParameter('status_name', $status->getName());
-            },
+                    $queryBuilder->join($alias.'.status', 's')
+                        ->andWhere('s.name = :status_name')
+                        ->setParameter('status_name', $status->getName());
+                    },
                 false,
                 array(
                     'active_class' => 'label label-' . $status->getLabel(),
@@ -87,11 +89,25 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $viewAction = new RowAction($this->get('translator')->trans('view'), '_clients_view');
+        $viewAction = new RowAction('<i class="icon-eye-open"></i>', '_clients_view');
+        $viewAction->addAttribute('title', $translator->trans('view_client'));
+        $viewAction->addAttribute('rel', 'tooltip');
 
-        $editAction = new RowAction($this->get('translator')->trans('edit'), '_clients_edit');
+        $editAction = new RowAction('<i class="icon-edit"></i>', '_clients_edit');
+        $editAction->addAttribute('title', $translator->trans('edit_client'));
+        $editAction->addAttribute('rel', 'tooltip');
 
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
+        $deleteAction = new RowAction('<i class="icon-remove"></i>', '_clients_delete');
+        $deleteAction->setAttributes(
+            array(
+                'title' => $translator->trans('delete_client'),
+                'rel' => 'tooltip',
+                'data-confirm' => $translator->trans('confirm_delete'),
+                'class' => 'delete-client',
+            )
+        );
+
+        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
         $grid->addColumn($actionsRow, 100);
 
         $grid->hideColumns(array('updated', 'deleted'));
@@ -214,7 +230,8 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
         }
 
-        return $this->render('CSBillClientBundle:Default:edit.html.twig',
+        return $this->render(
+            'CSBillClientBundle:Default:edit.html.twig',
             array(
                 'client' => $client,
                 'form' => $form->createView()

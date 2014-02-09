@@ -146,6 +146,18 @@
                 <source>created</source>
                 <target>Created</target>
             </trans-unit>
+            <trans-unit id="37">
+                <source>delete_client</source>
+                <target>Delete Client</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>confirm_delete</source>
+                <target>Are you sure you want to delete this client?</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>client_delete_success</source>
+                <target>The client was deleted successfully</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -4,18 +4,18 @@
     label {
       width: 120px;
     }
-    
+
     .controls {
       padding: 5px 0;
     }
-    
+
     span {
       padding: 0 4px;
     }
 }
 
 /* Grid Sorting
- ***********/
+ ***************/
 .sort_down, .sort_up {
   float: right;
 }
@@ -33,9 +33,34 @@
 .grid {
   .mass-actions {
     margin-bottom: 20px;
-    
+
     .grid_massactions .btn {
       margin-left: 8px;
     }
   }
+}
+
+/* Actions Column
+******************/
+
+.grid-row-actions {
+    li {
+        list-style: none;
+        float: left;
+        padding: 0 4px;
+
+        &:not(:last-child) {
+            border-right: 1px solid #D0DDE9;
+            height: 20px;
+            margin: 0px 3px 0px 3px;
+        }
+
+        a {
+            color: #333333;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
 }

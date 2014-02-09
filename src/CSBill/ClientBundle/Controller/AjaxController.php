@@ -15,6 +15,7 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class AjaxController extends BaseController
 {
@@ -28,11 +29,12 @@ class AjaxController extends BaseController
     {
         return new JsonResponse(
             array(
-                "content" => $this->renderView('CSBillClientBundle:Ajax:info.html.twig',
-                        array(
-                            'client' => $client
-                        )
+                "content" => $this->renderView(
+                    'CSBillClientBundle:Ajax:info.html.twig',
+                    array(
+                        'client' => $client
                     )
+                )
             )
         );
     }
@@ -40,14 +42,13 @@ class AjaxController extends BaseController
     /**
      * Add a new contact to a client
      *
+     * @param  Request                                                       $request
      * @param  Client                                                        $client
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addcontactAction(Client $client)
+    public function addcontactAction(Request $request, Client $client)
     {
-        $request = $this->getRequest();
-
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
@@ -69,18 +70,20 @@ class AjaxController extends BaseController
 
             return new JsonResponse(array(
                 "status"    => "success",
-                "content"   => $this->renderView('CSBillClientBundle:Ajax:contact_add.html.twig',
-                        array(
-                            'contact' => $contact
-                        )
-                    ),
+                "content"   => $this->renderView(
+                    'CSBillClientBundle:Ajax:contact_add.html.twig',
+                    array(
+                        'contact' => $contact
+                    )
+                ),
                 "id"        => $contact->getId()
             ));
         } else {
             $response['status'] = 'failure';
         }
 
-        $response["content"] = $this->renderView('CSBillClientBundle:Ajax:contact_add.html.twig',
+        $response["content"] = $this->renderView(
+            'CSBillClientBundle:Ajax:contact_add.html.twig',
             array(
                 'form' => $form->createView(),
                 'client' => $client
@@ -93,14 +96,13 @@ class AjaxController extends BaseController
     /**
      * Edits a contact
      *
+     * @param  Request                                                       $request
      * @param  Contact                                                       $contact
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editcontactAction(Contact $contact)
+    public function editcontactAction(Request $request, Contact $contact)
     {
-        $request = $this->getRequest();
-
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
@@ -141,11 +143,12 @@ class AjaxController extends BaseController
 
             return new JsonResponse(
                 array(
-                    "content" => $this->renderView('CSBillClientBundle:Ajax:contact_edit.html.twig',
-                            array(
-                                'success' => true
-                            )
-                        ),
+                    "content" => $this->renderView(
+                        'CSBillClientBundle:Ajax:contact_edit.html.twig',
+                        array(
+                            'success' => true
+                        )
+                    ),
                     "status" => "success"
                 )
             );
@@ -153,12 +156,13 @@ class AjaxController extends BaseController
 
         return new JsonResponse(
             array(
-                "content" => $this->renderView('CSBillClientBundle:Ajax:contact_edit.html.twig',
-                        array(
-                            'form' => $form->createView(),
-                            'contact' => $contact
-                        )
+                "content" => $this->renderView(
+                    'CSBillClientBundle:Ajax:contact_edit.html.twig',
+                    array(
+                        'form' => $form->createView(),
+                        'contact' => $contact
                     )
+                )
             )
         );
     }
@@ -173,11 +177,12 @@ class AjaxController extends BaseController
     {
         return new JsonResponse(
             array(
-                'content' => $this->renderView('CSBillClientBundle::contact_card.html.twig',
-                        array(
-                            'contact' => $contact
-                        )
+                'content' => $this->renderView(
+                    'CSBillClientBundle::contact_card.html.twig',
+                    array(
+                        'contact' => $contact
                     )
+                )
             )
         );
     }
@@ -209,7 +214,7 @@ class AjaxController extends BaseController
         $em->remove($client);
         $em->flush();
 
-        $this->flash($this->trans('The client was deleted successfully'));
+        $this->flash($this->trans('client_delete_success'));
 
         return new JsonResponse(array("status" => "success"));
     }
