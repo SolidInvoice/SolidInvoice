@@ -18,6 +18,9 @@
 
 		<section class="col-lg-10 col-md-10 col-md-offset-2 col-lg-offset-2 content">
 			{{ block('heading') }}
+
+            {% include "CSBillCoreBundle::flash.html.twig" %}
+
 			{{ block('content') }}
 		</section>
 	</div>
