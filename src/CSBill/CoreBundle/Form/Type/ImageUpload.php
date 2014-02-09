@@ -21,7 +21,7 @@ class ImageUpload extends AbstractType
     protected $encryption;
 
     /**
-     * @param Session $session
+     * @param Session    $session
      * @param Encryption $encryption
      */
     public function __construct(Session $session, Encryption $encryption)
@@ -31,9 +31,9 @@ class ImageUpload extends AbstractType
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {

@@ -55,7 +55,7 @@ class RequestListener
 
     /**
      * @param Installer $installer
-     * @param Router $router
+     * @param Router    $router
      */
     public function __construct(Installer $installer, Router $router)
     {

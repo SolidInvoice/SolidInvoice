@@ -13,7 +13,6 @@ namespace CSBill\CoreBundle\Menu\Builder;
 
 use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 final class MenuBuilder extends ContainerAware

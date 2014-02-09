@@ -12,7 +12,6 @@ namespace CSBill\InstallBundle\Installer;
 
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use CSBill\InstallBundle\Exception\InvalidStepException;
 use CSBill\InstallBundle\Installer\Step\DatabaseConfig;
 use CSBill\InstallBundle\Installer\Step\LicenseAgreement;
