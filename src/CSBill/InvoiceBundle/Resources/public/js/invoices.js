@@ -25,20 +25,15 @@
         "addRow" : function() {
             var that         = this,
                 row         = $(window.document.createElement(this.rowElement)),
-            //totalFields = this.fields.length,
                 rowTotal = $('.invoice-item-total', row);
 
 
             $.each(this.fields, function(counter, item) {
                 var column = $(window.document.createElement(that.columnElement));
 
-                column.html(that.createField(item));
+                column.html(that.createField(item)).addClass(item);
 
                 row.append(column);
-
-                /*if ((counter + 1) === totalFields) {
-                 //column.append(_.template(that.trashTemplate));
-                 }*/
             });
 
             this.counter += 1;
@@ -54,15 +49,10 @@
             return this;
         },
         "createField" : function(item) {
-            //var length = this.el.find(this.rowElement).length;
-            var template = this.templates[item].replace(/__name__/g, this.counter);
-
-            return template;
+            return this.templates[item].replace(/__name__/g, this.counter);
         },
         "setEvents" : function() {
-            $('.invoice-item-price, .invoice-item-qty').unbind('keyup change');
-
-            $('.invoice-item-price, .invoice-item-qty').on('keyup', function() {
+            $('.invoice-item-price, .invoice-item-qty').unbind('keyup change').on('keyup', function() {
                 Invoice.calcTotal(this);
             });
 
