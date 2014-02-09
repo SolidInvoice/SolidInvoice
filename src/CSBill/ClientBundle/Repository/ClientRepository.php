@@ -20,5 +20,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClientRepository extends EntityRepository
 {
+    public function getTotalClients()
+    {
+        $qb = $this->createQueryBuilder('c');
 
+        $qb->select('COUNT(c.id)');
+
+        $query = $qb->getQuery();
+
+        return (int) $query->getSingleScalarResult();
+    }
 }
