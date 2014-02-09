@@ -4,10 +4,31 @@ namespace CSBill\CoreBundle\Listener;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use CSBill\CoreBundle\Security\Encryption;
 
-class SessionRequestListener extends ContainerAware
+class SessionRequestListener
 {
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
+     * @var Encryption
+     */
+    protected $encryption;
+
+    /**
+     * @param SessionInterface $session
+     * @param Encryption $encryption
+     */
+    public function __construct(SessionInterface $session, Encryption $encryption)
+    {
+        $this->session = $session;
+        $this->encryption = $encryption;
+    }
+
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
@@ -17,13 +38,11 @@ class SessionRequestListener extends ContainerAware
         $request = $event->getRequest();
 
         if ($request->request->has('sessionId')) {
-            $request->cookies->set(session_name(), 1);
+            $request->cookies->set($this->session->getName(), 1);
 
-            $session = $this->container->get('session');
+            $sessionId = $this->encryption->decrypt($request->request->get('sessionId'));
 
-            $sessionId = $this->container->get('security.encryption')->decrypt($request->request->get('sessionId'));
-
-            $session->setId($sessionId);
+            $this->session->setId($sessionId);
         }
     }
 }

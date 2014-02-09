@@ -73,8 +73,7 @@ services:
 
     csbill_core.session.request.listener:
         class: %csbill_core.session.request.listener.class%
-        calls:
-            - [setContainer, [@service_container]]
+        arguments: [@session, @security.encryption]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 200 }
 
