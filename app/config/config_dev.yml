@@ -28,4 +28,4 @@ assetic:
     use_controller: true
 
 swiftmailer:
-    delivery_address: pierre@pcservice.co.za
+    delivery_address: test@localhost
