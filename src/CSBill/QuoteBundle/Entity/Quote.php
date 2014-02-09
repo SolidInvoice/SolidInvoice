@@ -50,7 +50,7 @@ class Quote
      * @var Status $status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="quotes")
-     * @Grid\Column(name="status", field="status.name", filter="select", selectFrom="source")
+     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
      */
     private $status;
 
@@ -59,7 +59,7 @@ class Quote
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
-     * @Grid\Column(name="clients", field="client.name", filter="select", selectFrom="source")
+     * @Grid\Column(name="clients", field="client.name", title="client", filter="select", selectFrom="source")
      */
     private $client;
 

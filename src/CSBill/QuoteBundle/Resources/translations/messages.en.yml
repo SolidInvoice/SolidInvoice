@@ -8,3 +8,8 @@ quote_delete: Delete Quote
 confirm_delete: Are you sure you want to delete this quote?
 quote_create_success: Quote created successfully
 quote_edit_success: Quote created successfully
+status: Status
+client: Client
+total: Total
+discount: Discount
+search: Search
