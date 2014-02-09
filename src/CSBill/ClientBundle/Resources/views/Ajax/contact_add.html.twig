@@ -2,8 +2,8 @@
 
     <div class="modal-body" data-id="{{ contact.id }}">
         <div class="alert alert-success">
-            <h3><i class="icon-ok"></i> {{ "Success"|trans }}</h3>
-            {{ "The contact was saved successfully"|trans }}
+            <h3><i class="icon-ok"></i> {{ "success"|trans }}</h3>
+            {{ "contact_saved"|trans }}
         </div>
     </div>
     <div class="modal-footer">
@@ -13,7 +13,7 @@
     <form action="{{ path("_clients_add_contact", {"id" : client.id}) }}" method="post">
 
         <div class="modal-header">
-            <h3>{{ "Add Contact"|trans }}</h3>
+            <h3>{{ "add_contact"|trans }}</h3>
         </div>
         <div class="modal-body">
             <div class="row-fluid">
@@ -21,8 +21,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-default">{{ "Close"|trans }}</button>
-            <button type="submit" class="btn btn-info">{{ "Save"|trans }}</button>
+            <button data-dismiss="modal" class="btn btn-default">{{ "close"|trans }}</button>
+            <button type="submit" class="btn btn-info">{{ "save"|trans }}</button>
         </div>
     </form>
 {% endif %}

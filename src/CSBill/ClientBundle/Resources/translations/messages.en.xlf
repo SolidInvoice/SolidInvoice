@@ -162,6 +162,46 @@
                 <source>contact_delete_success</source>
                 <target>The contact was deleted successfully</target>
             </trans-unit>
+            <trans-unit id="41">
+                <source>contact_delete</source>
+                <target>Delete Contact</target>
+            </trans-unit>
+            <trans-unit id="42">
+                <source>contact_edit</source>
+                <target>Edit Contact</target>
+            </trans-unit>
+            <trans-unit id="43">
+                <source>contact_saved</source>
+                <target>The contact was saved successfully</target>
+            </trans-unit>
+            <trans-unit id="44">
+                <source>success</source>
+                <target>Success</target>
+            </trans-unit>
+            <trans-unit id="45">
+                <source>close</source>
+                <target>Close</target>
+            </trans-unit>
+            <trans-unit id="46">
+                <source>contact_edit</source>
+                <target>Edit Contact</target>
+            </trans-unit>
+            <trans-unit id="47">
+                <source>change</source>
+                <target>Change</target>
+            </trans-unit>
+            <trans-unit id="48">
+                <source>client_create</source>
+                <target>Create Client</target>
+            </trans-unit>
+            <trans-unit id="49">
+                <source>number_invoices</source>
+                <target>{0} Invoices|{1} Invoice|]1,Inf] Invoices</target>
+            </trans-unit>
+            <trans-unit id="50">
+                <source>add_info</source>
+                <target>Add Info</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

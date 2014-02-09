@@ -104,7 +104,7 @@
                     <span rel="tooltip" title="{{ "total_quotes"|trans }}" class="badge">{{ client.quotes|length }}</span> {{ "number_quotes"|transchoice(client.quotes|length) }}
                 </li>
                 <li>
-                    <span rel="tooltip" title="{{ "total_invoices"|trans }}" class="badge">{{ client.invoices|length }}</span> {{ "{0} Invoices|{1} Invoice|]1,Inf] Invoices"|transchoice(client.invoices|length) }}
+                    <span rel="tooltip" title="{{ "total_invoices"|trans }}" class="badge">{{ client.invoices|length }}</span> {{ "number_invoices"|transchoice(client.invoices|length) }}
                 </li>
                 <li class="divider"></li>
                 <li>
