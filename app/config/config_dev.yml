@@ -29,3 +29,9 @@ assetic:
 
 swiftmailer:
     delivery_address: pierre@pcservice.co.za
+
+services:
+    twig.debug.extension:
+        class: Twig_Extension_Debug
+        tags:
+            - { name: twig.extension }
