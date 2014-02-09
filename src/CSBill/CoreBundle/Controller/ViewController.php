@@ -16,26 +16,59 @@ use Rhumsaa\Uuid\Uuid;
 class ViewController extends BaseController
 {
     /**
-     * View a quote/invoice if not logged in
+     * @var string
      */
-    public function viewAction($type, $uuid)
+    protected $repository;
+
+    /**
+     * @var string
+     */
+    protected $template;
+
+    /**
+     * @var string
+     */
+    protected $route;
+
+    /**
+     * View a quote if not logged in
+     *
+     * @param string $uuid
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewquoteAction($uuid)
     {
-        switch ($type) {
-            case 'quote':
-                $repository = $this->getRepository('CSBillQuoteBundle:Quote');
-                $route = '_quotes_view';
-                $template = 'CSBillQuoteBundle::quote_template.html.twig';
-                break;
+        $this->repository = 'CSBillQuoteBundle:Quote';
+        $this->route = '_quotes_view';
+        $this->template = 'CSBillQuoteBundle::quote_template.html.twig';
 
-            case 'invoice':
-                $repository = $this->getRepository('CSBillInvoiceBundle:Invoice');
-                $route = '_invoices_view';
-                $template = 'CSBillInvoiceBundle::invoice_template.html.twig';
-                break;
+        return $this->createResponse($uuid, 'quote');
+    }
 
-            default:
-                throw $this->createNotFoundException();
-        }
+    /**
+     * View a invoice if not logged in
+     *
+     * @param $uuid
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewinvoiceAction($uuid)
+    {
+        $this->repository = 'CSBillInvoiceBundle:Invoice';
+        $this->route = '_invoices_view';
+        $this->template = 'CSBillInvoiceBundle::invoice_template.html.twig';
+
+        return $this->createResponse($uuid, 'invoice');
+    }
+
+    /**
+     * @param $uuid
+     * @param $object
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function createResponse($uuid, $object)
+    {
+        $repository = $this->getRepository($this->repository);
 
         $entity = $repository->findOneBy(array('uuid' => Uuid::fromString($uuid)));
 
@@ -43,12 +76,10 @@ class ViewController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $security = $this->get('security.context');
-
-        if (true === $security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirect($this->generateUrl($route, array('id' => $entity->getId())));
+        if (true === $this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirect($this->generateUrl($this->route, array('id' => $entity->getId())));
         }
 
-        return $this->render($template, array($type => $entity));
+        return $this->render($this->template, array($object => $entity));
     }
 }
