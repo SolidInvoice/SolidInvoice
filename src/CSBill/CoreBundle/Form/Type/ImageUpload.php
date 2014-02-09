@@ -37,9 +37,9 @@ class ImageUpload extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $session_id = $this->session->getId();
+        $sessionId = $this->session->getId();
 
-        $view->vars['sessionId'] = $this->encryption->encrypt($session_id);
+        $view->vars['sessionId'] = $this->encryption->encrypt($sessionId);
     }
 
     /**

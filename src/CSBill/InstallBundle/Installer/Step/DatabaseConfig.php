@@ -132,7 +132,9 @@ class DatabaseConfig extends AbstractFormStep
      */
     public function executeMigrations()
     {
-        return $this->runProcess(sprintf('php %s/console doctrine:migrations:migrate --no-interaction', $this->rootDir));
+        return $this->runProcess(
+            sprintf('php %s/console doctrine:migrations:migrate --no-interaction', $this->rootDir)
+        );
     }
 
     /**

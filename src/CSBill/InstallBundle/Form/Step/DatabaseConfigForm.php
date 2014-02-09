@@ -32,42 +32,42 @@ class DatabaseConfigForm extends AbstractType
         $builder->add(
             'driver',
             'choice',
-             array(
-                 'help' => 'Only MySQL database is supported at the moment',
-                 'choices' => $drivers,
-                 'constraints' => array(
+            array(
+                'help' => 'Only MySQL database is supported at the moment',
+                'choices' => $drivers,
+                'constraints' => array(
                      new Constraints\NotBlank()
-                 )
-             )
+                )
+            )
         );
 
         $builder->add(
             'host',
-             null,
-             array(
-                 'data' => $options['host'],
-                 'constraints' => array(
-                     new Constraints\NotBlank()
-                 )
-             )
+            null,
+            array(
+                'data' => $options['host'],
+                'constraints' => array(
+                    new Constraints\NotBlank()
+                )
+            )
         );
 
         $builder->add(
             'port',
-             null,
-             array(
-                 'data' => $options['port']
-             )
+            null,
+            array(
+                'data' => $options['port']
+            )
         );
 
         $builder->add(
             'user',
-             null,
-             array(
-                 'constraints' => array(
-                     new Constraints\NotBlank()
-                 )
-             )
+            null,
+            array(
+                'constraints' => array(
+                    new Constraints\NotBlank()
+                )
+            )
         );
 
         $builder->add(
@@ -77,38 +77,41 @@ class DatabaseConfigForm extends AbstractType
 
         $builder->add(
             'name',
-             null,
-             array(
-                 'label' => 'Database Name',
-                 'constraints' => array(
-                     new Constraints\NotBlank()
-                 )
-             )
+            null,
+            array(
+                'label' => 'Database Name',
+                'constraints' => array(
+                    new Constraints\NotBlank()
+                )
+            )
         );
 
         $connectionFactory = $options['connection_factory'];
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($connectionFactory, $drivers) {
-            $form = $event->getForm();
+        $builder->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($connectionFactory, $drivers) {
+                $form = $event->getForm();
 
-            if ($form->isValid()) {
-                $data = $form->getData();
+                if ($form->isValid()) {
+                    $data = $form->getData();
 
-                $connection = $connectionFactory->createConnection(array(
-                    'driver' => sprintf('pdo_%s', $drivers[$data['driver']]),
-                    'user' => $data['user'],
-                    'password' => $data['password'],
-                    'host' => $data['host'],
-                    'dbname' => $data['name'],
-                ));
+                    $connection = $connectionFactory->createConnection(array(
+                        'driver' => sprintf('pdo_%s', $drivers[$data['driver']]),
+                        'user' => $data['user'],
+                        'password' => $data['password'],
+                        'host' => $data['host'],
+                        'dbname' => $data['name'],
+                    ));
 
-                try {
-                    $connection->connect();
-                } catch (DBALException $e) {
-                    $form->addError(new FormError($e->getMessage()));
+                    try {
+                        $connection->connect();
+                    } catch (DBALException $e) {
+                        $form->addError(new FormError($e->getMessage()));
+                    }
                 }
             }
-        });
+        );
     }
 
     /**

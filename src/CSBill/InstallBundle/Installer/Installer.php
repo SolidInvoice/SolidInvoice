@@ -173,11 +173,9 @@ class Installer extends ContainerAware
         if (array_key_exists($sessionKey, $this->steps)) {
             $currentStep = $this->steps[$sessionKey];
 
-            if (
-                !is_array($currentStep) &&
+            if (!is_array($currentStep) &&
                 !array_key_exists('label', $currentStep) &&
-                !array_key_exists('type', $currentStep)
-            ) {
+                !array_key_exists('type', $currentStep)) {
                 $keys = implode(', ', array('label', 'type'));
 
                 throw new \Exception(
@@ -284,5 +282,4 @@ class Installer extends ContainerAware
 
         return true;
     }
-
 }

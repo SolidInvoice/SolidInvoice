@@ -27,14 +27,14 @@ class RequestListener
      *
      * @var array $core_paths
      */
-    protected $core_paths = array('css', 'images', 'js');
+    protected $corePaths = array('css', 'images', 'js');
 
     /**
      * Core routes
      *
      * @var array $core_routes
      */
-    protected $core_routes = array(
+    protected $coreRoutes = array(
                                     Installer::INSTALLER_ROUTE,
                                     Installer::INSTALLER_SUCCESS_ROUTE,
                                     Installer::INSTALLER_RESTART_ROUTE,
@@ -77,10 +77,9 @@ class RequestListener
 
         $map = array_map(function ($route) use ($event) {
             return strpos($event->getRequest()->getPathInfo(), $route);
-        }, $this->core_paths);
+        }, $this->corePaths);
 
-        if (!in_array($route, $this->core_routes) && !in_array(true, $map)) {
-
+        if (!in_array($route, $this->coreRoutes) && !in_array(true, $map)) {
             if (!$this->installer->isInstalled()) {
                 $response = new RedirectResponse($this->router->generate(Installer::INSTALLER_ROUTE));
 

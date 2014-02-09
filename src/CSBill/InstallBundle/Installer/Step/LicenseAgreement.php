@@ -31,10 +31,10 @@ class LicenseAgreement extends AbstractFormStep
     {
         $license = '';
 
-        $root_dir = dirname($this->get('kernel')->getRootDir());
+        $rootDir = dirname($this->get('kernel')->getRootDir());
 
         $finder = new Finder();
-        $finder->files()->in($root_dir)->depth('== 0')->filter(function (\SplFileInfo $file) {
+        $finder->files()->in($rootDir)->depth('== 0')->filter(function (\SplFileInfo $file) {
             $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
 
             if ($extension !== '') {

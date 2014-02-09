@@ -8,7 +8,7 @@ use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
 use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
 use CSBill\CoreBundle\Mailer\Events\MailerEvent;
 use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
-use CS\SettingsBundle\Manager\SettingsManager;
+use CSBill\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use CSBill\CoreBundle\Mailer\Events\MessageEventInterface;
@@ -33,7 +33,7 @@ class Mailer implements MailerInterface
     protected $security;
 
     /**
-     * @var \CS\SettingsBundle\Manager\SettingsManager
+     * @var \CSBill\SettingsBundle\Manager\SettingsManager
      */
     protected $settings;
 
@@ -88,13 +88,15 @@ class Mailer implements MailerInterface
     public function sendInvoice(Invoice $invoice)
     {
         // TODO : this needs to come from settings or somewhere so it can be extended
-        $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig',
+        $htmlTemplate = $this->getTemplate(
+            'CSBillInvoiceBundle:Email:invoice.html.twig',
             array(
                 'invoice' => $invoice
             )
         );
 
-        $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig',
+        $textTemplate = $this->getTemplate(
+            'CSBillInvoiceBundle:Email:invoice.txt.twig',
             array(
                 'invoice' => $invoice
             )
@@ -173,8 +175,7 @@ class Mailer implements MailerInterface
         $htmlTemplate = null,
         $textTemplate = null,
         MessageEventInterface $event = null
-    )
-    {
+    ) {
         $message = \Swift_Message::newInstance();
 
         $fromAddress = (string) $this->settings->get('email.from_address');

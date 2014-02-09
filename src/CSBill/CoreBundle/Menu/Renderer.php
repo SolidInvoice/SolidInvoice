@@ -115,13 +115,14 @@ class Renderer extends ListRenderer
     protected function renderDivider(ItemInterface $item, array $options = array())
     {
         return $this->format(
-            '<li'.$this->renderHtmlAttributes(
+            '<li' . $this->renderHtmlAttributes(
                 array(
                     'class' => 'divider' . $item->getExtra('divider'))
-            ).'>',
+            ) . '>',
             'li',
             $item->getLevel(),
-            $options);
+            $options
+        );
     }
 
     /**

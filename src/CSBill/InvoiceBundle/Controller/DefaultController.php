@@ -62,63 +62,60 @@ class DefaultController extends BaseController
         $statusList = $this->getRepository('CSBillInvoiceBundle:Status')->findAll();
 
         // Return the response of the grid to the template
-        return $grid->getGridResponse('CSBillInvoiceBundle:Default:index.html.twig',
-            array('status_list' => $statusList)
+        return $grid->getGridResponse(
+            'CSBillInvoiceBundle:Default:index.html.twig',
+            array(
+                'status_list' => $statusList
+            )
         );
     }
 
     /**
+     * @param  Request  $request
      * @param  Client   $client
      * @return Response
      */
-    public function createAction(Client $client = null)
+    public function createAction(Request $request, Client $client = null)
     {
-        $request = $this->getRequest();
-
         $invoice = new Invoice;
         $invoice->setClient($client);
 
         $form = $this->createForm(new InvoiceType(), $invoice);
 
-        if ($request->getMethod() === 'POST') {
+        $form->handleRequest($request);
 
-            $form->bind($request);
+        if ($form->isValid()) {
 
-            if ($form->isValid()) {
+            $action = $request->request->get('save');
+            $this->saveInvoice($invoice, $action);
 
-                $this->saveInvoice($invoice);
+            $this->flash($this->trans('Invoice created successfully'), 'success');
 
-                $this->flash($this->trans('Invoice created successfully'), 'success');
-
-                return $this->redirect($this->generateUrl('_invoices_index'));
-            }
+            return $this->redirect($this->generateUrl('_invoices_index'));
         }
 
         return $this->render('CSBillInvoiceBundle:Default:create.html.twig', array('form' => $form->createView()));
     }
 
     /**
+     * @param  Request  $request
      * @param  Invoice  $invoice
      * @return Response
      */
-    public function editAction(Invoice $invoice)
+    public function editAction(Request $request, Invoice $invoice)
     {
-        $request = $this->getRequest();
-
         $form = $this->createForm(new InvoiceType(), $invoice);
 
-        if ($request->getMethod() === 'POST') {
+        $form->handleRequest($request);
 
-            $form->bind($request);
+        if ($form->isValid()) {
 
-            if ($form->isValid()) {
+            $action = $request->request->get('save');
+            $this->saveInvoice($invoice, $action);
 
-                $this->saveInvoice($invoice);
+            $this->flash($this->trans('Invoice edited successfully'), 'success');
 
-                $this->flash($this->trans('Invoice edited successfully'), 'success');
-
-                return $this->redirect($this->generateUrl('_invoices_index'));
-            }
+            return $this->redirect($this->generateUrl('_invoices_index'));
         }
 
         return $this->render('CSBillInvoiceBundle:Default:edit.html.twig', array('form' => $form->createView()));
@@ -137,15 +134,16 @@ class DefaultController extends BaseController
 
     /**
      * @param Invoice $invoice
-     * @param bool    $email
+     * @param string  $action
      */
-    private function saveInvoice(Invoice $invoice, $email = false)
+    private function saveInvoice(Invoice $invoice, $action)
     {
+        $email = false;
         $em = $this->get('doctrine')->getManager();
 
         $statusRepository = $this->getRepository('CSBillInvoiceBundle:Status');
 
-        switch ($this->getRequest()->request->get('save')) {
+        switch ($action) {
             case 'send':
                 $status = 'pending';
                 $email = true;

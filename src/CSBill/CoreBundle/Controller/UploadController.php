@@ -27,10 +27,10 @@ class UploadController extends BaseController
 
                 $path = dirname($this->get('kernel')->getRootDir()) . '/web/uploads';
 
-                $file_name = uniqid() . '.' . $file->guessExtension();
+                $fileName = uniqid() . '.' . $file->guessExtension();
 
-                if ($file->move($path, $file_name)) {
-                    $data = array('status' => 'success', 'file' => $file_name );
+                if ($file->move($path, $fileName)) {
+                    $data = array('status' => 'success', 'file' => $fileName );
                 } else {
                     $data = array('status' => 'error', 'message' => $this->trans('upload_error'));
                 }
