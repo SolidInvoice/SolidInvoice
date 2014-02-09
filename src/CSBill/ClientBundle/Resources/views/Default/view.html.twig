@@ -29,13 +29,13 @@
 
     <div id="client-view">
         <div class="row">
-            <div class="pull-left">
+            <div class="col-md-6 col-lg-6">
                 {% if client.website %}
                     <i class="icon-external-link"></i> <a href="{{ client.website }}" rel=external">{{ client.website }}</a>
                 {% endif %}
             </div>
 
-            <div class="pull-right">
+            <div class="col-md-6 col-lg-6" align="right">
                 <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-default"><i class="icon-edit"></i> {{ "edit"|trans }}</a>
                 <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client"><i class="icon-trash"></i> {{ "delete"|trans }}</a>
             </div>

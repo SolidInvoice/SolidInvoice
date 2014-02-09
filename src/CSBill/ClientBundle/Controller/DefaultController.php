@@ -60,7 +60,7 @@ class DefaultController extends BaseController
                     $queryBuilder->join($alias.'.status', 's')
                         ->andWhere('s.name = :status_name')
                         ->setParameter('status_name', $status->getName());
-                    },
+                },
                 false,
                 array(
                     'active_class' => 'label label-' . $status->getLabel(),
