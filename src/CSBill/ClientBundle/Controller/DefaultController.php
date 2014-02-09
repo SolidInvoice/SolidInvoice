@@ -31,104 +31,7 @@ class DefaultController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $source = new Entity('CSBillClientBundle:Client');
-
-        // Get a Grid instance
-        $grid = $this->get('grid');
-        $translator = $this->get('translator');
-
-        $filters = new Filters($request);
-
-        $filters->add(
-            'all_clients',
-            null,
-            true,
-            array(
-                'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
-            )
-        );
-
-        $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
-
-        foreach ($statusList as $status) {
-            $filters->add(
-                $status->getName() . '_clients',
-                function (QueryBuilder $queryBuilder) use ($status) {
-                    $aliases = $queryBuilder->getRootAliases();
-                    $alias = $aliases[0];
-
-                    $queryBuilder->join($alias.'.status', 's')
-                        ->andWhere('s.name = :status_name')
-                        ->setParameter('status_name', $status->getName());
-                },
-                false,
-                array(
-                    'active_class' => 'label label-' . $status->getLabel(),
-                    'default_class' => 'label label-default'
-                )
-            );
-        }
-
-        $search = $request->get('search');
-
-        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search, $filters) {
-
-            if ($filters->isFilterActive()) {
-                $filter = $filters->getActiveFilter();
-                $filter($queryBuilder);
-            }
-
-            if ($search) {
-                $aliases = $queryBuilder->getRootAliases();
-
-                $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
-                    ->setParameter('search', "%{$search}%");
-            }
-        });
-
-        // Attach the source to the grid
-        $grid->setSource($source);
-
-        $viewAction = new RowAction('<i class="icon-eye-open"></i>', '_clients_view');
-        $viewAction->addAttribute('title', $translator->trans('view_client'));
-        $viewAction->addAttribute('rel', 'tooltip');
-
-        $editAction = new RowAction('<i class="icon-edit"></i>', '_clients_edit');
-        $editAction->addAttribute('title', $translator->trans('edit_client'));
-        $editAction->addAttribute('rel', 'tooltip');
-
-        $deleteAction = new RowAction('<i class="icon-remove"></i>', '_clients_delete');
-        $deleteAction->setAttributes(
-            array(
-                'title' => $translator->trans('delete_client'),
-                'rel' => 'tooltip',
-                'data-confirm' => $translator->trans('confirm_delete'),
-                'class' => 'delete-client',
-            )
-        );
-
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
-        $grid->addColumn($actionsRow, 100);
-
-        $grid->hideColumns(array('updated', 'deleted'));
-
-        $grid->getColumn('website')->manipulateRenderCell(function ($value) {
-            if (!empty($value)) {
-                return '<a href="'. $value . '" target="_blank">' . $value . '<a>';
-            }
-
-            return $value;
-        })->setSafe(false);
-
-        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, \APY\DataGridBundle\Grid\Row $row) {
-            $label = $row->getField('status.label');
-
-            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
-        })->setSafe(false);
-
-        // Return the response of the grid to the template
-        return $grid->getGridResponse('CSBillClientBundle:Default:index.html.twig', array('filters' => $filters));
+        return $this->getGrid($request);
     }
 
     /**
@@ -249,5 +152,121 @@ class DefaultController extends BaseController
     public function viewAction(Client $client)
     {
         return $this->render('CSBillClientBundle:Default:view.html.twig', array('client' => $client));
+    }
+
+    /**
+     * @param Request                                      $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    private function getGrid(Request $request)
+    {
+        $source = new Entity('CSBillClientBundle:Client');
+
+        // Get a Grid instance
+        $grid = $this->get('grid');
+        $translator = $this->get('translator');
+
+        $filters = $this->getFilters($request);
+
+        $search = $request->get('search');
+
+        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search, $filters) {
+
+            if ($filters->isFilterActive()) {
+                $filter = $filters->getActiveFilter();
+                $filter($queryBuilder);
+            }
+
+            if ($search) {
+                $aliases = $queryBuilder->getRootAliases();
+
+                $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
+                    ->setParameter('search', "%{$search}%");
+            }
+        });
+
+        // Attach the source to the grid
+        $grid->setSource($source);
+
+        $viewAction = new RowAction('<i class="icon-eye-open"></i>', '_clients_view');
+        $viewAction->addAttribute('title', $translator->trans('view_client'));
+        $viewAction->addAttribute('rel', 'tooltip');
+
+        $editAction = new RowAction('<i class="icon-edit"></i>', '_clients_edit');
+        $editAction->addAttribute('title', $translator->trans('edit_client'));
+        $editAction->addAttribute('rel', 'tooltip');
+
+        $deleteAction = new RowAction('<i class="icon-remove"></i>', '_clients_delete');
+        $deleteAction->setAttributes(
+            array(
+                'title' => $translator->trans('delete_client'),
+                'rel' => 'tooltip',
+                'data-confirm' => $translator->trans('confirm_delete'),
+                'class' => 'delete-client',
+            )
+        );
+
+        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
+        $grid->addColumn($actionsRow, 100);
+
+        $grid->hideColumns(array('updated', 'deleted'));
+
+        $grid->getColumn('website')->manipulateRenderCell(function ($value) {
+            if (!empty($value)) {
+                return '<a href="'. $value . '" target="_blank">' . $value . '<a>';
+            }
+
+            return $value;
+        })->setSafe(false);
+
+        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, \APY\DataGridBundle\Grid\Row $row) {
+            $label = $row->getField('status.label');
+
+            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+        })->setSafe(false);
+
+        return $grid->getGridResponse('CSBillClientBundle:Default:index.html.twig', array('filters' => $filters));
+    }
+
+    /**
+     * @param Request  $request
+     * @return Filters
+     */
+    private function getFilters(Request $request)
+    {
+        $filters = new Filters($request);
+
+        $filters->add(
+            'all_clients',
+            null,
+            true,
+            array(
+                'active_class' => 'label label-info',
+                'default_class' => 'label label-default'
+            )
+        );
+
+        $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
+
+        foreach ($statusList as $status) {
+            $filters->add(
+                $status->getName() . '_clients',
+                function (QueryBuilder $queryBuilder) use ($status) {
+                    $aliases = $queryBuilder->getRootAliases();
+                    $alias = $aliases[0];
+
+                    $queryBuilder->join($alias.'.status', 's')
+                        ->andWhere('s.name = :status_name')
+                        ->setParameter('status_name', $status->getName());
+                },
+                false,
+                array(
+                    'active_class' => 'label label-' . $status->getLabel(),
+                    'default_class' => 'label label-default'
+                )
+            );
+        }
+
+        return $filters;
     }
 }
