@@ -3,46 +3,40 @@
 namespace CSBill\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Image;
 
 class UploadController extends BaseController
 {
-    public function imageUploadAction()
+    /**
+     * @param Request        $request
+     * @return JsonResponse
+     */
+    public function imageUploadAction(Request $request)
     {
-        $request = $this->getRequest();
         $file = $request->files->get('Filedata');
 
         if ($file === null) {
-            $data = array('status' => 'error', 'message' => $this->trans('Invalid File'));
+            $data = array('status' => 'error', 'message' => $this->trans('invalid_file'));
         } else {
-            $imageconstraint = new Image(array('maxSize' => "1024k"));
-            $errors = $this->get('validator')->validateValue($file, $imageconstraint);
+            $errors = $this->get('validator')->validateValue($file, new Image(array('maxSize' => "1024k")));
 
             if (count($errors) > 0) {
                 $data = array('status' => 'error', 'message' => $errors[0]->getMessage());
             } else {
 
-                $path = dirname($this->get('kernel')->getRootDir()).'/web/uploads';
+                $path = dirname($this->get('kernel')->getRootDir()) . '/web/uploads';
 
-                $file_name = uniqid().'.'.$file->guessExtension();
+                $file_name = uniqid() . '.' . $file->guessExtension();
 
                 if ($file->move($path, $file_name)) {
-                    $data = array(
-                        'status' => 'success',
-                        'file' => $file_name
-                    );
+                    $data = array('status' => 'success', 'file' => $file_name );
                 } else {
-                    $data = array(
-                        'status' => 'error',
-                        'message' => $this->trans('There was an error uploading the file')
-                    );
+                    $data = array('status' => 'error', 'message' => $this->trans('upload_error'));
                 }
             }
         }
 
-        $response = new JsonResponse($data);
-        $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
-
-        return $response;
+        return new JsonResponse($data);
     }
 }
