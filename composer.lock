@@ -3,21 +3,21 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f4fcc20ca242282e9559079b23c43a54",
+    "hash": "29f95b35770d8f4f9f115758f33b3f49",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
-            "version": "2.2.x-dev",
+            "version": "2.2.1",
             "target-dir": "APY/DataGridBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Abhoryo/APYDataGridBundle.git",
-                "reference": "d9ef2ebd7d5e64a1a7267099fbf7f6ed874a9246"
+                "reference": "4192fd0f6e6d6a3788e68029ac7cf64b8dd6ddfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Abhoryo/APYDataGridBundle/zipball/d9ef2ebd7d5e64a1a7267099fbf7f6ed874a9246",
-                "reference": "d9ef2ebd7d5e64a1a7267099fbf7f6ed874a9246",
+                "url": "https://api.github.com/repos/Abhoryo/APYDataGridBundle/zipball/4192fd0f6e6d6a3788e68029ac7cf64b8dd6ddfd",
+                "reference": "4192fd0f6e6d6a3788e68029ac7cf64b8dd6ddfd",
                 "shasum": ""
             },
             "require": {
@@ -62,7 +62,7 @@
                 "datagrid",
                 "symfony"
             ],
-            "time": "2014-01-22 19:49:30"
+            "time": "2013-12-16 16:34:58"
         },
         {
             "name": "doctrine/annotations",
