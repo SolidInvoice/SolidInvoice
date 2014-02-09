@@ -35,6 +35,7 @@ class DefaultController extends BaseController
 
         // Get a Grid instance
         $grid = $this->get('grid');
+        $translator = $this->get('translator');
 
         $search = $request->get('search');
 
@@ -48,13 +49,25 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $viewAction = new RowAction($this->get('translator')->trans('View'), '_quotes_view');
-        $viewAction->setAttributes(array('class' => 'btn'));
+        $viewAction = new RowAction('<i class="icon-eye-open"></i>', '_quotes_view');
+        $viewAction->addAttribute('title', $translator->trans('quote_view'));
+        $viewAction->addAttribute('rel', 'tooltip');
 
-        $editAction = new RowAction($this->get('translator')->trans('Edit'), '_quotes_edit');
-        $editAction->setAttributes(array('class' => 'btn'));
+        $editAction = new RowAction('<i class="icon-edit"></i>', '_quotes_view');
+        $editAction->addAttribute('title', $translator->trans('quote_edit'));
+        $editAction->addAttribute('rel', 'tooltip');
 
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
+        $deleteAction = new RowAction('<i class="icon-remove"></i>', '_quotes_delete');
+        $deleteAction->setAttributes(
+            array(
+                'title' => $translator->trans('quote_delete'),
+                'rel' => 'tooltip',
+                'data-confirm' => $translator->trans('confirm_delete'),
+                'class' => 'delete-client',
+            )
+        );
+
+        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
         $grid->addColumn($actionsRow, 100);
 
         $grid->hideColumns(array('updated', 'deleted', 'users', 'due', 'baseTotal', 'uuid'));
@@ -77,31 +90,29 @@ class DefaultController extends BaseController
     /**
      * Create a new Quote
      *
+     * @param  Request  $request
      * @param  Client   $client
      * @return Response
      */
-    public function createAction(Client $client = null)
+    public function createAction(Request $request, Client $client = null)
     {
-        $request = $this->getRequest();
-
         $quote = new Quote;
         $quote->setClient($client);
 
         $form = $this->createForm(new QuoteType(), $quote);
 
-        if ($request->getMethod() === 'POST') {
+        $form->handleRequest($request);
 
-            $form->bind($request);
+        if ($form->isValid()) {
 
-            if ($form->isValid()) {
+            $action = $request->request->get('save');
+            $this->saveQuote($quote, $action);
 
-                $this->saveQuote($quote);
+            $this->flash($this->trans('quote_creat_sucess'), 'success');
 
-                $this->flash($this->trans('Quote created successfully'), 'success');
-
-                return $this->redirect($this->generateUrl('_quotes_index'));
-            }
+            return $this->redirect($this->generateUrl('_quotes_index'));
         }
+
 
         return $this->render('CSBillQuoteBundle:Default:create.html.twig', array('form' => $form->createView()));
     }
@@ -109,27 +120,24 @@ class DefaultController extends BaseController
     /**
      * Edit a quote
      *
+     * @param  Request  $request
      * @param  Quote    $quote
      * @return Response
      */
-    public function editAction(Quote $quote)
+    public function editAction(Request $request, Quote $quote)
     {
-        $request = $this->getRequest();
-
         $form = $this->createForm(new QuoteType(), $quote);
 
-        if ($request->getMethod() === 'POST') {
+        $form->handleRequest($request);
 
-            $form->bind($request);
+        if ($form->isValid()) {
 
-            if ($form->isValid()) {
+            $action = $request->request->get('save');
+            $this->saveQuote($quote, $action);
 
-                $this->saveQuote($quote);
+            $this->flash($this->trans('quote_edit_success'), 'success');
 
-                $this->flash($this->trans('Quote edited successfully'), 'success');
-
-                return $this->redirect($this->generateUrl('_quotes_index'));
-            }
+            return $this->redirect($this->generateUrl('_quotes_index'));
         }
 
         return $this->render('CSBillQuoteBundle:Default:edit.html.twig', array('form' => $form->createView()));
@@ -147,17 +155,18 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Quote $quote
-     * @param bool  $email
+     * @param Quote   $quote
+     * @param string  $action
      */
-    private function saveQuote(Quote $quote, $email = false)
+    private function saveQuote(Quote $quote, $action)
     {
-        $em = $this->get('doctrine')->getManager();
+        $email = false;
+
+        $em = $this->getEm();
 
         $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
 
-        switch ($this->getRequest()->request->get('save')) {
-
+        switch ($action) {
             case 'send':
                 $status = 'pending';
                 $email = true;

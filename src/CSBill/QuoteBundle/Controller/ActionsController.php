@@ -31,7 +31,7 @@ class ActionsController extends BaseController
         // TODO : we should be able to specify if the new invoice must be emailed or not
         // TODO : we should set a default due date for invoices
 
-        $this->flash($this->trans('Quote Accepted and invoice created'), 'success');
+        $this->flash($this->trans('quote_accepted'), 'success');
 
         return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
@@ -40,7 +40,7 @@ class ActionsController extends BaseController
     {
         $this->setQuoteStatus($quote, 'declined');
 
-        $this->flash($this->trans('Quote Declined'), 'success');
+        $this->flash($this->trans('quote_declined'), 'success');
 
         return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
@@ -49,7 +49,7 @@ class ActionsController extends BaseController
     {
         $this->setQuoteStatus($quote, 'cancelled');
 
-        $this->flash($this->trans('Quote Cancelled'), 'success');
+        $this->flash($this->trans('quote_cancelled'), 'success');
 
         return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
@@ -62,7 +62,7 @@ class ActionsController extends BaseController
             $this->setQuoteStatus($quote, 'pending');
         }
 
-        $this->flash($this->trans('Quote Sent'), 'success');
+        $this->flash($this->trans('quote_sent'), 'success');
 
         return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
