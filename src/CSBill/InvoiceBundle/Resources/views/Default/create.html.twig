@@ -84,7 +84,7 @@
                             {% set error = form_errors(item[field]) %}
 
                             {% if error|trim is not empty %}
-                                <div class="control-group has-error">
+                                <div class="form-group has-error">
                                     {{ form_widget(item[field]) }}
                                     {{ error|raw }}
                                 </div>
@@ -142,27 +142,31 @@
 {% block script %}
 {% spaceless %}
     {% if form.client.vars.data %}
-        $('#{{ form.client.vars.id }}').parents('div.control-group').hide();
+        $('#{{ form.client.vars.id }}').parents('div.form-group').hide();
     {% endif %}
 
-    $('#{{ form.client.vars.id }}').on('change', function(){
+    var clientSelect = $('#{{ form.client.vars.id }}');
+
+    clientSelect.on('change', function(){
 
         $('body').modalmanager('loading');
 
-        var client_select = $(this).parents('div.control-group'),
+        var clientSelectContainer = $(this).closest('div.form-group'),
             client_id = $(':selected', this).val();
 
         $.getJSON(Routing.generate('_clients_info', {"id" : client_id}), function(data) {
             $('#{{ form.client.vars.id }}-container').html(data.content);
             $('body').modalmanager('loading');
-            client_select.hide();
+            clientSelectContainer.hide();
         });
     });
 
     $('#invoice-create-form').on('click', '.client-select-change', function(evt) {
         evt.preventDefault();
         $('#{{ form.client.vars.id }}-container').html('');
-        $('#{{ form.client.vars.id }}').parents('div.control-group').show();
+        clientSelect.closest('div.form-group').show();
+        clientSelect.val('');
+        clientSelect.trigger('chosen:updated');
     });
 
     Invoice.setSelector($('#invoice-rows'));

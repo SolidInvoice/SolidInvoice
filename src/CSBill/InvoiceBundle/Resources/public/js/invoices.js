@@ -31,7 +31,7 @@
             $.each(this.fields, function(counter, item) {
                 var column = $(window.document.createElement(that.columnElement));
 
-                column.html(that.createField(item)).addClass(item);
+                column.html(that.createField(item)).addClass('column-' + item);
 
                 row.append(column);
             });
