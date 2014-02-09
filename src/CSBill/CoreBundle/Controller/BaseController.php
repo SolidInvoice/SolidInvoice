@@ -22,7 +22,7 @@ abstract class BaseController extends Base
      */
     public function getEm()
     {
-        return $this->get('doctrine')->getManager();
+        return $this->getDoctrine()->getManager();
     }
 
     /**
