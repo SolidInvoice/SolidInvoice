@@ -118,7 +118,6 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('_quotes_index'));
         }
 
-
         return $this->render('CSBillQuoteBundle:Default:create.html.twig', array('form' => $form->createView()));
     }
 
@@ -160,8 +159,8 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Quote   $quote
-     * @param string  $action
+     * @param Quote  $quote
+     * @param string $action
      */
     private function saveQuote(Quote $quote, $action)
     {

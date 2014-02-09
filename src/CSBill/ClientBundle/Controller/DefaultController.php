@@ -114,7 +114,7 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request                                      $request
+     * @param  Request                                    $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     private function getGrid(Request $request)
@@ -188,7 +188,7 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request  $request
+     * @param  Request $request
      * @return Filters
      */
     private function getFilters(Request $request)
@@ -231,7 +231,7 @@ class DefaultController extends BaseController
 
     /**
      * @param Client $client
-     * @param array $originalContactsDetails
+     * @param array  $originalContactsDetails
      */
     private function removeClientContacts(Client $client, array $originalContactsDetails)
     {
@@ -273,8 +273,8 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request $request
-     * @param Client $client
+     * @param  Request $request
+     * @param  Client  $client
      * @return array
      */
     private function getClientContactDetails(Request $request, Client $client)

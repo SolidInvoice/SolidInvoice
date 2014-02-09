@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Image;
 class UploadController extends BaseController
 {
     /**
-     * @param Request        $request
+     * @param  Request      $request
      * @return JsonResponse
      */
     public function imageUploadAction(Request $request)

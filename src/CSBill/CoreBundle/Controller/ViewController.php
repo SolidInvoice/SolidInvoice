@@ -33,7 +33,7 @@ class ViewController extends BaseController
     /**
      * View a quote if not logged in
      *
-     * @param string $uuid
+     * @param  string                                     $uuid
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewquoteAction($uuid)

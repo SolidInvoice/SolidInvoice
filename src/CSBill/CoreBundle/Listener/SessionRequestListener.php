@@ -21,7 +21,7 @@ class SessionRequestListener
 
     /**
      * @param SessionInterface $session
-     * @param Encryption $encryption
+     * @param Encryption       $encryption
      */
     public function __construct(SessionInterface $session, Encryption $encryption)
     {
