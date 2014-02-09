@@ -20,7 +20,7 @@ abstract class BaseController extends Base
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    public function getEm()
+    protected function getEm()
     {
         return $this->getDoctrine()->getManager();
     }
@@ -31,7 +31,7 @@ abstract class BaseController extends Base
      * @param  string                                        $repository
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getRepository($repository)
+    protected function getRepository($repository)
     {
         return $this->getEm()->getRepository($repository);
     }
@@ -44,7 +44,7 @@ abstract class BaseController extends Base
      *
      * @return $this
      */
-    public function flash($message, $type = 'notice')
+    protected function flash($message, $type = 'notice')
     {
         $this->get('session')->getFlashBag()->add($type, $message);
 
@@ -57,7 +57,7 @@ abstract class BaseController extends Base
      * @param  string $message
      * @return string
      */
-    public function trans($message)
+    protected function trans($message)
     {
         return $this->get('translator')->trans($message);
     }
