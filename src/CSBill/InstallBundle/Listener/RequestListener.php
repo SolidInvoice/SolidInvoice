@@ -13,8 +13,8 @@ namespace CSBill\InstallBundle\Listener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use CSBill\InstallBundle\Installer\Installer;
+use Symfony\Component\Routing\Router;
 
 /**
  * Listener class to intercept requests
@@ -22,11 +22,6 @@ use CSBill\InstallBundle\Installer\Installer;
  */
 class RequestListener
 {
-    /**
-     * @var ContainerInterface $container
-     */
-    public $container;
-
     /**
      * Core paths for assets
      *
@@ -39,13 +34,34 @@ class RequestListener
      *
      * @var array $core_routes
      */
-    protected $core_routes = array(	Installer::INSTALLER_ROUTE,
+    protected $core_routes = array(
+                                    Installer::INSTALLER_ROUTE,
                                     Installer::INSTALLER_SUCCESS_ROUTE,
                                     Installer::INSTALLER_RESTART_ROUTE,
                                     '_installer_step',
                                     '_profiler',
                                     '_wdt'
                                   );
+
+    /**
+     * @var Installer
+     */
+    protected $installer;
+
+    /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
+     * @param Installer $installer
+     * @param Router $router
+     */
+    public function __construct(Installer $installer, Router $router)
+    {
+        $this->installer = $installer;
+        $this->router = $router;
+    }
 
     /**
      * @param  GetResponseEvent $event
@@ -64,27 +80,14 @@ class RequestListener
         }, $this->core_paths);
 
         if (!in_array($route, $this->core_routes) && !in_array(true, $map)) {
-            $installer = $this->container->get('csbill.installer');
 
-            if (!$installer->isInstalled()) {
-                $response = new RedirectResponse($this->container->get('router')->generate(Installer::INSTALLER_ROUTE));
+            if (!$this->installer->isInstalled()) {
+                $response = new RedirectResponse($this->router->generate(Installer::INSTALLER_ROUTE));
 
                 $event->setResponse($response);
             }
 
             return null;
         }
-    }
-
-    /**
-     * Sets an instance of the service container
-     *
-     * @param  ContainerInterface $container
-     * @return void
-     */
-
-    public function setContainer(ContainerInterface $container)
-    {
-        $this->container = $container;
     }
 }

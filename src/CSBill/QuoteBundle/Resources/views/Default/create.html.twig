@@ -63,7 +63,6 @@
 {% endblock form_client %}
 
 {% block form_discount %}
-    {#{{ form_row(form.status) }}#}
     {{ form_row(form.discount) }}
 {% endblock form_discount %}
 
@@ -81,7 +80,7 @@
 
             {% for item in form.items %}
                 <tr>
-                    {% for key,field in item.children|keys %}
+                    {% for key, field in item.children|keys %}
                         <td>
                             {% set error = form_errors(item[field]) %}
 

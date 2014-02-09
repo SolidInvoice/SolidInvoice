@@ -144,7 +144,8 @@ class Renderer extends ListRenderer
 
         foreach ($storage as $builder) {
             /** @var \CSBill\CoreBundle\Menu\Builder\MenuBuilder $builder */
-            $builder->setContainer($this->container)->invoke($menu, $options);
+            $builder->setContainer($this->container);
+            $builder->invoke($menu, $options);
         }
 
         return $this->render($menu, $options);

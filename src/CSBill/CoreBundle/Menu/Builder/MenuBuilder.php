@@ -12,10 +12,11 @@
 namespace CSBill\CoreBundle\Menu\Builder;
 
 use Knp\Menu\ItemInterface;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-final class MenuBuilder
+final class MenuBuilder extends ContainerAware
 {
     /**
      *
@@ -40,21 +41,6 @@ final class MenuBuilder
     }
 
     /**
-     * Sets an instance of the container on the menu builder
-     *
-     * @param  ContainerInterface $container
-     * @return MenuBuilder
-     */
-    public function setContainer(ContainerInterface $container)
-    {
-        if ($this->class instanceof ContainerAwareInterface) {
-            $this->class->setContainer($container);
-        }
-
-        return $this;
-    }
-
-    /**
      * Invokes the builder class to add items to the menu
      *
      * @param ItemInterface $menu
@@ -64,6 +50,10 @@ final class MenuBuilder
      */
     public function invoke(ItemInterface $menu, array $options = array())
     {
+        if ($this->class instanceof ContainerAwareInterface) {
+            $this->class->setContainer($this->container);
+        }
+
         if ($this->class->validate()) {
             $this->class->{$this->method}($menu, $options);
         }

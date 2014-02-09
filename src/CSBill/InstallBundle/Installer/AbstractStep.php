@@ -10,31 +10,11 @@
 
 namespace CSBill\InstallBundle\Installer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class AbstractStep implements StepInterface
+abstract class AbstractStep extends ContainerAware implements StepInterface
 {
-    /**
-     * Contains an instance of the service container
-     *
-     * @var ContainerInterface $container
-     */
-    protected $container;
-
-    /**
-     * Set the instance of the service container
-     *
-     * @param  ContainerInterface $container
-     * @return $this
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-
-        return $this;
-    }
-
     /**
      * Gets a service from the service container
      *

@@ -11,6 +11,7 @@
 namespace CSBill\InstallBundle\Installer;
 
 use Doctrine\DBAL\DBALException;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use CSBill\InstallBundle\Exception\InvalidStepException;
 use CSBill\InstallBundle\Installer\Step\DatabaseConfig;
@@ -21,7 +22,7 @@ use CSBill\InstallBundle\Installer\Step\SystemInformation;
 /**
  * Installer service
  */
-class Installer
+class Installer extends ContainerAware
 {
     const INSTALLER_ROUTE = '_installer';
     const INSTALLER_SUCCESS_ROUTE = '_installer_success';
@@ -44,11 +45,6 @@ class Installer
     public $currentStepIndex = 0;
 
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * Default available steps
      *
      * @var array
@@ -64,13 +60,9 @@ class Installer
 
     /**
      * Constructer to initialize the installer
-     *
-     * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct()
     {
-        $this->setContainer($container);
-
         $this->steps = $this->getSteps();
     }
 
@@ -112,7 +104,7 @@ class Installer
      */
     public function restart()
     {
-        $this->getContainer()->get('session')->clear();
+        $this->container->get('session')->clear();
     }
 
     /**
@@ -125,7 +117,7 @@ class Installer
      */
     public function getSession($key, $default = null)
     {
-        $session = $this->getContainer()->get('session');
+        $session = $this->container->get('session');
 
         return $session->get(self::SESSION_KEY . $key, $default);
     }
@@ -140,32 +132,9 @@ class Installer
      */
     public function setSession($key, $value)
     {
-        $session = $this->getContainer()->get('session');
+        $session = $this->container->get('session');
 
         $session->set(self::SESSION_KEY . $key, $value);
-
-        return $this;
-    }
-
-    /**
-     * Gets the service container
-     *
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
-     * Sets the instance of the container
-     *
-     * @param  ContainerInterface $container
-     * @return $this
-     */
-    public function setContainer(ContainerInterface $container)
-    {
-        $this->container = $container;
 
         return $this;
     }
