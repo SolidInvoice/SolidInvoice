@@ -158,6 +158,10 @@
                 <source>client_delete_success</source>
                 <target>The client was deleted successfully</target>
             </trans-unit>
+            <trans-unit id="40">
+                <source>contact_delete_success</source>
+                <target>The contact was deleted successfully</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

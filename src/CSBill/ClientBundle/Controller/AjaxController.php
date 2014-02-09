@@ -199,6 +199,8 @@ class AjaxController extends BaseController
         $entityMnager->remove($contact);
         $entityMnager->flush();
 
+        $this->flash($this->trans('contact_delete_success'), 'success');
+
         return new JsonResponse(array("status" => "success"));
     }
 
@@ -214,7 +216,7 @@ class AjaxController extends BaseController
         $em->remove($client);
         $em->flush();
 
-        $this->flash($this->trans('client_delete_success'));
+        $this->flash($this->trans('client_delete_success'), 'success');
 
         return new JsonResponse(array("status" => "success"));
     }
