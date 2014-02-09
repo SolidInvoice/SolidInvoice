@@ -30,5 +30,11 @@ class CSBillCoreExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('doctrine_extensions.yml');
+        $loader->load('twig.yml');
+
+        if (true === $container->getParameter('kernel.debug')) {
+            $loader->load('debug.yml');
+        }
     }
 }

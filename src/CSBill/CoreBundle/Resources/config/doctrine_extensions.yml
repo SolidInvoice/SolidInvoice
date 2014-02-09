@@ -1,4 +1,5 @@
 services:
+
     # KernelRequest listener
     doctrine.extension.listener:
         class: CSBill\CoreBundle\Listener\DoctrineExtensionListener

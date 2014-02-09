@@ -1,6 +1,3 @@
-imports:
-    - { resource: twig.yml }
-
 parameters:
     csbill_core.menu.renderer.class: CSBill\CoreBundle\Menu\Renderer
     csbill_core.menu.provider.class: CSBill\CoreBundle\Menu\Provider
