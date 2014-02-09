@@ -55,4 +55,4 @@ security:
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
-        - { path: ^/view/(quote|invoice)/([a-zA-Z0-9-]{36}), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/view/(quote|invoice)/([a-zA-Z0-9-]), roles: IS_AUTHENTICATED_ANONYMOUSLY }
