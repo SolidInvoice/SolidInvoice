@@ -33,8 +33,27 @@ class ClientMenu extends AuthenticatedMenu
      */
     public function clientsMenu(ItemInterface $menu)
     {
-        $menu->addChild('List Clients', array('extras' => array('icon' => 'icon-file-alt'), 'route' => '_clients_index'));
-        $menu->addChild('Add Client', array('extras' => array('icon' => 'icon-user'), 'route' => '_clients_add'));
+        $translator = $this->container->get('translator');
+
+        $menu->addChild(
+            $translator->trans('list_clients'),
+            array(
+                'extras' => array(
+                    'icon' => 'icon-file-alt'
+                ),
+                'route' => '_clients_index'
+            )
+        );
+
+        $menu->addChild(
+            $translator->trans('add_client'),
+            array(
+                'extras' => array(
+                    'icon' => 'icon-user'
+                ),
+                'route' => '_clients_add'
+            )
+        );
     }
 
     /**
@@ -45,10 +64,47 @@ class ClientMenu extends AuthenticatedMenu
     public function clientViewMenu(ItemInterface $menu)
     {
         $request = $this->container->get('request');
+        $translator = $this->container->get('translator');
 
         $this->clientsMenu($menu);
-        $menu->addChild('View Client', array('extras' => array('icon' => 'icon-eye-open'), 'route' => '_clients_view', 'routeParameters' => array('id' => $request->get('id'))));
-        $menu->addChild('Create Invoice', array('extras' => array('icon' => 'icon-file-alt'), 'route' => '_invoices_create', 'routeParameters' => array('client' => $request->get('id'))));
-        $menu->addChild('Create Quote', array('extras' => array('icon' => 'icon-file-alt'), 'route' => '_quotes_create', 'routeParameters' => array('client' => $request->get('id'))));
+
+        $menu->addChild(
+            $translator->trans('view_client'),
+            array(
+                'extras' => array(
+                    'icon' => 'icon-eye-open'
+                ),
+                'route' => '_clients_view',
+                'routeParameters' => array(
+                    'id' => $request->get('id')
+                )
+            )
+        );
+
+        $menu->addChild(
+            $translator->trans('create_invoice'),
+            array(
+                'extras' => array(
+                    'icon' => 'icon-file-alt'
+                ),
+                'route' => '_invoices_create',
+                'routeParameters' => array(
+                    'client' => $request->get('id')
+                )
+            )
+        );
+
+        $menu->addChild(
+            $translator->trans('create_quote'),
+            array(
+                'extras' => array(
+                    'icon' => 'icon-file-alt'
+                ),
+                'route' => '_quotes_create',
+                'routeParameters' => array(
+                    'client' => $request->get('id')
+                )
+            )
+        );
     }
 }

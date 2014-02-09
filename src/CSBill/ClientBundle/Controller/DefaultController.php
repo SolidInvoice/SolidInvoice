@@ -53,7 +53,8 @@ class DefaultController extends BaseController
 
         foreach ($statusList as $status) {
             $filters->add(
-                $status->getName() . '_clients', function (QueryBuilder $queryBuilder) use ($status) {
+                $status->getName() . '_clients',
+                function (QueryBuilder $queryBuilder) use ($status) {
                     $aliases = $queryBuilder->getRootAliases();
                     $alias = $aliases[0];
 

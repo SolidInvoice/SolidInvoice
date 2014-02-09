@@ -202,6 +202,10 @@
                 <source>add_info</source>
                 <target>Add Info</target>
             </trans-unit>
+            <trans-unit id="51">
+                <source>list_clients</source>
+                <target>List Clients</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
