@@ -57,17 +57,7 @@ class DefaultController extends BaseController
         $editAction->addAttribute('title', $translator->trans('quote_edit'));
         $editAction->addAttribute('rel', 'tooltip');
 
-        $deleteAction = new RowAction('<i class="icon-remove"></i>', '_quotes_delete');
-        $deleteAction->setAttributes(
-            array(
-                'title' => $translator->trans('quote_delete'),
-                'rel' => 'tooltip',
-                'data-confirm' => $translator->trans('confirm_delete'),
-                'class' => 'delete-client',
-            )
-        );
-
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
+        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);
 
         $grid->hideColumns(array('updated', 'deleted', 'users', 'due', 'baseTotal', 'uuid'));
