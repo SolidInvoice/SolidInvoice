@@ -51,6 +51,7 @@ class Invoice
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="invoices")
      * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
+     * @Grid\Column(field="status.label", visible=false)
      */
     private $status;
 
@@ -67,6 +68,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="total", type="float")
+     * @Grid\Column(type="number", style="currency")
      */
     private $total;
 
@@ -85,7 +87,7 @@ class Invoice
     private $discount;
 
     /**
-     * @var DateTime $due
+     * @var \DateTime $due
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -93,7 +95,7 @@ class Invoice
     private $due;
 
     /**
-     * @var DateTIme $created
+     * @var \DateTIme $created
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -102,7 +104,7 @@ class Invoice
     private $created;
 
     /**
-     * @var DateTime $updated
+     * @var \DateTime $updated
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -111,7 +113,7 @@ class Invoice
     private $updated;
 
     /**
-     * @var DateTime $deleted
+     * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -119,7 +121,7 @@ class Invoice
     private $deleted;
 
     /**
-     * @var DateTime $paidDate
+     * @var \DateTime $paidDate
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime

@@ -16,6 +16,7 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
+use APY\DataGridBundle\Grid\Row;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\QueryBuilder;
@@ -61,6 +62,17 @@ class DefaultController extends BaseController
         $grid->addColumn($actionsRow, 100);
 
         $grid->hideColumns(array('updated', 'deleted', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));
+
+        $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
+            $label = $row->getField('status.label');
+
+            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+        })->setSafe(false);
+
+        $grid->setPermanentFilters(array(
+            'client.name' => array('operator' => 'isNotNull')
+        ));
 
         $statusList = $this->getRepository('CSBillInvoiceBundle:Status')->findAll();
 
