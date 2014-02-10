@@ -56,8 +56,7 @@ services:
 
     csbill_core.form.type.image_upload:
         class: %csbill_core.form.type.image_upload.class%
-        calls:
-            - [setContainer, [@service_container]]
+        arguments: [@session, @security.encryption]
         tags:
             - { name: form.type, alias: image_upload }
 
