@@ -10,6 +10,7 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
+use CSBill\CoreBundle\CSBillCoreBundle;
 use Twig_Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
@@ -42,7 +43,8 @@ class GlobalExtension extends Twig_Extension
                     'query'            => $this->getQuery(),
                     'currency'         => $this->container->get('currency'),
                     'settings'         => $this->container->get('settings')->getSettings(),
-                    'invoice_manager'  => $this->container->get('invoice.manager')
+                    'invoice_manager'  => $this->container->get('invoice.manager'),
+                    'app_version'      => CSBillCoreBundle::VERSION,
             );
     }
 
