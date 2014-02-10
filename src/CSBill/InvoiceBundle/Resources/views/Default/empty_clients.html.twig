@@ -1,0 +1,16 @@
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block title %}{{ "invoice_create"|trans }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('invoicess_create') }}
+{% endblock sidebar %}
+
+{% block content %}
+    <div class="alert alert-warning">
+        <h4>
+            <i class="icon-exclamation-sign"></i>
+            {{ "no_clients"|trans }} <a href="{{ url('_clients_add') }}">{{ "add_client"|trans }}</a>
+        </h4>
+    </div>
+{% endblock %}

@@ -35,6 +35,7 @@ class DefaultController extends BaseController
 
         // Get a Grid instance
         $grid = $this->get('grid');
+        $translator = $this->get('translator');
 
         $search = $request->get('search');
 
@@ -48,11 +49,13 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $viewAction = new RowAction($this->trans('View'), '_invoices_view');
-        $viewAction->setAttributes(array('class' => 'btn'));
+        $viewAction = new RowAction('<i class="icon-eye-open"></i>', '_invoices_view');
+        $viewAction->addAttribute('title', $translator->trans('invoice_view'));
+        $viewAction->addAttribute('rel', 'tooltip');
 
-        $editAction = new RowAction($this->trans('Edit'), '_invoices_edit');
-        $editAction->setAttributes(array('class' => 'btn'));
+        $editAction = new RowAction('<i class="icon-edit"></i>', '_invoices_view');
+        $editAction->addAttribute('title', $translator->trans('invoice_edit'));
+        $editAction->addAttribute('rel', 'tooltip');
 
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);
@@ -77,6 +80,12 @@ class DefaultController extends BaseController
      */
     public function createAction(Request $request, Client $client = null)
     {
+        $clients = $this->getRepository('CSBillClientBundle:Client');
+
+        if ($clients->getTotalClients() > 0) {
+            return $this->render('CSBillInvoiceBundle:Default:empty_clients.html.twig');
+        }
+
         $invoice = new Invoice;
         $invoice->setClient($client);
 

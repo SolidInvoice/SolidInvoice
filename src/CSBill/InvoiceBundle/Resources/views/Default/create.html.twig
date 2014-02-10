@@ -14,7 +14,7 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block title %}{{ "Create Invoice"|trans }}{% endblock %}
+{% block title %}{{ "invoice_create"|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_create') }}
@@ -42,7 +42,7 @@
 
         {{ block('form_items') }}
 
-        <a href="#" class="add-item"><i class="icon-plus-sign"></i> {{ "Add Item"|trans }}</a>
+        <a href="#" class="add-item"><i class="icon-plus-sign"></i> {{ "add_item"|trans }}</a>
 
         {{ form_rest(form) }}
 
@@ -100,7 +100,7 @@
         <tfoot>
             <tr>
                 <td colspan="3" align="right" style="text-align:right">
-                    <strong>{{ "Sub-Total"|trans }}</strong>
+                    <strong>{{ "subtotal"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
                     <div class="invoice-sub-total"></div>
@@ -108,7 +108,7 @@
             </tr>
             <tr>
                 <td colspan="3" align="right" style="text-align:right">
-                    <strong>{{ "Discount"|trans }}</strong>
+                    <strong>{{ "discount"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
                     <span class="text-error invoice-discount"></span>
@@ -116,7 +116,7 @@
             </tr>
             <tr>
                 <td colspan="3" align="right" style="text-align:right">
-                    <strong>{{ "Total"|trans }}</strong>
+                    <strong>{{ "total"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
                     <div class="invoice-total"></div>
@@ -129,12 +129,12 @@
 {% block form_buttons %}
     <div class="col-lg-2 col-md-2">
         <button type="submit" class="btn btn-success" name="save" value="send">
-            <i class="icon-envelope-alt"></i> {{ "Save and Send"|trans }}
+            <i class="icon-envelope-alt"></i> {{ "save_send"|trans }}
         </button>
     </div>
     <div class="col-lg-2 col-md-2">
         <button type="submit" class="btn btn-primary" name="save" value="draft">
-            <i class="icon-save"></i> {{ "Save as Draft"|trans }}
+            <i class="icon-save"></i> {{ "save_draft"|trans }}
         </button>
     </div>
 {% endblock form_buttons %}

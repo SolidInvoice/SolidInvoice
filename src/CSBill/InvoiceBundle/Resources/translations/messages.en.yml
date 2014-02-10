@@ -1,0 +1,17 @@
+invoice_view: View Invoice
+invoice_edit: Edit Invoice
+invoice_create: Create Invoice
+invoice_create_success: Invoice created successfully
+invoice_edit_success: Invoice created successfully
+status: Status
+client: Client
+total: Total
+discount: Discount
+search: Search
+choose_client: Choose a client
+no_clients: You have not created any clients yet.
+add_client: Please add one now
+add_item: Add Item
+subtotal: Sub-Total
+save_send: Save and Send
+save_draft: Save as Draft

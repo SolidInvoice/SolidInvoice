@@ -50,7 +50,7 @@ class Invoice
      * @var Status $status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="invoices")
-     * @Grid\Column(name="status", field="status.name", filter="select", selectFrom="source")
+     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
      */
     private $status;
 
@@ -59,7 +59,7 @@ class Invoice
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
-     * @Grid\Column(name="clients", field="client.name", filter="select", selectFrom="source")
+     * @Grid\Column(name="clients", field="client.name", title="client", filter="select", selectFrom="source")
      */
     private $client;
 
