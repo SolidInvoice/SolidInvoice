@@ -2,7 +2,7 @@
 
 namespace CSBill\CoreBundle\Mailer;
 
-use CS\SettingsBundle\Manager\SettingsManager;
+use CSBill\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Swift_Mailer;

@@ -2,7 +2,7 @@
     <div style="text-align:center" align="center">
         <p>
             <div style="font-size: 80%; color: #999999">
-                {% set quotePath = url("_view_external", {"type" : "quote", "uuid" : quote.uuid}) %}
+                {% set quotePath = url("_view_quote_external", {"type" : "quote", "uuid" : quote.uuid}) %}
                 {{ "View this quote online at: %url%"|trans|replace({"%url%" : '<a href="' ~ quotePath ~ '">' ~ quotePath ~ '</a>'})|raw }}
             </div>
         </p>
