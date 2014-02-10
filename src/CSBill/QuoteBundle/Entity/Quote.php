@@ -51,6 +51,7 @@ class Quote
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="quotes")
      * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
+     * @Grid\Column(field="status.label", visible=false)
      */
     private $status;
 
@@ -85,7 +86,7 @@ class Quote
     private $discount;
 
     /**
-     * @var DateTime $due
+     * @var \DateTime $due
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -93,7 +94,7 @@ class Quote
     private $due;
 
     /**
-     * @var DateTIme $created
+     * @var \DateTIme $created
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -102,7 +103,7 @@ class Quote
     private $created;
 
     /**
-     * @var DateTime $updated
+     * @var \DateTime $updated
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -111,7 +112,7 @@ class Quote
     private $updated;
 
     /**
-     * @var DateTime $deleted
+     * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -269,7 +270,7 @@ class Quote
      * Set base total
      *
      * @param  float   $baseTotal
-     * @return Invoice
+     * @return Quote
      */
     public function setBaseTotal($baseTotal)
     {

@@ -62,6 +62,13 @@ class DefaultController extends BaseController
 
         $grid->hideColumns(array('updated', 'deleted', 'users', 'due', 'baseTotal', 'uuid'));
 
+        $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
+            $label = $row->getField('status.label');
+
+            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+        })->setSafe(false);
+
         $grid->setPermanentFilters(array(
             'client.name' => array('operator' => 'isNotNull')
         ));
