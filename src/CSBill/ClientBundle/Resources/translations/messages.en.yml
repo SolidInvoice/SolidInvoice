@@ -32,7 +32,7 @@ total_outstanding: Total number of outstanding invoices for this client
 total_paid: Total number of paid invoices for this client
 outstanding_invoices: Outstanding Invoices
 paid_invoices: Paid Invoices
-number_quotes: {0} Quotes|{1} Quote|]1,Inf] Quotes
+number_quotes: "{0} Quotes|{1} Quote|]1,Inf] Quotes"
 created: Created
 delete_client: Delete Client
 confirm_delete: Are you sure you want to delete this client?
@@ -46,6 +46,6 @@ close: Close
 contact_edit: Edit Contact
 change: Change
 client_create: Create Client
-number_invoices: {0} Invoices|{1} Invoice|]1,Inf] Invoices
+number_invoices: "{0} Invoices|{1} Invoice|]1,Inf] Invoices"
 add_info: Add Info
 list_clients: List Clients
