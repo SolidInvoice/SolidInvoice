@@ -1,7 +1,9 @@
 {% if success is defined and success == true %}
     <div class="modal-body">
         <div class="alert alert-success">
-            <h3><i class="icon-ok"></i> {{ "success"|trans }}</h3>
+            <h3>
+                {{ icon('check') }} {{ "success"|trans }}
+            </h3>
             {{ "contact_saved"|trans }}
         </div>
     </div>

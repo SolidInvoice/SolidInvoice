@@ -39,7 +39,7 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('list_clients'),
             array(
                 'extras' => array(
-                    'icon' => 'icon-file-alt'
+                    'icon' => 'file-o'
                 ),
                 'route' => '_clients_index'
             )
@@ -49,7 +49,7 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('add_client'),
             array(
                 'extras' => array(
-                    'icon' => 'icon-user'
+                    'icon' => 'user'
                 ),
                 'route' => '_clients_add'
             )
@@ -72,7 +72,7 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('view_client'),
             array(
                 'extras' => array(
-                    'icon' => 'icon-eye-open'
+                    'icon' => 'eye'
                 ),
                 'route' => '_clients_view',
                 'routeParameters' => array(
@@ -85,7 +85,7 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('create_invoice'),
             array(
                 'extras' => array(
-                    'icon' => 'icon-file-alt'
+                    'icon' => 'file-o'
                 ),
                 'route' => '_invoices_create',
                 'routeParameters' => array(
@@ -98,7 +98,7 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('create_quote'),
             array(
                 'extras' => array(
-                    'icon' => 'icon-file-alt'
+                    'icon' => 'file-o'
                 ),
                 'route' => '_quotes_create',
                 'routeParameters' => array(

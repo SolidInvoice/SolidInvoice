@@ -1,5 +1,7 @@
 <div class="well well-small contact-card" data-id="{{ contact.id }}">
-    <h4><i class="icon-user"></i> {{ contact.firstname }} {{ contact.lastname }}</h4>
+    <h4>
+        {{ icon('user') }} {{ contact.firstname }} {{ contact.lastname }}
+    </h4>
 
     <dl class="dl-horizontal">
         {% for contact_details in contact.details if contact_details.primary %}
@@ -9,8 +11,12 @@
     </dl>
 
     <div class="pull-right contact-actions">
-        <a href="{{ path('_clients_edit_contact', {'id' : contact.id}) }}" rel="tooltip" title="{{ "contact_edit"|trans }}" class="text-info edit-contact"><i class="icon-pencil"></i></a>
-        <a href="#" rel="tooltip" title="{{ "contact_delete"|trans }}" class="text-danger delete-contact"><i class="icon-trash"></i></a>
+        <a href="{{ path('_clients_edit_contact', {'id' : contact.id}) }}" rel="tooltip" title="{{ "contact_edit"|trans }}" class="text-info edit-contact">
+            {{ icon('pencil') }}
+        </a>
+        <a href="#" rel="tooltip" title="{{ "contact_delete"|trans }}" class="text-danger delete-contact">
+            {{ icon('trash', ['o']) }}
+        </a>
     </div>
 
     <br class="clearfix" />

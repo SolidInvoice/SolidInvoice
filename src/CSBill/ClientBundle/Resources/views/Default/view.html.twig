@@ -31,20 +31,24 @@
         <div class="row">
             <div class="col-md-6 col-lg-6">
                 {% if client.website %}
-                    <i class="icon-external-link"></i> <a href="{{ client.website }}" rel=external">{{ client.website }}</a>
+                    {{ icon('external-link') }} <a href="{{ client.website }}" rel=external">{{ client.website }}</a>
                 {% endif %}
             </div>
 
             <div class="col-md-6 col-lg-6" align="right">
-                <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-default"><i class="icon-edit"></i> {{ "edit"|trans }}</a>
-                <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client"><i class="icon-trash"></i> {{ "delete"|trans }}</a>
+                <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-default">
+                    {{ icon('edit') }} {{ "edit"|trans }}
+                </a>
+                <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client">
+                    {{ icon('trash') }} {{ "delete"|trans }}
+                </a>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <legend>
                     <h3>
-                        <i class="icon-group"></i> {{ "contacts"|trans }}
+                        {{ icon('users') }} {{ "contacts"|trans }}
                     </h3>
                 </legend>
 
@@ -77,13 +81,19 @@
         <div class="text-center">
             <ul class="nav nav-list client-action-buttons">
                 <li>
-                    <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-default btn-lg"><i class="icon-file-alt"></i> {{ "create_quote"|trans }}</a>
+                    <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-default btn-lg">
+                        {{ icon('file', ['text', 'o']) }} {{ "create_quote"|trans }}
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-default btn-lg"><i class="icon-file-alt"></i> {{ "create_invoice"|trans }}</a>
+                    <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-default btn-lg">
+                        {{ icon('file', ['text', 'o']) }} {{ "create_invoice"|trans }}
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-default btn-lg add-contact-button" data-id="{{ client.id }}"><i class="icon-user"></i> {{ "add_contact"|trans }}</a>
+                    <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-default btn-lg add-contact-button" data-id="{{ client.id }}">
+                        {{ icon('user') }} {{ "add_contact"|trans }}
+                    </a>
                 </li>
             </ul>
         </div>

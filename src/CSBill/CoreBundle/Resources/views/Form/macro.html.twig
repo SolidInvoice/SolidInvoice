@@ -9,7 +9,9 @@
 
     <div data-content="{{ name }}">
         {% if delete %}
-            <a href="#" class="{{ attr.trash.class is defined ? attr.trash.class : "pull-right" }} btn-remove" data-related="{{ name }}"><i class="icon-trash"></i> {{ remove_text }}</a>
+            <a href="#" class="{{ attr.trash.class is defined ? attr.trash.class : "pull-right" }} btn-remove" data-related="{{ name }}">
+                {{ icon('trash') }} {{ remove_text }}
+            </a>
         {% endif %}
 
         {{ form_row(form) }}

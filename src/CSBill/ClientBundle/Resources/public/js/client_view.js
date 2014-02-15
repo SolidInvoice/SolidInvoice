@@ -119,7 +119,7 @@
             var contact = $(this).parents('.contact-card'),
                 contactId = contact.data('id');
 
-            bootbox.confirm('<i class="icon-exclamation-sign icon-2x"></i> Are you sure you want to delete this contact?', function(bool) {
+            bootbox.confirm('<i class="fa fa-exclamation-circle fa-2x"></i> Are you sure you want to delete this contact?', function(bool) {
                 if (true === bool) {
                     $('body').modalmanager('loading');
 

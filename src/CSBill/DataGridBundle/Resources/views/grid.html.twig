@@ -85,7 +85,7 @@
                     {% endfor %}
 
                     <div class="grid-search-action">
-                        <a href="#" class="grid-search-submit btn btn-info" onclick="$('#{{ grid.hash }}_search').submit()"><i class="icon-search"></i> {{ 'Search'|trans }}</a>
+                        <a href="#" class="grid-search-submit btn btn-info" onclick="$('#{{ grid.hash }}_search').submit()">{{ icon('search') }} {{ 'Search'|trans }}</a>
                         <input type="button" class="grid-search-reset btn btn-warning" value="{{ 'Reset'|trans }}" onclick="return {{ grid.hash }}_reset();"/>
                         &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="grid-simple-search">{{ 'Simple Search'|trans  }}</a>
                     </div>

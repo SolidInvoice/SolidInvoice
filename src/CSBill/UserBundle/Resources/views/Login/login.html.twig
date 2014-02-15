@@ -31,7 +31,7 @@
 				            <label for="username">{{ "Username"|trans }}</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="icon-user"></i>
+                                    {{ icon('user') }}
                                 </span>
                                 <input class="form-control" type="text" id="username" name="_username" placeholder="{{ "Username"|trans }}" value="{{ last_username }}" />
                             </div>
@@ -41,7 +41,7 @@
 				            <label for="password">{{ "Password"|trans }}</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="icon-lock"></i>
+                                    {{ icon('lock') }}
                                 </span>
                                 <input class="form-control" type="password" id="password" placeholder="{{ "Password"|trans }}" name="_password" />
                             </div>
@@ -55,7 +55,7 @@
 						</div>
 
     					<div class="clear">
-				        	<input type="submit" class="btn btn-success" value="{{ "Login"|trans }}" />
+				        	<button type="submit" class="btn btn-success">{{ icon('key') }} {{ "Login"|trans }}</button>
 				        </div>
 				    </form>
 

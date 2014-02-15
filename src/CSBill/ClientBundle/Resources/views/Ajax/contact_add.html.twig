@@ -2,7 +2,9 @@
 
     <div class="modal-body" data-id="{{ contact.id }}">
         <div class="alert alert-success">
-            <h3><i class="icon-ok"></i> {{ "success"|trans }}</h3>
+            <h3>
+                {{ icon('check') }} {{ "success"|trans }}
+            </h3>
             {{ "contact_saved"|trans }}
         </div>
     </div>
