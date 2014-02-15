@@ -10,6 +10,7 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
+use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
 use CSBill\UserBundle\Entity\User;
@@ -55,6 +56,7 @@ class SystemInformation extends AbstractFormStep
         $em->flush();
 
         $this->saveConfig($data);
+        $this->saveCurrentVersion();
     }
 
     /**
@@ -88,5 +90,18 @@ class SystemInformation extends AbstractFormStep
         $yaml = $dumper->dump($value, 2);
 
         file_put_contents($config, $yaml);
+    }
+
+    /**
+     * Saves the current app version in the database
+     */
+    protected function saveCurrentVersion()
+    {
+        $verion = CSBillCoreBundle::VERSION;
+
+        $entityManager = $this->container->get('doctrine')->getManager();
+
+        $repository = $entityManager->getRepository('CSBillCoreBundle:Version');
+        return $repository->updateVersion($verion);
     }
 }
