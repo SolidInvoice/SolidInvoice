@@ -1,6 +1,6 @@
 <legend>
     <h3>
-        <i class="icon-file-alt"></i> {{ "quotes"|trans }}
+        {{ icon('fiel', ['text', 'o']) }} {{ "quotes"|trans }}
     </h3>
 </legend>
 
@@ -19,7 +19,9 @@
             {{ quote.total|currency }}
         </div>
         <div class="col-lg-2 col-md-2">
-            <a href="{{ url('_quotes_view', {'id': quote.id}) }}" class="btn"><i class="icon-eye-open"></i> {{ "view"|trans }}</a>
+            <a href="{{ url('_quotes_view', {'id': quote.id}) }}" class="btn">
+                {{ icon('eye') }} {{ "view"|trans }}
+            </a>
         </div>
     </div>
     <hr />

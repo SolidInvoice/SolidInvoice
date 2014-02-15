@@ -36,6 +36,7 @@ class DefaultController extends BaseController
         // Get a Grid instance
         $grid = $this->get('grid');
         $translator = $this->get('translator');
+        $templating = $this->get('templating');
 
         $search = $request->get('search');
 
@@ -49,11 +50,13 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $viewAction = new RowAction('<i class="icon-eye-open"></i>', '_quotes_view');
+        $viewIcon = $templating->render('{{ icon("eye") }}');
+        $viewAction = new RowAction($viewIcon, '_quotes_view');
         $viewAction->addAttribute('title', $translator->trans('quote_view'));
         $viewAction->addAttribute('rel', 'tooltip');
 
-        $editAction = new RowAction('<i class="icon-edit"></i>', '_quotes_view');
+        $editIcon = $templating->render('{{ icon("edit") }}');
+        $editAction = new RowAction($editIcon, '_quotes_view');
         $editAction->addAttribute('title', $translator->trans('quote_edit'));
         $editAction->addAttribute('rel', 'tooltip');
 

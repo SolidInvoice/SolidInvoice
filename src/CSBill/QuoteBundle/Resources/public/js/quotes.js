@@ -8,7 +8,7 @@
             "columnElement" : "td",
             "fields" : [],
             "templates" : {},
-            "trashTemplate" : '<div class="pull-right"><a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="icon-trash"></i></a></div>',
+            "trashTemplate" : '<div class="pull-right"><a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="fa fa-trash-o"></i></a></div>',
             "counter" : 0,
             "addTemplate" : function(type, template) {
                 this.templates[type] = template;

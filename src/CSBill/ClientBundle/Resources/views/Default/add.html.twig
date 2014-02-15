@@ -48,7 +48,7 @@
             {% endfor %}
         </div>
 
-        <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link"><i class="icon-plus-sign"></i> {{ "add_contact"|trans }}</a>
+        <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link">{{ icon('plus', ['circle']) }} {{ "add_contact"|trans }}</a>
 
         {{ form_row(form._token) }}
 
@@ -56,7 +56,7 @@
 
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn btn-success"><i class="icon-save"></i> {{ "save"|trans }}</button>
+                <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "save"|trans }}</button>
             </div>
         </div>
     </form>

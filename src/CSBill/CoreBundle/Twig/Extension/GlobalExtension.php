@@ -54,15 +54,47 @@ class GlobalExtension extends Twig_Extension
      */
     public function getFilters()
     {
-        return array(new \Twig_SimpleFilter('percentage', array($this, 'formatPercentage')),
-                    new \Twig_SimpleFilter('currency', array($this, 'formatCurrency')));
+        return array(
+            new \Twig_SimpleFilter('percentage', array($this, 'formatPercentage')),
+            new \Twig_SimpleFilter('currency', array($this, 'formatCurrency'))
+        );
+    }
+
+    /**
+     * (non-PHPDoc)
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('icon', array($this, 'displayIcon'), array('is_safe' => array('html')))
+        );
+    }
+
+    /**
+     * Displays an icon
+     *
+     * @param string $iconName
+     * @param array $options
+     * @return string
+     */
+    public function displayIcon($iconName, array $options = array())
+    {
+        $options = implode('-', $options);
+        $class = sprintf('fa fa-%s', $iconName);
+
+        if (!empty($options)) {
+            $class .= '-' . $options;
+        }
+
+        return sprintf('<i class="%s"></i>', $class);
     }
 
     /**
      * @param  int|float $amount
      * @return string
      */
-    public function formatCurrency($amount)
+    protected function formatCurrency($amount)
     {
         return $this->container->get('currency')->format($amount);
     }
@@ -72,7 +104,7 @@ class GlobalExtension extends Twig_Extension
      * @param  int       $percentage
      * @return float|int
      */
-    public function formatPercentage($amount, $percentage = 0)
+    protected function formatPercentage($amount, $percentage = 0)
     {
         if ($percentage > 0) {
             return ($amount * $percentage) / 100;

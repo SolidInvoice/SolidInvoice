@@ -42,7 +42,7 @@
 
         {{ block('form_items') }}
 
-        <a href="#" class="add-item"><i class="icon-plus-sign"></i> {{ "add_item"|trans }}</a>
+        <a href="#" class="add-item">{{ icon('plus', ['circle']) }} {{ "add_item"|trans }}</a>
 
         {{ form_rest(form) }}
 
@@ -129,12 +129,12 @@
 {% block form_buttons %}
     <div class="col-lg-2 col-md-2">
         <button type="submit" class="btn btn-success" name="save" value="send">
-            <i class="icon-envelope-alt"></i> {{ "save_send"|trans }}
+            {{ icon('envelope', ['o']) }} {{ "save_send"|trans }}
         </button>
     </div>
     <div class="col-lg-2 col-md-2">
         <button type="submit" class="btn btn-primary" name="save" value="draft">
-            <i class="icon-save"></i> {{ "save_draft"|trans }}
+            {{ icon('save') }} {{ "save_draft"|trans }}
         </button>
     </div>
 {% endblock form_buttons %}
@@ -176,7 +176,7 @@
         Invoice.addField("{{ item }}");
     {% endfor %}
 
-    Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="icon-trash"></i></a>');
+    Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="{{ "Remove Item"|trans }}">{{ icon('trash', ['o']) }}</a>');
     Invoice.addField("trash");
 
     {% if form.items|length == 0 %}

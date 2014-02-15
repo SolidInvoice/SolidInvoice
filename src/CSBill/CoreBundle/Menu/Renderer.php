@@ -18,6 +18,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 class Renderer extends ListRenderer
 {
@@ -31,6 +32,11 @@ class Renderer extends ListRenderer
      * @var ContainerInterface
      */
     protected $container;
+
+    /**
+     * @var \Symfony\Bundle\TwigBundle\TwigEngine
+     */
+    protected $templating;
 
     /**
      * Constructor
@@ -93,6 +99,13 @@ class Renderer extends ListRenderer
         return $html;
     }
 
+    /**
+     * Renders the menu label
+     *
+     * @param ItemInterface $item
+     * @param array         $options
+     * @return string
+     */
     protected function renderLabel(ItemInterface $item, array $options)
     {
         $icon = '';
@@ -107,11 +120,22 @@ class Renderer extends ListRenderer
         return $icon . $this->escape($item->getLabel());
     }
 
+    /**
+     * Renders an icon in the menu
+     *
+     * @param string $icon
+     * @return string
+     */
     protected function renderIcon($icon)
     {
-        return sprintf('<i class="%s"></i> ', $icon);
+        return $this->container->get('templating')->render(sprintf('{{ icon("%s") }} ', $icon));
     }
 
+    /**
+     * @param ItemInterface $item
+     * @param array         $options
+     * @return string
+     */
     protected function renderDivider(ItemInterface $item, array $options = array())
     {
         return $this->format(

@@ -28,7 +28,7 @@
                     <ul class="nav nav-pills pull-left">
                         <li>
                             <a href="#" class="filter-header">
-                                <b><i class="icon-filter"></i> {{ "Filter:"|trans }}</b>
+                                <b>{{ icon('filter') }} {{ "Filter:"|trans }}</b>
                             </a>
                         </li>
                         {% for filter in filters %}
@@ -45,7 +45,7 @@
                     <div class="input-group">
                         <input name="search" placeholder="{{ "Search"|trans }}" type="text" id="search" class="search-query form-control" value="{{ app.request.get('search') ?: '' }}" />
                         <span class="input-group-btn">
-                            <button type="submit" class="btn btn-info"><i class="icon-search"></i> {{ "search"|trans }}</button>
+                            <button type="submit" class="btn btn-info">{{ icon('search') }} {{ "search"|trans }}</button>
                         </span>
                     </div>
 

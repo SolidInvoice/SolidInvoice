@@ -42,7 +42,7 @@
 
         {{ block('form_items') }}
 
-        <a href="#" class="add-item"><i class="icon-plus-sign"></i> {{ "Add Item"|trans }}</a>
+        <a href="#" class="add-item">{{ icon('plus', ['circle']) }} {{ "Add Item"|trans }}</a>
 
         {{ form_rest(form) }}
 
@@ -130,12 +130,12 @@
 {% block form_buttons %}
     <div class="col-lg-2 col-md-2">
         <button type="submit" class="btn btn-success" name="save" value="send">
-            <i class="icon-envelope-alt"></i> {{ "Save and Send"|trans }}
+            {{ icon('envelope', ['o']) }} {{ "Save and Send"|trans }}
         </button>
     </div>
     <div class="col-lg-2 col-md-2">
         <button type="submit" class="btn btn-primary" name="save" value="draft">
-            <i class="icon-save"></i> {{ "Save as Draft"|trans }}
+            {{ icon('save') }} {{ "Save as Draft"|trans }}
         </button>
     </div>
 {% endblock form_buttons %}
@@ -177,7 +177,7 @@
         Quote.addField("{{ item }}");
     {% endfor %}
 
-    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="icon-trash"></i></a>');
+    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item">{{ icon('trash') }}</a>');
     Quote.addField("trash");
 
     {% if form.items|length == 0 %}

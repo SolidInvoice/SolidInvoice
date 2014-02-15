@@ -10,7 +10,7 @@ discount: Discount
 search: Search
 choose_client: Choose a client
 no_clients: You have not created any clients yet.
-add_client: Please add one now
+add_new_client: Please add one now
 add_item: Add Item
 subtotal: Sub-Total
 save_send: Save and Send

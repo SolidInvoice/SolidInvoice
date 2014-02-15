@@ -124,6 +124,7 @@ class DefaultController extends BaseController
         // Get a Grid instance
         $grid = $this->get('grid');
         $translator = $this->get('translator');
+        $templating = $this->get('templating');
 
         $filters = $this->getFilters($request);
 
@@ -147,15 +148,18 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $viewAction = new RowAction('<i class="icon-eye-open"></i>', '_clients_view');
+        $viewIcon = $templating->render('{{ icon("eye") }}');
+        $viewAction = new RowAction($viewIcon, '_clients_view');
         $viewAction->addAttribute('title', $translator->trans('view_client'));
         $viewAction->addAttribute('rel', 'tooltip');
 
-        $editAction = new RowAction('<i class="icon-edit"></i>', '_clients_edit');
+        $editIcon = $templating->render('{{ icon("edit") }}');
+        $editAction = new RowAction($editIcon, '_clients_edit');
         $editAction->addAttribute('title', $translator->trans('edit_client'));
         $editAction->addAttribute('rel', 'tooltip');
 
-        $deleteAction = new RowAction('<i class="icon-remove"></i>', '_clients_delete');
+        $deleteIcon = $templating->render('{{ icon("times") }}');
+        $deleteAction = new RowAction($deleteIcon, '_clients_delete');
         $deleteAction->setAttributes(
             array(
                 'title' => $translator->trans('delete_client'),

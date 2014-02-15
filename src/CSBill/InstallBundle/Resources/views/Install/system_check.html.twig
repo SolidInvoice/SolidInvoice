@@ -28,7 +28,7 @@
 		<div>
 			<ul>
 				{% for value in check.values %}
-					<li>{{ value|replace({'OK' : '<i class="icon-ok-circle"></i>', 'WARNING' : '<i class="icon-exclamation-sign"></i>', 'ERROR' : '<i class="icon-ban-circle"></i>'})|raw }}</li>
+					<li>{{ value|replace({'OK' : icon('check', ['circle', 'o']), 'WARNING' : icon('exclamation', ['circle']), 'ERROR' : icon('ban')})|raw }}</li>
 				{% endfor %}
 			</ul>
 		</div>

@@ -1,6 +1,6 @@
 <legend>
     <h3>
-        <i class="icon-file-alt"></i> {{ "invoices"|trans }}
+        {{ icon('file', ['text', 'o']) }} {{ "invoices"|trans }}
     </h3>
 </legend>
 
@@ -19,7 +19,9 @@
             {{ invoice.total|currency }}
         </div>
         <div class="col-lg-2 col-md-2">
-            <a href="{{ path("_invoices_view", {"id" : invoice.id}) }}" class="btn"><i class="icon-eye-open"></i> {{ "view"|trans }}</a>
+            <a href="{{ path("_invoices_view", {"id" : invoice.id}) }}" class="btn">
+                {{ icon('eye') }} {{ "view"|trans }}
+            </a>
         </div>
     </div>
 {% else %}

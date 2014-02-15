@@ -9,8 +9,8 @@
 {% block content %}
     <div class="alert alert-warning">
         <h4>
-            <i class="icon-exclamation-sign"></i>
-            {{ "no_clients"|trans }} <a href="{{ url('_clients_add') }}">{{ "add_client"|trans }}</a>
+            {{ icon('exclamation', ['triangle']) }}
+            {{ "no_clients"|trans }} <a href="{{ url('_clients_add') }}">{{ "add_new_client"|trans }}</a>
         </h4>
     </div>
 {% endblock %}
