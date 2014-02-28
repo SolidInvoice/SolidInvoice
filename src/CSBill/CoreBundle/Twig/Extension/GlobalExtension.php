@@ -94,7 +94,7 @@ class GlobalExtension extends Twig_Extension
      * @param  int|float $amount
      * @return string
      */
-    protected function formatCurrency($amount)
+    public function formatCurrency($amount)
     {
         return $this->container->get('currency')->format($amount);
     }
