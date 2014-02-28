@@ -82,7 +82,8 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
         if (!empty($settings)) {
             foreach ($settings as $setting) {
                 $entity = new Setting();
-                $entity->setKey($setting['key']);
+
+                $entity->setKey($setting['name']);
 
                 if (isset($setting['value'])) {
                     $entity->setValue($setting['value']);
