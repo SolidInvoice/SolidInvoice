@@ -97,7 +97,7 @@ class DefaultController extends BaseController
     {
         $clients = $this->getRepository('CSBillClientBundle:Client');
 
-        if ($clients->getTotalClients() > 0) {
+        if (!$clients->getTotalClients() > 0) {
             return $this->render('CSBillInvoiceBundle:Default:empty_clients.html.twig');
         }
 
