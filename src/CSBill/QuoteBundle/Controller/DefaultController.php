@@ -114,7 +114,7 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $this->saveQuote($quote, $action);
 
-            $this->flash($this->trans('quote_create_sucess'), 'success');
+            $this->flash($this->trans('quote_create_success'), 'success');
 
             return $this->redirect($this->generateUrl('_quotes_index'));
         }
