@@ -56,10 +56,10 @@ class SystemInformationForm extends AbstractType
             )
         );
 
-        $builder->add(
+        /*$builder->add(
             'logo',
             'image_upload'
-        );
+        );*/
 
         $builder->add(
             'username',
