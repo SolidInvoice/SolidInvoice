@@ -34,6 +34,16 @@ class DatabaseConfig extends AbstractFormStep
     private $rootDir;
 
     /**
+     * @var string
+     */
+    private $environment;
+
+    /**
+     * @var bool
+     */
+    private $debug;
+
+    /**
      * @var array
      */
     protected $drivers = array();
@@ -71,7 +81,11 @@ class DatabaseConfig extends AbstractFormStep
 
         $data['driver'] = sprintf('pdo_%s', $this->drivers[$data['driver']]);
 
-        $this->rootDir = $this->get('kernel')->getRootDir();
+        $kernel = $this->get('kernel');
+
+        $this->rootDir = $kernel->getRootDir();
+        $this->environment = $kernel->getEnvironment();
+        $this->debug = $kernel->isDebug();
 
         $this->writeConfigFile($data);
 
@@ -132,9 +146,13 @@ class DatabaseConfig extends AbstractFormStep
      */
     public function executeMigrations()
     {
-        return $this->runProcess(
-            sprintf('php %s/console doctrine:migrations:migrate --no-interaction', $this->rootDir)
-        );
+        $command = 'php %s/console doctrine:migrations:migrate --no-interaction --env=%s';
+
+        if ($this->debug) {
+            $command .= " --no-debug";
+        }
+
+        return $this->runProcess(sprintf($command, $this->rootDir, $this->environment));
     }
 
     /**
@@ -144,7 +162,13 @@ class DatabaseConfig extends AbstractFormStep
      */
     public function executeFixtures()
     {
-        return $this->runProcess(sprintf('php %s/console doctrine:fixtures:load --no-interaction', $this->rootDir));
+        $command = 'php %s/console doctrine:fixtures:load --no-interaction --env=%s';
+
+        if ($this->debug) {
+            $command .= " --no-debug";
+        }
+
+        return $this->runProcess(sprintf($command, $this->rootDir, $this->environment));
     }
 
     /**
