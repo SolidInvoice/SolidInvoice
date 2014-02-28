@@ -46,7 +46,7 @@ class SettingsController extends BaseController
 
             $manager->set($request->request->get('settings'));
 
-            $this->flash($this->trans('Settings saved successfully!'));
+            $this->flash($this->trans('Settings saved successfully!'), 'success');
 
             return $this->redirect($this->generateUrl($request->get('_route')));
         }
