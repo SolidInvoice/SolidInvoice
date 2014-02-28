@@ -41,9 +41,7 @@ assetic:
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
-        less:
-            node: "/usr/bin/nodejs"
-            node_paths: ["/usr/lib/node_modules"]
+        lessphp:
             apply_to: "\.less$"
         yui_css:
             jar: %kernel.root_dir%/Resources/Java/yuicompressor-2.4.7.jar

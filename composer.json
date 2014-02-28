@@ -42,7 +42,8 @@
         "knplabs/knp-menu-bundle": "2.0.x-dev",
         "zendframework/zend-config": "~2.2",
         "rhumsaa/uuid": "~2.5",
-        "moontoast/math": "~1.1"
+        "moontoast/math": "~1.1",
+        "oyejorge/less.php": "~1.5"
     },
     "require-dev" : {
         "jms/debugging-bundle": "dev-master"

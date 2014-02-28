@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "29f95b35770d8f4f9f115758f33b3f49",
+    "hash": "e1a9535155ddb6d2cd90a673115c5d26",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -1782,6 +1782,65 @@
                 "math"
             ],
             "time": "2013-01-19 17:42:34"
+        },
+        {
+            "name": "oyejorge/less.php",
+            "version": "1.6.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oyejorge/less.php.git",
+                "reference": "1845b841a1c5f4e5cc347e6d7c75de62f5d64a8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/1845b841a1c5f4e5cc347e6d7c75de62f5d64a8f",
+                "reference": "1845b841a1c5f4e5cc347e6d7c75de62f5d64a8f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "bin": [
+                "bin/lessc"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Less": "lib/"
+                },
+                "classmap": [
+                    "lessc.inc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Agar",
+                    "homepage": "https://github.com/agar"
+                },
+                {
+                    "name": "Martin Jantošovič",
+                    "homepage": "https://github.com/Mordred"
+                },
+                {
+                    "name": "Josh Schmidt",
+                    "homepage": "https://github.com/oyejorge"
+                }
+            ],
+            "description": "PHP port of the Javascript version of LESS http://lesscss.org",
+            "homepage": "http://lessphp.gpeasy.com",
+            "keywords": [
+                "css",
+                "less",
+                "less.js",
+                "lesscss",
+                "php",
+                "stylesheet"
+            ],
+            "time": "2014-02-23 18:29:04"
         },
         {
             "name": "pagerfanta/pagerfanta",
