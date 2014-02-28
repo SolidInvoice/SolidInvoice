@@ -57,7 +57,7 @@ class DefaultController extends BaseController
         $viewAction->addAttribute('rel', 'tooltip');
 
         $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_quotes_view');
+        $editAction = new RowAction($editIcon, '_quotes_edit');
         $editAction->addAttribute('title', $translator->trans('quote_edit'));
         $editAction->addAttribute('rel', 'tooltip');
 
