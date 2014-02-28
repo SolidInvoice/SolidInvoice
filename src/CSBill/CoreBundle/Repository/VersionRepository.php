@@ -24,4 +24,4 @@ class VersionRepository extends EntityRepository
 
         return $entityManager->flush();
     }
-} 
+}

@@ -74,8 +74,8 @@ class GlobalExtension extends Twig_Extension
     /**
      * Displays an icon
      *
-     * @param string $iconName
-     * @param array $options
+     * @param  string $iconName
+     * @param  array  $options
      * @return string
      */
     public function displayIcon($iconName, array $options = array())

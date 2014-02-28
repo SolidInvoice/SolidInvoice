@@ -269,7 +269,7 @@ class Quote
     /**
      * Set base total
      *
-     * @param  float   $baseTotal
+     * @param  float $baseTotal
      * @return Quote
      */
     public function setBaseTotal($baseTotal)

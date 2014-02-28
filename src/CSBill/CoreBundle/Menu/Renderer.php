@@ -102,8 +102,8 @@ class Renderer extends ListRenderer
     /**
      * Renders the menu label
      *
-     * @param ItemInterface $item
-     * @param array         $options
+     * @param  ItemInterface $item
+     * @param  array         $options
      * @return string
      */
     protected function renderLabel(ItemInterface $item, array $options)
@@ -123,7 +123,7 @@ class Renderer extends ListRenderer
     /**
      * Renders an icon in the menu
      *
-     * @param string $icon
+     * @param  string $icon
      * @return string
      */
     protected function renderIcon($icon)
@@ -132,8 +132,8 @@ class Renderer extends ListRenderer
     }
 
     /**
-     * @param ItemInterface $item
-     * @param array         $options
+     * @param  ItemInterface $item
+     * @param  array         $options
      * @return string
      */
     protected function renderDivider(ItemInterface $item, array $options = array())

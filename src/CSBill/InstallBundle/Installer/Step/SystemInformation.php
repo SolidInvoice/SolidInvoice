@@ -102,6 +102,7 @@ class SystemInformation extends AbstractFormStep
         $entityManager = $this->container->get('doctrine')->getManager();
 
         $repository = $entityManager->getRepository('CSBillCoreBundle:Version');
+
         return $repository->updateVersion($verion);
     }
 }

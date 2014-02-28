@@ -136,7 +136,7 @@ class DatabaseConfig extends AbstractFormStep
         $yaml = $dumper->dump($value, 2);
 
         if (!is_writable($config)) {
-            if(!@chmod($config, 0777)) {
+            if (!@chmod($config, 0777)) {
                 throw new \Exception('Unable to write config file');
             }
         }
