@@ -17,7 +17,7 @@ use CSBill\CoreBundle\DependencyInjection\Compiler;
 
 class CSBillCoreBundle extends Bundle
 {
-    const VERSION = '0.1.0-dev';
+    const VERSION = '0.1.0-aplha1';
 
     /**
      * (non-phpdoc)
