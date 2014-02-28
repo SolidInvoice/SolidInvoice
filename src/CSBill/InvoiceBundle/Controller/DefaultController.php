@@ -57,7 +57,7 @@ class DefaultController extends BaseController
         $viewAction->addAttribute('rel', 'tooltip');
 
         $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_invoices_view');
+        $editAction = new RowAction($editIcon, '_invoices_edit');
         $editAction->addAttribute('title', $translator->trans('invoice_edit'));
         $editAction->addAttribute('rel', 'tooltip');
 
