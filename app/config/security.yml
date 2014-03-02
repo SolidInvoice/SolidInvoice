@@ -7,7 +7,8 @@ security:
         connection: default
     encoders:
         CSBill\UserBundle\Entity\User:
-            id: csbill.user.password_encoder
+            algorithm: bcrypt
+            cost:      10
 
     role_hierarchy:
         ROLE_ADMIN:       ~

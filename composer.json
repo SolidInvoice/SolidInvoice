@@ -19,7 +19,7 @@
         "psr-0": { "": "src/" }
     },
     "require": {
-        "php": ">=5.3.4",
+        "php": ">=5.3.7",
         "symfony/symfony": "~2.4.0",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "~1.2",
@@ -43,7 +43,8 @@
         "zendframework/zend-config": "~2.2",
         "rhumsaa/uuid": "~2.5",
         "moontoast/math": "~1.1",
-        "oyejorge/less.php": "~1.5"
+        "oyejorge/less.php": "~1.5",
+        "ircmaxell/password-compat": "dev-master"
     },
     "require-dev" : {
         "jms/debugging-bundle": "dev-master"
