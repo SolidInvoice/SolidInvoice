@@ -86,6 +86,11 @@ CSBill is open-sourced software licensed under the [MIT license](http://opensour
 
 Please see the [LICENSE](LICENSE) file for the full license.
 
+Demo
+------------
+
+[http://demo.csbill.org](http://demo.csbill.org)
+
 
 [1]: http://symfony.com
 [2]: http://getcomposer.org
