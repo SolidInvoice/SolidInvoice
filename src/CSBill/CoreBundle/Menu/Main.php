@@ -46,7 +46,7 @@ class Main extends AuthenticatedMenu
 
         $topMenu->addChild('Settings', array('route' => '_settings', 'extras' => array('icon' => 'cog')));
         $topMenu->addDivider();
-        $topMenu->addChild('Logout', array('route' => '_logout', 'extras' => array('icon' => 'power-off')));
+        $topMenu->addChild('Logout', array('route' => 'fos_user_security_logout', 'extras' => array('icon' => 'power-off')));
 
         $topMenu->setChildrenAttributes(array('class' => 'dropdown-menu'));
     }
