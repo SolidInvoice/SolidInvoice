@@ -6,7 +6,7 @@ security:
     acl:
         connection: default
     encoders:
-        CSBill\UserBundle\Entity\User:
+        FOS\UserBundle\Model\UserInterface:
             algorithm: bcrypt
             cost:      10
 
@@ -17,26 +17,26 @@ security:
         ROLE_USER: ~
 
     providers:
-        main:
-            entity: { class: CSBillUserBundle:User }
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        installer:
-            pattern:  ^/install(.*)
-            anonymous: ~
+        #installer:
+            #pattern:  ^/install(.*)
+            #anonymous: ~
 
-        external:
-            pattern:  ^/view/(quote|invoice)/([a-zA-Z0-9-]{36})
-            anonymous: true
-            context: frontend
+        #external:
+            #pattern:  ^/view/(quote|invoice)/([a-zA-Z0-9-]{36})
+            #anonymous: true
+            #context: frontend
 
-        login:
-            pattern:  ^/login$
-            anonymous: ~
+        #login:
+            #pattern:  ^/login$
+            #anonymous: ~
 
         main:
             remember_me:
@@ -47,6 +47,8 @@ security:
             pattern:    ^/
             context: frontend
             form_login:
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
                 check_path: /login_check
                 login_path: /login
             logout:
@@ -57,3 +59,6 @@ security:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
         - { path: ^/view/(quote|invoice)/([a-zA-Z0-9-]), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/install$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
