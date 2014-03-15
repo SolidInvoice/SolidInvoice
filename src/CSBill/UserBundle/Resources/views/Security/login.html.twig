@@ -26,14 +26,14 @@
 			    {% endif %}
 
 			    <div class="well">
-				    <form action="{{ path("_security_check") }}" method="post" id="login" role="form">
+				    <form action="{{ path("fos_user_security_check") }}" method="post" id="login" role="form">
 				        <div class="form-group">
 				            <label for="username">{{ "Username"|trans }}</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     {{ icon('user') }}
                                 </span>
-                                <input class="form-control" type="text" id="username" name="_username" placeholder="{{ "Username"|trans }}" value="{{ last_username }}" />
+                                <input class="form-control" type="text" id="username" name="_username" placeholder="{{ "Username"|trans }}" value="{{ last_username }}" required="required" />
                             </div>
 				        </div>
 
@@ -43,7 +43,7 @@
                                 <span class="input-group-addon">
                                     {{ icon('lock') }}
                                 </span>
-                                <input class="form-control" type="password" id="password" placeholder="{{ "Password"|trans }}" name="_password" />
+                                <input class="form-control" type="password" id="password" placeholder="{{ "Password"|trans }}" name="_password" required="required" />
                             </div>
 				        </div>
 
@@ -57,10 +57,12 @@
     					<div class="clear">
 				        	<button type="submit" class="btn btn-success">{{ icon('key') }} {{ "Login"|trans }}</button>
 				        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 				    </form>
 
 				    <hr />
-				    <a href="#">{{ "Forgot Password"|trans }}</a>
+				    <a href="{{ path("fos_user_resetting_request") }}">{{ "Forgot Password"|trans }}</a>
 				</div>
 			</div>
 		</div>

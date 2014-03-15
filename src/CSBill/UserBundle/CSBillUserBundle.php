@@ -15,4 +15,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CSBillUserBundle extends Bundle
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent()
+    {
+        return 'FOSUserBundle';
+    }
 }

@@ -38,6 +38,10 @@ security:
             pattern:  ^/login$
             anonymous: ~
 
+        password_reset:
+            pattern:  ^/resetting(.*)
+            anonymous: ~
+
         main:
             remember_me:
                 key:      "%secret%"
