@@ -25,18 +25,18 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        #installer:
-            #pattern:  ^/install(.*)
-            #anonymous: ~
+        installer:
+            pattern:  ^/install(.*)
+            anonymous: ~
 
-        #external:
-            #pattern:  ^/view/(quote|invoice)/([a-zA-Z0-9-]{36})
-            #anonymous: true
-            #context: frontend
+        external:
+            pattern:  ^/view/(quote|invoice)/([a-zA-Z0-9-]{36})
+            anonymous: true
+            context: frontend
 
-        #login:
-            #pattern:  ^/login$
-            #anonymous: ~
+        login:
+            pattern:  ^/login$
+            anonymous: ~
 
         main:
             remember_me:
@@ -60,5 +60,5 @@ security:
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
         - { path: ^/view/(quote|invoice)/([a-zA-Z0-9-]), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/install$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/install(.*), role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
