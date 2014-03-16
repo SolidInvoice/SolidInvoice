@@ -44,6 +44,7 @@ class Main extends AuthenticatedMenu
         $topMenu->setAttributes(array('class' => 'dropdown'));
         $topMenu->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
 
+        $topMenu->addChild('Profile', array('route' => 'fos_user_profile_show', 'extras' => array('icon' => 'user')));
         $topMenu->addChild('Settings', array('route' => '_settings', 'extras' => array('icon' => 'cog')));
         $topMenu->addDivider();
         $topMenu->addChild('Logout', array('route' => 'fos_user_security_logout', 'extras' => array('icon' => 'power-off')));

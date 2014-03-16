@@ -1,12 +1,16 @@
 {% for type, flashMessage in app.session.flashbag.all() %}
+    {% set translation_domain = '' %}
     {% if type == 'error' %}
         {% set type = 'danger' %}
+    {% elseif type == 'fos_user_success' %}
+        {% set type = 'success' %}
+        {% set translation_domain = 'FOSUserBundle' %}
     {% endif %}
 
     {% for message in flashMessage %}
         <div class="alert alert-{{ type }} fade in">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ message }} <br />
+                {{ message|trans({}, translation_domain) }} <br />
         </div>
     {% endfor %}
 {% endfor %}

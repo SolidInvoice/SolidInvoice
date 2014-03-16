@@ -1,0 +1,9 @@
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block fos_user_content %}
+<div class="alert alert-info">
+{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}
+</div>
+
+<a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</a>
+{% endblock %}
