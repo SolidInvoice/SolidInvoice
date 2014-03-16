@@ -58,8 +58,7 @@ Now you have a fully working copy of CSBill, which you can use to modify or dig 
 
 #### Lesscss
 
-The stylesheets is built with [lesscss][3], so you need nodejs and less installed in your system to be able to parse the less files to CSS.
-(This is only for the development version. Once a stable version is released, it will included the pre-compiled css file)
+The stylesheets is built using [lesscss][3], and uses LessPHP to compile the stylesheets to plain CSS.
 
 Features
 --------
