@@ -1,5 +1,7 @@
 {% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
+{% block title %}{{ "Profile - %username%"|replace({"%username%" : user.username}) }}{% endblock title %}
+
 {% block content %}
 {% include "FOSUserBundle:Profile:show_content.html.twig" %}
 {% endblock content %}

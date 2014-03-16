@@ -1,6 +1,8 @@
 {% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
-{% block fos_user_content %}
+{% block title %}{{ "Reset Password" }}{% endblock title %}
+
+{% block content %}
 <div class="alert alert-info">
 {{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}
 </div>
