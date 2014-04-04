@@ -52,6 +52,8 @@
         "friendsofsymfony/user-bundle": "~1.3",
         "twig/twig": "~1.15",
         "swiftmailer/swiftmailer": "~5.2"
+        "payum/payum-bundle": "@stable",
+        "payum/offline": "~0.8"
     },
     "require-dev": {
         "jms/debugging-bundle": "dev-master",

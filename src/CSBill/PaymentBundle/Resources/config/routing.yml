@@ -1,0 +1,3 @@
+cs_bill_payment:
+    path:  /payments
+    defaults: { _controller: CSBillPaymentBundle:Default:index }

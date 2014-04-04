@@ -1,0 +1,7 @@
+parameters:
+#    cs_bill_payment.example.class: CSBill\PaymentBundle\Example
+
+services:
+#    cs_bill_payment.example:
+#        class: %cs_bill_payment.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

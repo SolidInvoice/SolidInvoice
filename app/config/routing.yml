@@ -29,6 +29,10 @@ csbill_item:
     resource: "@CSBillItemBundle/Resources/config/routing.yml"
     prefix:   /items
 
+csbill_payment:
+    resource: "@CSBillPaymentBundle/Resources/config/routing.yml"
+    prefix:   /payments
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
@@ -50,3 +54,9 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
+payum_capture:
+    resource: "@PayumBundle/Resources/config/routing/capture.xml"
+
+payum_notify:
+    resource: "@PayumBundle/Resources/config/routing/notify.xml"
