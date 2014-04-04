@@ -104,7 +104,7 @@ class GlobalExtension extends Twig_Extension
      * @param  int       $percentage
      * @return float|int
      */
-    protected function formatPercentage($amount, $percentage = 0)
+    public function formatPercentage($amount, $percentage = 0)
     {
         if ($percentage > 0) {
             return ($amount * $percentage) / 100;
