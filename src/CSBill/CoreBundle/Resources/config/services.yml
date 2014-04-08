@@ -81,7 +81,7 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 200 }
 
     csbill_core.settings.loader:
-            class: %csbill_core.settings.loader.class%
-            arguments: [@kernel]
-            tags:
-                - { name: settings.loader }
+        class: %csbill_core.settings.loader.class%
+        arguments: [@kernel]
+        tags:
+            - { name: settings.loader }
