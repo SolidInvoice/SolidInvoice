@@ -17,21 +17,22 @@ use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
 class Main extends AuthenticatedMenu
 {
     /**
-     * Menu builder for the quotes index
+     * Build the user menu
      *
      * @param ItemInterface $menu
      */
-    public function topMenu(ItemInterface $menu)
+    public function userMenu(ItemInterface $menu)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $username = $user->getUsername() . ' <b class="caret"></b>';
 
-        $menu->addChild(
-            $username,
+        $userMenu = $menu->addChild(
+            'user',
             array(
                 'uri' => '#',
                 'allow_safe_labels' => true,
+                'label' => $username,
                 'extras' => array(
                     'safe_label' => true,
                     'icon' => 'user'
@@ -39,16 +40,42 @@ class Main extends AuthenticatedMenu
             )
         );
 
-        $topMenu = $menu[$username];
+        $userMenu->setAttributes(array('class' => 'dropdown'));
+        $userMenu->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
 
-        $topMenu->setAttributes(array('class' => 'dropdown'));
-        $topMenu->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
+        $userMenu->addChild('Profile', array('route' => 'fos_user_profile_show', 'extras' => array('icon' => 'user')));
+        $userMenu->addDivider();
+        $userMenu->addChild('Logout', array('route' => 'fos_user_security_logout', 'extras' => array('icon' => 'power-off')));
 
-        $topMenu->addChild('Profile', array('route' => 'fos_user_profile_show', 'extras' => array('icon' => 'user')));
-        $topMenu->addChild('Settings', array('route' => '_settings', 'extras' => array('icon' => 'cog')));
-        $topMenu->addDivider();
-        $topMenu->addChild('Logout', array('route' => 'fos_user_security_logout', 'extras' => array('icon' => 'power-off')));
+        $userMenu->setChildrenAttributes(array('class' => 'dropdown-menu'));
+    }
 
-        $topMenu->setChildrenAttributes(array('class' => 'dropdown-menu'));
+    /**
+     * Build the system menu
+     *
+     * @param ItemInterface $menu
+     */
+    public function systemMenu(ItemInterface $menu)
+    {
+        $system = $menu->addChild(
+            'system',
+            array(
+                'uri' => '#',
+                'allow_safe_labels' => true,
+                'label' => 'System <b class="caret"></b>',
+                'extras' => array(
+                    'safe_label' => true,
+                    'icon' => 'laptop'
+                )
+            )
+        );
+
+        $system->setAttributes(array('class' => 'dropdown'));
+        $system->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
+        $system->addChild('Settings', array(
+                'route' => '_settings',
+                'extras' => array('icon' => 'cog'))
+        );
+        $system->setChildrenAttributes(array('class' => 'dropdown-menu'));
     }
 }
