@@ -1,7 +1,8 @@
 parameters:
-#    cs_bill_payment.example.class: CSBill\PaymentBundle\Example
+    csbill_payment.menu.top.class: CSBill\PaymentBundle\Menu\PaymentsMenu
 
 services:
-#    cs_bill_payment.example:
-#        class: %cs_bill_payment.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    csbill_payment.menu.top:
+        class: %csbill_payment.menu.top.class%
+        tags:
+            - { name: cs_core.menu, menu: top_right, method: topMenu }
