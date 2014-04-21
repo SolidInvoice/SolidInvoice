@@ -1,12 +1,12 @@
 <?php
 
-/*
- * This file is part of the CSBillCoreBundle package.
+/**
+ * This file is part of CSBill package.
  *
- * (c) Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace CSBill\CoreBundle\Controller;

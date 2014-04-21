@@ -1,11 +1,10 @@
-/*!
- * Bootstrap Modal
+/**
+ * This file is part of CSBill package.
  *
- * Copyright Jordan Schroter
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
  *
- * Boostrap 3 patch for for bootstrap-modal. Include BEFORE bootstrap-modal.css!
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 body.modal-open,

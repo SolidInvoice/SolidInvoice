@@ -1,3 +1,12 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
     {{ form_widget(form) }}
     <div>
