@@ -1,0 +1,41 @@
+payum:
+    security:
+        token_storage:
+            CSBill\PaymentBundle\Entity\SecurityToken:
+                doctrine:
+                    driver: orm
+    contexts:
+        offline:
+            offline: ~
+            storages:
+                CSBill\PaymentBundle\Entity\PaymentDetails:
+                    doctrine:
+                        driver: orm
+
+    #paypal:
+        #paypal_express_checkout_nvp:
+            #api:
+                #options:
+                    #username:  %paypal.express_checkout.username%
+                    #password:  %paypal.express_checkout.password%
+                    #signature: %paypal.express_checkout.signature%
+                    #sandbox:   %paypal.express_checkout.sandbox%
+        #storages:
+            #CSBill\PaymentBundle\Entity\PaymentDetails:
+                #doctrine:
+                    #driver: orm
+
+cs_bill_payment:
+    methods:
+        paypal_express:
+            context: offline
+            settings:
+                - { name: username, type: text}
+                - { name: password, type: password}
+                - { name: token,    type: text}
+                - { name: sandbox,  type: checkbox}
+        paypal_pro:
+            context: paypal_pro_checkout
+            settings:
+                - { name: username, type: text}
+                - { name: password, type: password}

@@ -1,0 +1,31 @@
+{#
+ # This file is part of the CSBill package.
+ #
+ # (c) Pierre du Plessis <info@customscripts.co.za>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+#}
+
+{% set parent = "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+
+{% block sidebar %}
+    {{ menu('payment_index') }}
+{% endblock sidebar %}
+
+{% block title %}{{ 'payment_methods'|trans }}{% endblock title %}
+
+{% block heading %}
+    <fieldset class="page-heading">
+        <legend>
+            <div class="pull-right header-button">
+                <a class="btn btn-info" href="{{ path("_payments_add") }}">
+                    {{ icon('credit-card') }} {{ "payment_create"|trans }}
+                </a>
+            </div>
+            <h3>{{ block('title') }}</h3>
+        </legend>
+    </fieldset>
+{% endblock %}

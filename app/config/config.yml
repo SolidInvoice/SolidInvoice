@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: default_settings.yml }
+    - { resource: payments.yml }
 
 framework:
     esi:             ~
@@ -140,17 +141,3 @@ fos_user:
     service:
         email_canonicalizer:    csbill.user.canonicalizer
         username_canonicalizer: csbill.user.canonicalizer
-
-payum:
-    security:
-        token_storage:
-            CSBill\PaymentBundle\Entity\SecurityToken:
-                doctrine:
-                    driver: orm
-    contexts:
-        csbill:
-            offline: ~
-            storages:
-                CSBill\PaymentBundle\Entity\PaymentDetails:
-                    doctrine:
-                        driver: orm

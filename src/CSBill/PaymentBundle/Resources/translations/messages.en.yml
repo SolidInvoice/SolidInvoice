@@ -1,0 +1,9 @@
+add_payment_method: Add Payment Method
+payment_method_added: Payment Method Successfully Added!
+payment_method_updated: Payment Method Successfully Updated!
+edit_payment_method: Edit Payment Method
+delete_payment_method: Delete Payment Method
+confirm_delete: Are you sure you want to delete this payment method?
+payment_methods: Payment Methods
+payment_create: Add Payment Method
+payment_delete_success: Payment Method Successfully Deleted
