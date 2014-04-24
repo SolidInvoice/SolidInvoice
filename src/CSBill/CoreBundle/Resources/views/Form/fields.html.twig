@@ -100,7 +100,6 @@
 
 {% block form_label %}
 {% spaceless %}
-
     {% if label is empty %}
         {% set label = name|humanize %}
     {% endif %}
@@ -146,66 +145,66 @@
 {% endblock percent_widget %}
 
 {% block image_upload_widget %}
-    {% spaceless %}
+{% spaceless %}
 
     {{ block('form_widget_simple') }}
 
     <div id="{{ id }}-uploader"></div>
 
-        <script type="text/javascript">
-            {# TODO : trim all the whitespace #}
-            {# TODO : move all this to an external js file #}
-            $(function(){
+    <script type="text/javascript">
+        {# TODO : trim all the whitespace #}
+        {# TODO : move all this to an external js file #}
+        $(function(){
 
-                function uploadSuccess(file, data, resource)
-                {
-                    if(!_.isObject(data)) {
-                        data = $.parseJSON(data);
-                    }
-
-                    $('#{{ id }}-uploader').hide();
-
-                    var img = $('<img />').attr('src', '{{ asset("uploads") }}/' + data.file);
-                    var a = $('<a />').attr('href', '#').addClass('thumbnail').html(img);
-                    var close_img = $('<b />').html('X').addClass('close');
-                    var close = $('<a />').attr({'href' : '#', 'title' : '{{ "Remove Image"|trans }}"', 'rel' : 'tooltip'}).addClass('pull-right').html(close_img);
-
-                    close.on('click', function(evt){
-                        evt.preventDefault();
-                        var a = $(this);
-
-                        a.parents('div.image-thumbnail-preview').remove();
-
-                        $('#{{ id }}-uploader').show();
-                        $("#{{ id }}").val('');
-                    });
-
-                    var li = $('<li />').addClass('span2').append(close).append(a);
-                    var ul = $('<ul />').addClass('thumbnails').append(li);
-                    var div = $('<div />').addClass('image-thumbnail-preview').html(ul);
-
-                    $('#{{ id }}').val(data.file);
-
-                    $('#{{ id }}-uploader-queue').html('');
-                    $('#{{ id }}-uploader').after(div);
+            function uploadSuccess(file, data, resource)
+            {
+                if($.type(data) !== 'object') {
+                    data = $.parseJSON(data);
                 }
 
-                $('#{{ id }}').hide();
-                $('#{{ id }}-uploader').uploadify({
-                        "swf" : "{{ asset('swf/uploadify.swf') }}",
-                        "uploader" : "{{ path("_image_upload") }}",
-                        "formData" : {"sessionId" : "{{ sessionId }}"},
-                        "buttonText" : "{{ "Select File"|trans }}",
-                        "multi"        : false,
-                        "onUploadSuccess" : uploadSuccess
-                    });
+                $('#{{ id }}-uploader').hide();
 
-                {% if value is not empty %}
-                    uploadSuccess(null, {"file" : "{{ value }}"});
-                {% endif %}
-            });
-        </script>
-    {% endspaceless %}
+                var img = $('<img />').attr('src', '{{ asset("uploads") }}/' + data.file);
+                var a = $('<a />').attr('href', '#').addClass('thumbnail').html(img);
+                var close_img = $('<b />').html('X').addClass('close');
+                var close = $('<a />').attr({'href' : '#', 'title' : '{{ "Remove Image"|trans }}"', 'rel' : 'tooltip'}).addClass('pull-right').html(close_img);
+
+                close.on('click', function(evt){
+                    evt.preventDefault();
+                    var a = $(this);
+
+                    a.parents('div.image-thumbnail-preview').remove();
+
+                    $('#{{ id }}-uploader').show();
+                    $("#{{ id }}").val('');
+                });
+
+                var li = $('<li />').addClass('span2').append(close).append(a);
+                var ul = $('<ul />').addClass('thumbnails').append(li);
+                var div = $('<div />').addClass('image-thumbnail-preview').html(ul);
+
+                $('#{{ id }}').val(data.file);
+
+                $('#{{ id }}-uploader-queue').html('');
+                $('#{{ id }}-uploader').after(div);
+            }
+
+            $('#{{ id }}').hide();
+            $('#{{ id }}-uploader').uploadify({
+                    "swf" : "{{ asset('swf/uploadify.swf') }}",
+                    "uploader" : "{{ path("_image_upload") }}",
+                    "formData" : {"sessionId" : "{{ sessionId }}"},
+                    "buttonText" : "{{ "Select File"|trans }}",
+                    "multi"        : false,
+                    "onUploadSuccess" : uploadSuccess
+                });
+
+            {% if value is not empty %}
+                uploadSuccess(null, {"file" : "{{ value }}"});
+            {% endif %}
+        });
+    </script>
+{% endspaceless %}
 {% endblock image_upload_widget %}
 
 {% block form_widget_simple %}
