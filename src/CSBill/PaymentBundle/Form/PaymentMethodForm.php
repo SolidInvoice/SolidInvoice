@@ -33,6 +33,8 @@ class PaymentMethodForm extends AbstractType
         );
 
         $builder->add('name');
+        $builder->add('defaultStatus');
+        $builder->add('public');
 
         $builder->add(
             'payment_method',

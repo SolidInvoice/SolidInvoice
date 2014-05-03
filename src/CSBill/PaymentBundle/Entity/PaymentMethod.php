@@ -48,6 +48,27 @@ class PaymentMethod
     private $settings;
 
     /**
+     * @var Status $status
+     *
+     * @ORM\ManyToOne(targetEntity="Status", inversedBy="paymentMethods")
+     */
+    private $defaultStatus;
+
+    /**
+     * @ORM\Column(name="public", type="boolean")
+     *
+     * @var bool
+     */
+    private $public;
+
+    /**
+     * @ORM\Column(name="enabled", type="boolean")
+     *
+     * @var bool
+     */
+    private $enabled;
+
+    /**
      * @var \DateTIme $created
      *
      * @ORM\Column(name="created", type="datetime")
@@ -153,6 +174,78 @@ class PaymentMethod
     public function getSettings()
     {
         return $this->settings;
+    }
+
+    /**
+     * Set status
+     *
+     * @param  Status  $status
+     * @return $this
+     */
+    public function setDefaultStatus(Status $status)
+    {
+        $this->defaultStatus = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return Status
+     */
+    public function getDefaultStatus()
+    {
+        return $this->defaultStatus;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublic()
+    {
+        return (bool) $this->public;
+    }
+
+    /**
+     * @param bool $public
+     *
+     * @return $this
+     */
+    public function setPublic($public)
+    {
+        $this->public = (bool) $public;
+
+        return $this;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return (bool) $this->enabled;
+    }
+
+    /**
+     * @return $this
+     */
+    public function enable()
+    {
+        $this->enabled = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disable()
+    {
+        $this->enabled = false;
+
+        return $this;
     }
 
     /**

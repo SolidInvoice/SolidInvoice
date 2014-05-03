@@ -20,3 +20,11 @@ _payments_load_settings:
     defaults: { _controller: CSBillPaymentBundle:Ajax:loadSettings }
     options:
         expose: true
+
+_payments_create:
+    path: /create/{id}
+    defaults: { _controller: CSBillPaymentBundle:Payment:preparePayment }
+
+_payments_done:
+    path: /done
+    defaults: { _controller: CSBillPaymentBundle:Payment:captureDone }

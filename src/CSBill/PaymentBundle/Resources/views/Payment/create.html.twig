@@ -1,0 +1,11 @@
+{% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    Total: {{ invoice.total|currency }}
+
+    <button type="submit" class="btn btn-info">{{ icon('credit-card') }} Pay Now</button>
+    {{ form_end(form) }}
+{% endblock %}

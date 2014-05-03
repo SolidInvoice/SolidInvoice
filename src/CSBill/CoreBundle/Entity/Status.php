@@ -26,7 +26,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\DiscriminatorMap({
  *      "client" = "CSBill\ClientBundle\Entity\Status",
  *      "invoice" = "CSBill\InvoiceBundle\Entity\Status",
- *      "quote" = "CSBill\QuoteBundle\Entity\Status"
+ *      "quote" = "CSBill\QuoteBundle\Entity\Status",
+ *      "payment" = "CSBill\PaymentBundle\Entity\Status",
  * })
  * @Gedmo\SoftDeleteable(fieldName="deleted")
  */
