@@ -71,7 +71,7 @@ class PaymentDetails extends ArrayObject
     /**
      * Set status
      *
-     * @param  Status  $status
+     * @param  Status $status
      * @return $this
      */
     public function setStatus(Status $status)

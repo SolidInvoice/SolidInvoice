@@ -134,4 +134,4 @@ class StatusRequest extends BaseStatusRequest
     {
         return $this->status === STATUS::STATUS_UNKNOWN;
     }
-} 
+}

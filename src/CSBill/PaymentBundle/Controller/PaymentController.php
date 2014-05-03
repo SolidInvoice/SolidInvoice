@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
@@ -36,7 +35,7 @@ class PaymentController extends BaseController
             'entity',
             array(
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
-                'query_builder' => function(PaymentMethod $repository) {
+                'query_builder' => function (PaymentMethod $repository) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
                     $queryBuilder->where('pm.enabled = 1');
 
@@ -127,7 +126,7 @@ class PaymentController extends BaseController
             );
             $entityManager->persist($invoice);
             $this->flash('Payment success.', 'success');
-        } else if ($status->isPending()) {
+        } elseif ($status->isPending()) {
             $this->flash('Payment is still pending.', 'warning');
         } else {
             $this->flash('Payment failed.', 'error');
@@ -137,4 +136,4 @@ class PaymentController extends BaseController
 
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }
-} 
+}

@@ -179,7 +179,7 @@ class PaymentMethod
     /**
      * Set status
      *
-     * @param  Status  $status
+     * @param  Status $status
      * @return $this
      */
     public function setDefaultStatus(Status $status)
@@ -218,7 +218,6 @@ class PaymentMethod
 
         return $this;
     }
-
 
     /**
      * @return bool

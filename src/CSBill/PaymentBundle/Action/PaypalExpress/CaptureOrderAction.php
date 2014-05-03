@@ -100,4 +100,4 @@ class CaptureOrderAction extends PaymentAwareAction
             !$request->getModel()->getDetails()
             ;
     }
-} 
+}
