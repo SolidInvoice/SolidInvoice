@@ -15,10 +15,12 @@ payum:
             paypal_express_checkout_nvp:
                 api:
                     options:
-                        username:  EDITME
-                        password:  EDITME
-                        signature: EDITME
-                        sandbox: EDITME
+                        username:  NOT USED
+                        password:  NOT USED
+                        signature: NOT USED
+                        sandbox: true
+                apis:
+                    - csbill.payment.payum.paypal_express_checkout_api
                 actions:
                     - csbill.payment.payum.paypal_express.action.capture_order_action
             storages:

@@ -15,3 +15,13 @@ services:
     csbill.payment.payum.paypal_express.action.capture_order_action:
         class: %csbill.payment.payum.paypal_express.action.capture_order.class%
         arguments: [@payum.security.token_factory, %currency%]
+
+    csbill.payment.payum.paypal_express_checkout_api:
+        class: Payum\Paypal\ExpressCheckout\Nvp\Api
+        arguments:
+            - @payum.buzz.client
+            - @=service("csbill.payment.method.options").get('paypal_express_checkout')
+
+    csbill.payment.method.options:
+        class: CSBill\PaymentBundle\Manager\PaymentSettingsManager
+        arguments: [@doctrine]
