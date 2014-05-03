@@ -20,11 +20,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuoteUsersSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData', FormEvents::PRE_SUBMIT => 'preSetData');
+        return array(
+            FormEvents::PRE_SET_DATA => 'preSetData',
+            FormEvents::PRE_SUBMIT => 'preSetData'
+        );
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
@@ -35,12 +44,12 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Quote) {
-            $client_id = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
+            $clientId = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
         } else {
-            $client_id = isset($data['client']) ? $data['client'] : null;
+            $clientId = isset($data['client']) ? $data['client'] : null;
         }
 
-        if (!empty($client_id)) {
+        if (!empty($clientId)) {
             $form->add(
                 'users',
                 'entity',
@@ -51,8 +60,10 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                     'multiple' => true,
                     'expanded' => true,
                     'class' => 'CSBillClientBundle:Contact',
-                    'query_builder' => function (EntityRepository $repo) use ($client_id) {
-                        return $repo->createQueryBuilder('c')->where('c.client = :client')->setParameter('client', $client_id);
+                    'query_builder' => function (EntityRepository $repo) use ($clientId) {
+                        return $repo->createQueryBuilder('c')
+                            ->where('c.client = :client')
+                            ->setParameter('client', $clientId);
                     }
                 )
             );

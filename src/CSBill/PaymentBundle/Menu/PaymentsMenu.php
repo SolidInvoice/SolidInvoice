@@ -23,6 +23,12 @@ class PaymentsMenu extends AuthenticatedMenu
      */
     public function topMenu(ItemInterface $menu)
     {
-        $menu['system']->addChild('Payment Methods', array('route' => '_payments_index', 'extras' => array('icon' => 'credit-card')));
+        $menu['system']->addChild(
+            'Payment Methods',
+            array(
+                'route' => '_payments_index',
+                'extras' => array('icon' => 'credit-card')
+            )
+        );
     }
 }

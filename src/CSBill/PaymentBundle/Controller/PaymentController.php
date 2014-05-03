@@ -56,7 +56,10 @@ class PaymentController extends BaseController
 
             $paymentName = $paymentMethod->getContext();
 
-            $status = $this->getRepository('CSBillPaymentBundle:Status')->findOneBy(array('name' => Status::STATUS_NEW));
+            $status = $this
+                ->getRepository('CSBillPaymentBundle:Status')
+                ->findOneBy(array('name' => Status::STATUS_NEW));
+
             $details = new PaymentDetails;
             /** @var \CSBill\PaymentBundle\Entity\PaymentDetails $paymentDetails */
             $invoice->addPayment($details);

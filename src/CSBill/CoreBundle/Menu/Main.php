@@ -45,7 +45,13 @@ class Main extends AuthenticatedMenu
 
         $userMenu->addChild('Profile', array('route' => 'fos_user_profile_show', 'extras' => array('icon' => 'user')));
         $userMenu->addDivider();
-        $userMenu->addChild('Logout', array('route' => 'fos_user_security_logout', 'extras' => array('icon' => 'power-off')));
+        $userMenu->addChild(
+            'Logout',
+            array(
+                'route' => 'fos_user_security_logout',
+                'extras' => array('icon' => 'power-off')
+            )
+        );
 
         $userMenu->setChildrenAttributes(array('class' => 'dropdown-menu'));
     }
@@ -72,9 +78,12 @@ class Main extends AuthenticatedMenu
 
         $system->setAttributes(array('class' => 'dropdown'));
         $system->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
-        $system->addChild('Settings', array(
+        $system->addChild(
+            'Settings',
+            array(
                 'route' => '_settings',
-                'extras' => array('icon' => 'cog'))
+                'extras' => array('icon' => 'cog')
+            )
         );
         $system->setChildrenAttributes(array('class' => 'dropdown-menu'));
     }

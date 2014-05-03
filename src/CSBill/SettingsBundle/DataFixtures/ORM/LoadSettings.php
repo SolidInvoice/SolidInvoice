@@ -65,7 +65,10 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
                 }
 
                 if (isset($setting['children'])) {
-                    $this->loadSettingValues($setting['children'], implode('.', array_filter(array($reference, $section))));
+                    $this->loadSettingValues(
+                        $setting['children'],
+                        implode('.', array_filter(array($reference, $section)))
+                    );
                 }
             }
         }

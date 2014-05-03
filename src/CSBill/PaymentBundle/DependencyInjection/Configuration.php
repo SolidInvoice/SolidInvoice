@@ -8,6 +8,18 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
+     * @var array
+     */
+    protected $availableFieldTypes = array(
+        'text',
+        'password',
+        'checkbox',
+        'radio',
+        'dropdown',
+        'textarea'
+    );
+
+    /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
@@ -23,7 +35,9 @@ class Configuration implements ConfigurationInterface
                         ->canBeDisabled()
                         ->beforeNormalization()
                             ->ifString()
-                            ->then(function ($v) { return array('context'=> $v); })
+                            ->then(function ($v) {
+                                return array('context'=> $v);
+                            })
                         ->end()
                         ->children()
                             ->scalarNode('context')
@@ -38,7 +52,7 @@ class Configuration implements ConfigurationInterface
                                             ->cannotBeEmpty()
                                         ->end()
                                         ->enumNode('type')
-                                            ->values(array('text', 'password', 'checkbox', 'radio', 'dropdown'))
+                                            ->values($this->availableFieldTypes)
                                             ->defaultValue('text')
                                         ->end()
                                     ->end()

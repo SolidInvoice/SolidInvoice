@@ -142,7 +142,11 @@ class Invoice
     /**
      * @var ArrayCollection $payments
      *
-     * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\PaymentDetails", mappedBy="invoice", cascade={"persist"})
+     * @ORM\OneToMany(
+     *     targetEntity="CSBill\PaymentBundle\Entity\PaymentDetails",
+     *     mappedBy="invoice",
+     *     cascade={"persist"}
+     * )
      */
     private $payments;
 
@@ -499,7 +503,7 @@ class Invoice
     /**
      * Removes a payment
      *
-     * @param  PaymentDetails $payment
+     * @param PaymentDetails $payment
     *
      * @return Invoice
      */
