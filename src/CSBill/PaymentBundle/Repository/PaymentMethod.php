@@ -23,4 +23,4 @@ class PaymentMethod extends EntityRepository
 
         return $settings['settings'];
     }
-} 
+}

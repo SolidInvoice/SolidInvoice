@@ -33,8 +33,22 @@ class PaymentMethodForm extends AbstractType
         );
 
         $builder->add('name');
-        $builder->add('defaultStatus');
-        $builder->add('public');
+        $builder->add(
+            'defaultStatus',
+            null,
+            array(
+                'label' => 'Force payment status'
+            )
+        );
+
+        $builder->add('enabled');
+        $builder->add(
+            'public',
+            null,
+            array(
+                'label' => 'Available for client use'
+            )
+        );
 
         $builder->add(
             'payment_method',

@@ -7,8 +7,10 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\PaymentDetails;
 use CSBill\PaymentBundle\Entity\Status;
+use CSBill\PaymentBundle\Repository\PaymentMethod;
 use Symfony\Component\HttpFoundation\Request;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PaymentController extends BaseController
 {
@@ -29,7 +31,21 @@ class PaymentController extends BaseController
 
         $builder = $this->createFormBuilder();
 
-        $builder->add('payment_method', 'entity', array('class' => 'CSBillPaymentBundle:PaymentMethod'));
+        $builder->add(
+            'payment_method',
+            'entity',
+            array(
+                'class' => 'CSBillPaymentBundle:PaymentMethod',
+                'query_builder' => function(PaymentMethod $repository) {
+                    $queryBuilder = $repository->createQueryBuilder('pm');
+                    $queryBuilder->where('pm.enabled = 1');
+
+                    return $queryBuilder;
+                },
+                'required' => true,
+                'constraints' => new NotBlank()
+            )
+        );
 
         $form = $builder->getForm();
 
