@@ -27,4 +27,4 @@ class InvoicePaidEvent extends Event
     {
         return $this->invoice;
     }
-} 
+}

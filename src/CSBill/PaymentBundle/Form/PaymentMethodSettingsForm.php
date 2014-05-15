@@ -31,7 +31,7 @@ class PaymentMethodSettingsForm extends AbstractType
     {
         $options = array();
 
-        switch($field) {
+        switch ($field) {
             case 'password' :
                 $options['always_empty'] = false;
                 break;

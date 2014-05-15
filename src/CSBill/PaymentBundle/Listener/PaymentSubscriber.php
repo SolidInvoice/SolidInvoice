@@ -43,4 +43,4 @@ class PaymentSubscriber implements EventSubscriberInterface
             $this->manager->markPaid($payment->getInvoice());
         }
     }
-} 
+}
