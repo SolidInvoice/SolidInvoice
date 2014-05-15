@@ -61,7 +61,20 @@ class DefaultController extends BaseController
         $editAction->addAttribute('title', $translator->trans('invoice_edit'));
         $editAction->addAttribute('rel', 'tooltip');
 
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
+        $payIcon = $templating->render('{{ icon("credit-card") }}');
+        $payAction = new RowAction($payIcon, '_payments_create');
+        $payAction->addAttribute('title', $translator->trans('pay_now'));
+        $payAction->addAttribute('rel', 'tooltip');
+
+        $payAction->manipulateRender(function(\APY\DataGridBundle\Grid\Action\RowAction $rowAction, \APY\DataGridBundle\Grid\Row $row) {
+            if ('pending' !== $row->getField('status.name')) {
+                $rowAction->setTitle('');;
+            }
+
+            return $rowAction;
+        });
+
+        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $payAction));
         $grid->addColumn($actionsRow, 100);
 
         $grid->hideColumns(array('updated', 'deleted', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));
