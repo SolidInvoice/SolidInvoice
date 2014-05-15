@@ -14,6 +14,6 @@ services:
 
     invoice.manager:
         class: %csbill_invoice.manager.class%
-        arguments: [@doctrine]
+        arguments: [@doctrine, @event_dispatcher]
         calls:
             - [ setContainer, [@service_container]]

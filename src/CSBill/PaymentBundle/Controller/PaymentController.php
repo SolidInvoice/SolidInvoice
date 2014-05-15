@@ -6,6 +6,8 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\PaymentDetails;
 use CSBill\PaymentBundle\Entity\Status;
+use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
+use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Repository\PaymentMethod;
 use Symfony\Component\HttpFoundation\Request;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
@@ -65,6 +67,7 @@ class PaymentController extends BaseController
             $invoice->addPayment($details);
             $details->setInvoice($invoice);
             $details->setStatus($status);
+            $details->setMethod($data['payment_method']);
 
             $entityManager = $this->getEm();
             $entityManager->persist($details);
@@ -120,7 +123,6 @@ class PaymentController extends BaseController
         $invoice = $paymentDetails->getInvoice();
 
         if ($status->isSuccess()) {
-
             $invoice->setPaidDate(new \DateTime('NOW'));
             $invoice->setStatus(
                 $this
@@ -136,6 +138,9 @@ class PaymentController extends BaseController
         }
 
         $entityManager->flush();
+
+        $event = new PaymentCompleteEvent($paymentDetails);
+        $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
 
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }

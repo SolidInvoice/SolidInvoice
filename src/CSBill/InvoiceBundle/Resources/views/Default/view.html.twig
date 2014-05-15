@@ -29,13 +29,16 @@
 
             {% if invoice is draft or invoice is pending %}
                 <div class="btn-group">
+                    <a href="{{ path('_payments_create', {'id' : invoice.id}) }}" class="btn btn-primary">{{ "pay_now"|trans }}</a>
                     <a href="{{ path('_cancel_invoice', {'id' : invoice.id}) }}" class="btn btn-inverse">{{ "Cancel"|trans }}</a>
                 </div>
             {% endif %}
 
-            <div class="btn-group">
-                <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">{{ "Edit"|trans }}</a>
-            </div>
+            {% if invoice is not paid %}
+                <div class="btn-group">
+                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">{{ "Edit"|trans }}</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 

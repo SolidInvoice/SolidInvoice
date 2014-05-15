@@ -29,22 +29,22 @@ class QuoteTotalListener
 {
     public function postLoad(LifecycleEventArgs $event)
     {
-        $em = $event->getEntityManager();
         $entity = $event->getEntity();
 
-        if ($entity instanceof Quote) {
-            if (count($entity->getUsers()) > 0) {
-                $contacts = $em->getRepository('CSBillClientBundle:Contact')
-                    ->findById(
-                        array_map(function ($item) {
-                                return $item->getId();
-                            },
-                            $entity->getUsers()->toArray()
-                        )
-                    );
+        if ($entity instanceof Quote && count($entity->getUsers()) > 0) {
+            $em = $event->getEntityManager();
 
-                $entity->setUsers($contacts);
-            }
+            $contacts = $em
+                ->getRepository('CSBillClientBundle:Contact')
+                ->findById(
+                    array_map(function ($item) {
+                            return $item->getId();
+                        },
+                        $entity->getUsers()->toArray()
+                    )
+                );
+
+            $entity->setUsers($contacts);
         }
     }
 }

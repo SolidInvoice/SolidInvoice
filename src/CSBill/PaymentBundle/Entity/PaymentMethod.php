@@ -5,6 +5,7 @@ namespace CSBill\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Table(name="payment_methods")
@@ -93,6 +94,22 @@ class PaymentMethod
      * @Assert\DateTime()
      */
     private $deleted;
+
+    /**
+     * @var ArrayCollection $payments
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="CSBill\PaymentBundle\Entity\PaymentDetails",
+     *     mappedBy="method",
+     *     cascade={"persist"}
+     * )
+     */
+    private $payments;
+
+    public function __construct()
+    {
+        $this->payments = new ArrayCollection;
+    }
 
     /**
      * Get id
@@ -228,11 +245,13 @@ class PaymentMethod
     }
 
     /**
+     * @param bool $enabled
+     *
      * @return $this
      */
-    public function enable()
+    public function setEnabled($enabled)
     {
-        $this->enabled = true;
+        $this->enabled = (bool) $enabled;
 
         return $this;
     }
@@ -314,6 +333,44 @@ class PaymentMethod
     public function getDeleted()
     {
         return $this->created;
+    }
+
+    /**
+     * Add payment
+     *
+     * @param  PaymentDetails $payment
+     * @return $this
+     */
+    public function addPayment(PaymentDetails $payment)
+    {
+        $this->payments[] = $payment;
+        $payment->setInvoice($this);
+
+        return $this;
+    }
+
+    /**
+     * Removes a payment
+     *
+     * @param PaymentDetails $payment
+     *
+     * @return $this
+     */
+    public function removePayment(PaymentDetails $payment)
+    {
+        $this->payments->removeElement($payment);
+
+        return $this;
+    }
+
+    /**
+     * Get payments
+     *
+     * @return ArrayCollection
+     */
+    public function getPayments()
+    {
+        return $this->payments;
     }
 
     /**

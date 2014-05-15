@@ -14,23 +14,41 @@ namespace CSBill\InvoiceBundle\Manager;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
+use CSBill\InvoiceBundle\Event\InvoiceEvents;
+use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceManager extends ContainerAware
 {
     /**
-     * @var \CSBill\InvoiceBundle\Repository\InvoiceRepository
+     * @var RegistryInterface
      */
-    protected $repository;
+    protected $entityManager;
 
     /**
-     * @param RegistryInterface $doctrine
+     * @var EventDispatcherInterface
      */
-    public function __construct(RegistryInterface $doctrine)
+    protected $dispatcher;
+
+    /**
+     * @param RegistryInterface        $doctrine
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function __construct(RegistryInterface $doctrine, EventDispatcherInterface $dispatcher)
     {
-        $this->repository = $doctrine->getRepository('CSBillInvoiceBundle:Invoice');
+        $this->entityManager = $doctrine;
+        $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * @return \CSBill\InvoiceBundle\Repository\InvoiceRepository
+     */
+    protected function getInvoiceRepository()
+    {
+        return $this->entityManager->getRepository('CSBillInvoiceBundle:Invoice');
     }
 
     /**
@@ -86,7 +104,7 @@ class InvoiceManager extends ContainerAware
      */
     public function getCount($status = null, Client $client = null)
     {
-        return $this->repository->getCountByStatus($status, $client);
+        return $this->getInvoiceRepository()->getCountByStatus($status, $client);
     }
 
     /**
@@ -95,7 +113,7 @@ class InvoiceManager extends ContainerAware
      */
     public function getTotalIncome(Client $client = null)
     {
-        return $this->repository->getTotalIncome($client);
+        return $this->getInvoiceRepository()->getTotalIncome($client);
     }
 
     /**
@@ -104,7 +122,7 @@ class InvoiceManager extends ContainerAware
      */
     public function getTotalOutstanding(Client $client = null)
     {
-        return $this->repository->getTotalOutstanding($client);
+        return $this->getInvoiceRepository()->getTotalOutstanding($client);
     }
 
     /**
@@ -128,5 +146,28 @@ class InvoiceManager extends ContainerAware
                 $cloneMetadata->setFieldValue($clone, $field, $metadata->getFieldValue($object, $field));
             }
         }
+    }
+
+    /**
+     * @param Invoice $invoice
+     */
+    public function markPaid(Invoice $invoice)
+    {
+        $invoice->setPaidDate(new \DateTime('NOW'));
+        $this->setInvoiceStatus($invoice, 'paid');
+
+        $status = $this
+            ->entityManager
+            ->getRepository('CSBillInvoiceBundle:Status')
+            ->findOneBy(array('name' => 'paid'));
+
+        $invoice->setStatus($status);
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
+        $event = new InvoicePaidEvent();
+        $event->setInvoice($invoice);
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PAID, $event);
     }
 }

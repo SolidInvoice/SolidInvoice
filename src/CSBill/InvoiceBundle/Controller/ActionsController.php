@@ -36,8 +36,7 @@ class ActionsController extends BaseController
      */
     public function payAction(Invoice $invoice)
     {
-        $invoice->setPaidDate(new \DateTime('NOW'));
-        $this->setInvoiceStatus($invoice, 'paid');
+        $this->get('invoice.manager')->markPaid($invoice);
 
         $this->flash($this->trans('Invoice Paid'), 'success');
 

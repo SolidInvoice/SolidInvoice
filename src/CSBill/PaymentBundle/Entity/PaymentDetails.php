@@ -30,6 +30,13 @@ class PaymentDetails extends ArrayObject
     private $invoice;
 
     /**
+     * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
+     *
+     * @var PaymentMethod
+     */
+    private $method;
+
+    /**
      * @var Status $status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="payments")
@@ -64,6 +71,26 @@ class PaymentDetails extends ArrayObject
     public function setInvoice(Invoice $invoice)
     {
         $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * @return PaymentMethod
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param PaymentMethod $method
+     *
+     * @return $this
+     */
+    public function setMethod(PaymentMethod $method)
+    {
+        $this->method = $method;
 
         return $this;
     }

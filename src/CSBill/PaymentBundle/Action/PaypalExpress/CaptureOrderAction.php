@@ -78,7 +78,7 @@ class CaptureOrderAction extends PaymentAwareAction
 
             $paymentDetails['PAYMENTREQUEST_0_NOTIFYURL'] = $this->tokenFactory->createNotifyToken(
                 $request->getToken()->getPaymentName(),
-                $invoice
+                $request->getModel()
             )->getTargetUrl();
 
             $model->setDetails($details);
