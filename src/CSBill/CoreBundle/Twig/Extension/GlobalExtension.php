@@ -107,7 +107,7 @@ class GlobalExtension extends Twig_Extension
     public function formatPercentage($amount, $percentage = 0)
     {
         if ($percentage > 0) {
-            return ($amount * $percentage) / 100;
+            return ($amount * $percentage);
         }
 
         return 0;
