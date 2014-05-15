@@ -73,6 +73,14 @@ class DefaultController extends BaseController
             return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
         })->setSafe(false);
 
+        $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
+            if (!empty($value)) {
+                return $value * 100 . '%';
+            }
+
+            return (int) $value;
+        });
+
         $grid->setPermanentFilters(array(
             'client.name' => array('operator' => 'isNotNull')
         ));

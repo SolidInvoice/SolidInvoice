@@ -458,7 +458,7 @@ class Quote
             $this->setBaseTotal($total);
 
             if ($this->discount > 0) {
-                $total -= ($total * $this->discount) / 100;
+                $total -= ($total * $this->discount);
             }
 
             $this->setTotal($total);
