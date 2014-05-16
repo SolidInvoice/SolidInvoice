@@ -40,12 +40,13 @@ class CaptureOrderAction extends PaymentAwareAction
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 
+        /** @var PaymentDetails $model */
         $model = $request->getModel();
 
         $details = array();
 
         /** @var \CSBill\InvoiceBundle\Entity\Invoice $invoice */
-        $invoice = $model->getInvoice();
+        $invoice = $model->getPayment()->getInvoice();
 
         if (0 === count($model->getIterator())) {
             $details['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency;
@@ -68,7 +69,7 @@ class CaptureOrderAction extends PaymentAwareAction
             if (null !== $invoice->getDiscount()) {
                 $discount = ($invoice->getTotal() * $invoice->getDiscount()) / 100;
                 $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Discount';
-                $details['L_PAYMENTREQUEST_0_AMT'.$counter]  = number_format($discount, 2);
+                $details['L_PAYMENTREQUEST_0_AMT'.$counter]  = number_format($discount, 2) * -1;
                 $details['L_PAYMENTREQUEST_0_QTY'.$counter]  = 1;
             }
 
@@ -76,7 +77,7 @@ class CaptureOrderAction extends PaymentAwareAction
             $details['RETURNURL'] = $request->getToken()->getTargetUrl();
             $details['CANCELURL'] = $request->getToken()->getTargetUrl();
 
-            $paymentDetails['PAYMENTREQUEST_0_NOTIFYURL'] = $this->tokenFactory->createNotifyToken(
+            $details['PAYMENTREQUEST_0_NOTIFYURL'] = $this->tokenFactory->createNotifyToken(
                 $request->getToken()->getPaymentName(),
                 $request->getModel()
             )->getTargetUrl();

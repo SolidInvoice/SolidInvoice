@@ -4,6 +4,7 @@ namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Entity\PaymentDetails;
 use CSBill\PaymentBundle\Entity\Status;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
@@ -62,20 +63,21 @@ class PaymentController extends BaseController
                 ->getRepository('CSBillPaymentBundle:Status')
                 ->findOneBy(array('name' => Status::STATUS_NEW));
 
-            $details = new PaymentDetails;
-            /** @var \CSBill\PaymentBundle\Entity\PaymentDetails $paymentDetails */
-            $invoice->addPayment($details);
-            $details->setInvoice($invoice);
-            $details->setStatus($status);
-            $details->setMethod($data['payment_method']);
+            $payment = new Payment;
+            $invoice->addPayment($payment);
+            $payment->setInvoice($invoice);
+            $payment->setStatus($status);
+            $payment->setMethod($data['payment_method']);
+            $payment->setAmount($invoice->getBaseTotal());
+            $payment->setCurrency($this->container->getParameter('currency'));
 
             $entityManager = $this->getEm();
-            $entityManager->persist($details);
+            $entityManager->persist($payment);
             $entityManager->flush();
 
             $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
                 $paymentName,
-                $details,
+                $payment->getDetails(),
                 '_payments_done' // the route to redirect after capture;
             );
 
@@ -109,7 +111,7 @@ class PaymentController extends BaseController
         $status = new StatusRequest($token);
         $payment->execute($status);
 
-        $paymentDetails = $status->getModel();
+        $paymentDetails = $status->getModel()->getPayment();
 
         $paymentDetails->setStatus(
             $this

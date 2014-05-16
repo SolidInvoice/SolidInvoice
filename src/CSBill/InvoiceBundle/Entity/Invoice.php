@@ -11,7 +11,7 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
-use CSBill\PaymentBundle\Entity\PaymentDetails;
+use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Rhumsaa\Uuid\Uuid;
@@ -143,7 +143,7 @@ class Invoice
      * @var ArrayCollection $payments
      *
      * @ORM\OneToMany(
-     *     targetEntity="CSBill\PaymentBundle\Entity\PaymentDetails",
+     *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
      *     mappedBy="invoice",
      *     cascade={"persist"}
      * )
@@ -489,10 +489,10 @@ class Invoice
     /**
      * Add payment
      *
-     * @param  PaymentDetails $payment
+     * @param  Payment $payment
      * @return Invoice
      */
-    public function addPayment(PaymentDetails $payment)
+    public function addPayment(Payment $payment)
     {
         $this->payments[] = $payment;
         $payment->setInvoice($this);
@@ -503,11 +503,11 @@ class Invoice
     /**
      * Removes a payment
      *
-     * @param PaymentDetails $payment
+     * @param Payment $payment
     *
      * @return Invoice
      */
-    public function removePayment(PaymentDetails $payment)
+    public function removePayment(Payment $payment)
     {
         $this->payments->removeElement($payment);
 

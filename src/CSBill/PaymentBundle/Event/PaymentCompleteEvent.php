@@ -2,26 +2,26 @@
 
 namespace CSBill\PaymentBundle\Event;
 
-use CSBill\PaymentBundle\Entity\PaymentDetails;
+use CSBill\PaymentBundle\Entity\Payment;
 use Symfony\Component\EventDispatcher\Event;
 
 class PaymentCompleteEvent extends Event
 {
     /**
-     * @var PaymentDetails
+     * @var Payment
      */
     protected $payment;
 
     /**
-     * @param PaymentDetails $payment
+     * @param Payment $payment
      */
-    public function __construct(PaymentDetails $payment)
+    public function __construct(Payment $payment)
     {
         $this->payment = $payment;
     }
 
     /**
-     * @return PaymentDetails
+     * @return Payment
      */
     public function getPayment()
     {

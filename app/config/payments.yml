@@ -8,9 +8,12 @@ payum:
         offline:
             offline: ~
             storages:
-                CSBill\PaymentBundle\Entity\PaymentDetails:
+                CSBill\PaymentBundle\Entity\Payment:
                     doctrine:
                         driver: orm
+                CSBill\PaymentBundle\Entity\PaymentDetails:
+                      doctrine:
+                          driver: orm
         paypal_express_checkout_nvp:
             paypal_express_checkout_nvp:
                 api:
@@ -24,6 +27,9 @@ payum:
                 actions:
                     - csbill.payment.payum.paypal_express.action.capture_order_action
             storages:
+                CSBill\PaymentBundle\Entity\Payment:
+                    doctrine:
+                        driver: orm
                 CSBill\PaymentBundle\Entity\PaymentDetails:
                     doctrine:
                         driver: orm

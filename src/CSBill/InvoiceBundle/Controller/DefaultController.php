@@ -66,7 +66,7 @@ class DefaultController extends BaseController
         $payAction->addAttribute('title', $translator->trans('pay_now'));
         $payAction->addAttribute('rel', 'tooltip');
 
-        $payAction->manipulateRender(function(\APY\DataGridBundle\Grid\Action\RowAction $rowAction, \APY\DataGridBundle\Grid\Row $row) {
+        $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
             if ('pending' !== $row->getField('status.name')) {
                 $rowAction->setTitle('');;
             }

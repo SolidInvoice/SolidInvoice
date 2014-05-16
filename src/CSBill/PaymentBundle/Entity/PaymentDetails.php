@@ -2,10 +2,8 @@
 
 namespace CSBill\PaymentBundle\Entity;
 
-use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Payum\Core\Model\ArrayObject;
-use APY\DataGridBundle\Grid\Mapping as Grid;
 
 /**
  * @ORM\Table(name="payment_details")
@@ -23,27 +21,11 @@ class PaymentDetails extends ArrayObject
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
+     * @var Payment
      *
-     * @var Invoice
+     * @ORM\OneToOne(targetEntity="Payment", mappedBy="details")
      */
-    private $invoice;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
-     *
-     * @var PaymentMethod
-     */
-    private $method;
-
-    /**
-     * @var Status $status
-     *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="payments")
-     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
-     * @Grid\Column(field="status.label", visible=false)
-     */
-    private $status;
+    private $payment;
 
     /**
      * Get the id
@@ -56,66 +38,23 @@ class PaymentDetails extends ArrayObject
     }
 
     /**
-     * @return Invoice
+     * @return Payment
      */
-    public function getInvoice()
+    public function getPayment()
     {
-        return $this->invoice;
+        return $this->payment;
     }
 
     /**
-     * @param Invoice $invoice
+     * @param Payment $payment
      *
      * @return $this
      */
-    public function setInvoice(Invoice $invoice)
+    public function setInvoice(Payment $payment)
     {
-        $this->invoice = $invoice;
+        $this->payment = $payment;
 
         return $this;
-    }
-
-    /**
-     * @return PaymentMethod
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    /**
-     * @param PaymentMethod $method
-     *
-     * @return $this
-     */
-    public function setMethod(PaymentMethod $method)
-    {
-        $this->method = $method;
-
-        return $this;
-    }
-
-    /**
-     * Set status
-     *
-     * @param  Status $status
-     * @return $this
-     */
-    public function setStatus(Status $status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return Status
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
