@@ -45,4 +45,43 @@
     </div>
 
     {% include "CSBillInvoiceBundle::invoice_template.html.twig" %}
+
+    <div class="col-md-10">
+        <hr />
+        <h3>{{ 'payments'|trans }}</h3>
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>{{ 'payment_id'|trans }}</th>
+                    <th>{{ 'method'|trans }}</th>
+                    <th>{{ 'amount'|trans }}</th>
+                    <th>{{ 'currency'|trans }}</th>
+                    <th>{{ 'payment_date'|trans }}</th>
+                    <th>{{ 'status'|trans }}</th>
+                </tr>
+            </thead>
+            {% for payment in payments %}
+                <tr>
+                    <td>
+                        {{ payment.id }}
+                    </td>
+                    <td>
+                        {{ payment.method }}
+                    </td>
+                    <td>
+                        {{ payment.amount|currency }}
+                    </td>
+                    <td>
+                        {{ payment.currency }}
+                    </td>
+                    <td>
+                        {{ payment.created|date }}
+                    </td>
+                    <td>
+                        {{ status_label(payment) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock content %}

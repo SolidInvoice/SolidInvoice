@@ -40,7 +40,7 @@ class Status extends BaseStatus
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="PaymentDetails", mappedBy="status", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="Payment", mappedBy="status", fetch="EXTRA_LAZY")
      */
     private $payments;
     /**

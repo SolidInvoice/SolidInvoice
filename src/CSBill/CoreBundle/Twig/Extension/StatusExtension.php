@@ -80,6 +80,13 @@ class StatusExtension extends \Twig_Extension
      */
     public function renderStatusLabel($object)
     {
+        if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
+            $object = array(
+                'name' => $object['status'],
+                'label' => $object['status_label'],
+            );
+        }
+
         return $this->environment->render('CSBillCoreBundle:Status:label.html.twig', array('entity' => $object));
     }
 

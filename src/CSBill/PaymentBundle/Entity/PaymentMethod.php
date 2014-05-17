@@ -99,7 +99,7 @@ class PaymentMethod
      * @var ArrayCollection $payments
      *
      * @ORM\OneToMany(
-     *     targetEntity="CSBill\PaymentBundle\Entity\PaymentDetails",
+     *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
      *     mappedBy="method",
      *     cascade={"persist"}
      * )

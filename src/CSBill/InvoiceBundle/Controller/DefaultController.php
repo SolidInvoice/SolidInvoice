@@ -174,7 +174,15 @@ class DefaultController extends BaseController
      */
     public function viewAction(Invoice $invoice)
     {
-        return $this->render('CSBillInvoiceBundle:Default:view.html.twig', array('invoice' => $invoice));
+        $payments = $this->getRepository('CSBillPaymentBundle:Payment')->getPaymentsForInvoice($invoice);
+
+        return $this->render(
+            'CSBillInvoiceBundle:Default:view.html.twig',
+            array(
+                'invoice'  => $invoice,
+                'payments' => $payments
+            )
+        );
     }
 
     /**
