@@ -15,3 +15,7 @@ amount: Amount
 currency: Currency
 payment_date: Payment Date
 status: Status
+total: Total
+base_total: Base Total
+
+payment_for_invoice: "Payment for invoice #%id%"

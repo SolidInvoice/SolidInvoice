@@ -45,7 +45,10 @@ class PaymentController extends BaseController
                     return $queryBuilder;
                 },
                 'required' => true,
-                'constraints' => new NotBlank()
+                'constraints' => new NotBlank(),
+                'attr' => array(
+                    'class' => 'chosen'
+                )
             )
         );
 

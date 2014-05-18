@@ -1,11 +1,46 @@
 {% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
 
+{% block title %}{{ "payment_for_invoice"|trans|replace({"%id%" : invoice.id}) }}{% endblock %}
+
 {% block content %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
 
-    Total: {{ invoice.total|currency }}
+    <div class="row">
+        <div class="col-md-5">
+            <div class="well well-sm">
+                <h3>
+                    {{ invoice.client.name }}
+                    <small>{{ status_label(invoice.client.status) }}</small>
+                </h3>
 
-    <button type="submit" class="btn btn-info">{{ icon('credit-card') }} Pay Now</button>
-    {{ form_end(form) }}
+                <div class="col-md-offset-6">
+                    <dl class="dl-horizontal">
+                        {% for item in invoice.items %}
+                            <dt>{{ item }}</dt>
+                            <dd>{{ item.total|currency }}</dd>
+                        {% endfor %}
+
+                        <hr />
+
+                        {% if invoice.discount is not empty %}
+                            <dt>{{ 'base_total'|trans }}</dt>
+                            <dd>{{ invoice.baseTotal|currency }}</dd>
+                            <dt>{{ 'discount'|trans }}</dt>
+                            <dd class="text-danger">-{{ (invoice.baseTotal * invoice.discount)|currency }}</dd>
+                        {% endif %}
+
+                        <dt>{{ 'total'|trans }}</dt>
+                        <dd>{{ invoice.total|currency }}</dd>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-5">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+
+            <button type="submit" class="btn btn-info">{{ icon('credit-card') }} Pay Now</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}
