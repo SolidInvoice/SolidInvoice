@@ -46,6 +46,7 @@
 
     {% include "CSBillInvoiceBundle::invoice_template.html.twig" %}
 
+    {% spaceless %}
     <div class="col-md-10">
         <hr />
         <h3>{{ 'payments'|trans }}</h3>
@@ -78,10 +79,11 @@
                         {{ payment.created|date }}
                     </td>
                     <td>
-                        {{ status_label(payment) }}
+                        {{ status_label(payment, payment.message) }}
                     </td>
                 </tr>
             {% endfor %}
         </table>
+        {% endspaceless %}
     </div>
 {% endblock content %}

@@ -1,6 +1,7 @@
 parameters:
     csbill_payment.menu.top.class: CSBill\PaymentBundle\Menu\PaymentsMenu
     csbill.payment.payum.paypal_express.action.capture_order.class: CSBill\PaymentBundle\Action\PaypalExpress\CaptureOrderAction
+    csbill.payment.payum.paypal_express.action.payment_status.class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
     csbill.payment.event.subscriber.class: CSBill\PaymentBundle\Listener\PaymentSubscriber
 
 services:
@@ -15,6 +16,10 @@ services:
 
     csbill.payment.payum.paypal_express.action.capture_order_action:
         class: %csbill.payment.payum.paypal_express.action.capture_order.class%
+        arguments: [@payum.security.token_factory, %currency%]
+
+    csbill.payment.payum.paypal_express.action.payment_status_action:
+        class: %csbill.payment.payum.paypal_express.action.payment_status.class%
         arguments: [@payum.security.token_factory, %currency%]
 
     csbill.payment.payum.paypal_express_checkout_api:

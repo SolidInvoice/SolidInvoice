@@ -12,11 +12,17 @@ class PaymentRepository extends EntityRepository
      * Returns an array of all the payments for an invoice
      *
      * @param Invoice $invoice
+     * @param string  $orderField
+     * @param string  $sort
      *
      * @return array
      */
-    public function getPaymentsForInvoice(Invoice $invoice)
+    public function getPaymentsForInvoice(Invoice $invoice, $orderField = null, $sort = 'DESC')
     {
+        if (null === $orderField) {
+            $orderField = 'p.created';
+        }
+
         $queryBuilder = $this->createQueryBuilder('p');
 
         $queryBuilder->select(
@@ -26,11 +32,13 @@ class PaymentRepository extends EntityRepository
             'p.created',
             'm.name as method',
             's.name as status',
-            's.label as status_label'
+            's.label as status_label',
+            'p.message'
         )
         ->join('p.method', 'm')
         ->join('p.status', 's')
         ->where('p.invoice = :invoice')
+        ->orderBy($orderField, $sort)
         ->setParameter('invoice', $invoice);
 
         $query = $queryBuilder->getQuery();

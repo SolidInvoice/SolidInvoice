@@ -59,6 +59,11 @@ class Payment
     private $currency;
 
     /**
+     * @ORM\Column(name="message", type="text", nullable=true)
+     */
+    private $message;
+
+    /**
      * @var PaymentDetails
      *
      * @ORM\OneToOne(targetEntity="PaymentDetails", inversedBy="payment", cascade={"persist"}, fetch="EAGER")
@@ -305,5 +310,25 @@ class Payment
     public function getDeleted()
     {
         return $this->created;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return Invoice
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
     }
 }

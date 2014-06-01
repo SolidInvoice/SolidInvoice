@@ -26,6 +26,7 @@ payum:
                     - csbill.payment.payum.paypal_express_checkout_api
                 actions:
                     - csbill.payment.payum.paypal_express.action.capture_order_action
+                    - csbill.payment.payum.paypal_express.action.payment_status_action
             storages:
                 CSBill\PaymentBundle\Entity\Payment:
                     doctrine:
