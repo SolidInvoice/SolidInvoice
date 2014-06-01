@@ -9,13 +9,19 @@
 
 {% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
-{% block title %}{{ client.name }}{% endblock title %}
+{% block page_title %}
+    {{ client.name }}
+{% endblock page_title %}
+
+{% block title %}
+    {{ block('page_title') }} <small>{{ status_label(client.status) }}</small>
+{% endblock title %}
 
 {% block sidebar_left %}
 	{{ menu('clients_view') }}
 {% endblock sidebar_left %}
 
-{% block heading %}
+{#{% block heading %}
 	<fieldset>
 		<legend>
 			<h3>
@@ -23,7 +29,7 @@
 			</h3>
 		</legend>
 	</fieldset>
-{% endblock heading %}
+{% endblock heading %}#}
 
 {% block content %}
 

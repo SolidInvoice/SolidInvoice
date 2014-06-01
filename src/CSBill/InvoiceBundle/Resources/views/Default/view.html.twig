@@ -9,7 +9,8 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block title %}{{ "Invoice #%id"|trans|replace({"%id" : invoice.id}) }} {{ status_label(invoice.status) }}{% endblock %}
+{% block page_title %}{{ "Invoice #%id"|trans|replace({"%id" : invoice.id}) }}{% endblock page_title %}
+{% block title %}{{ block('page_title') }} <small>{{ status_label(invoice.status) }}</small>{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_view') }}
@@ -44,7 +45,7 @@
         </div>
     </div>
 
-    {% include "CSBillInvoiceBundle::invoice_template.html.twig" %}
+    {% include "CSBillInvoiceBundle::invoice_template.html.twig" with {"link_client" : true} %}
 
     {% spaceless %}
     <div class="col-md-10">

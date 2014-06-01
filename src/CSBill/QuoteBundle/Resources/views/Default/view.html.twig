@@ -9,7 +9,12 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block title %}{{ "Quote #%id"|trans|replace({"%id" : quote.id}) }} {{ status_label(quote.status) }}{% endblock %}
+{% block page_title %}
+    {{ "Quote #%id"|trans|replace({"%id" : quote.id}) }}
+{% endblock page_title %}
+{% block title %}
+    {{ block('page_title') }} <small>{{ status_label(quote.status) }}</small>
+{% endblock title %}
 
 {% block sidebar %}
     {{ menu('quotes_view') }}
@@ -44,5 +49,5 @@
         </div>
     </div>
 
-    {% include "CSBillQuoteBundle::quote_template.html.twig" %}
+    {% include "CSBillQuoteBundle::quote_template.html.twig" with {'link_client' : true} %}
 {% endblock content %}

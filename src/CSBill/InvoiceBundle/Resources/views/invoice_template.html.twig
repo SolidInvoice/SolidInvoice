@@ -26,7 +26,15 @@
     <table style="width:100%">
         <tr>
             <td style="width: 50%" valign="top">
-                <h3>{{ invoice.client }}</h3>
+                <h3>
+                    {% if link_client is defined and true == link_client %}
+                        <a href="{{ path('_clients_view', {'id' : invoice.client.id}) }}">
+                            {{ invoice.client }}
+                        </a>
+                    {% else %}
+                        {{ invoice.client }}
+                    {% endif %}
+                </h3>
                 <p>{{ invoice.client.website }}</p>
 
                 <p>
