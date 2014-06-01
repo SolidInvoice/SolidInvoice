@@ -28,6 +28,10 @@ class PaymentController extends BaseController
         $invoice = $this->getRepository('CSBillInvoiceBundle:Invoice')
             ->findOneBy(array('uuid' => Uuid::fromString($uuid)));
 
+        if (null === $invoice) {
+            throw $this->createNotFoundException();
+        }
+
         if ('pending' !== (string) $invoice->getStatus()) {
             throw new \Exception('This invoice cannot be paid');
         }
@@ -150,6 +154,14 @@ class PaymentController extends BaseController
         $event = new PaymentCompleteEvent($paymentDetails);
         $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
 
-        return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
+        $security = $this->get('security.context');
+
+        if ($security->isGranted('ROLE_ADMIN')) {
+            $url = $this->generateUrl('_invoices_view', array('id' => $invoice->getId()));
+        } else {
+            $url = $this->generateUrl('_view_invoice_external', array('uuid' => $invoice->getUuid()));
+        }
+
+        return $this->redirect($url);
     }
 }
