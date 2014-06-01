@@ -63,13 +63,15 @@ class DefaultController extends BaseController
 
         $payIcon = $templating->render('{{ icon("credit-card") }}');
         $payAction = new RowAction($payIcon, '_payments_create');
-        
+
+        $payAction->setRouteParameters(array('uuid'));
+        $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
         $payAction->addAttribute('title', $translator->trans('pay_now'));
         $payAction->addAttribute('rel', 'tooltip');
 
         $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
             if ('pending' !== $row->getField('status.name')) {
-                $rowAction->setTitle('');;
+                $rowAction->setTitle('');
             }
 
             return $rowAction;
