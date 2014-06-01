@@ -63,6 +63,7 @@ class DefaultController extends BaseController
 
         $payIcon = $templating->render('{{ icon("credit-card") }}');
         $payAction = new RowAction($payIcon, '_payments_create');
+        
         $payAction->addAttribute('title', $translator->trans('pay_now'));
         $payAction->addAttribute('rel', 'tooltip');
 

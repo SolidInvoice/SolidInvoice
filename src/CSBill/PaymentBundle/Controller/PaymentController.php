@@ -5,26 +5,29 @@ namespace CSBill\PaymentBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Entity\PaymentDetails;
 use CSBill\PaymentBundle\Entity\Status;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Repository\PaymentMethod;
-use Symfony\Component\HttpFoundation\Request;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
+use Rhumsaa\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PaymentController extends BaseController
 {
     /**
      * @param Request $request
-     * @param Invoice $invoice
+     * @param string $uuid
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function preparePaymentAction(Request $request, Invoice $invoice)
+    public function preparePaymentAction(Request $request, $uuid)
     {
+        $invoice = $this->getRepository('CSBillInvoiceBundle:Invoice')
+            ->findOneBy(array('uuid' => Uuid::fromString($uuid)));
+
         if ('pending' !== (string) $invoice->getStatus()) {
             throw new \Exception('This invoice cannot be paid');
         }

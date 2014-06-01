@@ -67,7 +67,7 @@ class CaptureOrderAction extends PaymentAwareAction
             }
 
             if (null !== $invoice->getDiscount()) {
-                $discount = ($invoice->getTotal() * $invoice->getDiscount()) / 100;
+                $discount = ($invoice->getBaseTotal() * $invoice->getDiscount());
                 $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Discount';
                 $details['L_PAYMENTREQUEST_0_AMT'.$counter]  = number_format($discount, 2) * -1;
                 $details['L_PAYMENTREQUEST_0_QTY'.$counter]  = 1;

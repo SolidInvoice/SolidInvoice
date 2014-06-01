@@ -22,8 +22,10 @@ _payments_load_settings:
         expose: true
 
 _payments_create:
-    path: /create/{id}
+    path: /create/{uuid}
     defaults: { _controller: CSBillPaymentBundle:Payment:preparePayment }
+    requirements:
+        uuid: "[a-zA-Z0-9-]{36}"
 
 _payments_done:
     path: /done
