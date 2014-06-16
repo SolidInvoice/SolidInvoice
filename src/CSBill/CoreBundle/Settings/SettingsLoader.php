@@ -13,21 +13,21 @@ namespace CSBill\CoreBundle\Settings;
 
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use CSBill\SettingsBundle\Entity\Setting;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Locale\Stub\StubLocale;
 
 class SettingsLoader implements SettingsLoaderInterface
 {
     /**
-     * @var KernelInterface
+     * @var \AppKernel
      */
     protected $kernel;
 
     /**
-     * @param KernelInterface $kernel
+     * @param \AppKernel $kernel
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(\AppKernel $kernel)
     {
         $this->kernel = $kernel;
     }
@@ -134,7 +134,6 @@ class SettingsLoader implements SettingsLoaderInterface
 
     /**
      * @param  array $parameters
-     * @return int
      */
     protected function dumpParameters(array $parameters = array())
     {
@@ -142,7 +141,16 @@ class SettingsLoader implements SettingsLoaderInterface
 
         $parameters = Yaml::dump(array('parameters' => $parameters));
 
-        return file_put_contents($configFile, $parameters, LOCK_EX);
+        $file = new Filesystem();
+
+        $containerCache = sprintf(
+            '%s/%s.php',
+            $this->kernel->getCacheDir(),
+            $this->kernel->getContainerCacheClass()
+        );
+
+        $file->dumpFile($configFile, $parameters);
+        $file->remove($containerCache);
     }
 
     /**

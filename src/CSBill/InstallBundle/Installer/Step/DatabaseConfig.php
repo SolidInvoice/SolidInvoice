@@ -10,6 +10,7 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
@@ -97,8 +98,9 @@ class DatabaseConfig extends AbstractFormStep
     /**
      * Writes all the configuration values to the paramaters file
      *
-     * @param  array             $params
-     * @throws \RuntimeException
+     * @param  array $params
+     *
+     * @throws \Exception
      * @return void;
      */
     public function writeConfigFile($params = array())
@@ -135,15 +137,17 @@ class DatabaseConfig extends AbstractFormStep
 
         $yaml = $dumper->dump($value, 2);
 
-        if (!is_writable($config)) {
-            if (!@chmod($config, 0777)) {
-                throw new \Exception('Unable to write config file');
-            }
-        }
+        $fileSystem = new Filesystem();
+        $fileSystem->dumpFile($config, $yaml, 0644);
 
-        file_put_contents($config, $yaml);
-
-        @chmod($config, 0644);
+        /** @var \AppKernel $kernel */
+        $kernel = $this->container->get('kernel');
+        $fileSystem->remove(sprintf(
+                '%s/%s.php',
+                $kernel->getCacheDir(),
+                $kernel->getContainerCacheClass()
+            )
+        );
     }
 
     /**

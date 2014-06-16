@@ -49,6 +49,16 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
+    /**
+     * Return the name of the cached container class
+     *
+     * @return string
+     */
+    public function getContainerCacheClass()
+    {
+        return $this->getContainerClass();
+    }
+
     protected function getContainerBaseClass()
     {
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
