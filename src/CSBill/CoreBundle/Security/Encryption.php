@@ -24,6 +24,9 @@ class Encryption
         $this->salt = $salt;
     }
 
+    /**
+     * @param string $data
+     */
     public function encrypt($data)
     {
         return trim(base64_encode(mcrypt_encrypt(

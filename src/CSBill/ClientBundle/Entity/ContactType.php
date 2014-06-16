@@ -168,7 +168,7 @@ class ContactType
     }
 
     /**
-     * @param $type
+     * @param  string $type
      * @return $this
      */
     public function setType($type)

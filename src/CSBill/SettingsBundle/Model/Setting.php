@@ -124,7 +124,7 @@ abstract class Setting
     /**
      * Get section
      *
-     * @return section
+     * @return Section
      */
     public function getSection()
     {

@@ -16,7 +16,7 @@ use Symfony\Component\Form\AbstractType;
 class ContactType extends AbstractType
 {
     /**
-     * @return null|string|\Symfony\Component\Form\FormTypeInterface
+     * @return string
      */
     public function getParent()
     {

@@ -15,12 +15,13 @@ use Swift_Message;
 interface MessageEventInterface
 {
     /**
-     * @return mixed
+     * @return string
      */
     public function getEvent();
 
     /**
-     * @param Swift_Message $message
+     * @param  Swift_Message $message
+     * @return void
      */
     public function setMessage(Swift_Message $message);
 
@@ -30,7 +31,8 @@ interface MessageEventInterface
     public function getMessage();
 
     /**
-     * @param string $template
+     * @param  string $template
+     * @return void
      */
     public function setHtmlTemplate($template);
 
@@ -40,7 +42,8 @@ interface MessageEventInterface
     public function getHtmlTemplate();
 
     /**
-     * @param string $template
+     * @param  string $template
+     * @return void
      */
     public function setTextTemplate($template);
 

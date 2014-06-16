@@ -21,21 +21,24 @@ interface MailerInterface
     /**
      * Constructor
      *
-     * @param Swift_Mailer    $mailer
-     * @param SettingsManager $settings
+     * @param  Swift_Mailer    $mailer
+     * @param  SettingsManager $settings
+     * @return void
      */
     public function __construct(Swift_Mailer $mailer, SettingsManager $settings);
 
     /**
      * Sets the templating instance
      *
-     * @param EngineInterface $templating
+     * @param  EngineInterface $templating
+     * @return void
      */
     public function setTemplating(EngineInterface $templating);
 
     /**
      * Sets the event dispatcher instance
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param  EventDispatcherInterface $eventDispatcher
+     * @return Mailer
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher);
 }

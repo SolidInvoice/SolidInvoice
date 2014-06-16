@@ -62,7 +62,7 @@ class ViewController extends BaseController
 
     /**
      * @param $uuid
-     * @param $object
+     * @param  string                                                        $object
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */

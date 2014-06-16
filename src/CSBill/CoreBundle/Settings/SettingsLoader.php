@@ -16,7 +16,6 @@ use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Locale\Stub\StubLocale;
 
 class SettingsLoader implements SettingsLoaderInterface
 {
@@ -134,7 +133,7 @@ class SettingsLoader implements SettingsLoaderInterface
     }
 
     /**
-     * @param  array $parameters
+     * @param array $parameters
      */
     protected function dumpParameters(array $parameters = array())
     {

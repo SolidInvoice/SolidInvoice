@@ -33,6 +33,7 @@ interface StepInterface extends ContainerAwareInterface
 
     /**
      * Initializes the current step
+     * @return void
      */
     public function init();
 }

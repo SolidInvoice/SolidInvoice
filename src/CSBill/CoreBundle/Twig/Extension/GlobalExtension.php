@@ -62,7 +62,7 @@ class GlobalExtension extends Twig_Extension
 
     /**
      * (non-PHPDoc)
-     * @return array
+     * @return \Twig_SimpleFunction[]
      */
     public function getFunctions()
     {

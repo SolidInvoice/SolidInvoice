@@ -47,6 +47,9 @@ class ActionsController extends BaseController
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }
 
+    /**
+     * @param string $status
+     */
     protected function setInvoiceStatus(Invoice $invoice, $status)
     {
         $status = $this->getRepository('CSBillInvoiceBundle:Status')->findOneByName($status);

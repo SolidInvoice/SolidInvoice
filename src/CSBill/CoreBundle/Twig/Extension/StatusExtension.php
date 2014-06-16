@@ -34,7 +34,7 @@ class StatusExtension extends \Twig_Extension
     /**
      * Returns an array of all the helper functions for the client status
      *
-     * @return array
+     * @return \Twig_SimpleFunction[]
      */
     public function getFunctions()
     {
@@ -49,7 +49,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @return array|void
+     * @return \Twig_SimpleFilter[]
      */
     public function getFilters()
     {

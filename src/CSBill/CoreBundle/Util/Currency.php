@@ -53,6 +53,11 @@ class Currency
         return null;
     }
 
+    /**
+     * @param integer $value
+     *
+     * @return string
+     */
     public function format($value, $currency = null)
     {
         return $this->formatter->formatCurrency($value, $currency ?: $this->currency);

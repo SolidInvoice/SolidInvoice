@@ -168,7 +168,7 @@ class Invoice
     }
 
     /**
-     * @return string
+     * @return Uuid
      */
     public function getUuid()
     {

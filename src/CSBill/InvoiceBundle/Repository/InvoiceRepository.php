@@ -71,7 +71,7 @@ class InvoiceRepository extends EntityRepository
     /**
      * Get the total amount for a specific invoice status
      *
-     * @param $status
+     * @param  string $status
      * @param  Client $client set this paramater to filter per client
      * @return int
      */

@@ -170,7 +170,7 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * @return mixed|Config
+     * @return Config
      */
     public function getSettings()
     {

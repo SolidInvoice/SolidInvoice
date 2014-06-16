@@ -37,7 +37,7 @@ interface ManagerInterface
     public function set(array $settings = array());
 
     /**
-     * @return mixed|Config
+     * @return Config
      */
     public function getSettings();
 }

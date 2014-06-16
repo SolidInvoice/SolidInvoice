@@ -15,6 +15,9 @@ use UnexpectedValueException;
 
 class UnexpectedFormatException extends UnexpectedValueException
 {
+    /**
+     * @param string $format
+     */
     public function __construct($format)
     {
         $message = sprintf('Invalid email format "%s" given', $format);

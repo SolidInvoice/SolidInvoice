@@ -254,7 +254,7 @@ class Contact implements \serializable
      * Set created
      *
      * @param  \DateTime $created
-     * @return Client
+     * @return Contact
      */
     public function setCreated(\DateTime $created)
     {
@@ -277,7 +277,7 @@ class Contact implements \serializable
      * Set updated
      *
      * @param  \DateTime $updated
-     * @return Client
+     * @return Contact
      */
     public function setUpdated(\DateTime $updated)
     {
@@ -300,7 +300,7 @@ class Contact implements \serializable
      * Set deleted
      *
      * @param  \DateTime $deleted
-     * @return Client
+     * @return Contact
      */
     public function setDeleted(\DateTime $deleted)
     {
@@ -310,7 +310,7 @@ class Contact implements \serializable
     }
 
     /**
-     * @param $type
+     * @param  string             $type
      * @return null|ContactDetail
      */
     public function getDetail($type)

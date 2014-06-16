@@ -30,6 +30,10 @@ class Filters implements \Iterator
         $this->request = $request;
     }
 
+    /**
+     * @param string        $name
+     * @param null|\Closure $callback
+     */
     public function add($name, $callback, $default = false, array $options = array())
     {
         $active = $default;

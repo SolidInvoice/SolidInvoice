@@ -92,7 +92,7 @@ class Mailer implements MailerInterface
      * Emails an invoice to the customers
      *
      * @param  Invoice $invoice
-     * @return boolean If the email was successfully sent
+     * @return integer If the email was successfully sent
      */
     public function sendInvoice(Invoice $invoice)
     {
@@ -132,7 +132,7 @@ class Mailer implements MailerInterface
      * Emails a quote to the customers
      *
      * @param  Quote   $quote
-     * @return boolean If the email was successfully sent
+     * @return integer If the email was successfully sent
      */
     public function sendQuote(Quote $quote)
     {
@@ -244,7 +244,7 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * @param $template
+     * @param  string      $template
      * @param  array       $parameters
      * @return null|string
      */

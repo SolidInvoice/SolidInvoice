@@ -67,6 +67,9 @@ class ActionsController extends BaseController
         return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
 
+    /**
+     * @param string $status
+     */
     protected function setQuoteStatus(Quote $quote, $status)
     {
         $status = $this->getRepository('CSBillQuoteBundle:Status')->findOneByName($status);

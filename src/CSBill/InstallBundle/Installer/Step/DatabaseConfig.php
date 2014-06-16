@@ -98,7 +98,7 @@ class DatabaseConfig extends AbstractFormStep
     /**
      * Writes all the configuration values to the paramaters file
      *
-     * @param  array $params
+     * @param array $params
      *
      * @throws \Exception
      * @return void;
