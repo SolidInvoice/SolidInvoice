@@ -11,6 +11,7 @@
 
 namespace CSBill\SettingsBundle\Form\Type;
 
+use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zend\Config\Config;
@@ -54,7 +55,13 @@ class Settings extends AbstractType
         }
     }
 
-    protected function getFieldType($setting, array &$options = array())
+    /**
+     * @param Setting $setting
+     * @param array   $options
+     *
+     * @return string
+     */
+    protected function getFieldType(Setting $setting, array &$options = array())
     {
         $type = $setting->getType();
 
@@ -64,12 +71,7 @@ class Settings extends AbstractType
             $options['multiple'] = false;
         }
 
-        if ('chosen' === $type) {
-            $type = 'choice';
-            $options['attr'] = array('class' => 'chosen');
-        }
-
-        if ('choice' === $type) {
+        if (in_array($type, array('choice', 'select2'))) {
             $settingOptions = $setting->getOptions();
 
             $options['choices'] = $settingOptions;

@@ -28,31 +28,25 @@ class SystemInformationForm extends AbstractType
 
         $builder->add(
             'locale',
-            'choice',
+            'select2',
             array(
                 'choices' => $locales,
                 'constraints' => array(
                     new Constraints\NotBlank(array('message' => 'Please select a locale'))
                 ),
-                'empty_value' => '',
-                'attr' => array(
-                    'class' => 'chosen'
-                )
+                'empty_value' => ''
             )
         );
 
         $builder->add(
             'currency',
-            'choice',
+            'select2',
             array(
                 'choices' => $currencies,
                 'constraints' => array(
                     new Constraints\NotBlank(array('message' => 'Please select a currency'))
                 ),
-                'empty_value' => '',
-                'attr' => array(
-                    'class' => 'chosen'
-                )
+                'empty_value' => ''
             )
         );
 

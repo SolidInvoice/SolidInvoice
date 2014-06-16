@@ -24,7 +24,7 @@ class InvoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('client', null, array('attr' => array('class' => 'chosen'), 'empty_value' => 'choose_client'));
+        $builder->add('client', 'select2', array('empty_value' => 'choose_client'));
         $builder->add('discount', 'percent');
         $builder->add('items', 'collection', array('type' => new ItemType(),
                                                       'allow_add' => true,

@@ -165,7 +165,7 @@
         $('#{{ form.client.vars.id }}-container').html('');
         clientSelect.closest('div.form-group').show();
         clientSelect.val('');
-        clientSelect.trigger('chosen:updated');
+        clientSelect.trigger('select2-selecting');
     });
 
     Invoice.setSelector($('#invoice-rows'));

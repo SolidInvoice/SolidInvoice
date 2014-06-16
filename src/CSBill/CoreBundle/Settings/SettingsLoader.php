@@ -14,6 +14,7 @@ namespace CSBill\CoreBundle\Settings;
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Locale\Stub\StubLocale;
 
@@ -76,8 +77,8 @@ class SettingsLoader implements SettingsLoaderInterface
         $currency = new Setting();
         $currency->setKey('currency')
                 ->setValue($settings['currency'])
-                ->setType('chosen')
-                ->setOptions(StubLocale::getDisplayCurrencies('en'));
+                ->setType('select2')
+                ->setOptions(Intl::getCurrencyBundle()->getCurrencyNames($settings['locale']));
 
         $emailSettings = $this->getEmailSettings($settings);
 

@@ -24,7 +24,7 @@ class QuoteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('client', null, array('attr' => array('class' => 'chosen'), 'empty_value' => 'choose_client'));
+        $builder->add('client', null, array('empty_value' => 'choose_client'));
         $builder->add('discount', 'percent');
         $builder->add(
             'items',

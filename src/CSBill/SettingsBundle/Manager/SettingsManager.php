@@ -31,7 +31,7 @@ class SettingsManager implements ManagerInterface
     protected $accessor;
 
     /**
-     * @var Collection
+     * @var Config
      */
     protected $settings;
 
@@ -76,7 +76,7 @@ class SettingsManager implements ManagerInterface
 
         $this->settings = new Config(array());
 
-        $this->accessor = PropertyAccess::getPropertyAccessor();
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**

@@ -5,10 +5,11 @@ parameters:
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
     csbill_core.menu.top.class: CSBill\CoreBundle\Menu\Main
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
-    csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Doctrine\Type\Money
+    csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Form\Type\Money
     csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
     csbill_core.billing.mailer.class: CSBill\CoreBundle\Mailer\Mailer
     csbill_core.form.type.image_upload.class: CSBill\CoreBundle\Form\Type\ImageUpload
+    csbill_core.form.type.select2.class: CSBill\CoreBundle\Form\Type\Select2
     csbill_core.security.encryption.class: CSBill\CoreBundle\Security\Encryption
     csbill_core.session.request.listener.class: CSBill\CoreBundle\Listener\SessionRequestListener
     csbill_core.settings.loader.class: CSBill\CoreBundle\Settings\SettingsLoader
@@ -59,6 +60,11 @@ services:
         arguments: [@session, @security.encryption]
         tags:
             - { name: form.type, alias: image_upload }
+
+    csbill_core.form.type.select2:
+        class: %csbill_core.form.type.select2.class%
+        tags:
+            - { name: form.type, alias: select2 }
 
     csbill_core.security.encryption:
         class: %csbill_core.security.encryption.class%

@@ -16,9 +16,11 @@ $(function(){
     });
 
     /**
-     * Chosen
+     * Select2
      */
-    $('select.chosen').chosen();
+    $('select.select2').select2({
+        allowClear: true
+    });
 
     /**
      * PlaceHolder
