@@ -22,8 +22,10 @@ _clients_delete:
     methods: post
 
 _clients_info:
-    pattern:   /ajax/info/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:info }
+    pattern:   /ajax/info/{id}/{type}
+    defaults:
+        _controller: CSBillClientBundle:Ajax:info
+        type: quote
     options:
         expose: true
 

@@ -25,14 +25,15 @@ class AjaxController extends BaseController
      * @param  Client                                     $client
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function infoAction(Client $client)
+    public function infoAction(Client $client, $type = 'quote')
     {
         return new JsonResponse(
             array(
                 "content" => $this->renderView(
                     'CSBillClientBundle:Ajax:info.html.twig',
                     array(
-                        'client' => $client
+                        'client' => $client,
+                        'type'   => $type
                     )
                 )
             )

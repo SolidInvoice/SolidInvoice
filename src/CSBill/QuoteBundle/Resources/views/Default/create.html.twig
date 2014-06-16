@@ -154,7 +154,7 @@
         var clientSelectContainer = $(this).closest('div.form-group'),
             client_id = $(':selected', this).val();
 
-        $.getJSON(Routing.generate('_clients_info', {"id" : client_id}), function(data) {
+        $.getJSON(Routing.generate('_clients_info', {"id" : client_id, "type" : "quote"}), function(data) {
             $('#{{ form.client.vars.id }}-container').html(data.content);
             $('body').modalmanager('loading');
             clientSelectContainer.hide();

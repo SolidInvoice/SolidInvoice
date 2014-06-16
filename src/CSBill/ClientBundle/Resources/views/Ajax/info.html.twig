@@ -26,7 +26,7 @@
                 {% for contact in client.contacts %}
                     <li>
                         <div class="checkbox">
-                            <input type="checkbox" name="quote[users][]" value="{{ contact.id }}" id="client-contact-{{ contact.id }}" />
+                            <input type="checkbox" name="{{ type }}[users][]" value="{{ contact.id }}" id="client-contact-{{ contact.id }}" />
                             <label for="client-contact-{{ contact.id }}">{{ contact.firstname }} {{ contact.lastname }}</label>
                         </div>
                     </li>

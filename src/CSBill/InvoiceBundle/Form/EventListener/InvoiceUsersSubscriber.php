@@ -20,14 +20,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InvoiceUsersSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_BIND => 'preSetData'
+            FormEvents::PRE_SUBMIT => 'preSetData'
         );
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
