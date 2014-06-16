@@ -79,7 +79,7 @@
             {% for item in form.items %}
                 <tr>
                     {% for key,field in item.children|keys %}
-                        <td>
+                        <td class="column-{{ field }}">
                             {% set error = form_errors(item[field]) %}
 
                             {% if error|trim is not empty %}
