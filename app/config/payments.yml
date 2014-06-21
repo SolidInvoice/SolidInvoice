@@ -4,36 +4,27 @@ payum:
             CSBill\PaymentBundle\Entity\SecurityToken:
                 doctrine:
                     driver: orm
+    storages:
+        CSBill\PaymentBundle\Entity\Payment:
+            doctrine:
+                driver: orm
+        CSBill\PaymentBundle\Entity\PaymentDetails:
+              doctrine:
+                  driver: orm
     contexts:
         offline:
             offline: ~
-            storages:
-                CSBill\PaymentBundle\Entity\Payment:
-                    doctrine:
-                        driver: orm
-                CSBill\PaymentBundle\Entity\PaymentDetails:
-                      doctrine:
-                          driver: orm
         paypal_express_checkout_nvp:
             paypal_express_checkout_nvp:
-                api:
-                    options:
-                        username:  NOT USED
-                        password:  NOT USED
-                        signature: NOT USED
-                        sandbox: true
+                username:  NOT USED
+                password:  NOT USED
+                signature: NOT USED
+                sandbox: true
                 apis:
                     - csbill.payment.payum.paypal_express_checkout_api
                 actions:
                     - csbill.payment.payum.paypal_express.action.capture_order_action
                     - csbill.payment.payum.paypal_express.action.payment_status_action
-            storages:
-                CSBill\PaymentBundle\Entity\Payment:
-                    doctrine:
-                        driver: orm
-                CSBill\PaymentBundle\Entity\PaymentDetails:
-                    doctrine:
-                        driver: orm
 
 cs_bill_payment:
     methods:

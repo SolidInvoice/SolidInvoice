@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3b01e502863555a33a040f50e2466bbe",
+    "hash": "788536b2a93902d6fbdba6400ef82a5f",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -1776,16 +1776,16 @@
         },
         {
             "name": "kriswallsmith/buzz",
-            "version": "dev-master",
+            "version": "v0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/Buzz.git",
-                "reference": "a0f207ac4939978b604be9bec5d5b19baecd8165"
+                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/a0f207ac4939978b604be9bec5d5b19baecd8165",
-                "reference": "a0f207ac4939978b604be9bec5d5b19baecd8165",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/759432d66387e3433d3b06cb6f773b97225b9b17",
+                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17",
                 "shasum": ""
             },
             "require": {
@@ -1820,7 +1820,7 @@
                 "curl",
                 "http client"
             ],
-            "time": "2014-03-24 21:56:09"
+            "time": "2013-05-19 03:41:15"
         },
         {
             "name": "monolog/monolog",
@@ -2054,17 +2054,17 @@
         },
         {
             "name": "payum/core",
-            "version": "0.8.x-dev",
+            "version": "0.9.0",
             "target-dir": "Payum/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Core.git",
-                "reference": "4b1e4b8bf01ee720385ed7ca220884fe4270efb7"
+                "reference": "e40b4b476ea9012d835b55963626b5a917708bb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Core/zipball/4b1e4b8bf01ee720385ed7ca220884fe4270efb7",
-                "reference": "4b1e4b8bf01ee720385ed7ca220884fe4270efb7",
+                "url": "https://api.github.com/repos/Payum/Core/zipball/e40b4b476ea9012d835b55963626b5a917708bb7",
+                "reference": "e40b4b476ea9012d835b55963626b5a917708bb7",
                 "shasum": ""
             },
             "require": {
@@ -2079,6 +2079,9 @@
                 "ext-pdo_sqlite": "*",
                 "phpunit/phpunit": "3.7.*",
                 "psr/log": "~1.0",
+                "symfony/http-foundation": "~2",
+                "symfony/http-kernel": "~2",
+                "symfony/routing": "~2",
                 "zendframework/zend-db": "~2"
             },
             "suggest": {
@@ -2089,16 +2092,19 @@
                 "payum/be2bill": "If you want to use be2bill payment gateway",
                 "payum/omnipay-bridge": "If you want to use omnipay's gateways",
                 "payum/payex": "If you want to use payex payment gateway",
-                "payum/paypal-express-checkout-nvp": "If you want to use paypal express checkout, digital goods or recurring payments",
+                "payum/paypal-express-checkout-nvp": "If  you want to use paypal express checkout, digital goods or recurring payments",
                 "payum/paypal-ipn": "If you want to use paypal instant payment notifications(Paypal IPN)",
                 "payum/paypal-pro-checkout-nvp": "If you want to use paypal pro checkout",
                 "payum/paypal-rest": "If you want to use paypal rest gateway",
+                "symfony/http-foundation": "If you want to use HttpRequestVerifier or ResponseInteractiveRequest from symfony's bridge",
+                "symfony/http-kernel": "If you want to use HttpRequestVerifier from symfony's bridge",
+                "symfony/routing": "If you want to use TokenFactory from symfony's bridge",
                 "zendframework/zend-db": "If you want to store models to Zend Db ORM"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.8-dev"
+                    "dev-master": "0.9-dev"
                 }
             },
             "autoload": {
@@ -2121,7 +2127,7 @@
                 },
                 {
                     "name": "Community contributions",
-                    "homepage": "https://github.com/Payum/Payum/contributors"
+                    "homepage": "https://github.com/Payum/PayumLaravelPackage/contributors"
                 }
             ],
             "description": "Domain friendly payment framework. Paypal, payex, authorize.net, be2bill, omnipay, recurring paymens, instant notifications and many more",
@@ -2142,25 +2148,25 @@
                 "paypal rest",
                 "recurring payment"
             ],
-            "time": "2014-04-03 13:23:05"
+            "time": "2014-06-17 07:02:36"
         },
         {
             "name": "payum/offline",
-            "version": "0.8.x-dev",
+            "version": "0.9.0",
             "target-dir": "Payum/Offline",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Offline.git",
-                "reference": "319fa03630c031bfa686daf4bbe93b1a99872440"
+                "reference": "fa01a924c62012d66cf2efa16c41ab813e415447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Offline/zipball/319fa03630c031bfa686daf4bbe93b1a99872440",
-                "reference": "319fa03630c031bfa686daf4bbe93b1a99872440",
+                "url": "https://api.github.com/repos/Payum/Offline/zipball/fa01a924c62012d66cf2efa16c41ab813e415447",
+                "reference": "fa01a924c62012d66cf2efa16c41ab813e415447",
                 "shasum": ""
             },
             "require": {
-                "payum/core": "0.8.*",
+                "payum/core": "0.9.*",
                 "php": ">=5.3.2"
             },
             "require-dev": {
@@ -2169,7 +2175,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.8-dev"
+                    "dev-master": "0.9-dev"
                 }
             },
             "autoload": {
@@ -2201,25 +2207,25 @@
                 "offlile",
                 "payment"
             ],
-            "time": "2014-04-03 07:00:43"
+            "time": "2014-06-17 07:02:36"
         },
         {
             "name": "payum/paypal-express-checkout-nvp",
-            "version": "0.8.5",
+            "version": "0.9.0",
             "target-dir": "Payum/Paypal/ExpressCheckout/Nvp",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PaypalExpressCheckoutNvp.git",
-                "reference": "9941db984cac00b0313c505eebbfc7460637bd90"
+                "reference": "cdf452f29d44dbf7eef0d2186d3e027b4c099eeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/9941db984cac00b0313c505eebbfc7460637bd90",
-                "reference": "9941db984cac00b0313c505eebbfc7460637bd90",
+                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/cdf452f29d44dbf7eef0d2186d3e027b4c099eeb",
+                "reference": "cdf452f29d44dbf7eef0d2186d3e027b4c099eeb",
                 "shasum": ""
             },
             "require": {
-                "payum/core": "0.8.*",
+                "payum/core": "0.9.*",
                 "php": ">=5.3.2"
             },
             "require-dev": {
@@ -2228,7 +2234,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.8-dev"
+                    "dev-master": "0.9-dev"
                 }
             },
             "autoload": {
@@ -2263,35 +2269,40 @@
                 "paypal",
                 "recurring payment"
             ],
-            "time": "2014-04-09 06:27:57"
+            "time": "2014-06-17 07:02:36"
         },
         {
             "name": "payum/payum-bundle",
-            "version": "0.8.0",
+            "version": "0.9.0",
             "target-dir": "Payum/Bundle/PayumBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PayumBundle.git",
-                "reference": "b0de2b28189965be282a2643d442ab46d5de0e2d"
+                "reference": "6ed060da68f62000ee1ab77b9a83484938ff4007"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/b0de2b28189965be282a2643d442ab46d5de0e2d",
-                "reference": "b0de2b28189965be282a2643d442ab46d5de0e2d",
+                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/6ed060da68f62000ee1ab77b9a83484938ff4007",
+                "reference": "6ed060da68f62000ee1ab77b9a83484938ff4007",
                 "shasum": ""
             },
             "require": {
-                "payum/core": "0.8.*",
+                "payum/core": "0.9.*",
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": "~2.0",
-                "twig/twig": "*"
+                "symfony/form": "~2.3",
+                "symfony/framework-bundle": "~2.3",
+                "symfony/twig-bundle": "~2.3",
+                "symfony/validator": "~2.3"
             },
             "require-dev": {
                 "doctrine/orm": "*",
-                "payum/payum": "0.8.*@dev",
+                "omnipay/dummy": "~2.0",
+                "omnipay/paypal": "~2.0",
+                "omnipay/stripe": "~2.0",
+                "payum/payum": "0.9.*",
                 "phpunit/phpunit": "~3.7",
-                "symfony/browser-kit": "~2.0",
-                "symfony/class-loader": "~2.0"
+                "symfony/browser-kit": "~2.3",
+                "symfony/class-loader": "~2.3"
             },
             "suggest": {
                 "payum/authorize-net-aim": "If you want to use authorize.net gateway",
@@ -2305,7 +2316,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.8-dev"
+                    "dev-master": "0.9-dev"
                 }
             },
             "autoload": {
@@ -2337,6 +2348,7 @@
                 "authorize.net",
                 "be2bill",
                 "instant notifications",
+                "klarna",
                 "offline",
                 "omnipay",
                 "payex",
@@ -2346,7 +2358,7 @@
                 "paypal pro checkout",
                 "recurring payment"
             ],
-            "time": "2014-04-02 11:31:03"
+            "time": "2014-06-17 07:58:36"
         },
         {
             "name": "phpoption/phpoption",
