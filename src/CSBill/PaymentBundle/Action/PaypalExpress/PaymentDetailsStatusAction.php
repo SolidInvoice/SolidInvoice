@@ -10,7 +10,7 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
 {
     /**
      * @param \CSBill\PaymentBundle\Action\Request\StatusRequest $request
-     * {@inheritdoc}
+     *                                                                    {@inheritdoc}
      */
     public function execute($request)
     {
@@ -18,7 +18,7 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
         if (false == $this->supports($request)) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
-        
+
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         foreach (range(0, 9) as $index) {

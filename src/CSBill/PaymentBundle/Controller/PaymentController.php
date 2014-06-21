@@ -18,7 +18,7 @@ class PaymentController extends BaseController
 {
     /**
      * @param Request $request
-     * @param string $uuid
+     * @param string  $uuid
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
