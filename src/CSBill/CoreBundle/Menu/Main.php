@@ -11,7 +11,7 @@
 
 namespace CSBill\CoreBundle\Menu;
 
-use Knp\Menu\ItemInterface;
+use Knp\Menu\ItemInterface as Item;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
 
 class Main extends AuthenticatedMenu
@@ -19,9 +19,9 @@ class Main extends AuthenticatedMenu
     /**
      * Build the user menu
      *
-     * @param ItemInterface $menu
+     * @param Item $menu
      */
-    public function userMenu(ItemInterface $menu)
+    public function userMenu(Item $menu)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
 
@@ -59,9 +59,9 @@ class Main extends AuthenticatedMenu
     /**
      * Build the system menu
      *
-     * @param ItemInterface $menu
+     * @param Item $menu
      */
-    public function systemMenu(ItemInterface $menu)
+    public function systemMenu(Item $menu)
     {
         $system = $menu->addChild(
             'system',

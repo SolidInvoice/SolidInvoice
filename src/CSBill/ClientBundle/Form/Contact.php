@@ -11,7 +11,7 @@
 
 namespace CSBill\ClientBundle\Form;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\AbstractType;
@@ -23,9 +23,9 @@ use CSBill\ClientBundle\Form\Type\ContactDetailType;
 class Contact extends AbstractType
 {
     /**
-     * @var EntityManager
+     * @var ManagerRegistry
      */
-    protected $entityManager;
+    protected $registry;
 
     /**
      * @var array
@@ -33,12 +33,12 @@ class Contact extends AbstractType
     protected $types;
 
     /**
-     * @param EntityManager $entityManager
-     * @param array         $types
+     * @param ManagerRegistry $registry
+     * @param array           $types
      */
-    public function __construct(EntityManager $entityManager, array $types)
+    public function __construct(ManagerRegistry $registry, array $types)
     {
-        $this->entityManager = $entityManager;
+        $this->registry = $registry;
         $this->types = $types;
     }
 
@@ -57,7 +57,7 @@ class Contact extends AbstractType
                 'details_' . $item->getName(),
                 new ContactDetailType,
                 array(
-                    'type' => new ContactDetail($this->entityManager, $item),
+                    'type' => new ContactDetail($this->registry, $item),
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,

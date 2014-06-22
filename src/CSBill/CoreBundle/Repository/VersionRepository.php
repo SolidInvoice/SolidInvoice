@@ -31,6 +31,6 @@ class VersionRepository extends EntityRepository
         $entity = new Version($verion);
         $entityManager->persist($entity);
 
-        return $entityManager->flush();
+        $entityManager->flush();
     }
 }

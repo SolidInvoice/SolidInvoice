@@ -203,7 +203,7 @@ class Mailer implements MailerInterface
         }
 
         $message->setSubject($subject)
-                ->setTo($users);
+               ->setTo($users);
 
         if (null !== $event) {
             $event->setHtmlTemplate($htmlTemplate);

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Repository;
+namespace CSBill\InvoiceBundle\Repository;
 
 use CSBill\CoreBundle\Repository\StatusRepository as BaseRepository;
 

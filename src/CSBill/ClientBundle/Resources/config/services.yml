@@ -16,7 +16,7 @@ services:
 
     csbill_client.contact.form.type:
         class: %csbill_client.contact.form.type.class%
-        arguments: [@doctrine.orm.entity_manager, @csbill_client.contact_type.values]
+        arguments: [@doctrine, @csbill_client.contact_type.values]
         tags:
             - { name: form.type, alias: contact }
 

@@ -16,16 +16,20 @@ interface MenuStorageInterface
     /**
      * Checks if the storage has a builder for the specified menu
      *
-     * @param  string  $name
+     * @param string $name
+     * @param array  $options
+     *
      * @return boolean
      */
-    public function has($name);
+    public function has($name, array $options = array());
 
     /**
      * Returns the builder for the specified menu from the storage
      *
-     * @param  string            $name
+     * @param string $name
+     * @param array  $options
+     *
      * @return \SplObjectStorage
      */
-    public function get($name);
+    public function get($name, array $options = array());
 }

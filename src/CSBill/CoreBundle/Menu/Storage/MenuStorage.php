@@ -19,22 +19,17 @@ class MenuStorage implements MenuStorageInterface
     protected $list = array();
 
     /**
-     * (non-PHPDoc)
-     *
-     * @param string $name
+     * {@inheritdoc}
      */
-    public function has($name)
+    public function has($name, array $options = array())
     {
         return isset($this->list[$name]);
     }
 
     /**
-     * (non-PHPDoc)
-     *
-     * @param  string            $name
-     * @return \SplObjectStorage
+     * {@inheritdoc}
      */
-    public function get($name)
+    public function get($name, array $options = array())
     {
         if (!$this->has($name)) {
             $this->list[$name] = new \SplObjectStorage;

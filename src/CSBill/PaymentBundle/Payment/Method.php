@@ -17,14 +17,14 @@ class Method
     protected $context;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $settings;
 
     /**
-     * @param string $name
-     * @param string $context
-     * @param array  $settings
+     * @param string     $name
+     * @param string     $context
+     * @param array|null $settings
      */
     public function __construct($name, $context, array $settings = null)
     {
@@ -50,7 +50,7 @@ class Method
     }
 
     /**
-     * @param mixed $context
+     * @param string $context
      */
     public function setContext($context)
     {
@@ -58,7 +58,7 @@ class Method
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getContext()
     {

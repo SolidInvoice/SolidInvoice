@@ -110,7 +110,9 @@ class PaymentController extends BaseController
     /**
      * @param Request $request
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
+     * @throws \Payum\Core\Request\InteractiveRequestInterface
      */
     public function captureDoneAction(Request $request)
     {

@@ -122,7 +122,7 @@ class Payment
     /**
      * @param Invoice $invoice
      *
-     * @return $this
+     * @return Payment
      */
     public function setInvoice(Invoice $invoice)
     {
@@ -142,7 +142,7 @@ class Payment
     /**
      * @param PaymentMethod $method
      *
-     * @return $this
+     * @return Payment
      */
     public function setMethod(PaymentMethod $method)
     {
@@ -154,8 +154,9 @@ class Payment
     /**
      * Set status
      *
-     * @param  Status $status
-     * @return $this
+     * @param Status $status
+     *
+     * @return Payment
      */
     public function setStatus(Status $status)
     {
@@ -177,8 +178,9 @@ class Payment
     /**
      * Set details
      *
-     * @param  PaymentDetails $details
-     * @return $this
+     * @param PaymentDetails $details
+     *
+     * @return Payment
      */
     public function setDetails(PaymentDetails $details)
     {
@@ -200,8 +202,9 @@ class Payment
     /**
      * Set currency
      *
-     * @param  float $currency
-     * @return $this
+     * @param float $currency
+     *
+     * @return Payment
      */
     public function setCurrency($currency)
     {
@@ -223,8 +226,9 @@ class Payment
     /**
      * Set amount
      *
-     * @param  float $amount
-     * @return $this
+     * @param float $amount
+     *
+     * @return Payment
      */
     public function setAmount($amount)
     {
@@ -246,8 +250,9 @@ class Payment
     /**
      * Set created
      *
-     * @param  \DateTime $created
-     * @return Invoice
+     * @param \DateTime $created
+     *
+     * @return Payment
      */
     public function setCreated(\DateTime $created)
     {
@@ -269,8 +274,9 @@ class Payment
     /**
      * Set updated
      *
-     * @param  \DateTime $updated
-     * @return Invoice
+     * @param \DateTime $updated
+     *
+     * @return Payment
      */
     public function setUpdated(\DateTime $updated)
     {
@@ -292,8 +298,9 @@ class Payment
     /**
      * Set deleted
      *
-     * @param  \DateTime $deleted
-     * @return Invoice
+     * @param \DateTime $deleted
+     *
+     * @return Payment
      */
     public function setDeleted(\DateTime $deleted)
     {
@@ -309,13 +316,13 @@ class Payment
      */
     public function getDeleted()
     {
-        return $this->created;
+        return $this->deleted;
     }
 
     /**
      * @param string $message
      *
-     * @return Invoice
+     * @return Payment
      */
     public function setMessage($message)
     {

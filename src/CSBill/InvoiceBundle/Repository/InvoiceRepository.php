@@ -12,7 +12,6 @@
 namespace CSBill\InvoiceBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Status;
 use Doctrine\ORM\EntityRepository;
 
