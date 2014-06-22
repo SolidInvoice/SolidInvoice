@@ -3,6 +3,7 @@ parameters:
     csbill.payment.payum.paypal_express.action.capture_order.class: CSBill\PaymentBundle\Action\PaypalExpress\CaptureOrderAction
     csbill.payment.payum.paypal_express.action.payment_status.class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
     csbill.payment.event.subscriber.class: CSBill\PaymentBundle\Listener\PaymentSubscriber
+    csbill.payment.twig_extension.class: CSBill\PaymentBundle\Twig\PaymentExtension
 
 services:
     csbill_payment.menu.top:
@@ -37,3 +38,9 @@ services:
         arguments: [@invoice.manager]
         tags:
             - { name: kernel.event_subscriber }
+
+    csbill.payment.twig_extension:
+        class: %csbill.payment.twig_extension.class%
+        arguments: [@csbill_payment.method.manager]
+        tags:
+            - { name: twig.extension }

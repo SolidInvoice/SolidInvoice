@@ -38,6 +38,10 @@ class PaymentController extends BaseController
 
         $paymentManager = $this->get('csbill_payment.method.manager');
 
+        if (!count($paymentManager) > 0) {
+            throw $this->createNotFoundException('No payment methods configured');
+        }
+
         $builder = $this->createFormBuilder();
 
         $builder->add(

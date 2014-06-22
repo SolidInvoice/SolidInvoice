@@ -51,33 +51,41 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $viewIcon = $templating->render('{{ icon("eye") }}');
-        $viewAction = new RowAction($viewIcon, '_invoices_view');
-        $viewAction->addAttribute('title', $translator->trans('invoice_view'));
-        $viewAction->addAttribute('rel', 'tooltip');
+        $rowActicons = array();
 
         $editIcon = $templating->render('{{ icon("edit") }}');
         $editAction = new RowAction($editIcon, '_invoices_edit');
         $editAction->addAttribute('title', $translator->trans('invoice_edit'));
         $editAction->addAttribute('rel', 'tooltip');
+        $rowActicons[] = $editAction;
 
-        $payIcon = $templating->render('{{ icon("credit-card") }}');
-        $payAction = new RowAction($payIcon, '_payments_create');
+        $viewIcon = $templating->render('{{ icon("eye") }}');
+        $viewAction = new RowAction($viewIcon, '_invoices_view');
+        $viewAction->addAttribute('title', $translator->trans('invoice_view'));
+        $viewAction->addAttribute('rel', 'tooltip');
+        $rowActicons[] = $viewAction;
 
-        $payAction->setRouteParameters(array('uuid'));
-        $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
-        $payAction->addAttribute('title', $translator->trans('pay_now'));
-        $payAction->addAttribute('rel', 'tooltip');
+        // Only show payment option of payment methods is configured
+        if (count($this->get('csbill_payment.method.manager')) > 0) {
+            $payIcon = $templating->render('{{ icon("credit-card") }}');
+            $payAction = new RowAction($payIcon, '_payments_create');
 
-        $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
-            if ('pending' !== $row->getField('status.name')) {
-                $rowAction->setTitle('');
-            }
+            $payAction->setRouteParameters(array('uuid'));
+            $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
+            $payAction->addAttribute('title', $translator->trans('pay_now'));
+            $payAction->addAttribute('rel', 'tooltip');
 
-            return $rowAction;
-        });
+            $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
+                if ('pending' !== $row->getField('status.name')) {
+                    $rowAction->setTitle('');
+                }
 
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $payAction));
+                return $rowAction;
+            });
+            $rowActicons[] = $payAction;
+        }
+
+        $actionsRow = new ActionsColumn('actions', 'Action', $rowActicons);
         $grid->addColumn($actionsRow, 100);
 
         $grid->hideColumns(array('updated', 'deleted', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));

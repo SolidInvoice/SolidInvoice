@@ -5,7 +5,7 @@ namespace CSBill\PaymentBundle\Manager;
 use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
 use CSBill\PaymentBundle\Payment\Method;
 
-class PaymentMethodManager
+class PaymentMethodManager implements \Countable
 {
     /**
      * @var array
@@ -41,6 +41,14 @@ class PaymentMethodManager
     public function getPaymentMethods()
     {
         return $this->methods;
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->methods);
     }
 
     /**

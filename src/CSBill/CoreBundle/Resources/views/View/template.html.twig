@@ -2,19 +2,6 @@
 
 {% block title %}{{ title|title }}{% endblock title %}
 
-{% block heading %}
-    <fieldset class="page-heading">
-        <legend>
-            <div class="pull-right header-button">
-                <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                    {{ icon('credit-card') }} {{ "pay_now"|trans }}
-                </a>
-            </div>
-            <h3>{{ block('title') }}</h3>
-        </legend>
-    </fieldset>
-{% endblock %}
-
 {% block content %}
     {% include template %}
 {% endblock %}
