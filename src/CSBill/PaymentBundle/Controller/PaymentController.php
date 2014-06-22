@@ -52,7 +52,7 @@ class PaymentController extends BaseController
             'entity',
             array(
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
-                'query_builder' => function (PaymentMethod $repository) use($user) {
+                'query_builder' => function (PaymentMethod $repository) use ($user) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
                     $expression = new Expr;
                     $queryBuilder->where($expression->eq('pm.enabled', 1));

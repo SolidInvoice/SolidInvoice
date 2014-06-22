@@ -101,8 +101,8 @@ class Renderer extends ListRenderer
     /**
      * Renders the menu label
      *
-     * @param  Item  $item
-     * @param  array $options
+     * @param Item  $item
+     * @param array $options
      *
      * @return string
      */
@@ -132,8 +132,8 @@ class Renderer extends ListRenderer
     }
 
     /**
-     * @param  Item  $item
-     * @param  array $options
+     * @param Item  $item
+     * @param array $options
      *
      * @return string
      */

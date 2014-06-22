@@ -12,7 +12,6 @@ namespace CSBill\CoreBundle\Twig\Extension;
 
 use CSBill\CoreBundle\Util\ArrayUtil;
 use Twig_Extension;
-use Twig_Test_Function;
 use Twig_SimpleTest;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use CSBill\InstallBundle\Installer\Installer;

@@ -33,7 +33,7 @@ class ContactDetail extends AbstractType
 
     /**
      * @param ManagerRegistry $registry
-     * @param ContactType   $type
+     * @param ContactType     $type
      */
     public function __construct(ManagerRegistry $registry, ContactType $type)
     {
@@ -91,7 +91,7 @@ class ContactDetail extends AbstractType
     }
 
     /**
-     * @param  string $text
+     * @param string $text
      *
      * @return string
      */
