@@ -37,7 +37,10 @@ class PaymentMethodForm extends AbstractType
             'defaultStatus',
             null,
             array(
-                'label' => 'Force payment status'
+                'label' => 'Force payment status',
+                'attr'  => array(
+                    'class' => 'select2'
+                )
             )
         );
 
@@ -59,7 +62,7 @@ class PaymentMethodForm extends AbstractType
                 'choices'     => $options,
                 'empty_value' => 'Please Choose',
                 'attr'        => array(
-                    'class' => 'chosen'
+                    'class' => 'select2'
                 ),
             )
         );
