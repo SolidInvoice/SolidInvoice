@@ -10,6 +10,7 @@ use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Repository\PaymentMethod;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
+use Doctrine\ORM\Query\Expr;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -44,14 +45,22 @@ class PaymentController extends BaseController
 
         $builder = $this->createFormBuilder();
 
+        $user = $this->getUser();
+
         $builder->add(
             'payment_method',
             'entity',
             array(
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
-                'query_builder' => function (PaymentMethod $repository) {
+                'query_builder' => function (PaymentMethod $repository) use($user) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
-                    $queryBuilder->where('pm.enabled = 1');
+                    $expression = new Expr;
+                    $queryBuilder->where($expression->eq('pm.enabled', 1));
+
+                    // If user is not logged in, only show public exposed payment methods
+                    if (null === $user) {
+                        $queryBuilder->AndWhere($expression->eq('pm.public', 1));
+                    }
 
                     return $queryBuilder;
                 },

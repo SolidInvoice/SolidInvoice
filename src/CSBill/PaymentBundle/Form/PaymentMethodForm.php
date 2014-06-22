@@ -46,7 +46,9 @@ class PaymentMethodForm extends AbstractType
             'public',
             null,
             array(
-                'label' => 'Available for client use'
+                'label'     => 'Available for client use',
+                'help'      => 'payment_public_help_text',
+                'help_type' => 'block'
             )
         );
 

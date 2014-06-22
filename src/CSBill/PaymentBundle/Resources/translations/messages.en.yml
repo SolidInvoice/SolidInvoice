@@ -19,3 +19,5 @@ total: Total
 base_total: Base Total
 
 payment_for_invoice: "Payment for invoice #%id%"
+
+payment_public_help_text: "Selecting this option, will make this payment option available for a client to use.\nIf this option is not selected, this payment method will only be available for use by authenticated users."
