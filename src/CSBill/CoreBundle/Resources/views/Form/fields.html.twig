@@ -37,16 +37,6 @@
 {% spaceless %}
     <div class="form-group{{ errors|length > 0 ? ' has-error' : '' }}{{ 'checkbox' in form.vars.block_prefixes ? ' checkbox ' }}{{ form.vars.attr.class|default('') }}">
 
-     {#
-        {% if 'checkbox' in form.vars.types %}
-            {{ form_widget(form) }}
-            {{ form_label(form, label|default(null)) }}
-        {% else %}
-            {{ form_label(form, label|default(null)) }}
-            {{ form_widget(form) }}
-        {% endif %}
-    #}
-
         {{ form_label(form, label|default(null)) }}
         {{ form_widget(form) }}
 

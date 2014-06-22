@@ -138,8 +138,10 @@ class PaymentController extends BaseController
 
         $paymentDetails = $status->getModel()->getPayment();
 
+        $paymentStatus = $paymentDetails->getMethod()->getDefaultStatus();
+
         $paymentDetails->setStatus(
-            $this
+            $paymentStatus ?: $this
                 ->getRepository('CSBillPaymentBundle:Status')
                 ->findOneBy(array('name' => $status->getStatus()))
         );
