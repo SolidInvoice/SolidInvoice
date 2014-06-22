@@ -75,12 +75,25 @@ class DefaultController extends BaseController
     public function addAction(Request $request, PaymentMethod $payment = null)
     {
         $paymentMethod = $payment ?: new PaymentMethod();
+
+        $originalSettings = $paymentMethod->getSettings();
+
         $manager = $this->get('csbill_payment.method.manager');
         $form = $this->createForm(new PaymentMethodForm(), $paymentMethod, array('manager' => $manager));
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
+            $settings = $paymentMethod->getSettings();
+            foreach ($settings as $key => $value) {
+                if ('password' === $key && null === $value && !empty($originalSettings[$key])) {
+                    $settings[$key] = $originalSettings[$key];
+                    $payment->setSettings($settings);
+                    break;
+                }
+            }
+
             $entityManager = $this->getEm();
             $entityManager->persist($paymentMethod);
             $entityManager->flush();
