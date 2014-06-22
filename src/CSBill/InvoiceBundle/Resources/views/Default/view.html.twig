@@ -23,7 +23,7 @@
         <div class="btn-toolbar">
             <div class="btn-group">
                 {% if invoice is not paid %}
-                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" class="btn btn-success">{{ "Mark Paid"|trans }}</a>
+                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" id="pay-now" class="btn btn-success">{{ "mark_paid"|trans }}</a>
                 {% endif %}
                 <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">{{ "Send"|trans }}</a>
             </div>
@@ -87,4 +87,33 @@
         </table>
         {% endspaceless %}
     </div>
+
+    {% if paymentsConfigured() %}
+        <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="payment-modal-label">{{ 'add_payment'|trans }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'capture_payment_question'|trans }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'close'|trans }}</button>
+                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" class="btn btn-success">{{ 'mark_paid'|trans }}</a>
+                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">{{ 'capture_payment'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock content %}
+
+{% block script %}
+    {% if paymentsConfigured() %}
+        $('#pay-now').on('click', function(event) {
+            event.preventDefault();
+
+            $('#payment-modal').modal();
+        });
+    {% endif %}
+{% endblock script %}
