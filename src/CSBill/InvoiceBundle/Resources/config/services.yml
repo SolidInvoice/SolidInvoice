@@ -1,6 +1,7 @@
 parameters:
     csbill_invoice.menu.class: CSBill\InvoiceBundle\Menu\Main
     csbill_invoice.manager.class: CSBill\InvoiceBundle\Manager\InvoiceManager
+    invoice.mailer.send_invoice.payments.class: CSBill\InvoiceBundle\Listener\Mailer\InvoiceMailerListener
 
 services:
     csbill_invoice.menu:
@@ -17,3 +18,9 @@ services:
         arguments: [@doctrine, @event_dispatcher]
         calls:
             - [ setContainer, [@service_container]]
+
+    invoice.mailer.send_invoice.payments:
+        class: %invoice.mailer.send_invoice.payments.class%
+        arguments: [@csbill_payment.method.manager, @templating]
+        tags:
+            - { name: kernel.event_listener, event: billing.mailer.send_invoice, method: onInvoiceMail }
