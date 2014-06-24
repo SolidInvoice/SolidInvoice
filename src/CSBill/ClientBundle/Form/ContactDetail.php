@@ -22,9 +22,9 @@ use CSBill\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
 class ContactDetail extends AbstractType
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var ManagerRegistry
      */
-    protected $entityManager;
+    protected $registry;
 
     /**
      * @var \CSBill\ClientBundle\Entity\ContactType
@@ -37,7 +37,7 @@ class ContactDetail extends AbstractType
      */
     public function __construct(ManagerRegistry $registry, ContactType $type)
     {
-        $this->entityManager = $registry->getManager();
+        $this->registry = $registry;
         $this->type = $type;
     }
 
@@ -47,7 +47,7 @@ class ContactDetail extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new ContactTypeTransformer($this->entityManager);
+        $transformer = new ContactTypeTransformer($this->registry);
 
         $options = array(
                         'required' => $this->type->isRequired(),
