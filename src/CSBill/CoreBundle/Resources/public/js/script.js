@@ -82,4 +82,26 @@ $(function(){
         // subtract the height of the modal header and footer
         return $(window).height() - 165;
     };
+
+    /**
+     * Delete
+     */
+    $('a.delete-item').on('click', function(event) {
+        event.preventDefault();
+
+        var link = $(this);
+
+        bootbox.confirm(link.data('confirm'), function(bool) {
+            if (true === bool) {
+                $('body').modalmanager('loading');
+                $.ajax({
+                    'url'      : link.attr('href'),
+                    'dataType' : 'json',
+                    'method'   : 'post'
+                }).done(function() {
+                    window.document.location.reload();
+                });
+            }
+        });
+    });
 });

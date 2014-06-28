@@ -43,12 +43,12 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Invoice) {
-            $client_id = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
+            $clientId = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
         } else {
-            $client_id = isset($data['client']) ? $data['client'] : null;
+            $clientId = isset($data['client']) ? $data['client'] : null;
         }
 
-        if (!empty($client_id)) {
+        if (!empty($clientId)) {
             $form = $event->getForm();
 
             $form->add(
@@ -61,10 +61,10 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
                     'multiple' => true,
                     'expanded' => true,
                     'class' => 'CSBillClientBundle:Contact',
-                    'query_builder' => function (EntityRepository $repo) use ($client_id) {
+                    'query_builder' => function (EntityRepository $repo) use ($clientId) {
                         $qb = $repo->createQueryBuilder('c')
-                                   ->where('c.client = :client')
-                                   ->setParameter('client', $client_id);
+                            ->where('c.client = :client')
+                            ->setParameter('client', $clientId);
 
                         return $qb;
                     }

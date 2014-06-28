@@ -26,9 +26,9 @@ class DoctrineExtensionListener extends ContainerAware
     }
 
     /**
-     * @param GetResponseEvent $event
+     * Set the username on all loggable entities
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest()
     {
         $securityContext = $this->container->get('security.context', ContainerInterface::NULL_ON_INVALID_REFERENCE);
 

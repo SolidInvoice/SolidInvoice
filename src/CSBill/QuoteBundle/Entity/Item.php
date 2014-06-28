@@ -59,7 +59,7 @@ class Item
     private $qty;
 
     /**
-     * @var string $created
+     * @var \DateTime $created
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -68,7 +68,7 @@ class Item
     private $created;
 
     /**
-     * @var string $updated
+     * @var \DateTime $updated
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -77,7 +77,7 @@ class Item
     private $updated;
 
     /**
-     * @var string $deleted
+     * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -104,7 +104,8 @@ class Item
     /**
      * Set description
      *
-     * @param  string $description
+     * @param string $description
+     *
      * @return Item
      */
     public function setDescription($description)
@@ -127,7 +128,8 @@ class Item
     /**
      * Set the price
      *
-     * @param  float $price
+     * @param float $price
+     *
      * @return Item
      */
     public function setPrice($price)
@@ -150,7 +152,8 @@ class Item
     /**
      * Set the qty
      *
-     * @param  integer $qty
+     * @param integer $qty
+     *
      * @return Item
      */
     public function setQty($qty)
@@ -173,7 +176,8 @@ class Item
     /**
      * Set created
      *
-     * @param  \DateTime $created
+     * @param \DateTime $created
+     *
      * @return Item
      */
     public function setCreated(\DateTime $created)
@@ -196,7 +200,8 @@ class Item
     /**
      * Set updated
      *
-     * @param  \DateTime $updated
+     * @param \DateTime $updated
+     *
      * @return Item
      */
     public function setUpdated(\DateTime $updated)
@@ -219,7 +224,8 @@ class Item
     /**
      * Set deleted
      *
-     * @param  \DateTime $deleted
+     * @param \DateTime $deleted
+     *
      * @return Item
      */
     public function setDeleted(\DateTime $deleted)
@@ -236,13 +242,14 @@ class Item
      */
     public function getDeleted()
     {
-        return $this->created;
+        return $this->deleted;
     }
 
     /**
      * Set quote
      *
-     * @param  Quote $quote
+     * @param Quote $quote
+     *
      * @return Item
      */
     public function setQuote(Quote $quote)

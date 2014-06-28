@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: default_settings.yml }
+    - { resource: payments.yml }
 
 framework:
     esi:             ~
@@ -100,6 +101,13 @@ doctrine:
                         dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
+                    payum:
+                        is_bundle: false
+                        type: xml
+                        #dir: %kernel.root_dir%/../vendor/payum/core/Bridge/Doctrine/Resources/mapping
+                        # set this dir instead if you use `payum/payum` library
+                        dir: %kernel.root_dir%/../vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping
+                        prefix: Payum\Core\Model
 
 # Swiftmailer Configuration
 swiftmailer:

@@ -26,7 +26,13 @@
     <table style="width:100%">
         <tr>
             <td style="width: 50%" valign="top">
-                <h3>{{ quote.client }}</h3>
+                <h3>
+                    {% if link_client is defined and true == link_client %}
+                        <a href="{{ path('_clients_view', {'id' : quote.client.id}) }}">{{ quote.client }}</a>
+                    {% else %}
+                        {{ quote.client }}
+                    {% endif %}
+                </h3>
                 <p>{{ quote.client.website }}</p>
 
                 <p>
@@ -47,7 +53,7 @@
     </table>
 </p>
 <p></p>
-<table style="width:100%;" cellspacing="0" cellpadding="8">
+<table style="width:100%;" cellspacing="0" cellpadding="8" class="table table-bordered table-condensed table-hover table-striped">
     <thead>
         <tr>
             <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">

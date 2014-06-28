@@ -15,14 +15,32 @@ use Zend\Stdlib\CallbackHandler;
 
 class Filter
 {
+    /**
+     * @var bool
+     */
     protected $active;
 
+    /**
+     * @var string
+     */
     protected $name;
 
+    /**
+     * @var callable|\Zend\Stdlib\CallbackHandler
+     */
     protected $callback;
 
+    /**
+     * @var array|null
+     */
     protected $options;
 
+    /**
+     * @param          $name
+     * @param callable $callback
+     * @param bool     $active
+     * @param array    $options
+     */
     public function __construct($name, $callback, $active = false, array $options = array())
     {
         $this->name = $name;
@@ -32,26 +50,41 @@ class Filter
         $this->options = $options;
     }
 
+    /**
+     * @return bool
+     */
     public function isActive()
     {
         return $this->active;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @return mixed
+     */
     public function __invoke()
     {
         return call_user_func_array($this->callback, func_get_args());
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getClass()
     {
         if ($this->isActive()) {

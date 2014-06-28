@@ -36,6 +36,8 @@ class Provider implements MenuProviderInterface
      *
      * @param string $name
      * @param array  $options
+     *
+     * @return \Knp\Menu\ItemInterface|\SplObjectStorage
      */
     public function get($name, array $options = array())
     {
@@ -47,6 +49,8 @@ class Provider implements MenuProviderInterface
      *
      * @param string $name
      * @param array  $options
+     *
+     * @return bool
      */
     public function has($name, array $options = array())
     {

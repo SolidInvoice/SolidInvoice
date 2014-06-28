@@ -9,7 +9,8 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block title %}{{ "Invoice #%id"|trans|replace({"%id" : invoice.id}) }} {{ status_label(invoice.status) }}{% endblock %}
+{% block page_title %}{{ "Invoice #%id"|trans|replace({"%id" : invoice.id}) }}{% endblock page_title %}
+{% block title %}{{ block('page_title') }} <small>{{ status_label(invoice.status) }}</small>{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_view') }}
@@ -22,22 +23,97 @@
         <div class="btn-toolbar">
             <div class="btn-group">
                 {% if invoice is not paid %}
-                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" class="btn btn-success">{{ "Mark Paid"|trans }}</a>
+                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" id="pay-now" class="btn btn-success">{{ "mark_paid"|trans }}</a>
                 {% endif %}
                 <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">{{ "Send"|trans }}</a>
             </div>
 
             {% if invoice is draft or invoice is pending %}
                 <div class="btn-group">
+                    {% if paymentsConfigured() and invoice is pending %}
+                        <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">{{ "pay_now"|trans }}</a>
+                    {% endif %}
                     <a href="{{ path('_cancel_invoice', {'id' : invoice.id}) }}" class="btn btn-inverse">{{ "Cancel"|trans }}</a>
                 </div>
             {% endif %}
 
-            <div class="btn-group">
-                <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">{{ "Edit"|trans }}</a>
-            </div>
+            {% if invoice is not paid %}
+                <div class="btn-group">
+                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">{{ "Edit"|trans }}</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 
-    {% include "CSBillInvoiceBundle::invoice_template.html.twig" %}
+    {% include "CSBillInvoiceBundle::invoice_template.html.twig" with {"link_client" : true} %}
+
+    {% spaceless %}
+    <div class="col-md-10">
+        <hr />
+        <h3>{{ 'payments'|trans }}</h3>
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>{{ 'payment_id'|trans }}</th>
+                    <th>{{ 'method'|trans }}</th>
+                    <th>{{ 'amount'|trans }}</th>
+                    <th>{{ 'currency'|trans }}</th>
+                    <th>{{ 'payment_date'|trans }}</th>
+                    <th>{{ 'status'|trans }}</th>
+                </tr>
+            </thead>
+            {% for payment in payments %}
+                <tr>
+                    <td>
+                        {{ payment.id }}
+                    </td>
+                    <td>
+                        {{ payment.method }}
+                    </td>
+                    <td>
+                        {{ payment.amount|currency }}
+                    </td>
+                    <td>
+                        {{ payment.currency }}
+                    </td>
+                    <td>
+                        {{ payment.created|date }}
+                    </td>
+                    <td>
+                        {{ status_label(payment, payment.message) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endspaceless %}
+    </div>
+
+    {% if paymentsConfigured() %}
+        <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="payment-modal-label">{{ 'add_payment'|trans }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'capture_payment_question'|trans }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'close'|trans }}</button>
+                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" class="btn btn-success">{{ 'mark_paid'|trans }}</a>
+                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">{{ 'capture_payment'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock content %}
+
+{% block script %}
+    {% if paymentsConfigured() %}
+        $('#pay-now').on('click', function(event) {
+            event.preventDefault();
+
+            $('#payment-modal').modal();
+        });
+    {% endif %}
+{% endblock script %}

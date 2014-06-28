@@ -33,7 +33,8 @@ services:
     csbill_core.menu.top:
         class: %csbill_core.menu.top.class%
         tags:
-            - { name: cs_core.menu, menu: top_right, method: topMenu }
+            - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
+            - { name: cs_core.menu, menu: top_right, method: userMenu }
 
     csbill_core.currency:
         class: %csbill_core.currrency.class%
@@ -80,7 +81,7 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 200 }
 
     csbill_core.settings.loader:
-            class: %csbill_core.settings.loader.class%
-            arguments: [@kernel]
-            tags:
-                - { name: settings.loader }
+        class: %csbill_core.settings.loader.class%
+        arguments: [@kernel]
+        tags:
+            - { name: settings.loader }

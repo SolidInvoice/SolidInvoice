@@ -11,7 +11,7 @@
 
 namespace CSBill\ClientBundle\Form;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -22,9 +22,9 @@ use CSBill\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
 class ContactDetail extends AbstractType
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var ManagerRegistry
      */
-    protected $entityManager;
+    protected $registry;
 
     /**
      * @var \CSBill\ClientBundle\Entity\ContactType
@@ -32,18 +32,22 @@ class ContactDetail extends AbstractType
     private $type;
 
     /**
-     * @param EntityManager $entityManager
-     * @param ContactType   $type
+     * @param ManagerRegistry $registry
+     * @param ContactType     $type
      */
-    public function __construct(EntityManager $entityManager, ContactType $type)
+    public function __construct(ManagerRegistry $registry, ContactType $type)
     {
-        $this->entityManager = $entityManager;
+        $this->registry = $registry;
         $this->type = $type;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new ContactTypeTransformer($this->entityManager);
+        $transformer = new ContactTypeTransformer($this->registry);
 
         $options = array(
                         'required' => $this->type->isRequired(),
@@ -68,11 +72,17 @@ class ContactDetail extends AbstractType
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'contact_detail';
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -81,7 +91,8 @@ class ContactDetail extends AbstractType
     }
 
     /**
-     * @param  string $text
+     * @param string $text
+     *
      * @return string
      */
     private function humanize($text)

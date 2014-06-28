@@ -15,3 +15,8 @@ add_item: Add Item
 subtotal: Sub-Total
 save_send: Save and Send
 save_draft: Save as Draft
+pay_now: Pay Now
+add_payment: Add Payment
+capture_payment_question: Do you want to capture a payment for this invoice?
+mark_paid: Mark Paid
+capture_payment: Capture Payment

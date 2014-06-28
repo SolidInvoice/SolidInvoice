@@ -11,6 +11,7 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
+use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Rhumsaa\Uuid\Uuid;
@@ -139,6 +140,17 @@ class Invoice
     private $items;
 
     /**
+     * @var ArrayCollection $payments
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
+     *     mappedBy="invoice",
+     *     cascade={"persist"}
+     * )
+     */
+    private $payments;
+
+    /**
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      *
@@ -152,6 +164,7 @@ class Invoice
     public function __construct()
     {
         $this->items = new ArrayCollection;
+        $this->payments = new ArrayCollection;
         $this->users = new ArrayCollection;
         $this->setUuid(Uuid::uuid1());
     }
@@ -474,6 +487,44 @@ class Invoice
     }
 
     /**
+     * Add payment
+     *
+     * @param  Payment $payment
+     * @return Invoice
+     */
+    public function addPayment(Payment $payment)
+    {
+        $this->payments[] = $payment;
+        $payment->setInvoice($this);
+
+        return $this;
+    }
+
+    /**
+     * Removes a payment
+     *
+     * @param Payment $payment
+    *
+     * @return Invoice
+     */
+    public function removePayment(Payment $payment)
+    {
+        $this->payments->removeElement($payment);
+
+        return $this;
+    }
+
+    /**
+     * Get payments
+     *
+     * @return ArrayCollection
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    /**
      * PrePersist listener to update the invoice total
      *
      * @ORM\PrePersist
@@ -496,7 +547,7 @@ class Invoice
             $this->setTotal($total);
         } else {
             $this->setBaseTotal(0)
-                 ->setTotal(0);
+                ->setTotal(0);
         }
     }
 }

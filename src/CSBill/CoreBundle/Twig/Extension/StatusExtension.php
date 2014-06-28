@@ -64,23 +64,40 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param  mixed  $object
+     * @param mixed  $object
+     * @param string $tooltip
+     *
      * @return string
      */
-    public function getStatusLabel($object)
+    public function getStatusLabel($object, $tooltip = null)
     {
-        return $this->renderStatusLabel($object->getStatus());
+        return $this->renderStatusLabel($object->getStatus(), $tooltip);
     }
 
     /**
      * Return the status converted into a label string
      *
-     * @param  mixed  $object
+     * @param mixed  $object
+     * @param string $tooltip
+     *
      * @return string
      */
-    public function renderStatusLabel($object)
+    public function renderStatusLabel($object, $tooltip = null)
     {
-        return $this->environment->render('CSBillCoreBundle:Status:label.html.twig', array('entity' => $object));
+        if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
+            $object = array(
+                'name' => $object['status'],
+                'label' => $object['status_label'],
+            );
+        }
+
+        return $this->environment->render(
+            'CSBillCoreBundle:Status:label.html.twig',
+            array(
+                'entity' => $object,
+                'tooltip' => $tooltip
+            )
+        );
     }
 
     /**

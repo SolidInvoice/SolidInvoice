@@ -18,7 +18,7 @@ use CSBill\CoreBundle\Entity\Status as BaseStatus;
 /**
  * CSBill\QuoteBundle\Entity\Status
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\StatusRepository")
  */
 class Status extends BaseStatus
 {

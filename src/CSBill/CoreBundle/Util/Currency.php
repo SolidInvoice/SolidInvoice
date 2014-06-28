@@ -15,11 +15,25 @@ use NumberFormatter;
 
 class Currency
 {
+    /**
+     * @var \NumberFormatter
+     */
     protected $formatter;
 
+    /**
+     * @var string
+     */
     protected $locale;
+
+    /**
+     * @var string
+     */
     protected $currency;
 
+    /**
+     * @param string $locale
+     * @param string $currency
+     */
     public function __construct($locale, $currency)
     {
         $this->locale = $locale;
@@ -28,16 +42,27 @@ class Currency
         $this->formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
     }
 
+    /**
+     * @return bool|string
+     */
     public function getThousandSeparator()
     {
         return $this->formatter->getSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
     }
 
+    /**
+     * @return bool|string
+     */
     public function getDecimalSeparator()
     {
         return $this->formatter->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
     }
 
+    /**
+     * @param null $currency
+     *
+     * @return null
+     */
     public function getCurrencySymbol($currency = null)
     {
         $pattern = $this->format(123, $currency);
@@ -63,11 +88,17 @@ class Currency
         return $this->formatter->formatCurrency($value, $currency ?: $this->currency);
     }
 
+    /**
+     * @return string
+     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
+    /**
+     * @return string
+     */
     public function getLocale()
     {
         return $this->locale;

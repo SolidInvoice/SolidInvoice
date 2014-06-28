@@ -59,7 +59,7 @@ class Item
     private $qty;
 
     /**
-     * @var string $created
+     * @var \DateTime $created
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -68,7 +68,7 @@ class Item
     private $created;
 
     /**
-     * @var string $updated
+     * @var \DateTime $updated
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -77,7 +77,7 @@ class Item
     private $updated;
 
     /**
-     * @var string $deleted
+     * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -236,7 +236,7 @@ class Item
      */
     public function getDeleted()
     {
-        return $this->created;
+        return $this->deleted;
     }
 
     /**

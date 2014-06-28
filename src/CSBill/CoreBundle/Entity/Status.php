@@ -26,7 +26,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\DiscriminatorMap({
  *      "client" = "CSBill\ClientBundle\Entity\Status",
  *      "invoice" = "CSBill\InvoiceBundle\Entity\Status",
- *      "quote" = "CSBill\QuoteBundle\Entity\Status"
+ *      "quote" = "CSBill\QuoteBundle\Entity\Status",
+ *      "payment" = "CSBill\PaymentBundle\Entity\Status",
  * })
  * @Gedmo\SoftDeleteable(fieldName="deleted")
  */
@@ -58,7 +59,7 @@ class Status
     private $label;
 
     /**
-     * @var string $created
+     * @var \DateTime $created
      *
      * @ORM\Column(name="created", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -67,7 +68,7 @@ class Status
     private $created;
 
     /**
-     * @var string $updated
+     * @var \DateTime $updated
      *
      * @ORM\Column(name="updated", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -76,7 +77,7 @@ class Status
     private $updated;
 
     /**
-     * @var string $deleted
+     * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
      * @Assert\DateTime()
@@ -205,7 +206,7 @@ class Status
      */
     public function getDeleted()
     {
-        return $this->created;
+        return $this->deleted;
     }
 
     /**

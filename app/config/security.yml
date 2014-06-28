@@ -34,6 +34,24 @@ security:
             anonymous: true
             context: frontend
 
+
+         # Payments
+        create:
+            pattern:  ^/payments/create/([a-zA-Z0-9-]{36})
+            anonymous: true
+            context: frontend
+
+        capture:
+            pattern:  ^/payment/capture/(.*)
+            anonymous: true
+            context: frontend
+
+        done:
+            pattern:  ^/payments/done$
+            anonymous: true
+            context: frontend
+
+        # Login
         login:
             pattern:  ^/login$
             anonymous: ~
@@ -42,6 +60,7 @@ security:
             pattern:  ^/resetting(.*)
             anonymous: ~
 
+        # Main
         main:
             remember_me:
                 key:      "%secret%"
@@ -62,7 +81,12 @@ security:
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
-        - { path: ^/view/(quote|invoice)/([a-zA-Z0-9-]), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/install(.*), role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/view/(quote|invoice)/([a-zA-Z0-9-]{36})$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/install(.*), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # payments
+        - { path: "^/payments/create/([a-zA-Z0-9-]{36})$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/payment/capture/(.*), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/payments/done$, roles: IS_AUTHENTICATED_ANONYMOUSLY }

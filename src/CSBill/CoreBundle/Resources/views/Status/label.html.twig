@@ -7,4 +7,4 @@
  # with this source code in the file LICENSE.
  #}
 
-<span class="label{{ entity.label ? " label-" ~ entity.label }}">{{ entity|title }}</span>
+<span class="label{{ entity.label ? " label-" ~ entity.label }}"{% if tooltip is not empty %}title="{{ tooltip }}" rel="tooltip" {% endif %}>{{ entity.name|title }}</span>

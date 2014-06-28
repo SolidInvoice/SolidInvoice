@@ -68,6 +68,7 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="total", type="float")
+     * @Grid\Column(type="number", style="currency")
      */
     private $total;
 

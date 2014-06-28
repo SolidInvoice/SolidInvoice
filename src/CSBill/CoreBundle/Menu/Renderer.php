@@ -15,10 +15,9 @@ use Knp\Menu\Renderer\ListRenderer;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Silex\Voter\RouteVoter;
 use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
+use Knp\Menu\ItemInterface as Item;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 
 class Renderer extends ListRenderer
 {
@@ -74,12 +73,12 @@ class Renderer extends ListRenderer
      * has children).
      * This method updates the depth for the children.
      *
-     * @param ItemInterface $item
-     * @param array         $options The options to render the item.
+     * @param Item  $item
+     * @param array $options The options to render the item.
      *
      * @return string
      */
-    protected function renderChildren(ItemInterface $item, array $options)
+    protected function renderChildren(Item $item, array $options)
     {
         // render children with a depth - 1
         if (null !== $options['depth']) {
@@ -102,11 +101,12 @@ class Renderer extends ListRenderer
     /**
      * Renders the menu label
      *
-     * @param  ItemInterface $item
-     * @param  array         $options
+     * @param Item  $item
+     * @param array $options
+     *
      * @return string
      */
-    protected function renderLabel(ItemInterface $item, array $options)
+    protected function renderLabel(Item $item, array $options)
     {
         $icon = '';
         if ($item->getExtra('icon')) {
@@ -132,11 +132,12 @@ class Renderer extends ListRenderer
     }
 
     /**
-     * @param  ItemInterface $item
-     * @param  array         $options
+     * @param Item  $item
+     * @param array $options
+     *
      * @return string
      */
-    protected function renderDivider(ItemInterface $item, array $options = array())
+    protected function renderDivider(Item $item, array $options = array())
     {
         return $this->format(
             '<li' . $this->renderHtmlAttributes(

@@ -51,6 +51,12 @@ class SettingsController extends BaseController
             return $this->redirect($this->generateUrl($request->get('_route')));
         }
 
-        return $this->render('CSBillSettingsBundle:Settings:index.html.twig', array('settings' => $settings, 'form' => $form->createView()));
+        return $this->render(
+            'CSBillSettingsBundle:Settings:index.html.twig',
+            array(
+                'settings' => $settings,
+                'form' => $form->createView()
+            )
+        );
     }
 }
