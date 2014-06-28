@@ -163,7 +163,8 @@ class PaymentController extends BaseController
         } elseif ($status->isPending()) {
             $this->flash('Payment is still pending.', 'warning');
         } else {
-            $this->flash('Payment failed.', 'error');
+            $message = $paymentDetails->getMessage();
+            $this->flash(sprintf('Payment failed: %s', $message), 'error');
         }
 
         $entityManager->flush();
