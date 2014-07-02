@@ -89,6 +89,14 @@ class Payment
     private $updated;
 
     /**
+     * @var \DateTime $completed
+     *
+     * @ORM\Column(name="completed", type="datetime")
+     * @Assert\DateTime
+     */
+    private $completed;
+
+    /**
      * @var \DateTime $deleted
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
@@ -337,5 +345,25 @@ class Payment
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCompleted()
+    {
+        return $this->completed;
+    }
+
+    /**
+     * @param \DateTime $completed
+     *
+     * @return Payment
+     */
+    public function setCompleted(\DateTIme $completed)
+    {
+        $this->completed = $completed;
+
+        return $this;
     }
 }

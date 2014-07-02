@@ -136,6 +136,7 @@ class PaymentController extends BaseController
         $status = new StatusRequest($token);
         $payment->execute($status);
 
+        /** @var Payment $paymentDetails */
         $paymentDetails = $status->getModel()->getPayment();
 
         $paymentStatus = $paymentDetails->getMethod()->getDefaultStatus();
@@ -145,6 +146,8 @@ class PaymentController extends BaseController
                 ->getRepository('CSBillPaymentBundle:Status')
                 ->findOneBy(array('name' => $status->getStatus()))
         );
+
+        $paymentDetails->setCompleted(new \DateTime('now'));
 
         $entityManager->persist($paymentDetails);
 

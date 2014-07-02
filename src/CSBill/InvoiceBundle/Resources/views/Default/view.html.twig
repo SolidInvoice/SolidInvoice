@@ -77,7 +77,7 @@
                         {{ payment.currency }}
                     </td>
                     <td>
-                        {{ payment.created|date }}
+                        {{ payment.completed|date }}
                     </td>
                     <td>
                         {{ status_label(payment, payment.message) }}
