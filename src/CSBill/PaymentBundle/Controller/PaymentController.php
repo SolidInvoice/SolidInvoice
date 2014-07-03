@@ -66,6 +66,7 @@ class PaymentController extends BaseController
                 },
                 'required' => true,
                 'constraints' => new NotBlank(),
+                'empty_value' => 'Choose Payment Method',
                 'attr' => array(
                     'class' => 'select2'
                 )

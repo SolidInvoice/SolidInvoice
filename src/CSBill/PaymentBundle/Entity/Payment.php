@@ -99,7 +99,7 @@ class Payment
     /**
      * @var \DateTime $completed
      *
-     * @ORM\Column(name="completed", type="datetime")
+     * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
      */
     private $completed;
