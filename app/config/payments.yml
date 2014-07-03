@@ -13,7 +13,9 @@ payum:
                   driver: orm
     contexts:
         offline:
-            offline: ~
+            offline:
+                actions:
+                    - csbill.payment.payum.offline.action.status_action
         paypal_express_checkout_nvp:
             paypal_express_checkout_nvp:
                 username:  NOT USED
