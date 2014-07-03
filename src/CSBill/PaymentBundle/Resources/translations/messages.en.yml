@@ -8,6 +8,7 @@ payment_methods: Payment Methods
 payment_create: Add Payment Method
 payment_delete_success: Payment Method Successfully Deleted
 
+invoice: Invoice
 payments: Payments
 payment_id: Payment ID
 method: Method

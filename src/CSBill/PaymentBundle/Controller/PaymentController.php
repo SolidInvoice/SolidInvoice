@@ -93,6 +93,7 @@ class PaymentController extends BaseController
             $payment->setMethod($data['payment_method']);
             $payment->setAmount($invoice->getTotal());
             $payment->setCurrency($this->container->getParameter('currency'));
+            $payment->setClient($invoice->getClient());
 
             $entityManager = $this->getEm();
             $entityManager->persist($payment);

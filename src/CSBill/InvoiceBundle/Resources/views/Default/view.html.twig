@@ -33,7 +33,7 @@
                     {% if paymentsConfigured() and invoice is pending %}
                         <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">{{ "pay_now"|trans }}</a>
                     {% endif %}
-                    <a href="{{ path('_cancel_invoice', {'id' : invoice.id}) }}" class="btn btn-inverse">{{ "Cancel"|trans }}</a>
+                    <a href="{{ path('_cancel_invoice', {'id' : invoice.id}) }}" class="btn btn-warning">{{ "Cancel"|trans }}</a>
                 </div>
             {% endif %}
 
@@ -43,52 +43,22 @@
                 </div>
             {% endif %}
         </div>
+
+        <br class="clear" />
     </div>
 
     {% include "CSBillInvoiceBundle::invoice_template.html.twig" with {"link_client" : true} %}
 
-    {% spaceless %}
-    <div class="col-md-10">
-        <hr />
-        <h3>{{ 'payments'|trans }}</h3>
-        <table class="table table-bordered table-condensed table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>{{ 'payment_id'|trans }}</th>
-                    <th>{{ 'method'|trans }}</th>
-                    <th>{{ 'amount'|trans }}</th>
-                    <th>{{ 'currency'|trans }}</th>
-                    <th>{{ 'payment_date'|trans }}</th>
-                    <th>{{ 'status'|trans }}</th>
-                </tr>
-            </thead>
-            {% for payment in payments %}
-                <tr>
-                    <td>
-                        {{ payment.id }}
-                    </td>
-                    <td>
-                        {{ payment.method }}
-                    </td>
-                    <td>
-                        {{ payment.amount|currency }}
-                    </td>
-                    <td>
-                        {{ payment.currency }}
-                    </td>
-                    <td>
-                        {{ payment.completed|date }}
-                    </td>
-                    <td>
-                        {{ status_label(payment, payment.message) }}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endspaceless %}
-    </div>
-
     {% if paymentsConfigured() %}
+
+        {% if payments|length > 0 %}
+            <div class="col-md-10">
+                <hr />
+                <h3>{{ 'payments'|trans }}</h3>
+                {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, 'show_invoice' : false} only %}
+            </div>
+        {% endif %}
+
         <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label" aria-hidden="true">
             <div class="modal-content">
                 <div class="modal-header">

@@ -11,6 +11,7 @@
 
 namespace CSBill\ClientBundle\Entity;
 
+use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -95,6 +96,17 @@ class Client
     private $invoices;
 
     /**
+     * @var ArrayCollection $payments
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
+     *     mappedBy="client",
+     *     cascade={"persist"}
+     * )
+     */
+    private $payments;
+
+    /**
      * @var \DateTIme $created
      *
      * @ORM\Column(name="created", type="datetime")
@@ -128,6 +140,7 @@ class Client
         $this->contacts = new ArrayCollection;
         $this->quotes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->payments = new ArrayCollection;
     }
 
     /**
@@ -318,6 +331,45 @@ class Client
     public function getInvoices()
     {
         return $this->invoices;
+    }
+
+    /**
+     * Add payment
+     *
+     * @param Payment $payment
+     *
+     * @return Client
+     */
+    public function addPayment(Payment $payment)
+    {
+        $this->payments[] = $payment;
+        $payment->setClient($this);
+
+        return $this;
+    }
+
+    /**
+     * Removes a payment
+     *
+     * @param Payment $payment
+     *
+     * @return Client
+     */
+    public function removePayment(Payment $payment)
+    {
+        $this->payments->removeElement($payment);
+
+        return $this;
+    }
+
+    /**
+     * Get payments
+     *
+     * @return ArrayCollection
+     */
+    public function getPayments()
+    {
+        return $this->payments;
     }
 
     /**

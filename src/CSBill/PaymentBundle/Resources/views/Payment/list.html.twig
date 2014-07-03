@@ -1,0 +1,44 @@
+{% spaceless %}
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+        <tr>
+            {% if show_invoice %}
+                <th>{{ 'invoice'|trans }}</th>
+            {% endif %}
+            <th>{{ 'payment_id'|trans }}</th>
+            <th>{{ 'method'|trans }}</th>
+            <th>{{ 'amount'|trans }}</th>
+            <th>{{ 'currency'|trans }}</th>
+            <th>{{ 'payment_date'|trans }}</th>
+            <th>{{ 'status'|trans }}</th>
+        </tr>
+        </thead>
+        {% for payment in payments %}
+            <tr>
+                {% if show_invoice %}
+                    <td>
+                        <a href="{{ path('_invoices_view', {'id' : payment.invoice}) }}">{{ payment.invoice }}</a>
+                    </td>
+                {% endif %}
+                <td>
+                    {{ payment.id }}
+                </td>
+                <td>
+                    {{ payment.method }}
+                </td>
+                <td>
+                    {{ payment.amount|currency }}
+                </td>
+                <td>
+                    {{ payment.currency }}
+                </td>
+                <td>
+                    {{ payment.completed|date }}
+                </td>
+                <td>
+                    {{ status_label(payment, payment.message) }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endspaceless %}

@@ -21,16 +21,6 @@
 	{{ menu('clients_view') }}
 {% endblock sidebar_left %}
 
-{#{% block heading %}
-	<fieldset>
-		<legend>
-			<h3>
-				{{ client.name }} <small>{{ status_label(client.status) }}</small>
-			</h3>
-		</legend>
-	</fieldset>
-{% endblock heading %}#}
-
 {% block content %}
 
     <div id="client-view">
@@ -46,7 +36,7 @@
                     {{ icon('edit') }} {{ "edit"|trans }}
                 </a>
                 <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client">
-                    {{ icon('trash') }} {{ "delete"|trans }}
+                    {{ icon('trash-o') }} {{ "delete"|trans }}
                 </a>
             </div>
         </div>
@@ -77,6 +67,18 @@
                 </div>
             </div>
         </div>
+
+        {% if paymentsConfigured() and payments|length > 0 %}
+            <div class="row">
+                <div class="col-md-12">
+                    <legend>
+                        <h3>{{ 'payments'|trans }}</h3>
+                    </legend>
+
+                    {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, "show_invoice" : true} only %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock content %}

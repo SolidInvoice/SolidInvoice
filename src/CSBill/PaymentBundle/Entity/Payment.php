@@ -2,6 +2,7 @@
 
 namespace CSBill\PaymentBundle\Entity;
 
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -31,6 +32,13 @@ class Payment
      * @var Invoice
      */
     private $invoice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="payments")
+     *
+     * @var Client
+     */
+    private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
@@ -363,6 +371,26 @@ class Payment
     public function setCompleted(\DateTIme $completed)
     {
         $this->completed = $completed;
+
+        return $this;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param Client $client
+     *
+     * @return Payment
+     */
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
 
         return $this;
     }

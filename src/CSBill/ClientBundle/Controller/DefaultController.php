@@ -17,6 +17,7 @@ use CSBill\DataGridBundle\Grid\Filters;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
+use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\ORM\QueryBuilder;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,7 +111,17 @@ class DefaultController extends BaseController
      */
     public function viewAction(Client $client)
     {
-        return $this->render('CSBillClientBundle:Default:view.html.twig', array('client' => $client));
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
+        $payments = $paymentRepository->getPaymentsForClient($client);
+
+        return $this->render(
+            'CSBillClientBundle:Default:view.html.twig',
+            array(
+                'client' => $client,
+                'payments' => $payments,
+            )
+        );
     }
 
     /**
