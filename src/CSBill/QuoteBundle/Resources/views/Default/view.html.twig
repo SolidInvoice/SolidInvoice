@@ -34,7 +34,7 @@
                 {% endif %}
             </div>
             <div class="btn-group">
-                <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">{{ "Send"|trans }}</a>
+                <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">{{ icon('envelope-o') }} {{ "Send"|trans }}</a>
             </div>
 
             {% if quote is draft or quote is pending %}
