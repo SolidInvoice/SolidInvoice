@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
         'password',
         'checkbox',
         'radio',
-        'dropdown',
+        'choice',
         'textarea'
     );
 
@@ -54,6 +54,10 @@ class Configuration implements ConfigurationInterface
                                         ->enumNode('type')
                                             ->values($this->availableFieldTypes)
                                             ->defaultValue('text')
+                                        ->end()
+                                        ->arrayNode('options')
+                                            ->prototype('scalar')->end()
+                                            ->defaultValue(array())
                                         ->end()
                                     ->end()
                                 ->end()

@@ -17,23 +17,29 @@ class PaymentMethodSettingsForm extends AbstractType
         $settings = $options['settings'];
 
         foreach ($settings as $setting) {
-            $options = $this->getOptions($setting['type']);
+            $options = $this->getOptions($setting);
             $builder->add($setting['name'], $setting['type'], $options);
         }
     }
 
     /**
-     * @param string $field
+     * @param array $settings
      *
      * @return array
      */
-    private function getOptions($field)
+    private function getOptions(array $settings)
     {
         $options = array();
 
-        switch ($field) {
+        switch ($settings['type']) {
             case 'password' :
                 $options['always_empty'] = false;
+                break;
+
+            case 'choice' :
+                $options['choices'] = $settings['options'];
+                $options['empty_value'] = 'Please Choose';
+                $options['attr'] = array('class' => 'select2');
                 break;
         }
 
