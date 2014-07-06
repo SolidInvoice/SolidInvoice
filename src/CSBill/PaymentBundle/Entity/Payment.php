@@ -28,6 +28,7 @@ class Payment
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
+     * @Grid\Column(name="invoice", field="invoice.id", title="Invoice", filter="select", selectFrom="source")
      *
      * @var Invoice
      */
@@ -35,6 +36,8 @@ class Payment
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="payments")
+     * @Grid\Column(name="client", field="client.name", title="Client", filter="select", selectFrom="source")
+     * @Grid\Column(name="client_id", field="client.id", visible=false)
      *
      * @var Client
      */
@@ -58,6 +61,7 @@ class Payment
 
     /**
      * @ORM\Column(name="amount", type="float")
+     * @Grid\Column(type="number", style="currency")
      */
     private $amount;
 

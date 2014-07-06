@@ -10,7 +10,8 @@ services:
     csbill_payment.menu.top:
         class: %csbill_payment.menu.top.class%
         tags:
-            - { name: cs_core.menu, menu: top_right, method: topMenu }
+            - { name: cs_core.menu, menu: top_right, method: topRightMenu }
+            - { name: cs_core.menu, menu: top, method: topMenu }
 
     csbill_payment.method.manager:
         class: CSBill\PaymentBundle\Manager\PaymentMethodManager

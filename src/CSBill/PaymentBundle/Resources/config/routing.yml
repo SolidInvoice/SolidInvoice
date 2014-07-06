@@ -1,17 +1,21 @@
 _payments_index:
     path:  /
+    defaults: { _controller: CSBillPaymentBundle:Default:list }
+
+_payment_settings_index:
+    path:  /methods/
     defaults: { _controller: CSBillPaymentBundle:Default:index }
 
 _payments_add:
-    path:  /add
+    path:  /methods/add
     defaults: { _controller: CSBillPaymentBundle:Default:add }
 
 _payments_edit:
-    path:  /edit/{id}
+    path:  /methods/edit/{id}
     defaults: { _controller: CSBillPaymentBundle:Default:add }
 
 _payments_delete:
-    path: /delete/{id}
+    path: /methods/delete/{id}
     defaults: { _controller: CSBillPaymentBundle:Ajax:delete }
     methods: [POST]
 

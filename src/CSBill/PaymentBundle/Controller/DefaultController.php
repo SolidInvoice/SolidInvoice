@@ -4,6 +4,7 @@ namespace CSBill\PaymentBundle\Controller;
 
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
+use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
@@ -13,6 +14,58 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends BaseController
 {
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAction(Request $request)
+    {
+        $source = new Entity('CSBillPaymentBundle:Payment');
+
+        // Get a Grid instance
+        $grid = $this->get('grid');
+
+        $router = $this->get('router');
+
+        $search = $request->get('search');
+
+        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search) {
+
+            if ($search) {
+                $aliases = $queryBuilder->getRootAliases();
+
+                $queryBuilder
+                    ->orWhere($aliases[0].'.message LIKE :search')
+                    ->orWhere($aliases[0].'.amount LIKE :search')
+                    ->orWhere($aliases[0].'.currency LIKE :search')
+                    ->setParameter('search', "%{$search}%");
+            }
+        });
+
+        // Attach the source to the grid
+        $grid->setSource($source);
+
+        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
+                $label = $row->getField('status.label');
+
+                return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+            })->setSafe(false);
+        $grid->getColumn('amount')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('client.name')->manipulateRenderCell(function ($value, Row $row) use ($router) {
+                $clientId = $row->getField('client.id');
+                return '<a href="' . $router->generate('_clients_view', array('id' => $clientId)) . '">' . $value . '</a>';
+            })->setSafe(false);
+        $grid->getColumn('invoice.id')->manipulateRenderCell(function ($value) use ($router) {
+                return '<a href="' . $router->generate('_invoices_view', array('id' => $value)) . '">' . $value . '</a>';
+            })->setSafe(false);
+        $grid->setDefaultOrder('created', 'DESC');
+
+        $grid->hideColumns(array('updated', 'deleted'));
+
+        return $grid->getGridResponse('CSBillPaymentBundle:Default:list.html.twig', array('filters' => array()));
+    }
+
     /**
      * @param Request $request
      *
