@@ -35,4 +35,32 @@ class ClientRepository extends EntityRepository
 
         return (int) $query->getSingleScalarResult();
     }
+
+    /**
+     * Gets the most recent created clients
+     *
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function getRecentClients($limit = 5)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->select(
+            'c.id',
+            'c.name',
+            'c.website',
+            'c.created',
+            's.name as status',
+            's.label as status_label'
+        )
+            ->join('c.status', 's')
+            ->orderBy('c.created', 'DESC')
+            ->setMaxResults($limit);
+
+        $query = $qb->getQuery();
+
+        return $query->getArrayResult();
+    }
 }

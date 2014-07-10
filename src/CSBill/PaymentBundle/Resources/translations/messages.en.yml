@@ -18,6 +18,7 @@ payment_date: Payment Date
 status: Status
 total: Total
 base_total: Base Total
+completed: Completed
 
 payment_for_invoice: "Payment for invoice #%id%"
 

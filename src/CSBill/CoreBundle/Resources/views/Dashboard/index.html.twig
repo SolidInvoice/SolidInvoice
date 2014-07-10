@@ -14,3 +14,115 @@
 {% block title %}
     {{ icon('dashboard') }} {{ block('page_title') }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if paymentsConfigured() and payments|length > 0 %}
+        <script src="{{ asset('bundles/csbillcore/js/highcarts/highcharts.js') }}"></script>
+    {% endif %}
+{% endblock javascripts %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="graph-income"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="graph-monthly-income"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        {{ render(controller('CSBillClientBundle:Dashboard:recent')) }}
+        {{ render(controller('CSBillQuoteBundle:Dashboard:recent')) }}
+        {{ render(controller('CSBillInvoiceBundle:Dashboard:recent')) }}
+        {{ render(controller('CSBillPaymentBundle:Dashboard:recent')) }}
+    </div>
+{% endblock content %}
+
+{% block script %}
+    {% if paymentsConfigured() %}
+        {% if payments|length > 0 %}
+            var chart = $('#graph-income').highcharts({
+                title: {
+                    text: '{{ 'Payments Received'|trans }}',
+                    x: -20
+                },
+                chart: {
+                    zoomType: 'x'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: {
+                        text: '{{ 'amount'|trans }} ({{ currency.currency }})'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valuePrefix: '{{ currency.currencySymbol }}',
+                    pointFormat: '<b>{point.y}</b>'
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    data: {{ payments|json_encode }},
+                    pointStart: {{ payments[0][0] }},
+                    pointInterval: 24 * 3600 * 1000
+                }]
+            });
+        {% endif %}
+
+        {% if monthPayments|length > 0 %}
+            var chart = $('#graph-monthly-income').highcharts({
+                title: {
+                    text: '{{ 'Monthly Income'|trans }}',
+                    x: -20
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'x'
+                },
+                xAxis: {
+                    categories: {{ monthPayments|keys|json_encode|raw }}
+                },
+                yAxis: {
+                    title: {
+                        text: '{{ 'amount'|trans }} ({{ currency.currency }})'
+                    },
+                    plotLines: [{
+                        value: 0,
+                     width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valuePrefix: '{{ currency.currencySymbol }}',
+                    pointFormat: '<b>{point.y}</b>'
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    data: [
+                        {% for date, amount in monthPayments %}
+                        {
+                            name: '{{ date }}',
+                            y: {{ amount }}
+                        },
+                        {% endfor %}
+                    ],
+                    colorByPoint: true
+                }]
+            });
+        {% endif %}
+    {% endif %}
+{% endblock script %}
