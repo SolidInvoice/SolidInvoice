@@ -1,0 +1,41 @@
+{% if quotes is not empty %}
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ 'Recent Quotes'|trans }}
+            </div>
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>{{ 'id'|trans }}</th>
+                    <th>{{ 'client'|trans }}</th>
+                    <th>{{ 'status'|trans }}</th>
+                    <th>{{ 'total'|trans }}</th>
+                    <th>{{ 'discount'|trans }}</th>
+                    <th>{{ 'created'|trans }}</th>
+                </tr>
+                {% for quote in quotes %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('_quotes_view', {'id' : quote.id}) }}">{{ quote.id }}</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('_clients_view', {'id' : quote.client_id}) }}">{{ quote.client }}</a>
+                        </td>
+                        <td>
+                            {{ status_label(quote) }}
+                        </td>
+                        <td>
+                            {{ quote.total|currency }}
+                        </td>
+                        <td>
+                            {{ quote.discount * 100 }}%
+                        </td>
+                        <td>
+                            {{ quote.created|date }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endif %}

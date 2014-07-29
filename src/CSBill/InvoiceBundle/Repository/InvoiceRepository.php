@@ -96,4 +96,35 @@ class InvoiceRepository extends EntityRepository
 
         return $query->getSingleScalarResult();
     }
+
+    /**
+     * Gets the most recent created invoices
+     *
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function getRecentInvoices($limit = 5)
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select(
+            'i.id',
+            'c.name as client',
+            'c.id as client_id',
+            'i.discount',
+            'i.total',
+            'i.created',
+            's.name as status',
+            's.label as status_label'
+        )
+            ->join('i.client', 'c')
+            ->join('i.status', 's')
+            ->orderBy('i.created', 'DESC')
+            ->setMaxResults($limit);
+
+        $query = $qb->getQuery();
+
+        return $query->getArrayResult();
+    }
 }

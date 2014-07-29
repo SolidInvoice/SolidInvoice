@@ -23,7 +23,7 @@ use APY\DataGridBundle\Grid\Mapping as Grid;
  * CSBill\ClientBundle\Entity\Quote
  *
  * @ORM\Table(name="quotes")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\QuoteRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deleted")
  * @ORM\HasLifecycleCallbacks()

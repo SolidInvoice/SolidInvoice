@@ -11,6 +11,8 @@
 
 namespace CSBill\CoreBundle\Controller;
 
+use CSBill\PaymentBundle\Repository\PaymentRepository;
+
 class DashboardController extends BaseController
 {
     /**
@@ -18,6 +20,18 @@ class DashboardController extends BaseController
      */
     public function indexAction()
     {
-        return $this->render('CSBillCoreBundle:Dashboard:index.html.twig');
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
+
+        $monthPayments = $paymentRepository->getPaymentsByMonth();
+        $payments = $paymentRepository->getPaymentsList();
+
+        return $this->render(
+            'CSBillCoreBundle:Dashboard:index.html.twig',
+            array(
+                'payments' => $payments,
+                'monthPayments' => $monthPayments,
+            )
+        );
     }
 }
