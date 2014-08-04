@@ -31,8 +31,6 @@ twig:
     form:
         resources:
             - 'CSBillCoreBundle:Form:fields.html.twig'
-    globals:
-        app_name: CSBill
 
 # Assetic Configuration
 assetic:
