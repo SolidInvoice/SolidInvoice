@@ -250,7 +250,7 @@ class Installer extends ContainerAware
         // check if we can connect to the database
         try {
             $this->container->get('database_connection')->connect();
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             // if we can't connect to the database, assume the application is not installed
             // @TODO we should cater for cases when the database is down
             return false;
