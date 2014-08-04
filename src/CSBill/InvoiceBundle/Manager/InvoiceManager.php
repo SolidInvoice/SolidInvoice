@@ -17,14 +17,15 @@ use CSBill\InvoiceBundle\Entity\Item;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\QuoteBundle\Entity\Quote;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class InvoiceManager extends ContainerAware
 {
     /**
-     * @var RegistryInterface
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -34,12 +35,12 @@ class InvoiceManager extends ContainerAware
     protected $dispatcher;
 
     /**
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry           $doctrine
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(RegistryInterface $doctrine, EventDispatcherInterface $dispatcher)
+    public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $dispatcher)
     {
-        $this->entityManager = $doctrine;
+        $this->entityManager = $doctrine->getManager();
         $this->dispatcher = $dispatcher;
     }
 
@@ -63,8 +64,10 @@ class InvoiceManager extends ContainerAware
 
         $em = $this->container->get('doctrine')->getManager();
 
+        /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
         $metadata = $em->getClassMetadata(get_class($quote));
 
+        /** @var \Doctrine\ORM\Mapping\ClassMetadata $invoiceMetadata */
         $invoiceMetadata = $em->getClassMetadata(get_class($invoice));
 
         $this->copyFieldValues($quote, $invoice);
@@ -134,12 +137,16 @@ class InvoiceManager extends ContainerAware
     {
         $em = $this->container->get('doctrine')->getManager();
 
+        /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
         $metadata = $em->getClassMetadata(get_class($object));
+
+        /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
         $cloneMetadata = $em->getClassMetadata(get_class($clone));
 
         foreach ($metadata->getFieldNames() as $field) {
+
             if ($cloneMetadata->hasField($field)) {
-                if (in_array($field, array('created', 'updated', 'id'), true)) {
+                if (in_array($field, array('created', 'updated', 'id', 'uuid'), true)) {
                     continue;
                 }
 
@@ -154,7 +161,6 @@ class InvoiceManager extends ContainerAware
     public function markPaid(Invoice $invoice)
     {
         $invoice->setPaidDate(new \DateTime('NOW'));
-        $this->setInvoiceStatus($invoice, 'paid');
 
         $status = $this
             ->entityManager
