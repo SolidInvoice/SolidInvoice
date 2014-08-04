@@ -32,16 +32,31 @@
 
         {{ form_errors(form) }}
 
-        <div class="col-lg-6 col-md-6">
-            {{ block('form_client') }}
-        </div>
-        <div class="col-lg-6 col-md-6">
-            {{ block('form_discount') }}
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                {{ block('form_client') }}
+            </div>
+            <div class="col-lg-6 col-md-6">
+                {{ block('form_discount') }}
+            </div>
         </div>
 
-        {{ block('form_items') }}
+        <div class="row">
+            {{ block('form_items') }}
 
-        <a href="#" class="add-item">{{ icon('plus', ['circle']) }} {{ "add_item"|trans }}</a>
+            <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "add_item"|trans }}</a>
+        </div>
+
+        <br class="clear"/>
+
+        <div class="row">
+            <div class="col-lg-6">
+                {{ form_row(form.terms) }}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.notes) }}
+            </div>
+        </div>
 
         {{ form_rest(form) }}
 

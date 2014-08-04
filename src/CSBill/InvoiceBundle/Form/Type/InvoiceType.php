@@ -41,6 +41,9 @@ class InvoiceType extends AbstractType
                                                       'allow_delete' => true
                 ));
 
+        $builder->add('terms');
+        $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
+
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
     }
 

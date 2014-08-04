@@ -50,4 +50,15 @@
     </div>
 
     {% include "CSBillQuoteBundle::quote_template.html.twig" with {'link_client' : true} %}
+
+    {% if quote.notes is not empty %}
+
+        <br class="clear" />
+        <div>
+            <strong>{{ 'notes'|trans }}</strong>
+            <p>
+                {{ quote.notes }}
+            </p>
+        </div>
+    {% endif %}
 {% endblock content %}

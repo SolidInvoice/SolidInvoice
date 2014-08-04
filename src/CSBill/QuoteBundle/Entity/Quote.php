@@ -86,6 +86,23 @@ class Quote
      */
     private $discount;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="terms", type="text", nullable=true)
+     * @Grid\Column(visible=false)
+     */
+    private $terms;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="notes", type="text", nullable=true)
+     * @Grid\Column(visible=false)
+     */
+    private $notes;
+
     /**
      * @var \DateTime $due
      *
@@ -467,5 +484,37 @@ class Quote
             $this->setBaseTotal(0)
                  ->setTotal(0);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getTerms()
+    {
+        return $this->terms;
+    }
+
+    /**
+     * @param string $terms
+     */
+    public function setTerms($terms)
+    {
+        $this->terms = $terms;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param string $notes
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
     }
 }

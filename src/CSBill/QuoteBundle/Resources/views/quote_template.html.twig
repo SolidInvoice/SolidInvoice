@@ -111,4 +111,15 @@
         </tr>
     </tfoot>
 </table>
+
+    {% if quote.terms is not empty %}
+
+        <br class="clear" />
+        <div>
+            <strong>{{ 'terms'|trans }}</strong>
+            <p>
+                {{ quote.terms }}
+            </p>
+        </div>
+    {% endif %}
 {% endspaceless %}

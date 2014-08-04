@@ -49,6 +49,17 @@
 
     {% include "CSBillInvoiceBundle::invoice_template.html.twig" with {"link_client" : true} %}
 
+    {% if invoice.notes is not empty %}
+
+        <br class="clear" />
+        <div>
+            <strong>{{ 'notes'|trans }}</strong>
+            <p>
+                {{ invoice.notes }}
+            </p>
+        </div>
+    {% endif %}
+
     {% if paymentsConfigured() %}
 
         {% if payments|length > 0 %}

@@ -46,6 +46,9 @@ class QuoteType extends AbstractType
             )
         );
 
+        $builder->add('terms');
+        $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
+
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
     }
 

@@ -20,3 +20,5 @@ add_payment: Add Payment
 capture_payment_question: Do you want to capture a payment for this invoice?
 mark_paid: Mark Paid
 capture_payment: Capture Payment
+notes: Notes:
+terms: Terms:

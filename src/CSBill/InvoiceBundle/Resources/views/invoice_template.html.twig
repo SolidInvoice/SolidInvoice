@@ -113,4 +113,15 @@
         </tr>
     </tfoot>
 </table>
+
+{% if invoice.terms is not empty %}
+
+    <br class="clear" />
+    <div>
+        <strong>{{ 'terms'|trans }}</strong>
+        <p>
+            {{ invoice.terms }}
+        </p>
+    </div>
+{% endif %}
 {% endspaceless %}
