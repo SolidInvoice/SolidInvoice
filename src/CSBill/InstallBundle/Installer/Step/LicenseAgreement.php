@@ -26,31 +26,20 @@ class LicenseAgreement extends AbstractFormStep
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function getFormData()
     {
-        $license = '';
-
         $rootDir = dirname($this->get('kernel')->getRootDir());
 
-        $finder = new Finder();
-        $finder->files()->in($rootDir)->depth('== 0')->filter(function (\SplFileInfo $file) {
-            $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        $licenseFile = $rootDir . DIRECTORY_SEPARATOR . 'LICENSE';
 
-            if ($extension !== '') {
-                return false;
-            }
-        });
-
-        foreach ($finder as $file) {
-            if (strtolower($file->getBasename()) === 'license') {
-                $license = $file->getContents();
-                break;
-            }
+        if (!file_exists($licenseFile)) {
+            throw new \Exception('LICENSE file is missing');
         }
 
         return array(
-            'license_info' => $license
+            'license_info' => file_get_contents($licenseFile)
         );
     }
 }
