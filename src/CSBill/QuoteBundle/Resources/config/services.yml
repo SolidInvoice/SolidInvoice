@@ -10,3 +10,8 @@ services:
             - { name: cs_core.menu, menu: quotes_view,   method: quotesMenu }
             - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
             - { name: cs_core.menu, menu: quotes_edit, method: quotesMenu }
+
+    quote.total.listener:
+        class: CSBill\QuoteBundle\Listener\Doctrine\QuoteTotalListener
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }

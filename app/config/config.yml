@@ -128,10 +128,6 @@ stof_doctrine_extensions:
     default_locale: %locale%
     orm: ~
 
-jms_di_extra:
-    locations:
-        all_bundles: true
-
 fos_user:
     db_driver: orm
     firewall_name: main

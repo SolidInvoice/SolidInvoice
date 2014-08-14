@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -12,21 +11,13 @@
 namespace CSBill\InvoiceBundle\Listener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use JMS\DiExtraBundle\Annotation as DI;
 use CSBill\InvoiceBundle\Entity\Invoice;
 
-/**
- * @DI\DoctrineListener(
- *     events = {"postLoad"},
- *     connection = "default",
- *     lazy = true,
- *     priority = 0
- * )
- *
- * @author pierre
- */
 class InvoiceUsersListener
 {
+    /**
+     * @param LifecycleEventArgs $event
+     */
     public function postLoad(LifecycleEventArgs $event)
     {
         $em = $event->getEntityManager();

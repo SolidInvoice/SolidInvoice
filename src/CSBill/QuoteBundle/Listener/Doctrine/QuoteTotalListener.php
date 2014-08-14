@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -12,21 +11,13 @@
 namespace CSBill\QuoteBundle\Listener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use JMS\DiExtraBundle\Annotation as DI;
 use CSBill\QuoteBundle\Entity\Quote;
 
-/**
- * @DI\DoctrineListener(
- *     events = {"postLoad"},
- *     connection = "default",
- *     lazy = true,
- *     priority = 0
- * )
- *
- * @author pierre
- */
 class QuoteTotalListener
 {
+    /**
+     * @param LifecycleEventArgs $event
+     */
     public function postLoad(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();

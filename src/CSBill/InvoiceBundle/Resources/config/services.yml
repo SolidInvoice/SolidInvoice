@@ -24,3 +24,8 @@ services:
         arguments: [@csbill_payment.method.manager, @templating]
         tags:
             - { name: kernel.event_listener, event: billing.mailer.send_invoice, method: onInvoiceMail }
+
+    invoice.user.listener:
+        class: CSBill\InvoiceBundle\Listener\Doctrine\InvoiceUsersListener
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
