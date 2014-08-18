@@ -14,6 +14,7 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
 use CSBill\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
@@ -38,19 +39,18 @@ class SystemInformation extends AbstractFormStep
 
         $user = new User;
 
+        /** @var PasswordEncoderInterface $encoder */
         $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
 
         $password = $encoder->encodePassword($data['password'], $user->getSalt());
 
         $user->setUsername($data['username'])
-             ->setEmail($data['email_address'])
-             ->setPassword($password);
+            ->setEmail($data['email_address'])
+            ->setPassword($password)
+            ->setEnabled(true)
+            ->setSuperAdmin(true);
 
         $em = $this->container->get('doctrine.orm.entity_manager');
-
-        $role = $em->getRepository('CSBillUserBundle:Role')->findOneBy(array('name' => 'super_admin'));
-
-        $user->addRole($role);
 
         $em->persist($user);
         $em->flush();

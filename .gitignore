@@ -8,3 +8,4 @@ bin
 composer.phar
 web/uploads/*
 app/config/parameters.yml
+/.idea
