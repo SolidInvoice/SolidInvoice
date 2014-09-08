@@ -96,21 +96,21 @@ class DatabaseConfig extends AbstractFormStep
     }
 
     /**
-     * Writes all the configuration values to the paramaters file
+     * Writes all the configuration values to the parameters file
      *
      * @param array $params
      *
      * @throws \Exception
      * @return void;
      */
-    public function writeConfigFile($params = array())
+    private function writeConfigFile($params = array())
     {
         $config = $this->rootDir . '/config/parameters.yml';
 
-        $yaml = new Parser();
+        $yamlParser = new Parser();
 
         try {
-            $value = $yaml->parse(file_get_contents($config));
+            $value = $yamlParser->parse(file_get_contents($config));
         } catch (ParseException $e) {
             throw new \RuntimeException(
                 "Unable to parse the YAML string: %s. Your installation might be corrupt.",
@@ -137,7 +137,7 @@ class DatabaseConfig extends AbstractFormStep
 
         $yaml = $dumper->dump($value, 2);
 
-        $fileSystem = new Filesystem();
+        $fileSystem = $this->container->get('filesystem');
         $fileSystem->dumpFile($config, $yaml, 0644);
 
         /** @var \AppKernel $kernel */
@@ -155,15 +155,11 @@ class DatabaseConfig extends AbstractFormStep
      *
      * @return string
      */
-    public function executeMigrations()
+    private function executeMigrations()
     {
-        $command = 'php %s/console doctrine:migrations:migrate --no-interaction --env=%s';
+        $migration = $this->get('csbill.installer.database.migration');
 
-        if ($this->debug) {
-            $command .= " --no-debug";
-        }
-
-        return $this->runProcess(sprintf($command, $this->rootDir, $this->environment));
+        return $migration->migrate();
     }
 
     /**
@@ -171,7 +167,7 @@ class DatabaseConfig extends AbstractFormStep
      *
      * @return string
      */
-    public function executeFixtures()
+    private function executeFixtures()
     {
         $command = 'php %s/console doctrine:fixtures:load --no-interaction --env=%s';
 

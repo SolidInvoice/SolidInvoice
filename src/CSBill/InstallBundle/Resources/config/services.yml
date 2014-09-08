@@ -20,3 +20,9 @@ services:
         arguments: [ @csbill.installer ]
         tags:
             - { name: twig.extension }
+
+    csbill.installer.database.migration:
+        class: CSBill\InstallBundle\Installer\Database\Migration
+        arguments: [@filesystem]
+        calls:
+            - [setContainer, [@service_container]]
