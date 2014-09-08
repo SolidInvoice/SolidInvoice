@@ -11,7 +11,6 @@
 namespace CSBill\InstallBundle\Installer\Step;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -163,38 +162,14 @@ class DatabaseConfig extends AbstractFormStep
     }
 
     /**
-     * Load all fictures
+     * Load all fixtures
      *
      * @return string
      */
     private function executeFixtures()
     {
-        $command = 'php %s/console doctrine:fixtures:load --no-interaction --env=%s';
+        $fixtureLoader = $this->get('csbill.installer.database.fixtures');
 
-        if ($this->debug) {
-            $command .= " --no-debug";
-        }
-
-        return $this->runProcess(sprintf($command, $this->rootDir, $this->environment));
-    }
-
-    /**
-     * Runs a specific command with the Process Component
-     *
-     * @param  string            $command The command that needs to be run
-     * @throws \RuntimeException
-     * @return string            The output of the processed command
-     */
-    private function runProcess($command)
-    {
-        $process = new Process($command);
-        $process->setTimeout(3600);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
-        }
-
-        return $process->getOutput();
+        $fixtureLoader->execute();
     }
 }
