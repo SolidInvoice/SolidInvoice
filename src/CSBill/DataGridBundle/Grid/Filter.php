@@ -36,7 +36,7 @@ class Filter
     protected $options;
 
     /**
-     * @param          $name
+     * @param string   $name
      * @param callable $callback
      * @param bool     $active
      * @param array    $options
@@ -44,7 +44,7 @@ class Filter
     public function __construct($name, $callback, $active = false, array $options = array())
     {
         $this->name = $name;
-        $this->callback = is_callable($callback) ? new CallbackHandler($callback) : $callback;
+        $this->callback = new CallbackHandler($callback);
         $this->active = $active;
 
         $this->options = $options;

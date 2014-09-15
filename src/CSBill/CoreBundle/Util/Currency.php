@@ -59,9 +59,9 @@ class Currency
     }
 
     /**
-     * @param null $currency
+     * @param string|null $currency
      *
-     * @return null
+     * @return string|null
      */
     public function getCurrencySymbol($currency = null)
     {
