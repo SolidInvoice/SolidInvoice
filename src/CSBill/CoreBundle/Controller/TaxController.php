@@ -34,8 +34,6 @@ class TaxController extends BaseController
             )
         );
 
-        $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
-
         $filters->add(
             'inclusive',
             function (QueryBuilder $queryBuilder) {
@@ -73,20 +71,19 @@ class TaxController extends BaseController
         $search = $request->get('search');
 
         $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search, $filters) {
+            if ($filters->isFilterActive()) {
+                $filter = $filters->getActiveFilter();
+                $filter($queryBuilder);
+            }
 
-                if ($filters->isFilterActive()) {
-                    $filter = $filters->getActiveFilter();
-                    $filter($queryBuilder);
-                }
+            if ($search) {
+                $aliases = $queryBuilder->getRootAliases();
 
-                if ($search) {
-                    $aliases = $queryBuilder->getRootAliases();
-
-                    $queryBuilder
-                        ->andWhere($aliases[0].'.name LIKE :search')
-                        ->setParameter('search', "%{$search}%");
-                }
-            });
+                $queryBuilder
+                    ->andWhere($aliases[0].'.name LIKE :search')
+                    ->setParameter('search', "%{$search}%");
+            }
+        });
 
         // Attach the source to the grid
         $grid->setSource($source);
@@ -174,5 +171,4 @@ class TaxController extends BaseController
 
         return new JsonResponse($result);
     }
-
 }

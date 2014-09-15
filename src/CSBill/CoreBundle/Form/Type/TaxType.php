@@ -8,7 +8,7 @@
 
 namespace CSBill\CoreBundle\Form\Type;
 
-use CSBill\CoreBundle\Entity\Tax;
+use CSBill\CoreBundle\Entity\Tax as TaxEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -45,7 +45,7 @@ HTML;
             'type',
             'choice',
             array(
-                'choices' => Tax::getTypes(),
+                'choices' => TaxEntity::getTypes(),
                 'help' => $typeHelpText,
                 'empty_value' => 'select'
             )
