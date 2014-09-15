@@ -11,12 +11,26 @@
 
 namespace CSBill\InvoiceBundle\Form\Type;
 
+use CSBill\CoreBundle\Repository\TaxRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ItemType extends AbstractType
 {
+    /**
+     * @var TaxRepository
+     */
+    private $repo;
+
+    /**
+     * @param TaxRepository $repo
+     */
+    public function __construct(TaxRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Form.AbstractType::buildForm()
@@ -54,6 +68,20 @@ class ItemType extends AbstractType
             )
         );
 
+        if ($this->repo->getTotal() > 0) {
+            $builder->add(
+                'tax',
+                new \CSBill\CoreBundle\Form\Type\Tax,
+                array(
+                    'class' => 'CSBill\CoreBundle\Entity\Tax',
+                    'empty_value' => 'Choose Tax Type',
+                    'attr' => array(
+                        'class' => 'input-mini invoice-item-tax'
+                    )
+                )
+            );
+        }
+
         $builder->add(
             'total',
             'money',
@@ -83,8 +111,10 @@ class ItemType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
                 'data_class' => 'CSBill\InvoiceBundle\Entity\Item'
-        ));
+            )
+        );
     }
 }

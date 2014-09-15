@@ -3,6 +3,7 @@ parameters:
     csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
     csbill_core.twig.billing.class: CSBill\CoreBundle\Twig\Extension\BillingExtension
     csbill_core.twig.status.class: CSBill\CoreBundle\Twig\Extension\StatusExtension
+    csbill_core.twig.tax.class: CSBill\CoreBundle\Twig\Extension\TaxExtension
 
 services:
     csbill_core.twig.menu:
@@ -33,7 +34,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    csbill_core.twig.tax:
+        class: %csbill_core.twig.tax.class%
+        arguments: [@doctrine]
+        tags:
+            - { name: twig.extension }
+
     twig.loader.string:
         class: Twig_Loader_String
         tags:
             - { name: twig.loader }
+

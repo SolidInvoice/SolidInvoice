@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-(function($, window) {
+(function($, Routing, accounting, window) {
 
     "use strict";
 
@@ -17,7 +17,6 @@
         "columnElement" : "td",
         "fields" : [],
         "templates" : {},
-        "trashTemplate" : '<div class="pull-right"><a href="#" class="remove-item" rel="tooltip" title="Remove Item"><i class="fa fa-trash-o"></i></a></div>',
         "counter" : 0,
         "addTemplate" : function(type, template) {
             this.templates[type] = template;
@@ -36,7 +35,6 @@
                 row         = $(window.document.createElement(this.rowElement)),
                 rowTotal = $('.invoice-item-total', row);
 
-
             $.each(this.fields, function(counter, item) {
                 var column = $(window.document.createElement(that.columnElement));
 
@@ -51,7 +49,11 @@
 
             this.el.append(row);
 
-            row.fadeIn(150, this.setEvents);
+            row.fadeIn(150);
+
+            $('.invoice-item-tax', row).select2({
+                allowClear: true
+            });
 
             rowTotal.val(accounting.formatMoney(rowTotal.val() || 0, ''));
 
@@ -61,31 +63,35 @@
             return this.templates[item].replace(/__name__/g, this.counter);
         },
         "setEvents" : function() {
-            $('.invoice-item-price, .invoice-item-qty').unbind('keyup change').on('keyup', function() {
-                Invoice.calcTotal(this);
-            });
+            $(this.el)
+                .on('keyup change', '.invoice-item-price, .invoice-item-qty, .invoice-item-tax', function() {
+                    Invoice.calcTotal(this);
+                })
+                .on('change', '.invoice-item-qty', function() {
+                    var qty = $(this),
+                        val = qty.val(),
+                        decimals,
+                        value;
 
-            $('.invoice-item-qty').on('change', function() {
-                var qty = $(this),
-                    val = qty.val(),
-                    decimals,
-                    value;
+                    if (val.indexOf(accounting.settings.number.decimal) !== -1) {
+                        decimals = val.substr(val.indexOf(accounting.settings.number.decimal) + 1);
+                        qty.val(accounting.toFixed(qty.val(), decimals.length > 2 ? 2 : decimals.length) || 1);
+                    } else {
+                        value = accounting.toFixed(qty.val());
+                        qty.val(value > 0 ? value : 1);
+                    }
 
-                if (val.indexOf('.') !== -1) {
-                    decimals = val.substr(val.indexOf('.') + 1);
-                    qty.val(accounting.toFixed(qty.val(), decimals.length > 2 ? 2 : decimals.length) || 1);
-                } else {
-                    value = accounting.toFixed(qty.val());
-                    qty.val(value > 0 ? value : 1);
-                }
-                Invoice.calcTotal(this);
-            });
+                    Invoice.calcTotal(this);
+                })
+                .on('change', '.invoice-item-price', function() {
+                    var price = $(this);
+                    price.val(accounting.formatMoney(price.val(), '', '2'));
 
-            $('.invoice-item-price').on('change', function() {
-                var price = $(this);
-                price.val(accounting.formatMoney(price.val(), '', '2'));
+                    Invoice.calcTotal(this);
+                });
 
-                Invoice.calcTotal(this);
+            $('.invoice-item-tax', this.el).select2({
+                allowClear: true
             });
         },
         "calcTotal" : function(row) {
@@ -94,26 +100,50 @@
                 qty   = $('.invoice-item-qty', tr).val(),
                 total = $('.invoice-item-total', tr);
 
-            total.val(accounting.formatMoney(qty * price, ''));
+            var invoiceTotal = accounting.formatMoney(qty * price, '');
+
+            total.val(invoiceTotal);
 
             Invoice.updateTotal();
         },
         "updateTotal" : function() {
-
-            var subTotal = 0,
-                discount;
+            var total,
+                subTotal = 0,
+                totalTax = 0,
+                discount,
+                discountAmount;
 
             $('.invoice-item-total', this.el).each(function() {
                 subTotal += parseFloat(accounting.unformat($(this).val()));
             });
 
-            discount = (subTotal * parseInt($('#invoice_discount').val() || 0, 10) / 100);
+            discount = parseInt($('#invoice_discount').val() || 0, 10);
 
-            $('.invoice-discount').html(accounting.formatMoney(discount * -1));
+            $('.invoice-item-tax', this.el).each(function() {
+                var tax = $(this),
+                    selectedOption = tax.find(':selected'),
+                    rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.invoice-item-total').val()));
+                if (tax.val() !== '') {
+                    var taxAmount = percentage(rowTotal, parseFloat(selectedOption.data('rate')));
+                    totalTax += taxAmount;
 
+                    if ('inclusive' === selectedOption.data('type')) {
+                        subTotal -= taxAmount;
+                    }
+                }
+            });
+
+            discountAmount = percentage((subTotal + totalTax), discount);
+            total = (subTotal - discountAmount) + totalTax;
+
+            $('.invoice-discount').html(accounting.formatMoney(discountAmount * -1));
             $('.invoice-sub-total').html(accounting.formatMoney(subTotal));
+            $('.invoice-total').html(accounting.formatMoney(total));
+            $('.invoice-tax').html(accounting.formatMoney(totalTax));
 
-            $('.invoice-total').html(accounting.formatMoney(subTotal - discount));
+            $('#invoice_baseTotal').val(subTotal);
+            $('#invoice_tax').val(totalTax);
+            $('#invoice_total').val(total);
         }
     };
 
@@ -161,4 +191,4 @@
     });
 
     window.Invoice = Invoice;
-})(jQuery, window);
+})(window.jQuery, window.Routing, window.accounting, window);

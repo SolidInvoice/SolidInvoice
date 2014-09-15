@@ -105,3 +105,10 @@ $(function(){
         });
     });
 });
+
+function percentage(amount, percentage)
+{
+    "use strict";
+
+    return (amount * percentage) / 100;
+}

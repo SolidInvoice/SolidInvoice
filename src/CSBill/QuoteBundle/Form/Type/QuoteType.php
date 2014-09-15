@@ -11,6 +11,7 @@
 
 namespace CSBill\QuoteBundle\Form\Type;
 
+use CSBill\CoreBundle\Repository\TaxRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -18,6 +19,19 @@ use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 
 class QuoteType extends AbstractType
 {
+    /**
+     * @var TaxRepository
+     */
+    private $repo;
+
+    /**
+     * @param TaxRepository $repo
+     */
+    public function __construct(TaxRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Form.AbstractType::buildForm()
@@ -36,11 +50,12 @@ class QuoteType extends AbstractType
         );
 
         $builder->add('discount', 'percent');
+
         $builder->add(
             'items',
             'collection',
             array(
-                'type' => new ItemType(),
+                'type' => 'quote_item',
                 'allow_add' => true,
                 'allow_delete' => true
             )
@@ -48,6 +63,12 @@ class QuoteType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
+        $builder->add('total', 'hidden');
+        $builder->add('baseTotal', 'hidden');
+
+        if ($this->repo->getTotal() > 0) {
+            $builder->add('tax', 'hidden');
+        }
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
     }

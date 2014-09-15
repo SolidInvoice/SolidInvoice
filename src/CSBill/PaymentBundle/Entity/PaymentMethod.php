@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="payment_methods")
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentMethod")
  * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @Gedmo\Loggable()
  */
 class PaymentMethod
 {

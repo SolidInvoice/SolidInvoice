@@ -91,6 +91,7 @@ class DefaultController extends BaseController
         $grid->hideColumns(array('updated', 'deleted', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));
 
         $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
             $label = $row->getField('status.label');
 
@@ -136,7 +137,7 @@ class DefaultController extends BaseController
         $invoice = new Invoice;
         $invoice->setClient($client);
 
-        $form = $this->createForm(new InvoiceType(), $invoice);
+        $form = $this->createForm('invoice', $invoice);
 
         $form->handleRequest($request);
 
@@ -160,7 +161,7 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Invoice $invoice)
     {
-        $form = $this->createForm(new InvoiceType(), $invoice);
+        $form = $this->createForm('invoice', $invoice);
 
         $form->handleRequest($request);
 

@@ -82,6 +82,14 @@ class Quote
     /**
      * @var float
      *
+     * @ORM\Column(name="tax", type="float", nullable=true)
+     * @Grid\Column(type="number", style="currency")
+     */
+    private $tax;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="discount", type="float", nullable=true)
      */
     private $discount;
@@ -460,33 +468,6 @@ class Quote
     }
 
     /**
-     * PrePersist listener to update the quote total
-     *
-     * @ORM\PrePersist
-     */
-    public function updateTotal()
-    {
-        if (count($this->items)) {
-            $total = 0;
-            foreach ($this->items as $item) {
-                $item->setQuote($this);
-                $total += ($item->getPrice() * $item->getQty());
-            }
-
-            $this->setBaseTotal($total);
-
-            if ($this->discount > 0) {
-                $total -= ($total * $this->discount);
-            }
-
-            $this->setTotal($total);
-        } else {
-            $this->setBaseTotal(0)
-                 ->setTotal(0);
-        }
-    }
-
-    /**
      * @return string
      */
     public function getTerms()
@@ -496,10 +477,14 @@ class Quote
 
     /**
      * @param string $terms
+     *
+     * @return Quote
      */
     public function setTerms($terms)
     {
         $this->terms = $terms;
+
+        return $this;
     }
 
     /**
@@ -512,9 +497,47 @@ class Quote
 
     /**
      * @param string $notes
+     *
+     * @return Quote
      */
     public function setNotes($notes)
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param float $tax
+     *
+     * @return Quote
+     */
+    public function setTax($tax)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * PrePersist listener to link the items to the quote
+     *
+     * @ORM\PrePersist
+     */
+    public function updateTotal()
+    {
+        if (count($this->items)) {
+            foreach ($this->items as $item) {
+                $item->setQuote($this);
+            }
+        }
     }
 }
