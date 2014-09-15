@@ -44,4 +44,3 @@ services:
         class: Twig_Loader_String
         tags:
             - { name: twig.loader }
-

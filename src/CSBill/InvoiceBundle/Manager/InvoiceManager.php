@@ -35,7 +35,7 @@ class InvoiceManager extends ContainerAware
     protected $dispatcher;
 
     /**
-     * @param ManagerRegistry           $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $dispatcher)

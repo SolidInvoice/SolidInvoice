@@ -94,7 +94,6 @@ class Quote
      */
     private $discount;
 
-
     /**
      * @var string
      *

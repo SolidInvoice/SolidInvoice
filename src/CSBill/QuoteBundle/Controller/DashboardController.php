@@ -10,7 +10,6 @@
 
 namespace CSBill\QuoteBundle\Controller;
 
-
 use CSBill\CoreBundle\Controller\BaseController;
 
 class DashboardController extends BaseController
@@ -24,4 +23,4 @@ class DashboardController extends BaseController
 
         return $this->render('CSBillQuoteBundle:Dashboard:recent.html.twig', array('quotes' => $quotes));
     }
-} 
+}

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the MiWay Business Insurance project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
@@ -9,8 +9,6 @@
 namespace CSBill\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 
 /**
  * Class Tax

@@ -54,6 +54,7 @@ class DefaultController extends BaseController
         $grid->getColumn('amount')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('client.name')->manipulateRenderCell(function ($value, Row $row) use ($router) {
                 $clientId = $row->getField('client.id');
+
                 return '<a href="' . $router->generate('_clients_view', array('id' => $clientId)) . '">' . $value . '</a>';
             })->setSafe(false);
         $grid->getColumn('invoice.id')->manipulateRenderCell(function ($value) use ($router) {

@@ -96,7 +96,6 @@ class TaxController extends BaseController
         $editAction->addAttribute('title', $this->trans('Edit Tax Rate'));
         $editAction->addAttribute('rel', 'tooltip');
 
-
         $deleteIcon = $templating->render('{{ icon("times") }}');
         $deleteAction = new RowAction($deleteIcon, '_delete_tax_rate');
         $deleteAction->setAttributes(
@@ -112,7 +111,6 @@ class TaxController extends BaseController
         $grid->addColumn($actionsRow, 100);
 
         $grid->hideColumns(array('deleted'));
-
 
         return $grid->getGridResponse('CSBillCoreBundle:tax:index.html.twig', array('filters' => $filters));
     }
@@ -142,7 +140,7 @@ class TaxController extends BaseController
     }
 
     /**
-     * @param Tax     $tax
+     * @param Tax $tax
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -177,4 +175,4 @@ class TaxController extends BaseController
         return new JsonResponse($result);
     }
 
-} 
+}

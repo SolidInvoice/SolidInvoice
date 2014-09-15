@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the MiWay Business Insurance project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */

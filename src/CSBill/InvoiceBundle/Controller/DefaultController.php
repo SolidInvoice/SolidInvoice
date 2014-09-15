@@ -11,7 +11,6 @@
 namespace CSBill\InvoiceBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;

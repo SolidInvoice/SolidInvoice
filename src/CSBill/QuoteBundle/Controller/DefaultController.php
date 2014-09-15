@@ -11,7 +11,6 @@
 namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Entity\Quote;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
