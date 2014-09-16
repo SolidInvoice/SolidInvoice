@@ -42,9 +42,9 @@ class PaymentRepository extends EntityRepository
     /**
      * Returns an array of all the payments for a client
      *
-     * @param Client  $client
-     * @param string  $orderField
-     * @param string  $sort
+     * @param Client $client
+     * @param string $orderField
+     * @param string $sort
      *
      * @return array
      */

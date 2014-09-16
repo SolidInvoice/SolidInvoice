@@ -11,6 +11,7 @@
 
 namespace CSBill\QuoteBundle\Form\Type;
 
+use CSBill\CoreBundle\Repository\TaxRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -18,8 +19,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ItemType extends AbstractType
 {
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * @var TaxRepository
+     */
+    private $repo;
+
+    /**
+     * @param TaxRepository $repo
+     */
+    public function __construct(TaxRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -54,6 +67,20 @@ class ItemType extends AbstractType
             )
         );
 
+        if ($this->repo->getTotal() > 0) {
+            $builder->add(
+                'tax',
+                new \CSBill\CoreBundle\Form\Type\Tax,
+                array(
+                    'class' => 'CSBill\CoreBundle\Entity\Tax',
+                    'empty_value' => 'Choose Tax Type',
+                    'attr' => array(
+                        'class' => 'input-mini quote-item-tax'
+                    )
+                )
+            );
+        }
+
         $builder->add(
             'total',
             'money',
@@ -69,22 +96,22 @@ class ItemType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.FormTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
-        return 'item';
+        return 'quote_item';
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::setDefaultOptions()
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'CSBill\QuoteBundle\Entity\Item'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'CSBill\QuoteBundle\Entity\Item'
+            )
+        );
     }
 }

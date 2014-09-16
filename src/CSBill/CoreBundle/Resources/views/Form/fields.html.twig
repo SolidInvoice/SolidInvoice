@@ -242,3 +242,50 @@
         </select>
     {% endspaceless %}
 {% endblock choice_widget_collapsed %}
+
+{% block tax_field_widget %}
+{% spaceless %}
+    {% if expanded %}
+        {{ block('choice_widget_expanded') }}
+    {% else %}
+        {% spaceless %}
+            {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+            {% if required and empty_value is none and not empty_value_in_choices %}
+                {% set required = false %}
+            {% endif %}
+            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {% if empty_value is not none %}
+                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ empty_value|trans({}, translation_domain) }}</option>
+                {% endif %}
+                {% if preferred_choices|length > 0 %}
+                    {% set options = preferred_choices %}
+                    {{ block('choice_widget_options') }}
+                    {% if choices|length > 0 and separator is not none %}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {% endif %}
+                {% endif %}
+                {% set options = choices %}
+                {{ block('tax_choice_widget_options') }}
+            </select>
+        {% endspaceless %}
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block tax_choice_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                {% set attrs %}{% spaceless %}
+                    data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}"
+            {% endspaceless %}{% endset %}
+                <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }} {{ choice.data.id }}</option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock tax_choice_widget_options %}

@@ -89,9 +89,7 @@
                 {% endfor %}
             </tr>
         </thead>
-
         <tbody>
-
             {% for item in form.items %}
                 <tr>
                     {% for key, field in item.children|keys %}
@@ -109,20 +107,33 @@
                             <br />
                         </td>
                     {% endfor %}
+                    <td>
+                        <a href="#" class="remove-item" rel="tooltip" title="{{ 'Remove Item'|trans }}">{{ icon('trash', ['o']) }}</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="3" align="right" style="text-align:right">
+                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
                     <strong>{{ "Sub-Total"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
                     <div class="quote-sub-total"></div>
                 </td>
             </tr>
+            {% if form.tax is defined %}
+                <tr>
+                    <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
+                        <strong>{{ "Tax"|trans }}</strong>
+                    </td>
+                    <td colspan="2" align="left">
+                        <span class="text-error quote-tax"></span>
+                    </td>
+                </tr>
+            {% endif %}
             <tr>
-                <td colspan="3" align="right" style="text-align:right">
+                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
                     <strong>{{ "Discount"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
@@ -130,7 +141,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3" align="right" style="text-align:right">
+                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
                     <strong>{{ "Total"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
@@ -185,18 +196,20 @@
     });
 
     Quote.setSelector($('#quote-rows'));
+
     {% for item in items %}
         {% set field = form.items.vars.prototype[item] %}
         Quote.addTemplate('{{ item }}', '{{ form_widget(field) }}');
         Quote.addField("{{ item }}");
     {% endfor %}
 
-    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item">{{ icon('trash') }}</a>');
+    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item">{{ icon('trash', ['o'] }}</a>');
     Quote.addField("trash");
 
     {% if form.items|length == 0 %}
         Quote.addRow();
     {% endif %}
+
 {% endspaceless %}
 {% endblock %}
 

@@ -1,0 +1,10 @@
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block title %}{{ 'add_tax_rate'|trans }}{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_row(form) }}
+    <button type="submit" class="btn btn-primary">{{ icon('save') }} {{ 'Save'|trans }}</button>
+    {{ form_end(form) }}
+{% endblock content %}

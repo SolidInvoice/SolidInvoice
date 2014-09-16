@@ -33,6 +33,10 @@ class Filters implements \Iterator
     /**
      * @param string        $name
      * @param null|\Closure $callback
+     * @param bool          $default
+     * @param array         $options
+     *
+     * @return $this
      */
     public function add($name, $callback, $default = false, array $options = array())
     {
@@ -54,36 +58,57 @@ class Filters implements \Iterator
         return $this;
     }
 
+    /**
+     * @return Filter
+     */
     public function getActiveFilter()
     {
         return $this->filters[$this->activeFilter];
     }
 
+    /**
+     * @return bool
+     */
     public function isFilterActive()
     {
         return $this->isFilterActive;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function next()
     {
         $this->pointer++;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function current()
     {
         return $this->filters[$this->pointer];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function valid()
     {
         return isset($this->filters[$this->pointer]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rewind()
     {
         $this->pointer = 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function key()
     {
         return $this->pointer;

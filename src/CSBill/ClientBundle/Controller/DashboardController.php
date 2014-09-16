@@ -23,4 +23,4 @@ class DashboardController extends BaseController
 
         return $this->render('CSBillClientBundle:Dashboard:recent.html.twig', array('clients' => $clients));
     }
-} 
+}

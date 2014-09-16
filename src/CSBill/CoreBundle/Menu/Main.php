@@ -85,6 +85,14 @@ class Main extends AuthenticatedMenu
                 'extras' => array('icon' => 'cog')
             )
         );
+
+        $system->addChild(
+            'Tax Rates',
+            array(
+                'route' => '_tax_rates',
+                'extras' => array('icon' => 'money')
+            )
+        );
         $system->setChildrenAttributes(array('class' => 'dropdown-menu'));
     }
 }

@@ -108,20 +108,33 @@
                             <br />
                         </td>
                     {% endfor %}
+                    <td>
+                        <a href="#" class="remove-item" rel="tooltip" title="{{ 'Remove Item'|trans }}">{{ icon('trash', ['o']) }}</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="3" align="right" style="text-align:right">
+                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
                     <strong>{{ "subtotal"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
                     <div class="invoice-sub-total"></div>
                 </td>
             </tr>
+            {% if form.tax is defined %}
+                <tr>
+                    <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
+                        <strong>{{ "Tax"|trans }}</strong>
+                    </td>
+                    <td colspan="2" align="left">
+                        <span class="text-error invoice-tax"></span>
+                    </td>
+                </tr>
+            {% endif %}
             <tr>
-                <td colspan="3" align="right" style="text-align:right">
+                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
                     <strong>{{ "discount"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">
@@ -129,7 +142,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3" align="right" style="text-align:right">
+                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
                     <strong>{{ "total"|trans }}</strong>
                 </td>
                 <td colspan="2" align="left">

@@ -11,6 +11,7 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
+use CSBill\CoreBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -19,7 +20,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * CSBill\InvoiceBundle\Entity\Item
  *
  * @ORM\Table(name="invoice_items")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\ItemRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deleted")
  */
@@ -90,6 +91,11 @@ class Item
      * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="items")
      */
     private $invoice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CSBill\CoreBundle\Entity\Tax", inversedBy="invoiceItems")
+     */
+    private $tax;
 
     /**
      * Get id
@@ -280,5 +286,25 @@ class Item
     public function __toString()
     {
         return $this->getDescription();
+    }
+
+    /**
+     * @return Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param Tax $tax
+     *
+     * @return Item
+     */
+    public function setTax(Tax $tax)
+    {
+        $this->tax = $tax;
+
+        return $this;
     }
 }

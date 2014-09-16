@@ -11,6 +11,7 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
+use CSBill\CoreBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -19,7 +20,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * CSBill\QuoteBundle\Entity\Item
  *
  * @ORM\Table(name="quote_items")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\ItemRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deleted")
  */
@@ -90,6 +91,11 @@ class Item
      * @ORM\ManyToOne(targetEntity="Quote", inversedBy="items")
      */
     private $quote;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CSBill\CoreBundle\Entity\Tax", inversedBy="quoteItems")
+     */
+    private $tax;
 
     /**
      * Get id
@@ -277,6 +283,26 @@ class Item
     public function getTotal()
     {
         return $this->qty * $this->price;
+    }
+
+    /**
+     * @return Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param Tax $tax
+     *
+     * @return Item
+     */
+    public function setTax(Tax $tax)
+    {
+        $this->tax = $tax;
+
+        return $this;
     }
 
     /**

@@ -11,7 +11,6 @@
 namespace CSBill\InstallBundle\Installer\Step;
 
 use CSBill\InstallBundle\Form\Step\LicenseAgreementForm;
-use Symfony\Component\Finder\Finder;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
 
 class LicenseAgreement extends AbstractFormStep

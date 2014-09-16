@@ -103,6 +103,17 @@
             </tr>
         {% endif %}
 
+        {% if invoice.tax is not empty %}
+            <tr>
+                <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                    <b>{{ "Tax"|trans }}</b>
+                </td>
+                <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
+                    {{ invoice.tax|currency }}
+                </td>
+            </tr>
+        {% endif %}
+
         <tr>
             <td colspan="3" align="right" style="border:1px solid #cccccc;">
                 <b>{{ "Total"|trans }}</b>

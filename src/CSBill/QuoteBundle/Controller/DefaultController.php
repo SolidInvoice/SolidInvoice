@@ -11,7 +11,6 @@
 namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Entity\Quote;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
@@ -67,6 +66,7 @@ class DefaultController extends BaseController
         $grid->hideColumns(array('updated', 'deleted', 'users', 'due', 'baseTotal', 'uuid'));
 
         $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
             $label = $row->getField('status.label');
 
@@ -91,7 +91,7 @@ class DefaultController extends BaseController
         return $grid->getGridResponse(
             'CSBillQuoteBundle:Default:index.html.twig',
             array(
-                'status_list' => $statusList
+                'status_list' => $statusList,
             )
         );
     }
@@ -114,7 +114,7 @@ class DefaultController extends BaseController
         $quote = new Quote;
         $quote->setClient($client);
 
-        $form = $this->createForm(new QuoteType(), $quote);
+        $form = $this->createForm('quote', $quote);
 
         $form->handleRequest($request);
 
@@ -124,10 +124,15 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('quote_create_success'), 'success');
 
-            return $this->redirect($this->generateUrl('_quotes_index'));
+            return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
         }
 
-        return $this->render('CSBillQuoteBundle:Default:create.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'CSBillQuoteBundle:Default:create.html.twig',
+            array(
+                'form' => $form->createView()
+            )
+        );
     }
 
     /**
@@ -139,7 +144,7 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Quote $quote)
     {
-        $form = $this->createForm(new QuoteType(), $quote);
+        $form = $this->createForm('quote', $quote);
 
         $form->handleRequest($request);
 

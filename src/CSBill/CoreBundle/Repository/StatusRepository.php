@@ -12,7 +12,6 @@
 namespace CSBill\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
 
 abstract class StatusRepository extends EntityRepository
 {

@@ -61,4 +61,16 @@ abstract class BaseController extends Base
     {
         return $this->get('translator')->trans($message);
     }
+
+    /**
+     * @param object $entity
+     */
+    protected function save($entity)
+    {
+        $entityManager = $this->getEm();
+
+        $entityManager->persist($entity);
+
+        $entityManager->flush();
+    }
 }

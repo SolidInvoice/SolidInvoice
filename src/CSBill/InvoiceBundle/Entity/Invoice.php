@@ -83,6 +83,14 @@ class Invoice
     /**
      * @var float
      *
+     * @ORM\Column(name="tax", type="float", nullable=true)
+     * @Grid\Column(type="number", style="currency")
+     */
+    private $tax;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="discount", type="float", nullable=true)
      */
     private $discount;
@@ -541,33 +549,6 @@ class Invoice
     }
 
     /**
-     * PrePersist listener to update the invoice total
-     *
-     * @ORM\PrePersist
-     */
-    public function updateTotal()
-    {
-        if (count($this->items)) {
-            $total = 0;
-            foreach ($this->items as $item) {
-                $item->setInvoice($this);
-                $total += ($item->getPrice() * $item->getQty());
-            }
-
-            $this->setBaseTotal($total);
-
-            if ($this->discount > 0) {
-                $total -= ($total * $this->discount);
-            }
-
-            $this->setTotal($total);
-        } else {
-            $this->setBaseTotal(0)
-                ->setTotal(0);
-        }
-    }
-
-    /**
      * @return string
      */
     public function getTerms()
@@ -597,5 +578,39 @@ class Invoice
     public function setNotes($notes)
     {
         $this->notes = $notes;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param float $tax
+     *
+     * @return Invoice
+     */
+    public function setTax($tax)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * PrePersist listener to update the invoice total
+     *
+     * @ORM\PrePersist
+     */
+    public function updateTotal()
+    {
+        if (count($this->items)) {
+            foreach ($this->items as $item) {
+                $item->setInvoice($this);
+            }
+        }
     }
 }
