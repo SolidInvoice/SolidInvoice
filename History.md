@@ -1,3 +1,19 @@
+
+0.3.0 / 2014-09-17
+==================
+
+ * Added support for tax rates
+ * [InstallBundle] Execute database fixtures directly instead of running in a process
+ * [InstallBundle] Execute database migrations directly instead of running in a process
+ * [InstallBundle] Fixed installation not working correctly
+ * [InstallBundle] Simplified the LICENSE file check
+ * Removed JMSDiExtraBundle
+ * [CoreBundle] Remove empty test
+ * [InvoiceBundle] Fix invoice manager bugs
+ * [InvoiceBundle] [QuoteBundle] Added terms and notes to invoices and quotes
+ * [CoreBundle] Load app name from settings
+ * [InstallBundle] Fix install check when database connection can't connect
+
 0.2.0 / 2014-07-29
 ==================
 
