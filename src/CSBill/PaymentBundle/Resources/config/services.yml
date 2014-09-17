@@ -31,8 +31,8 @@ services:
     csbill.payment.payum.paypal_express_checkout_api:
         class: Payum\Paypal\ExpressCheckout\Nvp\Api
         arguments:
-            - @payum.buzz.client
             - @=service("csbill.payment.method.options").get('paypal_express_checkout')
+            - @payum.buzz.client
 
     csbill.payment.method.options:
         class: CSBill\PaymentBundle\Manager\PaymentSettingsManager

@@ -3,9 +3,9 @@
 namespace CSBill\PaymentBundle\Action\Request;
 
 use CSBill\PaymentBundle\Entity\Status;
-use Payum\Core\Request\BaseStatusRequest;
+use Payum\Core\Request\BaseGetStatus;
 
-class StatusRequest extends BaseStatusRequest
+class StatusRequest extends BaseGetStatus
 {
     /**
      * {@inheritdoc}

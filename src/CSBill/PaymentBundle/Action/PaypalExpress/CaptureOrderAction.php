@@ -3,15 +3,15 @@
 namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
 use CSBill\PaymentBundle\Entity\PaymentDetails;
-use Payum\Bundle\PayumBundle\Security\TokenFactory;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\SecuredCaptureRequest;
+use Payum\Core\Request\SecuredCapture;
+use Payum\Core\Security\GenericTokenFactoryInterface;
 
 class CaptureOrderAction extends PaymentAwareAction
 {
     /**
-     * @var TokenFactory
+     * @var GenericTokenFactoryInterface
      */
     protected $tokenFactory;
 
@@ -21,10 +21,10 @@ class CaptureOrderAction extends PaymentAwareAction
     protected $currency;
 
     /**
-     * @param TokenFactory $tokenFactory
-     * @param string       $currency
+     * @param GenericTokenFactoryInterface $tokenFactory
+     * @param string                       $currency
      */
-    public function __construct(TokenFactory $tokenFactory, $currency)
+    public function __construct(GenericTokenFactoryInterface $tokenFactory, $currency)
     {
         $this->tokenFactory = $tokenFactory;
         $this->currency = $currency;
@@ -35,7 +35,7 @@ class CaptureOrderAction extends PaymentAwareAction
      */
     public function execute($request)
     {
-        /** @var $request SecuredCaptureRequest */
+        /** @var $request SecuredCapture */
         if (!$this->supports($request)) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
@@ -96,7 +96,7 @@ class CaptureOrderAction extends PaymentAwareAction
     public function supports($request)
     {
         return
-            $request instanceof SecuredCaptureRequest &&
+            $request instanceof SecuredCapture &&
             $request->getModel() instanceof PaymentDetails &&
             !$request->getModel()->getDetails()
             ;

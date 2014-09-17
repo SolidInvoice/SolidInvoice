@@ -64,7 +64,7 @@ class PaymentDetails extends ArrayObject
      */
     public function setDetails(array $details)
     {
-        $this->array = $details;
+        $this->details = $details;
 
         return $this;
     }
@@ -74,6 +74,6 @@ class PaymentDetails extends ArrayObject
      */
     public function getDetails()
     {
-        return $this->array;
+        return $this->details;
     }
 }
