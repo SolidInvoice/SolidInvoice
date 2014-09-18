@@ -237,33 +237,6 @@ class InvoiceManagerTest extends KernelTestCase
         $this->assertSame(150, $this->manager->getTotalOutstanding($client));
     }
 
-    /**
-     * Copy all the fields from one entity to another
-     * @param $object
-     * @param $clone
-     */
-    protected function copyFieldValues($object, $clone)
-    {
-        $em = $this->container->get('doctrine')->getManager();
-
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
-        $metadata = $em->getClassMetadata(get_class($object));
-
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
-        $cloneMetadata = $em->getClassMetadata(get_class($clone));
-
-        foreach ($metadata->getFieldNames() as $field) {
-
-            if ($cloneMetadata->hasField($field)) {
-                if (in_array($field, array('created', 'updated', 'id', 'uuid'), true)) {
-                    continue;
-                }
-
-                $cloneMetadata->setFieldValue($clone, $field, $metadata->getFieldValue($object, $field));
-            }
-        }
-    }
-
     public function testMarkPaid()
     {
         $invoice = new Invoice;
