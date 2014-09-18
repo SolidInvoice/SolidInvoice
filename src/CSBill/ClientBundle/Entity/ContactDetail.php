@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,16 +10,21 @@
 
 namespace CSBill\ClientBundle\Entity;
 
+use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * CSBill\ClientBundle\Entity\ContactDetail
  *
  * @ORM\Table(name="contact_details")
  * @ORM\Entity()
+ * @Gedmo\Loggable()
  */
 class ContactDetail
 {
+    use Entity\TimeStampable;
+
     /**
      * @var integer $id
      *

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,15 +10,14 @@
 
 namespace CSBill\SettingsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use CSBill\SettingsBundle\Model\Setting as BaseClass;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class Setting
- * @package CSBill\SettingsBundle\Entity
- *
  * @ORM\Table(name="app_config")
  * @ORM\Entity(repositoryClass="CSBill\SettingsBundle\Repository\SettingsRepository")
+ * @Gedmo\Loggable()
  */
 class Setting extends BaseClass
 {

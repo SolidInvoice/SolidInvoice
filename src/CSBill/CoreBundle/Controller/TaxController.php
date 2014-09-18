@@ -107,7 +107,7 @@ class TaxController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $deleteAction));
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('deleted'));
+        $grid->hideColumns(array('deletedAt'));
 
         return $grid->getGridResponse('CSBillCoreBundle:tax:index.html.twig', array('filters' => $filters));
     }

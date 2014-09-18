@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,17 +10,21 @@
 
 namespace CSBill\UserBundle\Entity;
 
+use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * CSBill\UserBundle\Entity\User
- *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="CSBill\UserBundle\Repository\UserRepository")
+ * @Gedmo\Loggable()
  */
 class User extends BaseUser
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     /**
      * @var integer $id
      *

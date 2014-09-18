@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,13 +10,11 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
+use CSBill\CoreBundle\Entity\Status as BaseStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use CSBill\CoreBundle\Entity\Status as BaseStatus;
 
 /**
- * CSBill\QuoteBundle\Entity\Status
- *
  * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\StatusRepository")
  */
 class Status extends BaseStatus

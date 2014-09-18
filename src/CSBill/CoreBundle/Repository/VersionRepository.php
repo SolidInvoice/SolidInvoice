@@ -19,16 +19,16 @@ class VersionRepository extends EntityRepository
     /**
      * Updates the current version
      *
-     * @param $verion
+     * @param $version
      */
-    public function updateVersion($verion)
+    public function updateVersion($version)
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('DELETE FROM CSBillCoreBundle:Version');
 
         $query->execute();
 
-        $entity = new Version($verion);
+        $entity = new Version($version);
         $entityManager->persist($entity);
 
         $entityManager->flush();

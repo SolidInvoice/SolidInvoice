@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,26 +10,28 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
+use APY\DataGridBundle\Grid\Mapping as Grid;
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Traits\Entity;
 use CSBill\PaymentBundle\Entity\Payment;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
-use CSBill\ClientBundle\Entity\Client;
-use APY\DataGridBundle\Grid\Mapping as Grid;
 
 /**
- * CSBill\InvoiceBundle\Entity\Invoice
- *
  * @ORM\Table(name="invoices")
  * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
  */
 class Invoice
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     /**
      * @var integer $id
      *
@@ -118,32 +119,6 @@ class Invoice
      * @Assert\DateTime
      */
     private $due;
-
-    /**
-     * @var \DateTIme $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime
-     */
-    private $deleted;
 
     /**
      * @var \DateTime $paidDate
@@ -379,75 +354,6 @@ class Invoice
     public function getDue()
     {
         return $this->due;
-    }
-
-    /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return Invoice
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param  \DateTime $updated
-     * @return Invoice
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param  \DateTime $deleted
-     * @return Invoice
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->created;
     }
 
     /**

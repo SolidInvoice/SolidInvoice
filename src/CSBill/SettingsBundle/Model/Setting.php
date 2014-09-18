@@ -15,20 +15,17 @@ use Doctrine\ORM\Mapping as ORM;
 use CSBill\SettingsBundle\Entity\Section;
 
 /**
- * Class Setting
- * @package CSBill\SettingsBundle\Model
- *
  * @ORM\MappedSuperclass
  */
 abstract class Setting
 {
     /**
-     * @ORM\Column(name="`key`", type="string", length=125, nullable=false)
+     * @ORM\Column(name="setting_key", type="string", length=125, nullable=false)
      */
     protected $key;
 
     /**
-     * @ORM\Column(name="`value`", type="text", nullable=true)
+     * @ORM\Column(name="setting_value", type="text", nullable=true)
      */
     protected $value;
 
@@ -187,6 +184,9 @@ abstract class Setting
         return $this->options;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->value;

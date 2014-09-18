@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * This file is part of the CSBill package.
  *
  * (c) Pierre du Plessis <info@customscripts.co.za>
@@ -11,9 +10,9 @@
 
 namespace CSBill\PaymentBundle\Entity;
 
+use CSBill\CoreBundle\Entity\Status as BaseStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use CSBill\CoreBundle\Entity\Status as BaseStatus;
 
 /**
  * CSBill\PaymentBundle\Entity\Status

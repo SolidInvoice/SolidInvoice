@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,13 +10,11 @@
 
 namespace CSBill\ClientBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * CSBill\ClientBundle\Entity\ContactType
- *
  * @ORM\Table(name="contact_types")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactTypeRepository")
  */

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -12,9 +11,10 @@
 namespace CSBill\InvoiceBundle\Entity;
 
 use CSBill\CoreBundle\Entity\Tax;
+use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * CSBill\InvoiceBundle\Entity\Item
@@ -22,10 +22,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="invoice_items")
  * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\ItemRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @Gedmo\SoftDeleteable()
  */
 class Item
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     /**
      * @var integer $id
      *
@@ -58,32 +61,6 @@ class Item
      * @Assert\NotBlank
      */
     private $qty;
-
-    /**
-     * @var \DateTime $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime
-     */
-    private $deleted;
 
     /**
      * @var Invoice $invoice
@@ -177,75 +154,6 @@ class Item
     }
 
     /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return Item
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param  \DateTime $updated
-     * @return Item
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param  \DateTime $deleted
-     * @return Item
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
-    }
-
-    /**
      * Set invoice
      *
      * @param  Invoice $invoice
@@ -279,16 +187,6 @@ class Item
     }
 
     /**
-     * Return the item as a string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getDescription();
-    }
-
-    /**
      * @return Tax
      */
     public function getTax()
@@ -306,5 +204,15 @@ class Item
         $this->tax = $tax;
 
         return $this;
+    }
+
+    /**
+     * Return the item as a string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getDescription();
     }
 }

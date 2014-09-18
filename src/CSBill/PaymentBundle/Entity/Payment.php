@@ -1,22 +1,34 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\PaymentBundle\Entity;
 
+use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use APY\DataGridBundle\Grid\Mapping as Grid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @Gedmo\SoftDeleteable()
  */
 class Payment
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -83,38 +95,12 @@ class Payment
     private $details;
 
     /**
-     * @var \DateTIme $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime
-     */
-    private $updated;
-
-    /**
      * @var \DateTime $completed
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
      */
     private $completed;
-
-    /**
-     * @var \DateTime $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime
-     */
-    private $deleted;
 
     public function __construct()
     {
@@ -265,78 +251,6 @@ class Payment
     public function getAmount()
     {
         return $this->amount;
-    }
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     *
-     * @return Payment
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     *
-     * @return Payment
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param \DateTime $deleted
-     *
-     * @return Payment
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
     }
 
     /**
