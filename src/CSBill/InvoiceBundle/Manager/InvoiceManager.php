@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -57,18 +56,17 @@ class InvoiceManager extends ContainerAware
      *
      * @param  Quote   $quote
      * @return Invoice
+     * @TODO Needs to be refactored to a cleaner implementation
      */
     public function createFromQuote(Quote $quote)
     {
         $invoice = new Invoice;
 
-        $em = $this->container->get('doctrine')->getManager();
-
         /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
-        $metadata = $em->getClassMetadata(get_class($quote));
+        $metadata = $this->entityManager->getClassMetadata(get_class($quote));
 
         /** @var \Doctrine\ORM\Mapping\ClassMetadata $invoiceMetadata */
-        $invoiceMetadata = $em->getClassMetadata(get_class($invoice));
+        $invoiceMetadata = $this->entityManager->getClassMetadata(get_class($invoice));
 
         $this->copyFieldValues($quote, $invoice);
 
@@ -82,6 +80,26 @@ class InvoiceManager extends ContainerAware
 
                 foreach ($items as $item) {
                     $invoiceItem = new Item;
+
+                    /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
+                    $cloneMetadata = $this->entityManager->getClassMetadata(get_class($invoiceItem));
+
+                    /** @var \Doctrine\ORM\Mapping\ClassMetadata $itemMetaData */
+                    $itemMetaData = $this->entityManager->getClassMetadata(get_class($item));
+
+                    foreach ($itemMetaData->getAssociationNames() as $mappingField) {
+
+                        if ('quote' == $mappingField) {
+                            continue;
+                        }
+
+                        $cloneMetadata->setFieldValue(
+                            $invoiceItem,
+                            $mappingField,
+                            $itemMetaData->getFieldValue($item, $mappingField)
+                        );
+                    }
+
                     $this->copyFieldValues($item, $invoiceItem);
                     $invoice->addItem($invoiceItem);
                 }
@@ -94,7 +112,7 @@ class InvoiceManager extends ContainerAware
             }
         }
 
-        $status = $em->getRepository('CSBillInvoiceBundle:Status')->findOneByName('pending');
+        $status = $this->entityManager->getRepository('CSBillInvoiceBundle:Status')->findOneByName('pending');
         $invoice->setStatus($status);
 
         return $invoice;
@@ -135,13 +153,11 @@ class InvoiceManager extends ContainerAware
      */
     protected function copyFieldValues($object, $clone)
     {
-        $em = $this->container->get('doctrine')->getManager();
-
         /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
-        $metadata = $em->getClassMetadata(get_class($object));
+        $metadata = $this->entityManager->getClassMetadata(get_class($object));
 
         /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
-        $cloneMetadata = $em->getClassMetadata(get_class($clone));
+        $cloneMetadata = $this->entityManager->getClassMetadata(get_class($clone));
 
         foreach ($metadata->getFieldNames() as $field) {
 
