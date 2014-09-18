@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -16,10 +15,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Section
- *
- * @package CSBill\SettingsBundle\Entity
- *
  * @ORM\Table(name="config_sections")
  * @ORM\Entity(repositoryClass="CSBill\SettingsBundle\Repository\SectionRepository")
  * @UniqueEntity("name")

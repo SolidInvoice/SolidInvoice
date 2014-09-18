@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,28 +10,29 @@
 
 namespace CSBill\CoreBundle\Entity;
 
+use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class Status
- * @package CSBill\CoreBundle\Entity
- *
  * @ORM\Entity
  * @ORM\Table(name="status")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="entity", type="string")
  * @ORM\DiscriminatorMap({
- *      "client" = "CSBill\ClientBundle\Entity\Status",
+ *      "client"  = "CSBill\ClientBundle\Entity\Status",
  *      "invoice" = "CSBill\InvoiceBundle\Entity\Status",
- *      "quote" = "CSBill\QuoteBundle\Entity\Status",
+ *      "quote"   = "CSBill\QuoteBundle\Entity\Status",
  *      "payment" = "CSBill\PaymentBundle\Entity\Status",
  * })
- * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @Gedmo\SoftDeleteable()
  */
 class Status
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     /**
      * @var integer $id
      *
@@ -57,32 +57,6 @@ class Status
      * @ORM\Column(name="`label`", type="string", length=125, nullable=true)
      */
     private $label;
-
-    /**
-     * @var \DateTime $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime()
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime()
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
-    private $deleted;
 
     /**
      * Get id
@@ -138,75 +112,6 @@ class Status
     public function getLabel()
     {
         return $this->label;
-    }
-
-    /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return Status
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param  \DateTime $updated
-     * @return Status
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param  \DateTime $deleted
-     * @return Status
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
     }
 
     /**

@@ -41,10 +41,10 @@ class Filter
      * @param bool     $active
      * @param array    $options
      */
-    public function __construct($name, $callback, $active = false, array $options = array())
+    public function __construct($name, callable $callback = null, $active = false, array $options = array())
     {
         $this->name = $name;
-        $this->callback = new CallbackHandler($callback);
+        $this->callback = new CallbackHandler($callback ?: function(){});
         $this->active = $active;
 
         $this->options = $options;

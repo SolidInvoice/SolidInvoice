@@ -183,7 +183,7 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'deleted'));
+        $grid->hideColumns(array('updated', 'deletedAt'));
 
         $grid->getColumn('website')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {

@@ -62,7 +62,7 @@ class DefaultController extends BaseController
             })->setSafe(false);
         $grid->setDefaultOrder('created', 'DESC');
 
-        $grid->hideColumns(array('updated', 'deleted'));
+        $grid->hideColumns(array('updated', 'deletedAt'));
 
         return $grid->getGridResponse('CSBillPaymentBundle:Default:list.html.twig', array('filters' => array()));
     }

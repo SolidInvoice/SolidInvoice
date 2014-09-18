@@ -1,23 +1,33 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\CoreBundle\Entity;
 
+use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Tax
- *
  * @ORM\Table(name="tax_rates")
  * @ORM\Entity(repositoryClass="CSBill\CoreBundle\Repository\TaxRepository")
- * @Gedmo\SoftDeleteable(fieldName="deleted")
- * @UniqueEntity(fields={"name"})
+ * @UniqueEntity("name")
+ * @Gedmo\Loggable()
  */
 class Tax
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     const TYPE_INCLUSIVE = 'inclusive';
 
     const TYPE_EXCLUSIVE = 'exclusive';
@@ -61,32 +71,6 @@ class Tax
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Item", mappedBy="tax")
      */
     private $quoteItems;
-
-    /**
-     * @var \DateTIme $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime()
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime()
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
-    private $deleted;
 
     public function __construct()
     {
@@ -142,76 +126,6 @@ class Tax
         $this->rate = $rate;
 
         return $this;
-    }
-
-    /**
-     * @return \DateTIme
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @param \DateTIme $created
-     *
-     * @return Tax
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @param \DateTime $updated
-     *
-     * @return Tax
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
-    }
-
-    /**
-     * @param \DateTime $deleted
-     *
-     * @return Tax
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        $type = $this->type === 'inclusive' ? 'inc' : 'exl';
-
-        return "{$this->rate}% {$this->name} ({$type})";
     }
 
     /**
@@ -287,5 +201,15 @@ class Tax
         $this->quoteItems = $quoteItems;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $type = $this->type === self::TYPE_INCLUSIVE ? 'inc' : 'exl';
+
+        return "{$this->rate}% {$this->name} ({$type})";
     }
 }

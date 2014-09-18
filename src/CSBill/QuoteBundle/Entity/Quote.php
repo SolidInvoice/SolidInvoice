@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,25 +10,27 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use APY\DataGridBundle\Grid\Mapping as Grid;
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
-use CSBill\ClientBundle\Entity\Client;
-use APY\DataGridBundle\Grid\Mapping as Grid;
 
 /**
- * CSBill\ClientBundle\Entity\Quote
- *
  * @ORM\Table(name="quotes")
  * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\QuoteRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
  */
 class Quote
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     /**
      * @var integer $id
      *
@@ -119,32 +120,6 @@ class Quote
     private $due;
 
     /**
-     * @var \DateTIme $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime
-     */
-    private $deleted;
-
-    /**
      * @var ArrayCollection $items
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist"})
@@ -170,6 +145,16 @@ class Quote
         $this->items = new ArrayCollection;
         $this->users = new ArrayCollection;
         $this->setUuid(Uuid::uuid1());
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -210,16 +195,6 @@ class Quote
         $this->users = new ArrayCollection($users);
 
         return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -358,75 +333,6 @@ class Quote
     public function getDue()
     {
         return $this->due;
-    }
-
-    /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return Quote
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param  \DateTime $updated
-     * @return Quote
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param  \DateTime $deleted
-     * @return Quote
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->created;
     }
 
     /**

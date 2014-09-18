@@ -63,7 +63,7 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'deleted', 'users', 'due', 'baseTotal', 'uuid'));
+        $grid->hideColumns(array('updated', 'deletedAt', 'users', 'due', 'baseTotal', 'uuid'));
 
         $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,25 +10,29 @@
 
 namespace CSBill\ClientBundle\Entity;
 
-use CSBill\PaymentBundle\Entity\Payment;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use APY\DataGridBundle\Grid\Mapping as GRID;
-use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\PaymentBundle\Entity\Payment;
+use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\CoreBundle\Traits\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="clients")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ClientRepository")
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable(fieldName="deleted")
+ * @Gedmo\SoftDeleteable()
  */
 class Client
 {
+    use Entity\TimeStampable,
+        Entity\SoftDeleteable;
+
     /**
      * @var integer $id
      *
@@ -81,7 +84,7 @@ class Client
      * @var ArrayCollection $quotes
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"created" = "ASC"})
+     * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
      */
     private $quotes;
@@ -90,7 +93,7 @@ class Client
      * @var ArrayCollection $invoices
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"created" = "ASC"})
+     * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
      */
     private $invoices;
@@ -105,32 +108,6 @@ class Client
      * )
      */
     private $payments;
-
-    /**
-     * @var \DateTIme $created
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime()
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime()
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime $deleted
-     *
-     * @ORM\Column(name="deleted", type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
-    private $deleted;
 
     /**
      * Constructer
@@ -370,75 +347,6 @@ class Client
     public function getPayments()
     {
         return $this->payments;
-    }
-
-    /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return Client
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param  \DateTime $updated
-     * @return Client
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param  \DateTime $deleted
-     * @return Client
-     */
-    public function setDeleted(\DateTime $deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getDeleted()
-    {
-        return $this->created;
     }
 
     /**
