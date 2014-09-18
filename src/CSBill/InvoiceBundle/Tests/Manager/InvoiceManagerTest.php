@@ -60,7 +60,7 @@ class InvoiceManagerTest extends KernelTestCase
 
     public function testCreateFromQuote()
     {
-        static::bootKernel(array('debug' => false));
+        static::bootKernel();
 
         $container = static::$kernel->getContainer();
 
