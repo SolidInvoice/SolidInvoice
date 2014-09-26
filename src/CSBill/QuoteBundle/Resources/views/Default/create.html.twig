@@ -203,7 +203,7 @@
         Quote.addField("{{ item }}");
     {% endfor %}
 
-    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item">{{ icon('trash', ['o'] }}</a>');
+    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item">{{ icon('trash', ['o']) }}</a>');
     Quote.addField("trash");
 
     {% if form.items|length == 0 %}
