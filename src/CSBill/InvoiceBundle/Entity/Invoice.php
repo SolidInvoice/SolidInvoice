@@ -511,7 +511,7 @@ class Invoice
      *
      * @ORM\PrePersist
      */
-    public function updateTotal()
+    public function updateItems()
     {
         if (count($this->items)) {
             foreach ($this->items as $item) {

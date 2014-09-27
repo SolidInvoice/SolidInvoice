@@ -17,8 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="quote_items")
+ * @ORM\Table(name="quote_lines")
  * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\ItemRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  */
@@ -71,6 +72,12 @@ class Item
      * @ORM\ManyToOne(targetEntity="CSBill\CoreBundle\Entity\Tax", inversedBy="quoteItems")
      */
     private $tax;
+
+    /**
+     * @var int
+     * @ORM\Column(name="total", type="decimal", scale=2)
+     */
+    private $total;
 
     /**
      * Get id
@@ -179,13 +186,25 @@ class Item
     }
 
     /**
+     * @param float $total
+     *
+     * @return $this
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
      * Get the line item total
      *
      * @return float
      */
     public function getTotal()
     {
-        return $this->qty * $this->price;
+        return $this->total;
     }
 
     /**
@@ -206,6 +225,16 @@ class Item
         $this->tax = $tax;
 
         return $this;
+    }
+
+    /**
+     * PrePersist listener to update the line total
+     *
+     * @ORM\PrePersist
+     */
+    public function updateTotal()
+    {
+        $this->total = $this->qty * $this->price;
     }
 
     /**

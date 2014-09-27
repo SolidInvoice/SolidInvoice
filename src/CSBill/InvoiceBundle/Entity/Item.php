@@ -19,8 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * CSBill\InvoiceBundle\Entity\Item
  *
- * @ORM\Table(name="invoice_items")
+ * @ORM\Table(name="invoice_lines")
  * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\ItemRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  */
@@ -73,6 +74,12 @@ class Item
      * @ORM\ManyToOne(targetEntity="CSBill\CoreBundle\Entity\Tax", inversedBy="invoiceItems")
      */
     private $tax;
+
+    /**
+     * @var int
+     * @ORM\Column(name="total", type="decimal", scale=2)
+     */
+    private $total;
 
     /**
      * Get id
@@ -177,13 +184,25 @@ class Item
     }
 
     /**
+     * @param float $total
+     *
+     * @return $this
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
      * Get the line item total
      *
      * @return float
      */
     public function getTotal()
     {
-        return $this->qty * $this->price;
+        return $this->total;
     }
 
     /**
@@ -204,6 +223,16 @@ class Item
         $this->tax = $tax;
 
         return $this;
+    }
+
+    /**
+     * PrePersist listener to update the line total
+     *
+     * @ORM\PrePersist
+     */
+    public function updateTotal()
+    {
+        $this->total = $this->qty * $this->price;
     }
 
     /**
