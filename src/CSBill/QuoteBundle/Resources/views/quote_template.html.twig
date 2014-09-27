@@ -83,7 +83,7 @@
                     {{ item.qty }}
                 </td>
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ currency.format(item.price * item.qty) }}
+                    {{ currency.format(item.total) }}
                 </td>
             </tr>
         {% endfor %}

@@ -19,6 +19,8 @@ class Version20140926224147 extends AbstractMigration
         $this->addSql('RENAME TABLE invoice_items TO invoice_lines');
         $this->addSql('ALTER TABLE quote_lines ADD total NUMERIC(10, 2) NOT NULL');
         $this->addSql('ALTER TABLE invoice_lines ADD total NUMERIC(10, 2) NOT NULL');
+        $this->addSql('UPDATE invoice_lines SET total = (qty * price)');
+        $this->addSql('UPDATE quote_lines SET total = (qty * price)');
     }
 
     public function down(Schema $schema)
