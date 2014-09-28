@@ -12,7 +12,7 @@ matrix:
   
 before_script:
     - mysql -e 'create database csbill;'
-    - composer install
+    - composer install --no-interaction --prefer-dist
 
 script:
     - phpunit -c app --coverage-clover=coverage.clover
