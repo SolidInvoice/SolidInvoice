@@ -11,18 +11,18 @@
 
 namespace CSBill\CoreBundle\Mailer;
 
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
-use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
 use CSBill\CoreBundle\Mailer\Events\MailerEvent;
-use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
-use CSBill\SettingsBundle\Manager\SettingsManager;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use CSBill\CoreBundle\Mailer\Events\MessageEventInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
+use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
+use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\SettingsBundle\Manager\SettingsManager;
 use Swift_Mailer;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 class Mailer implements MailerInterface
 {
@@ -42,7 +42,7 @@ class Mailer implements MailerInterface
     protected $security;
 
     /**
-     * @var \CSBill\SettingsBundle\Manager\SettingsManager
+     * @var SettingsManager
      */
     protected $settings;
 
@@ -51,6 +51,10 @@ class Mailer implements MailerInterface
      */
     protected $dispatcher;
 
+    /**
+     * @param \Swift_Mailer   $mailer
+     * @param SettingsManager $settings
+     */
     public function __construct(Swift_Mailer $mailer, SettingsManager $settings)
     {
         $this->mailer = $mailer;
@@ -58,8 +62,7 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see CSBill\CoreBundle\Service.MailerInterface::setTemplating()
+     * {@inheritdoc}
      */
     public function setTemplating(EngineInterface $templating)
     {
@@ -67,9 +70,7 @@ class Mailer implements MailerInterface
     }
 
     /**
-    /**
-     * (non-PHPdoc)
-     * @see CSBill\CoreBundle\Service.MailerInterface::setEventDispatcher()
+     * {@inheritdoc}
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -91,7 +92,8 @@ class Mailer implements MailerInterface
     /**
      * Emails an invoice to the customers
      *
-     * @param  Invoice $invoice
+     * @param Invoice $invoice
+     *
      * @return integer If the email was successfully sent
      */
     public function sendInvoice(Invoice $invoice)
@@ -117,7 +119,7 @@ class Mailer implements MailerInterface
 
         foreach ($invoice->getUsers() as $user) {
             /** @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
+            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
         }
 
         $event = new InvoiceEvent();
@@ -129,39 +131,22 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * Emails a quote to the customers
+     * @param string $template
+     * @param array  $parameters
      *
-     * @param  Quote   $quote
-     * @return integer If the email was successfully sent
+     * @return null|string
      */
-    public function sendQuote(Quote $quote)
+    protected function getTemplate($template, array $parameters = array())
     {
-        // TODO : this needs to come from settings or somewhere so it can be extended
-        $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', array('quote' => $quote));
-        $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', array('quote' => $quote));
-
-        $subject = $this->getSubject('quote.email_subject', $quote->getId());
-
-        $users = array();
-
-        foreach ($quote->getUsers() as $user) {
-            /** @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
-        }
-
-        $event = new QuoteEvent();
-        $event->setQuote($quote);
-
-        $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event);
-
-        return $sent;
+        return $this->templating->exists($template) ? $this->templating->render($template, $parameters) : null;
     }
 
     /**
      * Get the subject for an email
      *
-     * @param  string  $settingsKey
-     * @param  integer $id
+     * @param string  $settingsKey
+     * @param integer $id
+     *
      * @return string
      */
     public function getSubject($settingsKey, $id = null)
@@ -170,11 +155,12 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * @param  string                              $subject
-     * @param  string|array                        $users
-     * @param  string|null                         $htmlTemplate
-     * @param  string|null                         $textTemplate
-     * @param  MessageEventInterface               $event
+     * @param string                $subject
+     * @param string|array          $users
+     * @param string|null           $htmlTemplate
+     * @param string|null           $textTemplate
+     * @param MessageEventInterface $event
+     *
      * @return int
      * @throws Exception\UnexpectedFormatException
      */
@@ -203,7 +189,7 @@ class Mailer implements MailerInterface
         }
 
         $message->setSubject($subject)
-               ->setTo($users);
+            ->setTo($users);
 
         if (null !== $event) {
             $event->setHtmlTemplate($htmlTemplate);
@@ -244,12 +230,32 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * @param  string      $template
-     * @param  array       $parameters
-     * @return null|string
+     * Emails a quote to the customers
+     *
+     * @param Quote $quote
+     *
+     * @return integer If the email was successfully sent
      */
-    protected function getTemplate($template, array $parameters = array())
+    public function sendQuote(Quote $quote)
     {
-        return $this->templating->exists($template) ? $this->templating->render($template, $parameters) : null;
+        // TODO : this needs to come from settings or somewhere so it can be extended
+        $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', array('quote' => $quote));
+        $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', array('quote' => $quote));
+
+        $subject = $this->getSubject('quote.email_subject', $quote->getId());
+
+        $users = array();
+
+        foreach ($quote->getUsers() as $user) {
+            /** @var \CSBill\ClientBundle\Entity\Contact $user */
+            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
+        }
+
+        $event = new QuoteEvent();
+        $event->setQuote($quote);
+
+        $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event);
+
+        return $sent;
     }
 }

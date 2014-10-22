@@ -11,113 +11,51 @@
 
 namespace CSBill\ClientBundle\Form;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use CSBill\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints;
-use CSBill\ClientBundle\Entity\ContactType;
-use CSBill\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
 
 class ContactDetail extends AbstractType
 {
     /**
-     * @var ManagerRegistry
+     * @var array
      */
-    protected $registry;
+    protected $types;
 
     /**
-     * @var \CSBill\ClientBundle\Entity\ContactType
+     * @param array $types
      */
-    private $type;
-
-    /**
-     * @param ManagerRegistry $registry
-     * @param ContactType     $type
-     */
-    public function __construct(ManagerRegistry $registry, ContactType $type)
+    public function __construct(array $types)
     {
-        $this->registry = $registry;
-        $this->type = $type;
+        $this->types = $types;
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new ContactTypeTransformer($this->registry);
-
         $options = array(
-                        'required' => $this->type->isRequired(),
-                        'data' => $this->type,
-                        'data_class' => null
-                        );
-
-        $contstraints = $this->buildConstraints();
-
-        if ($this->type->isRequired()) {
-            $contstraints[] = new Constraints\NotBlank();
-        }
-
-        $builder->add(
-            $builder->create('type', 'hidden', $options)
-                ->addModelTransformer($transformer)
+            'data_class' => null,
+            'attr' => array(
+                'class' => 'input-group-select-val'
+            )
         );
 
-        $builder->add('value', $this->type->getType(), array(
-            'label' => $this->humanize($this->type->getName()),
-            'constraints' => $contstraints
-        ));
+        $builder->add(
+            $builder
+                ->create('type', 'hidden', $options)
+                ->addModelTransformer(new ContactTypeTransformer($this->types))
+        );
+
+        $builder->add('value', 'text');
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
         return 'contact_detail';
-    }
-
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'CSBill\ClientBundle\Entity\ContactDetail'
-        ));
-    }
-
-    /**
-     * @param string $text
-     *
-     * @return string
-     */
-    private function humanize($text)
-    {
-        return ucwords(str_replace('_', ' ', $text));
-    }
-
-    /**
-     * @return array
-     */
-    private function buildConstraints()
-    {
-        $options = $this->type->getOptions();
-
-        $constraints = array();
-
-        if (is_array($options) && array_key_exists('constraints', $options)) {
-            foreach ($options['constraints'] as $constraint) {
-                $constraint = str_replace(' ', '', $this->humanize($constraint));
-                if (class_exists($class = sprintf('Symfony\Component\Validator\Constraints\\%s', $constraint))) {
-                    $constraints[] = new $class;
-                }
-            }
-        }
-
-        return $constraints;
     }
 }

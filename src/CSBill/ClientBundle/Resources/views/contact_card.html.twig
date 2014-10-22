@@ -13,9 +13,9 @@
     </h4>
 
     <dl class="dl-horizontal">
-        {% for contact_details in contact.details if contact_details.primary %}
+        {% for contact_details in contact.primaryDetails %}
             <dt>{{ contact_details.type|title }}:</dt>
-            <dd>{{ contact_details.value|nl2br }}</dd>
+            <dd>{{ contact_details.value }}</dd>
         {% endfor %}
     </dl>
 

@@ -11,15 +11,16 @@
 
 namespace CSBill\ClientBundle\Controller;
 
-use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\DataGridBundle\Grid\Filters;
-use APY\DataGridBundle\Grid\Source\Entity;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\RowAction;
+use APY\DataGridBundle\Grid\Column\ActionsColumn;
+use APY\DataGridBundle\Grid\Source\Entity;
+use CSBill\ClientBundle\Entity\AdditionalContactDetail;
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Form\Client as ClientForm;
+use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\DataGridBundle\Grid\Filters;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\ORM\QueryBuilder;
-use CSBill\ClientBundle\Form\Client as ClientForm;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends BaseController
@@ -27,7 +28,8 @@ class DefaultController extends BaseController
     /**
      * List all the clients
      *
-     * @param  Request                                    $request
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -36,96 +38,8 @@ class DefaultController extends BaseController
     }
 
     /**
-     * Adds a new client
+     * @param Request $request
      *
-     * @param  Request                                                                                       $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function addAction(Request $request)
-    {
-        $client = new Client;
-
-        // set all new clients default to active
-        $client->setStatus($this->getRepository('CSBillClientBundle:Status')->findOneBy(array('name' => 'active')));
-
-        $form = $this->createForm(new ClientForm, $client);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $entityManager = $this->getEm();
-
-            $entityManager->persist($client);
-            $entityManager->flush();
-
-            $this->flash($this->trans('client_saved'), 'success');
-
-            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
-        }
-
-        return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
-    }
-
-    /**
-     * Edit a client
-     *
-     * @param  Request                                    $request
-     * @param  Client                                     $client
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function editAction(Request $request, Client $client)
-    {
-        $form = $this->createForm(new ClientForm, $client);
-
-        $originalContactsDetails = $this->getClientContactDetails($request, $client);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $entityManager = $this->getEm();
-
-            $this->removeClientContacts($client, $originalContactsDetails);
-
-            $entityManager->persist($client);
-            $entityManager->flush();
-
-            $this->flash($this->trans('client_saved'), 'success');
-
-            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
-        }
-
-        return $this->render(
-            'CSBillClientBundle:Default:edit.html.twig',
-            array(
-                'client' => $client,
-                'form' => $form->createView()
-            )
-        );
-    }
-
-    /**
-     * View a client
-     *
-     * @param  Client                                     $client
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function viewAction(Client $client)
-    {
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
-        $payments = $paymentRepository->getPaymentsForClient($client);
-
-        return $this->render(
-            'CSBillClientBundle:Default:view.html.twig',
-            array(
-                'client' => $client,
-                'payments' => $payments,
-            )
-        );
-    }
-
-    /**
-     * @param  Request                                    $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     private function getGrid(Request $request)
@@ -141,20 +55,22 @@ class DefaultController extends BaseController
 
         $search = $request->get('search');
 
-        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search, $filters) {
+        $source->manipulateQuery(
+            function (QueryBuilder $queryBuilder) use ($search, $filters) {
 
-            if ($filters->isFilterActive()) {
-                $filter = $filters->getActiveFilter();
-                $filter($queryBuilder);
+                if ($filters->isFilterActive()) {
+                    $filter = $filters->getActiveFilter();
+                    $filter($queryBuilder);
+                }
+
+                if ($search) {
+                    $aliases = $queryBuilder->getRootAliases();
+
+                    $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
+                        ->setParameter('search', "%{$search}%");
+                }
             }
-
-            if ($search) {
-                $aliases = $queryBuilder->getRootAliases();
-
-                $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
-                    ->setParameter('search', "%{$search}%");
-            }
-        });
+        );
 
         // Attach the source to the grid
         $grid->setSource($source);
@@ -185,25 +101,30 @@ class DefaultController extends BaseController
 
         $grid->hideColumns(array('updated', 'deletedAt'));
 
-        $grid->getColumn('website')->manipulateRenderCell(function ($value) {
-            if (!empty($value)) {
-                return '<a href="'. $value . '" target="_blank">' . $value . '<a>';
+        $grid->getColumn('website')->manipulateRenderCell(
+            function ($value) {
+                if (!empty($value)) {
+                    return '<a href="' . $value . '" target="_blank">' . $value . '<a>';
+                }
+
+                return $value;
             }
+        )->setSafe(false);
 
-            return $value;
-        })->setSafe(false);
+        $grid->getColumn('status.name')->manipulateRenderCell(
+            function ($value, \APY\DataGridBundle\Grid\Row $row) {
+                $label = $row->getField('status.label');
 
-        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, \APY\DataGridBundle\Grid\Row $row) {
-            $label = $row->getField('status.label');
-
-            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
-        })->setSafe(false);
+                return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+            }
+        )->setSafe(false);
 
         return $grid->getGridResponse('CSBillClientBundle:Default:index.html.twig', array('filters' => $filters));
     }
 
     /**
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return Filters
      */
     private function getFilters(Request $request)
@@ -229,7 +150,7 @@ class DefaultController extends BaseController
                     $aliases = $queryBuilder->getRootAliases();
                     $alias = $aliases[0];
 
-                    $queryBuilder->join($alias.'.status', 's')
+                    $queryBuilder->join($alias . '.status', 's')
                         ->andWhere('s.name = :status_name')
                         ->setParameter('status_name', $status->getName());
                 },
@@ -242,6 +163,100 @@ class DefaultController extends BaseController
         }
 
         return $filters;
+    }
+
+    /**
+     * Adds a new client
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function addAction(Request $request)
+    {
+        $client = new Client;
+
+        // set all new clients default to active
+
+        $form = $this->createForm(new ClientForm, $client);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $client->setStatus(
+                $this->getRepository('CSBillClientBundle:Status')
+                    ->findOneBy(array('name' => 'active'))
+            );
+
+            $entityManager = $this->getEm();
+
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+            $this->flash($this->trans('client_saved'), 'success');
+
+            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
+        }
+
+        return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
+     * Edit a client
+     *
+     * @param Request $request
+     * @param Client  $client
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, Client $client)
+    {
+        $form = $this->createForm(new ClientForm, $client);
+
+        $originalContactsDetails = $this->getClientContactDetails($request, $client);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $this->removeClientContacts($client, $originalContactsDetails);
+
+            $this->save($client);
+            $this->flash($this->trans('client_saved'), 'success');
+
+            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
+        }
+
+        return $this->render(
+            'CSBillClientBundle:Default:edit.html.twig',
+            array(
+                'client' => $client,
+                'form' => $form->createView()
+            )
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Client  $client
+     *
+     * @return array
+     */
+    private function getClientContactDetails(Request $request, Client $client)
+    {
+        $originalContactsDetails = array();
+
+        if ($request->isMethod('POST')) {
+            $originalContacts = $client->getContacts()->toArray();
+
+            foreach ($originalContacts as $contact) {
+                /** @var \CSBill\ClientBundle\Entity\Contact $contact */
+                $originalContactsDetails[$contact->getId()] = $contact->getAdditionalDetails()->toArray();
+                $contact->getAdditionalDetails()->clear();
+            }
+        }
+
+        return $originalContactsDetails;
     }
 
     /**
@@ -262,17 +277,15 @@ class DefaultController extends BaseController
             }
         }
 
-        unset($contact);
-
         foreach ($originalContacts as $contact) {
             $entityManager->remove($contact);
             $client->removeContact($contact);
         }
 
-        unset($contact);
+        unset($contact, $key, $toDel);
 
         foreach ($client->getContacts() as $contact) {
-            foreach ($contact->getDetails() as $originalContactDetail) {
+            foreach ($contact->getAdditionalDetails() as $originalContactDetail) {
                 foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
                     if ($toDel->getId() === $originalContactDetail->getId()) {
                         unset($originalContactsDetails[$contact->getId()][$key]);
@@ -282,30 +295,30 @@ class DefaultController extends BaseController
 
             foreach ($originalContactsDetails[$contact->getId()] as $contactDetail) {
                 $entityManager->remove($contactDetail);
-                $contact->removeDetail($contactDetail);
+                $contact->removeAdditionalDetail($contactDetail);
             }
         }
     }
 
     /**
-     * @param  Request $request
-     * @param  Client  $client
-     * @return array
+     * View a client
+     *
+     * @param Client $client
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function getClientContactDetails(Request $request, Client $client)
+    public function viewAction(Client $client)
     {
-        $originalContactsDetails = array();
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
+        $payments = $paymentRepository->getPaymentsForClient($client);
 
-        if ($request->isMethod('POST')) {
-            $originalContacts = $client->getContacts()->toArray();
-
-            foreach ($originalContacts as $contact) {
-                /** @var \CSBill\ClientBundle\Entity\Contact $contact */
-                $originalContactsDetails[$contact->getId()] = $contact->getDetails()->toArray();
-                $contact->getDetails()->clear();
-            }
-        }
-
-        return $originalContactsDetails;
+        return $this->render(
+            'CSBillClientBundle:Default:view.html.twig',
+            array(
+                'client' => $client,
+                'payments' => $payments,
+            )
+        );
     }
 }

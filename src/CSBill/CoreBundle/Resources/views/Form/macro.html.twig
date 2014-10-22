@@ -16,7 +16,7 @@
         {% set name = widget.vars.full_name %}
     {% endif %}
 
-    <div data-content="{{ name }}">
+    <div class="prototype-widget" data-content="{{ name }}" data-counter="0">
         {% if delete %}
             <a href="#" class="{{ attr.trash.class is defined ? attr.trash.class : "pull-right" }} btn-remove" data-related="{{ name }}">
                 {{ icon('trash') }} {{ remove_text }}

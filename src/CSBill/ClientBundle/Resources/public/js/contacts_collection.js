@@ -7,43 +7,64 @@
  * with this source code in the file LICENSE.
  */
 
-(function($) {
+(function($, window) {
     'use strict';
 
-    /**
-     * Form Collection
-     */
-    $(document.body).on('click', '.contact_details_collection li', function(event) {
+    var addFormGroup = function (event) {
+        event.preventDefault();
 
         var $this = $(this),
-            value,
-            collectionHolder,
-            prototype,
-            regex,
-            form,
-            prototype_name,
-            collectionContainer = $this.closest('.contact-type-list').siblings('.collection-container');
+            regex = new RegExp('__contact_details_prototype__', "g"),
+            $formGroupContainer = $this.closest('.prototype-widget'),
+            $formGroupContainerCounter = (parseInt($formGroupContainer.data('counter'), 10) + 1);
 
-        collectionHolder = collectionContainer.find('.' + $this.parents('ul').data('target') + '[data-type=' + $this.data('type')  + ']');
+        var $formGroup = $(
+                    $formGroupContainer
+                    .siblings('.additional-details')
+                    .html()
+                    .replace(regex, $formGroupContainerCounter)
 
-        value = $(this).data('value');
+                )
+                .find('.multiple-form-group')
+            ;
 
-        prototype = collectionHolder.data('prototype');
+        $formGroupContainer.data('counter', $formGroupContainerCounter);
 
-        if(undefined !== prototype && null !== prototype) {
-            if(collectionHolder.data('prototype-name')) {
-                prototype_name = collectionHolder.data('prototype-name');
-            } else {
-                prototype_name = '__name__';
-            }
+        $this
+            .toggleClass('btn-success btn-add btn-danger btn-delete')
+            .html('–')
+        ;
 
-            regex = new RegExp(prototype_name, "g");
-            form = $(prototype.replace(regex, collectionHolder.children().length)).hide();
+        $formGroupContainer.append($formGroup);
+    };
 
-            collectionHolder.append(form);
+    var removeFormGroup = function (event) {
+        event.preventDefault();
+        $(this).closest('.form-group').remove();
+    };
 
-            form.slideDown();
-        }
+    var selectFormGroup = function (event) {
+        event.preventDefault();
+
+        var $this = $(this),
+            $selectGroup = $this.closest('.input-group-select'),
+            param = $this.data('value'),
+            concept = $this.text();
+
+        $selectGroup.find('.concept').text(concept);
+        $selectGroup.find('.input-group-select-val').val(param);
+
+    };
+
+    var attachContactListeners = window.attachContactListeners = function(){
+        $('.client_contacts')
+            .on('click', '.btn-add', addFormGroup)
+            .on('click', '.btn-delete', removeFormGroup)
+            .on('click', '.dropdown-menu a', selectFormGroup)
+        ;
+    };
+
+    $(function() {
+        attachContactListeners();
     });
-
-})(window.jQuery);
+})(window.jQuery, window);

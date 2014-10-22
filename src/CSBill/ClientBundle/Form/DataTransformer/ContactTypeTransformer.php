@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,60 +10,56 @@
 
 namespace CSBill\ClientBundle\Form\DataTransformer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ContactTypeTransformer implements DataTransformerInterface
 {
     /**
-     * @var ManagerRegistry
+     * @var \CSBill\ClientBundle\Entity\ContactType[]
      */
-    private $registry;
+    private $types;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param array $types
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(array $types)
     {
-        $this->registry = $registry;
+        $this->types = $types;
     }
 
     /**
      * @param mixed $type
      *
-     * @return mixed|string
+     * @return string
      */
     public function transform($type)
     {
-        if (null === $type) {
-            return '';
+        if (null !== $type) {
+            return $type->getId();
         }
 
-        return $type->getId();
+        return null;
     }
 
     /**
-     * @param mixed $id
+     * @param string $value
      *
-     * @return mixed|null
+     * @return \CSBill\ClientBundle\Entity\ContactType
+     * @throws TransformationFailedException
      */
-    public function reverseTransform($id)
+    public function reverseTransform($value)
     {
-        if (!$id) {
+        if (!$value) {
             return null;
         }
 
-        $type = $this->registry
-            ->getManager()
-            ->getRepository('CSBillClientBundle:ContactType')
-            ->findOneBy(array('id' => $id))
-        ;
-
-        if (null === $type) {
-            throw new TransformationFailedException('Invalid contact type');
+        foreach ($this->types as $type) {
+            if ($type->getId() === (int) $value) {
+                return $type;
+            }
         }
 
-        return $type;
+        throw new TransformationFailedException('Invalid contact type');
     }
 }

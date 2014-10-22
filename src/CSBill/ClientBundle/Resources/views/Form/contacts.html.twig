@@ -23,40 +23,24 @@
     </div>
 
     <div class="collection-container">
-
-        {% for item in contact_types %}
-
-            {% set child_form = _macro.widget_prototype(form['details_' ~ item.name], '', {"trash" : {"class" : "trash pull-left"}}) %}
-
-            {{ form_errors(form['details_' ~ item.name]) }}
-
-            <div class="client_contact_details" data-prototype="{{ child_form|escape }}" data-prototype-name="{{ form['details_' ~ item.name].vars.prototype.vars.name }}" data-type="{{ item.name }}">
-                {% for widget in form['details_' ~ item.name].children %}
-                    {{ _macro.widget_prototype(widget, '', {"trash" : {"class" : "trash pull-left"}}) }}
-                {% else %}
-                    {% if item.required %}
-                        {{ child_form|replace({'__contact_details_prototype__' : loop.index0})|raw }}
-                    {% endif %}
-                {% endfor %}
-            </div>
-
+        {% for item in contact_types if item.required %}
+            {{ form_row(form['details_' ~ item.name]) }}
         {% endfor %}
     </div>
 
-    <div class="child contact-type-list">
-        <div class="btn-group">
-            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span>
-                    {{ icon('plus', ['circle']) }} {{ "add_info"|trans }}
-                    <span class="caret"></span>
-                </span>
-            </button>
-            <ul class="dropdown-menu btn-add contact_details_collection" data-target="client_contact_details">
-                {% for type in contact_types %}
-                    <li data-value="{{ type.id }}" data-type="{{ type.name }}"><a href="#">{{ type.name|title }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+    {% set additional_details = form_row(form.additionalDetails.vars.prototype) %}
+
+    <script type="text/template" class="additional-details">
+        {{ additional_details|raw }}
+    </script>
+
+    {% set total = form.additionalDetails.children|length %}
+    <div class="prototype-widget client_contacts" data-counter="{{ total > 0 ? total : 0 }}">
+        {% for widget in form.additionalDetails.children %}
+            {{ form_row(widget, {'child' : true}) }}
+        {% endfor %}
+
+        {{ additional_details|replace({'__contact_details_prototype__' : total})|raw }}
     </div>
 
     {{ form_errors(form) }}
