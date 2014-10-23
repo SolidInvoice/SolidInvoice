@@ -14,7 +14,6 @@ namespace CSBill\ClientBundle\Controller;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Source\Entity;
-use CSBill\ClientBundle\Entity\AdditionalContactDetail;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\CoreBundle\Controller\BaseController;
@@ -176,22 +175,17 @@ class DefaultController extends BaseController
     {
         $client = new Client;
 
-        // set all new clients default to active
-
         $form = $this->createForm(new ClientForm, $client);
-
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            // set all new clients default to active
             $client->setStatus(
                 $this->getRepository('CSBillClientBundle:Status')
                     ->findOneBy(array('name' => 'active'))
             );
 
-            $entityManager = $this->getEm();
-
-            $entityManager->persist($client);
-            $entityManager->flush();
+            $this->save($client);
 
             $this->flash($this->trans('client_saved'), 'success');
 

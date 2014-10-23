@@ -18,48 +18,5 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <form action="{{ path("_clients_edit", {"id" : client.id}) }}" method="post"{{ form_enctype(form) }} role="form">
-
-        {{ form_errors(form) }}
-
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <legend>
-                    <h3>{{ 'Client Details'|trans }}</h3>
-                </legend>
-                {{ form_row(form.name) }}
-                {{ form_row(form.website) }}
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <legend>
-                    <h3>{{ "contacts"|trans }}</h3>
-                </legend>
-
-                {% set prototypeForm %}
-                {{ _macro.widget_prototype(form.contacts, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
-                {% endset %}
-
-                <div class="client_contacts" data-prototype="{{ prototypeForm|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.vars.name }}">
-                    {% for widget in form.contacts.children %}
-                        {% set delete = loop.index0 != 0 %}
-                        {{ _macro.widget_prototype(widget, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}, delete) }}
-                    {% else %}
-                        {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
-                    {% endfor %}
-                </div>
-
-                <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link">{{ icon('plus', ['circle']) }} {{ "add_contact"|trans }}</a>
-            </div>
-        </div>
-
-        {{ form_row(form._token) }}
-
-        <br class="clear" />
-
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "save"|trans }}</button>
-            </div>
-        </div>
-    </form>
+    {% include "CSBillClientBundle:Default:contact_form.html.twig" %}
 {% endblock %}

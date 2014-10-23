@@ -17,7 +17,7 @@ namespace CSBill\ClientBundle\Form;
  */
 class ConstraintBuilder
 {
-    CONST CONSTRAINT_NAMESPACE = 'Symfony\\Component\\Validator\\Constraints\\';
+    const CONSTRAINT_NAMESPACE = 'Symfony\\Component\\Validator\\Constraints\\';
 
     /**
      * @param array $options

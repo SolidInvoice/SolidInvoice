@@ -44,7 +44,7 @@ class Contact extends AbstractType
 
                 $contactDetails = $builder->create(
                     'details_' . $item->getName(),
-                    new PrimaryContactDetailType($item, $this->types),
+                    new PrimaryContactDetailType($item),
                     array(
                         'required' => true,
                         'property_path' => 'primaryDetails',
