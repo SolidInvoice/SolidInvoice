@@ -7,11 +7,12 @@
  * with this source code in the file LICENSE.
  */
 
-(function($, window) {
+(function ($, window) {
     'use strict';
 
     var addFormGroup = function (event) {
         event.preventDefault();
+        event.stopPropagation();
 
         var $this = $(this),
             regex = new RegExp('__contact_details_prototype__', "g"),
@@ -56,7 +57,7 @@
 
     };
 
-    var attachContactListeners = window.attachContactListeners = function(){
+    var attachContactListeners = window.attachContactListeners = function () {
         $('.client_contacts')
             .on('click', '.btn-add', addFormGroup)
             .on('click', '.btn-delete', removeFormGroup)
@@ -64,7 +65,7 @@
         ;
     };
 
-    $(function() {
+    $(function () {
         attachContactListeners();
     });
 })(window.jQuery, window);
