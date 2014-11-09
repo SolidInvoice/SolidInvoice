@@ -110,6 +110,17 @@ class Client
     private $payments;
 
     /**
+     * @var ArrayCollection $addresses
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="CSBill\ClientBundle\Entity\Address",
+     *     mappedBy="client",
+     *     cascade={"persist"}
+     * )
+     */
+    private $addresses;
+
+    /**
      * Constructer
      */
     public function __construct()
@@ -118,6 +129,7 @@ class Client
         $this->quotes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->payments = new ArrayCollection;
+        $this->addresses = new ArrayCollection;
     }
 
     /**
@@ -347,6 +359,45 @@ class Client
     public function getPayments()
     {
         return $this->payments;
+    }
+
+    /**
+     * Add address
+     *
+     * @param Address $address
+     *
+     * @return Client
+     */
+    public function addAddress(Address $address)
+    {
+        $this->addresses[] = $address;
+        $address->setClient($this);
+
+        return $this;
+    }
+
+    /**
+     * Removes an address
+     *
+     * @param Address $address
+     *
+     * @return Client
+     */
+    public function removeAddress(Address $address)
+    {
+        $this->addresses->removeElement($address);
+
+        return $this;
+    }
+
+    /**
+     * Get addresses
+     *
+     * @return ArrayCollection
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
     }
 
     /**

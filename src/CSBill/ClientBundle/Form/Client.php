@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,6 +10,7 @@
 
 namespace CSBill\ClientBundle\Form;
 
+use CSBill\ClientBundle\Form\Type\AddressType;
 use CSBill\ClientBundle\Form\Type\ContactType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,6 +37,8 @@ class Client extends AbstractType
                 'prototype_name' => '__contact_prototype__',
             )
         );
+
+        $builder->add('addresses', 'collection', array('type' => new AddressType, 'allow_add'    => true));
     }
 
     /**
