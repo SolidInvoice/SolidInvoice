@@ -8,10 +8,10 @@
  #}
 
 {% import "CSBillCoreBundle:Form:macro.html.twig" as _macro %}
+{% set id = random() %}
 
+<div class="form-widget" data-content="{{ id }}">
 <br class="clear" />
-
-<div class="form-widget">
 
     <div class="child row">
         <div class="col-lg-6 col-md-6">
@@ -44,4 +44,9 @@
     </div>
 
     {{ form_errors(form) }}
+
+    <a href="#" class="btn btn-danger btn-xs btn-remove pull-right" data-related="{{ id }}">
+        {{ icon('trash-o') }} {{ 'client.contact.delete'|trans }}
+    </a>
+    <br class="clear" />
 </div>

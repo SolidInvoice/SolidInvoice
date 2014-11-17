@@ -16,16 +16,7 @@
         {% set name = widget.vars.full_name %}
     {% endif %}
 
-    {% set id = random() %}
-
-    <div class="prototype-widget" data-content="{{ id }}" data-counter="0">
-        {% if delete %}
-            <a href="#" class="{{ attr.trash.class is defined ? attr.trash.class : "pull-right" }} btn-remove" data-related="{{ id }}">
-                {{ icon('trash') }} {{ remove_text }}
-            </a>
-            <br class="clear" />
-        {% endif %}
-
+    <div class="prototype-widget" data-counter="0">
         {{ form_row(form) }}
     </div>
 {% endmacro %}

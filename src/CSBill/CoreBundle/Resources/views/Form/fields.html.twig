@@ -289,7 +289,13 @@
 {% endblock tax_choice_widget_options %}
 
 {% block address_widget %}
-    <div class="form-widget">
+    {% set id = random() %}
+    <div class="form-widget" data-content="{{ id }}">
         {{ block('form_row') }}
+
+        <a href="#" class="btn btn-danger btn-xs btn-remove pull-right" data-related="{{ id }}">
+            {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
+        </a>
+        <br class="clear" />
     </div>
 {% endblock address_widget %}
