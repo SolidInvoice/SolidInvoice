@@ -66,10 +66,14 @@
     <div class="control-group">
         <div class="controls">
             <div class="pull-left">
-                <button type="button" class="btn btn-warning">{{ icon('reply') }} {{ 'client.cancel'|trans }}</button>
+                <button type="button" class="btn btn-warning" onclick="history.back()">
+                    {{ icon('reply') }} {{ 'client.cancel'|trans }}
+                </button>
             </div>
             <div class="pull-right">
-                <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "client.save"|trans }}</button>
+                <button type="submit" class="btn btn-success">
+                    {{ icon('save') }} {{ "client.save"|trans }}
+                </button>
             </div>
         </div>
     </div>

@@ -6,6 +6,8 @@ client:
         info: Address Info
         add: Add Address
         delete: Delete Address
+        country:
+            select: Select Country
     contact:
         info: Contact Info
         add: Add Contact

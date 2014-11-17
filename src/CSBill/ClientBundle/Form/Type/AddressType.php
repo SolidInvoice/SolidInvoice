@@ -26,7 +26,16 @@ class AddressType extends AbstractType
         $builder->add('city');
         $builder->add('state');
         $builder->add('zip');
-        $builder->add('country');
+        $builder->add(
+            'country',
+            'country',
+            array(
+                'attr' => array(
+                    'class' => 'select2'
+                ),
+                'empty_value' => 'client.address.country.select'
+            )
+        );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
