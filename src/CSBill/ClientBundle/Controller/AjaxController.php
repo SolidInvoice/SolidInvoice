@@ -57,7 +57,7 @@ class AjaxController extends BaseController
         $contact = new Contact();
         $contact->setClient($client);
 
-        $form = $this->createForm('contact', $contact);
+        $form = $this->createForm('contact', $contact, array('allow_delete' => false));
 
         $response = array();
 
@@ -113,7 +113,7 @@ class AjaxController extends BaseController
 
         $originalContactDetails = $contact->getAdditionalDetails()->toArray();
 
-        $form = $this->createForm('contact', $contact);
+        $form = $this->createForm('contact', $contact, array('allow_delete' => false));
 
         if ($request->isMethod('POST')) {
             $contact->getAdditionalDetails()->clear();

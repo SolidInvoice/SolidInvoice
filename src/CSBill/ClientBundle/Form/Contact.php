@@ -14,6 +14,8 @@ use CSBill\ClientBundle\Form\Type\ContactDetailType;
 use CSBill\ClientBundle\Form\Type\PrimaryContactDetailType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class Contact extends AbstractType
@@ -84,12 +86,21 @@ class Contact extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['allow_delete'] = $options['allow_delete'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
             array(
                 'data_class' => 'CSBill\ClientBundle\Entity\Contact',
-                'csrf_protection' => false
+                'csrf_protection' => false,
+                'allow_delete' => true,
             )
         );
     }

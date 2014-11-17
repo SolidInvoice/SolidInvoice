@@ -8,6 +8,7 @@
  #}
 
 {% import "CSBillCoreBundle:Form:macro.html.twig" as _macro %}
+
 {% set id = random() %}
 
 <div class="form-widget" data-content="{{ id }}">
@@ -49,8 +50,10 @@
 
     {{ form_errors(form) }}
 
-    <a href="#" class="btn btn-danger btn-xs btn-remove pull-right" data-related="{{ id }}">
-        {{ icon('trash-o') }} {{ 'client.contact.delete'|trans }}
-    </a>
-    <br class="clear" />
+    {% if allow_delete %}
+        <a href="#" class="btn btn-danger btn-xs btn-remove pull-right" data-related="{{ id }}">
+            {{ icon('trash-o') }} {{ 'client.contact.delete'|trans }}
+        </a>
+        <br class="clear" />
+    {% endif %}
 </div>
