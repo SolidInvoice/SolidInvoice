@@ -18,12 +18,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ContactDetail extends AbstractType
 {
     /**
-     * @var array
+     * @var \CSBill\ClientBundle\Entity\ContactType[]
      */
     protected $types;
 
     /**
-     * @param array $types
+     * @param \CSBill\ClientBundle\Entity\ContactType[] $types
      */
     public function __construct(array $types)
     {

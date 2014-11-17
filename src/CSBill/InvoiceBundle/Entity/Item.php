@@ -198,7 +198,7 @@ class Item
     /**
      * Get the line item total
      *
-     * @return float
+     * @return int
      */
     public function getTotal()
     {

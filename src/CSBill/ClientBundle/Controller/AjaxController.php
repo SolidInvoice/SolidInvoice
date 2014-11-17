@@ -42,8 +42,8 @@ class AjaxController extends BaseController
     /**
      * Add a new contact to a client
      *
-     * @param  Request $request
-     * @param  Client  $client
+     * @param Request $request
+     * @param Client  $client
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
@@ -99,8 +99,8 @@ class AjaxController extends BaseController
     /**
      * Edits a contact
      *
-     * @param  Request $request
-     * @param  Contact $contact
+     * @param Request $request
+     * @param Contact $contact
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
@@ -180,7 +180,7 @@ class AjaxController extends BaseController
     /**
      * Renders a contact card
      *
-     * @param  Contact $contact
+     * @param Contact $contact
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -201,7 +201,7 @@ class AjaxController extends BaseController
     /**
      * Deletes a contact
      *
-     * @param  Contact $contact
+     * @param Contact $contact
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -219,7 +219,7 @@ class AjaxController extends BaseController
     /**
      * Deletes a client
      *
-     * @param  Client $client
+     * @param Client $client
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */

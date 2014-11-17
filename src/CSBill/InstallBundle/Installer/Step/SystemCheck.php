@@ -11,7 +11,6 @@
 namespace CSBill\InstallBundle\Installer\Step;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Process\Process;
 use CSBill\InstallBundle\Installer\AbstractStep;
 use CSBill\InstallBundle\Installer\StepViewInterface;
 

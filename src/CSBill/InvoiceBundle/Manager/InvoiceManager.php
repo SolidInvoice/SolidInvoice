@@ -119,7 +119,7 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
-     * @param  null   $status
+     * @param  string $status
      * @param  Client $client
      * @return int
      */

@@ -10,7 +10,6 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;

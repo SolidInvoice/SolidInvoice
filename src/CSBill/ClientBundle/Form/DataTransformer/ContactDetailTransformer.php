@@ -34,7 +34,7 @@ class ContactDetailTransformer implements DataTransformerInterface
     /**
      * @param ContactDetail[] $value
      *
-     * @return string
+     * @return ContactDetail|null
      */
     public function transform($value)
     {

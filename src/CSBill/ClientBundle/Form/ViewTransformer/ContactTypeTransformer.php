@@ -31,7 +31,7 @@ class ContactTypeTransformer implements DataTransformerInterface
     /**
      * @param mixed $value
      *
-     * @return string
+     * @return int
      */
     public function transform($value)
     {
