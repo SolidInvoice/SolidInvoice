@@ -14,7 +14,7 @@
                 {% for type in contact_types if type.id == form.type.vars.value %}
                     {{ type.name|title }}
                 {% else %}
-                    {{ 'Choose'|trans }}
+                    {{ 'client.contact.details.choose'|trans }}
                 {% endfor %}
             </span> <span class="caret"></span>
         </button>

@@ -12,8 +12,11 @@ client:
         info: Contact Info
         add: Add Contact
         delete: Delete Contact
+        details:
+            choose: Choose
+            extra: Additional Contact Details
 
-
+email: Email
 clients: Clients
 add_client: Add Client
 save: Save
