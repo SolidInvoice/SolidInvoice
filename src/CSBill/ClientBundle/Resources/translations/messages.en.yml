@@ -1,6 +1,7 @@
 client:
     info: Client Info
     save: Save Client
+    cancel: Cancel
     address:
         info: Address Info
         add: Add Address

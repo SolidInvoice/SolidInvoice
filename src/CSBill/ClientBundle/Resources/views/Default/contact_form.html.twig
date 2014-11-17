@@ -61,11 +61,16 @@
 
     {{ form_rest(form) }}
 
-    <br class="clear" />
+    <hr class="clear" />
 
     <div class="control-group">
         <div class="controls">
-            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "client.save"|trans }}</button>
+            <div class="pull-left">
+                <button type="button" class="btn btn-warning">{{ icon('reply') }} {{ 'client.cancel'|trans }}</button>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "client.save"|trans }}</button>
+            </div>
         </div>
     </div>
 {{ form_end(form) }}
