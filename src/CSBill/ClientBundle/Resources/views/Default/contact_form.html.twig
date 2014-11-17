@@ -10,8 +10,10 @@
                 <h3>{{ 'client.info'|trans }}</h3>
             </legend>
 
-            {{ form_row(form.name) }}
-            {{ form_row(form.website) }}
+            <div class="form-widget">
+                {{ form_row(form.name) }}
+                {{ form_row(form.website) }}
+            </div>
 
             <legend>
                 <h3>{{ 'client.address.info'|trans }}</h3>
