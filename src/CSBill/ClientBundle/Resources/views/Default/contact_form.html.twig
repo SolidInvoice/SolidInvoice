@@ -1,3 +1,5 @@
+{% import "CSBillCoreBundle:Form:macro.html.twig" as _macro %}
+
 {{ form_start(form) }}
 
     {{ form_errors(form) }}
@@ -5,44 +7,63 @@
     <div class="row">
         <div class="col-lg-6 col-md-6">
             <legend>
-                <h3>{{ 'Client Details'|trans }}</h3>
+                <h3>{{ 'client.info'|trans }}</h3>
             </legend>
+
             {{ form_row(form.name) }}
             {{ form_row(form.website) }}
 
-            {{ form_row(form.addresses) }}
-            {{ form_row(form.addresses.vars.prototype) }}
+            <legend>
+                <h3>{{ 'client.address.info'|trans }}</h3>
+            </legend>
+
+            {% set addressesPrototypeForm %}
+                {{ _macro.widget_prototype(form.addresses, 'client.address.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'} }) }}
+            {% endset %}
+
+            <div class="client_addresses" data-prototype="{{ addressesPrototypeForm|escape }}" data-prototype-name="{{ form.addresses.vars.prototype.vars.name }}">
+                {% for widget in form.addresses %}
+                    {{ _macro.widget_prototype(widget, 'client.address.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
+                {% else %}
+                    {{ addressesPrototypeForm|replace({'__name__' : 0})|raw }}
+                {% endfor %}
+            </div>
+
+            <a href="#" data-target="client_addresses" class="btn-add add_form_collection_link">
+                {{ icon('plus', ['circle']) }} {{ "client.address.add"|trans }}
+            </a>
         </div>
         <div class="col-lg-6 col-md-6">
+
             <legend>
-                <h3>{{ "contacts"|trans }}</h3>
+                <h3>{{ 'client.contact.info'|trans }}</h3>
             </legend>
 
             {% set prototypeForm %}
-            {{ _macro.widget_prototype(form.contacts, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
+                {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'} }) }}
             {% endset %}
 
             <div class="client_contacts" data-prototype="{{ prototypeForm|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.vars.name }}">
-                {% for widget in form.contacts.children %}
-                    {% set delete = loop.index0 != 0 %}
-                    {{ _macro.widget_prototype(widget, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}, delete) }}
+                {% for widget in form.contacts %}
+                    {{ _macro.widget_prototype(widget, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
                 {% else %}
                     {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
                 {% endfor %}
             </div>
 
-            <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link">{{ icon('plus', ['circle']) }} {{ "add_contact"|trans }}</a>
+            <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link">
+                {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
+            </a>
         </div>
     </div>
 
-
-    {#{{ form_rest(form) }}#}
+    {{ form_rest(form) }}
 
     <br class="clear" />
 
     <div class="control-group">
         <div class="controls">
-            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "save"|trans }}</button>
+            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "client.save"|trans }}</button>
         </div>
     </div>
 {{ form_end(form) }}

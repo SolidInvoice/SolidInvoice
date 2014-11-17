@@ -102,11 +102,9 @@
         {% set label_attr = label_attr|merge({'for': id}) %}
         <label class="control-label"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
     {% else %}
-        {% if prototype is defined %}
-
-                <legend><h2{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</h2></legend>
-
-        {% endif %}
+        {#{% if prototype is defined %}
+            <legend><h2{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</h2></legend>
+        {% endif %}#}
     {% endif %}
 {% endspaceless %}
 {% endblock form_label %}

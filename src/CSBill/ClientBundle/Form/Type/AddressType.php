@@ -33,7 +33,7 @@ class AddressType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'CSBill\ClientBundle\Entity\Address'
+                'data_class' => 'CSBill\ClientBundle\Entity\Address',
             )
         );
     }

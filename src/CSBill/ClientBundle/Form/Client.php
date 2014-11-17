@@ -38,7 +38,16 @@ class Client extends AbstractType
             )
         );
 
-        $builder->add('addresses', 'collection', array('type' => new AddressType, 'allow_add'    => true));
+        $builder->add(
+            'addresses',
+            'collection',
+            array(
+                'type' => new AddressType,
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            )
+        );
     }
 
     /**

@@ -1,3 +1,16 @@
+client:
+    info: Client Info
+    save: Save Client
+    address:
+        info: Address Info
+        add: Add Address
+        delete: Delete Address
+    contact:
+        info: Contact Info
+        add: Add Contact
+        delete: Delete Contact
+
+
 clients: Clients
 add_client: Add Client
 save: Save
