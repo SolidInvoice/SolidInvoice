@@ -14,9 +14,8 @@
     bootstrap                   = "bootstrap.php.cache" >
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="CSBill Test Suite">
             <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -32,10 +31,14 @@
             <exclude>
                 <directory>../src/*/*Bundle/Resources</directory>
                 <directory>../src/*/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/Resources</directory>
-                <directory>../src/*/Bundle/*Bundle/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
 
+    <logging>
+        <log type="coverage-html" target="../build/coverage" title="CSBill" charset="UTF-8" yui="true"
+             highlight="true" lowUpperBound="35" highLowerBound="75"/>
+        <log type="coverage-clover" target="../build/logs/clover.xml" />
+        <log type="junit" target="../build/logs/junit.xml" logIncompleteSkipped="false" />
+    </logging>
 </phpunit>

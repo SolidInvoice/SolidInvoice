@@ -13,8 +13,8 @@ matrix:
 before_script:
     - mysql -e 'create database csbill;'
     - composer install --no-interaction --prefer-dist
+    - wget https://scrutinizer-ci.com/ocular.phar
 
 script:
-    - phpunit -c app --coverage-clover=coverage.clover
-    - wget https://scrutinizer-ci.com/ocular.phar
-    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    - phpunit -c app
+    - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
