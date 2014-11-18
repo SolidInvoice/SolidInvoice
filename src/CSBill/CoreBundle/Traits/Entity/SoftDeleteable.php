@@ -10,8 +10,6 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-
 trait SoftDeleteable
 {
     /**

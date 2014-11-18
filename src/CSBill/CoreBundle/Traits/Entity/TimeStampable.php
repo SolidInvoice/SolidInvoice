@@ -33,7 +33,7 @@ trait TimeStampable
     /**
      * Sets created
      *
-     * @param  \DateTime $created
+     * @param \DateTime $created
      *
      * @return $this
      */
@@ -57,7 +57,7 @@ trait TimeStampable
     /**
      * Sets updated
      *
-     * @param  \DateTime $updated
+     * @param \DateTime $updated
      *
      * @return $this
      */

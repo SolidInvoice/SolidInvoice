@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,40 +10,31 @@
 
 namespace CSBill\ClientBundle\Form;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
+use CSBill\ClientBundle\Form\Type\ContactDetailType;
+use CSBill\ClientBundle\Form\Type\PrimaryContactDetailType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use CSBill\ClientBundle\Form\Type\ContactDetailType;
 
 class Contact extends AbstractType
 {
     /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var array
+     * @var \CSBill\ClientBundle\Entity\ContactType[]
      */
     protected $types;
 
     /**
-     * @param ManagerRegistry $registry
-     * @param array           $types
+     * @param array $types
      */
-    public function __construct(ManagerRegistry $registry, array $types)
+    public function __construct(array $types)
     {
-        $this->registry = $registry;
         $this->types = $types;
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -52,64 +42,74 @@ class Contact extends AbstractType
         $builder->add('lastname');
 
         foreach ($this->types as $item) {
-            /** @var \CSBill\ClientBundle\Entity\ContactType $item */
-            $builder->add(
-                'details_' . $item->getName(),
-                new ContactDetailType,
-                array(
-                    'type' => new ContactDetail($this->registry, $item),
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'label' => 'contact_details',
-                    'prototype' => true,
-                    'prototype_name' => '__contact_details_prototype__',
-                    'error_bubbling' => false
-                )
-            );
+            if ($item->isRequired()) {
+
+                $contactDetails = $builder->create(
+                    'details_' . $item->getName(),
+                    new PrimaryContactDetailType($item),
+                    array(
+                        'required' => true,
+                        'property_path' => 'primaryDetails',
+                        'by_reference' => true
+                    )
+                );
+
+                $contactDetails->addModelTransformer(new DataTransformer\ContactDetailTransformer($item));
+
+                $builder->add(
+                    $contactDetails
+                );
+            }
         }
 
-        $types = $this->types;
-
-        $builder->addEventListener(
-            FormEvents::SUBMIT,
-            function (FormEvent $event) use ($types) {
-
-                $details = $event->getData()->getDetails();
-
-                $detailTypes = array();
-
-                foreach ($details as $detail) {
-                    $type = $detail->getType()->getName();
-                    $detailTypes[] = $type;
-                }
-
-                foreach ($types as $type) {
-                    if ($type->isRequired()) {
-                        if (!in_array($type->getName(), $detailTypes)) {
-                            $name = $type->getName();
-                            $error = sprintf(
-                                '%s is required',
-                                ucwords(str_replace('_', ' ', $name))
-                            );
-                            $event->getForm()->addError(new FormError($error));
-                        }
-                    }
-                }
-            }
+        $builder->add(
+            'additionalDetails',
+            new ContactDetailType,
+            array(
+                'type' => new ContactDetail($this->types),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'delete_empty' => true,
+                'required' => false,
+                'by_reference' => false,
+                'label' => 'contact_details',
+                'prototype' => true,
+                'prototype_name' => '__contact_details_prototype__',
+                'error_bubbling' => false,
+                'options' => array(
+                    'data_class' => 'CSBill\ClientBundle\Entity\AdditionalContactDetail'
+                )
+            )
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['allow_delete'] = $options['allow_delete'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'CSBill\ClientBundle\Entity\Contact',
+                'csrf_protection' => false,
+                'allow_delete' => true,
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'contact';
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-                'data_class' => 'CSBill\ClientBundle\Entity\Contact',
-                'csrf_protection'=> false
-        ));
     }
 }

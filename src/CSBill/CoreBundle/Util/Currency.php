@@ -43,7 +43,7 @@ class Currency
     }
 
     /**
-     * @return bool|string
+     * @return string
      */
     public function getThousandSeparator()
     {
@@ -51,7 +51,7 @@ class Currency
     }
 
     /**
-     * @return bool|string
+     * @return string
      */
     public function getDecimalSeparator()
     {
@@ -80,6 +80,7 @@ class Currency
 
     /**
      * @param integer $value
+     * @param string  $currency
      *
      * @return string
      */

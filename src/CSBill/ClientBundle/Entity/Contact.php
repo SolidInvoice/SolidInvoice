@@ -62,51 +62,29 @@ class Contact implements \serializable
     private $client;
 
     /**
-     * @var ArrayCollection $details
+     * @var ArrayCollection $primaryDetails
      *
-     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="contact", cascade={"persist"})
+     * @ORM\OneToMany(indexBy="contact_type_id", targetEntity="PrimaryContactDetail", mappedBy="contact",
+     *                                           cascade={"persist"})
      * @Assert\Valid()
-     * @Assert\Count(min=1, minMessage="You need to add at least one email address")
      */
-    private $details;
+    private $primaryDetails;
+
+    /**
+     * @var ArrayCollection $additionalDetails
+     *
+     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist"})
+     * @Assert\Valid()
+     */
+    private $additionalDetails;
 
     /**
      * Constructer
      */
     public function __construct()
     {
-        $this->details = new ArrayCollection;
-    }
-
-    public function __set($key, $value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $element) {
-                if ($element instanceof ContactDetail) {
-                    $this->addDetail($element);
-                }
-            }
-        }
-    }
-
-    public function __get($key)
-    {
-        if ('details_' === substr($key, 0, 8)) {
-
-            $details = array();
-
-            $type = substr($key, 8);
-
-            foreach ($this->details as $detail) {
-                if (strtolower((string) $detail->getType()) === strtolower($type)) {
-                    $details[] = $detail;
-                }
-            }
-
-            return $details;
-        }
-
-        return null;
+        $this->primaryDetails = new ArrayCollection;
+        $this->additionalDetails = new ArrayCollection;
     }
 
     /**
@@ -120,19 +98,6 @@ class Contact implements \serializable
     }
 
     /**
-     * Set firstname
-     *
-     * @param  string  $firstname
-     * @return Contact
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    /**
      * Get firstname
      *
      * @return string
@@ -143,14 +108,15 @@ class Contact implements \serializable
     }
 
     /**
-     * Set lastname
+     * Set firstname
      *
-     * @param  string  $lastname
+     * @param string $firstname
+     *
      * @return Contact
      */
-    public function setLastname($lastname)
+    public function setFirstname($firstname)
     {
-        $this->lastname = $lastname;
+        $this->firstname = $firstname;
 
         return $this;
     }
@@ -166,14 +132,15 @@ class Contact implements \serializable
     }
 
     /**
-     * Set client
+     * Set lastname
      *
-     * @param  Client  $client
+     * @param string $lastname
+     *
      * @return Contact
      */
-    public function setClient(Client $client)
+    public function setLastname($lastname)
     {
-        $this->client = $client;
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -189,50 +156,127 @@ class Contact implements \serializable
     }
 
     /**
-     * Add detail
+     * Set client
      *
-     * @param  ContactDetail $detail
+     * @param Client $client
+     *
      * @return Contact
      */
-    public function addDetail(ContactDetail $detail)
+    public function setClient(Client $client)
     {
-        $this->details[] = $detail;
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Add additional detail
+     *
+     * @param AdditionalContactDetail $detail
+     *
+     * @return Contact
+     */
+    public function addAdditionalDetail(AdditionalContactDetail $detail)
+    {
+        $this->additionalDetails->add($detail);
         $detail->setContact($this);
 
         return $this;
     }
 
     /**
-     * Removes detail from the current contact
+     * Removes primary detail from the current contact
      *
-     * @param  ContactDetail $detail
+     * @param PrimaryContactDetail $detail
+     *
      * @return Contact
      */
-    public function removeDetail(ContactDetail $detail)
+    public function removePrimaryDetail(PrimaryContactDetail $detail)
     {
-        $this->details->removeElement($detail);
+        $this->primaryDetails->removeElement($detail);
 
         return $this;
     }
 
     /**
-     * Get details
+     * Removes additional detail from the current contact
      *
-     * @return ArrayCollection
+     * @param AdditionalContactDetail $detail
+     *
+     * @return Contact
      */
-    public function getDetails()
+    public function removeAdditionalDetail(AdditionalContactDetail $detail)
     {
-        return $this->details;
+        $this->additionalDetails->removeElement($detail);
+
+        return $this;
     }
 
     /**
-     * @param  string             $type
-     * @return null|ContactDetail
+     * Get primary details
+     *
+     * @return ArrayCollection
      */
-    public function getDetail($type)
+    public function getPrimaryDetails()
     {
-        if (count($this->details) > 0) {
-            foreach ($this->details as $detail) {
+        return $this->primaryDetails;
+    }
+
+    /**
+     * Add primary detail
+     *
+     * @param PrimaryContactDetail $detail
+     *
+     * @return Contact
+     */
+    public function setPrimaryDetails(PrimaryContactDetail $detail)
+    {
+        if (!$this->primaryDetails->containsKey($detail->getType()->getId())) {
+            $this->primaryDetails->add($detail);
+        }
+
+        $detail->setContact($this);
+
+        return $this;
+    }
+
+    /**
+     * Get additional details
+     *
+     * @return ArrayCollection
+     */
+    public function getAdditionalDetails()
+    {
+        return $this->additionalDetails;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return null|PrimaryContactDetail
+     */
+    public function getPrimaryDetail($type)
+    {
+        if (count($this->primaryDetails) > 0) {
+            foreach ($this->primaryDetails as $detail) {
+                if (strtolower((string) $detail->getType()) === strtolower($type)) {
+                    return $detail;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return null|AdditionalContactDetail
+     */
+    public function getAdditionalDetail($type)
+    {
+        if (count($this->additionalDetails) > 0) {
+            foreach ($this->additionalDetails as $detail) {
                 if (strtolower((string) $detail->getType()) === strtolower($type)) {
                     return $detail;
                 }

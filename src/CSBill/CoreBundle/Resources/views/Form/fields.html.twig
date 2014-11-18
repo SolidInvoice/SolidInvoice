@@ -102,11 +102,9 @@
         {% set label_attr = label_attr|merge({'for': id}) %}
         <label class="control-label"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
     {% else %}
-        {% if prototype is defined %}
-
-                <legend><h2{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</h2></legend>
-
-        {% endif %}
+        {#{% if prototype is defined %}
+            <legend><h2{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</h2></legend>
+        {% endif %}#}
     {% endif %}
 {% endspaceless %}
 {% endblock form_label %}
@@ -289,3 +287,41 @@
         {% endfor %}
     {% endspaceless %}
 {% endblock tax_choice_widget_options %}
+
+{% block address_widget %}
+    {% set id = random() %}
+    <div class="form-widget" data-content="{{ id }}">
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.street1) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.street2) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.city) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.state) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.zip) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.country) }}
+            </div>
+        </div>
+
+        <a href="#" class="btn btn-danger btn-xs btn-remove pull-right" data-related="{{ id }}">
+            {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
+        </a>
+        <br class="clear" />
+    </div>
+{% endblock address_widget %}

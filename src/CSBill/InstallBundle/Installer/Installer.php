@@ -109,7 +109,7 @@ class Installer extends ContainerAware
      * Get the session data for specific step
      *
      * @param string $key
-     * @param mixed  $default
+     * @param int    $default
      *
      * @return mixed
      */

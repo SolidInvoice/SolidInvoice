@@ -20,8 +20,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="contact_details")
  * @ORM\Entity()
  * @Gedmo\Loggable()
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="detail_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "primary"    = "CSBill\ClientBundle\Entity\PrimaryContactDetail",
+ *      "additional" = "CSBill\ClientBundle\Entity\AdditionalContactDetail",
+ * })
  */
-class ContactDetail
+abstract class ContactDetail
 {
     use Entity\TimeStampable;
 
@@ -32,7 +38,7 @@ class ContactDetail
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $value
@@ -40,21 +46,6 @@ class ContactDetail
      * @ORM\Column(name="value", type="text", nullable=false)
      */
     private $value;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_primary", type="boolean", nullable=true)
-     */
-    private $primary;
-
-    /**
-     * @var Contact $contact
-     *
-     * @ORM\ManyToOne(targetEntity="Contact", inversedBy="details")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
-     */
-    private $contact;
 
     /**
      * @var ContactType $type
@@ -75,19 +66,6 @@ class ContactDetail
     }
 
     /**
-     * Set value
-     *
-     * @param  string        $value
-     * @return ContactDetail
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
      * Get value
      *
      * @return string
@@ -98,37 +76,15 @@ class ContactDetail
     }
 
     /**
-     * Set contact
+     * Set value
      *
-     * @param  Contact       $contact
+     * @param string $value
+     *
      * @return ContactDetail
      */
-    public function setContact(Contact $contact)
+    public function setValue($value)
     {
-        $this->contact = $contact;
-
-        return $this;
-    }
-
-    /**
-     * Get contact
-     *
-     * @return Contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
-     * Set type
-     *
-     * @param  ContactType   $type
-     * @return ContactDetail
-     */
-    public function setType(ContactType $type)
-    {
-        $this->type = $type;
+        $this->value = $value;
 
         return $this;
     }
@@ -144,26 +100,17 @@ class ContactDetail
     }
 
     /**
-     * Set the contact detail as primary
+     * Set type
      *
-     * @param  boolean       $primary
+     * @param ContactType $type
+     *
      * @return ContactDetail
      */
-    public function setPrimary($primary)
+    public function setType(ContactType $type)
     {
-        $this->primary = (bool) $primary;
+        $this->type = $type;
 
         return $this;
-    }
-
-    /**
-     * Is the contact detail primary
-     *
-     * @return bool
-     */
-    public function isPrimary()
-    {
-        return (bool) $this->primary;
     }
 
     /**

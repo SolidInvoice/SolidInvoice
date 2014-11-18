@@ -29,7 +29,7 @@ interface MenuStorageInterface
      * @param string $name
      * @param array  $options
      *
-     * @return \SplObjectStorage
+     * @return \Knp\Menu\ItemInterface|\SplObjectStorage
      */
     public function get($name, array $options = array());
 }

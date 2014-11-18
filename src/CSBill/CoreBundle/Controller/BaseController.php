@@ -12,9 +12,22 @@
 namespace CSBill\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class BaseController extends Base
 {
+    /**
+     * Get a doctrine repository
+     *
+     * @param string $repository
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function getRepository($repository)
+    {
+        return $this->getEm()->getRepository($repository);
+    }
+
     /**
      * Return a instance of the doctrine entity manager
      *
@@ -23,17 +36,6 @@ abstract class BaseController extends Base
     protected function getEm()
     {
         return $this->getDoctrine()->getManager();
-    }
-
-    /**
-     * Get a doctrine repository
-     *
-     * @param  string                                        $repository
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($repository)
-    {
-        return $this->getEm()->getRepository($repository);
     }
 
     /**
@@ -54,7 +56,8 @@ abstract class BaseController extends Base
     /**
      * Translates a message
      *
-     * @param  string $message
+     * @param string $message
+     *
      * @return string
      */
     protected function trans($message)
@@ -63,14 +66,30 @@ abstract class BaseController extends Base
     }
 
     /**
-     * @param object $entity
+     * @param mixed $entity
+     *
+     * @return $this
      */
     protected function save($entity)
     {
         $entityManager = $this->getEm();
-
         $entityManager->persist($entity);
-
         $entityManager->flush();
+
+        return $this;
+    }
+
+    /**
+     * Returns a new JsonResponse
+     *
+     * @param array $data
+     * @param int   $status
+     * @param array $headers
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function json(array $data, $status = 200, array $headers = array())
+    {
+        return new JsonResponse($data, $status, $headers);
     }
 }

@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-(function($) {
+(function($, Routing, window) {
     "use strict";
 
     $(function() {
@@ -16,6 +16,8 @@
          * ADD CONTACT
          */
         $('.add-contact-button').ajaxModal('#contacts-ajax-modal', function() {
+
+            window.attachContactListeners();
 
             var modal = $(this.$modal),
                 addContact = function(evt) {
@@ -43,7 +45,7 @@
                                     var content = $(data.content).hide();
 
                                     $('#client-contacts-list').append(content);
-                                    content.fadeIn(function(){
+                                    content.fadeIn(function() {
                                         $('.edit-contact', this).ajaxModal('#contacts-ajax-modal', contactEdit);
                                     });
                                 });
@@ -68,6 +70,9 @@
          * EDIT CONTACT
          */
         var contactEdit = function() {
+
+            window.attachContactListeners();
+
             var modal = $(this.$modal),
                 container = this,
                 contactEditForm = function(evt) {
@@ -128,7 +133,7 @@
             var contact = $(this).parents('.contact-card'),
                 contactId = contact.data('id');
 
-            bootbox.confirm('<i class="fa fa-exclamation-circle fa-2x"></i> Are you sure you want to delete this contact?', function(bool) {
+            window.bootbox.confirm('<i class="fa fa-exclamation-circle fa-2x"></i> Are you sure you want to delete this contact?', function(bool) {
                 if (true === bool) {
                     $('body').modalmanager('loading');
 
@@ -154,7 +159,7 @@
 
             var link = $(this);
 
-            bootbox.confirm("Are you sure you want to delete this client?", function(bool) {
+            window.bootbox.confirm("Are you sure you want to delete this client?", function(bool) {
                 if (true === bool) {
                     $('body').modalmanager('loading');
                     $.ajax({
@@ -168,5 +173,4 @@
             });
         });
     });
-
-})(window.jQuery);
+})(window.jQuery, window.Routing, window);

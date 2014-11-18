@@ -7,8 +7,6 @@
  # with this source code in the file LICENSE.
  #}
 
-{% import "CSBillCoreBundle:Form:macro.html.twig" as _macro %}
-
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block title %}{{ 'add_client'|trans }}{% endblock %}
@@ -18,45 +16,5 @@
 {% endblock sidebar %}
 
 {% block content %}
-
-    <form action="{{ path("_clients_add") }}" method="post"{{ form_enctype(form) }} role="form">
-
-        {{ form_errors(form) }}
-
-        <div class="col-lg-6 col-md-6">
-            {{ form_row(form.name) }}
-        </div>
-        <div class="col-lg-6 col-md-6">
-            {{ form_row(form.website) }}
-        </div>
-
-        <legend>
-            <h3>{{ "contacts"|trans }}</h3>
-        </legend>
-
-        {% set prototypeForm %}
-            {{ _macro.widget_prototype(form.contacts, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
-        {% endset %}
-
-        <div class="client_contacts" data-prototype="{{ prototypeForm|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.vars.name }}">
-            {% for widget in form.contacts.children %}
-                {% set delete = loop.index0 != 0 %}
-                {{ _macro.widget_prototype(widget, 'delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}, delete) }}
-            {% else %}
-                {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
-            {% endfor %}
-        </div>
-
-        <a href="#" data-target="client_contacts" class="btn-add add_form_collection_link">{{ icon('plus', ['circle']) }} {{ "add_contact"|trans }}</a>
-
-        {{ form_row(form._token) }}
-
-        <br class="clear" />
-
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "save"|trans }}</button>
-            </div>
-        </div>
-    </form>
+    {% include "CSBillClientBundle:Default:contact_form.html.twig" %}
 {% endblock %}

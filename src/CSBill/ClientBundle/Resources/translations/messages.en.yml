@@ -1,3 +1,22 @@
+client:
+    info: Client Info
+    save: Save Client
+    cancel: Cancel
+    address:
+        info: Address Info
+        add: Add Address
+        delete: Delete Address
+        country:
+            select: Select Country
+    contact:
+        info: Contact Info
+        add: Add Contact
+        delete: Delete Contact
+        details:
+            choose: Choose
+            extra: Additional Contact Details
+
+email: Email
 clients: Clients
 add_client: Add Client
 save: Save

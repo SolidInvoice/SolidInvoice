@@ -1,7 +1,6 @@
 parameters:
     csbill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
     csbill_client.contact_type.repository.class: CSBill\ClientBundle\Repository\ContactTypeRepository
-    csbill_client.contact_types.subscriber.class: CSBill\ClientBundle\EventListener\ClientDetailsSubscriber
     csbill_client.contact_types.twig.extension.class: CSBill\ClientBundle\Twig\Extension\ContactTypesExtension
     csbill_client.contact.form.type.class: CSBill\ClientBundle\Form\Contact
 
@@ -16,7 +15,7 @@ services:
 
     csbill_client.contact.form.type:
         class: %csbill_client.contact.form.type.class%
-        arguments: [@doctrine, @csbill_client.contact_type.values]
+        arguments: [@csbill_client.contact_type.values]
         tags:
             - { name: form.type, alias: contact }
 
@@ -41,8 +40,3 @@ services:
         class: %csbill_client.contact_type.repository.class%
         factory_service: csbill_client.contact_type.repository
         factory_method:  findAll
-
-    csbill_client.contact_types.subscriber:
-        class: %csbill_client.contact_types.subscriber.class%
-        tags:
-            - { name: doctrine.event_subscriber}
