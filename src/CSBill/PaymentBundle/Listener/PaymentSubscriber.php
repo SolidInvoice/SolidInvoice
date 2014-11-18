@@ -28,7 +28,7 @@ class PaymentSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            PaymentEvents::PAYMENT_COMPLETE => array('onPaymentComplete')
+            PaymentEvents::PAYMENT_COMPLETE => array('onPaymentComplete'),
         );
     }
 

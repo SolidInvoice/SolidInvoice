@@ -11,8 +11,8 @@
 
 namespace CSBill\CoreBundle\Menu;
 
-use Knp\Menu\ItemInterface as Item;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use Knp\Menu\ItemInterface as Item;
 
 class Main extends AuthenticatedMenu
 {
@@ -35,8 +35,8 @@ class Main extends AuthenticatedMenu
                 'label' => $username,
                 'extras' => array(
                     'safe_label' => true,
-                    'icon' => 'user'
-                )
+                    'icon' => 'user',
+                ),
             )
         );
 
@@ -49,7 +49,7 @@ class Main extends AuthenticatedMenu
             'Logout',
             array(
                 'route' => 'fos_user_security_logout',
-                'extras' => array('icon' => 'power-off')
+                'extras' => array('icon' => 'power-off'),
             )
         );
 
@@ -71,8 +71,8 @@ class Main extends AuthenticatedMenu
                 'label' => 'System <b class="caret"></b>',
                 'extras' => array(
                     'safe_label' => true,
-                    'icon' => 'laptop'
-                )
+                    'icon' => 'laptop',
+                ),
             )
         );
 
@@ -82,7 +82,7 @@ class Main extends AuthenticatedMenu
             'Settings',
             array(
                 'route' => '_settings',
-                'extras' => array('icon' => 'cog')
+                'extras' => array('icon' => 'cog'),
             )
         );
 
@@ -90,7 +90,7 @@ class Main extends AuthenticatedMenu
             'Tax Rates',
             array(
                 'route' => '_tax_rates',
-                'extras' => array('icon' => 'money')
+                'extras' => array('icon' => 'money'),
             )
         );
         $system->setChildrenAttributes(array('class' => 'dropdown-menu'));

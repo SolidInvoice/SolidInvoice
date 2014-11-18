@@ -16,7 +16,6 @@ use Doctrine\ORM\EntityRepository;
 
 class PaymentRepository extends EntityRepository
 {
-
     /**
      * Returns an array of all the payments for an invoice
      *

@@ -11,9 +11,9 @@
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use CSBill\CoreBundle\CSBillCoreBundle;
-use Twig_Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
+use Twig_Extension;
 
 class GlobalExtension extends Twig_Extension
 {
@@ -47,7 +47,7 @@ class GlobalExtension extends Twig_Extension
                     'settings'         => $settings,
                     'invoice_manager'  => $this->container->get('invoice.manager'),
                     'app_version'      => CSBillCoreBundle::VERSION,
-                    'app_name'         => (string) $settings['system']['general']['app_name']
+                    'app_name'         => (string) $settings['system']['general']['app_name'],
             );
     }
 
@@ -59,7 +59,7 @@ class GlobalExtension extends Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('percentage', array($this, 'formatPercentage')),
-            new \Twig_SimpleFilter('currency', array($this, 'formatCurrency'))
+            new \Twig_SimpleFilter('currency', array($this, 'formatCurrency')),
         );
     }
 
@@ -70,7 +70,7 @@ class GlobalExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('icon', array($this, 'displayIcon'), array('is_safe' => array('html')))
+            new \Twig_SimpleFunction('icon', array($this, 'displayIcon'), array('is_safe' => array('html'))),
         );
     }
 

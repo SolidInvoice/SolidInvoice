@@ -12,8 +12,8 @@
 namespace CSBill\SettingsBundle;
 
 use CSBill\SettingsBundle\DependencyInjection\Compiler\SettingsLoaderCompilerPass;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Class CSBillSettingsBundle
@@ -26,6 +26,6 @@ class CSBillSettingsBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new SettingsLoaderCompilerPass);
+        $container->addCompilerPass(new SettingsLoaderCompilerPass());
     }
 }

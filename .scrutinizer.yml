@@ -1,3 +1,14 @@
+application:
+    environment:
+        php:
+            version: 5.4
+    dependencies:
+        before:
+            - composer install --no-interaction
+    project_setup:
+        before:
+            - mysql -u root -e "CREATE DATABASE csbill"
+
 filter:
     excluded_paths: [vendor/*, web/*, app/*, bin/*]
     paths:

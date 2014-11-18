@@ -10,11 +10,11 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
-use Symfony\Component\Yaml\Parser;
+use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
+use CSBill\InstallBundle\Installer\AbstractFormStep;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
-use CSBill\InstallBundle\Installer\AbstractFormStep;
-use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
+use Symfony\Component\Yaml\Parser;
 
 class DatabaseConfig extends AbstractFormStep
 {
@@ -24,7 +24,7 @@ class DatabaseConfig extends AbstractFormStep
      * @var array
      */
     protected $implementedDrivers = array(
-        'mysql'
+        'mysql',
     );
 
     /**
@@ -66,7 +66,7 @@ class DatabaseConfig extends AbstractFormStep
             'drivers'            => $this->drivers,
             'host'               => 'localhost',
             'port'               => 3306,
-            'connection_factory' => $this->get('doctrine.dbal.connection_factory')
+            'connection_factory' => $this->get('doctrine.dbal.connection_factory'),
         );
     }
 

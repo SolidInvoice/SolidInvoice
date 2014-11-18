@@ -21,7 +21,7 @@ class AjaxController extends BaseController
             new PaymentMethodForm(),
             new PaymentMethod(),
             array(
-                'manager' => $this->get('csbill_payment.method.manager')
+                'manager' => $this->get('csbill_payment.method.manager'),
             )
         );
 
@@ -31,9 +31,9 @@ class AjaxController extends BaseController
             'content' => $this->renderView(
                 'CSBillPaymentBundle:Ajax:loadmethodsettings.html.twig',
                 array(
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
                 )
-            )
+            ),
         ));
     }
 

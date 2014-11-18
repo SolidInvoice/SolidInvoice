@@ -11,8 +11,8 @@
 
 namespace CSBill\CoreBundle\Mailer\Events;
 
-use Symfony\Component\EventDispatcher\Event;
 use Swift_Message;
+use Symfony\Component\EventDispatcher\Event;
 
 abstract class MessageEvent extends Event implements MessageEventInterface
 {

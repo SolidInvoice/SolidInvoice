@@ -10,9 +10,9 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
-use Symfony\Component\HttpFoundation\Request;
 use CSBill\InstallBundle\Installer\AbstractStep;
 use CSBill\InstallBundle\Installer\StepViewInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class SystemCheck extends AbstractStep implements StepViewInterface
 {
@@ -56,7 +56,7 @@ class SystemCheck extends AbstractStep implements StepViewInterface
     {
         return array(
             'checks' => self::$checks,
-            'errors' => $this->errors
+            'errors' => $this->errors,
         );
     }
 
@@ -85,11 +85,11 @@ class SystemCheck extends AbstractStep implements StepViewInterface
         return [
             'recommended' => [
                 'heading' => 'mandatory requirements',
-                'values' => $recommended
+                'values' => $recommended,
             ],
             'optional' => [
                 'heading' => 'optional recommendations',
-                'values' => $optional
+                'values' => $optional,
             ]
         ];
     }
@@ -119,7 +119,6 @@ class SystemCheck extends AbstractStep implements StepViewInterface
      */
     public function isValid()
     {
-
         if ($this->request->isMethod('POST')) {
             foreach (self::$checks['recommended']['values'] as $value) {
                 if (substr(trim($value), 0, 2) !== 'OK') {

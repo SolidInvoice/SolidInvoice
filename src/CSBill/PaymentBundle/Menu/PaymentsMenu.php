@@ -11,8 +11,8 @@
 
 namespace CSBill\PaymentBundle\Menu;
 
-use Knp\Menu\ItemInterface;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use Knp\Menu\ItemInterface;
 
 class PaymentsMenu extends AuthenticatedMenu
 {
@@ -42,7 +42,7 @@ class PaymentsMenu extends AuthenticatedMenu
             'Payment Methods',
             array(
                 'route' => '_payment_settings_index',
-                'extras' => array('icon' => 'credit-card')
+                'extras' => array('icon' => 'credit-card'),
             )
         );
     }

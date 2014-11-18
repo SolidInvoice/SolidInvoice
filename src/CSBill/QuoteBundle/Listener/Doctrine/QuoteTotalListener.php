@@ -10,8 +10,8 @@
 
 namespace CSBill\QuoteBundle\Listener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use CSBill\QuoteBundle\Entity\Quote;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class QuoteTotalListener
 {

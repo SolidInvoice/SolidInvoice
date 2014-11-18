@@ -11,8 +11,8 @@
 
 namespace CSBill\SettingsBundle\Model;
 
-use Doctrine\ORM\Mapping as ORM;
 use CSBill\SettingsBundle\Entity\Section;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\MappedSuperclass

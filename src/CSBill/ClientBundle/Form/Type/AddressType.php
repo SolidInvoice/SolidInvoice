@@ -31,9 +31,9 @@ class AddressType extends AbstractType
             'country',
             array(
                 'attr' => array(
-                    'class' => 'select2'
+                    'class' => 'select2',
                 ),
-                'empty_value' => 'client.address.country.select'
+                'empty_value' => 'client.address.country.select',
             )
         );
     }

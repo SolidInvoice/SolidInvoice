@@ -162,9 +162,9 @@ class Invoice
      */
     public function __construct()
     {
-        $this->items = new ArrayCollection;
-        $this->payments = new ArrayCollection;
-        $this->users = new ArrayCollection;
+        $this->items = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
     }
 

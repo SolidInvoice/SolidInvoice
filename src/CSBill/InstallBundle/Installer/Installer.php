@@ -10,12 +10,12 @@
 
 namespace CSBill\InstallBundle\Installer;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
 use CSBill\InstallBundle\Exception\InvalidStepException;
 use CSBill\InstallBundle\Installer\Step\DatabaseConfig;
 use CSBill\InstallBundle\Installer\Step\LicenseAgreement;
 use CSBill\InstallBundle\Installer\Step\SystemCheck;
 use CSBill\InstallBundle\Installer\Step\SystemInformation;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
  * Installer service
@@ -74,20 +74,20 @@ class Installer extends ContainerAware
         return array(
             array(
                 'label' => 'license_agreement',
-                'type'  => new LicenseAgreement,
+                'type'  => new LicenseAgreement(),
             ),
             array(
                 'label' => 'system_check',
-                'type'  => new SystemCheck,
+                'type'  => new SystemCheck(),
             ),
             array(
                 'label' => 'database_configuration',
-                'type'  => new DatabaseConfig,
+                'type'  => new DatabaseConfig(),
             ),
             array(
                 'label' => 'system_information',
-                'type'  => new SystemInformation,
-            )
+                'type'  => new SystemInformation(),
+            ),
         );
     }
 

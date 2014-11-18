@@ -11,10 +11,10 @@
 namespace CSBill\ClientBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as GRID;
+use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -125,11 +125,11 @@ class Client
      */
     public function __construct()
     {
-        $this->contacts = new ArrayCollection;
+        $this->contacts = new ArrayCollection();
         $this->quotes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
-        $this->payments = new ArrayCollection;
-        $this->addresses = new ArrayCollection;
+        $this->payments = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     /**

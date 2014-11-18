@@ -10,14 +10,14 @@
 
 namespace CSBill\InstallBundle\Form\Step;
 
+use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Doctrine\DBAL\DBALException;
 
 class DatabaseConfigForm extends AbstractType
 {
@@ -36,8 +36,8 @@ class DatabaseConfigForm extends AbstractType
                 'help' => 'Only MySQL database is supported at the moment',
                 'choices' => $drivers,
                 'constraints' => array(
-                     new Constraints\NotBlank()
-                )
+                     new Constraints\NotBlank(),
+                ),
             )
         );
 
@@ -47,8 +47,8 @@ class DatabaseConfigForm extends AbstractType
             array(
                 'data' => $options['host'],
                 'constraints' => array(
-                    new Constraints\NotBlank()
-                )
+                    new Constraints\NotBlank(),
+                ),
             )
         );
 
@@ -56,7 +56,7 @@ class DatabaseConfigForm extends AbstractType
             'port',
             null,
             array(
-                'data' => $options['port']
+                'data' => $options['port'],
             )
         );
 
@@ -65,8 +65,8 @@ class DatabaseConfigForm extends AbstractType
             null,
             array(
                 'constraints' => array(
-                    new Constraints\NotBlank()
-                )
+                    new Constraints\NotBlank(),
+                ),
             )
         );
 
@@ -81,8 +81,8 @@ class DatabaseConfigForm extends AbstractType
             array(
                 'label' => 'Database Name',
                 'constraints' => array(
-                    new Constraints\NotBlank()
-                )
+                    new Constraints\NotBlank(),
+                ),
             )
         );
 
@@ -123,7 +123,7 @@ class DatabaseConfigForm extends AbstractType
             'drivers',
             'host',
             'port',
-            'connection_factory'
+            'connection_factory',
         ));
     }
 

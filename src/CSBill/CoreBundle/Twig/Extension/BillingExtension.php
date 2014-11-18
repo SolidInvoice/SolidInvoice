@@ -11,10 +11,10 @@
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use CSBill\CoreBundle\Util\ArrayUtil;
+use CSBill\InstallBundle\Installer\Installer;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Twig_Extension;
 use Twig_SimpleTest;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use CSBill\InstallBundle\Installer\Installer;
 
 class BillingExtension extends Twig_Extension
 {

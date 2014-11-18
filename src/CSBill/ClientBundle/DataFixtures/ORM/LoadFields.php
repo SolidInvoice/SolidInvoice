@@ -11,9 +11,9 @@
 
 namespace CSBill\ClientBundle\DataFixtures\ORM;
 
+use CSBill\ClientBundle\Entity\ContactType;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CSBill\ClientBundle\Entity\ContactType;
 
 class LoadFields implements FixtureInterface
 {
@@ -28,8 +28,8 @@ class LoadFields implements FixtureInterface
               ->setRequired(true)
               ->setOptions(array(
                 'constraints' => array(
-                    'email'
-                )
+                    'email',
+                ),
             ));
         $manager->persist($email);
 

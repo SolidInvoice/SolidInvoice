@@ -10,9 +10,9 @@
 
 namespace CSBill\CoreBundle\Listener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class DoctrineExtensionListener extends ContainerAware
 {
@@ -35,7 +35,6 @@ class DoctrineExtensionListener extends ContainerAware
         if (null !== $securityContext &&
             null !== $securityContext->getToken() &&
             $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-
             $loggable = $this->container->get('gedmo.listener.loggable');
             $loggable->setUsername($securityContext->getToken()->getUsername());
         }

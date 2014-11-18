@@ -11,11 +11,11 @@
 
 namespace CSBill\QuoteBundle\Form\EventListener;
 
+use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use CSBill\QuoteBundle\Entity\Quote;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuoteUsersSubscriber implements EventSubscriberInterface
@@ -27,7 +27,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT => 'preSetData'
+            FormEvents::PRE_SUBMIT => 'preSetData',
         );
     }
 
@@ -55,7 +55,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                 'entity',
                 array(
                     'constraints' => array(
-                        new NotBlank()
+                        new NotBlank(),
                     ),
                     'multiple' => true,
                     'expanded' => true,
@@ -64,7 +64,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                         return $repo->createQueryBuilder('c')
                             ->where('c.client = :client')
                             ->setParameter('client', $clientId);
-                    }
+                    },
                 )
             );
         }

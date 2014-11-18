@@ -32,7 +32,6 @@ class StatusAction implements ActionInterface
     {
         return
             $request instanceof CaptureRequest &&
-            $request->getModel() instanceof \ArrayAccess
-            ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

@@ -73,7 +73,7 @@ class ContactType
      */
     public function __construct()
     {
-        $this->details = new ArrayCollection;
+        $this->details = new ArrayCollection();
     }
 
     /**

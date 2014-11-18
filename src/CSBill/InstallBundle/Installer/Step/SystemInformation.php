@@ -37,7 +37,7 @@ class SystemInformation extends AbstractFormStep
         $form = $this->buildForm();
         $data = $form->getData();
 
-        $user = new User;
+        $user = new User();
 
         /** @var PasswordEncoderInterface $encoder */
         $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);

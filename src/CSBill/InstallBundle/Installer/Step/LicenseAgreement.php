@@ -38,7 +38,7 @@ class LicenseAgreement extends AbstractFormStep
         }
 
         return array(
-            'license_info' => file_get_contents($licenseFile)
+            'license_info' => file_get_contents($licenseFile),
         );
     }
 }

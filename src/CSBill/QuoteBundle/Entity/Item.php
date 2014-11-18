@@ -13,8 +13,8 @@ namespace CSBill\QuoteBundle\Entity;
 use CSBill\CoreBundle\Entity\Tax;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="quote_lines")

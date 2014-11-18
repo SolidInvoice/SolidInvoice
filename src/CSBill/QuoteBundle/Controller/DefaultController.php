@@ -10,16 +10,16 @@
 
 namespace CSBill\QuoteBundle\Controller;
 
+use APY\DataGridBundle\Grid\Action\RowAction;
+use APY\DataGridBundle\Grid\Column\ActionsColumn;
+use APY\DataGridBundle\Grid\Row;
+use APY\DataGridBundle\Grid\Source\Entity;
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
-use APY\DataGridBundle\Grid\Source\Entity;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Row;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\QueryBuilder;
-use CSBill\ClientBundle\Entity\Client;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends BaseController
 {
@@ -82,7 +82,7 @@ class DefaultController extends BaseController
         });
 
         $grid->setPermanentFilters(array(
-            'client.name' => array('operator' => 'isNotNull')
+            'client.name' => array('operator' => 'isNotNull'),
         ));
 
         $statusList = $this->getRepository('CSBillQuoteBundle:Status')->findAll();
@@ -111,7 +111,7 @@ class DefaultController extends BaseController
             return $this->render('CSBillQuoteBundle:Default:empty_clients.html.twig');
         }
 
-        $quote = new Quote;
+        $quote = new Quote();
         $quote->setClient($client);
 
         $form = $this->createForm('quote', $quote);
@@ -130,7 +130,7 @@ class DefaultController extends BaseController
         return $this->render(
             'CSBillQuoteBundle:Default:create.html.twig',
             array(
-                'form' => $form->createView()
+                'form' => $form->createView(),
             )
         );
     }
@@ -149,7 +149,6 @@ class DefaultController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $action = $request->request->get('save');
             $this->saveQuote($quote, $action);
 

@@ -10,9 +10,9 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
+use CSBill\CoreBundle\Entity\Status as BaseStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use CSBill\CoreBundle\Entity\Status as BaseStatus;
 
 /**
  * CSBill\InvoiceBundle\Entity\Status

@@ -25,7 +25,6 @@ class InvoiceMailerListener
      */
     public function __construct(PaymentMethodManager $paymentManager, EngineInterface $templating)
     {
-
         $this->paymentManager = $paymentManager;
         $this->templating = $templating;
     }

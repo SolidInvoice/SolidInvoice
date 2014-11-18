@@ -42,9 +42,9 @@ class StatusExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'status_label',
                 array($this, 'renderStatusLabel'),
-                array('is_safe' => array('html')
+                array('is_safe' => array('html'),
                 )
-            )
+            ),
         );
     }
 
@@ -57,9 +57,9 @@ class StatusExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'status',
                 array($this, 'getStatusLabel'),
-                array('is_safe' => array('html')
+                array('is_safe' => array('html'),
                 )
-            )
+            ),
         );
     }
 
@@ -95,7 +95,7 @@ class StatusExtension extends \Twig_Extension
             'CSBillCoreBundle:Status:label.html.twig',
             array(
                 'entity' => $object,
-                'tooltip' => $tooltip
+                'tooltip' => $tooltip,
             )
         );
     }

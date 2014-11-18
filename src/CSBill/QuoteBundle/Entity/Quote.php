@@ -142,8 +142,8 @@ class Quote
      */
     public function __construct()
     {
-        $this->items = new ArrayCollection;
-        $this->users = new ArrayCollection;
+        $this->items = new ArrayCollection();
+        $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
     }
 

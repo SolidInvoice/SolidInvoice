@@ -38,8 +38,8 @@ class ContactDetail extends AbstractType
         $options = array(
             'data_class' => null,
             'attr' => array(
-                'class' => 'input-group-select-val'
-            )
+                'class' => 'input-group-select-val',
+            ),
         );
 
         $builder->add(

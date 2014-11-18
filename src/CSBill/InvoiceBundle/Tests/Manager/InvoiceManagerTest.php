@@ -132,8 +132,7 @@ class InvoiceManagerTest extends KernelTestCase
             ->expects($this->once())
             ->method('getRepository')
             ->with('CSBillInvoiceBundle:Status')
-            ->will($this->returnValue($entityRepository))
-            ;
+            ->will($this->returnValue($entityRepository));
 
         $status = new Status();
         $status->setName('pending');
@@ -142,8 +141,7 @@ class InvoiceManagerTest extends KernelTestCase
             ->expects($this->once())
             ->method('findOneByName')
             ->with('pending')
-            ->will($this->returnValue($status))
-        ;
+            ->will($this->returnValue($status));
 
         $client = new Client();
         $client->setName('Test Client');
@@ -239,7 +237,7 @@ class InvoiceManagerTest extends KernelTestCase
 
     public function testMarkPaid()
     {
-        $invoice = new Invoice;
+        $invoice = new Invoice();
 
         $status = new Status();
         $status->setName('paid');

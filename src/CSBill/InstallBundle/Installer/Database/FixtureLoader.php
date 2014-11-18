@@ -10,9 +10,9 @@ namespace CSBill\InstallBundle\Installer\Database;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader as DataFixturesLoader;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader as DataFixturesLoader;
 
 /**
  * Class FixtureLoader
@@ -41,7 +41,7 @@ class FixtureLoader extends ContainerAware
         $fixtures = $loader->getFixtures();
         if (!$fixtures) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
+                sprintf('Could not find any fixtures to load in: %s', "\n\n- " . implode("\n- ", $paths))
             );
         }
         $purger = new ORMPurger($em);

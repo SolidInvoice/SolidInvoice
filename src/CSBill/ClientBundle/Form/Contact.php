@@ -43,14 +43,13 @@ class Contact extends AbstractType
 
         foreach ($this->types as $item) {
             if ($item->isRequired()) {
-
                 $contactDetails = $builder->create(
                     'details_' . $item->getName(),
                     new PrimaryContactDetailType($item),
                     array(
                         'required' => true,
                         'property_path' => 'primaryDetails',
-                        'by_reference' => true
+                        'by_reference' => true,
                     )
                 );
 
@@ -64,7 +63,7 @@ class Contact extends AbstractType
 
         $builder->add(
             'additionalDetails',
-            new ContactDetailType,
+            new ContactDetailType(),
             array(
                 'type' => new ContactDetail($this->types),
                 'allow_add' => true,
@@ -77,8 +76,8 @@ class Contact extends AbstractType
                 'prototype_name' => '__contact_details_prototype__',
                 'error_bubbling' => false,
                 'options' => array(
-                    'data_class' => 'CSBill\ClientBundle\Entity\AdditionalContactDetail'
-                )
+                    'data_class' => 'CSBill\ClientBundle\Entity\AdditionalContactDetail',
+                ),
             )
         );
     }

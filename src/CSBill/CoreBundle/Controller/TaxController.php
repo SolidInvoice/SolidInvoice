@@ -30,7 +30,7 @@ class TaxController extends BaseController
             true,
             array(
                 'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
+                'default_class' => 'label label-default',
             )
         );
 
@@ -47,7 +47,7 @@ class TaxController extends BaseController
             false,
             array(
                 'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
+                'default_class' => 'label label-default',
             )
         );
 
@@ -64,7 +64,7 @@ class TaxController extends BaseController
             false,
             array(
                 'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
+                'default_class' => 'label label-default',
             )
         );
 
@@ -80,7 +80,7 @@ class TaxController extends BaseController
                 $aliases = $queryBuilder->getRootAliases();
 
                 $queryBuilder
-                    ->andWhere($aliases[0].'.name LIKE :search')
+                    ->andWhere($aliases[0] . '.name LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });

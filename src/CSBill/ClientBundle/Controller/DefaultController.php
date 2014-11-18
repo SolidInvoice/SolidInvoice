@@ -136,7 +136,7 @@ class DefaultController extends BaseController
             true,
             array(
                 'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
+                'default_class' => 'label label-default',
             )
         );
 
@@ -156,7 +156,7 @@ class DefaultController extends BaseController
                 false,
                 array(
                     'active_class' => 'label label-' . $status->getLabel(),
-                    'default_class' => 'label label-default'
+                    'default_class' => 'label label-default',
                 )
             );
         }
@@ -173,9 +173,9 @@ class DefaultController extends BaseController
      */
     public function addAction(Request $request)
     {
-        $client = new Client;
+        $client = new Client();
 
-        $form = $this->createForm(new ClientForm, $client);
+        $form = $this->createForm(new ClientForm(), $client);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -205,14 +205,13 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Client $client)
     {
-        $form = $this->createForm(new ClientForm, $client);
+        $form = $this->createForm(new ClientForm(), $client);
 
         $originalContactsDetails = $this->getClientContactDetails($request, $client);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->removeClientContacts($client, $originalContactsDetails);
 
             $this->save($client);
@@ -225,7 +224,7 @@ class DefaultController extends BaseController
             'CSBillClientBundle:Default:edit.html.twig',
             array(
                 'client' => $client,
-                'form' => $form->createView()
+                'form' => $form->createView(),
             )
         );
     }

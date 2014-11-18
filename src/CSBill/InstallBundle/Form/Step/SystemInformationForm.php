@@ -12,8 +12,8 @@ namespace CSBill\InstallBundle\Form\Step;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Validator\Constraints;
 
 class SystemInformationForm extends AbstractType
 {
@@ -32,9 +32,9 @@ class SystemInformationForm extends AbstractType
             array(
                 'choices' => $locales,
                 'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'Please select a locale'))
+                    new Constraints\NotBlank(array('message' => 'Please select a locale')),
                 ),
-                'empty_value' => ''
+                'empty_value' => '',
             )
         );
 
@@ -44,9 +44,9 @@ class SystemInformationForm extends AbstractType
             array(
                 'choices' => $currencies,
                 'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'Please select a currency'))
+                    new Constraints\NotBlank(array('message' => 'Please select a currency')),
                 ),
-                'empty_value' => ''
+                'empty_value' => '',
             )
         );
 
@@ -60,8 +60,8 @@ class SystemInformationForm extends AbstractType
             null,
             array(
                 'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'Please enter a username'))
-                )
+                    new Constraints\NotBlank(array('message' => 'Please enter a username')),
+                ),
             )
         );
 
@@ -72,7 +72,7 @@ class SystemInformationForm extends AbstractType
                 'constraints' => array(
                     new Constraints\NotBlank(array('message' => 'Please enter a email')),
                     new Constraints\Email(),
-                )
+                ),
             )
         );
 
@@ -89,7 +89,7 @@ class SystemInformationForm extends AbstractType
                 'constraints' => array(
                     new Constraints\NotBlank(array('message' => 'You must enter a secure password')),
                     new Constraints\Length(array('min' => 6)),
-                )
+                ),
             )
         );
     }

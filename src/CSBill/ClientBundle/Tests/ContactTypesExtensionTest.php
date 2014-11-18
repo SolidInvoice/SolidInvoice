@@ -22,14 +22,14 @@ class ContactTypesExtensionTest extends \PHPUnit_FrameWork_TestCase
             3,
             5,
             7,
-            9
+            9,
         );
 
         $extension = new ContactTypesExtension($array);
 
         $this->assertSame(
             array(
-                'contact_types' => $array
+                'contact_types' => $array,
             ),
             $extension->getGlobals()
         );

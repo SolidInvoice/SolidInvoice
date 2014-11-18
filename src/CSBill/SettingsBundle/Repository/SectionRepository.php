@@ -19,7 +19,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class SectionRepository extends EntityRepository
 {
-
     /**
      * Returns an array of all the top-level sections
      *
@@ -39,6 +38,6 @@ class SectionRepository extends EntityRepository
             $query->useResultCache(true, $lifetime, $cacheKey);
         }
 
-       return $query->getResult();
+        return $query->getResult();
     }
 }

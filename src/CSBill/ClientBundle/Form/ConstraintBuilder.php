@@ -32,7 +32,7 @@ class ConstraintBuilder
         foreach ($options as $constraint) {
             $constraint = str_replace(' ', '', self::humanize($constraint));
             if (class_exists($class = (self::CONSTRAINT_NAMESPACE . $constraint))) {
-                $constraints[] = new $class;
+                $constraints[] = new $class();
             }
         }
 

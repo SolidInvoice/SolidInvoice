@@ -86,8 +86,8 @@ class ViewController extends BaseController
             $template,
             array(
                 $object    => $entity,
-                'title'    => $object . ' #' .$entity->getId(),
-                'template' => $this->template
+                'title'    => $object . ' #' . $entity->getId(),
+                'template' => $this->template,
             )
         );
     }

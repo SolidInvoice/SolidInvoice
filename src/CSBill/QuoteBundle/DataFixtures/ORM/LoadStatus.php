@@ -11,9 +11,9 @@
 
 namespace CSBill\QuoteBundle\DataFixtures\ORM;
 
+use CSBill\QuoteBundle\Entity\Status;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CSBill\QuoteBundle\Entity\Status;
 
 class LoadStatus implements FixtureInterface
 {
@@ -21,13 +21,13 @@ class LoadStatus implements FixtureInterface
                                    'pending'   => 'warning',
                                    'accepted'  => 'success',
                                    'declined'  => 'danger',
-                                   'cancelled' => 'inverse'
+                                   'cancelled' => 'inverse',
                                   );
 
     public function load(ObjectManager $manager)
     {
         foreach ($this->statusList as $status => $label) {
-            $entity = new Status;
+            $entity = new Status();
             $entity->setName($status)
                    ->setLabel($label);
 

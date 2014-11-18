@@ -52,7 +52,7 @@ abstract class Status
     {
         $status = str_replace(array('-', '_'), ' ', strtolower((string) $status));
 
-        return '<label class="label label-'.$this->getStatusLabel($status).'">'.ucwords($status).'</label>';
+        return '<label class="label label-' . $this->getStatusLabel($status) . '">' . ucwords($status) . '</label>';
     }
 
     /**

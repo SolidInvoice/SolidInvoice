@@ -53,7 +53,7 @@ class PaymentMethodSettingsForm extends AbstractType
     {
         $resolver->setRequired(
             array(
-                'settings'
+                'settings',
             )
         );
     }

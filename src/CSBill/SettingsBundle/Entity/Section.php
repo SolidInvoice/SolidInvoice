@@ -10,8 +10,8 @@
 
 namespace CSBill\SettingsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -51,8 +51,8 @@ class Section
 
     public function __construct()
     {
-        $this->children = new ArrayCollection;
-        $this->settings = new ArrayCollection;
+        $this->children = new ArrayCollection();
+        $this->settings = new ArrayCollection();
     }
 
     /**

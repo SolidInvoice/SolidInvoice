@@ -36,9 +36,9 @@ class DefaultController extends BaseController
                 $aliases = $queryBuilder->getRootAliases();
 
                 $queryBuilder
-                    ->orWhere($aliases[0].'.message LIKE :search')
-                    ->orWhere($aliases[0].'.amount LIKE :search')
-                    ->orWhere($aliases[0].'.currency LIKE :search')
+                    ->orWhere($aliases[0] . '.message LIKE :search')
+                    ->orWhere($aliases[0] . '.amount LIKE :search')
+                    ->orWhere($aliases[0] . '.currency LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });
@@ -88,7 +88,7 @@ class DefaultController extends BaseController
                 $aliases = $queryBuilder->getRootAliases();
 
                 $queryBuilder
-                    ->andWhere($aliases[0].'.name LIKE :search')
+                    ->andWhere($aliases[0] . '.name LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });
@@ -138,7 +138,6 @@ class DefaultController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $settings = $paymentMethod->getSettings();
             foreach ($settings as $key => $value) {
                 if ('password' === $key && null === $value && !empty($originalSettings[$key])) {
@@ -160,7 +159,7 @@ class DefaultController extends BaseController
         return $this->render(
             'CSBillPaymentBundle:Default:add.html.twig',
             array(
-                'form' => $form->createView()
+                'form' => $form->createView(),
             )
         );
     }

@@ -11,11 +11,11 @@
 
 namespace CSBill\InvoiceBundle\Form\EventListener;
 
+use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use CSBill\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InvoiceUsersSubscriber implements EventSubscriberInterface
@@ -27,7 +27,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT => 'preSetData'
+            FormEvents::PRE_SUBMIT => 'preSetData',
         );
     }
 
@@ -56,7 +56,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
                 'entity',
                 array(
                     'constraints' => array(
-                        new NotBlank()
+                        new NotBlank(),
                     ),
                     'multiple' => true,
                     'expanded' => true,
@@ -67,7 +67,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
                             ->setParameter('client', $clientId);
 
                         return $qb;
-                    }
+                    },
                 )
             );
         }

@@ -11,8 +11,8 @@
 
 namespace CSBill\ClientBundle\Menu;
 
-use Knp\Menu\ItemInterface;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use Knp\Menu\ItemInterface;
 
 class ClientMenu extends AuthenticatedMenu
 {
@@ -39,9 +39,9 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('list_clients'),
             array(
                 'extras' => array(
-                    'icon' => 'file-o'
+                    'icon' => 'file-o',
                 ),
-                'route' => '_clients_index'
+                'route' => '_clients_index',
             )
         );
 
@@ -49,9 +49,9 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('add_client'),
             array(
                 'extras' => array(
-                    'icon' => 'user'
+                    'icon' => 'user',
                 ),
-                'route' => '_clients_add'
+                'route' => '_clients_add',
             )
         );
     }
@@ -72,12 +72,12 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('view_client'),
             array(
                 'extras' => array(
-                    'icon' => 'eye'
+                    'icon' => 'eye',
                 ),
                 'route' => '_clients_view',
                 'routeParameters' => array(
-                    'id' => $request->get('id')
-                )
+                    'id' => $request->get('id'),
+                ),
             )
         );
 
@@ -85,12 +85,12 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('create_invoice'),
             array(
                 'extras' => array(
-                    'icon' => 'file-o'
+                    'icon' => 'file-o',
                 ),
                 'route' => '_invoices_create',
                 'routeParameters' => array(
-                    'client' => $request->get('id')
-                )
+                    'client' => $request->get('id'),
+                ),
             )
         );
 
@@ -98,12 +98,12 @@ class ClientMenu extends AuthenticatedMenu
             $translator->trans('create_quote'),
             array(
                 'extras' => array(
-                    'icon' => 'file-o'
+                    'icon' => 'file-o',
                 ),
                 'route' => '_quotes_create',
                 'routeParameters' => array(
-                    'client' => $request->get('id')
-                )
+                    'client' => $request->get('id'),
+                ),
             )
         );
     }

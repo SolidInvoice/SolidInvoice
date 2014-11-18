@@ -36,7 +36,7 @@ class TaxExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('taxConfigured', array($this, 'isTaxConfigured'))
+            new \Twig_SimpleFunction('taxConfigured', array($this, 'isTaxConfigured')),
         );
     }
 

@@ -11,9 +11,9 @@
 
 namespace CSBill\ClientBundle\DataFixtures\ORM;
 
+use CSBill\ClientBundle\Entity\Status;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CSBill\ClientBundle\Entity\Status;
 
 class LoadStatus implements FixtureInterface
 {

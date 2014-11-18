@@ -42,8 +42,8 @@ class ItemType extends AbstractType
             'textarea',
             array(
                 'attr' => array(
-                    'class' => 'input-medium invoice-item-name'
-                )
+                    'class' => 'input-medium invoice-item-name',
+                ),
             )
         );
 
@@ -52,8 +52,8 @@ class ItemType extends AbstractType
             'money',
             array(
                 'attr' => array(
-                    'class' => 'input-small invoice-item-price'
-                )
+                    'class' => 'input-small invoice-item-price',
+                ),
             )
         );
 
@@ -63,21 +63,21 @@ class ItemType extends AbstractType
             array(
                 'data' => 1,
                 'attr' => array(
-                    'class' => 'input-mini invoice-item-qty'
-                )
+                    'class' => 'input-mini invoice-item-qty',
+                ),
             )
         );
 
         if ($this->repo->getTotal() > 0) {
             $builder->add(
                 'tax',
-                new \CSBill\CoreBundle\Form\Type\Tax,
+                new \CSBill\CoreBundle\Form\Type\Tax(),
                 array(
                     'class' => 'CSBill\CoreBundle\Entity\Tax',
                     'empty_value' => 'Choose Tax Type',
                     'attr' => array(
-                        'class' => 'input-mini invoice-item-tax'
-                    )
+                        'class' => 'input-mini invoice-item-tax',
+                    ),
                 )
             );
         }
@@ -90,8 +90,8 @@ class ItemType extends AbstractType
                 'attr' => array(
                     'class' => 'input-small invoice-item-total',
                     'disabled' => true,
-                    'readonly' => true
-                )
+                    'readonly' => true,
+                ),
             )
         );
     }
@@ -113,7 +113,7 @@ class ItemType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'CSBill\InvoiceBundle\Entity\Item'
+                'data_class' => 'CSBill\InvoiceBundle\Entity\Item',
             )
         );
     }

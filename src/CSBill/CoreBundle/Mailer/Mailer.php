@@ -102,14 +102,14 @@ class Mailer implements MailerInterface
         $htmlTemplate = $this->getTemplate(
             'CSBillInvoiceBundle:Email:invoice.html.twig',
             array(
-                'invoice' => $invoice
+                'invoice' => $invoice,
             )
         );
 
         $textTemplate = $this->getTemplate(
             'CSBillInvoiceBundle:Email:invoice.txt.twig',
             array(
-                'invoice' => $invoice
+                'invoice' => $invoice,
             )
         );
 
@@ -222,7 +222,7 @@ class Mailer implements MailerInterface
                 throw new UnexpectedFormatException($format);
         }
 
-        $mailerEvent = new MailerEvent;
+        $mailerEvent = new MailerEvent();
         $mailerEvent->setMessage($message);
         $this->dispatcher->dispatch(MailerEvents::MAILER_SEND, $mailerEvent);
 

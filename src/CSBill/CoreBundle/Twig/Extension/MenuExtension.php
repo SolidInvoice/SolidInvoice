@@ -11,10 +11,10 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
+use Knp\Menu\Provider\MenuProviderInterface;
+use Knp\Menu\Renderer\RendererInterface;
 use Twig_Extension;
 use Twig_Function_Method;
-use Knp\Menu\Renderer\RendererInterface;
-use Knp\Menu\Provider\MenuProviderInterface;
 
 class MenuExtension extends Twig_Extension
 {
@@ -54,7 +54,7 @@ class MenuExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-                    'menu' => new Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html')))
+                    'menu' => new Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html'))),
                 );
     }
 

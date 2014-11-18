@@ -157,7 +157,7 @@ class Tax
     {
         $types = array(
             self::TYPE_INCLUSIVE,
-            self::TYPE_EXCLUSIVE
+            self::TYPE_EXCLUSIVE,
         );
 
         return array_combine($types, $types);

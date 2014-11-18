@@ -11,11 +11,11 @@
 
 namespace CSBill\CoreBundle\Menu;
 
-use Knp\Menu\Renderer\ListRenderer;
-use Knp\Menu\Matcher\Matcher;
-use Knp\Menu\Silex\Voter\RouteVoter;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface as Item;
+use Knp\Menu\Matcher\Matcher;
+use Knp\Menu\Renderer\ListRenderer;
+use Knp\Menu\Silex\Voter\RouteVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
@@ -142,7 +142,7 @@ class Renderer extends ListRenderer
         return $this->format(
             '<li' . $this->renderHtmlAttributes(
                 array(
-                    'class' => 'divider' . $item->getExtra('divider'))
+                    'class' => 'divider' . $item->getExtra('divider'), )
             ) . '>',
             'li',
             $item->getLevel(),

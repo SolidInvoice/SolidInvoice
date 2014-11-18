@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
         'checkbox',
         'radio',
         'choice',
-        'textarea'
+        'textarea',
     );
 
     /**
@@ -36,7 +36,7 @@ class Configuration implements ConfigurationInterface
                         ->beforeNormalization()
                             ->ifString()
                             ->then(function ($v) {
-                                return array('context'=> $v);
+                                return array('context' => $v);
                             })
                         ->end()
                         ->children()
@@ -66,8 +66,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ->end()
-        ;
+        ->end();
 
         return $treeBuilder;
     }
