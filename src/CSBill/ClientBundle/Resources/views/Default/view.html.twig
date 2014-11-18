@@ -23,6 +23,8 @@
 
 {% block content %}
 
+    {% set totalAddresses = client.addresses|length %}
+
     <div id="client-view">
         <div class="row">
             <div class="col-md-6 col-lg-6">
@@ -32,7 +34,7 @@
             </div>
 
             <div class="col-md-6 col-lg-6" align="right">
-                <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-default">
+                <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning">
                     {{ icon('edit') }} {{ "edit"|trans }}
                 </a>
                 <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client">
@@ -40,8 +42,9 @@
                 </a>
             </div>
         </div>
+
         <div class="row">
-            <div class="col-lg-6 col-md-6 client_contact_list">
+            <div class="col-lg-{{ totalAddresses > 0 ? 6 : 12 }} col-md-{{ totalAddresses > 0 ? 6 : 12 }} client_contact_list">
                 <legend>
                     <h3>
                         {{ icon('users') }} {{ "contacts"|trans }}
@@ -50,21 +53,49 @@
 
                 <div id="client-contacts-list">
                     {% for contact in client.contacts %}
-                        {% include "CSBillClientBundle::contact_card.html.twig" %}
+                        {% if totalAddresses == 0 %}
+                            <div class="col-lg-6 col-md-6 client_contact_list">
+                        {% endif %}
+
+                            {% include "CSBillClientBundle::contact_card.html.twig" %}
+
+                        {% if totalAddresses == 0 %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
-
                 <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
+                </div>
+            {% if totalAddresses > 0 %}
+                <div class="col-lg-6 col-md-6">
+
+                    <legend>
+                        <h3>
+                            {{ icon('building-o') }} {{ "client.addresses"|trans }}
+                        </h3>
+                    </legend>
+
+                    <div id="client-address-list">
+
+                        <ul class="list-group">
+                        {% for address in client.addresses %}
+                            <li class="list-group-item">
+                                {{ address }}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                {% include "CSBillClientBundle::invoice_list.html.twig" %}
             </div>
 
             <div class="col-lg-6 col-md-6">
-                <div class="row">
-                    {% include "CSBillClientBundle::invoice_list.html.twig" %}
-                </div>
-
-                <div class="row">
-                    {% include "CSBillClientBundle::quote_list.html.twig" %}
-                </div>
+                {% include "CSBillClientBundle::quote_list.html.twig" %}
             </div>
         </div>
 
@@ -85,25 +116,17 @@
 
 {% block sidebar_right %}
 
-    <div class="well well-small">
-        <div class="text-center">
-            <ul class="nav nav-list client-action-buttons">
-                <li>
-                    <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-default btn-lg">
-                        {{ icon('file', ['text', 'o']) }} {{ "create_quote"|trans }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-default btn-lg">
-                        {{ icon('file', ['text', 'o']) }} {{ "create_invoice"|trans }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-default btn-lg add-contact-button" data-id="{{ client.id }}">
-                        {{ icon('user') }} {{ "add_contact"|trans }}
-                    </a>
-                </li>
-            </ul>
+    <div class="widget">
+        <div class="text-center client-actions">
+            <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
+                {{ icon('file', ['text', 'o']) }} {{ "create_quote"|trans }}
+            </a>
+            <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
+                {{ icon('file', ['text', 'o']) }} {{ "create_invoice"|trans }}
+            </a>
+            <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success btn-lg add-contact-button" data-id="{{ client.id }}">
+                {{ icon('user') }} {{ "add_contact"|trans }}
+            </a>
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 text-success text-center">
@@ -116,26 +139,32 @@
             </div>
         </div>
         <br class="clearfix" />
-        <div class="row">
-            <ul class="nav nav-list">
-                <li>
-                    <span rel="tooltip" title="{{ "total_quotes"|trans }}" class="badge">{{ client.quotes|length }}</span> {{ "number_quotes"|transchoice(client.quotes|length) }}
-                </li>
-                <li>
-                    <span rel="tooltip" title="{{ "total_invoices"|trans }}" class="badge">{{ client.invoices|length }}</span> {{ "number_invoices"|transchoice(client.invoices|length) }}
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <span class="badge" rel="tooltip" title="{{ "total_outstanding"|trans }}">
-                        {{ invoice_manager.count('pending', client) }}
-                    </span> {{ "outstanding_invoices"|trans }}
-                </li>
-                <li>
-                    <span class="badge" rel="tooltip" title="{{ "total_paid"|trans }}">
-                        {{ invoice_manager.count('paid', client) }}
-                    </span> {{ "paid_invoices"|trans }}
-                </li>
-            </ul>
-        </div>
+        <ul class="nav nav-list">
+            <li>
+                <span rel="tooltip" title="{{ "total_quotes"|trans }}" class="badge">
+                    {{ client.quotes|length }}
+                </span>
+                {{ "number_quotes"|transchoice(client.quotes|length) }}
+            </li>
+            <li>
+                <span rel="tooltip" title="{{ "total_invoices"|trans }}" class="badge">
+                    {{ client.invoices|length }}
+                </span>
+                {{ "number_invoices"|transchoice(client.invoices|length) }}
+            </li>
+            <li class="divider"></li>
+            <li>
+                <span class="badge" rel="tooltip" title="{{ "total_outstanding"|trans }}">
+                    {{ invoice_manager.count('pending', client) }}
+                </span>
+                {{ "outstanding_invoices"|trans }}
+            </li>
+            <li>
+                <span class="badge" rel="tooltip" title="{{ "total_paid"|trans }}">
+                    {{ invoice_manager.count('paid', client) }}
+                </span>
+                {{ "paid_invoices"|trans }}
+            </li>
+        </ul>
     </div>
 {% endblock sidebar_right %}

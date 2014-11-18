@@ -13,27 +13,29 @@
     </h3>
 </legend>
 
-{% for quote in client.quotes %}
-    <div class="row">
-        <div class="col-lg-2 col-md-2">
-            {{ status_label(quote.status) }}
+<div class="widget">
+    {% for quote in client.quotes %}
+        <div class="row">
+            <div class="col-lg-2 col-md-2">
+                {{ status_label(quote.status) }}
+            </div>
+            <div class="col-lg-1 col-md-1">
+                {{ quote.id }}
+            </div>
+            <div class="col-lg-3 col-md-3">
+                {{ quote.created|date }}
+            </div>
+            <div class="col-lg-3 col-md-3">
+                {{ quote.total|currency }}
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <a href="{{ url('_quotes_view', {'id': quote.id}) }}" class="btn">
+                    {{ icon('eye') }} {{ "view"|trans }}
+                </a>
+            </div>
         </div>
-        <div class="col-lg-1 col-md-1">
-            {{ quote.id }}
-        </div>
-        <div class="col-lg-3 col-md-3">
-            {{ quote.created|date }}
-        </div>
-        <div class="col-lg-3 col-md-3">
-            {{ quote.total|currency }}
-        </div>
-        <div class="col-lg-2 col-md-2">
-            <a href="{{ url('_quotes_view', {'id': quote.id}) }}" class="btn">
-                {{ icon('eye') }} {{ "view"|trans }}
-            </a>
-        </div>
-    </div>
-    <hr />
-{% else %}
-    <span class="muted">{{ "no_quotes"|trans }} <a href="{{ path("_quotes_create", {"client" : client.id}) }}">{{ "create_now"|trans }}</a></span>
-{% endfor %}
+        <hr />
+    {% else %}
+        <span class="muted">{{ "no_quotes"|trans }} <a href="{{ path("_quotes_create", {"client" : client.id}) }}">{{ "create_now"|trans }}</a></span>
+    {% endfor %}
+</div>
