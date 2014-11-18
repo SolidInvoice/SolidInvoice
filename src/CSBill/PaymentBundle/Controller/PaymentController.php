@@ -54,7 +54,7 @@ class PaymentController extends BaseController
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
                 'query_builder' => function (PaymentMethod $repository) use ($user) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
-                    $expression = new Expr;
+                    $expression = new Expr();
                     $queryBuilder->where($expression->eq('pm.enabled', 1));
 
                     // If user is not logged in, only show public exposed payment methods
@@ -68,8 +68,8 @@ class PaymentController extends BaseController
                 'constraints' => new NotBlank(),
                 'empty_value' => 'Choose Payment Method',
                 'attr' => array(
-                    'class' => 'select2'
-                )
+                    'class' => 'select2',
+                ),
             )
         );
 
@@ -87,7 +87,7 @@ class PaymentController extends BaseController
                 ->getRepository('CSBillPaymentBundle:Status')
                 ->findOneBy(array('name' => Status::STATUS_NEW));
 
-            $payment = new Payment;
+            $payment = new Payment();
             $invoice->addPayment($payment);
             $payment->setInvoice($invoice);
             $payment->setStatus($status);
@@ -113,7 +113,7 @@ class PaymentController extends BaseController
             'CSBillPaymentBundle:Payment:create.html.twig',
             array(
                 'form'    => $form->createView(),
-                'invoice' => $invoice
+                'invoice' => $invoice,
             )
         );
     }

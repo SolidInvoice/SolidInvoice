@@ -27,7 +27,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT => 'preSetData'
+            FormEvents::PRE_SUBMIT => 'preSetData',
         );
     }
 
@@ -56,7 +56,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
                 'entity',
                 array(
                     'constraints' => array(
-                        new NotBlank()
+                        new NotBlank(),
                     ),
                     'multiple' => true,
                     'expanded' => true,
@@ -67,7 +67,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
                             ->setParameter('client', $clientId);
 
                         return $qb;
-                    }
+                    },
                 )
             );
         }

@@ -31,8 +31,8 @@ class LicenseAgreementForm extends AbstractType
                 'read_only' => true,
                 'data' => $options['license_info'],
                 'attr' => array(
-                    'rows'  => 20
-                )
+                    'rows'  => 20,
+                ),
             )
         );
 
@@ -42,11 +42,11 @@ class LicenseAgreementForm extends AbstractType
             array(
                 'label' => 'Accept License',
                 'attr' => array(
-                    'class' => 'checkbox'
+                    'class' => 'checkbox',
                 ),
                 'constraints' => new NotBlank(array(
-                        'message' => 'You must accept the license agreement before you continue'
-                    ))
+                        'message' => 'You must accept the license agreement before you continue',
+                    )),
             )
         );
     }
@@ -57,7 +57,7 @@ class LicenseAgreementForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array(
-            'license_info'
+            'license_info',
         ));
     }
 

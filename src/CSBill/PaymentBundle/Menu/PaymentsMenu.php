@@ -42,7 +42,7 @@ class PaymentsMenu extends AuthenticatedMenu
             'Payment Methods',
             array(
                 'route' => '_payment_settings_index',
-                'extras' => array('icon' => 'credit-card')
+                'extras' => array('icon' => 'credit-card'),
             )
         );
     }

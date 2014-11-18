@@ -94,19 +94,19 @@ class DefaultController extends BaseController
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
             $label = $row->getField('status.label');
 
-            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+            return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
         })->setSafe(false);
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
-                return $value * 100 . '%';
+                return $value * 100 .'%';
             }
 
             return (int) $value;
         });
 
         $grid->setPermanentFilters(array(
-            'client.name' => array('operator' => 'isNotNull')
+            'client.name' => array('operator' => 'isNotNull'),
         ));
 
         $statusList = $this->getRepository('CSBillInvoiceBundle:Status')->findAll();
@@ -115,7 +115,7 @@ class DefaultController extends BaseController
         return $grid->getGridResponse(
             'CSBillInvoiceBundle:Default:index.html.twig',
             array(
-                'status_list' => $statusList
+                'status_list' => $statusList,
             )
         );
     }
@@ -133,7 +133,7 @@ class DefaultController extends BaseController
             return $this->render('CSBillInvoiceBundle:Default:empty_clients.html.twig');
         }
 
-        $invoice = new Invoice;
+        $invoice = new Invoice();
         $invoice->setClient($client);
 
         $form = $this->createForm('invoice', $invoice);
@@ -141,7 +141,6 @@ class DefaultController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $action = $request->request->get('save');
             $this->saveInvoice($invoice, $action);
 
@@ -165,7 +164,6 @@ class DefaultController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $action = $request->request->get('save');
             $this->saveInvoice($invoice, $action);
 
@@ -191,7 +189,7 @@ class DefaultController extends BaseController
             'CSBillInvoiceBundle:Default:view.html.twig',
             array(
                 'invoice'  => $invoice,
-                'payments' => $payments
+                'payments' => $payments,
             )
         );
     }

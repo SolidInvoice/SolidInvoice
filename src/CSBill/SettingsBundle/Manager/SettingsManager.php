@@ -60,8 +60,8 @@ class SettingsManager implements ManagerInterface
      */
     protected $loaders = array();
 
-    CONST LEFT_TOKEN = '[';
-    CONST RIGHT_TOKEN = ']';
+    const LEFT_TOKEN = '[';
+    const RIGHT_TOKEN = ']';
 
     /**
      * Constructor
@@ -89,15 +89,14 @@ class SettingsManager implements ManagerInterface
         $this->collection = new ConfigCollection($this);
 
         foreach ($this->loaders as $loader) {
-
             /** @var SettingsLoaderInterface $loader */
             $this->collection->startSection(get_class($loader));
 
-                $settings = new Config($loader->getSettings());
+            $settings = new Config($loader->getSettings());
 
-                $this->collection->add($settings);
+            $this->collection->add($settings);
 
-                $this->settings->merge($settings);
+            $this->settings->merge($settings);
 
             $this->collection->endSection();
         }
@@ -139,7 +138,6 @@ class SettingsManager implements ManagerInterface
             $setting = '';
 
             foreach ($split as $value) {
-
                 if (0 !== strpos($value, self::LEFT_TOKEN)) {
                     $setting .= self::LEFT_TOKEN;
                 }
@@ -153,11 +151,11 @@ class SettingsManager implements ManagerInterface
         }
 
         if (0 !== strpos($setting, self::LEFT_TOKEN)) {
-            $setting = self::LEFT_TOKEN . $setting;
+            $setting = self::LEFT_TOKEN.$setting;
         }
 
         if (strrpos($setting, self::RIGHT_TOKEN) !== strlen($setting) - 1) {
-             $setting .= self::RIGHT_TOKEN;
+            $setting .= self::RIGHT_TOKEN;
         }
 
         $entity = $this->accessor->getValue($this->settings, $setting);
@@ -194,15 +192,12 @@ class SettingsManager implements ManagerInterface
         }
 
         if (!empty($settings)) {
-
             foreach ($this->collection->getSections() as $collectionSection) {
-
                 $this->collection->startSection($collectionSection);
 
                 $collectionSettings = array();
 
                 foreach ($settings as $key => $value) {
-
                     $config = $this->collection->getSettings();
 
                     if (isset($config[$key])) {
@@ -229,7 +224,6 @@ class SettingsManager implements ManagerInterface
         $settingsArray = array();
 
         foreach ($config as $section => $setting) {
-
             foreach ($settings as $key => $value) {
                 if (is_array($value) && $setting instanceof Config) {
                     $settingsArray[$key] = $this->setData($setting, $value);

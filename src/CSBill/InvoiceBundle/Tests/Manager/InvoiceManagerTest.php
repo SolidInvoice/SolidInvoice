@@ -239,7 +239,7 @@ class InvoiceManagerTest extends KernelTestCase
 
     public function testMarkPaid()
     {
-        $invoice = new Invoice;
+        $invoice = new Invoice();
 
         $status = new Status();
         $status->setName('paid');

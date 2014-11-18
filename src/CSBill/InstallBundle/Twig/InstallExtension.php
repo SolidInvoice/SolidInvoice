@@ -54,7 +54,7 @@ class InstallExtension extends Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('install_step', array($this, 'getInstallStep'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('is_first_install_step', array($this, 'isFirstInstallStep'))
+            new \Twig_SimpleFunction('is_first_install_step', array($this, 'isFirstInstallStep')),
         );
     }
 
@@ -71,7 +71,7 @@ class InstallExtension extends Twig_Extension
             return $this->environment->render(
                 'CSBillInstallBundle:Install:form.html.twig',
                 array(
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
                 )
             );
         }

@@ -43,8 +43,8 @@ class PaymentMethodForm extends AbstractType
                 'empty_value' => 'choose_force_status',
                 'empty_data'  => null,
                 'attr'  => array(
-                    'class' => 'select2'
-                )
+                    'class' => 'select2',
+                ),
             )
         );
 
@@ -55,7 +55,7 @@ class PaymentMethodForm extends AbstractType
             array(
                 'label'     => 'Available for client use',
                 'help'      => 'payment_public_help_text',
-                'help_type' => 'block'
+                'help_type' => 'block',
             )
         );
 
@@ -66,7 +66,7 @@ class PaymentMethodForm extends AbstractType
                 'choices'     => $options,
                 'empty_value' => 'Please Choose',
                 'attr'        => array(
-                    'class' => 'select2'
+                    'class' => 'select2',
                 ),
             )
         );
@@ -108,7 +108,7 @@ class PaymentMethodForm extends AbstractType
     {
         $resolver->setRequired(
             array(
-                'manager'
+                'manager',
             )
         );
     }

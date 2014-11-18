@@ -40,7 +40,7 @@ class RequestListener
                                     Installer::INSTALLER_RESTART_ROUTE,
                                     '_installer_step',
                                     '_profiler',
-                                    '_wdt'
+                                    '_wdt',
                                   );
 
     /**

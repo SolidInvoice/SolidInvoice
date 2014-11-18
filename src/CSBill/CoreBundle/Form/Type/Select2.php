@@ -29,7 +29,7 @@ class Select2 extends AbstractType
         $class = 'select2';
 
         if (isset($attr['class'])) {
-            $class .= ' ' . $attr['class'];
+            $class .= ' '.$attr['class'];
         }
 
         $view->vars['attr']['class'] = $class;

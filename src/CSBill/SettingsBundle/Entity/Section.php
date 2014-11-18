@@ -51,8 +51,8 @@ class Section
 
     public function __construct()
     {
-        $this->children = new ArrayCollection;
-        $this->settings = new ArrayCollection;
+        $this->children = new ArrayCollection();
+        $this->settings = new ArrayCollection();
     }
 
     /**

@@ -125,11 +125,11 @@ class Client
      */
     public function __construct()
     {
-        $this->contacts = new ArrayCollection;
+        $this->contacts = new ArrayCollection();
         $this->quotes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
-        $this->payments = new ArrayCollection;
-        $this->addresses = new ArrayCollection;
+        $this->payments = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     /**

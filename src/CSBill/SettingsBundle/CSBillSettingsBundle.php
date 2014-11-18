@@ -26,6 +26,6 @@ class CSBillSettingsBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new SettingsLoaderCompilerPass);
+        $container->addCompilerPass(new SettingsLoaderCompilerPass());
     }
 }

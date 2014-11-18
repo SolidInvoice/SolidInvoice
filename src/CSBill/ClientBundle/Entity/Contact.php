@@ -83,8 +83,8 @@ class Contact implements \serializable
      */
     public function __construct()
     {
-        $this->primaryDetails = new ArrayCollection;
-        $this->additionalDetails = new ArrayCollection;
+        $this->primaryDetails = new ArrayCollection();
+        $this->additionalDetails = new ArrayCollection();
     }
 
     /**
@@ -307,6 +307,6 @@ class Contact implements \serializable
      */
     public function __toString()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 }

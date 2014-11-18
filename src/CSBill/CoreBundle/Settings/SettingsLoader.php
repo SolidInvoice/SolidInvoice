@@ -84,12 +84,12 @@ class SettingsLoader implements SettingsLoaderInterface
         return array(
                 'system' => array(
                     'general' => array(
-                        'currency' => $currency
-                    )
+                        'currency' => $currency,
+                    ),
                 ),
                 'email' => array(
-                    'sending_options' => $emailSettings
-                )
+                    'sending_options' => $emailSettings,
+                ),
         );
     }
 

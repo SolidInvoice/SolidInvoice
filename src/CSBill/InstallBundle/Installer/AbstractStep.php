@@ -31,7 +31,6 @@ abstract class AbstractStep extends ContainerAware implements StepInterface
      */
     public function init()
     {
-
     }
 
     /**

@@ -102,14 +102,14 @@ class Mailer implements MailerInterface
         $htmlTemplate = $this->getTemplate(
             'CSBillInvoiceBundle:Email:invoice.html.twig',
             array(
-                'invoice' => $invoice
+                'invoice' => $invoice,
             )
         );
 
         $textTemplate = $this->getTemplate(
             'CSBillInvoiceBundle:Email:invoice.txt.twig',
             array(
-                'invoice' => $invoice
+                'invoice' => $invoice,
             )
         );
 
@@ -119,7 +119,7 @@ class Mailer implements MailerInterface
 
         foreach ($invoice->getUsers() as $user) {
             /** @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
+            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
         }
 
         $event = new InvoiceEvent();
@@ -222,7 +222,7 @@ class Mailer implements MailerInterface
                 throw new UnexpectedFormatException($format);
         }
 
-        $mailerEvent = new MailerEvent;
+        $mailerEvent = new MailerEvent();
         $mailerEvent->setMessage($message);
         $this->dispatcher->dispatch(MailerEvents::MAILER_SEND, $mailerEvent);
 
@@ -248,7 +248,7 @@ class Mailer implements MailerInterface
 
         foreach ($quote->getUsers() as $user) {
             /** @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
+            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
         }
 
         $event = new QuoteEvent();

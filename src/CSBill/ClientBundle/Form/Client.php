@@ -42,7 +42,7 @@ class Client extends AbstractType
             'addresses',
             'collection',
             array(
-                'type' => new AddressType,
+                'type' => new AddressType(),
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,

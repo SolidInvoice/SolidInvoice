@@ -70,19 +70,19 @@ class DefaultController extends BaseController
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
             $label = $row->getField('status.label');
 
-            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+            return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
         })->setSafe(false);
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
-                return $value * 100 . '%';
+                return $value * 100 .'%';
             }
 
             return (int) $value;
         });
 
         $grid->setPermanentFilters(array(
-            'client.name' => array('operator' => 'isNotNull')
+            'client.name' => array('operator' => 'isNotNull'),
         ));
 
         $statusList = $this->getRepository('CSBillQuoteBundle:Status')->findAll();
@@ -111,7 +111,7 @@ class DefaultController extends BaseController
             return $this->render('CSBillQuoteBundle:Default:empty_clients.html.twig');
         }
 
-        $quote = new Quote;
+        $quote = new Quote();
         $quote->setClient($client);
 
         $form = $this->createForm('quote', $quote);
@@ -130,7 +130,7 @@ class DefaultController extends BaseController
         return $this->render(
             'CSBillQuoteBundle:Default:create.html.twig',
             array(
-                'form' => $form->createView()
+                'form' => $form->createView(),
             )
         );
     }
@@ -149,7 +149,6 @@ class DefaultController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $action = $request->request->get('save');
             $this->saveQuote($quote, $action);
 

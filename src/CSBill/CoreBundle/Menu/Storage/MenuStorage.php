@@ -32,7 +32,7 @@ class MenuStorage implements MenuStorageInterface
     public function get($name, array $options = array())
     {
         if (!$this->has($name)) {
-            $this->list[$name] = new \SplObjectStorage;
+            $this->list[$name] = new \SplObjectStorage();
         }
 
         return $this->list[$name];

@@ -24,7 +24,6 @@ use Doctrine\DBAL\DBALException;
  */
 class DoctrineLoader implements SettingsLoaderInterface
 {
-
     /**
      * @var ObjectManager
      */

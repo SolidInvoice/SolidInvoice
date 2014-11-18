@@ -43,9 +43,9 @@ class QuoteType extends AbstractType
             null,
             array(
                 'attr' => array(
-                    'class' => 'select2'
+                    'class' => 'select2',
                 ),
-                'empty_value' => 'choose_client'
+                'empty_value' => 'choose_client',
             )
         );
 
@@ -57,7 +57,7 @@ class QuoteType extends AbstractType
             array(
                 'type' => 'quote_item',
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
             )
         );
 
@@ -89,7 +89,7 @@ class QuoteType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CSBill\QuoteBundle\Entity\Quote'
+            'data_class' => 'CSBill\QuoteBundle\Entity\Quote',
         ));
     }
 }

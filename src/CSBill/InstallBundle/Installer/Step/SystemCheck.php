@@ -56,7 +56,7 @@ class SystemCheck extends AbstractStep implements StepViewInterface
     {
         return array(
             'checks' => self::$checks,
-            'errors' => $this->errors
+            'errors' => $this->errors,
         );
     }
 
@@ -68,7 +68,7 @@ class SystemCheck extends AbstractStep implements StepViewInterface
     {
         $rootDir = $this->get('kernel')->getRootDir();
 
-        require_once $rootDir . DIRECTORY_SEPARATOR . 'SymfonyRequirements.php';
+        require_once $rootDir.DIRECTORY_SEPARATOR.'SymfonyRequirements.php';
 
         $symfonyRequirements = new \SymfonyRequirements();
 
@@ -85,11 +85,11 @@ class SystemCheck extends AbstractStep implements StepViewInterface
         return [
             'recommended' => [
                 'heading' => 'mandatory requirements',
-                'values' => $recommended
+                'values' => $recommended,
             ],
             'optional' => [
                 'heading' => 'optional recommendations',
-                'values' => $optional
+                'values' => $optional,
             ]
         ];
     }
@@ -103,7 +103,7 @@ class SystemCheck extends AbstractStep implements StepViewInterface
     {
         $string = '';
         $string .= $requirement->isFulfilled() ? 'OK' : ($requirement->isOptional() ? 'WARNING' : 'ERROR');
-        $string .= ' ' . $requirement->getTestMessage();
+        $string .= ' '.$requirement->getTestMessage();
 
         if (!$requirement->isFulfilled()) {
             $string .= sprintf("          %s", $requirement->getHelpText());
@@ -119,7 +119,6 @@ class SystemCheck extends AbstractStep implements StepViewInterface
      */
     public function isValid()
     {
-
         if ($this->request->isMethod('POST')) {
             foreach (self::$checks['recommended']['values'] as $value) {
                 if (substr(trim($value), 0, 2) !== 'OK') {

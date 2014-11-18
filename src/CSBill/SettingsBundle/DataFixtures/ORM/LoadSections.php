@@ -50,7 +50,6 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
     {
         if (!empty($sections)) {
             foreach ($sections as $section => $settings) {
-
                 $sectionEntity = new Section();
                 $sectionEntity->setName($section);
 

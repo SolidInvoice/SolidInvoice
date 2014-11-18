@@ -25,7 +25,6 @@ class TaxType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $typeHelpText = <<<HTML
 Inclusive: Tax is included in the item price
 Exclusive: Tax is calculated on the item price
@@ -37,7 +36,7 @@ HTML;
             'percent',
             array(
                 'precision' => 2,
-                'type' => 'integer'
+                'type' => 'integer',
             )
         );
 
@@ -47,7 +46,7 @@ HTML;
             array(
                 'choices' => TaxEntity::getTypes(),
                 'help' => $typeHelpText,
-                'empty_value' => 'select'
+                'empty_value' => 'select',
             )
         );
     }

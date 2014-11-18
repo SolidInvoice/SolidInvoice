@@ -18,7 +18,6 @@ class PaymentExtension extends Twig_Extension
      */
     public function __construct(PaymentMethodManager $paymentsManager)
     {
-
         $this->paymentsManager = $paymentsManager;
     }
 

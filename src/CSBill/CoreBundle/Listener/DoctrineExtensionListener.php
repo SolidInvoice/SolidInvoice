@@ -35,7 +35,6 @@ class DoctrineExtensionListener extends ContainerAware
         if (null !== $securityContext &&
             null !== $securityContext->getToken() &&
             $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-
             $loggable = $this->container->get('gedmo.listener.loggable');
             $loggable->setUsername($securityContext->getToken()->getUsername());
         }

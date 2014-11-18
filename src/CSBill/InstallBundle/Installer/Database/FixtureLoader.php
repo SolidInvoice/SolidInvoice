@@ -60,7 +60,7 @@ class FixtureLoader extends ContainerAware
 
         /** @var Bundle $bundle */
         foreach ($this->container->get('kernel')->getBundles() as $bundle) {
-            $paths[] = $bundle->getPath() . '/DataFixtures/ORM';
+            $paths[] = $bundle->getPath().'/DataFixtures/ORM';
         }
 
         return $paths;

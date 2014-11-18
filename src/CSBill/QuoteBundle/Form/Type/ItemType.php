@@ -41,8 +41,8 @@ class ItemType extends AbstractType
             'textarea',
             array(
                 'attr' => array(
-                    'class' => 'input-medium quote-item-name'
-                )
+                    'class' => 'input-medium quote-item-name',
+                ),
             )
         );
 
@@ -51,8 +51,8 @@ class ItemType extends AbstractType
             'money',
             array(
                 'attr' => array(
-                    'class' => 'input-small quote-item-price'
-                )
+                    'class' => 'input-small quote-item-price',
+                ),
             )
         );
 
@@ -62,21 +62,21 @@ class ItemType extends AbstractType
             array(
                 'data' => 1,
                 'attr' => array(
-                    'class' => 'input-mini quote-item-qty'
-                )
+                    'class' => 'input-mini quote-item-qty',
+                ),
             )
         );
 
         if ($this->repo->getTotal() > 0) {
             $builder->add(
                 'tax',
-                new \CSBill\CoreBundle\Form\Type\Tax,
+                new \CSBill\CoreBundle\Form\Type\Tax(),
                 array(
                     'class' => 'CSBill\CoreBundle\Entity\Tax',
                     'empty_value' => 'Choose Tax Type',
                     'attr' => array(
-                        'class' => 'input-mini quote-item-tax'
-                    )
+                        'class' => 'input-mini quote-item-tax',
+                    ),
                 )
             );
         }
@@ -89,8 +89,8 @@ class ItemType extends AbstractType
                 'attr' => array(
                     'class' => 'input-small quote-item-total',
                     'disabled' => true,
-                    'readonly' => true
-                )
+                    'readonly' => true,
+                ),
             )
         );
     }
@@ -110,7 +110,7 @@ class ItemType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'CSBill\QuoteBundle\Entity\Item'
+                'data_class' => 'CSBill\QuoteBundle\Entity\Item',
             )
         );
     }

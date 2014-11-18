@@ -27,7 +27,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT => 'preSetData'
+            FormEvents::PRE_SUBMIT => 'preSetData',
         );
     }
 
@@ -55,7 +55,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                 'entity',
                 array(
                     'constraints' => array(
-                        new NotBlank()
+                        new NotBlank(),
                     ),
                     'multiple' => true,
                     'expanded' => true,
@@ -64,7 +64,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                         return $repo->createQueryBuilder('c')
                             ->where('c.client = :client')
                             ->setParameter('client', $clientId);
-                    }
+                    },
                 )
             );
         }

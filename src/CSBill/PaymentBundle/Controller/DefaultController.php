@@ -49,16 +49,16 @@ class DefaultController extends BaseController
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
                 $label = $row->getField('status.label');
 
-                return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+                return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
             })->setSafe(false);
         $grid->getColumn('amount')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('client.name')->manipulateRenderCell(function ($value, Row $row) use ($router) {
                 $clientId = $row->getField('client.id');
 
-                return '<a href="' . $router->generate('_clients_view', array('id' => $clientId)) . '">' . $value . '</a>';
+                return '<a href="'.$router->generate('_clients_view', array('id' => $clientId)).'">'.$value.'</a>';
             })->setSafe(false);
         $grid->getColumn('invoice.id')->manipulateRenderCell(function ($value) use ($router) {
-                return '<a href="' . $router->generate('_invoices_view', array('id' => $value)) . '">' . $value . '</a>';
+                return '<a href="'.$router->generate('_invoices_view', array('id' => $value)).'">'.$value.'</a>';
             })->setSafe(false);
         $grid->setDefaultOrder('created', 'DESC');
 
@@ -138,7 +138,6 @@ class DefaultController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $settings = $paymentMethod->getSettings();
             foreach ($settings as $key => $value) {
                 if ('password' === $key && null === $value && !empty($originalSettings[$key])) {
@@ -160,7 +159,7 @@ class DefaultController extends BaseController
         return $this->render(
             'CSBillPaymentBundle:Default:add.html.twig',
             array(
-                'form' => $form->createView()
+                'form' => $form->createView(),
             )
         );
     }

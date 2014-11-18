@@ -28,8 +28,8 @@ class LoadFields implements FixtureInterface
               ->setRequired(true)
               ->setOptions(array(
                 'constraints' => array(
-                    'email'
-                )
+                    'email',
+                ),
             ));
         $manager->persist($email);
 

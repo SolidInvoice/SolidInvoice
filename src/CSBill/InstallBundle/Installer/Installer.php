@@ -74,20 +74,20 @@ class Installer extends ContainerAware
         return array(
             array(
                 'label' => 'license_agreement',
-                'type'  => new LicenseAgreement,
+                'type'  => new LicenseAgreement(),
             ),
             array(
                 'label' => 'system_check',
-                'type'  => new SystemCheck,
+                'type'  => new SystemCheck(),
             ),
             array(
                 'label' => 'database_configuration',
-                'type'  => new DatabaseConfig,
+                'type'  => new DatabaseConfig(),
             ),
             array(
                 'label' => 'system_information',
-                'type'  => new SystemInformation,
-            )
+                'type'  => new SystemInformation(),
+            ),
         );
     }
 
@@ -117,7 +117,7 @@ class Installer extends ContainerAware
     {
         $session = $this->container->get('session');
 
-        return $session->get(self::SESSION_KEY . $key, $default);
+        return $session->get(self::SESSION_KEY.$key, $default);
     }
 
     /**
@@ -132,7 +132,7 @@ class Installer extends ContainerAware
     {
         $session = $this->container->get('session');
 
-        $session->set(self::SESSION_KEY . $key, $value);
+        $session->set(self::SESSION_KEY.$key, $value);
 
         return $this;
     }

@@ -30,7 +30,7 @@ class TaxController extends BaseController
             true,
             array(
                 'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
+                'default_class' => 'label label-default',
             )
         );
 
@@ -41,13 +41,13 @@ class TaxController extends BaseController
                 $alias = $aliases[0];
 
                 $queryBuilder
-                    ->andWhere($alias . '.type = :type')
+                    ->andWhere($alias.'.type = :type')
                     ->setParameter('type', 'inclusive');
             },
             false,
             array(
                 'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
+                'default_class' => 'label label-default',
             )
         );
 
@@ -58,13 +58,13 @@ class TaxController extends BaseController
                 $alias = $aliases[0];
 
                 $queryBuilder
-                    ->andWhere($alias . '.type = :type')
+                    ->andWhere($alias.'.type = :type')
                     ->setParameter('type', 'exclusive');
             },
             false,
             array(
                 'active_class' => 'label label-info',
-                'default_class' => 'label label-default'
+                'default_class' => 'label label-default',
             )
         );
 

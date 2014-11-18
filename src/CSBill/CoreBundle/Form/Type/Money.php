@@ -32,7 +32,7 @@ class Money extends BaseType
     {
         parent::setDefaultOptions($resolver);
         $resolver->setDefaults(array(
-                'currency'  => $this->currency->getCurrency()
+                'currency'  => $this->currency->getCurrency(),
         ));
     }
 

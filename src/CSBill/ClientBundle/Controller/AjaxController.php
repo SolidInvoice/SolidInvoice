@@ -32,7 +32,7 @@ class AjaxController extends BaseController
             'CSBillClientBundle:Ajax:info.html.twig',
             array(
                 'client' => $client,
-                'type' => $type
+                'type' => $type,
             )
         );
 
@@ -69,7 +69,7 @@ class AjaxController extends BaseController
             $content = $this->renderView(
                 'CSBillClientBundle:Ajax:contact_add.html.twig',
                 array(
-                    'contact' => $contact
+                    'contact' => $contact,
                 )
             );
 
@@ -77,7 +77,7 @@ class AjaxController extends BaseController
                 array(
                     "status" => "success",
                     "content" => $content,
-                    "id" => $contact->getId()
+                    "id" => $contact->getId(),
                 )
             );
         } else {
@@ -88,7 +88,7 @@ class AjaxController extends BaseController
             'CSBillClientBundle:Ajax:contact_add.html.twig',
             array(
                 'form' => $form->createView(),
-                'client' => $client
+                'client' => $client,
             )
         );
         $response["content"] = $content;
@@ -122,7 +122,6 @@ class AjaxController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->removeContactDetails($contact, $originalContactDetails);
 
             $this->save($contact);
@@ -132,10 +131,10 @@ class AjaxController extends BaseController
                     "content" => $this->renderView(
                         'CSBillClientBundle:Ajax:contact_edit.html.twig',
                         array(
-                            'success' => true
+                            'success' => true,
                         )
                     ),
-                    "status" => "success"
+                    "status" => "success",
                 )
             );
         }
@@ -146,9 +145,9 @@ class AjaxController extends BaseController
                     'CSBillClientBundle:Ajax:contact_edit.html.twig',
                     array(
                         'form' => $form->createView(),
-                        'contact' => $contact
+                        'contact' => $contact,
                     )
-                )
+                ),
             )
         );
     }
@@ -191,9 +190,9 @@ class AjaxController extends BaseController
                 'content' => $this->renderView(
                     'CSBillClientBundle::contact_card.html.twig',
                     array(
-                        'contact' => $contact
+                        'contact' => $contact,
                     )
-                )
+                ),
             )
         );
     }

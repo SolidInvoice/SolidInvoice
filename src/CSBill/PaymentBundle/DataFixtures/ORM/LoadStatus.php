@@ -25,35 +25,35 @@ class LoadStatus implements FixtureInterface
         $statusList = array(
             array(
                 'name' => 'unknown',
-                'label'  => 'default'
+                'label'  => 'default',
             ),
             array(
                 'name' => 'failed',
-                'label'  => 'danger'
+                'label'  => 'danger',
             ),
             array(
                 'name' => 'suspended',
-                'label'  => 'warning'
+                'label'  => 'warning',
             ),
             array(
                 'name' => 'expired',
-                'label'  => 'danger'
+                'label'  => 'danger',
             ),
             array(
                 'name' => 'success',
-                'label'  => 'success'
+                'label'  => 'success',
             ),
             array(
                 'name' => 'pending',
-                'label'  => 'warning'
+                'label'  => 'warning',
             ),
             array(
                 'name' => 'canceled',
-                'label'  => 'inverse'
+                'label'  => 'inverse',
             ),
             array(
                 'name' => 'new',
-                'label'  => 'info'
+                'label'  => 'info',
             ),
         );
 

@@ -23,7 +23,7 @@ class ContactTypesExtension extends \Twig_Extension
     public function getGlobals()
     {
         return array(
-            'contact_types' => $this->contactTypes
+            'contact_types' => $this->contactTypes,
         );
     }
 

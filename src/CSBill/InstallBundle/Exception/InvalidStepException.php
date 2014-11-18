@@ -17,7 +17,7 @@ class InvalidStepException extends \Exception
         $type = gettype($step);
 
         if ($type === 'object') {
-            $type = 'instance of ' . get_class($step);
+            $type = 'instance of '.get_class($step);
         }
 
         parent::__construct(sprintf('Expected type of AbstractStep, %s given', $type));

@@ -51,7 +51,7 @@ class InstallController extends BaseController
             array(
                 'step' => $step,
                 'step_label' => $installer->currentStep['label'],
-                'installer' => $installer
+                'installer' => $installer,
             )
         );
     }

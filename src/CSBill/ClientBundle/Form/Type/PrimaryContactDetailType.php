@@ -53,7 +53,7 @@ class PrimaryContactDetailType extends AbstractType
                     ),
                     array(new NotBlank())
                 ),
-                'label' => $this->item->getName()
+                'label' => $this->item->getName(),
             )
         );
 
@@ -77,7 +77,7 @@ class PrimaryContactDetailType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'CSBill\ClientBundle\Entity\PrimaryContactDetail'
+                'data_class' => 'CSBill\ClientBundle\Entity\PrimaryContactDetail',
             )
         );
     }

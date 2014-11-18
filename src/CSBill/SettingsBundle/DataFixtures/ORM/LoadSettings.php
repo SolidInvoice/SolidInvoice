@@ -50,7 +50,6 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
     {
         if (!empty($settings)) {
             foreach ($settings as $section => $setting) {
-
                 if (!is_array($setting)) {
                     continue;
                 }
@@ -58,7 +57,6 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
                 $referenceKey = implode('.', array_filter(array($reference, $section)));
 
                 if (isset($setting['settings']) && !empty($setting['settings'])) {
-
                     $referenceObject = $this->getReference('settings.'.$referenceKey);
 
                     $this->saveSettings($setting['settings'], $referenceObject);

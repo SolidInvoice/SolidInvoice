@@ -95,7 +95,7 @@ class PaymentMethod
 
     public function __construct()
     {
-        $this->payments = new ArrayCollection;
+        $this->payments = new ArrayCollection();
     }
 
     /**

@@ -24,7 +24,7 @@ class DatabaseConfig extends AbstractFormStep
      * @var array
      */
     protected $implementedDrivers = array(
-        'mysql'
+        'mysql',
     );
 
     /**
@@ -66,7 +66,7 @@ class DatabaseConfig extends AbstractFormStep
             'drivers'            => $this->drivers,
             'host'               => 'localhost',
             'port'               => 3306,
-            'connection_factory' => $this->get('doctrine.dbal.connection_factory')
+            'connection_factory' => $this->get('doctrine.dbal.connection_factory'),
         );
     }
 
@@ -103,7 +103,7 @@ class DatabaseConfig extends AbstractFormStep
      */
     private function writeConfigFile($params = array())
     {
-        $config = $this->rootDir . '/config/parameters.yml';
+        $config = $this->rootDir.'/config/parameters.yml';
 
         $yamlParser = new Parser();
 

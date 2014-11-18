@@ -60,7 +60,7 @@ class InvoiceManager extends ContainerAware
      */
     public function createFromQuote(Quote $quote)
     {
-        $invoice = new Invoice;
+        $invoice = new Invoice();
 
         /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
         $metadata = $this->entityManager->getClassMetadata(get_class($quote));
@@ -79,7 +79,7 @@ class InvoiceManager extends ContainerAware
                 $items = $metadata->getFieldValue($quote, $mappingField);
 
                 foreach ($items as $item) {
-                    $invoiceItem = new Item;
+                    $invoiceItem = new Item();
 
                     /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
                     $cloneMetadata = $this->entityManager->getClassMetadata(get_class($invoiceItem));
@@ -88,7 +88,6 @@ class InvoiceManager extends ContainerAware
                     $itemMetaData = $this->entityManager->getClassMetadata(get_class($item));
 
                     foreach ($itemMetaData->getAssociationNames() as $mappingField) {
-
                         if ('quote' == $mappingField) {
                             continue;
                         }
@@ -160,7 +159,6 @@ class InvoiceManager extends ContainerAware
         $cloneMetadata = $this->entityManager->getClassMetadata(get_class($clone));
 
         foreach ($metadata->getFieldNames() as $field) {
-
             if ($cloneMetadata->hasField($field)) {
                 if (in_array($field, array('created', 'updated', 'id', 'uuid'), true)) {
                     continue;
