@@ -228,4 +228,21 @@ class Address
     {
         $this->client = $client;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $info = [
+            $this->street1,
+            $this->street2,
+            $this->city,
+            $this->state,
+            $this->zip,
+            $this->country
+        ];
+
+        return trim(implode(', ', $info), ', \t\n\r\0\x0B');
+    }
 }
