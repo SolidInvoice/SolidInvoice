@@ -36,9 +36,9 @@ class DefaultController extends BaseController
                 $aliases = $queryBuilder->getRootAliases();
 
                 $queryBuilder
-                    ->orWhere($aliases[0].'.message LIKE :search')
-                    ->orWhere($aliases[0].'.amount LIKE :search')
-                    ->orWhere($aliases[0].'.currency LIKE :search')
+                    ->orWhere($aliases[0] . '.message LIKE :search')
+                    ->orWhere($aliases[0] . '.amount LIKE :search')
+                    ->orWhere($aliases[0] . '.currency LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });
@@ -49,16 +49,16 @@ class DefaultController extends BaseController
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
                 $label = $row->getField('status.label');
 
-                return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
+                return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
             })->setSafe(false);
         $grid->getColumn('amount')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('client.name')->manipulateRenderCell(function ($value, Row $row) use ($router) {
                 $clientId = $row->getField('client.id');
 
-                return '<a href="'.$router->generate('_clients_view', array('id' => $clientId)).'">'.$value.'</a>';
+                return '<a href="' . $router->generate('_clients_view', array('id' => $clientId)) . '">' . $value . '</a>';
             })->setSafe(false);
         $grid->getColumn('invoice.id')->manipulateRenderCell(function ($value) use ($router) {
-                return '<a href="'.$router->generate('_invoices_view', array('id' => $value)).'">'.$value.'</a>';
+                return '<a href="' . $router->generate('_invoices_view', array('id' => $value)) . '">' . $value . '</a>';
             })->setSafe(false);
         $grid->setDefaultOrder('created', 'DESC');
 
@@ -88,7 +88,7 @@ class DefaultController extends BaseController
                 $aliases = $queryBuilder->getRootAliases();
 
                 $queryBuilder
-                    ->andWhere($aliases[0].'.name LIKE :search')
+                    ->andWhere($aliases[0] . '.name LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });

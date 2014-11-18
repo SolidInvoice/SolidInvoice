@@ -11,9 +11,9 @@
 
 namespace CSBill\SettingsBundle\Form\Type;
 
+use CSBill\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use CSBill\SettingsBundle\Manager\SettingsManager;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**

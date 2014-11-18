@@ -10,9 +10,9 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
-use Symfony\Component\HttpFoundation\Request;
 use CSBill\InstallBundle\Installer\AbstractStep;
 use CSBill\InstallBundle\Installer\StepViewInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class SystemCheck extends AbstractStep implements StepViewInterface
 {
@@ -68,7 +68,7 @@ class SystemCheck extends AbstractStep implements StepViewInterface
     {
         $rootDir = $this->get('kernel')->getRootDir();
 
-        require_once $rootDir.DIRECTORY_SEPARATOR.'SymfonyRequirements.php';
+        require_once $rootDir . DIRECTORY_SEPARATOR . 'SymfonyRequirements.php';
 
         $symfonyRequirements = new \SymfonyRequirements();
 
@@ -103,7 +103,7 @@ class SystemCheck extends AbstractStep implements StepViewInterface
     {
         $string = '';
         $string .= $requirement->isFulfilled() ? 'OK' : ($requirement->isOptional() ? 'WARNING' : 'ERROR');
-        $string .= ' '.$requirement->getTestMessage();
+        $string .= ' ' . $requirement->getTestMessage();
 
         if (!$requirement->isFulfilled()) {
             $string .= sprintf("          %s", $requirement->getHelpText());

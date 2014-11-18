@@ -10,10 +10,10 @@
 
 namespace CSBill\InstallBundle\Listener;
 
+use CSBill\InstallBundle\Installer\Installer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
-use CSBill\InstallBundle\Installer\Installer;
 use Symfony\Component\Routing\Router;
 
 /**

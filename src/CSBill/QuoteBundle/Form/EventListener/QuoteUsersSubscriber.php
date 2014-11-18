@@ -11,11 +11,11 @@
 
 namespace CSBill\QuoteBundle\Form\EventListener;
 
+use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use CSBill\QuoteBundle\Entity\Quote;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuoteUsersSubscriber implements EventSubscriberInterface

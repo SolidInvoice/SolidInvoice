@@ -11,8 +11,8 @@
 
 namespace CSBill\PaymentBundle\Menu;
 
-use Knp\Menu\ItemInterface;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use Knp\Menu\ItemInterface;
 
 class PaymentsMenu extends AuthenticatedMenu
 {

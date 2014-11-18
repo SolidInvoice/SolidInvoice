@@ -44,7 +44,7 @@ class Contact extends AbstractType
         foreach ($this->types as $item) {
             if ($item->isRequired()) {
                 $contactDetails = $builder->create(
-                    'details_'.$item->getName(),
+                    'details_' . $item->getName(),
                     new PrimaryContactDetailType($item),
                     array(
                         'required' => true,

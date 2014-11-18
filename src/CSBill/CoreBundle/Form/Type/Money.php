@@ -12,9 +12,9 @@
 namespace CSBill\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\MoneyType as BaseType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class Money extends BaseType
 {

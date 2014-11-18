@@ -68,7 +68,7 @@ class SystemInformation extends AbstractFormStep
     {
         $rootDir = $this->container->get('kernel')->getRootDir();
 
-        $config = $rootDir.'/config/parameters.yml';
+        $config = $rootDir . '/config/parameters.yml';
 
         $yaml = new Parser();
 

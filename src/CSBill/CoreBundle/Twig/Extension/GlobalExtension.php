@@ -11,9 +11,9 @@
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use CSBill\CoreBundle\CSBillCoreBundle;
-use Twig_Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
+use Twig_Extension;
 
 class GlobalExtension extends Twig_Extension
 {
@@ -87,7 +87,7 @@ class GlobalExtension extends Twig_Extension
         $class = sprintf('fa fa-%s', $iconName);
 
         if (!empty($options)) {
-            $class .= '-'.$options;
+            $class .= '-' . $options;
         }
 
         return sprintf('<i class="%s"></i>', $class);

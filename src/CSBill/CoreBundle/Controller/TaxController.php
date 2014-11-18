@@ -41,7 +41,7 @@ class TaxController extends BaseController
                 $alias = $aliases[0];
 
                 $queryBuilder
-                    ->andWhere($alias.'.type = :type')
+                    ->andWhere($alias . '.type = :type')
                     ->setParameter('type', 'inclusive');
             },
             false,
@@ -58,7 +58,7 @@ class TaxController extends BaseController
                 $alias = $aliases[0];
 
                 $queryBuilder
-                    ->andWhere($alias.'.type = :type')
+                    ->andWhere($alias . '.type = :type')
                     ->setParameter('type', 'exclusive');
             },
             false,
@@ -80,7 +80,7 @@ class TaxController extends BaseController
                 $aliases = $queryBuilder->getRootAliases();
 
                 $queryBuilder
-                    ->andWhere($aliases[0].'.name LIKE :search')
+                    ->andWhere($aliases[0] . '.name LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });

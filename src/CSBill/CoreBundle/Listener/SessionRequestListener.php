@@ -11,10 +11,10 @@
 
 namespace CSBill\CoreBundle\Listener;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use CSBill\CoreBundle\Security\Encryption;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class SessionRequestListener
 {

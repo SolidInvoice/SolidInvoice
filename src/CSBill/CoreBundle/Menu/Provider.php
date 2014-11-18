@@ -11,10 +11,10 @@
 
 namespace CSBill\CoreBundle\Menu;
 
-use Knp\Menu\Provider\MenuProviderInterface;
-use CSBill\CoreBundle\Menu\Builder\MenuBuilder;
 use CSBill\CoreBundle\Menu\Builder\BuilderInterface;
+use CSBill\CoreBundle\Menu\Builder\MenuBuilder;
 use CSBill\CoreBundle\Menu\Storage\MenuStorageInterface;
+use Knp\Menu\Provider\MenuProviderInterface;
 
 class Provider implements MenuProviderInterface
 {

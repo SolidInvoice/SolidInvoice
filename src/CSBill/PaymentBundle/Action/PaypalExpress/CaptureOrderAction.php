@@ -59,18 +59,18 @@ class CaptureOrderAction extends PaymentAwareAction
             foreach ($invoice->getItems() as $item) {
                 /** @var \CSBill\InvoiceBundle\Entity\Item $item */
 
-                $details['L_PAYMENTREQUEST_0_NAME'.$counter] = $item->getDescription();
-                $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($item->getTotal() / $item->getQty(), 2);
-                $details['L_PAYMENTREQUEST_0_QTY'.$counter] = $item->getQty();
+                $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
+                $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format($item->getTotal() / $item->getQty(), 2);
+                $details['L_PAYMENTREQUEST_0_QTY' . $counter] = $item->getQty();
 
                 $counter++;
             }
 
             if (null !== $invoice->getDiscount()) {
                 $discount = ($invoice->getBaseTotal() * $invoice->getDiscount());
-                $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Discount';
-                $details['L_PAYMENTREQUEST_0_AMT'.$counter]  = number_format($discount, 2) * -1;
-                $details['L_PAYMENTREQUEST_0_QTY'.$counter]  = 1;
+                $details['L_PAYMENTREQUEST_0_NAME' . $counter] = 'Discount';
+                $details['L_PAYMENTREQUEST_0_AMT' . $counter]  = number_format($discount, 2) * -1;
+                $details['L_PAYMENTREQUEST_0_QTY' . $counter]  = 1;
             }
 
             $details['INVNUM'] = $invoice->getId();
@@ -98,7 +98,6 @@ class CaptureOrderAction extends PaymentAwareAction
         return
             $request instanceof SecuredCapture &&
             $request->getModel() instanceof PaymentDetails &&
-            !$request->getModel()->getDetails()
-            ;
+            !$request->getModel()->getDetails();
     }
 }

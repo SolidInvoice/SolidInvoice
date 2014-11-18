@@ -11,8 +11,8 @@
 
 namespace CSBill\CoreBundle\Menu;
 
-use Knp\Menu\ItemInterface as Item;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use Knp\Menu\ItemInterface as Item;
 
 class Main extends AuthenticatedMenu
 {
@@ -25,7 +25,7 @@ class Main extends AuthenticatedMenu
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        $username = $user->getUsername().' <b class="caret"></b>';
+        $username = $user->getUsername() . ' <b class="caret"></b>';
 
         $userMenu = $menu->addChild(
             'user',

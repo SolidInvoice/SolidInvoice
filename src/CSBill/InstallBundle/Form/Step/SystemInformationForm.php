@@ -12,8 +12,8 @@ namespace CSBill\InstallBundle\Form\Step;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Validator\Constraints;
 
 class SystemInformationForm extends AbstractType
 {

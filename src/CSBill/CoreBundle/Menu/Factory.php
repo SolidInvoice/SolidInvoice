@@ -11,11 +11,11 @@
 
 namespace CSBill\CoreBundle\Menu;
 
-use Knp\Menu\MenuFactory;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Knp\Menu\Silex\RoutingExtension;
 use Knp\Menu\Factory\CoreExtension;
 use Knp\Menu\Factory\ExtensionInterface;
+use Knp\Menu\MenuFactory;
+use Knp\Menu\Silex\RoutingExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Factory extends MenuFactory
 {

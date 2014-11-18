@@ -11,8 +11,8 @@
 
 namespace CSBill\CoreBundle\Settings;
 
-use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use CSBill\SettingsBundle\Entity\Setting;
+use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
@@ -158,6 +158,6 @@ class SettingsLoader implements SettingsLoaderInterface
      */
     protected function getParametersPath()
     {
-        return $this->kernel->getRootDir().'/config/parameters.yml';
+        return $this->kernel->getRootDir() . '/config/parameters.yml';
     }
 }

@@ -10,16 +10,16 @@
 
 namespace CSBill\InvoiceBundle\Controller;
 
+use APY\DataGridBundle\Grid\Action\RowAction;
+use APY\DataGridBundle\Grid\Column\ActionsColumn;
+use APY\DataGridBundle\Grid\Row;
+use APY\DataGridBundle\Grid\Source\Entity;
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use APY\DataGridBundle\Grid\Source\Entity;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Row;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\QueryBuilder;
-use CSBill\ClientBundle\Entity\Client;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends BaseController
 {
@@ -94,12 +94,12 @@ class DefaultController extends BaseController
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
             $label = $row->getField('status.label');
 
-            return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
+            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
         })->setSafe(false);
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
-                return $value * 100 .'%';
+                return $value * 100 . '%';
             }
 
             return (int) $value;

@@ -11,13 +11,13 @@
 
 namespace CSBill\InstallBundle\Twig;
 
+use CSBill\InstallBundle\Installer\Installer;
 use CSBill\InstallBundle\Installer\StepFormInterface;
+use CSBill\InstallBundle\Installer\StepInterface;
 use CSBill\InstallBundle\Installer\StepViewInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Twig_Extension;
 use Twig_Environment;
-use CSBill\InstallBundle\Installer\StepInterface;
-use CSBill\InstallBundle\Installer\Installer;
+use Twig_Extension;
 
 class InstallExtension extends Twig_Extension
 {

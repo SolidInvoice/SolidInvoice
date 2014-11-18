@@ -11,8 +11,8 @@
 
 namespace CSBill\InvoiceBundle\Menu;
 
-use Knp\Menu\ItemInterface;
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use Knp\Menu\ItemInterface;
 
 /**
  * Menu ietms for invoices

@@ -12,10 +12,10 @@
 namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\CoreBundle\Repository\TaxRepository;
+use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 
 class InvoiceType extends AbstractType
 {

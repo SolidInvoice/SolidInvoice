@@ -31,7 +31,7 @@ class LicenseAgreement extends AbstractFormStep
     {
         $rootDir = dirname($this->get('kernel')->getRootDir());
 
-        $licenseFile = $rootDir.DIRECTORY_SEPARATOR.'LICENSE';
+        $licenseFile = $rootDir . DIRECTORY_SEPARATOR . 'LICENSE';
 
         if (!file_exists($licenseFile)) {
             throw new \Exception('LICENSE file is missing');

@@ -17,9 +17,9 @@ use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class InvoiceManager extends ContainerAware
 {

@@ -12,10 +12,10 @@
 namespace CSBill\QuoteBundle\Form\Type;
 
 use CSBill\CoreBundle\Repository\TaxRepository;
+use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 
 class QuoteType extends AbstractType
 {

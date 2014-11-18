@@ -1,10 +1,10 @@
 <?php
 namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
+use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\StatusRequestInterface;
-use Payum\Core\Action\PaymentAwareAction;
 
 class PaymentDetailsStatusAction extends PaymentAwareAction
 {
@@ -22,8 +22,8 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         foreach (range(0, 9) as $index) {
-            if ($model['L_ERRORCODE'.$index]) {
-                $request->getModel()->getPayment()->setMessage($model['L_LONGMESSAGE'.$index]);
+            if ($model['L_ERRORCODE' . $index]) {
+                $request->getModel()->getPayment()->setMessage($model['L_LONGMESSAGE' . $index]);
 
                 $this->payment->execute($request);
 

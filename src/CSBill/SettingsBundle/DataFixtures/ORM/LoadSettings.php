@@ -11,13 +11,13 @@
 
 namespace CSBill\SettingsBundle\DataFixtures\ORM;
 
+use CSBill\SettingsBundle\Entity\Section;
+use CSBill\SettingsBundle\Entity\Setting;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CSBill\SettingsBundle\Entity\Setting;
-use CSBill\SettingsBundle\Entity\Section;
 
 class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -57,7 +57,7 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface, C
                 $referenceKey = implode('.', array_filter(array($reference, $section)));
 
                 if (isset($setting['settings']) && !empty($setting['settings'])) {
-                    $referenceObject = $this->getReference('settings.'.$referenceKey);
+                    $referenceObject = $this->getReference('settings.' . $referenceKey);
 
                     $this->saveSettings($setting['settings'], $referenceObject);
                 }

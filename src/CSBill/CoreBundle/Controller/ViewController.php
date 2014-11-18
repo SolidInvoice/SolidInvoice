@@ -80,13 +80,13 @@ class ViewController extends BaseController
             return $this->redirect($this->generateUrl($this->route, array('id' => $entity->getId())));
         }
 
-        $template = 'CSBillCoreBundle:View:'.$object.'.html.twig';
+        $template = 'CSBillCoreBundle:View:' . $object . '.html.twig';
 
         return $this->render(
             $template,
             array(
                 $object    => $entity,
-                'title'    => $object.' #'.$entity->getId(),
+                'title'    => $object . ' #' . $entity->getId(),
                 'template' => $this->template,
             )
         );

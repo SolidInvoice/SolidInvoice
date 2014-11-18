@@ -10,12 +10,12 @@
 
 namespace CSBill\InstallBundle\Installer;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
 use CSBill\InstallBundle\Exception\InvalidStepException;
 use CSBill\InstallBundle\Installer\Step\DatabaseConfig;
 use CSBill\InstallBundle\Installer\Step\LicenseAgreement;
 use CSBill\InstallBundle\Installer\Step\SystemCheck;
 use CSBill\InstallBundle\Installer\Step\SystemInformation;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
  * Installer service
@@ -117,7 +117,7 @@ class Installer extends ContainerAware
     {
         $session = $this->container->get('session');
 
-        return $session->get(self::SESSION_KEY.$key, $default);
+        return $session->get(self::SESSION_KEY . $key, $default);
     }
 
     /**
@@ -132,7 +132,7 @@ class Installer extends ContainerAware
     {
         $session = $this->container->get('session');
 
-        $session->set(self::SESSION_KEY.$key, $value);
+        $session->set(self::SESSION_KEY . $key, $value);
 
         return $this;
     }

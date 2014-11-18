@@ -10,8 +10,8 @@
 
 namespace CSBill\InvoiceBundle\Listener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class InvoiceUsersListener
 {

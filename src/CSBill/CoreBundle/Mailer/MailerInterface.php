@@ -12,9 +12,9 @@
 namespace CSBill\CoreBundle\Mailer;
 
 use CSBill\SettingsBundle\Manager\SettingsManager;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Swift_Mailer;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 interface MailerInterface
 {

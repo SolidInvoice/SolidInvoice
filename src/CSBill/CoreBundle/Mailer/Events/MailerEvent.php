@@ -11,8 +11,8 @@
 
 namespace CSBill\CoreBundle\Mailer\Events;
 
-use Symfony\Component\EventDispatcher\Event;
 use Swift_Message;
+use Symfony\Component\EventDispatcher\Event;
 
 class MailerEvent extends Event
 {

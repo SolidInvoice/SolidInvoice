@@ -11,11 +11,11 @@
 
 namespace CSBill\InvoiceBundle\Form\EventListener;
 
+use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use CSBill\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InvoiceUsersSubscriber implements EventSubscriberInterface

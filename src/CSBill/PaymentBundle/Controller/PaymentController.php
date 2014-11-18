@@ -4,12 +4,12 @@ namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Entity\Status;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Repository\PaymentMethod;
-use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use Doctrine\ORM\Query\Expr;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;

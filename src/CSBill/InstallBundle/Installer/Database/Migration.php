@@ -8,11 +8,11 @@
 
 namespace CSBill\InstallBundle\Installer\Database;
 
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\DBAL\Migrations\Migration as VersionMigration;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Doctrine\DBAL\Migrations\Migration as VersionMigration;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
 
 /**
  * Class Migration

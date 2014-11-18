@@ -20,7 +20,7 @@ class MenuItem extends BaseItem
         $name = uniqid();
 
         if (!empty($type)) {
-            $type = '-'.$type;
+            $type = '-' . $type;
         }
 
         $child = $this->addChild($name, array('extras' => array('divider' => $type)));

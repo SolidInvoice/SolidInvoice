@@ -12,11 +12,11 @@
 namespace CSBill\SettingsBundle\Manager;
 
 use CSBill\SettingsBundle\Collection\ConfigCollection;
-use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use CSBill\SettingsBundle\Exception\InvalidSettingException;
+use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use CSBill\SettingsBundle\Model\Setting;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Zend\Config\Config;
 
 /**
@@ -151,7 +151,7 @@ class SettingsManager implements ManagerInterface
         }
 
         if (0 !== strpos($setting, self::LEFT_TOKEN)) {
-            $setting = self::LEFT_TOKEN.$setting;
+            $setting = self::LEFT_TOKEN . $setting;
         }
 
         if (strrpos($setting, self::RIGHT_TOKEN) !== strlen($setting) - 1) {

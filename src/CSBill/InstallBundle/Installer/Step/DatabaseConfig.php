@@ -10,11 +10,11 @@
 
 namespace CSBill\InstallBundle\Installer\Step;
 
-use Symfony\Component\Yaml\Parser;
+use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
+use CSBill\InstallBundle\Installer\AbstractFormStep;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
-use CSBill\InstallBundle\Installer\AbstractFormStep;
-use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
+use Symfony\Component\Yaml\Parser;
 
 class DatabaseConfig extends AbstractFormStep
 {
@@ -103,7 +103,7 @@ class DatabaseConfig extends AbstractFormStep
      */
     private function writeConfigFile($params = array())
     {
-        $config = $this->rootDir.'/config/parameters.yml';
+        $config = $this->rootDir . '/config/parameters.yml';
 
         $yamlParser = new Parser();
 

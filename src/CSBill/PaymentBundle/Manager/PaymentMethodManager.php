@@ -2,8 +2,8 @@
 
 namespace CSBill\PaymentBundle\Manager;
 
-use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
 use CSBill\PaymentBundle\Payment\Method;
+use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
 
 class PaymentMethodManager implements \Countable
 {

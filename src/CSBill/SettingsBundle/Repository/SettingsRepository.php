@@ -11,8 +11,8 @@
 
 namespace CSBill\SettingsBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use CSBill\CoreBundle\Util\ArrayUtil;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Class SettingsRepository
