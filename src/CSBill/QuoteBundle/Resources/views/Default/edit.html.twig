@@ -12,7 +12,7 @@
 {% block title %}{{ "quote.edit"|trans }}{% endblock %}
 
 {% block sidebar %}
-    {{ menu('quotes_edit') }}
+    {{ menu('quotes_edit', {'quote' : quote}) }}
 {% endblock sidebar %}
 
 {% block form_buttons %}
