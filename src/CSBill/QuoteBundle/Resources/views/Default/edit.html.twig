@@ -9,17 +9,26 @@
 
 {% extends "CSBillQuoteBundle:Default:create.html.twig" %}
 
-{% block title %}{{ "Edit Quote"|trans }}{% endblock %}
+{% block title %}{{ "quote.edit"|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('quotes_edit') }}
 {% endblock sidebar %}
 
 {% block form_buttons %}
-    <div class="col-lg-2 col-md-2">
-        <button type="submit" class="btn btn-success" name="save" value="send">{{ "Save and Send"|trans }}</button>
+    <div class="pull-left">
+        <a href="{{ path('_quotes_view', {'id' : quote.id}) }}" class="btn btn-warning">
+            {{ icon('reply') }} {{ "quote.save.cancel"|trans }}
+        </a>
+        <button type="submit" class="btn btn-success" name="save" value="send">
+            {{ icon('envelope', ['o']) }} {{ "quote.save.send"|trans }}
+        </button>
     </div>
-    <div class="col-lg-2 col-md-2">
-        <button type="submit" class="btn btn-primary" name="save" value="draft">{{ "Save"|trans }}</button>
+    <div class="pull-right">
+        <button type="submit" class="btn btn-primary" name="save" value="draft">
+            {{ icon('save') }} {{ "quote.save.update"|trans }}
+        </button>
     </div>
+
+    <br class="clear" />
 {% endblock form_buttons %}

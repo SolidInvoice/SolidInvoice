@@ -10,44 +10,53 @@
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block page_title %}
-    {{ "Quote #%id"|trans|replace({"%id" : quote.id}) }}
+    {{ "quote.title"|trans({"%id%" : quote.id}) }}
 {% endblock page_title %}
-{% block title %}
-    {{ block('page_title') }} <small>{{ status_label(quote.status) }}</small>
-{% endblock title %}
 
 {% block sidebar %}
     {{ menu('quotes_view') }}
 {% endblock sidebar %}
 
 {% block content %}
-    {# TODO : add toolbar #}
     <div class="pull-right">
         <div class="btn-toolbar">
             <div class="btn-group">
                 {% if quote is pending or quote is draft %}
-                    <a href="{{ path('_accept_quote', {'id' : quote.id}) }}" class="btn btn-success">{{ "Accept"|trans }}</a>
+                    <a href="{{ path('_accept_quote', {'id' : quote.id}) }}" class="btn btn-success">
+                        {{ icon('check') }} {{ "quote.view.toolbar.accept"|trans }}
+                    </a>
                 {% endif %}
 
                 {% if quote is not accepted and quote is not declined and quote is not cancelled %}
-                    <a href="{{ path('_decline_quote', {'id' : quote.id}) }}" class="btn btn-danger">{{ "Decline"|trans }}</a>
+                    <a href="{{ path('_decline_quote', {'id' : quote.id}) }}" class="btn btn-danger">
+                        {{ icon('times') }} {{ "quote.view.toolbar.decline"|trans }}
+                    </a>
                 {% endif %}
             </div>
             <div class="btn-group">
-                <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">{{ icon('envelope-o') }} {{ "Send"|trans }}</a>
+                <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">
+                    {{ icon('envelope', ['o']) }} {{ "quote.view.toolbar.send"|trans }}
+                </a>
             </div>
 
             {% if quote is draft or quote is pending %}
                 <div class="btn-group">
-                    <a href="{{ path('_cancel_quote', {'id' : quote.id}) }}" class="btn btn-warning">{{ "Cancel"|trans }}</a>
+                    <a href="{{ path('_cancel_quote', {'id' : quote.id}) }}" class="btn btn-warning">
+                        {{ icon('ban') }} {{ "quote.view.toolbar.cancel"|trans }}
+                    </a>
                 </div>
             {% endif %}
 
             <div class="btn-group">
-                <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-default">{{ "Edit"|trans }}</a>
+                <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-default">
+                   {{ icon('edit') }} {{ "quote.view.toolbar.edit"|trans }}
+                </a>
             </div>
         </div>
     </div>
+
+    <br class="clear" />
+    <br class="clear" />
 
     {% include "CSBillQuoteBundle::quote_template.html.twig" with {'link_client' : true} %}
 
@@ -55,7 +64,7 @@
 
         <br class="clear" />
         <div>
-            <strong>{{ 'notes'|trans }}</strong>
+            <strong>{{ 'quote.notes'|trans }}</strong>
             <p>
                 {{ quote.notes }}
             </p>

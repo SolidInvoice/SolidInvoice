@@ -13,7 +13,7 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block title %}{{ "Create Quote"|trans }}{% endblock %}
+{% block page_title %}{{ "quote.create"|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('quotes_create') }}
@@ -28,23 +28,38 @@
 {% endblock %}
 
 {% block content %}
-    <form {{ form_enctype(form) }} action="{{ path(app.request.get('_route'), query) }}" method="post" id="quote-create-form">
 
-        {{ form_errors(form) }}
+    {{ form_start(form, {'attr' : {'id' : 'quote-create-form'} }) }}
 
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                {{ block('form_client') }}
+    {{ form_errors(form) }}
+
+    <div class="widget" id="quote-create">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="title">
+                        {% if quote is defined %}
+                            <h2>{{ 'quote.title'|trans({'%id%' : quote.id}) }}</h2>
+                        {% else %}
+                            <h2>{{ 'quote'|trans }}</h2>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {{ block('form_client') }}
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            {{ block('form_discount') }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6 col-md-6">
-                {{ block('form_discount') }}
-            </div>
-        </div>
 
-        <div class="row">
             {{ block('form_items') }}
 
-            <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "add_item"|trans }}</a>
+            <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "quote.item.add"|trans }}</a>
+
         </div>
 
         <br class="clear"/>
@@ -63,7 +78,9 @@
         <div class="form-actions">
             {{ block('form_buttons') }}
         </div>
-    </form>
+    </div>
+
+    {{ form_end(form) }}
 {% endblock content %}
 
 {% block form_client %}
@@ -81,88 +98,107 @@
 {% endblock form_discount %}
 
 {% block form_items %}
-    <table id="quote-rows" class="table">
-        <thead>
-            <tr>
-                {% for item in items %}
-                    <th>{{ item|trans|title }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in form.items %}
-                <tr>
-                    {% for key, field in item.children|keys %}
-                        <td class="column-{{ field }}">
-                            {% set error = form_errors(item[field]) %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>{{ 'quote.summary'|trans }}</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
 
-                            {% if error|trim is not empty %}
-                                <div class="form-group has-error">
-                                    {{ form_widget(item[field]) }}
-                                    {{ error|raw }}
-                                </div>
-                            {% else %}
-                                {{ form_widget(item[field]) }}
-                            {% endif %}
-                            <br />
-                        </td>
-                    {% endfor %}
-                    <td>
-                        <a href="#" class="remove-item" rel="tooltip" title="{{ 'Remove Item'|trans }}">{{ icon('trash', ['o']) }}</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
-                    <strong>{{ "Sub-Total"|trans }}</strong>
-                </td>
-                <td colspan="2" align="left">
-                    <div class="quote-sub-total"></div>
-                </td>
-            </tr>
-            {% if form.tax is defined %}
-                <tr>
-                    <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
-                        <strong>{{ "Tax"|trans }}</strong>
-                    </td>
-                    <td colspan="2" align="left">
-                        <span class="text-error quote-tax"></span>
-                    </td>
-                </tr>
-            {% endif %}
-            <tr>
-                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
-                    <strong>{{ "Discount"|trans }}</strong>
-                </td>
-                <td colspan="2" align="left">
-                    <span class="text-error quote-discount"></span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="{{ (form.items.vars.prototype.children|length) - 1 }}" align="right" style="text-align:right">
-                    <strong>{{ "Total"|trans }}</strong>
-                </td>
-                <td colspan="2" align="left">
-                    <div class="quote-total"></div>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+                        <table id="quote-rows" class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    {% for item in items %}
+                                        <th>{{ item|trans|title }}</th>
+                                    {% endfor %}
+                                    <th class="text-right">{{ 'quote.total'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in form.items %}
+                                    <tr>
+                                        {% for key, field in item.children|keys %}
+                                            <td class="column-{{ field }}">
+                                                {% set error = form_errors(item[field]) %}
+
+                                                {% if error|trim is not empty %}
+                                                    <div class="form-group has-error">
+                                                        {{ form_widget(item[field]) }}
+                                                        {{ error|raw }}
+                                                    </div>
+                                                {% else %}
+                                                    {{ form_widget(item[field]) }}
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                        <td class="column-total">
+                                            {{ 0|currency }}
+                                        </td>
+                                        <td>
+                                            <a href="#" class="remove-item" rel="tooltip" title="{{ 'quote.item.remove'|trans }}">{{ icon('trash', ['o']) }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line text-center"><strong>{{ 'quote.subtotal'|trans }}</strong></td>
+                                    <td class="thick-line text-right">
+                                        <div class="quote-sub-total"></div>
+                                    </td>
+                                </tr>
+                                {% if form.tax is defined %}
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center"><strong>{{ 'quote.tax'|trans }}</strong></td>
+                                        <td class="no-line text-right">
+                                            <span class="text-error quote-tax"></span>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>{{ 'quote.discount'|trans }}</strong></td>
+                                    <td class="no-line text-right">
+                                        <span class="text-success quote-discount"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>{{ 'quote.total'|trans }}</strong></td>
+                                    <td class="no-line text-right">
+                                        <div class="quote-total"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock form_items %}
 
 {% block form_buttons %}
-    <div class="col-lg-2 col-md-2">
+    <div class="pull-left">
         <button type="submit" class="btn btn-success" name="save" value="send">
-            {{ icon('envelope', ['o']) }} {{ "Save and Send"|trans }}
+            {{ icon('envelope', ['o']) }} {{ "quote.save.send"|trans }}
         </button>
     </div>
-    <div class="col-lg-2 col-md-2">
+    <div class="pull-right">
         <button type="submit" class="btn btn-primary" name="save" value="draft">
-            {{ icon('save') }} {{ "Save as Draft"|trans }}
+            {{ icon('save') }} {{ "quote.save.draft"|trans }}
         </button>
     </div>
+
+    <br class="clear" />
 {% endblock form_buttons %}
 
 {% block script %}
@@ -203,7 +239,9 @@
         Quote.addField("{{ item }}");
     {% endfor %}
 
+    Quote.addTemplate('total', accounting.formatMoney(0));
     Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item">{{ icon('trash', ['o']) }}</a>');
+    Quote.addField("total");
     Quote.addField("trash");
 
     {% if form.items|length == 0 %}
@@ -215,6 +253,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+
     {% javascripts
        "@CSBillQuoteBundle/Resources/public/js/quotes.js"
        filter="?yui_js"

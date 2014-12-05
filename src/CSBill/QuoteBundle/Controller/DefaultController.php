@@ -105,6 +105,7 @@ class DefaultController extends BaseController
      */
     public function createAction(Request $request, Client $client = null)
     {
+        /** @var \CSBill\ClientBundle\Repository\ClientRepository $clients */
         $clients = $this->getRepository('CSBillClientBundle:Client');
 
         if (!$clients->getTotalClients() > 0) {
@@ -122,7 +123,7 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $this->saveQuote($quote, $action);
 
-            $this->flash($this->trans('quote_create_success'), 'success');
+            $this->flash($this->trans('quote.create.success'), 'success');
 
             return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
         }
@@ -150,14 +151,20 @@ class DefaultController extends BaseController
 
         if ($form->isValid()) {
             $action = $request->request->get('save');
-            $this->saveQuote($quote, $action);
+            $this->saveQuote($quote, 'send' === $action ? $action : null);
 
-            $this->flash($this->trans('quote_edit_success'), 'success');
+            $this->flash($this->trans('quote.edit.success'), 'success');
 
-            return $this->redirect($this->generateUrl('_quotes_index'));
+            return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
         }
 
-        return $this->render('CSBillQuoteBundle:Default:edit.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'CSBillQuoteBundle:Default:edit.html.twig',
+            array(
+                'form' => $form->createView(),
+                'quote' => $quote
+            )
+        );
     }
 
     /**
@@ -175,11 +182,9 @@ class DefaultController extends BaseController
      * @param Quote  $quote
      * @param string $action
      */
-    private function saveQuote(Quote $quote, $action)
+    private function saveQuote(Quote $quote, $action = null)
     {
         $email = false;
-
-        $em = $this->getEm();
 
         $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
 
@@ -190,18 +195,21 @@ class DefaultController extends BaseController
                 break;
 
             case 'draft':
-            default:
                 $status = 'draft';
                 break;
+
+            default:
+                $status = null;
         }
 
-        /** @var \CSBill\QuoteBundle\Entity\Status $quoteStatus */
-        $quoteStatus = $statusRepository->findOneBy(array('name' => $status));
+        if (null !== $status) {
+            /** @var \CSBill\QuoteBundle\Entity\Status $quoteStatus */
+            $quoteStatus = $statusRepository->findOneBy(array('name' => $status));
 
-        $quote->setStatus($quoteStatus);
+            $quote->setStatus($quoteStatus);
+        }
 
-        $em->persist($quote);
-        $em->flush();
+        $this->save($quote);
 
         if (true === $email) {
             $this->get('billing.mailer')->sendQuote($quote);
