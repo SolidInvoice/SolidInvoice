@@ -33,8 +33,7 @@ class QuoteType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -58,6 +57,7 @@ class QuoteType extends AbstractType
                 'type' => 'quote_item',
                 'allow_add' => true,
                 'allow_delete' => true,
+                'by_reference' => false
             )
         );
 
@@ -74,8 +74,7 @@ class QuoteType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.FormTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -83,13 +82,14 @@ class QuoteType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::setDefaultOptions()
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'CSBill\QuoteBundle\Entity\Quote',
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'CSBill\QuoteBundle\Entity\Quote',
+            )
+        );
     }
 }

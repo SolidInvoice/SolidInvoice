@@ -8,129 +8,160 @@
  #}
 
 {% spaceless %}
-<table style="width: 100%; background-color: #4a78d4">
-    <tr>
-        {% if settings.system.general.logo.value is not empty %}
-            <td width="0%" valign="middle" style="vertical-align:middle; padding: 20px">
-                <img src="{{ app.request.uriForPath('/uploads/' ~ settings.system.general.logo) }}" />
-            </td>
-        {% endif %}
-        <td align="right" width="50%" valign="middle" style="vertical-align:middle; padding: 20px">
-            <h1 style="font-size: 60px; color: #FFFFFF">{{ "Quote"|trans }}</h1>
-        </td>
-        <td align="center" width="50%">&nbsp;</td>
-    </tr>
-</table>
-<p></p>
-<p>
-    <table style="width:100%">
-        <tr>
-            <td style="width: 50%" valign="top">
-                <h3>
-                    {% if link_client is defined and true == link_client %}
-                        <a href="{{ path('_clients_view', {'id' : quote.client.id}) }}">{{ quote.client }}</a>
-                    {% else %}
-                        {{ quote.client }}
-                    {% endif %}
-                </h3>
-                <p>{{ quote.client.website }}</p>
+    <div class="widget" id="quote-create">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="title">
+                        <h2>
+                            {{ "quote.title"|trans({"%id%" : quote.id}) }}
+                            <small>{{ status_label(quote.status) }}</small>
+                        </h2>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <h4>
+                                {{ quote.client }}
+                            </h4>
+                            {% if quote.client.website is not empty %}
+                                <p>
+                                    <a href="{{ quote.client.website }}" rel="external" target="_blank">
+                                        {{ quote.client.website }}
+                                    </a>
+                                </p>
+                            {% endif %}
+                            <p>
+                                {% for user in quote.users %}
+                                    {{ user }}<br />
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="col-xs-5 text-right">
+                            <dl class="dl-horizontal">
+                                <dt>{{ "quote.title"|trans({"%id%" : ''}) }}</dt>
+                                <dd>{{ quote.id }}</dd>
 
-                <p>
-                    {% for user in quote.users %}
-                        {{ user }}
-                    {% endfor %}
-                </p>
-            </td>
-            <td style="width: 25%" align="right">
-                <p><b>{{ "Quote #"|trans }}:</b><br />{{ quote.id }}</p>
-                <p><b>{{ "Total"|trans }}:</b><br />{{ currency.format(quote.total) }}</p>
-            </td>
-            <td style="width: 25%" align="right">
-                <p><b>{{ "Due"|trans }}:</b><br />{{ quote.due | date }}</p>
-                <p><b>{{ "Date"|trans }}:</b><br />{{ quote.created | date }}</p>
-            </td>
-        </tr>
-    </table>
-</p>
-<p></p>
-<table style="width:100%;" cellspacing="0" cellpadding="8" class="table table-bordered table-condensed table-hover table-striped">
-    <thead>
-        <tr>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "Description"|trans }}
-            </th>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "Price"|trans }}
-            </th>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "Qty"|trans }}
-            </th>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;">
-                {{ "Total"|trans }}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in quote.items %}
-            <tr{% if loop.index is odd %} style="background-color:#f5f5f5"{% endif %}>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                    {{ item.description }}
-                </td>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="right">
-                    {{ currency.format(item.price) }}
-                </td>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="center">
-                    {{ item.qty }}
-                </td>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ currency.format(item.total) }}
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
+                                <dt>{{ "quote.total"|trans }}</dt>
+                                <dd>{{ quote.total|currency }}</dd>
 
-        {% if quote.discount is not empty %}
-            <tr>
-                <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <b>{{ "Discount"|trans }}</b>
-                </td>
-                <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    <span style="color:#b94a48">{{ currency.format(quote.baseTotal | percentage(quote.discount)) }}</span>
-                </td>
-            </tr>
-        {% endif %}
+                                <dt>{{ "quote.created"|trans }}</dt>
+                                <dd>{{ quote.created | date }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        {% if quote.tax is not empty %}
-            <tr>
-                <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <b>{{ "Tax"|trans }}</b>
-                </td>
-                <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ quote.tax|currency }}
-                </td>
-            </tr>
-        {% endif %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><strong>{{ 'quote.summary'|trans }}</strong></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
 
-        <tr>
-            <td colspan="3" align="right" style="border:1px solid #cccccc;">
-                <b>{{ "Total"|trans }}</b>
-            </td>
-            <td style="border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                {{ currency.format(quote.total) }}
-            </td>
-        </tr>
-    </tfoot>
-</table>
+                                <table id="quote-rows" class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ 'quote.item.heading.description'|trans }}</th>
+                                        <th>{{ 'quote.item.heading.price'|trans }}</th>
+                                        <th>{{ 'quote.item.heading.qty'|trans }}</th>
+                                        {% if quote.tax is not empty %}
+                                            <th>{{ 'quote.item.heading.tax'|trans }}</th>
+                                        {% endif %}
+                                        <th class="text-right">{{ 'quote.item.heading.total'|trans }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in quote.items %}
+                                        <tr>
+                                            <td class="column-description">
+                                                {{ item.description }}
+                                            </td>
+                                            <td class="column-price">
+                                                {{ item.price|currency }}
+                                            </td>
+                                            <td class="column-qty">
+                                                {{ item.qty }}
+                                            </td>
+                                            {% if item.tax is not empty %}
+                                                <td class="column-tax">
+                                                    {{ item.tax|currency }}
+                                                </td>
+                                            {% endif %}
+                                            <td class="column-total">
+                                                {{ currency.format(item.total) }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot>
 
-    {% if quote.terms is not empty %}
-
-        <br class="clear" />
-        <div>
-            <strong>{{ 'terms'|trans }}</strong>
-            <p>
-                {{ quote.terms }}
-            </p>
+                                    <tr>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line text-center"><strong>{{ 'quote.subtotal'|trans }}</strong></td>
+                                        <td class="thick-line text-right">
+                                            <div class="quote-sub-total">
+                                                {{ quote.baseTotal|currency }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% if quote.tax is not empty %}
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="no-line text-center"><strong>{{ 'quote.tax'|trans }}</strong></td>
+                                            <td class="no-line text-right">
+                                        <span class="text-error quote-tax">
+                                            {{ quote.tax|currency }}
+                                        </span>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if quote.discount is not empty %}
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="no-line text-center"><strong>{{ 'quote.discount'|trans }}</strong></td>
+                                            <td class="no-line text-right">
+                                        <span class="text-danger quote-discount">
+                                            {{ currency.format(quote.baseTotal | percentage(quote.discount)) }}
+                                        </span>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center"><strong>{{ 'quote.total'|trans }}</strong></td>
+                                        <td class="no-line text-right">
+                                            <div class="quote-total">
+                                                {{ currency.format(quote.total) }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endif %}
+
+        {% if quote.terms is not empty %}
+
+            <br class="clear" />
+
+            <div>
+                <strong>{{ 'quote.terms'|trans }}</strong>
+                <p>
+                    {{ quote.terms|nl2br }}
+                </p>
+            </div>
+        {% endif %}
+    </div>
 {% endspaceless %}

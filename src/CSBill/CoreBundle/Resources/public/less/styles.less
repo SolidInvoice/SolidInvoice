@@ -30,13 +30,39 @@ ul.unstyled {
 *******************/
 
 #quote-rows, #invoice-rows {
-    .column-price, .column-total {
+    .column-price {
         width: 20%;
+    }
+
+    .column-total {
+        width: 10%;
     }
 
     .column-qty {
         width: 8%;
     }
+}
+
+#quote-create, #invoice-create {
+  .title h2, .title h3 {
+    display: inline-block;
+  }
+
+  .table > tbody > tr > .no-line {
+    border-top: none;
+  }
+
+  .table > thead > tr > .no-line {
+    border-bottom: none;
+  }
+
+  .table > tbody > tr > .thick-line {
+    border-top: 2px solid;
+  }
+
+  .column-total {
+    text-align: right;
+  }
 }
 
 .modal .loading-mask {
