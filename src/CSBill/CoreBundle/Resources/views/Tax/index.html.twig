@@ -15,14 +15,14 @@
 {{ menu('tax_index') }}
 {% endblock sidebar %}
 
-{% block title %}{{ 'tax_rates'|trans }}{% endblock title %}
+{% block title %}{{ 'tax.rates.title'|trans }}{% endblock title %}
 
 {% block heading %}
 <fieldset class="page-heading">
     <legend>
         <div class="pull-right header-button">
             <a class="btn btn-info" href="{{ path("_add_tax_rate") }}">
-            {{ icon('money') }} {{ "tax_create"|trans }}
+            {{ icon('money') }} {{ "tax.rates.add"|trans }}
             </a>
         </div>
         <h3>{{ block('title') }}</h3>

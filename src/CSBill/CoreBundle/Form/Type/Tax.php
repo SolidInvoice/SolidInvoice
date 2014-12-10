@@ -1,9 +1,12 @@
 <?php
+
 /**
- * This file is part of the MiWay Business Insurance project.
+ * This file is part of CSBill package.
  *
- * @author      MiWay Development Team
- * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace CSBill\CoreBundle\Form\Type;
@@ -17,6 +20,9 @@ use Symfony\Component\Form\AbstractType;
  */
 class Tax extends AbstractType
 {
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return 'entity';

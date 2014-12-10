@@ -52,6 +52,7 @@ class Tax
      * @ORM\Column(name="rate", type="float", precision=4)
      * @var string
      * @Assert\Type("float")
+     * @Assert\NotBlank
      */
     private $rate;
 
