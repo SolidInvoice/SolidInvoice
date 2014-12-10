@@ -1,9 +1,12 @@
 <?php
+
 /**
- * This file is part of the MiWay Business Insurance project.
+ * This file is part of CSBill package.
  *
- * @author      MiWay Development Team
- * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace CSBill\CoreBundle\Form\Type;
@@ -25,28 +28,23 @@ class TaxType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $typeHelpText = <<<HTML
-Inclusive: Tax is included in the item price
-Exclusive: Tax is calculated on the item price
-HTML;
-
         $builder->add('name');
         $builder->add(
             'rate',
             'percent',
             array(
-                'precision' => 2,
+                'precision' => 0,
                 'type' => 'integer',
             )
         );
 
         $builder->add(
             'type',
-            'choice',
+            'select2',
             array(
                 'choices' => TaxEntity::getTypes(),
-                'help' => $typeHelpText,
-                'empty_value' => 'select',
+                'help' => 'tax.rates.explanation',
+                'empty_value' => 'tax.rates.type.select',
             )
         );
     }
