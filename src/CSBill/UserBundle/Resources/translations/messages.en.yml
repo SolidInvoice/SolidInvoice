@@ -12,3 +12,5 @@ profile:
         roles: Roles
         change_password: Change Password
         update_profile: Update Profile
+    edit:
+        cancel: Cancel
