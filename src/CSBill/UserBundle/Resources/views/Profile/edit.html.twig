@@ -12,5 +12,17 @@
 {% block title %}{{ "Edit Profile" }}{% endblock title %}
 
 {% block content %}
-{% include "FOSUserBundle:Profile:edit_content.html.twig" %}
+    <div class="widget">
+        {{ form_start(form) }}
+            {{ form_row(form) }}
+            <div>
+                <button type="submit" class="btn btn-primary">
+                    {{ icon('save') }} {{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}
+                </button>
+                <a href="{{ path('fos_user_profile_show') }}" class="btn btn-warning">
+                    {{ icon('ban') }} {{ 'profile.edit.cancel'|trans }}
+                </a>
+            </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock content %}
