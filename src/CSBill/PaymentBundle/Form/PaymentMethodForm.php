@@ -37,7 +37,7 @@ class PaymentMethodForm extends AbstractType
             'defaultStatus',
             null,
             array(
-                'label'       => 'Force payment status',
+                'label'       => 'payment.create.force',
                 'help'        => 'force_payment_status_help',
                 'help_type'   => 'block',
                 'empty_value' => 'choose_force_status',

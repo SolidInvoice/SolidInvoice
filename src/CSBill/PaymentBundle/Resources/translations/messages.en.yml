@@ -1,3 +1,7 @@
+payment:
+    create:
+        force: Force payment status (Optional)
+
 add_payment_method: Add Payment Method
 payment_method_added: Payment Method Successfully Added!
 payment_method_updated: Payment Method Successfully Updated!

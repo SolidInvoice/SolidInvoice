@@ -5,10 +5,12 @@
 {% endblock title %}
 
 {% block content %}
-    {{ form_start(form) }}
-    {{ form_row(form) }}
-    <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'save'|trans }}</button>
-    {{ form_end(form) }}
+    <div class="widget">
+        {{ form_start(form) }}
+        {{ form_row(form) }}
+        <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'save'|trans }}</button>
+        {{ form_end(form) }}
+    </div>
 
     <script type="text/javascript">
         $(function () {
