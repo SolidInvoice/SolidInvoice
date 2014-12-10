@@ -10,6 +10,7 @@ invoice:
     edit: Edit Invoice
     notes: Notes
     terms: Terms
+    pay_now: Pay Now
     client:
         choose: Choose a client
         empty: You have not created any clients yet.

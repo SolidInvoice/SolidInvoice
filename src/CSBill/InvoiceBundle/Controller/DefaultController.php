@@ -71,7 +71,7 @@ class DefaultController extends BaseController
 
             $payAction->setRouteParameters(array('uuid'));
             $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
-            $payAction->addAttribute('title', $translator->trans('pay_now'));
+            $payAction->addAttribute('title', $translator->trans('invoice.pay_now'));
             $payAction->addAttribute('rel', 'tooltip');
 
             $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {

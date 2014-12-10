@@ -6,7 +6,7 @@
             {% if paymentsConfigured() %}
                 <div class="pull-right header-button">
                     <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                        {{ icon('credit-card') }} {{ "pay_now"|trans }}
+                        {{ icon('credit-card') }} {{ "invoice.pay_now"|trans }}
                     </a>
                 </div>
             {% endif %}
