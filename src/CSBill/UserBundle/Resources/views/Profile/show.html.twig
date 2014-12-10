@@ -9,8 +9,90 @@
 
 {% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
-{% block title %}{{ "Profile - %username%"|replace({"%username%" : user.username}) }}{% endblock title %}
+{% block title %}{{ "profile.show.title"|trans({"%username%" : user.username}) }}{% endblock title %}
 
 {% block content %}
-{% include "FOSUserBundle:Profile:show_content.html.twig" %}
+    <div class="widget">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>
+                        {{ 'profile.show.username'|trans }}
+                    </th>
+                    <td>
+                        {{ user.username }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ 'profile.show.email'|trans }}
+                    </th>
+                    <td>
+                        {{ user.email }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ 'profile.show.last_login'|trans }}
+                    </th>
+                    <td>
+                        {{ user.lastLogin|date }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ 'profile.show.enabled'|trans }}
+                    </th>
+                    <td>
+                        {% if user.enabled %}
+                            <span class="label label-success">{{ 'profile.show.yes'|trans }}</span>
+                        {% else %}
+                            <span class="label label-danger">{{ 'profile.show.no'|trans }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ 'profile.show.locked'|trans }}
+                    </th>
+                    <td>
+                        {% if user.locked %}
+                            <span class="label label-danger">{{ 'profile.show.yes'|trans }}</span>
+                        {% else %}
+                            <span class="label label-success">{{ 'profile.show.no'|trans }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ 'profile.show.expired'|trans }}
+                    </th>
+                    <td>
+                        {% if user.expired%}
+                            <span class="label label-danger">{{ 'profile.show.yes'|trans }}</span>
+                        {% else %}
+                            <span class="label label-success">{{ 'profile.show.no'|trans }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ 'profile.show.roles'|trans }}
+                    </th>
+                    <td>
+                        {{ user.roles|join(', ') }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary">
+                {{ icon('user') }} {{ 'profile.show.update_profile'|trans }}
+            </a>
+            <a href="{{ path('fos_user_change_password') }}" class="btn btn-info">
+                {{ icon('key') }} {{ 'profile.show.change_password'|trans }}
+            </a>
+        </div>
+    </div>
 {% endblock content %}

@@ -1,0 +1,14 @@
+profile:
+    show:
+        title: Profile - %username%
+        yes: Yes
+        no: No
+        username: Username
+        email: Email
+        last_login: Last Login
+        enabled: Enabled
+        locked: Locked
+        expired: Expired
+        roles: Roles
+        change_password: Change Password
+        update_profile: Update Profile
