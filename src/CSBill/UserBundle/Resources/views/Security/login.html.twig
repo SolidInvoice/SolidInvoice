@@ -9,7 +9,7 @@
 
 {% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
 
-{% block title %}{{ "Login"|trans }}{% endblock title %}
+{% block title %}{{ "security.login.login"|trans }}{% endblock title %}
 
 {% block content %}
 	<fieldset>
@@ -22,44 +22,46 @@
 			        </div>
 			    {% endif %}
 
-			    <div class="well">
+			    <div class="widget">
 				    <form action="{{ path("fos_user_security_check") }}" method="post" id="login" role="form">
 				        <div class="form-group">
-				            <label for="username">{{ "Username"|trans }}</label>
+				            <label for="username">{{ "security.login.username"|trans }}</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     {{ icon('user') }}
                                 </span>
-                                <input class="form-control" type="text" id="username" name="_username" placeholder="{{ "Username"|trans }}" value="{{ last_username }}" required="required" />
+                                <input class="form-control" type="text" id="username" name="_username" placeholder="{{ "security.login.username"|trans }}" value="{{ last_username }}" required="required" />
                             </div>
 				        </div>
 
 				        <div class="form-group">
-				            <label for="password">{{ "Password"|trans }}</label>
+				            <label for="password">{{ "security.login.password"|trans }}</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     {{ icon('lock') }}
                                 </span>
-                                <input class="form-control" type="password" id="password" placeholder="{{ "Password"|trans }}" name="_password" required="required" />
+                                <input class="form-control" type="password" id="password" placeholder="{{ "security.login.password"|trans }}" name="_password" required="required" />
                             </div>
 				        </div>
 
 				        <div class="checkbox">
 							<label for="remember_me" class="checkbox-inline">
                                 <input type="checkbox" id="remember_me" name="_remember_me" checked />
-                                {{ "Keep me logged in"|trans }}
+                                {{ "security.login.remember"|trans }}
                             </label>
 						</div>
 
     					<div class="clear">
-				        	<button type="submit" class="btn btn-success">{{ icon('key') }} {{ "Login"|trans }}</button>
+				        	<button type="submit" class="btn btn-success">{{ icon('key') }} {{ "security.login.login"|trans }}</button>
 				        </div>
 
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 				    </form>
 
 				    <hr />
-				    <a href="{{ path("fos_user_resetting_request") }}">{{ "Forgot Password"|trans }}</a>
+				    <a href="{{ path("fos_user_resetting_request") }}">
+                        {{ icon('lock') }} {{ "security.login.forgot_password"|trans }}
+                    </a>
 				</div>
 			</div>
 		</div>

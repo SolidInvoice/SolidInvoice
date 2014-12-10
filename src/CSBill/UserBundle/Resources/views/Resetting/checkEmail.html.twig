@@ -12,9 +12,13 @@
 {% block title %}{{ "Reset Password" }}{% endblock title %}
 
 {% block content %}
-<div class="alert alert-info">
-{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}
-</div>
+    <div class="widget">
+        <div class="alert alert-info">
+        {{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}
+        </div>
 
-<a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</a>
+        <a class="btn btn-success" href="{{ path('fos_user_security_login') }}">
+            {{ icon('lock') }} {{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}
+        </a>
+    </div>
 {% endblock %}

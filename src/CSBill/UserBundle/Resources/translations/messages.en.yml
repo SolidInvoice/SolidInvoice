@@ -14,3 +14,10 @@ profile:
         update_profile: Update Profile
     edit:
         cancel: Cancel
+security:
+    login:
+        login: Login
+        username: Username or Email
+        password: Password
+        remember: Keep me logged in
+        forgot_password: Forgot Password
