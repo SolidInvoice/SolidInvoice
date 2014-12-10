@@ -9,17 +9,25 @@
 
 {% extends "CSBillInvoiceBundle:Default:create.html.twig" %}
 
-{% block title %}{{ "Edit Invoice"|trans }}{% endblock %}
+{% block page_title %}{{ "invoice.edit"|trans }}{% endblock %}
+{% block title %}{{ "invoice.edit"|trans }}{% endblock %}
 
 {% block sidebar %}
-    {{ menu('invoices_edit') }}
+    {{ menu('invoices_edit', {'invoice' : invoice}) }}
 {% endblock sidebar %}
 
 {% block form_buttons %}
-    <div class="col-lg-2 col-md-2">
-        <button type="submit" class="btn btn-success" name="save" value="send">{{ "Save and Send"|trans }}</button>
-    </div>
-    <div class="col-lg-2 col-md-2">
-        <button type="submit" class="btn btn-primary" name="save" value="draft">{{ "Save"|trans }}</button>
-    </div>
+        <div class="pull-left">
+            <a href="{{ path('_invoices_view', {'id' : invoice.id}) }}" class="btn btn-warning">
+                {{ icon('reply') }} {{ "invoice.save.cancel"|trans }}
+            </a>
+            <button type="submit" class="btn btn-success" name="save" value="send">
+                {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
+            </button>
+        </div>
+        <div class="pull-right">
+            <button type="submit" class="btn btn-primary" name="save" value="draft">
+                {{ icon('save') }} {{ "invoice.save.update"|trans }}
+            </button>
+        </div>
 {% endblock form_buttons %}

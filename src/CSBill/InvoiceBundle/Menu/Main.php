@@ -12,6 +12,7 @@
 namespace CSBill\InvoiceBundle\Menu;
 
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use Knp\Menu\ItemInterface;
 
 /**
@@ -24,7 +25,7 @@ class Main extends AuthenticatedMenu
      *
      * @param $menu \Knp\Menu\ItemInterface
      */
-    public function topMenu(ItemInterface $menu, array $parameters = array())
+    public function topMenu(ItemInterface $menu)
     {
         $menu->addChild('Invoices', array('route' => '_invoices_index'));
     }
@@ -36,7 +37,51 @@ class Main extends AuthenticatedMenu
      */
     public function invoicesMenu(ItemInterface $menu)
     {
-        $menu->addChild('List Invoices', array('route' => '_invoices_index'));
-        $menu->addChild('Create Invoice', array('route' => '_invoices_create'));
+        $menu->addChild(
+            'List Invoices',
+            array(
+                'route' => '_invoices_index',
+                'extras' => array(
+                    'icon' => 'file-text-o',
+                )
+            )
+        );
+
+        $menu->addChild(
+            'Create Invoice',
+            array(
+                'route' => '_invoices_create',
+                'extras' => array(
+                    'icon' => 'file-text-o',
+                )
+            )
+        );
+    }
+
+    /**
+     * Renders the invoice edit menu
+     *
+     * @param ItemInterface $menu
+     * @param array         $options
+     */
+    public function invoicesEditMenu(ItemInterface $menu, array $options = array())
+    {
+        $this->invoicesMenu($menu);
+
+        if (isset($options['invoice']) && $options['invoice'] instanceof Invoice) {
+            $menu->addDivider();
+            $menu->addChild(
+                'View Invoice',
+                array(
+                    'extras' => array(
+                        'icon' => 'eye',
+                    ),
+                    'route' => '_invoices_view',
+                    'routeParameters' => array(
+                        'id' => $options['invoice']->getId()
+                    )
+                )
+            );
+        }
     }
 }

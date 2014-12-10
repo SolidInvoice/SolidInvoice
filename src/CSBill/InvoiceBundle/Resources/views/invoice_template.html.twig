@@ -8,131 +8,155 @@
  #}
 
 {% spaceless %}
-<table style="width: 100%; background-color: #4a78d4">
-    <tr>
-        {% if settings.system.general.logo.value is not empty %}
-            <td width="0%" valign="middle" style="vertical-align:middle; padding: 20px">
-                <img src="{{ app.request.uriForPath('/uploads/' ~ settings.system.general.logo) }}" />
-            </td>
-        {% endif %}
-        <td align="right" width="50%" valign="middle" style="vertical-align:middle; padding: 20px">
-            <h1 style="font-size: 60px; color: #FFFFFF">{{ "Invoice"|trans }}</h1>
-        </td>
-        <td align="center" width="50%">&nbsp;</td>
-    </tr>
-</table>
-<p></p>
-<p>
-    <table style="width:100%">
-        <tr>
-            <td style="width: 50%" valign="top">
-                <h3>
-                    {% if link_client is defined and true == link_client %}
-                        <a href="{{ path('_clients_view', {'id' : invoice.client.id}) }}">
+<div class="widget" id="invoice-create">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="title">
+                    <h2>
+                        {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
+                        <small>{{ status_label(invoice.status) }}</small>
+                    </h2>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-7">
+                        <h4>
                             {{ invoice.client }}
-                        </a>
-                    {% else %}
-                        {{ invoice.client }}
-                    {% endif %}
-                </h3>
-                <p>{{ invoice.client.website }}</p>
+                        </h4>
+                        {% if invoice.client.website is not empty %}
+                            <p>
+                                <a href="{{ invoice.client.website }}" rel="external" target="_blank">
+                                    {{ invoice.client.website }}
+                                </a>
+                            </p>
+                        {% endif %}
+                        <p>
+                            {% for user in invoice.users %}
+                                {{ user }}<br />
+                            {% endfor %}
+                        </p>
+                    </div>
+                    <div class="col-xs-5 text-right">
+                        <dl class="dl-horizontal">
+                            <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
+                            <dd>{{ invoice.id }}</dd>
 
-                <p>
-                    {% for user in invoice.users %}
-                        {{ user }}
-                    {% endfor %}
-                </p>
-            </td>
-            <td style="width: 25%" align="right">
-                <p><b>{{ "Invoice #"|trans }}:</b><br />{{ invoice.id }}</p>
-                <p><b>{{ "Total"|trans }}:</b><br />{{ currency.format(invoice.total) }}</p>
-            </td>
-            <td style="width: 25%" align="right">
-                <p><b>{{ "Due"|trans }}:</b><br />{{ invoice.due | date }}</p>
-                <p><b>{{ "Date"|trans }}:</b><br />{{ invoice.created | date }}</p>
-            </td>
-        </tr>
-    </table>
-</p>
-<p></p>
-<table style="width:100%;" cellspacing="0" cellpadding="8" class="table table-bordered table-condensed table-hover table-striped">
-    <thead>
-        <tr>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "Description"|trans }}
-            </th>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "Price"|trans }}
-            </th>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "Qty"|trans }}
-            </th>
-            <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;">
-                {{ "Total"|trans }}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in invoice.items %}
-            <tr{% if loop.index is odd %} style="background-color:#f5f5f5"{% endif %}>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                    {{ item.description }}
-                </td>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="right">
-                    {{ currency.format(item.price) }}
-                </td>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="center">
-                    {{ item.qty }}
-                </td>
-                <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ currency.format(item.total) }}
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
+                            <dt>{{ "invoice.total"|trans }}</dt>
+                            <dd>{{ invoice.total|currency }}</dd>
+                            <dt>{{ "invoice.created"|trans }}</dt>
+                            <dd>{{ invoice.created | date }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>{{ 'invoice.summary'|trans }}</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
 
-        {% if invoice.discount is not empty %}
-            <tr>
-                <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <b>{{ "Discount"|trans }}</b>
-                </td>
-                <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    <span style="color:#b94a48">{{ currency.format(invoice.baseTotal | percentage(invoice.discount)) }}</span>
-                </td>
-            </tr>
-        {% endif %}
-
-        {% if invoice.tax is not empty %}
-            <tr>
-                <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <b>{{ "Tax"|trans }}</b>
-                </td>
-                <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ invoice.tax|currency }}
-                </td>
-            </tr>
-        {% endif %}
-
-        <tr>
-            <td colspan="3" align="right" style="border:1px solid #cccccc;">
-                <b>{{ "Total"|trans }}</b>
-            </td>
-            <td style="border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                {{ currency.format(invoice.total) }}
-            </td>
-        </tr>
-    </tfoot>
-</table>
-
-{% if invoice.terms is not empty %}
-
-    <br class="clear" />
-    <div>
-        <strong>{{ 'terms'|trans }}</strong>
-        <p>
-            {{ invoice.terms }}
-        </p>
+                            <table id="invoice-rows" class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'invoice.item.heading.description'|trans }}</th>
+                                        <th>{{ 'invoice.item.heading.price'|trans }}</th>
+                                        <th>{{ 'invoice.item.heading.qty'|trans }}</th>
+                                        {% if invoice.tax is not empty %}
+                                            <th>{{ 'invoice.item.heading.tax'|trans }}</th>
+                                        {% endif %}
+                                        <th class="text-right">{{ 'invoice.item.heading.total'|trans }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in invoice.items %}
+                                        <tr>
+                                            <td class="column-description">
+                                                {{ item.description }}
+                                            </td>
+                                            <td class="column-price">
+                                                {{ item.price|currency }}
+                                            </td>
+                                            <td class="column-qty">
+                                                {{ item.qty }}
+                                            </td>
+                                            {% if item.tax is not empty %}
+                                                <td class="column-tax">
+                                                    {{ item.tax|currency }}
+                                                </td>
+                                            {% endif %}
+                                            <td class="column-total">
+                                                {{ item.total|currency }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line text-center"><strong>{{ 'invoice.subtotal'|trans }}</strong></td>
+                                        <td class="thick-line text-right">
+                                            <div class="invoice-sub-total">
+                                                {{ invoice.baseTotal|currency }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% if invoice.tax is not empty %}
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="no-line text-center"><strong>{{ 'invoice.tax'|trans }}</strong></td>
+                                            <td class="no-line text-right">
+                                                <span class="text-error invoice-tax">
+                                                    {{ invoice.tax|currency }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if invoice.discount is not empty %}
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="no-line text-center"><strong>{{ 'invoice.discount'|trans }}</strong></td>
+                                            <td class="no-line text-right">
+                                                <span class="text-danger invoice-discount">
+                                                    {{ invoice.baseTotal|percentage(invoice.discount)|currency }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center"><strong>{{ 'invoice.total'|trans }}</strong></td>
+                                        <td class="no-line text-right">
+                                            <div class="invoice-total">
+                                                {{ invoice.total|currency }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-{% endif %}
+    {% if invoice.terms is not empty %}
+        <br class="clear" />
+
+        <div>
+            <strong>{{ 'invoice.terms'|trans }}</strong>
+            <p>
+                {{ invoice.terms|nl2br }}
+            </p>
+        </div>
+    {% endif %}
+</div>
 {% endspaceless %}

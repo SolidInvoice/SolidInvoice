@@ -12,11 +12,11 @@
         <p>
             <div style="font-size: 80%; color: #999999">
                 {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
-                {{ "View this invoice online at: %url%"|trans|replace({"%url%" : '<a href="' ~ invoicePath ~ '">' ~ invoicePath ~ '</a>'})|raw }}
+                {{ "invoice.view.online"|trans|replace({"%url%" : '<a href="' ~ invoicePath ~ '">' ~ invoicePath ~ '</a>'})|raw }}
             </div>
         </p>
     </div>
 
-    {% include "CSBillInvoiceBundle::invoice_template.html.twig" %}
+    {% include "CSBillInvoiceBundle:Email:invoice_template.html.twig" %}
 
 </div>{% endspaceless %}

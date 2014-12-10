@@ -1,24 +1,52 @@
-invoice_view: View Invoice
-invoice_edit: Edit Invoice
-invoice_create: Create Invoice
-invoice_create_success: Invoice created successfully
-invoice_edit_success: Invoice created successfully
-status: Status
-client: Client
-total: Total
-discount: Discount
+invoice:
+    create: Create Invoice
+    created: Created
+    summary: Invoice Summary
+    total: Total
+    subtotal: Sub-Total
+    tax: Tax
+    discount: Discount
+    title: "Invoice #%id%"
+    edit: Edit Invoice
+    notes: Notes
+    terms: Terms
+    pay_now: Pay Now
+    client:
+        choose: Choose a client
+        empty: You have not created any clients yet.
+        create: Please add one now
+    create:
+        success: Invoice created successfully
+    edit:
+        success: Invoice updated successfully
+    item:
+        add: Add Item
+        remove: Remove Item
+        heading:
+            description: Description
+            price: Price
+            qty: Qty
+            total: Total
+            tax: Tax
+    save:
+        send: Save and Send
+        draft: Save as Draft
+        cancel: Cancel
+        update: Update
+    view:
+        online: "View this invoice online at: %url%"
+        toolbar:
+            mark_paid: Mark Paid
+            send: Send
+            pay_now: Pay Now
+            cancel: Cancel
+            edit: Edit
+    payment:
+        capture: Do you want to capture a payment for this invoice?
+    mark_paid: Mark Paid
+    capture_payment: Capture Payment
+    view: View Invoice
+    add_payment: Add Payment
+invoice: Invoice
 search: Search
-choose_client: Choose a client
-no_clients: You have not created any clients yet.
-add_new_client: Please add one now
-add_item: Add Item
-subtotal: Sub-Total
-save_send: Save and Send
-save_draft: Save as Draft
-pay_now: Pay Now
-add_payment: Add Payment
-capture_payment_question: Do you want to capture a payment for this invoice?
-mark_paid: Mark Paid
-capture_payment: Capture Payment
-notes: Notes:
-terms: Terms:
+

@@ -21,14 +21,14 @@ class ItemType extends AbstractType
     /**
      * @var TaxRepository
      */
-    private $repo;
+    private $taxRepo;
 
     /**
-     * @param TaxRepository $repo
+     * @param TaxRepository $taxRepo
      */
-    public function __construct(TaxRepository $repo)
+    public function __construct(TaxRepository $taxRepo)
     {
-        $this->repo = $repo;
+        $this->taxRepo = $taxRepo;
     }
 
     /**
@@ -68,7 +68,7 @@ class ItemType extends AbstractType
             )
         );
 
-        if ($this->repo->getTotal() > 0) {
+        if ($this->taxRepo->getTotal() > 0) {
             $builder->add(
                 'tax',
                 new \CSBill\CoreBundle\Form\Type\Tax(),
@@ -81,19 +81,6 @@ class ItemType extends AbstractType
                 )
             );
         }
-
-        $builder->add(
-            'total',
-            'money',
-            array(
-                'mapped' => false,
-                'attr' => array(
-                    'class' => 'input-small invoice-item-total',
-                    'disabled' => true,
-                    'readonly' => true,
-                ),
-            )
-        );
     }
 
     /**
