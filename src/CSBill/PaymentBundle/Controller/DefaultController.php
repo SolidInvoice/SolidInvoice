@@ -115,7 +115,7 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $deleteAction));
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'deleted', 'settings'));
+        $grid->hideColumns(array('updated', 'settings'));
 
         return $grid->getGridResponse('CSBillPaymentBundle:Default:index.html.twig', array('filters' => array()));
     }
