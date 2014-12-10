@@ -44,7 +44,7 @@ class QuoteType extends AbstractType
                 'attr' => array(
                     'class' => 'select2',
                 ),
-                'empty_value' => 'choose_client',
+                'empty_value' => 'quote.client.choose',
             )
         );
 
@@ -57,7 +57,7 @@ class QuoteType extends AbstractType
                 'type' => 'quote_item',
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false
+                'by_reference' => false,
             )
         );
 

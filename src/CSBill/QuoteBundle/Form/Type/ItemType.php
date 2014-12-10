@@ -80,19 +80,6 @@ class ItemType extends AbstractType
                 )
             );
         }
-
-        /*$builder->add(
-            'total',
-            'money',
-            array(
-                'mapped' => false,
-                'attr' => array(
-                    'class' => 'input-small quote-item-total',
-                    'disabled' => true,
-                    'readonly' => true,
-                ),
-            )
-        );*/
     }
 
     /**

@@ -98,11 +98,11 @@
             var tr = $(row).parents('tr'),
                 price = accounting.unformat($('.invoice-item-price', tr).val()),
                 qty   = $('.invoice-item-qty', tr).val(),
-                total = $('.invoice-item-total', tr);
+                total = $('.column-total', tr);
 
-            var invoiceTotal = accounting.formatMoney(qty * price, '');
+            var invoiceTotal = accounting.formatMoney(qty * price);
 
-            total.val(invoiceTotal);
+            total.text(invoiceTotal);
 
             Invoice.updateTotal();
         },
@@ -113,8 +113,8 @@
                 discount,
                 discountAmount;
 
-            $('.invoice-item-total', this.el).each(function() {
-                subTotal += parseFloat(accounting.unformat($(this).val()));
+            $('.column-total', this.el).each(function() {
+                subTotal += parseFloat(accounting.unformat($(this).text()));
             });
 
             discount = parseInt($('#invoice_discount').val() || 0, 10);

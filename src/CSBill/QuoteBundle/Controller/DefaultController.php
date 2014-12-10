@@ -52,12 +52,12 @@ class DefaultController extends BaseController
 
         $viewIcon = $templating->render('{{ icon("eye") }}');
         $viewAction = new RowAction($viewIcon, '_quotes_view');
-        $viewAction->addAttribute('title', $translator->trans('quote_view'));
+        $viewAction->addAttribute('title', $translator->trans('quote.view'));
         $viewAction->addAttribute('rel', 'tooltip');
 
         $editIcon = $templating->render('{{ icon("edit") }}');
         $editAction = new RowAction($editIcon, '_quotes_edit');
-        $editAction->addAttribute('title', $translator->trans('quote_edit'));
+        $editAction->addAttribute('title', $translator->trans('quote.edit'));
         $editAction->addAttribute('rel', 'tooltip');
 
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));

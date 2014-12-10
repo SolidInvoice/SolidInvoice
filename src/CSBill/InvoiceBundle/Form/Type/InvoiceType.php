@@ -33,8 +33,7 @@ class InvoiceType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -45,7 +44,7 @@ class InvoiceType extends AbstractType
                 'attr' => array(
                     'class' => 'select2',
                 ),
-                'empty_value' => 'choose_client',
+                'empty_value' => 'invoice.client.choose',
             )
         );
 
@@ -58,6 +57,7 @@ class InvoiceType extends AbstractType
                 'type' => 'invoice_item',
                 'allow_add' => true,
                 'allow_delete' => true,
+                'by_reference' => false,
             )
         );
 
@@ -74,8 +74,7 @@ class InvoiceType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.FormTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -83,13 +82,14 @@ class InvoiceType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::setDefaultOptions()
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
                 'data_class' => 'CSBill\InvoiceBundle\Entity\Invoice',
-        ));
+            )
+        );
     }
 }

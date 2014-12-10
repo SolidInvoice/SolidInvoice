@@ -36,15 +36,17 @@ quote:
             cancel: Cancel
             edit: Edit
 
-quote_accepted: Quote Accepted and invoice created
-quote_declined: Quote Declined
-quote_cancelled: Quote Cancelled
-quote_sent: Quote Sent
-quote_view: View Quote
-quote_edit: Edit Quote
+    accepted: Quote Accepted and invoice created
+    declined: Quote Declined
+    cancelled: Quote Cancelled
+    sent: Quote Sent
+    view: View Quote
+    edit: Edit Quote
+    client:
+        choose: Choose a client
+        empty: You have not created any clients yet.
+        create: Please add one now
+
 status: Status
 client: Client
 search: Search
-choose_client: Choose a client
-no_clients: You have not created any clients yet.
-add_new_client: Please add one now

@@ -41,7 +41,7 @@
                         {% if quote is defined %}
                             <h2>{{ 'quote.title'|trans({'%id%' : quote.id}) }}</h2>
                         {% else %}
-                            <h2>{{ 'quote'|trans }}</h2>
+                            <h2>{{ 'quote.create'|trans }}</h2>
                         {% endif %}
                     </div>
                     <hr>
@@ -114,6 +114,7 @@
                                         <th>{{ item|trans|title }}</th>
                                     {% endfor %}
                                     <th class="text-right">{{ 'quote.total'|trans }}</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -150,6 +151,7 @@
                                     <td class="thick-line text-right">
                                         <div class="quote-sub-total"></div>
                                     </td>
+                                    <td class="thick-line"></td>
                                 </tr>
                                 {% if form.tax is defined %}
                                     <tr>
@@ -159,6 +161,7 @@
                                         <td class="no-line text-right">
                                             <span class="text-error quote-tax"></span>
                                         </td>
+                                        <td class="no-line"></td>
                                     </tr>
                                 {% endif %}
                                 <tr>
@@ -168,6 +171,7 @@
                                     <td class="no-line text-right">
                                         <span class="text-success quote-discount"></span>
                                     </td>
+                                    <td class="no-line"></td>
                                 </tr>
                                 <tr>
                                     <td class="no-line"></td>
@@ -176,6 +180,7 @@
                                     <td class="no-line text-right">
                                         <div class="quote-total"></div>
                                     </td>
+                                    <td class="no-line"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -240,7 +245,7 @@
     {% endfor %}
 
     Quote.addTemplate('total', accounting.formatMoney(0));
-    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="Remove Item">{{ icon('trash', ['o']) }}</a>');
+    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="{{ 'quote.item.remove'|trans }}">{{ icon('trash', ['o']) }}</a>');
     Quote.addField("total");
     Quote.addField("trash");
 

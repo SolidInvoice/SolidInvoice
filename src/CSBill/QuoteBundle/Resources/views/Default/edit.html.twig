@@ -10,6 +10,7 @@
 {% extends "CSBillQuoteBundle:Default:create.html.twig" %}
 
 {% block title %}{{ "quote.edit"|trans }}{% endblock %}
+{% block page_title %}{{ "quote.edit"|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('quotes_edit', {'quote' : quote}) }}

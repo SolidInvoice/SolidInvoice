@@ -92,7 +92,7 @@
                                                 </td>
                                             {% endif %}
                                             <td class="column-total">
-                                                {{ currency.format(item.total) }}
+                                                {{ item.total|currency }}
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -127,9 +127,9 @@
                                             <td class="no-line"></td>
                                             <td class="no-line text-center"><strong>{{ 'quote.discount'|trans }}</strong></td>
                                             <td class="no-line text-right">
-                                        <span class="text-danger quote-discount">
-                                            {{ currency.format(quote.baseTotal | percentage(quote.discount)) }}
-                                        </span>
+                                                <span class="text-danger quote-discount">
+                                                    {{ quote.baseTotal|percentage(quote.discount)|currency }}
+                                                </span>
                                             </td>
                                         </tr>
                                     {% endif %}
@@ -139,7 +139,7 @@
                                         <td class="no-line text-center"><strong>{{ 'quote.total'|trans }}</strong></td>
                                         <td class="no-line text-right">
                                             <div class="quote-total">
-                                                {{ currency.format(quote.total) }}
+                                                {{ quote.total|currency }}
                                             </div>
                                         </td>
                                     </tr>

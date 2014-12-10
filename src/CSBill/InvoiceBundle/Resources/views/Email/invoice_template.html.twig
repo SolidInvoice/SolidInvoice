@@ -16,7 +16,7 @@
             </td>
         {% endif %}
         <td align="right" width="50%" valign="middle" style="vertical-align:middle; padding: 20px">
-            <h1 style="font-size: 60px; color: #FFFFFF">{{ "quote"|trans }}</h1>
+            <h1 style="font-size: 60px; color: #FFFFFF">{{ "invoice"|trans }}</h1>
         </td>
         <td align="center" width="50%">&nbsp;</td>
     </tr>
@@ -27,18 +27,14 @@
         <tr>
             <td style="width: 50%" valign="top">
                 <h3>
-                    {{ quote.client }}
+                    {{ invoice.client }}
                 </h3>
                 <p>
-                    {% if quote.client.website is not empty %}
-                        <a href="{{ quote.client.website }}">
-                            {{ quote.client.website }}
-                        </a>
-                    {% endif %}
+                    {{ invoice.client.website }}
                 </p>
 
                 <p>
-                    {% for user in quote.users %}
+                    {% for user in invoice.users %}
                         {{ user }}<br />
                     {% endfor %}
                 </p>
@@ -46,26 +42,26 @@
             <td style="width: 25%" align="right">
                 <p>
                     <strong>
-                        {{ "quote.title"|trans({'%id%' : quote.id}) }}:
+                        {{ "invoice.title"|trans({'%id%' : ''}) }}:
                     </strong>
                     <br />
-                    {{ quote.id }}
+                    {{ invoice.id }}
                 </p>
                 <p>
                     <strong>
-                        {{ "quote.total"|trans }}:
+                        {{ "invoice.total"|trans }}:
                     </strong>
                     <br />
-                    {{ currency.format(quote.total) }}
+                    {{ invoice.total|currency }}
                 </p>
             </td>
             <td style="width: 25%" align="right">
                 <p>
                     <strong>
-                        {{ "quote.created"|trans }}:
+                        {{ "invoice.created"|trans }}:
                     </strong>
                     <br />
-                    {{ quote.created|date }}
+                    {{ invoice.created | date }}
                 </p>
             </td>
         </tr>
@@ -76,99 +72,90 @@
     <thead>
         <tr>
             <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "quote.item.heading.description"|trans }}
+                {{ "invoice.item.heading.description"|trans }}
             </th>
             <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "quote.item.heading.price"|trans }}
+                {{ "invoice.item.heading.price"|trans }}
             </th>
             <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                {{ "quote.item.heading.qty"|trans }}
+                {{ "invoice.item.heading.qty"|trans }}
             </th>
-            {% if quote.tax is not empty %}
+            {% if invoice.tax is not empty %}
                 <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
-                    {{ 'quote.item.heading.tax'|trans }}
+                    {{ 'invoice.item.heading.tax'|trans }}
                 </th>
             {% endif %}
             <th style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;">
-                {{ "quote.item.heading.total"|trans }}
+                {{ "invoice.item.heading.total"|trans }}
             </th>
         </tr>
     </thead>
     <tbody>
-        {% for item in quote.items %}
+        {% for item in invoice.items %}
             <tr{% if loop.index is odd %} style="background-color:#f5f5f5"{% endif %}>
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;">
                     {{ item.description }}
                 </td>
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="right">
-                    {{ currency.format(item.price) }}
+                    {{ item.price|currency }}
                 </td>
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="center">
                     {{ item.qty }}
                 </td>
-                {% if quote.tax is not empty %}
+                {% if invoice.tax is not empty %}
                     <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="right">
                         {{ item.tax|currency }}
                     </td>
                 {% endif %}
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ currency.format(item.total) }}
+                    {{ item.total|currency }}
                 </td>
             </tr>
         {% endfor %}
     </tbody>
     <tfoot>
 
-        {% if quote.discount is not empty %}
+        {% if invoice.discount is not empty %}
             <tr>
                 <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <strong>
-                        {{ "quote.discount"|trans }}
-                    </strong>
+                    <strong>{{ "invoice.discount"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    <span style="color:#b94a48">
-                        {{ quote.baseTotal|percentage(quote.discount)|currency }}
-                    </span>
+                    <span style="color:#b94a48">{{ invoice.baseTotal|percentage(invoice.discount)|currency }}</span>
                 </td>
             </tr>
         {% endif %}
 
-        {% if quote.tax is not empty %}
+        {% if invoice.tax is not empty %}
             <tr>
                 <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <strong>
-                        {{ "quote.tax"|trans }}
-                    </strong>
+                    <strong>{{ "invoice.tax"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ quote.tax|currency }}
+                    {{ invoice.tax|currency }}
                 </td>
             </tr>
         {% endif %}
 
         <tr>
             <td colspan="3" align="right" style="border:1px solid #cccccc;">
-                <strong>
-                    {{ "quote.total"|trans }}
-                </strong>
+                <strong>{{ "invoice.total"|trans }}</strong>
             </td>
             <td style="border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                {{ quote.total|currency }}
+                {{ invoice.total|currency }}
             </td>
         </tr>
     </tfoot>
 </table>
 
-    {% if quote.terms is not empty %}
-        <br style="clear:both" />
-        <div>
-            <strong>
-                {{ 'quote.terms'|trans }}
-            </strong>
-            <p>
-                {{ quote.terms|nl2br }}
-            </p>
-        </div>
-    {% endif %}
+{% if invoice.terms is not empty %}
+
+    <br  />
+    <div>
+        <strong>{{ 'invoice.terms'|trans }}</strong>
+        <p>
+            {{ invoice.terms|nl2br }}
+        </p>
+    </div>
+{% endif %}
 {% endspaceless %}

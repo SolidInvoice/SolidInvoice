@@ -60,7 +60,7 @@ class DefaultController extends BaseController
 
         $viewIcon = $templating->render('{{ icon("eye") }}');
         $viewAction = new RowAction($viewIcon, '_invoices_view');
-        $viewAction->addAttribute('title', $translator->trans('invoice_view'));
+        $viewAction->addAttribute('title', $translator->trans('invoice.view'));
         $viewAction->addAttribute('rel', 'tooltip');
         $rowActicons[] = $viewAction;
 
@@ -127,6 +127,7 @@ class DefaultController extends BaseController
      */
     public function createAction(Request $request, Client $client = null)
     {
+        /** @var \CSBill\ClientBundle\Repository\ClientRepository $clients */
         $clients = $this->getRepository('CSBillClientBundle:Client');
 
         if (!$clients->getTotalClients() > 0) {
@@ -144,9 +145,9 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $this->saveInvoice($invoice, $action);
 
-            $this->flash($this->trans('Invoice created successfully'), 'success');
+            $this->flash($this->trans('invoice.create.success'), 'success');
 
-            return $this->redirect($this->generateUrl('_invoices_index'));
+            return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
         }
 
         return $this->render('CSBillInvoiceBundle:Default:create.html.twig', array('form' => $form->createView()));
@@ -165,14 +166,20 @@ class DefaultController extends BaseController
 
         if ($form->isValid()) {
             $action = $request->request->get('save');
-            $this->saveInvoice($invoice, $action);
+            $this->saveInvoice($invoice, 'send' === $action ? $action : null);
 
-            $this->flash($this->trans('Invoice edited successfully'), 'success');
+            $this->flash($this->trans('invoice.edit.success'), 'success');
 
-            return $this->redirect($this->generateUrl('_invoices_index'));
+            return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
         }
 
-        return $this->render('CSBillInvoiceBundle:Default:edit.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'CSBillInvoiceBundle:Default:edit.html.twig',
+            array(
+                'form' => $form->createView(),
+                'invoice' => $invoice
+            )
+        );
     }
 
     /**
@@ -198,10 +205,9 @@ class DefaultController extends BaseController
      * @param Invoice $invoice
      * @param string  $action
      */
-    private function saveInvoice(Invoice $invoice, $action)
+    private function saveInvoice(Invoice $invoice, $action = null)
     {
         $email = false;
-        $em = $this->get('doctrine')->getManager();
 
         $statusRepository = $this->getRepository('CSBillInvoiceBundle:Status');
 
@@ -212,18 +218,20 @@ class DefaultController extends BaseController
                 break;
 
             case 'draft':
-            default:
                 $status = 'draft';
                 break;
+
+            default:
+                $status = null;
         }
 
-        /** @var \CSBill\InvoiceBundle\Entity\Status $invoiceStatus */
-        $invoiceStatus = $statusRepository->findOneBy(array('name' => $status));
+        if (null !== $status) {
+            /** @var \CSBill\InvoiceBundle\Entity\Status $invoiceStatus */
+            $invoiceStatus = $statusRepository->findOneBy(array('name' => $status));
+            $invoice->setStatus($invoiceStatus);
+        }
 
-        $invoice->setStatus($invoiceStatus);
-
-        $em->persist($invoice);
-        $em->flush();
+        $this->save($invoice);
 
         if (true === $email) {
             $this->get('billing.mailer')->sendInvoice($invoice);
