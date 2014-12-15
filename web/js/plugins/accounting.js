@@ -1,12 +1,12 @@
 /*!
- * accounting.js v0.3.2
- * Copyright 2011, Joss Crowcroft
+ * accounting.js v0.4.1
+ * Copyright 2014 Open Exchange Rates
  *
  * Freely distributable under the MIT license.
  * Portions of accounting.js are inspired or borrowed from underscore.js
  *
  * Full details and documentation:
- * http://josscrowcroft.github.com/accounting.js/
+ * http://openexchangerates.github.io/accounting.js/
  */
 
 (function(root, undefined) {
@@ -17,7 +17,7 @@
 	var lib = {};
 
 	// Current version
-	lib.version = '0.3.2';
+	lib.version = '0.4.1';
 
 
 	/* --- Exposed settings --- */
@@ -146,7 +146,7 @@
 				zero : format
 			};
 
-		// If no format, or object is missing valid positive value, use defaults:
+			// If no format, or object is missing valid positive value, use defaults:
 		} else if ( !format || !format.pos || !format.pos.match("%v") ) {
 
 			// If defaults is a string, casts it to an object for faster checking next time:
@@ -166,10 +166,10 @@
 
 	/**
 	 * Takes a string/array of strings, removes all formatting/cruft and returns the raw float value
-	 * alias: accounting.`parse(string)`
+	 * Alias: `accounting.parse(string)`
 	 *
 	 * Decimal must be included in the regular expression to match floats (defaults to
-	 * accounting.settings.number.decimal), so if the number uses a non-standard decimal 
+	 * accounting.settings.number.decimal), so if the number uses a non-standard decimal
 	 * separator, provide it as the second argument.
 	 *
 	 * Also matches bracketed negatives (eg. "$ (1.99)" => -1.99)
@@ -197,9 +197,9 @@
 		var regex = new RegExp("[^0-9-" + decimal + "]", ["g"]),
 			unformatted = parseFloat(
 				("" + value)
-				.replace(/\((.*)\)/, "-$1") // replace bracketed values with negatives
-				.replace(regex, '')         // strip out any cruft
-				.replace(decimal, '.')      // make sure decimal point is standard
+					.replace(/\((.*)\)/, "-$1") // replace bracketed values with negatives
+					.replace(regex, '')         // strip out any cruft
+					.replace(decimal, '.')      // make sure decimal point is standard
 			);
 
 		// This will fail silently which may cause trouble, let's wait and see:
@@ -224,11 +224,12 @@
 
 	/**
 	 * Format a number, with comma-separated thousands and custom precision/decimal places
+	 * Alias: `accounting.format()`
 	 *
 	 * Localise by overriding the precision and thousand / decimal separators
 	 * 2nd parameter `precision` can be an object matching `settings.number`
 	 */
-	var formatNumber = lib.formatNumber = function(number, precision, thousand, decimal) {
+	var formatNumber = lib.formatNumber = lib.format = function(number, precision, thousand, decimal) {
 		// Resursively format arrays:
 		if (isArray(number)) {
 			return map(number, function(val) {
@@ -249,10 +250,10 @@
 				lib.settings.number
 			),
 
-			// Clean up precision
+		// Clean up precision
 			usePrecision = checkPrecision(opts.precision),
 
-			// Do some calc:
+		// Do some calc:
 			negative = number < 0 ? "-" : "",
 			base = parseInt(toFixed(Math.abs(number || 0), usePrecision), 10) + "",
 			mod = base.length > 3 ? base.length % 3 : 0;
@@ -296,10 +297,10 @@
 				lib.settings.currency
 			),
 
-			// Check format (returns object with pos, neg and zero):
+		// Check format (returns object with pos, neg and zero):
 			formats = checkCurrencyFormat(opts.format),
 
-			// Choose which format to use for this value:
+		// Choose which format to use for this value:
 			useFormat = number > 0 ? formats.pos : number < 0 ? formats.neg : formats.zero;
 
 		// Return with currency symbol added:
@@ -334,16 +335,16 @@
 				lib.settings.currency
 			),
 
-			// Check format (returns object with pos, neg and zero), only need pos for now:
+		// Check format (returns object with pos, neg and zero), only need pos for now:
 			formats = checkCurrencyFormat(opts.format),
 
-			// Whether to pad at start of string or after currency symbol:
+		// Whether to pad at start of string or after currency symbol:
 			padAfterSymbol = formats.pos.indexOf("%s") < formats.pos.indexOf("%v") ? true : false,
 
-			// Store value for the length of the longest string in the column:
+		// Store value for the length of the longest string in the column:
 			maxLength = 0,
 
-			// Format the list according to options, store the length of the longest string:
+		// Format the list according to options, store the length of the longest string:
 			formatted = map(list, function(val, i) {
 				if (isArray(val)) {
 					// Recursively format columns if list is a multi-dimensional array:
@@ -355,7 +356,7 @@
 					// Choose which format to use for this value (pos, neg or zero):
 					var useFormat = val > 0 ? formats.pos : val < 0 ? formats.neg : formats.zero,
 
-						// Format this value, push into formatted list and save the length:
+					// Format this value, push into formatted list and save the length:
 						fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(val), checkPrecision(opts.precision), opts.thousand, opts.decimal));
 
 					if (fVal.length > maxLength) maxLength = fVal.length;

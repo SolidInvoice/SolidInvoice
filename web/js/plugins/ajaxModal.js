@@ -42,21 +42,22 @@
 
         $(this).each(function() {
 
-            var trigger = $(this);
+            var trigger = $(this),
+                that = this;
 
             if ($.isFunction(route) && callback === undefined) {
-                this.callback = route;
+                that.callback = route;
                 if (trigger.data('target')) {
-                    this.route = trigger.data('target');
+                    that.route = trigger.data('target');
                 } else if (trigger.attr('href')) {
-                    this.route = trigger.attr('href');
+                    that.route = trigger.attr('href');
                 }
             } else {
-                this.route = route;
-                this.callback = callback;
+                that.route = route;
+                that.callback = callback;
             }
 
-            return new AjaxModal($modal, trigger, this.route, this.callback);
+            return new AjaxModal($modal, trigger, that.route, that.callback);
         });
     };
 })(window.jQuery);

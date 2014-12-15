@@ -13,7 +13,7 @@ body.modal-open,
     margin-right: 0;
 }
 
-.modal:not(.bootbox) {
+.modal {
     left: 50%;
     bottom: auto;
     right: auto;
