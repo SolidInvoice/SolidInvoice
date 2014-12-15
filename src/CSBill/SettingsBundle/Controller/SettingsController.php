@@ -14,6 +14,7 @@ namespace CSBill\SettingsBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\SettingsBundle\Form\Type\SettingsType;
 use CSBill\SettingsBundle\Model\Setting;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class SettingsController
@@ -26,7 +27,7 @@ class SettingsController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         /** @var \CSBill\SettingsBundle\Manager\SettingsManager $manager */
         $manager = $this->get('settings');
@@ -39,14 +40,12 @@ class SettingsController extends BaseController
 
         $form = $this->createForm(new SettingsType(), $settings, array('manager' => $manager));
 
-        $request = $this->getRequest();
+        $form->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-
+        if ($form->isValid()) {
             $manager->set($request->request->get('settings'));
 
-            $this->flash($this->trans('Settings saved successfully!'), 'success');
+            $this->flash($this->trans('settings.saved.success'), 'success');
 
             return $this->redirect($this->generateUrl($request->get('_route')));
         }

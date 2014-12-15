@@ -19,7 +19,7 @@
 
     {% if not form[section].rendered %}
         <legend>
-        {{ section|replace({"_" : " "})|title }}
+            {{ section|replace({"_" : " "})|title }}
         </legend>
 
         {{ form_widget(form[section]) }}

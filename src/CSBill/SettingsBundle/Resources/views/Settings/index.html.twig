@@ -7,40 +7,39 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
+{% extends 'CSBillCoreBundle:Layout:one_column_left.html.twig' %}
 
 {% import "CSBillSettingsBundle::macros.html.twig" as _macro %}
 
 {% block title %}{{ "Settings"|trans }}{% endblock %}
 
+{% block sidebar %}
+    <ul class="nav nav-tabs nav-stacked">
+        {% for section,setting in settings %}
+            <li{{ loop.first ? ' class="active"' }}>
+                <a href="#{{ section }}" data-toggle="tab">
+                    {{ section|trans|title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock sidebar %}
+
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-2 tabs-left">
-            <ul class="nav nav-tabs nav-stacked">
-                {% for section,setting in settings %}
-                    <li{{ loop.first ? ' class="active"' }}>
-                        <a href="#{{ section }}" data-toggle="tab">
-                            {{ section|trans|title }}
-                        </a>
-                    </li>
+    <div class="widget">
+        {{ form_start(form) }}
+            <div class="tab-content">
+                {% for section, setting in settings %}
+                    <div class="tab-pane{{ loop.first ? ' active' }}" id="{{ section }}">
+                        {{ _macro.settings_section(section, setting, form) }}
+                    </div>
                 {% endfor %}
-            </ul>
-        </div>
-        <div class="col-lg-9 col-md-9">
-            <form method="post" {{ form_enctype(form) }}>
-                <div class="tab-content">
-                    {% for section,setting in settings %}
-                        <div class="tab-pane{{ loop.first ? ' active' }}" id="{{ section }}">
-                            {{ _macro.settings_section(section, setting, form) }}
-                        </div>
-                    {% endfor %}
-                </div>
+            </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-info">{{ icon('save') }} {{ "Save"|trans }}</button>
-                </div>
-            </form>
-        </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-info">{{ icon('save') }} {{ "settings.save"|trans }}</button>
+            </div>
+        {{ form_end(form) }}
     </div>
 {% endblock %}
