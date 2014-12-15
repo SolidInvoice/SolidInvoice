@@ -7,57 +7,14 @@
  # with this source code in the file LICENSE.
  #}
 
-{% use 'form_div_layout.html.twig' %}
+{% extends 'bootstrap_3_layout.html.twig' %}
 
-{% block money_widget %}
-{% spaceless %}
-    <div class="{{ money_addon_class }}">{{ parent() }}</div>
-{% endspaceless %}
-{% endblock money_widget %}
-
-{% block form_widget_compound %}
-{% spaceless %}
-    <div {{ block('widget_container_attributes') }}>
-        <fieldset>
-            {{ block('form_rows') }}
-            {{ form_rest(form) }}
-        </fieldset>
-    </div>
-{% endspaceless %}
-{% endblock form_widget_compound %}
-
-{% block widget_attributes %}
-{% spaceless %}
+{% block widget_attributes -%}
     id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} data-pattern="{{ pattern }}"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
-{% endspaceless %}
-{% endblock widget_attributes %}
+{%- endblock widget_attributes %}
 
-{% block form_row %}
-{% spaceless %}
-    <div class="form-group{{ errors|length > 0 ? ' has-error' : '' }}{{ 'checkbox' in form.vars.block_prefixes ? ' checkbox ' }} {{ form.vars.attr.class|default('') }}">
-
-        {{ form_label(form, label|default(null)) }}
-        {{ form_widget(form) }}
-
-        {#
-            If the child is a compound form, the errors are rendered inside
-            the container. See also block form_rows.
-        #}
-
-        {% if not compound %}
-            {{ form_errors(form) }}
-        {% endif %}
-
-        {% if help is defined and help is not empty %}
-            <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
-        {% endif %}
-    </div>
-{% endspaceless %}
-{% endblock form_row %}
-
-{% block form_rows %}
-{% spaceless %}
+{% block form_rows -%}
     {{ form_errors(form) }}
     {% for child in form %}
         {% if prototype is defined %}
@@ -68,28 +25,28 @@
             </div>
         {% endif %}
     {% endfor %}
-{% endspaceless %}
-{% endblock form_rows %}
+{%- endblock form_rows %}
 
-{% block form_errors %}
-    {% spaceless %}
-        {% if errors|length > 0 %}
-            <div class="{{ compound ? "alert alert-danger" : "help-block" }}">
-                {% for error in errors %}
-                    {{
-                        error.messagePluralization is null
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
+            <ul class="list-unstyled">
+                {%- for error in errors -%}
+                    <li>
+                        {{ icon('exclamation-sign') }}
+                        {{ error.messagePluralization is null
                             ? error.messageTemplate|trans(error.messageParameters, 'validators')
                             : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
-                    }}
-                    <br />
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endspaceless %}
-{% endblock form_errors %}
+                        }}
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {% if form.parent %}</span>{% else %}</div>{% endif %}
+        {%- endif %}
+{%- endblock form_errors %}
 
-{% block form_label %}
-{% spaceless %}
+{% block form_label -%}
+    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label')|trim}) %}
     {% if label is empty %}
         {% set label = name|humanize %}
     {% endif %}
@@ -99,41 +56,17 @@
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
         {% endif %}
 
-        {% set label_attr = label_attr|merge({'for': id}) %}
-        <label class="control-label"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
-    {% else %}
-        {#{% if prototype is defined %}
-            <legend><h2{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</h2></legend>
-        {% endif %}#}
+        {{- parent() -}}
     {% endif %}
-{% endspaceless %}
-{% endblock form_label %}
+{%- endblock form_label %}
 
-{% block choice_widget_expanded %}
-{% spaceless %}
-    <div {{ block('widget_container_attributes') }}>
-    {% for child in form %}
-        <div class="{{ child.vars.block_prefixes|join(' ') }}">
-            {{ form_widget(child) }}
-            {{ form_label(child) }}
-        </div>
-    {% endfor %}
-    </div>
-{% endspaceless %}
-{% endblock choice_widget_expanded %}
-
-{% block percent_widget %}
-{% spaceless %}
+{% block percent_widget -%}
     {% set type = type|default('number') %}
 
-    <div class="input-group">
-        {{ block('form_widget_simple') }} <div class="input-group-addon">%</div>
-    </div>
-{% endspaceless %}
-{% endblock percent_widget %}
+    {{- parent() -}}
+{%- endblock percent_widget %}
 
-{% block image_upload_widget %}
-{% spaceless %}
+{% block image_upload_widget -%}
 
     {{ block('form_widget_simple') }}
 
@@ -192,23 +125,7 @@
             {% endif %}
         });
     </script>
-{% endspaceless %}
-{% endblock image_upload_widget %}
-
-{% block form_widget_simple %}
-    {% spaceless %}
-        {% set type = type|default('text') %}
-        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
-    {% endspaceless %}
-{% endblock form_widget_simple %}
-
-{% block textarea_widget %}
-    {% spaceless %}
-        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-        <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
-    {% endspaceless %}
-{% endblock textarea_widget %}
+{%- endblock image_upload_widget %}
 
 {% block contact_detail_widget %}
     {% include "CSBillClientBundle:Form:contact_details.html.twig" %}
@@ -218,8 +135,10 @@
     {% include "CSBillClientBundle:Form:contacts.html.twig" %}
 {% endblock contact_widget %}
 
-{% block choice_widget_collapsed %}
-    {% spaceless %}
+{% block tax_field_widget -%}
+    {% if expanded %}
+        {{ block('choice_widget_expanded') }}
+    {% else %}
         {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
         {% if required and placeholder is none and not placeholder_in_choices %}
             {% set required = false %}
@@ -236,57 +155,26 @@
                 {% endif %}
             {% endif %}
             {% set options = choices %}
-            {{ block('choice_widget_options') }}
+            {{ block('tax_choice_widget_options') }}
         </select>
-    {% endspaceless %}
-{% endblock choice_widget_collapsed %}
-
-{% block tax_field_widget %}
-{% spaceless %}
-    {% if expanded %}
-        {{ block('choice_widget_expanded') }}
-    {% else %}
-        {% spaceless %}
-            {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-            {% if required and placeholder is none and not placeholder_in_choices %}
-                {% set required = false %}
-            {% endif %}
-            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-                {% if placeholder is not none %}
-                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
-                {% endif %}
-                {% if preferred_choices|length > 0 %}
-                    {% set options = preferred_choices %}
-                    {{ block('choice_widget_options') }}
-                    {% if choices|length > 0 and separator is not none %}
-                        <option disabled="disabled">{{ separator }}</option>
-                    {% endif %}
-                {% endif %}
-                {% set options = choices %}
-                {{ block('tax_choice_widget_options') }}
-            </select>
-        {% endspaceless %}
     {% endif %}
-{% endspaceless %}
-{% endblock %}
+{%- endblock %}
 
-{% block tax_choice_widget_options %}
-    {% spaceless %}
-        {% for group_label, choice in options %}
-            {% if choice is iterable %}
-                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
-                    {% set options = choice %}
-                    {{ block('choice_widget_options') }}
-                </optgroup>
-            {% else %}
-                {% set attrs %}{% spaceless %}
-                    data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}"
-            {% endspaceless %}{% endset %}
-                <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }} {{ choice.data.id }}</option>
-            {% endif %}
-        {% endfor %}
-    {% endspaceless %}
-{% endblock tax_choice_widget_options %}
+{% block tax_choice_widget_options -%}
+    {% for group_label, choice in options %}
+        {% if choice is iterable %}
+            <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                {% set options = choice %}
+                {{ block('choice_widget_options') }}
+            </optgroup>
+        {% else %}
+            {% set attrs -%}
+                data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}"
+            {%- endset %}
+            <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }} {{ choice.data.id }}</option>
+        {% endif %}
+    {% endfor %}
+{%- endblock tax_choice_widget_options %}
 
 {% block address_widget %}
     {% set id = random() %}

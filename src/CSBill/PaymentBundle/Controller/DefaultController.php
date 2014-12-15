@@ -115,7 +115,7 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $deleteAction));
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'settings'));
+        $grid->hideColumns(array('updated', 'settings', 'deletedAt'));
 
         return $grid->getGridResponse('CSBillPaymentBundle:Default:index.html.twig', array('filters' => array()));
     }
@@ -147,13 +147,11 @@ class DefaultController extends BaseController
                 }
             }
 
-            $entityManager = $this->getEm();
-            $entityManager->persist($paymentMethod);
-            $entityManager->flush();
+            $this->save($paymentMethod);
 
             $this->flash($this->trans($payment ? 'payment_method_updated' : 'payment_method_added'), 'success');
 
-            return $this->redirect($this->generateUrl('_payments_index'));
+            return $this->redirect($this->generateUrl('_payment_settings_index'));
         }
 
         return $this->render(

@@ -23,4 +23,18 @@ class PaymentMethod extends EntityRepository
 
         return $settings['settings'];
     }
+
+    /**
+     * Get the total number of payment gateways configured
+     *
+     * @return int
+     */
+    public function getTotalMethodsConfigured()
+    {
+        $queryBuilder = $this->createQueryBuilder('pm');
+
+        $queryBuilder->select('COUNT(pm.id)');
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
 }

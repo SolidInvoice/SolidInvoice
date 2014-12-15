@@ -86,7 +86,7 @@
                                             <td class="column-qty">
                                                 {{ item.qty }}
                                             </td>
-                                            {% if item.tax is not empty %}
+                                            {% if quote.tax is not empty %}
                                                 <td class="column-tax">
                                                     {{ item.tax|currency }}
                                                 </td>
@@ -102,6 +102,9 @@
                                     <tr>
                                         <td class="thick-line"></td>
                                         <td class="thick-line"></td>
+                                        {% if quote.tax is not empty %}
+                                            <td class="thick-line"></td>
+                                        {% endif %}
                                         <td class="thick-line text-center"><strong>{{ 'quote.subtotal'|trans }}</strong></td>
                                         <td class="thick-line text-right">
                                             <div class="quote-sub-total">
@@ -111,6 +114,7 @@
                                     </tr>
                                     {% if quote.tax is not empty %}
                                         <tr>
+                                            <td class="no-line"></td>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
                                             <td class="no-line text-center"><strong>{{ 'quote.tax'|trans }}</strong></td>
@@ -125,6 +129,9 @@
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
+                                            {% if quote.tax is not empty %}
+                                                <td class="no-line"></td>
+                                            {% endif %}
                                             <td class="no-line text-center"><strong>{{ 'quote.discount'|trans }}</strong></td>
                                             <td class="no-line text-right">
                                                 <span class="text-danger quote-discount">
@@ -136,6 +143,9 @@
                                     <tr>
                                         <td class="no-line"></td>
                                         <td class="no-line"></td>
+                                        {% if quote.tax is not empty %}
+                                            <td class="no-line"></td>
+                                        {% endif %}
                                         <td class="no-line text-center"><strong>{{ 'quote.total'|trans }}</strong></td>
                                         <td class="no-line text-right">
                                             <div class="quote-total">

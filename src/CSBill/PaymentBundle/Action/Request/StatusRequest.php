@@ -3,6 +3,7 @@
 namespace CSBill\PaymentBundle\Action\Request;
 
 use CSBill\PaymentBundle\Entity\Status;
+use CSBill\PaymentBundle\Exception\NotImplementedException;
 use Payum\Core\Request\BaseGetStatus;
 
 class StatusRequest extends BaseGetStatus
@@ -133,5 +134,65 @@ class StatusRequest extends BaseGetStatus
     public function isUnknown()
     {
         return $this->status === STATUS::STATUS_UNKNOWN;
+    }
+
+    /**
+     * @TODO: Add implementation
+     *
+     * @throws NotImplementedException
+     */
+    public function markCaptured()
+    {
+        throw new NotImplementedException;
+    }
+
+    /**
+     * @TODO: Add implementation
+     *
+     * @throws NotImplementedException
+     */
+    public function isCaptured()
+    {
+        throw new NotImplementedException;
+    }
+
+    /**
+     * @TODO: Add implementation
+     *
+     * @throws NotImplementedException
+     */
+    public function isAuthorized()
+    {
+        throw new NotImplementedException;
+    }
+
+    /**
+     * @TODO: Add implementation
+     *
+     * @throws NotImplementedException
+     */
+    public function markAuthorized()
+    {
+        throw new NotImplementedException;
+    }
+
+    /**
+     * @TODO: Add implementation
+     *
+     * @throws NotImplementedException
+     */
+    public function isRefunded()
+    {
+        throw new NotImplementedException;
+    }
+
+    /**
+     * @TODO: Add implementation
+     *
+     * @throws NotImplementedException
+     */
+    public function markRefunded()
+    {
+        throw new NotImplementedException;
     }
 }

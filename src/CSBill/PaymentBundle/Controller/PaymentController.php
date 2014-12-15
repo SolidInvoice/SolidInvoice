@@ -39,26 +39,27 @@ class PaymentController extends BaseController
 
         $paymentManager = $this->get('csbill_payment.method.manager');
 
-        if (!count($paymentManager) > 0) {
+        /** @var \CSBill\PaymentBundle\Repository\PaymentMethod $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
+
+        if (0 === $paymentRepository->getTotalMethodsConfigured() || 0 === count($paymentManager)) {
             throw $this->createNotFoundException('No payment methods configured');
         }
 
         $builder = $this->createFormBuilder();
-
-        $user = $this->getUser();
 
         $builder->add(
             'payment_method',
             'entity',
             array(
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
-                'query_builder' => function (PaymentMethod $repository) use ($user) {
+                'query_builder' => function (PaymentMethod $repository) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
                     $expression = new Expr();
                     $queryBuilder->where($expression->eq('pm.enabled', 1));
 
                     // If user is not logged in, only show public exposed payment methods
-                    if (null === $user) {
+                    if (null === $this->getUser()) {
                         $queryBuilder->AndWhere($expression->eq('pm.public', 1));
                     }
 
@@ -96,9 +97,7 @@ class PaymentController extends BaseController
             $payment->setCurrency($this->container->getParameter('currency'));
             $payment->setClient($invoice->getClient());
 
-            $entityManager = $this->getEm();
-            $entityManager->persist($payment);
-            $entityManager->flush();
+            $this->save($payment);
 
             $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
                 $paymentName,
@@ -146,7 +145,7 @@ class PaymentController extends BaseController
         $paymentDetails->setStatus(
             $paymentStatus ?: $this
                 ->getRepository('CSBillPaymentBundle:Status')
-                ->findOneBy(array('name' => $status->getStatus()))
+                ->findOneBy(array('name' => $status->getValue()))
         );
 
         $paymentDetails->setCompleted(new \DateTime('now'));
@@ -171,8 +170,6 @@ class PaymentController extends BaseController
             $message = $paymentDetails->getMessage();
             $this->flash(sprintf('Payment failed: %s', $message), 'error');
         }
-
-        $entityManager->flush();
 
         $event = new PaymentCompleteEvent($paymentDetails);
         $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);

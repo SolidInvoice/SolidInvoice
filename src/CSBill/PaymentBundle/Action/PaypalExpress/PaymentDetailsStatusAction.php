@@ -1,20 +1,20 @@
 <?php
 namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
+use CSBill\PaymentBundle\Action\Request\StatusRequest;
+use CSBill\PaymentBundle\Entity\PaymentDetails;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\StatusRequestInterface;
 
 class PaymentDetailsStatusAction extends PaymentAwareAction
 {
     /**
      * @param \CSBill\PaymentBundle\Action\Request\StatusRequest $request
-     *                                                                    {@inheritdoc}
+     * {@inheritdoc}
      */
     public function execute($request)
     {
-        /** @var $request \Payum\Core\Request\StatusRequestInterface */
         if (false == $this->supports($request)) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
@@ -37,12 +37,13 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
      */
     public function supports($request)
     {
-        if (false == $request instanceof StatusRequestInterface) {
+        if (!$request instanceof StatusRequest) {
             return false;
         }
 
         $model = $request->getModel();
-        if (false == $model instanceof \ArrayAccess) {
+
+        if (!$model instanceof PaymentDetails) {
             return false;
         }
 

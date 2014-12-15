@@ -4,8 +4,8 @@ namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
 use CSBill\PaymentBundle\Entity\PaymentDetails;
 use Payum\Core\Action\PaymentAwareAction;
+use Payum\Core\Request\Capture;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\SecuredCapture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 
 class CaptureOrderAction extends PaymentAwareAction
@@ -35,7 +35,6 @@ class CaptureOrderAction extends PaymentAwareAction
      */
     public function execute($request)
     {
-        /** @var $request SecuredCapture */
         if (!$this->supports($request)) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
@@ -69,7 +68,7 @@ class CaptureOrderAction extends PaymentAwareAction
             if (null !== $invoice->getDiscount()) {
                 $discount = ($invoice->getBaseTotal() * $invoice->getDiscount());
                 $details['L_PAYMENTREQUEST_0_NAME' . $counter] = 'Discount';
-                $details['L_PAYMENTREQUEST_0_AMT' . $counter]  = number_format($discount, 2) * -1;
+                $details['L_PAYMENTREQUEST_0_AMT' . $counter]  = '-' . number_format($discount, 2);
                 $details['L_PAYMENTREQUEST_0_QTY' . $counter]  = 1;
             }
 
@@ -96,7 +95,7 @@ class CaptureOrderAction extends PaymentAwareAction
     public function supports($request)
     {
         return
-            $request instanceof SecuredCapture &&
+            $request instanceof Capture &&
             $request->getModel() instanceof PaymentDetails &&
             !$request->getModel()->getDetails();
     }
