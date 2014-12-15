@@ -1,3 +1,9 @@
+exception:
+    error:
+        text: The following error occurred:
+    not_found:
+        text: Sorry, but the page you were trying to view does not exist.
+
 tax:
     rates:
         title: Tax Rates

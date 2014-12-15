@@ -1,0 +1,11 @@
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block content %}
+    <div class="widget" align="center">
+        <h1>
+            {{ icon('ban') }} {{ status_code }} {{ status_text }}
+        </h1>
+        <p>{{ 'exception.error.text'|trans }}</p>
+        <p class="text-danger">{{ exception.message }}</p>
+    </div>
+{% endblock content %}
