@@ -40,7 +40,7 @@ class PaymentMethodForm extends AbstractType
                 'label'       => 'payment.create.force',
                 'help'        => 'force_payment_status_help',
                 'help_type'   => 'block',
-                'empty_value' => 'choose_force_status',
+                'placeholder' => 'choose_force_status',
                 'empty_data'  => null,
                 'attr'  => array(
                     'class' => 'select2',
@@ -64,7 +64,7 @@ class PaymentMethodForm extends AbstractType
             'choice',
             array(
                 'choices'     => $options,
-                'empty_value' => 'Please Choose',
+                'placeholder' => 'Please Choose',
                 'attr'        => array(
                     'class' => 'select2',
                 ),

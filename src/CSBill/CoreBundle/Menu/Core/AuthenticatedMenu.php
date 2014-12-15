@@ -17,14 +17,17 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class AuthenticatedMenu extends ContainerAware implements BuilderInterface
 {
+    /**
+     * @return bool
+     */
     public function validate()
     {
         try {
-            $security = $this->container->get('security.context');
+            $security = $this->container->get('security.authorization_checker');
+
+            return $security->isGranted('IS_AUTHENTICATED_REMEMBERED');
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }
-
-        return $security->isGranted('IS_AUTHENTICATED_REMEMBERED');
     }
 }

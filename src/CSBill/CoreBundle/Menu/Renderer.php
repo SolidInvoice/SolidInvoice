@@ -15,7 +15,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface as Item;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Renderer\ListRenderer;
-use Knp\Menu\Silex\Voter\RouteVoter;
+use Knp\Menu\Matcher\Voter\RouteVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
@@ -51,11 +51,9 @@ class Renderer extends ListRenderer
         $matcher = new Matcher();
 
         try {
-            $request = $this->container->get('request');
+            $request = $this->container->get('request_stack')->getCurrentRequest();
 
-            $voter = new RouteVoter($request->get('_route'));
-
-            $voter->setRequest($request);
+            $voter = new RouteVoter($request);
             $matcher->addVoter($voter);
         } catch (InactiveScopeException $e) {
             // We are most probably running from the command line, which means there is no 'request' service.

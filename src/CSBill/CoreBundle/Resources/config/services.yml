@@ -54,7 +54,7 @@ services:
         calls:
             - [setEventDispatcher, [@event_dispatcher]]
             - [setTemplating, [@templating]]
-            - [setSecurity, [@security.context]]
+            - [setSecurity, [@security.token_storage]]
 
     csbill_core.form.type.image_upload:
         class: %csbill_core.form.type.image_upload.class%

@@ -34,7 +34,7 @@ class SystemInformationForm extends AbstractType
                 'constraints' => array(
                     new Constraints\NotBlank(array('message' => 'Please select a locale')),
                 ),
-                'empty_value' => '',
+                'placeholder' => '',
             )
         );
 
@@ -46,14 +46,9 @@ class SystemInformationForm extends AbstractType
                 'constraints' => array(
                     new Constraints\NotBlank(array('message' => 'Please select a currency')),
                 ),
-                'empty_value' => '',
+                'placeholder' => '',
             )
         );
-
-        /*$builder->add(
-            'logo',
-            'image_upload'
-        );*/
 
         $builder->add(
             'username',

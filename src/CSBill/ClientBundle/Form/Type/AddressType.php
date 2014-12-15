@@ -33,7 +33,7 @@ class AddressType extends AbstractType
                 'attr' => array(
                     'class' => 'select2',
                 ),
-                'empty_value' => 'client.address.country.select',
+                'placeholder' => 'client.address.country.select',
             )
         );
     }

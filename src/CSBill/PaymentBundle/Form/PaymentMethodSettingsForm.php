@@ -38,7 +38,7 @@ class PaymentMethodSettingsForm extends AbstractType
 
             case 'choice' :
                 $options['choices'] = $settings['options'];
-                $options['empty_value'] = 'Please Choose';
+                $options['placeholder'] = 'Please Choose';
                 $options['attr'] = array('class' => 'select2');
                 break;
         }

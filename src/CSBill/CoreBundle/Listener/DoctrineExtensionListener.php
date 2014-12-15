@@ -30,13 +30,17 @@ class DoctrineExtensionListener extends ContainerAware
      */
     public function onKernelRequest()
     {
-        $securityContext = $this->container->get('security.context', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+        $securityStorage = $this->container->get('security.token_storage', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+        $securityChecker = $this->container->get('security.authorization_checker', ContainerInterface::NULL_ON_INVALID_REFERENCE);
 
-        if (null !== $securityContext &&
-            null !== $securityContext->getToken() &&
-            $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (
+            null !== $securityStorage &&
+            null !== $securityChecker &&
+            null !== ($token = $securityStorage->getToken()) &&
+            $securityChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
+        ) {
             $loggable = $this->container->get('gedmo.listener.loggable');
-            $loggable->setUsername($securityContext->getToken()->getUsername());
+            $loggable->setUsername($token->getUsername());
         }
     }
 }

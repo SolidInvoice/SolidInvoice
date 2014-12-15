@@ -66,7 +66,7 @@ class PaymentController extends BaseController
                 },
                 'required' => true,
                 'constraints' => new NotBlank(),
-                'empty_value' => 'Choose Payment Method',
+                'placeholder' => 'Choose Payment Method',
                 'attr' => array(
                     'class' => 'select2',
                 ),
@@ -123,7 +123,7 @@ class PaymentController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
-     * @throws \Payum\Core\Request\InteractiveRequestInterface
+     * @throws \Payum\Core\Reply\ReplyInterface
      */
     public function captureDoneAction(Request $request)
     {
@@ -177,7 +177,7 @@ class PaymentController extends BaseController
         $event = new PaymentCompleteEvent($paymentDetails);
         $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
 
-        $security = $this->get('security.context');
+        $security = $this->get('security.authorization_checker');
 
         if ($security->isGranted('ROLE_ADMIN')) {
             $url = $this->generateUrl('_invoices_view', array('id' => $invoice->getId()));

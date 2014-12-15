@@ -73,7 +73,7 @@ class ItemType extends AbstractType
                 new \CSBill\CoreBundle\Form\Type\Tax(),
                 array(
                     'class' => 'CSBill\CoreBundle\Entity\Tax',
-                    'empty_value' => 'Choose Tax Type',
+                    'placeholder' => 'Choose Tax Type',
                     'attr' => array(
                         'class' => 'input-mini quote-item-tax',
                     ),

@@ -44,7 +44,7 @@ class InvoiceType extends AbstractType
                 'attr' => array(
                     'class' => 'select2',
                 ),
-                'empty_value' => 'invoice.client.choose',
+                'placeholder' => 'invoice.client.choose',
             )
         );
 

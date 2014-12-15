@@ -76,7 +76,7 @@ class ViewController extends BaseController
             throw $this->createNotFoundException(sprintf('"%s" with id %s does not exist', $object, $uuid));
         }
 
-        if (true === $this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (true === $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->redirect($this->generateUrl($this->route, array('id' => $entity->getId())));
         }
 

@@ -44,7 +44,7 @@ class QuoteType extends AbstractType
                 'attr' => array(
                     'class' => 'select2',
                 ),
-                'empty_value' => 'quote.client.choose',
+                'placeholder' => 'quote.client.choose',
             )
         );
 

@@ -44,7 +44,7 @@ class TaxType extends AbstractType
             array(
                 'choices' => TaxEntity::getTypes(),
                 'help' => 'tax.rates.explanation',
-                'empty_value' => 'tax.rates.type.select',
+                'placeholder' => 'tax.rates.type.select',
             )
         );
     }

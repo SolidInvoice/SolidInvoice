@@ -23,7 +23,7 @@ class Main extends AuthenticatedMenu
      */
     public function userMenu(Item $menu)
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         $username = $user->getUsername() . ' <b class="caret"></b>';
 

@@ -21,7 +21,7 @@ use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\SettingsBundle\Manager\SettingsManager;
 use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Templating\EngineInterface;
 
 class Mailer implements MailerInterface
@@ -37,9 +37,9 @@ class Mailer implements MailerInterface
     protected $templating;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorage
      */
-    protected $security;
+    protected $securityToken;
 
     /**
      * @var SettingsManager
@@ -82,11 +82,11 @@ class Mailer implements MailerInterface
     /**
      * Set the security instance
      *
-     * @param SecurityContextInterface $security
+     * @param TokenStorage $securityToken
      */
-    public function setSecurity(SecurityContextInterface $security)
+    public function setSecurity(TokenStorage $securityToken)
     {
-        $this->security = $security;
+        $this->securityToken = $securityToken;
     }
 
     /**
@@ -181,7 +181,7 @@ class Mailer implements MailerInterface
             $message->setFrom($fromAddress, $fromName);
         } else {
             // if a from address is not specified in the config, then we use the currently logged-in users address
-            $token = $this->security->getToken();
+            $token = $this->securityToken->getToken();
 
             $user = $token->getUser();
 
