@@ -1,4 +1,7 @@
 quote:
+    list:
+        status_legend: Quote Status Legend
+        title: Quotes
     summary: Quote Summary
     create: Create Quote
     created: Created

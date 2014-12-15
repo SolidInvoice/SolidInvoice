@@ -1,4 +1,9 @@
 invoice:
+    list:
+        status_legend: Invoice Status Legend
+        title: Invoices
+        outstanding: Outstanding
+        income: Income
     create: Create Invoice
     created: Created
     summary: Invoice Summary

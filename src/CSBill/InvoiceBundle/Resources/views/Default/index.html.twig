@@ -11,7 +11,7 @@
 
 {% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
 
-{% block title %}{{ "Invoices"|trans }}{% endblock %}
+{% block title %}{{ "invoice.list.title"|trans }}{% endblock %}
 
 {% block sidebar_left %}
     {{ menu('invoices_index') }}
@@ -21,7 +21,7 @@
 
     {{ parent() }}
 
-    <h5>{{ "Invoice Status Legend"|trans }}</h5>
+    <h5>{{ "invoice.list.status_legend"|trans }}</h5>
 
     {% for status in status_list %}
         {{ status_label(status) }}
@@ -29,22 +29,20 @@
 {% endblock content %}
 
 {% block sidebar_right %}
-    <div class="well well-small">
-        <ul class="nav">
-            <li>
-                <a class="btn btn-lg btn-default" href="{{ path("_invoices_create") }}">
-                    {{ icon('file', ['text', 'o']) }} {{ "Create Invoice"|trans }}
-                </a>
-            </li>
-        </ul>
+    <div class="well well-small right-nav">
+
+        <a class="btn btn-lg btn-info action-button" href="{{ path("_invoices_create") }}">
+            {{ icon('file', ['text', 'o']) }} {{ "invoice.create"|trans }}
+        </a>
+
         <div class="row">
             <div class="text-center text-success">
                 <h3>{{ invoice_manager.totalIncome|currency }}</h3>
-                {{ "Income"|trans }}
+                {{ "invoice.list.income"|trans }}
             </div>
             <div class="text-center text-danger">
                 <h3>{{ invoice_manager.totalOutstanding|currency }}</h3>
-                {{ "Outstanding"|trans }}
+                {{ "invoice.list.outstanding"|trans }}
             </div>
         </div>
 

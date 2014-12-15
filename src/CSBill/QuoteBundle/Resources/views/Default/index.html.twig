@@ -11,7 +11,7 @@
 
 {% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
 
-{% block title %}{{ "Quotes"|trans }}{% endblock %}
+{% block title %}{{ "quote.list.title"|trans }}{% endblock %}
 
 {% block sidebar_left %}
     {{ menu('quotes_index') }}
@@ -21,7 +21,7 @@
 
     {{ parent() }}
 
-    <h5>{{ "Quote Status Legend"|trans }}</h5>
+    <h5>{{ "quote.list.status_legend"|trans }}</h5>
 
     {% for status in status_list %}
         {{ status_label(status) }}
@@ -30,9 +30,9 @@
 {% endblock content %}
 
 {% block sidebar_right %}
-    <div class="well well-small">
-        <a class="btn btn-lg btn-default" href="{{ path("_quotes_create") }}">
-            {{ icon('file', ['text', 'o']) }} {{ "Create Quote"|trans }}
+    <div class="well well-small right-nav">
+        <a class="btn btn-lg btn-info action-button" href="{{ path("_quotes_create") }}">
+            {{ icon('file', ['text', 'o']) }} {{ "quote.create"|trans }}
         </a>
 
         <ul class="nav nav-list">
