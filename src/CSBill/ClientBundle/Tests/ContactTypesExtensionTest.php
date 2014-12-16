@@ -13,7 +13,7 @@ namespace CSBill\ClientBundle\Tests\Twig\Extension;
 
 use CSBill\ClientBundle\Twig\Extension\ContactTypesExtension;
 
-class ContactTypesExtensionTest extends \PHPUnit_FrameWork_TestCase
+class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetFunctions()
     {

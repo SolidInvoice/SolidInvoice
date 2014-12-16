@@ -19,6 +19,10 @@
         </testsuite>
     </testsuites>
 
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+    </listeners>
+
     <!--
     <php>
         <server name="KERNEL_DIR" value="/path/to/your/app/" />

@@ -57,7 +57,9 @@
     },
     "require-dev": {
         "jms/debugging-bundle": "dev-master",
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "phpunit/phpunit": "~4.4",
+        "johnkary/phpunit-speedtrap": "~1.0@dev"
     },
     "scripts": {
         "post-root-package-install": [
