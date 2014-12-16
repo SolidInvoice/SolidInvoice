@@ -72,14 +72,13 @@
 
     <div id="{{ id }}-uploader"></div>
 
-    <script type="text/javascript">
-        {# TODO : trim all the whitespace #}
+    <script type="text/javascript">{% spaceless %}
         {# TODO : move all this to an external js file #}
         $(function(){
 
             function uploadSuccess(file, data, resource)
             {
-                if($.type(data) !== 'object') {
+                if ($.type(data) !== 'object') {
                     data = $.parseJSON(data);
                 }
 
@@ -124,7 +123,7 @@
                 uploadSuccess(null, {"file" : "{{ value }}"});
             {% endif %}
         });
-    </script>
+    {% endspaceless %}</script>
 {%- endblock image_upload_widget %}
 
 {% block contact_detail_widget %}

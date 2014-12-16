@@ -3,7 +3,6 @@
 namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Entity\Status;

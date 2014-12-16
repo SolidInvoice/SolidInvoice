@@ -11,9 +11,11 @@
 namespace CSBill\InstallBundle\Installer\Step;
 
 use CSBill\CoreBundle\CSBillCoreBundle;
+use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
 use CSBill\UserBundle\Entity\User;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -60,9 +62,8 @@ class SystemInformation extends AbstractFormStep
     }
 
     /**
-     * @param  array             $data
+     * @param  array $data
      * @throws \RuntimeException
-     * @TODO This section needs to move to a central location (along with databse config)
      */
     protected function saveConfig(array $data)
     {
@@ -74,11 +75,14 @@ class SystemInformation extends AbstractFormStep
 
         try {
             $value = $yaml->parse(file_get_contents($config));
-        } catch (ParseException $e) {
+        } catch (ParseException $exception) {
             throw new \RuntimeException(
-                "Unable to parse the YAML string: %s. Your installation might be corrupt.",
-                $e->getCode(),
-                $e
+                sprintf(
+                    "Unable to parse the YAML string: %s. Your installation might be corrupt.",
+                    $exception->getMessage()
+                ),
+                $exception->getCode(),
+                $exception
             );
         }
 
@@ -89,20 +93,23 @@ class SystemInformation extends AbstractFormStep
 
         $yaml = $dumper->dump($value, 2);
 
-        file_put_contents($config, $yaml);
+        $fileSystem = new Filesystem();
+        $fileSystem->dumpFile($config, $yaml);
     }
 
     /**
      * Saves the current app version in the database
      */
+
     protected function saveCurrentVersion()
     {
         $verion = CSBillCoreBundle::VERSION;
 
         $entityManager = $this->container->get('doctrine')->getManager();
 
+        /** @var VersionRepository $repository */
         $repository = $entityManager->getRepository('CSBillCoreBundle:Version');
 
-        return $repository->updateVersion($verion);
+        $repository->updateVersion($verion);
     }
 }

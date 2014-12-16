@@ -10,7 +10,6 @@
 
 namespace CSBill\ClientBundle\Entity;
 
-use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +27,9 @@ class PrimaryContactDetail extends ContactDetail
      */
     private $contact;
 
+    /**
+     * @param int $id
+     */
     public function setId($id)
     {
         $this->id = $id;

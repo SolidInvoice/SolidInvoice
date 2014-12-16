@@ -15,7 +15,7 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
      */
     public function execute($request)
     {
-        if (false == $this->supports($request)) {
+        if (false === $this->supports($request)) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 

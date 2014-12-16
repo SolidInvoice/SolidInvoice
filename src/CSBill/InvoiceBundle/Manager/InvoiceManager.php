@@ -34,6 +34,11 @@ class InvoiceManager extends ContainerAware
     protected $dispatcher;
 
     /**
+     * @var \CSBill\InvoiceBundle\Repository\InvoiceRepository
+     */
+    private $invoiceRepository;
+
+    /**
      * @param ManagerRegistry          $doctrine
      * @param EventDispatcherInterface $dispatcher
      */
@@ -48,15 +53,19 @@ class InvoiceManager extends ContainerAware
      */
     protected function getInvoiceRepository()
     {
-        return $this->entityManager->getRepository('CSBillInvoiceBundle:Invoice');
+        if (null === $this->invoiceRepository) {
+            $this->invoiceRepository = $this->entityManager->getRepository('CSBillInvoiceBundle:Invoice');
+        }
+
+        return $this->invoiceRepository;
     }
 
     /**
      * Create an invoice from a quote
      *
-     * @param  Quote   $quote
+     * @param  Quote $quote
+     *
      * @return Invoice
-     * @TODO Needs to be refactored to a cleaner implementation
      */
     public function createFromQuote(Quote $quote)
     {
@@ -120,6 +129,7 @@ class InvoiceManager extends ContainerAware
     /**
      * @param  string $status
      * @param  Client $client
+     *
      * @return int
      */
     public function getCount($status = null, Client $client = null)
@@ -129,6 +139,7 @@ class InvoiceManager extends ContainerAware
 
     /**
      * @param  Client $client
+     *
      * @return int
      */
     public function getTotalIncome(Client $client = null)
@@ -138,6 +149,7 @@ class InvoiceManager extends ContainerAware
 
     /**
      * @param  Client $client
+     *
      * @return int
      */
     public function getTotalOutstanding(Client $client = null)
@@ -147,6 +159,7 @@ class InvoiceManager extends ContainerAware
 
     /**
      * Copy all the fields from one entity to another
+     *
      * @param $object
      * @param $clone
      */

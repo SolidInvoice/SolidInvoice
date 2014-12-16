@@ -1,3 +1,6 @@
+parameters:
+    empty_paramter: NOT USED
+
 payum:
     security:
         token_storage:
@@ -18,9 +21,9 @@ payum:
                     - csbill.payment.payum.offline.action.status_action
         paypal_express_checkout_nvp:
             paypal_express_checkout_nvp:
-                username:  NOT USED
-                password:  NOT USED
-                signature: NOT USED
+                username:  %empty_paramter%
+                password:  %empty_paramter%
+                signature: %empty_paramter%
                 sandbox: true
                 apis:
                     - csbill.payment.payum.paypal_express_checkout_api

@@ -5,7 +5,7 @@ namespace CSBill\PaymentBundle\Action\Offline;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\CaptureRequest;
+use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
 
 class StatusAction implements ActionInterface
@@ -15,14 +15,14 @@ class StatusAction implements ActionInterface
      */
     public function execute($request)
     {
-        /** @var $request \Payum\Core\Request\StatusRequestInterface */
-        if (false == $this->supports($request)) {
+        /** @var $request \Payum\Core\Request\Capture */
+        if (false === $this->supports($request)) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model[Constants::FIELD_STATUS] = Constants::STATUS_SUCCESS;
+        $model->offsetSet(Constants::FIELD_STATUS, Constants::STATUS_CAPTURED);
     }
 
     /**
@@ -31,7 +31,7 @@ class StatusAction implements ActionInterface
     public function supports($request)
     {
         return
-            $request instanceof CaptureRequest &&
+            $request instanceof Capture &&
             $request->getModel() instanceof \ArrayAccess;
     }
 }
