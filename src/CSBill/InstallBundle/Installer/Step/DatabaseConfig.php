@@ -160,6 +160,6 @@ class DatabaseConfig extends AbstractFormStep
         $factory = new Factory;
         $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
 
-        return $generator->generateString(32);
+        return $generator->generateString(40);
     }
 }
