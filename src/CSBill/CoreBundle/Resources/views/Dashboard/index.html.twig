@@ -19,7 +19,7 @@
     {{ parent() }}
 
     {% if paymentsConfigured() and payments|length > 0 %}
-        <script src="{{ asset('bundles/csbillcore/js/highcarts/highcharts.js') }}"></script>
+        <script src="{{ asset('js/highcarts/highcharts.js') }}"></script>
     {% endif %}
 {% endblock javascripts %}
 
