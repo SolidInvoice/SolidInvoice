@@ -15,12 +15,14 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 interface StepViewInterface extends ContainerAwareInterface
 {
     /**
-     * @return \Symfony\Component\Form\AbstractType
+     * @return string
      */
     public function getTemplate();
 
     /**
      * Returns an array of variables that will be passed to the view
+     *
+     * @return array
      */
     public function getViewVars();
 }

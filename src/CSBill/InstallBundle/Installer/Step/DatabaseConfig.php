@@ -12,6 +12,8 @@ namespace CSBill\InstallBundle\Installer\Step;
 
 use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
+use RandomLib\Factory;
+use SecurityLib\Strength;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
@@ -26,21 +28,6 @@ class DatabaseConfig extends AbstractFormStep
     protected $implementedDrivers = array(
         'mysql',
     );
-
-    /**
-     * @var string
-     */
-    private $rootDir;
-
-    /**
-     * @var string
-     */
-    private $environment;
-
-    /**
-     * @var bool
-     */
-    private $debug;
 
     /**
      * @var array
@@ -63,9 +50,9 @@ class DatabaseConfig extends AbstractFormStep
         $this->drivers = array_intersect($this->implementedDrivers, \PDO::getAvailableDrivers());
 
         return array(
-            'drivers'            => $this->drivers,
-            'host'               => 'localhost',
-            'port'               => 3306,
+            'drivers' => $this->drivers,
+            'host' => 'localhost',
+            'port' => 3306,
             'connection_factory' => $this->get('doctrine.dbal.connection_factory'),
         );
     }
@@ -80,15 +67,8 @@ class DatabaseConfig extends AbstractFormStep
 
         $data['driver'] = sprintf('pdo_%s', $this->drivers[$data['driver']]);
 
-        $kernel = $this->get('kernel');
-
-        $this->rootDir = $kernel->getRootDir();
-        $this->environment = $kernel->getEnvironment();
-        $this->debug = $kernel->isDebug();
-
         $this->writeConfigFile($data);
 
-        // @TODO stream the response back to the user, so they can get feedback on the process running
         $this->executeMigrations();
         $this->executeFixtures();
     }
@@ -103,7 +83,7 @@ class DatabaseConfig extends AbstractFormStep
      */
     private function writeConfigFile($params = array())
     {
-        $config = $this->rootDir . '/config/parameters.yml';
+        $config = $this->get('kernel')->getRootDir() . '/config/parameters.yml';
 
         $yamlParser = new Parser();
 
@@ -126,10 +106,8 @@ class DatabaseConfig extends AbstractFormStep
 
         // Sets a unique value for the secret token.
         // We do this when writing the database configuration,
-        // as this is the only time (for now) that we modify the parameters.yml file.
-        // We still need to add an extra step so we can write smtp settings
-        // @TODO add a more secure random string generator for enhanced security
-        $value['parameters']['secret'] = md5(uniqid(php_uname(), true));
+        // as this is the only time that we modify the parameters.yml file.
+        $value['parameters']['secret'] = $this->generateRandomString();
 
         $dumper = new Dumper();
 
@@ -170,5 +148,18 @@ class DatabaseConfig extends AbstractFormStep
         $fixtureLoader = $this->get('csbill.installer.database.fixtures');
 
         $fixtureLoader->execute();
+    }
+
+    /**
+     * Generates a secure random string
+     *
+     * @return string
+     */
+    private function generateRandomString()
+    {
+        $factory = new Factory;
+        $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
+
+        return $generator->generateString(32);
     }
 }

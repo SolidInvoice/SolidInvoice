@@ -31,6 +31,9 @@ class SystemCheck extends AbstractStep implements StepViewInterface
      */
     protected $request;
 
+    /**
+     * {@inheritdoc}
+     */
     public function init()
     {
         if (null === self::$checks) {
