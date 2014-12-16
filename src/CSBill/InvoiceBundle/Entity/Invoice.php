@@ -153,7 +153,7 @@ class Invoice
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      *
-     * @var array
+     * @var ArrayCollection
      */
     private $users;
 

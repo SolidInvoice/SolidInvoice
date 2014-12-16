@@ -10,6 +10,8 @@
 
 namespace CSBill\QuoteBundle\Listener\Doctrine;
 
+use CSBill\ClientBundle\Entity\Contact;
+use CSBill\CoreBundle\Util\ArrayUtil;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
@@ -23,17 +25,15 @@ class QuoteTotalListener
         $entity = $event->getEntity();
 
         if ($entity instanceof Quote && count($entity->getUsers()) > 0) {
-            $em = $event->getEntityManager();
+            $entityManager = $event->getEntityManager();
 
-            $contacts = $em
-                ->getRepository('CSBillClientBundle:Contact')
-                ->findById(
-                    array_map(function ($item) {
-                            return $item->getId();
-                        },
-                        $entity->getUsers()->toArray()
-                    )
-                );
+            $repository = $entityManager->getRepository('CSBillClientBundle:Contact');
+
+            $criteria = array(
+                'id' => ArrayUtil::column($entity->getUsers(), 'id')
+            );
+
+            $contacts = $repository->findBy($criteria);
 
             $entity->setUsers($contacts);
         }

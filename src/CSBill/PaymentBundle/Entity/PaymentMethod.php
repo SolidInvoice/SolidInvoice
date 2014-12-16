@@ -262,7 +262,6 @@ class PaymentMethod
     public function addPayment(PaymentDetails $payment)
     {
         $this->payments[] = $payment;
-        $payment->setInvoice($this);
 
         return $this;
     }

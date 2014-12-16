@@ -11,7 +11,7 @@
 
 namespace CSBill\SettingsBundle\Form\Type;
 
-use CSBill\SettingsBundle\Entity\Setting;
+use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zend\Config\Config;

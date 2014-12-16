@@ -32,11 +32,11 @@ class PaymentMethodSettingsForm extends AbstractType
         $options = array();
 
         switch ($settings['type']) {
-            case 'password' :
+            case 'password':
                 $options['always_empty'] = false;
                 break;
 
-            case 'choice' :
+            case 'choice':
                 $options['choices'] = $settings['options'];
                 $options['placeholder'] = 'Please Choose';
                 $options['attr'] = array('class' => 'select2');

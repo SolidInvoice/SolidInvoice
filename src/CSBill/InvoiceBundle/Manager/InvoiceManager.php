@@ -17,14 +17,14 @@ use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class InvoiceManager extends ContainerAware
 {
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
     protected $entityManager;
 

@@ -76,7 +76,7 @@ class Item
     private $tax;
 
     /**
-     * @var int
+     * @var float
      * @ORM\Column(name="total", type="decimal", scale=2)
      */
     private $total;
@@ -198,7 +198,7 @@ class Item
     /**
      * Get the line item total
      *
-     * @return int
+     * @return float
      */
     public function getTotal()
     {

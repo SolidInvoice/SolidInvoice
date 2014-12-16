@@ -133,7 +133,7 @@ class Quote
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
      *
-     * @var array
+     * @var ArrayCollection
      */
     private $users;
 

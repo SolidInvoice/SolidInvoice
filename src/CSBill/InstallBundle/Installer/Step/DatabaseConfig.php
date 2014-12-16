@@ -79,7 +79,6 @@ class DatabaseConfig extends AbstractFormStep
      * @param array $params
      *
      * @throws \Exception
-     * @return void;
      */
     private function writeConfigFile($params = array())
     {
@@ -118,7 +117,8 @@ class DatabaseConfig extends AbstractFormStep
 
         /** @var \AppKernel $kernel */
         $kernel = $this->container->get('kernel');
-        $fileSystem->remove(sprintf(
+        $fileSystem->remove(
+            sprintf(
                 '%s/%s.php',
                 $kernel->getCacheDir(),
                 $kernel->getContainerCacheClass()

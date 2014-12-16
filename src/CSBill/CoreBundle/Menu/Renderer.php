@@ -19,7 +19,7 @@ use Knp\Menu\Matcher\Voter\RouteVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
-class Renderer extends ListRenderer
+class Renderer extends ListRenderer implements RendererInterface
 {
     /**
      * @var FactoryInterface

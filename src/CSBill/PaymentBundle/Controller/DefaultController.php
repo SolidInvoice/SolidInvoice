@@ -47,19 +47,23 @@ class DefaultController extends BaseController
         $grid->setSource($source);
 
         $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
-                $label = $row->getField('status.label');
+            $label = $row->getField('status.label');
 
-                return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
-            })->setSafe(false);
+            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+        })->setSafe(false);
+
         $grid->getColumn('amount')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('client.name')->manipulateRenderCell(function ($value, Row $row) use ($router) {
-                $clientId = $row->getField('client.id');
+            $clientId = $row->getField('client.id');
 
-                return '<a href="' . $router->generate('_clients_view', array('id' => $clientId)) . '">' . $value . '</a>';
-            })->setSafe(false);
+            return '<a href="' . $router->generate('_clients_view', array('id' => $clientId)) . '">' . $value . '</a>';
+        })->setSafe(false);
+
         $grid->getColumn('invoice.id')->manipulateRenderCell(function ($value) use ($router) {
-                return '<a href="' . $router->generate('_invoices_view', array('id' => $value)) . '">' . $value . '</a>';
-            })->setSafe(false);
+            return '<a href="' . $router->generate('_invoices_view', array('id' => $value)) . '">' . $value . '</a>';
+        })->setSafe(false);
+
+
         $grid->setDefaultOrder('created', 'DESC');
 
         $grid->hideColumns(array('updated', 'deletedAt'));

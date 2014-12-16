@@ -43,8 +43,11 @@ class Filter
      */
     public function __construct($name, callable $callback = null, $active = false, array $options = array())
     {
+        $callback = $callback ?: function () {
+        };
+
         $this->name = $name;
-        $this->callback = new CallbackHandler($callback ?: function () {});
+        $this->callback = new CallbackHandler($callback);
         $this->active = $active;
 
         $this->options = $options;

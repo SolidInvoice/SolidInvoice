@@ -18,15 +18,16 @@ class ArrayUtil
     /**
      * Returns a specific column from an array
      *
-     * @param  array      $array
-     * @param  string     $column
+     * @param  array|\Traversable $array
+     * @param  string             $column
+     *
      * @throws \Exception
      * @return array
      */
-    public static function column(array $array, $column)
+    public static function column($array, $column)
     {
-        if (empty($array)) {
-            throw new \Exception("Array cannot be empty");
+        if (!is_array($array) && !$array instanceof \Traversable) {
+            throw new \Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
         }
 
         reset($array);
@@ -38,14 +39,15 @@ class ArrayUtil
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        $return = array_map(function ($item) use ($column, $accessor) {
+        $return = array();
 
+        foreach ($array as $item) {
             if (is_array($item) || $item instanceof \ArrayAccess) {
-                $column = '[' . $column . ']';
+                $column = '['.$column.']';
             }
 
-            return $accessor->getValue($item, $column);
-        }, $array);
+            $return[] = $accessor->getValue($item, $column);
+        }
 
         return array_filter($return, function ($item) {
             return $item !== null;

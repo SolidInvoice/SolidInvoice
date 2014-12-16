@@ -15,7 +15,6 @@ use CSBill\InstallBundle\Installer\Installer;
 use CSBill\InstallBundle\Installer\StepFormInterface;
 use CSBill\InstallBundle\Installer\StepInterface;
 use CSBill\InstallBundle\Installer\StepViewInterface;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Twig_Environment;
 use Twig_Extension;
 
@@ -27,7 +26,7 @@ class InstallExtension extends Twig_Extension
     protected $installer;
 
     /**
-     * @var TwigEngine
+     * @var Twig_Environment
      */
     protected $environment;
 

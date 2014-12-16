@@ -13,7 +13,7 @@ namespace CSBill\CoreBundle\Mailer;
 
 use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
 use CSBill\CoreBundle\Mailer\Events\MailerEvent;
-use CSBill\CoreBundle\Mailer\Events\MessageEventInterface;
+use CSBill\CoreBundle\Mailer\Events\MessageEvent;
 use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
 use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use CSBill\InvoiceBundle\Entity\Invoice;
@@ -26,6 +26,7 @@ use Symfony\Component\Templating\EngineInterface;
 
 class Mailer implements MailerInterface
 {
+
     /**
      * @var Swift_Mailer
      */
@@ -119,7 +120,7 @@ class Mailer implements MailerInterface
 
         foreach ($invoice->getUsers() as $user) {
             /** @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
+            $users[(string)$user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
         }
 
         $event = new InvoiceEvent();
@@ -155,11 +156,11 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * @param string                $subject
-     * @param string|array          $users
-     * @param string|null           $htmlTemplate
-     * @param string|null           $textTemplate
-     * @param MessageEventInterface $event
+     * @param string       $subject
+     * @param string|array $users
+     * @param string|null  $htmlTemplate
+     * @param string|null  $textTemplate
+     * @param MessageEvent $event
      *
      * @return int
      * @throws Exception\UnexpectedFormatException
@@ -169,14 +170,14 @@ class Mailer implements MailerInterface
         $users,
         $htmlTemplate = null,
         $textTemplate = null,
-        MessageEventInterface $event = null
+        MessageEvent $event = null
     ) {
         $message = \Swift_Message::newInstance();
 
-        $fromAddress = (string) $this->settings->get('email.from_address');
+        $fromAddress = (string)$this->settings->get('email.from_address');
 
         if (!empty($fromAddress)) {
-            $fromName = (string) $this->settings->get('email.from_name');
+            $fromName = (string)$this->settings->get('email.from_name');
 
             $message->setFrom($fromAddress, $fromName);
         } else {
@@ -202,7 +203,7 @@ class Mailer implements MailerInterface
             $textTemplate = $event->getTextTemplate();
         }
 
-        $format = (string) $this->settings->get('email.format');
+        $format = (string)$this->settings->get('email.format');
 
         switch ($format) {
             case 'html':
@@ -248,7 +249,7 @@ class Mailer implements MailerInterface
 
         foreach ($quote->getUsers() as $user) {
             /** @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname() . ' ' . $user->getLastname();
+            $users[(string)$user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
         }
 
         $event = new QuoteEvent();

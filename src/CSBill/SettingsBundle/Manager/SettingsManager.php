@@ -15,7 +15,6 @@ use CSBill\SettingsBundle\Collection\ConfigCollection;
 use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use CSBill\SettingsBundle\Model\Setting;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Zend\Config\Config;
 
@@ -41,11 +40,6 @@ class SettingsManager implements ManagerInterface
     protected $sections;
 
     /**
-     * @var ManagerRegistry
-     */
-    protected $em;
-
-    /**
      * @var ConfigCollection
      */
     protected $collection;
@@ -65,17 +59,11 @@ class SettingsManager implements ManagerInterface
 
     /**
      * Constructor
-     *
-     * @param ManagerRegistry $doctrine
      */
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct()
     {
         $this->initialized = false;
-
-        $this->em = $doctrine->getManager();
-
         $this->settings = new Config(array());
-
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -86,7 +74,7 @@ class SettingsManager implements ManagerInterface
     {
         $this->initialized = true;
 
-        $this->collection = new ConfigCollection($this);
+        $this->collection = new ConfigCollection();
 
         foreach ($this->loaders as $loader) {
             /** @var SettingsLoaderInterface $loader */
