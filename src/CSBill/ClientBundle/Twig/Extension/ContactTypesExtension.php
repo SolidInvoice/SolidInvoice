@@ -11,22 +11,61 @@
 
 namespace CSBill\ClientBundle\Twig\Extension;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+
 class ContactTypesExtension extends \Twig_Extension
 {
+
+    /**
+     * @var array
+     */
     protected $contactTypes;
 
-    public function __construct(array $contactTypes)
+    /**
+     * @var ObjectManager
+     */
+    protected $doctrine;
+
+    /**
+     * @param Registry $doctrine
+     */
+    public function __construct(Registry $doctrine)
     {
-        $this->contactTypes = $contactTypes;
+        $this->doctrine = $doctrine->getManager();
     }
 
-    public function getGlobals()
+    /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
     {
         return array(
-            'contact_types' => $this->contactTypes,
+            new \Twig_SimpleFunction('contactTypes', array($this, 'getContactTypes'))
         );
     }
 
+    /**
+     * @return array
+     */
+    public function getContactTypes()
+    {
+        if (null !== $this->contactTypes) {
+            return $this->contactTypes;
+        }
+
+        /** @var ObjectRepository $repository */
+        $repository = $this->doctrine->getRepository('CSBillClientBundle:ContactType');
+
+        $this->contactTypes = $repository->findAll();
+
+        return $this->contactTypes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'client_contact_types_extension';

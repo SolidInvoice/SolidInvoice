@@ -24,7 +24,7 @@
     </div>
 
     <div class="collection-container">
-        {% for item in contact_types if item.required %}
+        {% for item in contactTypes() if item.required %}
             {{ form_row(form['details_' ~ item.name]) }}
         {% endfor %}
     </div>

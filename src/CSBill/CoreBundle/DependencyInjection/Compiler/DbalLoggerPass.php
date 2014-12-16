@@ -13,21 +13,22 @@ namespace CSBill\CoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
-class FormCompilerPass implements CompilerPassInterface
+class DbalLoggerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('form.type.money')) {
+        if (!$container->hasDefinition('doctrine.dbal.logger.chain') || !$container->getParameter('kernel.debug')) {
             return;
         }
 
-        $definition = $container->getDefinition('form.type.money');
-        $definition->setClass('CSBill\CoreBundle\Form\Type\Money');
+        $logger = new Definition('CSBill\CoreBundle\Logger\Dbal\TraceLogger');
 
-        $definition->addArgument($container->getDefinition('csbill_core.currency'));
+        $definition = $container->getDefinition('doctrine.dbal.logger.chain');
+        $definition->addMethodCall('addLogger', [$logger]);
     }
 }

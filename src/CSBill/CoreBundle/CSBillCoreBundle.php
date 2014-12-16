@@ -30,5 +30,6 @@ class CSBillCoreBundle extends Bundle
 
         $container->addCompilerPass(new Compiler\MenuCompilerPass());
         $container->addCompilerPass(new Compiler\FormCompilerPass());
+        $container->addCompilerPass(new Compiler\DbalLoggerPass());
     }
 }

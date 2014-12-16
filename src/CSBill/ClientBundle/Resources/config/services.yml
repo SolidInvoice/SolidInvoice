@@ -19,13 +19,9 @@ services:
         tags:
             - { name: form.type, alias: contact }
 
-    csbill_client.contact_type.factory:
-        class: CSBill\ClientBundle\Factory\ContactDetailsFactory
-        arguments: [@csbill.installer, @doctrine]
-
     csbill_client.contact_types.twig.extension:
         class: %csbill_client.contact_types.twig.extension.class%
-        arguments: [@=service("csbill_client.contact_type.factory").getDetails()]
+        arguments: [@doctrine]
         tags:
             - { name: twig.extension }
 

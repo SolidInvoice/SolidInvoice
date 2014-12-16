@@ -22,7 +22,7 @@
     <div class="pull-right">
         <div class="btn-toolbar">
             <div class="btn-group">
-                {% if invoice is not paid %}
+                {% if invoice.status~'' != 'paid' %}
                     <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" id="pay-now" class="btn btn-success">
                         {{ icon('money') }} {{ "invoice.view.toolbar.mark_paid"|trans }}
                     </a>
@@ -32,9 +32,9 @@
                 </a>
             </div>
 
-            {% if invoice is draft or invoice is pending %}
+            {% if invoice.status~'' in ['draft', 'pending'] %}
                 <div class="btn-group">
-                    {% if paymentsConfigured() and invoice is pending %}
+                    {% if paymentsConfigured() and invoice.status~'' == 'pending' %}
                         <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
                             {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
                         </a>
@@ -45,7 +45,7 @@
                 </div>
             {% endif %}
 
-            {% if invoice is not paid %}
+            {% if invoice.status~'' != 'paid' %}
                 <div class="btn-group">
                     <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">
                         {{ icon('edit') }} {{ "invoice.view.toolbar.edit"|trans }}

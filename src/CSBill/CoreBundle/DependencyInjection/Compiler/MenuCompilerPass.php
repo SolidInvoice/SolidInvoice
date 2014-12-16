@@ -18,9 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class MenuCompilerPass implements CompilerPassInterface
 {
     /**
-     * (non-phpdoc)
-     *
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

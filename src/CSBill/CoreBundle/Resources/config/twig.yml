@@ -21,14 +21,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    csbill_core.twig.billing:
-        class: %csbill_core.twig.billing.class%
-        calls:
-            - [ setDoctrine, [ @doctrine ] ]
-            - [ setInstaller, [ @csbill.installer ] ]
-        tags:
-            - { name: twig.extension }
-
     csbill_core.twig.status:
         class: %csbill_core.twig.status.class%
         tags:

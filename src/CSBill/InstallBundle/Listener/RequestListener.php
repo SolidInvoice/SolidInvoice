@@ -35,13 +35,13 @@ class RequestListener
      * @var array $core_routes
      */
     protected $coreRoutes = array(
-                                    Installer::INSTALLER_ROUTE,
-                                    Installer::INSTALLER_SUCCESS_ROUTE,
-                                    Installer::INSTALLER_RESTART_ROUTE,
-                                    '_installer_step',
-                                    '_profiler',
-                                    '_wdt',
-                                  );
+        Installer::INSTALLER_ROUTE,
+        Installer::INSTALLER_SUCCESS_ROUTE,
+        Installer::INSTALLER_RESTART_ROUTE,
+        '_installer_step',
+        '_profiler',
+        '_wdt',
+    );
 
     /**
      * @var Installer

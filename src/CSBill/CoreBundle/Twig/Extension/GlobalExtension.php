@@ -39,16 +39,15 @@ class GlobalExtension extends Twig_Extension
      */
     public function getGlobals()
     {
-        $settings = $this->container->get('settings')->getSettings();
+        $appName = $this->container->get('settings')->get('system.general.app_name');
 
         return array(
-                    'query'            => $this->getQuery(),
-                    'currency'         => $this->container->get('currency'),
-                    'settings'         => $settings,
-                    'invoice_manager'  => $this->container->get('invoice.manager'),
-                    'app_version'      => CSBillCoreBundle::VERSION,
-                    'app_name'         => (string) $settings['system']['general']['app_name'],
-            );
+            'query'            => $this->getQuery(),
+            'currency'         => $this->container->get('currency'),
+            'invoice_manager'  => $this->container->get('invoice.manager'),
+            'app_version'      => CSBillCoreBundle::VERSION,
+            'app_name'         => $appName,
+        );
     }
 
     /**

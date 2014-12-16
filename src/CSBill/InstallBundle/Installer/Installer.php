@@ -57,6 +57,11 @@ class Installer extends ContainerAware
     protected $isFinal = false;
 
     /**
+     * @var bool
+     */
+    private $installed;
+
+    /**
      * Constructer to initialize the installer
      */
     public function __construct()
@@ -246,13 +251,19 @@ class Installer extends ContainerAware
      */
     public function isInstalled()
     {
+        if (null !== $this->installed) {
+            return $this->installed;
+        }
+
         // check if we can connect to the database
         try {
             $this->container->get('database_connection')->connect();
         } catch (\Exception $e) {
             // if we can't connect to the database, assume the application is not installed
             // @TODO we should cater for cases when the database is down
-            return false;
+            $this->installed = false;
+
+            return $this->installed;
         }
 
         /*
@@ -270,15 +281,23 @@ class Installer extends ContainerAware
         $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('CSBillUserBundle:User');
 
         try {
-            $users = $repository->createQueryBuilder('u')->setMaxResults(1)->getQuery()->execute();
+            $users = $repository
+                ->createQueryBuilder('u')
+                ->select('COUNT(u.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
 
-            if (count($users) === 0) {
+            if ((int) $users === 0) {
                 throw new \RuntimeException('The users table does not exist');
             }
         } catch (\Exception $e) {
-            return false;
+            $this->installed = false;
+
+            return $this->installed;
         }
 
-        return true;
+        $this->installed = true;
+
+        return $this->installed;
     }
 }
