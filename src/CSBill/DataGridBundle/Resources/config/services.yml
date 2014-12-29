@@ -1,3 +1,15 @@
 parameters:
+    grid.class: CSBill\DataGridBundle\Grid
 
 services:
+    grid.column.extension.status_extension:
+        class: CSBill\DataGridBundle\Column\StatusColumn
+        arguments: [@templating]
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.extension.currency_extension:
+        class: CSBill\DataGridBundle\Column\CurrencyColumn
+        arguments: [%currency%]
+        tags:
+            - { name: grid.column.extension }

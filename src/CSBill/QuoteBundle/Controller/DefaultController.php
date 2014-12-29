@@ -66,14 +66,6 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'deletedAt', 'users', 'due', 'baseTotal', 'uuid'));
-
-        $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('status')->manipulateRenderCell(function ($value) use ($templating) {
-            return $templating->render('{{ quote_label("'.$value.'") }}');
-        })->setSafe(false);
-
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
                 return $value * 100 .'%';

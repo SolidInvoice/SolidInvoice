@@ -49,10 +49,6 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $grid->getColumn('status')->manipulateRenderCell(function ($value) use ($templating) {
-            return $templating->render('{{ payment_label("'.$value.'") }}');
-        })->setSafe(false);
-
         $grid->getColumn('totalAmount')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('client.name')->manipulateRenderCell(function ($value, Row $row) use ($router) {
             $clientId = $row->getField('client.id');
@@ -65,8 +61,6 @@ class DefaultController extends BaseController
         })->setSafe(false);
 
         $grid->setDefaultOrder('created', 'DESC');
-
-        $grid->hideColumns(array('updated', 'deletedAt'));
 
         return $grid->getGridResponse(
             'CSBillPaymentBundle:Default:list.html.twig',

@@ -2,42 +2,69 @@
  **************/
 .grid-search .control-group {
     label {
-      width: 120px;
+        width: 120px;
     }
 
     .controls {
-      padding: 5px 0;
+        padding: 5px 0;
     }
 
     span {
-      padding: 0 4px;
+        padding: 0 4px;
     }
 }
 
 /* Grid Sorting
  ***************/
 .sort_down, .sort_up {
-  float: right;
+    float: right;
 }
 
 .sort_down:after {
-  content: "↓";
+    content: "↓";
 }
 
 .sort_up:after {
-  content: "↑";
+    content: "↑";
 }
 
 /* Mass Actions
  ***************/
 .grid {
-  .mass-actions {
-    margin-bottom: 20px;
+    .mass-actions {
+        margin-bottom: 20px;
 
-    .grid_massactions .btn {
-      margin-left: 8px;
+        .grid_massactions .btn {
+            margin-left: 8px;
+        }
     }
-  }
+
+    .filterable {
+        margin-top: 15px;
+
+        .filters {
+            input[disabled] {
+                background-color: transparent;
+                border: none;
+                cursor: auto;
+                box-shadow: none;
+                padding: 0;
+                height: auto;
+
+                &::-webkit-input-placeholder {
+                    color: #333;
+                }
+
+                &::-moz-placeholder {
+                    color: #333;
+                }
+
+                &:-ms-input-placeholder {
+                    color: #333;
+                }
+            }
+        }
+    }
 }
 
 /* Actions Column
@@ -51,16 +78,7 @@
 
         &:not(:last-child) {
             border-right: 1px solid #D0DDE9;
-            height: 20px;
-            margin: 0px 3px 0px 3px;
-        }
-
-        a {
-            color: #333333;
-
-            &:hover {
-                text-decoration: none;
-            }
+            margin: 0 3px 0 3px;
         }
     }
 }

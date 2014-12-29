@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @GRID\Source(groupBy="created")
  */
 class Payment
 {
@@ -67,6 +68,7 @@ class Payment
      * @var string $status
      *
      * @ORM\Column(name="status", type="string", length=25)
+     * @Grid\Column(name="status", type="status", field="status.name", title="status", filter="select", selectFrom="source")
      */
     private $status;
 

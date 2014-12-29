@@ -11,13 +11,11 @@
 
 namespace CSBill\DataGridBundle\Grid;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class Filters implements \Iterator
 {
     protected $filters = array();
 
-    protected $request;
+    protected $filterString;
 
     protected $pointer = 0;
 
@@ -25,9 +23,9 @@ class Filters implements \Iterator
 
     protected $activeFilter;
 
-    public function __construct(Request $request)
+    public function __construct($filterString)
     {
-        $this->request = $request;
+        $this->filterString = $filterString;
     }
 
     /**
@@ -40,11 +38,7 @@ class Filters implements \Iterator
      */
     public function add($name, $callback, $default = false, array $options = array())
     {
-        $active = $default;
-
-        if (($filter = $this->request->get('filter')) !== null) {
-            $active = $filter === $name;
-        }
+        $active = $this->filterString === $name ?: $default;
 
         if ($active && !$default) {
             $this->isFilterActive = true;

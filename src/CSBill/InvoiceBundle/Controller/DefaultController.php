@@ -77,7 +77,7 @@ class DefaultController extends BaseController
 
         $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
             if (Graph::STATUS_PENDING !== $row->getField('status')) {
-                $rowAction->setTitle('');
+                    return null;
             }
 
             return $rowAction;
@@ -87,13 +87,8 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', $rowActicons);
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'deletedAt', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));
-
-        $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('status')->manipulateRenderCell(function ($value) use ($templating) {
-            return $templating->render('{{ invoice_label("'.$value.'") }}');
-        })->setSafe(false);
+        /*$grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));*/
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
