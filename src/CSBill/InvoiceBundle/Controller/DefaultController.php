@@ -76,7 +76,7 @@ class DefaultController extends BaseController
 
             $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
                 if ('pending' !== $row->getField('status.name')) {
-                    $rowAction->setTitle('');
+                    return null;
                 }
 
                 return $rowAction;
@@ -87,15 +87,8 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', $rowActicons);
         $grid->addColumn($actionsRow, 100);
 
-        $grid->hideColumns(array('updated', 'deletedAt', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));
-
-        $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
-            $label = $row->getField('status.label');
-
-            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
-        })->setSafe(false);
+        /*$grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));*/
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
@@ -105,6 +98,7 @@ class DefaultController extends BaseController
             return (int) $value;
         });
 
+        // Is this still necessary?
         $grid->setPermanentFilters(array(
             'client.name' => array('operator' => 'isNotNull'),
         ));

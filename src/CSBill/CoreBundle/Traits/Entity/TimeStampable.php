@@ -10,6 +10,8 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
+use APY\DataGridBundle\Grid\Mapping as GRID;
+
 trait TimeStampable
 {
     /**
@@ -25,6 +27,7 @@ trait TimeStampable
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
+     * @GRID\Column(visible=false)
      */
     protected $updated;
 

@@ -64,6 +64,10 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = new ContactTypesExtension($registry);
 
         $this->assertSame($array, $extension->getContactTypes());
+
+        // Run twice, to ensure the contact types is cached and no duplicate queries are executed
+        // when getting the contact types more than once
+        $this->assertSame($array, $extension->getContactTypes());
     }
 
     public function testGetName()

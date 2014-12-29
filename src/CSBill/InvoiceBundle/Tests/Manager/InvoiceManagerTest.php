@@ -72,13 +72,6 @@ class InvoiceManagerTest extends KernelTestCase
             ->with($quoteClass)
             ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($quoteClass)));
 
-        $this
-            ->entityManager
-            ->expects($this->at(2))
-            ->method('getClassMetadata')
-            ->with($quoteClass)
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($quoteClass)));
-
         $invoiceClass = 'CSBill\InvoiceBundle\Entity\Invoice';
         $this
             ->entityManager
@@ -86,6 +79,14 @@ class InvoiceManagerTest extends KernelTestCase
             ->method('getClassMetadata')
             ->with($invoiceClass)
             ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($invoiceClass)));
+
+        $this
+            ->entityManager
+            ->expects($this->at(2))
+            ->method('getClassMetadata')
+            ->with($quoteClass)
+            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($quoteClass)));
+
 
         $this
             ->entityManager

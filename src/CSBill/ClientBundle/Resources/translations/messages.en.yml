@@ -16,6 +16,11 @@ client:
         details:
             choose: Choose
             extra: Additional Contact Details
+    grid:
+        actions:
+            view: View
+            edit: Edit
+            delete: Delete
 
 email: Email
 clients: Clients

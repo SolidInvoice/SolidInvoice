@@ -65,7 +65,7 @@ class Client
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="clients")
      * @Assert\Valid()
-     * @GRID\Column(field="status.name", filter="source", filter="select", selectFrom="source", title="status")
+     * @GRID\Column(field="status.name", type="status", filter="source", filter="select", selectFrom="source", title="status")
      * @GRID\Column(field="status.label", visible=false)
      */
     private $status;
