@@ -48,7 +48,7 @@ class InvoiceType extends AbstractType
             )
         );
 
-        $builder->add('discount', 'percent');
+        $builder->add('discount', 'percent', array('required' => false));
 
         $builder->add(
             'items',

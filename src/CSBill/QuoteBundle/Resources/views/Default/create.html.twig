@@ -7,9 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% form_theme form _self %}
-
-{% use 'CSBillCoreBundle:Form:fields.html.twig' %}
+{% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
@@ -21,11 +19,15 @@
 
 {% set items = form.items.vars.prototype|keys %}
 
-{% block form_row %}
+{% block form_row -%}
     {% if prototype is not defined %}
-        {{ parent() }}
+        <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+            {{ form_label(form) }}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
     {% endif %}
-{% endblock %}
+{%- endblock %}
 
 {% block content %}
 
@@ -111,7 +113,10 @@
                             <thead>
                                 <tr>
                                     {% for item in items %}
-                                        <th>{{ item|trans|title }}</th>
+                                        {% set field = form.items.vars.prototype[item] %}
+                                        <th>
+                                            {{ form_label(field) }}
+                                        </th>
                                     {% endfor %}
                                     <th class="text-right">{{ 'quote.total'|trans }}</th>
                                     <th></th>

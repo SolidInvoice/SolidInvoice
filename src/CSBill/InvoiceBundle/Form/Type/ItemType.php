@@ -78,6 +78,7 @@ class ItemType extends AbstractType
                     'attr' => array(
                         'class' => 'input-mini invoice-item-tax',
                     ),
+                    'required' => false,
                 )
             );
         }

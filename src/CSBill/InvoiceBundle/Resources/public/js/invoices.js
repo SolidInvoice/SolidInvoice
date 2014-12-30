@@ -33,7 +33,7 @@
         "addRow" : function() {
             var that         = this,
                 row         = $(window.document.createElement(this.rowElement)),
-                rowTotal = $('.invoice-item-total', row);
+                rowTotal = $('.column-total', row);
 
             $.each(this.fields, function(counter, item) {
                 var column = $(window.document.createElement(that.columnElement));
@@ -51,7 +51,7 @@
 
             row.fadeIn(150);
 
-            $('.invoice-item-tax', row).select2({
+            $('select.invoice-item-tax', row).select2({
                 allowClear: true
             });
 
@@ -64,7 +64,7 @@
         },
         "setEvents" : function() {
             $(this.el)
-                .on('keyup change', '.invoice-item-price, .invoice-item-qty, .invoice-item-tax', function() {
+                .on('keyup change', '.invoice-item-price, .invoice-item-qty, select.invoice-item-tax', function() {
                     Invoice.calcTotal(this);
                 })
                 .on('change', '.invoice-item-qty', function() {
@@ -90,7 +90,7 @@
                     Invoice.calcTotal(this);
                 });
 
-            $('.invoice-item-tax', this.el).select2({
+            $('select.invoice-item-tax', this.el).select2({
                 allowClear: true
             });
         },
@@ -119,10 +119,10 @@
 
             discount = parseInt($('#invoice_discount').val() || 0, 10);
 
-            $('.invoice-item-tax', this.el).each(function() {
+            $('select.invoice-item-tax', this.el).each(function() {
                 var tax = $(this),
                     selectedOption = tax.find(':selected'),
-                    rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.invoice-item-total').val()));
+                    rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.column-total').text()));
                 if (tax.val() !== '') {
                     var taxAmount = percentage(rowTotal, parseFloat(selectedOption.data('rate')));
                     totalTax += taxAmount;
@@ -154,7 +154,7 @@
             Invoice.addRow();
         });
 
-        $('.invoice-item-price, .invoice-item-total', Invoice.el).each(function() {
+        $('.invoice-item-price, .column-total', Invoice.el).each(function() {
             var $this = $(this);
 
             if ($this.val() !== '') {

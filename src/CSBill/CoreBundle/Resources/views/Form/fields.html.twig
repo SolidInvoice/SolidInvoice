@@ -135,8 +135,9 @@
 {% endblock contact_widget %}
 
 {% block tax_field_widget -%}
+{% spaceless %}
     {% if expanded %}
-        {{ block('choice_widget_expanded') }}
+        {{- block('choice_widget_expanded') -}}
     {% else %}
         {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
         {% if required and placeholder is none and not placeholder_in_choices %}
@@ -157,6 +158,7 @@
             {{ block('tax_choice_widget_options') }}
         </select>
     {% endif %}
+{% endspaceless %}
 {%- endblock %}
 
 {% block tax_choice_widget_options -%}
@@ -170,7 +172,7 @@
             {% set attrs -%}
                 data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}"
             {%- endset %}
-            <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }} {{ choice.data.id }}</option>
+            <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
         {% endif %}
     {% endfor %}
 {%- endblock tax_choice_widget_options %}

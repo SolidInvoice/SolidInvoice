@@ -10,20 +10,23 @@
 
 namespace CSBill\CoreBundle\Form\Extension;
 
+use CSBill\CoreBundle\Util\Currency;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FormHelpExtension extends AbstractTypeExtension
+class MoneyExtension extends AbstractTypeExtension
 {
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    protected $currency;
+
+    /**
+     * @param string $currency
+     */
+    public function __construct(Currency $currency)
     {
-        $view->vars['help'] = $options['help'];
-        $view->vars['help_type'] = $options['help_type'];
+        $this->currency = $currency;
     }
 
     /**
@@ -33,8 +36,7 @@ class FormHelpExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(
             array(
-                'help' => null,
-                'help_type' => 'inline',
+                'currency'  => $this->currency->getCurrency(),
             )
         );
     }
@@ -44,6 +46,6 @@ class FormHelpExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'form';
+        return 'money';
     }
 }

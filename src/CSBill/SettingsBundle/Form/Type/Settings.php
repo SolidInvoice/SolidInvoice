@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -36,8 +35,7 @@ class Settings extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -46,7 +44,10 @@ class Settings extends AbstractType
                 $builder->add($key, new self($setting));
             } else {
                 /** @var \CSBill\SettingsBundle\Model\Setting $setting */
-                $options = array('help' => $setting->getDescription());
+                $options = array(
+                    'help' => $setting->getDescription(),
+                    'required' => false,
+                );
 
                 $type = $this->getFieldType($setting, $options);
 
@@ -81,8 +82,7 @@ class Settings extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.FormTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
