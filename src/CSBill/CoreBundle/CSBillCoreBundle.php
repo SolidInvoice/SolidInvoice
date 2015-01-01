@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -20,16 +19,13 @@ class CSBillCoreBundle extends Bundle
     const VERSION = '0.4.0-dev';
 
     /**
-     * (non-phpdoc)
-     *
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
 
         $container->addCompilerPass(new Compiler\MenuCompilerPass());
-        $container->addCompilerPass(new Compiler\FormCompilerPass());
         $container->addCompilerPass(new Compiler\DbalLoggerPass());
     }
 }

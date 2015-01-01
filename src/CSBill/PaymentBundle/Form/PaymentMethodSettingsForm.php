@@ -41,6 +41,10 @@ class PaymentMethodSettingsForm extends AbstractType
                 $options['placeholder'] = 'Please Choose';
                 $options['attr'] = array('class' => 'select2');
                 break;
+
+            case 'checkbox':
+                $options['required'] = false;
+                break;
         }
 
         return $options;

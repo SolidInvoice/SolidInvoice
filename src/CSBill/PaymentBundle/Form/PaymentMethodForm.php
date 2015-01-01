@@ -48,7 +48,8 @@ class PaymentMethodForm extends AbstractType
             )
         );
 
-        $builder->add('enabled');
+        $builder->add('enabled', null, array('required' => false));
+
         $builder->add(
             'public',
             null,
@@ -56,6 +57,7 @@ class PaymentMethodForm extends AbstractType
                 'label'     => 'Available for client use',
                 'help'      => 'payment_public_help_text',
                 'help_type' => 'block',
+                'required' => false,
             )
         );
 

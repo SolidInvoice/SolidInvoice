@@ -33,7 +33,7 @@
         "addRow" : function() {
             var that         = this,
                 row         = $(window.document.createElement(this.rowElement)).hide(),
-                rowTotal = $('.quote-item-total', row);
+                rowTotal = $('.column-total', row);
 
             $.each(this.fields, function(counter, item) {
                 var column = $(window.document.createElement(that.columnElement));
@@ -48,7 +48,7 @@
 
             row.fadeIn(150);
 
-            $('.quote-item-tax', row).select2({
+            $('select.quote-item-tax', row).select2({
                 allowClear: true
             });
 
@@ -61,7 +61,7 @@
         },
         "setEvents" : function() {
             $(this.el)
-                .on('keyup change', '.quote-item-price, .quote-item-qty, .quote-item-tax', function() {
+                .on('keyup change', '.quote-item-price, .quote-item-qty, select.quote-item-tax', function() {
                     Quote.calcTotal(this);
                 })
                 .on('change', '.quote-item-qty', function() {
@@ -87,7 +87,7 @@
                     Quote.calcTotal(this);
                 });
 
-            $('.quote-item-tax', this.el).select2({
+            $('select.quote-item-tax', this.el).select2({
                 allowClear: true
             });
         },
@@ -116,10 +116,10 @@
 
             discount = parseInt($('#quote_discount').val() || 0, 10);
 
-            $('.quote-item-tax', this.el).each(function() {
+            $('select.quote-item-tax', this.el).each(function() {
                 var tax = $(this),
                     selectedOption = tax.find(':selected'),
-                    rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.quote-item-total').val()));
+                    rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.column-total').text()))
                 if (tax.val() !== '') {
                     var taxAmount = percentage(rowTotal, parseFloat(selectedOption.data('rate')));
                     totalTax += taxAmount;
@@ -151,7 +151,7 @@
             Quote.addRow();
         });
 
-        $('.quote-item-price, .quote-item-total', Quote.el).each(function() {
+        $('.quote-item-price, .column-total', Quote.el).each(function() {
             var $this = $(this);
 
             if ($this.val() !== '') {

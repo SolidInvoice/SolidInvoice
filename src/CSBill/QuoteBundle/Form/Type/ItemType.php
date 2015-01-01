@@ -77,6 +77,7 @@ class ItemType extends AbstractType
                     'attr' => array(
                         'class' => 'input-mini quote-item-tax',
                     ),
+                    'required' => false,
                 )
             );
         }
