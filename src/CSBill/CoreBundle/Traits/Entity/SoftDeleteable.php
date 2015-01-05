@@ -10,13 +10,10 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
-
 trait SoftDeleteable
 {
     /**
      * @ORM\Column(type="datetime", name="deleted", nullable=true)
-     * @GRID\Column(visible=false)
      */
     protected $deletedAt;
 

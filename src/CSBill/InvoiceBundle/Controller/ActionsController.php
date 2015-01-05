@@ -12,6 +12,7 @@ namespace CSBill\InvoiceBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\InvoiceBundle\Entity\Status;
 
 class ActionsController extends BaseController
 {
@@ -22,7 +23,7 @@ class ActionsController extends BaseController
      */
     public function cancelAction(Invoice $invoice)
     {
-        $this->setInvoiceStatus($invoice, 'cancelled');
+        $this->setInvoiceStatus($invoice, Status::STATUS_CANCELLED);
 
         $this->flash($this->trans('Invoice Cancelled'), 'success');
 
@@ -52,8 +53,8 @@ class ActionsController extends BaseController
     {
         $this->get('billing.mailer')->sendInvoice($invoice);
 
-        if (strtolower($invoice->getStatus()->getName()) === 'draft') {
-            $this->setInvoiceStatus($invoice, 'pending');
+        if (strtolower($invoice->getStatus()->getName()) === Status::STATUS_DRAFT) {
+            $this->setInvoiceStatus($invoice, Status::STATUS_PENDING);
         }
 
         $this->flash($this->trans('Invoice Sent'), 'success');

@@ -19,8 +19,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Status extends BaseStatus
 {
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PENDING = 'pending';
+    const STATUS_ACCEPTED = 'accepted';
+    const STATUS_DECLINED = 'declined';
+    const STATUS_CANCELLED = 'cancelled';
+
     /**
      * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Quote", mappedBy="status")
      */
     protected $quotes;
@@ -31,7 +38,8 @@ class Status extends BaseStatus
     }
 
     /**
-     * @param  Quote $quote
+     * @param Quote $quote
+     *
      * @return $this
      */
     public function addQuote(Quote $quote)
@@ -43,7 +51,8 @@ class Status extends BaseStatus
     }
 
     /**
-     * @param  Quote $quote
+     * @param Quote $quote
+     *
      * @return $this
      */
     public function removeQuote(Quote $quote)

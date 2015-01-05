@@ -16,11 +16,16 @@ client:
         details:
             choose: Choose
             extra: Additional Contact Details
-    grid:
-        actions:
-            view: View
-            edit: Edit
-            delete: Delete
+    dashboard:
+        recent: Recent Clients
+        create: Create New Client
+        view_all: View All >>
+        grid:
+            id: Id
+            name: Name
+            status: Status
+            website: Website
+            created: Created
 
 email: Email
 clients: Clients

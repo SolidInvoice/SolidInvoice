@@ -49,6 +49,17 @@ quote:
         choose: Choose a client
         empty: You have not created any clients yet.
         create: Please add one now
+    dashboard:
+        recent: Recent Quotes
+        create: Create New Quote
+        view_all: View All >>
+        grid:
+            id: Id
+            client: Client
+            status: Status
+            discount: Discount
+            total: Total
+            created: Created
 
 status: Status
 client: Client

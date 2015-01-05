@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,29 +10,29 @@
 
 namespace CSBill\QuoteBundle\DataFixtures\ORM;
 
-use CSBill\QuoteBundle\Entity\Status;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use CSBill\CoreBundle\DataFixtures\AbstractStatusLoader;
 
-class LoadStatus implements FixtureInterface
+class LoadStatus extends AbstractStatusLoader
 {
-    protected $statusList = array( 'draft'     => 'default',
-                                   'pending'   => 'warning',
-                                   'accepted'  => 'success',
-                                   'declined'  => 'danger',
-                                   'cancelled' => 'inverse',
-                                  );
-
-    public function load(ObjectManager $manager)
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusList()
     {
-        foreach ($this->statusList as $status => $label) {
-            $entity = new Status();
-            $entity->setName($status)
-                   ->setLabel($label);
+        return array(
+            'draft' => 'default',
+            'pending' => 'warning',
+            'accepted' => 'success',
+            'declined' => 'danger',
+            'cancelled' => 'inverse',
+        );
+    }
 
-            $manager->persist($entity);
-        }
-
-        $manager->flush();
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusClass()
+    {
+        return 'CSBill\QuoteBundle\Entity\Status';
     }
 }

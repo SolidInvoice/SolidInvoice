@@ -21,8 +21,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Status extends BaseStatus
 {
+    const STATUS_ACTIVE = 'active';
+    const STATUS_INACTIVE = 'inactive';
+
     /**
      * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Client", mappedBy="status")
      */
     protected $clients;

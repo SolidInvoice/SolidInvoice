@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @GRID\Source(groupBy="created")
  */
 class Payment
 {
@@ -67,14 +66,14 @@ class Payment
      * @var Status $status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="payments")
-     * @Grid\Column(name="status", type="status", field="status.name", title="status", filter="select", selectFrom="source")
+     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
      * @Grid\Column(field="status.label", visible=false)
      */
     private $status;
 
     /**
      * @ORM\Column(name="amount", type="float")
-     * @Grid\Column(type="currency")
+     * @Grid\Column(type="number", style="currency")
      */
     private $amount;
 

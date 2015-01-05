@@ -1,17 +1,26 @@
-{% if invoices is not empty %}
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                {{ 'Recent Invoices'|trans }}
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {% if invoices is not empty %}
+                    <a href="{{ path('_invoices_index') }}">
+                        {{ 'invoice.dashboard.view_all'|trans }}
+                    </a>
+                {% endif %}
             </div>
+            <h3 class="panel-title">
+                {{ icon('file-text-o') }} {{ 'invoice.dashboard.recent'|trans }}
+            </h3>
+        </div>
+        {% if invoices is not empty %}
             <table class="table table-striped table-bordered">
                 <tr>
-                    <th>{{ 'id'|trans }}</th>
-                    <th>{{ 'client'|trans }}</th>
-                    <th>{{ 'status'|trans }}</th>
-                    <th>{{ 'total'|trans }}</th>
-                    <th>{{ 'discount'|trans }}</th>
-                    <th>{{ 'created'|trans }}</th>
+                    <th>{{ 'invoice.dashboard.grid.id'|trans }}</th>
+                    <th>{{ 'invoice.dashboard.grid.client'|trans }}</th>
+                    <th>{{ 'invoice.dashboard.grid.status'|trans }}</th>
+                    <th>{{ 'invoice.dashboard.grid.total'|trans }}</th>
+                    <th>{{ 'invoice.dashboard.grid.discount'|trans }}</th>
+                    <th>{{ 'invoice.dashboard.grid.created'|trans }}</th>
                 </tr>
                 {% for invoice in invoices %}
                     <tr>
@@ -36,6 +45,12 @@
                     </tr>
                 {% endfor %}
             </table>
-        </div>
+        {% else %}
+            <div class="panel-body">
+                <a href="{{ path('_invoices_create') }}">
+                    {{ 'invoice.dashboard.create'|trans }}
+                </a>
+            </div>
+        {% endif %}
     </div>
-{% endif %}
+</div>

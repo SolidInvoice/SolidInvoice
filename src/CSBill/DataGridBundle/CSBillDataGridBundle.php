@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -15,7 +16,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class CSBillDataGridBundle extends Bundle
 {
     /**
-     * {@inheritdoc}
+     * (non-PHPdoc)
+     * @see Symfony\Component\HttpKernel\Bundle.Bundle::getParent()
      */
     public function getParent()
     {

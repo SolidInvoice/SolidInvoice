@@ -15,6 +15,7 @@ use NumberFormatter;
 
 class Currency
 {
+
     /**
      * @var \NumberFormatter
      */
@@ -38,7 +39,6 @@ class Currency
     {
         $this->locale = $locale;
         $this->currency = $currency;
-
         $this->formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
     }
 

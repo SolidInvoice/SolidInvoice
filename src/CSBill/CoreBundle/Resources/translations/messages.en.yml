@@ -13,6 +13,17 @@ tax:
         type:
             select: Select
 
+dashboard:
+    active_clients: Active Clients
+    income_received: Income Received
+    pending_quotes: Pending Quotes
+    outstanding_invoices: Outstanding Invoices
+    create:
+       new: Create New
+       client: Client
+       invoice: Invoice
+       quote: Quote
+
 inclusive: Inclusive
 exclusive: Exclusive
 

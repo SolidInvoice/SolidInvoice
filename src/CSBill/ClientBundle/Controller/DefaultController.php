@@ -15,8 +15,8 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Status;
 use CSBill\ClientBundle\Form\Client as ClientForm;
-use CSBill\ClientBundle\Grid\ClientGrid;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\DataGridBundle\Grid\Filters;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
@@ -28,14 +28,13 @@ class DefaultController extends BaseController
     /**
      * List all the clients
      *
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $grid = $this->get('grid')->create(new ClientGrid($this->getRepository('CSBillClientBundle:Status')));
-
-        return $grid;
-        //return $this->getGrid($request);
+        return $this->getGrid($request);
     }
 
     /**
@@ -100,6 +99,8 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
         $grid->addColumn($actionsRow, 100);
 
+        $grid->hideColumns(array('updated', 'deletedAt'));
+
         $grid->getColumn('website')->manipulateRenderCell(
             function ($value) {
                 if (!empty($value)) {
@@ -107,6 +108,14 @@ class DefaultController extends BaseController
                 }
 
                 return $value;
+            }
+        )->setSafe(false);
+
+        $grid->getColumn('status.name')->manipulateRenderCell(
+            function ($value, \APY\DataGridBundle\Grid\Row $row) {
+                $label = $row->getField('status.label');
+
+                return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
             }
         )->setSafe(false);
 
@@ -174,7 +183,7 @@ class DefaultController extends BaseController
             // set all new clients default to active
             $client->setStatus(
                 $this->getRepository('CSBillClientBundle:Status')
-                    ->findOneBy(array('name' => 'active'))
+                    ->findOneBy(array('name' => Status::STATUS_ACTIVE))
             );
 
             $this->save($client);

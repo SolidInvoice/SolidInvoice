@@ -45,7 +45,6 @@ class Invoice
      * @var Uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
-     * @Grid\Column(visible=false)
      */
     private $uuid;
 
@@ -53,7 +52,7 @@ class Invoice
      * @var Status $status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="invoices")
-     * @Grid\Column(name="status", type="status", field="status.name", title="status", filter="select", selectFrom="source", safe=false)
+     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
      * @Grid\Column(field="status.label", visible=false)
      */
     private $status;
@@ -71,7 +70,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="total", type="float")
-     * @Grid\Column(type="currency")
+     * @Grid\Column(type="number", style="currency")
      */
     private $total;
 
@@ -79,7 +78,6 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="base_total", type="float")
-     * @Grid\Column(visible=false)
      */
     private $baseTotal;
 
@@ -87,7 +85,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="tax", type="float", nullable=true)
-     * @Grid\Column(type="currency")
+     * @Grid\Column(type="number", style="currency")
      */
     private $tax;
 
@@ -119,7 +117,6 @@ class Invoice
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
-     * @Grid\Column(visible=false)
      */
     private $due;
 
@@ -128,7 +125,6 @@ class Invoice
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
-     * @Grid\Column(visible=false)
      */
     private $paidDate;
 
@@ -156,7 +152,6 @@ class Invoice
     /**
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
-     * @Grid\Column(visible=false)
      *
      * @var ArrayCollection
      */

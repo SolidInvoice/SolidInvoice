@@ -1,19 +1,27 @@
-{% if payments is not empty %}
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                {{ 'Recent Payments'|trans }}
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {% if payments is not empty %}
+                    <a href="{{ path('_payments_index') }}">
+                        {{ 'client.dashboard.view_all'|trans }}
+                    </a>
+                {% endif %}
             </div>
+            <h3 class="panel-title">
+                {{ icon('credit-card') }} {{ 'payment.dashboard.recent'|trans }}
+            </h3>
+        </div>
+        {% if payments is not empty %}
             <table class="table table-striped table-bordered">
                 <tr>
-                    <th>{{ 'id'|trans }}</th>
-                    <th>{{ 'client'|trans }}</th>
-                    <th>{{ 'invoice'|trans }}</th>
-                    <th>{{ 'status'|trans }}</th>
-                    <th>{{ 'method'|trans }}</th>
-                    <th>{{ 'total'|trans }}</th>
-                    <th>{{ 'completed'|trans }}</th>
-                    <th>{{ 'created'|trans }}</th>
+                    <th>{{ 'payment.dashboard.grid.id'|trans }}</th>
+                    <th>{{ 'payment.dashboard.grid.client'|trans }}</th>
+                    <th>{{ 'payment.dashboard.grid.invoice'|trans }}</th>
+                    <th>{{ 'payment.dashboard.grid.status'|trans }}</th>
+                    <th>{{ 'payment.dashboard.grid.method'|trans }}</th>
+                    <th>{{ 'payment.dashboard.grid.total'|trans }}</th>
+                    <th>{{ 'payment.dashboard.grid.created'|trans }}</th>
                 </tr>
                 {% for payment in payments %}
                     <tr>
@@ -21,10 +29,14 @@
                             {{ payment.id }}
                         </td>
                         <td>
-                            <a href="{{ path('_clients_view', {'id' : payment.client_id}) }}">{{ payment.client }}</a>
+                            <a href="{{ path('_clients_view', {'id' : payment.client_id}) }}">
+                                {{ payment.client }}
+                            </a>
                         </td>
                         <td>
-                            <a href="{{ path('_invoices_view', {'id' : payment.invoice}) }}">{{ payment.invoice }}</a>
+                            <a href="{{ path('_invoices_view', {'id' : payment.invoice}) }}">
+                                {{ payment.invoice }}
+                            </a>
                         </td>
                         <td>
                             {{ status_label(payment) }}
@@ -36,14 +48,15 @@
                             {{ payment.amount|currency }}
                         </td>
                         <td>
-                            {{ payment.completed|date }}
-                        </td>
-                        <td>
                             {{ payment.created|date }}
                         </td>
                     </tr>
                 {% endfor %}
             </table>
-        </div>
+        {% else %}
+            <div class="panel-body">
+                {{ 'payment.dashboard.no_payments'|trans }}
+            </div>
+        {% endif %}
     </div>
-{% endif %}
+</div>

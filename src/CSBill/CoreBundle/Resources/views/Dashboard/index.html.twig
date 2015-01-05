@@ -13,131 +13,125 @@
 
 {% block title %}
     {{ icon('dashboard') }} {{ block('page_title') }}
+
+    <div class="pull-right">
+        <div class="btn-group">
+            <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+                {{ icon('plus') }} {{ 'dashboard.create.new'|trans }} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a href="{{ path('_clients_add') }}">
+                        {{ icon('user') }} {{ 'dashboard.create.client'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('_quotes_create') }}">
+                        {{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('_invoices_create') }}">
+                        {{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-    {% if paymentsConfigured() and payments|length > 0 %}
-        <script src="{{ asset('js/highcarts/highcharts.js') }}"></script>
-    {% endif %}
-{% endblock javascripts %}
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-2 col-md-offset-10">
-            <div class="btn-group">
-                <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
-                    {{ 'create_new'|trans }} <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="{{ path('_clients_add') }}">{{ 'client'|trans }}</a></li>
-                    <li><a href="{{ path('_quotes_create') }}">{{ 'quote'|trans }}</a></li>
-                    <li><a href="{{ path('_invoices_create') }}">{{ 'invoice'|trans }}</a></li>
-                </ul>
+    <br class="clear" />
+
+    <div class="widget">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                {{ icon('group', ['fa-5x']) }}
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>
+                                    {{ 'dashboard.active_clients'|trans }}
+                                </div>
+                                <h3>
+                                    {{ totalClients }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                {{ icon('money', ['fa-5x']) }}
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>
+                                    {{ 'dashboard.income_received'|trans }}
+                                </div>
+
+                                <h3>
+                                    {{ totalIncome|currency }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                {{ icon('file-text-o', ['fa-5x']) }}
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>
+                                    {{ 'dashboard.pending_quotes'|trans }}
+                                </div>
+                                <h3>
+                                    {{ totalQuotes }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                {{ icon('file-text-o', ['fa-5x']) }}
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>
+                                    {{ 'dashboard.outstanding_invoices'|trans }}
+                                </div>
+                                <h3>
+                                    {{ totalInvoices }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <br class="clear" />
-    <div class="row">
-        <div class="col-md-6">
-            <div id="graph-income"></div>
-        </div>
-        <div class="col-md-6">
-            <div id="graph-monthly-income"></div>
-        </div>
-    </div>
 
-    <div class="row">
-        {{ render(controller('CSBillClientBundle:Dashboard:recent')) }}
-        {{ render(controller('CSBillQuoteBundle:Dashboard:recent')) }}
-        {{ render(controller('CSBillInvoiceBundle:Dashboard:recent')) }}
-        {{ render(controller('CSBillPaymentBundle:Dashboard:recent')) }}
+        <div class="row">
+            {{ render(controller('CSBillClientBundle:Dashboard:recent')) }}
+            {{ render(controller('CSBillQuoteBundle:Dashboard:recent')) }}
+        </div>
+        <div class="row">
+            {{ render(controller('CSBillInvoiceBundle:Dashboard:recent')) }}
+            {{ render(controller('CSBillPaymentBundle:Dashboard:recent')) }}
+        </div>
     </div>
 {% endblock content %}
-
-{% block script %}
-    {% if paymentsConfigured() %}
-        {% if payments|length > 0 %}
-            var chart = $('#graph-income').highcharts({
-                title: {
-                    text: '{{ 'Payments Received'|trans }}',
-                    x: -20
-                },
-                chart: {
-                    zoomType: 'x'
-                },
-                xAxis: {
-                    type: 'datetime'
-                },
-                yAxis: {
-                    title: {
-                        text: '{{ 'amount'|trans }} ({{ currency.currency }})'
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
-                },
-                tooltip: {
-                    valuePrefix: '{{ currency.currencySymbol }}',
-                    pointFormat: '<b>{point.y}</b>'
-                },
-                legend: {
-                    enabled: false
-                },
-                series: [{
-                    data: {{ payments|json_encode }},
-                    pointStart: {{ payments[0][0] }},
-                    pointInterval: 24 * 3600 * 1000
-                }]
-            });
-        {% endif %}
-
-        {% if monthPayments|length > 0 %}
-            var chart = $('#graph-monthly-income').highcharts({
-                title: {
-                    text: '{{ 'Monthly Income'|trans }}',
-                    x: -20
-                },
-                chart: {
-                    type: 'column',
-                    zoomType: 'x'
-                },
-                xAxis: {
-                    categories: {{ monthPayments|keys|json_encode|raw }}
-                },
-                yAxis: {
-                    title: {
-                        text: '{{ 'amount'|trans }} ({{ currency.currency }})'
-                    },
-                    plotLines: [{
-                        value: 0,
-                     width: 1,
-                        color: '#808080'
-                    }]
-                },
-                tooltip: {
-                    valuePrefix: '{{ currency.currencySymbol }}',
-                    pointFormat: '<b>{point.y}</b>'
-                },
-                legend: {
-                    enabled: false
-                },
-                series: [{
-                    data: [
-                        {% for date, amount in monthPayments %}
-                        {
-                            name: '{{ date }}',
-                            y: {{ amount }}
-                        },
-                        {% endfor %}
-                    ],
-                    colorByPoint: true
-                }]
-            });
-        {% endif %}
-    {% endif %}
-{% endblock script %}

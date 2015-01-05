@@ -21,8 +21,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Status extends BaseStatus
 {
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PENDING = 'pending';
+    const STATUS_PAID = 'paid';
+    const STATUS_OVERDUE = 'overdue';
+    const STATUS_CANCELLED = 'cancelled';
+
     /**
      * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Invoice", mappedBy="status", fetch="EXTRA_LAZY")
      */
     protected $invoices;
@@ -33,7 +40,8 @@ class Status extends BaseStatus
     }
 
     /**
-     * @param  Invoice $invoice
+     * @param Invoice $invoice
+     *
      * @return $this
      */
     public function addInvoice(Invoice $invoice)
@@ -45,7 +53,8 @@ class Status extends BaseStatus
     }
 
     /**
-     * @param  Invoice $invoice
+     * @param Invoice $invoice
+     *
      * @return $this
      */
     public function removeInvoice(Invoice $invoice)

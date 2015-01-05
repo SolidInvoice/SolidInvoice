@@ -12,6 +12,7 @@ namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\QuoteBundle\Entity\Status;
 
 class ActionsController extends BaseController
 {
@@ -22,7 +23,7 @@ class ActionsController extends BaseController
      */
     public function acceptAction(Quote $quote)
     {
-        $this->setQuoteStatus($quote, 'accepted');
+        $this->setQuoteStatus($quote, Status::STATUS_ACCEPTED);
 
         $invoice = $this->get('invoice.manager')->createFromQuote($quote);
 
@@ -48,7 +49,7 @@ class ActionsController extends BaseController
      */
     public function declineAction(Quote $quote)
     {
-        $this->setQuoteStatus($quote, 'declined');
+        $this->setQuoteStatus($quote, Status::STATUS_DECLINED);
 
         $this->flash($this->trans('quote.declined'), 'success');
 
@@ -61,7 +62,7 @@ class ActionsController extends BaseController
      */
     public function cancelAction(Quote $quote)
     {
-        $this->setQuoteStatus($quote, 'cancelled');
+        $this->setQuoteStatus($quote, Status::STATUS_CANCELLED);
 
         $this->flash($this->trans('quote.cancelled'), 'success');
 
@@ -77,8 +78,8 @@ class ActionsController extends BaseController
     {
         $this->get('billing.mailer')->sendQuote($quote);
 
-        if (strtolower($quote->getStatus()->getName()) === 'draft') {
-            $this->setQuoteStatus($quote, 'pending');
+        if (strtolower($quote->getStatus()->getName()) === Status::STATUS_DRAFT) {
+            $this->setQuoteStatus($quote, Status::STATUS_PENDING);
         }
 
         $this->flash($this->trans('quote.sent'), 'success');

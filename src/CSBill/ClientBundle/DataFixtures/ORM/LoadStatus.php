@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,31 +10,26 @@
 
 namespace CSBill\ClientBundle\DataFixtures\ORM;
 
-use CSBill\ClientBundle\Entity\Status;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use CSBill\CoreBundle\DataFixtures\AbstractStatusLoader;
 
-class LoadStatus implements FixtureInterface
+class LoadStatus extends AbstractStatusLoader
 {
-    /*
-     * (non-phpdoc)
+    /**
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function getStatusList()
     {
-        // Active
-        $active = new Status();
-        $active->setName('active')
-               ->setLabel('success');
-        $manager->persist($active);
+        return array(
+            'active' => 'success',
+            'inactive' => 'warning',
+        );
+    }
 
-        // InActive
-        $inActive = new Status();
-        $inActive->setName('inactive')
-                 ->setLabel('warning');
-
-        $manager->persist($inActive);
-
-        // flush client statuses
-        $manager->flush();
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusClass()
+    {
+        return 'CSBill\ClientBundle\Entity\Status';
     }
 }

@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * This file is part of the CSBill package.
  *
  * (c) Pierre du Plessis <info@customscripts.co.za>
@@ -11,60 +10,32 @@
 
 namespace CSBill\PaymentBundle\DataFixtures\ORM;
 
-use CSBill\PaymentBundle\Entity\Status;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use CSBill\CoreBundle\DataFixtures\AbstractStatusLoader;
 
-class LoadStatus implements FixtureInterface
+class LoadStatus extends AbstractStatusLoader
 {
-    /*
-     * (non-phpdoc)
+    /**
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function getStatusList()
     {
-        $statusList = array(
-            array(
-                'name' => 'unknown',
-                'label'  => 'default',
-            ),
-            array(
-                'name' => 'failed',
-                'label'  => 'danger',
-            ),
-            array(
-                'name' => 'suspended',
-                'label'  => 'warning',
-            ),
-            array(
-                'name' => 'expired',
-                'label'  => 'danger',
-            ),
-            array(
-                'name' => 'success',
-                'label'  => 'success',
-            ),
-            array(
-                'name' => 'pending',
-                'label'  => 'warning',
-            ),
-            array(
-                'name' => 'canceled',
-                'label'  => 'inverse',
-            ),
-            array(
-                'name' => 'new',
-                'label'  => 'info',
-            ),
+        return array(
+            'unknown' => 'default',
+            'failed' => 'danger',
+            'suspended' => 'warning',
+            'expired' => 'danger',
+            'success' => 'success',
+            'pending' => 'warning',
+            'canceled' => 'inverse',
+            'new' => 'info',
         );
+    }
 
-        foreach ($statusList as $status) {
-            $entity = new Status();
-            $entity->setName($status['name'])
-                ->setLabel($status['label']);
-            $manager->persist($entity);
-        }
-
-        // flush statuses
-        $manager->flush();
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusClass()
+    {
+        return 'CSBill\PaymentBundle\Entity\Status';
     }
 }

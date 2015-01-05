@@ -3,6 +3,7 @@
 namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\InvoiceBundle\Entity\Status as InvoiceStatus;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Entity\Status;
@@ -32,7 +33,7 @@ class PaymentController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        if ('pending' !== (string) $invoice->getStatus()) {
+        if (InvoiceStatus::STATUS_PENDING !== (string) $invoice->getStatus()) {
             throw new \Exception('This invoice cannot be paid');
         }
 
@@ -159,7 +160,7 @@ class PaymentController extends BaseController
             $invoice->setStatus(
                 $this
                     ->getRepository('CSBillInvoiceBundle:Status')
-                    ->findOneBy(array('name' => 'paid'))
+                    ->findOneBy(array('name' => InvoiceStatus::STATUS_PAID))
             );
             $entityManager->persist($invoice);
             $this->flash('Payment success.', 'success');

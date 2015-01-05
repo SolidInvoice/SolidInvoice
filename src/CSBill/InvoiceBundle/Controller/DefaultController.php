@@ -17,6 +17,7 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\InvoiceBundle\Entity\Status;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,8 +76,8 @@ class DefaultController extends BaseController
             $payAction->addAttribute('rel', 'tooltip');
 
             $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
-                if ('pending' !== $row->getField('status.name')) {
-                    return null;
+                if (Status::STATUS_PENDING !== $row->getField('status.name')) {
+                    $rowAction->setTitle('');
                 }
 
                 return $rowAction;
@@ -87,8 +88,15 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', $rowActicons);
         $grid->addColumn($actionsRow, 100);
 
-        /*$grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));*/
+        $grid->hideColumns(array('updated', 'deletedAt', 'users', 'paidDate', 'due', 'baseTotal', 'uuid'));
+
+        $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
+            $label = $row->getField('status.label');
+
+            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+        })->setSafe(false);
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
@@ -98,7 +106,6 @@ class DefaultController extends BaseController
             return (int) $value;
         });
 
-        // Is this still necessary?
         $grid->setPermanentFilters(array(
             'client.name' => array('operator' => 'isNotNull'),
         ));
@@ -207,12 +214,12 @@ class DefaultController extends BaseController
 
         switch ($action) {
             case 'send':
-                $status = 'pending';
+                $status = Status::STATUS_PENDING;
                 $email = true;
                 break;
 
             case 'draft':
-                $status = 'draft';
+                $status = Status::STATUS_DRAFT;
                 break;
 
             default:

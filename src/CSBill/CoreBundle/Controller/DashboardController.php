@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,7 +10,8 @@
 
 namespace CSBill\CoreBundle\Controller;
 
-use CSBill\PaymentBundle\Repository\PaymentRepository;
+use CSBill\ClientBundle\Entity\Status as ClientStatus;
+use CSBill\QuoteBundle\Entity\Status as QuoteStatus;
 
 class DashboardController extends BaseController
 {
@@ -20,17 +20,16 @@ class DashboardController extends BaseController
      */
     public function indexAction()
     {
-        /** @var PaymentRepository $paymentRepository */
+        /** @var \CSBill\PaymentBundle\Repository\PaymentRepository $paymentRepository */
         $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
-
-        $monthPayments = $paymentRepository->getPaymentsByMonth();
-        $payments = $paymentRepository->getPaymentsList();
 
         return $this->render(
             'CSBillCoreBundle:Dashboard:index.html.twig',
             array(
-                'payments' => $payments,
-                'monthPayments' => $monthPayments,
+                'totalClients' => $this->getRepository('CSBillClientBundle:Client')->getTotalClients(ClientStatus::STATUS_ACTIVE),
+                'totalQuotes' => $this->getRepository('CSBillQuoteBundle:Quote')->getTotalQuotes(QuoteStatus::STATUS_DECLINED),
+                'totalInvoices' => $this->getRepository('CSBillInvoiceBundle:Invoice')->getCountByStatus('pending'),
+                'totalIncome' => $paymentRepository->getTotalIncome()[1]
             )
         );
     }
