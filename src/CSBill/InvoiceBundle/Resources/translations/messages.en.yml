@@ -52,17 +52,7 @@ invoice:
     capture_payment: Capture Payment
     view: View Invoice
     add_payment: Add Payment
-    dashboard:
-        recent: Recent Invoices
-        create: Create New Invoice
-        view_all: View All >>
-        grid:
-            id: Id
-            client: Client
-            status: Status
-            discount: Discount
-            total: Total
-            created: Created
+
 invoice: Invoice
 search: Search
 

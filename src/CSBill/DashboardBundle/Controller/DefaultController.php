@@ -8,13 +8,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Controller;
+namespace CSBill\DashboardBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Status as ClientStatus;
+use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Status as InvoiceStatus;
 use CSBill\QuoteBundle\Entity\Status as QuoteStatus;
 
-class DashboardController extends BaseController
+class DefaultController extends BaseController
 {
     /**
      * Homepage action
@@ -22,12 +23,12 @@ class DashboardController extends BaseController
     public function indexAction()
     {
         return $this->render(
-            'CSBillCoreBundle:Dashboard:index.html.twig',
+            'CSBillDashboardBundle:Default:index.html.twig',
             array(
                 'totalClients' => $this->getRepository('CSBillClientBundle:Client')->getTotalClients(ClientStatus::STATUS_ACTIVE),
                 'totalQuotes' => $this->getRepository('CSBillQuoteBundle:Quote')->getTotalQuotes(QuoteStatus::STATUS_DECLINED),
                 'totalInvoices' => $this->getRepository('CSBillInvoiceBundle:Invoice')->getCountByStatus(InvoiceStatus::STATUS_PENDING),
-                'totalIncome' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome()
+                'totalIncome' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome(),
             )
         );
     }

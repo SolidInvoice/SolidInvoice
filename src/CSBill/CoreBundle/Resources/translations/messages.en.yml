@@ -13,24 +13,12 @@ tax:
         type:
             select: Select
 
-dashboard:
-    active_clients: Active Clients
-    income_received: Income Received
-    pending_quotes: Pending Quotes
-    outstanding_invoices: Outstanding Invoices
-    create:
-       new: Create New
-       client: Client
-       invoice: Invoice
-       quote: Quote
-
 inclusive: Inclusive
 exclusive: Exclusive
 
 powered_by: Powered By
 invalid_file: Invalid File
 upload_error: There was an error uploading the file
-dashboard: Dashboard
 create_new: Create New
 invoice: Invoice
 quote: Quote

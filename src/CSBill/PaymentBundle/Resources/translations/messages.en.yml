@@ -1,19 +1,6 @@
 payment:
     create:
         force: Force payment status (Optional)
-    dashboard:
-        recent: Recent Payments
-        view_all: View All >>
-        grid:
-            id: Id
-            client: Client
-            status: Status
-            total: Total
-            created: Created
-            invoice: Invoice
-            method: Method
-            completed: Completed
-        no_payments: There are no recent payments available
 
 add_payment_method: Add Payment Method
 payment_method_added: Payment Method Successfully Added!

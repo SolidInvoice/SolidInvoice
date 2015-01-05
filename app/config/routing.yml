@@ -1,3 +1,7 @@
+cs_bill_dashboard:
+    resource: "@CSBillDashboardBundle/Resources/config/routing.yml"
+    prefix:   /
+
 csbill_settings:
     resource: "@CSBillSettingsBundle/Resources/config/routing.yml"
     prefix:   /

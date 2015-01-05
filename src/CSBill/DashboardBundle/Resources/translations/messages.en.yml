@@ -1,0 +1,63 @@
+dashboard:
+    title: Dashboard
+    active_clients: Active Clients
+    income_received: Income Received
+    pending_quotes: Pending Quotes
+    outstanding_invoices: Outstanding Invoices
+    create:
+       new: Create New
+       client: Client
+       invoice: Invoice
+       quote: Quote
+    quick_nav:
+        title: Quick Nav
+        clients: Clients
+        invoices: Invoices
+        quotes: Quotes
+        settings: Settings
+        profile: Profile
+    client:
+        recent: Recent Clients
+        create: Create New Client
+        view_all: View All >>
+        grid:
+            id: Id
+            name: Name
+            status: Status
+            website: Website
+            created: Created
+    quote:
+        recent: Recent Quotes
+        create: Create New Quote
+        view_all: View All >>
+        grid:
+            id: Id
+            client: Client
+            status: Status
+            discount: Discount
+            total: Total
+            created: Created
+    invoice:
+        recent: Recent Invoices
+        create: Create New Invoice
+        view_all: View All >>
+        grid:
+            id: Id
+            client: Client
+            status: Status
+            discount: Discount
+            total: Total
+            created: Created
+    payment:
+        recent: Recent Payments
+        view_all: View All >>
+        grid:
+            id: Id
+            client: Client
+            status: Status
+            total: Total
+            created: Created
+            invoice: Invoice
+            method: Method
+            completed: Completed
+        no_payments: There are no recent payments available
