@@ -35,7 +35,9 @@ class PaymentRepository extends EntityRepository
 
         $query = $qb->getQuery();
 
-        return $query->getSingleResult();
+        $result = $query->getSingleResult();
+
+        return $result[1];
     }
 
     /**

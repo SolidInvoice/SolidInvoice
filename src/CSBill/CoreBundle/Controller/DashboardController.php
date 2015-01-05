@@ -11,6 +11,7 @@
 namespace CSBill\CoreBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Status as ClientStatus;
+use CSBill\InvoiceBundle\Entity\Status as InvoiceStatus;
 use CSBill\QuoteBundle\Entity\Status as QuoteStatus;
 
 class DashboardController extends BaseController
@@ -20,16 +21,13 @@ class DashboardController extends BaseController
      */
     public function indexAction()
     {
-        /** @var \CSBill\PaymentBundle\Repository\PaymentRepository $paymentRepository */
-        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
-
         return $this->render(
             'CSBillCoreBundle:Dashboard:index.html.twig',
             array(
                 'totalClients' => $this->getRepository('CSBillClientBundle:Client')->getTotalClients(ClientStatus::STATUS_ACTIVE),
                 'totalQuotes' => $this->getRepository('CSBillQuoteBundle:Quote')->getTotalQuotes(QuoteStatus::STATUS_DECLINED),
-                'totalInvoices' => $this->getRepository('CSBillInvoiceBundle:Invoice')->getCountByStatus('pending'),
-                'totalIncome' => $paymentRepository->getTotalIncome()[1]
+                'totalInvoices' => $this->getRepository('CSBillInvoiceBundle:Invoice')->getCountByStatus(InvoiceStatus::STATUS_PENDING),
+                'totalIncome' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome()
             )
         );
     }
