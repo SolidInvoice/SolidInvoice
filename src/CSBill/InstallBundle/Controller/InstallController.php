@@ -20,9 +20,9 @@ class InstallController extends BaseController
     {
         $installer = $this->get('csbill.installer');
 
-        if ($installer->isInstalled()) {
+        /*if ($installer->isInstalled()) {
             throw new ApplicationInstalledException();
-        }
+        }*/
 
         $step = $installer->getCurrentStep();
 
@@ -38,6 +38,7 @@ class InstallController extends BaseController
             $step->process();
 
             if ($installer->isFinal()) {
+                $installer->complete();
                 return $this->redirect($this->generateUrl($installer::INSTALLER_SUCCESS_ROUTE));
             }
 

@@ -44,9 +44,9 @@ class RequestListener
     );
 
     /**
-     * @var Installer
+     * @var string
      */
-    protected $installer;
+    protected $installed;
 
     /**
      * @var Router
@@ -54,12 +54,12 @@ class RequestListener
     protected $router;
 
     /**
-     * @param Installer $installer
-     * @param Router    $router
+     * @param string $installed
+     * @param Router $router
      */
-    public function __construct(Installer $installer, Router $router)
+    public function __construct($installed, Router $router)
     {
-        $this->installer = $installer;
+        $this->installed = $installed;
         $this->router = $router;
     }
 
@@ -80,7 +80,7 @@ class RequestListener
         }, $this->corePaths);
 
         if (!in_array($route, $this->coreRoutes) && !in_array(true, $map)) {
-            if (!$this->installer->isInstalled()) {
+            if (!$this->installed) {
                 $response = new RedirectResponse($this->router->generate(Installer::INSTALLER_ROUTE));
 
                 $event->setResponse($response);

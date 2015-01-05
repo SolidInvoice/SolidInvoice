@@ -44,9 +44,11 @@ class LicenseAgreementForm extends AbstractType
                 'attr' => array(
                     'class' => 'checkbox',
                 ),
-                'constraints' => new NotBlank(array(
+                'constraints' => new NotBlank(
+                    array(
                         'message' => 'You must accept the license agreement before you continue',
-                    )),
+                    )
+                ),
             )
         );
     }
@@ -56,9 +58,11 @@ class LicenseAgreementForm extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array(
-            'license_info',
-        ));
+        $resolver->setRequired(
+            array(
+                'license_info',
+            )
+        );
     }
 
     /**

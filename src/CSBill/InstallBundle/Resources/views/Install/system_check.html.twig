@@ -10,14 +10,14 @@
 <div class="control-group">
     {% if errors is not empty %}
         <div class="alert alert-danger">
-            <strong>The following requirements were not met:</strong>
+            <strong>{{ 'installation.requirements.not_met'|trans }}</strong>
             <ul>
                 {% for error in errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
             <br />
-            Please ensure your system meets the minimum requirements before proceeding.
+            {{ 'installation.requirements.message' }}
         </div>
     {% endif %}
 

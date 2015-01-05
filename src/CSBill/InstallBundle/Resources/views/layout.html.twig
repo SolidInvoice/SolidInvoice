@@ -9,7 +9,7 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% set title = "app_installation"|trans({"%app_name%" : app_name}) %}
+{% set title = "installation.title"|trans({"%app_name%" : app_name}) %}
 
 {% block header %}
 	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : title|trans} %}
@@ -22,7 +22,7 @@
 {% block sidebar %}
     <ul class="nav nav-list">
         <li class="nav-header">
-            {{ "installation_progess"|trans }}
+            {{ "installation.progess"|trans }}
         </li>
         {% set link = true %}
         {% for index, step in installer.steps %}
@@ -32,7 +32,7 @@
                 {% set class = 'active' %}
             {% endif %}
             <li class="{{ class }}">
-                <a href="{{ link ? path('_installer_step', {'step' : index}) : '#' }}">{{ step.label|trans }}</a>
+                <a href="{{ link ? path('_installer_step', {'step' : index}) : '#' }}">{{ ('installation.step.' ~ step.label)|trans }}</a>
             </li>
         {% endfor %}
     </ul>

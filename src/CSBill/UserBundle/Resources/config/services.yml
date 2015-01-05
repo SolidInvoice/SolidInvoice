@@ -1,4 +1,9 @@
 services:
+    fos_user.user_manager.default:
+        class: CSBill\UserBundle\Manager\UserManager
+        public: false
+        arguments: [@security.encoder_factory, @fos_user.util.username_canonicalizer, @fos_user.util.email_canonicalizer, @fos_user.entity_manager, %fos_user.model.user.class%]
+
     csbill.user.canonicalizer:
         class: CSBill\UserBundle\Util\Canonicalizer
         public: false

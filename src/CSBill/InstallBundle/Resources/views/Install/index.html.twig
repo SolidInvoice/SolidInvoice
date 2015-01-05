@@ -9,23 +9,30 @@
 
 {% extends "CSBillInstallBundle::layout.html.twig" %}
 
-{% block title %}{{ "app_installation"|trans({"%app_name%" : app_name}) }} - {{ step_label|trans }}{% endblock %}
+{% block title %}{{ "installation.title"|trans({"%app_name%" : app_name}) }} - {{ ('installation.step.' ~ step_label)|trans }}{% endblock %}
 
 {% block content %}
     <fieldset>
         <form action="{{ path("_installer") }}" method="post">
             <div class="row">
-                <div class="col-lg-12 col-md-12 well">
-                    {{ install_step(step) }}
+                <div class="col-lg-12 col-md-12">
+                    <div class="widget">
+                        {{ install_step(step) }}
 
-                    {% if not is_first_install_step() %}
-                        <div class="control-group pull-left" id="restart_button">
-                            <a href="{{ path("_installer_restart") }}" class="btn btn-warning" title="{{ "restart_installation"|trans }}">{{ "restart"|trans }}</a>
+                        {% if not is_first_install_step() %}
+                            <div class="control-group pull-left" id="restart_button">
+                                <a href="{{ path("_installer_restart") }}" class="btn btn-warning" title="{{ "installation.action.restart_process"|trans }}">
+                                    {{ icon('undo') }} {{ "installation.action.restart"|trans }}
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="control-group pull-right" id="next_button">
+                            <button type="submit" class="btn btn-success">
+                                {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+                            </button>
                         </div>
-                    {% endif %}
-
-                    <div class="control-group pull-right" id="next_button">
-                        <input type="submit" class="btn btn-primary" value="{{ "next"|trans }}" />
+                        <br class="clear" />
                     </div>
                 </div>
             </div>

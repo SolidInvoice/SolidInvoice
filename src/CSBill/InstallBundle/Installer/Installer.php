@@ -16,6 +16,8 @@ use CSBill\InstallBundle\Installer\Step\LicenseAgreement;
 use CSBill\InstallBundle\Installer\Step\SystemCheck;
 use CSBill\InstallBundle\Installer\Step\SystemInformation;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use RandomLib\Factory;
+use SecurityLib\Strength;
 
 /**
  * Installer service
@@ -55,11 +57,6 @@ class Installer extends ContainerAware
      * @var bool
      */
     protected $isFinal = false;
-
-    /**
-     * @var bool
-     */
-    private $installed;
 
     /**
      * Constructer to initialize the installer
@@ -245,59 +242,32 @@ class Installer extends ContainerAware
     }
 
     /**
-     * Checks if the application is currently installed
-     *
-     * @return bool
+     * Completed the installation step
      */
-    public function isInstalled()
+    public function complete()
     {
-        if (null !== $this->installed) {
-            return $this->installed;
-        }
+        $date = new \DateTime('NOW');
 
-        // check if we can connect to the database
-        try {
-            $this->container->get('database_connection')->connect();
-        } catch (\Exception $e) {
-            // if we can't connect to the database, assume the application is not installed
-            // @TODO we should cater for cases when the database is down
-            $this->installed = false;
+        $value = array(
+            'parameters' => array(
+                'installed' => (string) $date,
+                'secret' => $this->generateRandomString()
+            )
+        );
 
-            return $this->installed;
-        }
+        $this->container->get('csbill.core.config_writer')->dump($value, 0644);
+    }
 
-        /*
-            @TODO: check (settings table|composer.lock file) for current installed version.
-            If version can't be found, run installer
-        */
-        // if version is older than available version, go to upgrade page (unless automatic update is activiated)
-        // (Should we automatically take user to upgrade page, or just notify that a new version is available?)
+    /**
+     * Generates a secure random string
+     *
+     * @return string
+     */
+    private function generateRandomString()
+    {
+        $factory = new Factory;
+        $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
 
-        /**
-         * Temporary Implemation
-         */
-
-        // check if the users table exists. If not, go to installer
-        $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('CSBillUserBundle:User');
-
-        try {
-            $users = $repository
-                ->createQueryBuilder('u')
-                ->select('COUNT(u.id)')
-                ->getQuery()
-                ->getSingleScalarResult();
-
-            if ((int) $users === 0) {
-                throw new \RuntimeException('The users table does not exist');
-            }
-        } catch (\Exception $e) {
-            $this->installed = false;
-
-            return $this->installed;
-        }
-
-        $this->installed = true;
-
-        return $this->installed;
+        return $generator->generateString(40);
     }
 }

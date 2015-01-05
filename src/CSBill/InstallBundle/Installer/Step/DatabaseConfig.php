@@ -12,11 +12,6 @@ namespace CSBill\InstallBundle\Installer\Step;
 
 use CSBill\InstallBundle\Form\Step\DatabaseConfigForm;
 use CSBill\InstallBundle\Installer\AbstractFormStep;
-use RandomLib\Factory;
-use SecurityLib\Strength;
-use Symfony\Component\Yaml\Dumper;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Parser;
 
 class DatabaseConfig extends AbstractFormStep
 {
@@ -80,21 +75,9 @@ class DatabaseConfig extends AbstractFormStep
      *
      * @throws \Exception
      */
-    private function writeConfigFile($params = array())
+    private function writeConfigFile(array $params = array())
     {
-        $config = $this->get('kernel')->getRootDir() . '/config/parameters.yml';
-
-        $yamlParser = new Parser();
-
-        try {
-            $value = $yamlParser->parse(file_get_contents($config));
-        } catch (ParseException $e) {
-            throw new \RuntimeException(
-                "Unable to parse the YAML string: %s. Your installation might be corrupt.",
-                $e->getCode(),
-                $e
-            );
-        }
+        $value = array('parameters' => array());
 
         foreach ($params as $key => $param) {
             $key = sprintf('database_%s', $key);
@@ -103,27 +86,7 @@ class DatabaseConfig extends AbstractFormStep
             $value['parameters'][$key] = $param;
         }
 
-        // Sets a unique value for the secret token.
-        // We do this when writing the database configuration,
-        // as this is the only time that we modify the parameters.yml file.
-        $value['parameters']['secret'] = $this->generateRandomString();
-
-        $dumper = new Dumper();
-
-        $yaml = $dumper->dump($value, 2);
-
-        $fileSystem = $this->container->get('filesystem');
-        $fileSystem->dumpFile($config, $yaml, 0644);
-
-        /** @var \AppKernel $kernel */
-        $kernel = $this->container->get('kernel');
-        $fileSystem->remove(
-            sprintf(
-                '%s/%s.php',
-                $kernel->getCacheDir(),
-                $kernel->getContainerCacheClass()
-            )
-        );
+        $this->get('csbill.core.config_writer')->dump($value);
     }
 
     /**
@@ -148,18 +111,5 @@ class DatabaseConfig extends AbstractFormStep
         $fixtureLoader = $this->get('csbill.installer.database.fixtures');
 
         $fixtureLoader->execute();
-    }
-
-    /**
-     * Generates a secure random string
-     *
-     * @return string
-     */
-    private function generateRandomString()
-    {
-        $factory = new Factory;
-        $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
-
-        return $generator->generateString(40);
     }
 }

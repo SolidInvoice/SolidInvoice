@@ -15,6 +15,11 @@ parameters:
     csbill_core.settings.loader.class: CSBill\CoreBundle\Settings\SettingsLoader
 
 services:
+
+    csbill.core.config_writer:
+        class: CSBill\InstallBundle\ConfigWriter
+        arguments: [%kernel.root_dir%, @kernel, @filesystem]
+
     csbill_core.menu.factory:
         class: %csbill_core.menu.factory.class%
         arguments: [@router]
