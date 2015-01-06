@@ -53,7 +53,8 @@
         "payum/payum-bundle": "~0.12",
         "payum/offline": "~0.12",
         "payum/paypal-express-checkout-nvp": "~0.12",
-        "ircmaxell/random-lib": "dev-master"
+        "ircmaxell/random-lib": "dev-master",
+        "nesbot/carbon": "1.*"
     },
     "require-dev": {
         "jms/debugging-bundle": "dev-master",

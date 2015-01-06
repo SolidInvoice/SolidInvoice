@@ -20,47 +20,53 @@ class InvoiceRepository extends EntityRepository
     /**
      * Get the total amount for paid invoices
      *
-     * @param  Client $client set this parameter to filter per client
+     * @param Client $client set this parameter to filter per client
+     *
      * @return int
      */
     public function getTotalIncome(Client $client = null)
     {
-        return $this->getTotalByStatus('paid', $client);
+        return $this->getTotalByStatus(Status::STATUS_PAID, $client);
     }
 
     /**
      * Get the total amount for outstanding invoices
      *
-     * @param  Client $client set this parameter to filter per client
+     * @param Client $client set this parameter to filter per client
+     *
      * @return int
      */
     public function getTotalOutstanding(Client $client = null)
     {
-        return $this->getTotalByStatus('pending', $client);
+        return $this->getTotalByStatus(Status::STATUS_PENDING, $client);
     }
 
     /**
      * Get the total number of invoices for a specific status
      *
-     * @param $status
-     * @param  Client $client set this paramater to filter per client
+     * @param string|Status $status
+     * @param Client        $client set this paramater to filter per client
+     *
      * @return int
      */
     public function getCountByStatus($status, Client $client = null)
     {
-        if (!$status instanceof Status) {
-            $status = $this->getEntityManager()->getRepository('CSBillInvoiceBundle:Status')->findOneByName($status);
-        }
-
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('COUNT(i)')
-            ->where('i.status = :status')
-            ->setParameter('status', $status);
+        $qb->select('COUNT(i)');
+
+        if (!$status instanceof Status) {
+            $qb->join('i.status', 's')
+                ->where('s.name = :status');
+        } else {
+            $qb->where('i.status = :status');
+        }
+
+        $qb->setParameter('status', $status);
 
         if (null !== $client) {
             $qb->andWhere('i.client = :client')
-               ->setParameter('client', $client);
+                ->setParameter('client', $client);
         }
 
         $query = $qb->getQuery();
@@ -71,21 +77,26 @@ class InvoiceRepository extends EntityRepository
     /**
      * Get the total amount for a specific invoice status
      *
-     * @param  string $status
-     * @param  Client $client set this paramater to filter per client
+     * @param string $status
+     * @param Client $client set this paramater to filter per client
+     *
      * @return int
      */
     public function getTotalByStatus($status, Client $client = null)
     {
-        if (!$status instanceof Status) {
-            $status = $this->getEntityManager()->getRepository('CSBillInvoiceBundle:Status')->findOneByName($status);
-        }
 
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('SUM(i.total)')
-            ->where('i.status = :status')
-            ->setParameter('status', $status);
+        $qb->select('SUM(i.total)');
+
+        if (!$status instanceof Status) {
+            $qb->join('i.status', 's')
+                ->where('s.name = :status');
+        } else {
+            $qb->where('i.status = :status');
+        }
+
+        $qb->setParameter('status', $status);
 
         if (null !== $client) {
             $qb->andWhere('i.client = :client')
@@ -110,9 +121,9 @@ class InvoiceRepository extends EntityRepository
 
         $qb->select(
             'i.id',
+            'i.uuid',
             'c.name as client',
             'c.id as client_id',
-            'i.discount',
             'i.total',
             'i.created',
             's.name as status',

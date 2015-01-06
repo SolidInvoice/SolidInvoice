@@ -15,6 +15,7 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Status;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\DataGridBundle\Grid\Filters;
@@ -182,7 +183,7 @@ class DefaultController extends BaseController
             // set all new clients default to active
             $client->setStatus(
                 $this->getRepository('CSBillClientBundle:Status')
-                    ->findOneBy(array('name' => 'active'))
+                    ->findOneBy(array('name' => Status::STATUS_ACTIVE))
             );
 
             $this->save($client);

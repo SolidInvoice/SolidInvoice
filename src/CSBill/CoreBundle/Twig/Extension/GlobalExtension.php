@@ -10,6 +10,7 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
+use Carbon\Carbon;
 use CSBill\CoreBundle\CSBillCoreBundle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
@@ -17,6 +18,7 @@ use Twig_Extension;
 
 class GlobalExtension extends Twig_Extension
 {
+
     /**
      * @var ContainerInterface $container
      */
@@ -42,29 +44,28 @@ class GlobalExtension extends Twig_Extension
         $appName = $this->container->get('settings')->get('system.general.app_name');
 
         return array(
-            'query'            => $this->getQuery(),
-            'currency'         => $this->container->get('currency'),
-            'invoice_manager'  => $this->container->get('invoice.manager'),
-            'app_version'      => CSBillCoreBundle::VERSION,
-            'app_name'         => $appName,
+            'query' => $this->getQuery(),
+            'currency' => $this->container->get('currency'),
+            'invoice_manager' => $this->container->get('invoice.manager'),
+            'app_version' => CSBillCoreBundle::VERSION,
+            'app_name' => $appName,
         );
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Twig_Extension::getFilters()
+     * {@inheritdoc}
      */
     public function getFilters()
     {
         return array(
             new \Twig_SimpleFilter('percentage', array($this, 'formatPercentage')),
             new \Twig_SimpleFilter('currency', array($this, 'formatCurrency')),
+            new \Twig_SimpleFilter('diff', array($this, 'dateDiff')),
         );
     }
 
     /**
-     * (non-PHPDoc)
-     * @return \Twig_SimpleFunction[]
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
@@ -76,8 +77,9 @@ class GlobalExtension extends Twig_Extension
     /**
      * Displays an icon
      *
-     * @param  string $iconName
-     * @param  array  $options
+     * @param string $iconName
+     * @param array  $options
+     *
      * @return string
      */
     public function displayIcon($iconName, array $options = array())
@@ -86,14 +88,15 @@ class GlobalExtension extends Twig_Extension
         $class = sprintf('fa fa-%s', $iconName);
 
         if (!empty($options)) {
-            $class .= '-' . $options;
+            $class .= ' '.$options;
         }
 
         return sprintf('<i class="%s"></i>', $class);
     }
 
     /**
-     * @param  int|float $amount
+     * @param int|float $amount
+     *
      * @return string
      */
     public function formatCurrency($amount)
@@ -102,8 +105,9 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * @param  int|float $amount
-     * @param  int       $percentage
+     * @param int|float $amount
+     * @param int       $percentage
+     *
      * @return float|int
      */
     public function formatPercentage($amount, $percentage = 0)
@@ -113,6 +117,20 @@ class GlobalExtension extends Twig_Extension
         }
 
         return 0;
+    }
+
+    /**
+     * Returns a human-readible diff for dates
+     *
+     * @param \DateTime $date
+     *
+     * @return string
+     */
+    public function dateDiff(\DateTime $date)
+    {
+        $carbon = Carbon::instance($date);
+
+        return $carbon->diffForHumans();
     }
 
     /**
@@ -141,7 +159,7 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * {inhertitDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

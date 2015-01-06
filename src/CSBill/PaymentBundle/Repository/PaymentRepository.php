@@ -12,10 +12,34 @@ namespace CSBill\PaymentBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\PaymentBundle\Entity\Status;
 use Doctrine\ORM\EntityRepository;
 
 class PaymentRepository extends EntityRepository
 {
+    /**
+     * Gets the total income that was received
+     *
+     * @return float
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalIncome()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('SUM(p.amount)')
+            ->join('p.status', 's')
+            ->where('s.name = :status')
+            ->setParameter('status', Status::STATUS_SUCCESS);
+
+        $query = $qb->getQuery();
+
+        $result = $query->getSingleResult();
+
+        return $result[1];
+    }
+
     /**
      * Returns an array of all the payments for an invoice
      *
@@ -120,18 +144,15 @@ class PaymentRepository extends EntityRepository
     /**
      * @return array
      */
-    public function getPaymentsList()
+    public function getPaymentsList(\DateTime $timestamp = null)
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
-        $queryBuilder->select(
-            'p.amount',
-            'p.created'
-        )
+        $queryBuilder->select('p.amount', 'p.created')
             ->join('p.method', 'm')
             ->join('p.status', 's')
             ->where('p.created >= :date')
-            ->setParameter('date', new \DateTime('-1 Month'))
+            ->setParameter('date', $timestamp)
             ->groupBy('p.created')
             ->orderBy('p.created', 'ASC');
 

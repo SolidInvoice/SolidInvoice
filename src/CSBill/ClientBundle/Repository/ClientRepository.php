@@ -23,13 +23,21 @@ class ClientRepository extends EntityRepository
     /**
      * Gets total number of clients
      *
+     * @param string $status
+     *
      * @return int
      */
-    public function getTotalClients()
+    public function getTotalClients($status = null)
     {
         $qb = $this->createQueryBuilder('c');
 
         $qb->select('COUNT(c.id)');
+
+        if (null !== $status) {
+            $qb->join('c.status', 's')
+                ->where('s.name = :status')
+                ->setParameter('status', $status);
+        }
 
         $query = $qb->getQuery();
 
@@ -50,7 +58,6 @@ class ClientRepository extends EntityRepository
         $qb->select(
             'c.id',
             'c.name',
-            'c.website',
             'c.created',
             's.name as status',
             's.label as status_label'

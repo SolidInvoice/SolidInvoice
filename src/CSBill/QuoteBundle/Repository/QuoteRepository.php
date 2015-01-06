@@ -16,6 +16,30 @@ use Doctrine\ORM\EntityRepository;
 class QuoteRepository extends EntityRepository
 {
     /**
+     * Gets total number of quotes
+     *
+     * @param string $status
+     *
+     * @return int
+     */
+    public function getTotalQuotes($status = null)
+    {
+        $qb = $this->createQueryBuilder('q');
+
+        $qb->select('COUNT(q.id)');
+
+        if (null !== $status) {
+            $qb->join('q.status', 's')
+                ->where('s.name = :status')
+                ->setParameter('status', $status);
+        }
+
+        $query = $qb->getQuery();
+
+        return (int) $query->getSingleScalarResult();
+    }
+
+    /**
      * Gets the most recent created quotes
      *
      * @param int $limit
@@ -30,7 +54,6 @@ class QuoteRepository extends EntityRepository
             'q.id',
             'c.name as client',
             'c.id as client_id',
-            'q.discount',
             'q.total',
             'q.created',
             's.name as status',

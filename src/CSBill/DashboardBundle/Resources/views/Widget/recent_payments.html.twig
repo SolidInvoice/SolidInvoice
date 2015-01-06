@@ -1,0 +1,65 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="pull-right">
+            {% if payments is not empty %}
+                <a href="{{ path('_payments_index') }}">
+                    {{ 'dashboard.payment.view_all'|trans }}
+                </a>
+            {% endif %}
+        </div>
+        <h3 class="panel-title">
+            {{ icon('credit-card') }} {{ 'dashboard.payment.recent'|trans }}
+        </h3>
+    </div>
+    {% if payments is not empty %}
+        <ul class="list-group">
+            {% for payment in payments %}
+                <li class="list-group-item">
+                    {{ status_label(payment) }}
+
+                    <a href="{{ path('_clients_view', {'id' : payment.client_id}) }}">
+                        {{ payment.client }}
+                    </a>
+
+                    <div class="pull-right">
+                        {{ payment.amount|currency }}
+                        <br />
+                        <small>
+                            <strong>
+                                {{ 'dashboard.payment.actions.created'|trans }}
+                            </strong>
+                            {{ payment.created|diff }}
+                        </small>
+                    </div>
+                    <br />
+                    <small>
+                        <strong>
+                            {{ 'dashboard.payment.actions.invoice'|trans }}
+                        </strong>
+                        <a href="{{ path('_invoices_view', {'id' : payment.invoice}) }}">
+                            #{{ payment.invoice }}
+                        </a>
+                    </small>
+                    <br class="clear" />
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="panel-body">
+            <div class="pull-left">
+                <h4>
+                    {{ 'dashboard.payment.no_payments'|trans }}
+                </h4>
+            </div>
+        </div>
+    {% endif %}
+</div>

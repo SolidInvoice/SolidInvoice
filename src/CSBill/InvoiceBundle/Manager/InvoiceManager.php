@@ -13,6 +13,7 @@ namespace CSBill\InvoiceBundle\Manager;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
+use CSBill\InvoiceBundle\Entity\Status;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -120,7 +121,7 @@ class InvoiceManager extends ContainerAware
             }
         }
 
-        $status = $this->entityManager->getRepository('CSBillInvoiceBundle:Status')->findOneByName('pending');
+        $status = $this->entityManager->getRepository('CSBillInvoiceBundle:Status')->findOneByName(Status::STATUS_PENDING);
         $invoice->setStatus($status);
 
         return $invoice;
@@ -192,7 +193,7 @@ class InvoiceManager extends ContainerAware
         $status = $this
             ->entityManager
             ->getRepository('CSBillInvoiceBundle:Status')
-            ->findOneBy(array('name' => 'paid'));
+            ->findOneBy(array('name' => Status::STATUS_PAID));
 
         $invoice->setStatus($status);
 

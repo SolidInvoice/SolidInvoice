@@ -38,6 +38,7 @@ class AppKernel extends Kernel
             new CSBill\SettingsBundle\CSBillSettingsBundle(),
             new CSBill\UserBundle\CSBillUserBundle(),
             new CSBill\PaymentBundle\CSBillPaymentBundle(),
+            new CSBill\DashboardBundle\CSBillDashboardBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

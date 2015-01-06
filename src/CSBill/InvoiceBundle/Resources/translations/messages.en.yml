@@ -52,6 +52,7 @@ invoice:
     capture_payment: Capture Payment
     view: View Invoice
     add_payment: Add Payment
+
 invoice: Invoice
 search: Search
 

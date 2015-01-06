@@ -17,6 +17,7 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\QuoteBundle\Entity\Status;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -190,12 +191,12 @@ class DefaultController extends BaseController
 
         switch ($action) {
             case 'send':
-                $status = 'pending';
+                $status = Status::STATUS_PENDING;
                 $email = true;
                 break;
 
             case 'draft':
-                $status = 'draft';
+                $status = Status::STATUS_DRAFT;
                 break;
 
             default:
