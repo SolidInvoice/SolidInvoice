@@ -34,10 +34,16 @@ class WidgetFactory
      * @param WidgetInterface $widget
      * @param string          $location
      * @param int             $priority
+     *
+     * @throws \Exception
      */
     public function add(WidgetInterface $widget, $location = null, $priority = null)
     {
         $location = $location ?: self::DEFAULT_LOCATION;
+
+        if (!isset($this->queues[$location])) {
+            throw new \Exception(sprintf('Invalid widget location: %s', $location));
+        }
 
         $this->queues[$location]->insert($widget, $priority);
     }
