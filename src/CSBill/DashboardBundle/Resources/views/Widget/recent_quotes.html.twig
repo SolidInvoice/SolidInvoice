@@ -21,43 +21,58 @@
         </h3>
     </div>
     {% if quotes is not empty %}
-        <table class="table table-striped table-bordered">
-            <tr>
-                <th>{{ 'dashboard.quote.grid.id'|trans }}</th>
-                <th>{{ 'dashboard.quote.grid.client'|trans }}</th>
-                <th>{{ 'dashboard.quote.grid.status'|trans }}</th>
-                <th>{{ 'dashboard.quote.grid.total'|trans }}</th>
-                <th>{{ 'dashboard.quote.grid.discount'|trans }}</th>
-                <th>{{ 'dashboard.quote.grid.created'|trans }}</th>
-            </tr>
+        <ul class="list-group">
             {% for quote in quotes %}
-                <tr>
-                    <td>
-                        <a href="{{ path('_quotes_view', {'id' : quote.id}) }}">{{ quote.id }}</a>
-                    </td>
-                    <td>
-                        <a href="{{ path('_clients_view', {'id' : quote.client_id}) }}">{{ quote.client }}</a>
-                    </td>
-                    <td>
-                        {{ status_label(quote) }}
-                    </td>
-                    <td>
+                <li class="list-group-item">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            {{ icon('cog') }}
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="{{ path('_quotes_view', {'id' : quote.id}) }}">
+                                    {{ icon('eye') }} {{ 'dashboard.quote.actions.view'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}">
+                                    {{ icon('edit') }} {{ 'dashboard.quote.actions.edit'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {{ status_label(quote) }}
+
+                    <a href="{{ path('_clients_view', {'id' : quote.client_id}) }}">
+                        {{ quote.client }}
+                    </a>
+                    <div class="pull-right">
                         {{ quote.total|currency }}
-                    </td>
-                    <td>
-                        {{ quote.discount * 100 }}%
-                    </td>
-                    <td>
-                        {{ quote.created|date }}
-                    </td>
-                </tr>
+                        <br />
+                        <small>
+                            <strong>
+                                {{ 'dashboard.quote.actions.created'|trans }}
+                            </strong>
+                            {{ quote.created|diff }}
+                        </small>
+                    </div>
+                    <br class="clear" />
+                </li>
             {% endfor %}
-        </table>
+        </ul>
     {% else %}
         <div class="panel-body">
-            <a href="{{ path('_quotes_create') }}">
-                {{ 'dashboard.quote.create'|trans }}
-            </a>
+            <div class="pull-left">
+                <h4>
+                    {{ 'dashboard.quote.empty'|trans }}
+                </h4>
+            </div>
+            <div class="pull-right">
+                <a href="{{ path('_quotes_create') }}" class="btn btn-info">
+                    {{ icon('plus') }} {{ 'dashboard.quote.create'|trans }}
+                </a>
+            </div>
         </div>
     {% endif %}
 </div>

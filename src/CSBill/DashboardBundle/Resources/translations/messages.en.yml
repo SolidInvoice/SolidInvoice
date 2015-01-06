@@ -19,45 +19,38 @@ dashboard:
     client:
         recent: Recent Clients
         create: Create New Client
+        empty: There are no clients available
         view_all: View All >>
-        grid:
-            id: Id
-            name: Name
-            status: Status
-            website: Website
-            created: Created
+        actions:
+            view: View
+            edit: Edit
+            created: Created:
+            create:
+                quote: Create Quote
+                invoice: Create Invoice
     quote:
         recent: Recent Quotes
         create: Create New Quote
+        empty: There are no quotes available
         view_all: View All >>
-        grid:
-            id: Id
-            client: Client
-            status: Status
-            discount: Discount
-            total: Total
-            created: Created
+        actions:
+            view: View
+            edit: Edit
+            created: Created:
     invoice:
         recent: Recent Invoices
         create: Create New Invoice
+        empty: There are no invoices available
         view_all: View All >>
-        grid:
-            id: Id
-            client: Client
-            status: Status
-            discount: Discount
-            total: Total
-            created: Created
+        actions:
+            view: View
+            pay: Pay Now
+            edit: Edit
+            created: Created:
     payment:
         recent: Recent Payments
         view_all: View All >>
-        grid:
-            id: Id
-            client: Client
-            status: Status
-            total: Total
-            created: Created
-            invoice: Invoice
-            method: Method
-            completed: Completed
+        actions:
+            created: Created:
+            invoice: Invoice:
         no_payments: There are no recent payments available

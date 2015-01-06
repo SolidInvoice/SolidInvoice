@@ -42,8 +42,8 @@ class PaymentController extends BaseController
         /** @var \CSBill\PaymentBundle\Repository\PaymentMethod $paymentRepository */
         $paymentRepository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
 
-        if (0 === $paymentRepository->getTotalMethodsConfigured() || 0 === count($paymentManager)) {
-            throw $this->createNotFoundException('No payment methods configured');
+        if (1 === $paymentRepository->getTotalMethodsConfigured() || 0 === count($paymentManager)) {
+            throw new \Exception('No payment methods configured');
         }
 
         $builder = $this->createFormBuilder();

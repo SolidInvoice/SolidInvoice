@@ -10,6 +10,7 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
+use Carbon\Carbon;
 use CSBill\CoreBundle\CSBillCoreBundle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
@@ -59,6 +60,7 @@ class GlobalExtension extends Twig_Extension
         return array(
             new \Twig_SimpleFilter('percentage', array($this, 'formatPercentage')),
             new \Twig_SimpleFilter('currency', array($this, 'formatCurrency')),
+            new \Twig_SimpleFilter('diff', array($this, 'dateDiff')),
         );
     }
 
@@ -115,6 +117,20 @@ class GlobalExtension extends Twig_Extension
         }
 
         return 0;
+    }
+
+    /**
+     * Returns a human-readible diff for dates
+     *
+     * @param \DateTime $date
+     *
+     * @return string
+     */
+    public function dateDiff(\DateTime $date)
+    {
+        $carbon = Carbon::instance($date);
+
+        return $carbon->diffForHumans();
     }
 
     /**

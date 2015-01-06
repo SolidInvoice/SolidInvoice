@@ -21,45 +21,64 @@
         </h3>
     </div>
     {% if clients is not empty %}
-        <table class="table table-striped table-bordered">
-            <tr>
-                <th>{{ 'dashboard.client.grid.id'|trans }}</th>
-                <th>{{ 'dashboard.client.grid.name'|trans }}</th>
-                <th>{{ 'dashboard.client.grid.status'|trans }}</th>
-                <th>{{ 'dashboard.client.grid.website'|trans }}</th>
-                <th>{{ 'dashboard.client.grid.created'|trans }}</th>
-            </tr>
+        <ul class="list-group">
             {% for client in clients %}
-                <tr>
-                    <td>
-                        <a href="{{ path('_clients_view', {'id' : client.id}) }}">
-                            {{ client.id }}
-                        </a>
-                    </td>
-                    <td>
+                <li class="list-group-item">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            {{ icon('cog') }}
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="{{ path('_clients_view', {'id' : client.id}) }}">
+                                    {{ icon('eye') }} {{ 'dashboard.client.actions.view'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('_clients_edit', {'id' : client.id}) }}">
+                                    {{ icon('edit') }} {{ 'dashboard.client.actions.edit'|trans }}
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ path('_quotes_create', {'client' : client.id}) }}">
+                                    {{ icon('file-text-o') }} {{ 'dashboard.client.actions.create.quote'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('_invoices_create', {'client' : client.id}) }}">
+                                    {{ icon('file-text-o') }} {{ 'dashboard.client.actions.create.invoice'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {{ status_label(client) }}
+
+                    <a href="{{ path('_clients_view', {'id' : client.id}) }}">
                         {{ client.name }}
-                    </td>
-                    <td>
-                        {{ status_label(client) }}
-                    </td>
-                    <td>
-                        {% if client.website is not empty %}
-                            <a href="{{ client.website }}" rel="external">
-                                {{ client.webste }}
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {{ client.created|date }}
-                    </td>
-                </tr>
+                    </a>
+
+                    <div class="pull-right">
+                        <strong>
+                            {{ 'dashboard.client.actions.created'|trans }}
+                        </strong> {{ client.created|diff }}
+                    </div>
+                </li>
             {% endfor %}
-        </table>
+        </ul>
     {% else %}
         <div class="panel-body">
-            <a href="{{ path('_clients_add') }}">
-                {{ 'dashboard.client.create'|trans }}
-            </a>
+            <div class="pull-left">
+                <h4>
+                    {{ 'dashboard.client.empty'|trans }}
+                </h4>
+            </div>
+            <div class="pull-right">
+                <a href="{{ path('_clients_add') }}" class="btn btn-info">
+                    {{ icon('plus') }} {{ 'dashboard.client.create'|trans }}
+                </a>
+            </div>
         </div>
     {% endif %}
 </div>

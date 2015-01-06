@@ -54,7 +54,6 @@ class QuoteRepository extends EntityRepository
             'q.id',
             'c.name as client',
             'c.id as client_id',
-            'q.discount',
             'q.total',
             'q.created',
             's.name as status',

@@ -58,7 +58,6 @@ class ClientRepository extends EntityRepository
         $qb->select(
             'c.id',
             'c.name',
-            'c.website',
             'c.created',
             's.name as status',
             's.label as status_label'

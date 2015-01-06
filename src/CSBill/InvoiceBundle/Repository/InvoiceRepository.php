@@ -121,9 +121,9 @@ class InvoiceRepository extends EntityRepository
 
         $qb->select(
             'i.id',
+            'i.uuid',
             'c.name as client',
             'c.id as client_id',
-            'i.discount',
             'i.total',
             'i.created',
             's.name as status',
