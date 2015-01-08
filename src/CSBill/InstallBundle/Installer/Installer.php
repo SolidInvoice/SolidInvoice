@@ -119,7 +119,7 @@ class Installer extends ContainerAware
     {
         $session = $this->container->get('session');
 
-        return $session->get(self::SESSION_KEY . $key, $default);
+        return $session->get(self::SESSION_KEY.$key, $default);
     }
 
     /**
@@ -134,7 +134,7 @@ class Installer extends ContainerAware
     {
         $session = $this->container->get('session');
 
-        $session->set(self::SESSION_KEY . $key, $value);
+        $session->set(self::SESSION_KEY.$key, $value);
 
         return $this;
     }
@@ -251,8 +251,8 @@ class Installer extends ContainerAware
         $value = array(
             'parameters' => array(
                 'installed' => (string) $date,
-                'secret' => $this->generateRandomString()
-            )
+                'secret' => $this->generateRandomString(),
+            ),
         );
 
         $this->container->get('csbill.core.config_writer')->dump($value, 0644);
@@ -265,7 +265,7 @@ class Installer extends ContainerAware
      */
     private function generateRandomString()
     {
-        $factory = new Factory;
+        $factory = new Factory();
         $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
 
         return $generator->generateString(40);

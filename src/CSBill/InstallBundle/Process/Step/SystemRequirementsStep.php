@@ -10,8 +10,6 @@
 
 namespace CSBill\InstallBundle\Process\Step;
 
-use CSBill\InstallBundle\Form\Step\LicenseAgreementForm;
-use CSBill\InstallBundle\Installer\Step\LicenseAgreement;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
 
@@ -57,7 +55,7 @@ class SystemRequirementsStep extends ControllerStep
     {
         $rootDir = $this->get('kernel')->getRootDir();
 
-        require_once $rootDir . DIRECTORY_SEPARATOR . 'AppRequirements.php';
+        require_once $rootDir.DIRECTORY_SEPARATOR.'AppRequirements.php';
 
         return new \AppRequirements();
     }

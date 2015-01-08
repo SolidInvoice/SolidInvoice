@@ -107,7 +107,7 @@ class ConfigStep extends ControllerStep
                 'host' => $config['database_host'],
                 'port' => $config['database_port'],
                 'name' => $config['database_name'],
-            )
+            ),
         );
 
         $options = array(
@@ -117,9 +117,9 @@ class ConfigStep extends ControllerStep
                 'sylius_flow_forward',
                 array(
                     'scenarioAlias' => 'install',
-                    'stepName' => 'config'
+                    'stepName' => 'config',
                 )
-            )
+            ),
         );
 
         return $this->createForm(new ConfigStepForm(), $data, $options);

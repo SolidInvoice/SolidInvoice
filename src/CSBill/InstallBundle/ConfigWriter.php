@@ -12,9 +12,7 @@ namespace CSBill\InstallBundle;
 
 use CSBill\CoreBundle\Kernel\ContainerClassKernelInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 class ConfigWriter
@@ -49,7 +47,7 @@ class ConfigWriter
         $this->rootDir = $rootDir;
         $this->fileSystem = $fileSystem;
         $this->kernel = $kernel;
-        $this->configFile = $this->rootDir . '/config/parameters.yml';
+        $this->configFile = $this->rootDir.'/config/parameters.yml';
     }
 
     /**
@@ -60,7 +58,7 @@ class ConfigWriter
     public function dump(array $config, $mode = 0777)
     {
         $values = array(
-            'parameters' => array_merge($this->getConfigValues(), $config)
+            'parameters' => array_merge($this->getConfigValues(), $config),
         );
 
         $yaml = Yaml::dump($values);

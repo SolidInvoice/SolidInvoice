@@ -10,7 +10,6 @@
 
 namespace CSBill\InstallBundle\Listener;
 
-use CSBill\InstallBundle\Installer\Installer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
@@ -45,7 +44,7 @@ class RequestListener
         '_profiler_search_bar',
         '_profiler_search_results',
         '_profiler_router',
-        'fos_js_routing_js'
+        'fos_js_routing_js',
     );
 
     /**

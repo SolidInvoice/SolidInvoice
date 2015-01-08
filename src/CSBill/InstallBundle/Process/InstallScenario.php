@@ -13,7 +13,6 @@ namespace CSBill\InstallBundle\Process;
 use Sylius\Bundle\FlowBundle\Process\Builder\ProcessBuilderInterface;
 use Sylius\Bundle\FlowBundle\Process\Scenario\ProcessScenarioInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use CSBill\InstallBundle\Process\Step;
 
 class InstallScenario extends ContainerAware implements ProcessScenarioInterface
 {

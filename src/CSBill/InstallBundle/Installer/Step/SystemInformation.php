@@ -62,14 +62,14 @@ class SystemInformation extends AbstractFormStep
     }
 
     /**
-     * @param  array $data
+     * @param  array             $data
      * @throws \RuntimeException
      */
     protected function saveConfig(array $data)
     {
         $rootDir = $this->container->get('kernel')->getRootDir();
 
-        $config = $rootDir . '/config/parameters.yml';
+        $config = $rootDir.'/config/parameters.yml';
 
         $yaml = new Parser();
 

@@ -103,7 +103,7 @@ class EmailSettingsType extends AbstractType
                 $data['host'] = null;
                 $data['port'] = null;
                 $data['encryption'] = null;
-            } else if ('sendmail' === $data['transport'] || 'mail' === $data['transport']) {
+            } elseif ('sendmail' === $data['transport'] || 'mail' === $data['transport']) {
                 $data['host'] = null;
                 $data['port'] = null;
                 $data['encryption'] = null;
