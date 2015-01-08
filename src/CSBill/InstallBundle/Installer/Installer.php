@@ -24,7 +24,7 @@ use SecurityLib\Strength;
  */
 class Installer extends ContainerAware
 {
-    const INSTALLER_ROUTE = '_installer';
+    const INSTALLER_ROUTE = 'sylius_flow_start';
     const INSTALLER_SUCCESS_ROUTE = '_installer_success';
     const INSTALLER_RESTART_ROUTE = '_installer_restart';
 

@@ -11,6 +11,8 @@
 
 namespace CSBill\InstallBundle\Installer\Database;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration as VersionMigration;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -40,10 +42,12 @@ class Migration extends ContainerAware
     }
 
     /**
+     * @param array $params
+     *
      * @return array
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      */
-    public function migrate()
+    public function migrate(array $params)
     {
         $dir = $this->container->getParameter('doctrine_migrations.dir_name');
 
@@ -51,7 +55,7 @@ class Migration extends ContainerAware
             $this->filesystem->mkdir($dir);
         }
 
-        $configuration = $this->getConfiguration($dir);
+        $configuration = $this->getConfiguration($dir, $params);
 
         $versions = $configuration->getMigrations();
 
@@ -69,14 +73,16 @@ class Migration extends ContainerAware
 
     /**
      * @param string $dir
+     * @param array  $params
      *
      * @return Configuration
+     * @throws \Doctrine\DBAL\DBALException
      */
-    private function getConfiguration($dir)
+    private function getConfiguration($dir, array $params)
     {
-        $conn = $this->container->get('doctrine')->getConnection();
+        $connection = DriverManager::getConnection($params);
 
-        $configuration = new Configuration($conn);
+        $configuration = new Configuration($connection);
         $configuration->setMigrationsNamespace($this->container->getParameter('doctrine_migrations.namespace'));
         $configuration->setMigrationsDirectory($dir);
         $configuration->registerMigrationsFromDirectory($dir);

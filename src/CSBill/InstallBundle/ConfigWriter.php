@@ -15,6 +15,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 class ConfigWriter
 {
@@ -34,6 +35,11 @@ class ConfigWriter
     private $kernel;
 
     /**
+     * @var string
+     */
+    private $configFile;
+
+    /**
      * @param string                        $rootDir
      * @param ContainerClassKernelInterface $kernel
      * @param Filesystem                    $fileSystem
@@ -43,6 +49,7 @@ class ConfigWriter
         $this->rootDir = $rootDir;
         $this->fileSystem = $fileSystem;
         $this->kernel = $kernel;
+        $this->configFile = $this->rootDir . '/config/parameters.yml';
     }
 
     /**
@@ -52,29 +59,13 @@ class ConfigWriter
      */
     public function dump(array $config, $mode = 0777)
     {
-        $configFile = $this->rootDir . '/config/parameters.yml';
-
-        $yamlParser = new Parser();
-
-        try {
-            $value = $yamlParser->parse(file_get_contents($configFile));
-        } catch (ParseException $e) {
-            throw new \RuntimeException(
-                "Unable to parse the YAML string: %s. Your installation might be corrupt.",
-                $e->getCode(),
-                $e
-            );
-        }
-
         $values = array(
-            'parameters' => array_merge($value['parameters'], $config['parameters'])
+            'parameters' => array_merge($this->getConfigValues(), $config)
         );
 
-        $dumper = new Dumper();
+        $yaml = Yaml::dump($values);
 
-        $yaml = $dumper->dump($values, 2);
-
-        $this->fileSystem->dumpFile($configFile, $yaml, $mode);
+        $this->fileSystem->dumpFile($this->configFile, $yaml, $mode);
 
         $this->fileSystem->remove(
             sprintf(
@@ -83,5 +74,28 @@ class ConfigWriter
                 $this->kernel->getContainerCacheClass()
             )
         );
+    }
+
+    /**
+     * Get all values from the config file
+     *
+     * @return array
+     */
+    public function getConfigValues()
+    {
+        try {
+            $value = Yaml::parse(file_get_contents($this->configFile));
+        } catch (ParseException $e) {
+            throw new \RuntimeException(
+                sprintf(
+                    "Unable to parse the YAML string: %s Your installation might be corrupt.",
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        return $value['parameters'];
     }
 }

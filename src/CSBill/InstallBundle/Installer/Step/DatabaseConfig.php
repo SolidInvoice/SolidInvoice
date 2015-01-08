@@ -58,13 +58,13 @@ class DatabaseConfig extends AbstractFormStep
     public function process()
     {
         $form = $this->buildForm();
-        $data = $form->getData();
+        $params = $form->getData();
 
-        $data['driver'] = sprintf('pdo_%s', $this->drivers[$data['driver']]);
+        $params['driver'] = sprintf('pdo_%s', $this->drivers[$params['driver']]);
 
-        $this->writeConfigFile($data);
+        $this->writeConfigFile($params);
 
-        $this->executeMigrations();
+        $this->executeMigrations($params);
         $this->executeFixtures();
     }
 
@@ -92,13 +92,15 @@ class DatabaseConfig extends AbstractFormStep
     /**
      * Executes all doctrine migrations to create database structure
      *
+     * @param array $params
+     *
      * @return string
      */
-    private function executeMigrations()
+    private function executeMigrations(array $params)
     {
         $migration = $this->get('csbill.installer.database.migration');
 
-        return $migration->migrate();
+        return $migration->migrate($params);
     }
 
     /**

@@ -11,8 +11,11 @@ installation:
             user: Admin User Information
     action:
         next: Next
+        refresh: Refresh
         restart: Restart
         restart_process: Restart the installation process
     requirements:
-        not_met: The following requirements were not met:
+        not_met: Some requirements were not met
         message: Please ensure your system meets the minimum requirements before proceeding.
+        mandatory: Mandatory
+        optional: Optional
