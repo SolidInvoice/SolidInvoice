@@ -32,6 +32,7 @@ class RequestListener
         self::INSTALLER_ROUTE,
         'sylius_flow_display',
         'sylius_flow_forward',
+        'fos_js_routing_js',
     );
 
     /**
@@ -44,7 +45,6 @@ class RequestListener
         '_profiler_search_bar',
         '_profiler_search_results',
         '_profiler_router',
-        'fos_js_routing_js',
     );
 
     /**
@@ -84,13 +84,17 @@ class RequestListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== HttpKernel::MASTER_REQUEST || $this->installed) {
+        if ($this->installed || $event->getRequestType() !== HttpKernel::MASTER_REQUEST) {
             return;
         }
 
         $route = $event->getRequest()->get('_route');
 
-        if (!in_array($route, $this->allowRoutes) && ($this->debug && false === strpos($route, '_assetic'))) {
+        if (!in_array($route, $this->allowRoutes)) {
+            if ($this->debug && false !== strpos($route, '_assetic')) {
+                return;
+            }
+
             $response = new RedirectResponse($this->router->generate(self::INSTALLER_ROUTE));
 
             $event->setResponse($response);

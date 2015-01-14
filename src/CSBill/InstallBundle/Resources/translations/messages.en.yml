@@ -1,4 +1,5 @@
 installation:
+    already_installed: The application is already installed
     progess: Installation Progress
     title: %app_name% Installation
     step:

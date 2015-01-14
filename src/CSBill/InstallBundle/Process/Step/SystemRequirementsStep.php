@@ -19,9 +19,16 @@ class SystemRequirementsStep extends ControllerStep
      * @param ProcessContextInterface $context
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function displayAction(ProcessContextInterface $context)
     {
+        if ($this->container->getParameter('installed')) {
+            throw new \Exception(
+                $this->get('translator')->trans('installation.already_installed')
+            );
+        }
+
         $requirements = $this->getSystemRequirements();
 
         return $this->render(
