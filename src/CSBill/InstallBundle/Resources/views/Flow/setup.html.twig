@@ -1,0 +1,26 @@
+{% extends 'CSBillInstallBundle::layout.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.locale) }}
+            {{ form_row(form.currency) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form) }}
+        </div>
+    </div>
+
+    <div class="control-group pull-right" id="next_button">
+        <button type="submit" class="btn btn-success">
+            {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+        </button>
+    </div>
+    <br class="clear" />
+
+    {{ form_end(form) }}
+{% endblock %}

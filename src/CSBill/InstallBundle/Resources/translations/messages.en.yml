@@ -20,3 +20,10 @@ installation:
         message: Please ensure your system meets the minimum requirements before proceeding.
         mandatory: Mandatory
         optional: Optional
+    process:
+        title:
+            busy: Installing...
+            done: Done
+        step:
+            migrations: Creating database schema
+            fixtures: Loading fixtures

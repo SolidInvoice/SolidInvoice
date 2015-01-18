@@ -24,9 +24,11 @@ class SystemRequirementsStep extends ControllerStep
     public function displayAction(ProcessContextInterface $context)
     {
         if ($this->container->getParameter('installed')) {
-            throw new \Exception(
-                $this->get('translator')->trans('installation.already_installed')
-            );
+            $flashBag = $this->get('session')->getFlashBag();
+
+            $flashBag->add('error', $this->get('translator')->trans('installation.already_installed'));
+
+            return $this->redirectToRoute('_home');
         }
 
         $requirements = $this->getSystemRequirements();

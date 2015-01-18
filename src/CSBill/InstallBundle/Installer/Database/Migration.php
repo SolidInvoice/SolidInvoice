@@ -42,12 +42,10 @@ class Migration extends ContainerAware
     }
 
     /**
-     * @param array $params
-     *
      * @return array
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      */
-    public function migrate(array $params)
+    public function migrate()
     {
         $dir = $this->container->getParameter('doctrine_migrations.dir_name');
 
@@ -55,7 +53,7 @@ class Migration extends ContainerAware
             $this->filesystem->mkdir($dir);
         }
 
-        $configuration = $this->getConfiguration($dir, $params);
+        $configuration = $this->getConfiguration($dir);
 
         $versions = $configuration->getMigrations();
 
@@ -73,14 +71,13 @@ class Migration extends ContainerAware
 
     /**
      * @param string $dir
-     * @param array  $params
      *
      * @return Configuration
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function getConfiguration($dir, array $params)
+    private function getConfiguration($dir)
     {
-        $connection = DriverManager::getConnection($params);
+        $connection = $this->container->get('database_connection');
 
         $configuration = new Configuration($connection);
         $configuration->setMigrationsNamespace($this->container->getParameter('doctrine_migrations.namespace'));

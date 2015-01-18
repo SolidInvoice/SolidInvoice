@@ -1,0 +1,75 @@
+{% extends 'CSBillInstallBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="progress progress-striped">
+                <div class="progress-bar active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                </div>
+            </div>
+            <h3 align="center" id="install-title">
+                {{ 'installation.process.title.busy'|trans }}</h3>
+            <div id="error-message" class="text-danger"></div>
+            <ul class="list-group">
+                <li class="list-group-item" id="step-migrations">
+                    {{ 'installation.process.step.migrations'|trans }}
+                </li>
+                <li class="list-group-item" id="step-fixtures">
+                    {{ 'installation.process.step.fixtures'|trans }}
+                </li>
+            </ul>
+            <div class="pull-right">
+                <a href="{{ path('sylius_flow_forward', {'stepName' : 'process'}) }}" id="continue-btn" class="disabled btn btn-success">
+                    {{ 'installation.action.next'|trans }} {{ icon('arrow-right') }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    $(function () {
+
+        ajaxStep('migrations', function () {
+            ajaxStep('fixtures', function () {
+                $('.progress').remove();
+                $('#install-title').text('{{ 'installation.process.title.done'|trans }}');
+                $('#continue-btn').removeClass('disabled');
+            });
+        });
+    });
+
+    var iconBusy = '{{ icon('circle-o-notch', ['fa-spin']) }}',
+        iconSuccess = '{{ icon('check', ['text-success']) }}',
+        iconFail = '{{ icon('times', ['text-danger']) }}';
+
+    function ajaxStep(action, callback)
+    {
+        var step = $('#step-' + action),
+            container = $('<div />', {'class' : 'pull-right icon'});
+
+        var clone = container.clone();
+        step.append(clone.append(iconBusy));
+        $.ajax({
+            url : Routing.generate('sylius_flow_display', {'stepName' : 'process', 'action' : action})
+        }).done(function (response) {
+            if (true === response.success) {
+                clone.remove();
+                step.append(container.append(iconSuccess));
+
+                if (undefined !== callback) {
+                    callback();
+                }
+            } else {
+                clone.remove();
+                step.append(container.append(iconFail));
+                $('#error-message').append(response.message);
+            }
+        })
+        .fail(function (jqXHR) {
+            clone.remove();
+            step.append(container.append(iconFail));
+            $('#error-message').append(jqXHR.statusText);
+        });
+    }
+{% endblock %}

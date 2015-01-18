@@ -1,0 +1,15 @@
+{% extends 'CSBillInstallBundle::layout.html.twig' %}
+
+{% block content %}
+    <fieldset>
+        <legend>
+            <h1>{{ "Success"|trans }}</h1>
+        </legend>
+
+        <h3>{{ "You have successfully installed CSBill!"|trans }}</h3>
+
+        <a href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
+            {{ icon('user') }} {{ "Log in now"|trans }}
+        </a>
+    </fieldset>
+{% endblock %}

@@ -9,6 +9,8 @@ _install_flow:
 sylius_flow_display:
     path: /install/{stepName}
     defaults: { _controller: sylius.controller.process:displayAction, scenarioAlias: "install" }
+    options:
+        expose: true
 
 sylius_flow_forward:
     path: /install/{stepName}/forward
