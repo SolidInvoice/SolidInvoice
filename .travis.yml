@@ -12,6 +12,7 @@ matrix:
     - php: hhvm
     - php: hhvm-nightly
 
+sudo: false
 
 before_install:
   - composer self-update
