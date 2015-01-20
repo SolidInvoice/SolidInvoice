@@ -11,8 +11,6 @@
 
 namespace CSBill\InstallBundle\Installer\Database;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration as VersionMigration;
 use Symfony\Component\DependencyInjection\ContainerAware;

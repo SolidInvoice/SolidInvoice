@@ -24,7 +24,6 @@ class InstallStep extends ControllerStep
         $request = $this->getRequest();
 
         if ($request->query->has('action')) {
-
             $result = array();
 
             switch ($request->query->get('action')) {

@@ -41,7 +41,6 @@ class SetupStep extends ControllerStep
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $data = $form->getData();
 
             $this->createAdminUser($data);
@@ -117,7 +116,7 @@ class SetupStep extends ControllerStep
     }
 
     /**
-     * @param  array $data
+     * @param array $data
      *
      * @throws \RuntimeException
      */
@@ -128,7 +127,7 @@ class SetupStep extends ControllerStep
         $config = array(
             'locale' => $data['locale'],
             'currency' => $data['currency'],
-            'installed' => $time->format(\DateTime::ISO8601)
+            'installed' => $time->format(\DateTime::ISO8601),
         );
 
         $this->get('csbill.core.config_writer')->dump($config);

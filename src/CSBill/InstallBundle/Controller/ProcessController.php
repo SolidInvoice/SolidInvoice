@@ -42,5 +42,4 @@ class ProcessController extends BaseController implements ContainerAwareInterfac
 
         return parent::forwardAction($request, $scenarioAlias, $stepName);
     }
-
 }
