@@ -12,7 +12,7 @@ csbill_core:
 
 csbill_install:
     resource: "@CSBillInstallBundle/Resources/config/routing.yml"
-    prefix:   /install
+    prefix:   /
 
 csbill_client:
     prefix:   /clients

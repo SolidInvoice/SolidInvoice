@@ -25,6 +25,7 @@
         "php": ">=5.4.0",
         "symfony/symfony": "2.6.*",
         "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/dbal": "~2.3,!=2.5.0",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "~1.0",
         "symfony/assetic-bundle": "~2.3",
@@ -54,7 +55,8 @@
         "payum/offline": "~0.12",
         "payum/paypal-express-checkout-nvp": "~0.12",
         "ircmaxell/random-lib": "dev-master",
-        "nesbot/carbon": "1.*"
+        "nesbot/carbon": "1.*",
+        "sylius/flow-bundle" : "0.12.*"
     },
     "require-dev": {
         "jms/debugging-bundle": "dev-master",

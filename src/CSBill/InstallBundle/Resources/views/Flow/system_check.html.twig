@@ -1,0 +1,90 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'CSBillInstallBundle::layout.html.twig' %}
+
+{% macro requirementCheck(requirement) %}
+    <li class="list-group-item">
+        {% if requirement.fulfilled %}
+            <span class="text-success">
+                {{ icon('check') }}
+            </span>
+        {% elseif not requirement.optional %}
+            <span class="text-danger">
+                {{ icon('ban') }}
+            </span>
+        {% else %}
+            <span class="text-warning">
+                {{ icon('warning') }}
+            </span>
+        {% endif %}
+
+        {{ requirement.testMessage }}
+
+        {% if not requirement.fulfilled %}
+            <p class="list-group-item-text">
+                <small><i>{{ requirement.helpHtml|raw }}</i></small>
+            </p>
+        {% endif %}
+    </li>
+{% endmacro %}
+
+{% block content %}
+    {% if requirements.failedRequirements|length > 0 %}
+        <div class="alert alert-danger">
+            <div class="hidden-xs col-sm-1">
+                {{ icon('ban', ['fa-4x']) }}
+            </div>
+            <strong>{{ 'installation.requirements.not_met'|trans }}</strong>
+            <br />
+            {{ 'installation.requirements.message'|trans }}
+            <br class="clear" />
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <fieldset>
+                <legend>
+
+                {{ 'installation.requirements.mandatory'|trans }}
+                </legend>
+                <ul class="list-group">
+                    {% for requirement in requirements.requirements %}
+                        {{ _self.requirementCheck(requirement) }}
+                    {% endfor %}
+                </ul>
+            </fieldset>
+        </div>
+        <div class="col-md-6">
+            <fieldset>
+                <legend>
+                    {{ 'installation.requirements.optional'|trans }}
+                </legend>
+            <ul class="list-group">
+            {% for requirement in requirements.recommendations %}
+                {{ _self.requirementCheck(requirement) }}
+            {% endfor %}
+            </ul>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="pull-right">
+                <a href="{{ path('_install_flow') }}" class="btn btn-warning">
+                    {{ icon('refresh') }} {{ "installation.action.refresh"|trans }}
+                </a>
+                <a href="{{ path('sylius_flow_forward', {'scenarioAlias': 'install', 'stepName': 'system_check'}) }}" class="btn btn-success{% if requirements.failedRequirements|length > 0 %} disabled{% endif %}">
+                    {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

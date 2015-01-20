@@ -146,7 +146,7 @@ class SettingsManager implements ManagerInterface
             $setting .= self::RIGHT_TOKEN;
         }
 
-        $entity = $this->accessor->getValue($this->settings, $setting);
+        $entity = $this->accessor->getValue($this->settings->toArray(), $setting);
 
         if ($entity instanceof Setting) {
             return $entity->getValue();

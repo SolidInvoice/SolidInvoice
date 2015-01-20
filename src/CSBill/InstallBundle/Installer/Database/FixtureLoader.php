@@ -44,7 +44,7 @@ class FixtureLoader extends ContainerAware
         $fixtures = $loader->getFixtures();
         if (!$fixtures) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- " . implode("\n- ", $paths))
+                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
             );
         }
         $purger = new ORMPurger($em);
@@ -63,7 +63,7 @@ class FixtureLoader extends ContainerAware
 
         /** @var Bundle $bundle */
         foreach ($this->container->get('kernel')->getBundles() as $bundle) {
-            $paths[] = $bundle->getPath() . '/DataFixtures/ORM';
+            $paths[] = $bundle->getPath().'/DataFixtures/ORM';
         }
 
         return $paths;

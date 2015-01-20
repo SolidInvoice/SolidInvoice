@@ -7,33 +7,55 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
 
-{% set title = "app_installation"|trans({"%app_name%" : app_name}) %}
+{% from "CSBillInstallBundle:Macro:install_progress.html.twig" import progress %}
+
+{% set title = "installation.title"|trans({"%app_name%" : 'CSBill'}) ~ ' - ' ~ ('installation.progress.step.' ~ context.currentStep.name)|trans %}
 
 {% block header %}
-	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : title|trans} %}
+	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : "installation.title"|trans({"%app_name%" : 'CSBill'})} %}
 {% endblock header %}
 
-{% block title %}
-	{{ title }}
-{% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
+
+{% block body %}
+    <div class="row">
+        <section class="col-lg-12 col-md-12 content">
+            {{ block('heading') }}
+
+            {% set steps = context.process.steps|keys %}
+
+            {{ progress(steps, context) }}
+
+            {% include "CSBillCoreBundle::flash.html.twig" %}
+
+            <br class="clear" />
+
+            <div class="widget">
+                {{ block('content') }}
+            </div>
+        </section>
+    </div>
+{% endblock body %}
 
 {% block sidebar %}
     <ul class="nav nav-list">
         <li class="nav-header">
-            {{ "installation_progess"|trans }}
+            {{ "installation.progess"|trans }}
         </li>
-        {% set link = true %}
+        {#{% set link = false %}
         {% for index, step in installer.steps %}
             {% set class = not installer.stepComplete(index) ? 'disabled' %}
             {% if installer.currentStep.label is sameas(step.label) %}
-                {% set link = false %}
+                &#123;&#35;{% set link = false %}&#35;&#125;
                 {% set class = 'active' %}
             {% endif %}
             <li class="{{ class }}">
-                <a href="{{ link ? path('_installer_step', {'step' : index}) : '#' }}">{{ step.label|trans }}</a>
+                <a href="{{ link ? path('_installer_step', {'step' : index}) : '#' }}">
+                    {{ ('installation.step.' ~ step.label)|trans }}
+                </a>
             </li>
-        {% endfor %}
+        {% endfor %}#}
     </ul>
 {% endblock sidebar %}

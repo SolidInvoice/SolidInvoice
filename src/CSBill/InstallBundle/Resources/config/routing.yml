@@ -1,15 +1,13 @@
-_installer:
-    pattern: /
-    defaults: { _controller: CSBillInstallBundle:Install:index }
+_install_flow:
+    pattern:  /install
+    defaults: { _controller: installer.controller.process:startAction, scenarioAlias: "install" }
 
-_installer_step:
-    pattern: /step/{step}
-    defaults: { _controller: CSBillInstallBundle:Install:step }
+sylius_flow_display:
+    path: /install/{stepName}
+    defaults: { _controller: installer.controller.process:displayAction, scenarioAlias: "install" }
+    options:
+        expose: true
 
-_installer_restart:
-    pattern: /restart
-    defaults: { _controller: CSBillInstallBundle:Install:restart }
-
-_installer_success:
-    pattern: /success
-    defaults: { _controller: CSBillInstallBundle:Install:success }
+sylius_flow_forward:
+    path: /install/{stepName}/forward
+    defaults: { _controller: installer.controller.process:forwardAction, scenarioAlias: "install" }

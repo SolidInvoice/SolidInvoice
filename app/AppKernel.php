@@ -1,9 +1,10 @@
 <?php
 
+use CSBill\CoreBundle\Kernel\ContainerClassKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-class AppKernel extends Kernel
+class AppKernel extends Kernel implements ContainerClassKernelInterface
 {
     public function registerBundles()
     {
@@ -27,6 +28,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Payum\Bundle\PayumBundle\PayumBundle(),
+            new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),

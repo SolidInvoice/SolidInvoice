@@ -71,12 +71,13 @@ class Migration extends ContainerAware
      * @param string $dir
      *
      * @return Configuration
+     * @throws \Doctrine\DBAL\DBALException
      */
     private function getConfiguration($dir)
     {
-        $conn = $this->container->get('doctrine')->getConnection();
+        $connection = $this->container->get('database_connection');
 
-        $configuration = new Configuration($conn);
+        $configuration = new Configuration($connection);
         $configuration->setMigrationsNamespace($this->container->getParameter('doctrine_migrations.namespace'));
         $configuration->setMigrationsDirectory($dir);
         $configuration->registerMigrationsFromDirectory($dir);

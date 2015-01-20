@@ -10,7 +10,6 @@
 
 namespace CSBill\InstallBundle\Listener;
 
-use CSBill\InstallBundle\Installer\Installer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
@@ -22,45 +21,61 @@ use Symfony\Component\Routing\Router;
  */
 class RequestListener
 {
-    /**
-     * Core paths for assets
-     *
-     * @var array $core_paths
-     */
-    protected $corePaths = array('css', 'images', 'js');
+    const INSTALLER_ROUTE = '_install_flow';
 
     /**
      * Core routes
      *
-     * @var array $core_routes
+     * @var array
      */
-    protected $coreRoutes = array(
-        Installer::INSTALLER_ROUTE,
-        Installer::INSTALLER_SUCCESS_ROUTE,
-        Installer::INSTALLER_RESTART_ROUTE,
-        '_installer_step',
-        '_profiler',
-        '_wdt',
+    private $allowRoutes = array(
+        self::INSTALLER_ROUTE,
+        'sylius_flow_display',
+        'sylius_flow_forward',
+        'fos_js_routing_js',
     );
 
     /**
-     * @var Installer
+     * @var array
      */
-    protected $installer;
+    private $debugRoutes = array(
+        '_wdt',
+        '_profiler',
+        '_profiler_search',
+        '_profiler_search_bar',
+        '_profiler_search_results',
+        '_profiler_router',
+    );
+
+    /**
+     * @var string
+     */
+    private $installed;
 
     /**
      * @var Router
      */
-    protected $router;
+    private $router;
 
     /**
-     * @param Installer $installer
-     * @param Router    $router
+     * @var bool
      */
-    public function __construct(Installer $installer, Router $router)
+    private $debug;
+
+    /**
+     * @param string $installed
+     * @param Router $router
+     * @param bool   $debug
+     */
+    public function __construct($installed, Router $router, $debug = false)
     {
-        $this->installer = $installer;
+        $this->installed = $installed;
         $this->router = $router;
+        $this->debug = $debug;
+
+        if (true === $this->debug) {
+            $this->allowRoutes = array_merge($this->allowRoutes, $this->debugRoutes);
+        }
     }
 
     /**
@@ -69,24 +84,21 @@ class RequestListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== HttpKernel::MASTER_REQUEST) {
+        if ($this->installed || $event->getRequestType() !== HttpKernel::MASTER_REQUEST) {
             return;
         }
 
         $route = $event->getRequest()->get('_route');
 
-        $map = array_map(function ($route) use ($event) {
-            return strpos($event->getRequest()->getPathInfo(), $route);
-        }, $this->corePaths);
-
-        if (!in_array($route, $this->coreRoutes) && !in_array(true, $map)) {
-            if (!$this->installer->isInstalled()) {
-                $response = new RedirectResponse($this->router->generate(Installer::INSTALLER_ROUTE));
-
-                $event->setResponse($response);
+        if (!in_array($route, $this->allowRoutes)) {
+            if ($this->debug && false !== strpos($route, '_assetic')) {
+                return;
             }
 
-            return null;
+            $response = new RedirectResponse($this->router->generate(self::INSTALLER_ROUTE));
+
+            $event->setResponse($response);
+            $event->stopPropagation();
         }
     }
 }

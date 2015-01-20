@@ -8,18 +8,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Form\Step;
+namespace CSBill\InstallBundle\Form\Type;
 
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints;
 
-class DatabaseConfigForm extends AbstractType
+class DatabaseConfigType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -31,10 +27,11 @@ class DatabaseConfigForm extends AbstractType
 
         $builder->add(
             'driver',
-            'choice',
+            'select2',
             array(
-                'help' => 'Only MySQL database is supported at the moment',
+                'help' => 'Only MySQL is supported at the moment',
                 'choices' => $drivers,
+                'empty_value' => 'Select Database Driver',
                 'constraints' => array(
                      new Constraints\NotBlank(),
                 ),
@@ -45,7 +42,6 @@ class DatabaseConfigForm extends AbstractType
             'host',
             null,
             array(
-                'data' => $options['host'],
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
@@ -54,9 +50,12 @@ class DatabaseConfigForm extends AbstractType
 
         $builder->add(
             'port',
-            null,
+            'integer',
             array(
-                'data' => $options['port'],
+                'constraints'   => array(
+                    new Constraints\Type(array('type' => 'integer')),
+                ),
+                'required' => false,
             )
         );
 
@@ -72,7 +71,10 @@ class DatabaseConfigForm extends AbstractType
 
         $builder->add(
             'password',
-            'password'
+            'password',
+            array(
+                'required' => false,
+            )
         );
 
         $builder->add(
@@ -83,34 +85,8 @@ class DatabaseConfigForm extends AbstractType
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
+                'required' => false,
             )
-        );
-
-        $connectionFactory = $options['connection_factory'];
-
-        $builder->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($connectionFactory, $drivers) {
-                $form = $event->getForm();
-
-                if ($form->isValid()) {
-                    $data = $form->getData();
-
-                    $connection = $connectionFactory->createConnection(array(
-                        'driver' => sprintf('pdo_%s', $drivers[$data['driver']]),
-                        'user' => $data['user'],
-                        'password' => $data['password'],
-                        'host' => $data['host'],
-                        'dbname' => $data['name'],
-                    ));
-
-                    try {
-                        $connection->connect();
-                    } catch (DBALException $e) {
-                        $form->addError(new FormError($e->getMessage()));
-                    }
-                }
-            }
         );
     }
 
@@ -119,12 +95,11 @@ class DatabaseConfigForm extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array(
-            'drivers',
-            'host',
-            'port',
-            'connection_factory',
-        ));
+        $resolver->setRequired(
+            array(
+                'drivers',
+            )
+        );
     }
 
     /**
