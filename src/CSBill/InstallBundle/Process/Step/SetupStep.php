@@ -35,7 +35,7 @@ class SetupStep extends ControllerStep
      */
     public function forwardAction(ProcessContextInterface $context)
     {
-        $request = $this->getRequest();
+        $request = $context->getRequest();
         $form = $this->getForm();
 
         $form->handleRequest($request);

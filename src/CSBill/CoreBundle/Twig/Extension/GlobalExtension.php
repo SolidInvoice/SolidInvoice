@@ -41,7 +41,7 @@ class GlobalExtension extends Twig_Extension
      */
     public function getGlobals()
     {
-        $appName = ''; //$this->container->get('settings')->get('system.general.app_name');
+        $appName = $this->container->get('settings')->get('system.general.app_name');
 
         return array(
             'query' => $this->getQuery(),

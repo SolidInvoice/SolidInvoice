@@ -1,6 +1,6 @@
 _install_flow:
     pattern:  /install
-    defaults: { _controller: sylius.controller.process:startAction, scenarioAlias: "install" }
+    defaults: { _controller: installer.controller.process:startAction, scenarioAlias: "install" }
 
 #sylius_flow_start:
 #    path: /{scenarioAlias}
@@ -8,13 +8,13 @@ _install_flow:
 
 sylius_flow_display:
     path: /install/{stepName}
-    defaults: { _controller: sylius.controller.process:displayAction, scenarioAlias: "install" }
+    defaults: { _controller: installer.controller.process:displayAction, scenarioAlias: "install" }
     options:
         expose: true
 
 sylius_flow_forward:
     path: /install/{stepName}/forward
-    defaults: { _controller: sylius.controller.process:forwardAction, scenarioAlias: "install" }
+    defaults: { _controller: installer.controller.process:forwardAction, scenarioAlias: "install" }
 
 #flow_bundle:
 #    resource: "@SyliusFlowBundle/Resources/config/routing.yml"

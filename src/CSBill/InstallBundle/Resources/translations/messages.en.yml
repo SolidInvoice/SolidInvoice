@@ -20,6 +20,13 @@ installation:
         message: Please ensure your system meets the minimum requirements before proceeding.
         mandatory: Mandatory
         optional: Optional
+    progress:
+        step:
+            system_check: Requirements Check
+            config: Database Config
+            process: Installation Process
+            setup: System Setup
+            finish: Finish
     process:
         title:
             busy: Installing...
@@ -27,3 +34,15 @@ installation:
         step:
             migrations: Creating database schema
             fixtures: Loading fixtures
+    config:
+        title:
+            database_config: Database Config
+            email_settings: Email Settings
+    setup:
+        title:
+            system_settings: System Settings
+            admin_user: Admin User
+    finish:
+        success: Success
+        success_message: You have successfully installed CSBill!
+        login: Log In Now

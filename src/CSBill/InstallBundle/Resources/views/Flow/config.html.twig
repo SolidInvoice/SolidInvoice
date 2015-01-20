@@ -1,3 +1,12 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 {% extends 'CSBillInstallBundle::layout.html.twig' %}
 
 {% block content %}
@@ -7,17 +16,27 @@
 
     <div class="row">
         <div class="col-md-6">
-            {{ form_row(form.database_config) }}
+            <fieldset>
+                <legend>
+                    {{ icon('database') }} {{ 'installation.config.title.database_config'|trans }}
+                </legend>
+                {{ form_row(form.database_config) }}
+            </fieldset>
         </div>
         <div class="col-md-6">
-            {{ form_row(form.email_settings.transport) }}
-            <div id="smtp_settings" style="display: none">
-                {{ form_row(form.email_settings.host) }}
-                {{ form_row(form.email_settings.port) }}
-                {{ form_row(form.email_settings.encryption) }}
-                {{ form_row(form.email_settings.user) }}
-                {{ form_row(form.email_settings.password) }}
-            </div>
+            <fieldset>
+                <legend>
+                    {{ icon('envelope-o') }} {{ 'installation.config.title.email_settings'|trans }}
+                </legend>
+                {{ form_row(form.email_settings.transport) }}
+                <div id="smtp_settings" style="display: none">
+                    {{ form_row(form.email_settings.host) }}
+                    {{ form_row(form.email_settings.port) }}
+                    {{ form_row(form.email_settings.encryption) }}
+                    {{ form_row(form.email_settings.user) }}
+                    {{ form_row(form.email_settings.password) }}
+                </div>
+            </fieldset>
         </div>
     </div>
 

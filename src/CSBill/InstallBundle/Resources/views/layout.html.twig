@@ -9,22 +9,28 @@
 
 {% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
 
-{% set title = "installation.title"|trans({"%app_name%" : app_name}) %}
+{% from "CSBillInstallBundle:Macro:install_progress.html.twig" import progress %}
+
+{% set title = "installation.title"|trans({"%app_name%" : 'CSBill'}) ~ ' - ' ~ ('installation.progress.step.' ~ context.currentStep.name)|trans %}
 
 {% block header %}
-	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : title|trans} %}
+	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : "installation.title"|trans({"%app_name%" : 'CSBill'})} %}
 {% endblock header %}
 
-{% block title %}
-	{{ title }}
-{% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
 
 {% block body %}
     <div class="row">
         <section class="col-lg-12 col-md-12 content">
             {{ block('heading') }}
 
+            {% set steps = context.process.steps|keys %}
+
+            {{ progress(steps, context) }}
+
             {% include "CSBillCoreBundle::flash.html.twig" %}
+
+            <br class="clear" />
 
             <div class="widget">
                 {{ block('content') }}

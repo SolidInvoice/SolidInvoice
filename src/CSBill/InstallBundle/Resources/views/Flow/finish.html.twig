@@ -1,15 +1,28 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 {% extends 'CSBillInstallBundle::layout.html.twig' %}
 
 {% block content %}
     <fieldset>
         <legend>
-            <h1>{{ "Success"|trans }}</h1>
+            <h2>
+                {{ "installation.finish.success"|trans }}
+            </h2>
         </legend>
 
-        <h3>{{ "You have successfully installed CSBill!"|trans }}</h3>
+        <h4>
+            {{ "installation.finish.success_message"|trans }}
+        </h4>
 
         <a href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
-            {{ icon('user') }} {{ "Log in now"|trans }}
+            {{ icon('user') }} {{ "installation.finish.login"|trans }}
         </a>
     </fieldset>
 {% endblock %}

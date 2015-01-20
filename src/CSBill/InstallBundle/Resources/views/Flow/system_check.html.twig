@@ -1,3 +1,12 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 {% extends 'CSBillInstallBundle::layout.html.twig' %}
 
 {% macro requirementCheck(requirement) %}
@@ -41,24 +50,29 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h3>
+            <fieldset>
+                <legend>
+
                 {{ 'installation.requirements.mandatory'|trans }}
-            </h3>
-            <ul class="list-group">
-                {% for requirement in requirements.requirements %}
-                    {{ _self.requirementCheck(requirement) }}
-                {% endfor %}
-            </ul>
+                </legend>
+                <ul class="list-group">
+                    {% for requirement in requirements.requirements %}
+                        {{ _self.requirementCheck(requirement) }}
+                    {% endfor %}
+                </ul>
+            </fieldset>
         </div>
         <div class="col-md-6">
-            <h3>
-                {{ 'installation.requirements.optional'|trans }}
-            </h3>
+            <fieldset>
+                <legend>
+                    {{ 'installation.requirements.optional'|trans }}
+                </legend>
             <ul class="list-group">
             {% for requirement in requirements.recommendations %}
                 {{ _self.requirementCheck(requirement) }}
             {% endfor %}
             </ul>
+            </fieldset>
         </div>
     </div>
     <div class="row">

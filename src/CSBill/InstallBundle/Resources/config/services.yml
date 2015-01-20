@@ -1,8 +1,15 @@
 parameters:
     csbill.installer.class: CSBill\InstallBundle\Installer\Installer
+    sylius.controller.process.class: CSBill\InstallBundle\Controller\ProcessController
     csbill.twig.install_extension.class: CSBill\InstallBundle\Twig\InstallExtension
 
 services:
+
+    installer.controller.process:
+        parent: sylius.controller.process
+        calls:
+            - [setContainer, [@service_container]]
+
     installation.scenario.flow:
         class: CSBill\InstallBundle\Process\InstallScenario
         calls:
