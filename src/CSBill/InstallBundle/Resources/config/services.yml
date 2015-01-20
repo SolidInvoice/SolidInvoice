@@ -1,10 +1,7 @@
 parameters:
-    csbill.installer.class: CSBill\InstallBundle\Installer\Installer
     sylius.controller.process.class: CSBill\InstallBundle\Controller\ProcessController
-    csbill.twig.install_extension.class: CSBill\InstallBundle\Twig\InstallExtension
 
 services:
-
     installer.controller.process:
         parent: sylius.controller.process
         calls:
@@ -22,22 +19,6 @@ services:
         arguments: [%installed%, @router, %kernel.debug%]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 10 }
-
-
-
-
-
-
-    csbill.installer:
-        class: %csbill.installer.class%
-        calls:
-            - [ setContainer, [ @service_container ] ]
-
-    csbill.twig.install_extension:
-        class: %csbill.twig.install_extension.class%
-        arguments: [ @csbill.installer ]
-        tags:
-            - { name: twig.extension }
 
     csbill.installer.database.migration:
         class: CSBill\InstallBundle\Installer\Database\Migration
