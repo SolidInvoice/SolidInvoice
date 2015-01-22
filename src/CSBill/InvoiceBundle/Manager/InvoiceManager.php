@@ -72,53 +72,30 @@ class InvoiceManager extends ContainerAware
     {
         $invoice = new Invoice();
 
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
-        $metadata = $this->entityManager->getClassMetadata(get_class($quote));
+        $now = new \DateTime('NOW');
 
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $invoiceMetadata */
-        $invoiceMetadata = $this->entityManager->getClassMetadata(get_class($invoice));
+        $invoice->setCreated($now);
+        $invoice->setClient($quote->getClient());
+        $invoice->setBaseTotal($quote->getBaseTotal());
+        $invoice->setDiscount($quote->getDiscount());
+        $invoice->setNotes($quote->getNotes());
+        $invoice->setTax($quote->getTax());
+        $invoice->setTotal($quote->getTotal());
+        $invoice->setTerms($quote->getTerms());
+        $invoice->setDue($quote->getDue());
+        $invoice->setUsers($quote->getUsers()->toArray());
 
-        $this->copyFieldValues($quote, $invoice);
+        /** @var \CSBill\QuoteBundle\Entity\Item $item */
+        foreach ($quote->getItems() as $item) {
+            $invoiceItem = new Item();
+            $invoiceItem->setCreated($now);
+            $invoiceItem->setTotal($item->getTotal());
+            $invoiceItem->setTax($item->getTax());
+            $invoiceItem->setDescription($item->getDescription());
+            $invoiceItem->setPrice($item->getPrice());
+            $invoiceItem->setQty($item->getQty());
 
-        foreach ($metadata->getAssociationNames() as $mappingField) {
-            if ('status' === $mappingField) {
-                continue;
-            }
-
-            if ('items' === $mappingField) {
-                $items = $metadata->getFieldValue($quote, $mappingField);
-
-                foreach ($items as $item) {
-                    $invoiceItem = new Item();
-
-                    /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
-                    $cloneMetadata = $this->entityManager->getClassMetadata(get_class($invoiceItem));
-
-                    /** @var \Doctrine\ORM\Mapping\ClassMetadata $itemMetaData */
-                    $itemMetaData = $this->entityManager->getClassMetadata(get_class($item));
-
-                    foreach ($itemMetaData->getAssociationNames() as $mappingField) {
-                        if ('quote' == $mappingField) {
-                            continue;
-                        }
-
-                        $cloneMetadata->setFieldValue(
-                            $invoiceItem,
-                            $mappingField,
-                            $itemMetaData->getFieldValue($item, $mappingField)
-                        );
-                    }
-
-                    $this->copyFieldValues($item, $invoiceItem);
-                    $invoice->addItem($invoiceItem);
-                }
-            } else {
-                $invoiceMetadata->setFieldValue(
-                    $invoice,
-                    $mappingField,
-                    $metadata->getFieldValue($quote, $mappingField)
-                );
-            }
+            $invoice->addItem($invoiceItem);
         }
 
         $status = $this->entityManager->getRepository('CSBillInvoiceBundle:Status')->findOneByName(Status::STATUS_PENDING);
@@ -156,31 +133,6 @@ class InvoiceManager extends ContainerAware
     public function getTotalOutstanding(Client $client = null)
     {
         return $this->getInvoiceRepository()->getTotalOutstanding($client);
-    }
-
-    /**
-     * Copy all the fields from one entity to another
-     *
-     * @param $object
-     * @param $clone
-     */
-    protected function copyFieldValues($object, $clone)
-    {
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
-        $metadata = $this->entityManager->getClassMetadata(get_class($object));
-
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
-        $cloneMetadata = $this->entityManager->getClassMetadata(get_class($clone));
-
-        foreach ($metadata->getFieldNames() as $field) {
-            if ($cloneMetadata->hasField($field)) {
-                if (in_array($field, array('created', 'updated', 'id', 'uuid'), true)) {
-                    continue;
-                }
-
-                $cloneMetadata->setFieldValue($clone, $field, $metadata->getFieldValue($object, $field));
-            }
-        }
     }
 
     /**
