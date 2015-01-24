@@ -10,6 +10,7 @@
 
 namespace CSBill\InvoiceBundle\Listener\Doctrine;
 
+use CSBill\CoreBundle\Util\ArrayUtil;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
@@ -23,14 +24,15 @@ class InvoiceUsersListener
         $em = $event->getEntityManager();
         $entity = $event->getEntity();
 
-        if ($entity instanceof Invoice) {
-            if (count($entity->getUsers()) > 0) {
-                $contacts = $em->getRepository('CSBillClientBundle:Contact')
-                    ->findById(array_map(function ($item) {
-                        return $item->getId();
-                    }, $entity->getUsers()->toArray()));
-                $entity->setUsers($contacts);
-            }
+        if ($entity instanceof Invoice && count($entity->getUsers()) > 0) {
+            $contacts = $em->getRepository('CSBillClientBundle:Contact')
+                ->findBy(
+                    array(
+                        'id' => ArrayUtil::column($entity->getUsers()->toArray(), 'id')
+                    )
+                );
+
+            $entity->setUsers($contacts);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\InvoiceBundle\Entity\Status as InvoiceStatus;
+use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Entity\Status;
@@ -33,7 +33,7 @@ class PaymentController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        if (InvoiceStatus::STATUS_PENDING !== (string) $invoice->getStatus()) {
+        if (Graph::STATUS_PENDING !== (string) $invoice->getStatus()) {
             throw new \Exception('This invoice cannot be paid');
         }
 
@@ -111,7 +111,7 @@ class PaymentController extends BaseController
         return $this->render(
             'CSBillPaymentBundle:Payment:create.html.twig',
             array(
-                'form'    => $form->createView(),
+                'form' => $form->createView(),
                 'invoice' => $invoice,
             )
         );
@@ -157,11 +157,7 @@ class PaymentController extends BaseController
 
         if ($status->isSuccess()) {
             $invoice->setPaidDate(new \DateTime('NOW'));
-            $invoice->setStatus(
-                $this
-                    ->getRepository('CSBillInvoiceBundle:Status')
-                    ->findOneBy(array('name' => InvoiceStatus::STATUS_PAID))
-            );
+            $this->get('invoice.manager')->pay($invoice);
             $entityManager->persist($invoice);
             $this->flash('Payment success.', 'success');
         } elseif ($status->isPending()) {

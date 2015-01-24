@@ -22,8 +22,9 @@
     <div class="pull-right">
         <div class="btn-toolbar">
             <div class="btn-group">
-                {% if invoice.status~'' != 'paid' %}
-                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" id="pay-now" class="btn btn-success">
+                {% if finite_can(invoice, 'pay', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
+                    <a href="{{ path('_action_invoice', {'action' : 'pay', 'id' : invoice.id}) }}" id="pay-now"
+                       class="btn btn-success">
                         {{ icon('money') }} {{ "invoice.view.toolbar.mark_paid"|trans }}
                     </a>
                 {% endif %}
@@ -32,20 +33,21 @@
                 </a>
             </div>
 
-            {% if invoice.status~'' in ['draft', 'pending'] %}
-                <div class="btn-group">
-                    {% if paymentsConfigured() and invoice.status~'' == 'pending' %}
-                        <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                            {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
-                        </a>
-                    {% endif %}
-                    <a href="{{ path('_cancel_invoice', {'id' : invoice.id}) }}" class="btn btn-warning">
+            <div class="btn-group">
+                {% if finite_can(invoice, 'pay', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
+                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
+                        {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
+                    </a>
+                {% endif %}
+                {% if finite_can(invoice, 'cancel', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
+                    <a href="{{ path('_action_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}"
+                       class="btn btn-warning">
                         {{ icon('ban') }} {{ "invoice.view.toolbar.cancel"|trans }}
                     </a>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
 
-            {% if invoice.status~'' != 'paid' %}
+            {% if finite_has(invoice, 'editable', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
                 <div class="btn-group">
                     <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">
                         {{ icon('edit') }} {{ "invoice.view.toolbar.edit"|trans }}
@@ -55,16 +57,17 @@
         </div>
     </div>
 
-    <br class="clear" />
-    <br class="clear" />
+    <br class="clear"/>
+    <br class="clear"/>
 
     {% include "CSBillInvoiceBundle::invoice_template.html.twig" %}
 
     {% if invoice.notes is not empty %}
 
-        <br class="clear" />
+        <br class="clear"/>
         <div>
             <strong>{{ 'invoice.notes'|trans }}</strong>
+
             <p>
                 {{ invoice.notes }}
             </p>
@@ -75,13 +78,14 @@
 
         {% if payments|length > 0 %}
             <div class="col-md-10">
-                <hr />
+                <hr/>
                 <h3>{{ 'payments'|trans }}</h3>
                 {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, 'show_invoice' : false} only %}
             </div>
         {% endif %}
 
-        <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label" aria-hidden="true">
+        <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label"
+             aria-hidden="true">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -109,9 +113,9 @@
 {% block script %}
     {% if paymentsConfigured() %}
         $('#pay-now').on('click', function(event) {
-            event.preventDefault();
+        event.preventDefault();
 
-            $('#payment-modal').modal();
+        $('#payment-modal').modal();
         });
     {% endif %}
 {% endblock script %}

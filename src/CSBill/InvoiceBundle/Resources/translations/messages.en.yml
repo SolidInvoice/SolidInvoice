@@ -52,6 +52,12 @@ invoice:
     capture_payment: Capture Payment
     view: View Invoice
     add_payment: Add Payment
+    action:
+        transition:
+            accept: Invoice has been accepted
+            cancel: Invoice has been cancelled
+            paid: Invoice has been paid
+            sent: Invoice has been sent
 
 invoice: Invoice
 search: Search

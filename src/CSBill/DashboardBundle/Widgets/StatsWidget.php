@@ -12,7 +12,7 @@ namespace CSBill\DashboardBundle\Widgets;
 
 use CSBill\ClientBundle\Entity\Status as ClientStatus;
 use CSBill\ClientBundle\Repository\ClientRepository;
-use CSBill\InvoiceBundle\Entity\Status as InvoiceStatus;
+use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use CSBill\QuoteBundle\Entity\Status as QuoteStatus;
@@ -21,6 +21,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 class StatsWidget implements WidgetInterface
 {
+
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
@@ -51,7 +52,7 @@ class StatsWidget implements WidgetInterface
         return array(
             'totalClients' => $clientRepository->getTotalClients(ClientStatus::STATUS_ACTIVE),
             'totalQuotes' => $quoteRepository->getTotalQuotes(QuoteStatus::STATUS_DECLINED),
-            'totalInvoices' => $invoiceRepository->getCountByStatus(InvoiceStatus::STATUS_PENDING),
+            'totalInvoices' => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),
             'totalIncome' => $paymentRepository->getTotalIncome(),
         );
     }

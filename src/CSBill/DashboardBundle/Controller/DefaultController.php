@@ -12,7 +12,7 @@ namespace CSBill\DashboardBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Status as ClientStatus;
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\InvoiceBundle\Entity\Status as InvoiceStatus;
+use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\QuoteBundle\Entity\Status as QuoteStatus;
 
 class DefaultController extends BaseController
@@ -27,7 +27,7 @@ class DefaultController extends BaseController
             array(
                 'totalClients' => $this->getRepository('CSBillClientBundle:Client')->getTotalClients(ClientStatus::STATUS_ACTIVE),
                 'totalQuotes' => $this->getRepository('CSBillQuoteBundle:Quote')->getTotalQuotes(QuoteStatus::STATUS_DECLINED),
-                'totalInvoices' => $this->getRepository('CSBillInvoiceBundle:Invoice')->getCountByStatus(InvoiceStatus::STATUS_PENDING),
+                'totalInvoices' => $this->getRepository('CSBillInvoiceBundle:Invoice')->getCountByStatus(Graph::STATUS_PENDING),
                 'totalIncome' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome(),
             )
         );

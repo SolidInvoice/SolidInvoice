@@ -5,7 +5,6 @@ namespace CSBill\InvoiceBundle\Tests\Manager;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Entity\Tax;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Entity\Status;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
@@ -15,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class InvoiceManagerTest extends KernelTestCase
 {
+
     /**
      * @var InvoiceManager
      */
@@ -28,120 +28,47 @@ class InvoiceManagerTest extends KernelTestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
+    private $finite;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     private $entityManager;
 
     public function setUp()
     {
         $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->entityManager = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $this->finite = $this->getMock('Finite\Factory\FactoryInterface');
+        $stateMachine = $this->getMock('Finite\Factory\StateMachineInterface', array('can', 'apply'));
         $doctrine = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
 
         $doctrine->expects($this->once())
             ->method('getManager')
             ->will($this->returnValue($this->entityManager));
 
-        $this->manager = new InvoiceManager($doctrine, $this->dispatcher);
-    }
+        $this->finite->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($stateMachine));
 
-    protected function getInvoiceRepositoryMock()
-    {
-        $repository = $this->getMockBuilder('CSBill\InvoiceBundle\Repository\InvoiceRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $stateMachine->expects($this->any())
+            ->method('can')
+            ->will($this->returnValue(true));
 
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with('CSBillInvoiceBundle:Invoice')
-            ->will($this->returnValue($repository));
-
-        return $repository;
+        $this->manager = new InvoiceManager($doctrine, $this->dispatcher, $this->finite);
     }
 
     public function testCreateFromQuote()
     {
-        static::bootKernel();
-
-        $container = static::$kernel->getContainer();
-
-        $quoteClass = 'CSBill\QuoteBundle\Entity\Quote';
         $this
             ->entityManager
-            ->expects($this->at(0))
-            ->method('getClassMetadata')
-            ->with($quoteClass)
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($quoteClass)));
+            ->expects($this->any())
+            ->method('persist');
 
         $this
             ->entityManager
-            ->expects($this->at(2))
-            ->method('getClassMetadata')
-            ->with($quoteClass)
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($quoteClass)));
-
-        $invoiceClass = 'CSBill\InvoiceBundle\Entity\Invoice';
-        $this
-            ->entityManager
-            ->expects($this->at(1))
-            ->method('getClassMetadata')
-            ->with($invoiceClass)
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($invoiceClass)));
-
-        $this
-            ->entityManager
-            ->expects($this->at(3))
-            ->method('getClassMetadata')
-            ->with($invoiceClass)
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($invoiceClass)));
-
-        $this
-            ->entityManager
-            ->expects($this->at(4))
-            ->method('getClassMetadata')
-            ->with('CSBill\InvoiceBundle\Entity\Item')
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata('CSBill\InvoiceBundle\Entity\Item')));
-
-        $this
-            ->entityManager
-            ->expects($this->at(5))
-            ->method('getClassMetadata')
-            ->with('CSBill\QuoteBundle\Entity\Item')
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata('CSBill\QuoteBundle\Entity\Item')));
-
-        $this
-            ->entityManager
-            ->expects($this->at(6))
-            ->method('getClassMetadata')
-            ->with('CSBill\QuoteBundle\Entity\Item')
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata('CSBill\QuoteBundle\Entity\Item')));
-
-        $this
-            ->entityManager
-            ->expects($this->at(7))
-            ->method('getClassMetadata')
-            ->with('CSBill\InvoiceBundle\Entity\Item')
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata('CSBill\InvoiceBundle\Entity\Item')));
-
-        $entityRepository = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
-            ->setMethods(array('findOneByName'))
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-
-        $this
-            ->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with('CSBillInvoiceBundle:Status')
-            ->will($this->returnValue($entityRepository));
-
-        $status = new Status();
-        $status->setName('pending');
-
-        $entityRepository
-            ->expects($this->once())
-            ->method('findOneByName')
-            ->with('pending')
-            ->will($this->returnValue($status));
+            ->expects($this->any())
+            ->method('flush');
 
         $client = new Client();
         $client->setName('Test Client');
@@ -181,7 +108,7 @@ class InvoiceManagerTest extends KernelTestCase
         $this->assertSame($quote->getTerms(), $invoice->getTerms());
         $this->assertSame($quote->getTax(), $invoice->getTax());
         $this->assertSame($client, $invoice->getClient());
-        $this->assertSame($status, $invoice->getStatus());
+        $this->assertSame(null, $invoice->getStatus());
 
         $this->assertNotSame($quote->getUuid(), $invoice->getUuid());
         $this->assertNull($invoice->getId());
@@ -194,64 +121,14 @@ class InvoiceManagerTest extends KernelTestCase
 
         $this->assertSame($item->getTax(), $invoiceItem[0]->getTax());
         $this->assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        $this->assertNull($invoiceItem[0]->getCreated());
+        $this->assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
         $this->assertSame($item->getPrice(), $invoiceItem[0]->getPrice());
         $this->assertSame($item->getQty(), $invoiceItem[0]->getQty());
-    }
-
-    public function testGetCount()
-    {
-        $client = new Client();
-        $repository = $this->getInvoiceRepositoryMock();
-        $repository->expects($this->once())
-            ->method('getCountByStatus')
-            ->with('paid', $client)
-            ->will($this->returnValue(5));
-
-        $this->assertSame(5, $this->manager->getCount('paid', $client));
-    }
-
-    public function testgGetTotalIncome()
-    {
-        $client = new Client();
-        $repository = $this->getInvoiceRepositoryMock();
-        $repository->expects($this->once())
-            ->method('getTotalIncome')
-            ->with($client)
-            ->will($this->returnValue(500));
-
-        $this->assertSame(500, $this->manager->getTotalIncome($client));
-    }
-
-    public function testgGetTotalOutstanding()
-    {
-        $client = new Client();
-        $repository = $this->getInvoiceRepositoryMock();
-        $repository->expects($this->once())
-            ->method('getTotalOutstanding')
-            ->with($client)
-            ->will($this->returnValue(150));
-
-        $this->assertSame(150, $this->manager->getTotalOutstanding($client));
     }
 
     public function testMarkPaid()
     {
         $invoice = new Invoice();
-
-        $status = new Status();
-        $status->setName('paid');
-
-        $entityRepository = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
-            ->setMethods(array('findOneBy', 'persist', 'flush'))
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-
-        $entityRepository
-            ->expects($this->once())
-            ->method('findOneBy')
-            ->with(array('name' => 'paid'))
-            ->will($this->returnValue($status));
 
         $this
             ->entityManager
@@ -264,27 +141,27 @@ class InvoiceManagerTest extends KernelTestCase
             ->expects($this->once())
             ->method('flush');
 
-        $this
-            ->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->will($this->returnValue($entityRepository));
-
         $event = new InvoicePaidEvent();
         $event->setInvoice($invoice);
 
         $this
             ->dispatcher
-            ->expects($this->once())
+            ->expects($this->at(0))
             ->method('dispatch')
-            ->with(InvoiceEvents::INVOICE_PAID, $event);
+            ->with(InvoiceEvents::INVOICE_PRE_PAID, $event);
+
+        $this
+            ->dispatcher
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(InvoiceEvents::INVOICE_POST_PAID, $event);
 
         // Ensure paid date is empty when creating invoice
         $this->assertNull($invoice->getPaidDate());
 
-        $this->manager->markPaid($invoice);
+        $this->manager->pay($invoice);
 
         $this->assertInstanceOf('DateTime', $invoice->getPaidDate());
-        $this->assertSame($status, $invoice->getStatus());
+        $this->assertSame(null, $invoice->getStatus());
     }
 }

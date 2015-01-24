@@ -1,0 +1,35 @@
+finite_finite:
+    csbill_invoice:
+        class: CSBill\InvoiceBundle\Entity\Invoice
+        graph: csbill_invoice
+        property_path: status
+        states:
+            new:
+                type: initial
+            draft:
+                properties: {edit: true}
+            pending:
+                properties: {edit: true}
+            overdue:
+                properties: {edit: true}
+            cancelled:
+                type: final
+                properties: {edit: true}
+            paid:
+                type: final
+        transitions:
+            new:
+                from: [new, cancelled]
+                to: draft
+            accept:
+                from: [new, draft, overdue, cancelled]
+                to: pending
+            cancel:
+                from: [draft, pending, overdue]
+                to: cancelled
+            overdue:
+                from: [pending]
+                to: overdue
+            pay:
+                from: [pending, overdue]
+                to: paid

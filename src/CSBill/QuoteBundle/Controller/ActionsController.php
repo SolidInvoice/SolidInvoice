@@ -23,23 +23,14 @@ class ActionsController extends BaseController
      */
     public function acceptAction(Quote $quote)
     {
-        $this->setQuoteStatus($quote, Status::STATUS_ACCEPTED);
+        // @TODO: APply transition for quote
+        //$this->setQuoteStatus($quote, Status::STATUS_ACCEPTED);
 
         $invoice = $this->get('invoice.manager')->createFromQuote($quote);
 
-        $em = $this->getEm();
-
-        $em->persist($invoice);
-        $em->flush();
-
-        $this->get('billing.mailer')->sendInvoice($invoice);
-
-        // TODO : we should be able to specify if the new invoice must be emailed or not
-        // TODO : we should set a default due date for invoices
-
         $this->flash($this->trans('quote.accepted'), 'success');
 
-        return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
+        return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }
 
     /**
@@ -58,6 +49,7 @@ class ActionsController extends BaseController
 
     /**
      * @param Quote $quote
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function cancelAction(Quote $quote)

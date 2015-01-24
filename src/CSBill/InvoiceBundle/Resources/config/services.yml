@@ -15,15 +15,15 @@ services:
 
     invoice.manager:
         class: %csbill_invoice.manager.class%
-        arguments: [@doctrine, @event_dispatcher]
+        arguments: [@doctrine, @event_dispatcher, @finite.factory]
         calls:
             - [ setContainer, [@service_container]]
 
     invoice.mailer.send_invoice.payments:
         class: %invoice.mailer.send_invoice.payments.class%
-        arguments: [@csbill_payment.method.manager, @templating]
+        arguments: [@csbill_payment.method.manager, @templating, @billing.mailer]
         tags:
-            - { name: kernel.event_listener, event: billing.mailer.send_invoice, method: onInvoiceMail }
+            - { name: kernel.event_subscriber }
 
     invoice.user.listener:
         class: CSBill\InvoiceBundle\Listener\Doctrine\InvoiceUsersListener

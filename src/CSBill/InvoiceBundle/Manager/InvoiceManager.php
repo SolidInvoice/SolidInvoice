@@ -10,20 +10,23 @@
 
 namespace CSBill\InvoiceBundle\Manager;
 
-use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\InvoiceBundle\Entity\Status;
+use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
+use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
+use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Finite\Factory\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class InvoiceManager extends ContainerAware
 {
+
     /**
      * @var ObjectManager
      */
@@ -35,36 +38,26 @@ class InvoiceManager extends ContainerAware
     protected $dispatcher;
 
     /**
-     * @var \CSBill\InvoiceBundle\Repository\InvoiceRepository
+     * @var FactoryInterface
      */
-    private $invoiceRepository;
+    private $stateMachine;
 
     /**
      * @param ManagerRegistry          $doctrine
      * @param EventDispatcherInterface $dispatcher
+     * @param FactoryInterface         $stateMachine
      */
-    public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $dispatcher)
+    public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $dispatcher, FactoryInterface $stateMachine)
     {
         $this->entityManager = $doctrine->getManager();
         $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * @return \CSBill\InvoiceBundle\Repository\InvoiceRepository
-     */
-    protected function getInvoiceRepository()
-    {
-        if (null === $this->invoiceRepository) {
-            $this->invoiceRepository = $this->entityManager->getRepository('CSBillInvoiceBundle:Invoice');
-        }
-
-        return $this->invoiceRepository;
+        $this->stateMachine = $stateMachine;
     }
 
     /**
      * Create an invoice from a quote
      *
-     * @param  Quote $quote
+     * @param Quote $quote
      *
      * @return Invoice
      */
@@ -72,136 +65,158 @@ class InvoiceManager extends ContainerAware
     {
         $invoice = new Invoice();
 
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
-        $metadata = $this->entityManager->getClassMetadata(get_class($quote));
+        $now = new \DateTime('NOW');
 
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $invoiceMetadata */
-        $invoiceMetadata = $this->entityManager->getClassMetadata(get_class($invoice));
+        $invoice->setCreated($now);
+        $invoice->setClient($quote->getClient());
+        $invoice->setBaseTotal($quote->getBaseTotal());
+        $invoice->setDiscount($quote->getDiscount());
+        $invoice->setNotes($quote->getNotes());
+        $invoice->setTax($quote->getTax());
+        $invoice->setTotal($quote->getTotal());
+        $invoice->setTerms($quote->getTerms());
+        $invoice->setDue($quote->getDue());
+        $invoice->setUsers($quote->getUsers()->toArray());
 
-        $this->copyFieldValues($quote, $invoice);
-
-        foreach ($metadata->getAssociationNames() as $mappingField) {
-            if ('status' === $mappingField) {
-                continue;
-            }
-
-            if ('items' === $mappingField) {
-                $items = $metadata->getFieldValue($quote, $mappingField);
-
-                foreach ($items as $item) {
-                    $invoiceItem = new Item();
-
-                    /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
-                    $cloneMetadata = $this->entityManager->getClassMetadata(get_class($invoiceItem));
-
-                    /** @var \Doctrine\ORM\Mapping\ClassMetadata $itemMetaData */
-                    $itemMetaData = $this->entityManager->getClassMetadata(get_class($item));
-
-                    foreach ($itemMetaData->getAssociationNames() as $mappingField) {
-                        if ('quote' == $mappingField) {
-                            continue;
-                        }
-
-                        $cloneMetadata->setFieldValue(
-                            $invoiceItem,
-                            $mappingField,
-                            $itemMetaData->getFieldValue($item, $mappingField)
-                        );
-                    }
-
-                    $this->copyFieldValues($item, $invoiceItem);
-                    $invoice->addItem($invoiceItem);
-                }
-            } else {
-                $invoiceMetadata->setFieldValue(
-                    $invoice,
-                    $mappingField,
-                    $metadata->getFieldValue($quote, $mappingField)
-                );
-            }
+        /** @var \CSBill\QuoteBundle\Entity\Item $item */
+        foreach ($quote->getItems() as $item) {
+            $invoiceItem = new Item();
+            $invoiceItem->setCreated($now);
+            $invoiceItem->setTotal($item->getTotal());
+            $invoiceItem->setTax($item->getTax());
+            $invoiceItem->setDescription($item->getDescription());
+            $invoiceItem->setPrice($item->getPrice());
+            $invoiceItem->setQty($item->getQty());
+            $invoice->addItem($invoiceItem);
         }
 
-        $status = $this->entityManager->getRepository('CSBillInvoiceBundle:Status')->findOneByName(Status::STATUS_PENDING);
-        $invoice->setStatus($status);
+        $this->create($invoice);
+        $this->accept($invoice);
+
+        // @TODO: Quote status need to be changed
 
         return $invoice;
     }
 
     /**
-     * @param  string $status
-     * @param  Client $client
+     * @param Invoice $invoice
      *
-     * @return int
+     * @return Invoice
+     * @throws InvalidTransitionException
      */
-    public function getCount($status = null, Client $client = null)
+    public function create(Invoice $invoice)
     {
-        return $this->getInvoiceRepository()->getCountByStatus($status, $client);
-    }
-
-    /**
-     * @param  Client $client
-     *
-     * @return int
-     */
-    public function getTotalIncome(Client $client = null)
-    {
-        return $this->getInvoiceRepository()->getTotalIncome($client);
-    }
-
-    /**
-     * @param  Client $client
-     *
-     * @return int
-     */
-    public function getTotalOutstanding(Client $client = null)
-    {
-        return $this->getInvoiceRepository()->getTotalOutstanding($client);
-    }
-
-    /**
-     * Copy all the fields from one entity to another
-     *
-     * @param $object
-     * @param $clone
-     */
-    protected function copyFieldValues($object, $clone)
-    {
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $metadata */
-        $metadata = $this->entityManager->getClassMetadata(get_class($object));
-
-        /** @var \Doctrine\ORM\Mapping\ClassMetadata $cloneMetadata */
-        $cloneMetadata = $this->entityManager->getClassMetadata(get_class($clone));
-
-        foreach ($metadata->getFieldNames() as $field) {
-            if ($cloneMetadata->hasField($field)) {
-                if (in_array($field, array('created', 'updated', 'id', 'uuid'), true)) {
-                    continue;
-                }
-
-                $cloneMetadata->setFieldValue($clone, $field, $metadata->getFieldValue($object, $field));
-            }
+        if (!$this->applyTransition($invoice, Graph::TRANSITION_NEW)) {
+            throw new InvalidTransitionException('Invoice cannot be created');
         }
+
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CREATE, new InvoiceEvent($invoice));
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush($invoice);
+
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CREATE, new InvoiceEvent($invoice));
+
+        return $invoice;
+    }
+
+    /**
+     * Accepts an invoice
+     *
+     * @param Invoice $invoice
+     *
+     * @return Invoice
+     * @throws InvalidTransitionException
+     */
+    public function accept($invoice)
+    {
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_ACCEPT, new InvoiceEvent($invoice));
+
+        if (!$this->applyTransition($invoice, Graph::TRANSITION_ACCEPT)) {
+            throw new InvalidTransitionException('Invoice cannot be accepted');
+        }
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush($invoice);
+
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_ACCEPT, new InvoiceEvent($invoice));
+
+        return $invoice;
     }
 
     /**
      * @param Invoice $invoice
+     *
+     * @return Invoice
+     * @throws InvalidTransitionException
      */
-    public function markPaid(Invoice $invoice)
+    public function pay(Invoice $invoice)
     {
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoicePaidEvent($invoice));
+
+        if (!$this->applyTransition($invoice, Graph::TRANSITION_PAY)) {
+            throw new InvalidTransitionException('Invoice cannot be paid');
+        }
+
         $invoice->setPaidDate(new \DateTime('NOW'));
-
-        $status = $this
-            ->entityManager
-            ->getRepository('CSBillInvoiceBundle:Status')
-            ->findOneBy(array('name' => Status::STATUS_PAID));
-
-        $invoice->setStatus($status);
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
-        $event = new InvoicePaidEvent();
-        $event->setInvoice($invoice);
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PAID, $event);
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_PAID, new InvoicePaidEvent($invoice));
+
+        return $invoice;
+    }
+
+    /**
+     * @param Invoice $invoice
+     *
+     * @return Invoice
+     * @throws InvalidTransitionException
+     */
+    public function cancel(Invoice $invoice)
+    {
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoiceEvent($invoice));
+
+        if (!$this->applyTransition($invoice, Graph::TRANSITION_CANCEL)) {
+            throw new InvalidTransitionException('Invoice cannot be cancelled');
+        }
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CANCEL, new InvoiceEvent($invoice));
+
+        return $invoice;
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @param string  $transition
+     *
+     * @return bool
+     */
+    private function applyTransition(Invoice $invoice, $transition)
+    {
+        $stateMachine = $this->stateMachine->get($invoice, Graph::GRAPH);
+
+        if ($stateMachine->can($transition)) {
+            $stateMachine->apply($transition);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $method
+     * @param array  $args
+     *
+     * @throws \Exception
+     */
+    public function __call($method, $args)
+    {
+        throw new \Exception();
     }
 }

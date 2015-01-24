@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ec707f55bf125af4d3233cb65bdf9db",
+    "hash": "d23fdcc25818c490625296cd5169ece7",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -429,7 +429,15 @@
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
             },
+            "bin": [
+                "bin/doctrine-dbal"
+            ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Doctrine\\DBAL\\": "lib/"
@@ -465,7 +473,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2014-10-16 11:56:49"
+            "time": "2014-12-04 21:57:15"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -3505,6 +3513,77 @@
             "time": "2014-01-20 22:35:06"
         },
         {
+            "name": "yohang/finite",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yohang/Finite.git",
+                "reference": "c37d98e33c5283234a7d0ab6adaf99c6ac59c0f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yohang/Finite/zipball/c37d98e33c5283234a7d0ab6adaf99c6ac59c0f6",
+                "reference": "c37d98e33c5283234a7d0ab6adaf99c6ac59c0f6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": "~2.1",
+                "symfony/options-resolver": "~2.1",
+                "symfony/property-access": "~2.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7",
+                "pimple/pimple": "~1.0",
+                "symfony/dependency-injection": "~2.1",
+                "symfony/framework-bundle": "~2.1",
+                "symfony/security": "~2.1",
+                "twig/twig": "~1.13"
+            },
+            "suggest": {
+                "pimple/pimple": "Needed for use with PimpleFactory",
+                "symfony/security": "Needed for using SecurityAwareStateMachine",
+                "symfony/yaml": "Yaml allows you to define your State graph in YAML"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Finite": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yohan GIARELLI",
+                    "email": "yohan@giarel.li",
+                    "homepage": "http://yohan.giarel.li"
+                },
+                {
+                    "name": "Finite contributors",
+                    "homepage": "https://github.com/yohang/Finite/graphs/contributors"
+                }
+            ],
+            "description": "A simple PHP5.3+ Finite State Machine",
+            "homepage": "https://github.com/yohang/Finite",
+            "keywords": [
+                "bundle",
+                "state",
+                "statemachine",
+                "symfony",
+                "transition",
+                "workflow"
+            ],
+            "time": "2014-12-11 10:41:06"
+        },
+        {
             "name": "zendframework/zend-config",
             "version": "2.3.3",
             "target-dir": "Zend/Config",
@@ -4504,6 +4583,7 @@
         "doctrine/doctrine-migrations-bundle": 20,
         "ircmaxell/password-compat": 20,
         "ircmaxell/random-lib": 20,
+        "yohang/finite": 20,
         "jms/debugging-bundle": 20,
         "johnkary/phpunit-speedtrap": 20
     },

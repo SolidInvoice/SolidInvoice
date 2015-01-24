@@ -56,7 +56,8 @@
         "payum/paypal-express-checkout-nvp": "~0.12",
         "ircmaxell/random-lib": "dev-master",
         "nesbot/carbon": "1.*",
-        "sylius/flow-bundle" : "0.12.*"
+        "sylius/flow-bundle" : "0.12.*",
+        "yohang/finite": "1.1.*@dev"
     },
     "require-dev": {
         "jms/debugging-bundle": "dev-master",

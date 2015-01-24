@@ -58,30 +58,30 @@
                 </div>
             </div>
 
-        <div class="row">
-            {{ block('form_items') }}
+            <div class="row">
+                {{ block('form_items') }}
 
-            <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "invoice.item.add"|trans }}</a>
+                <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "invoice.item.add"|trans }}</a>
 
-        </div>
-
-        <br class="clear"/>
-
-        <div class="row">
-            <div class="col-lg-6">
-                {{ form_row(form.terms) }}
             </div>
-            <div class="col-lg-6">
-                {{ form_row(form.notes) }}
+
+            <br class="clear"/>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    {{ form_row(form.terms) }}
+                </div>
+                <div class="col-lg-6">
+                    {{ form_row(form.notes) }}
+                </div>
+            </div>
+
+            {{ form_rest(form) }}
+
+            <div class="form-actions">
+                {{ block('form_buttons') }}
             </div>
         </div>
-
-        {{ form_rest(form) }}
-
-        <div class="form-actions">
-            {{ block('form_buttons') }}
-        </div>
-    </div>
 
     </div>
 
@@ -114,83 +114,84 @@
                     <div class="table-responsive">
                         <table id="invoice-rows" class="table table-condensed">
                             <thead>
-                                <tr>
-                                    {% for item in items %}
-                                        {% set field = form.items.vars.prototype[item] %}
-                                        <th>
-                                            {{ form_label(field) }}
-                                        </th>
-                                    {% endfor %}
-                                    <th class="text-right">{{ 'invoice.total'|trans }}</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                {% for item in items %}
+                                    {% set field = form.items.vars.prototype[item] %}
+                                    <th>
+                                        {{ form_label(field) }}
+                                    </th>
+                                {% endfor %}
+                                <th class="text-right">{{ 'invoice.total'|trans }}</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {% for item in form.items %}
-                                    <tr>
-                                        {% for key, field in item.children|keys %}
-                                            <td class="column-{{ field }}">
-                                                {% set error = form_errors(item[field]) %}
+                            {% for item in form.items %}
+                                <tr>
+                                    {% for key, field in item.children|keys %}
+                                        <td class="column-{{ field }}">
+                                            {% set error = form_errors(item[field]) %}
 
-                                                {% if error|trim is not empty %}
-                                                    <div class="form-group has-error">
-                                                        {{ form_widget(item[field]) }}
-                                                        {{ error|raw }}
-                                                    </div>
-                                                {% else %}
+                                            {% if error|trim is not empty %}
+                                                <div class="form-group has-error">
                                                     {{ form_widget(item[field]) }}
-                                                {% endif %}
-                                            </td>
-                                        {% endfor %}
-                                        <td class="column-total">
-                                            {{ 0|currency }}
+                                                    {{ error|raw }}
+                                                </div>
+                                            {% else %}
+                                                {{ form_widget(item[field]) }}
+                                            {% endif %}
                                         </td>
-                                        <td>
-                                            <a href="#" class="remove-item" rel="tooltip" title="{{ 'invoice.item.remove'|trans }}">{{ icon('trash', ['o']) }}</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                                    {% endfor %}
+                                    <td class="column-total">
+                                        {{ 0|currency }}
+                                    </td>
+                                    <td>
+                                        <a href="#" class="remove-item" rel="tooltip"
+                                           title="{{ 'invoice.item.remove'|trans }}">{{ icon('trash', ['o']) }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line text-center"><strong>{{ 'invoice.subtotal'|trans }}</strong></td>
-                                    <td class="thick-line text-right">
-                                        <div class="invoice-sub-total"></div>
-                                    </td>
-                                    <td class="thick-line">
-                                    </td>
-                                </tr>
-                                {% if form.tax is defined %}
-                                    <tr>
-                                        <td class="no-line"></td>
-                                        <td class="no-line"></td>
-                                        <td class="no-line text-center"><strong>{{ 'invoice.tax'|trans }}</strong></td>
-                                        <td class="no-line text-right">
-                                            <span class="text-error invoice-tax"></span>
-                                        </td>
-                                        <td class="no-line"></td>
-                                    </tr>
-                                {% endif %}
+                            <tr>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line text-center"><strong>{{ 'invoice.subtotal'|trans }}</strong></td>
+                                <td class="thick-line text-right">
+                                    <div class="invoice-sub-total"></div>
+                                </td>
+                                <td class="thick-line">
+                                </td>
+                            </tr>
+                            {% if form.tax is defined %}
                                 <tr>
                                     <td class="no-line"></td>
                                     <td class="no-line"></td>
-                                    <td class="no-line text-center"><strong>{{ 'invoice.discount'|trans }}</strong></td>
+                                    <td class="no-line text-center"><strong>{{ 'invoice.tax'|trans }}</strong></td>
                                     <td class="no-line text-right">
-                                        <span class="text-success invoice-discount"></span>
+                                        <span class="text-error invoice-tax"></span>
                                     </td>
                                     <td class="no-line"></td>
                                 </tr>
-                                <tr>
-                                    <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line text-center"><strong>{{ 'invoice.total'|trans }}</strong></td>
-                                    <td class="no-line text-right">
-                                        <div class="invoice-total"></div>
-                                    </td>
-                                    <td class="no-line"></td>
-                                </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong>{{ 'invoice.discount'|trans }}</strong></td>
+                                <td class="no-line text-right">
+                                    <span class="text-success invoice-discount"></span>
+                                </td>
+                                <td class="no-line"></td>
+                            </tr>
+                            <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong>{{ 'invoice.total'|trans }}</strong></td>
+                                <td class="no-line text-right">
+                                    <div class="invoice-total"></div>
+                                </td>
+                                <td class="no-line"></td>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -202,74 +203,74 @@
 
 {% block form_buttons %}
     <div class="pull-left">
-        <button type="submit" class="btn btn-success" name="save" value="send">
+        <button type="submit" class="btn btn-success" name="save" value="accept">
             {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
         </button>
     </div>
     <div class="pull-right">
-        <button type="submit" class="btn btn-primary" name="save" value="draft">
+        <button type="submit" class="btn btn-primary" name="save" value="save">
             {{ icon('save') }} {{ "invoice.save.draft"|trans }}
         </button>
     </div>
 
-    <br class="clear" />
+    <br class="clear"/>
 {% endblock form_buttons %}
 
 {% block script %}
-{% spaceless %}
-    {% if form.client.vars.data %}
-        $('#{{ form.client.vars.id }}').parents('div.form-group').hide();
-    {% endif %}
+    {% spaceless %}
+        {% if form.client.vars.data %}
+            $('#{{ form.client.vars.id }}').parents('div.form-group').hide();
+        {% endif %}
 
-    var clientSelect = $('#{{ form.client.vars.id }}');
+        var clientSelect = $('#{{ form.client.vars.id }}');
 
-    clientSelect.on('change', function(){
+        clientSelect.on('change', function(){
 
         $('body').modalmanager('loading');
 
         var clientSelectContainer = $(this).closest('div.form-group'),
-            client_id = $(':selected', this).val();
+        client_id = $(':selected', this).val();
 
         $.getJSON(Routing.generate('_clients_info', {"id" : client_id, "type" : "invoice"}), function(data) {
-            $('#{{ form.client.vars.id }}-container').html(data.content);
-            $('body').modalmanager('loading');
-            clientSelectContainer.hide();
+        $('#{{ form.client.vars.id }}-container').html(data.content);
+        $('body').modalmanager('loading');
+        clientSelectContainer.hide();
         });
-    });
+        });
 
-    $('#invoice-create-form').on('click', '.client-select-change', function(evt) {
+        $('#invoice-create-form').on('click', '.client-select-change', function(evt) {
         evt.preventDefault();
         $('#{{ form.client.vars.id }}-container').html('');
         clientSelect.closest('div.form-group').show();
         clientSelect.val('');
         clientSelect.trigger('select2-selecting');
-    });
+        });
 
-    Invoice.setSelector($('#invoice-rows'));
-    {% for item in items %}
-        {% set field = form.items.vars.prototype[item] %}
-        Invoice.addTemplate('{{ item }}', '{{ form_widget(field) }}');
-        Invoice.addField("{{ item }}");
-    {% endfor %}
+        Invoice.setSelector($('#invoice-rows'));
+        {% for item in items %}
+            {% set field = form.items.vars.prototype[item] %}
+            Invoice.addTemplate('{{ item }}', '{{ form_widget(field) }}');
+            Invoice.addField("{{ item }}");
+        {% endfor %}
 
-    Invoice.addTemplate('total', accounting.formatMoney(0));
-    Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="{{ "invoice.item.remove"|trans }}">{{ icon('trash', ['o']) }}</a>');
-    Invoice.addField("total");
-    Invoice.addField("trash");
+        Invoice.addTemplate('total', accounting.formatMoney(0));
+        Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip"
+                                         title="{{ "invoice.item.remove"|trans }}">{{ icon('trash', ['o']) }}</a>');
+        Invoice.addField("total");
+        Invoice.addField("trash");
 
-    {% if form.items|length == 0 %}
-        Invoice.addRow();
-    {% endif %}
-{% endspaceless %}
+        {% if form.items|length == 0 %}
+            Invoice.addRow();
+        {% endif %}
+    {% endspaceless %}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
     {% javascripts
-       "@CSBillInvoiceBundle/Resources/public/js/invoices.js"
-       filter="?yui_js"
-    %}
-        <script src="{{ asset_url }}"></script>
+    "@CSBillInvoiceBundle/Resources/public/js/invoices.js"
+    filter="?yui_js" %}
+    <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
