@@ -7,14 +7,12 @@ finite_finite:
             new:
                 type: initial
             draft:
-                properties: {edit: true}
+                properties: {editable: true, sendable: true}
             pending:
-                properties: {edit: true}
+                properties: {editable: true, sendable: true}
             overdue:
-                properties: {edit: true}
-            cancelled:
-                type: final
-                properties: {edit: true}
+                properties: {editable: true, sendable: true}
+            cancelled: ~
             paid:
                 type: final
         transitions:
@@ -33,3 +31,6 @@ finite_finite:
             pay:
                 from: [pending, overdue]
                 to: paid
+            reopen:
+                from: [cancelled]
+                to: draft

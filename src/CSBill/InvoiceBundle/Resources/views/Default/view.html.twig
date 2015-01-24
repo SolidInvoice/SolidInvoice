@@ -19,27 +19,38 @@
 
 {% block content %}
 
+    {% set graph = constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH') %}
+
     <div class="pull-right">
         <div class="btn-toolbar">
             <div class="btn-group">
-                {% if finite_can(invoice, 'pay', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
+                {% if finite_can(invoice, 'pay', graph) %}
                     <a href="{{ path('_action_invoice', {'action' : 'pay', 'id' : invoice.id}) }}" id="pay-now"
                        class="btn btn-success">
                         {{ icon('money') }} {{ "invoice.view.toolbar.mark_paid"|trans }}
                     </a>
                 {% endif %}
-                <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">
-                    {{ icon('envelope-o') }} {{ "invoice.view.toolbar.send"|trans }}
-                </a>
+
+                {% if finite_can(invoice, 'reopen', graph) %}
+                    <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-default">
+                        {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
+                    </a>
+                {% endif %}
+
+                {% if finite_has(invoice, 'sendable', graph) %}
+                    <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">
+                        {{ icon('envelope-o') }} {{ "invoice.view.toolbar.send"|trans }}
+                    </a>
+                {% endif %}
             </div>
 
             <div class="btn-group">
-                {% if finite_can(invoice, 'pay', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
+                {% if finite_can(invoice, 'pay', graph) %}
                     <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
                         {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
                     </a>
                 {% endif %}
-                {% if finite_can(invoice, 'cancel', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
+                {% if finite_can(invoice, 'cancel', graph) %}
                     <a href="{{ path('_action_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}"
                        class="btn btn-warning">
                         {{ icon('ban') }} {{ "invoice.view.toolbar.cancel"|trans }}
@@ -47,7 +58,7 @@
                 {% endif %}
             </div>
 
-            {% if finite_has(invoice, 'editable', constant('CSBill\InvoiceBundle\Model\Graph::Grapth')) %}
+            {% if finite_has(invoice, 'editable', graph) %}
                 <div class="btn-group">
                     <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">
                         {{ icon('edit') }} {{ "invoice.view.toolbar.edit"|trans }}
@@ -96,13 +107,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">
-                        {{ 'close'|trans }}
+                        {{ 'invoice.save.cancel'|trans }}
                     </button>
-                    <a href="{{ path('_pay_invoice', {'id' : invoice.id}) }}" class="btn btn-success">
-                        {{ 'invoice.mark_paid'|trans }}
+                    <a href="{{ path('_action_invoice', {'action' : 'pay', 'id' : invoice.id}) }}" class="btn btn-success">
+                        {{ icon('money') }} {{ 'invoice.mark_paid'|trans }}
                     </a>
                     <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                        {{ 'invoice.capture_payment'|trans }}
+                        {{ icon('credit-card') }} {{ 'invoice.capture_payment'|trans }}
                     </a>
                 </div>
             </div>

@@ -26,7 +26,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceManager extends ContainerAware
 {
-
     /**
      * @var ObjectManager
      */
@@ -106,9 +105,7 @@ class InvoiceManager extends ContainerAware
      */
     public function create(Invoice $invoice)
     {
-        if (!$this->applyTransition($invoice, Graph::TRANSITION_NEW)) {
-            throw new InvalidTransitionException('Invoice cannot be created');
-        }
+        $this->applyTransition($invoice, Graph::TRANSITION_NEW);
 
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CREATE, new InvoiceEvent($invoice));
 
@@ -132,9 +129,7 @@ class InvoiceManager extends ContainerAware
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_ACCEPT, new InvoiceEvent($invoice));
 
-        if (!$this->applyTransition($invoice, Graph::TRANSITION_ACCEPT)) {
-            throw new InvalidTransitionException('Invoice cannot be accepted');
-        }
+        $this->applyTransition($invoice, Graph::TRANSITION_ACCEPT);
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush($invoice);
@@ -154,9 +149,7 @@ class InvoiceManager extends ContainerAware
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoicePaidEvent($invoice));
 
-        if (!$this->applyTransition($invoice, Graph::TRANSITION_PAY)) {
-            throw new InvalidTransitionException('Invoice cannot be paid');
-        }
+        $this->applyTransition($invoice, Graph::TRANSITION_PAY);
 
         $invoice->setPaidDate(new \DateTime('NOW'));
 
@@ -178,9 +171,27 @@ class InvoiceManager extends ContainerAware
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoiceEvent($invoice));
 
-        if (!$this->applyTransition($invoice, Graph::TRANSITION_CANCEL)) {
-            throw new InvalidTransitionException('Invoice cannot be cancelled');
-        }
+        $this->applyTransition($invoice, Graph::TRANSITION_CANCEL);
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CANCEL, new InvoiceEvent($invoice));
+
+        return $invoice;
+    }
+
+    /**
+     * @param Invoice $invoice
+     *
+     * @return Invoice
+     * @throws InvalidTransitionException
+     */
+    public function reopen(Invoice $invoice)
+    {
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoiceEvent($invoice));
+
+        $this->applyTransition($invoice, Graph::TRANSITION_REOPEN);
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
@@ -195,6 +206,7 @@ class InvoiceManager extends ContainerAware
      * @param string  $transition
      *
      * @return bool
+     * @throws InvalidTransitionException
      */
     private function applyTransition(Invoice $invoice, $transition)
     {
@@ -206,7 +218,7 @@ class InvoiceManager extends ContainerAware
             return true;
         }
 
-        return false;
+        throw new InvalidTransitionException($transition);
     }
 
     /**
@@ -217,6 +229,6 @@ class InvoiceManager extends ContainerAware
      */
     public function __call($method, $args)
     {
-        throw new \Exception();
+        throw new InvalidTransitionException($method);
     }
 }

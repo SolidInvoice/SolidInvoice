@@ -11,6 +11,8 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
+use CSBill\InvoiceBundle\Model\Graph;
+
 /**
  * This class is a twig extension that gives some shortcut methods to client statuses
  *
@@ -18,6 +20,17 @@ namespace CSBill\CoreBundle\Twig\Extension;
  */
 class StatusExtension extends \Twig_Extension
 {
+    /**
+     * @var array
+     */
+    private $invoiceLabelMap = array(
+        Graph::STATUS_PENDING => 'warning',
+        Graph::STATUS_DRAFT => 'default',
+        Graph::STATUS_OVERDUE => 'danger',
+        Graph::STATUS_PAID => 'success',
+        Graph::STATUS_CANCELLED => 'inverse',
+    );
+
     /**
      * @var \Twig_Environment
      */
@@ -45,6 +58,12 @@ class StatusExtension extends \Twig_Extension
                 array('is_safe' => array('html'),
                 )
             ),
+            new \Twig_SimpleFunction(
+                'invoice_label',
+                array($this, 'renderInvoiceStatusLabel'),
+                array('is_safe' => array('html'),
+                )
+            ),
         );
     }
 
@@ -56,7 +75,7 @@ class StatusExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter(
                 'status',
-                array($this, 'getStatusLabel'),
+                array($this, 'renderStatusLabel'),
                 array('is_safe' => array('html'),
                 )
             ),
@@ -64,14 +83,24 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param mixed  $object
+     * @param string $status
      * @param string $tooltip
      *
      * @return string
+     * @throws \Exception
      */
-    public function getStatusLabel($object, $tooltip = null)
+    public function renderInvoiceStatusLabel($status, $tooltip = null)
     {
-        return $this->renderStatusLabel($object->getStatus(), $tooltip);
+        if (!isset($this->invoiceLabelMap[$status])) {
+            throw new \Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
+        }
+
+        $statusLabel = array(
+            'status' => $status,
+            'status_label' => $this->invoiceLabelMap[$status]
+        );
+
+        return $this->renderStatusLabel($statusLabel, $tooltip);
     }
 
     /**
@@ -91,13 +120,19 @@ class StatusExtension extends \Twig_Extension
             );
         }
 
-        return $this->environment->render(
-            'CSBillCoreBundle:Status:label.html.twig',
-            array(
-                'entity' => $object,
-                'tooltip' => $tooltip,
-            )
-        );
+        try {
+            return $this->environment->render(
+                'CSBillCoreBundle:Status:label.html.twig',
+                array(
+                    'entity' => $object,
+                    'tooltip' => $tooltip,
+                )
+            );
+        } catch (\Twig_Error_Runtime $e) {
+            var_dump($object, $e);
+            exit;
+        }
+
     }
 
     /**

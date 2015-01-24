@@ -11,6 +11,7 @@ final class Graph
     const TRANSITION_CANCEL = 'cancel';
     const TRANSITION_OVERDUE = 'overdue';
     const TRANSITION_PAY = 'pay';
+    const TRANSITION_REOPEN = 'reopen';
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PENDING = 'pending';

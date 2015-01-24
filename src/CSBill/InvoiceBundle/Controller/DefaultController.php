@@ -56,13 +56,13 @@ class DefaultController extends BaseController
 
         $editIcon = $templating->render('{{ icon("edit") }}');
         $editAction = new RowAction($editIcon, '_invoices_edit');
-        $editAction->addAttribute('title', $translator->trans('invoice_edit'));
+        $editAction->addAttribute('title', $translator->trans('invoice.action.edit'));
         $editAction->addAttribute('rel', 'tooltip');
         $rowActicons[] = $editAction;
 
         $viewIcon = $templating->render('{{ icon("eye") }}');
         $viewAction = new RowAction($viewIcon, '_invoices_view');
-        $viewAction->addAttribute('title', $translator->trans('invoice.view'));
+        $viewAction->addAttribute('title', $translator->trans('invoice.action.view'));
         $viewAction->addAttribute('rel', 'tooltip');
         $rowActicons[] = $viewAction;
 
@@ -73,11 +73,11 @@ class DefaultController extends BaseController
 
             $payAction->setRouteParameters(array('uuid'));
             $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
-            $payAction->addAttribute('title', $translator->trans('invoice.pay_now'));
+            $payAction->addAttribute('title', $translator->trans('invoice.action.pay_now'));
             $payAction->addAttribute('rel', 'tooltip');
 
             $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
-                if (Graph::STATUS_PENDING !== $row->getField('status.name')) {
+                if (Graph::STATUS_PENDING !== $row->getField('status')) {
                     $rowAction->setTitle('');
                 }
 
@@ -93,10 +93,8 @@ class DefaultController extends BaseController
 
         $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
-            $label = $row->getField('status.label');
-
-            return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
+        $grid->getColumn('status')->manipulateRenderCell(function ($value) use ($templating) {
+            return $templating->render('{{ invoice_label("'.$value.'") }}');
         })->setSafe(false);
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
@@ -107,9 +105,14 @@ class DefaultController extends BaseController
             return (int) $value;
         });
 
-        $grid->setPermanentFilters(array(
-            'client.name' => array('operator' => 'isNotNull'),
-        ));
+        $grid->setPermanentFilters(
+            array(
+                'client.name' => array('operator' => 'isNotNull'),
+            )
+        );
+
+        /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
+        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
 
         // Return the response of the grid to the template
         return $grid->getGridResponse(
@@ -122,6 +125,15 @@ class DefaultController extends BaseController
                     Graph::STATUS_DRAFT,
                     Graph::STATUS_OVERDUE,
                 ),
+                'status_list_count' => array(
+                    Graph::STATUS_PENDING => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),
+                    Graph::STATUS_PAID => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID),
+                    Graph::STATUS_CANCELLED => $invoiceRepository->getCountByStatus(Graph::STATUS_CANCELLED),
+                    Graph::STATUS_DRAFT => $invoiceRepository->getCountByStatus(Graph::STATUS_DRAFT),
+                    Graph::STATUS_OVERDUE => $invoiceRepository->getCountByStatus(Graph::STATUS_OVERDUE),
+                ),
+                'total_income' => $invoiceRepository->getTotalIncome(),
+                'total_outstanding' => $invoiceRepository->getTotalOutstanding(),
             )
         );
     }

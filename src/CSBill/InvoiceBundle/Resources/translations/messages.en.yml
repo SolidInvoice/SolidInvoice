@@ -12,10 +12,8 @@ invoice:
     tax: Tax
     discount: Discount
     title: "Invoice #%id%"
-    edit: Edit Invoice
     notes: Notes
     terms: Terms
-    pay_now: Pay Now
     client:
         choose: Choose a client
         empty: You have not created any clients yet.
@@ -46,18 +44,32 @@ invoice:
             pay_now: Pay Now
             cancel: Cancel
             edit: Edit
+            reopen: Re-Open
     payment:
         capture: Do you want to capture a payment for this invoice?
     mark_paid: Mark Paid
     capture_payment: Capture Payment
     view: View Invoice
     add_payment: Add Payment
-    action:
-        transition:
+    transition:
+        exception:
+        action:
             accept: Invoice has been accepted
             cancel: Invoice has been cancelled
-            paid: Invoice has been paid
+            pay: Invoice has been paid
             sent: Invoice has been sent
+            reopen: Invoice has been re-opened
+    stats:
+        count:
+            pending: Pending Invoices
+            draft: Draft Invoices
+            paid: Paid Invoices
+            cancelled: Cancelled Invoices
+            overdue: Overdue Invoices
+    action:
+        edit: Edit Invoice
+        view: View Invoice
+        pay_now: Pay Now
 
 invoice: Invoice
 search: Search

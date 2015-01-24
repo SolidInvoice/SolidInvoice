@@ -26,13 +26,13 @@ class ActionsController extends BaseController
      */
     public function transitionAction($action, Invoice $invoice)
     {
-        $this->get('invoice.manager')->$action($invoice);
-
         if (!$this->get('finite.factory')->get($invoice, Graph::GRAPH)->can($action)) {
             throw new InvalidTransitionException($action);
         }
 
-        $this->flash($this->trans('invoice.action.transition.'.$action), 'success');
+        $this->get('invoice.manager')->$action($invoice);
+
+        $this->flash($this->trans('invoice.transition.action.'.$action), 'success');
 
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }
@@ -44,13 +44,13 @@ class ActionsController extends BaseController
      */
     public function sendAction(Invoice $invoice)
     {
-        if ($invoice->getStatus() === Graph::STATUS_DRAFT) {
+        if ($invoice->getStatus() !== Graph::STATUS_PENDING) {
             $this->get('invoice.manager')->accept($invoice);
         } else {
             $this->get('billing.mailer')->sendInvoice($invoice);
         }
 
-        $this->flash($this->trans('invoice.action.transition.sent'), 'success');
+        $this->flash($this->trans('invoice.transition.action.sent'), 'success');
 
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }

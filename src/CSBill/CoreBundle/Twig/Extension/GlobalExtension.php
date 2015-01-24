@@ -46,9 +46,9 @@ class GlobalExtension extends Twig_Extension
         return array(
             'query' => $this->getQuery(),
             'currency' => $this->container->get('currency'),
-            'invoice_manager' => $this->container->get('invoice.manager'),
             'app_version' => CSBillCoreBundle::VERSION,
             'app_name' => $appName,
+            'settings' => $this->container->get('settings')->getSettings()->toArray()
         );
     }
 

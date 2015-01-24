@@ -77,7 +77,6 @@ class InvoiceRepository extends EntityRepository
      */
     public function getTotalByStatus($status, Client $client = null)
     {
-
         $qb = $this->createQueryBuilder('i');
 
         $qb->select('SUM(i.total)')

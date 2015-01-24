@@ -10,9 +10,10 @@
 
 namespace CSBill\InvoiceBundle\Listener\Mailer;
 
-use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
+use CSBill\CoreBundle\Mailer\Events\InvoiceMailEvent;
 use CSBill\CoreBundle\Mailer\Mailer;
 use CSBill\CoreBundle\Mailer\MailerEvents;
+use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\PaymentBundle\Manager\PaymentMethodManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -69,9 +70,9 @@ class InvoiceMailerListener implements EventSubscriberInterface
     }
 
     /**
-     * @param InvoiceEvent $event
+     * @param InvoiceMailEvent $event
      */
-    public function onInvoiceMail(InvoiceEvent $event)
+    public function onInvoiceMail(InvoiceMailEvent $event)
     {
         if (count($this->paymentManager) > 0) {
             $htmlTemplate = $event->getHtmlTemplate();

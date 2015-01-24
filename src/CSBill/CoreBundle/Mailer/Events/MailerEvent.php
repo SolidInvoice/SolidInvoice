@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -16,13 +15,22 @@ use Symfony\Component\EventDispatcher\Event;
 
 class MailerEvent extends Event
 {
+    /**
+     * @var Swift_Message
+     */
     protected $message;
 
+    /**
+     * @param Swift_Message $message
+     */
     public function setMessage(Swift_Message $message)
     {
         $this->message = $message;
     }
 
+    /**
+     * @return Swift_Message
+     */
     public function getMessage()
     {
         return $this->message;

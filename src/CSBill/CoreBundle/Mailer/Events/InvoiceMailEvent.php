@@ -14,7 +14,7 @@ namespace CSBill\CoreBundle\Mailer\Events;
 use CSBill\CoreBundle\Mailer\MailerEvents;
 use CSBill\InvoiceBundle\Entity\Invoice;
 
-class InvoiceEvent extends MessageEvent
+class InvoiceMailEvent extends MessageEvent
 {
     /**
      * @var Invoice

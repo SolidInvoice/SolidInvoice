@@ -11,7 +11,7 @@
 
 namespace CSBill\CoreBundle\Mailer;
 
-use CSBill\CoreBundle\Mailer\Events\InvoiceEvent;
+use CSBill\CoreBundle\Mailer\Events\InvoiceMailEvent;
 use CSBill\CoreBundle\Mailer\Events\MailerEvent;
 use CSBill\CoreBundle\Mailer\Events\MessageEvent;
 use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
@@ -123,7 +123,7 @@ class Mailer implements MailerInterface
             $users[(string)$user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
         }
 
-        $event = new InvoiceEvent();
+        $event = new InvoiceMailEvent();
         $event->setInvoice($invoice);
 
         $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event);
