@@ -18,29 +18,41 @@
 {% endblock sidebar %}
 
 {% block content %}
+
+    {% set graph = constant('CSBill\\QuoteBundle\\Model\\Graph::GRAPH') %}
+
     <div class="pull-right">
         <div class="btn-toolbar">
             <div class="btn-group">
 
-                {% if quote.status~'' in ['pending', 'draft'] %}
+                {% if finite_can(quote, 'accept', graph) %}
                     <a href="{{ path('_accept_quote', {'id' : quote.id}) }}" class="btn btn-success">
                         {{ icon('check') }} {{ "quote.view.toolbar.accept"|trans }}
                     </a>
                 {% endif %}
 
-                {% if quote.status~'' not in ['accepted', 'declined', 'cancelled'] %}
+                {% if finite_can(quote, 'decline', graph) %}
                     <a href="{{ path('_decline_quote', {'id' : quote.id}) }}" class="btn btn-danger">
                         {{ icon('times') }} {{ "quote.view.toolbar.decline"|trans }}
                     </a>
                 {% endif %}
             </div>
             <div class="btn-group">
-                <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">
-                    {{ icon('envelope', ['o']) }} {{ "quote.view.toolbar.send"|trans }}
-                </a>
+
+                {% if finite_can(quote, 'reopen', graph) %}
+                    <a href="{{ path('_reopen_quote', {'id' : quote.id}) }}" class="btn btn-default">
+                        {{ icon('reply') }} {{ "quote.view.toolbar.reopen"|trans }}
+                    </a>
+                {% endif %}
+
+                {% if finite_has(quote, 'sendable', graph) %}
+                    <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">
+                        {{ icon('envelope', ['o']) }} {{ "quote.view.toolbar.send"|trans }}
+                    </a>
+                {% endif %}
             </div>
 
-            {% if quote.status~'' in ['draft', 'pending'] %}
+            {% if finite_can(quote, 'cancel', graph) %}
                 <div class="btn-group">
                     <a href="{{ path('_cancel_quote', {'id' : quote.id}) }}" class="btn btn-warning">
                         {{ icon('ban') }} {{ "quote.view.toolbar.cancel"|trans }}
@@ -48,11 +60,13 @@
                 </div>
             {% endif %}
 
-            <div class="btn-group">
-                <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-default">
-                   {{ icon('edit') }} {{ "quote.view.toolbar.edit"|trans }}
-                </a>
-            </div>
+            {% if finite_has(quote, 'editable', graph) %}
+                <div class="btn-group">
+                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-default">
+                       {{ icon('edit') }} {{ "quote.view.toolbar.edit"|trans }}
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 

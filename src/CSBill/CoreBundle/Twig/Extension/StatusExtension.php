@@ -11,7 +11,8 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
-use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
+use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
 
 /**
  * This class is a twig extension that gives some shortcut methods to client statuses
@@ -24,11 +25,22 @@ class StatusExtension extends \Twig_Extension
      * @var array
      */
     private $invoiceLabelMap = array(
-        Graph::STATUS_PENDING => 'warning',
-        Graph::STATUS_DRAFT => 'default',
-        Graph::STATUS_OVERDUE => 'danger',
-        Graph::STATUS_PAID => 'success',
-        Graph::STATUS_CANCELLED => 'inverse',
+        InvoiceGraph::STATUS_PENDING => 'warning',
+        InvoiceGraph::STATUS_DRAFT => 'default',
+        InvoiceGraph::STATUS_OVERDUE => 'danger',
+        InvoiceGraph::STATUS_PAID => 'success',
+        InvoiceGraph::STATUS_CANCELLED => 'inverse',
+    );
+
+     /**
+     * @var array
+     */
+    private $quoteLabelMap = array(
+        QuoteGraph::STATUS_DRAFT => 'default',
+        QuoteGraph::STATUS_PENDING => 'warning',
+        QuoteGraph::STATUS_ACCEPTED => 'success',
+        QuoteGraph::STATUS_DECLINED => 'danger',
+        QuoteGraph::STATUS_CANCELLED => 'inverse',
     );
 
     /**
@@ -61,6 +73,12 @@ class StatusExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'invoice_label',
                 array($this, 'renderInvoiceStatusLabel'),
+                array('is_safe' => array('html'),
+                )
+            ),
+            new \Twig_SimpleFunction(
+                'quote_label',
+                array($this, 'renderQuoteStatusLabel'),
                 array('is_safe' => array('html'),
                 )
             ),
@@ -103,6 +121,28 @@ class StatusExtension extends \Twig_Extension
         return $this->renderStatusLabel($statusLabel, $tooltip);
     }
 
+
+    /**
+     * @param string $status
+     * @param string $tooltip
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function renderQuoteStatusLabel($status, $tooltip = null)
+    {
+        if (!isset($this->quoteLabelMap[$status])) {
+            throw new \Exception(sprintf('The quote status "%s" does not have an associative label', $status));
+        }
+
+        $statusLabel = array(
+            'status' => $status,
+            'status_label' => $this->quoteLabelMap[$status]
+        );
+
+        return $this->renderStatusLabel($statusLabel, $tooltip);
+    }
+
     /**
      * Return the status converted into a label string
      *
@@ -120,19 +160,13 @@ class StatusExtension extends \Twig_Extension
             );
         }
 
-        try {
-            return $this->environment->render(
-                'CSBillCoreBundle:Status:label.html.twig',
-                array(
-                    'entity' => $object,
-                    'tooltip' => $tooltip,
-                )
-            );
-        } catch (\Twig_Error_Runtime $e) {
-            var_dump($object, $e);
-            exit;
-        }
-
+        return $this->environment->render(
+            'CSBillCoreBundle:Status:label.html.twig',
+            array(
+                'entity' => $object,
+                'tooltip' => $tooltip,
+            )
+        );
     }
 
     /**

@@ -42,7 +42,24 @@ class Version20150124112808 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE invoices ADD status_id INT DEFAULT NULL, DROP status');
+        $this->addSql(
+            sprintf(
+                "UPDATE invoices SET status = CASE status
+                  WHEN '%s' THEN 9
+                  WHEN '%s' THEN 10
+                  WHEN '%s' THEN 11
+                  WHEN '%s' THEN 12
+                  WHEN '%s' THEN 13 END",
+                Graph::STATUS_DRAFT,
+                Graph::STATUS_PENDING,
+                Graph::STATUS_PAID,
+                Graph::STATUS_OVERDUE,
+                Graph::STATUS_CANCELLED
+            )
+        );
+
+        $this->addSql('ALTER TABLE invoices CHANGE status status_id INT DEFAULT NULL');
+
         $this->addSql('ALTER TABLE invoices ADD CONSTRAINT FK_6A2F2F956BF700BD FOREIGN KEY (status_id) REFERENCES status (id)');
         $this->addSql('CREATE INDEX IDX_6A2F2F956BF700BD ON invoices (status_id)');
     }

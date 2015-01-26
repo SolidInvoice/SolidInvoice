@@ -61,11 +61,11 @@ invoice:
             reopen: Invoice has been re-opened
     stats:
         count:
-            pending: Pending Invoices
-            draft: Draft Invoices
-            paid: Paid Invoices
-            cancelled: Cancelled Invoices
-            overdue: Overdue Invoices
+            pending: "{0} Pending Invoices|{1} Pending Invoice|]1,Inf] Pending Invoices"
+            draft: "{0} Draft Invoices|{1} Draft Invoice|]1,Inf] Draft Invoices"
+            paid: "{0} Paid Invoices|{1} Paid Invoice|]1,Inf] Paid Invoices"
+            cancelled: "{0} Cancelled Invoices|{1} Cancelled Invoice|]1,Inf] Cancelled Invoices"
+            overdue: "{0} Overdue Invoices|{1} Overdue Invoice|]1,Inf] Overdue Invoices"
     action:
         edit: Edit Invoice
         view: View Invoice

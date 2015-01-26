@@ -11,8 +11,11 @@
 namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\QuoteBundle\Event\QuoteEvent;
+use CSBill\QuoteBundle\Event\QuoteEvents;
+use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Entity\Status;
+use CSBill\QuoteBundle\Model\Graph;
 
 class ActionsController extends BaseController
 {
@@ -20,13 +23,27 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws InvalidTransitionException
      */
     public function acceptAction(Quote $quote)
     {
-        // @TODO: APply transition for quote
-        //$this->setQuoteStatus($quote, Status::STATUS_ACCEPTED);
+        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
+
+        if (!$finite->can(Graph::TRANSITION_ACCEPT)) {
+            throw new InvalidTransitionException(Graph::TRANSITION_ACCEPT);
+        }
+
+        $dispatcher = $this->get('event_dispatcher');
+
+        $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_ACCEPT, new QuoteEvent($quote));
 
         $invoice = $this->get('invoice.manager')->createFromQuote($quote);
+
+        $finite->apply(Graph::TRANSITION_ACCEPT);
+
+        $dispatcher->dispatch(QuoteEvents::QUOTE_POST_ACCEPT, new QuoteEvent($quote));
+
+        $this->save($quote);
 
         $this->flash($this->trans('quote.accepted'), 'success');
 
@@ -37,10 +54,25 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws InvalidTransitionException
      */
     public function declineAction(Quote $quote)
     {
-        $this->setQuoteStatus($quote, Status::STATUS_DECLINED);
+        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
+
+        if (!$finite->can(Graph::TRANSITION_DECLINE)) {
+            throw new InvalidTransitionException(Graph::TRANSITION_DECLINE);
+        }
+
+        $dispatcher = $this->get('event_dispatcher');
+
+        $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_DECLINE, new QuoteEvent($quote));
+
+        $finite->apply(Graph::TRANSITION_DECLINE);
+
+        $dispatcher->dispatch(QuoteEvents::QUOTE_POST_DECLINE, new QuoteEvent($quote));
+
+        $this->save($quote);
 
         $this->flash($this->trans('quote.declined'), 'success');
 
@@ -51,10 +83,25 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws InvalidTransitionException
      */
     public function cancelAction(Quote $quote)
     {
-        $this->setQuoteStatus($quote, Status::STATUS_CANCELLED);
+        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
+
+        if (!$finite->can(Graph::TRANSITION_CANCEL)) {
+            throw new InvalidTransitionException(Graph::TRANSITION_CANCEL);
+        }
+
+        $dispatcher = $this->get('event_dispatcher');
+
+        $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CANCEL, new QuoteEvent($quote));
+
+        $finite->apply(Graph::TRANSITION_CANCEL);
+
+        $dispatcher->dispatch(QuoteEvents::QUOTE_POST_CANCEL, new QuoteEvent($quote));
+
+        $this->save($quote);
 
         $this->flash($this->trans('quote.cancelled'), 'success');
 
@@ -65,32 +112,51 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws InvalidTransitionException
      */
-    public function sendAction(Quote $quote)
+    public function reopenAction(Quote $quote)
     {
-        $this->get('billing.mailer')->sendQuote($quote);
+        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
 
-        if (strtolower($quote->getStatus()->getName()) === Status::STATUS_DRAFT) {
-            $this->setQuoteStatus($quote, Status::STATUS_PENDING);
+        if (!$finite->can(Graph::TRANSITION_REOPEN)) {
+            throw new InvalidTransitionException(Graph::TRANSITION_REOPEN);
         }
+        $finite->apply(Graph::TRANSITION_REOPEN);
 
-        $this->flash($this->trans('quote.sent'), 'success');
+        $this->save($quote);
+
+        $this->flash($this->trans('quote.reopened'), 'success');
 
         return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
 
     /**
-     * @param string $status
+     * @param Quote $quote
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws InvalidTransitionException
      */
-    protected function setQuoteStatus(Quote $quote, $status)
+    public function sendAction(Quote $quote)
     {
-        $status = $this->getRepository('CSBillQuoteBundle:Status')->findOneByName($status);
+        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
 
-        $quote->setStatus($status);
+        if ($quote->getStatus() !== Graph::STATUS_PENDING) {
+            if (!$finite->can(Graph::TRANSITION_SEND)) {
+                throw new InvalidTransitionException(Graph::TRANSITION_SEND);
+            }
 
-        $em = $this->getEm();
+            $dispatcher = $this->get('event_dispatcher');
+            $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
+            $finite->apply(Graph::TRANSITION_SEND);
+            $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
+        } else {
+            $this->get('billing.mailer')->sendQuote($quote);
+        }
 
-        $em->persist($status);
-        $em->flush();
+        $this->save($quote);
+
+        $this->flash($this->trans('quote.sent'), 'success');
+
+        return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
     }
 }

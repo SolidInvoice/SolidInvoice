@@ -12,10 +12,10 @@ namespace CSBill\DashboardBundle\Widgets;
 
 use CSBill\ClientBundle\Entity\Status as ClientStatus;
 use CSBill\ClientBundle\Repository\ClientRepository;
-use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
-use CSBill\QuoteBundle\Entity\Status as QuoteStatus;
+use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -49,10 +49,17 @@ class StatsWidget implements WidgetInterface
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
 
+        $totalInvoices = $invoiceRepository->getCountByStatus(
+            array(
+                InvoiceGraph::STATUS_PENDING,
+                InvoiceGraph::STATUS_OVERDUE
+            )
+        );
+
         return array(
             'totalClients' => $clientRepository->getTotalClients(ClientStatus::STATUS_ACTIVE),
-            'totalQuotes' => $quoteRepository->getTotalQuotes(QuoteStatus::STATUS_DECLINED),
-            'totalInvoices' => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),
+            'totalQuotes' => $quoteRepository->getTotalQuotes(QuoteGraph::STATUS_PENDING),
+            'totalInvoices' => $totalInvoices,
             'totalIncome' => $paymentRepository->getTotalIncome(),
         );
     }

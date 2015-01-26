@@ -48,11 +48,9 @@ class Quote
     private $uuid;
 
     /**
-     * @var Status $status
+     * @var string $status
      *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="quotes")
-     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
-     * @Grid\Column(field="status.label", visible=false)
+     * @ORM\Column(name="status", type="string", length=25)
      */
     private $status;
 
@@ -166,7 +164,8 @@ class Quote
     }
 
     /**
-     * @param  Uuid  $uuid
+     * @param  Uuid $uuid
+     *
      * @return $this
      */
     public function setUuid(Uuid $uuid)
@@ -188,6 +187,7 @@ class Quote
 
     /**
      * @param  array $users
+     *
      * @return $this
      */
     public function setUsers(array $users = array())
@@ -200,10 +200,11 @@ class Quote
     /**
      * Set status
      *
-     * @param  Status $status
+     * @param string $status
+     *
      * @return Quote
      */
-    public function setStatus(Status $status)
+    public function setStatus($status)
     {
         $this->status = $status;
 
@@ -213,7 +214,7 @@ class Quote
     /**
      * Get status
      *
-     * @return Status
+     * @return string
      */
     public function getStatus()
     {
@@ -224,6 +225,7 @@ class Quote
      * Set client
      *
      * @param  Client|null $client
+     *
      * @return Quote
      */
     public function setClient(Client $client = null)
@@ -247,6 +249,7 @@ class Quote
      * Set total
      *
      * @param  float $total
+     *
      * @return Quote
      */
     public function setTotal($total)
@@ -270,6 +273,7 @@ class Quote
      * Set base total
      *
      * @param  float $baseTotal
+     *
      * @return Quote
      */
     public function setBaseTotal($baseTotal)
@@ -293,6 +297,7 @@ class Quote
      * Set discount
      *
      * @param  float $discount
+     *
      * @return Quote
      */
     public function setDiscount($discount)
@@ -316,6 +321,7 @@ class Quote
      * Set due
      *
      * @param  \DateTime $due
+     *
      * @return Quote
      */
     public function setDue(\DateTime $due)
@@ -338,7 +344,8 @@ class Quote
     /**
      * Add item
      *
-     * @param  Item  $item
+     * @param  Item $item
+     *
      * @return Quote
      */
     public function addItem(Item $item)
@@ -352,7 +359,8 @@ class Quote
     /**
      * Removes an item
      *
-     * @param  Item  $item
+     * @param  Item $item
+     *
      * @return Quote
      */
     public function removeItem(Item $item)

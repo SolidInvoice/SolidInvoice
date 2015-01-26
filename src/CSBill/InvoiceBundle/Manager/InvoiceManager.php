@@ -71,28 +71,32 @@ class InvoiceManager extends ContainerAware
         $invoice->setBaseTotal($quote->getBaseTotal());
         $invoice->setDiscount($quote->getDiscount());
         $invoice->setNotes($quote->getNotes());
-        $invoice->setTax($quote->getTax());
         $invoice->setTotal($quote->getTotal());
         $invoice->setTerms($quote->getTerms());
-        $invoice->setDue($quote->getDue());
         $invoice->setUsers($quote->getUsers()->toArray());
+
+        if (null !== $quote->getTax()) {
+            $invoice->setTax($quote->getTax());
+        }
 
         /** @var \CSBill\QuoteBundle\Entity\Item $item */
         foreach ($quote->getItems() as $item) {
             $invoiceItem = new Item();
             $invoiceItem->setCreated($now);
             $invoiceItem->setTotal($item->getTotal());
-            $invoiceItem->setTax($item->getTax());
             $invoiceItem->setDescription($item->getDescription());
             $invoiceItem->setPrice($item->getPrice());
             $invoiceItem->setQty($item->getQty());
+
+            if (null !== $item->getTax()) {
+                $invoiceItem->setTax($item->getTax());
+            }
+
             $invoice->addItem($invoiceItem);
         }
 
         $this->create($invoice);
-        $this->accept($invoice);
-
-        // @TODO: Quote status need to be changed
+        $this->accept($invoice); // ?? Do we really want to accept it immediately after creating it? I think not...
 
         return $invoice;
     }

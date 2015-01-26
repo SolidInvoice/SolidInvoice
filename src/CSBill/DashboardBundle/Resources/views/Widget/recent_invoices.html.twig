@@ -34,23 +34,27 @@
                                     {{ icon('eye') }} {{ 'dashboard.invoice.actions.view'|trans }}
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
-                                    {{ icon('edit') }} {{ 'dashboard.invoice.actions.edit'|trans }}
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}">
-                                    {{ icon('credit-card') }} {{ 'dashboard.invoice.actions.pay'|trans }}
-                                </a>
-                            </li>
+                            {% if finite_has(invoice, 'editable', constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH')) %}
+                                <li>
+                                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
+                                        {{ icon('edit') }} {{ 'dashboard.invoice.actions.edit'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if finite_can(invoice, 'pay', constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH')) %}
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}">
+                                        {{ icon('credit-card') }} {{ 'dashboard.invoice.actions.pay'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
 
-                    {{ status_label(invoice) }}
+                    {{ invoice_label(invoice.status) }}
 
-                    <a href="{{ path('_clients_view', {'id' : invoice.client_id}) }}">
+                    <a href="{{ path('_clients_view', {'id' : invoice.client.id}) }}">
                         {{ invoice.client }}
                     </a>
                     <div class="pull-right">

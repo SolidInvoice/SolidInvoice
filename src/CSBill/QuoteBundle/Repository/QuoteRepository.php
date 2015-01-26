@@ -29,8 +29,7 @@ class QuoteRepository extends EntityRepository
         $qb->select('COUNT(q.id)');
 
         if (null !== $status) {
-            $qb->join('q.status', 's')
-                ->where('s.name = :status')
+            $qb->where('q.status = :status')
                 ->setParameter('status', $status);
         }
 
@@ -50,22 +49,11 @@ class QuoteRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('q');
 
-        $qb->select(
-            'q.id',
-            'c.name as client',
-            'c.id as client_id',
-            'q.total',
-            'q.created',
-            's.name as status',
-            's.label as status_label'
-        )
-            ->join('q.client', 'c')
-            ->join('q.status', 's')
-            ->orderBy('q.created', 'DESC')
+        $qb->orderBy('q.created', 'DESC')
             ->setMaxResults($limit);
 
         $query = $qb->getQuery();
 
-        return $query->getArrayResult();
+        return $query->getResult();
     }
 }

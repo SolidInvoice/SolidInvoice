@@ -1,7 +1,7 @@
 finite_finite:
-    csbill_invoice:
-        class: CSBill\InvoiceBundle\Entity\Invoice
-        graph: csbill_invoice
+    csbill_quote:
+        class: CSBill\QuoteBundle\Entity\Quote
+        graph: csbill_quote
         property_path: status
         states:
             new:
@@ -10,27 +10,26 @@ finite_finite:
                 properties: {editable: true, sendable: true}
             pending:
                 properties: {editable: true, sendable: true}
-            overdue:
-                properties: {editable: true, sendable: true}
             cancelled: ~
-            paid:
+            accepted:
                 type: final
+            declined: ~
         transitions:
             new:
-                from: [new]
+                from: [new, cancelled]
                 to: draft
-            accept:
-                from: [new, draft, overdue]
+            send:
+                from: [new, draft]
                 to: pending
             cancel:
-                from: [draft, pending, overdue]
+                from: [draft, pending]
                 to: cancelled
-            overdue:
+            decline:
+                from: [new, draft, pending]
+                to: declined
+            accept:
                 from: [pending]
-                to: overdue
-            pay:
-                from: [pending, overdue]
-                to: paid
+                to: accepted
             reopen:
-                from: [cancelled]
+                from: [cancelled, declined]
                 to: draft

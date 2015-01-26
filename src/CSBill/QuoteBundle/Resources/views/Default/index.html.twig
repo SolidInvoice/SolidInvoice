@@ -24,7 +24,7 @@
     <h5>{{ "quote.list.status_legend"|trans }}</h5>
 
     {% for status in status_list %}
-        {{ status_label(status) }}
+        {{ quote_label(status) }}
     {% endfor %}
 
 {% endblock content %}
@@ -36,13 +36,13 @@
         </a>
 
         <ul class="nav nav-list">
-            {% for status in status_list %}
+            {% for status, count in status_list_count %}
                 <li>
-                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.quotes|length }}</label>
+                    <label class="badge">
+                        {{ count }}
+                    </label>
 
-                    {% transchoice status.quotes|length with {'%name%': status.name|title} %}
-                    {0} %name% Quotes|{1} %name% Quote|]1,Inf] %name% Quotes
-                    {% endtranschoice %}
+                    {{ ('quote.stats.count.' ~ status)|transchoice(count) }}
                 </li>
             {% endfor %}
         </ul>

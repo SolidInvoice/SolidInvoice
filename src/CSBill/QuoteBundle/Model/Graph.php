@@ -8,22 +8,22 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Model;
+namespace CSBill\QuoteBundle\Model;
 
 final class Graph
 {
-    const GRAPH = 'csbill_invoice';
+    const GRAPH = 'csbill_quote';
 
-    const TRANSITION_ACCEPT = 'accept';
     const TRANSITION_NEW = 'new';
+    const TRANSITION_SEND = 'send';
     const TRANSITION_CANCEL = 'cancel';
-    const TRANSITION_OVERDUE = 'overdue';
-    const TRANSITION_PAY = 'pay';
+    const TRANSITION_DECLINE = 'decline';
+    const TRANSITION_ACCEPT = 'accept';
     const TRANSITION_REOPEN = 'reopen';
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PENDING = 'pending';
-    const STATUS_PAID = 'paid';
-    const STATUS_OVERDUE = 'overdue';
+    const STATUS_ACCEPTED = 'accepted';
     const STATUS_CANCELLED = 'cancelled';
+    const STATUS_DECLINED = 'declined';
 }

@@ -53,9 +53,15 @@ class InvoiceRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('COUNT(i)')
-            ->where('i.status = :status')
-            ->setParameter('status', $status);
+        $qb->select('COUNT(i)');
+
+        if (is_array($status)) {
+            $qb->add('where', $qb->expr()->in('i.status', ':status'));
+        } else {
+            $qb->where('i.status = :status');
+        }
+
+        $qb->setParameter('status', $status);
 
         if (null !== $client) {
             $qb->andWhere('i.client = :client')
@@ -64,7 +70,7 @@ class InvoiceRepository extends EntityRepository
 
         $query = $qb->getQuery();
 
-        return $query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     /**
@@ -104,23 +110,11 @@ class InvoiceRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select(
-            array(
-                'i.id',
-                'i.uuid',
-                'c.name as client',
-                'c.id as client_id',
-                'i.total',
-                'i.created',
-                'i.status',
-            )
-        )
-            ->join('i.client', 'c')
-            ->orderBy('i.created', 'DESC')
+        $qb->orderBy('i.created', 'DESC')
             ->setMaxResults($limit);
 
         $query = $qb->getQuery();
 
-        return $query->getArrayResult();
+        return $query->getResult();
     }
 }

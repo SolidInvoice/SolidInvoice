@@ -121,7 +121,7 @@
 
         {% if quote.discount is not empty %}
             <tr>
-                <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
                     <strong>
                         {{ "quote.discount"|trans }}
                     </strong>
@@ -136,7 +136,7 @@
 
         {% if quote.tax is not empty %}
             <tr>
-                <td colspan="3" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
                     <strong>
                         {{ "quote.tax"|trans }}
                     </strong>
@@ -148,7 +148,7 @@
         {% endif %}
 
         <tr>
-            <td colspan="3" align="right" style="border:1px solid #cccccc;">
+            <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border:1px solid #cccccc;">
                 <strong>
                     {{ "quote.total"|trans }}
                 </strong>

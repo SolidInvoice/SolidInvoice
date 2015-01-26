@@ -12,12 +12,14 @@ namespace CSBill\QuoteBundle\Controller;
 
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Entity\Status;
+use CSBill\QuoteBundle\Event\QuoteEvent;
+use CSBill\QuoteBundle\Event\QuoteEvents;
+use CSBill\QuoteBundle\Model\Graph;
+use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,10 +70,8 @@ class DefaultController extends BaseController
 
         $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
-            $label = $row->getField('status.label');
-
-            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+        $grid->getColumn('status')->manipulateRenderCell(function ($value) use ($templating) {
+            return $templating->render('{{ quote_label("'.$value.'") }}');
         })->setSafe(false);
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
@@ -82,17 +82,33 @@ class DefaultController extends BaseController
             return (int) $value;
         });
 
-        $grid->setPermanentFilters(array(
-            'client.name' => array('operator' => 'isNotNull'),
-        ));
+        $grid->setPermanentFilters(
+            array(
+                'client.name' => array('operator' => 'isNotNull'),
+            )
+        );
 
-        $statusList = $this->getRepository('CSBillQuoteBundle:Status')->findAll();
+        /** @var QuoteRepository $quoteRepository */
+        $quoteRepository = $this->getRepository('CSBillQuoteBundle:Quote');
 
         // Return the response of the grid to the template
         return $grid->getGridResponse(
             'CSBillQuoteBundle:Default:index.html.twig',
             array(
-                'status_list' => $statusList,
+                'status_list' => array(
+                    Graph::STATUS_PENDING,
+                    Graph::STATUS_ACCEPTED,
+                    Graph::STATUS_CANCELLED,
+                    Graph::STATUS_DRAFT,
+                    Graph::STATUS_DECLINED,
+                ),
+                'status_list_count' => array(
+                    Graph::STATUS_PENDING => $quoteRepository->getTotalQuotes(Graph::STATUS_PENDING),
+                    Graph::STATUS_ACCEPTED => $quoteRepository->getTotalQuotes(Graph::STATUS_ACCEPTED),
+                    Graph::STATUS_CANCELLED => $quoteRepository->getTotalQuotes(Graph::STATUS_CANCELLED),
+                    Graph::STATUS_DRAFT => $quoteRepository->getTotalQuotes(Graph::STATUS_DRAFT),
+                    Graph::STATUS_DECLINED => $quoteRepository->getTotalQuotes(Graph::STATUS_DECLINED),
+                ),
             )
         );
     }
@@ -124,7 +140,7 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $this->saveQuote($quote, $action);
 
-            $this->flash($this->trans('quote.create.success'), 'success');
+            $this->flash($this->trans('quote.action.create.success'), 'success');
 
             return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
         }
@@ -154,7 +170,7 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $this->saveQuote($quote, 'send' === $action ? $action : null);
 
-            $this->flash($this->trans('quote.edit.success'), 'success');
+            $this->flash($this->trans('quote.action.edit.success'), 'success');
 
             return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
         }
@@ -185,35 +201,23 @@ class DefaultController extends BaseController
      */
     private function saveQuote(Quote $quote, $action = null)
     {
-        $email = false;
+        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
+        $dispatcher = $this->get('event_dispatcher');
 
-        $statusRepository = $this->getRepository('CSBillQuoteBundle:Status');
-
-        switch ($action) {
-            case 'send':
-                $status = Status::STATUS_PENDING;
-                $email = true;
-                break;
-
-            case 'draft':
-                $status = Status::STATUS_DRAFT;
-                break;
-
-            default:
-                $status = null;
+        if (!$quote->getId()) {
+            $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
         }
 
-        if (null !== $status) {
-            /** @var \CSBill\QuoteBundle\Entity\Status $quoteStatus */
-            $quoteStatus = $statusRepository->findOneBy(array('name' => $status));
+        if ($action === Graph::STATUS_PENDING) {
+            $finite->apply(Graph::TRANSITION_SEND);
+        } else {
+            $finite->apply(Graph::TRANSITION_NEW);
+        }
 
-            $quote->setStatus($quoteStatus);
+        if (!$quote->getId()) {
+            $dispatcher->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($quote));
         }
 
         $this->save($quote);
-
-        if (true === $email) {
-            $this->get('billing.mailer')->sendQuote($quote);
-        }
     }
 }
