@@ -94,7 +94,6 @@ class InvoiceManagerTest extends KernelTestCase
         $quote->setTax(432);
         $quote->setTerms('Terms');
         $quote->setTotal(987);
-        $quote->setDue(new \DateTime('now'));
         $quote->setClient($client);
         $quote->addItem($item);
 
@@ -102,7 +101,6 @@ class InvoiceManagerTest extends KernelTestCase
 
         $this->assertSame($quote->getTotal(), $invoice->getTotal());
         $this->assertSame($quote->getBaseTotal(), $invoice->getBaseTotal());
-        $this->assertSame($quote->getDue(), $invoice->getDue());
         $this->assertSame($quote->getDiscount(), $invoice->getDiscount());
         $this->assertSame($quote->getNotes(), $invoice->getNotes());
         $this->assertSame($quote->getTerms(), $invoice->getTerms());
