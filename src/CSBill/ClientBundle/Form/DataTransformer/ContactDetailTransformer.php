@@ -46,7 +46,7 @@ class ContactDetailTransformer implements DataTransformerInterface
             }
         }
 
-        return null;
+        return;
     }
 
     /**

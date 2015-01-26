@@ -21,7 +21,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 class StatsWidget implements WidgetInterface
 {
-
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
@@ -52,7 +51,7 @@ class StatsWidget implements WidgetInterface
         $totalInvoices = $invoiceRepository->getCountByStatus(
             array(
                 InvoiceGraph::STATUS_PENDING,
-                InvoiceGraph::STATUS_OVERDUE
+                InvoiceGraph::STATUS_OVERDUE,
             )
         );
 

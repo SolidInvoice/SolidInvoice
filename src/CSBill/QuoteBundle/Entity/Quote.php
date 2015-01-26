@@ -164,7 +164,7 @@ class Quote
     }
 
     /**
-     * @param  Uuid $uuid
+     * @param Uuid $uuid
      *
      * @return $this
      */
@@ -186,7 +186,7 @@ class Quote
     }
 
     /**
-     * @param  array $users
+     * @param array $users
      *
      * @return $this
      */
@@ -224,7 +224,7 @@ class Quote
     /**
      * Set client
      *
-     * @param  Client|null $client
+     * @param Client|null $client
      *
      * @return Quote
      */
@@ -248,7 +248,7 @@ class Quote
     /**
      * Set total
      *
-     * @param  float $total
+     * @param float $total
      *
      * @return Quote
      */
@@ -272,7 +272,7 @@ class Quote
     /**
      * Set base total
      *
-     * @param  float $baseTotal
+     * @param float $baseTotal
      *
      * @return Quote
      */
@@ -296,7 +296,7 @@ class Quote
     /**
      * Set discount
      *
-     * @param  float $discount
+     * @param float $discount
      *
      * @return Quote
      */
@@ -320,7 +320,7 @@ class Quote
     /**
      * Set due
      *
-     * @param  \DateTime $due
+     * @param \DateTime $due
      *
      * @return Quote
      */
@@ -344,7 +344,7 @@ class Quote
     /**
      * Add item
      *
-     * @param  Item $item
+     * @param Item $item
      *
      * @return Quote
      */
@@ -359,7 +359,7 @@ class Quote
     /**
      * Removes an item
      *
-     * @param  Item $item
+     * @param Item $item
      *
      * @return Quote
      */

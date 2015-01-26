@@ -15,7 +15,6 @@ use NumberFormatter;
 
 class Currency
 {
-
     /**
      * @var \NumberFormatter
      */
@@ -75,7 +74,7 @@ class Currency
             return $matches[2];
         }
 
-        return null;
+        return;
     }
 
     /**

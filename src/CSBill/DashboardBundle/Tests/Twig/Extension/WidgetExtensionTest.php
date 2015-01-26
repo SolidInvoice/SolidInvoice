@@ -58,7 +58,7 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $widget = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
         $widgets = array(
-            $widget
+            $widget,
         );
         $environment = $this->getMock('Twig_Environment');
 

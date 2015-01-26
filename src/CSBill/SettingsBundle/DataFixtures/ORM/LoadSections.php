@@ -63,7 +63,7 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
                     $this->loadSettingsSections($settings['children'], $sectionEntity, $referenceKey);
                 }
 
-                $this->addReference('settings.' . $referenceKey, $sectionEntity);
+                $this->addReference('settings.'.$referenceKey, $sectionEntity);
 
                 $this->em->persist($sectionEntity);
             }

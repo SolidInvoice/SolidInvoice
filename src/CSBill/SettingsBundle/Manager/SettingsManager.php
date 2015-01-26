@@ -139,7 +139,7 @@ class SettingsManager implements ManagerInterface
         }
 
         if (0 !== strpos($setting, self::LEFT_TOKEN)) {
-            $setting = self::LEFT_TOKEN . $setting;
+            $setting = self::LEFT_TOKEN.$setting;
         }
 
         if (strrpos($setting, self::RIGHT_TOKEN) !== strlen($setting) - 1) {

@@ -143,7 +143,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markCaptured()
     {
-        throw new NotImplementedException;
+        throw new NotImplementedException();
     }
 
     /**
@@ -153,7 +153,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isCaptured()
     {
-        throw new NotImplementedException;
+        throw new NotImplementedException();
     }
 
     /**
@@ -163,7 +163,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isAuthorized()
     {
-        throw new NotImplementedException;
+        throw new NotImplementedException();
     }
 
     /**
@@ -173,7 +173,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markAuthorized()
     {
-        throw new NotImplementedException;
+        throw new NotImplementedException();
     }
 
     /**
@@ -183,7 +183,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isRefunded()
     {
-        throw new NotImplementedException;
+        throw new NotImplementedException();
     }
 
     /**
@@ -193,6 +193,6 @@ class StatusRequest extends BaseGetStatus
      */
     public function markRefunded()
     {
-        throw new NotImplementedException;
+        throw new NotImplementedException();
     }
 }

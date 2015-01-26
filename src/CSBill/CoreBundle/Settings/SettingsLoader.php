@@ -158,6 +158,6 @@ class SettingsLoader implements SettingsLoaderInterface
      */
     protected function getParametersPath()
     {
-        return $this->kernel->getRootDir() . '/config/parameters.yml';
+        return $this->kernel->getRootDir().'/config/parameters.yml';
     }
 }

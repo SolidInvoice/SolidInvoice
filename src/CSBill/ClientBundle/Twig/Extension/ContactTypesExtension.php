@@ -17,7 +17,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 class ContactTypesExtension extends \Twig_Extension
 {
-
     /**
      * @var array
      */
@@ -42,7 +41,7 @@ class ContactTypesExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('contactTypes', array($this, 'getContactTypes'))
+            new \Twig_SimpleFunction('contactTypes', array($this, 'getContactTypes')),
         );
     }
 

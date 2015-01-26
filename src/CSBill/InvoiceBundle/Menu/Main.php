@@ -43,7 +43,7 @@ class Main extends AuthenticatedMenu
                 'route' => '_invoices_index',
                 'extras' => array(
                     'icon' => 'file-text-o',
-                )
+                ),
             )
         );
 
@@ -53,7 +53,7 @@ class Main extends AuthenticatedMenu
                 'route' => '_invoices_create',
                 'extras' => array(
                     'icon' => 'file-text-o',
-                )
+                ),
             )
         );
     }
@@ -78,8 +78,8 @@ class Main extends AuthenticatedMenu
                     ),
                     'route' => '_invoices_view',
                     'routeParameters' => array(
-                        'id' => $options['invoice']->getId()
-                    )
+                        'id' => $options['invoice']->getId(),
+                    ),
                 )
             );
         }

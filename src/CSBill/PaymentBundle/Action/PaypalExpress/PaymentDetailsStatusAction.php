@@ -11,7 +11,7 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
 {
     /**
      * @param \CSBill\PaymentBundle\Action\Request\StatusRequest $request
-     * {@inheritdoc}
+     *                                                                    {@inheritdoc}
      */
     public function execute($request)
     {
@@ -22,8 +22,8 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         foreach (range(0, 9) as $index) {
-            if ($model['L_ERRORCODE' . $index]) {
-                $request->getModel()->getPayment()->setMessage($model['L_LONGMESSAGE' . $index]);
+            if ($model['L_ERRORCODE'.$index]) {
+                $request->getModel()->getPayment()->setMessage($model['L_LONGMESSAGE'.$index]);
 
                 $this->payment->execute($request);
 

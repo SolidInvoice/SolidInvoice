@@ -67,7 +67,7 @@ class DefaultController extends BaseController
                 if ($search) {
                     $aliases = $queryBuilder->getRootAliases();
 
-                    $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
+                    $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
                         ->setParameter('search', "%{$search}%");
                 }
             }
@@ -105,7 +105,7 @@ class DefaultController extends BaseController
         $grid->getColumn('website')->manipulateRenderCell(
             function ($value) {
                 if (!empty($value)) {
-                    return '<a href="' . $value . '" target="_blank">' . $value . '<a>';
+                    return '<a href="'.$value.'" target="_blank">'.$value.'<a>';
                 }
 
                 return $value;
@@ -116,7 +116,7 @@ class DefaultController extends BaseController
             function ($value, \APY\DataGridBundle\Grid\Row $row) {
                 $label = $row->getField('status.label');
 
-                return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
+                return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
             }
         )->setSafe(false);
 
@@ -146,18 +146,18 @@ class DefaultController extends BaseController
 
         foreach ($statusList as $status) {
             $filters->add(
-                $status->getName() . '_clients',
+                $status->getName().'_clients',
                 function (QueryBuilder $queryBuilder) use ($status) {
                     $aliases = $queryBuilder->getRootAliases();
                     $alias = $aliases[0];
 
-                    $queryBuilder->join($alias . '.status', 's')
+                    $queryBuilder->join($alias.'.status', 's')
                         ->andWhere('s.name = :status_name')
                         ->setParameter('status_name', $status->getName());
                 },
                 false,
                 array(
-                    'active_class' => 'label label-' . $status->getLabel(),
+                    'active_class' => 'label label-'.$status->getLabel(),
                     'default_class' => 'label label-default',
                 )
             );
