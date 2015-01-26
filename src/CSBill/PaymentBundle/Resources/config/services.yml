@@ -38,12 +38,6 @@ services:
         class: CSBill\PaymentBundle\Manager\PaymentSettingsManager
         arguments: [@doctrine]
 
-    csbill.payment.event.subscriber:
-        class: %csbill.payment.event.subscriber.class%
-        arguments: [@invoice.manager]
-        tags:
-            - { name: kernel.event_subscriber }
-
     csbill.payment.twig_extension:
         class: %csbill.payment.twig_extension.class%
         arguments: [@csbill_payment.method.manager]

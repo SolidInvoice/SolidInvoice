@@ -82,5 +82,4 @@ class InvoiceMailerListener implements EventSubscriberInterface
             $event->setHtmlTemplate($htmlTemplate);
         }
     }
-
 }

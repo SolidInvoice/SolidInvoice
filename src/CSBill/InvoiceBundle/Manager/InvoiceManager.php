@@ -114,7 +114,7 @@ class InvoiceManager extends ContainerAware
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CREATE, new InvoiceEvent($invoice));
 
         $this->entityManager->persist($invoice);
-        $this->entityManager->flush($invoice);
+        $this->entityManager->flush();
 
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CREATE, new InvoiceEvent($invoice));
 
@@ -136,7 +136,7 @@ class InvoiceManager extends ContainerAware
         $this->applyTransition($invoice, Graph::TRANSITION_ACCEPT);
 
         $this->entityManager->persist($invoice);
-        $this->entityManager->flush($invoice);
+        $this->entityManager->flush();
 
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_ACCEPT, new InvoiceEvent($invoice));
 
