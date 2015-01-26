@@ -167,7 +167,7 @@ class Invoice
     }
 
     /**
-     * @param  Uuid $uuid
+     * @param Uuid $uuid
      *
      * @return $this
      */
@@ -197,7 +197,7 @@ class Invoice
     }
 
     /**
-     * @param  array $users
+     * @param array $users
      *
      * @return $this
      */
@@ -245,7 +245,7 @@ class Invoice
     /**
      * Set client
      *
-     * @param  Client $client
+     * @param Client $client
      *
      * @return Invoice
      */
@@ -269,7 +269,7 @@ class Invoice
     /**
      * Set total
      *
-     * @param  float $total
+     * @param float $total
      *
      * @return Invoice
      */
@@ -293,7 +293,7 @@ class Invoice
     /**
      * Set base total
      *
-     * @param  float $baseTotal
+     * @param float $baseTotal
      *
      * @return Invoice
      */
@@ -317,7 +317,7 @@ class Invoice
     /**
      * Set discount
      *
-     * @param  float $discount
+     * @param float $discount
      *
      * @return Invoice
      */
@@ -341,7 +341,7 @@ class Invoice
     /**
      * Set due
      *
-     * @param  \DateTime $due
+     * @param \DateTime $due
      *
      * @return Invoice
      */
@@ -365,7 +365,7 @@ class Invoice
     /**
      * Set paidDate
      *
-     * @param  \DateTime $paidDate
+     * @param \DateTime $paidDate
      *
      * @return Invoice
      */
@@ -389,7 +389,7 @@ class Invoice
     /**
      * Add item
      *
-     * @param  Item $item
+     * @param Item $item
      *
      * @return Invoice
      */
@@ -404,7 +404,7 @@ class Invoice
     /**
      * Removes an item
      *
-     * @param  Item $item
+     * @param Item $item
      *
      * @return Invoice
      */
@@ -428,7 +428,7 @@ class Invoice
     /**
      * Add payment
      *
-     * @param  Payment $payment
+     * @param Payment $payment
      *
      * @return Invoice
      */

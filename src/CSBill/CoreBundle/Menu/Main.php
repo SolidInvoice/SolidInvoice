@@ -25,7 +25,7 @@ class Main extends AuthenticatedMenu
     {
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
-        $username = $user->getUsername() . ' <b class="caret"></b>';
+        $username = $user->getUsername().' <b class="caret"></b>';
 
         $userMenu = $menu->addChild(
             'user',

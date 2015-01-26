@@ -27,7 +27,7 @@ class DefaultController extends BaseController
     /**
      * List all the invoices
      *
-     * @param  Request $request
+     * @param Request $request
      *
      * @return Response
      */
@@ -139,8 +139,8 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param  Request $request
-     * @param  Client  $client
+     * @param Request $request
+     * @param Client  $client
      *
      * @return Response
      */
@@ -179,8 +179,8 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param  Request $request
-     * @param  Invoice $invoice
+     * @param Request $request
+     * @param Invoice $invoice
      *
      * @return Response
      */
@@ -207,7 +207,7 @@ class DefaultController extends BaseController
             'CSBillInvoiceBundle:Default:edit.html.twig',
             array(
                 'form' => $form->createView(),
-                'invoice' => $invoice
+                'invoice' => $invoice,
             )
         );
     }
@@ -215,7 +215,7 @@ class DefaultController extends BaseController
     /**
      * View a Invoice
      *
-     * @param  Invoice $invoice
+     * @param Invoice $invoice
      *
      * @return Response
      */

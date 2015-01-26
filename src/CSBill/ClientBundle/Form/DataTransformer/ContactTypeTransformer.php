@@ -39,7 +39,7 @@ class ContactTypeTransformer implements DataTransformerInterface
             return $type->getId();
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -51,7 +51,7 @@ class ContactTypeTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if (!$value) {
-            return null;
+            return;
         }
 
         foreach ($this->types as $type) {

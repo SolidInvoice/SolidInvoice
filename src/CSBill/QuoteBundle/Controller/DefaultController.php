@@ -76,7 +76,7 @@ class DefaultController extends BaseController
 
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
-                return $value * 100 . '%';
+                return $value * 100 .'%';
             }
 
             return (int) $value;
@@ -179,7 +179,7 @@ class DefaultController extends BaseController
             'CSBillQuoteBundle:Default:edit.html.twig',
             array(
                 'form' => $form->createView(),
-                'quote' => $quote
+                'quote' => $quote,
             )
         );
     }

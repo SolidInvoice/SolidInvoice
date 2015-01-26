@@ -112,10 +112,10 @@ class Renderer extends ListRenderer implements RendererInterface
         }
 
         if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
-            return $icon . $item->getLabel();
+            return $icon.$item->getLabel();
         }
 
-        return $icon . $this->escape($item->getLabel());
+        return $icon.$this->escape($item->getLabel());
     }
 
     /**
@@ -138,10 +138,10 @@ class Renderer extends ListRenderer implements RendererInterface
     protected function renderDivider(Item $item, array $options = array())
     {
         return $this->format(
-            '<li' . $this->renderHtmlAttributes(
+            '<li'.$this->renderHtmlAttributes(
                 array(
-                    'class' => 'divider' . $item->getExtra('divider'), )
-            ) . '>',
+                    'class' => 'divider'.$item->getExtra('divider'), )
+            ).'>',
             'li',
             $item->getLevel(),
             $options

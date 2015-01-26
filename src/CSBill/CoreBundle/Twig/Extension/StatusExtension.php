@@ -32,7 +32,7 @@ class StatusExtension extends \Twig_Extension
         InvoiceGraph::STATUS_CANCELLED => 'inverse',
     );
 
-     /**
+    /**
      * @var array
      */
     private $quoteLabelMap = array(
@@ -115,12 +115,11 @@ class StatusExtension extends \Twig_Extension
 
         $statusLabel = array(
             'status' => $status,
-            'status_label' => $this->invoiceLabelMap[$status]
+            'status_label' => $this->invoiceLabelMap[$status],
         );
 
         return $this->renderStatusLabel($statusLabel, $tooltip);
     }
-
 
     /**
      * @param string $status
@@ -137,7 +136,7 @@ class StatusExtension extends \Twig_Extension
 
         $statusLabel = array(
             'status' => $status,
-            'status_label' => $this->quoteLabelMap[$status]
+            'status_label' => $this->quoteLabelMap[$status],
         );
 
         return $this->renderStatusLabel($statusLabel, $tooltip);

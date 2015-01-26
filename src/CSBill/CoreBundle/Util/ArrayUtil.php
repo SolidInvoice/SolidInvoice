@@ -18,8 +18,8 @@ class ArrayUtil
     /**
      * Returns a specific column from an array
      *
-     * @param  array|\Traversable $array
-     * @param  string             $column
+     * @param array|\Traversable $array
+     * @param string             $column
      *
      * @throws \Exception
      * @return array

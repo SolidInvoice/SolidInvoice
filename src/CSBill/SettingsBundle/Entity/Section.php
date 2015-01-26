@@ -34,13 +34,13 @@ class Section
     private $name;
 
     /**
-    * @ORM\ManyToOne(targetEntity="Section", inversedBy="children")
-    */
+     * @ORM\ManyToOne(targetEntity="Section", inversedBy="children")
+     */
     private $parent;
 
     /**
-    * @ORM\OneToMany(targetEntity="Section", mappedBy="parent")
-    */
+     * @ORM\OneToMany(targetEntity="Section", mappedBy="parent")
+     */
     private $children;
 
     /**

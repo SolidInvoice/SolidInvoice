@@ -25,7 +25,7 @@ abstract class AbstractStatusLoader implements FixtureInterface
 
         foreach ($this->getStatusList() as $status => $label) {
             /** @var Status $entity */
-            $entity = new $statusClass;
+            $entity = new $statusClass();
             $entity->setName($status)
                 ->setLabel($label);
 

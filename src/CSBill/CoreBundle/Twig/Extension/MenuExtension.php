@@ -53,7 +53,7 @@ class MenuExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('menu', array($this, 'renderMenu'), array('is_safe' => array('html')))
+            new \Twig_SimpleFunction('menu', array($this, 'renderMenu'), array('is_safe' => array('html'))),
         );
     }
 

@@ -30,7 +30,7 @@ class QuoteTotalListener
             $repository = $entityManager->getRepository('CSBillClientBundle:Contact');
 
             $criteria = array(
-                'id' => ArrayUtil::column($entity->getUsers(), 'id')
+                'id' => ArrayUtil::column($entity->getUsers(), 'id'),
             );
 
             $contacts = $repository->findBy($criteria);

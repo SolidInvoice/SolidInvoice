@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class InvoiceManagerTest extends KernelTestCase
 {
-
     /**
      * @var InvoiceManager
      */

@@ -265,7 +265,7 @@ class Contact implements \serializable
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -283,7 +283,7 @@ class Contact implements \serializable
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -307,6 +307,6 @@ class Contact implements \serializable
      */
     public function __toString()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 }

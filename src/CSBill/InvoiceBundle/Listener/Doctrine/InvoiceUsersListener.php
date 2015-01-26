@@ -28,7 +28,7 @@ class InvoiceUsersListener
             $contacts = $em->getRepository('CSBillClientBundle:Contact')
                 ->findBy(
                     array(
-                        'id' => ArrayUtil::column($entity->getUsers()->toArray(), 'id')
+                        'id' => ArrayUtil::column($entity->getUsers()->toArray(), 'id'),
                     )
                 );
 
