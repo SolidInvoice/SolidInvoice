@@ -19,6 +19,7 @@ use CSBill\ClientBundle\Entity\Status;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\DataGridBundle\Grid\Filters;
+use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -307,11 +308,18 @@ class DefaultController extends BaseController
         $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
         $payments = $paymentRepository->getPaymentsForClient($client);
 
+        /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
+        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
+
         return $this->render(
             'CSBillClientBundle:Default:view.html.twig',
             array(
                 'client' => $client,
                 'payments' => $payments,
+                'total_invoices_pending' => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
+                'total_invoices_paid' => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
+                'total_income' => $invoiceRepository->getTotalIncome($client),
+                'total_outstanding' => $invoiceRepository->getTotalOutstanding($client),
             )
         );
     }

@@ -1,0 +1,29 @@
+<?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace CSBill\QuoteBundle\Event;
+
+final class QuoteEvents
+{
+    const QUOTE_PRE_ACCEPT = 'quote.pre_accept';
+    const QUOTE_POST_ACCEPT = 'quote.post_accept';
+
+    const QUOTE_PRE_CANCEL = 'quote.pre_cancel';
+    const QUOTE_POST_CANCEL = 'quote.post_cancel';
+
+    const QUOTE_PRE_CREATE = 'quote.pre_create';
+    const QUOTE_POST_CREATE = 'quote.post_create';
+
+    const QUOTE_PRE_DECLINE = 'quote.pre_decline';
+    const QUOTE_POST_DECLINE = 'quote.post_decline';
+
+    const QUOTE_PRE_SEND = 'quote.pre_send';
+    const QUOTE_POST_SEND = 'quote.post_send';
+}

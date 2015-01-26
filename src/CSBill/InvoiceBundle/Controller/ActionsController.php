@@ -12,34 +12,27 @@ namespace CSBill\InvoiceBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Entity\Status;
+use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
+use CSBill\InvoiceBundle\Model\Graph;
 
 class ActionsController extends BaseController
 {
     /**
+     * @param string  $action
      * @param Invoice $invoice
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws InvalidTransitionException
      */
-    public function cancelAction(Invoice $invoice)
+    public function transitionAction($action, Invoice $invoice)
     {
-        $this->setInvoiceStatus($invoice, Status::STATUS_CANCELLED);
+        if (!$this->get('finite.factory')->get($invoice, Graph::GRAPH)->can($action)) {
+            throw new InvalidTransitionException($action);
+        }
 
-        $this->flash($this->trans('Invoice Cancelled'), 'success');
+        $this->get('invoice.manager')->$action($invoice);
 
-        return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
-    }
-
-    /**
-     * @param Invoice $invoice
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function payAction(Invoice $invoice)
-    {
-        $this->get('invoice.manager')->markPaid($invoice);
-
-        $this->flash($this->trans('Invoice Paid'), 'success');
+        $this->flash($this->trans('invoice.transition.action.'.$action), 'success');
 
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
     }
@@ -51,30 +44,14 @@ class ActionsController extends BaseController
      */
     public function sendAction(Invoice $invoice)
     {
-        $this->get('billing.mailer')->sendInvoice($invoice);
-
-        if (strtolower($invoice->getStatus()->getName()) === Status::STATUS_DRAFT) {
-            $this->setInvoiceStatus($invoice, Status::STATUS_PENDING);
+        if ($invoice->getStatus() !== Graph::STATUS_PENDING) {
+            $this->get('invoice.manager')->accept($invoice);
+        } else {
+            $this->get('billing.mailer')->sendInvoice($invoice);
         }
 
-        $this->flash($this->trans('Invoice Sent'), 'success');
+        $this->flash($this->trans('invoice.transition.action.sent'), 'success');
 
         return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
-    }
-
-    /**
-     * @param Invoice $invoice
-     * @param string  $status
-     */
-    protected function setInvoiceStatus(Invoice $invoice, $status)
-    {
-        $status = $this->getRepository('CSBillInvoiceBundle:Status')->findOneByName($status);
-
-        $invoice->setStatus($status);
-
-        $entityManager = $this->getEm();
-
-        $entityManager->persist($invoice);
-        $entityManager->flush();
     }
 }

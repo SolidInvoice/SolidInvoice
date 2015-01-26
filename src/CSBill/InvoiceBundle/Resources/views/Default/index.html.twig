@@ -24,7 +24,7 @@
     <h5>{{ "invoice.list.status_legend"|trans }}</h5>
 
     {% for status in status_list %}
-        {{ status_label(status) }}
+        {{ invoice_label(status) }}
     {% endfor %}
 {% endblock content %}
 
@@ -37,11 +37,11 @@
 
         <div class="row">
             <div class="text-center text-success">
-                <h3>{{ invoice_manager.totalIncome|currency }}</h3>
+                <h3>{{ total_income|currency }}</h3>
                 {{ "invoice.list.income"|trans }}
             </div>
             <div class="text-center text-danger">
-                <h3>{{ invoice_manager.totalOutstanding|currency }}</h3>
+                <h3>{{ total_outstanding|currency }}</h3>
                 {{ "invoice.list.outstanding"|trans }}
             </div>
         </div>
@@ -49,9 +49,10 @@
         <br class="clearfix" />
 
         <ul class="nav nav-list">
-            {% for status in status_list %}
+            {% for status, count in status_list_count %}
                 <li>
-                    <label class="badge{{ status.label ? " badge-" ~ status.label }}">{{ status.invoices|length }}</label> {{ status.name|title }} {{ "Invoices"|trans }}
+                    <span class="badge">{{ count }}</span>
+                    {{ ('invoice.stats.count.' ~ status)|transchoice(count) }}
                 </li>
             {% endfor %}
         </ul>

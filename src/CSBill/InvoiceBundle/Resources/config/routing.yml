@@ -17,15 +17,10 @@ _invoices_view:
     defaults:  { _controller: CSBillInvoiceBundle:Default:view }
 
 # Actions routes
-
-_cancel_invoice:
-    pattern:   /action/cancel/{id}
-    defaults:  { _controller: CSBillInvoiceBundle:Actions:cancel }
-
-_pay_invoice:
-    pattern:   /action/pay/{id}
-    defaults:  { _controller: CSBillInvoiceBundle:Actions:pay }
-
 _send_invoice:
     pattern:   /action/send/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Actions:send }
+
+_action_invoice:
+    pattern:   /action/{action}/{id}
+    defaults:  { _controller: CSBillInvoiceBundle:Actions:transition }

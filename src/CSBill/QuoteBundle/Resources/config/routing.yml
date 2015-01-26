@@ -30,6 +30,10 @@ _cancel_quote:
     pattern:   /action/cancel/{id}
     defaults:  { _controller: CSBillQuoteBundle:Actions:cancel }
 
+_reopen_quote:
+    pattern:   /action/reopen/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Actions:reopen }
+
 _send_quote:
     pattern:   /action/send/{id}
     defaults:  { _controller: CSBillQuoteBundle:Actions:send }

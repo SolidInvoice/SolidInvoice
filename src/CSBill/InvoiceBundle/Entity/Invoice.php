@@ -49,11 +49,9 @@ class Invoice
     private $uuid;
 
     /**
-     * @var Status $status
+     * @var string $status
      *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="invoices")
-     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
-     * @Grid\Column(field="status.label", visible=false)
+     * @ORM\Column(name="status", type="string", length=25)
      */
     private $status;
 
@@ -169,7 +167,8 @@ class Invoice
     }
 
     /**
-     * @param  Uuid  $uuid
+     * @param  Uuid $uuid
+     *
      * @return $this
      */
     public function setUuid(Uuid $uuid)
@@ -199,6 +198,7 @@ class Invoice
 
     /**
      * @param  array $users
+     *
      * @return $this
      */
     public function setUsers(array $users = array())
@@ -221,10 +221,11 @@ class Invoice
     /**
      * Set status
      *
-     * @param  Status  $status
+     * @param string $status
+     *
      * @return Invoice
      */
-    public function setStatus(Status $status)
+    public function setStatus($status)
     {
         $this->status = $status;
 
@@ -234,7 +235,7 @@ class Invoice
     /**
      * Get status
      *
-     * @return Status
+     * @return string
      */
     public function getStatus()
     {
@@ -244,7 +245,8 @@ class Invoice
     /**
      * Set client
      *
-     * @param  Client  $client
+     * @param  Client $client
+     *
      * @return Invoice
      */
     public function setClient(Client $client = null)
@@ -267,7 +269,8 @@ class Invoice
     /**
      * Set total
      *
-     * @param  float   $total
+     * @param  float $total
+     *
      * @return Invoice
      */
     public function setTotal($total)
@@ -290,7 +293,8 @@ class Invoice
     /**
      * Set base total
      *
-     * @param  float   $baseTotal
+     * @param  float $baseTotal
+     *
      * @return Invoice
      */
     public function setBaseTotal($baseTotal)
@@ -313,7 +317,8 @@ class Invoice
     /**
      * Set discount
      *
-     * @param  float   $discount
+     * @param  float $discount
+     *
      * @return Invoice
      */
     public function setDiscount($discount)
@@ -337,6 +342,7 @@ class Invoice
      * Set due
      *
      * @param  \DateTime $due
+     *
      * @return Invoice
      */
     public function setDue(\DateTime $due)
@@ -360,6 +366,7 @@ class Invoice
      * Set paidDate
      *
      * @param  \DateTime $paidDate
+     *
      * @return Invoice
      */
     public function setPaidDate(\DateTime $paidDate)
@@ -382,7 +389,8 @@ class Invoice
     /**
      * Add item
      *
-     * @param  Item    $item
+     * @param  Item $item
+     *
      * @return Invoice
      */
     public function addItem(Item $item)
@@ -396,7 +404,8 @@ class Invoice
     /**
      * Removes an item
      *
-     * @param  Item    $item
+     * @param  Item $item
+     *
      * @return Invoice
      */
     public function removeItem(Item $item)
@@ -420,6 +429,7 @@ class Invoice
      * Add payment
      *
      * @param  Payment $payment
+     *
      * @return Invoice
      */
     public function addPayment(Payment $payment)
@@ -434,7 +444,7 @@ class Invoice
      * Removes a payment
      *
      * @param Payment $payment
-    *
+     *
      * @return Invoice
      */
     public function removePayment(Payment $payment)

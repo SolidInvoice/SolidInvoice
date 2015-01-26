@@ -1,0 +1,35 @@
+finite_finite:
+    csbill_quote:
+        class: CSBill\QuoteBundle\Entity\Quote
+        graph: csbill_quote
+        property_path: status
+        states:
+            new:
+                type: initial
+            draft:
+                properties: {editable: true, sendable: true}
+            pending:
+                properties: {editable: true, sendable: true}
+            cancelled: ~
+            accepted:
+                type: final
+            declined: ~
+        transitions:
+            new:
+                from: [new, cancelled]
+                to: draft
+            send:
+                from: [new, draft]
+                to: pending
+            cancel:
+                from: [draft, pending]
+                to: cancelled
+            decline:
+                from: [new, draft, pending]
+                to: declined
+            accept:
+                from: [pending]
+                to: accepted
+            reopen:
+                from: [cancelled, declined]
+                to: draft

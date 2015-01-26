@@ -3,6 +3,8 @@ imports:
     - { resource: security.yml }
     - { resource: default_settings.yml }
     - { resource: payments.yml }
+    - { resource: @CSBillInvoiceBundle/Resources/config/finite.yml }
+    - { resource: @CSBillQuoteBundle/Resources/config/finite.yml }
 
 framework:
     esi:             ~
@@ -109,12 +111,10 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:  %mailer_transport%
-    host:       %mailer_host%
-    username:   %mailer_user%
-    password:   %mailer_password%
-    port:       %mailer_port%
-    encryption: %mailer_encryption%
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
     spool:     { type: memory }
 
 apy_data_grid:

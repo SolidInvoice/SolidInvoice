@@ -1,5 +1,6 @@
 parameters:
     csbill_quote.menu.class: CSBill\QuoteBundle\Menu\Main
+    csbill.mailer.send_quotes.listener.class: CSBill\QuoteBundle\Listener\Mailer\QuoteMailerListener
 
 services:
     csbill_quote.menu:
@@ -15,6 +16,12 @@ services:
         class: CSBill\QuoteBundle\Listener\Doctrine\QuoteTotalListener
         tags:
             - { name: doctrine.event_listener, event: postLoad }
+
+    quote.mailer.send_quote.listener:
+        class: %csbill.mailer.send_quotes.listener.class%
+        arguments: [@billing.mailer]
+        tags:
+            - { name: kernel.event_subscriber }
 
     quote.form.type:
         class: CSBill\QuoteBundle\Form\Type\QuoteType

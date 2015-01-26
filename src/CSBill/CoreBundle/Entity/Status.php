@@ -22,8 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="entity", type="string")
  * @ORM\DiscriminatorMap({
  *      "client"  = "CSBill\ClientBundle\Entity\Status",
- *      "invoice" = "CSBill\InvoiceBundle\Entity\Status",
- *      "quote"   = "CSBill\QuoteBundle\Entity\Status",
  *      "payment" = "CSBill\PaymentBundle\Entity\Status",
  * })
  * @Gedmo\SoftDeleteable()

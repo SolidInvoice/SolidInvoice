@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -9,12 +8,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Mailer\Events;
+namespace CSBill\InvoiceBundle\Event;
 
-use CSBill\CoreBundle\Mailer\MailerEvents;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use Symfony\Component\EventDispatcher\Event;
 
-class InvoiceEvent extends MessageEvent
+class InvoiceEvent extends Event
 {
     /**
      * @var Invoice
@@ -22,11 +21,11 @@ class InvoiceEvent extends MessageEvent
     protected $invoice;
 
     /**
-     * @return string
+     * @param Invoice $invoice
      */
-    public function getEvent()
+    public function __construct(Invoice $invoice = null)
     {
-        return MailerEvents::MAILER_SEND_INVOICE;
+        $this->invoice = $invoice;
     }
 
     /**

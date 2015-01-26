@@ -35,10 +35,10 @@
 
             <div class="col-md-6 col-lg-6" align="right">
                 <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning">
-                    {{ icon('edit') }} {{ "edit"|trans }}
+                    {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
                 </a>
                 <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client">
-                    {{ icon('trash-o') }} {{ "delete"|trans }}
+                    {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
                 </a>
             </div>
         </div>
@@ -47,7 +47,7 @@
             <div class="col-lg-{{ totalAddresses > 0 ? 6 : 12 }} col-md-{{ totalAddresses > 0 ? 6 : 12 }} client_contact_list">
                 <legend>
                     <h3>
-                        {{ icon('users') }} {{ "contacts"|trans }}
+                        {{ icon('users') }} {{ "client.heading.contacts"|trans }}
                     </h3>
                 </legend>
 
@@ -71,7 +71,7 @@
 
                     <legend>
                         <h3>
-                            {{ icon('building-o') }} {{ "client.addresses"|trans }}
+                            {{ icon('building-o') }} {{ "client.heading.addresses"|trans }}
                         </h3>
                     </legend>
 
@@ -103,7 +103,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <legend>
-                        <h3>{{ 'payments'|trans }}</h3>
+                        <h3>{{ 'client.heading.payments'|trans }}</h3>
                     </legend>
 
                     {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, "show_invoice" : true} only %}
@@ -119,51 +119,51 @@
     <div class="widget">
         <div class="text-center client-actions">
             <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
-                {{ icon('file', ['text', 'o']) }} {{ "create_quote"|trans }}
+                {{ icon('file', ['text', 'o']) }} {{ "client.view.actions.create_quote"|trans }}
             </a>
             <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
-                {{ icon('file', ['text', 'o']) }} {{ "create_invoice"|trans }}
+                {{ icon('file', ['text', 'o']) }} {{ "client.view.actions.create_invoice"|trans }}
             </a>
             <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success btn-lg add-contact-button" data-id="{{ client.id }}">
-                {{ icon('user') }} {{ "add_contact"|trans }}
+                {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
             </a>
         </div>
         <div class="row">
-            <div class="col-lg-6 col-md-6 text-success text-center">
-                <h3>{{ invoice_manager.totalIncome(client)|currency }}</h3>
-                {{ "income"|trans }}
+            <div class="text-center text-success">
+                <h3>{{ total_income|currency }}</h3>
+                {{ "client.stats.income"|trans }}
             </div>
-            <div class="col-lg-6 col-md-6 text-danger text-center">
-                <h3>{{ invoice_manager.totalOutstanding(client)|currency }}</h3>
-                {{ "outstanding"|trans }}
+            <div class="text-center text-danger">
+                <h3>{{ total_outstanding|currency }}</h3>
+                {{ "client.stats.outstanding"|trans }}
             </div>
         </div>
         <br class="clearfix" />
         <ul class="nav nav-list">
             <li>
-                <span rel="tooltip" title="{{ "total_quotes"|trans }}" class="badge">
+                <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge">
                     {{ client.quotes|length }}
                 </span>
-                {{ "number_quotes"|transchoice(client.quotes|length) }}
+                {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
             </li>
             <li>
-                <span rel="tooltip" title="{{ "total_invoices"|trans }}" class="badge">
+                <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge">
                     {{ client.invoices|length }}
                 </span>
-                {{ "number_invoices"|transchoice(client.invoices|length) }}
+                {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
             </li>
             <li class="divider"></li>
             <li>
-                <span class="badge" rel="tooltip" title="{{ "total_outstanding"|trans }}">
-                    {{ invoice_manager.count('pending', client) }}
+                <span class="badge" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
+                    {{ total_invoices_pending }}
                 </span>
-                {{ "outstanding_invoices"|trans }}
+                {{ "client.stats.outstanding_invoices"|trans }}
             </li>
             <li>
-                <span class="badge" rel="tooltip" title="{{ "total_paid"|trans }}">
-                    {{ invoice_manager.count('paid', client) }}
+                <span class="badge" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
+                    {{ total_invoices_paid }}
                 </span>
-                {{ "paid_invoices"|trans }}
+                {{ "client.stats.paid_invoices"|trans }}
             </li>
         </ul>
     </div>

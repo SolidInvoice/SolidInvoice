@@ -29,6 +29,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new FOS\UserBundle\FOSUserBundle(),
             new Payum\Bundle\PayumBundle\PayumBundle(),
             new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
+            new Finite\Bundle\FiniteBundle\FiniteFiniteBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
