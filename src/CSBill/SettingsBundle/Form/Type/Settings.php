@@ -13,7 +13,6 @@ namespace CSBill\SettingsBundle\Form\Type;
 use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zend\Config\Config;
 
 /**
  * Class Settings
@@ -27,9 +26,9 @@ class Settings extends AbstractType
     protected $settings;
 
     /**
-     * @param Config $settings
+     * @param array $settings
      */
-    public function __construct(Config $settings)
+    public function __construct(array $settings)
     {
         $this->settings = $settings;
     }
@@ -40,7 +39,7 @@ class Settings extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->settings as $key => $setting) {
-            if ($setting instanceof Config) {
+            if (is_array($setting)) {
                 $builder->add($key, new self($setting));
             } else {
                 /** @var \CSBill\SettingsBundle\Model\Setting $setting */

@@ -16,7 +16,6 @@ use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
 use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Zend\Config\Config;
 
 /**
  * Class SettingsManager
@@ -30,7 +29,7 @@ class SettingsManager implements ManagerInterface
     protected $accessor;
 
     /**
-     * @var Config
+     * @var array
      */
     protected $settings;
 
@@ -63,7 +62,7 @@ class SettingsManager implements ManagerInterface
     public function __construct()
     {
         $this->initialized = false;
-        $this->settings = new Config(array());
+        $this->settings = array();
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -72,21 +71,23 @@ class SettingsManager implements ManagerInterface
      */
     protected function initialize()
     {
-        $this->initialized = true;
+        if (false === $this->initialized) {
+            $this->collection = new ConfigCollection();
 
-        $this->collection = new ConfigCollection();
+            foreach ($this->loaders as $loader) {
+                /** @var SettingsLoaderInterface $loader */
+                $this->collection->startSection(get_class($loader));
 
-        foreach ($this->loaders as $loader) {
-            /** @var SettingsLoaderInterface $loader */
-            $this->collection->startSection(get_class($loader));
+                $settings = $loader->getSettings();
 
-            $settings = new Config($loader->getSettings());
+                $this->collection->add($settings);
 
-            $this->collection->add($settings);
+                $this->settings = array_merge_recursive($this->settings, $settings);
 
-            $this->settings->merge($settings);
+                $this->collection->endSection();
+            }
 
-            $this->collection->endSection();
+            $this->initialized = true;
         }
     }
 
@@ -106,9 +107,7 @@ class SettingsManager implements ManagerInterface
      */
     public function get($setting = null)
     {
-        if (!$this->initialized) {
-            $this->initialize();
-        }
+        $this->initialize();
 
         if (empty($setting)) {
             return $this->getSettings();
@@ -146,7 +145,7 @@ class SettingsManager implements ManagerInterface
             $setting .= self::RIGHT_TOKEN;
         }
 
-        $entity = $this->accessor->getValue($this->settings->toArray(), $setting);
+        $entity = $this->accessor->getValue($this->settings, $setting);
 
         if ($entity instanceof Setting) {
             return $entity->getValue();
@@ -156,13 +155,11 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * @return Config
+     * @return array
      */
     public function getSettings()
     {
-        if (!$this->initialized) {
-            $this->initialize();
-        }
+        $this->initialize();
 
         return $this->settings;
     }
@@ -175,9 +172,7 @@ class SettingsManager implements ManagerInterface
      */
     public function set(array $settings = array())
     {
-        if (!$this->initialized) {
-            $this->initialize();
-        }
+        $this->initialize();
 
         if (!empty($settings)) {
             foreach ($this->collection->getSections() as $collectionSection) {
@@ -203,17 +198,18 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * @param  Config $config
-     * @param  array  $settings
+     * @param array $config
+     * @param array  $settings
+     *
      * @return array
      */
-    protected function setData(Config $config, array $settings)
+    protected function setData(array $config, array $settings)
     {
         $settingsArray = array();
 
         foreach ($config as $section => $setting) {
             foreach ($settings as $key => $value) {
-                if (is_array($value) && $setting instanceof Config) {
+                if (is_array($value) && is_array($setting)) {
                     $settingsArray[$key] = $this->setData($setting, $value);
                 } else {
                     if ($section === $key) {
