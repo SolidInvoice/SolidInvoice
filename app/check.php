@@ -1,12 +1,13 @@
 <?php
 
-require_once dirname(__FILE__).'/SymfonyRequirements.php';
+require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
+require_once dirname(__FILE__).'/AppRequirements.php';
 
 $lineSize = 70;
-$symfonyRequirements = new SymfonyRequirements();
-$iniPath = $symfonyRequirements->getPhpIniConfigPath();
+$appRequirements = new AppRequirements();
+$iniPath = $appRequirements->getPhpIniConfigPath();
 
-echo_title('Symfony2 Requirements Checker');
+echo_title('CSBill Requirements Checker');
 
 echo '> PHP is using the following php.ini file:'.PHP_EOL;
 if ($iniPath) {
@@ -17,10 +18,10 @@ if ($iniPath) {
 
 echo PHP_EOL.PHP_EOL;
 
-echo '> Checking Symfony requirements:'.PHP_EOL.'  ';
+echo '> Checking CSBill requirements:'.PHP_EOL.'  ';
 
 $messages = array();
-foreach ($symfonyRequirements->getRequirements() as $req) {
+foreach ($appRequirements->getRequirements() as $req) {
     /** @var $req Requirement */
     if ($helpText = get_error_message($req, $lineSize)) {
         echo_style('red', 'E');
@@ -32,7 +33,7 @@ foreach ($symfonyRequirements->getRequirements() as $req) {
 
 $checkPassed = empty($messages['error']);
 
-foreach ($symfonyRequirements->getRecommendations() as $req) {
+foreach ($appRequirements->getRecommendations() as $req) {
     if ($helpText = get_error_message($req, $lineSize)) {
         echo_style('yellow', 'W');
         $messages['warning'][] = $helpText;
@@ -41,10 +42,14 @@ foreach ($symfonyRequirements->getRecommendations() as $req) {
     }
 }
 
+echo PHP_EOL.PHP_EOL;
+
 if ($checkPassed) {
-    echo_block('success', 'OK', 'Your system is ready to run Symfony2 projects', true);
+    echo_style('success', '[OK] Your system is ready to run CSBill', true);
 } else {
-    echo_block('error', 'ERROR', 'Your system is not ready to run Symfony2 projects', true);
+    echo_style('error', '[ERROR] Your system is not ready to run CSBill', true);
+
+    echo PHP_EOL;
 
     echo_title('Fix the following mandatory requirements', 'red');
 
@@ -53,6 +58,8 @@ if ($checkPassed) {
     }
 }
 
+echo PHP_EOL;
+
 if (!empty($messages['warning'])) {
     echo_title('Optional recommendations to improve your setup', 'yellow');
 
@@ -60,17 +67,6 @@ if (!empty($messages['warning'])) {
         echo ' * '.$helpText.PHP_EOL;
     }
 }
-
-echo PHP_EOL;
-echo_style('title', 'Note');
-echo '  The command console could use a different php.ini file'.PHP_EOL;
-echo_style('title', '~~~~');
-echo '  than the one used with your web server. To be on the'.PHP_EOL;
-echo '      safe side, please check the requirements from your web'.PHP_EOL;
-echo '      server using the ';
-echo_style('yellow', 'web/config.php');
-echo ' script.'.PHP_EOL;
-echo PHP_EOL;
 
 exit($checkPassed ? 0 : 1);
 
@@ -111,19 +107,6 @@ function echo_style($style, $message)
     $supports = has_color_support();
 
     echo($supports ? $styles[$style] : '').$message.($supports ? $styles['reset'] : '');
-}
-
-function echo_block($style, $title, $message)
-{
-    $message = ' '.trim($message).' ';
-    $width = strlen($message);
-
-    echo PHP_EOL.PHP_EOL;
-
-    echo_style($style, str_repeat(' ', $width).PHP_EOL);
-    echo_style($style, str_pad(' ['.$title.']',  $width, ' ', STR_PAD_RIGHT).PHP_EOL);
-    echo_style($style, str_pad($message,  $width, ' ', STR_PAD_RIGHT).PHP_EOL);
-    echo_style($style, str_repeat(' ', $width).PHP_EOL);
 }
 
 function has_color_support()
