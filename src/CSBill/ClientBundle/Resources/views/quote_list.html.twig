@@ -17,7 +17,7 @@
     {% for quote in client.quotes %}
         <div class="row">
             <div class="col-lg-2 col-md-2">
-                {{ status_label(quote.status) }}
+                {{ quote_label(quote.status) }}
             </div>
             <div class="col-lg-1 col-md-1">
                 {{ quote.id }}
