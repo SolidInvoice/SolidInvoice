@@ -34,6 +34,7 @@ class AddressType extends AbstractType
                     'class' => 'select2',
                 ),
                 'placeholder' => 'client.address.country.select',
+                'required' => false,
             )
         );
     }

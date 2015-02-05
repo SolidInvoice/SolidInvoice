@@ -8,6 +8,7 @@ client:
         delete: Delete Address
         country:
             select: Select Country
+        view_map: View Map
     contact:
         info: Contact Info
         add: Add Contact

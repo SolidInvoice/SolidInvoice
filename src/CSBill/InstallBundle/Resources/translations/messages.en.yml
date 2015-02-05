@@ -32,6 +32,7 @@ installation:
             busy: Installing...
             done: Done
         step:
+            createdb: Creating database
             migrations: Creating database schema
             fixtures: Loading fixtures
     config:
