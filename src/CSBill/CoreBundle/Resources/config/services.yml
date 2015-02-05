@@ -15,9 +15,8 @@ parameters:
     csbill_core.settings.loader.class: CSBill\CoreBundle\Settings\SettingsLoader
 
 services:
-
     csbill.core.config_writer:
-        class: CSBill\InstallBundle\ConfigWriter
+        class: CSBill\CoreBundle\ConfigWriter
         arguments: [%kernel.root_dir%, @kernel, @filesystem]
 
     csbill_core.menu.factory:
@@ -93,6 +92,6 @@ services:
 
     csbill_core.settings.loader:
         class: %csbill_core.settings.loader.class%
-        arguments: [@kernel]
+        arguments: [@kernel, @csbill.core.config_writer]
         tags:
             - { name: settings.loader }

@@ -11,7 +11,6 @@
 namespace CSBill\SettingsBundle\Manager;
 
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
-use Zend\Config\Config;
 
 interface ManagerInterface
 {
@@ -37,7 +36,7 @@ interface ManagerInterface
     public function set(array $settings = array());
 
     /**
-     * @return Config
+     * @return array
      */
     public function getSettings();
 }

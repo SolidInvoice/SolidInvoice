@@ -47,7 +47,7 @@ class GlobalExtension extends Twig_Extension
             'currency' => $this->container->get('currency'),
             'app_version' => CSBillCoreBundle::VERSION,
             'app_name' => $appName,
-            'settings' => $this->container->get('settings')->getSettings()->toArray(),
+            'settings' => $this->container->get('settings')->getSettings(),
         );
     }
 

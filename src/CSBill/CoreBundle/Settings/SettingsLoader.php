@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -11,9 +10,9 @@
 
 namespace CSBill\CoreBundle\Settings;
 
+use CSBill\CoreBundle\ConfigWriter;
 use CSBill\SettingsBundle\Entity\Setting;
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
 
@@ -25,42 +24,72 @@ class SettingsLoader implements SettingsLoaderInterface
     protected $kernel;
 
     /**
-     * @param \AppKernel $kernel
+     * @var array
      */
-    public function __construct(\AppKernel $kernel)
+    protected $mailerTransports = array(
+        '' => 'Choose Mail Transport',
+        'mail' => 'PHP Mail',
+        'sendmail' => 'Sendmail',
+        'smtp' => 'SMTP',
+        'gmail' => 'Gmail',
+    );
+
+    /**
+     * @var ConfigWriter
+     */
+    private $configWriter;
+
+    /**
+     * @param \AppKernel   $kernel
+     * @param ConfigWriter $configWriter
+     */
+    public function __construct(\AppKernel $kernel, ConfigWriter $configWriter)
     {
         $this->kernel = $kernel;
+        $this->configWriter = $configWriter;
     }
 
+    /**
+     * @param array $settings
+     *
+     * @return array
+     */
     protected function getEmailSettings(array $settings = array())
     {
-        $transportOptions = array('sendmail', 'mail', 'gmail', 'smtp');
-
         $transport = new Setting();
         $transport->setKey('transport')
             ->setValue($settings['mailer_transport'])
-            ->setType('choice')
-            ->setOptions(array_combine($transportOptions, $transportOptions));
+            ->setType('select2')
+            ->setOptions($this->mailerTransports);
 
         $host = new Setting();
         $host->setKey('host')
-            ->setValue($settings['mailer_host'])
-            ->setDescription('Only necessary if using smtp or gmail');
+            ->setValue($settings['mailer_host']);
+
+        $port = new Setting();
+        $port->setKey('port')
+            ->setValue($settings['mailer_port']);
+
+        $encryption = new Setting();
+        $encryption->setKey('encryption')
+            ->setValue($settings['mailer_encryption'])
+            ->setType('select2')
+            ->setOptions(array('' => 'None', 'ssl' => 'SSL', 'tls' => 'TLS'));
 
         $user = new Setting();
         $user->setKey('user')
-            ->setValue($settings['mailer_user'])
-            ->setDescription('Only necessary if using smtp or gmail');
+            ->setValue($settings['mailer_user']);
 
         $password = new Setting();
         $password->setKey('password')
-                ->setValue($settings['mailer_password'])
-                ->setType('password')
-                ->setDescription('Only necessary if using smtp or gmail');
+            ->setValue($settings['mailer_password'])
+            ->setType('password');
 
         return array(
             'transport' => $transport,
             'host' => $host,
+            'port' => $port,
+            'encryption' => $encryption,
             'user' => $user,
             'password' => $password,
         );
@@ -75,21 +104,21 @@ class SettingsLoader implements SettingsLoaderInterface
 
         $currency = new Setting();
         $currency->setKey('currency')
-                ->setValue($settings['currency'])
-                ->setType('select2')
-                ->setOptions(Intl::getCurrencyBundle()->getCurrencyNames($settings['locale']));
+            ->setValue($settings['currency'])
+            ->setType('select2')
+            ->setOptions(Intl::getCurrencyBundle()->getCurrencyNames($settings['locale']));
 
         $emailSettings = $this->getEmailSettings($settings);
 
         return array(
-                'system' => array(
-                    'general' => array(
-                        'currency' => $currency,
-                    ),
+            'system' => array(
+                'general' => array(
+                    'currency' => $currency,
                 ),
-                'email' => array(
-                    'sending_options' => $emailSettings,
-                ),
+            ),
+            'email' => array(
+                'sending_options' => $emailSettings,
+            ),
         );
     }
 
@@ -98,26 +127,56 @@ class SettingsLoader implements SettingsLoaderInterface
      */
     public function saveSettings(array $settings = array())
     {
-        $defaults = $this->getYamlParameters();
+        $parameters = array();
 
         // Currency Options
+        /** @var Setting $currency */
         $currency = $settings['system']['general']['currency'];
-        $defaults['currency'] = $currency->getValue();
 
         // Email Options
+        /** @var Setting $transport */
         $transport = $settings['email']['sending_options']['transport'];
-        $defaults['mailer_transport'] = $transport->getValue();
 
+        /** @var Setting $host */
         $host = $settings['email']['sending_options']['host'];
-        $defaults['mailer_host'] = $host->getValue();
 
+        /** @var Setting $port */
+        $port = $settings['email']['sending_options']['port'];
+
+        /** @var Setting $encryption */
+        $encryption = $settings['email']['sending_options']['encryption'];
+
+        /** @var Setting $user */
         $user = $settings['email']['sending_options']['user'];
-        $defaults['mailer_user'] = $user->getValue();
 
+        /** @var Setting $password */
         $password = $settings['email']['sending_options']['password'];
-        $defaults['mailer_password'] = $password->getValue();
 
-        $this->dumpParameters($defaults);
+        if ($password->getValue() !== '') {
+            $parameters['mailer_password'] = $password->getValue();
+        }
+
+        if ('gmail' === $transport->getValue()) {
+            $parameters['mailer_host'] = null;
+            $parameters['mailer_port'] = null;
+            $parameters['mailer_encryption'] = null;
+        } elseif ('sendmail' === $transport->getValue() || 'mail' === $transport->getValue()) {
+            $parameters['mailer_host'] = null;
+            $parameters['mailer_port'] = null;
+            $parameters['mailer_encryption'] = null;
+            $parameters['mailer_user'] = null;
+            $parameters['mailer_password'] = null;
+        } else {
+            $parameters['mailer_user'] = $user->getValue();
+            $parameters['mailer_encryption'] = $encryption->getValue();
+            $parameters['mailer_port'] = $port->getValue();
+            $parameters['mailer_host'] = $host->getValue();
+            $parameters['mailer_transport'] = $transport->getValue();
+        }
+
+        $parameters['currency'] = $currency->getValue();
+
+        $this->configWriter->dump($parameters);
     }
 
     /**
@@ -130,27 +189,6 @@ class SettingsLoader implements SettingsLoaderInterface
         $parameters = Yaml::Parse(file_get_contents($configFile));
 
         return $parameters['parameters'];
-    }
-
-    /**
-     * @param array $parameters
-     */
-    protected function dumpParameters(array $parameters = array())
-    {
-        $configFile = $this->getParametersPath();
-
-        $parameters = Yaml::dump(array('parameters' => $parameters));
-
-        $file = new Filesystem();
-
-        $containerCache = sprintf(
-            '%s/%s.php',
-            $this->kernel->getCacheDir(),
-            $this->kernel->getContainerCacheClass()
-        );
-
-        $file->dumpFile($configFile, $parameters);
-        $file->remove($containerCache);
     }
 
     /**

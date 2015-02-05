@@ -32,7 +32,7 @@ class SettingsController extends BaseController
         /** @var \CSBill\SettingsBundle\Manager\SettingsManager $manager */
         $manager = $this->get('settings');
 
-        $settings = $manager->getSettings()->toArray();
+        $settings = $manager->getSettings();
 
         array_walk_recursive($settings, function (Setting &$setting) {
             $setting = $setting->getValue();

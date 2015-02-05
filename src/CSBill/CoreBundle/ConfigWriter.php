@@ -8,7 +8,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle;
+namespace CSBill\CoreBundle;
 
 use CSBill\CoreBundle\Kernel\ContainerClassKernelInterface;
 use Symfony\Component\Filesystem\Filesystem;

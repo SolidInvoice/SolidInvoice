@@ -11,8 +11,6 @@
 
 namespace CSBill\DataGridBundle\Grid;
 
-use Zend\Stdlib\CallbackHandler;
-
 class Filter
 {
     /**
@@ -26,7 +24,7 @@ class Filter
     protected $name;
 
     /**
-     * @var callable|\Zend\Stdlib\CallbackHandler
+     * @var callable
      */
     protected $callback;
 
@@ -43,11 +41,8 @@ class Filter
      */
     public function __construct($name, callable $callback = null, $active = false, array $options = array())
     {
-        $callback = $callback ?: function () {
-        };
-
         $this->name = $name;
-        $this->callback = new CallbackHandler($callback);
+        $this->callback = $callback ?: function () {};
         $this->active = $active;
 
         $this->options = $options;

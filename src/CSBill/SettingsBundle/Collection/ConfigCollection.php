@@ -11,8 +11,6 @@
 
 namespace CSBill\SettingsBundle\Collection;
 
-use Zend\Config\Config;
-
 /**
  * Class ConfigCollection
  * @package CSBill\SettingsBundle\Collection
@@ -48,9 +46,9 @@ class ConfigCollection
 
     /**
      * Adds config to the current section
-     * @param Config $settings
+     * @param array $settings
      */
-    public function add(Config $settings)
+    public function add(array $settings)
     {
         $this->elements[$this->current] = $settings;
     }
@@ -58,7 +56,7 @@ class ConfigCollection
     /**
      * Get the settings for the current section
      *
-     * @return Config
+     * @return array
      */
     public function getSettings()
     {

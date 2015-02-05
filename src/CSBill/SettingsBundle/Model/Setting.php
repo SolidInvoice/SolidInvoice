@@ -167,11 +167,14 @@ abstract class Setting
     /**
      * Set type
      *
-     * @param Array $options
+     * @param array $options
+     * @return Setting
      */
     public function setOptions(array $options)
     {
         $this->options = $options;
+
+        return $this;
     }
 
     /**
