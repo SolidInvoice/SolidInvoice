@@ -209,7 +209,9 @@ class DefaultController extends BaseController
         }
 
         if ($action === Graph::STATUS_PENDING) {
+            $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
             $finite->apply(Graph::TRANSITION_SEND);
+            $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
         } else {
             $finite->apply(Graph::TRANSITION_NEW);
         }

@@ -26,7 +26,6 @@
 {% endblock sidebar %}
 
 {% block content %}
-
     <div class="widget">
         {{ form_start(form) }}
             <div class="tab-content">
@@ -42,4 +41,48 @@
             </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+
+{% block script %}
+    var transport = $('#settings_email_sending_options_transport'),
+        smtpSettings = $('#settings_email_sending_options_host, #settings_email_sending_options_port, #settings_email_sending_options_encryption, #settings_email_sending_options_user, #settings_email_sending_options_password').parent('.form-group'),
+        gmailConfig = $('#settings_email_sending_options_host, #settings_email_sending_options_port, #settings_email_sending_options_encryption').parent('.form-group');
+
+    transport.on('change', function () {
+        var val = $(this).val();
+        if ('smtp' === val) {
+            showSmtpSettings();
+        } else if ('gmail' === val) {
+            showGmailSettings();
+        } else if (smtpSettings.is(':visible')) {
+            hideSettings();
+        }
+    });
+
+    function showSmtpSettings()
+    {
+        gmailConfig.show()
+        smtpSettings.show();
+    }
+
+    function showGmailSettings()
+    {
+        smtpSettings.show();
+        gmailConfig.hide();
+    }
+
+    function hideSettings()
+    {
+        smtpSettings.hide();
+        gmailConfig.hide();
+    }
+
+    {% set value = form.email.sending_options.transport.vars.value %}
+
+    {% if value == 'smtp' %}
+        showSmtpSettings();
+    {% elseif value == 'gmail' %}
+        showGmailSettings();
+    {% endif %}
 {% endblock %}

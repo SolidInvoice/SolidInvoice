@@ -27,6 +27,17 @@
     {% endfor %}
 {%- endblock form_rows %}
 
+{% block form_row -%}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+        {% if help is defined and help is not empty %}
+            <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
+        {% endif %}
+    </div>
+{%- endblock form_row %}
+
 {% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
@@ -110,7 +121,11 @@
             }
 
             $('#{{ id }}').hide();
-            $('#{{ id }}-uploader').uploadify({
+
+            // The init method needs to be wrapped in a setTimeout to prevent a race condition
+            // in Chrome (http://stackoverflow.com/a/25135325/833811)
+            setTimeout(function () {
+                $('#{{ id }}-uploader').uploadify({
                     "swf" : "{{ asset('swf/uploadify.swf') }}",
                     "uploader" : "{{ path("_image_upload") }}",
                     "formData" : {"sessionId" : "{{ sessionId }}"},
@@ -118,6 +133,7 @@
                     "multi"        : false,
                     "onUploadSuccess" : uploadSuccess
                 });
+            }, 0);
 
             {% if value is not empty %}
                 uploadSuccess(null, {"file" : "{{ value }}"});

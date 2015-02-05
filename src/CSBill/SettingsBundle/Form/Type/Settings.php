@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class Settings extends AbstractType
 {
     /**
-     * @var Config
+     * @var array
      */
     protected $settings;
 
