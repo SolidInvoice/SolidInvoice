@@ -13,6 +13,7 @@ namespace CSBill\ClientBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Intl\Intl;
 
 /**
  * @ORM\Table(name="addresses")
@@ -234,15 +235,23 @@ class Address
      */
     public function __toString()
     {
-        $info = [
-            $this->street1,
-            $this->street2,
-            $this->city,
-            $this->state,
-            $this->zip,
-            $this->country,
-        ];
+        static $countries;
 
-        return trim(implode(', ', $info), ', \t\n\r\0\x0B');
+        if (empty($countries)) {
+            $countries = Intl::getRegionBundle()->getCountryNames();
+        }
+
+        $info = array_filter(
+            [
+                $this->street1,
+                $this->street2,
+                $this->city,
+                $this->state,
+                $this->zip,
+                isset($countries[$this->country]) ? $countries[$this->country] : null,
+            ]
+        );
+
+        return trim(implode("\n", $info), ', \t\n\r\0\x0B');
     }
 }

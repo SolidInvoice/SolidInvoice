@@ -43,9 +43,10 @@ class Client extends AbstractType
             'collection',
             array(
                 'type' => new AddressType(),
-                'allow_add'    => true,
+                'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'required' => false,
             )
         );
     }

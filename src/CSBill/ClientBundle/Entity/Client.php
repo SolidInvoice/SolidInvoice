@@ -368,10 +368,12 @@ class Client
      *
      * @return Client
      */
-    public function addAddress(Address $address)
+    public function addAddress(Address $address = null)
     {
-        $this->addresses[] = $address;
-        $address->setClient($this);
+        if (null !== $address) {
+            $this->addresses[] = $address;
+            $address->setClient($this);
+        }
 
         return $this;
     }
