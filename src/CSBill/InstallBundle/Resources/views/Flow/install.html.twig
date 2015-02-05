@@ -20,6 +20,9 @@
                 {{ 'installation.process.title.busy'|trans }}</h3>
             <div id="error-message" class="text-danger"></div>
             <ul class="list-group">
+                <li class="list-group-item" id="step-createdb">
+                    {{ 'installation.process.step.createdb'|trans }}
+                </li>
                 <li class="list-group-item" id="step-migrations">
                     {{ 'installation.process.step.migrations'|trans }}
                 </li>
@@ -38,12 +41,13 @@
 
 {% block script %}
     $(function () {
-
-        ajaxStep('migrations', function () {
-            ajaxStep('fixtures', function () {
-                $('.progress').remove();
-                $('#install-title').text('{{ 'installation.process.title.done'|trans }}');
-                $('#continue-btn').removeClass('disabled');
+        ajaxStep('createdb', function () {
+            ajaxStep('migrations', function () {
+                ajaxStep('fixtures', function () {
+                    $('.progress').remove();
+                    $('#install-title').text('{{ 'installation.process.title.done'|trans }}');
+                    $('#continue-btn').removeClass('disabled');
+                });
             });
         });
     });

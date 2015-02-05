@@ -10,6 +10,7 @@
 
 namespace CSBill\InstallBundle\Process\Step;
 
+use Doctrine\DBAL\DriverManager;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +28,28 @@ class InstallStep extends ControllerStep
             $result = array();
 
             switch ($request->query->get('action')) {
+                case 'createdb' :
+                    $connection = $this->get('doctrine')->getConnection();
+                    $params = $connection->getParams();
+                    $dbName = $params['dbname'];
+
+                    unset($params['dbname']);
+
+                    $tmpConnection = DriverManager::getConnection($params);
+
+                    try {
+                        $tmpConnection->getSchemaManager()->createDatabase($dbName);
+                        $result['success'] = true;
+                    } catch (\Exception $e) {
+                        if (false !== strpos($e->getMessage(), 'database exists')) {
+                            $result['success'] = true;
+                        } else {
+                            $result['success'] = false;
+                            $result['message'] = $e->getMessage();
+                        }
+                    }
+
+                    break;
                 case 'migrations' :
                     $migration = $this->get('csbill.installer.database.migration');
 
