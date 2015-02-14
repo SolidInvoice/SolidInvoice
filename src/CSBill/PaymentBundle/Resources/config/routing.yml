@@ -19,8 +19,8 @@ _payments_delete:
     defaults: { _controller: CSBillPaymentBundle:Ajax:delete }
     methods: [POST]
 
-_payments_load_settings:
-    path:  /add/load/method
+_payment_method_settings:
+    path:  /method/settings/{method}
     defaults: { _controller: CSBillPaymentBundle:Ajax:loadSettings }
     options:
         expose: true

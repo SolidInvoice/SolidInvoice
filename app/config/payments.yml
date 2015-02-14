@@ -4,22 +4,20 @@ parameters:
 payum:
     security:
         token_storage:
-            CSBill\PaymentBundle\Entity\SecurityToken:
-                doctrine:
-                    driver: orm
+            CSBill\PaymentBundle\Entity\SecurityToken: {doctrine: orm}
     storages:
-        CSBill\PaymentBundle\Entity\Payment:
-            doctrine:
-                driver: orm
-        CSBill\PaymentBundle\Entity\PaymentDetails:
-              doctrine:
-                  driver: orm
+        CSBill\PaymentBundle\Entity\Payment:  {doctrine: orm}
+        CSBill\PaymentBundle\Entity\PaymentDetails:  {doctrine: orm}
     contexts:
-        offline:
+        cash:
             offline:
                 actions:
                     - csbill.payment.payum.offline.action.status_action
-        paypal_express_checkout_nvp:
+        bank_transfer:
+            offline:
+                actions:
+                    - csbill.payment.payum.offline.action.status_action
+        paypal_express_checkout:
             paypal_express_checkout_nvp:
                 username:  %empty_paramter%
                 password:  %empty_paramter%
@@ -31,9 +29,12 @@ payum:
                     - csbill.payment.payum.paypal_express.action.capture_order_action
                     - csbill.payment.payum.paypal_express.action.payment_status_action
 
+
 cs_bill_payment:
     methods:
-        offline:
+        cash:
+            context: offline
+        bank_transfer:
             context: offline
         paypal_express_checkout:
             context: paypal_express_checkout_nvp

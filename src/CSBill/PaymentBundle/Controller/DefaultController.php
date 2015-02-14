@@ -2,8 +2,6 @@
 
 namespace CSBill\PaymentBundle\Controller;
 
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\CoreBundle\Controller\BaseController;
@@ -71,56 +69,19 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $source = new Entity('CSBillPaymentBundle:PaymentMethod');
+        $paymentMethods = $this->get('payum')->getPaymentMethods();
 
-        // Get a Grid instance
-        $grid = $this->get('grid');
-        $templating = $this->get('templating');
-
-        $search = $request->get('search');
-
-        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search) {
-
-            if ($search) {
-                $aliases = $queryBuilder->getRootAliases();
-
-                $queryBuilder
-                    ->andWhere($aliases[0].'.name LIKE :search')
-                    ->setParameter('search', "%{$search}%");
-            }
-        });
-
-        // Attach the source to the grid
-        $grid->setSource($source);
-
-        $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_payments_edit');
-        $editAction->addAttribute('title', $this->trans('edit_payment_method'));
-        $editAction->addAttribute('rel', 'tooltip');
-
-        $deleteIcon = $templating->render('{{ icon("times") }}');
-        $deleteAction = new RowAction($deleteIcon, '_payments_delete');
-        $deleteAction->setAttributes(
+        return $this->render(
+            'CSBillPaymentBundle:Default:index.html.twig',
             array(
-                'title' => $this->trans('delete_payment_method'),
-                'rel' => 'tooltip',
-                'data-confirm' => $this->trans('confirm_delete'),
-                'class' => 'delete-item',
+                'paymentMethods' => array_keys($paymentMethods),
             )
         );
 
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $deleteAction));
-        $grid->addColumn($actionsRow, 100);
-
-        $grid->hideColumns(array('updated', 'settings', 'deletedAt'));
-
-        return $grid->getGridResponse('CSBillPaymentBundle:Default:index.html.twig', array('filters' => array()));
     }
 
     /**

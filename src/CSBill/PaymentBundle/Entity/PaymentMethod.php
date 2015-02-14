@@ -40,8 +40,7 @@ class PaymentMethod
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=125)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=125)
+     * @Assert\NotBlank
      */
     private $name;
 
@@ -49,15 +48,13 @@ class PaymentMethod
      * @var string
      *
      * @ORM\Column(name="payment_method", type="string", length=125)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=125)
      */
     private $paymentMethod;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="settings", type="array")
+     * @ORM\Column(name="settings", type="array", nullable=true)
      */
     private $settings;
 
@@ -69,14 +66,14 @@ class PaymentMethod
     private $defaultStatus;
 
     /**
-     * @ORM\Column(name="public", type="boolean")
+     * @ORM\Column(name="public", type="boolean", nullable=true)
      *
      * @var bool
      */
     private $public;
 
     /**
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(name="enabled", type="boolean",  nullable=true)
      *
      * @var bool
      */
@@ -133,8 +130,14 @@ class PaymentMethod
     }
 
     /**
-     * Set paymentMethod
-     *
+     * @return string
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
      * @param string $paymentMethod
      *
      * @return PaymentMethod
@@ -144,16 +147,6 @@ class PaymentMethod
         $this->paymentMethod = $paymentMethod;
 
         return $this;
-    }
-
-    /**
-     * Get paymentMethod
-     *
-     * @return string
-     */
-    public function getPaymentMethod()
-    {
-        return $this->paymentMethod;
     }
 
     /**
@@ -289,7 +282,6 @@ class PaymentMethod
     {
         return $this->payments;
     }
-
     /**
      * Return the payment method name as a string
      *
@@ -299,4 +291,5 @@ class PaymentMethod
     {
         return $this->name;
     }
+
 }

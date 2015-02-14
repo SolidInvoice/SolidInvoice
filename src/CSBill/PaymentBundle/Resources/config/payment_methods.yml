@@ -1,0 +1,8 @@
+parameters:
+    csbill_payment.method.paypal_express_checkout.class: CSBill\PaymentBundle\Form\Methods\PaypalExpressCheckout
+
+services:
+    csbill_payment.method.paypal_express_checkout:
+        class: %csbill_payment.method.paypal_express_checkout.class%
+        tags:
+            - { name: form.type, alias: paypal_express_checkout }

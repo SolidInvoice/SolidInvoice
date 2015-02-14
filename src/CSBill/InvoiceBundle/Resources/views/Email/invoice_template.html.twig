@@ -117,7 +117,7 @@
 
         {% if invoice.discount is not empty %}
             <tr>
-                <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                <td colspan="{{ invoie.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
                     <strong>{{ "invoice.discount"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
@@ -128,7 +128,7 @@
 
         {% if invoice.tax is not empty %}
             <tr>
-                <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                <td colspan="{{ invoice.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
                     <strong>{{ "invoice.tax"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
@@ -138,7 +138,7 @@
         {% endif %}
 
         <tr>
-            <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border:1px solid #cccccc;">
+            <td colspan="{{ invoice.tax is not empty ? 4 : 3 }}" align="right" style="border:1px solid #cccccc;">
                 <strong>{{ "invoice.total"|trans }}</strong>
             </td>
             <td style="border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">

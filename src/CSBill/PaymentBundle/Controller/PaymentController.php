@@ -42,7 +42,7 @@ class PaymentController extends BaseController
         /** @var \CSBill\PaymentBundle\Repository\PaymentMethod $paymentRepository */
         $paymentRepository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
 
-        if (1 === $paymentRepository->getTotalMethodsConfigured() || 0 === count($paymentManager)) {
+        if (0 === $paymentRepository->getTotalMethodsConfigured() || 0 === count($paymentManager)) {
             throw new \Exception('No payment methods configured');
         }
 
@@ -89,13 +89,13 @@ class PaymentController extends BaseController
                 ->findOneBy(array('name' => Status::STATUS_NEW));
 
             $payment = new Payment();
-            $invoice->addPayment($payment);
             $payment->setInvoice($invoice);
             $payment->setStatus($status);
             $payment->setMethod($data['payment_method']);
             $payment->setAmount($invoice->getTotal());
             $payment->setCurrency($this->container->getParameter('currency'));
             $payment->setClient($invoice->getClient());
+            $invoice->addPayment($payment);
 
             $this->save($payment);
 

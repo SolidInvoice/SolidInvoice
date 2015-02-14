@@ -23,6 +23,7 @@ class CSBillPaymentExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('payment_methods.yml');
         $loader->load('services.yml');
 
         $manager = $container->getDefinition('csbill_payment.method.manager');

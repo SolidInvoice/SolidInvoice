@@ -7,25 +7,96 @@
  # file that was distributed with this source code.
 #}
 
-{% set parent = "CSBillCoreBundle:Layout:single_column.html.twig" %}
-
-{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
-
-{% block sidebar %}
-    {{ menu('payment_index') }}
-{% endblock sidebar %}
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
 {% block title %}{{ 'payment_methods'|trans }}{% endblock title %}
 
-{% block heading %}
-    <fieldset class="page-heading">
-        <legend>
-            <div class="pull-right header-button">
-                <a class="btn btn-info" href="{{ path("_payments_add") }}">
-                    {{ icon('credit-card') }} {{ "payment_create"|trans }}
-                </a>
+{% block content %}
+    <div class="row widget">
+        <div role="tabpanel">
+            <div class="col-md-3">
+                <ul class="nav nav-tabs nav-stacked" role="tablist" id="payment-method-tabs">
+                    {% for method in paymentMethods %}
+                        <li role="presentation">
+                            <a href="#{{ method }}" aria-controls="{{ method }}" data-method="{{ method }}" role="tab" data-toggle="tab">
+                                <span class="icon">
+                                    {% if payment_enabled(method) %}
+                                        {{ icon('check-circle') }}
+                                    {% else %}
+                                        {{ icon('times-circle') }}
+                                    {% endif %}
+                                </span>
+                                {{ method|trans|humanize|title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
-            <h3>{{ block('title') }}</h3>
-        </legend>
-    </fieldset>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    {% for method in paymentMethods %}
+                        <div role="tabpanel" class="tab-pane" id="{{ method }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    var spinIcon = '{{ icon('circle-o-notch', ['fa-spin']) }}',
+        enabledIcon = '{{ icon('check-circle') }}',
+        disabledIcon = '{{ icon('times-circle') }}';
+
+    $('#payment-method-tabs a').on('click', function (e) {
+        e.preventDefault();
+
+        var $this = $(this),
+            method = $this.data('method'),
+            url = Routing.generate('_payment_method_settings', {'method' : method}),
+            link = $('#' + $this.attr('aria-controls')),
+            pane = $(this),
+            iconDiv = $this.find('.icon')
+            originalIcon = iconDiv.html(),
+            applyFormEvent = function () {
+                link.find('form').on('submit', function (event) {
+                    event.preventDefault();
+                    link.html('{{ icon('spinner', ['fa-spin fa-5x']) }}');
+
+                    $.ajax({
+                        "url" : url,
+                        "data" : $(this).serialize(),
+                        "method" : "post"
+                    }).success(function (response) {
+                        $('.tab-pane').empty();
+                        link.html(response.content);
+                        applyFormEvent();
+
+                        if ($('#payment_methods_enabled').is(':checked')) {
+                            iconDiv.html(enabledIcon);
+                        } else {
+                            iconDiv.html(disabledIcon);
+                            iconDiv.html(disabledIcon);
+                        }
+                    });
+                });
+            };
+
+        iconDiv.html(spinIcon);
+
+        link.html('{{ icon('spinner', ['fa-spin fa-5x']) }}');
+
+        $.ajax({"url" : url})
+        .success(function (response) {
+            $('.tab-pane').empty();
+            link.html(response.content);
+            iconDiv.html(originalIcon);
+            pane.tab('show');
+
+            applyFormEvent();
+        });
+    });
+
+    $('#payment-method-tabs a').first().trigger('click');
 {% endblock %}
