@@ -1,6 +1,23 @@
 payment:
     create:
         force: Force payment status (Optional)
+    flash:
+        status:
+            success: Payment has been completed
+            cancelled: Payment has been cancelled
+            pending: Payment is pending
+            expired: Payment has expired
+            failed: Payment failed: %message%
+            new: New payment created
+            suspended: Payment has been suspended
+            unknown: An unknown error occurred
+            authorized: Payment has been authorized
+            refunded: Payment has been refunded
+    form:
+        help:
+            internal: "Selecting this option, will make this payment option only available for internal use."
+        label:
+            internal: Internal use only
 
 add_payment_method: Add Payment Method
 payment_method_added: Payment Method Successfully Added!
@@ -26,7 +43,6 @@ completed: Completed
 
 payment_for_invoice: "Payment for invoice #%id%"
 
-payment_public_help_text: "Selecting this option, will make this payment option available for a client to use.\nIf this option is not selected, this payment method will only be available for use by authenticated users."
 force_payment_status_help: "When setting a forced status, every new payment will have this status by default, regardless of the outcome of the payment (whether it was successful or failed etc)."
 
 choose_force_status: Choose a Status

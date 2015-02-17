@@ -15,18 +15,12 @@ use CSBill\CoreBundle\Mailer\Mailer;
 use CSBill\CoreBundle\Mailer\MailerEvents;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
-use CSBill\PaymentBundle\Manager\PaymentMethodManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 class InvoiceMailerListener implements EventSubscriberInterface
 {
     const TEMPLATE = 'CSBillInvoiceBundle:Email:payment.html.twig';
-
-    /**
-     * @var PaymentMethodManager
-     */
-    private $paymentManager;
 
     /**
      * @var EngineInterface
@@ -39,13 +33,11 @@ class InvoiceMailerListener implements EventSubscriberInterface
     private $mailer;
 
     /**
-     * @param PaymentMethodManager $paymentManager
-     * @param EngineInterface      $templating
-     * @param Mailer               $mailer
+     * @param EngineInterface $templating
+     * @param Mailer          $mailer
      */
-    public function __construct(PaymentMethodManager $paymentManager, EngineInterface $templating, Mailer $mailer)
+    public function __construct(EngineInterface $templating, Mailer $mailer)
     {
-        $this->paymentManager = $paymentManager;
         $this->templating = $templating;
         $this->mailer = $mailer;
     }
@@ -74,12 +66,10 @@ class InvoiceMailerListener implements EventSubscriberInterface
      */
     public function onInvoiceMail(InvoiceMailEvent $event)
     {
-        if (count($this->paymentManager) > 0) {
-            $htmlTemplate = $event->getHtmlTemplate();
+        $htmlTemplate = $event->getHtmlTemplate();
 
-            $htmlTemplate .= $this->templating->render(self::TEMPLATE, array('invoice' => $event->getInvoice()));
+        $htmlTemplate .= $this->templating->render(self::TEMPLATE, array('invoice' => $event->getInvoice()));
 
-            $event->setHtmlTemplate($htmlTemplate);
-        }
+        $event->setHtmlTemplate($htmlTemplate);
     }
 }

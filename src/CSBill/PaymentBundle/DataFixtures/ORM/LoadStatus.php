@@ -24,10 +24,12 @@ class LoadStatus extends AbstractStatusLoader
             'failed' => 'danger',
             'suspended' => 'warning',
             'expired' => 'danger',
-            'success' => 'success',
+            'captured' => 'success',
             'pending' => 'warning',
             'canceled' => 'inverse',
             'new' => 'info',
+            'authorized' => 'info',
+            'refunded' => 'warning',
         );
     }
 

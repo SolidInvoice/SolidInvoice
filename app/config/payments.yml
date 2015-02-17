@@ -1,45 +1,21 @@
-parameters:
-    empty_paramter: NOT USED
-
 payum:
     security:
         token_storage:
             CSBill\PaymentBundle\Entity\SecurityToken: {doctrine: orm}
     storages:
         CSBill\PaymentBundle\Entity\Payment:  {doctrine: orm}
-        CSBill\PaymentBundle\Entity\PaymentDetails:  {doctrine: orm}
     contexts:
         cash:
-            offline:
-                actions:
-                    - csbill.payment.payum.offline.action.status_action
+            offline: ~
+
         bank_transfer:
-            offline:
-                actions:
-                    - csbill.payment.payum.offline.action.status_action
+            offline: ~
+
         paypal_express_checkout:
             paypal_express_checkout_nvp:
-                username:  %empty_paramter%
-                password:  %empty_paramter%
-                signature: %empty_paramter%
+                username:  NOT USED
+                password:  NOT USED
+                signature: NOT USED
                 sandbox: true
                 apis:
                     - csbill.payment.payum.paypal_express_checkout_api
-                actions:
-                    - csbill.payment.payum.paypal_express.action.capture_order_action
-                    - csbill.payment.payum.paypal_express.action.payment_status_action
-
-
-cs_bill_payment:
-    methods:
-        cash:
-            context: offline
-        bank_transfer:
-            context: offline
-        paypal_express_checkout:
-            context: paypal_express_checkout_nvp
-            settings:
-                - { name: username, type: text }
-                - { name: password, type: password }
-                - { name: signature, type: text }
-                - { name: sandbox, type: checkbox }

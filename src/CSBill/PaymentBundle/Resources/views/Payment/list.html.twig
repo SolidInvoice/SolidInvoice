@@ -27,10 +27,10 @@
                     {{ payment.method }}
                 </td>
                 <td>
-                    {{ payment.amount|currency }}
+                    {{ payment.totalAmount|currency }}
                 </td>
                 <td>
-                    {{ payment.currency }}
+                    {{ payment.currencyCode }}
                 </td>
                 <td>
                     {{ payment.completed|date }}

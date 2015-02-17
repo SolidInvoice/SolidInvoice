@@ -31,7 +31,7 @@ class PaymentRepository extends EntityRepository
         $qb->select('SUM(p.amount)')
             ->join('p.status', 's')
             ->where('s.name = :status')
-            ->setParameter('status', Status::STATUS_SUCCESS);
+            ->setParameter('status', Status::STATUS_CAPTURED);
 
         $query = $qb->getQuery();
 
@@ -100,8 +100,8 @@ class PaymentRepository extends EntityRepository
 
         $queryBuilder->select(
             'p.id',
-            'p.amount',
-            'p.currency',
+            'p.totalAmount',
+            'p.currencyCode',
             'p.created',
             'p.completed',
             'i.id as invoice',

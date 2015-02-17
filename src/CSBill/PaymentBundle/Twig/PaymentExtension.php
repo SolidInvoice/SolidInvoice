@@ -17,7 +17,7 @@ use Twig_SimpleFunction;
 class PaymentExtension extends Twig_Extension
 {
     /**
-     * @var \CSBill\PaymentBundle\Repository\PaymentMethod
+     * @var \CSBill\PaymentBundle\Repository\PaymentMethodRepository
      */
     private $repository;
 
@@ -46,7 +46,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function paymentEnabled($method)
     {
-        $paymentMethod = $this->repository->findOneBy(array('name' => $method));
+        $paymentMethod = $this->repository->findOneBy(array('paymentMethod' => $method));
 
         if (null === $paymentMethod) {
             return false;

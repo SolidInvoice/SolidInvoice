@@ -26,28 +26,13 @@ class PaymentMethodForm extends AbstractType
         $builder->add('enabled', null, array('required' => false));
 
         $builder->add(
-            'public',
+            'internal',
             null,
             array(
-                'label' => 'Available for client use',
-                'help' => 'payment_public_help_text',
+                'label' => 'payment.form.label.internal',
+                'help' => 'payment.form.help.internal',
                 'help_type' => 'block',
                 'required' => false,
-            )
-        );
-
-        $builder->add(
-            'defaultStatus',
-            null,
-            array(
-                'label' => 'payment.create.force',
-                'help' => 'force_payment_status_help',
-                'help_type' => 'block',
-                'placeholder' => 'choose_force_status',
-                'empty_data' => null,
-                'attr' => array(
-                    'class' => 'select2',
-                ),
             )
         );
 

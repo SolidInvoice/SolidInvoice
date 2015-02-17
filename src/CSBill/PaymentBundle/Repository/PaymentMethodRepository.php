@@ -12,7 +12,7 @@ namespace CSBill\PaymentBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class PaymentMethod extends EntityRepository
+class PaymentMethodRepository extends EntityRepository
 {
     /**
      * @param string $paymentMethod
@@ -41,7 +41,8 @@ class PaymentMethod extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('pm');
 
-        $queryBuilder->select('COUNT(pm.id)');
+        $queryBuilder->select('COUNT(pm.id)')
+            ->where('pm.enabled = 1');
 
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }

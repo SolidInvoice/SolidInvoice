@@ -22,37 +22,25 @@ use Doctrine\ORM\Mapping as ORM;
 class Status extends BaseStatus
 {
     const STATUS_UNKNOWN = 'unknown';
-
     const STATUS_FAILED = 'failed';
-
     const STATUS_SUSPENDED = 'suspended';
-
     const STATUS_EXPIRED = 'expired';
-
-    const STATUS_SUCCESS = 'success';
-
     const STATUS_PENDING = 'pending';
-
     const STATUS_CANCELED = 'canceled';
-
     const STATUS_NEW = 'new';
+    const STATUS_CAPTURED = 'captured';
+    const STATUS_AUTHORIZED = 'authorized';
+    const STATUS_REFUNDED = 'refunded';
 
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="status", fetch="EXTRA_LAZY")
      */
     private $payments;
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="PaymentMethod", mappedBy="defaultStatus", fetch="EXTRA_LAZY")
-     */
-    private $paymentMethods;
 
     public function __construct()
     {
         $this->payments = new ArrayCollection();
-        $this->paymentMethods = new ArrayCollection();
     }
 
     /**
@@ -61,13 +49,5 @@ class Status extends BaseStatus
     public function getPayments()
     {
         return $this->payments;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getPaymentMethods()
-    {
-        return $this->paymentMethods;
     }
 }

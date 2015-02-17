@@ -8,16 +8,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action\Offline;
+namespace CSBill\PaymentBundle\Action;
 
-use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
+use CSBill\PaymentBundle\Entity\Status;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
 
-class StatusAction extends PaymentAwareAction
+class CaptureAction extends PaymentAwareAction
 {
     /**
      * {@inheritDoc}
@@ -28,24 +29,10 @@ class StatusAction extends PaymentAwareAction
 
         /** @var Payment $payment */
         $payment = $request->getModel();
-        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?: array());
+        $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $details[Constants::FIELD_STATUS] = Constants::STATUS_CAPTURED;
-
+        $details[Constants::FIELD_STATUS] = Status::STATUS_NEW;
         $payment->setDetails($details);
-
-        try {
-            $request->setModel($details);
-            $this->payment->execute($request);
-
-            $payment->setDetails($details);
-            $request->setModel($payment);
-        } catch (\Exception $e) {
-            $payment->setDetails($details);
-            $request->setModel($payment);
-
-            throw $e;
-        }
     }
 
     /**
@@ -53,9 +40,14 @@ class StatusAction extends PaymentAwareAction
      */
     public function supports($request)
     {
-        return
-            $request instanceof StatusRequest &&
-            $request->getModel() instanceof Payment
-        ;
+        $model = $request->getModel();
+
+        if (!($request instanceof Capture && $model instanceof Payment)) {
+            return false;
+        }
+
+        $details = ArrayObject::ensureArrayObject($model->getDetails());
+
+        return null === $details[Constants::FIELD_STATUS];
     }
 }

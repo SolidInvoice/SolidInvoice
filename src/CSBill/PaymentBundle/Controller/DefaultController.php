@@ -35,8 +35,8 @@ class DefaultController extends BaseController
 
                 $queryBuilder
                     ->orWhere($aliases[0].'.message LIKE :search')
-                    ->orWhere($aliases[0].'.amount LIKE :search')
-                    ->orWhere($aliases[0].'.currency LIKE :search')
+                    ->orWhere($aliases[0].'.totalAmount LIKE :search')
+                    ->orWhere($aliases[0].'.currencyCode LIKE :search')
                     ->setParameter('search', "%{$search}%");
             }
         });
@@ -50,7 +50,7 @@ class DefaultController extends BaseController
             return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
         })->setSafe(false);
 
-        $grid->getColumn('amount')->setCurrencyCode($this->container->getParameter('currency'));
+        $grid->getColumn('totalAmount')->setCurrencyCode($this->container->getParameter('currency'));
         $grid->getColumn('client.name')->manipulateRenderCell(function ($value, Row $row) use ($router) {
             $clientId = $row->getField('client.id');
 
@@ -96,8 +96,7 @@ class DefaultController extends BaseController
 
         $originalSettings = $paymentMethod->getSettings();
 
-        $manager = $this->get('csbill_payment.method.manager');
-        $form = $this->createForm(new PaymentMethodForm(), $paymentMethod, array('manager' => $manager));
+        $form = $this->createForm(new PaymentMethodForm(), $paymentMethod);
 
         $form->handleRequest($request);
 
