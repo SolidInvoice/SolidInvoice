@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="payment_methods")
- * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentMethod")
+ * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentMethodRepository")
  * @Gedmo\SoftDeleteable()
  * @Gedmo\Loggable()
  */
@@ -40,8 +40,7 @@ class PaymentMethod
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=125)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=125)
+     * @Assert\NotBlank
      */
     private $name;
 
@@ -49,34 +48,25 @@ class PaymentMethod
      * @var string
      *
      * @ORM\Column(name="payment_method", type="string", length=125)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=125)
      */
     private $paymentMethod;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="settings", type="array")
+     * @ORM\Column(name="settings", type="array", nullable=true)
      */
     private $settings;
 
     /**
-     * @var Status $status
-     *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="paymentMethods")
-     */
-    private $defaultStatus;
-
-    /**
-     * @ORM\Column(name="public", type="boolean")
+     * @ORM\Column(name="internal", type="boolean", nullable=true)
      *
      * @var bool
      */
-    private $public;
+    private $internal;
 
     /**
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(name="enabled", type="boolean",  nullable=true)
      *
      * @var bool
      */
@@ -85,11 +75,7 @@ class PaymentMethod
     /**
      * @var ArrayCollection $payments
      *
-     * @ORM\OneToMany(
-     *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
-     *     mappedBy="method",
-     *     cascade={"persist"}
-     * )
+     * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
     private $payments;
 
@@ -133,8 +119,14 @@ class PaymentMethod
     }
 
     /**
-     * Set paymentMethod
-     *
+     * @return string
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
      * @param string $paymentMethod
      *
      * @return PaymentMethod
@@ -144,16 +136,6 @@ class PaymentMethod
         $this->paymentMethod = $paymentMethod;
 
         return $this;
-    }
-
-    /**
-     * Get paymentMethod
-     *
-     * @return string
-     */
-    public function getPaymentMethod()
-    {
-        return $this->paymentMethod;
     }
 
     /**
@@ -181,44 +163,21 @@ class PaymentMethod
     }
 
     /**
-     * Set status
-     *
-     * @param  Status $status
-     * @return $this
-     */
-    public function setDefaultStatus(Status $status)
-    {
-        $this->defaultStatus = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return Status
-     */
-    public function getDefaultStatus()
-    {
-        return $this->defaultStatus;
-    }
-
-    /**
      * @return bool
      */
-    public function isPublic()
+    public function isInternal()
     {
-        return (bool) $this->public;
+        return (bool) $this->internal;
     }
 
     /**
-     * @param bool $public
+     * @param bool $internal
      *
      * @return $this
      */
-    public function setPublic($public)
+    public function setInternal($internal)
     {
-        $this->public = (bool) $public;
+        $this->internal = (bool) $internal;
 
         return $this;
     }
@@ -256,10 +215,10 @@ class PaymentMethod
     /**
      * Add payment
      *
-     * @param  PaymentDetails $payment
+     * @param  Payment $payment
      * @return $this
      */
-    public function addPayment(PaymentDetails $payment)
+    public function addPayment(Payment $payment)
     {
         $this->payments[] = $payment;
 
@@ -269,11 +228,11 @@ class PaymentMethod
     /**
      * Removes a payment
      *
-     * @param PaymentDetails $payment
+     * @param Payment $payment
      *
      * @return $this
      */
-    public function removePayment(PaymentDetails $payment)
+    public function removePayment(Payment $payment)
     {
         $this->payments->removeElement($payment);
 
@@ -289,7 +248,6 @@ class PaymentMethod
     {
         return $this->payments;
     }
-
     /**
      * Return the payment method name as a string
      *
@@ -299,4 +257,5 @@ class PaymentMethod
     {
         return $this->name;
     }
+
 }

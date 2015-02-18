@@ -1,9 +1,16 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\PaymentBundle\Action\Request;
 
-use CSBill\PaymentBundle\Entity\Status;
-use CSBill\PaymentBundle\Exception\NotImplementedException;
+use CSBill\PaymentBundle\Model\Status;
 use Payum\Core\Request\BaseGetStatus;
 
 class StatusRequest extends BaseGetStatus
@@ -22,22 +29,6 @@ class StatusRequest extends BaseGetStatus
     public function isNew()
     {
         return $this->status === Status::STATUS_NEW;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function markSuccess()
-    {
-        $this->status = STATUS::STATUS_SUCCESS;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isSuccess()
-    {
-        return $this->status === STATUS::STATUS_SUCCESS;
     }
 
     /**
@@ -77,7 +68,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markCanceled()
     {
-        $this->status = STATUS::STATUS_CANCELED;
+        $this->status = STATUS::STATUS_CANCELLED;
     }
 
     /**
@@ -85,7 +76,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isCanceled()
     {
-        return $this->status === STATUS::STATUS_CANCELED;
+        return $this->status === STATUS::STATUS_CANCELLED;
     }
 
     /**
@@ -137,62 +128,50 @@ class StatusRequest extends BaseGetStatus
     }
 
     /**
-     * @TODO: Add implementation
-     *
-     * @throws NotImplementedException
+     * {@inheritdoc}
      */
     public function markCaptured()
     {
-        throw new NotImplementedException();
+        $this->status = STATUS::STATUS_CAPTURED;
     }
 
     /**
-     * @TODO: Add implementation
-     *
-     * @throws NotImplementedException
+     * {@inheritdoc}
      */
     public function isCaptured()
     {
-        throw new NotImplementedException();
+        return $this->status === STATUS::STATUS_CAPTURED;
     }
 
     /**
-     * @TODO: Add implementation
-     *
-     * @throws NotImplementedException
+     * {@inheritdoc}
      */
     public function isAuthorized()
     {
-        throw new NotImplementedException();
+        return $this->status === STATUS::STATUS_AUTHORIZED;
     }
 
     /**
-     * @TODO: Add implementation
-     *
-     * @throws NotImplementedException
+     * {@inheritdoc}
      */
     public function markAuthorized()
     {
-        throw new NotImplementedException();
+        $this->status = STATUS::STATUS_AUTHORIZED;
     }
 
     /**
-     * @TODO: Add implementation
-     *
-     * @throws NotImplementedException
+     * {@inheritdoc}
      */
     public function isRefunded()
     {
-        throw new NotImplementedException();
+        return $this->status === STATUS::STATUS_REFUNDED;
     }
 
     /**
-     * @TODO: Add implementation
-     *
-     * @throws NotImplementedException
+     * {@inheritdoc}
      */
     public function markRefunded()
     {
-        throw new NotImplementedException();
+        $this->status = STATUS::STATUS_REFUNDED;
     }
 }

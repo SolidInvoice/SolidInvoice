@@ -12,6 +12,7 @@ namespace CSBill\PaymentBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Exception\UnexpectedTypeException;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,24 +64,23 @@ class Payment
     private $method;
 
     /**
-     * @var Status $status
+     * @var string $status
      *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="payments")
-     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
-     * @Grid\Column(field="status.label", visible=false)
+     * @ORM\Column(name="status", type="string")
      */
     private $status;
 
     /**
      * @ORM\Column(name="amount", type="float")
-     * @Grid\Column(type="number", style="currency")
+     * @Grid\Column(type="number", style="currency", title="amount")
      */
-    private $amount;
+    private $totalAmount;
 
     /**
      * @ORM\Column(name="currency", type="string", length=24)
+     * @Grid\Column(title="currency")
      */
-    private $currency;
+    private $currencyCode;
 
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
@@ -88,9 +88,10 @@ class Payment
     private $message;
 
     /**
-     * @var PaymentDetails
+     * @var array
      *
-     * @ORM\OneToOne(targetEntity="PaymentDetails", inversedBy="payment", cascade={"persist"}, fetch="EAGER")
+     * @ORM\Column(name="details", type="array", nullable=true)
+     * @Grid\Column(visible=false)
      */
     private $details;
 
@@ -104,7 +105,7 @@ class Payment
 
     public function __construct()
     {
-        $this->details = new PaymentDetails();
+        $this->details = array();
     }
 
     /**
@@ -160,11 +161,11 @@ class Payment
     /**
      * Set status
      *
-     * @param Status $status
+     * @param string $status
      *
      * @return Payment
      */
-    public function setStatus(Status $status)
+    public function setStatus($status)
     {
         $this->status = $status;
 
@@ -174,7 +175,7 @@ class Payment
     /**
      * Get status
      *
-     * @return Status
+     * @return string
      */
     public function getStatus()
     {
@@ -184,12 +185,21 @@ class Payment
     /**
      * Set details
      *
-     * @param PaymentDetails $details
+     * @param array|\Traversable $details
      *
      * @return Payment
+     * @throws UnexpectedTypeException
      */
-    public function setDetails(PaymentDetails $details)
+    public function setDetails($details)
     {
+        if ($details instanceof \Traversable) {
+            $details = iterator_to_array($details);
+        }
+
+        if (!is_array($details)) {
+            throw new UnexpectedTypeException($details, 'array');
+        }
+
         $this->details = $details;
 
         return $this;
@@ -198,7 +208,7 @@ class Payment
     /**
      * Get details
      *
-     * @return PaymentDetails
+     * @return array
      */
     public function getDetails()
     {
@@ -208,13 +218,13 @@ class Payment
     /**
      * Set currency
      *
-     * @param float $currency
+     * @param float $currencyCode
      *
      * @return Payment
      */
-    public function setCurrency($currency)
+    public function setCurrencyCode($currencyCode)
     {
-        $this->currency = $currency;
+        $this->currencyCode = $currencyCode;
 
         return $this;
     }
@@ -224,21 +234,21 @@ class Payment
      *
      * @return float
      */
-    public function getCurrency()
+    public function getCurrencyCode()
     {
-        return $this->currency;
+        return $this->currencyCode;
     }
 
     /**
      * Set amount
      *
-     * @param float $amount
+     * @param float $totalAmount
      *
      * @return Payment
      */
-    public function setAmount($amount)
+    public function setTotalAmount($totalAmount)
     {
-        $this->amount = $amount;
+        $this->totalAmount = $totalAmount;
 
         return $this;
     }
@@ -248,9 +258,9 @@ class Payment
      *
      * @return float
      */
-    public function getAmount()
+    public function getTotalAmount()
     {
-        return $this->amount;
+        return $this->totalAmount;
     }
 
     /**

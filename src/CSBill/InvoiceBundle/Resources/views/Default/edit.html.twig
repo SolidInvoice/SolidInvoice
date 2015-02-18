@@ -9,8 +9,8 @@
 
 {% extends "CSBillInvoiceBundle:Default:create.html.twig" %}
 
-{% block page_title %}{{ "invoice.edit"|trans }}{% endblock %}
-{% block title %}{{ "invoice.edit"|trans }}{% endblock %}
+{% block page_title %}{{ "invoice.action.edit"|trans }}{% endblock %}
+{% block title %}{{ "invoice.action.edit"|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_edit', {'invoice' : invoice}) }}
@@ -21,7 +21,7 @@
             <a href="{{ path('_invoices_view', {'id' : invoice.id}) }}" class="btn btn-warning">
                 {{ icon('reply') }} {{ "invoice.save.cancel"|trans }}
             </a>
-            <button type="submit" class="btn btn-success" name="save" value="accept">
+            <button type="submit" class="btn btn-success" name="save" value="pending">
                 {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
             </button>
         </div>

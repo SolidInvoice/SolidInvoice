@@ -24,14 +24,14 @@
         <ul class="list-group">
             {% for payment in payments %}
                 <li class="list-group-item">
-                    {{ status_label(payment) }}
+                    {{ payment_label(payment.status) }}
 
                     <a href="{{ path('_clients_view', {'id' : payment.client_id}) }}">
                         {{ payment.client }}
                     </a>
 
                     <div class="pull-right">
-                        {{ payment.amount|currency }}
+                        {{ payment.totalAmount|currency }}
                         <br />
                         <small>
                             <strong>

@@ -11,7 +11,7 @@
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
-{% block page_title %}{{ "invoice.create"|trans }}{% endblock %}
+{% block page_title %}{{ "invoice.action.create"|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_create') }}
@@ -43,7 +43,7 @@
                         {% if invoice is defined %}
                             <h2>{{ 'invoice.title'|trans({'%id%' : invoice.id}) }}</h2>
                         {% else %}
-                            <h2>{{ 'invoice.create'|trans }}</h2>
+                            <h2>{{ 'invoice.action.create'|trans }}</h2>
                         {% endif %}
                     </div>
                     <hr>
@@ -203,7 +203,7 @@
 
 {% block form_buttons %}
     <div class="pull-left">
-        <button type="submit" class="btn btn-success" name="save" value="accept">
+        <button type="submit" class="btn btn-success" name="save" value="pending">
             {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
         </button>
     </div>
@@ -232,18 +232,18 @@
         client_id = $(':selected', this).val();
 
         $.getJSON(Routing.generate('_clients_info', {"id" : client_id, "type" : "invoice"}), function(data) {
-        $('#{{ form.client.vars.id }}-container').html(data.content);
-        $('body').modalmanager('loading');
-        clientSelectContainer.hide();
-        });
+            $('#{{ form.client.vars.id }}-container').html(data.content);
+            $('body').modalmanager('loading');
+                clientSelectContainer.hide();
+            });
         });
 
         $('#invoice-create-form').on('click', '.client-select-change', function(evt) {
-        evt.preventDefault();
-        $('#{{ form.client.vars.id }}-container').html('');
-        clientSelect.closest('div.form-group').show();
-        clientSelect.val('');
-        clientSelect.trigger('select2-selecting');
+            evt.preventDefault();
+            $('#{{ form.client.vars.id }}-container').html('');
+            clientSelect.closest('div.form-group').show();
+            clientSelect.val('');
+            clientSelect.trigger('select2-selecting');
         });
 
         Invoice.setSelector($('#invoice-rows'));
@@ -254,8 +254,7 @@
         {% endfor %}
 
         Invoice.addTemplate('total', accounting.formatMoney(0));
-        Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip"
-                                         title="{{ "invoice.item.remove"|trans }}">{{ icon('trash', ['o']) }}</a>');
+        Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="{{ "invoice.item.remove"|trans }}">{{ icon('trash', ['o']) }}</a>');
         Invoice.addField("total");
         Invoice.addField("trash");
 
@@ -269,8 +268,8 @@
     {{ parent() }}
 
     {% javascripts
-    "@CSBillInvoiceBundle/Resources/public/js/invoices.js"
-    filter="?yui_js" %}
-    <script src="{{ asset_url }}"></script>
+        "@CSBillInvoiceBundle/Resources/public/js/invoices.js"
+        filter="?yui_js" %}
+            <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

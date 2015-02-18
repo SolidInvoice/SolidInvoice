@@ -1,8 +1,17 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
-use CSBill\PaymentBundle\Entity\PaymentDetails;
+use CSBill\PaymentBundle\Entity\Payment;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -10,25 +19,43 @@ use Payum\Core\Exception\RequestNotSupportedException;
 class PaymentDetailsStatusAction extends PaymentAwareAction
 {
     /**
-     * @param \CSBill\PaymentBundle\Action\Request\StatusRequest $request
-     *                                                                    {@inheritdoc}
+     * {@inheritdoc}
      */
     public function execute($request)
     {
-        if (false === $this->supports($request)) {
-            throw RequestNotSupportedException::createActionNotSupported($this, $request);
-        }
+        RequestNotSupportedException::assertSupports($this, $request);
 
-        $model = ArrayObject::ensureArrayObject($request->getModel());
+        /** @var Payment $payment */
+        $payment = $request->getModel();
+
+        $details = ArrayObject::ensureArrayObject($payment->getDetails());
+
+        $message = array();
 
         foreach (range(0, 9) as $index) {
-            if ($model['L_ERRORCODE'.$index]) {
-                $request->getModel()->getPayment()->setMessage($model['L_LONGMESSAGE'.$index]);
+            if ($details['L_ERRORCODE'.$index]) {
+                $message[] = $details['L_LONGMESSAGE'.$index];
 
+            }
+        }
+
+        $payment->setMessage(implode('. ', $message));
+
+        if ($payment->getDetails()) {
+            try {
+                $request->setModel($details);
                 $this->payment->execute($request);
 
-                return;
+                $payment->setDetails($details);
+                $request->setModel($payment);
+            } catch (\Exception $e) {
+                $payment->setDetails($details);
+                $request->setModel($payment);
+
+                throw $e;
             }
+        } else {
+            $request->markNew();
         }
     }
 
@@ -37,18 +64,9 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
      */
     public function supports($request)
     {
-        if (!$request instanceof StatusRequest) {
-            return false;
-        }
-
-        $model = $request->getModel();
-
-        if (!$model instanceof PaymentDetails) {
-            return false;
-        }
-
-        $message = $model->getPayment()->getMessage();
-
-        return isset($model['PAYMENTREQUEST_0_AMT']) && null !== $model['PAYMENTREQUEST_0_AMT'] && empty($message);
+        return
+            $request instanceof StatusRequest &&
+            $request->getModel() instanceof Payment
+        ;
     }
 }

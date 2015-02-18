@@ -14,13 +14,8 @@ _payments_edit:
     path:  /methods/edit/{id}
     defaults: { _controller: CSBillPaymentBundle:Default:add }
 
-_payments_delete:
-    path: /methods/delete/{id}
-    defaults: { _controller: CSBillPaymentBundle:Ajax:delete }
-    methods: [POST]
-
-_payments_load_settings:
-    path:  /add/load/method
+_payment_method_settings:
+    path:  /method/settings/{method}
     defaults: { _controller: CSBillPaymentBundle:Ajax:loadSettings }
     options:
         expose: true

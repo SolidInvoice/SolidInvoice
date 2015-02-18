@@ -12,6 +12,7 @@
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
+use CSBill\PaymentBundle\Model\Status as PaymentStatus;
 use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
 
 /**
@@ -41,6 +42,22 @@ class StatusExtension extends \Twig_Extension
         QuoteGraph::STATUS_ACCEPTED => 'success',
         QuoteGraph::STATUS_DECLINED => 'danger',
         QuoteGraph::STATUS_CANCELLED => 'inverse',
+    );
+
+    /**
+     * @var array
+     */
+    private $paymentLabelMap = array(
+        PaymentStatus::STATUS_UNKNOWN => 'default',
+        PaymentStatus::STATUS_FAILED => 'danger',
+        PaymentStatus::STATUS_SUSPENDED => 'warning',
+        PaymentStatus::STATUS_EXPIRED => 'danger',
+        PaymentStatus::STATUS_CAPTURED => 'success',
+        PaymentStatus::STATUS_PENDING => 'warning',
+        PaymentStatus::STATUS_CANCELLED => 'danger',
+        PaymentStatus::STATUS_NEW => 'info',
+        PaymentStatus::STATUS_AUTHORIZED => 'info',
+        PaymentStatus::STATUS_REFUNDED => 'warning',
     );
 
     /**
@@ -79,6 +96,12 @@ class StatusExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'quote_label',
                 array($this, 'renderQuoteStatusLabel'),
+                array('is_safe' => array('html'),
+                )
+            ),
+            new \Twig_SimpleFunction(
+                'payment_label',
+                array($this, 'renderPaymentStatusLabel'),
                 array('is_safe' => array('html'),
                 )
             ),
@@ -137,6 +160,27 @@ class StatusExtension extends \Twig_Extension
         $statusLabel = array(
             'status' => $status,
             'status_label' => $this->quoteLabelMap[$status],
+        );
+
+        return $this->renderStatusLabel($statusLabel, $tooltip);
+    }
+
+    /**
+     * @param string $status
+     * @param string $tooltip
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function renderPaymentStatusLabel($status, $tooltip = null)
+    {
+        if (!isset($this->paymentLabelMap[$status])) {
+            throw new \Exception(sprintf('The payment status "%s" does not have an associative label', $status));
+        }
+
+        $statusLabel = array(
+            'status' => $status,
+            'status_label' => $this->paymentLabelMap[$status],
         );
 
         return $this->renderStatusLabel($statusLabel, $tooltip);

@@ -1,28 +1,51 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\PaymentBundle\Action\Offline;
 
-use Payum\Core\Action\ActionInterface;
+use CSBill\PaymentBundle\Action\Request\StatusRequest;
+use CSBill\PaymentBundle\Entity\Payment;
+use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
 
-class StatusAction implements ActionInterface
+class StatusAction extends PaymentAwareAction
 {
     /**
      * {@inheritDoc}
      */
     public function execute($request)
     {
-        /** @var $request \Payum\Core\Request\Capture */
-        if (false === $this->supports($request)) {
-            throw RequestNotSupportedException::createActionNotSupported($this, $request);
+        RequestNotSupportedException::assertSupports($this, $request);
+
+        /** @var Payment $payment */
+        $payment = $request->getModel();
+        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?: array());
+
+        $details[Constants::FIELD_STATUS] = Constants::STATUS_CAPTURED;
+
+        $payment->setDetails($details);
+
+        try {
+            $request->setModel($details);
+            $this->payment->execute($request);
+
+            $payment->setDetails($details);
+            $request->setModel($payment);
+        } catch (\Exception $e) {
+            $payment->setDetails($details);
+            $request->setModel($payment);
+
+            throw $e;
         }
-
-        $model = ArrayObject::ensureArrayObject($request->getModel());
-
-        $model->offsetSet(Constants::FIELD_STATUS, Constants::STATUS_CAPTURED);
     }
 
     /**
@@ -31,7 +54,8 @@ class StatusAction implements ActionInterface
     public function supports($request)
     {
         return
-            $request instanceof Capture &&
-            $request->getModel() instanceof \ArrayAccess;
+            $request instanceof StatusRequest &&
+            $request->getModel() instanceof Payment
+        ;
     }
 }

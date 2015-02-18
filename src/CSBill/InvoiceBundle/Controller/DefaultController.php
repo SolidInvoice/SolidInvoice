@@ -18,6 +18,7 @@ use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,25 +67,22 @@ class DefaultController extends BaseController
         $viewAction->addAttribute('rel', 'tooltip');
         $rowActicons[] = $viewAction;
 
-        // Only show payment option of payment methods is configured
-        if (count($this->get('csbill_payment.method.manager')) > 0) {
-            $payIcon = $templating->render('{{ icon("credit-card") }}');
-            $payAction = new RowAction($payIcon, '_payments_create');
+        $payIcon = $templating->render('{{ icon("credit-card") }}');
+        $payAction = new RowAction($payIcon, '_payments_create');
 
-            $payAction->setRouteParameters(array('uuid'));
-            $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
-            $payAction->addAttribute('title', $translator->trans('invoice.action.pay_now'));
-            $payAction->addAttribute('rel', 'tooltip');
+        $payAction->setRouteParameters(array('uuid'));
+        $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
+        $payAction->addAttribute('title', $translator->trans('invoice.action.pay_now'));
+        $payAction->addAttribute('rel', 'tooltip');
 
-            $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
-                if (Graph::STATUS_PENDING !== $row->getField('status')) {
-                    $rowAction->setTitle('');
-                }
+        $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
+            if (Graph::STATUS_PENDING !== $row->getField('status')) {
+                $rowAction->setTitle('');
+            }
 
-                return $rowAction;
-            });
-            $rowActicons[] = $payAction;
-        }
+            return $rowAction;
+        });
+        $rowActicons[] = $payAction;
 
         $actionsRow = new ActionsColumn('actions', 'Action', $rowActicons);
         $grid->addColumn($actionsRow, 100);
@@ -221,7 +219,9 @@ class DefaultController extends BaseController
      */
     public function viewAction(Invoice $invoice)
     {
-        $payments = $this->getRepository('CSBillPaymentBundle:Payment')->getPaymentsForInvoice($invoice);
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
+        $payments = $paymentRepository->getPaymentsForInvoice($invoice);
 
         return $this->render(
             'CSBillInvoiceBundle:Default:view.html.twig',

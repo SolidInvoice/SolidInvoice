@@ -12,7 +12,7 @@ namespace CSBill\PaymentBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\PaymentBundle\Entity\Status;
+use CSBill\PaymentBundle\Model\Status;
 use Doctrine\ORM\EntityRepository;
 
 class PaymentRepository extends EntityRepository
@@ -28,10 +28,9 @@ class PaymentRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->select('SUM(p.amount)')
-            ->join('p.status', 's')
-            ->where('s.name = :status')
-            ->setParameter('status', Status::STATUS_SUCCESS);
+        $qb->select('SUM(p.totalAmount)')
+            ->where('p.status = :status')
+            ->setParameter('status', Status::STATUS_CAPTURED);
 
         $query = $qb->getQuery();
 
@@ -100,18 +99,16 @@ class PaymentRepository extends EntityRepository
 
         $queryBuilder->select(
             'p.id',
-            'p.amount',
-            'p.currency',
+            'p.totalAmount',
+            'p.currencyCode',
             'p.created',
             'p.completed',
+            'p.status',
             'i.id as invoice',
             'm.name as method',
-            's.name as status',
-            's.label as status_label',
             'p.message'
         )
             ->join('p.method', 'm')
-            ->join('p.status', 's')
             ->join('p.invoice', 'i')
             ->orderBy($orderField, $sort);
 
@@ -142,15 +139,16 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
+     * @param \DateTime $timestamp
+     *
      * @return array
      */
     public function getPaymentsList(\DateTime $timestamp = null)
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
-        $queryBuilder->select('p.amount', 'p.created')
+        $queryBuilder->select('p.totalAmount', 'p.created')
             ->join('p.method', 'm')
-            ->join('p.status', 's')
             ->where('p.created >= :date')
             ->setParameter('date', $timestamp)
             ->groupBy('p.created')
@@ -158,15 +156,7 @@ class PaymentRepository extends EntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        $payments = array();
-
-        foreach ($query->getArrayResult() as $result) {
-            $date = $result['created']->format('Y-m-d');
-            if (!isset($payments[$date])) {
-                $payments[$date] = 0;
-            }
-            $payments[$date] += $result['amount'];
-        }
+        $payments = $this->formatDate($query);
 
         $results = array();
 
@@ -185,11 +175,10 @@ class PaymentRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('p');
 
         $queryBuilder->select(
-            'p.amount',
+            'p.totalAmount',
             'p.created'
         )
             ->join('p.method', 'm')
-            ->join('p.status', 's')
             ->where('p.created >= :date')
             ->setParameter('date', new \DateTime('-1 Year'))
             ->groupBy('p.created')
@@ -197,14 +186,29 @@ class PaymentRepository extends EntityRepository
 
         $query = $queryBuilder->getQuery();
 
+        $payments = $this->formatDate($query, 'F Y');
+
+        return $payments;
+    }
+
+    /**
+     * @param \Doctrine\ORM\Query $query
+     * @param string              $dateFormat
+     *
+     * @return array
+     */
+    private function formatDate($query, $dateFormat = 'Y-m-d')
+    {
         $payments = array();
 
         foreach ($query->getArrayResult() as $result) {
-            $date = $result['created']->format('F Y');
+            /** @var \DateTime $created */
+            $created = $result['created'];
+            $date = $created->format($dateFormat);
             if (!isset($payments[$date])) {
                 $payments[$date] = 0;
             }
-            $payments[$date] += $result['amount'];
+            $payments[$date] += $result['totalAmount'];
         }
 
         return $payments;

@@ -1,24 +1,32 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\PaymentBundle\Twig;
 
-use CSBill\PaymentBundle\Manager\PaymentMethodManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
 class PaymentExtension extends Twig_Extension
 {
     /**
-     * @var PaymentMethodManager
+     * @var \CSBill\PaymentBundle\Repository\PaymentMethodRepository
      */
-    private $paymentsManager;
+    private $repository;
 
     /**
-     * @param PaymentMethodManager $paymentsManager
+     * @param ManagerRegistry $registry
      */
-    public function __construct(PaymentMethodManager $paymentsManager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->paymentsManager = $paymentsManager;
+        $this->repository = $registry->getRepository('CSBillPaymentBundle:PaymentMethod');
     }
 
     /**
@@ -27,16 +35,24 @@ class PaymentExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('paymentsConfigured', array($this, 'paymentsConfigured')),
+            new Twig_SimpleFunction('payment_enabled', array($this, 'paymentEnabled')),
         );
     }
 
     /**
+     * @param string $method
+     *
      * @return bool
      */
-    public function paymentsConfigured()
+    public function paymentEnabled($method)
     {
-        return count($this->paymentsManager) > 0;
+        $paymentMethod = $this->repository->findOneBy(array('paymentMethod' => $method));
+
+        if (null === $paymentMethod) {
+            return false;
+        }
+
+        return $paymentMethod->isEnabled();
     }
 
     /**

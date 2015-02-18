@@ -42,7 +42,7 @@ security:
             context: frontend
 
         capture:
-            pattern:  ^/payment/capture/(.*)
+            pattern:  ^/payment/(capture|notify|done)/(.*)
             anonymous: true
             context: frontend
 
