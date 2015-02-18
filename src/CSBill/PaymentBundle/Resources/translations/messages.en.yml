@@ -1,6 +1,10 @@
 payment:
     create:
         force: Force payment status (Optional)
+        discount: Discount
+        base_total: Base Total
+        total: Total
+        tite: "Payment for invoice #%id%"
     flash:
         status:
             success: Payment has been completed
@@ -18,6 +22,8 @@ payment:
             internal: "Selecting this option, will make this payment option only available for internal use."
         label:
             internal: Internal use only
+    action:
+        pay: Pay Now
 
 add_payment_method: Add Payment Method
 payment_method_added: Payment Method Successfully Added!
@@ -37,11 +43,7 @@ amount: Amount
 currency: Currency
 payment_date: Payment Date
 status: Status
-total: Total
-base_total: Base Total
 completed: Completed
-
-payment_for_invoice: "Payment for invoice #%id%"
 
 force_payment_status_help: "When setting a forced status, every new payment will have this status by default, regardless of the outcome of the payment (whether it was successful or failed etc)."
 

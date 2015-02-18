@@ -25,15 +25,8 @@
         <div class="btn-toolbar">
             <div class="btn-group">
                 {% if finite_can(invoice, 'pay', graph) %}
-                    <a href="{{ path('_action_invoice', {'action' : 'pay', 'id' : invoice.id}) }}" id="pay-now"
-                       class="btn btn-success">
-                        {{ icon('money') }} {{ "invoice.view.toolbar.mark_paid"|trans }}
-                    </a>
-                {% endif %}
-
-                {% if finite_can(invoice, 'reopen', graph) %}
-                    <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-default">
-                        {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
+                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
+                        {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
                     </a>
                 {% endif %}
 
@@ -45,9 +38,9 @@
             </div>
 
             <div class="btn-group">
-                {% if finite_can(invoice, 'pay', graph) %}
-                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                        {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
+                {% if finite_can(invoice, 'reopen', graph) %}
+                    <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-default">
+                        {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
                     </a>
                 {% endif %}
                 {% if finite_can(invoice, 'cancel', graph) %}

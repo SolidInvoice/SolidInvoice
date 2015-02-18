@@ -74,12 +74,13 @@ class Payment
 
     /**
      * @ORM\Column(name="amount", type="float")
-     * @Grid\Column(type="number", style="currency")
+     * @Grid\Column(type="number", style="currency", title="amount")
      */
     private $totalAmount;
 
     /**
      * @ORM\Column(name="currency", type="string", length=24)
+     * @Grid\Column(title="currency")
      */
     private $currencyCode;
 
@@ -92,6 +93,7 @@ class Payment
      * @var array
      *
      * @ORM\Column(name="details", type="array", nullable=true)
+     * @Grid\Column(visible=false)
      */
     private $details;
 

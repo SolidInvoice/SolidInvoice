@@ -1,6 +1,6 @@
 {% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
 
-{% block title %}{{ "payment_for_invoice"|trans|replace({"%id%" : invoice.id}) }}{% endblock %}
+{% block title %}{{ "payment.create.tite"|trans|replace({"%id%" : invoice.id}) }}{% endblock %}
 
 {% block content %}
 
@@ -22,13 +22,13 @@
                         <hr />
 
                         {% if invoice.discount is not empty %}
-                            <dt>{{ 'base_total'|trans }}</dt>
+                            <dt>{{ 'payment.create.base_total'|trans }}</dt>
                             <dd>{{ invoice.baseTotal|currency }}</dd>
-                            <dt>{{ 'discount'|trans }}</dt>
+                            <dt>{{ 'payment.create.discount'|trans }}</dt>
                             <dd class="text-danger">-{{ (invoice.baseTotal * invoice.discount)|currency }}</dd>
                         {% endif %}
 
-                        <dt>{{ 'total'|trans }}</dt>
+                        <dt>{{ 'payment.create.total'|trans }}</dt>
                         <dd>{{ invoice.total|currency }}</dd>
                     </dl>
                 </div>
@@ -39,7 +39,7 @@
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
 
-                <button type="submit" class="btn btn-info">{{ icon('credit-card') }} {{ 'Pay Now'|trans }}</button>
+                <button type="submit" class="btn btn-info">{{ icon('credit-card') }} {{ 'payment.action.pay'|trans }}</button>
                 {{ form_end(form) }}
             </div>
         </div>
