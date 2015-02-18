@@ -96,7 +96,7 @@ class InvoiceManager extends ContainerAware
         }
 
         $this->create($invoice);
-        $this->accept($invoice); // ?? Do we really want to accept it immediately after creating it? I think not...
+        $this->accept($invoice); // ?? Do we really want to accept it immediately after creating it?
 
         return $invoice;
     }
