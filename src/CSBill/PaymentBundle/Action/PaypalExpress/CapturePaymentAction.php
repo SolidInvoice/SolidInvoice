@@ -79,10 +79,12 @@ class CapturePaymentAction extends PaymentAwareAction
             $details['L_PAYMENTREQUEST_0_QTY'.$counter] = 1;
         }
 
-        $details['PAYMENTREQUEST_0_NOTIFYURL'] = $this->tokenFactory->createNotifyToken(
+        /*$notifyUrl = $this->tokenFactory->createNotifyToken(
             $request->getToken()->getPaymentName(),
-            $request->getModel()
+            $payment
         )->getTargetUrl();
+
+        $details['PAYMENTREQUEST_0_NOTIFYURL'] = $notifyUrl;*/
 
         $payment->setDetails($details);
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
@@ -106,9 +108,17 @@ class CapturePaymentAction extends PaymentAwareAction
      */
     public function supports($request)
     {
-        return
-            $request instanceof Capture &&
-            $request->getModel() instanceof Payment
-        ;
+        if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
+            return false;
+        }
+
+        /** @var Payment $payment */
+        $payment = $request->getModel();
+
+        if ($payment->getDetails()) {
+            return false;
+        }
+
+        return true;
     }
 }

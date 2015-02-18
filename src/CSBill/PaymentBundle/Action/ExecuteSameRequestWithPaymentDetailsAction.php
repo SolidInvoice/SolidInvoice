@@ -11,17 +11,17 @@
 namespace CSBill\PaymentBundle\Action;
 
 use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Entity\Status;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\Capture;
-use Payum\Offline\Constants;
+use Payum\Core\Request\Generic;
 
-class CaptureAction extends PaymentAwareAction
+class ExecuteSameRequestWithPaymentDetailsAction extends PaymentAwareAction
 {
     /**
      * {@inheritDoc}
+     *
+     * @param $request Generic
      */
     public function execute($request)
     {
@@ -31,12 +31,15 @@ class CaptureAction extends PaymentAwareAction
         $payment = $request->getModel();
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $details[Constants::FIELD_STATUS] = Status::STATUS_NEW;
-        $payment->setDetails($details);
+        try {
+            $request->setModel($details);
+            $this->payment->execute($request);
+            $payment->setDetails($details);
+        } catch (\Exception $e) {
+            $payment->setDetails($details);
 
-        $request->setModel($details);
-
-        $this->payment->execute($request);
+            throw $e;
+        }
     }
 
     /**
@@ -44,14 +47,9 @@ class CaptureAction extends PaymentAwareAction
      */
     public function supports($request)
     {
-        $model = $request->getModel();
-
-        if (!($request instanceof Capture && $model instanceof Payment)) {
-            return false;
-        }
-
-        $details = ArrayObject::ensureArrayObject($model->getDetails());
-
-        return null === $details[Constants::FIELD_STATUS];
+        return
+            $request instanceof Generic &&
+            $request->getModel() instanceof Payment
+        ;
     }
 }

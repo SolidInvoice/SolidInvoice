@@ -1,9 +1,12 @@
 parameters:
     csbill_payment.menu.top.class: CSBill\PaymentBundle\Menu\PaymentsMenu
     csbill.payment.payum.paypal_express.action.capture_payment.class: CSBill\PaymentBundle\Action\PaypalExpress\CapturePaymentAction
+    csbill.payment.payum.paypal_express.action.notify_payment.class: CSBill\PaymentBundle\Action\PaypalExpress\NotifyPaymentAction
     csbill.payment.payum.paypal_express.action.payment_status.class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
     csbill.payment.payum.offline.action.status_action.class: CSBill\PaymentBundle\Action\Offline\StatusAction
     csbill.payment.payum.action.capture_action.class: CSBill\PaymentBundle\Action\CaptureAction
+    csbill.payment.payum.action.execute_same_request_with_payment_details_action.class: CSBill\PaymentBundle\Action\ExecuteSameRequestWithPaymentDetailsAction
+    csbill.payment.payum.extension.update_payment_details_extension.class: CSBill\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
     csbill.payment.twig_extension.class: CSBill\PaymentBundle\Twig\PaymentExtension
     csbill.payment.listener.payment_complete_listener.class: CSBill\PaymentBundle\Listener\PaymentCompleteListener
     payum.class: CSBill\PaymentBundle\Payum
@@ -21,6 +24,12 @@ services:
         tags:
             - { name: payum.action, factory: paypal_express_checkout_nvp }
 
+    csbill.payment.payum.paypal_express.action.notify_payment_action:
+        class: %csbill.payment.payum.paypal_express.action.notify_payment.class%
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: payum.action, factory: paypal_express_checkout_nvp }
+
     csbill.payment.payum.paypal_express.action.payment_status_action:
         class: %csbill.payment.payum.paypal_express.action.payment_status.class%
         arguments: [@payum.security.token_factory, %currency%]
@@ -34,6 +43,15 @@ services:
 
     csbill.payment.payum.action.capture_action:
         class: %csbill.payment.payum.action.capture_action.class%
+        tags:
+            - { name: payum.action, all: true }
+
+    csbill.payment.payum.extension.update_payment_details_extension:
+        class: %csbill.payment.payum.extension.update_payment_details_extension.class%
+        arguments: [@doctrine.orm.entity_manager]
+
+    csbill.payment.payum.action.execute_same_request_with_payment_details_action:
+        class: %csbill.payment.payum.action.execute_same_request_with_payment_details_action.class%
         tags:
             - { name: payum.action, all: true }
 
@@ -56,6 +74,5 @@ services:
     csbill.payment.listener.payment_complete_listener:
         class: %csbill.payment.listener.payment_complete_listener.class%
         arguments: [@invoice.manager, @session, @translator, @router]
-        scope: request
         tags:
             - { name: kernel.event_listener, event: payment.complete, method: onPaymentComplete }

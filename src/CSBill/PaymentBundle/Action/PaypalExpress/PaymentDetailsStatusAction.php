@@ -41,17 +41,21 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
 
         $payment->setMessage(implode('. ', $message));
 
-        try {
-            $request->setModel($details);
-            $this->payment->execute($request);
+        if ($payment->getDetails()) {
+            try {
+                $request->setModel($details);
+                $this->payment->execute($request);
 
-            $payment->setDetails($details);
-            $request->setModel($payment);
-        } catch (\Exception $e) {
-            $payment->setDetails($details);
-            $request->setModel($payment);
+                $payment->setDetails($details);
+                $request->setModel($payment);
+            } catch (\Exception $e) {
+                $payment->setDetails($details);
+                $request->setModel($payment);
 
-            throw $e;
+                throw $e;
+            }
+        } else {
+            $request->markNew();
         }
     }
 
@@ -60,23 +64,9 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
      */
     public function supports($request)
     {
-        if (!$request instanceof StatusRequest) {
-            return false;
-        }
-
-        $model = $request->getModel();
-
-        if (!$model instanceof Payment) {
-            return false;
-        }
-
-        $message = $model->getMessage();
-        $details = $model->getDetails();
-
         return
-            isset($details['PAYMENTREQUEST_0_AMT']) &&
-            null !== $details['PAYMENTREQUEST_0_AMT'] &&
-            empty($message)
+            $request instanceof StatusRequest &&
+            $request->getModel() instanceof Payment
         ;
     }
 }

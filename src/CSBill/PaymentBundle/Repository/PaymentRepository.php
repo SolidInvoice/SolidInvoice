@@ -28,7 +28,7 @@ class PaymentRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->select('SUM(p.amount)')
+        $qb->select('SUM(p.totalAmount)')
             ->join('p.status', 's')
             ->where('s.name = :status')
             ->setParameter('status', Status::STATUS_CAPTURED);
@@ -142,13 +142,15 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
+     * @param \DateTime $timestamp
+     *
      * @return array
      */
     public function getPaymentsList(\DateTime $timestamp = null)
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
-        $queryBuilder->select('p.amount', 'p.created')
+        $queryBuilder->select('p.totalAmount', 'p.created')
             ->join('p.method', 'm')
             ->join('p.status', 's')
             ->where('p.created >= :date')
@@ -158,15 +160,7 @@ class PaymentRepository extends EntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        $payments = array();
-
-        foreach ($query->getArrayResult() as $result) {
-            $date = $result['created']->format('Y-m-d');
-            if (!isset($payments[$date])) {
-                $payments[$date] = 0;
-            }
-            $payments[$date] += $result['amount'];
-        }
+        $payments = $this->formatDate($query);
 
         $results = array();
 
@@ -185,7 +179,7 @@ class PaymentRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('p');
 
         $queryBuilder->select(
-            'p.amount',
+            'p.totalAmount',
             'p.created'
         )
             ->join('p.method', 'm')
@@ -197,14 +191,29 @@ class PaymentRepository extends EntityRepository
 
         $query = $queryBuilder->getQuery();
 
+        $payments = $this->formatDate($query, 'F Y');
+
+        return $payments;
+    }
+
+    /**
+     * @param \Doctrine\ORM\Query $query
+     * @param string              $dateFormat
+     *
+     * @return array
+     */
+    private function formatDate($query, $dateFormat = 'Y-m-d')
+    {
         $payments = array();
 
         foreach ($query->getArrayResult() as $result) {
-            $date = $result['created']->format('F Y');
+            /** @var \DateTime $created */
+            $created = $result['created'];
+            $date = $created->format($dateFormat);
             if (!isset($payments[$date])) {
                 $payments[$date] = 0;
             }
-            $payments[$date] += $result['amount'];
+            $payments[$date] += $result['totalAmount'];
         }
 
         return $payments;

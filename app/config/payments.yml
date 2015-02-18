@@ -19,3 +19,5 @@ payum:
                 sandbox: true
                 apis:
                     - csbill.payment.payum.paypal_express_checkout_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
