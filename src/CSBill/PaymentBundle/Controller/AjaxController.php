@@ -65,22 +65,4 @@ class AjaxController extends BaseController
             ),
         ));
     }
-
-    /**
-     * Deletes a payment method
-     *
-     * @param  PaymentMethod $paymentMethod
-     *
-     * @return JsonResponse
-     */
-    public function deleteAction(PaymentMethod $paymentMethod)
-    {
-        $entityManager = $this->getEm();
-        $entityManager->remove($paymentMethod);
-        $entityManager->flush();
-
-        $this->flash($this->trans('payment_delete_success'), 'success');
-
-        return new JsonResponse(array("status" => "success"));
-    }
 }

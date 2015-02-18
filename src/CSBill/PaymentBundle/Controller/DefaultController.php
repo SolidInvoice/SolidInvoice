@@ -7,6 +7,7 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Form\PaymentMethodForm;
+use CSBill\PaymentBundle\Model\Status;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,13 +24,11 @@ class DefaultController extends BaseController
 
         // Get a Grid instance
         $grid = $this->get('grid');
-
         $router = $this->get('router');
-
+        $templating = $this->get('templating');
         $search = $request->get('search');
 
         $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search) {
-
             if ($search) {
                 $aliases = $queryBuilder->getRootAliases();
 
@@ -44,10 +43,8 @@ class DefaultController extends BaseController
         // Attach the source to the grid
         $grid->setSource($source);
 
-        $grid->getColumn('status.name')->manipulateRenderCell(function ($value, Row $row) {
-            $label = $row->getField('status.label');
-
-            return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
+        $grid->getColumn('status')->manipulateRenderCell(function ($value) use ($templating) {
+            return $templating->render('{{ payment_label("'.$value.'") }}');
         })->setSafe(false);
 
         $grid->getColumn('totalAmount')->setCurrencyCode($this->container->getParameter('currency'));
@@ -65,7 +62,24 @@ class DefaultController extends BaseController
 
         $grid->hideColumns(array('updated', 'deletedAt'));
 
-        return $grid->getGridResponse('CSBillPaymentBundle:Default:list.html.twig', array('filters' => array()));
+        return $grid->getGridResponse(
+            'CSBillPaymentBundle:Default:list.html.twig',
+            array(
+                'status_list' => array(
+                    Status::STATUS_UNKNOWN,
+                    Status::STATUS_FAILED,
+                    Status::STATUS_SUSPENDED,
+                    Status::STATUS_EXPIRED,
+                    Status::STATUS_PENDING,
+                    Status::STATUS_CANCELLED,
+                    Status::STATUS_NEW,
+                    Status::STATUS_CAPTURED,
+                    Status::STATUS_AUTHORIZED,
+                    Status::STATUS_REFUNDED,
+                ),
+                'filters' => array()
+            )
+        );
     }
 
     /**
@@ -112,7 +126,7 @@ class DefaultController extends BaseController
 
             $this->save($paymentMethod);
 
-            $this->flash($this->trans($payment ? 'payment_method_updated' : 'payment_method_added'), 'success');
+            $this->flash($this->trans($payment ? 'payment.method.updated' : 'payment.method.added'), 'success');
 
             return $this->redirect($this->generateUrl('_payment_settings_index'));
         }

@@ -79,9 +79,9 @@
     {% endif %}
 
     {% if payments|length > 0 %}
-        <div class="col-md-10">
-            <hr/>
-            <h3>{{ 'payments'|trans }}</h3>
+        <br class="clear" />
+        <div class="widget">
+            <h3>{{ 'invoice.view.payments'|trans }}</h3>
             {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, 'show_invoice' : false} only %}
         </div>
     {% endif %}

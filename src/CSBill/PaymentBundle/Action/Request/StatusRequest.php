@@ -10,7 +10,7 @@
 
 namespace CSBill\PaymentBundle\Action\Request;
 
-use CSBill\PaymentBundle\Entity\Status;
+use CSBill\PaymentBundle\Model\Status;
 use Payum\Core\Request\BaseGetStatus;
 
 class StatusRequest extends BaseGetStatus
@@ -68,7 +68,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markCanceled()
     {
-        $this->status = STATUS::STATUS_CANCELED;
+        $this->status = STATUS::STATUS_CANCELLED;
     }
 
     /**
@@ -76,7 +76,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isCanceled()
     {
-        return $this->status === STATUS::STATUS_CANCELED;
+        return $this->status === STATUS::STATUS_CANCELLED;
     }
 
     /**

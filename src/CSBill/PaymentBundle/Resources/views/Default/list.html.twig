@@ -15,4 +15,15 @@
     {{ menu('payments_list') }}
 {% endblock sidebar %}
 
-{% block title %}{{ 'payments'|trans }}{% endblock title %}
+{% block title %}{{ 'payment.list.title'|trans }}{% endblock title %}
+
+{% block content %}
+
+    {{ parent() }}
+
+    <h5>{{ "payment.list.status_legend"|trans }}</h5>
+
+    {% for status in status_list %}
+        {{ payment_label(status) }}
+    {% endfor %}
+{% endblock content %}

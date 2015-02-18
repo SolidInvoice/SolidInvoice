@@ -45,6 +45,7 @@ invoice:
             cancel: Cancel
             edit: Edit
             reopen: Re-Open
+        payments: Payments
     payment:
         capture: Do you want to capture a payment for this invoice?
     mark_paid: Mark Paid

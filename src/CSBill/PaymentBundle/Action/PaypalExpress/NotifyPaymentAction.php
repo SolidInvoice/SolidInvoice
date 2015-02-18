@@ -52,10 +52,7 @@ class NotifyPaymentAction extends PaymentAwareAction
 
         $nextState = $status->getValue();
 
-        $status = $this->objectManager->getRepository('CSBillPaymentBundle:Status')
-            ->findOneBy(array('name' => $nextState));
-
-        $payment->setStatus($status);
+        $payment->setStatus($nextState);
 
         $this->objectManager->flush();
     }

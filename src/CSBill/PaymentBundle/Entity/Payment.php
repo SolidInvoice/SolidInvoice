@@ -64,11 +64,9 @@ class Payment
     private $method;
 
     /**
-     * @var Status $status
+     * @var string $status
      *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="payments")
-     * @Grid\Column(name="status", field="status.name", title="status", filter="select", selectFrom="source")
-     * @Grid\Column(field="status.label", visible=false)
+     * @ORM\Column(name="status", type="string")
      */
     private $status;
 
@@ -163,11 +161,11 @@ class Payment
     /**
      * Set status
      *
-     * @param Status $status
+     * @param string $status
      *
      * @return Payment
      */
-    public function setStatus(Status $status)
+    public function setStatus($status)
     {
         $this->status = $status;
 
@@ -177,7 +175,7 @@ class Payment
     /**
      * Get status
      *
-     * @return Status
+     * @return string
      */
     public function getStatus()
     {

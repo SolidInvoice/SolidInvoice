@@ -11,7 +11,7 @@
 namespace CSBill\PaymentBundle\Action;
 
 use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Entity\Status;
+use CSBill\PaymentBundle\Model\Status;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;

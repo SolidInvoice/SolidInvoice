@@ -24,27 +24,20 @@ payment:
             internal: Internal use only
     action:
         pay: Pay Now
-
-add_payment_method: Add Payment Method
-payment_method_added: Payment Method Successfully Added!
-payment_method_updated: Payment Method Successfully Updated!
-edit_payment_method: Edit Payment Method
-delete_payment_method: Delete Payment Method
-confirm_delete: Are you sure you want to delete this payment method?
-payment_methods: Payment Methods
-payment_create: Add Payment Method
-payment_delete_success: Payment Method Successfully Deleted
-
-invoice: Invoice
-payments: Payments
-payment_id: Payment ID
-method: Method
-amount: Amount
-currency: Currency
-payment_date: Payment Date
-status: Status
-completed: Completed
-
-force_payment_status_help: "When setting a forced status, every new payment will have this status by default, regardless of the outcome of the payment (whether it was successful or failed etc)."
-
-choose_force_status: Choose a Status
+    list:
+        title: Payments
+        status_legend: Payment Status Legend
+        grid:
+            invoice: Invoice
+            payment_id: Payment Id
+            method: Payment Method
+            amount: Amount
+            currency: Currency
+            payment_date: Payment Date
+            status: Status
+    method:
+        add: Add Payment Method
+        added: Payment Method Successfully Added!
+        updated: Payment Method Successfully Updated!
+    methods:
+        title: Payment Methods

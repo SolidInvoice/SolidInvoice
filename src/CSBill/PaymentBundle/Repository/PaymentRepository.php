@@ -12,7 +12,7 @@ namespace CSBill\PaymentBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\PaymentBundle\Entity\Status;
+use CSBill\PaymentBundle\Model\Status;
 use Doctrine\ORM\EntityRepository;
 
 class PaymentRepository extends EntityRepository
@@ -29,8 +29,7 @@ class PaymentRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p');
 
         $qb->select('SUM(p.totalAmount)')
-            ->join('p.status', 's')
-            ->where('s.name = :status')
+            ->where('p.status = :status')
             ->setParameter('status', Status::STATUS_CAPTURED);
 
         $query = $qb->getQuery();
@@ -104,14 +103,12 @@ class PaymentRepository extends EntityRepository
             'p.currencyCode',
             'p.created',
             'p.completed',
+            'p.status',
             'i.id as invoice',
             'm.name as method',
-            's.name as status',
-            's.label as status_label',
             'p.message'
         )
             ->join('p.method', 'm')
-            ->join('p.status', 's')
             ->join('p.invoice', 'i')
             ->orderBy($orderField, $sort);
 
@@ -152,7 +149,6 @@ class PaymentRepository extends EntityRepository
 
         $queryBuilder->select('p.totalAmount', 'p.created')
             ->join('p.method', 'm')
-            ->join('p.status', 's')
             ->where('p.created >= :date')
             ->setParameter('date', $timestamp)
             ->groupBy('p.created')
@@ -183,7 +179,6 @@ class PaymentRepository extends EntityRepository
             'p.created'
         )
             ->join('p.method', 'm')
-            ->join('p.status', 's')
             ->where('p.created >= :date')
             ->setParameter('date', new \DateTime('-1 Year'))
             ->groupBy('p.created')

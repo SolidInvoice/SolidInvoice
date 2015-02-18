@@ -11,8 +11,8 @@
 namespace CSBill\PaymentBundle\Listener;
 
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\PaymentBundle\Entity\Status;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
+use CSBill\PaymentBundle\Model\Status;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -94,7 +94,7 @@ class PaymentCompleteListener
                 $message = 'payment.flash.status.success';
                 break;
 
-            case Status::STATUS_CANCELED:
+            case Status::STATUS_CANCELLED:
                 $type = 'danger';
                 $message = 'payment.flash.status.cancelled';
                 break;

@@ -3,14 +3,14 @@
         <thead>
         <tr>
             {% if show_invoice %}
-                <th>{{ 'invoice'|trans }}</th>
+                <th>{{ 'payment.list.grid.invoice'|trans }}</th>
             {% endif %}
-            <th>{{ 'payment_id'|trans }}</th>
-            <th>{{ 'method'|trans }}</th>
-            <th>{{ 'amount'|trans }}</th>
-            <th>{{ 'currency'|trans }}</th>
-            <th>{{ 'payment_date'|trans }}</th>
-            <th>{{ 'status'|trans }}</th>
+            <th>{{ 'payment.list.grid.payment_id'|trans }}</th>
+            <th>{{ 'payment.list.grid.method'|trans }}</th>
+            <th>{{ 'payment.list.grid.amount'|trans }}</th>
+            <th>{{ 'payment.list.grid.currency'|trans }}</th>
+            <th>{{ 'payment.list.grid.payment_date'|trans }}</th>
+            <th>{{ 'payment.list.grid.status'|trans }}</th>
         </tr>
         </thead>
         {% for payment in payments %}
@@ -36,7 +36,7 @@
                     {{ payment.completed|date }}
                 </td>
                 <td>
-                    {{ status_label(payment, payment.message) }}
+                    {{ payment_label(payment.status, payment.message) }}
                 </td>
             </tr>
         {% endfor %}

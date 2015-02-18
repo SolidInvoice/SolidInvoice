@@ -21,8 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="entity", type="string")
  * @ORM\DiscriminatorMap({
- *      "client"  = "CSBill\ClientBundle\Entity\Status",
- *      "payment" = "CSBill\PaymentBundle\Entity\Status",
+ *      "client"  = "CSBill\ClientBundle\Entity\Status"
  * })
  * @Gedmo\SoftDeleteable()
  */

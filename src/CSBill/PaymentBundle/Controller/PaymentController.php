@@ -16,10 +16,10 @@ use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Entity\PaymentMethod as Entity;
-use CSBill\PaymentBundle\Entity\Status;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Form\PaymentForm;
+use CSBill\PaymentBundle\Model\Status;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -58,13 +58,9 @@ class PaymentController extends BaseController
 
             $paymentName = $paymentMethod->getPaymentMethod();
 
-            $status = $this
-                ->getRepository('CSBillPaymentBundle:Status')
-                ->findOneBy(array('name' => Status::STATUS_NEW));
-
             $payment = new Payment();
             $payment->setInvoice($invoice);
-            $payment->setStatus($status);
+            $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
             $payment->setTotalAmount($invoice->getTotal());
             $payment->setCurrencyCode($this->container->getParameter('currency'));
@@ -108,12 +104,7 @@ class PaymentController extends BaseController
         /** @var \CSBill\PaymentBundle\Entity\Payment $payment */
         $payment = $status->getFirstModel();
 
-        $payment->setStatus(
-            $this
-                ->getRepository('CSBillPaymentBundle:Status')
-                ->findOneBy(array('name' => $status->getValue()))
-        );
-
+        $payment->setStatus($status->getValue());
         $payment->setCompleted(new \DateTime('now'));
 
         $this->save($payment);
