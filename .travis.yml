@@ -1,6 +1,7 @@
 language: php
 
 php:
+  - 5.3.3 #php7
   - 5.4
   - 5.5
   - 5.6
@@ -15,6 +16,7 @@ matrix:
 sudo: false
 
 before_install:
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.3.3" ]]; then pushd $HOME; git clone https://github.com/php/php-src.git; pushd php-src; ./buildconf -f; ./configure --with-curl --prefix=$HOME/.phpenv/versions/7 && make && make install; phpenv global 7; popd; popd; php --version; echo Travis PHP Version is $TRAVIS_PHP_VERSION; wget http://getcomposer.org/composer.phar; mkdir $PWD/phar; mv composer.phar $PWD/phar/composer; chmod +x $PWD/phar/composer; export PATH=$PWD/phar:$PATH; fi
   - composer self-update
 
 install:
