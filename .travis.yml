@@ -27,7 +27,7 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-source --no-interaction
+  - composer install --prefer-source --no-interaction --dev
 
 before_script:
   - mysql -e 'create database csbill;'
