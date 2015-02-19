@@ -17,28 +17,28 @@ sudo: false
 
 # cache vendor dirs
 cache:
-    directories:
-        - vendor
-        - $HOME/.composer/cache
+  directories:
+    - vendor
+    - $HOME/.composer/cache
 
 before_install:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.3.3" ]]; then pushd $HOME; git clone https://github.com/php/php-src.git; pushd php-src; ./buildconf -f; ./configure --with-curl --prefix=$HOME/.phpenv/versions/7 && make && make install; phpenv global 7; popd; popd; php --version; echo Travis PHP Version is $TRAVIS_PHP_VERSION; wget http://getcomposer.org/composer.phar; mkdir $PWD/phar; mv composer.phar $PWD/phar/composer; chmod +x $PWD/phar/composer; export PATH=$PWD/phar:$PATH; fi
   - composer self-update
 
 install:
-    - composer install --prefer-source --no-interaction
+  - composer install --prefer-source --no-interaction
 
 before_script:
-    - mysql -e 'create database csbill;'
+  - mysql -e 'create database csbill;'
 
 script:
-    - ./bin/phpunit -c app
+  - ./bin/phpunit -c app
 
 after_script:
-    - wget https://scrutinizer-ci.com/ocular.phar
-    - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
 notifications:
-    hipchat:
-        rooms:
-            secure: Wc5cg/o//7DW9G0mosA5wmmECr9+R7S/FmVFvZU2mBBpfaE5nY873hePRrMK/Dhiu2aD5R/ll6d7b3mT7oiWzO/rMgQ+U/DcMmgqHYiYrtEz4umi+1EuSLURDAxyv3rDiXHhEWwbYcHfE1Tcfs07Aj4JWSZheploBRpg3iqzMbw=
+  hipchat:
+    rooms:
+      secure: Wc5cg/o//7DW9G0mosA5wmmECr9+R7S/FmVFvZU2mBBpfaE5nY873hePRrMK/Dhiu2aD5R/ll6d7b3mT7oiWzO/rMgQ+U/DcMmgqHYiYrtEz4umi+1EuSLURDAxyv3rDiXHhEWwbYcHfE1Tcfs07Aj4JWSZheploBRpg3iqzMbw=
