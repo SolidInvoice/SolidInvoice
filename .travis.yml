@@ -19,6 +19,8 @@ sudo: false
 # cache vendor dirs
 cache:
   directories:
+    - vendor
+    - bin
     - $HOME/.composer/cache
 
 before_install:
