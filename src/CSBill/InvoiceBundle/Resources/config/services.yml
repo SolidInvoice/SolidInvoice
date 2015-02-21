@@ -30,6 +30,12 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
 
+    invoice.listener.paid:
+        class: CSBill\InvoiceBundle\Listener\InvoicePaidListener
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: kernel.event_listener, event: invoice.post_paid, method: onInvoicePaid }
+
     invoice.form.type:
         class: CSBill\InvoiceBundle\Form\Type\InvoiceType
         arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]

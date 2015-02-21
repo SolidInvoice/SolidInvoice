@@ -73,6 +73,6 @@ services:
 
     csbill.payment.listener.payment_complete_listener:
         class: %csbill.payment.listener.payment_complete_listener.class%
-        arguments: [@invoice.manager, @session, @translator, @router]
+        arguments: [@invoice.manager, @doctrine.orm.entity_manager, @session, @translator, @router]
         tags:
             - { name: kernel.event_listener, event: payment.complete, method: onPaymentComplete }

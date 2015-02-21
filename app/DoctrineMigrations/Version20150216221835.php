@@ -18,6 +18,8 @@ class Version20150216221835 extends AbstractMigration
         $this->addSql('ALTER TABLE payment_methods DROP FOREIGN KEY FK_4FABF983C182F730');
         $this->addSql('DROP INDEX IDX_4FABF983C182F730 ON payment_methods');
         $this->addSql('ALTER TABLE payment_methods DROP defaultStatus_id, CHANGE public internal TINYINT(1) DEFAULT NULL');
+
+        $this->addSql('INSERT INTO payment_methods (id, name, settings, created, updated, deleted, internal, enabled, payment_method) VALUES (NULL, "Cash", "a:0:{}", NOW(), NOW(), NULL, 0, 1, "cash"), (NULL, "Bank Transfer", "a:0:{}", NOW(), NOW(), NULL, 0, 1, "bank_transfer")');
     }
 
     public function down(Schema $schema)

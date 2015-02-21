@@ -46,7 +46,19 @@ class PaymentController extends BaseController
             throw new \Exception('This invoice cannot be paid');
         }
 
-        $form = $this->createForm(new PaymentForm(), null, array('user' => $this->getUser()));
+        $preferredChoices = $this->getRepository('CSBillPaymentBundle:PaymentMethod')
+            ->findBy(array('paymentMethod' => 'credit'));
+
+        $form = $this->createForm(
+            new PaymentForm(),
+            array(
+                'amount' => $invoice->getBalance()
+            ),
+            array(
+                'user' => $this->getUser(),
+                'preferred_choices' => $preferredChoices
+            )
+        );
 
         $form->handleRequest($request);
 
@@ -62,7 +74,7 @@ class PaymentController extends BaseController
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
-            $payment->setTotalAmount($invoice->getTotal());
+            $payment->setTotalAmount($data['amount']);
             $payment->setCurrencyCode($this->container->getParameter('currency'));
             $payment->setClient($invoice->getClient());
             $invoice->addPayment($payment);

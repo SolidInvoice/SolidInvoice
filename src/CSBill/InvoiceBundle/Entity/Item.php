@@ -166,7 +166,7 @@ class Item
      * @param  Invoice $invoice
      * @return Item
      */
-    public function setInvoice(Invoice $invoice)
+    public function setInvoice(Invoice $invoice = null)
     {
         $this->invoice = $invoice;
 

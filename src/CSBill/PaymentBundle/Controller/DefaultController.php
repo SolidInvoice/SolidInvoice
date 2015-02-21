@@ -1,12 +1,18 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\PaymentBundle\Controller;
 
 use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Form\PaymentMethodForm;
 use CSBill\PaymentBundle\Model\Status;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,6 +95,8 @@ class DefaultController extends BaseController
     {
         $paymentMethods = $this->get('payum')->getPaymentMethods();
 
+        unset($paymentMethods['credit']);
+
         return $this->render(
             'CSBillPaymentBundle:Default:index.html.twig',
             array(
@@ -96,46 +104,5 @@ class DefaultController extends BaseController
             )
         );
 
-    }
-
-    /**
-     * @param Request       $request
-     * @param PaymentMethod $payment
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function addAction(Request $request, PaymentMethod $payment = null)
-    {
-        $paymentMethod = $payment ?: new PaymentMethod();
-
-        $originalSettings = $paymentMethod->getSettings();
-
-        $form = $this->createForm(new PaymentMethodForm(), $paymentMethod);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $settings = $paymentMethod->getSettings();
-            foreach ($settings as $key => $value) {
-                if ('password' === $key && null === $value && !empty($originalSettings[$key])) {
-                    $settings[$key] = $originalSettings[$key];
-                    $payment->setSettings($settings);
-                    break;
-                }
-            }
-
-            $this->save($paymentMethod);
-
-            $this->flash($this->trans($payment ? 'payment.method.updated' : 'payment.method.added'), 'success');
-
-            return $this->redirect($this->generateUrl('_payment_settings_index'));
-        }
-
-        return $this->render(
-            'CSBillPaymentBundle:Default:add.html.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
     }
 }

@@ -5,6 +5,7 @@ payment:
         base_total: Base Total
         total: Total
         tite: "Payment for invoice #%id%"
+        balance: Outstanding balance
     flash:
         status:
             success: Payment has been completed

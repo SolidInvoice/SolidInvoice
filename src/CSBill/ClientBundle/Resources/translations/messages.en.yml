@@ -18,6 +18,7 @@ client:
             extra: Additional Contact Details
     stats:
         income: Income
+        credit: Credit Balance
         outstanding: Outstanding
         outstanding_invoices: Outstanding Invoices
         paid_invoices: Paid Invoices

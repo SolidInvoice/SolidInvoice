@@ -97,12 +97,10 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td class="thick-line"></td>
-                                        <td class="thick-line"></td>
-                                        {% if invoice.tax is not empty %}
-                                            <td class="thick-line"></td>
-                                        {% endif %}
-                                        <td class="thick-line text-center"><strong>{{ 'invoice.subtotal'|trans }}</strong></td>
+                                        <td class="no-line"></td>
+                                        <td colspan="2" class="thick-line text-right">
+                                            <strong>{{ 'invoice.subtotal'|trans }}</strong>
+                                        </td>
                                         <td class="thick-line text-right">
                                             <div class="invoice-sub-total">
                                                 {{ invoice.baseTotal|currency }}
@@ -112,9 +110,9 @@
                                     {% if invoice.tax is not empty %}
                                         <tr>
                                             <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line text-center"><strong>{{ 'invoice.tax'|trans }}</strong></td>
+                                            <td colspan="2" class="no-line text-right">
+                                                <strong>{{ 'invoice.tax'|trans }}</strong>
+                                            </td>
                                             <td class="no-line text-right">
                                                 <span class="text-error invoice-tax">
                                                     {{ invoice.tax|currency }}
@@ -125,11 +123,9 @@
                                     {% if invoice.discount is not empty %}
                                         <tr>
                                             <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            {% if invoice.tax is not empty %}
-                                                <td class="no-line"></td>
-                                            {% endif %}
-                                            <td class="no-line text-center"><strong>{{ 'invoice.discount'|trans }}</strong></td>
+                                            <td colspan="2" class="no-line text-right">
+                                                <strong>{{ 'invoice.discount'|trans }}</strong>
+                                            </td>
                                             <td class="no-line text-right">
                                                 <span class="text-danger invoice-discount">
                                                     {{ invoice.baseTotal|percentage(invoice.discount)|currency }}
@@ -137,16 +133,43 @@
                                             </td>
                                         </tr>
                                     {% endif %}
+                                    {% set paid = 0 %}
+                                    {% if invoice.payments|length > 0 and invoice.balance != 0 %}
+                                        {% for payment in invoice.payments %}
+                                            <tr>
+                                                <td class="no-line"></td>
+                                                <td colspan="2" class="no-line text-right">
+                                                    <strong>
+                                                        Payment:
+                                                    </strong>
+                                                    {{ payment.method.name }}
+                                                </td>
+                                                <td class="no-line text-right">
+                                                    <div class="text-danger invoice-total">
+                                                        -{{ payment.totalAmount|currency }}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
                                     <tr>
                                         <td class="no-line"></td>
-                                        <td class="no-line"></td>
-                                        {% if invoice.tax is not empty %}
-                                            <td class="no-line"></td>
-                                        {% endif %}
-                                        <td class="no-line text-center"><strong>{{ 'invoice.total'|trans }}</strong></td>
+                                        <td colspan="2" class="no-line text-right">
+                                            <strong>
+                                                {% if invoice.payments|length > 0 and invoice.balance != 0 %}
+                                                    {{ 'invoice.balance'|trans }}
+                                                {% else %}
+                                                    {{ 'invoice.total'|trans }}
+                                                {% endif %}
+                                            </strong>
+                                        </td>
                                         <td class="no-line text-right">
                                             <div class="invoice-total">
-                                                {{ invoice.total|currency }}
+                                                {% if invoice.payments|length > 0 and invoice.balance != 0 %}
+                                                    {{ invoice.balance|currency }}
+                                                {% else %}
+                                                    {{ invoice.total|currency }}
+                                                {% endif %}
                                             </div>
                                         </td>
                                     </tr>

@@ -82,6 +82,14 @@ class Invoice
     /**
      * @var float
      *
+     * @ORM\Column(name="balance", type="float")
+     * @Grid\Column(visible=false)
+     */
+    private $balance;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="tax", type="float", nullable=true)
      * @Grid\Column(type="number", style="currency")
      */
@@ -129,8 +137,7 @@ class Invoice
     /**
      * @var ArrayCollection $items
      *
-     * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist"})
-     * @Orm\OrderBy({"description" = "ASC"})
+     * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
      */
@@ -315,6 +322,26 @@ class Invoice
     }
 
     /**
+     * @return float
+     */
+    public function getBalance()
+    {
+        return $this->balance;
+    }
+
+    /**
+     * @param float $balance
+     *
+     * @return $this
+     */
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
+
+        return $this;
+    }
+
+    /**
      * Set discount
      *
      * @param float $discount
@@ -411,6 +438,7 @@ class Invoice
     public function removeItem(Item $item)
     {
         $this->items->removeElement($item);
+        $item->setInvoice(null);
 
         return $this;
     }

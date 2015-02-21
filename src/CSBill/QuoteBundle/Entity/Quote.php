@@ -120,8 +120,7 @@ class Quote
     /**
      * @var ArrayCollection $items
      *
-     * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist"})
-     * @Orm\OrderBy({"description" = "ASC"})
+     * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
      */
@@ -366,6 +365,7 @@ class Quote
     public function removeItem(Item $item)
     {
         $this->items->removeElement($item);
+        $item->setQuote(null);
 
         return $this;
     }

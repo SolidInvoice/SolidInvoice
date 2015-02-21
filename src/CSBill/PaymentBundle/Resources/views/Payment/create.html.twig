@@ -30,6 +30,11 @@
 
                         <dt>{{ 'payment.create.total'|trans }}</dt>
                         <dd>{{ invoice.total|currency }}</dd>
+
+                        {% if invoice.payments|length > 0 and invoice.balance != 0 %}
+                            <dt>{{ 'payment.create.balance'|trans }}</dt>
+                            <dd>{{ invoice.balance|currency }}</dd>
+                        {% endif %}
                     </dl>
                 </div>
             </div>

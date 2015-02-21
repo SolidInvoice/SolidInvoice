@@ -36,12 +36,15 @@ class PaymentForm extends AbstractType
 
                     // If user is not logged in, exclude internal payment methods
                     if (null === $options['user']) {
-                        $queryBuilder->AndWhere($expression->eq('pm.internal', 0));
+                        $queryBuilder->andWhere($expression->eq('pm.internal', 0));
                     }
+
+                    $queryBuilder->orderBy($expression->asc('pm.name'));
 
                     return $queryBuilder;
                 },
                 'required' => true,
+                'preferred_choices' => $options['preferred_choices'],
                 'constraints' => new NotBlank(),
                 'placeholder' => 'Choose Payment Method',
                 'attr' => array(
@@ -49,6 +52,8 @@ class PaymentForm extends AbstractType
                 ),
             )
         );
+
+        $builder->add('amount', 'money');
     }
 
     /**
@@ -56,7 +61,7 @@ class PaymentForm extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('user'));
+        $resolver->setRequired(array('user', 'preferred_choices'));
     }
 
     /**

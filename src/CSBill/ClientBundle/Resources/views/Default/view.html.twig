@@ -22,7 +22,6 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-
     {% set totalAddresses = client.addresses|length %}
 
     <div id="client-view">
@@ -63,6 +62,12 @@
                             </div>
                         {% endif %}
                     {% endfor %}
+
+                    <br class="clear" />
+
+                    <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success add-contact-button" data-id="{{ client.id }}">
+                        {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
+                    </a>
                 </div>
                 <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
                 </div>
@@ -123,11 +128,9 @@
             </div>
         {% endif %}
     </div>
-
 {% endblock content %}
 
 {% block sidebar_right %}
-
     <div class="widget">
         <div class="text-center client-actions">
             <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
@@ -136,10 +139,8 @@
             <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
                 {{ icon('file', ['text', 'o']) }} {{ "client.view.actions.create_invoice"|trans }}
             </a>
-            <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success btn-lg add-contact-button" data-id="{{ client.id }}">
-                {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
-            </a>
         </div>
+        <hr />
         <div class="row">
             <div class="text-center text-success">
                 <h3>{{ total_income|currency }}</h3>
@@ -149,7 +150,16 @@
                 <h3>{{ total_outstanding|currency }}</h3>
                 {{ "client.stats.outstanding"|trans }}
             </div>
+            <div class="text-center text-info">
+                <h3>{{ client.credit.value|currency }}</h3>
+
+                <a href="#" rel="tooltip" title="Add Credit">
+                    {{ icon('plus-circle') }}
+                    {{ "client.stats.credit"|trans }}
+                </a>
+            </div>
         </div>
+        <hr />
         <br class="clearfix" />
         <ul class="nav nav-list">
             <li>

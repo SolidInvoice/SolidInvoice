@@ -6,14 +6,6 @@ _payment_settings_index:
     path:  /methods/
     defaults: { _controller: CSBillPaymentBundle:Default:index }
 
-_payments_add:
-    path:  /methods/add
-    defaults: { _controller: CSBillPaymentBundle:Default:add }
-
-_payments_edit:
-    path:  /methods/edit/{id}
-    defaults: { _controller: CSBillPaymentBundle:Default:add }
-
 _payment_method_settings:
     path:  /method/settings/{method}
     defaults: { _controller: CSBillPaymentBundle:Ajax:loadSettings }

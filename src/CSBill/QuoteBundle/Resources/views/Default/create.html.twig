@@ -256,6 +256,8 @@
 
     {% if form.items|length == 0 %}
         Quote.addRow();
+    {% else %}
+        Quote.counter = {{ form.items|length }};
     {% endif %}
 
 {% endspaceless %}

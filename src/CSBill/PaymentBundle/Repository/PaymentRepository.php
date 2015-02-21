@@ -62,6 +62,29 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
+     * Returns an array of all the payments for an invoice
+     *
+     * @param Invoice $invoice
+     *
+     * @return float
+     */
+    public function getTotalPaidForInvoice(Invoice $invoice)
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        $queryBuilder
+            ->select('SUM(p.totalAmount) as total')
+            ->where('p.invoice = :invoice')
+            ->andWhere('p.status = :status')
+            ->setParameter('invoice', $invoice)
+            ->setParameter('status', Status::STATUS_CAPTURED);
+
+        $query = $queryBuilder->getQuery();
+
+        return (float) $query->getSingleScalarResult();
+    }
+
+    /**
      * Returns an array of all the payments for a client
      *
      * @param Client $client

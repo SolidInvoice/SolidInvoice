@@ -260,6 +260,8 @@
 
         {% if form.items|length == 0 %}
             Invoice.addRow();
+        {% else %}
+            Invoice.counter = {{ form.items|length }};
         {% endif %}
     {% endspaceless %}
 {% endblock %}
