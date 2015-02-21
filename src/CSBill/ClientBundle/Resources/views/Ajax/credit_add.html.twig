@@ -1,0 +1,27 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{{ form_start(form) }}
+    <div class="modal-header">
+        <h3>{{ "client.modal.add_credit"|trans }}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            {{ form_row(form) }}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-warning">
+            {{ icon('times') }} {{ "client.modal.action.close"|trans }}
+        </button>
+        <button type="submit" class="btn btn-success">
+            {{ icon('save') }} {{ "client.modal.action.save"|trans }}
+        </button>
+    </div>
+{{ form_end(form) }}

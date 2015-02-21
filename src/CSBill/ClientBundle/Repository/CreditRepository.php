@@ -18,6 +18,8 @@ class CreditRepository extends EntityRepository
     /**
      * @param Client $client
      * @param float  $amount
+     *
+     * @return \CSBill\ClientBundle\Entity\Credit
      */
     public function addCredit(Client $client, $amount)
     {
@@ -28,5 +30,7 @@ class CreditRepository extends EntityRepository
         $entityManager = $this->getEntityManager();
         $entityManager->persist($credit);
         $entityManager->flush();
+
+        return $client->getCredit();
     }
 }

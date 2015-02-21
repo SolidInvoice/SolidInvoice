@@ -112,6 +112,8 @@ class DefaultController extends BaseController
             }
         )->setSafe(false);
 
+        $grid->getColumn('credit.value')->setCurrencyCode($this->container->getParameter('currency'));
+
         $grid->getColumn('status.name')->manipulateRenderCell(
             function ($value, \APY\DataGridBundle\Grid\Row $row) {
                 $label = $row->getField('status.label');

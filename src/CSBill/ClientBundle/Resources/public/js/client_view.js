@@ -15,6 +15,38 @@
         /**
          * ADD CONTACT
          */
+        $('#add-credit-button').ajaxModal('#credit-ajax-modal', function() {
+            var modal = $(this.$modal),
+                addCredit = function(evt) {
+                    var form = $(this);
+
+                    evt.preventDefault();
+
+                    modal.modal('loading');
+
+                    $.ajax({
+                        "url": form.attr('action'),
+                        "dataType" : "json",
+                        "data" : form.serialize(),
+                        "method": "post",
+                        "success" : function(data) {
+                            if ('success' === data.status) {
+                                modal.modal('hide');
+                                $('#client-credit-value').text(accounting.formatMoney(data.amount));
+                            } else {
+                                modal.html(data.content);
+                                $('form', modal).on('submit', addCredit);
+                            }
+                        }
+                    });
+                };
+
+            $('form', modal).on('submit', addCredit);
+        });
+
+        /**
+         * ADD CONTACT
+         */
         $('.add-contact-button').ajaxModal('#contacts-ajax-modal', function() {
 
             window.attachContactListeners();

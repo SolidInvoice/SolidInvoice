@@ -29,6 +29,10 @@ _clients_info:
     options:
         expose: true
 
+_clients_add_credit:
+    pattern:   /ajax/credit/add/{id}
+    defaults:  { _controller: CSBillClientBundle:Credit:add }
+
 _clients_add_contact:
     pattern:   /ajax/contacts/add/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:addcontact }

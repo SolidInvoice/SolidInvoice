@@ -36,10 +36,16 @@ client:
             add_contact: Add Contact
             edit: Edit
             delete: Delete
+            add_credit: Add Credit
     heading:
         payments: Payments
         addresses: Addresses
         contacts: Contacts
+    modal:
+        add_credit: Add Credit
+        action:
+            close: Close
+            save: Save
 
 email: Email
 clients: Clients

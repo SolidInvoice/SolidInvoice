@@ -38,7 +38,20 @@ class InvoiceRepository extends EntityRepository
      */
     public function getTotalOutstanding(Client $client = null)
     {
-        return $this->getTotalByStatus(Graph::STATUS_PENDING, $client);
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select('SUM(i.balance)')
+            ->where('i.status = :status')
+            ->setParameter('status', Graph::STATUS_PENDING);
+
+        if (null !== $client) {
+            $qb->andWhere('i.client = :client')
+                ->setParameter('client', $client);
+        }
+
+        $query = $qb->getQuery();
+
+        return (float) $query->getSingleScalarResult();
     }
 
     /**
