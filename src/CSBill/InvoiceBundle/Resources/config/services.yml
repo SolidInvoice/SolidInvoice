@@ -36,6 +36,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: invoice.post_paid, method: onInvoicePaid }
 
+    invoice.listener.cancel:
+        class: CSBill\InvoiceBundle\Listener\InvoiceCancelListener
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: kernel.event_listener, event: invoice.post_cancel, method: onInvoiceCancelled }
+
     invoice.form.type:
         class: CSBill\InvoiceBundle\Form\Type\InvoiceType
         arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]

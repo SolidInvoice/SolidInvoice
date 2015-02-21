@@ -12,7 +12,9 @@ namespace CSBill\PaymentBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Model\Status;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 
 class PaymentRepository extends EntityRepository
@@ -235,5 +237,32 @@ class PaymentRepository extends EntityRepository
         }
 
         return $payments;
+    }
+
+    /**
+     * @param Payment[]|Collection $payments
+     * @param string               $status
+     *
+     * @return mixed
+     */
+    public function updatePaymentStatus($payments, $status)
+    {
+        if (!is_array($payments) && !$payments instanceof \Traversable) {
+            $payments = array($payments);
+        }
+
+        if ($payments instanceof Collection) {
+            $payments = $payments->toArray();
+        }
+
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->update()
+            ->set('p.status', ':status')
+            ->where('p.id in (:payments)')
+            ->setParameter('status', $status)
+            ->setParameter('payments', $payments);
+
+        return $qb->getQuery()->execute();
     }
 }

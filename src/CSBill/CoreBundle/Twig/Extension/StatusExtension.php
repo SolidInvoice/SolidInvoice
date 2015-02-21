@@ -58,6 +58,7 @@ class StatusExtension extends \Twig_Extension
         PaymentStatus::STATUS_NEW => 'info',
         PaymentStatus::STATUS_AUTHORIZED => 'info',
         PaymentStatus::STATUS_REFUNDED => 'warning',
+        PaymentStatus::STATUS_CREDIT => 'success',
     );
 
     /**

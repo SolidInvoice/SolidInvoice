@@ -177,7 +177,7 @@ class InvoiceManager extends ContainerAware
      */
     public function cancel(Invoice $invoice)
     {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoiceEvent($invoice));
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CANCEL, new InvoiceEvent($invoice));
 
         $this->applyTransition($invoice, Graph::TRANSITION_CANCEL);
 
@@ -197,14 +197,14 @@ class InvoiceManager extends ContainerAware
      */
     public function reopen(Invoice $invoice)
     {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoiceEvent($invoice));
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_REOPEN, new InvoiceEvent($invoice));
 
         $this->applyTransition($invoice, Graph::TRANSITION_REOPEN);
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CANCEL, new InvoiceEvent($invoice));
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_REOPEN, new InvoiceEvent($invoice));
 
         return $invoice;
     }
