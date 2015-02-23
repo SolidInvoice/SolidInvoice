@@ -15,7 +15,7 @@ use Doctrine\ORM\Query\Expr;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PaymentForm extends AbstractType
 {
@@ -45,7 +45,7 @@ class PaymentForm extends AbstractType
                 },
                 'required' => true,
                 'preferred_choices' => $options['preferred_choices'],
-                'constraints' => new NotBlank(),
+                'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
                 'attr' => array(
                     'class' => 'select2',
@@ -53,7 +53,16 @@ class PaymentForm extends AbstractType
             )
         );
 
-        $builder->add('amount', 'money');
+        $builder->add(
+            'amount',
+            'money',
+            array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\GreaterThan(0)
+                )
+            )
+        );
 
         if (null !== $options['user']) {
             $builder->add('capture_online', 'checkbox', array('data' => true));
