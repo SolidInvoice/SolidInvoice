@@ -46,7 +46,19 @@ class PaymentController extends BaseController
             throw new \Exception('This invoice cannot be paid');
         }
 
-        $form = $this->createForm(new PaymentForm(), null, array('user' => $this->getUser()));
+        $preferredChoices = $this->getRepository('CSBillPaymentBundle:PaymentMethod')
+            ->findBy(array('paymentMethod' => 'credit'));
+
+        $form = $this->createForm(
+            new PaymentForm(),
+            array(
+                'amount' => $invoice->getBalance()
+            ),
+            array(
+                'user' => $this->getUser(),
+                'preferred_choices' => $preferredChoices
+            )
+        );
 
         $form->handleRequest($request);
 
@@ -58,24 +70,60 @@ class PaymentController extends BaseController
 
             $paymentName = $paymentMethod->getPaymentMethod();
 
+            if ('credit' === $paymentName) {
+                $clientCredit = $invoice->getClient()->getCredit()->getValue();
+                $invalid = '';
+                if ($data['amount'] > $clientCredit) {
+                    $invalid = 'payment.create.exception.not_enough_credit';
+                } elseif ($data['amount'] > $invoice->getBalance()) {
+                    $invalid = 'payment.create.exception.amount_exceeds_balance';
+                }
+
+                if (!empty($invalid)) {
+                    $this->flash($this->trans($invalid), 'error');
+                    return $this->redirectToRoute(
+                        '_payments_create',
+                        array(
+                            'uuid' => $invoice->getUuid()
+                        )
+                    );
+                }
+
+                $data['capture_online'] = true;
+            }
+
             $payment = new Payment();
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
-            $payment->setTotalAmount($invoice->getTotal());
+            $payment->setTotalAmount($data['amount']);
             $payment->setCurrencyCode($this->container->getParameter('currency'));
             $payment->setClient($invoice->getClient());
             $invoice->addPayment($payment);
-
             $this->save($payment);
 
-            $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
-                $paymentName,
-                $payment,
-                '_payments_done' // the route to redirect after capture;
-            );
+            if (array_key_exists('capture_online', $data) && true === $data['capture_online']) {
+                $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
+                    $paymentName,
+                    $payment,
+                    '_payments_done' // the route to redirect after capture;
+                );
 
-            return $this->redirect($captureToken->getTargetUrl());
+                return $this->redirect($captureToken->getTargetUrl());
+            } else {
+                $payment->setStatus(Status::STATUS_CAPTURED);
+                $payment->setCompleted(new \DateTime('now'));
+                $this->save($payment);
+
+                $event = new PaymentCompleteEvent($payment);
+                $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
+
+                if ($response = $event->getResponse()) {
+                    return $response;
+                }
+
+                return $this->redirectToRoute('_payments_index');
+            }
         }
 
         return $this->render(

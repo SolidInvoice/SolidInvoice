@@ -13,6 +13,7 @@ namespace CSBill\PaymentBundle\Listener;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Model\Status;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -42,13 +43,20 @@ class PaymentCompleteListener
     private $router;
 
     /**
+     * @var ObjectManager
+     */
+    private $manager;
+
+    /**
      * @param InvoiceManager      $invoiceManager
+     * @param ObjectManager       $manager
      * @param SessionInterface    $session
      * @param TranslatorInterface $translator
      * @param RouterInterface     $router
      */
     public function __construct(
         InvoiceManager $invoiceManager,
+        ObjectManager $manager,
         SessionInterface $session,
         TranslatorInterface $translator,
         RouterInterface $router
@@ -57,6 +65,7 @@ class PaymentCompleteListener
         $this->session = $session;
         $this->translator = $translator;
         $this->router = $router;
+        $this->manager = $manager;
     }
 
     /**
@@ -69,9 +78,20 @@ class PaymentCompleteListener
 
         $this->addFlashMessage($status, $payment->getMessage());
 
+        if ('credit' === $payment->getMethod()->getPaymentMethod()) {
+            $creditRepository = $this->manager->getRepository('CSBillClientBundle:Credit');
+            $creditRepository->deductCredit($payment->getClient(), $payment->getTotalAmount());
+        }
+
         if (null !== $invoice = $event->getPayment()->getInvoice()) {
-            if ($status === Status::STATUS_CAPTURED) {
+            if ($status === Status::STATUS_CAPTURED && $this->invoiceManager->isFullyPaid($invoice)) {
                 $this->invoiceManager->pay($invoice);
+            } else {
+                $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
+                $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+                $invoice->setBalance($invoice->getTotal() - $totalPaid);
+                $this->manager->persist($invoice);
+                $this->manager->flush();
             }
 
             $event->setResponse(

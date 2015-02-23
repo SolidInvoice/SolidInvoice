@@ -162,6 +162,8 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $invoiceManager = $this->get('invoice.manager');
 
+            $invoice->setBalance($invoice->getTotal());
+
             $invoiceManager->create($invoice);
 
             if ($action === Graph::STATUS_PENDING) {
@@ -192,8 +194,18 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $invoiceManager = $this->get('invoice.manager');
 
+            /** @var PaymentRepository $paymentRepository */
+            $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
+            $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+
+            // @TODO: If current invoice total is updated to less than the total amount paid,
+            // then the balance needs to be added as credit
+            $invoice->setBalance($invoice->getTotal() - $totalPaid);
+
             if ($action === Graph::STATUS_PENDING) {
                 $invoiceManager->accept($invoice);
+            } else {
+                $this->save($invoice);
             }
 
             $this->flash($this->trans('invoice.edit.success'), 'success');

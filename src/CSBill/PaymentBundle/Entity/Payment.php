@@ -66,7 +66,7 @@ class Payment
     /**
      * @var string $status
      *
-     * @ORM\Column(name="status", type="string")
+     * @ORM\Column(name="status", type="string", length=25)
      */
     private $status;
 

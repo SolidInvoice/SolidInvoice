@@ -18,6 +18,7 @@ client:
             extra: Additional Contact Details
     stats:
         income: Income
+        credit: Credit Balance
         outstanding: Outstanding
         outstanding_invoices: Outstanding Invoices
         paid_invoices: Paid Invoices
@@ -35,10 +36,16 @@ client:
             add_contact: Add Contact
             edit: Edit
             delete: Delete
+            add_credit: Add Credit
     heading:
         payments: Payments
         addresses: Addresses
         contacts: Contacts
+    modal:
+        add_credit: Add Credit
+        action:
+            close: Close
+            save: Save
 
 email: Email
 clients: Clients

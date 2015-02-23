@@ -168,7 +168,7 @@ class Item
      *
      * @return Item
      */
-    public function setQuote(Quote $quote)
+    public function setQuote(Quote $quote = null)
     {
         $this->quote = $quote;
 

@@ -23,4 +23,7 @@ final class InvoiceEvents
 
     const INVOICE_PRE_CREATE = 'invoice.pre_create';
     const INVOICE_POST_CREATE = 'invoice.post_create';
+
+    const INVOICE_PRE_REOPEN = 'invoice.pre_reopen';
+    const INVOICE_POST_REOPEN = 'invoice.post_reopen';
 }

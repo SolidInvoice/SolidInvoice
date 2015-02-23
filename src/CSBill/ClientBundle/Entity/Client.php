@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="clients")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ClientRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
@@ -34,7 +35,7 @@ class Client
         Entity\SoftDeleteable;
 
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -43,7 +44,7 @@ class Client
     private $id;
 
     /**
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
      * @Assert\NotBlank()
@@ -52,7 +53,7 @@ class Client
     private $name;
 
     /**
-     * @var string $website
+     * @var string
      *
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
@@ -61,7 +62,7 @@ class Client
     private $website;
 
     /**
-     * @var Status $status
+     * @var Status
      *
      * @ORM\ManyToOne(targetEntity="Status", inversedBy="clients")
      * @Assert\Valid()
@@ -71,7 +72,7 @@ class Client
     private $status;
 
     /**
-     * @var ArrayCollection $contacts
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\OrderBy({"firstname" = "ASC"})
@@ -81,7 +82,7 @@ class Client
     private $contacts;
 
     /**
-     * @var ArrayCollection $quotes
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"created" = "DESC"})
@@ -90,7 +91,7 @@ class Client
     private $quotes;
 
     /**
-     * @var ArrayCollection $invoices
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"created" = "DESC"})
@@ -99,26 +100,26 @@ class Client
     private $invoices;
 
     /**
-     * @var ArrayCollection $payments
+     * @var ArrayCollection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
-     *     mappedBy="client",
-     *     cascade={"persist"}
-     * )
+     * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist"})
      */
     private $payments;
 
     /**
-     * @var ArrayCollection $addresses
+     * @var ArrayCollection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="CSBill\ClientBundle\Entity\Address",
-     *     mappedBy="client",
-     *     cascade={"persist"}
-     * )
+     * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist"})
      */
     private $addresses;
+
+    /**
+     * @var Credit
+     *
+     * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @GRID\Column(field="credit.value", title="Credit", type="number", style="currency")
+     */
+    private $credit;
 
     /**
      * Constructer
@@ -400,6 +401,35 @@ class Client
     public function getAddresses()
     {
         return $this->addresses;
+    }
+
+    /**
+     * @return Credit
+     */
+    public function getCredit()
+    {
+        return $this->credit;
+    }
+
+    /**
+     * @param Credit $credit
+     */
+    public function setCredit($credit)
+    {
+        $this->credit = $credit;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setInitialCredit()
+    {
+        if (null === $this->id) {
+            $credit = new Credit();
+            $credit->setClient($this);
+            $credit->setValue(0);
+            $this->setCredit($credit);
+        }
     }
 
     /**

@@ -22,4 +22,5 @@ class Status
     const STATUS_CAPTURED = 'captured';
     const STATUS_AUTHORIZED = 'authorized';
     const STATUS_REFUNDED = 'refunded';
+    const STATUS_CREDIT = 'credit';
 }

@@ -5,6 +5,8 @@ payum:
     storages:
         CSBill\PaymentBundle\Entity\Payment:  {doctrine: orm}
     contexts:
+        credit:
+            offline: ~
         cash:
             offline: ~
 

@@ -17,6 +17,7 @@ use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
 use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\PaymentBundle\Repository\PaymentRepository;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -46,8 +47,11 @@ class InvoiceManager extends ContainerAware
      * @param EventDispatcherInterface $dispatcher
      * @param FactoryInterface         $stateMachine
      */
-    public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $dispatcher, FactoryInterface $stateMachine)
-    {
+    public function __construct(
+        ManagerRegistry $doctrine,
+        EventDispatcherInterface $dispatcher,
+        FactoryInterface $stateMachine
+    ) {
         $this->entityManager = $doctrine->getManager();
         $this->dispatcher = $dispatcher;
         $this->stateMachine = $stateMachine;
@@ -173,7 +177,7 @@ class InvoiceManager extends ContainerAware
      */
     public function cancel(Invoice $invoice)
     {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoiceEvent($invoice));
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CANCEL, new InvoiceEvent($invoice));
 
         $this->applyTransition($invoice, Graph::TRANSITION_CANCEL);
 
@@ -193,14 +197,14 @@ class InvoiceManager extends ContainerAware
      */
     public function reopen(Invoice $invoice)
     {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoiceEvent($invoice));
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_REOPEN, new InvoiceEvent($invoice));
 
         $this->applyTransition($invoice, Graph::TRANSITION_REOPEN);
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CANCEL, new InvoiceEvent($invoice));
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_REOPEN, new InvoiceEvent($invoice));
 
         return $invoice;
     }
@@ -223,6 +227,23 @@ class InvoiceManager extends ContainerAware
         }
 
         throw new InvalidTransitionException($transition);
+    }
+
+    /**
+     * Checks if an invoice has been paid in full
+     *
+     * @param Invoice $invoice
+     *
+     * @return bool
+     */
+    public function isFullyPaid(Invoice $invoice)
+    {
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
+
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+
+        return $totalPaid >= $invoice->getBalance();
     }
 
     /**

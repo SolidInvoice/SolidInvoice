@@ -14,11 +14,13 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="payment_methods")
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentMethodRepository")
+ * @UniqueEntity("paymentMethod")
  * @Gedmo\SoftDeleteable()
  * @Gedmo\Loggable()
  */
@@ -47,7 +49,7 @@ class PaymentMethod
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_method", type="string", length=125)
+     * @ORM\Column(name="payment_method", type="string", length=125, unique=true)
      */
     private $paymentMethod;
 
