@@ -75,7 +75,7 @@ class PaymentController extends BaseController
                 $invalid = '';
                 if ($data['amount'] > $clientCredit) {
                     $invalid = 'payment.create.exception.not_enough_credit';
-                } else if ($data['amount'] > $invoice->getBalance()) {
+                } elseif ($data['amount'] > $invoice->getBalance()) {
                     $invalid = 'payment.create.exception.amount_exceeds_balance';
                 }
 

@@ -48,8 +48,7 @@ class CreditController extends BaseController
                 'form' => $form->createView(),
             )
         );
-        $response["content"] = $content;
 
-        return $this->json($response);
+        return $this->json(array('content' => $content));
     }
 }
