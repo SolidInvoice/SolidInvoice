@@ -78,6 +78,11 @@ class PaymentCompleteListener
 
         $this->addFlashMessage($status, $payment->getMessage());
 
+        if ('credit' === $payment->getMethod()->getPaymentMethod()) {
+            $creditRepository = $this->manager->getRepository('CSBillClientBundle:Credit');
+            $creditRepository->deductCredit($payment->getClient(), $payment->getTotalAmount());
+        }
+
         if (null !== $invoice = $event->getPayment()->getInvoice()) {
             if ($status === Status::STATUS_CAPTURED && $this->invoiceManager->isFullyPaid($invoice)) {
                 $this->invoiceManager->pay($invoice);

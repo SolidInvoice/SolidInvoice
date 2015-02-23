@@ -89,6 +89,7 @@ class PaymentController extends BaseController
                     );
                 }
 
+                $data['capture_online'] = true;
             }
 
             $payment = new Payment();
@@ -99,16 +100,30 @@ class PaymentController extends BaseController
             $payment->setCurrencyCode($this->container->getParameter('currency'));
             $payment->setClient($invoice->getClient());
             $invoice->addPayment($payment);
-
             $this->save($payment);
 
-            $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
-                $paymentName,
-                $payment,
-                '_payments_done' // the route to redirect after capture;
-            );
+            if (array_key_exists('capture_online', $data) && true === $data['capture_online']) {
+                $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
+                    $paymentName,
+                    $payment,
+                    '_payments_done' // the route to redirect after capture;
+                );
 
-            return $this->redirect($captureToken->getTargetUrl());
+                return $this->redirect($captureToken->getTargetUrl());
+            } else {
+                $payment->setStatus(Status::STATUS_CAPTURED);
+                $payment->setCompleted(new \DateTime('now'));
+                $this->save($payment);
+
+                $event = new PaymentCompleteEvent($payment);
+                $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
+
+                if ($response = $event->getResponse()) {
+                    return $response;
+                }
+
+                return $this->redirectToRoute('_payments_index');
+            }
         }
 
         return $this->render(

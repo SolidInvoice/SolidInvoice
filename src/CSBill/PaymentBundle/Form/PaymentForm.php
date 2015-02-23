@@ -54,6 +54,10 @@ class PaymentForm extends AbstractType
         );
 
         $builder->add('amount', 'money');
+
+        if (null !== $options['user']) {
+            $builder->add('capture_online', 'checkbox', array('data' => true));
+        }
     }
 
     /**

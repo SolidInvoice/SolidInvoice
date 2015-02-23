@@ -55,3 +55,18 @@
         </div>
     </div>
 {% endblock %}
+
+{% block script %}
+    $(function () {
+        var captureOnline = $('#payment_capture_online').parents('div.form-group');
+        $('#payment_payment_method').on('change', function () {
+            var val = $('option:selected', this).text();
+
+            if ('credit' === val.toLowerCase()) {
+                captureOnline.hide();
+            } else {
+                captureOnline.show();
+            }
+        });
+    });
+{% endblock %}
