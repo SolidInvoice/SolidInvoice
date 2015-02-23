@@ -6,6 +6,10 @@ payment:
         total: Total
         tite: "Payment for invoice #%id%"
         balance: Outstanding balance
+        credit: Credit:
+        exception:
+            not_enough_credit: Not have enough credit available
+            amount_exceeds_balance: Amount captured exceeds outstanding balance
     flash:
         status:
             success: Payment has been completed

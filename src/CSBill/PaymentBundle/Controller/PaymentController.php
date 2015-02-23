@@ -70,6 +70,27 @@ class PaymentController extends BaseController
 
             $paymentName = $paymentMethod->getPaymentMethod();
 
+            if ('credit' === $paymentName) {
+                $clientCredit = $invoice->getClient()->getCredit()->getValue();
+                $invalid = '';
+                if ($data['amount'] > $clientCredit) {
+                    $invalid = 'payment.create.exception.not_enough_credit';
+                } else if ($data['amount'] > $invoice->getBalance()) {
+                    $invalid = 'payment.create.exception.amount_exceeds_balance';
+                }
+
+                if (!empty($invalid)) {
+                    $this->flash($this->trans($invalid), 'error');
+                    return $this->redirectToRoute(
+                        '_payments_create',
+                        array(
+                            'uuid' => $invoice->getUuid()
+                        )
+                    );
+                }
+
+            }
+
             $payment = new Payment();
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);

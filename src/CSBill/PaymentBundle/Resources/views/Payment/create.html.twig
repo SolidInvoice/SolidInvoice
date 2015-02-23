@@ -3,16 +3,21 @@
 {% block title %}{{ "payment.create.tite"|trans|replace({"%id%" : invoice.id}) }}{% endblock %}
 
 {% block content %}
-
     <div class="row">
         <div class="col-md-6">
             <div class="widget">
                 <h3>
                     {{ invoice.client.name }}
                     <small>{{ status_label(invoice.client.status) }}</small>
+                    {% if invoice.client.credit.value is not empty %}
+                        <div class="pull-right">
+                            {{ 'payment.create.credit'|trans }}
+                            {{ invoice.client.credit.value|currency }}
+                        </div>
+                    {% endif %}
                 </h3>
 
-                <div class="">
+                <div>
                     <dl class="dl-horizontal">
                         {% for item in invoice.items %}
                             <dt>{{ item }}</dt>
