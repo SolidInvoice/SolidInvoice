@@ -1,12 +1,21 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\ClientBundle\Grid;
 
-use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Status;
 use CSBill\DataGridBundle\Action\ActionColumn;
 use CSBill\DataGridBundle\Action\Collection;
+use CSBill\DataGridBundle\Action\DeleteMassAction;
+use CSBill\DataGridBundle\Action\MassAction;
 use CSBill\DataGridBundle\Grid\Filters;
 use CSBill\DataGridBundle\GridInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -40,16 +49,6 @@ class ClientGrid implements GridInterface
      */
     public function getFilters(Filters $filters)
     {
-        $filters->add(
-            'all_clients',
-            null,
-            false,
-            array(
-                'active_class' => 'label label-info',
-                'default_class' => 'label label-default',
-            )
-        );
-
         /** @var Status[] $statusList */
         $statusList = $this->statusRepository->findAll();
 
@@ -67,15 +66,12 @@ class ClientGrid implements GridInterface
                 false,
                 array(
                     'active_class' => 'label label-' . $status->getLabel(),
-                    //'default_class' => 'label label-default',
                 )
             );
         }
 
         return $filters;
     }
-
-
 
     /**
      * {@inheritdoc}
@@ -88,7 +84,10 @@ class ClientGrid implements GridInterface
             ->setParameter('search', "%{$searchString}%");
     }
 
-    public function getActions(Collection $collection)
+    /**
+     * {@inheritdoc}
+     */
+    public function getRowActions(Collection $collection)
     {
         $viewAction = new ActionColumn();
         $viewAction->setIcon('eye')
@@ -123,7 +122,28 @@ class ClientGrid implements GridInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumns()
+    public function getMassActions()
+    {
+        $archive = new MassAction('Archive', function() {
+            var_dump(func_get_args());
+            exit;
+        }, true);
+
+        $archive->setIcon('archive');
+        $archive->setClass('warning');
+
+        $deleteAction = new DeleteMassAction(true);
+
+        return array(
+            $archive,
+            $deleteAction
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    /*public function getColumns()
     {
         $viewIcon = $templating->render('{{ icon("eye") }}');
         $viewAction = new RowAction($viewIcon, '_clients_view');
@@ -161,6 +181,14 @@ class ClientGrid implements GridInterface
             }
         )->setSafe(false);
 
+    }*/
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplate()
+    {
+        return 'CSBillClientBundle:Default:index.html.twig';
     }
 
     /**

@@ -53,7 +53,7 @@ class Invoice
      * @var string $status
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Grid\Column(name="status", type="status", field="status.name", title="status", filter="select", selectFrom="source", safe=false)
+     * @Grid\Column(name="status", type="status", field="status", title="status", filter="select", selectFrom="source", safe=false)
      */
     private $status;
 

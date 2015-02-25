@@ -66,14 +66,6 @@ class InvoiceManagerTest extends KernelTestCase
 
         $this
             ->entityManager
-            ->expects($this->at(2))
-            ->method('getClassMetadata')
-            ->with($quoteClass)
-            ->will($this->returnValue($container->get('doctrine')->getManager()->getClassMetadata($quoteClass)));
-
-
-        $this
-            ->entityManager
             ->expects($this->any())
             ->method('flush');
 

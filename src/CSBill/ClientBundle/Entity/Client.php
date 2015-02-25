@@ -74,7 +74,7 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @ORM\OrderBy({"firstname" = "ASC"})
      * @Assert\Valid()
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
@@ -84,7 +84,7 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
      */
@@ -93,7 +93,7 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
      */
@@ -102,21 +102,21 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
      */
     private $payments;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
      */
     private $addresses;
 
     /**
      * @var Credit
      *
-     * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @GRID\Column(field="credit.value", title="Credit", type="number", style="currency")
      */
     private $credit;

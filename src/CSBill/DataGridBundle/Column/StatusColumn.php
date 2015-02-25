@@ -1,8 +1,17 @@
 <?php
+/**
+ * This file is part of CSBill package.
+ *
+ * (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\DataGridBundle\Column;
 
 use APY\DataGridBundle\Grid\Column\TextColumn;
+use APY\DataGridBundle\Grid\Row;
 use Symfony\Component\Templating\EngineInterface;
 
 class StatusColumn extends TextColumn
@@ -12,10 +21,10 @@ class StatusColumn extends TextColumn
      */
     public function __construct(EngineInterface $twig)
     {
-        $this->callback = function ($value, \APY\DataGridBundle\Grid\Row $row) use ($twig) {
+        $this->callback = function ($value, Row $row) use ($twig) {
             $label = $row->getField('status.label');
 
-            $twig->render('CSBillCoreBundle:Status:label.html.twig',
+            return $twig->render('CSBillCoreBundle:Status:label.html.twig',
                 array(
                     'entity' => array(
                         'label' => $label,
@@ -23,8 +32,6 @@ class StatusColumn extends TextColumn
                     ),
                 )
             );
-
-            return '<span class="label label-' . $label . '">' . ucfirst($value) . '</span>';
         };
 
         parent::__construct();

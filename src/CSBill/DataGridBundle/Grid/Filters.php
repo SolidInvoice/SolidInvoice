@@ -13,30 +13,49 @@ namespace CSBill\DataGridBundle\Grid;
 
 class Filters implements \Iterator
 {
+
+    /**
+     * @var array
+     */
     protected $filters = array();
 
+    /**
+     * @var string
+     */
     protected $filterString;
 
+    /**
+     * @var int
+     */
     protected $pointer = 0;
 
+    /**
+     * @var bool
+     */
     protected $isFilterActive = false;
 
+    /**
+     * @var int
+     */
     protected $activeFilter;
 
+    /**
+     * @param string $filterString
+     */
     public function __construct($filterString)
     {
         $this->filterString = $filterString;
     }
 
     /**
-     * @param string        $name
-     * @param null|\Closure $callback
-     * @param bool          $default
-     * @param array         $options
+     * @param string   $name
+     * @param callable $callback
+     * @param bool     $default
+     * @param array    $options
      *
      * @return $this
      */
-    public function add($name, $callback, $default = false, array $options = array())
+    public function add($name, callable $callback, $default = false, array $options = array())
     {
         $active = $this->filterString === $name ?: $default;
 

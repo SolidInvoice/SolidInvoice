@@ -87,9 +87,6 @@ class DefaultController extends BaseController
         $actionsRow = new ActionsColumn('actions', 'Action', $rowActicons);
         $grid->addColumn($actionsRow, 100);
 
-        /*$grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));*/
-
         $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
             if (!empty($value)) {
                 return $value * 100 .'%';
