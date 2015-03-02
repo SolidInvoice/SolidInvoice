@@ -36,3 +36,7 @@ services:
         class: %csbill_client.contact_type.repository.class%
         factory_service: csbill_client.contact_type.repository
         factory_method:  findAll
+
+    csbill.client.grid:
+        class: CSBill\ClientBundle\Grid\ClientGrid
+        arguments: [@doctrine, @session]

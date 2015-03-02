@@ -38,7 +38,7 @@ class Grid extends DataGrid
     private $entity;
 
     /**
-     * @param GridInterface $grid
+     * @param GridInterface|string $grid
      *
      * @return $this
      * @throws \Exception

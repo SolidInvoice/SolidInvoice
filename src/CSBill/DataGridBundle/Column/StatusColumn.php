@@ -26,6 +26,7 @@ class StatusColumn extends TextColumn
     public function __construct(EngineInterface $twig)
     {
         $this->twig = $twig;
+
         parent::__construct();
     }
 

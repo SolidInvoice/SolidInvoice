@@ -29,7 +29,7 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $grid = $this->get('grid')->create(new ClientGrid($this->getEm()));
+        $grid = $this->get('grid')->create('csbill.client.grid');
 
         return $grid->getGridResponse();
     }

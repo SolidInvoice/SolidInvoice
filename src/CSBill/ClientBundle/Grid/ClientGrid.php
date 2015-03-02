@@ -20,9 +20,11 @@ use CSBill\DataGridBundle\Action\DeleteMassAction;
 use CSBill\DataGridBundle\Action\MassAction;
 use CSBill\DataGridBundle\Grid\Filters;
 use CSBill\DataGridBundle\GridInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ClientGrid implements GridInterface
 {
@@ -32,11 +34,18 @@ class ClientGrid implements GridInterface
     private $objectManager;
 
     /**
-     * @param EntityManagerInterface $objectManager
+     * @var SessionInterface
      */
-    public function __construct(EntityManagerInterface $objectManager)
+    private $session;
+
+    /**
+     * @param ManagerRegistry  $doctrine
+     * @param SessionInterface $session
+     */
+    public function __construct(ManagerRegistry $doctrine, SessionInterface $session)
     {
-        $this->objectManager = $objectManager;
+        $this->objectManager = $doctrine->getManager();
+        $this->session = $session;
     }
 
     /**
@@ -144,7 +153,9 @@ class ClientGrid implements GridInterface
 
             $this->objectManager->flush();
 
-            // TODO: Set flash message
+            /** @var FlashBag $flashBag */
+            $flashBag = $this->session->getBag('flashes');
+            $flashBag->add('success', 'client.archive.success');
         }, true);
 
         $archive->setIcon('archive');
@@ -157,49 +168,6 @@ class ClientGrid implements GridInterface
             $deleteAction
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    /*public function getColumns()
-    {
-        $viewIcon = $templating->render('{{ icon("eye") }}');
-        $viewAction = new RowAction($viewIcon, '_clients_view');
-        $viewAction->addAttribute('title', $translator->trans('view_client'));
-        $viewAction->addAttribute('rel', 'tooltip');
-
-        $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_clients_edit');
-        $editAction->addAttribute('title', $translator->trans('edit_client'));
-        $editAction->addAttribute('rel', 'tooltip');
-
-        $deleteIcon = $templating->render('{{ icon("times") }}');
-        $deleteAction = new RowAction($deleteIcon, '_clients_delete');
-        $deleteAction->setAttributes(
-            array(
-                'title' => $translator->trans('delete_client'),
-                'rel' => 'tooltip',
-                'data-confirm' => $translator->trans('confirm_delete'),
-                'class' => 'delete-client',
-            )
-        );
-
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
-        $grid->addColumn($actionsRow, 100);
-
-        $grid->hideColumns(array('updated', 'deletedAt'));
-
-        $grid->getColumn('website')->manipulateRenderCell(
-            function ($value) {
-                if (!empty($value)) {
-                    return '<a href="' . $value . '" target="_blank">' . $value . '<a>';
-                }
-
-                return $value;
-            }
-        )->setSafe(false);
-
-    }*/
 
     /**
      * {@inheritdoc}
