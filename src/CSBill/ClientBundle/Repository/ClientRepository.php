@@ -34,8 +34,7 @@ class ClientRepository extends EntityRepository
         $qb->select('COUNT(c.id)');
 
         if (null !== $status) {
-            $qb->join('c.status', 's')
-                ->where('s.name = :status')
+            $qb->where('c.status = :status')
                 ->setParameter('status', $status);
         }
 
@@ -56,13 +55,13 @@ class ClientRepository extends EntityRepository
         $qb = $this->createQueryBuilder('c');
 
         $qb->select(
-            'c.id',
-            'c.name',
-            'c.created',
-            's.name as status',
-            's.label as status_label'
+            array(
+                'c.id',
+                'c.name',
+                'c.created',
+                'c.status',
+            )
         )
-            ->join('c.status', 's')
             ->orderBy('c.created', 'DESC')
             ->setMaxResults($limit);
 

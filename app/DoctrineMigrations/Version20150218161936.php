@@ -46,6 +46,26 @@ class Version20150218161936 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql(
+            sprintf(
+                "UPDATE payments SET status = CASE status
+                  WHEN '%s' THEN 3
+                  WHEN '%s' THEN 4
+                  WHEN '%s' THEN 5
+                  WHEN '%s' THEN 6
+                  WHEN '%s' THEN 7
+                  WHEN '%s' THEN 8
+                  WHEN '%s' THEN 9 END",
+                Status::STATUS_UNKNOWN,
+                Status::STATUS_FAILED,
+                Status::STATUS_SUSPENDED,
+                Status::STATUS_EXPIRED,
+                Status::STATUS_CAPTURED,
+                Status::STATUS_PENDING,
+                Status::STATUS_CANCELLED
+            )
+        );
+
         $this->addSql('ALTER TABLE payments CHANGE status status_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE payments ADD CONSTRAINT FK_65D29B326BF700BD FOREIGN KEY (status_id) REFERENCES status (id)');
         $this->addSql('CREATE INDEX IDX_65D29B326BF700BD ON payments (status_id)');

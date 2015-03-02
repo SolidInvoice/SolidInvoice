@@ -11,29 +11,32 @@
 namespace CSBill\ClientBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
-use CSBill\ClientBundle\Entity\Status;
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Model\Status;
+use CSBill\ClientBundle\Repository\ClientRepository;
 use CSBill\DataGridBundle\Action\ActionColumn;
 use CSBill\DataGridBundle\Action\Collection;
 use CSBill\DataGridBundle\Action\DeleteMassAction;
 use CSBill\DataGridBundle\Action\MassAction;
 use CSBill\DataGridBundle\Grid\Filters;
 use CSBill\DataGridBundle\GridInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
 class ClientGrid implements GridInterface
 {
     /**
-     * @var ObjectRepository
+     * @var ObjectManager
      */
-    private $statusRepository;
+    private $objectManager;
 
     /**
-     * @param ObjectRepository $statusRepository
+     * @param EntityManagerInterface $objectManager
      */
-    public function __construct(ObjectRepository $statusRepository)
+    public function __construct(EntityManagerInterface $objectManager)
     {
-        $this->statusRepository = $statusRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -41,6 +44,8 @@ class ClientGrid implements GridInterface
      */
     public function getSource()
     {
+        //$this->objectManager->getFilters()->disable('archivable');
+
         return new Entity('CSBillClientBundle:Client');
     }
 
@@ -49,26 +54,27 @@ class ClientGrid implements GridInterface
      */
     public function getFilters(Filters $filters)
     {
-        /** @var Status[] $statusList */
-        $statusList = $this->statusRepository->findAll();
+        $callback = function (QueryBuilder $queryBuilder, $status) {
+            $aliases = $queryBuilder->getRootAliases();
+            $alias = $aliases[0];
 
-        foreach ($statusList as $status) {
-            $filters->add(
-                $status->getName() . '_clients',
-                function (QueryBuilder $queryBuilder) use ($status) {
-                    $aliases = $queryBuilder->getRootAliases();
-                    $alias = $aliases[0];
+            $queryBuilder->andWhere($alias.'.status = :status')
+                ->setParameter('status', $status);
+        };
 
-                    $queryBuilder->join($alias . '.status', 's')
-                        ->andWhere('s.name = :status_name')
-                        ->setParameter('status_name', $status->getName());
-                },
-                false,
-                array(
-                    'active_class' => 'label label-' . $status->getLabel(),
-                )
-            );
-        }
+        $filters->add(
+            'active_clients',
+            function (QueryBuilder $queryBuilder) use ($callback) {
+                $callback($queryBuilder, Status::STATUS_ACTIVE);
+            }
+        );
+
+        $filters->add(
+            'inactive_clients',
+            function (QueryBuilder $queryBuilder) use ($callback) {
+                $callback($queryBuilder, Status::STATUS_INACTIVE);
+            }
+        );
 
         return $filters;
     }
@@ -124,9 +130,21 @@ class ClientGrid implements GridInterface
      */
     public function getMassActions()
     {
-        $archive = new MassAction('Archive', function() {
-            var_dump(func_get_args());
-            exit;
+        $archive = new MassAction('Archive', function($ids) {
+            /** @var ClientRepository $clientRepository */
+            $clientRepository = $this->objectManager->getRepository('CSBillClientBundle:Client');
+
+            /** @var Client[] $clients */
+            $clients = $clientRepository->findBy(array('id' => $ids));
+
+            foreach ($clients as $client) {
+                $client->archive();
+                $this->objectManager->persist($client);
+            }
+
+            $this->objectManager->flush();
+
+            // TODO: Set flash message
         }, true);
 
         $archive->setIcon('archive');

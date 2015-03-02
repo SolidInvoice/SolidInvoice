@@ -32,7 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Client
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\Archivable;
 
     /**
      * @var integer
@@ -62,12 +63,10 @@ class Client
     private $website;
 
     /**
-     * @var Status
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Status", inversedBy="clients")
-     * @Assert\Valid()
-     * @GRID\Column(field="status.name", type="status", filter="source", filter="select", selectFrom="source", title="status")
-     * @GRID\Column(field="status.label", visible=false)
+     * @ORM\Column(name="status", type="string", length=25)
+     * @GRID\Column(type="status", filter="source", filter="select", selectFrom="source", title="status", label_function="client_label")
      */
     private $status;
 
@@ -169,7 +168,7 @@ class Client
     /**
      * Set status
      *
-     * @param  Status $status
+     * @param string $status
      * @return Client
      */
     public function setStatus($status)
@@ -182,7 +181,7 @@ class Client
     /**
      * Get status
      *
-     * @return Status
+     * @return string
      */
     public function getStatus()
     {

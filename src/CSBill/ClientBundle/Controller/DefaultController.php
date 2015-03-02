@@ -12,7 +12,7 @@
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Entity\Status;
+use CSBill\ClientBundle\Model\Status;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\ClientBundle\Grid\ClientGrid;
 use CSBill\CoreBundle\Controller\BaseController;
@@ -29,7 +29,7 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $grid = $this->get('grid')->create(new ClientGrid($this->getRepository('CSBillClientBundle:Status')));
+        $grid = $this->get('grid')->create(new ClientGrid($this->getEm()));
 
         return $grid->getGridResponse();
     }

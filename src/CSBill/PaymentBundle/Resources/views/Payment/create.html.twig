@@ -8,7 +8,7 @@
             <div class="widget">
                 <h3>
                     {{ invoice.client.name }}
-                    <small>{{ status_label(invoice.client.status) }}</small>
+                    <small>{{ client_label(invoice.client.status) }}</small>
                     {% if invoice.client.credit.value is not empty %}
                         <div class="pull-right">
                             {{ 'payment.create.credit'|trans }}

@@ -11,29 +11,21 @@
 namespace CSBill\DataGridBundle\Column;
 
 use APY\DataGridBundle\Grid\Column\TextColumn;
-use APY\DataGridBundle\Grid\Row;
 use Symfony\Component\Templating\EngineInterface;
 
 class StatusColumn extends TextColumn
 {
     /**
+     * @var EngineInterface
+     */
+    private $twig;
+
+    /**
      * @param EngineInterface $twig
      */
     public function __construct(EngineInterface $twig)
     {
-        $this->callback = function ($value, Row $row) use ($twig) {
-            $label = $row->getField('status.label');
-
-            return $twig->render('CSBillCoreBundle:Status:label.html.twig',
-                array(
-                    'entity' => array(
-                        'label' => $label,
-                        'name' => $value
-                    ),
-                )
-            );
-        };
-
+        $this->twig = $twig;
         parent::__construct();
     }
 
@@ -42,6 +34,15 @@ class StatusColumn extends TextColumn
      */
     public function __initialize(array $params)
     {
+        $this->callback = function ($value) {
+            $function = $this->getParam('label_function');
+
+            // @TODO: This should not call a string template
+            return $this->twig->render(
+                sprintf('{{ %s("%s") }}', $function, $value)
+            );
+        };
+
         $params['safe'] = false;
 
         parent::__initialize($params);

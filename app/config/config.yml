@@ -75,6 +75,9 @@ doctrine:
                     softdeleteable:
                         class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                         enabled: true
+                    archivable:
+                        class: CSBill\CoreBundle\Doctrine\Filter\ArchivableFilter
+                        enabled: true
                 auto_mapping: true
                 mappings:
                     gedmo_translatable:
