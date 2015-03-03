@@ -14,8 +14,8 @@ namespace CSBill\ClientBundle\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Model\Status;
 use CSBill\ClientBundle\Form\Client as ClientForm;
-use CSBill\ClientBundle\Grid\ClientGrid;
 use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +29,13 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $grid = $this->get('grid')->create('csbill.client.grid');
+        $gridCollection = new GridCollection();
+
+        $gridCollection->add('csbill.client.grid', 'active', 'check');
+        $gridCollection->add('csbill.client.grid.archived', 'archived', 'archive');
+        $gridCollection->add('csbill.client.grid.deleted', 'deleted', 'times');
+
+        $grid = $this->get('grid')->create($gridCollection);
 
         return $grid->getGridResponse();
     }

@@ -16,6 +16,7 @@ use CSBill\DataGridBundle\Action\ActionColumn;
 use CSBill\DataGridBundle\Action\Collection;
 use CSBill\DataGridBundle\Action\RowAction;
 use CSBill\DataGridBundle\Grid\Filters;
+use CSBill\DataGridBundle\Grid\GridCollection;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
@@ -38,6 +39,11 @@ class Grid extends DataGrid
     private $entity;
 
     /**
+     * @var GridCollection
+     */
+    private $collection;
+
+    /**
      * @param GridInterface|string $grid
      *
      * @return $this
@@ -45,6 +51,14 @@ class Grid extends DataGrid
      */
     public function create($grid)
     {
+        if ($grid instanceof GridCollection) {
+            $this->collection = $grid;
+            $activeGrid = $this->request->query->get('grid');
+
+            $this->collection->setActive($activeGrid);
+            $grid = $this->collection->getGrid($activeGrid)['grid'];
+        }
+
         if (is_string($grid)) {
             $grid = $this->container->get($grid);
         }
@@ -78,13 +92,13 @@ class Grid extends DataGrid
         // Attach the source to the grid
         $this->setSource($source);
 
-        $collection = new Collection();
+        $grid->getRowActions($collection = new Collection());
 
-        $grid->getRowActions($collection);
+        if (!$collection->isEmpty()) {
+            $actionsRow = $this->getActionColumn($collection);
 
-        $actionsRow = $this->getActionColumn($collection);
-
-        $this->addColumn($actionsRow, 100);
+            $this->addColumn($actionsRow, 100);
+        }
 
         $massActions = $grid->getMassActions();
 
@@ -103,6 +117,14 @@ class Grid extends DataGrid
         }
 
         return $this;
+    }
+
+    /**
+     * @return GridCollection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
     }
 
     /**
@@ -222,5 +244,17 @@ class Grid extends DataGrid
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRouteParameters()
+    {
+        if ($this->request->query->has('grid')) {
+            $this->routeParameters['grid'] = $this->request->query->get('grid');
+        }
+
+        return parent::getRouteParameters();
     }
 }

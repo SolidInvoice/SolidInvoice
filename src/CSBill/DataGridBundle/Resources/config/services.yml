@@ -4,7 +4,7 @@ parameters:
 services:
     grid.column.extension.status_extension:
         class: CSBill\DataGridBundle\Column\StatusColumn
-        arguments: [@templating]
+        arguments: [@twig]
         tags:
             - { name: grid.column.extension }
 

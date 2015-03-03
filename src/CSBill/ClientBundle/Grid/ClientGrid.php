@@ -53,8 +53,6 @@ class ClientGrid implements GridInterface
      */
     public function getSource()
     {
-        //$this->objectManager->getFilters()->disable('archivable');
-
         return new Entity('CSBillClientBundle:Client');
     }
 
@@ -148,6 +146,7 @@ class ClientGrid implements GridInterface
 
             foreach ($clients as $client) {
                 $client->archive();
+                $client->setStatus(Status::STATUS_ARCHIVED);
                 $this->objectManager->persist($client);
             }
 

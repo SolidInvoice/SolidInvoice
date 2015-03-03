@@ -12,122 +12,128 @@
 {# ------------------------------------------------------ grid ------------------------------------------------------ #}
 {% block grid %}
     <div class="grid">
-        {% if grid.totalCount > 0 or grid.filtered or grid.noDataMessage is sameas(false) %}
+
             <form id="{{ grid.hash }}" action="{{ grid.routeUrl }}" method="post">
                 <div class="grid_body">
-                    <div class="pull-right">
-                        <div class="btn-group btn-group-sm" role="group">
-                            {# TODO: This needs to be active links that shows the relevant grids #}
-                            <a href="#" class="btn btn-default disabled">
-                                {{ icon('check') }} Active
-                            </a>
 
-                            <a href="#" class="btn btn-default">
-                                {{ icon('archive') }} Archived
-                            </a>
+                    {% if grid.collection is not empty %}
+                        <div class="pull-right">
+                            <div class="btn-group btn-group-sm" role="group">
 
-                            <a href="#" class="btn btn-default">
-                                {{ icon('times') }} Deleted
-                            </a>
+                                {% for extraGrid in grid.collection.grids %}
+                                    <a href="?grid={{ extraGrid.name }}" class="btn btn-default{% if grid.collection.active == extraGrid.name %} disabled{% endif %}">
+                                        {% if extraGrid.icon is not empty %}
+                                            {{ icon(extraGrid.icon) }}
+                                        {% endif %}
+
+                                        {{ extraGrid.name|humanize|title|trans }}
+                                    </a>
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
-
-                    {% if grid.massActions|length > 0 %}
-                        <input type="hidden" id="{{ grid.hash }}_mass_action_all" name="{{ grid.hash }}[{{ constant('APY\\DataGridBundle\\Grid\\Grid::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED') }}]" value="0"/>
                     {% endif %}
 
-                    <br class="clear" />
+                    {% if grid.totalCount > 0 or grid.filtered or grid.noDataMessage is sameas(false) %}
 
-                    <div class="rows">
-                        <div class="panel panel-primary filterable">
-                            <div class="panel-heading">
+                        {% if grid.massActions|length > 0 %}
+                            <input type="hidden" id="{{ grid.hash }}_mass_action_all" name="{{ grid.hash }}[{{ constant('APY\\DataGridBundle\\Grid\\Grid::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED') }}]" value="0"/>
+                        {% endif %}
 
-                                <h3 class="panel-title">
-                                    {% if grid.massActions|length > 0 %}
-                                        {% for key, massAction in grid.massActions %}
-                                            <button{% if massAction.confirm %} onclick="return confirm('{{ massAction.confirmMessage }}')"{% endif %} type="submit" value="{{ key }}" class="btn btn-{{ massAction.class }} btn-xs" name="{{ grid.hash }}[{{ constant('APY\\DataGridBundle\\Grid\\Grid::REQUEST_QUERY_MASS_ACTION') }}]">
-                                                {% if massAction.icon is not empty %}
-                                                    {{ icon(massAction.icon) }}
-                                                {% endif %}
+                        <br class="clear" />
 
-                                                {{ massAction.title|trans }}
-                                            </button>
-                                        {% endfor %}
-                                    {% endif %}
-                                    {% if grid.filterable %}
-                                        <div class="pull-right">
-                                            <div class="dropdown">
-                                                <button class="btn btn-default btn-xs btn-filter dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                                    {% if grid.filters.filterActive %}
-                                                        <span class="text-danger">
-                                                            {{ icon('filter') }}
-                                                        </span>
-                                                    {% else %}
-                                                        {{ icon('filter') }}
+                        <div class="rows">
+                            <div class="panel panel-primary filterable">
+                                <div class="panel-heading">
+
+                                    <h3 class="panel-title">
+                                        {% if grid.massActions|length > 0 %}
+                                            {% for key, massAction in grid.massActions %}
+                                                <button{% if massAction.confirm %} onclick="return confirm('{{ massAction.confirmMessage }}')"{% endif %} type="submit" value="{{ key }}" class="btn btn-{{ massAction.class }} btn-xs" name="{{ grid.hash }}[{{ constant('APY\\DataGridBundle\\Grid\\Grid::REQUEST_QUERY_MASS_ACTION') }}]">
+                                                    {% if massAction.icon is not empty %}
+                                                        {{ icon(massAction.icon) }}
                                                     {% endif %}
-                                                    {{ 'Filter'|trans }}
+
+                                                    {{ massAction.title|trans }}
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                                                    {% for filter in grid.filters %}
-                                                        <li role="presentation"{% if filter.active %} class="active"{% endif %}>
-                                                            <a role="menuitem" tabindex="-1" href="{{ path(app.request.get('_route'), query|merge({'filter' : filter.name})) }}">
-                                                                {{ filter|trans }}
-                                                            </a>
-                                                        </li>
-                                                    {% endfor %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if grid.filterable %}
+                                            <div class="pull-right">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-default btn-xs btn-filter dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                        {% if grid.filters.filterActive %}
+                                                            <span class="text-danger">
+                                                                {{ icon('filter') }}
+                                                            </span>
+                                                        {% else %}
+                                                            {{ icon('filter') }}
+                                                        {% endif %}
+                                                        {{ 'Filter'|trans }}
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                                                        {% for filter in grid.filters %}
+                                                            <li role="presentation"{% if filter.active %} class="active"{% endif %}>
+                                                                <a role="menuitem" tabindex="-1" href="{{ path(app.request.get('_route'), query|merge({'filter' : filter.name})) }}">
+                                                                    {{ filter|trans }}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
 
-                                                    {% if grid.filters.filterActive %}
-                                                        <li role="presentation">
-                                                            <a role="menuitem" tabindex="-1" href="{{ path(app.request.get('_route'), query|merge({'filter' : null})) }}">
-                                                                {{ 'Reset'|trans }}
-                                                            </a>
-                                                        </li>
-                                                    {% endif %}
-                                                </ul>
+                                                        {% if grid.filters.filterActive %}
+                                                            <li role="presentation">
+                                                                <a role="menuitem" tabindex="-1" href="{{ path(app.request.get('_route'), query|merge({'filter' : null})) }}">
+                                                                    {{ 'Reset'|trans }}
+                                                                </a>
+                                                            </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <br class="clearfix" />
-                                    {% endif %}
-                                </h3>
-                            </div>
-                            {% if grid.searchable %}
-                                <div class="panel-body">
-                                    <div class="input-group">
-                                        {% if grid.searchActive %}
+                                            <br class="clearfix" />
+                                        {% endif %}
+                                    </h3>
+                                </div>
+                                {% if grid.searchable %}
+                                    <div class="panel-body">
+                                        <div class="input-group">
+                                            {% if grid.searchActive %}
+                                                <span class="input-group-btn">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="grid-search-reset btn btn-warning" onclick="return {{ grid.hash }}_reset();">
+                                                            {{ icon('times') }}
+                                                            {{ 'Reset'|trans }}
+                                                        </button>
+                                                    </div>
+                                                </span>
+                                            {% endif %}
+                                            <input name="search" placeholder="{{ 'search'|trans }}" type="text" id="search" class="form-control" value="{{ grid.searchString }}" />
                                             <span class="input-group-btn">
                                                 <div class="btn-group" role="group">
-                                                    <button type="button" class="grid-search-reset btn btn-warning" onclick="return {{ grid.hash }}_reset();">
-                                                        {{ icon('times') }}
-                                                        {{ 'Reset'|trans }}
+                                                    <button type="submit" class="btn btn-default" id="{{ grid.hash }}_search_submit" tabindex="0">
+                                                        {{ icon('search') }}
+                                                        {{ 'search'|trans }}
                                                     </button>
                                                 </div>
                                             </span>
-                                        {% endif %}
-                                        <input name="search" placeholder="{{ 'search'|trans }}" type="text" id="search" class="form-control" value="{{ grid.searchString }}" />
-                                        <span class="input-group-btn">
-                                            <div class="btn-group" role="group">
-                                                <button type="submit" class="btn btn-default">
-                                                    {{ icon('search') }}
-                                                    {{ 'search'|trans }}
-                                                </button>
-                                            </div>
-                                        </span>
+                                        </div>
                                     </div>
-                                </div>
-                            {% endif %}
-                            <table class="table table-bordered table-striped table-hover">
-                                {% if grid.isTitleSectionVisible %}
-                                    {{ grid_titles(grid) }}
                                 {% endif %}
+                                <table class="table table-bordered table-striped table-hover">
+                                    {% if grid.isTitleSectionVisible %}
+                                        {{ grid_titles(grid) }}
+                                    {% endif %}
 
-                                {#{% if grid.isFilterSectionVisible %}
-                                    {{ grid_filters(grid) }}
-                                {% endif %}#}
+                                    {#{% if grid.isFilterSectionVisible %}
+                                        {{ grid_filters(grid) }}
+                                    {% endif %}#}
 
-                                {{ grid_rows(grid) }}
-                            </table>
+                                    {{ grid_rows(grid) }}
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                    {% else %}
+                        {{ grid_no_data(grid) }}
+                    {% endif %}
                 </div>
 
                 <span class="mass-actions-selected" id="{{ grid.hash }}_mass_action_selected"></span>
@@ -151,9 +157,6 @@
                 {% endif %}
 
             </form>
-        {% else %}
-            {{ grid_no_data(grid) }}
-        {% endif %}
     </div>
 {% endblock grid %}
 
@@ -197,24 +200,26 @@
 {% block grid_column_actions_cell %}
     {% set actions = column.getActionsToRender(row) %}
 
-    <div class="dropdown">
-        <button class="btn btn-default btn-xs btn-filter dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-            <i class="caret"></i>
-            {{ 'Actions'|trans }}
-        </button>
-        <ul class="grid-row-actions dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-            {% for action in actions %}
-                <li>
-                    <a href="{{ url(action.route, column.routeParameters(row, action), false) }}" target="{{ action.target }}"{% if action.confirm %} onclick="return confirm('{{ action.confirmMessage }}')"{% endif %}{% for name, value in action.attributes %} {{ name }}="{{ name == 'title' ? value|trans : value }}" {% endfor %}>
-                        {% if action.icon is not empty %}
-                            {{ icon(action.icon) }}
-                        {% endif %}
-                        {{ action.title|trans|raw }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+    {% if actions is not empty %}
+        <div class="dropdown">
+            <button class="btn btn-default btn-xs btn-filter dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                <i class="caret"></i>
+                {{ 'Actions'|trans }}
+            </button>
+            <ul class="grid-row-actions dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                {% for action in actions %}
+                    <li>
+                        <a href="{{ url(action.route, column.routeParameters(row, action), false) }}" target="{{ action.target }}"{% if action.confirm %} onclick="return confirm('{{ action.confirmMessage }}')"{% endif %}{% for name, value in action.attributes %} {{ name }}="{{ name == 'title' ? value|trans : value }}" {% endfor %}>
+                            {% if action.icon is not empty %}
+                                {{ icon(action.icon) }}
+                            {% endif %}
+                            {{ action.title|trans|raw }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock grid_column_actions_cell %}
 
 {# -------------------------------------------- grid_column_operator --------------------------------------- #}

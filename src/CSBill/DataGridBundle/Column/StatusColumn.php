@@ -11,19 +11,18 @@
 namespace CSBill\DataGridBundle\Column;
 
 use APY\DataGridBundle\Grid\Column\TextColumn;
-use Symfony\Component\Templating\EngineInterface;
 
 class StatusColumn extends TextColumn
 {
     /**
-     * @var EngineInterface
+     * @var \Twig_Environment
      */
     private $twig;
 
     /**
-     * @param EngineInterface $twig
+     * @param \Twig_Environment $twig
      */
-    public function __construct(EngineInterface $twig)
+    public function __construct(\Twig_Environment $twig)
     {
         $this->twig = $twig;
 
@@ -35,18 +34,24 @@ class StatusColumn extends TextColumn
      */
     public function __initialize(array $params)
     {
-        $this->callback = function ($value) {
-            $function = $this->getParam('label_function');
-
-            // @TODO: This should not call a string template
-            return $this->twig->render(
-                sprintf('{{ %s("%s") }}', $function, $value)
-            );
-        };
+        /** @var \Twig_Template[] $template */
+        static $template = array();
 
         $params['safe'] = false;
 
         parent::__initialize($params);
+
+        $function = $this->getParam('label_function');
+
+        if (!isset($template[$function])) {
+            $template[$function] = $this->twig->createTemplate(
+                sprintf('{{ %s(status) }}', $function)
+            );
+        }
+
+        $this->callback = function ($value) use ($template, $function) {
+            return $template[$function]->render(array('status' => $value));
+        };
     }
 
     /**

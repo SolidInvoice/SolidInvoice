@@ -1,6 +1,8 @@
 client:
     archive:
         success: Client Successfully Archived
+    restore:
+        success: Client Successfully Restored
     info: Client Info
     save: Save Client
     cancel: Cancel
