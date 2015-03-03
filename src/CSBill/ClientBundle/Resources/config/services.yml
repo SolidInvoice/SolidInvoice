@@ -43,7 +43,7 @@ services:
 
     csbill.client.grid.archived:
         class: CSBill\ClientBundle\Grid\ClientArchivedGrid
-        arguments: [@doctrine.orm.entity_manager.abstract, @session]
+        arguments: [@doctrine.orm.entity_manager, @session]
 
     csbill.client.grid.deleted:
         class: CSBill\ClientBundle\Grid\ClientDeletedGrid
