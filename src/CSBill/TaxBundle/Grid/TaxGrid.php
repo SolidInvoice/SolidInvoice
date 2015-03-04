@@ -6,7 +6,7 @@
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
 
-namespace CSBill\CoreBundle\Grid;
+namespace CSBill\TaxBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\DataGridBundle\Action\ActionColumn;
@@ -23,7 +23,7 @@ class TaxGrid implements GridInterface
      */
     public function getSource()
     {
-        return new Entity('CSBillCoreBundle:Tax');
+        return new Entity('CSBillTaxBundle:Tax');
     }
 
     /**
@@ -110,7 +110,7 @@ class TaxGrid implements GridInterface
      */
     public function getTemplate()
     {
-        return 'CSBillCoreBundle:tax:index.html.twig';
+        return 'CSBillTaxBundle:Default:index.html.twig';
     }
 
     /**

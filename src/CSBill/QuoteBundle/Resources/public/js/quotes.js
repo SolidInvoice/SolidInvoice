@@ -119,9 +119,9 @@
             $('select.quote-item-tax', this.el).each(function() {
                 var tax = $(this),
                     selectedOption = tax.find(':selected'),
-                    rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.column-total').text()))
+                    rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.column-total').text()));
                 if (tax.val() !== '') {
-                    var taxAmount = percentage(rowTotal, parseFloat(selectedOption.data('rate')));
+                    var taxAmount = rowTotal * parseFloat(selectedOption.data('rate'));
                     totalTax += taxAmount;
 
                     if ('inclusive' === selectedOption.data('type')) {
@@ -133,7 +133,7 @@
             discountAmount = percentage((subTotal + totalTax), discount);
             total = (subTotal - discountAmount) + totalTax;
 
-            $('.quote-discount').html(accounting.formatMoney(discountAmount * -1));
+            $('.quote-discount').html(accounting.formatMoney(-discountAmount));
             $('.quote-sub-total').html(accounting.formatMoney(subTotal));
             $('.quote-total').html(accounting.formatMoney(total));
             $('.quote-tax').html(accounting.formatMoney(totalTax));

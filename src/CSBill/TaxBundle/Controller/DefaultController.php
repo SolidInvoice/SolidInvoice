@@ -1,14 +1,21 @@
 <?php
+/**
+ * This file is part of the CSBill project.
+ *
+ * @author      MiWay Development Team
+ * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
+ */
 
-namespace CSBill\CoreBundle\Controller;
+namespace CSBill\TaxBundle\Controller;
 
-use CSBill\CoreBundle\Entity\Tax;
-use CSBill\CoreBundle\Form\Type\TaxType;
-use CSBill\CoreBundle\Grid\TaxGrid;
+use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\TaxBundle\Entity\Tax;
+use CSBill\TaxBundle\Form\Type\TaxType;
+use CSBill\TaxBundle\Grid\TaxGrid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class TaxController extends BaseController
+class DefaultController extends BaseController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
@@ -43,7 +50,7 @@ class TaxController extends BaseController
             return $this->redirect($this->generateUrl('_tax_rates'));
         }
 
-        return $this->render('CSBillCoreBundle:Tax:add.html.twig', array('form' => $form->createView()));
+        return $this->render('CSBillTaxBundle:Default:add.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -55,8 +62,14 @@ class TaxController extends BaseController
     {
         $entityMnager = $this->getEm();
 
-        $this->getRepository('CSBillInvoiceBundle:Item')->removeTax($tax);
-        $this->getRepository('CSBillQuoteBundle:Item')->removeTax($tax);
+        /** @var \CSBill\InvoiceBundle\Repository\ItemRepository $invoiceRepository */
+        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Item');
+        $invoiceRepository->removeTax($tax);
+
+        /** @var \CSBill\QuoteBundle\Repository\ItemRepository $quoteRepository */
+        $quoteRepository = $this->getRepository('CSBillQuoteBundle:Item');
+        $quoteRepository->removeTax($tax);
+
         $entityMnager->remove($tax);
         $entityMnager->flush();
 

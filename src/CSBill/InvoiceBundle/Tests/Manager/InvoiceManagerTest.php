@@ -3,7 +3,7 @@
 namespace CSBill\InvoiceBundle\Tests\Manager;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\CoreBundle\Entity\Tax;
+use CSBill\TaxBundle\Entity\Tax;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;

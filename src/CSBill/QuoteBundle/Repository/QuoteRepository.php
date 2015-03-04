@@ -49,7 +49,9 @@ class QuoteRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('q');
 
-        $qb->orderBy('q.created', 'DESC')
+        $qb
+            ->innerJoin('q.client', 'c')
+            ->orderBy('q.created', 'DESC')
             ->setMaxResults($limit);
 
         $query = $qb->getQuery();

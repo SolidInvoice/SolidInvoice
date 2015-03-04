@@ -44,13 +44,12 @@ services:
 
     invoice.form.type:
         class: CSBill\InvoiceBundle\Form\Type\InvoiceType
-        arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]
         tags:
             - { name: form.type, alias: invoice }
 
     invoice.item.form.type:
         class: CSBill\InvoiceBundle\Form\Type\ItemType
-        arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]
+        arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: invoice_item }
 

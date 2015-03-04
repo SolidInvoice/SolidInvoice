@@ -124,7 +124,7 @@
                     selectedOption = tax.find(':selected'),
                     rowTotal = parseFloat(accounting.unformat(tax.closest('tr').find('.column-total').text()));
                 if (tax.val() !== '') {
-                    var taxAmount = percentage(rowTotal, parseFloat(selectedOption.data('rate')));
+                    var taxAmount = rowTotal * parseFloat(selectedOption.data('rate'));
                     totalTax += taxAmount;
 
                     if ('inclusive' === selectedOption.data('type')) {
@@ -136,7 +136,7 @@
             discountAmount = percentage((subTotal + totalTax), discount);
             total = (subTotal - discountAmount) + totalTax;
 
-            $('.invoice-discount').html(accounting.formatMoney(discountAmount * -1));
+            $('.invoice-discount').html(accounting.formatMoney(-discountAmount));
             $('.invoice-sub-total').html(accounting.formatMoney(subTotal));
             $('.invoice-total').html(accounting.formatMoney(total));
             $('.invoice-tax').html(accounting.formatMoney(totalTax));

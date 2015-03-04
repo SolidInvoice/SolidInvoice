@@ -34,6 +34,13 @@ csbill_payment:
     resource: "@CSBillPaymentBundle/Resources/config/routing.yml"
     prefix:   /payments
 
+csbill_tax:
+    resource: "@CSBillTaxBundle/Resources/config/routing.yml"
+    prefix:   /tax
+
+
+# External Routes
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

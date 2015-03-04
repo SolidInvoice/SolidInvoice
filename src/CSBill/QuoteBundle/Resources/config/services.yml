@@ -25,13 +25,13 @@ services:
 
     quote.form.type:
         class: CSBill\QuoteBundle\Form\Type\QuoteType
-        arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]
+        arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: quote }
 
     quote.item.form.type:
         class: CSBill\QuoteBundle\Form\Type\ItemType
-        arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]
+        arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: quote_item }
 

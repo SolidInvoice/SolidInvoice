@@ -10,7 +10,6 @@
 
 namespace CSBill\InvoiceBundle\Form\Type;
 
-use CSBill\CoreBundle\Repository\TaxRepository;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,19 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class InvoiceType extends AbstractType
 {
-    /**
-     * @var TaxRepository
-     */
-    private $repo;
-
-    /**
-     * @param TaxRepository $repo
-     */
-    public function __construct(TaxRepository $repo)
-    {
-        $this->repo = $repo;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -65,10 +51,7 @@ class InvoiceType extends AbstractType
         $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
         $builder->add('total', 'hidden');
         $builder->add('baseTotal', 'hidden');
-
-        if ($this->repo->getTotal() > 0) {
-            $builder->add('tax', 'hidden');
-        }
+        $builder->add('tax', 'hidden');
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
     }

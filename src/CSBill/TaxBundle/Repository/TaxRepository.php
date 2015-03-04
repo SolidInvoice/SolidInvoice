@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Repository;
+namespace CSBill\TaxBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -32,7 +32,13 @@ class TaxRepository extends EntityRepository
     public function getTaxList()
     {
         $queryBuilder = $this->createQueryBuilder('t')
-            ->select('t.name', 't.rate', 't.type');
+            ->select(
+                array(
+                    't.name',
+                    't.rate',
+                    't.type',
+                )
+            );
 
         $query = $queryBuilder->getQuery();
 

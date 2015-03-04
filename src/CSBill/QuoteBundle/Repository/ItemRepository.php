@@ -11,7 +11,8 @@
 
 namespace CSBill\QuoteBundle\Repository;
 
-use CSBill\CoreBundle\Entity\Tax;
+use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -28,6 +29,24 @@ class ItemRepository extends EntityRepository
      */
     public function removeTax(Tax $tax)
     {
+        if (Tax::TYPE_EXCLUSIVE === $tax->getType()) {
+            $qb = $this->createQueryBuilder('i');
+
+            $query =$qb->where('i.tax = :tax')
+                ->setParameter('tax', $tax)
+                ->groupBy('i.quote')
+                ->getQuery();
+
+            /** @var Quote $quote */
+            foreach ($query->execute() as $quote) {
+                $quote->setTotal($quote->getBaseTotal() + $quote->getTax());
+                $quote->setTax(null);
+                $this->getEntityManager()->persist($quote);
+            }
+
+            $this->getEntityManager()->flush();
+        }
+
         $qb = $this->createQueryBuilder('q')
             ->update()
             ->set('q.tax', 'NULL')

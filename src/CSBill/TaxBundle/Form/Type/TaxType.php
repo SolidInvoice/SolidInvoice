@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Form\Type;
+namespace CSBill\TaxBundle\Form\Type;
 
-use CSBill\CoreBundle\Entity\Tax as TaxEntity;
+use CSBill\TaxBundle\Entity\Tax;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Class Tax
  *
- * @package CSBill\CoreBundle\Form\Type
+ * @package CSBill\TaxBundle\Form\Type
  */
 class TaxType extends AbstractType
 {
@@ -29,20 +29,13 @@ class TaxType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name');
-        $builder->add(
-            'rate',
-            'percent',
-            array(
-                'precision' => 0,
-                'type' => 'integer',
-            )
-        );
+        $builder->add('rate', 'percent', array('precision' => 2));
 
         $builder->add(
             'type',
             'select2',
             array(
-                'choices' => TaxEntity::getTypes(),
+                'choices' => Tax::getTypes(),
                 'help' => 'tax.rates.explanation',
                 'placeholder' => 'tax.rates.type.select',
             )
@@ -54,7 +47,7 @@ class TaxType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'CSBill\CoreBundle\Entity\Tax'));
+        $resolver->setDefaults(array('data_class' => 'CSBill\TaxBundle\Entity\Tax'));
     }
 
     /**

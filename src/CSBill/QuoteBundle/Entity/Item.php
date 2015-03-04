@@ -10,7 +10,7 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
-use CSBill\CoreBundle\Entity\Tax;
+use CSBill\TaxBundle\Entity\Tax;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -69,7 +69,7 @@ class Item
     private $quote;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CSBill\CoreBundle\Entity\Tax", inversedBy="quoteItems")
+     * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="quoteItems")
      */
     private $tax;
 
