@@ -11,17 +11,13 @@
 
 namespace CSBill\ClientBundle\Controller;
 
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Entity\Status;
+use CSBill\ClientBundle\Model\Status;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\DataGridBundle\Grid\Filters;
+use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends BaseController
@@ -29,143 +25,19 @@ class DefaultController extends BaseController
     /**
      * List all the clients
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        return $this->getGrid($request);
-    }
+        $gridCollection = new GridCollection();
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    private function getGrid(Request $request)
-    {
-        $source = new Entity('CSBillClientBundle:Client');
+        $gridCollection->add('csbill.client.grid', 'active', 'check');
+        $gridCollection->add('csbill.client.grid.archived', 'archived', 'archive');
+        $gridCollection->add('csbill.client.grid.deleted', 'deleted', 'times');
 
-        // Get a Grid instance
-        $grid = $this->get('grid');
-        $translator = $this->get('translator');
-        $templating = $this->get('templating');
+        $grid = $this->get('grid')->create($gridCollection);
 
-        $filters = $this->getFilters($request);
-
-        $search = $request->get('search');
-
-        $source->manipulateQuery(
-            function (QueryBuilder $queryBuilder) use ($search, $filters) {
-
-                if ($filters->isFilterActive()) {
-                    $filter = $filters->getActiveFilter();
-                    $filter($queryBuilder);
-                }
-
-                if ($search) {
-                    $aliases = $queryBuilder->getRootAliases();
-
-                    $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
-                        ->setParameter('search', "%{$search}%");
-                }
-            }
-        );
-
-        // Attach the source to the grid
-        $grid->setSource($source);
-
-        $viewIcon = $templating->render('{{ icon("eye") }}');
-        $viewAction = new RowAction($viewIcon, '_clients_view');
-        $viewAction->addAttribute('title', $translator->trans('view_client'));
-        $viewAction->addAttribute('rel', 'tooltip');
-
-        $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_clients_edit');
-        $editAction->addAttribute('title', $translator->trans('edit_client'));
-        $editAction->addAttribute('rel', 'tooltip');
-
-        $deleteIcon = $templating->render('{{ icon("times") }}');
-        $deleteAction = new RowAction($deleteIcon, '_clients_delete');
-        $deleteAction->setAttributes(
-            array(
-                'title' => $translator->trans('delete_client'),
-                'rel' => 'tooltip',
-                'data-confirm' => $translator->trans('confirm_delete'),
-                'class' => 'delete-client',
-            )
-        );
-
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction, $deleteAction));
-        $grid->addColumn($actionsRow, 100);
-
-        $grid->hideColumns(array('updated', 'deletedAt'));
-
-        $grid->getColumn('website')->manipulateRenderCell(
-            function ($value) {
-                if (!empty($value)) {
-                    return '<a href="'.$value.'" target="_blank">'.$value.'<a>';
-                }
-
-                return $value;
-            }
-        )->setSafe(false);
-
-        $grid->getColumn('credit.value')->setCurrencyCode($this->container->getParameter('currency'));
-
-        $grid->getColumn('status.name')->manipulateRenderCell(
-            function ($value, \APY\DataGridBundle\Grid\Row $row) {
-                $label = $row->getField('status.label');
-
-                return '<span class="label label-'.$label.'">'.ucfirst($value).'</span>';
-            }
-        )->setSafe(false);
-
-        return $grid->getGridResponse('CSBillClientBundle:Default:index.html.twig', array('filters' => $filters));
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Filters
-     */
-    private function getFilters(Request $request)
-    {
-        $filters = new Filters($request);
-
-        $filters->add(
-            'all_clients',
-            null,
-            true,
-            array(
-                'active_class' => 'label label-info',
-                'default_class' => 'label label-default',
-            )
-        );
-
-        $statusList = $this->getRepository('CSBillClientBundle:Status')->findAll();
-
-        foreach ($statusList as $status) {
-            $filters->add(
-                $status->getName().'_clients',
-                function (QueryBuilder $queryBuilder) use ($status) {
-                    $aliases = $queryBuilder->getRootAliases();
-                    $alias = $aliases[0];
-
-                    $queryBuilder->join($alias.'.status', 's')
-                        ->andWhere('s.name = :status_name')
-                        ->setParameter('status_name', $status->getName());
-                },
-                false,
-                array(
-                    'active_class' => 'label label-'.$status->getLabel(),
-                    'default_class' => 'label label-default',
-                )
-            );
-        }
-
-        return $filters;
+        return $grid->getGridResponse();
     }
 
     /**

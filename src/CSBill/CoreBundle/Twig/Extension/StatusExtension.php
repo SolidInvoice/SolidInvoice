@@ -11,6 +11,7 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
+use CSBill\ClientBundle\Model\Status as ClientStatus;
 use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
 use CSBill\PaymentBundle\Model\Status as PaymentStatus;
 use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
@@ -27,21 +28,23 @@ class StatusExtension extends \Twig_Extension
      */
     private $invoiceLabelMap = array(
         InvoiceGraph::STATUS_PENDING => 'warning',
-        InvoiceGraph::STATUS_DRAFT => 'default',
-        InvoiceGraph::STATUS_OVERDUE => 'danger',
+        InvoiceGraph::STATUS_DRAFT => 'primary',
         InvoiceGraph::STATUS_PAID => 'success',
-        InvoiceGraph::STATUS_CANCELLED => 'inverse',
+        InvoiceGraph::STATUS_OVERDUE => 'danger',
+        InvoiceGraph::STATUS_CANCELLED => 'default',
+        InvoiceGraph::STATUS_ARCHIVED => 'warning',
     );
 
     /**
      * @var array
      */
     private $quoteLabelMap = array(
-        QuoteGraph::STATUS_DRAFT => 'default',
         QuoteGraph::STATUS_PENDING => 'warning',
+        QuoteGraph::STATUS_DRAFT => 'primary',
         QuoteGraph::STATUS_ACCEPTED => 'success',
         QuoteGraph::STATUS_DECLINED => 'danger',
-        QuoteGraph::STATUS_CANCELLED => 'inverse',
+        QuoteGraph::STATUS_CANCELLED => 'default',
+        QuoteGraph::STATUS_ARCHIVED => 'warning',
     );
 
     /**
@@ -54,11 +57,20 @@ class StatusExtension extends \Twig_Extension
         PaymentStatus::STATUS_EXPIRED => 'danger',
         PaymentStatus::STATUS_CAPTURED => 'success',
         PaymentStatus::STATUS_PENDING => 'warning',
-        PaymentStatus::STATUS_CANCELLED => 'danger',
+        PaymentStatus::STATUS_CANCELLED => 'default',
         PaymentStatus::STATUS_NEW => 'info',
-        PaymentStatus::STATUS_AUTHORIZED => 'info',
+        PaymentStatus::STATUS_AUTHORIZED => 'primary',
         PaymentStatus::STATUS_REFUNDED => 'warning',
         PaymentStatus::STATUS_CREDIT => 'success',
+    );
+
+    /**
+     * @var array
+     */
+    private $clientLabelMap = array(
+        ClientStatus::STATUS_ACTIVE => 'success',
+        ClientStatus::STATUS_INACTIVE => 'info',
+        ClientStatus::STATUS_ARCHIVED => 'warning',
     );
 
     /**
@@ -83,12 +95,6 @@ class StatusExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction(
-                'status_label',
-                array($this, 'renderStatusLabel'),
-                array('is_safe' => array('html'),
-                )
-            ),
-            new \Twig_SimpleFunction(
                 'invoice_label',
                 array($this, 'renderInvoiceStatusLabel'),
                 array('is_safe' => array('html'),
@@ -106,18 +112,9 @@ class StatusExtension extends \Twig_Extension
                 array('is_safe' => array('html'),
                 )
             ),
-        );
-    }
-
-    /**
-     * @return \Twig_SimpleFilter[]
-     */
-    public function getFilters()
-    {
-        return array(
-            new \Twig_SimpleFilter(
-                'status',
-                array($this, 'renderStatusLabel'),
+            new \Twig_SimpleFunction(
+                'client_label',
+                array($this, 'renderClientStatusLabel'),
                 array('is_safe' => array('html'),
                 )
             ),
@@ -188,6 +185,27 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
+     * @param string $status
+     * @param string $tooltip
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function renderClientStatusLabel($status, $tooltip = null)
+    {
+        if (!isset($this->clientLabelMap[$status])) {
+            throw new \Exception(sprintf('The client status "%s" does not have an associative label', $status));
+        }
+
+        $statusLabel = array(
+            'status' => $status,
+            'status_label' => $this->clientLabelMap[$status],
+        );
+
+        return $this->renderStatusLabel($statusLabel, $tooltip);
+    }
+
+    /**
      * Return the status converted into a label string
      *
      * @param mixed  $object
@@ -195,7 +213,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function renderStatusLabel($object, $tooltip = null)
+    private function renderStatusLabel($object, $tooltip = null)
     {
         if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
             $object = array(

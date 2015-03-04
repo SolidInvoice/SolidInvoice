@@ -11,6 +11,7 @@ finite_finite:
             pending:
                 properties: {editable: true, sendable: true}
             cancelled: ~
+            archived: ~
             accepted:
                 type: final
             declined: ~
@@ -33,3 +34,6 @@ finite_finite:
             reopen:
                 from: [cancelled, declined]
                 to: draft
+            archive:
+                from: [new, draft, cancelled, accepted, declined]
+                to: archived

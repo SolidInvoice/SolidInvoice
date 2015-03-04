@@ -10,17 +10,14 @@
 
 namespace CSBill\QuoteBundle\Controller;
 
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Event\QuoteEvent;
 use CSBill\QuoteBundle\Event\QuoteEvents;
 use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,71 +26,21 @@ class DefaultController extends BaseController
     /**
      * List all the available quotes
      *
-     * @param  Request  $request
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $source = new Entity('CSBillQuoteBundle:Quote');
+        $gridCollection = new GridCollection();
+        $gridCollection->add('csbill.quote.grid.default_grid', 'active', 'check');
+        $gridCollection->add('csbill.quote.grid.archived_grid', 'archived', 'archive');
 
-        // Get a Grid instance
-        $grid = $this->get('grid');
-        $translator = $this->get('translator');
-        $templating = $this->get('templating');
-
-        $search = $request->get('search');
-
-        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search) {
-            if ($search) {
-                $queryBuilder->andWhere('_client.name LIKE :search')
-                    ->setParameter('search', "%{$search}%");
-            }
-        });
-
-        // Attach the source to the grid
-        $grid->setSource($source);
-
-        $viewIcon = $templating->render('{{ icon("eye") }}');
-        $viewAction = new RowAction($viewIcon, '_quotes_view');
-        $viewAction->addAttribute('title', $translator->trans('quote.view'));
-        $viewAction->addAttribute('rel', 'tooltip');
-
-        $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_quotes_edit');
-        $editAction->addAttribute('title', $translator->trans('quote.edit'));
-        $editAction->addAttribute('rel', 'tooltip');
-
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $viewAction));
-        $grid->addColumn($actionsRow, 100);
-
-        $grid->hideColumns(array('updated', 'deletedAt', 'users', 'due', 'baseTotal', 'uuid'));
-
-        $grid->getColumn('total')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('tax')->setCurrencyCode($this->container->getParameter('currency'));
-        $grid->getColumn('status')->manipulateRenderCell(function ($value) use ($templating) {
-            return $templating->render('{{ quote_label("'.$value.'") }}');
-        })->setSafe(false);
-
-        $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
-            if (!empty($value)) {
-                return $value * 100 .'%';
-            }
-
-            return (int) $value;
-        });
-
-        $grid->setPermanentFilters(
-            array(
-                'client.name' => array('operator' => 'isNotNull'),
-            )
-        );
+        $grid = $this->get('grid')->create($gridCollection);
 
         /** @var QuoteRepository $quoteRepository */
         $quoteRepository = $this->getRepository('CSBillQuoteBundle:Quote');
 
         // Return the response of the grid to the template
         return $grid->getGridResponse(
-            'CSBillQuoteBundle:Default:index.html.twig',
             array(
                 'status_list' => array(
                     Graph::STATUS_PENDING,

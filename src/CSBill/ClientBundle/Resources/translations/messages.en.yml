@@ -1,4 +1,8 @@
 client:
+    archive:
+        success: Client Successfully Archived
+    restore:
+        success: Client Successfully Restored
     info: Client Info
     save: Save Client
     cancel: Cancel
@@ -16,6 +20,11 @@ client:
         details:
             choose: Choose
             extra: Additional Contact Details
+    grid:
+        actions:
+            view: View
+            edit: Edit
+            delete: Delete
     stats:
         income: Income
         credit: Credit Balance

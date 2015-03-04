@@ -30,7 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Invoice
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\Archivable;
 
     /**
      * @var integer $id
@@ -45,6 +46,7 @@ class Invoice
      * @var Uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
+     * @Grid\Column(visible=false)
      */
     private $uuid;
 
@@ -52,6 +54,7 @@ class Invoice
      * @var string $status
      *
      * @ORM\Column(name="status", type="string", length=25)
+     * @Grid\Column(name="status", type="status", field="status", title="status", filter="select", selectFrom="source", safe=false, label_function="invoice_label")
      */
     private $status;
 
@@ -60,7 +63,8 @@ class Invoice
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
-     * @Grid\Column(name="clients", field="client.name", title="client", filter="select", selectFrom="source")
+     * @Grid\Column(type="client", name="clients", field="client.name", title="client", filter="select", selectFrom="source", joinType="inner")
+     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      */
     private $client;
 
@@ -68,7 +72,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="total", type="float")
-     * @Grid\Column(type="number", style="currency")
+     * @Grid\Column(type="currency")
      */
     private $total;
 
@@ -76,6 +80,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="base_total", type="float")
+     * @Grid\Column(visible=false)
      */
     private $baseTotal;
 
@@ -91,7 +96,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="tax", type="float", nullable=true)
-     * @Grid\Column(type="number", style="currency")
+     * @Grid\Column(type="currency")
      */
     private $tax;
 
@@ -99,6 +104,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
+     * @Grid\Column(type="percent")
      */
     private $discount;
 
@@ -123,6 +129,7 @@ class Invoice
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
+     * @Grid\Column(visible=false)
      */
     private $due;
 
@@ -131,6 +138,7 @@ class Invoice
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
+     * @Grid\Column(visible=false)
      */
     private $paidDate;
 
@@ -157,6 +165,7 @@ class Invoice
     /**
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
+     * @Grid\Column(visible=false)
      *
      * @var ArrayCollection
      */

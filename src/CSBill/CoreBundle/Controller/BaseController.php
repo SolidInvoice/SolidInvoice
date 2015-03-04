@@ -31,7 +31,7 @@ abstract class BaseController extends Base
     /**
      * Return a instance of the doctrine entity manager
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @return \Doctrine\ORM\EntityManagerInterface
      */
     protected function getEm()
     {

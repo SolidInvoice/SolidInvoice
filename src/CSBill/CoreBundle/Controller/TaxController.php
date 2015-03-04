@@ -2,118 +2,28 @@
 
 namespace CSBill\CoreBundle\Controller;
 
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\CoreBundle\Entity\Tax;
 use CSBill\CoreBundle\Form\Type\TaxType;
-use CSBill\DataGridBundle\Grid\Filters;
-use Doctrine\ORM\QueryBuilder;
+use CSBill\CoreBundle\Grid\TaxGrid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class TaxController extends BaseController
 {
-    public function ratesAction(Request $request)
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function ratesAction()
     {
-        $source = new Entity('CSBillCoreBundle:Tax');
+        $grid = $this->get('grid')->create(new TaxGrid);
 
-        // Get a Grid instance
-        $grid = $this->get('grid');
-        $templating = $this->get('templating');
-
-        $filters = new Filters($request);
-
-        $filters->add(
-            'all',
-            null,
-            true,
-            array(
-                'active_class' => 'label label-info',
-                'default_class' => 'label label-default',
-            )
-        );
-
-        $filters->add(
-            'inclusive',
-            function (QueryBuilder $queryBuilder) {
-                $aliases = $queryBuilder->getRootAliases();
-                $alias = $aliases[0];
-
-                $queryBuilder
-                    ->andWhere($alias.'.type = :type')
-                    ->setParameter('type', 'inclusive');
-            },
-            false,
-            array(
-                'active_class' => 'label label-info',
-                'default_class' => 'label label-default',
-            )
-        );
-
-        $filters->add(
-            'exclusive',
-            function (QueryBuilder $queryBuilder) {
-                $aliases = $queryBuilder->getRootAliases();
-                $alias = $aliases[0];
-
-                $queryBuilder
-                    ->andWhere($alias.'.type = :type')
-                    ->setParameter('type', 'exclusive');
-            },
-            false,
-            array(
-                'active_class' => 'label label-info',
-                'default_class' => 'label label-default',
-            )
-        );
-
-        $search = $request->get('search');
-
-        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search, $filters) {
-            if ($filters->isFilterActive()) {
-                $filter = $filters->getActiveFilter();
-                $filter($queryBuilder);
-            }
-
-            if ($search) {
-                $aliases = $queryBuilder->getRootAliases();
-
-                $queryBuilder
-                    ->andWhere($aliases[0].'.name LIKE :search')
-                    ->setParameter('search', "%{$search}%");
-            }
-        });
-
-        // Attach the source to the grid
-        $grid->setSource($source);
-
-        $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_edit_tax_rate');
-        $editAction->addAttribute('title', $this->trans('Edit Tax Rate'));
-        $editAction->addAttribute('rel', 'tooltip');
-
-        $deleteIcon = $templating->render('{{ icon("times") }}');
-        $deleteAction = new RowAction($deleteIcon, '_delete_tax_rate');
-        $deleteAction->setAttributes(
-            array(
-                'title' => $this->trans('Delete Tax'),
-                'rel' => 'tooltip',
-                'data-confirm' => $this->trans('Are you sure you want to delete this tax method?'),
-                'class' => 'delete-item',
-            )
-        );
-
-        $actionsRow = new ActionsColumn('actions', 'Action', array($editAction, $deleteAction));
-        $grid->addColumn($actionsRow, 100);
-
-        $grid->hideColumns(array('deletedAt'));
-
-        return $grid->getGridResponse('CSBillCoreBundle:tax:index.html.twig', array('filters' => $filters));
+        return $grid->getGridResponse();
     }
 
     /**
      * @param Request $request
+     * @param Tax     $tax
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

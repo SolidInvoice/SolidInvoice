@@ -29,7 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Quote
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\Archivable;
 
     /**
      * @var integer $id
@@ -44,6 +45,7 @@ class Quote
      * @var Uuid $uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
+     * @Grid\Column(visible=false)
      */
     private $uuid;
 
@@ -51,6 +53,7 @@ class Quote
      * @var string $status
      *
      * @ORM\Column(name="status", type="string", length=25)
+     * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", safe=false, label_function="quote_label")
      */
     private $status;
 
@@ -59,7 +62,8 @@ class Quote
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
-     * @Grid\Column(name="clients", field="client.name", title="client", filter="select", selectFrom="source")
+     * @Grid\Column(type="client", name="clients", field="client.name", title="client", filter="select", selectFrom="source", joinType="inner")
+     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      */
     private $client;
 
@@ -67,7 +71,7 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="total", type="float")
-     * @Grid\Column(type="number", style="currency")
+     * @Grid\Column(type="currency")
      */
     private $total;
 
@@ -75,6 +79,7 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="base_total", type="float")
+     * @Grid\Column(visible=false)
      */
     private $baseTotal;
 
@@ -82,7 +87,7 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="tax", type="float", nullable=true)
-     * @Grid\Column(type="number", style="currency")
+     * @Grid\Column(type="currency")
      */
     private $tax;
 
@@ -90,6 +95,7 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
+     * @Grid\Column(type="percent")
      */
     private $discount;
 
@@ -114,6 +120,7 @@ class Quote
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
+     * @Grid\Column(visible=false)
      */
     private $due;
 
@@ -129,6 +136,7 @@ class Quote
     /**
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
+     * @Grid\Column(visible=false)
      *
      * @var ArrayCollection
      */

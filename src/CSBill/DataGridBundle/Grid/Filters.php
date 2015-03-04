@@ -11,40 +11,53 @@
 
 namespace CSBill\DataGridBundle\Grid;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class Filters implements \Iterator
 {
+
+    /**
+     * @var array
+     */
     protected $filters = array();
 
-    protected $request;
+    /**
+     * @var string
+     */
+    protected $filterString;
 
+    /**
+     * @var int
+     */
     protected $pointer = 0;
 
+    /**
+     * @var bool
+     */
     protected $isFilterActive = false;
 
+    /**
+     * @var int
+     */
     protected $activeFilter;
 
-    public function __construct(Request $request)
+    /**
+     * @param string $filterString
+     */
+    public function __construct($filterString)
     {
-        $this->request = $request;
+        $this->filterString = $filterString;
     }
 
     /**
-     * @param string        $name
-     * @param null|\Closure $callback
-     * @param bool          $default
-     * @param array         $options
+     * @param string   $name
+     * @param callable $callback
+     * @param bool     $default
+     * @param array    $options
      *
      * @return $this
      */
-    public function add($name, $callback, $default = false, array $options = array())
+    public function add($name, callable $callback, $default = false, array $options = array())
     {
-        $active = $default;
-
-        if (($filter = $this->request->get('filter')) !== null) {
-            $active = $filter === $name;
-        }
+        $active = $this->filterString === $name ?: $default;
 
         if ($active && !$default) {
             $this->isFilterActive = true;

@@ -59,12 +59,14 @@ invoice:
             pay: Invoice cannot be paid
             sent: Invoice cannot be sent
             reopen: Invoice cannot be re-opened
+            archive: Invoice cannot be archived
         action:
             accept: Invoice has been accepted
             cancel: Invoice has been cancelled
             pay: Invoice has been paid
             sent: Invoice has been sent
             reopen: Invoice has been re-opened
+            archive: Invoice has been archived
     stats:
         count:
             pending: "{0} Pending Invoices|{1} Pending Invoice|]1,Inf] Pending Invoices"
@@ -78,6 +80,7 @@ invoice:
         view: View Invoice
         pay_now: Pay Now
     balance: Outstanding Balance
+    archive:
+        success: Invoice has been archived
 
 invoice: Invoice
-search: Search

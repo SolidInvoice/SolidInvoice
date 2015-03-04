@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @GRID\Source(groupBy="created")
  */
 class Payment
 {
@@ -49,8 +50,8 @@ class Payment
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="payments")
-     * @Grid\Column(name="client", field="client.name", title="Client", filter="select", selectFrom="source")
-     * @Grid\Column(name="client_id", field="client.id", visible=false)
+     * @Grid\Column(type="client", name="client", field="client.name", title="Client", filter="select", selectFrom="source", joinType="inner")
+     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      *
      * @var Client
      */
@@ -58,6 +59,7 @@ class Payment
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
+     * @Grid\Column(name="method", field="method.name", title="Method", filter="select", selectFrom="source")
      *
      * @var PaymentMethod
      */
@@ -67,12 +69,13 @@ class Payment
      * @var string $status
      *
      * @ORM\Column(name="status", type="string", length=25)
+     * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", label_function="payment_label")
      */
     private $status;
 
     /**
      * @ORM\Column(name="amount", type="float")
-     * @Grid\Column(type="number", style="currency", title="amount")
+     * @Grid\Column(type="currency", title="Total")
      */
     private $totalAmount;
 
@@ -100,6 +103,7 @@ class Payment
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
+     * @Grid\Column(sortable=true, order="desc")
      */
     private $completed;
 
