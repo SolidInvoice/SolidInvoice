@@ -74,12 +74,13 @@
                                                         {% for filter in grid.filters %}
                                                             <li role="presentation"{% if filter.active %} class="active"{% endif %}>
                                                                 <a role="menuitem" tabindex="-1" href="{{ path(app.request.get('_route'), query|merge({'filter' : filter.name})) }}">
-                                                                    {{ filter|trans }}
+                                                                    {{ filter|humanize|title|trans }}
                                                                 </a>
                                                             </li>
                                                         {% endfor %}
 
                                                         {% if grid.filters.filterActive %}
+                                                            <li class="divider"></li>
                                                             <li role="presentation">
                                                                 <a role="menuitem" tabindex="-1" href="{{ path(app.request.get('_route'), query|merge({'filter' : null})) }}">
                                                                     {{ 'Reset'|trans }}

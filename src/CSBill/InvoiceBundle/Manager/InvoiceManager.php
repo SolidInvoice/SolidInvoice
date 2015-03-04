@@ -211,6 +211,27 @@ class InvoiceManager extends ContainerAware
 
     /**
      * @param Invoice $invoice
+     *
+     * @return Invoice
+     * @throws InvalidTransitionException
+     */
+    public function archive(Invoice $invoice)
+    {
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_ARCHIVE, new InvoiceEvent($invoice));
+
+        $this->applyTransition($invoice, Graph::TRANSITION_ARCHIVE);
+        $invoice->archive();
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_ARCHIVE, new InvoiceEvent($invoice));
+
+        return $invoice;
+    }
+
+    /**
+     * @param Invoice $invoice
      * @param string  $transition
      *
      * @return bool

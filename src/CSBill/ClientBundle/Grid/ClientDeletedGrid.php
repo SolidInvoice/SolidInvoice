@@ -13,13 +13,11 @@ namespace CSBill\ClientBundle\Grid;
 use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Repository\ClientRepository;
-use CSBill\DataGridBundle\Action\Collection;
-use CSBill\DataGridBundle\Grid\Filters;
-use CSBill\DataGridBundle\GridInterface;
+use CSBill\DataGridBundle\AbstractGrid;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
-class ClientDeletedGrid implements GridInterface
+class ClientDeletedGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface
@@ -57,36 +55,12 @@ class ClientDeletedGrid implements GridInterface
     /**
      * {@inheritdoc}
      */
-    public function getFilters(Filters $filters)
-    {
-        return $filters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function search(QueryBuilder $queryBuilder, $searchString)
     {
         $aliases = $queryBuilder->getRootAliases();
 
         $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
             ->setParameter('search', "%{$searchString}%");
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRowActions(Collection $collection)
-    {
-        return $collection;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMassActions()
-    {
-        return array();
     }
 
     /**
@@ -103,13 +77,5 @@ class ClientDeletedGrid implements GridInterface
     public function isSearchable()
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isFilterable()
-    {
-        return false;
     }
 }

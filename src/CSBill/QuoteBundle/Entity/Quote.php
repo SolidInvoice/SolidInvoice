@@ -29,7 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Quote
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\Archivable;
 
     /**
      * @var integer $id
@@ -52,7 +53,7 @@ class Quote
      * @var string $status
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Grid\Column(name="status", type="status", field="status.name", title="status", filter="select", selectFrom="source", safe=false)
+     * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", safe=false, label_function="quote_label")
      */
     private $status;
 
@@ -61,7 +62,8 @@ class Quote
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
-     * @Grid\Column(name="clients", field="client.name", title="client", filter="select", selectFrom="source")
+     * @Grid\Column(type="client", name="clients", field="client.name", title="client", filter="select", selectFrom="source", joinType="inner")
+     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      */
     private $client;
 
@@ -93,6 +95,7 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
+     * @Grid\Column(type="percent")
      */
     private $discount;
 

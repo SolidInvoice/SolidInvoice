@@ -28,21 +28,23 @@ class StatusExtension extends \Twig_Extension
      */
     private $invoiceLabelMap = array(
         InvoiceGraph::STATUS_PENDING => 'warning',
-        InvoiceGraph::STATUS_DRAFT => 'default',
-        InvoiceGraph::STATUS_OVERDUE => 'danger',
+        InvoiceGraph::STATUS_DRAFT => 'primary',
         InvoiceGraph::STATUS_PAID => 'success',
-        InvoiceGraph::STATUS_CANCELLED => 'inverse',
+        InvoiceGraph::STATUS_OVERDUE => 'danger',
+        InvoiceGraph::STATUS_CANCELLED => 'default',
+        InvoiceGraph::STATUS_ARCHIVED => 'warning',
     );
 
     /**
      * @var array
      */
     private $quoteLabelMap = array(
-        QuoteGraph::STATUS_DRAFT => 'default',
         QuoteGraph::STATUS_PENDING => 'warning',
+        QuoteGraph::STATUS_DRAFT => 'primary',
         QuoteGraph::STATUS_ACCEPTED => 'success',
         QuoteGraph::STATUS_DECLINED => 'danger',
-        QuoteGraph::STATUS_CANCELLED => 'inverse',
+        QuoteGraph::STATUS_CANCELLED => 'default',
+        QuoteGraph::STATUS_ARCHIVED => 'warning',
     );
 
     /**
@@ -55,9 +57,9 @@ class StatusExtension extends \Twig_Extension
         PaymentStatus::STATUS_EXPIRED => 'danger',
         PaymentStatus::STATUS_CAPTURED => 'success',
         PaymentStatus::STATUS_PENDING => 'warning',
-        PaymentStatus::STATUS_CANCELLED => 'danger',
+        PaymentStatus::STATUS_CANCELLED => 'default',
         PaymentStatus::STATUS_NEW => 'info',
-        PaymentStatus::STATUS_AUTHORIZED => 'info',
+        PaymentStatus::STATUS_AUTHORIZED => 'primary',
         PaymentStatus::STATUS_REFUNDED => 'warning',
         PaymentStatus::STATUS_CREDIT => 'success',
     );

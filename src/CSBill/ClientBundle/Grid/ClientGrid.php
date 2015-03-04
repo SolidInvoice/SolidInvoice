@@ -116,18 +116,8 @@ class ClientGrid implements GridInterface
             ->setClass('info')
         ;
 
-        $deleteAction = new ActionColumn();
-        $deleteAction->setIcon('times')
-            ->setTitle('client.grid.actions.delete')
-            ->setRoute('_clients_delete')
-            ->setConfirm('confirm_delete')
-            ->setAttributes(array('class' => 'delete-client'))
-            ->setClass('danger')
-        ;
-
         $collection->add($viewAction);
         $collection->add($editAction);
-        $collection->add($deleteAction);
 
         return $collection;
     }

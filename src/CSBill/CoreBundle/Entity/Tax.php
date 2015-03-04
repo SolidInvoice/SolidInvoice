@@ -29,7 +29,6 @@ class Tax
         Entity\SoftDeleteable;
 
     const TYPE_INCLUSIVE = 'inclusive';
-
     const TYPE_EXCLUSIVE = 'exclusive';
 
     /**
@@ -42,15 +41,17 @@ class Tax
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=32)
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=32)
      * @Assert\NotBlank
      */
     private $name;
 
     /**
-     * @ORM\Column(name="rate", type="float", precision=4)
      * @var string
+     *
+     * @ORM\Column(name="rate", type="float", precision=4)
      * @Assert\Type("float")
      * @Assert\NotBlank
      */

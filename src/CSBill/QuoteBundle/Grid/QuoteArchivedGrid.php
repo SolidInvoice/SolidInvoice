@@ -8,20 +8,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Grid;
+namespace CSBill\QuoteBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Repository\ClientRepository;
 use CSBill\DataGridBundle\AbstractGrid;
 use CSBill\DataGridBundle\Action\DeleteMassAction;
-use CSBill\DataGridBundle\Action\MassAction;
+use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ClientArchivedGrid extends AbstractGrid
+class QuoteArchivedGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface
@@ -50,13 +47,13 @@ class ClientArchivedGrid extends AbstractGrid
     {
         $this->entityManager->getFilters()->disable('archivable');
 
-        $source = new Entity('CSBillClientBundle:Client');
+        $source = new Entity('CSBillQuoteBundle:Quote');
 
-        /** @var ClientRepository $repo */
-        $repo = $this->entityManager->getRepository('CSBillClientBundle:Client');
+        /** @var QuoteRepository $repo */
+        $repo = $this->entityManager->getRepository('CSBillQuoteBundle:Quote');
 
-        $queryBuilder = $repo->createQueryBuilder('c');
-        $queryBuilder->where('c.archived is not null');
+        $queryBuilder = $repo->createQueryBuilder('i');
+        $queryBuilder->where('i.archived is not null');
 
         $source->initQueryBuilder($queryBuilder);
 
@@ -68,9 +65,11 @@ class ClientArchivedGrid extends AbstractGrid
      */
     public function search(QueryBuilder $queryBuilder, $searchString)
     {
-        $aliases = $queryBuilder->getRootAliases();
-
-        $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
+        $alias = $queryBuilder->getRootAliases();
+        $queryBuilder
+            ->orWhere('_client.name LIKE :search')
+            ->orWhere($alias[0].'.status LIKE :search')
+            ->orWhere($alias[0].'.total LIKE :search')
             ->setParameter('search', "%{$searchString}%");
     }
 
@@ -79,33 +78,8 @@ class ClientArchivedGrid extends AbstractGrid
      */
     public function getMassActions()
     {
-        $archive = new MassAction('Restore', function($ids) {
-            /** @var ClientRepository $clientRepository */
-            $clientRepository = $this->entityManager->getRepository('CSBillClientBundle:Client');
-
-            /** @var Client[] $clients */
-            $clients = $clientRepository->findBy(array('id' => $ids));
-
-            foreach ($clients as $client) {
-                $client->setArchived(null);
-                $this->entityManager->persist($client);
-            }
-
-            $this->entityManager->flush();
-
-            /** @var FlashBag $flashBag */
-            $flashBag = $this->session->getBag('flashes');
-            $flashBag->add('success', 'client.restore.success');
-        }, true);
-
-        $archive->setIcon('reply');
-        $archive->setClass('success');
-
-        $deleteAction = new DeleteMassAction(true);
-
         return array(
-            $archive,
-            $deleteAction
+            new DeleteMassAction()
         );
     }
 
@@ -114,7 +88,7 @@ class ClientArchivedGrid extends AbstractGrid
      */
     public function getTemplate()
     {
-        return 'CSBillClientBundle:Default:index.html.twig';
+        return 'CSBillQuoteBundle:Default:index.html.twig';
     }
 
     /**

@@ -71,12 +71,6 @@
     {% endif %}
 {%- endblock form_label %}
 
-{% block percent_widget -%}
-    {% set type = type|default('number') %}
-
-    {{- parent() -}}
-{%- endblock percent_widget %}
-
 {% block image_upload_widget -%}
 
     {{ block('form_widget_simple') }}

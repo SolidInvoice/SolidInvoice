@@ -8,7 +8,7 @@
  #}
 
 {% for type, flashMessage in app.session.flashbag.all() %}
-    {% set translation_domain = '' %}
+    {% set translation_domain = null %}
     {% if type == 'error' %}
         {% set type = 'danger' %}
     {% elseif type == 'fos_user_success' %}

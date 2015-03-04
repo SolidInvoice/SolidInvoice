@@ -193,6 +193,7 @@ class Grid extends DataGrid
             $actionColumn->setClass($action->getClass());
             $actionColumn->addAttribute('rel', 'tooltip');
             $actionColumn->addAttribute('title', $action->getTitle());
+            $actionColumn->manipulateRender($action->getCallback());
 
             $confirm = $action->getConfirm();
             if (!empty($confirm)) {

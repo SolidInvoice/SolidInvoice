@@ -48,6 +48,11 @@ class ActionColumn
     protected $attributes = array();
 
     /**
+     * @var callable
+     */
+    protected $callback;
+
+    /**
      * @return string
      */
     public function getRoute()
@@ -187,5 +192,25 @@ class ActionColumn
     public function setClass($class)
     {
         $this->class = $class;
+    }
+
+    /**
+     * @return callable
+     */
+    public function getCallback()
+    {
+        return $this->callback;
+    }
+
+    /**
+     * @param callable $callback
+     *
+     * @return ActionColumn
+     */
+    public function setCallback(callable $callback)
+    {
+        $this->callback = $callback;
+
+        return $this;
     }
 }

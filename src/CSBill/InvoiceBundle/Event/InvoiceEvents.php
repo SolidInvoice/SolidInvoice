@@ -26,4 +26,7 @@ final class InvoiceEvents
 
     const INVOICE_PRE_REOPEN = 'invoice.pre_reopen';
     const INVOICE_POST_REOPEN = 'invoice.post_reopen';
+
+    const INVOICE_PRE_ARCHIVE = 'invoice.pre_archive';
+    const INVOICE_POST_ARCHIVE = 'invoice.post_archive';
 }

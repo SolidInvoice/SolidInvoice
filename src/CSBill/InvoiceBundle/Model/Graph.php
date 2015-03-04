@@ -20,10 +20,12 @@ final class Graph
     const TRANSITION_OVERDUE = 'overdue';
     const TRANSITION_PAY = 'pay';
     const TRANSITION_REOPEN = 'reopen';
+    const TRANSITION_ARCHIVE = 'archive';
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PENDING = 'pending';
     const STATUS_PAID = 'paid';
     const STATUS_OVERDUE = 'overdue';
     const STATUS_CANCELLED = 'cancelled';
+    const STATUS_ARCHIVED = 'archived';
 }

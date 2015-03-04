@@ -53,3 +53,12 @@ services:
         arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]
         tags:
             - { name: form.type, alias: invoice_item }
+
+    csbill.invoice.grid.default_grid:
+        class: CSBill\InvoiceBundle\Grid\InvoiceGrid
+        arguments: [@doctrine.orm.entity_manager, @invoice.manager, @session]
+
+
+    csbill.invoice.grid.archived_grid:
+        class: CSBill\InvoiceBundle\Grid\InvoiceArchivedGrid
+        arguments: [@doctrine.orm.entity_manager, @session]

@@ -10,16 +10,12 @@
 
 namespace CSBill\InvoiceBundle\Controller;
 
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Row;
-use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,85 +24,21 @@ class DefaultController extends BaseController
     /**
      * List all the invoices
      *
-     * @param Request $request
-     *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $source = new Entity('CSBillInvoiceBundle:Invoice');
+        $gridCollection = new GridCollection();
+        $gridCollection->add('csbill.invoice.grid.default_grid', 'active', 'check');
+        $gridCollection->add('csbill.invoice.grid.archived_grid', 'archived', 'archive');
 
-        // Get a Grid instance
-        $grid = $this->get('grid');
-        $translator = $this->get('translator');
-        $templating = $this->get('templating');
-
-        $search = $request->get('search');
-
-        $source->manipulateQuery(function (QueryBuilder $queryBuilder) use ($search) {
-            if ($search) {
-                $queryBuilder->andWhere('_client.name LIKE :search')
-                    ->setParameter('search', "%{$search}%");
-            }
-        });
-
-        // Attach the source to the grid
-        $grid->setSource($source);
-
-        $rowActicons = array();
-
-        $editIcon = $templating->render('{{ icon("edit") }}');
-        $editAction = new RowAction($editIcon, '_invoices_edit');
-        $editAction->addAttribute('title', $translator->trans('invoice.action.edit'));
-        $editAction->addAttribute('rel', 'tooltip');
-        $rowActicons[] = $editAction;
-
-        $viewIcon = $templating->render('{{ icon("eye") }}');
-        $viewAction = new RowAction($viewIcon, '_invoices_view');
-        $viewAction->addAttribute('title', $translator->trans('invoice.action.view'));
-        $viewAction->addAttribute('rel', 'tooltip');
-        $rowActicons[] = $viewAction;
-
-        $payIcon = $templating->render('{{ icon("credit-card") }}');
-        $payAction = new RowAction($payIcon, '_payments_create');
-
-        $payAction->setRouteParameters(array('uuid'));
-        $payAction->setRouteParametersMapping(array('uuid' => 'uuid'));
-        $payAction->addAttribute('title', $translator->trans('invoice.action.pay_now'));
-        $payAction->addAttribute('rel', 'tooltip');
-
-        $payAction->manipulateRender(function (RowAction $rowAction, Row $row) {
-            if (Graph::STATUS_PENDING !== $row->getField('status')) {
-                    return null;
-            }
-
-            return $rowAction;
-        });
-        $rowActicons[] = $payAction;
-
-        $actionsRow = new ActionsColumn('actions', 'Action', $rowActicons);
-        $grid->addColumn($actionsRow, 100);
-
-        $grid->getColumn('discount')->manipulateRenderCell(function ($value) {
-            if (!empty($value)) {
-                return $value * 100 .'%';
-            }
-
-            return (int) $value;
-        });
-
-        $grid->setPermanentFilters(
-            array(
-                'client.name' => array('operator' => 'isNotNull'),
-            )
-        );
+        $grid = $this->get('grid')->create($gridCollection);
 
         /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
 
         // Return the response of the grid to the template
         return $grid->getGridResponse(
-            'CSBillInvoiceBundle:Default:index.html.twig',
             array(
                 'status_list' => array(
                     Graph::STATUS_PENDING,

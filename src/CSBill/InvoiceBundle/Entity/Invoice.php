@@ -30,7 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Invoice
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\Archivable;
 
     /**
      * @var integer $id
@@ -53,7 +54,7 @@ class Invoice
      * @var string $status
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Grid\Column(name="status", type="status", field="status", title="status", filter="select", selectFrom="source", safe=false)
+     * @Grid\Column(name="status", type="status", field="status", title="status", filter="select", selectFrom="source", safe=false, label_function="invoice_label")
      */
     private $status;
 
@@ -62,7 +63,8 @@ class Invoice
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
-     * @Grid\Column(name="clients", field="client.name", title="client", filter="select", selectFrom="source")
+     * @Grid\Column(type="client", name="clients", field="client.name", title="client", filter="select", selectFrom="source", joinType="inner")
+     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      */
     private $client;
 
@@ -102,6 +104,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
+     * @Grid\Column(type="percent")
      */
     private $discount;
 

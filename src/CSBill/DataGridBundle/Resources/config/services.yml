@@ -13,3 +13,14 @@ services:
         arguments: [%currency%]
         tags:
             - { name: grid.column.extension }
+
+    grid.column.extension.percent_extension:
+        class: CSBill\DataGridBundle\Column\PercentColumn
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.extension.client_extension:
+            class: CSBill\DataGridBundle\Column\ClientColumn
+            arguments: [@twig]
+            tags:
+                - { name: grid.column.extension }

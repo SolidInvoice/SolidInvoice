@@ -34,3 +34,12 @@ services:
         arguments: [@=service('doctrine').getManager().getRepository('CSBillCoreBundle:Tax')]
         tags:
             - { name: form.type, alias: quote_item }
+
+    csbill.quote.grid.default_grid:
+        class: CSBill\QuoteBundle\Grid\QuoteGrid
+        arguments: [@doctrine.orm.entity_manager, @finite.factory, @session]
+
+    csbill.quote.grid.archived_grid:
+        class: CSBill\QuoteBundle\Grid\QuoteArchivedGrid
+        arguments: [@doctrine.orm.entity_manager, @session]
+

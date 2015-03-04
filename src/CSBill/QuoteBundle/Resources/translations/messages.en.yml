@@ -46,8 +46,6 @@ quote:
     cancelled: Quote Cancelled
     reopened: Quote Re-Opened
     sent: Quote Sent
-    view: View Quote
-    edit: Edit Quote
     client:
         choose: Choose a client
         empty: You have not created any clients yet.
@@ -55,6 +53,13 @@ quote:
     transition:
         exception:
             accept: Quote cannot be accepted
+            archive: Quote cannot be archived
+    archive:
+        success: Quote Archived
+    grid:
+        action:
+            view: View Quote
+            edit: Edit Quote
 
     stats:
         count:
