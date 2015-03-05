@@ -123,7 +123,9 @@ class InvoiceRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('i');
 
-        $qb->orderBy('i.created', 'DESC')
+        $qb
+            ->innerJoin('i.client', 'c')
+            ->orderBy('i.created', 'DESC')
             ->setMaxResults($limit);
 
         $query = $qb->getQuery();

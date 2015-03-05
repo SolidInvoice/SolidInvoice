@@ -11,7 +11,9 @@
 
 namespace CSBill\QuoteBundle\Form\Type;
 
-use CSBill\CoreBundle\Repository\TaxRepository;
+use CSBill\TaxBundle\Form\Type\Tax;
+use CSBill\TaxBundle\Repository\TaxRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -24,11 +26,11 @@ class ItemType extends AbstractType
     private $taxRepo;
 
     /**
-     * @param TaxRepository $taxRepo
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TaxRepository $taxRepo)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->taxRepo = $taxRepo;
+        $this->taxRepo = $entityManager->getRepository('CSBillTaxBundle:Tax');
     }
 
     /**
@@ -70,9 +72,9 @@ class ItemType extends AbstractType
         if ($this->taxRepo->getTotal() > 0) {
             $builder->add(
                 'tax',
-                new \CSBill\CoreBundle\Form\Type\Tax(),
+                new Tax(),
                 array(
-                    'class' => 'CSBill\CoreBundle\Entity\Tax',
+                    'class' => 'CSBill\TaxBundle\Entity\Tax',
                     'placeholder' => 'Choose Tax Type',
                     'attr' => array(
                         'class' => 'input-mini quote-item-tax',

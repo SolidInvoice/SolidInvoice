@@ -8,8 +8,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Entity;
+namespace CSBill\TaxBundle\Entity;
 
+use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="tax_rates")
- * @ORM\Entity(repositoryClass="CSBill\CoreBundle\Repository\TaxRepository")
+ * @ORM\Entity(repositoryClass="CSBill\TaxBundle\Repository\TaxRepository")
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  */
@@ -52,6 +53,7 @@ class Tax
      * @var string
      *
      * @ORM\Column(name="rate", type="float", precision=4)
+     * @Grid\Column(type="percent")
      * @Assert\Type("float")
      * @Assert\NotBlank
      */
@@ -211,7 +213,8 @@ class Tax
     public function __toString()
     {
         $type = $this->type === self::TYPE_INCLUSIVE ? 'inc' : 'exl';
+        $rate = $this->rate * 100;
 
-        return "{$this->rate}% {$this->name} ({$type})";
+        return "{$rate}% {$this->name} ({$type})";
     }
 }

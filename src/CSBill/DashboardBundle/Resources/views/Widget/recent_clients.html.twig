@@ -53,7 +53,7 @@
                         </ul>
                     </div>
 
-                    {{ client_label(client) }}
+                    {{ client_label(client.status) }}
 
                     <a href="{{ path('_clients_view', {'id' : client.id}) }}">
                         {{ client.name }}

@@ -1,0 +1,21 @@
+_tax_rates:
+    pattern: /rates
+    defaults: { _controller: CSBillTaxBundle:Default:rates }
+
+_add_tax_rate:
+    pattern: /rates/add
+    defaults: { _controller: CSBillTaxBundle:Default:add }
+
+_edit_tax_rate:
+    pattern: /rates/edit/{id}
+    defaults: { _controller: CSBillTaxBundle:Default:add }
+
+_delete_tax_rate:
+    pattern: /rates/delete/{id}
+    defaults: { _controller: CSBillTaxBundle:Default:delete }
+
+_get_tax_rate:
+    pattern: /rates/get/{id}
+    defaults: { _controller: CSBillTaxBundle:Default:get }
+    options:
+        expose: true

@@ -10,7 +10,7 @@
 
 namespace CSBill\DashboardBundle\Widgets;
 
-use CSBill\ClientBundle\Entity\Status as ClientStatus;
+use CSBill\ClientBundle\Model\Status as ClientStatus;
 use CSBill\ClientBundle\Repository\ClientRepository;
 use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Form\Type;
+namespace CSBill\TaxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 

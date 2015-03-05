@@ -11,8 +11,9 @@
 
 namespace CSBill\QuoteBundle\Form\Type;
 
-use CSBill\CoreBundle\Repository\TaxRepository;
+use CSBill\TaxBundle\Repository\TaxRepository;
 use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -25,11 +26,11 @@ class QuoteType extends AbstractType
     private $repo;
 
     /**
-     * @param TaxRepository $repo
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TaxRepository $repo)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->repo = $repo;
+        $this->repo = $entityManager->getRepository('CSBillTaxBundle:Tax');
     }
 
     /**
@@ -67,9 +68,7 @@ class QuoteType extends AbstractType
         $builder->add('total', 'hidden');
         $builder->add('baseTotal', 'hidden');
 
-        if ($this->repo->getTotal() > 0) {
-            $builder->add('tax', 'hidden');
-        }
+        $builder->add('tax', 'hidden');
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
     }

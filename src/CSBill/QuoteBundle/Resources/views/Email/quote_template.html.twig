@@ -8,6 +8,9 @@
  #}
 
 {% spaceless %}
+
+{% set footerSpan = quote.tax is empty ? 3 : 4 %}
+
 <table style="width: 100%; background-color: #4a78d4">
     <tr>
         {% if settings.system.general.logo.value is not empty %}
@@ -108,7 +111,7 @@
                 </td>
                 {% if quote.tax is not empty %}
                     <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="right">
-                        {{ item.tax|currency }}
+                        {{ item.tax }}
                     </td>
                 {% endif %}
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
@@ -119,27 +122,32 @@
     </tbody>
     <tfoot>
 
-        {% if quote.discount is not empty %}
+        {% if quote.tax is not empty and quote.discount is not empty %}
             <tr>
-                <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <strong>
-                        {{ "quote.discount"|trans }}
-                    </strong>
+                <td colspan="{{ footerSpan }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                    <strong>{{ "quote.subtotal"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    <span style="color:#b94a48">
-                        {{ quote.baseTotal|percentage(quote.discount)|currency }}
-                    </span>
+                    <span style="color:#b94a48">{{ quote.baseTotal|currency }}</span>
                 </td>
             </tr>
         {% endif %}
 
-        {% if quote.tax is not empty %}
+                {% if quote.discount is not empty %}
             <tr>
-                <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
-                    <strong>
-                        {{ "quote.tax"|trans }}
-                    </strong>
+                <td colspan="{{ footerSpan }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                    <strong>{{ "quote.discount"|trans }}</strong>
+                </td>
+                <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
+                    <span style="color:#b94a48">{{ quote.baseTotal|percentage(quote.discount)|currency }}</span>
+                </td>
+            </tr>
+        {% endif %}
+
+                {% if quote.tax is not empty %}
+            <tr>
+                <td colspan="{{ footerSpan }}" align="right" style="border-left:1px solid #cccccc; border-top:1px solid #cccccc; border-right:1px solid #cccccc;">
+                    <strong>{{ "quote.tax"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
                     {{ quote.tax|currency }}
@@ -148,16 +156,13 @@
         {% endif %}
 
         <tr>
-            <td colspan="{{ quote.tax is not empty ? 4 : 3 }}" align="right" style="border:1px solid #cccccc;">
-                <strong>
-                    {{ "quote.total"|trans }}
-                </strong>
+            <td colspan="{{ footerSpan }}" align="right" style="border:1px solid #cccccc;">
+                <strong>{{ "quote.total"|trans }}</strong>
             </td>
             <td style="border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
                 {{ quote.total|currency }}
             </td>
         </tr>
-    </tfoot>
 </table>
 
     {% if quote.terms is not empty %}

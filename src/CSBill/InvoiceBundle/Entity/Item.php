@@ -10,7 +10,7 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
-use CSBill\CoreBundle\Entity\Tax;
+use CSBill\TaxBundle\Entity\Tax;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -71,7 +71,7 @@ class Item
     private $invoice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CSBill\CoreBundle\Entity\Tax", inversedBy="invoiceItems")
+     * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
      */
     private $tax;
 

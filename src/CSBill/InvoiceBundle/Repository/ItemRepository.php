@@ -11,7 +11,8 @@
 
 namespace CSBill\InvoiceBundle\Repository;
 
-use CSBill\CoreBundle\Entity\Tax;
+use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\EntityRepository;
 
 class ItemRepository extends EntityRepository
@@ -23,6 +24,24 @@ class ItemRepository extends EntityRepository
      */
     public function removeTax(Tax $tax)
     {
+        if (Tax::TYPE_EXCLUSIVE === $tax->getType()) {
+            $qb = $this->createQueryBuilder('i');
+
+            $query =$qb->where('i.tax = :tax')
+                ->setParameter('tax', $tax)
+                ->groupBy('i.invoice')
+                ->getQuery();
+
+            /** @var Invoice $invoice */
+            foreach ($query->execute() as $invoice) {
+                $invoice->setTotal($invoice->getBaseTotal() + $invoice->getTax());
+                $invoice->setTax(null);
+                $this->getEntityManager()->persist($invoice);
+            }
+
+            $this->getEntityManager()->flush();
+        }
+
         $qb = $this->createQueryBuilder('i')
             ->update()
             ->set('i.tax', 'NULL')

@@ -22,25 +22,3 @@ _view_invoice_external:
         _controller: CSBillCoreBundle:View:viewinvoice
     requirements:
         uuid: "[a-zA-Z0-9-]{36}"
-
-_tax_rates:
-    pattern: /tax/rates
-    defaults: { _controller: CSBillCoreBundle:Tax:rates }
-
-_add_tax_rate:
-    pattern: /tax/rates/add
-    defaults: { _controller: CSBillCoreBundle:Tax:add }
-
-_edit_tax_rate:
-    pattern: /tax/rates/edit/{id}
-    defaults: { _controller: CSBillCoreBundle:Tax:add }
-
-_delete_tax_rate:
-    pattern: /tax/rates/delete/{id}
-    defaults: { _controller: CSBillCoreBundle:Tax:delete }
-
-_get_tax_rate:
-    pattern: /tax/rates/get/{id}
-    defaults: { _controller: CSBillCoreBundle:Tax:get }
-    options:
-        expose: true
