@@ -21,7 +21,7 @@
             {{ "installation.finish.success_message"|trans }}
         </h4>
 
-        <a href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
+        <a id="login" href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
             {{ icon('user') }} {{ "installation.finish.login"|trans }}
         </a>
     </fieldset>
