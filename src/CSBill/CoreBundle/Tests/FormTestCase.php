@@ -27,7 +27,7 @@ class FormTestCase extends TypeTestCase
             ->addTypes($this->getTypes())
             ->getFormFactory();
 
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = \Mockery::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
     }
 
@@ -38,8 +38,9 @@ class FormTestCase extends TypeTestCase
      */
     protected function getTypedExtensions()
     {
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-        $validator->expects($this->any())->method('validate')->will($this->returnValue([]));
+        $validator = \Mockery::mock('Symfony\Component\Validator\ValidatorInterface');
+
+        $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn(array());
 
         return array(
             new Extension\FormHelpExtension(),
@@ -60,7 +61,7 @@ class FormTestCase extends TypeTestCase
         return array(
             'select2' => new Type\Select2(),
             'image_upload' => new Type\ImageUpload(
-                $this->getMock('Symfony\Component\HttpFoundation\Session\SessionInterface'),
+                \Mockery::mock('Symfony\Component\HttpFoundation\Session\SessionInterface'),
                 new Encryption(rand())
             ),
         );

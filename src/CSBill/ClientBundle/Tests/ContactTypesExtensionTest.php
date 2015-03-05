@@ -17,12 +17,8 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetFunctions()
     {
-        $registry = $this->getMock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager'), array(), '', false);
-        $manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-
-        $registry->expects($this->once())
-            ->method('getManager')
-            ->will($this->returnValue($manager));
+        $manager = \Mockery::mock('Doctrine\Common\Persistence\ObjectManager');
+        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager' => $manager));
 
         $extension = new ContactTypesExtension($registry);
 
@@ -44,22 +40,15 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
             9,
         );
 
-        $registry = $this->getMock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager'), array(), '', false);
-        $manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $objectRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $manager = \Mockery::mock('Doctrine\Common\Persistence\ObjectManager');
+        $objectRepository = \Mockery::mock('Doctrine\Common\Persistence\ObjectRepository', array('findAll' => $array));
+        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager' => $manager));
 
-        $registry->expects($this->once())
-            ->method('getManager')
-            ->will($this->returnValue($manager));
-
-        $manager->expects($this->once())
-            ->method('getRepository')
+        $manager->shouldReceive('getRepository')
+            ->once()
             ->with('CSBillClientBundle:ContactType')
-            ->will($this->returnValue($objectRepository));
+            ->andReturn($objectRepository);
 
-        $objectRepository->expects($this->once())
-            ->method('findAll')
-            ->will($this->returnValue($array));
 
         $extension = new ContactTypesExtension($registry);
 
@@ -72,11 +61,8 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $registry = $this->getMock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager'), array(), '', false);
-        $manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $registry->expects($this->once())
-            ->method('getManager')
-            ->will($this->returnValue($manager));
+        $manager = \Mockery::mock('Doctrine\Common\Persistence\ObjectManager');
+        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager' => $manager));
 
         $extension = new ContactTypesExtension($registry);
 

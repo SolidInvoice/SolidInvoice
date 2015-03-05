@@ -21,6 +21,7 @@
 
     <listeners>
         <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+        <listener class="Mockery\Adapter\Phpunit\TestListener" />
     </listeners>
 
     <!--
