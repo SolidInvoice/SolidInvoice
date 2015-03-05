@@ -14,7 +14,6 @@ Feature: Install application
   Scenario: Installation System Check
     Given I am on "/install/system_check"
     Then I should see "CSBill Installation - Requirements Check"
-    Then print last response
     And I should not see an ".alert-danger" element
     When I follow "continue_step"
     Then I should be on "/install/config"

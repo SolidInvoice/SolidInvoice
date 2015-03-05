@@ -31,11 +31,12 @@ install:
 before_script:
   - mysql -e 'create database csbill;'
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm"* ]]; then echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
+  - chmod -R 0777 ./web/uploads
   - php app/check.php
 
 script:
   - ./bin/phpunit -c app
-  - ./bin/behat --suite=installation -vvv
+  - ./bin/behat --suite=installation -n -f progress
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
