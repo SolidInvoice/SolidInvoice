@@ -34,6 +34,7 @@
         <whitelist>
             <directory>../src</directory>
             <exclude>
+                <directory>../src/*/*Bundle/Behat</directory>
                 <directory>../src/*/*Bundle/Controller</directory>
                 <directory>../src/*/*Bundle/Resources</directory>
                 <directory>../src/*/*Bundle/Tests</directory>
