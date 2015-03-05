@@ -15,7 +15,7 @@ use CSBill\CoreBundle\Security\Encryption;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ImageUpload extends AbstractType
 {
@@ -30,10 +30,10 @@ class ImageUpload extends AbstractType
     protected $encryption;
 
     /**
-     * @param Session    $session
-     * @param Encryption $encryption
+     * @param SessionInterface $session
+     * @param Encryption       $encryption
      */
-    public function __construct(Session $session, Encryption $encryption)
+    public function __construct(SessionInterface $session, Encryption $encryption)
     {
         $this->session = $session;
         $this->encryption = $encryption;

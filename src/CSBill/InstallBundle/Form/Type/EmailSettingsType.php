@@ -146,6 +146,6 @@ class EmailSettingsType extends AbstractType
      */
     public function getName()
     {
-        return 'database_config';
+        return 'email_settings';
     }
 }
