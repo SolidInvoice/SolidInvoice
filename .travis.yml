@@ -35,7 +35,7 @@ before_script:
 
 script:
   - ./bin/phpunit -c app
-  - ./bin/behat --suite=installation -f progress -n -vvv
+  - ./bin/behat --suite=installation -vvv
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
