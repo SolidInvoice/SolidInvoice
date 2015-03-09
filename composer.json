@@ -63,8 +63,7 @@
         "friendsofsymfony/rest-bundle": "~1.5",
         "jms/serializer-bundle": "~0.12",
         "willdurand/hateoas-bundle": "0.4.*",
-        "nelmio/api-doc-bundle": "~2.7",
-        "white-october/pagerfanta-bundle": "~1.0"
+        "nelmio/api-doc-bundle": "~2.7"
     },
     "require-dev": {
         "behat/behat": "~3.0",

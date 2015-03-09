@@ -25,6 +25,10 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        api_doc:
+            pattern:  ^/api/docs
+            anonymous: ~
+
         installer:
             pattern:  ^/install(.*)
             anonymous: ~
