@@ -14,10 +14,12 @@ namespace CSBill\ClientBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="contact_types")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactTypeRepository")
+ * @Serialize\ExclusionPolicy("all")
  */
 class ContactType
 {
@@ -36,6 +38,8 @@ class ContactType
      * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
+     * @Serialize\Expose()
+     * @Serialize\SerializedName("type")
      */
     private $name;
 

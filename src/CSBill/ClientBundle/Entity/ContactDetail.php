@@ -14,6 +14,7 @@ namespace CSBill\ClientBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * CSBill\ClientBundle\Entity\ContactDetail.
@@ -27,6 +28,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *      "primary"    = "CSBill\ClientBundle\Entity\PrimaryContactDetail",
  *      "additional" = "CSBill\ClientBundle\Entity\AdditionalContactDetail",
  * })
+ * @Serialize\Discriminator(field = "detail_type", map = {
+ *    "primary": "CSBill\ClientBundle\Entity\PrimaryContactDetail",
+ *    "additional": "CSBill\ClientBundle\Entity\AdditionalContactDetail",
+ * })
+ * @Serialize\ExclusionPolicy("all")
  */
 abstract class ContactDetail
 {
@@ -45,6 +51,7 @@ abstract class ContactDetail
      * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
+     * @Serialize\Expose()
      */
     private $value;
 
@@ -53,6 +60,8 @@ abstract class ContactDetail
      *
      * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
      * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
+     * @Serialize\Expose()
+     * @Serialize\Inline()
      */
     private $type;
 

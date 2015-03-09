@@ -15,6 +15,7 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * CSBill\ClientBundle\Entity\Credit.
@@ -23,6 +24,7 @@ use Money\Money;
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\CreditRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @Serialize\ExclusionPolicy("all")
  */
 class Credit
 {
@@ -40,6 +42,8 @@ class Credit
      * @ORM\Column(name="value", type="money")
      *
      * @var Money
+     * @Serialize\Expose()
+     * @Serialize\SerializedName("credit")
      */
     private $value;
 

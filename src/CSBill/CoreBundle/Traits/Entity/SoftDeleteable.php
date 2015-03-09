@@ -12,12 +12,14 @@
 namespace CSBill\CoreBundle\Traits\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as GRID;
+use JMS\Serializer\Annotation as Serialize;
 
 trait SoftDeleteable
 {
     /**
      * @ORM\Column(type="datetime", name="deleted", nullable=true)
      * @GRID\Column(visible=false)
+     * @Serialize\Exclude()
      */
     protected $deletedAt;
 

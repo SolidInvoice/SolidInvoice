@@ -146,3 +146,29 @@ fos_user:
     service:
         email_canonicalizer:    csbill.user.canonicalizer
         username_canonicalizer: csbill.user.canonicalizer
+
+fos_rest:
+    param_fetcher_listener: true
+    allowed_methods_listener: true
+    routing_loader:
+        default_format: json
+    serializer:
+        serialize_null: true
+    view:
+        formats:
+            jsonp: true
+            json: true
+            xml: true
+            rss: false
+            html: false
+        templating_formats:
+            html: false
+        force_redirects:
+            html: false
+        serialize_null: true
+        failed_validation: HTTP_BAD_REQUEST
+        exception_wrapper_handler:  null
+
+nelmio_api_doc:
+    sandbox:
+        enabled: false

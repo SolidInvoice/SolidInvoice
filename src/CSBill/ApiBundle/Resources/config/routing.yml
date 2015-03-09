@@ -1,0 +1,8 @@
+api_doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /docs
+
+client_api:
+    type:     rest
+    resource: CSBill\ApiBundle\Controller\ClientController
+    prefix:   /
