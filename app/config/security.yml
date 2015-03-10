@@ -19,6 +19,8 @@ security:
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username_email
+        api_token_user_provider:
+            id: api_token_user_provider
 
     firewalls:
         dev:
@@ -29,6 +31,13 @@ security:
             pattern:  ^/api/docs
             anonymous: ~
 
+        api:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: api_token_authenticator
+            provider: api_token_user_provider
+
         installer:
             pattern:  ^/install(.*)
             anonymous: ~
@@ -37,7 +46,6 @@ security:
             pattern:  ^/view/(quote|invoice)/([a-zA-Z0-9-]{36})
             anonymous: true
             context: frontend
-
 
          # Payments
         create:

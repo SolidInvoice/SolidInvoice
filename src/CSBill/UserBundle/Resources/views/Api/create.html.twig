@@ -1,0 +1,20 @@
+{{ form_start(form) }}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="api-token-modal-label">
+            {{ 'profile.api.form.title'|trans }}
+        </h4>
+    </div>
+    <div class="modal-body">
+        {{ form_errors(form) }}
+        {{ form_row(form.name) }}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            {{ 'profile.api.form.actions.close'|trans }}
+        </button>
+        <button type="submit" class="btn btn-primary" id="save-token">
+            {{ 'profile.api.form.actions.save'|trans }}
+        </button>
+    </div>
+{{ form_end(form) }}

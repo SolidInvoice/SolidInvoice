@@ -1,0 +1,136 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2014 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block title %}{{ "profile.api.title"|trans }}{% endblock title %}
+
+{% block content %}
+    <div class="widget">
+
+        <div class="pull-right">
+            <a href="{{ path('api_key_create') }}" class="btn btn-default" id="create-api-token">
+                {{ icon('plus') }} {{ 'profile.api.create'|trans }}
+            </a>
+        </div>
+
+        <br class="clear" />
+        <br class="clear" />
+
+        <ul class="list-group" id="token-list">
+            {% for token in tokens %}
+                <li class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <div class="pull-right">
+                             <a href="#" class="btn btn-danger btn-xs revoke-token" data-id="{{ token.id }}">
+                                {{ icon('ban') }} {{ 'profile.api.tokens.revoke'|trans }}
+                            </a>
+                        </div>
+                        <h4>
+                            {{ token.name }}
+                        </h4>
+                        <p>
+                            <input readonly="readonly" value="{{ token.token }}" class="form-control" />
+                        </p>
+                    </div>
+                </li>
+            {% else %}
+                <li class="list-group-item" id="empty-message">
+                    {{ 'profile.api.tokens.empty'|trans }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="api-token-modal" class="modal fade" tabindex="-1"></div>
+{% endblock content %}
+
+{% block script %}
+
+    $('#token-list').on('click', '.revoke-token', function (evt) {
+        evt.preventDefault();
+        var $this = $(this);
+
+        console.log($this);
+
+        bootbox.confirm('{{ 'profile.api.tokens.revoke_mesage'|trans }}', function(bool) {
+            if (true === bool) {
+                $('body').modalmanager('loading');
+                $.ajax({
+                    "url" : Routing.generate('api_key_revoke', {'id' : $this.data('id')}),
+                    "dataType" : "json",
+                    "method" : "post"
+                }).done(function() {
+                    $('body').modalmanager('loading');
+
+                    $this.closest('.list-group-item').fadeOut(function () {
+                        $(this).remove();
+                    });
+                });
+            }
+        });
+    });
+
+    $('#create-api-token').ajaxModal('#api-token-modal', function() {
+        var modal = $(this.$modal),
+            addToken = function(evt) {
+                evt.preventDefault();
+                var form = $(this);
+
+                evt.preventDefault();
+
+                modal.modal('loading');
+
+                $.ajax({
+                    "url": form.attr('action'),
+                    "dataType" : "json",
+                    "data" : form.serialize(),
+                    "method": "post",
+                    "success" : function(data) {
+                        var callback = function(func) {
+                            return func.call();
+                        };
+
+                        if (0 === data.status) {
+                            $('#empty-message').remove();
+                            var li = $('<li>').addClass('list-group-item').hide();
+
+                            li.html('<div class="list-group-item-heading">' +
+                                        '<div class="pull-right">' +
+                                            '<a href="#" class="btn btn-danger btn-xs revoke-token" data-id="' + data.token.id + '">' +
+                                                '{{ icon('ban') }} {{ 'profile.api.tokens.revoke'|trans }}' +
+                                            '</a>' +
+                                        '</div>' +
+                                        '<h4>' +
+                                          data.token.name +
+                                        '</h4>' +
+                                        '<p>' +
+                                            '<input readonly="readonly" value="' + data.token.token + '" class="form-control" />' +
+                                        '</p>' +
+                                    '</div>');
+
+                            $('#token-list').append(li);
+                            li.fadeIn();
+                            modal.modal('hide');
+                        } else {
+                            modal.modal('loading');
+
+                            setTimeout(function () {
+                                modal.html(data.content);
+                                $('form', modal).on('submit', addToken);
+                            }, 200);
+                        }
+
+                    }
+                });
+            };
+
+        $('form', modal).on('submit', addToken);
+    });
+{% endblock script %}

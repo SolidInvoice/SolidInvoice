@@ -12,6 +12,7 @@
 namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -38,7 +39,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="mobile", type="string", nullable=true)
+     * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      */
     protected $mobile;
 

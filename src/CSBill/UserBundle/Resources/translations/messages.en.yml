@@ -15,6 +15,18 @@ profile:
         update_profile: Update Profile
     edit:
         cancel: Cancel
+    api:
+        title: API Tokens
+        create: Create Token
+        tokens:
+            empty: "You don't have any API tokens"
+            revoke: Revoke
+            revoke_mesage: "Are you sure you want to revoke the selected token? All applications using the token will stop working"
+        form:
+            title: Create API Token
+            actions:
+                save: Save
+                close: Close
 security:
     login:
         login: Login
