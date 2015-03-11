@@ -9,6 +9,9 @@
 namespace CSBill\ApiBundle\Security;
 
 use CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider;
+use CSBill\UserBundle\Entity\ApiTokenHistory;
+use CSBill\UserBundle\Repository\ApiTokenHistoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\SimplePreAuthenticatorInterface;
@@ -19,8 +22,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
-class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface
+class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface, AuthenticationSuccessHandlerInterface
 {
     /**
      * @var ApiTokenUserProvider
@@ -33,13 +37,23 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
     private $serializer;
 
     /**
-     * @param ApiTokenUserProvider $userProvider
-     * @param SerializerInterface  $serializer
+     * @var EntityManagerInterface
      */
-    public function __construct(ApiTokenUserProvider $userProvider, SerializerInterface $serializer)
-    {
+    private $entityManager;
+
+    /**
+     * @param ApiTokenUserProvider   $userProvider
+     * @param SerializerInterface    $serializer
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        ApiTokenUserProvider $userProvider,
+        SerializerInterface $serializer,
+        EntityManagerInterface $entityManager
+    ) {
         $this->userProvider = $userProvider;
         $this->serializer = $serializer;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -50,7 +64,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      */
     public function createToken(Request $request, $providerKey)
     {
-        $token = $request->headers->get('token', $request->query->get('token'));
+        $token = $this->getToken($request);
 
         if (!$token) {
             throw new BadCredentialsException('No API token found');
@@ -85,12 +99,14 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
 
         $user = $userProvider->loadUserByUsername($username);
 
-        return new PreAuthenticatedToken(
-            $user,
-            $apiToken,
-            $providerKey,
-            $user->getRoles()
+        $roles = array_merge(
+            $user->getRoles(),
+            array(
+                'ROLE_API_AUTHENTICATED'
+            )
         );
+
+        return new PreAuthenticatedToken($user, $apiToken, $providerKey, $roles);
     }
 
     /**
@@ -114,5 +130,37 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $content = $this->serializer->serialize($response, $request->getRequestFormat());
 
         return new Response($content, 403);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
+    {
+        $apiToken = $this->getToken($request);
+
+        $history = new ApiTokenHistory();
+
+        $history->setMethod($request->getMethod())
+            ->setIp($request->getClientIp())
+            ->setRequestData($request->request->all())
+            ->setUserAgent($request->server->get('HTTP_USER_AGENT'))
+            ->setResource($request->getPathInfo())
+        ;
+
+        /** @var ApiTokenHistoryRepository $repository */
+        $repository = $this->entityManager->getRepository('CSBillUserBundle:ApiTokenHistory');
+
+        $repository->addHistory($history, $apiToken);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    private function getToken(Request $request)
+    {
+        return $request->headers->get('token', $request->query->get('token'));
     }
 }

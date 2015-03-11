@@ -36,7 +36,27 @@
                             {{ token.name }}
                         </h4>
                         <p>
-                            <input readonly="readonly" value="{{ token.token }}" class="form-control" />
+                            <input readonly="readonly" value="{{ token.token }}" class="form-control">
+                        </p>
+                        <p>
+                            {% set history = token.history|last %}
+
+                            {% if history is not empty %}
+                                <div class="pull-right">
+                                    <a href="{{ path('api_key_history', {'id' : token.id}) }}" class="view-token-history">
+                                        {{ 'profile.api.tokens.history'|trans }}
+                                    </a>
+                                </div>
+                            {% endif %}
+
+                            <small>
+                                <strong>{{ 'profile.api.tokens.used.last'|trans }}</strong>
+                                {% if history is not empty %}
+                                    {{ 'profile.api.tokens.used.text'|trans({'date' : history.created|date, 'ip' : history.ip}) }}
+                                {% else %}
+                                    {{ 'profile.api.tokens.used.never'|trans }}
+                                {% endif %}
+                            </small>
                         </p>
                     </div>
                 </li>
@@ -77,6 +97,8 @@
         });
     });
 
+    $('.view-token-history').ajaxModal('#api-token-modal');
+
     $('#create-api-token').ajaxModal('#api-token-modal', function() {
         var modal = $(this.$modal),
             addToken = function(evt) {
@@ -113,6 +135,11 @@
                                         '<p>' +
                                             '<input readonly="readonly" value="' + data.token.token + '" class="form-control" />' +
                                         '</p>' +
+                                        '<p>' +
+                                        '<small>' +
+                                            '<strong>{{ 'profile.api.tokens.used.last'|trans }}</strong> ' +
+                                            '{{ 'profile.api.tokens.used.never'|trans }}' +
+                                        '</small>' +
                                     '</div>');
 
                             $('#token-list').append(li);

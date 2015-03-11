@@ -9,6 +9,7 @@
 namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +20,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table("api_tokens")
  * @Gedmo\Loggable()
  * @UniqueEntity({"name", "user"})
-
  */
 class ApiToken
 {
@@ -50,12 +50,25 @@ class ApiToken
     private $token;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"created" = "DESC"})
+     */
+    private $history;
+
+    /**
      * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="apiTokens")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+    public function __construct()
+    {
+        $this->history = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -101,6 +114,39 @@ class ApiToken
     public function setToken($token)
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
+    /**
+     * @param ApiTokenHistory $history
+     *
+     * @return ApiToken
+     */
+    public function addHistory(ApiTokenHistory $history)
+    {
+        $this->history[] = $history;
+        $history->setToken($this);
+
+        return $this;
+    }
+
+    /**
+     * @param ApiTokenHistory $history
+     *
+     * @return ApiToken
+     */
+    public function removeHistory(ApiTokenHistory $history)
+    {
+        $this->history->removeElement($history);
 
         return $this;
     }

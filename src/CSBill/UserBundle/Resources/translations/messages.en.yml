@@ -22,11 +22,27 @@ profile:
             empty: "You don't have any API tokens"
             revoke: Revoke
             revoke_mesage: "Are you sure you want to revoke the selected token? All applications using the token will stop working"
+            history: View History
+            used:
+                text: date from ip
+                never: Never
+                last: Last Used:
         form:
             title: Create API Token
             actions:
                 save: Save
                 close: Close
+        history:
+            title: API History
+            actions:
+                close: Close
+            last_calls_shown: Only the last 100 calls are shown
+            last_calls_shown_note: Note:
+            list:
+                date: Date
+                ip: IP Address
+                resource: Resource
+                user_agent: User Agent
 security:
     login:
         login: Login

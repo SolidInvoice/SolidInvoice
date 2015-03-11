@@ -36,6 +36,27 @@ class ApiController extends BaseController
     }
 
     /**
+     * @param ApiToken $token
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function tokenHistoryAction(ApiToken $token)
+    {
+        $content = $this->renderView(
+            'CSBillUserBundle:Api:history.html.twig',
+            array(
+                'history' => $token->getHistory(),
+            )
+        );
+
+        return $this->json(
+            array(
+                'content' => $content
+            )
+        );
+    }
+
+    /**
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
