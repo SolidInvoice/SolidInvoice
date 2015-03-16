@@ -8,6 +8,8 @@
 
 namespace CSBill\ApiBundle\Controller;
 
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Model\Status;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -15,19 +17,23 @@ use Hateoas\Configuration\Route;
 use Hateoas\Representation\Factory\PagerfantaFactory;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\HttpFoundation\Request;
 
 class ClientController extends FOSRestController
 {
     /**
      * @ApiDoc(
-     *      statusCodes={
-     *         200="Returned when successful",
-     *         403="Returned when the user is not authorized",
+     *    statusCodes={
+     *        200="Returned when successful",
+     *        400="Returned when the page is out of range",
+     *        403="Returned when the user is not authorized",
      *     },
-     *      resource=true,
-     *      description="Returns a list of all clients"
+     *     resource=true,
+     *     description="Returns a list of all clients",
      * )
+     *
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
@@ -43,9 +49,15 @@ class ClientController extends FOSRestController
         $clientRepository = $this->get('doctrine.orm.entity_manager')->getRepository('CSBillClientBundle:Client');
         $data = $clientRepository->createQueryBuilder('c');
 
-        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($data));
-        $pagerfanta->setMaxPerPage($limit);
-        $pagerfanta->setCurrentPage($page);
+        try {
+            $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($data));
+            $pagerfanta->setMaxPerPage($limit);
+            $pagerfanta->setCurrentPage($page);
+        } catch (OutOfRangeCurrentPageException $exception) {
+            $response = array('message' => 'Page out of range');
+
+            return $this->handleView($this->view($response, 400));
+        }
 
         $pagerfantaFactory   = new PagerfantaFactory();
 
@@ -55,6 +67,45 @@ class ClientController extends FOSRestController
         );
 
         return $this->handleView($this->view($paginatedCollection));
+    }
+
+    /**
+     * @ApiDoc(
+     *      statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when the validation fails",
+     *         403="Returned when the user is not authorized",
+     *     },
+     *      resource=true,
+     *      description="Create a new client",
+     *      input="CSBill\ClientBundle\Form\Client",
+     *      output="CSBill\ClientBundle\Entity\Client"
+     * )
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postClientsAction(Request $request)
+    {
+        $client = new Client;
+
+        $form = $this->createForm(new \CSBill\ClientBundle\Form\Client(), $client);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $entityManager = $this->get('doctrine.orm.entity_manager');
+
+            $client->setStatus(Status::STATUS_ACTIVE);
+
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+            return $this->handleView($this->view($client));
+        }
+
+        return $this->handleView($this->view($form));
     }
 
     /**
