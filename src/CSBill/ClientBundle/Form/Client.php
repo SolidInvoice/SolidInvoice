@@ -26,6 +26,18 @@ class Client extends AbstractType
         $builder->add('name');
         $builder->add('website');
         $builder->add(
+            'currency',
+            'currency',
+            array(
+                'empty_value' => 'Site Default',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'select2'
+                )
+            )
+        );
+
+        $builder->add(
             'contacts',
             new ContactType(),
             array(
