@@ -42,91 +42,119 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-{{ totalAddresses > 0 ? 6 : 12 }} col-md-{{ totalAddresses > 0 ? 6 : 12 }} client_contact_list">
-                <legend>
-                    <h3>
-                        {{ icon('users') }} {{ "client.heading.contacts"|trans }}
-                    </h3>
-                </legend>
+        <br class="clear" />
 
-                <div id="client-contacts-list">
-                    {% for contact in client.contacts %}
-                        {% if totalAddresses == 0 %}
-                            <div class="col-lg-6 col-md-6 client_contact_list">
-                        {% endif %}
+        <div class="widget">
 
-                            {% include "CSBillClientBundle::contact_card.html.twig" %}
+            <div role="tabpanel">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#info" aria-controls="info" role="tab" data-toggle="tab">
+                            {{ 'client.view.tabs.info'|trans }}
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">
+                            {{ 'client.view.tabs.quotes'|trans }}
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">
+                            {{ 'client.view.tabs.invoices'|trans }}
+                        </a>
+                    </li>
+                    {% if payments|length > 0 %}
+                        <li role="presentation">
+                            <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab">
+                                {{ 'client.view.tabs.payments'|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
 
-                        {% if totalAddresses == 0 %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="info">
 
-                    <br class="clear" />
+                        <div class="row">
+                            <div class="col-lg-{{ totalAddresses > 0 ? 6 : 12 }} col-md-{{ totalAddresses > 0 ? 6 : 12 }} client_contact_list">
+                                <legend>
+                                    <h3>
+                                        {{ icon('users') }} {{ "client.heading.contacts"|trans }}
+                                    </h3>
+                                </legend>
 
-                    <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success add-contact-button" data-id="{{ client.id }}">
-                        {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
-                    </a>
-                </div>
-                <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
-            </div>
-            {% if totalAddresses > 0 %}
-                <div class="col-lg-6 col-md-6">
+                                <div id="client-contacts-list">
+                                    {% for contact in client.contacts %}
+                                        {% if totalAddresses == 0 %}
+                                            <div class="col-lg-6 col-md-6 client_contact_list">
+                                        {% endif %}
 
-                    <legend>
-                        <h3>
-                            {{ icon('building-o') }} {{ "client.heading.addresses"|trans }}
-                        </h3>
-                    </legend>
+                                        {% include "CSBillClientBundle::contact_card.html.twig" %}
 
-                    <div id="client-address-list">
+                                        {% if totalAddresses == 0 %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
 
-                        <ul class="list-group">
-                        {% for address in client.addresses %}
-                            <li class="list-group-item">
-                                <div class="" style="position: absolute;">
-                                    {{ icon('map-marker') }}
-                                </div>
-                                <div style="position: relative; left: 20px;">
-                                    {{ address|nl2br }}
-                                </div>
-                                <div class="pull-right">
-                                    {{ icon('map-marker') }}
-                                    <a href="http://maps.google.com/?q={{ address|replace({"\n" : " "}) }}" target="_blank">
-                                        {{ 'client.address.view_map'|trans }}
+                                    <br class="clear" />
+
+                                    <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success add-contact-button" data-id="{{ client.id }}">
+                                        {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
                                     </a>
                                 </div>
-                                <br class="clear" />
-                            </li>
-                        {% endfor %}
-                        </ul>
+                                <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
+                            </div>
+                            {% if totalAddresses > 0 %}
+                                <div class="col-lg-6 col-md-6">
+
+                                    <legend>
+                                        <h3>
+                                            {{ icon('building-o') }} {{ "client.heading.addresses"|trans }}
+                                        </h3>
+                                    </legend>
+
+                                    <div id="client-address-list">
+
+                                        <ul class="list-group">
+                                            {% for address in client.addresses %}
+                                                <li class="list-group-item">
+                                                    <div class="" style="position: absolute;">
+                                                        {{ icon('map-marker') }}
+                                                    </div>
+                                                    <div style="position: relative; left: 20px;">
+                                                        {{ address|nl2br }}
+                                                    </div>
+                                                    <div class="pull-right">
+                                                        {{ icon('map-marker') }}
+                                                        <a href="http://maps.google.com/?q={{ address|replace({"\n" : " "}) }}" target="_blank">
+                                                            {{ 'client.address.view_map'|trans }}
+                                                        </a>
+                                                    </div>
+                                                    <br class="clear" />
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                {% include "CSBillClientBundle::invoice_list.html.twig" %}
-            </div>
-
-            <div class="col-lg-6 col-md-6">
-                {% include "CSBillClientBundle::quote_list.html.twig" %}
-            </div>
-        </div>
-
-        {% if payments|length > 0 %}
-            <div class="row">
-                <div class="col-md-12">
-                    <legend>
-                        <h3>{{ 'client.heading.payments'|trans }}</h3>
-                    </legend>
-
-                    {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, "show_invoice" : true} only %}
+                    <div role="tabpanel" class="tab-pane" id="quotes">
+                        {% include "CSBillClientBundle::quote_list.html.twig" %}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="invoices">
+                        {% include "CSBillClientBundle::invoice_list.html.twig" %}
+                    </div>
+                    {% if payments|length > 0 %}
+                        <div role="tabpanel" class="tab-pane" id="payments">
+                            {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, "show_invoice" : true} only %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock content %}
 
