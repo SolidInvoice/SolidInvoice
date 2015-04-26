@@ -92,13 +92,15 @@ class PaymentController extends BaseController
                 $data['capture_online'] = true;
             }
 
+            $client = $invoice->getClient();
+
             $payment = new Payment();
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
             $payment->setTotalAmount($data['amount']);
-            $payment->setCurrencyCode($this->container->getParameter('currency'));
-            $payment->setClient($invoice->getClient());
+            $payment->setCurrencyCode($client->getCurrency() ?: $this->container->getParameter('currency'));
+            $payment->setClient($client);
             $invoice->addPayment($payment);
             $this->save($payment);
 

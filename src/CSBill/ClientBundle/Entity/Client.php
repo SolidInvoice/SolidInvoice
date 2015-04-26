@@ -71,6 +71,13 @@ class Client
     private $status;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="currency", type="string", length=25)
+     */
+    private $currency;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
@@ -439,5 +446,25 @@ class Client
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @return Client
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
     }
 }

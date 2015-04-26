@@ -46,6 +46,7 @@ client:
             edit: Edit
             delete: Delete
             add_credit: Add Credit
+        currency: Currency
     heading:
         payments: Payments
         addresses: Addresses
