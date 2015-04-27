@@ -60,6 +60,13 @@ client:
         action:
             close: Close
             save: Save
+    menu:
+        index: Clients
+        list: List Clients
+        add: Add Client
+        create:
+            invoice: Create Invoice
+            quote: Create Quote
 
 email: Email
 clients: Clients
@@ -96,4 +103,3 @@ contact_edit: Edit Contact
 change: Change
 client_create: Create Client
 add_info: Add Info
-list_clients: List Clients

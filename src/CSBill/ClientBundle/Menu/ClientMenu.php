@@ -23,7 +23,7 @@ class ClientMenu extends AuthenticatedMenu
      */
     public function topMenu(ItemInterface $menu)
     {
-        $menu->addChild('Clients', array('route' => '_clients_index'));
+        $menu->addChild('client.menu.index', array('route' => '_clients_index'));
     }
 
     /**
@@ -36,7 +36,7 @@ class ClientMenu extends AuthenticatedMenu
         $translator = $this->container->get('translator');
 
         $menu->addChild(
-            $translator->trans('list_clients'),
+            $translator->trans('client.menu.list'),
             array(
                 'extras' => array(
                     'icon' => 'file-o',
@@ -46,7 +46,7 @@ class ClientMenu extends AuthenticatedMenu
         );
 
         $menu->addChild(
-            $translator->trans('add_client'),
+            $translator->trans('client.menu.add'),
             array(
                 'extras' => array(
                     'icon' => 'user',
@@ -82,7 +82,7 @@ class ClientMenu extends AuthenticatedMenu
         );
 
         $menu->addChild(
-            $translator->trans('create_invoice'),
+            $translator->trans('client.menu.create.invoice'),
             array(
                 'extras' => array(
                     'icon' => 'file-o',
@@ -95,7 +95,7 @@ class ClientMenu extends AuthenticatedMenu
         );
 
         $menu->addChild(
-            $translator->trans('create_quote'),
+            $translator->trans('client.menu.create.quote'),
             array(
                 'extras' => array(
                     'icon' => 'file-o',
