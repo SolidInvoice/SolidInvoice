@@ -1,44 +1,35 @@
-{% spaceless %}
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-        <tr>
+<legend>
+    <h3>
+        {{ icon('credit-card') }} {{ "Payments"|trans }}
+    </h3>
+</legend>
+
+<div class="widget">
+    {% for payment in payments %}
+        <div class="row">
+            <div class="col-md-2">
+                {{ payment_label(payment.status, payment.message) }}
+            </div>
             {% if show_invoice %}
-                <th>{{ 'payment.list.grid.invoice'|trans }}</th>
+                <div class="col-md-2">
+                    {{ 'invoice'|trans }} #<a href="{{ path('_invoices_view', {'id' : payment.invoice}) }}">
+                        {{ payment.invoice }}
+                    </a>
+                </div>
             {% endif %}
-            <th>{{ 'payment.list.grid.payment_id'|trans }}</th>
-            <th>{{ 'payment.list.grid.method'|trans }}</th>
-            <th>{{ 'payment.list.grid.amount'|trans }}</th>
-            <th>{{ 'payment.list.grid.currency'|trans }}</th>
-            <th>{{ 'payment.list.grid.payment_date'|trans }}</th>
-            <th>{{ 'payment.list.grid.status'|trans }}</th>
-        </tr>
-        </thead>
-        {% for payment in payments %}
-            <tr>
-                {% if show_invoice %}
-                    <td>
-                        <a href="{{ path('_invoices_view', {'id' : payment.invoice}) }}">{{ payment.invoice }}</a>
-                    </td>
-                {% endif %}
-                <td>
-                    {{ payment.id }}
-                </td>
-                <td>
-                    {{ payment.method }}
-                </td>
-                <td>
-                    {{ payment.totalAmount|currency }}
-                </td>
-                <td>
-                    {{ payment.currencyCode }}
-                </td>
-                <td>
-                    {{ payment.completed|date }}
-                </td>
-                <td>
-                    {{ payment_label(payment.status, payment.message) }}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-{% endspaceless %}
+            <div class="col-md-2">
+                {{ payment.method }}
+            </div>
+            <div class="col-md-2">
+                {{ payment.completed|date }}
+            </div>
+            <div class="col-md-2">
+                {{ payment.currencyCode }}
+            </div>
+            <div class="col-md-2">
+                {{ payment.totalAmount|currency }}
+            </div>
+        </div>
+        <hr />
+    {% endfor %}
+</div>
