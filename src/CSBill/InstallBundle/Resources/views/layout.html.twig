@@ -44,18 +44,5 @@
         <li class="nav-header">
             {{ "installation.progess"|trans }}
         </li>
-        {#{% set link = false %}
-        {% for index, step in installer.steps %}
-            {% set class = not installer.stepComplete(index) ? 'disabled' %}
-            {% if installer.currentStep.label is sameas(step.label) %}
-                &#123;&#35;{% set link = false %}&#35;&#125;
-                {% set class = 'active' %}
-            {% endif %}
-            <li class="{{ class }}">
-                <a href="{{ link ? path('_installer_step', {'step' : index}) : '#' }}">
-                    {{ ('installation.step.' ~ step.label)|trans }}
-                </a>
-            </li>
-        {% endfor %}#}
     </ul>
 {% endblock sidebar %}

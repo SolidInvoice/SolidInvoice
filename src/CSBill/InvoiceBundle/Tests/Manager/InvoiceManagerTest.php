@@ -5,8 +5,6 @@ namespace CSBill\InvoiceBundle\Tests\Manager;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\TaxBundle\Entity\Tax;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Event\InvoiceEvents;
-use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -20,54 +18,39 @@ class InvoiceManagerTest extends KernelTestCase
     private $manager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \Mockery\Mock
      */
     private $dispatcher;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $finite;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \Mockery\Mock
      */
     private $entityManager;
 
     public function setUp()
     {
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->entityManager = $this->getMock('Doctrine\ORM\EntityManagerInterface');
-        $this->finite = $this->getMock('Finite\Factory\FactoryInterface');
-        $stateMachine = $this->getMock('Finite\Factory\StateMachineInterface', array('can', 'apply'));
-        $doctrine = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->dispatcher = \Mockery::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->entityManager = \Mockery::mock('Doctrine\ORM\EntityManagerInterface');
+        $stateMachine = \Mockery::mock('Finite\Factory\FactoryInterface', array('can' => true));
+        $finite = \Mockery::mock('Finite\Factory\FactoryInterface', array('get' => $stateMachine));
+        $doctrine = \Mockery::mock('Doctrine\Common\Persistence\ManagerRegistry', array('getManager' => $this->entityManager));
 
-        $doctrine->expects($this->once())
-            ->method('getManager')
-            ->will($this->returnValue($this->entityManager));
+        $this->manager = new InvoiceManager($doctrine, $this->dispatcher, $finite);
 
-        $this->finite->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($stateMachine));
+        $this
+            ->entityManager
+            ->shouldReceive('persist', 'flush')
+            ->zeroOrMoreTimes();
 
-        $stateMachine->expects($this->any())
-            ->method('can')
-            ->will($this->returnValue(true));
-
-        $this->manager = new InvoiceManager($doctrine, $this->dispatcher, $this->finite);
+        $stateMachine->shouldReceive('apply')->zeroOrMoreTimes();
     }
 
     public function testCreateFromQuote()
     {
         $this
-            ->entityManager
-            ->expects($this->any())
-            ->method('persist');
-
-        $this
-            ->entityManager
-            ->expects($this->any())
-            ->method('flush');
+            ->dispatcher
+            ->shouldReceive('dispatch')
+            ->withAnyArgs();
 
         $client = new Client();
         $client->setName('Test Client');
@@ -128,30 +111,16 @@ class InvoiceManagerTest extends KernelTestCase
         $invoice = new Invoice();
 
         $this
-            ->entityManager
-            ->expects($this->once())
-            ->method('persist')
-            ->with($invoice);
-
-        $this
-            ->entityManager
-            ->expects($this->once())
-            ->method('flush');
-
-        $event = new InvoicePaidEvent();
-        $event->setInvoice($invoice);
+            ->dispatcher
+            ->shouldReceive('dispatch')
+            ->once()
+            ->withAnyArgs();
 
         $this
             ->dispatcher
-            ->expects($this->at(0))
-            ->method('dispatch')
-            ->with(InvoiceEvents::INVOICE_PRE_PAID, $event);
-
-        $this
-            ->dispatcher
-            ->expects($this->at(1))
-            ->method('dispatch')
-            ->with(InvoiceEvents::INVOICE_POST_PAID, $event);
+            ->shouldReceive('dispatch')
+            ->once()
+            ->withAnyArgs();
 
         // Ensure paid date is empty when creating invoice
         $this->assertNull($invoice->getPaidDate());

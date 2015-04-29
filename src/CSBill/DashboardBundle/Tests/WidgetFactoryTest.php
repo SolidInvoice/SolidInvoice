@@ -18,11 +18,11 @@ class WidgetFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget1 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget2 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget3 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget4 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget5 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget1 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget2 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget3 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget4 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget5 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);
@@ -51,7 +51,7 @@ class WidgetFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
 
         $this->setExpectedException('Exception', 'Invalid widget location: bottom');
 
@@ -62,11 +62,11 @@ class WidgetFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget1 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget2 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget3 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget4 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget5 = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget1 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget2 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget3 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget4 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget5 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);

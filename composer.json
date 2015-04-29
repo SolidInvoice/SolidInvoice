@@ -59,10 +59,18 @@
         "yohang/finite": "1.1.*@dev"
     },
     "require-dev": {
+        "behat/behat": "~3.0",
+        "behat/symfony2-extension": "~2.0",
+        "behat/mink-extension": "~2.0",
+        "behat/mink-browserkit-driver": "~1.2",
+        "behat/mink-selenium2-driver": "~1.2",
+        "behat/mink": "~1.6",
         "jms/debugging-bundle": "dev-master",
         "sensio/generator-bundle": "~2.3",
         "phpunit/phpunit": "~4.4",
-        "johnkary/phpunit-speedtrap": "~1.0@dev"
+        "johnkary/phpunit-speedtrap": "~1.0@dev",
+        "fzaninotto/faker": "~1.3",
+        "mockery/mockery": "0.9.*"
     },
     "scripts": {
         "post-root-package-install": [

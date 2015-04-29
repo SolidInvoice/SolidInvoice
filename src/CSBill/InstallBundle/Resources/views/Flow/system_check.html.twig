@@ -81,7 +81,7 @@
                 <a href="{{ path('_install_flow') }}" class="btn btn-warning">
                     {{ icon('refresh') }} {{ "installation.action.refresh"|trans }}
                 </a>
-                <a href="{{ path('sylius_flow_forward', {'scenarioAlias': 'install', 'stepName': 'system_check'}) }}" class="btn btn-success{% if requirements.failedRequirements|length > 0 %} disabled{% endif %}">
+                <a id="continue_step" href="{{ path('sylius_flow_forward', {'scenarioAlias': 'install', 'stepName': 'system_check'}) }}" class="btn btn-success{% if requirements.failedRequirements|length > 0 %} disabled{% endif %}">
                     {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
                 </a>
             </div>

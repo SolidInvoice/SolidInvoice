@@ -21,6 +21,7 @@
 
     <listeners>
         <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+        <listener class="Mockery\Adapter\Phpunit\TestListener" />
     </listeners>
 
     <!--
@@ -33,6 +34,8 @@
         <whitelist>
             <directory>../src</directory>
             <exclude>
+                <directory>../src/*/*Bundle/Behat</directory>
+                <directory>../src/*/*Bundle/Controller</directory>
                 <directory>../src/*/*Bundle/Resources</directory>
                 <directory>../src/*/*Bundle/Tests</directory>
             </exclude>

@@ -20,13 +20,13 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
     private $extension;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \Mockery\Mock
      */
     private $factory;
 
     protected function setUp()
     {
-        $this->factory = $this->getMock('CSBill\DashboardBundle\WidgetFactory');
+        $this->factory = \Mockery::mock('CSBill\DashboardBundle\WidgetFactory');
         $this->extension = new WidgetExtension($this->factory);
     }
 
@@ -56,33 +56,29 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderDashboardWidget()
     {
-        $widget = $this->getMock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widgets = array(
-            $widget,
+        $widget = \Mockery::mock(
+            'CSBill\DashboardBundle\Widgets\WidgetInterface',
+            array(
+                'getTemplate' => 'test_template.html.twig',
+                'getData' => array('a' => '1', 'b' => '2', 'c' => '3')
+            )
         );
-        $environment = $this->getMock('Twig_Environment');
+
+        $environment = \Mockery::mock('Twig_Environment');
 
         $this->factory
-            ->expects($this->once())
-            ->method('get')
+            ->shouldReceive('get')
+            ->once()
             ->with('top')
-            ->will($this->returnValue($widgets));
+            ->andReturn(array($widget))
+        ;
 
         $environment
-            ->expects($this->once())
-            ->method('render')
+            ->shouldReceive('render')
+            ->once()
             ->with('test_template.html.twig', array('a' => '1', 'b' => '2', 'c' => '3'))
-            ->will($this->returnValue('123'));
-
-        $widget
-            ->expects($this->once())
-            ->method('getTemplate')
-            ->will($this->returnValue('test_template.html.twig'));
-
-        $widget
-            ->expects($this->once())
-            ->method('getData')
-            ->will($this->returnValue(array('a' => '1', 'b' => '2', 'c' => '3')));
+            ->andReturn('123')
+        ;
 
         $this->extension->initRuntime($environment);
         $content = $this->extension->renderDashboardWidget('top');
