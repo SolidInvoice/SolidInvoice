@@ -15,7 +15,9 @@
                 {{ icon('bars') }}
             </button>
 
-            <a class="navbar-brand" href="{{ url('_dashboard') }}">{{ title }}</a>
+            <a class="navbar-brand" href="{{ url('_dashboard') }}">
+                <img src="{{ asset('img/logo.png') }}" width="25" style="display: inline" /> {{ title }}
+            </a>
         </div>
 
         <div class="collapse navbar-collapse" id="top_menu">
