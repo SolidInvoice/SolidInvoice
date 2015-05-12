@@ -1,0 +1,15 @@
+services:
+    notification.settings.form:
+        class: CSBill\NotificationBundle\Form\Type\NotificationType
+        tags:
+            - { name: form.type, alias: notification }
+
+    notification.manager:
+        class: Namshi\Notificator\Manager
+        arguments: [[], @logger]
+
+    notification.handler.swiftmailer:
+        class: Namshi\Notificator\Notification\Handler\SwiftMailer
+        arguments: [@mailer]
+        tags:
+            - { name: notification.handler }

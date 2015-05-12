@@ -1,0 +1,10 @@
+payment:
+    description: A new payment has been made
+    heading: Payment Details
+    details:
+        amount: Amount
+        currency: Currency
+        invoice: Invoice
+        client: Client
+        status: Status
+        method: Payment Method

@@ -38,6 +38,14 @@
     </div>
 {%- endblock form_row %}
 
+{% block checkbox_widget -%}
+    {{ parent() }}
+
+    {% if help is defined and help is not empty %}
+        <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
+    {% endif %}
+{%- endblock checkbox_widget %}
+
 {% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
@@ -62,13 +70,13 @@
         {% set label = name|humanize %}
     {% endif %}
 
-    {% if not compound %}
+
         {% if required %}
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
         {% endif %}
 
         {{- parent() -}}
-    {% endif %}
+
 {%- endblock form_label %}
 
 {% block image_upload_widget -%}
