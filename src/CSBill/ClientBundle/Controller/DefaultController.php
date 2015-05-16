@@ -56,10 +56,7 @@ class DefaultController extends BaseController
 
         if ($form->isValid()) {
             // set all new clients default to active
-            $client->setStatus(
-                $this->getRepository('CSBillClientBundle:Status')
-                    ->findOneBy(array('name' => Status::STATUS_ACTIVE))
-            );
+            $client->setStatus(Status::STATUS_ACTIVE);
 
             $this->save($client);
 
