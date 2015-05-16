@@ -68,6 +68,12 @@ client:
             invoice: Create Invoice
             quote: Create Quote
 
+    notification:
+        create:
+            subject: A new client has been created
+        update:
+            subject: A client has been updated
+
 email: Email
 clients: Clients
 add_client: Add Client

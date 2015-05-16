@@ -48,3 +48,9 @@ services:
     csbill.client.grid.deleted:
         class: CSBill\ClientBundle\Grid\ClientDeletedGrid
         arguments: [@doctrine.orm.entity_manager]
+
+    client.notification.listener:
+        class: CSBill\ClientBundle\Listener\ClientListener
+        arguments: [@notification.manager]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }

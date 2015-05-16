@@ -4,12 +4,26 @@ services:
         tags:
             - { name: form.type, alias: notification }
 
-    notification.manager:
+    notification.sender:
         class: Namshi\Notificator\Manager
         arguments: [[], @logger]
+
+    notification.handler.chained:
+        class: CSBill\NotificationBundle\Notification\Handler\ChainedHandler
+        arguments: [@notification.sender]
+        tags:
+            - { name: notification.handler }
 
     notification.handler.swiftmailer:
         class: Namshi\Notificator\Notification\Handler\SwiftMailer
         arguments: [@mailer]
         tags:
             - { name: notification.handler }
+
+    notification.manager:
+        class: CSBill\NotificationBundle\Notification\NotificationManager
+        arguments: [@notification.factory, @settings, notification.sender]
+
+    notification.factory:
+        class: CSBill\NotificationBundle\Notification\Factory
+        arguments: [@templating, @translator, @settings]
