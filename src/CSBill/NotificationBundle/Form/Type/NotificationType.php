@@ -22,6 +22,7 @@ class NotificationType extends AbstractType
     {
         $builder->add('email', 'checkbox');
         $builder->add('hipchat', 'checkbox');
+        $builder->add('sms', 'checkbox');
     }
 
     /**

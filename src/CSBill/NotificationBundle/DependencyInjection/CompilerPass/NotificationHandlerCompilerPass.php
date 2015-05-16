@@ -21,11 +21,11 @@ class NotificationHandlerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('notification.manager')) {
+        if (!$container->hasDefinition('notification.sender')) {
             return;
         }
 
-        $definition = $container->getDefinition('notification.manager');
+        $definition = $container->getDefinition('notification.sender');
 
         $services = $container->findTaggedServiceIds('notification.handler');
 

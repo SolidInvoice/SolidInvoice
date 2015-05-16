@@ -46,6 +46,15 @@
     {% endif %}
 {%- endblock checkbox_widget %}
 
+{% block notification_widget -%}
+    {% if help is defined and help is not empty %}
+        <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
+    {% endif %}
+
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+{%- endblock notification_widget %}
+
 {% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}

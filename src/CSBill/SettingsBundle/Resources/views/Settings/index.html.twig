@@ -78,11 +78,11 @@
         gmailConfig.hide();
     }
 
-    {% set value = form.email.sending_options.transport.vars.value %}
+    {#{% set value = form.email.sending_options.transport.vars.value %}
 
     {% if value == 'smtp' %}
         showSmtpSettings();
     {% elseif value == 'gmail' %}
         showGmailSettings();
-    {% endif %}
+    {% endif %}#}
 {% endblock %}

@@ -1,4 +1,10 @@
 services:
+    csbill.notification.settings.loader:
+        class: CSBill\NotificationBundle\Settings\Loader
+        arguments: [@doctrine]
+        tags:
+            - { name: settings.loader }
+
     notification.settings.form:
         class: CSBill\NotificationBundle\Form\Type\NotificationType
         tags:
@@ -22,7 +28,7 @@ services:
 
     notification.manager:
         class: CSBill\NotificationBundle\Notification\NotificationManager
-        arguments: [@notification.factory, @settings, notification.sender]
+        arguments: [@notification.factory, @settings, @notification.sender]
 
     notification.factory:
         class: CSBill\NotificationBundle\Notification\Factory
