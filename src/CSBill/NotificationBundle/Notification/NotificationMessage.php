@@ -20,7 +20,7 @@ abstract class NotificationMessage implements NotificationMessageInterface
     /**
      * @var array
      */
-    private $users;
+    private $users = array();
 
     /**
      * @param array $parameters

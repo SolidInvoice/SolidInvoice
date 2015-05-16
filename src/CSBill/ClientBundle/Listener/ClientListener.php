@@ -12,29 +12,28 @@ namespace CSBill\ClientBundle\Listener;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Notification\ClientCreateNotification;
-use CSBill\ClientBundle\Notification\ClientUpdateNotification;
-use CSBill\NotificationBundle\Notification\NotificationManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ClientListener
 {
     /**
-     * @var NotificationManager
+     * @var ContainerInterface
      */
-    private $notification;
+    private $container;
 
     /**
-     * @param NotificationManager $notification
+     * @param ContainerInterface $container
      */
-    public function __construct(NotificationManager $notification)
+    public function __construct(ContainerInterface $container)
     {
-        $this->notification = $notification;
+        $this->container = $container;
     }
 
     /**
      * @param LifecycleEventArgs $event
      */
-    public function postPersist(LifecycleEventArgs $event)
+    public function prePersist(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();
 
@@ -45,13 +44,11 @@ class ClientListener
         if (null === $entity->getId()) {
             // client is created
             $notification = new ClientCreateNotification(array('client' => $entity));
-            $event = 'client_create';
-        } else {
-            // client is updated
-            $notification = new ClientUpdateNotification(array('client' => $entity));
-            $event = 'client_update';
-        }
 
-        $this->notification->sendNotification($event, $notification);
+            $this->container
+                ->get('notification.manager')
+                ->sendNotification('client_create', $notification)
+            ;
+        }
     }
 }
