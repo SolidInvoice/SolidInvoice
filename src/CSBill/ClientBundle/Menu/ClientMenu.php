@@ -23,7 +23,12 @@ class ClientMenu extends AuthenticatedMenu
      */
     public function topMenu(ItemInterface $menu)
     {
-        $menu->addChild('client.menu.index', array('route' => '_clients_index'));
+        $translator = $this->container->get('translator');
+
+        $menu->addChild(
+            $translator->trans('client.menu.index'),
+            array('route' => '_clients_index')
+        );
     }
 
     /**
