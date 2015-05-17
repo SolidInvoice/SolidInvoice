@@ -33,7 +33,7 @@ class ClientListener
     /**
      * @param LifecycleEventArgs $event
      */
-    public function prePersist(LifecycleEventArgs $event)
+    public function postPersist(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();
 
@@ -41,14 +41,12 @@ class ClientListener
             return;
         }
 
-        if (null === $entity->getId()) {
-            // client is created
-            $notification = new ClientCreateNotification(array('client' => $entity));
+        // client is created
+        $notification = new ClientCreateNotification(array('client' => $entity));
 
-            $this->container
-                ->get('notification.manager')
-                ->sendNotification('client_create', $notification)
-            ;
-        }
+        $this->container
+            ->get('notification.manager')
+            ->sendNotification('client_create', $notification)
+        ;
     }
 }

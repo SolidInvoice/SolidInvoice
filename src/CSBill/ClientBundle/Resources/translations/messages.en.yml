@@ -74,6 +74,17 @@ client:
         update:
             subject: A client has been updated
 
+    email:
+        create:
+            heading: A new client has been created.
+            contacts:
+                heading: Contacts
+                name: Name
+            details:
+                    id: ID
+                    name: Name
+                    website: Website
+
 email: Email
 clients: Clients
 add_client: Add Client

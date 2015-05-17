@@ -1,0 +1,43 @@
+<h3>{{ 'client.email.create.heading'|trans }}</h3>
+
+<strong>
+    {{ 'client.email.create.details.id'|trans }}:
+</strong>
+    <a href="{{ url('_clients_view', {'id' : client.id}) }}">
+        {{ client.id }}
+    </a>
+<br />
+
+<strong>
+    {{ 'client.email.create.details.name'|trans }}:
+</strong>
+{{ client.name }}<br />
+
+{% if client.website is not empty %}
+    <strong>
+        {{ 'client.email.create.details.website'|trans }}:
+    </strong>
+    <a href="{{ client.website }}" rel="external" target="_blank">
+        {{ client.website }}
+    </a>
+    <br />
+{% endif %}
+
+<h3>
+    {{ 'client.email.create.contacts.heading'|trans }}
+</h3>
+
+{% for contact in client.contacts %}
+    <strong>
+        {{ 'client.email.create.contacts.name'|trans }}:
+    </strong>
+    {{ contact.firstname }} {{ contact.lastname }}
+    <br />
+    {% for contactDetail in contact.primaryDetails %}
+        <strong>
+            {{ contactDetail.type }}:
+        </strong>
+        {{ contactDetail.value }}
+        <br />
+    {% endfor %}
+{% endfor %}

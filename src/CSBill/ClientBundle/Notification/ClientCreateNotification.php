@@ -16,12 +16,16 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class ClientCreateNotification extends NotificationMessage
 {
+    const HTML_TEMPLATE = 'CSBillClientBundle:Email:client_create.html.twig';
+
+    const TEXT_TEMPLATE = 'CSBillClientBundle:Email:client_create.text.twig';
+
     /**
      * {@inheritdoc}
      */
     public function getHtmlContent(EngineInterface $templating = null)
     {
-        // TODO: Implement getHtmlContent() method.
+        return $templating->render(self::HTML_TEMPLATE, $this->getParameters());
     }
 
     /**
@@ -29,7 +33,7 @@ class ClientCreateNotification extends NotificationMessage
      */
     public function getTextContent(EngineInterface $templating = null)
     {
-        // TODO: Implement getTextContent() method.
+        return $templating->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
     /**
