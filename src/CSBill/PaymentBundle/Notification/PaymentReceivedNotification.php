@@ -10,55 +10,39 @@
 
 namespace CSBill\PaymentBundle\Notification;
 
-use CSBill\NotificationBundle\Notification\SwiftMailerNotification;
-use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
-use CSBill\PaymentBundle\Mailer\PaymentMailer;
-use CSBill\SettingsBundle\Manager\SettingsManager;
-use Namshi\Notificator\Manager;
+use CSBill\NotificationBundle\Notification\NotificationMessage;
+use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class PaymentReceivedNotification
+class PaymentReceivedNotification extends NotificationMessage
 {
-    /**
-     * @var SettingsManager
-     */
-    private $settings;
+    const HTML_TEMPLATE = 'CSBillPaymentBundle:Email:payment.html.twig';
+
+    const TEXT_TEMPLATE = 'CSBillPaymentBundle:Email:payment.txt.twig';
 
     /**
-     * @var Manager
+     * {@inheritdoc}
      */
-    private $notification;
-
-    /**
-     * @var PaymentMailer
-     */
-    private $mailer;
-
-    /**
-     * @param SettingsManager $settings
-     * @param Manager         $notification
-     * @param PaymentMailer   $mailer
-     */
-    public function __construct(SettingsManager $settings, Manager $notification, PaymentMailer $mailer)
+    public function getHtmlContent(EngineInterface $templating = null)
     {
-        $this->settings = $settings;
-        $this->notification = $notification;
-        $this->mailer = $mailer;
+        return $templating->render(self::HTML_TEMPLATE, $this->getParameters());
     }
 
     /**
-     * @param PaymentCompleteEvent $event
+     * {@inheritdoc}
      */
-    public function onPaymentCapture(PaymentCompleteEvent $event)
+    public function getTextContent(EngineInterface $templating = null)
     {
-        if ($this->settings->get('notifications.payment_made')) {
-            $payment = $event->getPayment();
+        return $templating->render(self::TEXT_TEMPLATE, $this->getParameters());
+    }
 
-            $message = $this->mailer->createPaymentMail($payment);
-
-            $notification = new SwiftMailerNotification($message);
-
-            // trigger the notification
-            $this->notification->trigger($notification);
-        }
+    /**
+     * @param TranslatorInterface $translator
+     *
+     * @return string
+     */
+    public function getSubject(TranslatorInterface $translator = null)
+    {
+        return $translator->trans('payment.email.capture.subject');
     }
 }

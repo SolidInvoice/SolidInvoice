@@ -9,7 +9,7 @@ parameters:
     csbill.payment.payum.extension.update_payment_details_extension.class: CSBill\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
     csbill.payment.twig_extension.class: CSBill\PaymentBundle\Twig\PaymentExtension
     csbill.payment.listener.payment_complete_listener.class: CSBill\PaymentBundle\Listener\PaymentCompleteListener
-    csbill.payment.notification.listener.payment_complete_listener.class: CSBill\PaymentBundle\Notification\PaymentReceivedNotification
+    csbill.payment.notification.listener.payment_complete_listener.class: CSBill\PaymentBundle\Listener\PaymentReceivedListener
     payum.class: CSBill\PaymentBundle\Payum
 
 services:
@@ -78,13 +78,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: payment.complete, method: onPaymentComplete }
 
-    csbill.payment.mailer:
-        class: CSBill\PaymentBundle\Mailer\PaymentMailer
-        arguments: [@templating, @settings, @doctrine, @translator]
-
-    csbill.payment.notification.listener.payment_complete_listener:
-        class: %csbill.payment.notification.listener.payment_complete_listener.class%
-        arguments: [@settings, @notification.manager, @csbill.payment.mailer]
+    csbill.payment.notification.listener.payment_listener:
+        class: CSBill\PaymentBundle\Listener\PaymentReceivedListener
+        arguments: [@notification.manager]
         tags:
             - { name: kernel.event_listener, event: payment.complete, method: onPaymentCapture }
 
