@@ -1,29 +1,29 @@
-{{ 'payment.description'|trans([], 'email') }}
+{{ 'payment.description'|trans({}, 'email') }}
 
-<h3>{{ 'payment.heading'|trans([], 'email') }}</h3>
+<h3>{{ 'payment.heading'|trans({}, 'email') }}</h3>
 {% if payment.invoice is not empty %}
-    <strong>{{ 'payment.details.invoice'|trans([], 'email') }}</strong>
+    <strong>{{ 'payment.details.invoice'|trans({}, 'email') }}</strong>
     #<a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">{{ payment.invoice.id }}</a>
 {% endif %}
 <br />
 
 {% if payment.client is not empty %}
-    <strong>{{ 'payment.details.client'|trans([], 'email') }}</strong>
+    <strong>{{ 'payment.details.client'|trans({}, 'email') }}</strong>
     <a href="{{ url('_clients_view', {'id' : payment.client.id}) }}">{{ payment.client }}</a>
 {% endif %}
 <br />
 
-<strong>{{ 'payment.details.method'|trans([], 'email') }}</strong>
+<strong>{{ 'payment.details.method'|trans({}, 'email') }}</strong>
 {{ payment.method }}
 <br />
 
-<strong>{{ 'payment.details.currency'|trans([], 'email') }}</strong>
+<strong>{{ 'payment.details.currency'|trans({}, 'email') }}</strong>
 {{ payment.currencyCode }}
 <br />
 
-<strong>{{ 'payment.details.amount'|trans([], 'email') }}</strong>
+<strong>{{ 'payment.details.amount'|trans({}, 'email') }}</strong>
 {{ payment.totalAmount }}
 <br />
 
-<strong>{{ 'payment.details.status'|trans([], 'email') }}</strong>
+<strong>{{ 'payment.details.status'|trans({}, 'email') }}</strong>
 {{ payment.status }}

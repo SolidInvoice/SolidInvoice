@@ -1,17 +1,17 @@
-{{ 'payment.description'|trans([], 'email') }}
+{{ 'payment.description'|trans({}, 'email') }}
 
 {% if payment.invoice is not empty %}
-    {{ 'payment.details.invoice'|trans([], 'email') }}: {{ payment.invoice.id }}
+    {{ 'payment.details.invoice'|trans({}, 'email') }}: {{ payment.invoice.id }}
 {% endif %}
 
 {% if payment.client is not empty %}
-    {{ 'payment.details.client'|trans([], 'email') }}: {{ payment.client }}
+    {{ 'payment.details.client'|trans({}, 'email') }}: {{ payment.client }}
 {% endif %}
 
-{{ 'payment.details.method'|trans([], 'email') }}: {{ payment.method }}
+{{ 'payment.details.method'|trans({}, 'email') }}: {{ payment.method }}
 
-{{ 'payment.details.currency'|trans([], 'email') }}: {{ payment.currencyCode }}
+{{ 'payment.details.currency'|trans({}, 'email') }}: {{ payment.currencyCode }}
 
-{{ 'payment.details.amount'|trans([], 'email') }}: {{ payment.totalAmount }}
+{{ 'payment.details.amount'|trans({}, 'email') }}: {{ payment.totalAmount }}
 
-{{ 'payment.details.status'|trans([], 'email') }}: {{ payment.status }}
+{{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status }}

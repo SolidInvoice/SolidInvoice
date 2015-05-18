@@ -43,6 +43,6 @@ class PaymentReceivedNotification extends NotificationMessage
      */
     public function getSubject(TranslatorInterface $translator = null)
     {
-        return $translator->trans('payment.email.capture.subject');
+        return $translator->trans('payment.capture.subject', array(), 'email');
     }
 }

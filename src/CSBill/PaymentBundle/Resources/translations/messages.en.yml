@@ -46,6 +46,3 @@ payment:
         updated: Payment Method Successfully Updated!
     methods:
         title: Payment Methods
-    email:
-        capture:
-            subject: A Payment has been made

@@ -1,7 +1,7 @@
-<h3>{{ 'client.email.create.heading'|trans }}</h3>
+<h3>{{ 'client.create.heading'|trans({}, 'email') }}</h3>
 
 <strong>
-    {{ 'client.email.create.details.id'|trans }}:
+    {{ 'client.create.details.id'|trans({}, 'email') }}:
 </strong>
     <a href="{{ url('_clients_view', {'id' : client.id}) }}">
         {{ client.id }}
@@ -9,13 +9,13 @@
 <br />
 
 <strong>
-    {{ 'client.email.create.details.name'|trans }}:
+    {{ 'client.create.details.name'|trans({}, 'email') }}:
 </strong>
 {{ client.name }}<br />
 
 {% if client.website is not empty %}
     <strong>
-        {{ 'client.email.create.details.website'|trans }}:
+        {{ 'client.create.details.website'|trans({}, 'email') }}:
     </strong>
     <a href="{{ client.website }}" rel="external" target="_blank">
         {{ client.website }}
@@ -24,12 +24,12 @@
 {% endif %}
 
 <h3>
-    {{ 'client.email.create.contacts.heading'|trans }}
+    {{ 'client.create.contacts.heading'|trans({}, 'email') }}
 </h3>
 
 {% for contact in client.contacts %}
     <strong>
-        {{ 'client.email.create.contacts.name'|trans }}:
+        {{ 'client.create.contacts.name'|trans({}, 'email') }}:
     </strong>
     {{ contact.firstname }} {{ contact.lastname }}
     <br />

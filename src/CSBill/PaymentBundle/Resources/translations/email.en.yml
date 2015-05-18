@@ -1,6 +1,8 @@
 payment:
     description: A new payment has been made
     heading: Payment Details
+    capture:
+        subject: A Payment has been made
     details:
         amount: Amount
         currency: Currency
