@@ -34,8 +34,9 @@ class InvoiceManagerTest extends KernelTestCase
         $stateMachine = \Mockery::mock('Finite\Factory\FactoryInterface', array('can' => true));
         $finite = \Mockery::mock('Finite\Factory\FactoryInterface', array('get' => $stateMachine));
         $doctrine = \Mockery::mock('Doctrine\Common\Persistence\ManagerRegistry', array('getManager' => $this->entityManager));
+        $notification = \Mockery::mock('CSBill\NotificationBundle\Notification\NotificationManager');
 
-        $this->manager = new InvoiceManager($doctrine, $this->dispatcher, $finite);
+        $this->manager = new InvoiceManager($doctrine, $this->dispatcher, $finite, $notification);
 
         $this
             ->entityManager
