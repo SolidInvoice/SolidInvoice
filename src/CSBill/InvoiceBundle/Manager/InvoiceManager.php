@@ -17,6 +17,8 @@ use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
 use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\InvoiceBundle\Notification\InvoiceStatusNotification;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -43,18 +45,26 @@ class InvoiceManager extends ContainerAware
     private $stateMachine;
 
     /**
+     * @var NotificationManager
+     */
+    private $notification;
+
+    /**
      * @param ManagerRegistry          $doctrine
      * @param EventDispatcherInterface $dispatcher
      * @param FactoryInterface         $stateMachine
+     * @param NotificationManager      $notification
      */
     public function __construct(
         ManagerRegistry $doctrine,
         EventDispatcherInterface $dispatcher,
-        FactoryInterface $stateMachine
+        FactoryInterface $stateMachine,
+        NotificationManager $notification
     ) {
         $this->entityManager = $doctrine->getManager();
         $this->dispatcher = $dispatcher;
         $this->stateMachine = $stateMachine;
+        $this->notification = $notification;
     }
 
     /**
@@ -242,7 +252,22 @@ class InvoiceManager extends ContainerAware
         $stateMachine = $this->stateMachine->get($invoice, Graph::GRAPH);
 
         if ($stateMachine->can($transition)) {
+            $oldStatus = $invoice->getStatus();
+
             $stateMachine->apply($transition);
+
+            $newStatus = $invoice->getStatus();
+
+            $parameters = array(
+                'invoice' => $invoice,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'transition' => $transition
+            );
+
+            $notification = new InvoiceStatusNotification($parameters);
+
+            $this->notification->sendNotification('invoice_status_update', $notification);
 
             return true;
         }

@@ -1,0 +1,6 @@
+{{ 'invoice.status_change.heading'|trans({}, 'email') }}
+-------------------
+
+{{ 'invoice.status_change.id'|trans({}, 'email') }}: {{ url('_invoices_view', {'id' : invoice.id}) }}
+{{ 'invoice.status_change.old_status'|trans({}, 'email') }}: {{ old_status }}
+{{ 'invoice.status_change.new_status'|trans({}, 'email') }}: {{ new_status }}
