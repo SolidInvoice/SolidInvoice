@@ -125,7 +125,9 @@ class Mailer implements MailerInterface
         $event = new InvoiceMailEvent();
         $event->setInvoice($invoice);
 
-        $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event);
+        $bcc = (string) $this->settings->get('invoice.bcc_address');
+
+        $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event, $bcc);
 
         return $sent;
     }
@@ -160,16 +162,17 @@ class Mailer implements MailerInterface
      * @param string|null  $htmlTemplate
      * @param string|null  $textTemplate
      * @param MessageEvent $event
+     * @param string       $bccAddress
      *
      * @return int
-     * @throws Exception\UnexpectedFormatException
      */
     protected function sendMessage(
         $subject,
         $users,
         $htmlTemplate = null,
         $textTemplate = null,
-        MessageEvent $event = null
+        MessageEvent $event = null,
+        $bccAddress = null
     ) {
         $message = \Swift_Message::newInstance();
 
@@ -190,6 +193,10 @@ class Mailer implements MailerInterface
 
         $message->setSubject($subject)
             ->setTo($users);
+
+        if (!empty($bccAddress)) {
+            $message->setBcc($bccAddress);
+        }
 
         if (null !== $event) {
             $event->setHtmlTemplate($htmlTemplate);
@@ -254,7 +261,9 @@ class Mailer implements MailerInterface
         $event = new QuoteEvent();
         $event->setQuote($quote);
 
-        $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event);
+        $bcc = (string) $this->settings->get('quote.bcc_address');
+
+        $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event, $bcc);
 
         return $sent;
     }

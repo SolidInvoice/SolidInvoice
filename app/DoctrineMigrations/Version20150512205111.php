@@ -22,11 +22,57 @@ class Version20150512205111 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_6000B0D3FD1AEF5E ON notifications (notification_event)');
 
         $this->addSql('INSERT INTO notifications VALUES (NULL, "client_create", 1, 0, 0)');
-        $this->addSql('INSERT INTO notifications VALUES (NULL, "invoice_create", 1, 0, 0)');
         $this->addSql('INSERT INTO notifications VALUES (NULL, "invoice_status_update", 1, 0, 0)');
-        $this->addSql('INSERT INTO notifications VALUES (NULL, "quote_create", 1, 0, 0)');
         $this->addSql('INSERT INTO notifications VALUES (NULL, "quote_status_update", 1, 0, 0)');
         $this->addSql('INSERT INTO notifications VALUES (NULL, "payment_made", 1, 0, 0)');
+
+        $this->addSql('
+            INSERT INTO
+              app_config
+                (
+                  id,
+                  setting_key,
+                  setting_value,
+                  description,
+                  section_id,
+                  field_type,
+                  field_options
+                )
+            VALUES
+              (
+                NULL,
+                "bcc_address",
+                NULL,
+                "Send BCC copy of invoice to this address",
+                (select id from config_sections where name = "invoice"),
+                "email",
+                "a:0:{}"
+              )
+        ');
+
+        $this->addSql('
+            INSERT INTO
+              app_config
+                (
+                  id,
+                  setting_key,
+                  setting_value,
+                  description,
+                  section_id,
+                  field_type,
+                  field_options
+                )
+            VALUES
+              (
+                NULL,
+                "bcc_address",
+                NULL,
+                "Send BCC copy of quote to this address",
+                (select id from config_sections where name = "quote"),
+                "email",
+                "a:0:{}"
+              )
+        ');
     }
 
     /**
