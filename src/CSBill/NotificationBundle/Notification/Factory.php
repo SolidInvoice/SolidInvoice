@@ -98,12 +98,27 @@ class Factory
      */
     public function createHipchatNotification(NotificationMessageInterface $message)
     {
+        $format = $this->settings->get('hipchat.message_format');
+
+        switch (strtolower($format)) {
+            case 'html' :
+                $content = $message->getHtmlContent($this->templating);
+                break;
+
+            case 'text' :
+            default:
+                $content = $message->getTextContent($this->templating);
+                break;
+        }
+
         return new HipChatNotification(
-            $message->getHtmlContent($this->templating),
-            $this->settings->get('system.app_name'),
-            $this->settings->get('hipchat.room'),
+            $content,
+            $this->settings->get('system.general.app_name'),
+            $this->settings->get('hipchat.room_id'),
             array(
-                'hipchat_message_format' => 'html' // @TODO: Add setting for Hipchat Format
+                'hipchat_message_format' => $format,
+                'hipchat_color' => $this->settings->get('hipchat.message_color'),
+                'hipchat_notify' => (string) $this->settings->get('hipchat.notify'),
             )
         );
     }

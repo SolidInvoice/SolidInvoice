@@ -1,11 +1,13 @@
 <h3>
     {{ 'quote.status_change.heading'|trans({}, 'email') }}
 </h3>
-
+<br />
 <strong>
     {{ 'quote.status_change.id'|trans({}, 'email') }}:
 </strong>
-{{ url('_quotes_view', {'id' : quote.id}) }}<br />
+<a href="{{ url('_quotes_view', {'id' : quote.id}) }}">
+    quote.id
+</a><br />
 
 <strong>
     {{ 'quote.status_change.old_status'|trans({}, 'email') }}:
@@ -14,5 +16,5 @@
 
 <strong>
 {{ 'quote.status_change.new_status'|trans({}, 'email') }}:
-    {{ new_status }}
 </strong>
+{{ new_status }}
