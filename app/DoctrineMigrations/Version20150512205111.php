@@ -28,13 +28,23 @@ class Version20150512205111 extends AbstractMigration
 
         $this->addSql('INSERT INTO notifications VALUES (NULL, "payment_made", 1, 0, 0)');
 
-        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'hipchat')");
-        $this->addSql("INSERT INTO `app_config` VALUES (NULL, 'auth_token', '', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}')");
-        $this->addSql("INSERT INTO `app_config` VALUES (NULL, 'room_id', NULL, NULL, LAST_INSERT_ID(), NULL, 'a:0:{}')");
-        $this->addSql("INSERT INTO `app_config` VALUES (NULL, 'server_url', 'https://api.hipchat.com', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}')");
-        $this->addSql("INSERT INTO `app_config` VALUES (NULL, 'notify', NULL, NULL, LAST_INSERT_ID(), 'checkbox', 'a:0:{}')");
-        $this->addSql("INSERT INTO `app_config` VALUES (NULL, 'message_color', 'yellow', NULL, LAST_INSERT_ID(), 'select2', 'a:6:{s:6:\"yellow\";s:6:\"yellow\";s:3:\"red\";s:3:\"red\";s:4:\"gray\";s:4:\"gray\";s:5:\"green\";s:5:\"green\";s:6:\"purple\";s:6:\"purple\";s:6:\"random\";s:6:\"random\";}')");
-        $this->addSql("INSERT INTO `app_config` VALUES (NULL, 'message_format', 'text', NULL, LAST_INSERT_ID(), 'select2', 'a:2:{s:4:\"html\";s:4:\"html\";s:4:\"text\";s:4:\"text\";}')");
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'hipchats')");
+        $this->addSql("INSERT INTO `app_config` VALUES
+          (NULL, 'auth_token', '', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'room_id', NULL, NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'server_url', 'https://api.hipchat.com', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'notify', NULL, NULL, LAST_INSERT_ID(), 'checkbox', 'a:0:{}'),
+          (NULL, 'message_color', 'yellow', NULL, LAST_INSERT_ID(), 'select2', 'a:6:{s:6:\"yellow\";s:6:\"yellow\";s:3:\"red\";s:3:\"red\";s:4:\"gray\";s:4:\"gray\";s:5:\"green\";s:5:\"green\";s:6:\"purple\";s:6:\"purple\";s:6:\"random\";s:6:\"random\";}'),
+          (NULL, 'message_format', 'text', NULL, LAST_INSERT_ID(), 'select2', 'a:2:{s:4:\"html\";s:4:\"html\";s:4:\"text\";s:4:\"text\";}')
+          ");
+
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'smss')");
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, LAST_INSERT_ID(), 'twilios')");
+        $this->addSql("INSERT INTO `app_config` VALUES
+          (NULL, 'number', NULL, NULL, LAST_INSERT_ID(), 'text', 'a:0:{}'),
+          (NULL, 'sid', NULL, NULL, LAST_INSERT_ID(), 'text', 'a:0:{}'),
+          (NULL, 'token', NULL, NULL, LAST_INSERT_ID(), 'text', 'a:0:{}')
+        ");
 
         $this->addSql('
             INSERT INTO

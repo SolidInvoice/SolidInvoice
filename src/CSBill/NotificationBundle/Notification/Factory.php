@@ -13,7 +13,6 @@ namespace CSBill\NotificationBundle\Notification;
 use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use CSBill\SettingsBundle\Manager\SettingsManager;
 use Namshi\Notificator\Notification\HipChat\HipChatNotification;
-use Namshi\Notificator\Notification\Sms\SmsNotification;
 use Namshi\Notificator\NotificationInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -131,6 +130,6 @@ class Factory
      */
     public function createSmsNotification($cellphone, NotificationMessageInterface $message)
     {
-        return new SmsNotification($cellphone, $message->getTextContent());
+        return new TwilioNotification($cellphone, $message->getTextContent($this->templating));
     }
 }

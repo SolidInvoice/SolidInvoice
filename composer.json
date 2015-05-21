@@ -58,7 +58,8 @@
         "sylius/flow-bundle" : "0.12.*",
         "yohang/finite": "1.1.*@dev",
         "namshi/notificator": "~4.0",
-        "hipchat/hipchat-php": "~1.4"
+        "hipchat/hipchat-php": "~1.4",
+        "twilio/sdk": "~4.2"
     },
     "require-dev": {
         "behat/behat": "~3.0",

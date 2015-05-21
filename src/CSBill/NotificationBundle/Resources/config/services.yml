@@ -20,6 +20,14 @@ services:
         tags:
             - { name: notification.handler }
 
+    notification.handler.twilio:
+        class: CSBill\NotificationBundle\Notification\Handler\TwilioHandler
+        arguments:
+            - @twilio.client
+            - @=service('settings').get('sms.twilio.number')
+        tags:
+            - { name: notification.handler }
+
     notification.handler.swiftmailer:
         class: Namshi\Notificator\Notification\Handler\SwiftMailer
         arguments: [@mailer]
@@ -45,3 +53,9 @@ services:
         arguments:
             - @=service('settings').get('hipchat.auth_token')
             - @=service('settings').get('hipchat.server_url')
+
+    twilio.client:
+        class: Services_Twilio
+        arguments:
+            - @=service('settings').get('sms.twilio.sid')
+            - @=service('settings').get('sms.twilio.token')

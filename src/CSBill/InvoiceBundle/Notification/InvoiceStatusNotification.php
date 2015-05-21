@@ -18,7 +18,7 @@ class InvoiceStatusNotification extends NotificationMessage
 {
     const HTML_TEMPLATE = 'CSBillInvoiceBundle:Email:status_change.html.twig';
 
-    const TEXT_TEMPLATE = 'CSBillInvoiceBundle:Email:status_change.txt.twig';
+    const TEXT_TEMPLATE = 'CSBillInvoiceBundle:Email:status_change.text.twig';
 
     /**
      * {@inheritdoc}
