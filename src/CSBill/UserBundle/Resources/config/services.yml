@@ -7,3 +7,8 @@ services:
     csbill.user.canonicalizer:
         class: CSBill\UserBundle\Util\Canonicalizer
         public: false
+
+    csbiill.user.profile.form.type:
+        class: CSBill\UserBundle\Form\ProfileForm
+        tags:
+            - { name: form.type, alias: profile_form }

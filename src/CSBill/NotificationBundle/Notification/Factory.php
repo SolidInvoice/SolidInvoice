@@ -64,7 +64,7 @@ class Factory
         $swiftMessage->setSubject($message->getSubject($this->translator));
 
         foreach ($message->getUsers() as $user) {
-            $swiftMessage->addTo($user->getEmail(), $user->getName());
+            $swiftMessage->addTo($user->getEmail(), $user->getUsername());
         }
 
         $format = (string) $this->settings->get('email.format');

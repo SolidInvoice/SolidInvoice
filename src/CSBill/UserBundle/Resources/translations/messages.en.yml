@@ -5,6 +5,7 @@ profile:
         no: No
         username: Username
         email: Email
+        mobile: Mobile
         last_login: Last Login
         enabled: Enabled
         locked: Locked

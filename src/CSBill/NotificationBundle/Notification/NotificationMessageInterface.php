@@ -10,6 +10,7 @@
 
 namespace CSBill\NotificationBundle\Notification;
 
+use CSBill\UserBundle\Entity\User;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -42,7 +43,7 @@ interface NotificationMessageInterface
     public function setUsers(array $users);
 
     /**
-     * @return array
+     * @return User[]
      */
     public function getUsers();
 

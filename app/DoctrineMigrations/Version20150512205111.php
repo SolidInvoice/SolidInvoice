@@ -93,6 +93,8 @@ class Version20150512205111 extends AbstractMigration
                 "a:0:{}"
               )
         ');
+
+        $this->addSql('ALTER TABLE users ADD mobile VARCHAR(255) DEFAULT NULL');
     }
 
     /**

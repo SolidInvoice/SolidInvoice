@@ -61,10 +61,9 @@ class NotificationManager
         }
 
         if ($settings['sms']) {
-            // TODO: Get cellphone number from users
             foreach ($message->getUsers() as $user) {
                 $notification->addNotifications(
-                    $this->factory->createSmsNotification($user->getCellphone(), $message)
+                    $this->factory->createSmsNotification($user->getMobile(), $message)
                 );
             }
         }
