@@ -11,6 +11,9 @@
 namespace CSBill\NotificationBundle\Notification;
 
 use CSBill\SettingsBundle\Manager\SettingsManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
 use Namshi\Notificator\Manager;
 
 class NotificationManager
@@ -31,15 +34,26 @@ class NotificationManager
     private $settings;
 
     /**
+     * @var ObjectManager
+     */
+    private $entityManager;
+
+    /**
      * @param Factory         $factory
      * @param SettingsManager $settings
      * @param Manager         $notification
+     * @param ManagerRegistry $doctrine
      */
-    public function __construct(Factory $factory, SettingsManager $settings, Manager $notification)
-    {
+    public function __construct(
+        Factory $factory,
+        SettingsManager $settings,
+        Manager $notification,
+        ManagerRegistry $doctrine
+    ) {
         $this->factory = $factory;
         $this->notification = $notification;
         $this->settings = $settings;
+        $this->entityManager = $doctrine->getManager();
     }
 
     /**
@@ -48,6 +62,11 @@ class NotificationManager
      */
     public function sendNotification($event, NotificationMessageInterface $message)
     {
+        /** @var EntityRepository $repository */
+        $repository = $this->entityManager->getRepository('CSBillUserBundle:User');
+
+        $message->setUsers($repository->findAll());
+
         $notification = new ChainedNotification();
 
         $settings = $this->settings->get(sprintf('notification.%s', $event));
