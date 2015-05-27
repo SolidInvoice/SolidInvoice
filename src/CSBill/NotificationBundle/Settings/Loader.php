@@ -8,7 +8,6 @@
  * with this source code in the file LICENSE.
  */
 
-
 namespace CSBill\NotificationBundle\Settings;
 
 use CSBill\NotificationBundle\Entity\Notification;
