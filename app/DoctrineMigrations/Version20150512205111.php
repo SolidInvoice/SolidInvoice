@@ -26,8 +26,6 @@ class Version20150512205111 extends AbstractMigration
         $this->addSql('INSERT INTO notifications VALUES (NULL, "quote_status_update", 1, 0, 0)');
         $this->addSql('INSERT INTO notifications VALUES (NULL, "payment_made", 1, 0, 0)');
 
-        $this->addSql('INSERT INTO notifications VALUES (NULL, "payment_made", 1, 0, 0)');
-
         $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'hipchats')");
         $this->addSql("INSERT INTO `app_config` VALUES
           (NULL, 'auth_token', '', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
