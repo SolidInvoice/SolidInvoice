@@ -53,6 +53,14 @@ class Loader implements SettingsLoaderInterface
         foreach ($values as $notification) {
             $value = $settings['notification'][$notification->getEvent()]->getValue();
 
+            if (isset($value['hipchat'])) {
+                $this->checkHipchatConfig();
+            }
+
+            if (isset($value['sms'])) {
+                $this->checkSmsConfig();
+            }
+
             $notification->setEmail(isset($value['email']))
                 ->setHipchat(isset($value['hipchat']))
                 ->setSms(isset($value['sms']));
@@ -115,5 +123,73 @@ class Loader implements SettingsLoaderInterface
         }
 
         return true;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function checkHipchatConfig()
+    {
+        static $hasHipchatConfig = false;
+
+        if (true === $hasHipchatConfig) {
+            return;
+        }
+
+        /** @var EntityRepository $repository */
+        $repository = $this->manager->getRepository('CSBillSettingsBundle:Setting');
+
+        $builder = $repository->createQueryBuilder('s');
+
+        $builder
+            ->select('s.key, s.value')
+            ->join('s.section', 'se')
+            ->where('se.name = :section')
+            ->setParameter('section', 'hipchat')
+        ;
+
+        $query = $builder->getQuery();
+
+        foreach ($query->getArrayResult() as $result) {
+            if ($result['key'] === 'auth_token' && null === $result['value']) {
+                throw new \Exception('You need to set a HipChat Auth token in order to enable HipChat notifications');
+            }
+
+            if ($result['key'] === 'room_id' && null === $result['value']) {
+                throw new \Exception('You need to set a HipChat Room ID in order to enable HipChat notifications');
+            }
+        }
+
+        $hasHipchatConfig = true;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function checkSmsConfig()
+    {
+        static $hasSmsConfig = false;
+
+        if (true === $hasSmsConfig) {
+            return;
+        }
+
+        /** @var EntityRepository $repository */
+        $repository = $this->manager->getRepository('CSBillUserBundle:User');
+
+        $builder = $repository->createQueryBuilder('u');
+
+        $builder->select('COUNT(u.id)')
+            ->where('u.mobile IS NOT NULL');
+
+        $query = $builder->getQuery();
+
+        $hasSmsConfig = (int) $query->getSingleScalarResult() > 0;
+
+        if (false === $hasSmsConfig) {
+            throw new \Exception(
+                'You need at least one user with a mobile number in order to enable SMS notifications'
+            );
+        }
     }
 }

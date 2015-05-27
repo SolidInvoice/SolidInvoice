@@ -81,6 +81,11 @@ class NotificationManager
 
         if ($settings['sms']) {
             foreach ($message->getUsers() as $user) {
+
+                if (null === $user->getMobile()) {
+                    continue;
+                }
+
                 $notification->addNotifications(
                     $this->factory->createSmsNotification($user->getMobile(), $message)
                 );
