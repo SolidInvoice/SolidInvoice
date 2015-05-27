@@ -1,43 +1,59 @@
-<h3>{{ 'client.create.heading'|trans({}, 'email') }}</h3>
+{% extends "CSBillCoreBundle:Layout:Email.html.twig" %}
 
-<strong>
-    {{ 'client.create.details.id'|trans({}, 'email') }}:
-</strong>
-    <a href="{{ url('_clients_view', {'id' : client.id}) }}">
-        {{ client.id }}
-    </a>
-<br />
+{% block title %}
+    {{ 'client.create.heading'|trans({}, 'email') }}
+{% endblock %}
 
-<strong>
-    {{ 'client.create.details.name'|trans({}, 'email') }}:
-</strong>
-{{ client.name }}<br />
-
-{% if client.website is not empty %}
+{% block content %}
     <strong>
-        {{ 'client.create.details.website'|trans({}, 'email') }}:
+        {{ 'client.create.details.id'|trans({}, 'email') }}:
     </strong>
-    <a href="{{ client.website }}" rel="external" target="_blank">
-        {{ client.website }}
-    </a>
+        <a href="{{ url('_clients_view', {'id' : client.id}) }}">
+            {{ client.id }}
+        </a>
     <br />
-{% endif %}
 
-<h3>
-    {{ 'client.create.contacts.heading'|trans({}, 'email') }}
-</h3>
-
-{% for contact in client.contacts %}
     <strong>
-        {{ 'client.create.contacts.name'|trans({}, 'email') }}:
+        {{ 'client.create.details.name'|trans({}, 'email') }}:
     </strong>
-    {{ contact.firstname }} {{ contact.lastname }}
-    <br />
-    {% for contactDetail in contact.primaryDetails %}
+    {{ client.name }}<br />
+
+    {% if client.website is not empty %}
         <strong>
-            {{ contactDetail.type }}:
+            {{ 'client.create.details.website'|trans({}, 'email') }}:
         </strong>
-        {{ contactDetail.value }}
+        <a href="{{ client.website }}" rel="external" target="_blank">
+            {{ client.website }}
+        </a>
         <br />
+    {% endif %}
+
+    <h3>
+        {{ 'client.create.contacts.heading'|trans({}, 'email') }}
+    </h3>
+
+    {% for contact in client.contacts %}
+        <p>
+            <table>
+                <tr>
+                    <th>
+                        {{ 'client.create.contacts.name'|trans({}, 'email') }}:
+                    </th>
+                    <td>
+                        {{ contact.firstname }} {{ contact.lastname }}
+                    </td>
+                </tr>
+                <tr>
+                    {% for contactDetail in contact.primaryDetails %}
+                        <th>
+                            {{ contactDetail.type|humanize|title }}:
+                        </th>
+                        <td>
+                            {{ contactDetail.value }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </p>
     {% endfor %}
-{% endfor %}
+{% endblock %}
