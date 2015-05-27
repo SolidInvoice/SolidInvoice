@@ -1,29 +1,72 @@
-{{ 'payment.description'|trans({}, 'email') }}
+{% extends "CSBillCoreBundle:Layout:Email.html.twig" %}
 
-<h3>{{ 'payment.heading'|trans({}, 'email') }}</h3>
-{% if payment.invoice is not empty %}
-    <strong>{{ 'payment.details.invoice'|trans({}, 'email') }}</strong>
-    #<a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">{{ payment.invoice.id }}</a>
-{% endif %}
-<br />
+{% block title %}
+    {{ 'payment.description'|trans({}, 'email') }}
+{% endblock %}
 
-{% if payment.client is not empty %}
-    <strong>{{ 'payment.details.client'|trans({}, 'email') }}</strong>
-    <a href="{{ url('_clients_view', {'id' : payment.client.id}) }}">{{ payment.client }}</a>
-{% endif %}
-<br />
+{% block content %}
+    <table>
 
-<strong>{{ 'payment.details.method'|trans({}, 'email') }}</strong>
-{{ payment.method }}
-<br />
+        {% if payment.invoice is not empty %}
+            <tr>
+                <th>
+                    {{ 'payment.details.invoice'|trans({}, 'email') }}
+                </th>
+                <td>
+                    <a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">
+                        {{ payment.invoice.id }}
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
 
-<strong>{{ 'payment.details.currency'|trans({}, 'email') }}</strong>
-{{ payment.currencyCode }}
-<br />
+        {% if payment.client is not empty %}
+            <tr>
+                <th>
+                    {{ 'payment.details.client'|trans({}, 'email') }}
+                </th>
+                <td>
+                    <a href="{{ url('_clients_view', {'id' : payment.client.id}) }}">
+                        {{ payment.client }}
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
 
-<strong>{{ 'payment.details.amount'|trans({}, 'email') }}</strong>
-{{ payment.totalAmount }}
-<br />
+        <tr>
+            <th>
+                {{ 'payment.details.method'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment.method }}
+            </td>
+        </tr>
 
-<strong>{{ 'payment.details.status'|trans({}, 'email') }}</strong>
-{{ payment.status }}
+        <tr>
+            <th>
+                {{ 'payment.details.currency'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment.currencyCode }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                {{ 'payment.details.amount'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment.totalAmount }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                {{ 'payment.details.status'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment_label(payment.status) }}
+            </td>
+        </tr>
+    </table>
+{% endblock %}

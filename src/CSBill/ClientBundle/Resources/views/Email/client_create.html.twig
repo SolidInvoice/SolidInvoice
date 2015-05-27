@@ -37,7 +37,7 @@
             <table>
                 <tr>
                     <th>
-                        {{ 'client.create.contacts.name'|trans({}, 'email') }}:
+                        {{ 'client.create.contacts.name'|trans({}, 'email') }}
                     </th>
                     <td>
                         {{ contact.firstname }} {{ contact.lastname }}
@@ -46,7 +46,7 @@
                 <tr>
                     {% for contactDetail in contact.primaryDetails %}
                         <th>
-                            {{ contactDetail.type|humanize|title }}:
+                            {{ contactDetail.type|humanize|title }}
                         </th>
                         <td>
                             {{ contactDetail.value }}
