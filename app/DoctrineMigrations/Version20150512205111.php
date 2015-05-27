@@ -34,8 +34,7 @@ class Version20150512205111 extends AbstractMigration
           (NULL, 'room_id', NULL, NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
           (NULL, 'server_url', 'https://api.hipchat.com', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
           (NULL, 'notify', NULL, NULL, LAST_INSERT_ID(), 'checkbox', 'a:0:{}'),
-          (NULL, 'message_color', 'yellow', NULL, LAST_INSERT_ID(), 'select2', 'a:6:{s:6:\"yellow\";s:6:\"yellow\";s:3:\"red\";s:3:\"red\";s:4:\"gray\";s:4:\"gray\";s:5:\"green\";s:5:\"green\";s:6:\"purple\";s:6:\"purple\";s:6:\"random\";s:6:\"random\";}'),
-          (NULL, 'message_format', 'text', NULL, LAST_INSERT_ID(), 'select2', 'a:2:{s:4:\"html\";s:4:\"html\";s:4:\"text\";s:4:\"text\";}')
+          (NULL, 'message_color', 'yellow', NULL, LAST_INSERT_ID(), 'select2', 'a:6:{s:6:\"yellow\";s:6:\"yellow\";s:3:\"red\";s:3:\"red\";s:4:\"gray\";s:4:\"gray\";s:5:\"green\";s:5:\"green\";s:6:\"purple\";s:6:\"purple\";s:6:\"random\";s:6:\"random\";}')
           ");
 
         $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'smss')");
