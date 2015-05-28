@@ -8,23 +8,22 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Class SectionRepository
- * @package CSBill\SettingsBundle\Repository
+ * Class SectionRepository.
  */
 class SectionRepository extends EntityRepository
 {
     /**
-     * Returns an array of all the top-level sections
+     * Returns an array of all the top-level sections.
      *
-     * @param  bool   $cache
-     * @param  string $cacheKey
-     * @param  int    $lifetime
+     * @param bool   $cache
+     * @param string $cacheKey
+     * @param int    $lifetime
+     *
      * @return array
      */
     public function getTopLevelSections($cache = false, $cacheKey = 'csbill_settings_top_section_sections', $lifetime = 604800)

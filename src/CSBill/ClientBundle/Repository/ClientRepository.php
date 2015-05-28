@@ -8,20 +8,19 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 /**
- * ClientRepository
+ * ClientRepository.
  *
  * Custom Repository class for managing clients
  */
 class ClientRepository extends EntityRepository
 {
     /**
-     * Gets total number of clients
+     * Gets total number of clients.
      *
      * @param string $status
      *
@@ -44,7 +43,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * Gets the most recent created clients
+     * Gets the most recent created clients.
      *
      * @param int $limit
      *

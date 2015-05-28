@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -16,8 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class SettingsLoaderCompilerPass
- * @package CSBill\SettingsBundle\DependencyInjection\Compiler
+ * Class SettingsLoaderCompilerPass.
  */
 class SettingsLoaderCompilerPass implements CompilerPassInterface
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
@@ -22,6 +22,7 @@ class ActionsController extends BaseController
      * @param Invoice $invoice
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function transitionAction($action, Invoice $invoice)

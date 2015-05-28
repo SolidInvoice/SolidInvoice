@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Menu;
 
 use CSBill\CoreBundle\Menu\Builder\BuilderInterface;
@@ -32,7 +31,7 @@ class Provider implements MenuProviderInterface
     }
 
     /**
-     * Gets the storage for the specific menu
+     * Gets the storage for the specific menu.
      *
      * @param string $name
      * @param array  $options
@@ -45,7 +44,7 @@ class Provider implements MenuProviderInterface
     }
 
     /**
-     * Checks if the storage has builders for the specified menu
+     * Checks if the storage has builders for the specified menu.
      *
      * @param string $name
      * @param array  $options
@@ -58,7 +57,7 @@ class Provider implements MenuProviderInterface
     }
 
     /**
-     * Adds a builder to the storage
+     * Adds a builder to the storage.
      *
      * @param BuilderInterface $class
      * @param string           $name   The name of the menu the builder should be attached to

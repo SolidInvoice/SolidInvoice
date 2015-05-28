@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\InstallBundle\Tests\Form\Step;
 
 use CSBill\CoreBundle\Tests\FormTestCase;
@@ -24,7 +24,7 @@ class SystemInformationFormTest extends FormTestCase
             'currency' => $faker->randomKey(Intl::getCurrencyBundle()->getCurrencyNames()),
             'username' => $faker->userName,
             'email_address' => $faker->email,
-            'password' => null
+            'password' => null,
         );
 
         $type = new SystemInformationForm();

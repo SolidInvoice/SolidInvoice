@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Tests\Twig\Extension;
 
 use CSBill\ClientBundle\Twig\Extension\ContactTypesExtension;
@@ -48,7 +47,6 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->with('CSBillClientBundle:ContactType')
             ->andReturn($objectRepository);
-
 
         $extension = new ContactTypesExtension($registry);
 

@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -23,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends BaseController
 {
     /**
-     * List all the clients
+     * List all the clients.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -41,7 +40,7 @@ class DefaultController extends BaseController
     }
 
     /**
-     * Adds a new client
+     * Adds a new client.
      *
      * @param Request $request
      *
@@ -69,7 +68,7 @@ class DefaultController extends BaseController
     }
 
     /**
-     * Edit a client
+     * Edit a client.
      *
      * @param Request $request
      * @param Client  $client
@@ -116,7 +115,7 @@ class DefaultController extends BaseController
             $originalContacts = $client->getContacts()->toArray();
 
             foreach ($originalContacts as $contact) {
-                /** @var \CSBill\ClientBundle\Entity\Contact $contact */
+                /* @var \CSBill\ClientBundle\Entity\Contact $contact */
                 $originalContactsDetails[$contact->getId()] = $contact->getAdditionalDetails()->toArray();
                 $contact->getAdditionalDetails()->clear();
             }
@@ -167,7 +166,7 @@ class DefaultController extends BaseController
     }
 
     /**
-     * View a client
+     * View a client.
      *
      * @param Client $client
      *

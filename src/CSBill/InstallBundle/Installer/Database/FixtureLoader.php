@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Installer\Database;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
@@ -18,14 +17,12 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class FixtureLoader
- *
- * @package CSBill\InstallBundle\Installer\Database
+ * Class FixtureLoader.
  */
 class FixtureLoader extends ContainerAware
 {
     /**
-     * Executes Database Fixtures
+     * Executes Database Fixtures.
      */
     public function execute()
     {

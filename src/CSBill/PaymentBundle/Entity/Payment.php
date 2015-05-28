@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as Grid;
@@ -36,7 +36,7 @@ class Payment
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
@@ -66,7 +66,7 @@ class Payment
     private $method;
 
     /**
-     * @var string $status
+     * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", label_function="payment_label")
@@ -99,7 +99,7 @@ class Payment
     private $details;
 
     /**
-     * @var \DateTime $completed
+     * @var \DateTime
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -113,7 +113,7 @@ class Payment
     }
 
     /**
-     * Get the id
+     * Get the id.
      *
      * @return int
      */
@@ -163,7 +163,7 @@ class Payment
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param string $status
      *
@@ -177,7 +177,7 @@ class Payment
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return string
      */
@@ -187,11 +187,12 @@ class Payment
     }
 
     /**
-     * Set details
+     * Set details.
      *
      * @param array|\Traversable $details
      *
      * @return Payment
+     *
      * @throws UnexpectedTypeException
      */
     public function setDetails($details)
@@ -210,7 +211,7 @@ class Payment
     }
 
     /**
-     * Get details
+     * Get details.
      *
      * @return array
      */
@@ -220,7 +221,7 @@ class Payment
     }
 
     /**
-     * Set currency
+     * Set currency.
      *
      * @param float $currencyCode
      *
@@ -234,7 +235,7 @@ class Payment
     }
 
     /**
-     * Get currency
+     * Get currency.
      *
      * @return float
      */
@@ -244,7 +245,7 @@ class Payment
     }
 
     /**
-     * Set amount
+     * Set amount.
      *
      * @param float $totalAmount
      *
@@ -258,7 +259,7 @@ class Payment
     }
 
     /**
-     * Get amount
+     * Get amount.
      *
      * @return float
      */

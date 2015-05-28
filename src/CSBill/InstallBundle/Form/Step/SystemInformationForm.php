@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Form\Step;
 
 use Symfony\Component\Form\AbstractType;
@@ -79,7 +79,7 @@ class SystemInformationForm extends AbstractType
                 'invalid_message' => 'The password fields must match.',
                 'options' => array('attr' => array('class' => 'password-field')),
                 'required' => true,
-                'first_options'  => array('label' => 'Password'),
+                'first_options' => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password'),
                 'constraints' => array(
                     new Constraints\NotBlank(array('message' => 'You must enter a secure password')),

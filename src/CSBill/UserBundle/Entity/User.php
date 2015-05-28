@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
@@ -26,7 +26,7 @@ class User extends BaseUser
         Entity\SoftDeleteable;
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id

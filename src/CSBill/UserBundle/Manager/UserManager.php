@@ -9,9 +9,7 @@ use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * Class UserManager
- *
- * @package CSBill\UserBundle\Manager
+ * Class UserManager.
  */
 class UserManager extends BaseUserManager
 {

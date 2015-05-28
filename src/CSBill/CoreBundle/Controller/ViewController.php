@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Controller;
 
 use Rhumsaa\Uuid\Uuid;
@@ -31,9 +30,10 @@ class ViewController extends BaseController
     protected $route;
 
     /**
-     * View a quote if not logged in
+     * View a quote if not logged in.
      *
-     * @param  string                                     $uuid
+     * @param string $uuid
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewquoteAction($uuid)
@@ -46,9 +46,10 @@ class ViewController extends BaseController
     }
 
     /**
-     * View a invoice if not logged in
+     * View a invoice if not logged in.
      *
      * @param $uuid
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewinvoiceAction($uuid)
@@ -62,8 +63,10 @@ class ViewController extends BaseController
 
     /**
      * @param $uuid
-     * @param  string                                                        $object
+     * @param string $object
+     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     private function createResponse($uuid, $object)
@@ -85,8 +88,8 @@ class ViewController extends BaseController
         return $this->render(
             $template,
             array(
-                $object    => $entity,
-                'title'    => $object.' #'.$entity->getId(),
+                $object => $entity,
+                'title' => $object.' #'.$entity->getId(),
                 'template' => $this->template,
             )
         );

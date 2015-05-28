@@ -8,15 +8,12 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\TaxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Class Tax
- *
- * @package CSBill\CoreBundle\Form\Type
+ * Class Tax.
  */
 class Tax extends AbstractType
 {

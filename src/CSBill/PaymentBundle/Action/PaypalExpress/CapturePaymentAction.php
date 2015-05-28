@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
 use CSBill\PaymentBundle\Entity\Payment;
@@ -57,7 +57,7 @@ class CapturePaymentAction extends PaymentAwareAction
 
         $counter = 0;
         foreach ($invoice->getItems() as $item) {
-            /** @var \CSBill\InvoiceBundle\Entity\Item $item */
+            /* @var \CSBill\InvoiceBundle\Entity\Item $item */
 
             $details['L_PAYMENTREQUEST_0_NAME'.$counter] = $item->getDescription();
             $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($item->getPrice(), 2);

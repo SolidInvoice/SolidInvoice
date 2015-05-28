@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Listener;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,14 +17,14 @@ use Symfony\Component\Routing\Router;
 
 /**
  * Listener class to intercept requests
- * and redirect to the installer if necessary
+ * and redirect to the installer if necessary.
  */
 class RequestListener
 {
     const INSTALLER_ROUTE = '_install_flow';
 
     /**
-     * Core routes
+     * Core routes.
      *
      * @var array
      */
@@ -79,8 +79,7 @@ class RequestListener
     }
 
     /**
-     * @param  GetResponseEvent $event
-     * @return null
+     * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
     {

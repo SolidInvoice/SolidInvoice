@@ -2,7 +2,7 @@
 
 namespace CSBill\CoreBundle\Tests;
 
-require_once (__DIR__ . '/../../../../app/AppKernel.php');
+require_once __DIR__.'/../../../../app/AppKernel.php';
 
 abstract class KernelAwareTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,9 +21,6 @@ abstract class KernelAwareTest extends \PHPUnit_Framework_TestCase
      */
     protected $container;
 
-    /**
-     * @return null
-     */
     public function setUp()
     {
         $this->kernel = new \AppKernel('test', true);
@@ -34,9 +31,6 @@ abstract class KernelAwareTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
     }
 
-    /**
-     * @return null
-     */
     public function tearDown()
     {
         $this->kernel->shutdown();

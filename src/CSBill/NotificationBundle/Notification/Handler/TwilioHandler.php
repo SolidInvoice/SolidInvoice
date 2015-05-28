@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,8 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
-
 namespace CSBill\NotificationBundle\Notification\Handler;
 
 use CSBill\NotificationBundle\Notification\TwilioNotification;
@@ -51,7 +50,7 @@ class TwilioHandler implements HandlerInterface
      */
     public function handle(NotificationInterface $notification)
     {
-        /** @var TwilioNotification $notification */
+        /* @var TwilioNotification $notification */
 
         $this->twilio
             ->account

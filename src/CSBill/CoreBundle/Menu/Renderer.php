@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
@@ -27,7 +26,6 @@ class Renderer extends ListRenderer implements RendererInterface
     protected $factory;
 
     /**
-     *
      * @var ContainerInterface
      */
     protected $container;
@@ -38,7 +36,7 @@ class Renderer extends ListRenderer implements RendererInterface
     protected $templating;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ContainerInterface $container
      * @param FactoryInterface   $factory
@@ -85,7 +83,7 @@ class Renderer extends ListRenderer implements RendererInterface
 
         $html = '';
         foreach ($item->getChildren() as $child) {
-            /** @var \CSBill\CoreBundle\Menu\MenuItem $child */
+            /* @var \CSBill\CoreBundle\Menu\MenuItem $child */
             if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {
@@ -97,7 +95,7 @@ class Renderer extends ListRenderer implements RendererInterface
     }
 
     /**
-     * Renders the menu label
+     * Renders the menu label.
      *
      * @param Item  $item
      * @param array $options
@@ -119,9 +117,10 @@ class Renderer extends ListRenderer implements RendererInterface
     }
 
     /**
-     * Renders an icon in the menu
+     * Renders an icon in the menu.
      *
-     * @param  string $icon
+     * @param string $icon
+     *
      * @return string
      */
     protected function renderIcon($icon)
@@ -149,10 +148,11 @@ class Renderer extends ListRenderer implements RendererInterface
     }
 
     /**
-     * Renders a menu at a specific location
+     * Renders a menu at a specific location.
      *
-     * @param  \SplObjectStorage $storage
-     * @param  array             $options
+     * @param \SplObjectStorage $storage
+     * @param array             $options
+     *
      * @return string
      */
     public function build(\SplObjectStorage $storage, array $options = array())
@@ -167,7 +167,7 @@ class Renderer extends ListRenderer implements RendererInterface
         }
 
         foreach ($storage as $builder) {
-            /** @var \CSBill\CoreBundle\Menu\Builder\MenuBuilder $builder */
+            /* @var \CSBill\CoreBundle\Menu\Builder\MenuBuilder $builder */
             $builder->setContainer($this->container);
             $builder->invoke($menu, $options);
         }

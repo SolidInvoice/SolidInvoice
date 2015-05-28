@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Form;
 
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
@@ -59,8 +59,8 @@ class PaymentForm extends AbstractType
             array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\GreaterThan(0)
-                )
+                    new Assert\GreaterThan(0),
+                ),
             )
         );
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
@@ -28,7 +28,7 @@ class Contact implements \serializable
         Entity\SoftDeleteable;
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -37,7 +37,7 @@ class Contact implements \serializable
     private $id;
 
     /**
-     * @var string $firstname
+     * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=125, nullable=false)
      * @Assert\NotBlank()
@@ -46,7 +46,7 @@ class Contact implements \serializable
     private $firstname;
 
     /**
-     * @var string $lastname
+     * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
@@ -54,7 +54,7 @@ class Contact implements \serializable
     private $lastname;
 
     /**
-     * @var Client $client
+     * @var Client
      *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts")
      * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
@@ -62,7 +62,7 @@ class Contact implements \serializable
     private $client;
 
     /**
-     * @var ArrayCollection $primaryDetails
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(indexBy="contact_type_id", targetEntity="PrimaryContactDetail", mappedBy="contact",
      *                                           cascade={"persist"})
@@ -71,7 +71,7 @@ class Contact implements \serializable
     private $primaryDetails;
 
     /**
-     * @var ArrayCollection $additionalDetails
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist"})
      * @Assert\Valid()
@@ -79,7 +79,7 @@ class Contact implements \serializable
     private $additionalDetails;
 
     /**
-     * Constructer
+     * Constructer.
      */
     public function __construct()
     {
@@ -88,9 +88,9 @@ class Contact implements \serializable
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -98,7 +98,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Get firstname
+     * Get firstname.
      *
      * @return string
      */
@@ -108,7 +108,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Set firstname
+     * Set firstname.
      *
      * @param string $firstname
      *
@@ -122,7 +122,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Get lastname
+     * Get lastname.
      *
      * @return string
      */
@@ -132,7 +132,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Set lastname
+     * Set lastname.
      *
      * @param string $lastname
      *
@@ -146,7 +146,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Get client
+     * Get client.
      *
      * @return Client
      */
@@ -156,7 +156,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Set client
+     * Set client.
      *
      * @param Client $client
      *
@@ -170,7 +170,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Add additional detail
+     * Add additional detail.
      *
      * @param AdditionalContactDetail $detail
      *
@@ -185,7 +185,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Removes primary detail from the current contact
+     * Removes primary detail from the current contact.
      *
      * @param PrimaryContactDetail $detail
      *
@@ -199,7 +199,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Removes additional detail from the current contact
+     * Removes additional detail from the current contact.
      *
      * @param AdditionalContactDetail $detail
      *
@@ -213,7 +213,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Get primary details
+     * Get primary details.
      *
      * @return ArrayCollection
      */
@@ -223,7 +223,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Add primary detail
+     * Add primary detail.
      *
      * @param PrimaryContactDetail $detail
      *
@@ -241,7 +241,7 @@ class Contact implements \serializable
     }
 
     /**
-     * Get additional details
+     * Get additional details.
      *
      * @return ArrayCollection
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -52,7 +52,7 @@ class DatabaseConfigType extends AbstractType
             'port',
             'integer',
             array(
-                'constraints'   => array(
+                'constraints' => array(
                     new Constraints\Type(array('type' => 'integer')),
                 ),
                 'required' => false,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends BaseController
 {
     /**
-     * List all the invoices
+     * List all the invoices.
      *
      * @return Response
      */
@@ -147,7 +147,7 @@ class DefaultController extends BaseController
     }
 
     /**
-     * View a Invoice
+     * View a Invoice.
      *
      * @param Invoice $invoice
      *

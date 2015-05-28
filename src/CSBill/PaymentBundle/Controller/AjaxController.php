@@ -67,9 +67,9 @@ class AjaxController extends BaseController
     }
 
     /**
-     * Deletes a payment method
+     * Deletes a payment method.
      *
-     * @param  PaymentMethod $paymentMethod
+     * @param PaymentMethod $paymentMethod
      *
      * @return JsonResponse
      */
@@ -81,6 +81,6 @@ class AjaxController extends BaseController
 
         $this->flash($this->trans('payment_delete_success'), 'success');
 
-        return new JsonResponse(array("status" => "success"));
+        return new JsonResponse(array('status' => 'success'));
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Menu;
 
 use Knp\Menu\Renderer\RendererInterface as BaseInterface;
@@ -15,7 +15,7 @@ use Knp\Menu\Renderer\RendererInterface as BaseInterface;
 interface RendererInterface extends BaseInterface
 {
     /**
-     * Build and render a menu
+     * Build and render a menu.
      *
      * @param \SplObjectStorage $storage
      * @param array             $options

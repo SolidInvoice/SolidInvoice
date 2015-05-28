@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Traits\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as GRID;
@@ -32,7 +32,7 @@ trait TimeStampable
     protected $updated;
 
     /**
-     * Sets created
+     * Sets created.
      *
      * @param \DateTime $created
      *
@@ -46,7 +46,7 @@ trait TimeStampable
     }
 
     /**
-     * Returns created
+     * Returns created.
      *
      * @return \DateTime
      */
@@ -56,7 +56,7 @@ trait TimeStampable
     }
 
     /**
-     * Sets updated
+     * Sets updated.
      *
      * @param \DateTime $updated
      *
@@ -70,7 +70,7 @@ trait TimeStampable
     }
 
     /**
-     * Returns updated
+     * Returns updated.
      *
      * @return \DateTime
      */

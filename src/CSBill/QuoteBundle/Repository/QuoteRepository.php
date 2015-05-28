@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -16,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 class QuoteRepository extends EntityRepository
 {
     /**
-     * Gets total number of quotes
+     * Gets total number of quotes.
      *
      * @param string $status
      *
@@ -39,7 +38,7 @@ class QuoteRepository extends EntityRepository
     }
 
     /**
-     * Gets the most recent created quotes
+     * Gets the most recent created quotes.
      *
      * @param int $limit
      *

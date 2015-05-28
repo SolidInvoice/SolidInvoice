@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,20 +8,19 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CSBill\ClientBundle\Entity\AdditionalContactDetail
+ * CSBill\ClientBundle\Entity\AdditionalContactDetail.
  *
  * @ORM\Entity()
  */
 class AdditionalContactDetail extends ContactDetail
 {
     /**
-     * @var Contact $contact
+     * @var Contact
      *
      * @ORM\ManyToOne(targetEntity="Contact", inversedBy="additionalDetails")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
@@ -28,7 +28,7 @@ class AdditionalContactDetail extends ContactDetail
     private $contact;
 
     /**
-     * Get contact
+     * Get contact.
      *
      * @return Contact
      */
@@ -38,7 +38,7 @@ class AdditionalContactDetail extends ContactDetail
     }
 
     /**
-     * Set contact
+     * Set contact.
      *
      * @param Contact $contact
      *

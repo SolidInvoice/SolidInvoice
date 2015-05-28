@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -21,10 +20,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
     /**
-     * Searches for a user by username or email
+     * Searches for a user by username or email.
      *
-     * @param  string                    $username
+     * @param string $username
+     *
      * @return UserInterface
+     *
      * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username)

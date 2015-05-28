@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
@@ -19,12 +19,12 @@ use Twig_Extension;
 class GlobalExtension extends Twig_Extension
 {
     /**
-     * @var ContainerInterface $container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * Sets the container
+     * Sets the container.
      *
      * @param ContainerInterface $container
      */
@@ -34,7 +34,7 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * Get global twig variables
+     * Get global twig variables.
      *
      * @return array
      */
@@ -74,7 +74,7 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * Displays an icon
+     * Displays an icon.
      *
      * @param string $iconName
      * @param array  $options
@@ -119,7 +119,7 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * Returns a human-readible diff for dates
+     * Returns a human-readible diff for dates.
      *
      * @param \DateTime $date
      *
@@ -133,9 +133,10 @@ class GlobalExtension extends Twig_Extension
     }
 
     /**
-     * Get the url query
+     * Get the url query.
      *
      * @throws InactiveScopeException
+     *
      * @return array
      */
     protected function getQuery()

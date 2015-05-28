@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
@@ -30,7 +30,7 @@ class PaymentMethod
         Entity\SoftDeleteable;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -75,7 +75,7 @@ class PaymentMethod
     private $enabled;
 
     /**
-     * @var ArrayCollection $payments
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -87,9 +87,9 @@ class PaymentMethod
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -97,7 +97,7 @@ class PaymentMethod
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -111,7 +111,7 @@ class PaymentMethod
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -141,7 +141,7 @@ class PaymentMethod
     }
 
     /**
-     * Set settings
+     * Set settings.
      *
      * @param array $settings
      *
@@ -155,7 +155,7 @@ class PaymentMethod
     }
 
     /**
-     * Get settings
+     * Get settings.
      *
      * @return array
      */
@@ -215,9 +215,10 @@ class PaymentMethod
     }
 
     /**
-     * Add payment
+     * Add payment.
      *
-     * @param  Payment $payment
+     * @param Payment $payment
+     *
      * @return $this
      */
     public function addPayment(Payment $payment)
@@ -228,7 +229,7 @@ class PaymentMethod
     }
 
     /**
-     * Removes a payment
+     * Removes a payment.
      *
      * @param Payment $payment
      *
@@ -242,7 +243,7 @@ class PaymentMethod
     }
 
     /**
-     * Get payments
+     * Get payments.
      *
      * @return ArrayCollection
      */
@@ -251,7 +252,7 @@ class PaymentMethod
         return $this->payments;
     }
     /**
-     * Return the payment method name as a string
+     * Return the payment method name as a string.
      *
      * @return string
      */
@@ -259,5 +260,4 @@ class PaymentMethod
     {
         return $this->name;
     }
-
 }

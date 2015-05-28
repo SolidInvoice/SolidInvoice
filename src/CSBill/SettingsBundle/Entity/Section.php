@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -45,6 +45,7 @@ class Section
 
     /**
      * @ORM\OneToMany(targetEntity="Setting", mappedBy="section")
+     *
      * @var ArrayCollection
      */
     private $settings;
@@ -56,9 +57,9 @@ class Section
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,7 +67,7 @@ class Section
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -76,9 +77,10 @@ class Section
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -89,7 +91,7 @@ class Section
     }
 
     /**
-     * Get parent
+     * Get parent.
      *
      * @return Section
      */
@@ -99,9 +101,10 @@ class Section
     }
 
     /**
-     * Set parent
+     * Set parent.
      *
-     * @param  Section $parent
+     * @param Section $parent
+     *
      * @return Section
      */
     public function setParent(Section $parent)
@@ -112,7 +115,7 @@ class Section
     }
 
     /**
-     * Get children
+     * Get children.
      *
      * @return ArrayCollection
      */
@@ -122,9 +125,10 @@ class Section
     }
 
     /**
-     * Add child
+     * Add child.
      *
-     * @param  Section $child
+     * @param Section $child
+     *
      * @return Section
      */
     public function addChild(Section $child)
@@ -136,9 +140,10 @@ class Section
     }
 
     /**
-     * Remove child
+     * Remove child.
      *
-     * @param  Section $child
+     * @param Section $child
+     *
      * @return Section
      */
     public function removeChild(Section $child)
@@ -149,7 +154,7 @@ class Section
     }
 
     /**
-     * Get settings
+     * Get settings.
      *
      * @return ArrayCollection
      */
@@ -159,8 +164,10 @@ class Section
     }
 
     /**
-     * Add a setting
-     * @param  Setting $setting
+     * Add a setting.
+     *
+     * @param Setting $setting
+     *
      * @return Section
      */
     public function addSetting(Setting $setting)
@@ -172,9 +179,10 @@ class Section
     }
 
     /**
-     * Remove a setting
+     * Remove a setting.
      *
-     * @param  Setting $setting
+     * @param Setting $setting
+     *
      * @return Section
      */
     public function removeSetting(Setting $setting)

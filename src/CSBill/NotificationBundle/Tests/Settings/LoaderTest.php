@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\NotificationBundle\Tests\Settings;
 
 use CSBill\CoreBundle\Tests\KernelAwareTest;
@@ -50,11 +50,11 @@ class LoaderTest extends KernelAwareTest
                 'client_create' => $clientCreate,
                 'invoice_status_update' => $invoiceStatus,
                 'quote_status_update' => $quoteStatus,
-                'payment_made' => $paymentMade
-            )
+                'payment_made' => $paymentMade,
+            ),
         );
 
-        $this->assertEquals($values , $settings);
+        $this->assertEquals($values, $settings);
     }
 
     /**
@@ -126,28 +126,28 @@ class LoaderTest extends KernelAwareTest
             ->setKey('client_create')
             ->setValue(array(
                 'hipchat' => true,
-                'sms' => true
+                'sms' => true,
             ));
 
         $invoiceStatus = (new Setting())
             ->setKey('invoice_status_update')
             ->setValue(array(
                 'hipchat' => true,
-                'sms' => true
+                'sms' => true,
             ));
 
         $quoteStatus = (new Setting())
             ->setKey('quote_status_update')
             ->setValue(array(
                 'hipchat' => true,
-                'sms' => true
+                'sms' => true,
             ));
 
         $paymentMade = (new Setting())
             ->setKey('payment_made')
             ->setValue(array(
                 'hipchat' => true,
-                'sms' => true
+                'sms' => true,
             ));
 
         $settings = array(
@@ -156,9 +156,8 @@ class LoaderTest extends KernelAwareTest
                 'invoice_status_update' => $invoiceStatus,
                 'quote_status_update' => $quoteStatus,
                 'payment_made' => $paymentMade,
-            )
+            ),
         );
-
 
         return array(array($settings));
     }

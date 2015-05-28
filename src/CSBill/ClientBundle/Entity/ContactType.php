@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ContactType
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -30,7 +30,7 @@ class ContactType
     private $id;
 
     /**
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
      * @Assert\NotBlank()
@@ -39,7 +39,7 @@ class ContactType
     private $name;
 
     /**
-     * @var string $type
+     * @var string
      *
      * @ORM\Column(name="type", type="string", length=45)
      * @Assert\NotBlank()
@@ -48,28 +48,28 @@ class ContactType
     private $type = 'text';
 
     /**
-     * @var array $options
+     * @var array
      *
      * @ORM\Column(name="field_options", type="array", nullable=true)
      */
     private $options;
 
     /**
-     * @var bool $required
+     * @var bool
      *
      * @ORM\Column(name="required", type="boolean", nullable=false)
      */
     private $required = false;
 
     /**
-     * @var ArrayCollection $details
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="type")
      */
     private $details;
 
     /**
-     * Constructer
+     * Constructer.
      */
     public function __construct()
     {
@@ -77,9 +77,9 @@ class ContactType
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -87,9 +87,10 @@ class ContactType
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string      $name
+     * @param string $name
+     *
      * @return ContactType
      */
     public function setName($name)
@@ -100,7 +101,7 @@ class ContactType
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -110,9 +111,10 @@ class ContactType
     }
 
     /**
-     * Set the contact type required
+     * Set the contact type required.
      *
-     * @param  bool        $required
+     * @param bool $required
+     *
      * @return ContactType
      */
     public function setRequired($required)
@@ -123,9 +125,9 @@ class ContactType
     }
 
     /**
-     * returns if the contact type is required
+     * returns if the contact type is required.
      *
-     * @return boolean
+     * @return bool
      */
     public function isRequired()
     {
@@ -133,9 +135,10 @@ class ContactType
     }
 
     /**
-     * Add detail
+     * Add detail.
      *
-     * @param  ContactDetail $detail
+     * @param ContactDetail $detail
+     *
      * @return ContactType
      */
     public function addDetail(ContactDetail $detail)
@@ -147,7 +150,7 @@ class ContactType
     }
 
     /**
-     * Get details
+     * Get details.
      *
      * @return ArrayCollection
      */
@@ -165,7 +168,8 @@ class ContactType
     }
 
     /**
-     * @param  string $type
+     * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
@@ -184,7 +188,8 @@ class ContactType
     }
 
     /**
-     * @param  array $options
+     * @param array $options
+     *
      * @return $this
      */
     public function setOptions(array $options)
@@ -195,7 +200,7 @@ class ContactType
     }
 
     /**
-     * Return the contact type as a string
+     * Return the contact type as a string.
      */
     public function __toString()
     {

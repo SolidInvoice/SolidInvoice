@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -20,9 +20,10 @@ use Doctrine\ORM\EntityRepository;
 class PaymentRepository extends EntityRepository
 {
     /**
-     * Gets the total income that was received
+     * Gets the total income that was received.
      *
      * @return float
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -42,7 +43,7 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
-     * Returns an array of all the payments for an invoice
+     * Returns an array of all the payments for an invoice.
      *
      * @param Invoice $invoice
      * @param string  $orderField
@@ -64,7 +65,7 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
-     * Returns an array of all the payments for an invoice
+     * Returns an array of all the payments for an invoice.
      *
      * @param Invoice $invoice
      *
@@ -87,7 +88,7 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
-     * Returns an array of all the payments for a client
+     * Returns an array of all the payments for a client.
      *
      * @param Client $client
      * @param string $orderField
@@ -141,7 +142,7 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
-     * Gets the most recent created payments
+     * Gets the most recent created payments.
      *
      * @param int $limit
      *

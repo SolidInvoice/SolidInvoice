@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\TaxBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -65,7 +65,7 @@ class TaxGrid implements GridInterface
     {
         $aliases = $queryBuilder->getRootAliases();
 
-        $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
+        $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
             ->setParameter('search', "%{$searchString}%");
     }
 
@@ -101,7 +101,7 @@ class TaxGrid implements GridInterface
     public function getMassActions()
     {
         return array(
-            new DeleteMassAction()
+            new DeleteMassAction(),
         );
     }
 

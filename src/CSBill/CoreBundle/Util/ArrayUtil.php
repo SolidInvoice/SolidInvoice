@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Util;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -16,12 +15,13 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class ArrayUtil
 {
     /**
-     * Returns a specific column from an array
+     * Returns a specific column from an array.
      *
      * @param array|\Traversable $array
      * @param string             $column
      *
      * @throws \Exception
+     *
      * @return array
      */
     public static function column($array, $column)

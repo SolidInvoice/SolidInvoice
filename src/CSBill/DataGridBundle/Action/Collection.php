@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\DataGridBundle\Action;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,7 +22,7 @@ class Collection extends ArrayCollection
     public function add($value)
     {
         if (!$value instanceof ActionColumn) {
-            $type = is_object($value) ? 'instance of ' . get_class($value) : gettype($value);
+            $type = is_object($value) ? 'instance of '.get_class($value) : gettype($value);
             throw new \Exception(sprintf('Instance of ActionColumn expected, %s given', $type));
         }
 

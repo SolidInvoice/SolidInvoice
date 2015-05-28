@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends BaseController
 {
     /**
-     * List all the available quotes
+     * List all the available quotes.
      *
      * @return Response
      */
@@ -61,10 +61,11 @@ class DefaultController extends BaseController
     }
 
     /**
-     * Create a new Quote
+     * Create a new Quote.
      *
-     * @param  Request  $request
-     * @param  Client   $client
+     * @param Request $request
+     * @param Client  $client
+     *
      * @return Response
      */
     public function createAction(Request $request, Client $client = null)
@@ -101,10 +102,11 @@ class DefaultController extends BaseController
     }
 
     /**
-     * Edit a quote
+     * Edit a quote.
      *
-     * @param  Request  $request
-     * @param  Quote    $quote
+     * @param Request $request
+     * @param Quote   $quote
+     *
      * @return Response
      */
     public function editAction(Request $request, Quote $quote)
@@ -132,9 +134,10 @@ class DefaultController extends BaseController
     }
 
     /**
-     * View a Quote
+     * View a Quote.
      *
-     * @param  Quote    $quote
+     * @param Quote $quote
+     *
      * @return Response
      */
     public function viewAction(Quote $quote)

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -79,7 +79,7 @@ class QuoteArchivedGrid extends AbstractGrid
     public function getMassActions()
     {
         return array(
-            new DeleteMassAction()
+            new DeleteMassAction(),
         );
     }
 

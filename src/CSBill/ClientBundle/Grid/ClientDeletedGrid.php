@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -59,7 +59,7 @@ class ClientDeletedGrid extends AbstractGrid
     {
         $aliases = $queryBuilder->getRootAliases();
 
-        $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
+        $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
             ->setParameter('search', "%{$searchString}%");
     }
 

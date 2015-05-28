@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
@@ -20,6 +20,7 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function acceptAction(Quote $quote)
@@ -35,6 +36,7 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function declineAction(Quote $quote)
@@ -50,6 +52,7 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function cancelAction(Quote $quote)
@@ -65,6 +68,7 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function reopenAction(Quote $quote)
@@ -80,6 +84,7 @@ class ActionsController extends BaseController
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function sendAction(Quote $quote)

@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
  *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\TaxBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
@@ -19,11 +19,12 @@ class DefaultController extends BaseController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function ratesAction()
     {
-        $grid = $this->get('grid')->create(new TaxGrid);
+        $grid = $this->get('grid')->create(new TaxGrid());
 
         return $grid->getGridResponse();
     }
@@ -75,7 +76,7 @@ class DefaultController extends BaseController
 
         $this->flash($this->trans('Tax Deleted'), 'success');
 
-        return new JsonResponse(array("status" => "success"));
+        return new JsonResponse(array('status' => 'success'));
     }
 
     /**

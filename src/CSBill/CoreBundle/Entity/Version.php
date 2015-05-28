@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,14 +8,12 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Version
- * @package CSBill\CoreBundle\Entity
+ * Class Version.
  *
  * @ORM\Entity(repositoryClass="CSBill\CoreBundle\Repository\VersionRepository")
  * @ORM\Table(name="version")
@@ -22,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Version
 {
     /**
-     * @var string $version
+     * @var string
      *
      * @ORM\Column(name="version", type="string", length=125, nullable=false)
      * @ORM\Id
@@ -38,9 +37,10 @@ class Version
     }
 
     /**
-     * Set version
+     * Set version.
      *
-     * @param  string $version
+     * @param string $version
+     *
      * @return $this
      */
     public function setVersion($version)
@@ -51,7 +51,7 @@ class Version
     }
 
     /**
-     * Get version
+     * Get version.
      *
      * @return string
      */
@@ -61,7 +61,7 @@ class Version
     }
 
     /**
-     * Return the version as a string
+     * Return the version as a string.
      *
      * @return string
      */

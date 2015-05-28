@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Form\DataTransformer;
 
 use CSBill\ClientBundle\Entity\ContactDetail;
@@ -53,6 +53,7 @@ class ContactDetailTransformer implements DataTransformerInterface
      * @param string $value
      *
      * @return ContactDetail
+     *
      * @throws TransformationFailedException
      */
     public function reverseTransform($value)

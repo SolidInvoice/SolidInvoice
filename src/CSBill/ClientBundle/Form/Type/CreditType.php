@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -29,8 +28,8 @@ class CreditType extends AbstractType
                 'precision' => 2,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Type('float')
-                )
+                    new Assert\Type('float'),
+                ),
             )
         );
     }

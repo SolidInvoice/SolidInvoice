@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,14 +8,8 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Form;
 
-/**
- * Class ConstraintBuilder
- *
- * @package CSBill\ClientBundle\Form
- */
 class ConstraintBuilder
 {
     const CONSTRAINT_NAMESPACE = 'Symfony\\Component\\Validator\\Constraints\\';

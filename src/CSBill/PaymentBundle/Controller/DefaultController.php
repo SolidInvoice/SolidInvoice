@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
@@ -18,6 +18,7 @@ class DefaultController extends BaseController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function listAction()
@@ -57,6 +58,5 @@ class DefaultController extends BaseController
                 'paymentMethods' => array_keys($paymentMethods),
             )
         );
-
     }
 }

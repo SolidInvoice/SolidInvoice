@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle;
 
 use CSBill\CoreBundle\Kernel\ContainerClassKernelInterface;
@@ -51,7 +51,7 @@ class ConfigWriter
     }
 
     /**
-     * Dumps an array into the parameters.yml file
+     * Dumps an array into the parameters.yml file.
      *
      * @param array $config
      */
@@ -75,7 +75,7 @@ class ConfigWriter
     }
 
     /**
-     * Get all values from the config file
+     * Get all values from the config file.
      *
      * @return array
      */
@@ -86,7 +86,7 @@ class ConfigWriter
         } catch (ParseException $e) {
             throw new \RuntimeException(
                 sprintf(
-                    "Unable to parse the YAML string: %s Your installation might be corrupt.",
+                    'Unable to parse the YAML string: %s Your installation might be corrupt.',
                     $e->getMessage()
                 ),
                 $e->getCode(),

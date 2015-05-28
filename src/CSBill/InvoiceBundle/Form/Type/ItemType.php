@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\TaxBundle\Form\Type\Tax;

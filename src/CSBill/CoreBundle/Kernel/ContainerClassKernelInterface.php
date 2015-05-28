@@ -5,14 +5,12 @@ namespace CSBill\CoreBundle\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Interface KernelInterface
- *
- * @package CSBill\CoreBundle\Kernel
+ * Interface KernelInterface.
  */
 interface ContainerClassKernelInterface extends KernelInterface
 {
     /**
-     * Return the name of the cached container class
+     * Return the name of the cached container class.
      *
      * @return string
      */

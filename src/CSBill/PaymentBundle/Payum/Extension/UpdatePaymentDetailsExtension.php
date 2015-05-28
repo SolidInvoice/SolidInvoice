@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Payum\Extension;
 
 use CSBill\PaymentBundle\Entity\Payment;
@@ -51,7 +51,7 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
      */
     public function onPostExecute($request, ActionInterface $action)
     {
-        /** @var \Payum\Core\Request\Capture $request */
+        /* @var \Payum\Core\Request\Capture $request */
         if ($action instanceof CaptureAction) {
             /** @var Payment $payment */
             $payment = $request->getFirstModel();

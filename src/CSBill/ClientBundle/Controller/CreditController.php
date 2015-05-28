@@ -22,7 +22,7 @@ class CreditController extends BaseController
             new CreditType(),
             null,
             array(
-                'action' => $this->generateUrl('_clients_add_credit', array('id' => $client->getId()))
+                'action' => $this->generateUrl('_clients_add_credit', array('id' => $client->getId())),
             )
         );
 
@@ -37,7 +37,7 @@ class CreditController extends BaseController
             return $this->json(
                 array(
                     'status' => 'success',
-                    'amount' => $credit->getValue()
+                    'amount' => $credit->getValue(),
                 )
             );
         }

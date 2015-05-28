@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Process\Step;
 
 use CSBill\InstallBundle\Form\Step\ConfigStepForm;
@@ -17,7 +17,7 @@ use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
 class ConfigStep extends ControllerStep
 {
     /**
-     * Array of currently implemented database drivers
+     * Array of currently implemented database drivers.
      *
      * @var array
      */

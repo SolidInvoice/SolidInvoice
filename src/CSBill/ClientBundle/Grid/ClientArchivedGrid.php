@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -70,7 +70,7 @@ class ClientArchivedGrid extends AbstractGrid
     {
         $aliases = $queryBuilder->getRootAliases();
 
-        $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
+        $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
             ->setParameter('search', "%{$searchString}%");
     }
 
@@ -79,7 +79,7 @@ class ClientArchivedGrid extends AbstractGrid
      */
     public function getMassActions()
     {
-        $archive = new MassAction('Restore', function($ids) {
+        $archive = new MassAction('Restore', function ($ids) {
             /** @var ClientRepository $clientRepository */
             $clientRepository = $this->entityManager->getRepository('CSBillClientBundle:Client');
 
@@ -105,7 +105,7 @@ class ClientArchivedGrid extends AbstractGrid
 
         return array(
             $archive,
-            $deleteAction
+            $deleteAction,
         );
     }
 

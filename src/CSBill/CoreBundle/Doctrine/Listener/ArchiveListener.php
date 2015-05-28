@@ -1,14 +1,12 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
-
 namespace CSBill\CoreBundle\Doctrine\Listener;
-
 
 use Doctrine\Common\EventArgs;
 use Gedmo\Mapping\MappedEventSubscriber;
@@ -21,16 +19,14 @@ class ArchiveListener extends MappedEventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'loadClassMetadata'
+            'loadClassMetadata',
         );
     }
 
     /**
-     * Maps additional metadata
+     * Maps additional metadata.
      *
      * @param EventArgs $eventArgs
-     *
-     * @return void
      */
     public function loadClassMetadata(EventArgs $eventArgs)
     {

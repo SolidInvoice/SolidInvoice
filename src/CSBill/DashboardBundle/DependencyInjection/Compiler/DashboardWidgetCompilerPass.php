@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\DashboardBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -30,17 +30,17 @@ class DashboardWidgetCompilerPass implements CompilerPassInterface
 
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                if (!isset($attributes["location"])) {
-                    $attributes["location"] = null;
+                if (!isset($attributes['location'])) {
+                    $attributes['location'] = null;
                 }
 
-                if (!isset($attributes["priority"])) {
-                    $attributes["priority"] = null;
+                if (!isset($attributes['priority'])) {
+                    $attributes['priority'] = null;
                 }
 
                 $definition->addMethodCall(
                     'add',
-                    array(new Reference($id), $attributes["location"], $attributes["priority"])
+                    array(new Reference($id), $attributes['location'], $attributes['priority'])
                 );
             }
         }

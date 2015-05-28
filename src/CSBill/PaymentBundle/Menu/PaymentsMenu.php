@@ -17,7 +17,7 @@ use Knp\Menu\ItemInterface;
 class PaymentsMenu extends AuthenticatedMenu
 {
     /**
-     * Renders the top menu for payments
+     * Renders the top menu for payments.
      *
      * @param ItemInterface $menu
      */
@@ -32,7 +32,7 @@ class PaymentsMenu extends AuthenticatedMenu
     }
 
     /**
-     * Renders the top menu for payments
+     * Renders the top menu for payments.
      *
      * @param ItemInterface $menu
      */

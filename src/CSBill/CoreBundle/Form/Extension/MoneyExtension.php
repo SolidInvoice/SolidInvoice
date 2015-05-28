@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Form\Extension;
 
 use CSBill\CoreBundle\Util\Currency;
@@ -36,7 +36,7 @@ class MoneyExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(
             array(
-                'currency'  => $this->currency->getCurrency(),
+                'currency' => $this->currency->getCurrency(),
             )
         );
     }

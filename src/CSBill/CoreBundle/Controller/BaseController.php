@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
@@ -17,7 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 abstract class BaseController extends Base
 {
     /**
-     * Get a doctrine repository
+     * Get a doctrine repository.
      *
      * @param string $repository
      *
@@ -29,7 +28,7 @@ abstract class BaseController extends Base
     }
 
     /**
-     * Return a instance of the doctrine entity manager
+     * Return a instance of the doctrine entity manager.
      *
      * @return \Doctrine\ORM\EntityManagerInterface
      */
@@ -39,7 +38,7 @@ abstract class BaseController extends Base
     }
 
     /**
-     * Adds a message to the session flash
+     * Adds a message to the session flash.
      *
      * @param string $message The message to add to the session flash
      * @param string $type    The flash message type (notice, success, error etc)
@@ -54,7 +53,7 @@ abstract class BaseController extends Base
     }
 
     /**
-     * Translates a message
+     * Translates a message.
      *
      * @param string $message
      *
@@ -80,7 +79,7 @@ abstract class BaseController extends Base
     }
 
     /**
-     * Returns a new JsonResponse
+     * Returns a new JsonResponse.
      *
      * @param array $data
      * @param int   $status

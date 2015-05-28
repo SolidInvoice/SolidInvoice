@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Menu;
 
 use Knp\Menu\Factory\CoreExtension;
@@ -35,8 +34,9 @@ class Factory extends MenuFactory
     }
 
     /**
-     * @param  string                      $name
-     * @param  array                       $options
+     * @param string $name
+     * @param array  $options
+     *
      * @return MenuItem|\Knp\Menu\MenuItem
      */
     public function createItem($name, array $options = array())
@@ -55,10 +55,10 @@ class Factory extends MenuFactory
     }
 
     /**
-     * Adds a factory extension
+     * Adds a factory extension.
      *
      * @param ExtensionInterface $extension
-     * @param integer            $priority
+     * @param int                $priority
      */
     public function addExtension(ExtensionInterface $extension, $priority = 0)
     {

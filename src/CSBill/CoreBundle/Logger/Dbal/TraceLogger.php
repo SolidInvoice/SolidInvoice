@@ -6,7 +6,6 @@ use Doctrine\DBAL\Logging\SQLLogger;
 
 /**
  * Includes backtrace and executed SQLs in a Debug Stack.
- *
  */
 class TraceLogger implements SQLLogger
 {
@@ -20,7 +19,7 @@ class TraceLogger implements SQLLogger
     /**
      * If the logger is enabled (log queries) or not.
      *
-     * @var boolean
+     * @var bool
      */
     public $enabled = true;
 
@@ -30,7 +29,7 @@ class TraceLogger implements SQLLogger
     public $start = null;
 
     /**
-     * @var integer
+     * @var int
      */
     public $currentQuery = 0;
 

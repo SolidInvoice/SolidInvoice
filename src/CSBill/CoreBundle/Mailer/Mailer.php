@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Mailer;
 
 use CSBill\CoreBundle\Mailer\Events\InvoiceMailEvent;
@@ -80,7 +79,7 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * Set the security instance
+     * Set the security instance.
      *
      * @param TokenStorage $securityToken
      */
@@ -90,11 +89,11 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * Emails an invoice to the customers
+     * Emails an invoice to the customers.
      *
      * @param Invoice $invoice
      *
-     * @return integer If the email was successfully sent
+     * @return int If the email was successfully sent
      */
     public function sendInvoice(Invoice $invoice)
     {
@@ -118,7 +117,7 @@ class Mailer implements MailerInterface
         $users = array();
 
         foreach ($invoice->getUsers() as $user) {
-            /** @var \CSBill\ClientBundle\Entity\Contact $user */
+            /* @var \CSBill\ClientBundle\Entity\Contact $user */
             $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
         }
 
@@ -144,10 +143,10 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * Get the subject for an email
+     * Get the subject for an email.
      *
-     * @param string  $settingsKey
-     * @param integer $id
+     * @param string $settingsKey
+     * @param int    $id
      *
      * @return string
      */
@@ -237,11 +236,11 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * Emails a quote to the customers
+     * Emails a quote to the customers.
      *
      * @param Quote $quote
      *
-     * @return integer If the email was successfully sent
+     * @return int If the email was successfully sent
      */
     public function sendQuote(Quote $quote)
     {
@@ -254,7 +253,7 @@ class Mailer implements MailerInterface
         $users = array();
 
         foreach ($quote->getUsers() as $user) {
-            /** @var \CSBill\ClientBundle\Entity\Contact $user */
+            /* @var \CSBill\ClientBundle\Entity\Contact $user */
             $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
         }
 

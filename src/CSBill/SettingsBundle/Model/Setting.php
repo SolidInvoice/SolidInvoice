@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Model;
 
 use CSBill\SettingsBundle\Entity\Section;
@@ -50,7 +49,7 @@ abstract class Setting
     protected $section;
 
     /**
-     * Get key
+     * Get key.
      *
      * @return string
      */
@@ -60,9 +59,10 @@ abstract class Setting
     }
 
     /**
-     * Set key
+     * Set key.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return Setting
      */
     public function setKey($key)
@@ -73,7 +73,7 @@ abstract class Setting
     }
 
     /**
-     * Get value
+     * Get value.
      *
      * @return string
      */
@@ -83,9 +83,10 @@ abstract class Setting
     }
 
     /**
-     * Set value
+     * Set value.
      *
-     * @param  mixed   $value
+     * @param mixed $value
+     *
      * @return Setting
      */
     public function setValue($value)
@@ -96,7 +97,7 @@ abstract class Setting
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -106,9 +107,10 @@ abstract class Setting
     }
 
     /**
-     * Set description
+     * Set description.
      *
-     * @param  string  $description
+     * @param string $description
+     *
      * @return Setting
      */
     public function setDescription($description)
@@ -119,7 +121,7 @@ abstract class Setting
     }
 
     /**
-     * Get section
+     * Get section.
      *
      * @return Section
      */
@@ -129,9 +131,10 @@ abstract class Setting
     }
 
     /**
-     * Set section
+     * Set section.
      *
-     * @param  Section $section
+     * @param Section $section
+     *
      * @return Setting
      */
     public function setSection(Section $section)
@@ -142,7 +145,7 @@ abstract class Setting
     }
 
     /**
-     * Get type
+     * Get type.
      *
      * @return string
      */
@@ -152,9 +155,10 @@ abstract class Setting
     }
 
     /**
-     * Set type
+     * Set type.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return Setting
      */
     public function setType($type)
@@ -165,9 +169,10 @@ abstract class Setting
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param array $options
+     *
      * @return Setting
      */
     public function setOptions(array $options)
@@ -178,7 +183,7 @@ abstract class Setting
     }
 
     /**
-     * Get options
+     * Get options.
      *
      * @return array
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
@@ -32,6 +32,7 @@ class PaymentController extends BaseController
      * @param Invoice $invoice
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function preparePaymentAction(Request $request, Invoice $invoice = null)
@@ -52,11 +53,11 @@ class PaymentController extends BaseController
         $form = $this->createForm(
             new PaymentForm(),
             array(
-                'amount' => $invoice->getBalance()
+                'amount' => $invoice->getBalance(),
             ),
             array(
                 'user' => $this->getUser(),
-                'preferred_choices' => $preferredChoices
+                'preferred_choices' => $preferredChoices,
             )
         );
 
@@ -81,10 +82,11 @@ class PaymentController extends BaseController
 
                 if (!empty($invalid)) {
                     $this->flash($this->trans($invalid), 'error');
+
                     return $this->redirectToRoute(
                         '_payments_create',
                         array(
-                            'uuid' => $invoice->getUuid()
+                            'uuid' => $invoice->getUuid(),
                         )
                     );
                 }
@@ -139,6 +141,7 @@ class PaymentController extends BaseController
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \Exception
      * @throws \Payum\Core\Reply\ReplyInterface
      */

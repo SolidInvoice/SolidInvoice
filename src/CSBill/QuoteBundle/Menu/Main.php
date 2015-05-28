@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Menu;
 
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
@@ -16,12 +15,12 @@ use CSBill\QuoteBundle\Entity\Quote;
 use Knp\Menu\ItemInterface;
 
 /**
- * Menu ietms for quotes
+ * Menu ietms for quotes.
  */
 class Main extends AuthenticatedMenu
 {
     /**
-     * Menu builder for the quotes index
+     * Menu builder for the quotes index.
      *
      * @param $menu \Knp\Menu\ItemInterface
      */
@@ -31,7 +30,7 @@ class Main extends AuthenticatedMenu
     }
 
     /**
-     * Renders the quote index menu
+     * Renders the quote index menu.
      *
      * @param ItemInterface $menu
      */
@@ -59,7 +58,7 @@ class Main extends AuthenticatedMenu
     }
 
     /**
-     * Renders the quote edit menu
+     * Renders the quote edit menu.
      *
      * @param ItemInterface $menu
      * @param array         $options

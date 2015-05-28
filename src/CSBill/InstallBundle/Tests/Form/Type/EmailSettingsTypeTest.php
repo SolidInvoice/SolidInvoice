@@ -1,15 +1,14 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\InstallBundle\Tests\Form\Type;
 
 use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\InstallBundle\Form\Type\DatabaseConfigType;
 use CSBill\InstallBundle\Form\Type\EmailSettingsType;
 
 class EmailSettingsTypeTest extends FormTestCase

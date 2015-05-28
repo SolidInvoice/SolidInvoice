@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Listener;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -26,7 +26,7 @@ class DoctrineExtensionListener extends ContainerAware
     }
 
     /**
-     * Set the username on all loggable entities
+     * Set the username on all loggable entities.
      */
     public function onKernelRequest()
     {

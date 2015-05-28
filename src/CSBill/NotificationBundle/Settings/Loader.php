@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\NotificationBundle\Settings;
 
 use CSBill\NotificationBundle\Entity\Notification;
@@ -87,14 +87,14 @@ class Loader implements SettingsLoaderInterface
         $values = $repository->findAll();
 
         foreach ($values as $value) {
-            /** @var \CSBill\NotificationBundle\Entity\Notification $value */
+            /* @var \CSBill\NotificationBundle\Entity\Notification $value */
 
             $setting = new Setting();
             $setting->setKey($value->getEvent())
                 ->setValue(array(
                     'email' => $value->getEmail(),
                     'hipchat' => $value->getHipchat(),
-                    'sms' => $value->getSms()
+                    'sms' => $value->getSms(),
                 ))
                 ->setType('notification');
 
@@ -105,7 +105,7 @@ class Loader implements SettingsLoaderInterface
     }
 
     /**
-     * Check if we can connect to the database and if the tables are loaded
+     * Check if we can connect to the database and if the tables are loaded.
      *
      * @return bool
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * CSBill\ClientBundle\Entity\ContactDetail
+ * CSBill\ClientBundle\Entity\ContactDetail.
  *
  * @ORM\Table(name="contact_details")
  * @ORM\Entity()
@@ -32,7 +32,7 @@ abstract class ContactDetail
     use Entity\TimeStampable;
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -41,14 +41,14 @@ abstract class ContactDetail
     protected $id;
 
     /**
-     * @var string $value
+     * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
      */
     private $value;
 
     /**
-     * @var ContactType $type
+     * @var ContactType
      *
      * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
      * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
@@ -56,9 +56,9 @@ abstract class ContactDetail
     private $type;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,7 +66,7 @@ abstract class ContactDetail
     }
 
     /**
-     * Get value
+     * Get value.
      *
      * @return string
      */
@@ -76,7 +76,7 @@ abstract class ContactDetail
     }
 
     /**
-     * Set value
+     * Set value.
      *
      * @param string $value
      *
@@ -90,7 +90,7 @@ abstract class ContactDetail
     }
 
     /**
-     * Get type
+     * Get type.
      *
      * @return ContactType
      */
@@ -100,7 +100,7 @@ abstract class ContactDetail
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param ContactType $type
      *

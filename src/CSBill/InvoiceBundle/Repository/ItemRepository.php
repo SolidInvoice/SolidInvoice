@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Repository;
 
 use CSBill\InvoiceBundle\Entity\Invoice;
@@ -18,7 +17,7 @@ use Doctrine\ORM\EntityRepository;
 class ItemRepository extends EntityRepository
 {
     /**
-     * Removes all tax rates from invoices
+     * Removes all tax rates from invoices.
      *
      * @param Tax $tax
      */
@@ -27,7 +26,7 @@ class ItemRepository extends EntityRepository
         if (Tax::TYPE_EXCLUSIVE === $tax->getType()) {
             $qb = $this->createQueryBuilder('i');
 
-            $query =$qb->where('i.tax = :tax')
+            $query = $qb->where('i.tax = :tax')
                 ->setParameter('tax', $tax)
                 ->groupBy('i.invoice')
                 ->getQuery();

@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\DataFixtures\ORM;
 
 use CSBill\SettingsBundle\Entity\Section;
@@ -31,7 +30,8 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
     protected $em;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see Symfony\Component\DependencyInjection.ContainerAwareInterface::setContainer()
      */
     public function setContainer(ContainerInterface $container = null)
@@ -40,7 +40,7 @@ class LoadSections extends AbstractFixture implements OrderedFixtureInterface, C
     }
 
     /**
-     * Load sections into the database
+     * Load sections into the database.
      *
      * @param array   $sections
      * @param Section $parent

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
@@ -27,7 +27,7 @@ class Address
         Entity\SoftDeleteable;
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -36,58 +36,58 @@ class Address
     private $id;
 
     /**
-     * @var string $street1
+     * @var string
      *
      * @ORM\Column(name="street1", type="string", nullable=true)
      */
     private $street1;
 
     /**
-     * @var string $street2
+     * @var string
      *
      * @ORM\Column(name="street2", type="string", nullable=true)
      */
     private $street2;
 
     /**
-     * @var string $city
+     * @var string
      *
      * @ORM\Column(name="city", type="string", nullable=true)
      */
     private $city;
 
     /**
-     * @var string $state
+     * @var string
      *
      * @ORM\Column(name="state", type="string", nullable=true)
      */
     private $state;
 
     /**
-     * @var string $zip
+     * @var string
      *
      * @ORM\Column(name="zip", type="string", nullable=true)
      */
     private $zip;
 
     /**
-     * @var string $country
+     * @var string
      *
      * @ORM\Column(name="country", type="string", nullable=true)
      */
     private $country;
 
     /**
-     * @var Client $client
+     * @var Client
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="addresses")
      */
     private $client;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {

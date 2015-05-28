@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Entity;
 
 use CSBill\TaxBundle\Entity\Tax;
@@ -29,7 +29,7 @@ class Item
         Entity\SoftDeleteable;
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -38,7 +38,7 @@ class Item
     private $id;
 
     /**
-     * @var string $description
+     * @var string
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
@@ -54,7 +54,7 @@ class Item
     private $price;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank
@@ -62,7 +62,7 @@ class Item
     private $qty;
 
     /**
-     * @var Quote $quote
+     * @var Quote
      *
      * @ORM\ManyToOne(targetEntity="Quote", inversedBy="items")
      */
@@ -80,9 +80,9 @@ class Item
     private $total;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -90,7 +90,7 @@ class Item
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -104,7 +104,7 @@ class Item
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -114,7 +114,7 @@ class Item
     }
 
     /**
-     * Set the price
+     * Set the price.
      *
      * @param float $price
      *
@@ -128,7 +128,7 @@ class Item
     }
 
     /**
-     * Get the price
+     * Get the price.
      *
      * @return float
      */
@@ -138,9 +138,9 @@ class Item
     }
 
     /**
-     * Set the qty
+     * Set the qty.
      *
-     * @param integer $qty
+     * @param int $qty
      *
      * @return Item
      */
@@ -152,9 +152,9 @@ class Item
     }
 
     /**
-     * Get qty
+     * Get qty.
      *
-     * @return integer
+     * @return int
      */
     public function getQty()
     {
@@ -162,7 +162,7 @@ class Item
     }
 
     /**
-     * Set quote
+     * Set quote.
      *
      * @param Quote $quote
      *
@@ -176,7 +176,7 @@ class Item
     }
 
     /**
-     * Get quote
+     * Get quote.
      *
      * @return Quote
      */
@@ -198,7 +198,7 @@ class Item
     }
 
     /**
-     * Get the line item total
+     * Get the line item total.
      *
      * @return float
      */
@@ -228,7 +228,7 @@ class Item
     }
 
     /**
-     * PrePersist listener to update the line total
+     * PrePersist listener to update the line total.
      *
      * @ORM\PrePersist
      */
@@ -238,7 +238,7 @@ class Item
     }
 
     /**
-     * Return the item as a string
+     * Return the item as a string.
      *
      * @return string
      */

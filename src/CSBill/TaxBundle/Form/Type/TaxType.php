@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\TaxBundle\Form\Type;
 
 use CSBill\TaxBundle\Entity\Tax;
@@ -17,9 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class Tax
- *
- * @package CSBill\TaxBundle\Form\Type
+ * Class Tax.
  */
 class TaxType extends AbstractType
 {

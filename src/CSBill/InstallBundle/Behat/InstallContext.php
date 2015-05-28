@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\InstallBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
@@ -37,9 +37,9 @@ class InstallContext extends DefaultContext
             $connection->getSchemaManager()->createDatabase($name);
         }
 
-        $fs = new Filesystem;
+        $fs = new Filesystem();
 
-        $configFile = $this->kernel->getRootDir() . '/config/parameters.yml';
+        $configFile = $this->kernel->getRootDir().'/config/parameters.yml';
 
         $yaml = Yaml::parse(file_get_contents($configFile));
         $yaml['parameters']['installed'] = null;
@@ -58,7 +58,7 @@ class InstallContext extends DefaultContext
      */
     public function configIsNotEmpty($config)
     {
-        $configFile = $this->kernel->getRootDir() . '/config/parameters.yml';
+        $configFile = $this->kernel->getRootDir().'/config/parameters.yml';
 
         $yaml = Yaml::parse(file_get_contents($configFile))['parameters'];
 
@@ -73,13 +73,14 @@ class InstallContext extends DefaultContext
 
     /**
      * @Then /^The config should contain the following values:$/
+     *
      * @param TableNode $table
      *
      * @throws \Exception
      */
     public function configContainsValues(TableNode $table)
     {
-        $configFile = $this->kernel->getRootDir() . '/config/parameters.yml';
+        $configFile = $this->kernel->getRootDir().'/config/parameters.yml';
 
         $yaml = Yaml::parse(file_get_contents($configFile))['parameters'];
 
@@ -96,6 +97,7 @@ class InstallContext extends DefaultContext
 
     /**
      * @Then /^the following user must exist:$/
+     *
      * @param TableNode $table
      *
      * @throws \Exception

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -45,8 +45,8 @@ class PaymentMethodForm extends AbstractType
             'submit',
             array(
                 'attr' => array(
-                    'class' => 'btn-success'
-                )
+                    'class' => 'btn-success',
+                ),
             )
         );
     }

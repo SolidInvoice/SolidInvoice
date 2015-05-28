@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use CSBill\ClientBundle\Model\Status as ClientStatus;
@@ -17,7 +16,7 @@ use CSBill\PaymentBundle\Model\Status as PaymentStatus;
 use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
 
 /**
- * This class is a twig extension that gives some shortcut methods to client statuses
+ * This class is a twig extension that gives some shortcut methods to client statuses.
  *
  * @author Pierre du Plessis
  */
@@ -87,7 +86,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * Returns an array of all the helper functions for the client status
+     * Returns an array of all the helper functions for the client status.
      *
      * @return \Twig_SimpleFunction[]
      */
@@ -126,6 +125,7 @@ class StatusExtension extends \Twig_Extension
      * @param string $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderInvoiceStatusLabel($status, $tooltip = null)
@@ -147,6 +147,7 @@ class StatusExtension extends \Twig_Extension
      * @param string $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderQuoteStatusLabel($status, $tooltip = null)
@@ -168,6 +169,7 @@ class StatusExtension extends \Twig_Extension
      * @param string $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderPaymentStatusLabel($status, $tooltip = null)
@@ -189,6 +191,7 @@ class StatusExtension extends \Twig_Extension
      * @param string $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderClientStatusLabel($status, $tooltip = null)
@@ -206,7 +209,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * Return the status converted into a label string
+     * Return the status converted into a label string.
      *
      * @param mixed  $object
      * @param string $tooltip
@@ -232,7 +235,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * Get the name of the twig extension
+     * Get the name of the twig extension.
      *
      * @return string
      */

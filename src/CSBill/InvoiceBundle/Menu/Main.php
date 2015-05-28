@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Menu;
 
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
@@ -16,12 +15,12 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use Knp\Menu\ItemInterface;
 
 /**
- * Menu ietms for invoices
+ * Menu ietms for invoices.
  */
 class Main extends AuthenticatedMenu
 {
     /**
-     * Menu builder for the invoice index
+     * Menu builder for the invoice index.
      *
      * @param $menu \Knp\Menu\ItemInterface
      */
@@ -31,7 +30,7 @@ class Main extends AuthenticatedMenu
     }
 
     /**
-     * Renders the invoice index menu
+     * Renders the invoice index menu.
      *
      * @param ItemInterface $menu
      */
@@ -59,7 +58,7 @@ class Main extends AuthenticatedMenu
     }
 
     /**
-     * Renders the invoice edit menu
+     * Renders the invoice edit menu.
      *
      * @param ItemInterface $menu
      * @param array         $options

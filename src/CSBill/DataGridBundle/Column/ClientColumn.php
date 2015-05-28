@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\DataGridBundle\Column;
 
 use APY\DataGridBundle\Grid\Column\TextColumn;
@@ -36,7 +36,7 @@ class ClientColumn extends TextColumn
      */
     public function __initialize(array $params)
     {
-        /** @var \Twig_Template $template */
+        /* @var \Twig_Template $template */
         static $template;
 
         $params['safe'] = false;

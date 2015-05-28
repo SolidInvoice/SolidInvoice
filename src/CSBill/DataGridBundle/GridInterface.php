@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\DataGridBundle;
 
 use CSBill\DataGridBundle\Action\Collection;
@@ -49,7 +49,7 @@ interface GridInterface
     public function getMassActions();
 
     /**
-     * Get the template to render for the grid
+     * Get the template to render for the grid.
      *
      * @return string
      */

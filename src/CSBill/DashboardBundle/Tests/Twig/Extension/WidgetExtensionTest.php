@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\DashboardBundle\Tests\Twig\Extension;
 
 use CSBill\DashboardBundle\Twig\Extension\WidgetExtension;
@@ -60,7 +60,7 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
             'CSBill\DashboardBundle\Widgets\WidgetInterface',
             array(
                 'getTemplate' => 'test_template.html.twig',
-                'getData' => array('a' => '1', 'b' => '2', 'c' => '3')
+                'getData' => array('a' => '1', 'b' => '2', 'c' => '3'),
             )
         );
 

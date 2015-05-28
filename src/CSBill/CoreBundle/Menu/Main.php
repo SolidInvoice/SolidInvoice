@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Menu;
 
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
@@ -17,7 +16,7 @@ use Knp\Menu\ItemInterface as Item;
 class Main extends AuthenticatedMenu
 {
     /**
-     * Build the user menu
+     * Build the user menu.
      *
      * @param Item $menu
      */
@@ -57,7 +56,7 @@ class Main extends AuthenticatedMenu
     }
 
     /**
-     * Build the system menu
+     * Build the system menu.
      *
      * @param Item $menu
      */

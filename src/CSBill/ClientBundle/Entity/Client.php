@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as GRID;
@@ -36,7 +36,7 @@ class Client
         Entity\Archivable;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -121,7 +121,7 @@ class Client
     private $credit;
 
     /**
-     * Constructer
+     * Constructer.
      */
     public function __construct()
     {
@@ -133,9 +133,9 @@ class Client
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -143,9 +143,10 @@ class Client
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return Client
      */
     public function setName($name)
@@ -156,7 +157,7 @@ class Client
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -166,9 +167,10 @@ class Client
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param string $status
+     *
      * @return Client
      */
     public function setStatus($status)
@@ -179,7 +181,7 @@ class Client
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return string
      */
@@ -189,9 +191,10 @@ class Client
     }
 
     /**
-     * Set website
+     * Set website.
      *
-     * @param  string $website
+     * @param string $website
+     *
      * @return Client
      */
     public function setWebsite($website)
@@ -202,7 +205,7 @@ class Client
     }
 
     /**
-     * Get website
+     * Get website.
      *
      * @return string
      */
@@ -212,9 +215,10 @@ class Client
     }
 
     /**
-     * Add contact
+     * Add contact.
      *
-     * @param  Contact $contact
+     * @param Contact $contact
+     *
      * @return Client
      */
     public function addContact(Contact $contact)
@@ -226,9 +230,10 @@ class Client
     }
 
     /**
-     * Removes a contact
+     * Removes a contact.
      *
-     * @param  Contact $contact
+     * @param Contact $contact
+     *
      * @return Client
      */
     public function removeContact(Contact $contact)
@@ -239,7 +244,7 @@ class Client
     }
 
     /**
-     * Get contacts
+     * Get contacts.
      *
      * @return ArrayCollection
      */
@@ -249,9 +254,10 @@ class Client
     }
 
     /**
-     * Add quote
+     * Add quote.
      *
-     * @param  Quote  $quote
+     * @param Quote $quote
+     *
      * @return Client
      */
     public function addQuote(Quote $quote)
@@ -263,9 +269,10 @@ class Client
     }
 
     /**
-     * Remove quote
+     * Remove quote.
      *
-     * @param  Quote  $quote
+     * @param Quote $quote
+     *
      * @return Client
      */
     public function removeQuote(Quote $quote)
@@ -276,7 +283,7 @@ class Client
     }
 
     /**
-     * Get quotes
+     * Get quotes.
      *
      * @return ArrayCollection
      */
@@ -286,9 +293,10 @@ class Client
     }
 
     /**
-     * Add invoice
+     * Add invoice.
      *
-     * @param  Invoice $invoice
+     * @param Invoice $invoice
+     *
      * @return Client
      */
     public function addInvoice(Invoice $invoice)
@@ -300,9 +308,10 @@ class Client
     }
 
     /**
-     * Remove invoice
+     * Remove invoice.
      *
-     * @param  Invoice $invoice
+     * @param Invoice $invoice
+     *
      * @return Client
      */
     public function removeInvoice(Invoice $invoice)
@@ -313,7 +322,7 @@ class Client
     }
 
     /**
-     * Get invoices
+     * Get invoices.
      *
      * @return ArrayCollection
      */
@@ -323,7 +332,7 @@ class Client
     }
 
     /**
-     * Add payment
+     * Add payment.
      *
      * @param Payment $payment
      *
@@ -338,7 +347,7 @@ class Client
     }
 
     /**
-     * Removes a payment
+     * Removes a payment.
      *
      * @param Payment $payment
      *
@@ -352,7 +361,7 @@ class Client
     }
 
     /**
-     * Get payments
+     * Get payments.
      *
      * @return ArrayCollection
      */
@@ -362,7 +371,7 @@ class Client
     }
 
     /**
-     * Add address
+     * Add address.
      *
      * @param Address $address
      *
@@ -379,7 +388,7 @@ class Client
     }
 
     /**
-     * Removes an address
+     * Removes an address.
      *
      * @param Address $address
      *
@@ -393,7 +402,7 @@ class Client
     }
 
     /**
-     * Get addresses
+     * Get addresses.
      *
      * @return ArrayCollection
      */
@@ -432,7 +441,7 @@ class Client
     }
 
     /**
-     * Return the client name as a string
+     * Return the client name as a string.
      *
      * @return string
      */

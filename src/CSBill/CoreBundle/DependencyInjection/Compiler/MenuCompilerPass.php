@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -34,7 +33,7 @@ class MenuCompilerPass implements CompilerPassInterface
             foreach ($tagAttributes as $attributes) {
                 $definition->addMethodCall(
                     'addBuilder',
-                    array(new Reference($id), $attributes["menu"], $attributes["method"])
+                    array(new Reference($id), $attributes['menu'], $attributes['method'])
                 );
             }
         }

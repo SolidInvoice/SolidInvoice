@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as Grid;
@@ -34,7 +34,7 @@ class Invoice
         Entity\Archivable;
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -51,7 +51,7 @@ class Invoice
     private $uuid;
 
     /**
-     * @var string $status
+     * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Grid\Column(name="status", type="status", field="status", title="status", filter="select", selectFrom="source", safe=false, label_function="invoice_label")
@@ -59,7 +59,7 @@ class Invoice
     private $status;
 
     /**
-     * @var Client $client
+     * @var Client
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
@@ -125,7 +125,7 @@ class Invoice
     private $notes;
 
     /**
-     * @var \DateTime $due
+     * @var \DateTime
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -134,7 +134,7 @@ class Invoice
     private $due;
 
     /**
-     * @var \DateTime $paidDate
+     * @var \DateTime
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -143,7 +143,7 @@ class Invoice
     private $paidDate;
 
     /**
-     * @var ArrayCollection $items
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -152,7 +152,7 @@ class Invoice
     private $items;
 
     /**
-     * @var ArrayCollection $payments
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(
      *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
@@ -172,7 +172,7 @@ class Invoice
     private $users;
 
     /**
-     * Constructer
+     * Constructer.
      */
     public function __construct()
     {
@@ -203,7 +203,7 @@ class Invoice
     }
 
     /**
-     * Return users array
+     * Return users array.
      *
      * @return ArrayCollection
      */
@@ -225,9 +225,9 @@ class Invoice
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -235,7 +235,7 @@ class Invoice
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param string $status
      *
@@ -249,7 +249,7 @@ class Invoice
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return string
      */
@@ -259,7 +259,7 @@ class Invoice
     }
 
     /**
-     * Set client
+     * Set client.
      *
      * @param Client $client
      *
@@ -273,7 +273,7 @@ class Invoice
     }
 
     /**
-     * Get Client
+     * Get Client.
      *
      * @return Client
      */
@@ -283,7 +283,7 @@ class Invoice
     }
 
     /**
-     * Set total
+     * Set total.
      *
      * @param float $total
      *
@@ -297,7 +297,7 @@ class Invoice
     }
 
     /**
-     * Get total
+     * Get total.
      *
      * @return float
      */
@@ -307,7 +307,7 @@ class Invoice
     }
 
     /**
-     * Set base total
+     * Set base total.
      *
      * @param float $baseTotal
      *
@@ -321,7 +321,7 @@ class Invoice
     }
 
     /**
-     * Get base total
+     * Get base total.
      *
      * @return float
      */
@@ -351,7 +351,7 @@ class Invoice
     }
 
     /**
-     * Set discount
+     * Set discount.
      *
      * @param float $discount
      *
@@ -365,7 +365,7 @@ class Invoice
     }
 
     /**
-     * Get discount
+     * Get discount.
      *
      * @return float
      */
@@ -375,7 +375,7 @@ class Invoice
     }
 
     /**
-     * Set due
+     * Set due.
      *
      * @param \DateTime $due
      *
@@ -389,7 +389,7 @@ class Invoice
     }
 
     /**
-     * Get due
+     * Get due.
      *
      * @return \DateTime
      */
@@ -399,7 +399,7 @@ class Invoice
     }
 
     /**
-     * Set paidDate
+     * Set paidDate.
      *
      * @param \DateTime $paidDate
      *
@@ -413,7 +413,7 @@ class Invoice
     }
 
     /**
-     * Get paidDate
+     * Get paidDate.
      *
      * @return \DateTime
      */
@@ -423,7 +423,7 @@ class Invoice
     }
 
     /**
-     * Add item
+     * Add item.
      *
      * @param Item $item
      *
@@ -438,7 +438,7 @@ class Invoice
     }
 
     /**
-     * Removes an item
+     * Removes an item.
      *
      * @param Item $item
      *
@@ -453,7 +453,7 @@ class Invoice
     }
 
     /**
-     * Get items
+     * Get items.
      *
      * @return ArrayCollection
      */
@@ -463,7 +463,7 @@ class Invoice
     }
 
     /**
-     * Add payment
+     * Add payment.
      *
      * @param Payment $payment
      *
@@ -478,7 +478,7 @@ class Invoice
     }
 
     /**
-     * Removes a payment
+     * Removes a payment.
      *
      * @param Payment $payment
      *
@@ -492,7 +492,7 @@ class Invoice
     }
 
     /**
-     * Get payments
+     * Get payments.
      *
      * @return ArrayCollection
      */
@@ -554,7 +554,7 @@ class Invoice
     }
 
     /**
-     * PrePersist listener to update the invoice total
+     * PrePersist listener to update the invoice total.
      *
      * @ORM\PrePersist
      */

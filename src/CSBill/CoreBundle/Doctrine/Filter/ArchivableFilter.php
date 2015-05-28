@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Doctrine\Filter;
 
 use Doctrine\ORM\Mapping\ClassMetaData;
@@ -23,7 +23,7 @@ class ArchivableFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         if (!in_array(self::ARCHIVABLEE_CLASS, $targetEntity->reflClass->getTraitNames(), true)) {
-            return "";
+            return '';
         }
 
         return $targetTableAlias.'.archived IS NULL';

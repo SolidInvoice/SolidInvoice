@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Loader;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -15,11 +15,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\DBALException;
 
 /**
- * Class DoctrineLoader
+ * Class DoctrineLoader.
  *
  * This class loads settings from the database
- *
- * @package CSBill\SettingsBundle\Loader
  */
 class DoctrineLoader implements SettingsLoaderInterface
 {
@@ -79,7 +77,8 @@ class DoctrineLoader implements SettingsLoaderInterface
     }
 
     /**
-     * @param  array|\ArrayAccess $sections
+     * @param array|\ArrayAccess $sections
+     *
      * @return array
      */
     protected function addSettings($sections)
@@ -90,12 +89,12 @@ class DoctrineLoader implements SettingsLoaderInterface
         $repository = $this->manager->getRepository('CSBillSettingsBundle:Setting');
 
         foreach ($sections as $section) {
-            /** @var \CSBill\SettingsBundle\Entity\Section $section */
+            /* @var \CSBill\SettingsBundle\Entity\Section $section */
             $values = $repository->getSettingsBySection($section, false);
 
             if (is_array($values) && !empty($values)) {
                 foreach ($values as $value) {
-                    /** @var \CSBill\SettingsBundle\Model\Setting $value */
+                    /* @var \CSBill\SettingsBundle\Model\Setting $value */
                     if ('checkbox' === $value->getType() && 1 === (int) $value->getValue()) {
                         $value->setValue(true);
                     }
@@ -113,7 +112,8 @@ class DoctrineLoader implements SettingsLoaderInterface
     }
 
     /**
-     * Check if we can connect to the database and if the tables are loaded
+     * Check if we can connect to the database and if the tables are loaded.
+     *
      * @return bool
      */
     protected function checkConnection()

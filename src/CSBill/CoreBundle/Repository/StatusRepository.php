@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -16,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 abstract class StatusRepository extends EntityRepository
 {
     /**
-     * Gets an array of all the available statuses
+     * Gets an array of all the available statuses.
      */
     public function getStatusList()
     {

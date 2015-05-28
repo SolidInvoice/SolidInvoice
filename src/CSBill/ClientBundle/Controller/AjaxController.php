@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class AjaxController extends BaseController
 {
     /**
-     * Get client info
+     * Get client info.
      *
      * @param Client $client
      * @param string $type
@@ -36,16 +35,17 @@ class AjaxController extends BaseController
             )
         );
 
-        return $this->json(array("content" => $content));
+        return $this->json(array('content' => $content));
     }
 
     /**
-     * Add a new contact to a client
+     * Add a new contact to a client.
      *
      * @param Request $request
      * @param Client  $client
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addcontactAction(Request $request, Client $client)
@@ -75,9 +75,9 @@ class AjaxController extends BaseController
 
             return $this->json(
                 array(
-                    "status" => "success",
-                    "content" => $content,
-                    "id" => $contact->getId(),
+                    'status' => 'success',
+                    'content' => $content,
+                    'id' => $contact->getId(),
                 )
             );
         } else {
@@ -91,18 +91,19 @@ class AjaxController extends BaseController
                 'client' => $client,
             )
         );
-        $response["content"] = $content;
+        $response['content'] = $content;
 
         return $this->json($response);
     }
 
     /**
-     * Edits a contact
+     * Edits a contact.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editcontactAction(Request $request, Contact $contact)
@@ -128,20 +129,20 @@ class AjaxController extends BaseController
 
             return $this->json(
                 array(
-                    "content" => $this->renderView(
+                    'content' => $this->renderView(
                         'CSBillClientBundle:Ajax:contact_edit.html.twig',
                         array(
                             'success' => true,
                         )
                     ),
-                    "status" => "success",
+                    'status' => 'success',
                 )
             );
         }
 
         return $this->json(
             array(
-                "content" => $this->renderView(
+                'content' => $this->renderView(
                     'CSBillClientBundle:Ajax:contact_edit.html.twig',
                     array(
                         'form' => $form->createView(),
@@ -159,7 +160,7 @@ class AjaxController extends BaseController
     private function removeContactDetails(Contact $contact, array $originalContactDetails)
     {
         foreach ($contact->getAdditionalDetails() as $detail) {
-            /** @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
+            /* @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
             foreach ($originalContactDetails as $key => $toDel) {
                 if ($toDel->getId() === $detail->getId()) {
                     unset($originalContactDetails[$key]);
@@ -177,7 +178,7 @@ class AjaxController extends BaseController
     }
 
     /**
-     * Renders a contact card
+     * Renders a contact card.
      *
      * @param Contact $contact
      *
@@ -198,7 +199,7 @@ class AjaxController extends BaseController
     }
 
     /**
-     * Deletes a contact
+     * Deletes a contact.
      *
      * @param Contact $contact
      *
@@ -212,11 +213,11 @@ class AjaxController extends BaseController
 
         $this->flash($this->trans('contact_delete_success'), 'success');
 
-        return $this->json(array("status" => "success"));
+        return $this->json(array('status' => 'success'));
     }
 
     /**
-     * Deletes a client
+     * Deletes a client.
      *
      * @param Client $client
      *
@@ -230,6 +231,6 @@ class AjaxController extends BaseController
 
         $this->flash($this->trans('client_delete_success'), 'success');
 
-        return $this->json(array("status" => "success"));
+        return $this->json(array('status' => 'success'));
     }
 }

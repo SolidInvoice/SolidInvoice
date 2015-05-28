@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Twig\Extension;
 
 use Knp\Menu\Provider\MenuProviderInterface;
@@ -18,17 +17,17 @@ use Twig_Extension;
 class MenuExtension extends Twig_Extension
 {
     /**
-     * @var RendererInterface $renderer
+     * @var RendererInterface
      */
     protected $renderer;
 
     /**
-     * @var MenuProviderInterface $provider
+     * @var MenuProviderInterface
      */
     protected $provider;
 
     /**
-     * Sets the renderer for the menu
+     * Sets the renderer for the menu.
      *
      * @param RendererInterface $renderer
      */
@@ -38,7 +37,7 @@ class MenuExtension extends Twig_Extension
     }
 
     /**
-     * Sets the provider for the menu
+     * Sets the provider for the menu.
      *
      * @param MenuProviderInterface $provider
      */
@@ -48,7 +47,7 @@ class MenuExtension extends Twig_Extension
     }
 
     /**
-     * (non-phpdoc)
+     * (non-phpdoc).
      */
     public function getFunctions()
     {
@@ -58,10 +57,11 @@ class MenuExtension extends Twig_Extension
     }
 
     /**
-     * Renders a menu in a specific location
+     * Renders a menu in a specific location.
      *
-     * @param  string $location The location on the page to render the menu
-     * @param  array  $options
+     * @param string $location The location on the page to render the menu
+     * @param array  $options
+     *
      * @return string
      */
     public function renderMenu($location, array $options = array())
@@ -72,7 +72,7 @@ class MenuExtension extends Twig_Extension
     }
 
     /**
-     * (non-phpdoc)
+     * {@inheritdoc}
      */
     public function getName()
     {

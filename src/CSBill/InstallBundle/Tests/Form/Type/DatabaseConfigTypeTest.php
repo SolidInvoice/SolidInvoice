@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\InstallBundle\Tests\Form\Type;
 
 use CSBill\CoreBundle\Tests\FormTestCase;
@@ -16,7 +16,7 @@ class DatabaseConfigTypeTest extends FormTestCase
     public function testSubmitValidData()
     {
         $drivers = array(
-            'pdo_mysql' => 'MySQL'
+            'pdo_mysql' => 'MySQL',
         );
 
         $formData = array(

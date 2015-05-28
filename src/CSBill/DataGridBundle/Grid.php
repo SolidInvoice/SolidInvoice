@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\DataGridBundle;
 
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
@@ -47,6 +47,7 @@ class Grid extends DataGrid
      * @param GridInterface|string $grid
      *
      * @return $this
+     *
      * @throws \Exception
      */
     public function create($grid)
@@ -110,8 +111,8 @@ class Grid extends DataGrid
 
         if (
             1 === count($requestData) &&
-            isset($requestData[Grid::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED]) &&
-            $requestData[Grid::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED] === '0'
+            isset($requestData[self::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED]) &&
+            $requestData[self::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED] === '0'
         ) {
             $this->request->request->remove($this->getHash());
         }
@@ -133,7 +134,6 @@ class Grid extends DataGrid
      * @param Response     $response
      *
      * @return Response
-     *
      */
     public function getGridResponse($param1 = null, $param2 = null, Response $response = null)
     {

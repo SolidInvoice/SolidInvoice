@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * CSBill\ClientBundle\Entity\Credit
+ * CSBill\ClientBundle\Entity\Credit.
  *
  * @ORM\Table(name="client_credit")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\CreditRepository")
@@ -45,7 +45,6 @@ class Credit
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
      */
     private $client;
-
 
     /**
      * @return mixed

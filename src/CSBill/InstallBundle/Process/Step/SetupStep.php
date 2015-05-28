@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Process\Step;
 
 use CSBill\CoreBundle\CSBillCoreBundle;
@@ -101,7 +101,7 @@ class SetupStep extends ControllerStep
     }
 
     /**
-     * Saves the current app version in the database
+     * Saves the current app version in the database.
      */
     private function saveCurrentVersion()
     {

@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\InstallBundle\Tests\Form\Step;
 
 use CSBill\CoreBundle\Tests\FormTestCase;
@@ -16,11 +16,11 @@ class ConfigStepFormTest extends FormTestCase
     public function testSubmitData()
     {
         $drivers = array(
-            'pdo_mysql' => 'MySQL'
+            'pdo_mysql' => 'MySQL',
         );
 
         $transports = array(
-            'mail' => 'PHPMail'
+            'mail' => 'PHPMail',
         );
 
         $formData = array(
@@ -39,7 +39,7 @@ class ConfigStepFormTest extends FormTestCase
                 'encryption' => null,
                 'user' => null,
                 'password' => null,
-            )
+            ),
         );
 
         $type = new ConfigStepForm();

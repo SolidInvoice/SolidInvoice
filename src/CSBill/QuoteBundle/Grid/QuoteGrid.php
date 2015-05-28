@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\QuoteBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -135,7 +135,7 @@ class QuoteGrid implements GridInterface
      */
     public function getMassActions()
     {
-        $archiveAction = new MassAction('Archive', function($ids) {
+        $archiveAction = new MassAction('Archive', function ($ids) {
             /** @var QuoteRepository $quoteRepository */
             $quoteRepository = $this->entityManager->getRepository('CSBillQuoteBundle:Quote');
 

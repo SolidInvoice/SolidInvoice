@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\TaxBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as Grid;
@@ -33,7 +33,7 @@ class Tax
     const TYPE_EXCLUSIVE = 'exclusive';
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -61,6 +61,7 @@ class Tax
 
     /**
      * @ORM\Column(name="tax_type", type="string", length=32)
+     *
      * @var string
      * @Assert\NotBlank
      */
@@ -83,9 +84,9 @@ class Tax
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {

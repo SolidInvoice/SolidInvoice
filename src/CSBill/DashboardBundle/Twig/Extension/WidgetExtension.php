@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\DashboardBundle\Twig\Extension;
 
 use CSBill\DashboardBundle\WidgetFactory;
@@ -54,7 +54,7 @@ class WidgetExtension extends \Twig_Extension
     }
 
     /**
-     * Renders a dashboard widget at a specific location
+     * Renders a dashboard widget at a specific location.
      *
      * @param string $location
      *

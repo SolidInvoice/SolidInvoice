@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Menu;
 
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
@@ -17,7 +16,7 @@ use Knp\Menu\ItemInterface;
 class ClientMenu extends AuthenticatedMenu
 {
     /**
-     * Renders the top menu for clients
+     * Renders the top menu for clients.
      *
      * @param ItemInterface $menu
      */
@@ -32,7 +31,7 @@ class ClientMenu extends AuthenticatedMenu
     }
 
     /**
-     * Renders the client index menu
+     * Renders the client index menu.
      *
      * @param ItemInterface $menu
      */
@@ -62,7 +61,7 @@ class ClientMenu extends AuthenticatedMenu
     }
 
     /**
-     * Renders the client view menu
+     * Renders the client view menu.
      *
      * @param ItemInterface $menu
      */

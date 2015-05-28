@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\CoreBundle\Tests;
 
 use CSBill\CoreBundle\Form\Extension;
@@ -32,7 +32,7 @@ class FormTestCase extends TypeTestCase
     }
 
     /**
-     * Get registered form extensions
+     * Get registered form extensions.
      *
      * @return array
      */
@@ -47,12 +47,12 @@ class FormTestCase extends TypeTestCase
             new Extension\MoneyExtension(new Currency('en', 'USD')),
             new FormTypeValidatorExtension(
                 $validator
-            )
+            ),
         );
     }
 
     /**
-     * Get registered form types
+     * Get registered form types.
      *
      * @return array
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -54,7 +54,7 @@ class EmailSettingsType extends AbstractType
             'port',
             'integer',
             array(
-                'constraints'   => array(
+                'constraints' => array(
                     new Constraints\Type(array('groups' => array('smtp'), 'type' => 'integer')),
                 ),
                 'required' => false,
@@ -66,9 +66,9 @@ class EmailSettingsType extends AbstractType
             'select2',
             array(
                 'empty_value' => 'None',
-                'choices'       => array(
-                    'ssl'       => 'SSL',
-                    'tls'       => 'TLS',
+                'choices' => array(
+                    'ssl' => 'SSL',
+                    'tls' => 'TLS',
                 ),
                 'required' => false,
             )

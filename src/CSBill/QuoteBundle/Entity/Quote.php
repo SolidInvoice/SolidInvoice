@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as Grid;
@@ -33,7 +33,7 @@ class Quote
         Entity\Archivable;
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -42,7 +42,7 @@ class Quote
     private $id;
 
     /**
-     * @var Uuid $uuid
+     * @var Uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
      * @Grid\Column(visible=false)
@@ -50,7 +50,7 @@ class Quote
     private $uuid;
 
     /**
-     * @var string $status
+     * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", safe=false, label_function="quote_label")
@@ -58,7 +58,7 @@ class Quote
     private $status;
 
     /**
-     * @var Client $client
+     * @var Client
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
@@ -116,7 +116,7 @@ class Quote
     private $notes;
 
     /**
-     * @var \DateTime $due
+     * @var \DateTime
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -125,7 +125,7 @@ class Quote
     private $due;
 
     /**
-     * @var ArrayCollection $items
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -143,7 +143,7 @@ class Quote
     private $users;
 
     /**
-     * Constructer
+     * Constructer.
      */
     public function __construct()
     {
@@ -153,9 +153,9 @@ class Quote
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -183,7 +183,7 @@ class Quote
     }
 
     /**
-     * Return users array
+     * Return users array.
      *
      * @return ArrayCollection
      */
@@ -205,7 +205,7 @@ class Quote
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param string $status
      *
@@ -219,7 +219,7 @@ class Quote
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return string
      */
@@ -229,7 +229,7 @@ class Quote
     }
 
     /**
-     * Set client
+     * Set client.
      *
      * @param Client|null $client
      *
@@ -243,7 +243,7 @@ class Quote
     }
 
     /**
-     * Get Client
+     * Get Client.
      *
      * @return Client
      */
@@ -253,7 +253,7 @@ class Quote
     }
 
     /**
-     * Set total
+     * Set total.
      *
      * @param float $total
      *
@@ -267,7 +267,7 @@ class Quote
     }
 
     /**
-     * Get total
+     * Get total.
      *
      * @return float
      */
@@ -277,7 +277,7 @@ class Quote
     }
 
     /**
-     * Set base total
+     * Set base total.
      *
      * @param float $baseTotal
      *
@@ -291,7 +291,7 @@ class Quote
     }
 
     /**
-     * Get base total
+     * Get base total.
      *
      * @return float
      */
@@ -301,7 +301,7 @@ class Quote
     }
 
     /**
-     * Set discount
+     * Set discount.
      *
      * @param float $discount
      *
@@ -315,7 +315,7 @@ class Quote
     }
 
     /**
-     * Get discount
+     * Get discount.
      *
      * @return float
      */
@@ -325,7 +325,7 @@ class Quote
     }
 
     /**
-     * Set due
+     * Set due.
      *
      * @param \DateTime $due
      *
@@ -339,7 +339,7 @@ class Quote
     }
 
     /**
-     * Get due
+     * Get due.
      *
      * @return \DateTime
      */
@@ -349,7 +349,7 @@ class Quote
     }
 
     /**
-     * Add item
+     * Add item.
      *
      * @param Item $item
      *
@@ -364,7 +364,7 @@ class Quote
     }
 
     /**
-     * Removes an item
+     * Removes an item.
      *
      * @param Item $item
      *
@@ -379,7 +379,7 @@ class Quote
     }
 
     /**
-     * Get items
+     * Get items.
      *
      * @return ArrayCollection
      */
@@ -449,7 +449,7 @@ class Quote
     }
 
     /**
-     * PrePersist listener to link the items to the quote
+     * PrePersist listener to link the items to the quote.
      *
      * @ORM\PrePersist
      */

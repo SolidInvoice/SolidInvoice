@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Menu\Builder;
 
 use Knp\Menu\ItemInterface;
@@ -18,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 final class MenuBuilder extends ContainerAware
 {
     /**
-     *
      * @var BuilderInterface An instance of the class that creates a menu
      */
     protected $class;
@@ -29,7 +27,6 @@ final class MenuBuilder extends ContainerAware
     protected $method;
 
     /**
-     *
      * @param BuilderInterface $class
      * @param string           $method
      */
@@ -40,7 +37,7 @@ final class MenuBuilder extends ContainerAware
     }
 
     /**
-     * Invokes the builder class to add items to the menu
+     * Invokes the builder class to add items to the menu.
      *
      * @param ItemInterface $menu
      * @param array         $options

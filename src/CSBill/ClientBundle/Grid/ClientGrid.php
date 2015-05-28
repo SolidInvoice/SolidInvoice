@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\ClientBundle\Grid;
 
 use APY\DataGridBundle\Grid\Source\Entity;
@@ -93,7 +93,7 @@ class ClientGrid implements GridInterface
     {
         $aliases = $queryBuilder->getRootAliases();
 
-        $queryBuilder->andWhere($aliases[0] . '.name LIKE :search')
+        $queryBuilder->andWhere($aliases[0].'.name LIKE :search')
             ->setParameter('search', "%{$searchString}%");
     }
 
@@ -127,7 +127,7 @@ class ClientGrid implements GridInterface
      */
     public function getMassActions()
     {
-        $archive = new MassAction('Archive', function($ids) {
+        $archive = new MassAction('Archive', function ($ids) {
             /** @var ClientRepository $clientRepository */
             $clientRepository = $this->objectManager->getRepository('CSBillClientBundle:Client');
 
@@ -154,7 +154,7 @@ class ClientGrid implements GridInterface
 
         return array(
             $archive,
-            $deleteAction
+            $deleteAction,
         );
     }
 

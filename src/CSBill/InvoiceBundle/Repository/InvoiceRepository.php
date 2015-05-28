@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -18,7 +17,7 @@ use Doctrine\ORM\EntityRepository;
 class InvoiceRepository extends EntityRepository
 {
     /**
-     * Get the total amount for paid invoices
+     * Get the total amount for paid invoices.
      *
      * @param Client $client set this parameter to filter per client
      *
@@ -30,7 +29,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Get the total amount for outstanding invoices
+     * Get the total amount for outstanding invoices.
      *
      * @param Client $client set this parameter to filter per client
      *
@@ -55,7 +54,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Get the total number of invoices for a specific status
+     * Get the total number of invoices for a specific status.
      *
      * @param string|array $status
      * @param Client       $client set this parameter to filter per client
@@ -87,7 +86,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Get the total amount for a specific invoice status
+     * Get the total amount for a specific invoice status.
      *
      * @param string $status
      * @param Client $client set this paramater to filter per client
@@ -113,7 +112,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Gets the most recent created invoices
+     * Gets the most recent created invoices.
      *
      * @param int $limit
      *

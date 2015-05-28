@@ -8,12 +8,10 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Collection;
 
 /**
- * Class ConfigCollection
- * @package CSBill\SettingsBundle\Collection
+ * Class ConfigCollection.
  */
 class ConfigCollection
 {
@@ -33,7 +31,7 @@ class ConfigCollection
     protected $sections = array();
 
     /**
-     * Start a new section
+     * Start a new section.
      *
      * @param string $sectionName
      */
@@ -45,7 +43,8 @@ class ConfigCollection
     }
 
     /**
-     * Adds config to the current section
+     * Adds config to the current section.
+     *
      * @param array $settings
      */
     public function add(array $settings)
@@ -54,7 +53,7 @@ class ConfigCollection
     }
 
     /**
-     * Get the settings for the current section
+     * Get the settings for the current section.
      *
      * @return array
      */
@@ -64,7 +63,8 @@ class ConfigCollection
     }
 
     /**
-     * Get the list of available sections
+     * Get the list of available sections.
+     *
      * @return array
      */
     public function getSections()
@@ -73,7 +73,7 @@ class ConfigCollection
     }
 
     /**
-     * Ends the current section
+     * Ends the current section.
      */
     public function endSection()
     {

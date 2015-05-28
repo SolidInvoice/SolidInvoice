@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InvoiceBundle\Manager;
 
 use CSBill\InvoiceBundle\Entity\Invoice;
@@ -68,7 +68,7 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
-     * Create an invoice from a quote
+     * Create an invoice from a quote.
      *
      * @param Quote $quote
      *
@@ -119,6 +119,7 @@ class InvoiceManager extends ContainerAware
      * @param Invoice $invoice
      *
      * @return Invoice
+     *
      * @throws InvalidTransitionException
      */
     public function create(Invoice $invoice)
@@ -136,11 +137,12 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
-     * Accepts an invoice
+     * Accepts an invoice.
      *
      * @param Invoice $invoice
      *
      * @return Invoice
+     *
      * @throws InvalidTransitionException
      */
     public function accept($invoice)
@@ -161,6 +163,7 @@ class InvoiceManager extends ContainerAware
      * @param Invoice $invoice
      *
      * @return Invoice
+     *
      * @throws InvalidTransitionException
      */
     public function pay(Invoice $invoice)
@@ -183,6 +186,7 @@ class InvoiceManager extends ContainerAware
      * @param Invoice $invoice
      *
      * @return Invoice
+     *
      * @throws InvalidTransitionException
      */
     public function cancel(Invoice $invoice)
@@ -203,6 +207,7 @@ class InvoiceManager extends ContainerAware
      * @param Invoice $invoice
      *
      * @return Invoice
+     *
      * @throws InvalidTransitionException
      */
     public function reopen(Invoice $invoice)
@@ -223,6 +228,7 @@ class InvoiceManager extends ContainerAware
      * @param Invoice $invoice
      *
      * @return Invoice
+     *
      * @throws InvalidTransitionException
      */
     public function archive(Invoice $invoice)
@@ -245,6 +251,7 @@ class InvoiceManager extends ContainerAware
      * @param string  $transition
      *
      * @return bool
+     *
      * @throws InvalidTransitionException
      */
     private function applyTransition(Invoice $invoice, $transition)
@@ -262,7 +269,7 @@ class InvoiceManager extends ContainerAware
                 'invoice' => $invoice,
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
-                'transition' => $transition
+                'transition' => $transition,
             );
 
             $notification = new InvoiceStatusNotification($parameters);
@@ -276,7 +283,7 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
-     * Checks if an invoice has been paid in full
+     * Checks if an invoice has been paid in full.
      *
      * @param Invoice $invoice
      *

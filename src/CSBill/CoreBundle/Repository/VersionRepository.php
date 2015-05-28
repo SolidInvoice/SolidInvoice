@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\CoreBundle\Repository;
 
 use CSBill\CoreBundle\Entity\Version;
@@ -17,7 +16,7 @@ use Doctrine\ORM\EntityRepository;
 class VersionRepository extends EntityRepository
 {
     /**
-     * Updates the current version
+     * Updates the current version.
      *
      * @param $version
      */

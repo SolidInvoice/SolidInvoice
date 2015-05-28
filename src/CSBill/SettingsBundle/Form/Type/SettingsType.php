@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Form\Type;
 
 use CSBill\SettingsBundle\Manager\SettingsManager;
@@ -16,10 +15,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-/**
- * Class SettingsType
- * @package CSBill\SettingsBundle\Form\Type
- */
 class SettingsType extends AbstractType
 {
     /**
@@ -28,8 +23,7 @@ class SettingsType extends AbstractType
     protected $manager;
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -43,8 +37,7 @@ class SettingsType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.FormTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -52,7 +45,7 @@ class SettingsType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

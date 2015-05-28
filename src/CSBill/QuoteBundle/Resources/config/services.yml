@@ -47,4 +47,3 @@ services:
     csbill.quote.grid.archived_grid:
         class: CSBill\QuoteBundle\Grid\QuoteArchivedGrid
         arguments: [@doctrine.orm.entity_manager, @session]
-

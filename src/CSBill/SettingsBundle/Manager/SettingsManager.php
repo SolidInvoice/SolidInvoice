@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Manager;
 
 use CSBill\SettingsBundle\Collection\ConfigCollection;
@@ -18,8 +17,7 @@ use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * Class SettingsManager
- * @package CSBill\SettingsBundle\Manager
+ * Class SettingsManager.
  */
 class SettingsManager implements ManagerInterface
 {
@@ -57,7 +55,7 @@ class SettingsManager implements ManagerInterface
     const RIGHT_TOKEN = ']';
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -67,7 +65,7 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * Initializes the loaders and load the default settings
+     * Initializes the loaders and load the default settings.
      */
     protected function initialize()
     {
@@ -75,7 +73,7 @@ class SettingsManager implements ManagerInterface
             $this->collection = new ConfigCollection();
 
             foreach ($this->loaders as $loader) {
-                /** @var SettingsLoaderInterface $loader */
+                /* @var SettingsLoaderInterface $loader */
                 $this->collection->startSection(get_class($loader));
 
                 $settings = $loader->getSettings();
@@ -92,7 +90,8 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * @param  SettingsLoaderInterface      $loader
+     * @param SettingsLoaderInterface $loader
+     *
      * @return SettingsLoaderInterface|void
      */
     public function addSettingsLoader(SettingsLoaderInterface $loader)
@@ -101,8 +100,10 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * @param  string|null                                              $setting
+     * @param string|null $setting
+     *
      * @return mixed|string
+     *
      * @throws \CSBill\SettingsBundle\Exception\InvalidSettingException
      */
     public function get($setting = null)
@@ -165,9 +166,10 @@ class SettingsManager implements ManagerInterface
     }
 
     /**
-     * Recursively set settings from an array
+     * Recursively set settings from an array.
      *
-     * @param  array      $settings
+     * @param array $settings
+     *
      * @return mixed|void
      */
     public function set(array $settings = array())
@@ -199,7 +201,7 @@ class SettingsManager implements ManagerInterface
 
     /**
      * @param array $config
-     * @param array  $settings
+     * @param array $settings
      *
      * @return array
      */
@@ -213,7 +215,7 @@ class SettingsManager implements ManagerInterface
                     $settingsArray[$key] = $this->setData($setting, $value);
                 } else {
                     if ($section === $key) {
-                        /** @var \CSBill\SettingsBundle\Model\Setting $setting */
+                        /* @var \CSBill\SettingsBundle\Model\Setting $setting */
                         $setting->setValue($value);
                         $settingsArray[$key] = $setting;
                     }

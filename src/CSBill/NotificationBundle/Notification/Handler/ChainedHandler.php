@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\NotificationBundle\Notification\Handler;
 
 use CSBill\NotificationBundle\Notification\ChainedNotificationInterface;
@@ -33,7 +33,7 @@ class ChainedHandler implements HandlerInterface
     /**
      * {@inheritdoc}
      */
-    function shouldHandle(NotificationInterface $notification)
+    public function shouldHandle(NotificationInterface $notification)
     {
         return $notification instanceof ChainedNotificationInterface;
     }
@@ -41,11 +41,11 @@ class ChainedHandler implements HandlerInterface
     /**
      * {@inheritdoc}
      */
-    function handle(NotificationInterface $notification)
+    public function handle(NotificationInterface $notification)
     {
         /** @var ChainedNotificationInterface $notification */
         foreach ($notification->getNotifications() as $notify) {
             $this->manager->trigger($notify);
         }
     }
-} 
+}

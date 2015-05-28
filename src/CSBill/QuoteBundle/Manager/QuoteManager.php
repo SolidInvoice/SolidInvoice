@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\QuoteBundle\Manager;
 
 use CSBill\CoreBundle\Mailer\Mailer;
@@ -84,6 +84,7 @@ class QuoteManager
      * @param Quote $quote
      *
      * @return Invoice
+     *
      * @throws InvalidTransitionException
      */
     public function accept(Quote $quote)
@@ -103,6 +104,7 @@ class QuoteManager
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function decline(Quote $quote)
@@ -120,6 +122,7 @@ class QuoteManager
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function cancel(Quote $quote)
@@ -137,6 +140,7 @@ class QuoteManager
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function reopen(Quote $quote)
@@ -150,6 +154,7 @@ class QuoteManager
      * @param Quote $quote
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws InvalidTransitionException
      */
     public function send(Quote $quote)
@@ -176,6 +181,7 @@ class QuoteManager
      * @param string $transition
      *
      * @return bool
+     *
      * @throws InvalidTransitionException
      */
     private function applyTransition(Quote $quote, $transition)
@@ -196,7 +202,7 @@ class QuoteManager
                 'quote' => $quote,
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
-                'transition' => $transition
+                'transition' => $transition,
             );
 
             $notification = new QuoteStatusNotification($parameters);

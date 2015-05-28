@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\PaymentBundle\Form\Methods;
 
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +25,7 @@ class PaypalExpressCheckout extends AbstractType
             'username',
             'text',
             array(
-                'constraints' => new NotBlank()
+                'constraints' => new NotBlank(),
             )
         );
 
@@ -38,7 +38,7 @@ class PaypalExpressCheckout extends AbstractType
             'signature',
             'text',
             array(
-                'constraints' => new NotBlank()
+                'constraints' => new NotBlank(),
             )
         );
 
@@ -46,7 +46,7 @@ class PaypalExpressCheckout extends AbstractType
             'sandbox',
             'checkbox',
             array(
-                'required' => false
+                'required' => false,
             )
         );
     }

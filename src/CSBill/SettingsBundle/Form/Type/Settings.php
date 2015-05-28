@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of CSBill package.
  *
@@ -7,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\SettingsBundle\Form\Type;
 
 use CSBill\SettingsBundle\Model\Setting;
@@ -15,8 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class Settings
- * @package CSBill\SettingsBundle\Form\Type
+ * Class Settings.
  */
 class Settings extends AbstractType
 {
@@ -42,7 +41,7 @@ class Settings extends AbstractType
             if (is_array($setting)) {
                 $builder->add($key, new self($setting));
             } else {
-                /** @var \CSBill\SettingsBundle\Model\Setting $setting */
+                /* @var \CSBill\SettingsBundle\Model\Setting $setting */
                 $options = array(
                     'help' => $setting->getDescription(),
                     'required' => false,

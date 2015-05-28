@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
- * 
+ *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\InvoiceBundle\Grid;
 
 use APY\DataGridBundle\Grid\Action\RowAction;
@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class InvoiceGrid implements GridInterface
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -137,7 +136,7 @@ class InvoiceGrid implements GridInterface
             ->setRouteParams(array('uuid'))
             ->setCallback(function (RowAction $rowAction, Row $row) {
                 if (Graph::STATUS_PENDING !== $row->getField('status')) {
-                    return null;
+                    return;
                 }
 
                 return $rowAction;
@@ -154,7 +153,7 @@ class InvoiceGrid implements GridInterface
      */
     public function getMassActions()
     {
-        $archiveAction = new MassAction('Archive', function($ids) {
+        $archiveAction = new MassAction('Archive', function ($ids) {
             /** @var InvoiceRepository $invoiceRepository */
             $invoiceRepository = $this->entityManager->getRepository('CSBillInvoiceBundle:Invoice');
 

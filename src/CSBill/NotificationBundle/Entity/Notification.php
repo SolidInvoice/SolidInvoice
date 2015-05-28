@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of the CSBill project.
  *
  * @author      MiWay Development Team
  * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
  */
-
 namespace CSBill\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Notification
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id

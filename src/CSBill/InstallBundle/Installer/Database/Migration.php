@@ -8,7 +8,6 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace CSBill\InstallBundle\Installer\Database;
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
@@ -18,11 +17,9 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Class Migration
+ * Class Migration.
  *
  * Performs database migrations
- *
- * @package CSBill\InstallBundle\Installer\Database
  */
 class Migration extends ContainerAware
 {
@@ -41,6 +38,7 @@ class Migration extends ContainerAware
 
     /**
      * @return array
+     *
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      */
     public function migrate()
@@ -71,6 +69,7 @@ class Migration extends ContainerAware
      * @param string $dir
      *
      * @return Configuration
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     private function getConfiguration($dir)
