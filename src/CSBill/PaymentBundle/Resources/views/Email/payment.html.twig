@@ -1,0 +1,72 @@
+{% extends "CSBillCoreBundle:Layout:Email.html.twig" %}
+
+{% block title %}
+    {{ 'payment.description'|trans({}, 'email') }}
+{% endblock %}
+
+{% block content %}
+    <table>
+
+        {% if payment.invoice is not empty %}
+            <tr>
+                <th>
+                    {{ 'payment.details.invoice'|trans({}, 'email') }}
+                </th>
+                <td>
+                    <a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">
+                        {{ payment.invoice.id }}
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
+
+        {% if payment.client is not empty %}
+            <tr>
+                <th>
+                    {{ 'payment.details.client'|trans({}, 'email') }}
+                </th>
+                <td>
+                    <a href="{{ url('_clients_view', {'id' : payment.client.id}) }}">
+                        {{ payment.client }}
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <th>
+                {{ 'payment.details.method'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment.method }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                {{ 'payment.details.currency'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment.currencyCode }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                {{ 'payment.details.amount'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment.totalAmount }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                {{ 'payment.details.status'|trans({}, 'email') }}
+            </th>
+            <td>
+                {{ payment_label(payment.status) }}
+            </td>
+        </tr>
+    </table>
+{% endblock %}

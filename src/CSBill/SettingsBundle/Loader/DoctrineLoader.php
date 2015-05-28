@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of CSBill package.
  *
@@ -97,6 +96,10 @@ class DoctrineLoader implements SettingsLoaderInterface
             if (is_array($values) && !empty($values)) {
                 foreach ($values as $value) {
                     /** @var \CSBill\SettingsBundle\Model\Setting $value */
+                    if ('checkbox' === $value->getType() && 1 === (int) $value->getValue()) {
+                        $value->setValue(true);
+                    }
+
                     $settings[$section->getName()][$value->getKey()] = $value;
                 }
             }

@@ -16,3 +16,11 @@ cs_bill_settings:
             - { name: from_name, value: ""}
             - { name: from_address, value: ""}
             - { name: format, value: "both", type: "radio", options: {"html" : "html", "text" : "text", "both" : "both"}, description: "In what format should emails be sent."}
+
+    hipchat:
+        settings:
+            - { name: auth_token, value: ~ }
+            - { name: server_url, value: "https://api.hipchat.com" }
+            - { name: notify, type: checkbox }
+            - { name: message_color, type: select2, value: yellow, options: {yellow : yellow, red : red, gray : gray, green : green, purple : purple, random : random} }
+            - { name: message_format, type: select2, value: text, options: {html: html, text: text} }

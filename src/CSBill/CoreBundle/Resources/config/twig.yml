@@ -1,6 +1,7 @@
 parameters:
     csbill_core.twig.menu.class: CSBill\CoreBundle\Twig\Extension\MenuExtension
     csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
+    csbill_core.twig.file.class: CSBill\CoreBundle\Twig\Extension\FileExtension
     csbill_core.twig.status.class: CSBill\CoreBundle\Twig\Extension\StatusExtension
 
 services:
@@ -16,6 +17,12 @@ services:
         class: %csbill_core.twig.globals.class%
         calls:
             - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: twig.extension }
+
+    csbill_core.twig.file:
+        class: %csbill_core.twig.file.class%
+        arguments: [@request_stack]
         tags:
             - { name: twig.extension }
 

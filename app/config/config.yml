@@ -137,6 +137,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: CSBill\UserBundle\Entity\User
+    profile:
+        form:
+            type: profile_form
     service:
         email_canonicalizer:    csbill.user.canonicalizer
         username_canonicalizer: csbill.user.canonicalizer

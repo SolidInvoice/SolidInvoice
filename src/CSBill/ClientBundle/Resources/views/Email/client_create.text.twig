@@ -1,0 +1,17 @@
+{{ 'client.create.heading'|trans({}, 'email') }}
+
+{{ 'client.create.details.id'|trans({}, 'email') }}: {{ client.id }}
+{{ 'client.create.details.name'|trans({}, 'email') }}: {{ client.name }}
+
+{% if client.website is not empty %}
+{{ 'client.create.details.website'|trans({}, 'email') }}: {{ client.website }}
+{% endif %}
+{{ 'client.create.contacts.heading'|trans({}, 'email') }}
+------------
+
+{% for contact in client.contacts %}
+{{ 'client.create.contacts.name'|trans({}, 'email') }}: {{ contact.firstname }} {{ contact.lastname }}
+{% for contactDetail in contact.primaryDetails %}
+{{ contactDetail.type }}:{{ contactDetail.value }}
+{% endfor %}
+{% endfor %}

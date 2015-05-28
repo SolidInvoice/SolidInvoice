@@ -33,8 +33,8 @@ before_script:
   - php app/check.php
 
 script:
-  - ./bin/phpunit -c app
   - ./bin/behat --suite=installation -n -f progress
+  - ./bin/phpunit -c app
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar

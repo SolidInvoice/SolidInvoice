@@ -1,8 +1,13 @@
 parameters:
+    quote.manager.class: CSBill\QuoteBundle\Manager\QuoteManager
     csbill_quote.menu.class: CSBill\QuoteBundle\Menu\Main
     csbill.mailer.send_quotes.listener.class: CSBill\QuoteBundle\Listener\Mailer\QuoteMailerListener
 
 services:
+    quote.manager:
+        class: %quote.manager.class%
+        arguments: [@doctrine, @event_dispatcher, @finite.factory, @invoice.manager, @billing.mailer, @notification.manager]
+
     csbill_quote.menu:
         class: %csbill_quote.menu.class%
         tags:

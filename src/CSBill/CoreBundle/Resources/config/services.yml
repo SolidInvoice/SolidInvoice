@@ -95,3 +95,15 @@ services:
         arguments: [@kernel, @csbill.core.config_writer]
         tags:
             - { name: settings.loader }
+
+    csbill_core.swiftmailer.plugin.cssinline:
+        class: CSBill\CoreBundle\Swiftmailer\Plugin\CssInlinerPlugin
+        arguments: [@csbill_core.cssinline]
+        tags:
+            - { name: swiftmailer.default.plugin }
+
+    csbill_core.cssinline:
+        class: TijsVerkoyen\CssToInlineStyles\CssToInlineStyles
+        public: false
+        calls:
+            - [setUseInlineStylesBlock, [true]]

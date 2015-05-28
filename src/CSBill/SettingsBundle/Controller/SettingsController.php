@@ -43,11 +43,17 @@ class SettingsController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $manager->set($request->request->get('settings'));
+            try {
+                $manager->set($request->request->get('settings'));
+            } catch (\Exception $e) {
+                $this->flash($this->trans($e->getMessage()), 'error');
+
+                return $this->redirectToRoute($request->get('_route'));
+            }
 
             $this->flash($this->trans('settings.saved.success'), 'success');
 
-            return $this->redirect($this->generateUrl($request->get('_route')));
+            return $this->redirectToRoute($request->get('_route'));
         }
 
         return $this->render(
