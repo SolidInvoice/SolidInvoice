@@ -150,7 +150,7 @@ class PaymentController extends BaseController
     {
         $token = $this->get('payum.security.http_request_verifier')->verify($request);
 
-        $paymentMethod = $this->get('payum')->getPayment($token->getPaymentName());
+        $paymentMethod = $this->get('payum')->getGateway($token->getPaymentName());
         $paymentMethod->execute($status = new StatusRequest($token));
 
         /** @var \CSBill\PaymentBundle\Entity\Payment $payment */

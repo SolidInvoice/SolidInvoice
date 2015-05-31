@@ -49,7 +49,7 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $paymentMethods = $this->get('payum')->getPaymentMethods();
+        $paymentMethods = $this->get('payum')->getGateways();
 
         unset($paymentMethods['credit']);
 

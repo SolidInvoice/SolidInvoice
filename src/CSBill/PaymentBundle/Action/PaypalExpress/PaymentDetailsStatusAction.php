@@ -13,11 +13,11 @@ namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
-use Payum\Core\Action\PaymentAwareAction;
+use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 
-class PaymentDetailsStatusAction extends PaymentAwareAction
+class PaymentDetailsStatusAction extends GatewayAwareAction
 {
     /**
      * {@inheritdoc}
@@ -44,7 +44,7 @@ class PaymentDetailsStatusAction extends PaymentAwareAction
         if ($payment->getDetails()) {
             try {
                 $request->setModel($details);
-                $this->payment->execute($request);
+                $this->gateway->execute($request);
 
                 $payment->setDetails($details);
                 $request->setModel($payment);

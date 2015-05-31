@@ -14,12 +14,12 @@ namespace CSBill\PaymentBundle\Action\PaypalExpress;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Persistence\ObjectManager;
-use Payum\Core\Action\PaymentAwareAction;
+use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 
-class NotifyPaymentAction extends PaymentAwareAction
+class NotifyPaymentAction extends GatewayAwareAction
 {
     /**
      * @var ObjectManager
@@ -46,10 +46,10 @@ class NotifyPaymentAction extends PaymentAwareAction
         /** @var Payment $payment */
         $payment = $request->getModel();
 
-        $this->payment->execute(new Sync($payment));
+        $this->gateway->execute(new Sync($payment));
 
         $status = new StatusRequest($payment);
-        $this->payment->execute($status);
+        $this->gateway->execute($status);
 
         $nextState = $status->getValue();
 

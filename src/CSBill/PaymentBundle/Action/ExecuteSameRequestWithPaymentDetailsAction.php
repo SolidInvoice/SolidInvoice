@@ -12,12 +12,12 @@
 namespace CSBill\PaymentBundle\Action;
 
 use CSBill\PaymentBundle\Entity\Payment;
-use Payum\Core\Action\PaymentAwareAction;
+use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Generic;
 
-class ExecuteSameRequestWithPaymentDetailsAction extends PaymentAwareAction
+class ExecuteSameRequestWithPaymentDetailsAction extends GatewayAwareAction
 {
     /**
      * {@inheritDoc}
@@ -34,7 +34,7 @@ class ExecuteSameRequestWithPaymentDetailsAction extends PaymentAwareAction
 
         try {
             $request->setModel($details);
-            $this->payment->execute($request);
+            $this->gateway->execute($request);
             $payment->setDetails($details);
         } catch (\Exception $e) {
             $payment->setDetails($details);

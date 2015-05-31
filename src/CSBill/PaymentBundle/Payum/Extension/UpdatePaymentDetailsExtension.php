@@ -14,6 +14,7 @@ namespace CSBill\PaymentBundle\Payum\Extension;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Persistence\ObjectManager;
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Reply\ReplyInterface;
 use Payum\Paypal\ExpressCheckout\Nvp\Action\CaptureAction;
@@ -36,23 +37,27 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function onPreExecute($request)
+    public function onPreExecute(Context $context)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function onExecute($request, ActionInterface $action)
+    public function onExecute(Context $context)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function onPostExecute($request, ActionInterface $action)
+    public function onPostExecute(Context $context)
     {
+        $action = $context->getAction();
+
         /* @var \Payum\Core\Request\Capture $request */
+        $request = $context->getAction();
+
         if ($action instanceof CaptureAction) {
             /** @var Payment $payment */
             $payment = $request->getFirstModel();

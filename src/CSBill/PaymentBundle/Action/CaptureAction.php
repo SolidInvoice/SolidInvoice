@@ -13,13 +13,13 @@ namespace CSBill\PaymentBundle\Action;
 
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Model\Status;
-use Payum\Core\Action\PaymentAwareAction;
+use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
 
-class CaptureAction extends PaymentAwareAction
+class CaptureAction extends GatewayAwareAction
 {
     /**
      * {@inheritDoc}
@@ -37,7 +37,7 @@ class CaptureAction extends PaymentAwareAction
 
         $request->setModel($details);
 
-        $this->payment->execute($request);
+        $this->gateway->execute($request);
     }
 
     /**

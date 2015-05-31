@@ -4,7 +4,7 @@ payum:
             CSBill\PaymentBundle\Entity\SecurityToken: {doctrine: orm}
     storages:
         CSBill\PaymentBundle\Entity\Payment:  {doctrine: orm}
-    payments:
+    gateways:
         credit:
             offline: ~
         cash:
