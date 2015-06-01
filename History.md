@@ -1,3 +1,23 @@
+0.4.0 / 2015-05-31
+==================
+
+  * [CoreBundle] Add setting to BCC copy of quote/invoice to specific address
+  * [NotificationBundle] Add new Notification bundle
+  * Update login page style
+  * Added new logo
+  * Change client view to use tabs for info
+  * [TaxBundle] Extract tax functionality to separate bundle
+  * [ClientBundle] [DataGridBunde] Add support for Grid collections, so that you can display multiple grids on the same page
+  * [DataGridBundle] Updates to DataGrid
+  * Added support for credits
+  * [PaymentBundle] Refactored payment process
+  * [InstallBundle] Add installation step to create database if it does not yet exist
+  * Updated settings
+  * Update installation process
+  * Updated dashboard
+  * Added custom error pages
+  * Added Address support for clients
+  * Updated minimum required PHP version to 5.4.0
 
 0.3.0 / 2014-09-17
 ==================
