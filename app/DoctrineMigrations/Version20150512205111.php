@@ -35,7 +35,7 @@ class Version20150512205111 extends AbstractMigration
         $this->addSql('INSERT INTO notifications VALUES (NULL, "quote_status_update", 1, 0, 0)');
         $this->addSql('INSERT INTO notifications VALUES (NULL, "payment_made", 1, 0, 0)');
 
-        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'hipchats')");
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'hipchat')");
         $this->addSql("INSERT INTO `app_config` VALUES
           (NULL, 'auth_token', '', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
           (NULL, 'room_id', NULL, NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
@@ -44,8 +44,8 @@ class Version20150512205111 extends AbstractMigration
           (NULL, 'message_color', 'yellow', NULL, LAST_INSERT_ID(), 'select2', 'a:6:{s:6:\"yellow\";s:6:\"yellow\";s:3:\"red\";s:3:\"red\";s:4:\"gray\";s:4:\"gray\";s:5:\"green\";s:5:\"green\";s:6:\"purple\";s:6:\"purple\";s:6:\"random\";s:6:\"random\";}')
           ");
 
-        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'smss')");
-        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, LAST_INSERT_ID(), 'twilios')");
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'sms')");
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, LAST_INSERT_ID(), 'twilio')");
         $this->addSql("INSERT INTO `app_config` VALUES
           (NULL, 'number', NULL, NULL, LAST_INSERT_ID(), 'text', 'a:0:{}'),
           (NULL, 'sid', NULL, NULL, LAST_INSERT_ID(), 'text', 'a:0:{}'),
