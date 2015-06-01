@@ -1,4 +1,11 @@
-0.4.0 / 2015-05-31
+
+0.4.1 / 2015-06-01
+==================
+
+  * Fix incorrect invoice status when creating new invoices
+  * Fix config section names for notifications
+
+0.4.0 / 2015-06-01
 ==================
 
   * [CoreBundle] Add setting to BCC copy of quote/invoice to specific address
