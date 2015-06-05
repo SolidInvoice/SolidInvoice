@@ -63,11 +63,11 @@
     {% block javascripts %}
         {% javascripts
             "js/plugins/bootstrap.min.js"
-            "@CSBillCoreBundle/Resources/public/js/plugins.js"
+            "@FOSJsRoutingBundle/Resources/public/js/router.js"
             "js/plugins/*.js"
+            "@CSBillCoreBundle/Resources/public/js/plugins.js"
             "@CSBillClientBundle/Resources/public/js/*.js"
             "@CSBillCoreBundle/Resources/public/js/script.js"
-            "@FOSJsRoutingBundle/Resources/public/js/router.js"
             filter="?yui_js"
         %}
             <script src="{{ asset_url }}"></script>
