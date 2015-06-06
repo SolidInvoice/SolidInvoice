@@ -19,6 +19,12 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
+addons:
+  sauce_connect:
+    username: "pierredup"
+    access_key:
+         secure: "KJNGNOBRk8diPsfBJWEBNpAi2MWz+VWTo2SAZQw+ZsriYMTUgO6QfPGBWS82N9lzE6Z/O6Z//gMgEFHLm7G8t8/4JWk8+2LlAm9Y+yTirt308gPM2vm0rkYISTruTlXLv18X3auTczKzA6jHjKGcZIKMWwgEKWRcEH1cmVeJg74="
+
 before_install:
   - composer self-update
 
@@ -29,6 +35,11 @@ before_script:
   - mysql -e 'create database csbill;'
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm"* ]]; then echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
   - php app/check.php
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+  - rackup  # start a Web server
+  - sleep 3 # give Web server some time to bind to sockets, etc
 
 script:
   - php app/console security:check
