@@ -101,7 +101,7 @@ class InvoiceManagerTest extends KernelTestCase
         $this->assertSame($quote->getTerms(), $invoice->getTerms());
         $this->assertSame($quote->getTax(), $invoice->getTax());
         $this->assertSame($client, $invoice->getClient());
-        $this->assertSame(null, $invoice->getStatus());
+        $this->assertSame('new', $invoice->getStatus());
 
         $this->assertNotSame($quote->getUuid(), $invoice->getUuid());
         $this->assertNull($invoice->getId());
