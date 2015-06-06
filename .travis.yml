@@ -16,8 +16,8 @@ sudo: false
 
 env:
   global:
-  - secure: "RseUypq34oKYkpon4UJCaN+0YrAfUPg78xS6NSu0RElW949MviD+2VGfVIoelQTwoQAd/ggICPZSMSGXY+NOwBKxvaYmAberAEoNb0DzXW6KPXAmpvfdjFJ5t2TCU1pGLyjg059jsJI/UdEJa/9EGFWNS0ZVyebNIgv3yl1J7cY="
-  - secure: "Ri6tvMLROKS/zbvkU8JL9tqUomjYXoSbW3GQRNfAHSwo83pCB2USj0AAiqq9xDma0ecRH4rES9aWrdJmD7wTES0E818dRqMwnDbe5N87/9JrkUp8AC3T8xnSdnz5fffZu4pTkNiwV8XQ5XktXGQ68Qh4Ru+5O5iEXHcSWant8cs="
+    - secure: "RseUypq34oKYkpon4UJCaN+0YrAfUPg78xS6NSu0RElW949MviD+2VGfVIoelQTwoQAd/ggICPZSMSGXY+NOwBKxvaYmAberAEoNb0DzXW6KPXAmpvfdjFJ5t2TCU1pGLyjg059jsJI/UdEJa/9EGFWNS0ZVyebNIgv3yl1J7cY="
+    - secure: "Ri6tvMLROKS/zbvkU8JL9tqUomjYXoSbW3GQRNfAHSwo83pCB2USj0AAiqq9xDma0ecRH4rES9aWrdJmD7wTES0E818dRqMwnDbe5N87/9JrkUp8AC3T8xnSdnz5fffZu4pTkNiwV8XQ5XktXGQ68Qh4Ru+5O5iEXHcSWant8cs="
 
 cache:
   directories:
@@ -39,6 +39,7 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
+  - echo $SAUCE_USERNAME
 
 script:
   - php app/console security:check
