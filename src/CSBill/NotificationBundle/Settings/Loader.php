@@ -32,6 +32,16 @@ class Loader implements SettingsLoaderInterface
     protected $sections;
 
     /**
+     * @var bool
+     */
+    private $hasHipchatConfig = false;
+
+    /**
+     * @var bool
+     */
+    private $hasSmsConfig = false;
+
+    /**
      * @param ManagerRegistry $doctrine
      */
     public function __construct(ManagerRegistry $doctrine)
@@ -130,9 +140,7 @@ class Loader implements SettingsLoaderInterface
      */
     private function checkHipchatConfig()
     {
-        static $hasHipchatConfig = false;
-
-        if (true === $hasHipchatConfig) {
+        if (true === $this->hasHipchatConfig) {
             return;
         }
 
@@ -160,7 +168,7 @@ class Loader implements SettingsLoaderInterface
             }
         }
 
-        $hasHipchatConfig = true;
+        $this->hasHipchatConfig = true;
     }
 
     /**
@@ -168,9 +176,7 @@ class Loader implements SettingsLoaderInterface
      */
     private function checkSmsConfig()
     {
-        static $hasSmsConfig = false;
-
-        if (true === $hasSmsConfig) {
+        if (true === $this->hasSmsConfig) {
             return;
         }
 
@@ -184,9 +190,9 @@ class Loader implements SettingsLoaderInterface
 
         $query = $builder->getQuery();
 
-        $hasSmsConfig = (int) $query->getSingleScalarResult() > 0;
+        $this->hasSmsConfig = (int) $query->getSingleScalarResult() > 0;
 
-        if (false === $hasSmsConfig) {
+        if (false === $this->hasSmsConfig) {
             throw new \Exception(
                 'You need at least one user with a mobile number in order to enable SMS notifications'
             );
