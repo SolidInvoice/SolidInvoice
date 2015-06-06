@@ -15,15 +15,14 @@ default:
 
     extensions:
         Behat\MinkExtension:
-            sessions:
-                default:
-                    symfony2: ~
-            browser_name: firefox
-            show_auto:    false
-        Behat\Symfony2Extension: ~
-    context:
-        parameters:
-            javascript_session: selenium
             base_url: http://localhost
-            browser: firefox
-            show_cmd: open %s
+            default_session: saucelabs
+            javascript_session: saucelabs
+            sessions:
+                symfony2:
+                    symfony2: ~
+                saucelabs:
+                    sauce_labs: ~
+            #browser_name: firefox
+            #show_auto:    false
+        Behat\Symfony2Extension: ~
