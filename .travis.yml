@@ -35,7 +35,8 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
   - echo $SAUCE_USERNAME
-  - if [ "$SAUCE_USERNAME" ] ; then (sh sauce.sh); fi
+  #- if [ "$SAUCE_USERNAME" ] ; then (sh sauce.sh); fi
+  - curl -L https://gist.githubusercontent.com/henrikhodne/9322897/raw/sauce-connect.sh | bash
 
 script:
   - php app/console security:check
