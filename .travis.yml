@@ -23,9 +23,6 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
-addons:
-  sauce_connect: true
-
 before_install:
   - composer self-update
 
@@ -40,6 +37,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
   - echo $SAUCE_USERNAME
+  - if [ "$SAUCE_USERNAME" ] ; then (curl -L https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash); fi
 
 script:
   - php app/console security:check
