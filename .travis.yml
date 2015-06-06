@@ -16,10 +16,8 @@ sudo: false
 
 env:
   global:
-    - secure: g36zEESW2zTfuo6zkf4HgQodrBUHs8NfcZr+MkqdtxClf90n4Rl4RXwUp2oIpfWOlCGFH/aLyidUEgi8//t5WTPCWoV2WH9k/mGNOzdtvOlwzFPYTHJvlEbVzjjJqmJwERhYuU8HiwEzoLXGr0hQvQza6JieTNorYkPzv4H/K3c=
-    - secure: Wg0vUr9HCVNlqwny7cAXEg/ytEfDpQW1oNoZPscbXl8m0EDChsjzYZrxMSlIuVFLPcURtgWxSKFFh9NZ7e9jS5qMlsoYaeVptu97CV7V0xZnwe3/jK1bdd8ZrrlEFt03od+HiEKDKnYxOTs6oWVtQI069sQ9gHSUgrfQSyfqgq8=
-    - SAUCE_USERNAME=pierredup
-    - SAUCE_ACCESS_KEY=37de17cb-dfbe-4519-804c-01b24bc88c31
+    - secure: "g36zEESW2zTfuo6zkf4HgQodrBUHs8NfcZr+MkqdtxClf90n4Rl4RXwUp2oIpfWOlCGFH/aLyidUEgi8//t5WTPCWoV2WH9k/mGNOzdtvOlwzFPYTHJvlEbVzjjJqmJwERhYuU8HiwEzoLXGr0hQvQza6JieTNorYkPzv4H/K3c="
+    - secure: "Wg0vUr9HCVNlqwny7cAXEg/ytEfDpQW1oNoZPscbXl8m0EDChsjzYZrxMSlIuVFLPcURtgWxSKFFh9NZ7e9jS5qMlsoYaeVptu97CV7V0xZnwe3/jK1bdd8ZrrlEFt03od+HiEKDKnYxOTs6oWVtQI069sQ9gHSUgrfQSyfqgq8="
 
 # cache vendor dirs
 cache:

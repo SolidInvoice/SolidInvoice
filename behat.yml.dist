@@ -23,6 +23,7 @@ default:
                     symfony2: ~
                 saucelabs:
                     sauce_labs:
+                        connect: true
                         capabilities:
                             custom-data: {travis: true}
             #browser_name: firefox
