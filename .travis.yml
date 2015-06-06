@@ -18,8 +18,8 @@ env:
   global:
     - secure: "RseUypq34oKYkpon4UJCaN+0YrAfUPg78xS6NSu0RElW949MviD+2VGfVIoelQTwoQAd/ggICPZSMSGXY+NOwBKxvaYmAberAEoNb0DzXW6KPXAmpvfdjFJ5t2TCU1pGLyjg059jsJI/UdEJa/9EGFWNS0ZVyebNIgv3yl1J7cY="
     - secure: "Ri6tvMLROKS/zbvkU8JL9tqUomjYXoSbW3GQRNfAHSwo83pCB2USj0AAiqq9xDma0ecRH4rES9aWrdJmD7wTES0E818dRqMwnDbe5N87/9JrkUp8AC3T8xnSdnz5fffZu4pTkNiwV8XQ5XktXGQ68Qh4Ru+5O5iEXHcSWant8cs="
-    - SAUCE_USERNAME=pierredup
-    - SAUCE_ACCESS_KEY=37de17cb-dfbe-4519-804c-01b24bc88c31
+    - SAUCE_USERNAME=csbill
+    - SAUCE_ACCESS_KEY=dc33d33b-1a56-4333-9195-659844348121
 
 cache:
   directories:
