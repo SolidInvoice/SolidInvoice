@@ -12,8 +12,6 @@ matrix:
   allow_failures:
     - php: 7
 
-sudo: false
-
 env:
   global:
     - SAUCE_USERNAME=csbill
