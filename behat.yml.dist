@@ -22,7 +22,9 @@ default:
                 symfony2:
                     symfony2: ~
                 saucelabs:
-                    sauce_labs: ~
+                    sauce_labs:
+                        capabilities:
+                            custom-data: {}
             #browser_name: firefox
             #show_auto:    false
         Behat\Symfony2Extension: ~
