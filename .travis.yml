@@ -14,16 +14,18 @@ matrix:
 
 sudo: false
 
+env:
+    global:
+        - secure: g36zEESW2zTfuo6zkf4HgQodrBUHs8NfcZr+MkqdtxClf90n4Rl4RXwUp2oIpfWOlCGFH/aLyidUEgi8//t5WTPCWoV2WH9k/mGNOzdtvOlwzFPYTHJvlEbVzjjJqmJwERhYuU8HiwEzoLXGr0hQvQza6JieTNorYkPzv4H/K3c=
+        - secure: Wg0vUr9HCVNlqwny7cAXEg/ytEfDpQW1oNoZPscbXl8m0EDChsjzYZrxMSlIuVFLPcURtgWxSKFFh9NZ7e9jS5qMlsoYaeVptu97CV7V0xZnwe3/jK1bdd8ZrrlEFt03od+HiEKDKnYxOTs6oWVtQI069sQ9gHSUgrfQSyfqgq8=
+
 # cache vendor dirs
 cache:
   directories:
     - $HOME/.composer/cache/files
 
 addons:
-  sauce_connect:
-    username: "pierredup"
-    access_key:
-         secure: "KJNGNOBRk8diPsfBJWEBNpAi2MWz+VWTo2SAZQw+ZsriYMTUgO6QfPGBWS82N9lzE6Z/O6Z//gMgEFHLm7G8t8/4JWk8+2LlAm9Y+yTirt308gPM2vm0rkYISTruTlXLv18X3auTczKzA6jHjKGcZIKMWwgEKWRcEH1cmVeJg74="
+  sauce_connect: true
 
 before_install:
   - composer self-update
