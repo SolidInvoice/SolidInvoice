@@ -38,7 +38,7 @@ script:
 after_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi;
-  - php vendor/bin/coveralls -v
+  - php ./bin/coveralls -v
 
 notifications:
   hipchat:
