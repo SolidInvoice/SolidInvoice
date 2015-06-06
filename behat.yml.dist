@@ -21,3 +21,9 @@ default:
             browser_name: firefox
             show_auto:    false
         Behat\Symfony2Extension: ~
+    context:
+        parameters:
+            javascript_session: selenium
+            base_url: http://localhost
+            browser: firefox
+            show_cmd: open %s
