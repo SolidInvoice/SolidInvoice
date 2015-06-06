@@ -16,10 +16,8 @@ sudo: false
 
 env:
   global:
-    - secure: "RseUypq34oKYkpon4UJCaN+0YrAfUPg78xS6NSu0RElW949MviD+2VGfVIoelQTwoQAd/ggICPZSMSGXY+NOwBKxvaYmAberAEoNb0DzXW6KPXAmpvfdjFJ5t2TCU1pGLyjg059jsJI/UdEJa/9EGFWNS0ZVyebNIgv3yl1J7cY="
-    - secure: "Ri6tvMLROKS/zbvkU8JL9tqUomjYXoSbW3GQRNfAHSwo83pCB2USj0AAiqq9xDma0ecRH4rES9aWrdJmD7wTES0E818dRqMwnDbe5N87/9JrkUp8AC3T8xnSdnz5fffZu4pTkNiwV8XQ5XktXGQ68Qh4Ru+5O5iEXHcSWant8cs="
-    - SAUCE_USERNAME=csbill
-    - SAUCE_ACCESS_KEY=dc33d33b-1a56-4333-9195-659844348121
+    - secure: jwilMssemvcgxSjqqAFEieOxGA6LWjMEM0cXYJDScmG7ItL4lDhxOP9R3YLTKA/nUHKLX+bpYxgh6Aztst+Ob+i3ZSIA8VBttSp9nmjY9sZS/udB/3pjgBYmjFcEP4/A0zVDq3H5wD5WXHErsEUR2Os9FvMVJ+IIUoPNgmb6kco=
+    - secure: Gt26IsYTJKiLAmmJsVWkK+IKfoi2LRIwB9tLx2yE6S97EPT5s08VIdNPXbKt6LIfRthZd8CInvZi7zsUx+UQq6WJuY2coQoCD3wQwgXyv3XAvtzFaJg65+ST1DUuMgfma1d33EbMsoXkq7ZWmHW6fzsEYlhTQ/uGr6oNFrTxh0Q=
 
 cache:
   directories:
@@ -38,8 +36,8 @@ before_script:
   - mysql -e 'create database csbill;'
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm"* ]]; then echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
   - php app/check.php
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
   - echo $SAUCE_USERNAME
 
