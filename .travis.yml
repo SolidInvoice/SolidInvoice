@@ -16,10 +16,9 @@ sudo: false
 
 env:
   global:
-    - secure: "g36zEESW2zTfuo6zkf4HgQodrBUHs8NfcZr+MkqdtxClf90n4Rl4RXwUp2oIpfWOlCGFH/aLyidUEgi8//t5WTPCWoV2WH9k/mGNOzdtvOlwzFPYTHJvlEbVzjjJqmJwERhYuU8HiwEzoLXGr0hQvQza6JieTNorYkPzv4H/K3c="
-    - secure: "Wg0vUr9HCVNlqwny7cAXEg/ytEfDpQW1oNoZPscbXl8m0EDChsjzYZrxMSlIuVFLPcURtgWxSKFFh9NZ7e9jS5qMlsoYaeVptu97CV7V0xZnwe3/jK1bdd8ZrrlEFt03od+HiEKDKnYxOTs6oWVtQI069sQ9gHSUgrfQSyfqgq8="
+  - secure: "RseUypq34oKYkpon4UJCaN+0YrAfUPg78xS6NSu0RElW949MviD+2VGfVIoelQTwoQAd/ggICPZSMSGXY+NOwBKxvaYmAberAEoNb0DzXW6KPXAmpvfdjFJ5t2TCU1pGLyjg059jsJI/UdEJa/9EGFWNS0ZVyebNIgv3yl1J7cY="
+  - secure: "Ri6tvMLROKS/zbvkU8JL9tqUomjYXoSbW3GQRNfAHSwo83pCB2USj0AAiqq9xDma0ecRH4rES9aWrdJmD7wTES0E818dRqMwnDbe5N87/9JrkUp8AC3T8xnSdnz5fffZu4pTkNiwV8XQ5XktXGQ68Qh4Ru+5O5iEXHcSWant8cs="
 
-# cache vendor dirs
 cache:
   directories:
     - $HOME/.composer/cache/files
@@ -43,7 +42,7 @@ before_script:
 
 script:
   - php app/console security:check
-  - ./bin/behat --suite=installation -n -f progress
+  - ./bin/behat --suite=installation -n -f progress -vvv
   - ./bin/phpunit -c app
 
 after_script:
