@@ -16,6 +16,7 @@ env:
   global:
     - SAUCE_USERNAME=csbill
     - SAUCE_ACCESS_KEY=dc33d33b-1a56-4333-9195-659844348121
+    - SYMFONY_ENV=test
 
 cache:
   directories:
@@ -25,7 +26,9 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-dist --no-interaction
+  - composer install --prefer-source --no-interaction
+  - php app/console assets:install --no-interaction
+  - php app/console assetic:dump --no-interaction
 
 before_script:
   - mysql -e 'create database csbill;'
@@ -33,23 +36,15 @@ before_script:
   - php app/check.php
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - sudo a2enmod rewrite actions fastcgi alias
-  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  - sudo cp -f travis-ci-apache /etc/apache2/sites-available/default
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo service apache2 restart
+  - bash travis/travis-ci-apache.sh
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
-  - echo $SAUCE_USERNAME
-  #- if [ "$SAUCE_USERNAME" ] ; then (sh sauce.sh); fi
-  - curl -L https://gist.githubusercontent.com/henrikhodne/9322897/raw/sauce-connect.sh | bash
+  - bash travis/sauce.sh
 
 script:
   - php app/console security:check
-  - ./bin/behat --suite=installation -n -f progress -vvv
+  - ./bin/behat --suite=installation -n -f progress
   - ./bin/phpunit -c app
 
 after_script:
