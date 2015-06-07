@@ -22,11 +22,11 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "Database" with "mysql"
-    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
+      | Database      | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
+      | Transport     | mail       |
     And I press "continue_step"
     Then The config should contain the following values:
       | database_driver   | pdo_mysql |
@@ -42,11 +42,11 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "Database" with "mysql"
-    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
+      | Database      | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
+      | Transport     | mail       |
     And I press "continue_step"
     Then I should be on "/install/process"
     And I am on "/install/process?action=createdb"
@@ -60,11 +60,11 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "Database" with "mysql"
-    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
+      | Database      | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
+      | Transport     | mail       |
     And I press "continue_step"
     And I am on "/install/process?action=createdb"
     And I am on "/install/process?action=migrations"
@@ -72,9 +72,9 @@ Feature: Install application
     And I am on "/install/process"
     And I follow "continue_step"
     Then I should be on "/install/setup"
-    And I fill in select2 input "Locale" with "English (United States)"
-    And I fill in select2 input "Currency" with "US Dollar"
     And I fill in the following:
+      | Locale          | en_US       |
+      | Currency        | USD         |
       | Username        | admin       |
       | Email address   | foo@bar.com |
       | Password        | foobar      |
