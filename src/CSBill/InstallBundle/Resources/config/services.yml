@@ -25,8 +25,3 @@ services:
         arguments: [@filesystem]
         calls:
             - [setContainer, [@service_container]]
-
-    csbill.installer.database.fixtures:
-        class: CSBill\InstallBundle\Installer\Database\FixtureLoader
-        calls:
-            - [setContainer, [@service_container]]

@@ -34,7 +34,6 @@ installation:
         step:
             createdb: Creating database
             migrations: Creating database schema
-            fixtures: Loading fixtures
     config:
         title:
             database_config: Database Config
