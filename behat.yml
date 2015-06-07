@@ -9,6 +9,7 @@ default:
         installation:
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
+                - CSBill\CoreBundle\Behat\CoreContext
                 - CSBill\InstallBundle\Behat\InstallContext
             filters:
                 tags: "@installation"

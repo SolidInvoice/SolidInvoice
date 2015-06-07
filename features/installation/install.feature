@@ -22,11 +22,11 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
+    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
+    And I fill in select2 input "config_step_email_settings_transport" with "mail"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
-      | Transport     | mail       |
     And I press "continue_step"
     Then The config should contain the following values:
       | database_driver   | pdo_mysql |
@@ -42,11 +42,11 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
+    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
+    And I fill in select2 input "config_step_email_settings_transport" with "mail"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
-      | Transport     | mail       |
     And I press "continue_step"
     Then I should be on "/install/process"
     And I am on "/install/process?action=createdb"
@@ -60,11 +60,11 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
+    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
+    And I fill in select2 input "config_step_email_settings_transport" with "mail"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
-      | Transport     | mail       |
     And I press "continue_step"
     And I am on "/install/process?action=createdb"
     And I am on "/install/process?action=migrations"
