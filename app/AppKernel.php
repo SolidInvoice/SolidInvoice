@@ -30,7 +30,6 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new APY\DataGridBundle\APYDataGridBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),

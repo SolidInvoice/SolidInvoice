@@ -95,6 +95,31 @@ class Version010 extends AbstractMigration
         $this->addSql("CREATE UNIQUE INDEX UNIQ_1483A5E992FC23A8 ON users (username_canonical)");
         $this->addSql("CREATE UNIQUE INDEX UNIQ_1483A5E9A0D96FBF ON users (email_canonical)");
         $this->addSql("UPDATE users SET roles = 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', username_canonical = username, email_canonical = email, enabled = 1");
+
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'system')");
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, LAST_INSERT_ID(), 'general')");
+
+        $this->addSql("INSERT INTO `app_config` VALUES
+          (NULL, 'app_name', 'CSBill', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'logo', NULL, NULL, LAST_INSERT_ID(), 'image_upload', 'a:0:{}')
+        ");
+
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'quote')");
+        $this->addSql("INSERT INTO `app_config` VALUES
+          (NULL, 'email_subject', 'New Quotation - #{id}', 'To include the id of the quote in the subject, add the placeholder {id} where you want the id', LAST_INSERT_ID(), NULL, 'a:0:{}')
+        ");
+
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'invoice')");
+        $this->addSql("INSERT INTO `app_config` VALUES
+          (NULL, 'email_subject', 'New Invoice - #{id}', 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', LAST_INSERT_ID(), NULL, 'a:0:{}')
+        ");
+
+        $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'email')");
+        $this->addSql("INSERT INTO `app_config` VALUES
+          (NULL, 'from_name', 'CSBill', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'from_address', 'info@csbill.org', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'format', 'both', 'In what format should emails be sent.', LAST_INSERT_ID(), 'radio', 'a:3:{s:4:\"html\";s:4:\"html\";s:4:\"text\";s:4:\"text\";s:4:\"both\";s:4:\"both\";}')
+        ");
     }
 
     public function down(Schema $schema)
@@ -177,5 +202,9 @@ class Version010 extends AbstractMigration
         $this->addSql("ALTER TABLE users ADD active TINYINT(1) NOT NULL, DROP username_canonical, DROP email_canonical, DROP enabled, DROP last_login, DROP locked, DROP expired, DROP expires_at, DROP confirmation_token, DROP password_requested_at, DROP roles, DROP credentials_expired, DROP credentials_expire_at, CHANGE username username VARCHAR(25) NOT NULL, CHANGE email email VARCHAR(60) NOT NULL, CHANGE salt salt VARCHAR(32) NOT NULL");
         $this->addSql("CREATE UNIQUE INDEX UNIQ_1483A5E9F85E0677 ON users (username)");
         $this->addSql("CREATE UNIQUE INDEX UNIQ_1483A5E9E7927C74 ON users (email)");
+
+        $this->addSql('DELETE FROM app_config WHERE `key` IN ("app_name", "logo", "email_subject", "from_name", "from_address", "format")');
+        $this->addSql('DELETE FROM config_sections WHERE name IN ("general", "quote", "invoice")');
+        $this->addSql('DELETE FROM config_sections WHERE name = "system"');
     }
 }
