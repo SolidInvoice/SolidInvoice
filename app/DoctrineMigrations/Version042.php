@@ -20,11 +20,17 @@ class Version042 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
 
-        $this->addSql('ALTER TABLE security_token CHANGE payment_name gateway_name VARCHAR(255) NOT NULL;');
+        $this->addSql('ALTER TABLE security_token CHANGE payment_name gateway_name VARCHAR(255) NOT NULL');
+        $this->addSql('UPDATE app_config set setting_value = "info@csbill.org" WHERE setting_key  = "from_address"');
+        $this->addSql('UPDATE app_config set setting_value = "CSBill" WHERE setting_key  = "from_name"');
     }
 
     public function down(Schema $schema)
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+
+        $this->addSql('ALTER TABLE security_token CHANGE gateway_name payment_name VARCHAR(255) NOT NULL');
+        $this->addSql('UPDATE app_config set setting_value = "" WHERE setting_key  = "from_address"');
+        $this->addSql('UPDATE app_config set setting_value = "" WHERE setting_key  = "from_name"');
     }
 }
