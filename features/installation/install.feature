@@ -22,8 +22,8 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
-    And I fill in select2 input "config_step_email_settings_transport" with "mail"
+    And I fill in select2 input "Database" with "mysql"
+    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
       | User          | root       |
       | Database Name | csbill     |
@@ -42,8 +42,8 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
-    And I fill in select2 input "config_step_email_settings_transport" with "mail"
+    And I fill in select2 input "Database" with "mysql"
+    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
       | User          | root       |
       | Database Name | csbill     |
@@ -60,8 +60,8 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
-    And I fill in select2 input "config_step_email_settings_transport" with "mail"
+    And I fill in select2 input "Database" with "mysql"
+    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
       | User          | root       |
       | Database Name | csbill     |
@@ -72,8 +72,8 @@ Feature: Install application
     And I am on "/install/process"
     And I follow "continue_step"
     Then I should be on "/install/setup"
-    And I fill in select2 input "system_information_locale" with "en_US"
-    And I fill in select2 input "system_information_currency" with "USD"
+    And I fill in select2 input "Locale" with "English (United States)"
+    And I fill in select2 input "Currency" with "US Dollar"
     And I fill in the following:
       | Username        | admin       |
       | Email address   | foo@bar.com |
