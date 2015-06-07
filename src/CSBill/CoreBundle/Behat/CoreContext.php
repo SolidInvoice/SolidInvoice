@@ -20,9 +20,9 @@ class CoreContext extends DefaultContext
     {
         $page = $this->getSession()->getPage();
 
-        $field = $page->findField($field);
+        $element = $page->findField($field);
 
-        $select2 = $field->getParent()->find('css', 'select2-container');
+        $select2 = $element->getParent()->find('css', '.select2-container');
 
         if (!$select2) {
             throw new \Exception(sprintf('Field %s found', $field));
