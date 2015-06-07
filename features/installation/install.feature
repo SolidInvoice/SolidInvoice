@@ -72,9 +72,9 @@ Feature: Install application
     And I am on "/install/process"
     And I follow "continue_step"
     Then I should be on "/install/setup"
+    And I fill in select2 input "system_information_locale" with "en_US"
+    And I fill in select2 input "system_information_currency" with "USD"
     And I fill in the following:
-      | Locale          | en_US       |
-      | Currency        | USD         |
       | Username        | admin       |
       | Email address   | foo@bar.com |
       | Password        | foobar      |
