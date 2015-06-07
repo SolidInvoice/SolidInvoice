@@ -26,9 +26,9 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-source --no-interaction
-  - php app/console assets:install --no-interaction
-  - php app/console assetic:dump --no-interaction
+  - composer install --prefer-source -n
+  - php app/console assets:install -n
+  - php app/console assetic:dump -n
 
 before_script:
   - mysql -e 'create database csbill;'
@@ -45,7 +45,7 @@ before_script:
 script:
   - php app/console security:check
   - ./bin/behat --suite=installation -n -f progress
-  - ./bin/phpunit -c app
+  - bash travis/phpunit.sh
 
 after_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
