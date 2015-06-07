@@ -1,7 +1,6 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: default_settings.yml }
     - { resource: payments.yml }
     - { resource: @CSBillInvoiceBundle/Resources/config/finite.yml }
     - { resource: @CSBillQuoteBundle/Resources/config/finite.yml }

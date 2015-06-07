@@ -37,7 +37,6 @@
         "jms/security-extra-bundle": "~1.5",
         "doctrine/migrations": "~1.0@dev",
         "doctrine/doctrine-migrations-bundle": "~2.1@dev",
-        "doctrine/doctrine-fixtures-bundle": "~2.2",
         "apy/datagrid-bundle": "2.2.1",
         "pagerfanta/pagerfanta": "~1.0",
         "stof/doctrine-extensions-bundle": "~1.1",

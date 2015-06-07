@@ -64,15 +64,40 @@ class LoaderTest extends KernelAwareTest
      */
     public function testSaveSettings(array $settings)
     {
-        $user = (new User())
-            ->setEmail('a@b.com')
+        $doctrine = $this->container->get('doctrine');
+        $manager = $doctrine->getManager();
+
+        $user = new User();
+        $user->setEmail('a@b.com')
             ->setMobile('+1234567890')
             ->setUsername('admin')
             ->setPassword('admin')
         ;
 
-        $doctrine = $this->container->get('doctrine');
-        $manager = $doctrine->getManager();
+        /** @var EntityRepository $setting */
+        $settingsRepo = $manager->getRepository('CSBillSettingsBundle:Setting');
+
+        $settingsRepo
+            ->createQueryBuilder('s')
+            ->update()
+            ->set('s.value', ':value')
+            ->where('s.key = :key')
+            ->setParameter('key', 'room_id')
+            ->setParameter('value', 12345)
+            ->getQuery()
+            ->execute()
+        ;
+
+        $settingsRepo
+            ->createQueryBuilder('s')
+            ->update()
+            ->set('s.value', ':value')
+            ->where('s.key = :key')
+            ->setParameter('key', 'auth_token')
+            ->setParameter('value', 'abcdef')
+            ->getQuery()
+            ->execute()
+        ;
 
         $manager->persist($user);
         $manager->flush();
@@ -93,6 +118,65 @@ class LoaderTest extends KernelAwareTest
         }
     }
 
+    /**
+     * @param array $settings
+     * @dataProvider settingsDataProvider
+     */
+    public function testSaveSettingsInvalidHipchatToken(array $settings)
+    {
+        $doctrine = $this->container->get('doctrine');
+
+        $manager = $doctrine->getManager();
+
+        /** @var EntityRepository $setting */
+        $settingsRepo = $manager->getRepository('CSBillSettingsBundle:Setting');
+        $settingsRepo
+            ->createQueryBuilder('s')
+            ->update()
+            ->set('s.value', ':value')
+            ->where('s.key = :key')
+            ->setParameter('key', 'room_id')
+            ->setParameter('value', 12345)
+            ->getQuery()
+            ->execute()
+        ;
+
+        $this->setExpectedException('Exception', 'You need to set a HipChat Auth token in order to enable HipChat notifications');
+
+        $settingsLoader = new Loader($doctrine);
+
+        $settingsLoader->saveSettings($settings);
+    }
+
+    /**
+     * @param array $settings
+     * @dataProvider settingsDataProvider
+     */
+    public function testSaveSettingsInvalidHipchatRoomId(array $settings)
+    {
+        $doctrine = $this->container->get('doctrine');
+
+        $manager = $doctrine->getManager();
+        /** @var EntityRepository $setting */
+        $settingsRepo = $manager->getRepository('CSBillSettingsBundle:Setting');
+        $settingsRepo
+            ->createQueryBuilder('s')
+            ->update()
+            ->set('s.value', ':value')
+            ->where('s.key = :key')
+            ->setParameter('key', 'auth_token')
+            ->setParameter('value', 'ABCDEF')
+            ->getQuery()
+            ->execute()
+        ;
+
+        $this->setExpectedException('Exception', 'You need to set a HipChat Room ID in order to enable HipChat notifications');
+
+        $settingsLoader = new Loader($doctrine);
+
+        $settingsLoader->saveSettings($settings);
+    }
+
     public function tearDown()
     {
         $doctrine = $this->container->get('doctrine');
@@ -108,11 +192,24 @@ class LoaderTest extends KernelAwareTest
         /** @var EntityRepository $repo */
         $repo = $manager->getRepository('CSBillNotificationBundle:Notification');
 
+        /** @var EntityRepository $setting */
+        $setting = $manager->getRepository('CSBillSettingsBundle:Setting');
+
         $repo->createQueryBuilder('n')
             ->update()
             ->set('n.email', 1)
             ->set('n.hipchat', 0)
             ->set('n.sms', 0)
+            ->getQuery()
+            ->execute()
+        ;
+
+        $qb = $setting->createQueryBuilder('s');
+        $qb
+            ->update()
+            ->set('s.value', ':value')
+            ->where($qb->expr()->in('s.key', array('auth_token', 'room_id')))
+            ->setParameter('value', null)
             ->getQuery()
             ->execute()
         ;

@@ -26,9 +26,6 @@
                 <li class="list-group-item" id="step-migrations">
                     {{ 'installation.process.step.migrations'|trans }}
                 </li>
-                <li class="list-group-item" id="step-fixtures">
-                    {{ 'installation.process.step.fixtures'|trans }}
-                </li>
             </ul>
             <div class="pull-right">
                 <a id="continue_step" href="{{ path('sylius_flow_forward', {'stepName' : 'process'}) }}" class="disabled btn btn-success">
@@ -43,11 +40,9 @@
     $(function () {
         ajaxStep('createdb', function () {
             ajaxStep('migrations', function () {
-                ajaxStep('fixtures', function () {
-                    $('.progress').remove();
-                    $('#install-title').text('{{ 'installation.process.title.done'|trans }}');
-                    $('#continue_step').removeClass('disabled');
-                });
+                $('.progress').remove();
+                $('#install-title').text('{{ 'installation.process.title.done'|trans }}');
+                $('#continue_step').removeClass('disabled');
             });
         });
     });

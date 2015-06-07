@@ -125,6 +125,11 @@ class InvoiceManager extends ContainerAware
      */
     public function create(Invoice $invoice)
     {
+        // Set the invoice status as new and save, before we transition to the correct status
+        $invoice->setStatus(Graph::STATUS_NEW);
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
         $this->applyTransition($invoice, Graph::TRANSITION_NEW);
 
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CREATE, new InvoiceEvent($invoice));
@@ -273,9 +278,13 @@ class InvoiceManager extends ContainerAware
                 'transition' => $transition,
             );
 
-            $notification = new InvoiceStatusNotification($parameters);
+            // Do not send status updates for new invoices
+            if ($transition !== Graph::TRANSITION_NEW) {
+                $notification = new InvoiceStatusNotification($parameters);
 
-            $this->notification->sendNotification('invoice_status_update', $notification);
+                $this->notification->sendNotification('invoice_status_update', $notification);
+            }
+
 
             return true;
         }

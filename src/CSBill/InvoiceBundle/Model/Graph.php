@@ -29,4 +29,5 @@ final class Graph
     const STATUS_OVERDUE = 'overdue';
     const STATUS_CANCELLED = 'cancelled';
     const STATUS_ARCHIVED = 'archived';
+    const STATUS_NEW = 'new';
 }

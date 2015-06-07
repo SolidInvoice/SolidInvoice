@@ -64,17 +64,6 @@ class InstallStep extends ControllerStep
                     }
 
                     break;
-                case 'fixtures' :
-                    $fixtureLoader = $this->get('csbill.installer.database.fixtures');
-
-                    try {
-                        $fixtureLoader->execute();
-                        $result['success'] = true;
-                    } catch (\Exception $e) {
-                        $result['success'] = false;
-                        $result['message'] = $e->getMessage();
-                    }
-                    break;
             }
 
             return new JsonResponse($result);
