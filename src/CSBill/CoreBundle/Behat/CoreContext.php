@@ -20,13 +20,15 @@ class CoreContext extends DefaultContext
     {
         $page = $this->getSession()->getPage();
 
-        $select2 = $page->find('css', 's2id_'.$field.' .select2-choice');
+        $field = $page->findField($field);
+
+        $select2 = $field->getParent()->find('css', 'select2-container');
 
         if (!$select2) {
             throw new \Exception(sprintf('Field %s found', $field));
         }
 
-        $select2->click();
+        $select2->press();
 
         $chosenResults = $page->findAll('css', '.select2-results li');
 
