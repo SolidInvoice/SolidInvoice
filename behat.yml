@@ -17,10 +17,10 @@ default:
     extensions:
         Behat\MinkExtension:
             base_url: http://localhost
-            default_session: saucelabs
+            default_session: symfony
             javascript_session: saucelabs
             sessions:
-                symfony2:
+                symfony:
                     symfony2: ~
                 saucelabs:
                     sauce_labs:
