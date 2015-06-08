@@ -21,6 +21,8 @@ class FinishStep extends ControllerStep
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        return $this->render('CSBillInstallBundle:Flow:finish.html.twig');
+        $rootDir = $this->container->getParameter('kernel.root_dir');
+
+        return $this->render('CSBillInstallBundle:Flow:finish.html.twig', array('rootDir' => $rootDir));
     }
 }
