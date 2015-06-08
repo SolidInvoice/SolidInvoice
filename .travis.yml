@@ -44,7 +44,7 @@ before_script:
 
 script:
   - php app/console security:check
-  - ./bin/behat --suite=installation -n -f progress
+  - bash travis/behat.sh
   - bash travis/phpunit.sh
 
 after_script:

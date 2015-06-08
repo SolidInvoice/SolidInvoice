@@ -14,6 +14,14 @@ default:
             filters:
                 tags: "@installation"
 
+        login:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - CSBill\CoreBundle\Behat\CoreContext
+                - CSBill\UserBundle\Behat\UserContext
+            filters:
+                tags: "@login"
+
     extensions:
         Behat\MinkExtension:
             base_url: http://localhost
