@@ -23,7 +23,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in the following:
-      | Database      | pdo_mysql  |
+      | Driver        | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
       | Transport     | mail       |
@@ -43,7 +43,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in the following:
-      | Database      | pdo_mysql  |
+      | Driver        | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
       | Transport     | mail       |
@@ -61,7 +61,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in the following:
-      | Database      | pdo_mysql  |
+      | Driver        | pdo_mysql  |
       | User          | root       |
       | Database Name | csbill     |
       | Transport     | mail       |
