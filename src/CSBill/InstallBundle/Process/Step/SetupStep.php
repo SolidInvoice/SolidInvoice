@@ -15,6 +15,7 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\UserBundle\Entity\User;
+use RandomLib\Factory;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -106,14 +107,14 @@ class SetupStep extends ControllerStep
      */
     private function saveCurrentVersion()
     {
-        $verion = CSBillCoreBundle::VERSION;
+        $version = CSBillCoreBundle::VERSION;
 
         $entityManager = $this->container->get('doctrine')->getManager();
 
         /** @var VersionRepository $repository */
         $repository = $entityManager->getRepository('CSBillCoreBundle:Version');
 
-        $repository->updateVersion($verion);
+        $repository->updateVersion($version);
     }
 
     /**
@@ -123,12 +124,15 @@ class SetupStep extends ControllerStep
      */
     protected function saveConfig(array $data)
     {
+        $factory = new Factory;
+
         $time = new \DateTime('NOW');
 
         $config = array(
             'locale' => $data['locale'],
             'currency' => $data['currency'],
             'installed' => $time->format(\DateTime::ISO8601),
+            'secret' => $factory->getMediumStrengthGenerator()->generateString(64)
         );
 
         $this->get('csbill.core.config_writer')->dump($config);

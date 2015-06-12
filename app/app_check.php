@@ -77,6 +77,10 @@ if (!empty($messages['warning'])) {
     }
 }
 
+if (isset($return) && true === $return) {
+    return $checkPassed ? 0 : 1;
+}
+
 exit($checkPassed ? 0 : 1);
 
 function get_error_message(Requirement $requirement, $lineSize)

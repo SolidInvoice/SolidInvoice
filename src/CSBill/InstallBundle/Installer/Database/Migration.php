@@ -13,6 +13,7 @@ namespace CSBill\InstallBundle\Installer\Database;
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration as VersionMigration;
+use Doctrine\DBAL\Migrations\OutputWriter;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -38,11 +39,12 @@ class Migration extends ContainerAware
     }
 
     /**
-     * @return array
+     * @param \Closure $outputWriter
      *
+     * @return array
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      */
-    public function migrate()
+    public function migrate(\Closure $outputWriter = null)
     {
         $dir = $this->container->getParameter('doctrine_migrations.dir_name');
 
@@ -50,7 +52,7 @@ class Migration extends ContainerAware
             $this->filesystem->mkdir($dir);
         }
 
-        $configuration = $this->getConfiguration($dir);
+        $configuration = $this->getConfiguration($dir, $outputWriter);
 
         $versions = $configuration->getMigrations();
 
@@ -67,17 +69,17 @@ class Migration extends ContainerAware
     }
 
     /**
-     * @param string $dir
+     * @param string   $dir
+     *
+     * @param \Closure $outputWriter
      *
      * @return Configuration
-     *
-     * @throws \Doctrine\DBAL\DBALException
      */
-    private function getConfiguration($dir)
+    private function getConfiguration($dir, \Closure $outputWriter = null)
     {
         $connection = $this->container->get('database_connection');
 
-        $configuration = new Configuration($connection);
+        $configuration = new Configuration($connection, new OutputWriter($outputWriter));
         $configuration->setMigrationsNamespace($this->container->getParameter('doctrine_migrations.namespace'));
         $configuration->setMigrationsDirectory($dir);
         $configuration->registerMigrationsFromDirectory($dir);
