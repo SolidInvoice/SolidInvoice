@@ -61,7 +61,7 @@ class AjaxController extends BaseController
 
             $paymentMethod->setSettings($settings);
             $this->save($paymentMethod);
-            $this->flash($this->trans('payment_method_updated'), 'success');
+            $this->flash($this->trans('payment.method.updated'), 'success');
         }
 
         return new JsonResponse(array(

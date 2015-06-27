@@ -13,6 +13,13 @@ parameters:
     payum.class: CSBill\PaymentBundle\Payum
 
 services:
+
+    payum.static_registry:
+        class: CSBill\PaymentBundle\Payum
+        arguments: [[], [], []]
+        calls:
+            - [setContainer, [@service_container]]
+
     csbill_payment.menu.top:
         class: %csbill_payment.menu.top.class%
         tags:
