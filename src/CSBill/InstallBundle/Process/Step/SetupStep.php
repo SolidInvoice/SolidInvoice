@@ -132,7 +132,7 @@ class SetupStep extends ControllerStep
             'locale' => $data['locale'],
             'currency' => $data['currency'],
             'installed' => $time->format(\DateTime::ISO8601),
-            'secret' => $factory->getMediumStrengthGenerator()->generateString(64)
+            'secret' => $factory->getMediumStrengthGenerator()->generateString(32)
         );
 
         $this->get('csbill.core.config_writer')->dump($config);
