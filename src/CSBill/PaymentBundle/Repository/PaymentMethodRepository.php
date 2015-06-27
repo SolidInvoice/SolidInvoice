@@ -12,6 +12,7 @@
 namespace CSBill\PaymentBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 class PaymentMethodRepository extends EntityRepository
 {
@@ -28,7 +29,11 @@ class PaymentMethodRepository extends EntityRepository
             ->where('pm.paymentMethod = :paymentMethod')
             ->setParameter('paymentMethod', $paymentMethod);
 
-        $settings = $queryBuilder->getQuery()->getSingleResult();
+        try {
+            $settings = $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return array();
+        }
 
         return $settings['settings'];
     }
