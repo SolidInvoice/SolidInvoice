@@ -202,7 +202,7 @@ class InstallCommand extends ContainerAwareCommand
             'mailer_encryption' => $input->getOption('mailer-encryption'),
             'locale' => $input->getOption('locale'),
             'currency' => $input->getOption('currency'),
-            'secret' => $factory->getMediumStrengthGenerator()->generateString(64),
+            'secret' => $factory->getMediumStrengthGenerator()->generateString(32),
         );
 
         $this->getContainer()->get('csbill.core.config_writer')->dump($config);
