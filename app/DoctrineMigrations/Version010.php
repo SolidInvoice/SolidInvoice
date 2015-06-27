@@ -120,6 +120,13 @@ class Version010 extends AbstractMigration
           (NULL, 'from_address', 'info@csbill.org', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
           (NULL, 'format', 'both', 'In what format should emails be sent.', LAST_INSERT_ID(), 'radio', 'a:3:{s:4:\"html\";s:4:\"html\";s:4:\"text\";s:4:\"text\";s:4:\"both\";s:4:\"both\";}')
         ");
+
+        $this->addSql("INSERT INTO `contact_types` VALUES
+          (NULL, 'email', 1, 'email', 'a:1:{s:11:\"constraints\";a:1:{i:0;s:5:\"email\";}}'),
+          (NULL, 'mobile', 0, 'text', 'N;'),
+          (NULL, 'phone', 0, 'text', 'N;'),
+          (NULL, 'address', 0, 'textarea', 'N;')
+        ");
     }
 
     public function down(Schema $schema)
