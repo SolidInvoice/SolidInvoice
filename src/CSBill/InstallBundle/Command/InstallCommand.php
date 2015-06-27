@@ -63,7 +63,9 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (null !== $this->getContainer()->getParameter('installed')) {
+        $container = $this->getContainer();
+
+        if (null !== $container->getParameter('installed')) {
             throw new ApplicationInstalledException();
         }
 
@@ -82,6 +84,17 @@ class InstallCommand extends ContainerAwareCommand
 
         $output->writeln('');
         $output->writeln($success);
+        $output->writeln('');
+
+        $output->writeln('As a final step, you must add a scheduled task to run daily.');
+        $output->writeln('You can choose what time the command should run, but 12AM is a good default if you are unsure.');
+        $output->writeln('');
+        $output->writeln('Add the following cron job to run daily at 12AM:');
+        $output->writeln('');
+        $output->writeln(sprintf(
+            '<comment>0 0 * * * php %s/console cron:run -e prod -n</comment>',
+            $container->getParameter('kernel.root_dir')
+        ));
     }
 
     /**
