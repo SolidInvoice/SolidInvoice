@@ -1,4 +1,16 @@
 
+0.4.2 / 2015-07-01
+==================
+
+  * [PaymentBundle] Simplify payment method settings to not rely on services to be created
+  * Add contact types to database migrations
+  * Remove fixtures from installation process
+  * Set default email from name and address
+  * Move migrations to more version specific files
+  * Fix confirm dialog styles
+  * Load Router JavaScript earlier to fix Router variable not defined
+  * Fix InvoiceManager Unit test
+
 0.4.1 / 2015-06-01
 ==================
 
