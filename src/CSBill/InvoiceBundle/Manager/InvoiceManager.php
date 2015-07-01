@@ -89,6 +89,7 @@ class InvoiceManager extends ContainerAware
         $invoice->setTotal($quote->getTotal());
         $invoice->setTerms($quote->getTerms());
         $invoice->setUsers($quote->getUsers()->toArray());
+        $invoice->setBalance($invoice->getTotal());
 
         if (null !== $quote->getTax()) {
             $invoice->setTax($quote->getTax());
