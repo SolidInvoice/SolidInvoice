@@ -21,6 +21,7 @@ use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Form\PaymentForm;
 use CSBill\PaymentBundle\Model\Status;
+use Payum\Core\Model\Token;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -148,9 +149,10 @@ class PaymentController extends BaseController
      */
     public function captureDoneAction(Request $request)
     {
+        /** @var Token $token */
         $token = $this->get('payum.security.http_request_verifier')->verify($request);
 
-        $paymentMethod = $this->get('payum')->getGateway($token->getPaymentName());
+        $paymentMethod = $this->get('payum')->getGateway($token->getGatewayName());
         $paymentMethod->execute($status = new StatusRequest($token));
 
         /** @var \CSBill\PaymentBundle\Entity\Payment $payment */

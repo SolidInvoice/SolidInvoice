@@ -81,7 +81,7 @@ class CapturePaymentAction extends GatewayAwareAction
         }
 
         /*$notifyUrl = $this->tokenFactory->createNotifyToken(
-            $request->getToken()->getPaymentName(),
+            $request->getToken()->getGatewayName(),
             $payment
         )->getTargetUrl();
 
