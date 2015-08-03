@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -34,7 +34,7 @@ class CapturePaymentAction extends GatewayAwareAction
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute($request)
     {
@@ -64,7 +64,7 @@ class CapturePaymentAction extends GatewayAwareAction
             $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($item->getPrice(), 2);
             $details['L_PAYMENTREQUEST_0_QTY'.$counter] = $item->getQty();
 
-            $counter++;
+            ++$counter;
         }
 
         if (null !== $invoice->getDiscount()) {
@@ -105,7 +105,7 @@ class CapturePaymentAction extends GatewayAwareAction
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {

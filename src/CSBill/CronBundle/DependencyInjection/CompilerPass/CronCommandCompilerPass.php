@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 /**
  * This file is part of the MiWay Business Insurance project.
  *
@@ -13,9 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class CronCommandCompilerPass
- *
- * @package CSBill\CronBundle\DependencyInjection\CompilerPass
+ * Class CronCommandCompilerPass.
  */
 class CronCommandCompilerPass implements CompilerPassInterface
 {

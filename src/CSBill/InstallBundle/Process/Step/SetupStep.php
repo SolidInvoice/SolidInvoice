@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -124,7 +124,7 @@ class SetupStep extends ControllerStep
      */
     protected function saveConfig(array $data)
     {
-        $factory = new Factory;
+        $factory = new Factory();
 
         $time = new \DateTime('NOW');
 
@@ -132,7 +132,7 @@ class SetupStep extends ControllerStep
             'locale' => $data['locale'],
             'currency' => $data['currency'],
             'installed' => $time->format(\DateTime::ISO8601),
-            'secret' => $factory->getMediumStrengthGenerator()->generateString(32)
+            'secret' => $factory->getMediumStrengthGenerator()->generateString(32),
         );
 
         $this->get('csbill.core.config_writer')->dump($config);
