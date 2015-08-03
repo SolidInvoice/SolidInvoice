@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -42,6 +42,7 @@ class Migration extends ContainerAware
      * @param \Closure $outputWriter
      *
      * @return array
+     *
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      */
     public function migrate(\Closure $outputWriter = null)
@@ -70,7 +71,6 @@ class Migration extends ContainerAware
 
     /**
      * @param string   $dir
-     *
      * @param \Closure $outputWriter
      *
      * @return Configuration
