@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -133,7 +133,6 @@ class InstallCommand extends ContainerAwareCommand
         /** @var Question $question */
         foreach ($options as $option => $question) {
             if (null === $input->getOption($option)) {
-
                 $value = null;
 
                 while (empty($value)) {
@@ -150,7 +149,7 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * Checks if the system matches all the requirements
+     * Checks if the system matches all the requirements.
      *
      * @return int
      */
@@ -197,7 +196,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     private function saveConfig(InputInterface $input)
     {
-        $factory = new Factory;
+        $factory = new Factory();
 
         // Don't update installed here, in case something goes wrong with the rest of the installation process
         $config = array(
@@ -228,6 +227,7 @@ class InstallCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      *
      * @return bool
+     *
      * @throws \Exception
      */
     private function initDb(InputInterface $input, OutputInterface $output)
@@ -254,6 +254,7 @@ class InstallCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      *
      * @return bool
+     *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
@@ -268,7 +269,7 @@ class InstallCommand extends ContainerAwareCommand
             'user' => $input->getOption('database-user'),
             'password' => $input->getOption('database-password'),
             'charset' => 'UTF8',
-            'driverOptions' => array()
+            'driverOptions' => array(),
         );
 
         $tmpConnection = DriverManager::getConnection($params);

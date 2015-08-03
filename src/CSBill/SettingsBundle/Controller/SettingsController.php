@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -33,7 +33,7 @@ class SettingsController extends BaseController
 
         $settings = $manager->getSettings();
 
-        array_walk_recursive($settings, function (Setting & $setting) {
+        array_walk_recursive($settings, function (Setting &$setting) {
             $setting = $setting->getValue();
         });
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -35,7 +35,7 @@ class NotifyPaymentAction extends GatewayAwareAction
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param $request Notify
      */
@@ -59,7 +59,7 @@ class NotifyPaymentAction extends GatewayAwareAction
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {
