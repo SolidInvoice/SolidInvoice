@@ -42,7 +42,7 @@
         "stof/doctrine-extensions-bundle": "~1.1",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "knplabs/knp-menu-bundle": "~2.0",
-        "rhumsaa/uuid": "~2.8",
+        "ramsey/uuid": "~2.8",
         "moontoast/math": "~1.1",
         "oyejorge/less.php": "~1.7",
         "ircmaxell/password-compat": "dev-master",
