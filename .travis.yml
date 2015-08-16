@@ -33,6 +33,7 @@ before_script:
   - php app/check.php
 
 script:
+  - php app/console security:check
   - ./bin/behat --suite=installation -n -f progress
   - ./bin/phpunit -c app
 

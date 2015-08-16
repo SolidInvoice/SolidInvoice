@@ -73,7 +73,8 @@
         "phpunit/phpunit": "~4.4",
         "johnkary/phpunit-speedtrap": "~1.0@dev",
         "fzaninotto/faker": "~1.3",
-        "mockery/mockery": "0.9.*"
+        "mockery/mockery": "0.9.*",
+        "sensiolabs/security-checker": "~3.0"
     },
     "scripts": {
         "post-root-package-install": [
