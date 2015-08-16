@@ -9,13 +9,6 @@
  * with this source code in the file LICENSE.
  */
 
-/**
- * This file is part of the MiWay Business Insurance project.
- *
- * @author      MiWay Developer Team
- * @copyright   Copyright (c) 2014 MiWay Insurance Ltd
- */
-
 namespace CSBill\CronBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
