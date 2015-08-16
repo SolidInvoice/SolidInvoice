@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: payments.yml }
+    - { resource: assetVersion.php }
     - { resource: @CSBillInvoiceBundle/Resources/config/finite.yml }
     - { resource: @CSBillQuoteBundle/Resources/config/finite.yml }
 
@@ -15,8 +16,8 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    templating:
-        engines: ['twig']
+    #templating:
+        #engines: ['twig']
         #assets_version: SomeVersionScheme
     default_locale:  %locale%
     trusted_proxies: ~
