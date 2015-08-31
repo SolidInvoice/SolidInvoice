@@ -55,10 +55,8 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
     {
         $action = $context->getAction();
 
-        /* @var \Payum\Core\Request\Capture $request */
-        $request = $context->getAction();
-
         if ($action instanceof CaptureAction) {
+            $request = $context->getRequest();
             /** @var Payment $payment */
             $payment = $request->getFirstModel();
             $details = $request->getModel();

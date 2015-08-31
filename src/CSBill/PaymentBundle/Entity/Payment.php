@@ -18,6 +18,7 @@ use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -75,7 +76,9 @@ class Payment
     private $status;
 
     /**
-     * @ORM\Column(name="amount", type="float")
+     * @var Money
+     *
+     * @ORM\Column(name="amount", type="money")
      * @Grid\Column(type="currency", title="Total")
      */
     private $totalAmount;
@@ -248,11 +251,11 @@ class Payment
     /**
      * Set amount.
      *
-     * @param float $totalAmount
+     * @param Money $totalAmount
      *
      * @return Payment
      */
-    public function setTotalAmount($totalAmount)
+    public function setTotalAmount(Money $totalAmount)
     {
         $this->totalAmount = $totalAmount;
 
@@ -262,7 +265,7 @@ class Payment
     /**
      * Get amount.
      *
-     * @return float
+     * @return Money
      */
     public function getTotalAmount()
     {

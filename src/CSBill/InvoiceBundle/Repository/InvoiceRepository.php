@@ -14,6 +14,8 @@ namespace CSBill\InvoiceBundle\Repository;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+use Money\Money;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -22,11 +24,18 @@ class InvoiceRepository extends EntityRepository
      *
      * @param Client $client set this parameter to filter per client
      *
-     * @return int
+     * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
+     *
+     * @return Money
      */
     public function getTotalIncome(Client $client = null)
     {
-        return $this->getTotalByStatus(Graph::STATUS_PAID, $client);
+        @trigger_error(
+            'This function is deprecated, and the one in PaymentRepository should be used instead',
+            E_USER_DEPRECATED
+        );
+
+        return $this->getTotalByStatus(Graph::STATUS_PAID, $client, 'money');
     }
 
     /**
@@ -51,7 +60,7 @@ class InvoiceRepository extends EntityRepository
 
         $query = $qb->getQuery();
 
-        return (float) $query->getSingleScalarResult();
+        return $query->getSingleResult('money');
     }
 
     /**
@@ -90,11 +99,15 @@ class InvoiceRepository extends EntityRepository
      * Get the total amount for a specific invoice status.
      *
      * @param string $status
-     * @param Client $client set this paramater to filter per client
+     * @param Client $client  filter per client
+     * @param int    $hydrate
      *
      * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getTotalByStatus($status, Client $client = null)
+    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR)
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -109,7 +122,7 @@ class InvoiceRepository extends EntityRepository
 
         $query = $qb->getQuery();
 
-        return $query->getSingleScalarResult();
+        return $query->getSingleResult($hydrate);
     }
 
     /**

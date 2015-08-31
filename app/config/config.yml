@@ -63,6 +63,7 @@ doctrine:
         charset:  UTF8
         types:
             uuid: Rhumsaa\Uuid\Doctrine\UuidType
+            money: CSBill\MoneyBundle\Doctrine\Types\MoneyType
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
@@ -71,6 +72,8 @@ doctrine:
         auto_generate_proxy_classes: %kernel.debug%
         entity_managers:
             default:
+                hydrators:
+                    money: CSBill\MoneyBundle\Doctrine\Hydrator\MoneyHydrator
                 filters:
                     softdeleteable:
                         class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter

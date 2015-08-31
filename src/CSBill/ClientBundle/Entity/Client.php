@@ -423,7 +423,7 @@ class Client
     /**
      * @param Credit $credit
      */
-    public function setCredit($credit)
+    public function setCredit(Credit $credit)
     {
         $this->credit = $credit;
     }
@@ -436,7 +436,6 @@ class Client
         if (null === $this->id) {
             $credit = new Credit();
             $credit->setClient($this);
-            $credit->setValue(0);
             $this->setCredit($credit);
         }
     }

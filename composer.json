@@ -58,7 +58,8 @@
         "namshi/notificator": "~4.0",
         "hipchat/hipchat-php": "~1.4",
         "twilio/sdk": "~4.2",
-        "tijsverkoyen/css-to-inline-styles": "~1.5"
+        "tijsverkoyen/css-to-inline-styles": "~1.5",
+        "mathiasverraes/money": "~1.2"
     },
     "require-dev": {
         "behat/behat": "~3.0",

@@ -65,7 +65,7 @@
                 {{ 'payment.details.amount'|trans({}, 'email') }}
             </th>
             <td>
-                {{ payment.totalAmount }}
+                {{ payment.totalAmount|formatCurrency }}
             </td>
         </tr>
 

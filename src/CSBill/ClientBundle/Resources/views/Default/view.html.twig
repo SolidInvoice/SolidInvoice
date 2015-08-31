@@ -171,16 +171,16 @@
         <hr />
         <div class="row">
             <div class="text-center text-success">
-                <h3>{{ total_income|currency }}</h3>
+                <h3>{{ total_income|formatCurrency }}</h3>
                 {{ "client.stats.income"|trans }}
             </div>
             <div class="text-center text-danger">
-                <h3>{{ total_outstanding|currency }}</h3>
+                <h3>{{ total_outstanding|formatCurrency }}</h3>
                 {{ "client.stats.outstanding"|trans }}
             </div>
             <div class="text-center text-info">
                 <h3 id="client-credit-value">
-                    {{ client.credit.value|currency }}
+                    {{ client.credit.value|formatCurrency }}
                 </h3>
 
                 <a href="{{ path('_clients_add_credit', {'id' : client.id}) }}" rel="tooltip" title="{{ 'client.view.actions.add_credit'|trans }}" id="add-credit-button">

@@ -53,6 +53,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new CSBill\TaxBundle\CSBillTaxBundle(),
             new CSBill\NotificationBundle\CSBillNotificationBundle(),
             new CSBill\CronBundle\CSBillCronBundle(),
+            new CSBill\MoneyBundle\CSBillMoneyBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

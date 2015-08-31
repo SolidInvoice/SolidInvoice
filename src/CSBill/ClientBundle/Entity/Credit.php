@@ -14,6 +14,7 @@ namespace CSBill\ClientBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 
 /**
  * CSBill\ClientBundle\Entity\Credit.
@@ -36,13 +37,14 @@ class Credit
     private $id;
 
     /**
-     * @ORM\Column(name="value", type="float")
+     * @ORM\Column(name="value", type="money")
+     *
+     * @var Money
      */
     private $value;
 
     /**
      * @var Client
-     *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
      */
     private $client;
@@ -72,18 +74,19 @@ class Credit
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getValue()
     {
         return $this->value;
     }
+
     /**
-     * @param float $value
+     * @param Money $value
      *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue(Money $value)
     {
         $this->value = $value;
 
@@ -95,6 +98,6 @@ class Credit
      */
     public function __toString()
     {
-        return $this->value;
+        return $this->value->getAmount();
     }
 }

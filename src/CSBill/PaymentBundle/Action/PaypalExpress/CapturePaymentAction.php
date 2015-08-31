@@ -11,6 +11,7 @@
 
 namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
+use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use CSBill\PaymentBundle\Entity\Payment;
 use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -26,11 +27,18 @@ class CapturePaymentAction extends GatewayAwareAction
     protected $tokenFactory;
 
     /**
-     * @param GenericTokenFactoryInterface $tokenFactory
+     * @var MoneyFormatter
      */
-    public function __construct(GenericTokenFactoryInterface $tokenFactory)
+    private $formatter;
+
+    /**
+     * @param GenericTokenFactoryInterface $tokenFactory
+     * @param MoneyFormatter               $formatter
+     */
+    public function __construct(GenericTokenFactoryInterface $tokenFactory, MoneyFormatter $formatter)
     {
         $this->tokenFactory = $tokenFactory;
+        $this->formatter = $formatter;
     }
 
     /**
@@ -49,34 +57,34 @@ class CapturePaymentAction extends GatewayAwareAction
 
         $invoice = $payment->getInvoice();
 
-        $details = array();
+        $details = [];
 
         $details['PAYMENTREQUEST_0_INVNUM'] = $invoice->getId().'-'.$payment->getId();
         $details['PAYMENTREQUEST_0_CURRENCYCODE'] = $payment->getCurrencyCode();
-        $details['PAYMENTREQUEST_0_AMT'] = number_format($invoice->getTotal(), 2);
-        $details['PAYMENTREQUEST_0_ITEMAMT'] = number_format($invoice->getTotal(), 2);
+        $details['PAYMENTREQUEST_0_AMT'] = number_format($this->formatter->toFloat($invoice->getTotal()), 2);
+        $details['PAYMENTREQUEST_0_ITEMAMT'] = number_format($this->formatter->toFloat($invoice->getTotal()), 2);
 
         $counter = 0;
         foreach ($invoice->getItems() as $item) {
             /* @var \CSBill\InvoiceBundle\Entity\Item $item */
 
             $details['L_PAYMENTREQUEST_0_NAME'.$counter] = $item->getDescription();
-            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($item->getPrice(), 2);
+            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($this->formatter->toFloat($item->getPrice()), 2);
             $details['L_PAYMENTREQUEST_0_QTY'.$counter] = $item->getQty();
 
             ++$counter;
         }
 
         if (null !== $invoice->getDiscount()) {
-            $discount = ($invoice->getBaseTotal() * $invoice->getDiscount());
+            $discount = $invoice->getBaseTotal()->multiply($invoice->getDiscount());
             $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Discount';
-            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = '-'.number_format($discount, 2);
+            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = '-'.number_format($this->formatter->toFloat($discount), 2);
             $details['L_PAYMENTREQUEST_0_QTY'.$counter] = 1;
         }
 
         if (null !== $tax = $invoice->getTax()) {
             $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Tax Total';
-            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($tax, 2);
+            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($this->formatter->toFloat($tax), 2);
             $details['L_PAYMENTREQUEST_0_QTY'.$counter] = 1;
         }
 

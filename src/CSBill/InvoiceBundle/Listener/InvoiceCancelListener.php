@@ -47,7 +47,7 @@ class InvoiceCancelListener
 
         $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
-        if ($totalPaid > 0) {
+        if ($totalPaid->isPositive()) {
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);
 
             /** @var CreditRepository $creditRepository */

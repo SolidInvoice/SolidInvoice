@@ -28,7 +28,7 @@ services:
 
     csbill.payment.payum.paypal_express.action.capture_payment_action:
         class: %csbill.payment.payum.paypal_express.action.capture_payment.class%
-        arguments: [@payum.security.token_factory]
+        arguments: [@payum.security.token_factory, @csbill.money.formatter]
         tags:
             - { name: payum.action, factory: paypal_express_checkout_nvp }
 

@@ -254,6 +254,35 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
+     * Checks if an invoice has been paid in full.
+     *
+     * @param Invoice $invoice
+     *
+     * @return bool
+     */
+    public function isFullyPaid(Invoice $invoice)
+    {
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
+
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+        $balance = $invoice->getBalance();
+
+        return $totalPaid->equals($balance) || $totalPaid->greaterThan($balance);
+    }
+
+    /**
+     * @param string $method
+     * @param array  $args
+     *
+     * @throws \Exception
+     */
+    public function __call($method, $args)
+    {
+        throw new InvalidTransitionException($method);
+    }
+
+    /**
      * @param Invoice $invoice
      * @param string  $transition
      *
@@ -272,12 +301,12 @@ class InvoiceManager extends ContainerAware
 
             $newStatus = $invoice->getStatus();
 
-            $parameters = array(
+            $parameters = [
                 'invoice' => $invoice,
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
                 'transition' => $transition,
-            );
+            ];
 
             // Do not send status updates for new invoices
             if ($transition !== Graph::TRANSITION_NEW) {
@@ -290,33 +319,5 @@ class InvoiceManager extends ContainerAware
         }
 
         throw new InvalidTransitionException($transition);
-    }
-
-    /**
-     * Checks if an invoice has been paid in full.
-     *
-     * @param Invoice $invoice
-     *
-     * @return bool
-     */
-    public function isFullyPaid(Invoice $invoice)
-    {
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
-
-        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
-
-        return $totalPaid >= $invoice->getBalance();
-    }
-
-    /**
-     * @param string $method
-     * @param array  $args
-     *
-     * @throws \Exception
-     */
-    public function __call($method, $args)
-    {
-        throw new InvalidTransitionException($method);
     }
 }

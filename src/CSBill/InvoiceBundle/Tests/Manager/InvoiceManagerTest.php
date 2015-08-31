@@ -17,6 +17,8 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
+use Money\Currency;
+use Money\Money;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class InvoiceManagerTest extends KernelTestCase
@@ -60,6 +62,8 @@ class InvoiceManagerTest extends KernelTestCase
 
     public function testCreateFromQuote()
     {
+        $currency = new Currency('USD');
+
         $this
             ->dispatcher
             ->shouldReceive('dispatch')
@@ -79,16 +83,17 @@ class InvoiceManagerTest extends KernelTestCase
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new \DateTime('now'));
-        $item->setPrice(120);
+        $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
+        $item->setTotal(new Money((12 * 10), $currency));
 
         $quote = new Quote();
-        $quote->setBaseTotal(123);
-        $quote->setDiscount(12);
+        $quote->setBaseTotal(new Money(123, $currency));
+        $quote->setDiscount(new Money(12, $currency));
         $quote->setNotes('Notes');
-        $quote->setTax(432);
+        $quote->setTax(new Money(432, $currency));
         $quote->setTerms('Terms');
-        $quote->setTotal(987);
+        $quote->setTotal(new Money(987, $currency));
         $quote->setClient($client);
         $quote->addItem($item);
 

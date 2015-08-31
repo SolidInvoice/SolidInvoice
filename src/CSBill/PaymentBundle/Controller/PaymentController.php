@@ -21,6 +21,7 @@ use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Form\PaymentForm;
 use CSBill\PaymentBundle\Model\Status;
+use Money\Money;
 use Payum\Core\Model\Token;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,6 +68,8 @@ class PaymentController extends BaseController
 
         if ($form->isValid()) {
             $data = $form->getData();
+            /** @var Money $amount */
+            $amount = $data['amount'];
 
             /** @var Entity $paymentMethod */
             $paymentMethod = $data['payment_method'];
@@ -75,10 +78,11 @@ class PaymentController extends BaseController
 
             if ('credit' === $paymentName) {
                 $clientCredit = $invoice->getClient()->getCredit()->getValue();
+
                 $invalid = '';
-                if ($data['amount'] > $clientCredit) {
+                if ($amount->greaterThan($clientCredit)) {
                     $invalid = 'payment.create.exception.not_enough_credit';
-                } elseif ($data['amount'] > $invoice->getBalance()) {
+                } elseif ($amount->greaterThan($invoice->getBalance())) {
                     $invalid = 'payment.create.exception.amount_exceeds_balance';
                 }
 

@@ -55,7 +55,7 @@
                         {{ "invoice.total"|trans }}:
                     </strong>
                     <br />
-                    {{ invoice.total|currency }}
+                    {{ invoice.total|formatCurrency }}
                 </p>
             </td>
             <td style="width: 25%" align="right">
@@ -100,7 +100,7 @@
                     {{ item.description }}
                 </td>
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="right">
-                    {{ item.price|currency }}
+                    {{ item.price|formatCurrency }}
                 </td>
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc;" align="center">
                     {{ item.qty }}
@@ -111,7 +111,7 @@
                     </td>
                 {% endif %}
                 <td style="border-top:1px solid #cccccc; border-left:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ item.total|currency }}
+                    {{ item.total|formatCurrency }}
                 </td>
             </tr>
         {% endfor %}
@@ -123,7 +123,7 @@
                     <strong>{{ "invoice.subtotal"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    <span style="color:#b94a48">{{ invoice.baseTotal|currency }}</span>
+                    <span style="color:#b94a48">{{ invoice.baseTotal|formatCurrency }}</span>
                 </td>
             </tr>
         {% endif %}
@@ -134,7 +134,7 @@
                     <strong>{{ "invoice.discount"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    <span style="color:#b94a48">{{ invoice.baseTotal|percentage(invoice.discount)|currency }}</span>
+                    <span style="color:#b94a48">{{ invoice.baseTotal|percentage(invoice.discount)|formatCurrency }}</span>
                 </td>
             </tr>
         {% endif %}
@@ -145,7 +145,7 @@
                     <strong>{{ "invoice.tax"|trans }}</strong>
                 </td>
                 <td style="border-top:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                    {{ invoice.tax|currency }}
+                    {{ invoice.tax|formatCurrency }}
                 </td>
             </tr>
         {% endif %}
@@ -155,7 +155,7 @@
                 <strong>{{ "invoice.total"|trans }}</strong>
             </td>
             <td style="border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;" align="right">
-                {{ invoice.total|currency }}
+                {{ invoice.total|formatCurrency }}
             </td>
         </tr>
     </tfoot>
