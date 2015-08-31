@@ -19,6 +19,7 @@ use CSBill\PaymentBundle\Repository\PaymentRepository;
 use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Currency;
 
 class StatsWidget implements WidgetInterface
 {
@@ -28,11 +29,18 @@ class StatsWidget implements WidgetInterface
     private $manager;
 
     /**
-     * @param ManagerRegistry $registry
+     * @var Currency
      */
-    public function __construct(ManagerRegistry $registry)
+    private $currency;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param Currency        $currency
+     */
+    public function __construct(ManagerRegistry $registry, Currency $currency)
     {
         $this->manager = $registry->getManager();
+        $this->currency = $currency;
     }
 
     /**
@@ -50,18 +58,18 @@ class StatsWidget implements WidgetInterface
         $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
 
         $totalInvoices = $invoiceRepository->getCountByStatus(
-            array(
+            [
                 InvoiceGraph::STATUS_PENDING,
                 InvoiceGraph::STATUS_OVERDUE,
-            )
+            ]
         );
 
-        return array(
+        return [
             'totalClients' => $clientRepository->getTotalClients(ClientStatus::STATUS_ACTIVE),
             'totalQuotes' => $quoteRepository->getTotalQuotes(QuoteGraph::STATUS_PENDING),
             'totalInvoices' => $totalInvoices,
             'totalIncome' => $paymentRepository->getTotalIncome(),
-        );
+        ];
     }
 
     /**

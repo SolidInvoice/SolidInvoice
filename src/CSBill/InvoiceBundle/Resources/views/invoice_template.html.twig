@@ -46,7 +46,7 @@
                             <dd>{{ invoice.id }}</dd>
 
                             <dt>{{ "invoice.total"|trans }}</dt>
-                            <dd>{{ invoice.total|currency }}</dd>
+                            <dd>{{ invoice.total|formatCurrency }}</dd>
                             <dt>{{ "invoice.created"|trans }}</dt>
                             <dd>{{ invoice.created | date }}</dd>
                             </dl>
@@ -82,7 +82,7 @@
                                                 {{ item.description }}
                                             </td>
                                             <td class="column-price">
-                                                {{ item.price|currency }}
+                                                {{ item.price|formatCurrency }}
                                             </td>
                                             <td class="column-qty">
                                                 {{ item.qty }}
@@ -93,7 +93,7 @@
                                                 </td>
                                             {% endif %}
                                             <td class="column-total">
-                                                {{ item.total|currency }}
+                                                {{ item.total|formatCurrency }}
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -107,7 +107,7 @@
                                             </td>
                                             <td class="thick-line text-right">
                                                 <div class="invoice-sub-total">
-                                                    {{ invoice.baseTotal|currency }}
+                                                    {{ invoice.baseTotal|formatCurrency }}
                                                 </div>
                                             </td>
                                         </tr>
@@ -120,7 +120,7 @@
                                             </td>
                                             <td class="no-line text-right">
                                                 <span class="text-error invoice-tax">
-                                                    {{ invoice.tax|currency }}
+                                                    {{ invoice.tax|formatCurrency }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -133,13 +133,13 @@
                                             </td>
                                             <td class="no-line text-right">
                                                 <span class="text-danger invoice-discount">
-                                                    {{ invoice.baseTotal|percentage(invoice.discount)|currency }}
+                                                    {{ invoice.baseTotal|percentage(invoice.discount)|formatCurrency }}
                                                 </span>
                                             </td>
                                         </tr>
                                     {% endif %}
                                     {% set paid = 0 %}
-                                    {% if invoice.payments|length > 0 and invoice.balance != 0 %}
+                                    {% if invoice.payments|length > 0 and not invoice.balance.zero %}
                                         {% for payment in invoice.payments %}
                                             <tr>
                                                 <td class="no-line"></td>
@@ -151,7 +151,7 @@
                                                 </td>
                                                 <td class="no-line text-right">
                                                     <div class="text-danger invoice-total">
-                                                        -{{ payment.totalAmount|currency }}
+                                                        -{{ payment.totalAmount|formatCurrency }}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -161,7 +161,7 @@
                                         <td class="no-line"></td>
                                         <td colspan="{{ footerSpan }}" class="no-line text-right">
                                             <strong>
-                                                {% if invoice.payments|length > 0 and invoice.balance != 0 %}
+                                                {% if invoice.payments|length > 0 and not invoice.balance.zero %}
                                                     {{ 'invoice.balance'|trans }}
                                                 {% else %}
                                                     {{ 'invoice.total'|trans }}
@@ -170,10 +170,10 @@
                                         </td>
                                         <td class="no-line text-right">
                                             <div class="invoice-total">
-                                                {% if invoice.payments|length > 0 and invoice.balance != 0 %}
-                                                    {{ invoice.balance|currency }}
+                                                {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+                                                    {{ invoice.balance|formatCurrency }}
                                                 {% else %}
-                                                    {{ invoice.total|currency }}
+                                                    {{ invoice.total|formatCurrency }}
                                                 {% endif %}
                                             </div>
                                         </td>

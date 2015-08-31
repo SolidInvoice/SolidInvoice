@@ -15,6 +15,7 @@ use CSBill\TaxBundle\Entity\Tax;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -49,9 +50,9 @@ class Item
     private $description;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="price", type="decimal", scale=2)
+     * @ORM\Column(name="price", type="money")
      * @Assert\NotBlank
      */
     private $price;
@@ -77,8 +78,9 @@ class Item
     private $tax;
 
     /**
-     * @var float
-     * @ORM\Column(name="total", type="decimal", scale=2)
+     * @var Money
+     *
+     * @ORM\Column(name="total", type="money")
      */
     private $total;
 
@@ -119,11 +121,11 @@ class Item
     /**
      * Set the price.
      *
-     * @param float $price
+     * @param Money $price
      *
      * @return Item
      */
-    public function setPrice($price)
+    public function setPrice(Money $price)
     {
         $this->price = $price;
 
@@ -133,7 +135,7 @@ class Item
     /**
      * Get the price.
      *
-     * @return float
+     * @return Money
      */
     public function getPrice()
     {
@@ -189,11 +191,11 @@ class Item
     }
 
     /**
-     * @param float $total
+     * @param Money $total
      *
-     * @return $this
+     * @return Item
      */
-    public function setTotal($total)
+    public function setTotal(Money $total)
     {
         $this->total = $total;
 
@@ -203,7 +205,7 @@ class Item
     /**
      * Get the line item total.
      *
-     * @return float
+     * @return Money
      */
     public function getTotal()
     {
@@ -237,7 +239,7 @@ class Item
      */
     public function updateTotal()
     {
-        $this->total = $this->qty * $this->price;
+        $this->total = $this->price->multiply($this->qty);
     }
 
     /**

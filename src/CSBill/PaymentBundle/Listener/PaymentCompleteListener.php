@@ -90,7 +90,7 @@ class PaymentCompleteListener
             } else {
                 $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
                 $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
-                $invoice->setBalance($invoice->getTotal() - $totalPaid);
+                $invoice->setBalance($invoice->getTotal()->subtract($totalPaid));
                 $this->manager->persist($invoice);
                 $this->manager->flush();
             }

@@ -29,16 +29,16 @@
     <script type="text/javascript">
         accounting.settings = {
                 currency: {
-                    symbol : "{{ currency.currencySymbol }}",
-                    format: "%s%v", // TODO : set format. controls output: %s = symbol, %v = value/number (can be object: see below)
-                    decimal : "{{ currency.decimalSeparator }}",  // decimal point separator
-                    thousand: "{{ currency.thousandSeparator }}",  // thousands separator
-                    precision : 2   // decimal places
+                    symbol : "{{ currencyFormatter().currencySymbol }}",
+                    format: "{{ currencyFormatter().pattern }}",
+                    decimal : "{{ currencyFormatter().decimalSeparator }}",
+                    thousand: "{{ currencyFormatter().thousandSeparator }}",
+                    precision : 2
                 },
                 number: {
-                    precision : 0,  // default precision on numbers is 0
-                    thousand: "{{ currency.thousandSeparator }}",
-                    decimal : "{{ currency.decimalSeparator }}"
+                    precision : 0,
+                    thousand: "{{ currencyFormatter().thousandSeparator }}",
+                    decimal : "{{ currencyFormatter().decimalSeparator }}"
                 }
             };
 

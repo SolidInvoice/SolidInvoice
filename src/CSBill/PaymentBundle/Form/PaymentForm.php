@@ -13,10 +13,12 @@ namespace CSBill\PaymentBundle\Form;
 
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\ORM\Query\Expr;
+use Money\Money;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PaymentForm extends AbstractType
 {
@@ -60,7 +62,14 @@ class PaymentForm extends AbstractType
             array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\GreaterThan(0),
+                    new Assert\Callback(function (Money $money, ExecutionContextInterface $context) {
+                        if ($money->isZero() || $money->isNegative()) {
+                            $context->buildViolation('This value should be greater than {{ compared_value }}.')
+                                ->setParameter('{{ value }}', $money->getAmount())
+                                ->setParameter('{{ compared_value }}', 0)
+                                ->addViolation();
+                        }
+                    }),
                 ),
             )
         );

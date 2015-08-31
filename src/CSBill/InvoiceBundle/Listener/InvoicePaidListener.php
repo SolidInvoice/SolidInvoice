@@ -15,6 +15,8 @@ use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Money\Currency;
+use Money\Money;
 
 class InvoicePaidListener
 {
@@ -24,11 +26,18 @@ class InvoicePaidListener
     private $manager;
 
     /**
-     * @param ObjectManager $manager
+     * @var Currency
      */
-    public function __construct(ObjectManager $manager)
+    private $currency;
+
+    /**
+     * @param ObjectManager $manager
+     * @param Currency      $currency
+     */
+    public function __construct(ObjectManager $manager, Currency $currency)
     {
         $this->manager = $manager;
+        $this->currency = $currency;
     }
 
     /**
@@ -41,15 +50,17 @@ class InvoicePaidListener
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
 
-        $invoice->setBalance(0);
+        $invoice->setBalance(new Money(0, $this->currency));
         $this->manager->persist($invoice);
 
-        if (($totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice)) > $invoice->getTotal()) {
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+
+        if ($totalPaid->greaterThan($invoice->getTotal())) {
             $client = $invoice->getClient();
 
             /** @var CreditRepository $creditRepository */
             $creditRepository = $this->manager->getRepository('CSBillClientBundle:Credit');
-            $creditRepository->addCredit($client, ($totalPaid - $invoice->getTotal()));
+            $creditRepository->addCredit($client, $totalPaid->subtract($invoice->getTotal()));
         }
 
         $this->manager->flush();

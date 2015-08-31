@@ -24,13 +24,9 @@ class CreditType extends AbstractType
     {
         $builder->add(
             'amount',
-            'number',
+            'money',
             array(
-                'precision' => 2,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Type('float'),
-                ),
+                'constraints' => new Assert\NotBlank(),
             )
         );
     }

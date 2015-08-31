@@ -17,6 +17,7 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -69,31 +70,31 @@ class Quote
     private $client;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="total", type="float")
+     * @ORM\Column(name="total", type="money")
      * @Grid\Column(type="currency")
      */
     private $total;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="base_total", type="float")
+     * @ORM\Column(name="base_total", type="money")
      * @Grid\Column(visible=false)
      */
     private $baseTotal;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="tax", type="float", nullable=true)
+     * @ORM\Column(name="tax", type="money", nullable=true)
      * @Grid\Column(type="currency")
      */
     private $tax;
 
     /**
-     * @var float
+     * @var Money
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
      * @Grid\Column(type="percent")
@@ -174,7 +175,7 @@ class Quote
     /**
      * @param Uuid $uuid
      *
-     * @return $this
+     * @return Quote
      */
     public function setUuid(Uuid $uuid)
     {
@@ -196,7 +197,7 @@ class Quote
     /**
      * @param array $users
      *
-     * @return $this
+     * @return Quote
      */
     public function setUsers(array $users = array())
     {
@@ -256,11 +257,11 @@ class Quote
     /**
      * Set total.
      *
-     * @param float $total
+     * @param Money $total
      *
      * @return Quote
      */
-    public function setTotal($total)
+    public function setTotal(Money $total)
     {
         $this->total = $total;
 
@@ -270,7 +271,7 @@ class Quote
     /**
      * Get total.
      *
-     * @return float
+     * @return Money
      */
     public function getTotal()
     {
@@ -280,11 +281,11 @@ class Quote
     /**
      * Set base total.
      *
-     * @param float $baseTotal
+     * @param Money $baseTotal
      *
      * @return Quote
      */
-    public function setBaseTotal($baseTotal)
+    public function setBaseTotal(Money $baseTotal)
     {
         $this->baseTotal = $baseTotal;
 
@@ -294,7 +295,7 @@ class Quote
     /**
      * Get base total.
      *
-     * @return float
+     * @return Money
      */
     public function getBaseTotal()
     {
@@ -430,7 +431,7 @@ class Quote
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getTax()
     {
@@ -438,11 +439,11 @@ class Quote
     }
 
     /**
-     * @param float $tax
+     * @param Money $tax
      *
      * @return Quote
      */
-    public function setTax($tax)
+    public function setTax(Money $tax)
     {
         $this->tax = $tax;
 

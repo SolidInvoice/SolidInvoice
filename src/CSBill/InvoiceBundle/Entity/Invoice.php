@@ -18,6 +18,7 @@ use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,7 +33,8 @@ class Invoice
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable,
-        Entity\Archivable;
+        Entity\Archivable
+        ;
 
     /**
      * @var int
@@ -70,39 +72,39 @@ class Invoice
     private $client;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="total", type="float")
+     * @ORM\Column(name="total", type="money")
      * @Grid\Column(type="currency")
      */
     private $total;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="base_total", type="float")
+     * @ORM\Column(name="base_total", type="money")
      * @Grid\Column(visible=false)
      */
     private $baseTotal;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="balance", type="float")
+     * @ORM\Column(name="balance", type="money")
      * @Grid\Column(visible=false)
      */
     private $balance;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="tax", type="float", nullable=true)
+     * @ORM\Column(name="tax", type="money", nullable=true)
      * @Grid\Column(type="currency")
      */
     private $tax;
 
     /**
-     * @var float
+     * @var Money
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
      * @Grid\Column(type="percent")
@@ -186,7 +188,7 @@ class Invoice
     /**
      * @param Uuid $uuid
      *
-     * @return $this
+     * @return Invoice
      */
     public function setUuid(Uuid $uuid)
     {
@@ -216,7 +218,7 @@ class Invoice
     /**
      * @param array $users
      *
-     * @return $this
+     * @return Invoice
      */
     public function setUsers(array $users = array())
     {
@@ -286,11 +288,11 @@ class Invoice
     /**
      * Set total.
      *
-     * @param float $total
+     * @param Money $total
      *
      * @return Invoice
      */
-    public function setTotal($total)
+    public function setTotal(Money $total)
     {
         $this->total = $total;
 
@@ -300,7 +302,7 @@ class Invoice
     /**
      * Get total.
      *
-     * @return float
+     * @return Money
      */
     public function getTotal()
     {
@@ -310,11 +312,11 @@ class Invoice
     /**
      * Set base total.
      *
-     * @param float $baseTotal
+     * @param Money $baseTotal
      *
      * @return Invoice
      */
-    public function setBaseTotal($baseTotal)
+    public function setBaseTotal(Money $baseTotal)
     {
         $this->baseTotal = $baseTotal;
 
@@ -324,7 +326,7 @@ class Invoice
     /**
      * Get base total.
      *
-     * @return float
+     * @return Money
      */
     public function getBaseTotal()
     {
@@ -332,7 +334,7 @@ class Invoice
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getBalance()
     {
@@ -340,11 +342,11 @@ class Invoice
     }
 
     /**
-     * @param float $balance
+     * @param Money $balance
      *
-     * @return $this
+     * @return Invoice
      */
-    public function setBalance($balance)
+    public function setBalance(Money $balance)
     {
         $this->balance = $balance;
 
@@ -535,7 +537,7 @@ class Invoice
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getTax()
     {
@@ -543,11 +545,11 @@ class Invoice
     }
 
     /**
-     * @param float $tax
+     * @param Money $tax
      *
      * @return Invoice
      */
-    public function setTax($tax)
+    public function setTax(Money $tax)
     {
         $this->tax = $tax;
 

@@ -14,7 +14,8 @@ namespace CSBill\CoreBundle\Tests;
 use CSBill\CoreBundle\Form\Extension;
 use CSBill\CoreBundle\Form\Type;
 use CSBill\CoreBundle\Security\Encryption;
-use CSBill\CoreBundle\Util\Currency;
+use CSBill\MoneyBundle\Form\Extension\MoneyExtension;
+use Money\Currency;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
@@ -43,15 +44,15 @@ class FormTestCase extends TypeTestCase
     {
         $validator = \Mockery::mock('Symfony\Component\Validator\ValidatorInterface');
 
-        $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn(array());
+        $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn([]);
 
-        return array(
+        return [
             new Extension\FormHelpExtension(),
-            new Extension\MoneyExtension(new Currency('en', 'USD')),
+            new MoneyExtension(new Currency('USD')),
             new FormTypeValidatorExtension(
                 $validator
             ),
-        );
+        ];
     }
 
     /**
@@ -61,12 +62,12 @@ class FormTestCase extends TypeTestCase
      */
     protected function getTypes()
     {
-        return array(
+        return [
             'select2' => new Type\Select2(),
             'image_upload' => new Type\ImageUpload(
                 \Mockery::mock('Symfony\Component\HttpFoundation\Session\SessionInterface'),
                 new Encryption(rand())
             ),
-        );
+        ];
     }
 }

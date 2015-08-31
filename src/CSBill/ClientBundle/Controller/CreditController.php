@@ -15,6 +15,7 @@ use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Form\Type\CreditType;
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\CoreBundle\Controller\BaseController;
+use Money\Money;
 use Symfony\Component\HttpFoundation\Request;
 
 class CreditController extends BaseController
@@ -41,12 +42,15 @@ class CreditController extends BaseController
             /** @var CreditRepository $clientRepository */
             $clientRepository = $this->getRepository('CSBillClientBundle:Credit');
 
-            $credit = $clientRepository->addCredit($client, $form->get('amount')->getData());
+            /** @var Money $amount */
+            $amount = $form->get('amount')->getData();
+
+            $credit = $clientRepository->addCredit($client, $amount);
 
             return $this->json(
                 array(
                     'status' => 'success',
-                    'amount' => $credit->getValue(),
+                    'amount' => $this->get('csbill.money.formatter')->format($credit->getValue()),
                 )
             );
         }

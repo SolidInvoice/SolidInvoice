@@ -12,20 +12,21 @@
 namespace CSBill\DataGridBundle\Column;
 
 use APY\DataGridBundle\Grid\Column\NumberColumn;
+use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 
 class CurrencyColumn extends NumberColumn
 {
     /**
-     * @var string
+     * @var \CSBill\MoneyBundle\Formatter\MoneyFormatter
      */
-    private $currency;
+    private $formatter;
 
     /**
-     * @param string $currency
+     * @param MoneyFormatter $formatter
      */
-    public function __construct($currency)
+    public function __construct(MoneyFormatter $formatter)
     {
-        $this->currency = $currency;
+        $this->formatter = $formatter;
 
         parent::__construct();
     }
@@ -35,10 +36,17 @@ class CurrencyColumn extends NumberColumn
      */
     public function __initialize(array $params)
     {
-        $params['currencyCode'] = $this->currency;
         $params['style'] = 'currency';
 
         parent::__initialize($params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDisplayedValue($value)
+    {
+        return $this->formatter->format($value);
     }
 
     /**

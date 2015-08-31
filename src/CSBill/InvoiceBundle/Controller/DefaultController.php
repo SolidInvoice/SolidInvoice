@@ -55,7 +55,7 @@ class DefaultController extends BaseController
                     Graph::STATUS_DRAFT => $invoiceRepository->getCountByStatus(Graph::STATUS_DRAFT),
                     Graph::STATUS_OVERDUE => $invoiceRepository->getCountByStatus(Graph::STATUS_OVERDUE),
                 ),
-                'total_income' => $invoiceRepository->getTotalIncome(),
+                'total_income' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome(),
                 'total_outstanding' => $invoiceRepository->getTotalOutstanding(),
             )
         );
@@ -125,7 +125,7 @@ class DefaultController extends BaseController
 
             // @TODO: If current invoice total is updated to less than the total amount paid,
             // then the balance needs to be added as credit
-            $invoice->setBalance($invoice->getTotal() - $totalPaid);
+            $invoice->setBalance($invoice->getTotal()->subtract($totalPaid));
 
             if ($action === Graph::STATUS_PENDING) {
                 $invoiceManager->accept($invoice);

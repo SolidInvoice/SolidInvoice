@@ -1,0 +1,30 @@
+parameters:
+    csbill_core.doctrine.type.money.class: CSBill\MoneyBundle\Form\Extension\MoneyExtension
+    csbill_money.form.type.hidden_money.class: CSBill\MoneyBundle\Form\Type\HiddenMoneyType
+
+services:
+    currency:
+        class: Money\Currency
+        arguments: [%currency%]
+
+    csbill.money.formatter:
+        class: CSBill\MoneyBundle\Formatter\MoneyFormatter
+        arguments: [%locale%, %currency%]
+
+    csbill.money.formatter.twig.extension:
+        class: CSBill\MoneyBundle\Twig\Extension\MoneyFormatterExtension
+        arguments: [@csbill.money.formatter]
+        tags:
+            - { name: twig.extension }
+
+    csbill_money.form.money.extension:
+        class: %csbill_core.doctrine.type.money.class%
+        arguments: [@currency]
+        tags:
+            - { name: form.type_extension, alias: money}
+
+    csbill_money.form.hidden_money.type:
+        class: %csbill_money.form.type.hidden_money.class%
+        arguments: [@currency]
+        tags:
+            - { name: form.type, alias: hidden_money}

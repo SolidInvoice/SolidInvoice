@@ -9,21 +9,24 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Form\Extension;
+namespace CSBill\MoneyBundle\Form\Extension;
 
-use CSBill\CoreBundle\Util\Currency;
+use CSBill\MoneyBundle\Form\DataTransformer\ModelTransformer;
+use CSBill\MoneyBundle\Form\DataTransformer\ViewTransformer;
+use Money\Currency;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MoneyExtension extends AbstractTypeExtension
 {
     /**
-     * @var string
+     * @var Currency
      */
     protected $currency;
 
     /**
-     * @param string $currency
+     * @param Currency $currency
      */
     public function __construct(Currency $currency)
     {
@@ -33,12 +36,22 @@ class MoneyExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->addViewTransformer(new ViewTransformer($this->currency), true)
+            ->addModelTransformer(new ModelTransformer($this->currency), true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'currency' => $this->currency->getCurrency(),
-            )
+            [
+                'currency' => $this->currency->getName(),
+            ]
         );
     }
 
