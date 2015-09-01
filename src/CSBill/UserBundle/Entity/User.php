@@ -39,7 +39,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     * @ORM\Column(name="mobile", type="string", nullable=true)
      */
     protected $mobile;
 
