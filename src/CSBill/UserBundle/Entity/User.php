@@ -44,6 +44,33 @@ class User extends BaseUser
     protected $mobile;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     */
+    private $apiTokens;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getApiTokens()
+    {
+        return $this->apiTokens;
+    }
+
+    /**
+     * @param ArrayCollection $apiTokens
+     *
+     * @return User
+     */
+    public function setApiTokens($apiTokens)
+    {
+        $this->apiTokens = $apiTokens;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getMobile()
