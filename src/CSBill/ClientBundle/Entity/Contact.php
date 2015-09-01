@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serialize;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @ORM\Table(name="contacts")

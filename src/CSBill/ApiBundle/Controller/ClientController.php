@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace CSBill\ApiBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -53,7 +62,7 @@ class ClientController extends FOSRestController
             return $this->handleView($this->view($response, 400));
         }
 
-        $pagerfantaFactory   = new PagerfantaFactory();
+        $pagerfantaFactory = new PagerfantaFactory();
 
         $paginatedCollection = $pagerfantaFactory->createRepresentation(
             $pagerfanta,
@@ -82,7 +91,7 @@ class ClientController extends FOSRestController
      */
     public function postClientsAction(Request $request)
     {
-        $client = new Client;
+        $client = new Client();
 
         $form = $this->createForm(new \CSBill\ClientBundle\Form\Client(), $client);
 
@@ -133,7 +142,7 @@ class ClientController extends FOSRestController
         $pagerfanta->setMaxPerPage($limit);
         $pagerfanta->setCurrentPage($page);
 
-        $pagerfantaFactory   = new PagerfantaFactory();
+        $pagerfantaFactory = new PagerfantaFactory();
 
         $paginatedCollection = $pagerfantaFactory->createRepresentation(
             $pagerfanta,

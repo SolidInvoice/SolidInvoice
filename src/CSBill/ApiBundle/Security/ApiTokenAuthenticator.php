@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace CSBill\ApiBundle\Security;
 
 use CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider;
@@ -82,7 +91,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      */
     public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
     {
-        /** @var ApiTokenUserProvider $userProvider */
+        /* @var ApiTokenUserProvider $userProvider */
 
         $apiToken = $token->getCredentials();
         $username = $userProvider->getUsernameForToken($apiToken);
@@ -96,7 +105,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $roles = array_merge(
             $user->getRoles(),
             array(
-                'ROLE_API_AUTHENTICATED'
+                'ROLE_API_AUTHENTICATED',
             )
         );
 

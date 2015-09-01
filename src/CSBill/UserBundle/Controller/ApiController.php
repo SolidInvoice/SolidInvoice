@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace CSBill\UserBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
@@ -43,7 +52,7 @@ class ApiController extends BaseController
 
         return $this->json(
             array(
-                'content' => $content
+                'content' => $content,
             )
         );
     }
@@ -62,7 +71,7 @@ class ApiController extends BaseController
             $apiToken,
             array(
                 'action' => $this->generateUrl('api_key_create'),
-                'data_class' => 'CSBill\UserBundle\Entity\ApiToken'
+                'data_class' => 'CSBill\UserBundle\Entity\ApiToken',
             )
         );
 
@@ -75,7 +84,7 @@ class ApiController extends BaseController
         $response = array();
 
         if ($form->isValid()) {
-            $factory = new Factory;
+            $factory = new Factory();
             $generator = $factory->getMediumStrengthGenerator();
 
             $token = $generator->generateString(64, Generator::CHAR_ALNUM);
@@ -87,7 +96,7 @@ class ApiController extends BaseController
             $response['token'] = array(
                 'token' => $apiToken->getToken(),
                 'name' => $apiToken->getName(),
-                'id' => $apiToken->getId()
+                'id' => $apiToken->getId(),
             );
 
             return $this->json($response);
@@ -119,7 +128,7 @@ class ApiController extends BaseController
 
         return $this->json(
             array(
-                'status' => 0
+                'status' => 0,
             )
         );
     }
