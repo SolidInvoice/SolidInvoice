@@ -53,19 +53,19 @@ class ClientController extends FOSRestController
         $data = $clientRepository->createQueryBuilder('c');
 
         try {
-            $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($data));
-            $pagerfanta->setMaxPerPage($limit);
-            $pagerfanta->setCurrentPage($page);
+            $pager = new Pagerfanta(new DoctrineORMAdapter($data));
+            $pager->setMaxPerPage($limit);
+            $pager->setCurrentPage($page);
         } catch (OutOfRangeCurrentPageException $exception) {
             $response = array('message' => 'Page out of range');
 
             return $this->handleView($this->view($response, 400));
         }
 
-        $pagerfantaFactory = new PagerfantaFactory();
+        $pagerFactory = new PagerfantaFactory();
 
-        $paginatedCollection = $pagerfantaFactory->createRepresentation(
-            $pagerfanta,
+        $paginatedCollection = $pagerFactory->createRepresentation(
+            $pager,
             new Route('get_clients', array(), true, $this->get('router'))
         );
 

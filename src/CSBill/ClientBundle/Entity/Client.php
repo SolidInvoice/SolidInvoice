@@ -128,7 +128,7 @@ class Client
      *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @GRID\Column(field="credit.value", title="Credit", type="currency")
-     * @Serialize\Expose
+     * @Serialize\Expose()
      * @Serialize\Inline()
      */
     private $credit;

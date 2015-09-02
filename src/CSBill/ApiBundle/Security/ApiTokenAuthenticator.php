@@ -97,7 +97,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $username = $userProvider->getUsernameForToken($apiToken);
 
         if (!$username) {
-            throw new AuthenticationException(sprintf('API Token \'%s\' is invalid.', $apiToken));
+            throw new AuthenticationException(sprintf('API Token "%s" is invalid.', $apiToken));
         }
 
         $user = $userProvider->loadUserByUsername($username);
