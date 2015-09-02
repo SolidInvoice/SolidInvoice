@@ -169,6 +169,8 @@ fos_rest:
         failed_validation: HTTP_BAD_REQUEST
         exception_wrapper_handler:  null
     disable_csrf_role: ROLE_API_AUTHENTICATED
+    body_listener: true
+    format_listener: true
 
 nelmio_api_doc:
     sandbox:

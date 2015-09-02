@@ -93,7 +93,7 @@ class ClientController extends FOSRestController
     {
         $client = new Client();
 
-        $form = $this->createForm(new \CSBill\ClientBundle\Form\Client(), $client);
+        $form = $this->get('form.factory')->createNamed('', new \CSBill\ClientBundle\Form\Client(), $client);
 
         $form->handleRequest($request);
 
@@ -106,6 +106,10 @@ class ClientController extends FOSRestController
             $entityManager->flush();
 
             return $this->handleView($this->view($client));
+        }
+
+        if (!$form->isSubmitted()) {
+            $form->submit([]);
         }
 
         return $this->handleView($this->view($form));
