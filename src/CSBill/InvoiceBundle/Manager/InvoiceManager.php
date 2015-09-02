@@ -307,7 +307,7 @@ class InvoiceManager extends ContainerAware
 
         $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
-        return $totalPaid >= $invoice->getBalance();
+        return $totalPaid >= $invoice->getTotal();
     }
 
     /**
