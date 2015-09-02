@@ -1,4 +1,15 @@
 
+0.4.3 / 2015-08-16
+==================
+
+  * Added the security:check to travis
+  * Update dependencies
+  * [InstallBundle] Change secret to 32 bits instead of 64, to avoid algorithm key size error
+  * [InstallBundle] Added command line installer
+  * Fix client grid credit column
+  * Set invoice balance when converting a quote to an invoice
+  * Fix error when trying to create a payment
+
 0.4.2 / 2015-07-01
 ==================
 

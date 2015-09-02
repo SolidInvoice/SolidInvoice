@@ -266,9 +266,9 @@ class InvoiceManager extends ContainerAware
         $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
 
         $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
-        $balance = $invoice->getBalance();
+        $invoiceTotal = $invoice->getTotal();
 
-        return $totalPaid->equals($balance) || $totalPaid->greaterThan($balance);
+        return $totalPaid->equals($invoiceTotal) || $totalPaid->greaterThan($invoiceTotal);
     }
 
     /**
