@@ -7,21 +7,22 @@
  # with this source code in the file LICENSE.
  #}
 
-{% spaceless %}
+{% set footerSpan = quote.tax is empty ? 2 : 3 %}
 
-    {% set footerSpan = quote.tax is empty ? 2 : 3 %}
-
-    <div class="widget" id="quote-create">
-        <div class="container">
+<div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="quote-create">
+    <div class="container">
+        {% block header %}
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="title">
-                        <h2>
-                            {{ "quote.title"|trans({"%id%" : quote.id}) }}
-                            <small>{{ quote_label(quote.status) }}</small>
-                        </h2>
-                    </div>
-                    <hr>
+                    {% block title %}
+                        <div class="title">
+                            <h2>
+                                {{ "quote.title"|trans({"%id%" : quote.id}) }}
+                                <small>{{ quote_label(quote.status) }}</small>
+                            </h2>
+                        </div>
+                        <hr>
+                    {% endblock %}
                     <div class="row">
                         <div class="col-xs-7">
                             <h4>
@@ -55,7 +56,9 @@
                     </div>
                 </div>
             </div>
+        {% endblock %}
 
+        {% block content %}
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
@@ -160,8 +163,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        {% endblock %}
+    </div>
 
+    {% block footer %}
         {% if quote.terms is not empty %}
 
             <br class="clear" />
@@ -173,5 +178,5 @@
                 </p>
             </div>
         {% endif %}
-    </div>
-{% endspaceless %}
+    {% endblock %}
+</div>
