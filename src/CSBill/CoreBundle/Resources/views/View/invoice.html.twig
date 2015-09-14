@@ -10,14 +10,18 @@
 {% extends "CSBillCoreBundle:View:template.html.twig" %}
 
 {% block heading %}
-    <fieldset class="page-heading">
-        <legend>
-            <div class="pull-right header-button">
-                <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                    {{ icon('credit-card') }} {{ "invoice.action.pay_now"|trans }}
-                </a>
-            </div>
-            <h3>{{ block('title') }}</h3>
-        </legend>
-    </fieldset>
+    {% if payments_configured(false) > 0 %}
+        <fieldset class="page-heading">
+            <legend>
+                <div class="pull-right header-button">
+                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
+                        {{ icon('credit-card') }} {{ "invoice.action.pay_now"|trans }}
+                    </a>
+                </div>
+                <h3>{{ block('title') }}</h3>
+            </legend>
+        </fieldset>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
