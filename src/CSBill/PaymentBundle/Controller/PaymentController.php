@@ -21,6 +21,7 @@ use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Form\PaymentForm;
 use CSBill\PaymentBundle\Model\Status;
+use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Money\Money;
 use Payum\Core\Model\Token;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -50,7 +51,14 @@ class PaymentController extends BaseController
             throw new \Exception('This invoice cannot be paid');
         }
 
-        $preferredChoices = $this->getRepository('CSBillPaymentBundle:PaymentMethod')
+        /** @var PaymentMethodRepository $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
+
+        if ($paymentRepository->getTotalMethodsConfigured(false) < 1) {
+            throw new \Exception('No payment methods available');
+        }
+
+        $preferredChoices = $paymentRepository
             ->findBy(array('paymentMethod' => 'credit'));
 
         $form = $this->createForm(

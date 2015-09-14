@@ -16,10 +16,33 @@ use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
 class Payum extends ContainerAwareRegistry
 {
     /**
+     * @var array
+     */
+    private $factories;
+
+    /**
      * @return array
      */
     public function getGatewayList()
     {
         return array_keys($this->gateways);
+    }
+
+    /**
+     * @param array $factories
+     */
+    public function setGatewayFactories(array $factories)
+    {
+        $this->factories = $factories;
+    }
+
+    /**
+     * @param string $paymentMethod
+     *
+     * @return bool
+     */
+    public function isOffline($paymentMethod)
+    {
+        return isset($this->factories[$paymentMethod]) && $this->factories[$paymentMethod] === 'offline';
     }
 }
