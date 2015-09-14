@@ -34,12 +34,17 @@ class PaymentForm extends AbstractType
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
                 'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
-                    $expression = new Expr();
+                    $expression = $queryBuilder->expr();
                     $queryBuilder->where($expression->eq('pm.enabled', 1));
 
                     // If user is not logged in, exclude internal payment methods
                     if (null === $options['user']) {
-                        $queryBuilder->andWhere($expression->eq('pm.internal', 0));
+                        $queryBuilder->andWhere(
+                            $expression->orX(
+                                $expression->neq('pm.internal', 1),
+                                $expression->isNull('pm.internal')
+                            )
+                        );
                     }
 
                     $queryBuilder->orderBy($expression->asc('pm.name'));

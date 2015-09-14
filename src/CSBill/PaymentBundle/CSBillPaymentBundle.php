@@ -11,8 +11,17 @@
 
 namespace CSBill\PaymentBundle;
 
+use CSBill\PaymentBundle\DependencyInjection\CompilerPass\PaymentFactoryCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CSBillPaymentBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new PaymentFactoryCompilerPass());
+    }
 }
