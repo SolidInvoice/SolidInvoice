@@ -12,7 +12,6 @@
 namespace CSBill\MoneyBundle\Twig\Extension;
 
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
-use Money\Money;
 
 class MoneyFormatterExtension extends \Twig_Extension
 {
@@ -47,8 +46,8 @@ class MoneyFormatterExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('formatCurrency', function (Money $money) {
-                return $this->formatter->format($money);
+            new \Twig_SimpleFilter('formatCurrency', function ($money) {
+                return $money ? $this->formatter->format($money) : null;
             }),
         ];
     }

@@ -252,6 +252,7 @@ class PaymentMethod
     {
         return $this->payments;
     }
+
     /**
      * Return the payment method name as a string.
      *

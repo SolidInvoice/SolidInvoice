@@ -35,7 +35,7 @@ class FileExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('file', array($this, 'getFile'), array('is_safe' => array('css'))),
+            new \Twig_SimpleFunction('file', array($this, 'getFile'), array('is_safe' => array('css', 'html'))),
         );
     }
 

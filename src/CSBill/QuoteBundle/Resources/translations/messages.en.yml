@@ -41,6 +41,7 @@ quote:
             edit: Edit
             reopen: Re-Open
 
+        online: "View this quote online at: %url%"
     accepted: Quote Accepted and invoice created
     declined: Quote Declined
     cancelled: Quote Cancelled
