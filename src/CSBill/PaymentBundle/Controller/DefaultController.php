@@ -51,9 +51,8 @@ class DefaultController extends BaseController
     {
         /** @var \CSBill\PaymentBundle\Payum $payum */
         $payum = $this->get('payum');
-        $paymentMethods = $payum->getGatewayList();
 
-        unset($paymentMethods['credit']);
+        $paymentMethods = $payum->getGatewayList();
 
         return $this->render(
             'CSBillPaymentBundle:Default:index.html.twig',

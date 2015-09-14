@@ -26,16 +26,18 @@ class PaymentMethodForm extends AbstractType
 
         $builder->add('enabled', null, array('required' => false));
 
-        $builder->add(
-            'internal',
-            null,
-            array(
-                'label' => 'payment.form.label.internal',
-                'help' => 'payment.form.help.internal',
-                'help_type' => 'block',
-                'required' => false,
-            )
-        );
+        if (false === $options['internal']) {
+            $builder->add(
+                'internal',
+                null,
+                array(
+                    'label' => 'payment.form.label.internal',
+                    'help' => 'payment.form.help.internal',
+                    'help_type' => 'block',
+                    'required' => false,
+                )
+            );
+        }
 
         if (null !== $options['settings']) {
             $builder->add('settings', $options['settings']);
@@ -59,6 +61,7 @@ class PaymentMethodForm extends AbstractType
     {
         $resolver->setRequired(array('settings'));
         $resolver->setAllowedTypes(array('settings' => array('string', 'null')));
+        $resolver->setDefaults(array('internal' => false));
     }
 
     /**
