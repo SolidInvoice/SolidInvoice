@@ -23,8 +23,11 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class UserManager extends BaseUserManager
 {
     protected $objectManager;
+
     protected $class;
+
     protected $repository;
+
     private $entity;
 
     /**
@@ -107,15 +110,16 @@ class UserManager extends BaseUserManager
      * Updates a user.
      *
      * @param UserInterface $user
-     * @param Boolean       $andFlush Whether to flush the changes (default true)
+     * @param bool          $flush Whether to flush the changes (default true)
      */
-    public function updateUser(UserInterface $user, $andFlush = true)
+    public function updateUser(UserInterface $user, $flush = true)
     {
         $this->updateCanonicalFields($user);
         $this->updatePassword($user);
 
         $this->objectManager->persist($user);
-        if ($andFlush) {
+
+        if ($flush) {
             $this->objectManager->flush();
         }
     }
