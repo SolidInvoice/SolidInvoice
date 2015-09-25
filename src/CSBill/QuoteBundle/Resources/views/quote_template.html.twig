@@ -104,20 +104,18 @@
                                     {% endfor %}
                                     </tbody>
                                     <tfoot>
-                                        {% if quote.tax is empty and quote.tax is empty %}
-                                            <tr>
-                                                <td class="no-line"></td>
-                                                <td colspan="{{ footerSpan }}" class="thick-line text-right">
-                                                    <strong>{{ 'quote.subtotal'|trans }}</strong>
-                                                </td>
-                                                <td class="thick-line text-right">
-                                                    <div class="quote-sub-total">
-                                                        {{ quote.baseTotal|formatCurrency }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                        {% if quote.tax is not empty %}
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td colspan="{{ footerSpan }}" class="thick-line text-right">
+                                                <strong>{{ 'quote.subtotal'|trans }}</strong>
+                                            </td>
+                                            <td class="thick-line text-right">
+                                                <div class="quote-sub-total">
+                                                    {{ quote.baseTotal|formatCurrency }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% if quote.tax.positive %}
                                             <tr>
                                                 <td class="no-line"></td>
                                                 <td colspan="{{ footerSpan }}" class="no-line text-right">
@@ -138,7 +136,7 @@
                                                 </td>
                                                 <td class="no-line text-right">
                                                     <span class="text-danger quote-discount">
-                                                        {{ quote.baseTotal|percentage(quote.discount)|formatCurrency }}
+                                                        -{{ (quote.baseTotal.add(quote.tax))|percentage(quote.discount)|formatCurrency }}
                                                     </span>
                                                 </td>
                                             </tr>
