@@ -14,7 +14,6 @@ namespace CSBill\ApiBundle\Controller;
 use CSBill\ClientBundle\Entity;
 use CSBill\ClientBundle\Form\Client;
 use CSBill\ClientBundle\Form\Contact;
-use CSBill\ClientBundle\Form\Type\ContactType;
 use FOS\RestBundle\Controller\Annotations as RestRoute;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -123,8 +122,8 @@ class ClientController extends Controller
      *     output="CSBill\ClientBundle\Entity\Client",
      * )
      *
-     * @param Request $request
-     * @param Entity\Client  $client
+     * @param Request       $request
+     * @param Entity\Client $client
      *
      * @RestRoute\Put(path="/clients/{clientId}")
      *

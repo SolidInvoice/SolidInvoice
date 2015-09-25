@@ -175,3 +175,5 @@ fos_rest:
 nelmio_api_doc:
     sandbox:
         enabled: false
+    cache:
+        enabled: true
