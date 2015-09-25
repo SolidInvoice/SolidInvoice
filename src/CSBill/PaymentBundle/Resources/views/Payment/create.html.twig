@@ -39,7 +39,7 @@
                             <dt>{{ 'payment.create.base_total'|trans }}</dt>
                             <dd>{{ invoice.baseTotal|formatCurrency }}</dd>
                             <dt>{{ 'payment.create.discount'|trans }}</dt>
-                            <dd class="text-danger">-{{ invoice.baseTotal|percentage(invoice.discount)|formatCurrency }}</dd>
+                            <dd class="text-danger">-{{ (invoice.balance.add(invoice.tax))|percentage(invoice.discount)|formatCurrency }}</dd>
                         {% endif %}
 
                         <dt>{{ 'payment.create.total'|trans }}</dt>
