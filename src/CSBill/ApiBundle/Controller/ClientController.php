@@ -74,15 +74,15 @@ class ClientController extends FOSRestController
 
     /**
      * @ApiDoc(
-     *      statusCodes={
+     *     statusCodes={
      *         200="Returned when successful",
      *         400="Returned when the validation fails",
      *         403="Returned when the user is not authorized",
      *     },
-     *      resource=true,
-     *      description="Create a new client",
-     *      input="CSBill\ClientBundle\Form\Client",
-     *      output="CSBill\ClientBundle\Entity\Client"
+     *     resource=true,
+     *     description="Create a new client",
+     *     input="CSBill\ClientBundle\Form\Client",
+     *     output="CSBill\ClientBundle\Entity\Client",
      * )
      *
      * @param Request $request
@@ -93,7 +93,7 @@ class ClientController extends FOSRestController
     {
         $client = new Client();
 
-        $form = $this->get('form.factory')->createNamed('', new \CSBill\ClientBundle\Form\Client(), $client);
+        $form = $this->get('form.factory')->create(new \CSBill\ClientBundle\Form\Client(), $client);
 
         $form->handleRequest($request);
 
