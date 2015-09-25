@@ -104,20 +104,18 @@
                                         {% endfor %}
                                     </tbody>
                                     <tfoot>
-                                        {% if invoice.tax is empty and invoice.tax is empty %}
-                                            <tr>
-                                                <td class="no-line"></td>
-                                                <td colspan="{{ footerSpan }}" class="thick-line text-right">
-                                                    <strong>{{ 'invoice.subtotal'|trans }}</strong>
-                                                </td>
-                                                <td class="thick-line text-right">
-                                                    <div class="invoice-sub-total">
-                                                        {{ invoice.baseTotal|formatCurrency }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                        {% if invoice.tax is not empty %}
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td colspan="{{ footerSpan }}" class="thick-line text-right">
+                                                <strong>{{ 'invoice.subtotal'|trans }}</strong>
+                                            </td>
+                                            <td class="thick-line text-right">
+                                                <div class="invoice-sub-total">
+                                                    {{ invoice.baseTotal|formatCurrency }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% if invoice.tax.positive %}
                                             <tr>
                                                 <td class="no-line"></td>
                                                 <td colspan="{{ footerSpan }}" class="no-line text-right">
@@ -138,7 +136,7 @@
                                                 </td>
                                                 <td class="no-line text-right">
                                                     <span class="text-danger invoice-discount">
-                                                        {{ invoice.baseTotal|percentage(invoice.discount)|formatCurrency }}
+                                                        -{{ (invoice.baseTotal.add(invoice.tax))|percentage(invoice.discount)|formatCurrency }}
                                                     </span>
                                                 </td>
                                             </tr>
