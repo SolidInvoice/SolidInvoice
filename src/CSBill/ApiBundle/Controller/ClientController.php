@@ -11,20 +11,19 @@
 
 namespace CSBill\ApiBundle\Controller;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Model\Status;
+use CSBill\ClientBundle\Entity;
+use CSBill\ClientBundle\Form\Client;
+use CSBill\ClientBundle\Form\Contact;
+use CSBill\ClientBundle\Form\Type\ContactType;
+use FOS\RestBundle\Controller\Annotations as RestRoute;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Hateoas\Configuration\Route;
-use Hateoas\Representation\Factory\PagerfantaFactory;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\OutOfRangeCurrentPageException;
-use Pagerfanta\Pagerfanta;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class ClientController extends FOSRestController
+class ClientController extends Controller
 {
     /**
      * @ApiDoc(
@@ -40,36 +39,51 @@ class ClientController extends FOSRestController
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
+     * @RestRoute\Get(path="/clients")
+     *
      * @param ParamFetcherInterface $fetcher
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getClientsAction(ParamFetcherInterface $fetcher)
     {
-        $limit = $fetcher->get('limit');
-        $page = $fetcher->get('page');
+        $clientRepository = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('CSBillClientBundle:Client');
 
-        $clientRepository = $this->get('doctrine.orm.entity_manager')->getRepository('CSBillClientBundle:Client');
+        return $this->manageCollection($fetcher, $clientRepository->createQueryBuilder('c'), 'get_clients');
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when the page is out of range",
+     *         403="Returned when the user is not authorized",
+     *     },
+     *     resource=true,
+     *     description="Returns a list of all contacts for a specific client"
+     * )
+     *
+     * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
+     * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
+     *
+     * @param ParamFetcherInterface $fetcher
+     * @param int                   $clientId
+     *
+     * @RestRoute\Get(path="/clients/{clientId}/contacts")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getClientContactsAction(ParamFetcherInterface $fetcher, $clientId)
+    {
+        $clientRepository = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('CSBillClientBundle:Contact');
+
         $data = $clientRepository->createQueryBuilder('c');
+        $data->where('c.client = :client')
+            ->setParameter('client', $clientId);
 
-        try {
-            $pager = new Pagerfanta(new DoctrineORMAdapter($data));
-            $pager->setMaxPerPage($limit);
-            $pager->setCurrentPage($page);
-        } catch (OutOfRangeCurrentPageException $exception) {
-            $response = array('message' => 'Page out of range');
-
-            return $this->handleView($this->view($response, 400));
-        }
-
-        $pagerFactory = new PagerfantaFactory();
-
-        $paginatedCollection = $pagerFactory->createRepresentation(
-            $pager,
-            new Route('get_clients', array(), true, $this->get('router'))
-        );
-
-        return $this->handleView($this->view($paginatedCollection));
+        return $this->manageCollection($fetcher, $data, 'get_clients');
     }
 
     /**
@@ -87,72 +101,100 @@ class ClientController extends FOSRestController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @RestRoute\Post(path="/clients")
+     *
+     * @return Response
      */
-    public function postClientsAction(Request $request)
+    public function createClientAction(Request $request)
     {
-        $client = new Client();
-
-        $form = $this->get('form.factory')->create(new \CSBill\ClientBundle\Form\Client(), $client);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $entityManager = $this->get('doctrine.orm.entity_manager');
-
-            $client->setStatus(Status::STATUS_ACTIVE);
-
-            $entityManager->persist($client);
-            $entityManager->flush();
-
-            return $this->handleView($this->view($client));
-        }
-
-        if (!$form->isSubmitted()) {
-            $form->submit([]);
-        }
-
-        return $this->handleView($this->view($form));
+        return $this->manageClientForm($request, new Client(), new Entity\Client());
     }
 
     /**
      * @ApiDoc(
-     *      statusCodes={
+     *     statusCodes={
      *         200="Returned when successful",
+     *         400="Returned when the validation fails",
      *         403="Returned when the user is not authorized",
      *     },
-     *      resource=true,
-     *      description="Returns a list of all contacts for a specific client"
+     *     resource=true,
+     *     description="Update a client",
+     *     input="CSBill\ClientBundle\Form\Client",
+     *     output="CSBill\ClientBundle\Entity\Client",
      * )
-     * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
-     * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @param ParamFetcherInterface $fetcher
-     * @param int                   $clientId
+     * @param Request $request
+     * @param Entity\Client  $client
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @RestRoute\Put(path="/clients/{clientId}")
+     *
+     * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
+     *
+     * @return Response
      */
-    public function getClientContactsAction(ParamFetcherInterface $fetcher, $clientId)
+    public function updateClientAction(Request $request, Entity\Client $client)
     {
-        $limit = $fetcher->get('limit');
-        $page = $fetcher->get('page');
+        return $this->manageClientForm($request, new Client(), $client);
+    }
 
-        $clientRepository = $this->get('doctrine.orm.entity_manager')->getRepository('CSBillClientBundle:Contact');
-        $data = $clientRepository->createQueryBuilder('c');
-        $data->where('c.client = :client')
-            ->setParameter('client', $clientId);
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when the validation fails",
+     *         403="Returned when the user is not authorized",
+     *     },
+     *     resource=true,
+     *     description="Create a new contact",
+     *     input="CSBill\ClientBundle\Form\Contact",
+     *     output="CSBill\ClientBundle\Entity\Contact",
+     * )
+     *
+     * @param Request       $request
+     * @param Entity\Client $client
+     *
+     * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
+     *
+     * @RestRoute\Post(path="/clients/{clientId}/contacts")
+     *
+     * @return Response
+     */
+    public function createContactAction(Request $request, Entity\Client $client)
+    {
+        $contact = new Entity\Contact();
+        $contact->setClient($client);
 
-        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($data));
-        $pagerfanta->setMaxPerPage($limit);
-        $pagerfanta->setCurrentPage($page);
+        return $this->manageClientForm($request, 'contact', $contact);
+    }
 
-        $pagerfantaFactory = new PagerfantaFactory();
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when the validation fails",
+     *         403="Returned when the user is not authorized",
+     *     },
+     *     resource=true,
+     *     description="Update a contact",
+     *     input="CSBill\ClientBundle\Form\Contact",
+     *     output="CSBill\ClientBundle\Entity\Contact",
+     * )
+     *
+     * @param Request        $request
+     * @param Entity\Client  $client
+     * @param Entity\Contact $contact
+     *
+     * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
+     * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
+     *
+     * @RestRoute\Put(path="/clients/{clientId}/contacts/{contactId}")
+     *
+     * @return Response
+     */
+    public function updateContactAction(Request $request, Entity\Client $client, Entity\Contact $contact)
+    {
+        $contact->setClient($client);
 
-        $paginatedCollection = $pagerfantaFactory->createRepresentation(
-            $pagerfanta,
-            new Route('get_client_contacts', array('clientId' => $clientId), true, $this->get('router'))
-        );
-
-        return $this->handleView($this->view($paginatedCollection));
+        return $this->manageClientForm($request, 'contact', $contact);
     }
 }
