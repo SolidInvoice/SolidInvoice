@@ -26,7 +26,7 @@ class InvoiceRepository extends EntityRepository
      *
      * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      *
-     * @return Money
+     * @return integer
      */
     public function getTotalIncome(Client $client = null)
     {

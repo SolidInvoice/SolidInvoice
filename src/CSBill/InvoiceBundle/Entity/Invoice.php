@@ -370,7 +370,7 @@ class Invoice
     /**
      * Get discount.
      *
-     * @return float
+     * @return Money
      */
     public function getDiscount()
     {
