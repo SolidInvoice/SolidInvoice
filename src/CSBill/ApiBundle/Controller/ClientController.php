@@ -109,7 +109,7 @@ class ClientController extends Controller
      */
     public function createClientAction(Request $request)
     {
-        return $this->manageForm($request, new Client(), new Entity\Client(), 201);
+        return $this->manageForm($request, new Client(), new Entity\Client(), Response::HTTP_CREATED);
     }
 
     /**
@@ -192,7 +192,7 @@ class ClientController extends Controller
         $contact = new Entity\Contact();
         $contact->setClient($client);
 
-        return $this->manageForm($request, 'contact', $contact, 201);
+        return $this->manageForm($request, 'contact', $contact, Response::HTTP_CREATED);
     }
 
     /**

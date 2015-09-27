@@ -73,7 +73,23 @@ class InvoiceController extends Controller
      */
     public function createInvoiceAction(Request $request)
     {
-        return $this->manageForm($request, 'invoice', new Entity\Invoice(), 201);
+        $invoice = new Entity\Invoice();
+
+        $form = $this->get('form.factory')->create('invoice', $invoice);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $this->get('invoice.manager')->create($invoice);
+
+            return $this->handleView($this->view($invoice, Response::HTTP_CREATED));
+        }
+
+        if (!$form->isSubmitted()) {
+            $form->submit([]);
+        }
+
+        return $this->handleView($this->view($form));
     }
 
     /**

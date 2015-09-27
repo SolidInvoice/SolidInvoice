@@ -73,7 +73,7 @@ class QuoteController extends Controller
      */
     public function createQuoteAction(Request $request)
     {
-        return $this->manageForm($request, 'quote', new Entity\Quote(), 201);
+        return $this->manageForm($request, 'quote', new Entity\Quote(), Response::HTTP_CREATED);
     }
 
     /**

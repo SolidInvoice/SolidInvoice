@@ -33,7 +33,7 @@ abstract class Controller extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function manageForm(Request $request, $form, $entity, $status = 200)
+    protected function manageForm(Request $request, $form, $entity, $status = Response::HTTP_OK)
     {
         $form = $this->get('form.factory')->create($form, $entity);
 
@@ -45,14 +45,14 @@ abstract class Controller extends FOSRestController
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->handleView($this->view($entity));
+            return $this->handleView($this->view($entity, $status));
         }
 
         if (!$form->isSubmitted()) {
             $form->submit([]);
         }
 
-        return $this->handleView($this->view($form, $status));
+        return $this->handleView($this->view($form, Response::HTTP_BAD_REQUEST));
     }
 
     /**
