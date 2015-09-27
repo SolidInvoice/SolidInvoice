@@ -171,6 +171,11 @@ fos_rest:
     disable_csrf_role: ROLE_API_AUTHENTICATED
     body_listener: true
     format_listener: true
+    unauthorized_challenge: "Basic realm=\"Restricted Access\""
+    access_denied_listener:
+        json: true
+        xml: true
+        jsonp: true
 
 nelmio_api_doc:
     sandbox:

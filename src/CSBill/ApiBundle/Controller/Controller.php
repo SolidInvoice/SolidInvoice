@@ -21,6 +21,7 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class Controller extends FOSRestController
 {
@@ -28,10 +29,11 @@ abstract class Controller extends FOSRestController
      * @param Request                  $request
      * @param FormTypeInterface|string $form
      * @param mixed                    $entity
+     * @param int                      $status
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function manageClientForm(Request $request, $form, $entity)
+    protected function manageForm(Request $request, $form, $entity, $status = 200)
     {
         $form = $this->get('form.factory')->create($form, $entity);
 
@@ -50,7 +52,7 @@ abstract class Controller extends FOSRestController
             $form->submit([]);
         }
 
-        return $this->handleView($this->view($form));
+        return $this->handleView($this->view($form, $status));
     }
 
     /**
@@ -72,7 +74,7 @@ abstract class Controller extends FOSRestController
         } catch (OutOfRangeCurrentPageException $exception) {
             $response = ['message' => 'Page out of range'];
 
-            return $this->handleView($this->view($response, 400));
+            return $this->handleView($this->view($response, Response::HTTP_NOT_FOUND));
         }
 
         $pagerFactory = new PagerfantaFactory();
@@ -83,5 +85,26 @@ abstract class Controller extends FOSRestController
         );
 
         return $this->handleView($this->view($paginatedCollection));
+    }
+
+    /**
+     * @param mixed $entity
+     *
+     * @return Response
+     */
+    protected function deleteEntity($entity)
+    {
+        $status = Response::HTTP_NO_CONTENT;
+
+        try {
+            $manager = $this->get('doctrine')->getManager();
+
+            $manager->remove($entity);
+            $manager->flush();
+        } catch (\Exception $e) {
+            $status = Response::HTTP_BAD_REQUEST;
+        }
+
+        return $this->handleView($this->view(null, $status));
     }
 }

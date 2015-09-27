@@ -19,6 +19,7 @@ use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\SimplePreAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +71,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $token = $this->getToken($request);
 
         if (!$token) {
-            throw new BadCredentialsException('No API token found');
+            throw new AuthenticationCredentialsNotFoundException('No API token found');
             // skip api key authentication when we allow other methods of authentication against the api
             // return null;
         }
@@ -97,7 +98,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $username = $userProvider->getUsernameForToken($apiToken);
 
         if (!$username) {
-            throw new AuthenticationException(sprintf('API Token "%s" is invalid.', $apiToken));
+            throw new BadCredentialsException(sprintf('API Token "%s" is invalid.', $apiToken));
         }
 
         $user = $userProvider->loadUserByUsername($username);

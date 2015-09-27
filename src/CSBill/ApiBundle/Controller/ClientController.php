@@ -28,11 +28,12 @@ class ClientController extends Controller
      * @ApiDoc(
      *    statusCodes={
      *        200="Returned when successful",
-     *        400="Returned when the page is out of range",
      *        403="Returned when the user is not authorized",
+     *        404="Returned when the page is out of range",
      *     },
      *     resource=true,
      *     description="Returns a list of all clients",
+     *     authentication=true,
      * )
      *
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
@@ -56,11 +57,12 @@ class ClientController extends Controller
      * @ApiDoc(
      *     statusCodes={
      *         200="Returned when successful",
-     *         400="Returned when the page is out of range",
      *         403="Returned when the user is not authorized",
+     *         404="Returned when the page is out of range",
      *     },
      *     resource=true,
-     *     description="Returns a list of all contacts for a specific client"
+     *     description="Returns a list of all contacts for a specific client",
+     *     authentication=true,
      * )
      *
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
@@ -88,7 +90,7 @@ class ClientController extends Controller
     /**
      * @ApiDoc(
      *     statusCodes={
-     *         200="Returned when successful",
+     *         201="Returned when successful",
      *         400="Returned when the validation fails",
      *         403="Returned when the user is not authorized",
      *     },
@@ -96,6 +98,7 @@ class ClientController extends Controller
      *     description="Create a new client",
      *     input="CSBill\ClientBundle\Form\Client",
      *     output="CSBill\ClientBundle\Entity\Client",
+     *     authentication=true,
      * )
      *
      * @param Request $request
@@ -106,7 +109,7 @@ class ClientController extends Controller
      */
     public function createClientAction(Request $request)
     {
-        return $this->manageClientForm($request, new Client(), new Entity\Client());
+        return $this->manageForm($request, new Client(), new Entity\Client(), 201);
     }
 
     /**
@@ -120,6 +123,7 @@ class ClientController extends Controller
      *     description="Update a client",
      *     input="CSBill\ClientBundle\Form\Client",
      *     output="CSBill\ClientBundle\Entity\Client",
+     *     authentication=true,
      * )
      *
      * @param Request       $request
@@ -133,13 +137,37 @@ class ClientController extends Controller
      */
     public function updateClientAction(Request $request, Entity\Client $client)
     {
-        return $this->manageClientForm($request, new Client(), $client);
+        return $this->manageForm($request, new Client(), $client);
     }
 
     /**
      * @ApiDoc(
      *     statusCodes={
-     *         200="Returned when successful",
+     *         204="Returned when successful",
+     *         403="Returned when the user is not authorized",
+     *     },
+     *     resource=true,
+     *     description="Delete a client",
+     *     authentication=true,
+     * )
+     *
+     * @param Entity\Client $client
+     *
+     * @RestRoute\Delete(path="/clients/{clientId}")
+     *
+     * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
+     *
+     * @return Response
+     */
+    public function deleteClientAction(Entity\Client $client)
+    {
+        return $this->deleteEntity($client);
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         201="Returned when successful",
      *         400="Returned when the validation fails",
      *         403="Returned when the user is not authorized",
      *     },
@@ -147,6 +175,7 @@ class ClientController extends Controller
      *     description="Create a new contact",
      *     input="CSBill\ClientBundle\Form\Contact",
      *     output="CSBill\ClientBundle\Entity\Contact",
+     *     authentication=true,
      * )
      *
      * @param Request       $request
@@ -163,7 +192,7 @@ class ClientController extends Controller
         $contact = new Entity\Contact();
         $contact->setClient($client);
 
-        return $this->manageClientForm($request, 'contact', $contact);
+        return $this->manageForm($request, 'contact', $contact, 201);
     }
 
     /**
@@ -177,6 +206,7 @@ class ClientController extends Controller
      *     description="Update a contact",
      *     input="CSBill\ClientBundle\Form\Contact",
      *     output="CSBill\ClientBundle\Entity\Contact",
+     *     authentication=true,
      * )
      *
      * @param Request        $request
@@ -194,6 +224,37 @@ class ClientController extends Controller
     {
         $contact->setClient($client);
 
-        return $this->manageClientForm($request, 'contact', $contact);
+        return $this->manageForm($request, 'contact', $contact);
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         204="Returned when successful",
+     *         403="Returned when the user is not authorized",
+     *         404="Returned when the contact does not exist on the client",
+     *     },
+     *     resource=true,
+     *     description="Delete a contact",
+     *     authentication=true,
+     * )
+     *
+     * @param Entity\Client $client
+     * @param Entity\Contact $contact
+     *
+     * @RestRoute\Delete(path="/clients/{clientId}/contacts/{contactId}")
+     *
+     * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
+     * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
+     *
+     * @return Response
+     */
+    public function deleteContactAction(Entity\Client $client, Entity\Contact $contact)
+    {
+        if ($client->getContacts()->contains($contact)) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->deleteEntity($contact);
     }
 }
