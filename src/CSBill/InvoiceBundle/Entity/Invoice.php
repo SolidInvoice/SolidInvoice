@@ -21,6 +21,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="invoices")
@@ -28,6 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
+ * @Serialize\ExclusionPolicy("all")
+ * @Serialize\XmlRoot("invoice")
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_invoices", absolute=true))
  */
 class Invoice
 {
@@ -40,8 +45,9 @@ class Invoice
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Expose()
      */
     private $id;
 
@@ -58,6 +64,7 @@ class Invoice
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Grid\Column(name="status", type="status", field="status", title="status", filter="select", selectFrom="source", safe=false, label_function="invoice_label")
+     * @Serialize\Expose()
      */
     private $status;
 
@@ -76,6 +83,7 @@ class Invoice
      *
      * @ORM\Column(name="total", type="money")
      * @Grid\Column(type="currency")
+     * @Serialize\Expose()
      */
     private $total;
 
@@ -84,6 +92,7 @@ class Invoice
      *
      * @ORM\Column(name="base_total", type="money")
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $baseTotal;
 
@@ -92,6 +101,7 @@ class Invoice
      *
      * @ORM\Column(name="balance", type="money")
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $balance;
 
@@ -100,6 +110,7 @@ class Invoice
      *
      * @ORM\Column(name="tax", type="money", nullable=true)
      * @Grid\Column(type="currency")
+     * @Serialize\Expose()
      */
     private $tax;
 
@@ -108,6 +119,7 @@ class Invoice
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
      * @Grid\Column(type="percent")
+     * @Serialize\Expose()
      */
     private $discount;
 
@@ -116,6 +128,7 @@ class Invoice
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $terms;
 
@@ -124,6 +137,7 @@ class Invoice
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $notes;
 
@@ -133,6 +147,7 @@ class Invoice
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $due;
 
@@ -142,6 +157,7 @@ class Invoice
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $paidDate;
 
@@ -151,6 +167,7 @@ class Invoice
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
+     * @Serialize\Expose()
      */
     private $items;
 
@@ -162,15 +179,17 @@ class Invoice
      *     mappedBy="invoice",
      *     cascade={"persist"}
      * )
+     * @Serialize\Exclude()
      */
     private $payments;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      * @Grid\Column(visible=false)
-     *
-     * @var ArrayCollection
+     * @Serialize\Exclude()
      */
     private $users;
 
