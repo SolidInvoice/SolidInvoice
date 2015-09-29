@@ -39,7 +39,7 @@ class InvoiceController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/invoices")
+     * @RestRoute\Get(path="/")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -69,7 +69,7 @@ class InvoiceController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/invoices")
+     * @RestRoute\Post(path="/")
      *
      * @return Response
      */
@@ -115,7 +115,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Put(path="/invoices/{invoiceId}")
+     * @RestRoute\Put(path="/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -166,7 +166,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Patch(path="/invoices/{invoiceId}/status")
+     * @RestRoute\Patch(path="/{invoiceId}/status")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -203,7 +203,7 @@ class InvoiceController extends Controller
      *
      * @param Entity\Invoice $invoice
      *
-     * @RestRoute\Delete(path="/invoices/{invoiceId}")
+     * @RestRoute\Delete(path="/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      *
@@ -229,7 +229,7 @@ class InvoiceController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/invoices/{invoiceId}/payments")
+     * @RestRoute\Get(path="/{invoiceId}/payments")
      *
      * @param ParamFetcherInterface $fetcher
      * @param int                   $invoiceId

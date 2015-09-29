@@ -33,7 +33,7 @@ class PaymentController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/payments")
+     * @RestRoute\Get(path="/")
      *
      * @param ParamFetcherInterface $fetcher
      *
