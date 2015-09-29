@@ -12,6 +12,7 @@
 namespace CSBill\ApiBundle\Controller;
 
 use CSBill\QuoteBundle\Entity;
+use CSBill\QuoteBundle\Model\Graph;
 use FOS\RestBundle\Controller\Annotations as RestRoute;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -102,6 +103,50 @@ class QuoteController extends Controller
     public function updateQuoteAction(Request $request, Entity\Quote $quote)
     {
         return $this->manageForm($request, 'quote', $quote);
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when the validation fails",
+     *         403="Returned when the user is not authorized",
+     *     },
+     *     parameters={{"name" : "status", "dataType" : "string", "required" : true}},
+     *     resource=true,
+     *     description="Update the status of a Quote",
+     *     authentication=true,
+     * )
+     *
+     * @param Request      $request
+     * @param Entity\Quote $quote
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     *
+     * @RestRoute\Patch(path="/quotes/{quoteId}/status")
+     *
+     * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
+     */
+    public function updateQuoteStatusAction(Request $request, Entity\Quote $quote)
+    {
+        if (!$request->request->has('status')) {
+            throw new \Exception('You need to provide a status', Response::HTTP_BAD_REQUEST);
+        }
+
+        $status = $request->request->get('status');
+        $manager = $this->get('quote.manager');
+
+        $transitions = $this->get('finite.factory')->get($quote, Graph::GRAPH)->getTransitions();
+
+        if (!in_array($status, $transitions)) {
+            throw new \Exception(sprintf('The value "%s" is not valid', $status), Response::HTTP_BAD_REQUEST);
+        }
+
+        $manager->{$status}($quote);
+
+        return $this->handleView($this->view($quote));
     }
 
     /**

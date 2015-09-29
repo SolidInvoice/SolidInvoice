@@ -12,6 +12,7 @@
 namespace CSBill\ApiBundle\Controller;
 
 use CSBill\InvoiceBundle\Entity;
+use CSBill\InvoiceBundle\Model\Graph;
 use FOS\RestBundle\Controller\Annotations as RestRoute;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -109,15 +110,84 @@ class InvoiceController extends Controller
      * @param Request        $request
      * @param Entity\Invoice $invoice
      *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     *
      * @RestRoute\Put(path="/invoices/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
-     *
-     * @return Response
      */
     public function updateInvoiceAction(Request $request, Entity\Invoice $invoice)
     {
-        return $this->manageForm($request, 'invoice', $invoice);
+        $originalStatus = $invoice->getStatus();
+        $form = $this->get('form.factory')->create('invoice', $invoice);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            if ($invoice->getStatus() !== $originalStatus) {
+                throw new \Exception('To change the status of an invoice, use the dedicated "status" method', 400);
+            }
+
+            $entityManager = $this->get('doctrine.orm.entity_manager');
+
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+
+            return $this->handleView($this->view($invoice));
+        }
+
+        if (!$form->isSubmitted()) {
+            $form->submit([]);
+        }
+
+        return $this->handleView($this->view($form, Response::HTTP_BAD_REQUEST));
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when the validation fails",
+     *         403="Returned when the user is not authorized",
+     *     },
+     *     parameters={{"name" : "status", "dataType" : "string", "required" : true}},
+     *     resource=true,
+     *     description="Update the status of an Invoice",
+     *     authentication=true,
+     * )
+     *
+     * @param Request        $request
+     * @param Entity\Invoice $invoice
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     *
+     * @RestRoute\Patch(path="/invoices/{invoiceId}/status")
+     *
+     * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
+     */
+    public function updateInvoiceStatusAction(Request $request, Entity\Invoice $invoice)
+    {
+        if (!$request->request->has('status')) {
+            throw new \Exception('You need to provide a status', Response::HTTP_BAD_REQUEST);
+        }
+
+        $status = $request->request->get('status');
+        $manager = $this->get('invoice.manager');
+
+        $transitions = $this->get('finite.factory')->get($invoice, Graph::GRAPH)->getTransitions();
+
+        if (!in_array($status, $transitions)) {
+            throw new \Exception(sprintf('The value "%s" is not valid', $status), Response::HTTP_BAD_REQUEST);
+        }
+
+        $manager->{$status}($invoice);
+
+        return $this->handleView($this->view($invoice));
     }
 
     /**
