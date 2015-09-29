@@ -133,7 +133,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
 
         $content = $this->serializer->serialize($response, $request->getRequestFormat());
 
-        return new Response($content, 403);
+        return new Response($content, 401);
     }
 
     /**
