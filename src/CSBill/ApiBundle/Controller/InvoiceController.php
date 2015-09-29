@@ -16,6 +16,7 @@ use CSBill\InvoiceBundle\Model\Graph;
 use FOS\RestBundle\Controller\Annotations as RestRoute;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use Hateoas\Configuration\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -212,5 +213,41 @@ class InvoiceController extends Controller
     public function deleteInvoiceAction(Entity\Invoice $invoice)
     {
         return $this->deleteEntity($invoice);
+    }
+
+    /**
+     * @ApiDoc(
+     *    statusCodes={
+     *        200="Returned when successful",
+     *        403="Returned when the user is not authorized",
+     *        404="Returned when the page is out of range",
+     *     },
+     *     resource=true,
+     *     description="Returns a list of all payments for an invoice",
+     *     authentication=true,
+     * )
+     *
+     * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
+     * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
+     *
+     * @RestRoute\Get(path="/invoices/{invoiceId}/payments")
+     *
+     * @param ParamFetcherInterface $fetcher
+     * @param int                   $invoiceId
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getInvoicePaymentsAction(ParamFetcherInterface $fetcher, $invoiceId)
+    {
+        $repository = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('CSBillPaymentBundle:Payment');
+
+        $queryBuilder = $repository->createQueryBuilder('i')
+            ->where('i.invoice = :invoice')
+            ->setParameter('invoice', $invoiceId);
+
+        $route = new Route('get_invoice_payments', ['invoiceId' => $invoiceId], true, $this->get('router'));
+
+        return $this->manageCollection($fetcher, $queryBuilder, $route);
     }
 }

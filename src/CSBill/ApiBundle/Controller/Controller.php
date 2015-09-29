@@ -79,9 +79,13 @@ abstract class Controller extends FOSRestController
 
         $pagerFactory = new PagerfantaFactory();
 
+        if (!$route instanceof Route) {
+            $route = new Route($route, [], true, $this->get('router'));
+        }
+
         $paginatedCollection = $pagerFactory->createRepresentation(
             $pager,
-            new Route($route, [], true, $this->get('router'))
+            $route
         );
 
         return $this->handleView($this->view($paginatedCollection));

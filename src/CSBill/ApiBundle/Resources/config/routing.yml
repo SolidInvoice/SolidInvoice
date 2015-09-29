@@ -16,3 +16,8 @@ quote_api:
     type:     rest
     resource: CSBill\ApiBundle\Controller\QuoteController
     prefix:   /
+
+payment_api:
+    type:     rest
+    resource: CSBill\ApiBundle\Controller\PaymentController
+    prefix:   /
