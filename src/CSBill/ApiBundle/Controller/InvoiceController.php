@@ -127,7 +127,6 @@ class InvoiceController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             if ($invoice->getStatus() !== $originalStatus) {
                 throw new \Exception('To change the status of an invoice, use the dedicated "status" method', 400);
             }

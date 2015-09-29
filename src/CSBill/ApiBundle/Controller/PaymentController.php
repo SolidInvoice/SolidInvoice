@@ -11,15 +11,10 @@
 
 namespace CSBill\ApiBundle\Controller;
 
-use CSBill\QuoteBundle\Entity;
-use CSBill\QuoteBundle\Model\Graph;
 use FOS\RestBundle\Controller\Annotations as RestRoute;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends Controller
 {

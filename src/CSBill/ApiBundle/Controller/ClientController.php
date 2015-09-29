@@ -239,7 +239,7 @@ class ClientController extends Controller
      *     authentication=true,
      * )
      *
-     * @param Entity\Client $client
+     * @param Entity\Client  $client
      * @param Entity\Contact $contact
      *
      * @RestRoute\Delete(path="/clients/{clientId}/contacts/{contactId}")

@@ -91,7 +91,7 @@ class QuoteController extends Controller
      *     authentication=true,
      * )
      *
-     * @param Request        $request
+     * @param Request      $request
      * @param Entity\Quote $quote
      *
      * @RestRoute\Put(path="/quotes/{quoteId}")
