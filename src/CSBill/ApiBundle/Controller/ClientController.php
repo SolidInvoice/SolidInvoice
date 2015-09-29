@@ -39,7 +39,7 @@ class ClientController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/")
+     * @RestRoute\Get(path="/clients")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -71,7 +71,7 @@ class ClientController extends Controller
      * @param ParamFetcherInterface $fetcher
      * @param int                   $clientId
      *
-     * @RestRoute\Get(path="/{clientId}/contacts")
+     * @RestRoute\Get(path="/clients/{clientId}/contacts")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -103,7 +103,7 @@ class ClientController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/")
+     * @RestRoute\Post(path="/clients")
      *
      * @return Response
      */
@@ -129,7 +129,7 @@ class ClientController extends Controller
      * @param Request       $request
      * @param Entity\Client $client
      *
-     * @RestRoute\Put(path="/{clientId}")
+     * @RestRoute\Put(path="/clients/{clientId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
@@ -153,7 +153,7 @@ class ClientController extends Controller
      *
      * @param Entity\Client $client
      *
-     * @RestRoute\Delete(path="/{clientId}")
+     * @RestRoute\Delete(path="/clients/{clientId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
@@ -183,7 +183,7 @@ class ClientController extends Controller
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
-     * @RestRoute\Post(path="/{clientId}/contacts")
+     * @RestRoute\Post(path="/clients/{clientId}/contacts")
      *
      * @return Response
      */
@@ -216,7 +216,7 @@ class ClientController extends Controller
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
      *
-     * @RestRoute\Put(path="/{clientId}/contacts/{contactId}")
+     * @RestRoute\Put(path="/clients/{clientId}/contacts/{contactId}")
      *
      * @return Response
      */
@@ -242,7 +242,7 @@ class ClientController extends Controller
      * @param Entity\Client  $client
      * @param Entity\Contact $contact
      *
-     * @RestRoute\Delete(path="/{clientId}/contacts/{contactId}")
+     * @RestRoute\Delete(path="/clients/{clientId}/contacts/{contactId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})

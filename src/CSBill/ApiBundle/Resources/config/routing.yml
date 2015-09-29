@@ -5,19 +5,19 @@ api_doc:
 client_api:
     type:     rest
     resource: CSBill\ApiBundle\Controller\ClientController
-    prefix:   /clients
+    prefix:   /
 
 invoice_api:
     type:     rest
     resource: CSBill\ApiBundle\Controller\InvoiceController
-    prefix:   /invoices
+    prefix:   /
 
 quote_api:
     type:     rest
     resource: CSBill\ApiBundle\Controller\QuoteController
-    prefix:   /quotes
+    prefix:   /
 
 payment_api:
     type:     rest
     resource: CSBill\ApiBundle\Controller\PaymentController
-    prefix:   /payments
+    prefix:   /

@@ -38,7 +38,7 @@ class QuoteController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/")
+     * @RestRoute\Get(path="/quotes")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -68,7 +68,7 @@ class QuoteController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/")
+     * @RestRoute\Post(path="/quotes")
      *
      * @return Response
      */
@@ -94,7 +94,7 @@ class QuoteController extends Controller
      * @param Request      $request
      * @param Entity\Quote $quote
      *
-     * @RestRoute\Put(path="/{quoteId}")
+     * @RestRoute\Put(path="/quotes/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *
@@ -125,7 +125,7 @@ class QuoteController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Patch(path="/{quoteId}/status")
+     * @RestRoute\Patch(path="/quotes/{quoteId}/status")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      */
@@ -162,7 +162,7 @@ class QuoteController extends Controller
      *
      * @param Entity\Quote $quote
      *
-     * @RestRoute\Delete(path="/{quoteId}")
+     * @RestRoute\Delete(path="/quotes/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *
