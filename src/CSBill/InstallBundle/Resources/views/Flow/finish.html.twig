@@ -21,6 +21,20 @@
             {{ "installation.finish.success_message"|trans }}
         </h4>
 
+        <div>
+            <p>
+                As a final step, you must add a scheduled task to run daily. You can choose what time the command should run, but 12AM is a good default if you are unsure.
+            </p>
+            <p>
+                Add the following cron job to run daily at 12AM:
+                <br />
+                <pre style="color: #c7254e;">
+                    0 0 * * * php {{ rootDir }}/console cron:run -e prod -n
+                </pre>
+            </p>
+        </div>
+        <br class="clear" />
+
         <a id="login" href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
             {{ icon('user') }} {{ "installation.finish.login"|trans }}
         </a>

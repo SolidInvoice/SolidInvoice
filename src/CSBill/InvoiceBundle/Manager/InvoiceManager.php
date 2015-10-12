@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -254,6 +254,35 @@ class InvoiceManager extends ContainerAware
     }
 
     /**
+     * Checks if an invoice has been paid in full.
+     *
+     * @param Invoice $invoice
+     *
+     * @return bool
+     */
+    public function isFullyPaid(Invoice $invoice)
+    {
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
+
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+        $invoiceTotal = $invoice->getTotal();
+
+        return $totalPaid->equals($invoiceTotal) || $totalPaid->greaterThan($invoiceTotal);
+    }
+
+    /**
+     * @param string $method
+     * @param array  $args
+     *
+     * @throws \Exception
+     */
+    public function __call($method, $args)
+    {
+        throw new InvalidTransitionException($method);
+    }
+
+    /**
      * @param Invoice $invoice
      * @param string  $transition
      *
@@ -272,12 +301,12 @@ class InvoiceManager extends ContainerAware
 
             $newStatus = $invoice->getStatus();
 
-            $parameters = array(
+            $parameters = [
                 'invoice' => $invoice,
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
                 'transition' => $transition,
-            );
+            ];
 
             // Do not send status updates for new invoices
             if ($transition !== Graph::TRANSITION_NEW) {
@@ -286,38 +315,9 @@ class InvoiceManager extends ContainerAware
                 $this->notification->sendNotification('invoice_status_update', $notification);
             }
 
-
             return true;
         }
 
         throw new InvalidTransitionException($transition);
-    }
-
-    /**
-     * Checks if an invoice has been paid in full.
-     *
-     * @param Invoice $invoice
-     *
-     * @return bool
-     */
-    public function isFullyPaid(Invoice $invoice)
-    {
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
-
-        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
-
-        return $totalPaid >= $invoice->getTotal();
-    }
-
-    /**
-     * @param string $method
-     * @param array  $args
-     *
-     * @throws \Exception
-     */
-    public function __call($method, $args)
-    {
-        throw new InvalidTransitionException($method);
     }
 }

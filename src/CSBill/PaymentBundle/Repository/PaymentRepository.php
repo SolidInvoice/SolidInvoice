@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -17,18 +17,21 @@ use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
+use Money\Money;
 
 class PaymentRepository extends EntityRepository
 {
     /**
      * Gets the total income that was received.
      *
-     * @return float
+     * @param \CSBill\ClientBundle\Entity\Client $client
+     *
+     * @return \Money\Money
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getTotalIncome()
+    public function getTotalIncome(Client $client = null)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -36,11 +39,14 @@ class PaymentRepository extends EntityRepository
             ->where('p.status = :status')
             ->setParameter('status', Status::STATUS_CAPTURED);
 
+        if (null !== $client) {
+            $qb->andWhere('p.client = :client')
+                ->setParameter('client', $client);
+        }
+
         $query = $qb->getQuery();
 
-        $result = $query->getSingleResult();
-
-        return $result[1];
+        return $query->getSingleResult('money');
     }
 
     /**
@@ -70,7 +76,7 @@ class PaymentRepository extends EntityRepository
      *
      * @param Invoice $invoice
      *
-     * @return float
+     * @return Money
      */
     public function getTotalPaidForInvoice(Invoice $invoice)
     {
@@ -85,7 +91,7 @@ class PaymentRepository extends EntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        return (float) $query->getSingleScalarResult();
+        return $query->getSingleResult('money');
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -37,6 +37,7 @@ class PaymentExtension extends Twig_Extension
     {
         return array(
             new Twig_SimpleFunction('payment_enabled', array($this, 'paymentEnabled')),
+            new Twig_SimpleFunction('payments_configured', array($this, 'paymentConfigured')),
         );
     }
 
@@ -54,6 +55,16 @@ class PaymentExtension extends Twig_Extension
         }
 
         return $paymentMethod->isEnabled();
+    }
+
+    /**
+     * @param bool $includeInternal
+     *
+     * @return int
+     */
+    public function paymentConfigured($includeInternal = true)
+    {
+        return $this->repository->getTotalMethodsConfigured($includeInternal);
     }
 
     /**

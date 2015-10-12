@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,8 +11,8 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
-use Knp\Menu\Provider\MenuProviderInterface;
 use CSBill\CoreBundle\Menu\RendererInterface;
+use Knp\Menu\Provider\MenuProviderInterface;
 use Twig_Extension;
 
 class MenuExtension extends Twig_Extension

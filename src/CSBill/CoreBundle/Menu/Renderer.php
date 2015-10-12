@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -14,8 +14,8 @@ namespace CSBill\CoreBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface as Item;
 use Knp\Menu\Matcher\Matcher;
-use Knp\Menu\Renderer\ListRenderer;
 use Knp\Menu\Matcher\Voter\RouteVoter;
+use Knp\Menu\Renderer\ListRenderer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 

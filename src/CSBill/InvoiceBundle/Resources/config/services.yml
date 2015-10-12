@@ -32,7 +32,7 @@ services:
 
     invoice.listener.paid:
         class: CSBill\InvoiceBundle\Listener\InvoicePaidListener
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, @currency]
         tags:
             - { name: kernel.event_listener, event: invoice.post_paid, method: onInvoicePaid }
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -99,19 +99,8 @@ class Mailer implements MailerInterface
     public function sendInvoice(Invoice $invoice)
     {
         // TODO : this needs to come from settings or somewhere so it can be extended
-        $htmlTemplate = $this->getTemplate(
-            'CSBillInvoiceBundle:Email:invoice.html.twig',
-            array(
-                'invoice' => $invoice,
-            )
-        );
-
-        $textTemplate = $this->getTemplate(
-            'CSBillInvoiceBundle:Email:invoice.txt.twig',
-            array(
-                'invoice' => $invoice,
-            )
-        );
+        $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', array('invoice' => $invoice));
+        $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', array('invoice' => $invoice));
 
         $subject = $this->getSubject('invoice.email_subject', $invoice->getId());
 

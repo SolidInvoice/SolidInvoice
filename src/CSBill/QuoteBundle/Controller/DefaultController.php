@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -89,6 +89,9 @@ class DefaultController extends BaseController
             $action = $request->request->get('save');
             $this->saveQuote($quote, $action);
 
+            $this->get('event_dispatcher')
+                ->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($quote));
+
             $this->flash($this->trans('quote.action.create.success'), 'success');
 
             return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
@@ -162,15 +165,11 @@ class DefaultController extends BaseController
         if ($action === Graph::STATUS_PENDING) {
             $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
             $finite->apply(Graph::TRANSITION_SEND);
+            $this->save($quote);
             $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
         } else {
             $finite->apply(Graph::TRANSITION_NEW);
+            $this->save($quote);
         }
-
-        if (!$quote->getId()) {
-            $dispatcher->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($quote));
-        }
-
-        $this->save($quote);
     }
 }

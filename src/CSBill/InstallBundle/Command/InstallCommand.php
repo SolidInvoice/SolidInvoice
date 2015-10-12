@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -54,8 +54,7 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
 
             ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')
-            ->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use')
-        ;
+            ->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use');
     }
 
     /**
@@ -63,7 +62,9 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (null !== $this->getContainer()->getParameter('installed')) {
+        $container = $this->getContainer();
+
+        if (null !== $container->getParameter('installed')) {
             throw new ApplicationInstalledException();
         }
 
@@ -82,6 +83,17 @@ class InstallCommand extends ContainerAwareCommand
 
         $output->writeln('');
         $output->writeln($success);
+        $output->writeln('');
+
+        $output->writeln('As a final step, you must add a scheduled task to run daily.');
+        $output->writeln('You can choose what time the command should run, but 12AM is a good default if you are unsure.');
+        $output->writeln('');
+        $output->writeln('Add the following cron job to run daily at 12AM:');
+        $output->writeln('');
+        $output->writeln(sprintf(
+            '<comment>0 0 * * * php %s/console cron:run -e prod -n</comment>',
+            $container->getParameter('kernel.root_dir')
+        ));
     }
 
     /**
@@ -120,7 +132,6 @@ class InstallCommand extends ContainerAwareCommand
         /** @var Question $question */
         foreach ($options as $option => $question) {
             if (null === $input->getOption($option)) {
-
                 $value = null;
 
                 while (empty($value)) {
@@ -137,7 +148,7 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * Checks if the system matches all the requirements
+     * Checks if the system matches all the requirements.
      *
      * @return int
      */
@@ -184,7 +195,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     private function saveConfig(InputInterface $input)
     {
-        $factory = new Factory;
+        $factory = new Factory();
 
         // Don't update installed here, in case something goes wrong with the rest of the installation process
         $config = array(
@@ -215,6 +226,7 @@ class InstallCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      *
      * @return bool
+     *
      * @throws \Exception
      */
     private function initDb(InputInterface $input, OutputInterface $output)
@@ -241,6 +253,7 @@ class InstallCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      *
      * @return bool
+     *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
@@ -255,7 +268,7 @@ class InstallCommand extends ContainerAwareCommand
             'user' => $input->getOption('database-user'),
             'password' => $input->getOption('database-password'),
             'charset' => 'UTF8',
-            'driverOptions' => array()
+            'driverOptions' => array(),
         );
 
         $tmpConnection = DriverManager::getConnection($params);

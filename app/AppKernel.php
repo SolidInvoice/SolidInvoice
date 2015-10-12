@@ -38,6 +38,10 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new Payum\Bundle\PayumBundle\PayumBundle(),
             new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
             new Finite\Bundle\FiniteBundle\FiniteFiniteBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
@@ -52,6 +56,9 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new CSBill\DashboardBundle\CSBillDashboardBundle(),
             new CSBill\TaxBundle\CSBillTaxBundle(),
             new CSBill\NotificationBundle\CSBillNotificationBundle(),
+            new CSBill\ApiBundle\CSBillApiBundle(),
+            new CSBill\CronBundle\CSBillCronBundle(),
+            new CSBill\MoneyBundle\CSBillMoneyBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

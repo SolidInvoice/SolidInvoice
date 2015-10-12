@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -16,6 +16,7 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\TaxBundle\Repository\TaxRepository")
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
+ * @Serialize\ExclusionPolicy("all")
  */
 class Tax
 {
@@ -46,7 +48,8 @@ class Tax
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=32)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $name;
 
@@ -56,15 +59,17 @@ class Tax
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Grid\Column(type="percent")
      * @Assert\Type("float")
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $rate;
 
     /**
-     * @ORM\Column(name="tax_type", type="string", length=32)
-     *
      * @var string
-     * @Assert\NotBlank
+     *
+     * @ORM\Column(name="tax_type", type="string", length=32)
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $type;
 

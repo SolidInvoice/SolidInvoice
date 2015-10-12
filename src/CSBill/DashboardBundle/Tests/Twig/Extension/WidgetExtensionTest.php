@@ -71,15 +71,13 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('get')
             ->once()
             ->with('top')
-            ->andReturn(array($widget))
-        ;
+            ->andReturn(array($widget));
 
         $environment
             ->shouldReceive('render')
             ->once()
             ->with('test_template.html.twig', array('a' => '1', 'b' => '2', 'c' => '3'))
-            ->andReturn('123')
-        ;
+            ->andReturn('123');
 
         $this->extension->initRuntime($environment);
         $content = $this->extension->renderDashboardWidget('top');

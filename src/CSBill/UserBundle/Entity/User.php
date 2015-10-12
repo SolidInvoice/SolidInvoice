@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -12,6 +12,7 @@
 namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -41,6 +42,33 @@ class User extends BaseUser
      * @ORM\Column(name="mobile", type="string", nullable=true)
      */
     protected $mobile;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     */
+    private $apiTokens;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getApiTokens()
+    {
+        return $this->apiTokens;
+    }
+
+    /**
+     * @param ArrayCollection $apiTokens
+     *
+     * @return User
+     */
+    public function setApiTokens($apiTokens)
+    {
+        $this->apiTokens = $apiTokens;
+
+        return $this;
+    }
 
     /**
      * @return string

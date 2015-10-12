@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -24,13 +24,9 @@ class CreditType extends AbstractType
     {
         $builder->add(
             'amount',
-            'number',
+            'money',
             array(
-                'precision' => 2,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Type('float'),
-                ),
+                'constraints' => new Assert\NotBlank(),
             )
         );
     }

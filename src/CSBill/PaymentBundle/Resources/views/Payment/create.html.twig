@@ -21,7 +21,7 @@
                     {% if invoice.client.credit.value is not empty %}
                         <div class="pull-right">
                             {{ 'payment.create.credit'|trans }}
-                            {{ invoice.client.credit.value|currency }}
+                            {{ invoice.client.credit.value|formatCurrency }}
                         </div>
                     {% endif %}
                 </h3>
@@ -30,24 +30,24 @@
                     <dl class="dl-horizontal">
                         {% for item in invoice.items %}
                             <dt>{{ item }}</dt>
-                            <dd>{{ item.total|currency }}</dd>
+                            <dd>{{ item.total|formatCurrency }}</dd>
                         {% endfor %}
 
                         <hr />
 
                         {% if invoice.discount is not empty %}
                             <dt>{{ 'payment.create.base_total'|trans }}</dt>
-                            <dd>{{ invoice.baseTotal|currency }}</dd>
+                            <dd>{{ invoice.baseTotal|formatCurrency }}</dd>
                             <dt>{{ 'payment.create.discount'|trans }}</dt>
-                            <dd class="text-danger">-{{ (invoice.baseTotal * invoice.discount)|currency }}</dd>
+                            <dd class="text-danger">-{{ (invoice.balance.add(invoice.tax))|percentage(invoice.discount)|formatCurrency }}</dd>
                         {% endif %}
 
                         <dt>{{ 'payment.create.total'|trans }}</dt>
-                        <dd>{{ invoice.total|currency }}</dd>
+                        <dd>{{ invoice.total|formatCurrency }}</dd>
 
-                        {% if invoice.payments|length > 0 and invoice.balance != 0 %}
+                        {% if invoice.payments|length > 0 and not invoice.balance.zero %}
                             <dt>{{ 'payment.create.balance'|trans }}</dt>
-                            <dd>{{ invoice.balance|currency }}</dd>
+                            <dd>{{ invoice.balance|formatCurrency }}</dd>
                         {% endif %}
                     </dl>
                 </div>

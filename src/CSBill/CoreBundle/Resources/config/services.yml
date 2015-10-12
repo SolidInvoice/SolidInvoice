@@ -5,7 +5,6 @@ parameters:
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
     csbill_core.menu.top.class: CSBill\CoreBundle\Menu\Main
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
-    csbill_core.doctrine.type.money.class: CSBill\CoreBundle\Form\Extension\MoneyExtension
     csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
     csbill_core.billing.mailer.class: CSBill\CoreBundle\Mailer\Mailer
     csbill_core.form.type.image_upload.class: CSBill\CoreBundle\Form\Type\ImageUpload
@@ -40,23 +39,10 @@ services:
             - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
             - { name: cs_core.menu, menu: top_right, method: userMenu }
 
-    csbill_core.currency:
-        class: %csbill_core.currrency.class%
-        arguments: [%locale%, %currency%]
-
-    currency:
-        alias: csbill_core.currency
-
     csbill_core.form.help.extension:
         class: %csbill_core.form.help.extension.class%
         tags:
             - { name: form.type_extension, alias: form}
-
-    csbill_core.form.money.extension:
-        class: %csbill_core.doctrine.type.money.class%
-        arguments: [@csbill_core.currency]
-        tags:
-            - { name: form.type_extension, alias: money}
 
     billing.mailer:
         class: %csbill_core.billing.mailer.class%

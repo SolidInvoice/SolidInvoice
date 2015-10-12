@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -55,10 +55,8 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
     {
         $action = $context->getAction();
 
-        /* @var \Payum\Core\Request\Capture $request */
-        $request = $context->getAction();
-
         if ($action instanceof CaptureAction) {
+            $request = $context->getRequest();
             /** @var Payment $payment */
             $payment = $request->getFirstModel();
             $details = $request->getModel();

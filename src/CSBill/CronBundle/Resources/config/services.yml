@@ -1,0 +1,4 @@
+services:
+
+    cron.runner:
+        class: CSBill\CronBundle\Runner

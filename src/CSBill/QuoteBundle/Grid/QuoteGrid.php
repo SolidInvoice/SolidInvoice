@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -120,14 +120,12 @@ class QuoteGrid implements GridInterface
         $viewAction = new ActionColumn();
         $viewAction->setIcon('eye')
             ->setTitle('quote.grid.action.view')
-            ->setRoute('_quotes_view')
-        ;
+            ->setRoute('_quotes_view');
 
         $editAction = new ActionColumn();
         $editAction->setIcon('edit')
             ->setTitle('quote.grid.action.edit')
-            ->setRoute('_quotes_edit')
-        ;
+            ->setRoute('_quotes_edit');
 
         $collection->add($viewAction);
         $collection->add($editAction);
@@ -157,7 +155,7 @@ class QuoteGrid implements GridInterface
                     $this->entityManager->persist($quote);
                 } else {
                     $flashBag->add('warning', 'quote.transition.exception.archive');
-                    $failed++;
+                    ++$failed;
                 }
             }
 

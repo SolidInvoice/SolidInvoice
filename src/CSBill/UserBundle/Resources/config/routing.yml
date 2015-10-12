@@ -1,0 +1,18 @@
+api_keys:
+    pattern: /api
+    defaults: { _controller: CSBillUserBundle:Api:index }
+
+api_key_history:
+    pattern: /api/history/{id}
+    defaults: { _controller: CSBillUserBundle:Api:tokenHistory }
+
+api_key_create:
+    pattern: /api/create
+    defaults: { _controller: CSBillUserBundle:Api:saveToken }
+
+api_key_revoke:
+    pattern: /api/revoke/{id}
+    defaults: { _controller: CSBillUserBundle:Api:revokeToken }
+    methods: [POST]
+    options:
+        expose: true

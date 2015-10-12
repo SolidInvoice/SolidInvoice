@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -25,28 +25,35 @@ class SystemInformationForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
-        $locales = Intl::getLocaleBundle()->getLocaleNames();
 
-        $builder->add(
-            'locale',
-            'select2',
-            array(
-                'choices' => $locales,
-                'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'Please select a locale')),
-                ),
-                'placeholder' => '',
-            )
-        );
+        if (extension_loaded('intl')) {
+            $builder->add(
+                'locale',
+                'select2',
+                array(
+                    'choices' => Intl::getLocaleBundle()->getLocaleNames(),
+                    'constraints' => new Constraints\NotBlank(array('message' => 'Please select a locale')),
+                    'placeholder' => '',
+                )
+            );
+        } else {
+            $builder->add(
+                'locale',
+                null,
+                array(
+                    'data' => 'en',
+                    'read_only' => true,
+                    'help' => 'The only currently supported locale is "en". To choose a different locale, please install the \'intl\' extension',
+                )
+            );
+        }
 
         $builder->add(
             'currency',
             'select2',
             array(
                 'choices' => $currencies,
-                'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'Please select a currency')),
-                ),
+                'constraints' => new Constraints\NotBlank(array('message' => 'Please select a currency')),
                 'placeholder' => '',
             )
         );
@@ -55,9 +62,7 @@ class SystemInformationForm extends AbstractType
             'username',
             null,
             array(
-                'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'Please enter a username')),
-                ),
+                'constraints' => new Constraints\NotBlank(array('message' => 'Please enter a username')),
             )
         );
 

@@ -4,42 +4,54 @@ php:
   - 5.4
   - 5.5
   - 5.6
-  - nightly
+  - 7
   - hhvm
-  - hhvm-nightly
 
 matrix:
   fast_finish: true
   allow_failures:
-    - php: hhvm-nightly
-    - php: nightly
+    - php: 7
 
-sudo: false
+env:
+  global:
+    - SAUCE_USERNAME=csbill
+    - SAUCE_ACCESS_KEY=dc33d33b-1a56-4333-9195-659844348121
+    - SYMFONY_ENV=test
 
-# cache vendor dirs
 cache:
   directories:
-    - $HOME/.composer/cache
+    - $HOME/.composer/cache/files
 
 before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-source --no-interaction
+  - composer install --prefer-source -n
+  - php app/console assets:install -n
+  - php app/console assetic:dump -n
 
 before_script:
   - mysql -e 'create database csbill;'
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm"* ]]; then echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
   - php app/check.php
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  - bash travis/travis-ci-apache.sh
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3 # give xvfb some time to start
+  - bash travis/sauce.sh
 
 script:
   - php app/console security:check
-  - ./bin/behat --suite=installation -n -f progress
-  - ./bin/phpunit -c app
+  - bash travis/behat.sh
+  - bash travis/phpunit.sh
 
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi;
+  - php ./bin/coveralls -v
+  - cat build/logs/coveralls-upload.json
 
 notifications:
   hipchat:

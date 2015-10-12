@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -107,15 +107,13 @@ class ClientGrid implements GridInterface
         $viewAction->setIcon('eye')
             ->setTitle('client.grid.actions.view')
             ->setRoute('_clients_view')
-            ->setClass('primary')
-        ;
+            ->setClass('primary');
 
         $editAction = new ActionColumn();
         $editAction->setIcon('edit')
             ->setTitle('client.grid.actions.edit')
             ->setRoute('_clients_edit')
-            ->setClass('info')
-        ;
+            ->setClass('info');
 
         $collection->add($viewAction);
         $collection->add($editAction);

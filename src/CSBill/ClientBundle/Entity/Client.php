@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -19,6 +19,8 @@ use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serialize;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,6 +31,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @Serialize\ExclusionPolicy("all")
+ * @Serialize\XmlRoot("client")
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_clients", absolute=true))
+ * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
  */
 class Client
 {
@@ -42,6 +48,7 @@ class Client
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Expose
      */
     private $id;
 
@@ -51,6 +58,7 @@ class Client
      * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
+     * @Serialize\Expose
      */
     private $name;
 
@@ -60,6 +68,7 @@ class Client
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
      * @Assert\Length(max=125)
+     * @Serialize\Expose
      */
     private $website;
 
@@ -68,6 +77,7 @@ class Client
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @GRID\Column(type="status", filter="source", filter="select", selectFrom="source", title="status", label_function="client_label")
+     * @Serialize\Expose
      */
     private $status;
 
@@ -118,6 +128,8 @@ class Client
      *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @GRID\Column(field="credit.value", title="Credit", type="currency")
+     * @Serialize\Expose()
+     * @Serialize\Inline()
      */
     private $credit;
 
@@ -423,7 +435,7 @@ class Client
     /**
      * @param Credit $credit
      */
-    public function setCredit($credit)
+    public function setCredit(Credit $credit)
     {
         $this->credit = $credit;
     }
@@ -436,7 +448,6 @@ class Client
         if (null === $this->id) {
             $credit = new Credit();
             $credit->setClient($this);
-            $credit->setValue(0);
             $this->setCredit($credit);
         }
     }

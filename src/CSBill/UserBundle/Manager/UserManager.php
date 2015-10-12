@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -23,8 +23,11 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class UserManager extends BaseUserManager
 {
     protected $objectManager;
+
     protected $class;
+
     protected $repository;
+
     private $entity;
 
     /**
@@ -50,7 +53,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleteUser(UserInterface $user)
     {
@@ -59,7 +62,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getClass()
     {
@@ -72,7 +75,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findUserBy(array $criteria)
     {
@@ -84,7 +87,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findUsers()
     {
@@ -96,7 +99,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reloadUser(UserInterface $user)
     {
@@ -107,15 +110,16 @@ class UserManager extends BaseUserManager
      * Updates a user.
      *
      * @param UserInterface $user
-     * @param Boolean       $andFlush Whether to flush the changes (default true)
+     * @param bool          $flush Whether to flush the changes (default true)
      */
-    public function updateUser(UserInterface $user, $andFlush = true)
+    public function updateUser(UserInterface $user, $flush = true)
     {
         $this->updateCanonicalFields($user);
         $this->updatePassword($user);
 
         $this->objectManager->persist($user);
-        if ($andFlush) {
+
+        if ($flush) {
             $this->objectManager->flush();
         }
     }

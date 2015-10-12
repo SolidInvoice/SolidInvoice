@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -12,12 +12,14 @@
 namespace CSBill\CoreBundle\Traits\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as GRID;
+use JMS\Serializer\Annotation as Serialize;
 
 trait SoftDeleteable
 {
     /**
      * @ORM\Column(type="datetime", name="deleted", nullable=true)
      * @GRID\Column(visible=false)
+     * @Serialize\Exclude()
      */
     protected $deletedAt;
 

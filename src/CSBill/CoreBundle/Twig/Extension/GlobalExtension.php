@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -13,6 +13,7 @@ namespace CSBill\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
 use CSBill\CoreBundle\CSBillCoreBundle;
+use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 use Twig_Extension;
@@ -43,13 +44,12 @@ class GlobalExtension extends Twig_Extension
     {
         $appName = $this->container->get('settings')->get('system.general.app_name');
 
-        return array(
+        return [
             'query' => $this->getQuery(),
-            'currency' => $this->container->get('currency'),
             'app_version' => CSBillCoreBundle::VERSION,
             'app_name' => $appName,
             'settings' => $this->container->get('settings')->getSettings(),
-        );
+        ];
     }
 
     /**
@@ -57,11 +57,10 @@ class GlobalExtension extends Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('percentage', array($this, 'formatPercentage')),
-            new \Twig_SimpleFilter('currency', array($this, 'formatCurrency')),
-            new \Twig_SimpleFilter('diff', array($this, 'dateDiff')),
-        );
+        return [
+            new \Twig_SimpleFilter('percentage', [$this, 'formatPercentage']),
+            new \Twig_SimpleFilter('diff', [$this, 'dateDiff']),
+        ];
     }
 
     /**
@@ -69,9 +68,9 @@ class GlobalExtension extends Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('icon', array($this, 'displayIcon'), array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFunction('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
+        ];
     }
 
     /**
@@ -82,7 +81,7 @@ class GlobalExtension extends Twig_Extension
      *
      * @return string
      */
-    public function displayIcon($iconName, array $options = array())
+    public function displayIcon($iconName, array $options = [])
     {
         $options = implode('-', $options);
         $class = sprintf('fa fa-%s', $iconName);
@@ -96,16 +95,6 @@ class GlobalExtension extends Twig_Extension
 
     /**
      * @param int|float $amount
-     *
-     * @return string
-     */
-    public function formatCurrency($amount)
-    {
-        return $this->container->get('currency')->format($amount);
-    }
-
-    /**
-     * @param int|float $amount
      * @param int       $percentage
      *
      * @return float|int
@@ -113,6 +102,10 @@ class GlobalExtension extends Twig_Extension
     public function formatPercentage($amount, $percentage = 0)
     {
         if ($percentage > 0) {
+            if ($amount instanceof Money) {
+                return $amount->multiply($percentage);
+            }
+
             return ($amount * $percentage);
         }
 
@@ -131,6 +124,14 @@ class GlobalExtension extends Twig_Extension
         $carbon = Carbon::instance($date);
 
         return $carbon->diffForHumans();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'csbill_core.twig.globals';
     }
 
     /**
@@ -155,15 +156,7 @@ class GlobalExtension extends Twig_Extension
 
             return $params;
         } catch (InactiveScopeException $e) {
-            return array();
+            return [];
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'csbill_core.twig.globals';
     }
 }

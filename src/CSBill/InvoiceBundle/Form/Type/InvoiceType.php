@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -50,9 +50,9 @@ class InvoiceType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
-        $builder->add('total', 'hidden');
-        $builder->add('baseTotal', 'hidden');
-        $builder->add('tax', 'hidden');
+        $builder->add('total', 'hidden_money');
+        $builder->add('baseTotal', 'hidden_money');
+        $builder->add('tax', 'hidden_money');
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
     }

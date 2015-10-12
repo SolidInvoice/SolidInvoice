@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,28 +11,13 @@
 
 namespace CSBill\QuoteBundle\Form\Type;
 
-use CSBill\TaxBundle\Repository\TaxRepository;
 use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class QuoteType extends AbstractType
 {
-    /**
-     * @var TaxRepository
-     */
-    private $repo;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->repo = $entityManager->getRepository('CSBillTaxBundle:Tax');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -65,10 +50,9 @@ class QuoteType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
-        $builder->add('total', 'hidden');
-        $builder->add('baseTotal', 'hidden');
-
-        $builder->add('tax', 'hidden');
+        $builder->add('total', 'hidden_money');
+        $builder->add('baseTotal', 'hidden_money');
+        $builder->add('tax', 'hidden_money');
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
     }

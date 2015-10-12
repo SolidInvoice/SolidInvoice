@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -12,8 +12,8 @@
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Model\Status;
 use CSBill\ClientBundle\Form\Client as ClientForm;
+use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\InvoiceBundle\Model\Graph;
@@ -62,10 +62,10 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('client_saved'), 'success');
 
-            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
+            return $this->redirect($this->generateUrl('_clients_view', ['id' => $client->getId()]));
         }
 
-        return $this->render('CSBillClientBundle:Default:add.html.twig', array('form' => $form->createView()));
+        return $this->render('CSBillClientBundle:Default:add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -90,15 +90,44 @@ class DefaultController extends BaseController
             $this->save($client);
             $this->flash($this->trans('client_saved'), 'success');
 
-            return $this->redirect($this->generateUrl('_clients_view', array('id' => $client->getId())));
+            return $this->redirect($this->generateUrl('_clients_view', ['id' => $client->getId()]));
         }
 
         return $this->render(
             'CSBillClientBundle:Default:edit.html.twig',
-            array(
+            [
                 'client' => $client,
                 'form' => $form->createView(),
-            )
+            ]
+        );
+    }
+
+    /**
+     * View a client.
+     *
+     * @param Client $client
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewAction(Client $client)
+    {
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
+        $payments = $paymentRepository->getPaymentsForClient($client);
+
+        /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
+        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
+
+        return $this->render(
+            'CSBillClientBundle:Default:view.html.twig',
+            [
+                'client' => $client,
+                'payments' => $payments,
+                'total_invoices_pending' => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
+                'total_invoices_paid' => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
+                'total_income' => $paymentRepository->getTotalIncome($client),
+                'total_outstanding' => $invoiceRepository->getTotalOutstanding($client),
+            ]
         );
     }
 
@@ -110,7 +139,7 @@ class DefaultController extends BaseController
      */
     private function getClientContactDetails(Request $request, Client $client)
     {
-        $originalContactsDetails = array();
+        $originalContactsDetails = [];
 
         if ($request->isMethod('POST')) {
             $originalContacts = $client->getContacts()->toArray();
@@ -164,34 +193,5 @@ class DefaultController extends BaseController
                 $contact->removeAdditionalDetail($contactDetail);
             }
         }
-    }
-
-    /**
-     * View a client.
-     *
-     * @param Client $client
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function viewAction(Client $client)
-    {
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
-        $payments = $paymentRepository->getPaymentsForClient($client);
-
-        /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
-
-        return $this->render(
-            'CSBillClientBundle:Default:view.html.twig',
-            array(
-                'client' => $client,
-                'payments' => $payments,
-                'total_invoices_pending' => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
-                'total_invoices_paid' => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
-                'total_income' => $invoiceRepository->getTotalIncome($client),
-                'total_outstanding' => $invoiceRepository->getTotalOutstanding($client),
-            )
-        );
     }
 }

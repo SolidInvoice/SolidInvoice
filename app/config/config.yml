@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: payments.yml }
+    - { resource: assetVersion.php }
     - { resource: @CSBillInvoiceBundle/Resources/config/finite.yml }
     - { resource: @CSBillQuoteBundle/Resources/config/finite.yml }
 
@@ -15,8 +16,8 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    templating:
-        engines: ['twig']
+    #templating:
+        #engines: ['twig']
         #assets_version: SomeVersionScheme
     default_locale:  %locale%
     trusted_proxies: ~
@@ -62,6 +63,7 @@ doctrine:
         charset:  UTF8
         types:
             uuid: Rhumsaa\Uuid\Doctrine\UuidType
+            money: CSBill\MoneyBundle\Doctrine\Types\MoneyType
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
@@ -70,6 +72,8 @@ doctrine:
         auto_generate_proxy_classes: %kernel.debug%
         entity_managers:
             default:
+                hydrators:
+                    money: CSBill\MoneyBundle\Doctrine\Hydrator\MoneyHydrator
                 filters:
                     softdeleteable:
                         class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
@@ -142,3 +146,38 @@ fos_user:
     service:
         email_canonicalizer:    csbill.user.canonicalizer
         username_canonicalizer: csbill.user.canonicalizer
+
+fos_rest:
+    param_fetcher_listener: true
+    allowed_methods_listener: true
+    routing_loader:
+        default_format: json
+    serializer:
+        serialize_null: true
+    view:
+        formats:
+            jsonp: true
+            json: true
+            xml: true
+            rss: false
+            html: false
+        templating_formats:
+            html: false
+        force_redirects:
+            html: false
+        serialize_null: true
+        failed_validation: HTTP_BAD_REQUEST
+        exception_wrapper_handler:  null
+    disable_csrf_role: ROLE_API_AUTHENTICATED
+    body_listener: true
+    format_listener: true
+    access_denied_listener:
+        json: true
+        xml: true
+        jsonp: true
+
+nelmio_api_doc:
+    sandbox:
+        enabled: false
+    cache:
+        enabled: true

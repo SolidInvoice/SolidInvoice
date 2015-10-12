@@ -10,7 +10,7 @@ services:
 
     grid.column.extension.currency_extension:
         class: CSBill\DataGridBundle\Column\CurrencyColumn
-        arguments: [%currency%]
+        arguments: [@csbill.money.formatter]
         tags:
             - { name: grid.column.extension }
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -21,6 +21,8 @@ class FinishStep extends ControllerStep
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        return $this->render('CSBillInstallBundle:Flow:finish.html.twig');
+        $rootDir = $this->container->getParameter('kernel.root_dir');
+
+        return $this->render('CSBillInstallBundle:Flow:finish.html.twig', array('rootDir' => $rootDir));
     }
 }

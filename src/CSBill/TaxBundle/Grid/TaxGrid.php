@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -80,8 +80,7 @@ class TaxGrid implements GridInterface
         $editAction = new ActionColumn();
         $editAction->setIcon('edit')
             ->setTitle('Edit Tax Rate')
-            ->setRoute('_edit_tax_rate')
-        ;
+            ->setRoute('_edit_tax_rate');
 
         $deleteAction = new ActionColumn();
         $deleteAction->setIcon('times')
@@ -89,8 +88,7 @@ class TaxGrid implements GridInterface
             ->setRoute('_delete_tax_rate')
             ->setConfirm('Are you sure you want to delete this tax method?')
             ->setAttributes(array('class' => 'delete-tax'))
-            ->setClass('danger')
-        ;
+            ->setClass('danger');
 
         $collection->add($editAction);
         $collection->add($deleteAction);

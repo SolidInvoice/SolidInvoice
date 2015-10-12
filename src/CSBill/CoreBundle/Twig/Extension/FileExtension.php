@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -35,7 +35,7 @@ class FileExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('file', array($this, 'getFile'), array('is_safe' => array('css'))),
+            new \Twig_SimpleFunction('file', array($this, 'getFile'), array('is_safe' => array('css', 'html'))),
         );
     }
 

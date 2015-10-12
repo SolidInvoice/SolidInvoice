@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -13,10 +13,12 @@ namespace CSBill\PaymentBundle\Form;
 
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\ORM\Query\Expr;
+use Money\Money;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PaymentForm extends AbstractType
 {
@@ -32,12 +34,17 @@ class PaymentForm extends AbstractType
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
                 'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
-                    $expression = new Expr();
+                    $expression = $queryBuilder->expr();
                     $queryBuilder->where($expression->eq('pm.enabled', 1));
 
                     // If user is not logged in, exclude internal payment methods
                     if (null === $options['user']) {
-                        $queryBuilder->andWhere($expression->eq('pm.internal', 0));
+                        $queryBuilder->andWhere(
+                            $expression->orX(
+                                $expression->neq('pm.internal', 1),
+                                $expression->isNull('pm.internal')
+                            )
+                        );
                     }
 
                     $queryBuilder->orderBy($expression->asc('pm.name'));
@@ -60,7 +67,14 @@ class PaymentForm extends AbstractType
             array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\GreaterThan(0),
+                    new Assert\Callback(function (Money $money, ExecutionContextInterface $context) {
+                        if ($money->isZero() || $money->isNegative()) {
+                            $context->buildViolation('This value should be greater than {{ compared_value }}.')
+                                ->setParameter('{{ value }}', $money->getAmount())
+                                ->setParameter('{{ compared_value }}', 0)
+                                ->addViolation();
+                        }
+                    }),
                 ),
             )
         );

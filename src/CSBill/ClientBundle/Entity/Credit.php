@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -14,6 +14,8 @@ namespace CSBill\ClientBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
+use Money\Money;
 
 /**
  * CSBill\ClientBundle\Entity\Credit.
@@ -22,6 +24,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\CreditRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @Serialize\ExclusionPolicy("all")
  */
 class Credit
 {
@@ -36,13 +39,16 @@ class Credit
     private $id;
 
     /**
-     * @ORM\Column(name="value", type="float")
+     * @ORM\Column(name="value", type="money")
+     *
+     * @var Money
+     * @Serialize\Expose()
+     * @Serialize\SerializedName("credit")
      */
     private $value;
 
     /**
      * @var Client
-     *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
      */
     private $client;
@@ -72,18 +78,19 @@ class Credit
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getValue()
     {
         return $this->value;
     }
+
     /**
-     * @param float $value
+     * @param Money $value
      *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue(Money $value)
     {
         $this->value = $value;
 
@@ -95,6 +102,6 @@ class Credit
      */
     public function __toString()
     {
-        return $this->value;
+        return $this->value->getAmount();
     }
 }

@@ -26,7 +26,7 @@
                 {{ invoice.created|date }}
             </div>
             <div class="col-lg-3 col-md-3">
-                {{ invoice.total|currency }}
+                {{ invoice.total|formatCurrency }}
             </div>
             <div class="col-lg-2 col-md-2">
                 <a href="{{ path("_invoices_view", {"id" : invoice.id}) }}" class="btn">

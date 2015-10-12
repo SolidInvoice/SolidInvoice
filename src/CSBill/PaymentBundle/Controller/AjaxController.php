@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -38,6 +38,8 @@ class AjaxController extends BaseController
 
         $originalSettings = $paymentMethod->getSettings();
 
+        /** @var \CSBill\PaymentBundle\Payum $payum */
+        $payum = $this->get('payum');
         $registry = $this->get('form.registry');
 
         $form = $this->createForm(
@@ -45,6 +47,7 @@ class AjaxController extends BaseController
             $paymentMethod,
             array(
                 'settings' => $registry->hasType($paymentMethod->getPaymentMethod()) ? $paymentMethod->getPaymentMethod() : null,
+                'internal' => $payum->isOffline($paymentMethod->getPaymentMethod()),
             )
         );
 

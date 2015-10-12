@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,12 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
-use CSBill\TaxBundle\Entity\Tax;
 use CSBill\CoreBundle\Traits\Entity;
+use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @Serialize\ExclusionPolicy("all")
  */
 class Item
 {
@@ -35,6 +38,7 @@ class Item
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Expose()
      */
     private $id;
 
@@ -43,14 +47,16 @@ class Item
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
+     * @Serialize\Expose()
      */
     private $description;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="price", type="decimal", scale=2)
-     * @Assert\NotBlank
+     * @ORM\Column(name="price", type="money")
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $price;
 
@@ -58,7 +64,8 @@ class Item
      * @var int
      *
      * @ORM\Column(name="qty", type="float")
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $qty;
 
@@ -71,12 +78,15 @@ class Item
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="quoteItems")
+     * @Serialize\Expose()
      */
     private $tax;
 
     /**
-     * @var float
-     * @ORM\Column(name="total", type="decimal", scale=2)
+     * @var Money
+     *
+     * @ORM\Column(name="total", type="money")
+     * @Serialize\Expose()
      */
     private $total;
 
@@ -117,11 +127,11 @@ class Item
     /**
      * Set the price.
      *
-     * @param float $price
+     * @param Money $price
      *
      * @return Item
      */
-    public function setPrice($price)
+    public function setPrice(Money $price)
     {
         $this->price = $price;
 
@@ -131,7 +141,7 @@ class Item
     /**
      * Get the price.
      *
-     * @return float
+     * @return Money
      */
     public function getPrice()
     {
@@ -187,11 +197,11 @@ class Item
     }
 
     /**
-     * @param float $total
+     * @param Money $total
      *
-     * @return $this
+     * @return Item
      */
-    public function setTotal($total)
+    public function setTotal(Money $total)
     {
         $this->total = $total;
 
@@ -201,7 +211,7 @@ class Item
     /**
      * Get the line item total.
      *
-     * @return float
+     * @return Money
      */
     public function getTotal()
     {
@@ -235,7 +245,7 @@ class Item
      */
     public function updateTotal()
     {
-        $this->total = $this->qty * $this->price;
+        $this->total = $this->price->multiply($this->qty);
     }
 
     /**

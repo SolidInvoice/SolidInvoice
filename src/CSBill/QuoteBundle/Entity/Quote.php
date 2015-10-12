@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -17,6 +17,9 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serialize;
+use Money\Money;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,6 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
+ * @Serialize\ExclusionPolicy("all")
+ * @Serialize\XmlRoot("quote")
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_quotes", absolute=true))
  */
 class Quote
 {
@@ -39,6 +45,7 @@ class Quote
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Expose
      */
     private $id;
 
@@ -55,6 +62,7 @@ class Quote
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", safe=false, label_function="quote_label")
+     * @Serialize\Expose()
      */
     private $status;
 
@@ -69,26 +77,29 @@ class Quote
     private $client;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="total", type="float")
+     * @ORM\Column(name="total", type="money")
      * @Grid\Column(type="currency")
+     * @Serialize\Expose()
      */
     private $total;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="base_total", type="float")
+     * @ORM\Column(name="base_total", type="money")
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $baseTotal;
 
     /**
-     * @var float
+     * @var Money
      *
-     * @ORM\Column(name="tax", type="float", nullable=true)
+     * @ORM\Column(name="tax", type="money", nullable=true)
      * @Grid\Column(type="currency")
+     * @Serialize\Expose()
      */
     private $tax;
 
@@ -97,6 +108,7 @@ class Quote
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
      * @Grid\Column(type="percent")
+     * @Serialize\Expose()
      */
     private $discount;
 
@@ -105,6 +117,7 @@ class Quote
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $terms;
 
@@ -113,6 +126,7 @@ class Quote
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $notes;
 
@@ -122,6 +136,7 @@ class Quote
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
      * @Grid\Column(visible=false)
+     * @Serialize\Exclude()
      */
     private $due;
 
@@ -131,6 +146,7 @@ class Quote
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
+     * @Serialize\Expose()
      */
     private $items;
 
@@ -174,7 +190,7 @@ class Quote
     /**
      * @param Uuid $uuid
      *
-     * @return $this
+     * @return Quote
      */
     public function setUuid(Uuid $uuid)
     {
@@ -196,7 +212,7 @@ class Quote
     /**
      * @param array $users
      *
-     * @return $this
+     * @return Quote
      */
     public function setUsers(array $users = array())
     {
@@ -256,11 +272,11 @@ class Quote
     /**
      * Set total.
      *
-     * @param float $total
+     * @param Money $total
      *
      * @return Quote
      */
-    public function setTotal($total)
+    public function setTotal(Money $total)
     {
         $this->total = $total;
 
@@ -270,7 +286,7 @@ class Quote
     /**
      * Get total.
      *
-     * @return float
+     * @return Money
      */
     public function getTotal()
     {
@@ -280,11 +296,11 @@ class Quote
     /**
      * Set base total.
      *
-     * @param float $baseTotal
+     * @param Money $baseTotal
      *
      * @return Quote
      */
-    public function setBaseTotal($baseTotal)
+    public function setBaseTotal(Money $baseTotal)
     {
         $this->baseTotal = $baseTotal;
 
@@ -294,7 +310,7 @@ class Quote
     /**
      * Get base total.
      *
-     * @return float
+     * @return Money
      */
     public function getBaseTotal()
     {
@@ -318,7 +334,7 @@ class Quote
     /**
      * Get discount.
      *
-     * @return float
+     * @return Money
      */
     public function getDiscount()
     {
@@ -430,7 +446,7 @@ class Quote
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getTax()
     {
@@ -438,11 +454,11 @@ class Quote
     }
 
     /**
-     * @param float $tax
+     * @param Money $tax
      *
      * @return Quote
      */
-    public function setTax($tax)
+    public function setTax(Money $tax)
     {
         $this->tax = $tax;
 

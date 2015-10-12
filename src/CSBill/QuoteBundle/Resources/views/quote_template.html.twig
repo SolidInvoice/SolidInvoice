@@ -7,21 +7,22 @@
  # with this source code in the file LICENSE.
  #}
 
-{% spaceless %}
+{% set footerSpan = quote.tax is empty ? 2 : 3 %}
 
-    {% set footerSpan = quote.tax is empty ? 2 : 3 %}
-
-    <div class="widget" id="quote-create">
-        <div class="container">
+<div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="quote-create">
+    <div class="container">
+        {% block header %}
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="title">
-                        <h2>
-                            {{ "quote.title"|trans({"%id%" : quote.id}) }}
-                            <small>{{ quote_label(quote.status) }}</small>
-                        </h2>
-                    </div>
-                    <hr>
+                    {% block title %}
+                        <div class="title">
+                            <h2>
+                                {{ "quote.title"|trans({"%id%" : quote.id}) }}
+                                <small>{{ quote_label(quote.status) }}</small>
+                            </h2>
+                        </div>
+                        <hr>
+                    {% endblock %}
                     <div class="row">
                         <div class="col-xs-7">
                             <h4>
@@ -46,7 +47,7 @@
                                 <dd>{{ quote.id }}</dd>
 
                                 <dt>{{ "quote.total"|trans }}</dt>
-                                <dd>{{ quote.total|currency }}</dd>
+                                <dd>{{ quote.total|formatCurrency }}</dd>
 
                                 <dt>{{ "quote.created"|trans }}</dt>
                                 <dd>{{ quote.created | date }}</dd>
@@ -55,7 +56,9 @@
                     </div>
                 </div>
             </div>
+        {% endblock %}
 
+        {% block content %}
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
@@ -84,7 +87,7 @@
                                                 {{ item.description }}
                                             </td>
                                             <td class="column-price">
-                                                {{ item.price|currency }}
+                                                {{ item.price|formatCurrency }}
                                             </td>
                                             <td class="column-qty">
                                                 {{ item.qty }}
@@ -95,26 +98,24 @@
                                                 </td>
                                             {% endif %}
                                             <td class="column-total">
-                                                {{ item.total|currency }}
+                                                {{ item.total|formatCurrency }}
                                             </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
                                     <tfoot>
-                                        {% if quote.tax is empty and quote.tax is empty %}
-                                            <tr>
-                                                <td class="no-line"></td>
-                                                <td colspan="{{ footerSpan }}" class="thick-line text-right">
-                                                    <strong>{{ 'quote.subtotal'|trans }}</strong>
-                                                </td>
-                                                <td class="thick-line text-right">
-                                                    <div class="quote-sub-total">
-                                                        {{ quote.baseTotal|currency }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                        {% if quote.tax is not empty %}
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td colspan="{{ footerSpan }}" class="thick-line text-right">
+                                                <strong>{{ 'quote.subtotal'|trans }}</strong>
+                                            </td>
+                                            <td class="thick-line text-right">
+                                                <div class="quote-sub-total">
+                                                    {{ quote.baseTotal|formatCurrency }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% if quote.tax.positive %}
                                             <tr>
                                                 <td class="no-line"></td>
                                                 <td colspan="{{ footerSpan }}" class="no-line text-right">
@@ -122,7 +123,7 @@
                                                 </td>
                                                 <td class="no-line text-right">
                                                     <span class="text-error quote-tax">
-                                                        {{ quote.tax|currency }}
+                                                        {{ quote.tax|formatCurrency }}
                                                     </span>
                                                 </td>
                                             </tr>
@@ -135,7 +136,7 @@
                                                 </td>
                                                 <td class="no-line text-right">
                                                     <span class="text-danger quote-discount">
-                                                        {{ quote.baseTotal|percentage(quote.discount)|currency }}
+                                                        -{{ (quote.baseTotal.add(quote.tax))|percentage(quote.discount)|formatCurrency }}
                                                     </span>
                                                 </td>
                                             </tr>
@@ -149,7 +150,7 @@
                                             </td>
                                             <td class="no-line text-right">
                                                 <div class="quote-total">
-                                                    {{ quote.total|currency }}
+                                                    {{ quote.total|formatCurrency }}
                                                 </div>
                                             </td>
                                         </tr>
@@ -160,8 +161,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        {% endblock %}
+    </div>
 
+    {% block footer %}
         {% if quote.terms is not empty %}
 
             <br class="clear" />
@@ -173,5 +176,5 @@
                 </p>
             </div>
         {% endif %}
-    </div>
-{% endspaceless %}
+    {% endblock %}
+</div>
