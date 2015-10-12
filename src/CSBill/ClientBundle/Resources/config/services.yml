@@ -54,3 +54,10 @@ services:
         arguments: [@service_container]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+
+    csbill.serializer.credit.handler:
+        class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
+        arguments: [@csbill.money.formatter]
+        tags:
+            - { name: jms_serializer.handler, type: "Money\Money", direction: serialization, format: json, method: serializeMoney }
+            - { name: jms_serializer.handler, type: "Money\Money", direction: serialization, format: xml, method: serializeMoney }

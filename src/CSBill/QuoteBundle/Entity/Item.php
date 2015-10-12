@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="quote_lines")
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @Serialize\ExclusionPolicy("all")
  */
 class Item
 {
@@ -36,6 +38,7 @@ class Item
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Expose()
      */
     private $id;
 
@@ -44,6 +47,7 @@ class Item
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
+     * @Serialize\Expose()
      */
     private $description;
 
@@ -51,7 +55,8 @@ class Item
      * @var Money
      *
      * @ORM\Column(name="price", type="money")
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $price;
 
@@ -59,7 +64,8 @@ class Item
      * @var int
      *
      * @ORM\Column(name="qty", type="float")
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $qty;
 
@@ -72,6 +78,7 @@ class Item
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="quoteItems")
+     * @Serialize\Expose()
      */
     private $tax;
 
@@ -79,6 +86,7 @@ class Item
      * @var Money
      *
      * @ORM\Column(name="total", type="money")
+     * @Serialize\Expose()
      */
     private $total;
 

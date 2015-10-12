@@ -59,7 +59,11 @@
         "hipchat/hipchat-php": "~1.4",
         "twilio/sdk": "~4.2",
         "tijsverkoyen/css-to-inline-styles": "~1.5",
-        "mathiasverraes/money": "~1.2"
+        "mathiasverraes/money": "~1.2",
+        "friendsofsymfony/rest-bundle": "~1.5",
+        "jms/serializer-bundle": "~0.12",
+        "willdurand/hateoas-bundle": "0.4.*",
+        "nelmio/api-doc-bundle": "~2.7"
     },
     "require-dev": {
         "behat/behat": "~3.0",

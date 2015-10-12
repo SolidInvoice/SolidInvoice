@@ -29,7 +29,7 @@ class Contact extends AbstractType
     /**
      * @param array $types
      */
-    public function __construct(array $types)
+    public function __construct(array $types = array())
     {
         $this->types = $types;
     }

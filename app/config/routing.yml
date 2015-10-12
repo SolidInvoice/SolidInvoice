@@ -1,6 +1,9 @@
+cs_bill_api:
+    resource: "@CSBillApiBundle/Resources/config/routing.yml"
+    prefix:   /api
+
 cs_bill_dashboard:
     resource: "@CSBillDashboardBundle/Resources/config/routing.yml"
-    prefix:   /
 
 csbill_settings:
     resource: "@CSBillSettingsBundle/Resources/config/routing.yml"
@@ -38,6 +41,9 @@ csbill_tax:
     resource: "@CSBillTaxBundle/Resources/config/routing.yml"
     prefix:   /tax
 
+csbill_user:
+    resource: "@CSBillUserBundle/Resources/config/routing.yml"
+    prefix:   /profile
 
 # External Routes
 

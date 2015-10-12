@@ -44,6 +44,7 @@ class Main extends AuthenticatedMenu
         $userMenu->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
 
         $userMenu->addChild('Profile', array('route' => 'fos_user_profile_show', 'extras' => array('icon' => 'user')));
+        $userMenu->addChild('API Tokens', array('route' => 'api_keys', 'extras' => array('icon' => 'user-secret')));
         $userMenu->addDivider();
         $userMenu->addChild(
             'Logout',

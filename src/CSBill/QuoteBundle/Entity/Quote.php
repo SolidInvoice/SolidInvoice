@@ -20,6 +20,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="quotes")
@@ -27,6 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
+ * @Serialize\ExclusionPolicy("all")
+ * @Serialize\XmlRoot("quote")
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_quotes", absolute=true))
  */
 class Quote
 {
@@ -40,6 +45,7 @@ class Quote
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Expose
      */
     private $id;
 
@@ -56,6 +62,7 @@ class Quote
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", safe=false, label_function="quote_label")
+     * @Serialize\Expose()
      */
     private $status;
 
@@ -74,6 +81,7 @@ class Quote
      *
      * @ORM\Column(name="total", type="money")
      * @Grid\Column(type="currency")
+     * @Serialize\Expose()
      */
     private $total;
 
@@ -82,6 +90,7 @@ class Quote
      *
      * @ORM\Column(name="base_total", type="money")
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $baseTotal;
 
@@ -90,14 +99,16 @@ class Quote
      *
      * @ORM\Column(name="tax", type="money", nullable=true)
      * @Grid\Column(type="currency")
+     * @Serialize\Expose()
      */
     private $tax;
 
     /**
-     * @var Money
+     * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
      * @Grid\Column(type="percent")
+     * @Serialize\Expose()
      */
     private $discount;
 
@@ -106,6 +117,7 @@ class Quote
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $terms;
 
@@ -114,6 +126,7 @@ class Quote
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Grid\Column(visible=false)
+     * @Serialize\Expose()
      */
     private $notes;
 
@@ -123,6 +136,7 @@ class Quote
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
      * @Grid\Column(visible=false)
+     * @Serialize\Exclude()
      */
     private $due;
 
@@ -132,6 +146,7 @@ class Quote
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
+     * @Serialize\Expose()
      */
     private $items;
 

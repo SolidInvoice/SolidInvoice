@@ -45,7 +45,14 @@
             var trigger = $(this),
                 that = this;
 
-            if ($.isFunction(route) && callback === undefined) {
+            if (route === undefined && callback === undefined) {
+                if (trigger.data('target')) {
+                    that.route = trigger.data('target');
+                } else if (trigger.attr('href')) {
+                    that.route = trigger.attr('href');
+                }
+                that.callback = null;
+            } else if ($.isFunction(route) && callback === undefined) {
                 that.callback = route;
                 if (trigger.data('target')) {
                     that.route = trigger.data('target');

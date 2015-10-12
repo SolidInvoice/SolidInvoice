@@ -35,6 +35,12 @@ class Version050 extends AbstractMigration
 
         $this->addSql('UPDATE payments SET amount = amount * 100');
         $this->addSql('ALTER TABLE payments CHANGE amount amount INT NOT NULL');
+
+        $this->addSql('CREATE TABLE api_tokens (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(125) NOT NULL, token VARCHAR(125) NOT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, INDEX IDX_2CAD560EA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE api_tokens ADD CONSTRAINT FK_2CAD560EA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+
+        $this->addSql('CREATE TABLE api_token_history (id INT AUTO_INCREMENT NOT NULL, token_id INT DEFAULT NULL, ip VARCHAR(255) NOT NULL, resource VARCHAR(125) NOT NULL, method VARCHAR(25) NOT NULL, requestData LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', userAgent VARCHAR(255) NOT NULL, created DATETIME NOT NULL, updated DATETIME NOT NULL, INDEX IDX_61D8DC4441DEE7B9 (token_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE api_token_history ADD CONSTRAINT FK_61D8DC4441DEE7B9 FOREIGN KEY (token_id) REFERENCES api_tokens (id)');
     }
 
     /**
@@ -62,5 +68,8 @@ class Version050 extends AbstractMigration
 
         $this->addSql('ALTER TABLE quotes CHANGE total total DOUBLE PRECISION NOT NULL, CHANGE base_total base_total DOUBLE PRECISION NOT NULL, CHANGE tax tax DOUBLE PRECISION DEFAULT NULL');
         $this->addSql('UPDATE quotes SET total = total / 100, base_total = base_total / 100, tax = tax / 100');
+
+        $this->addSql('DROP TABLE api_tokens');
+        $this->addSql('DROP TABLE api_token_history');
     }
 }

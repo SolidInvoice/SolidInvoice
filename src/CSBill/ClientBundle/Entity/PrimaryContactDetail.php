@@ -12,9 +12,11 @@
 namespace CSBill\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Entity()
+ * @Serialize\ExclusionPolicy("all")
  */
 class PrimaryContactDetail extends ContactDetail
 {

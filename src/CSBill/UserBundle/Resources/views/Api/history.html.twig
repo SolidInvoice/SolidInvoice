@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="api-token-modal-label">
+        {{ 'profile.api.history.title'|trans }}
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="alert alert-warning">
+        <strong>{{ icon('exclamation-triangle') }} {{ 'profile.api.history.last_calls_shown_note'|trans }} </strong>
+        {{ 'profile.api.history.last_calls_shown'|trans }}
+    </div>
+    <ul class="list-group">
+        {% for item in history %}
+            <li class="list-group-item">
+                <dl class="dl-horizontal">
+                    <dt>{{ 'profile.api.history.list.date'|trans }}</dt>
+                    <dd>{{ item.created|date }}</dd>
+
+                    <dt>{{ 'profile.api.history.list.ip'|trans }}</dt>
+                    <dd>{{ item.ip }}</dd>
+
+                    <dt>{{ 'profile.api.history.list.resource'|trans }}</dt>
+                    <dd>[{{ item.method }}] {{ item.resource }}</dd>
+
+                    <dt>{{ 'profile.api.history.list.user_agent'|trans }}</dt>
+                    <dd>{{ item.userAgent }}</dd>
+                </dl>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">
+        {{ 'profile.api.history.actions.close'|trans }}
+    </button>
+</div>

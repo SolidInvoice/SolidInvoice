@@ -16,12 +16,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="contacts")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
+ * @Serialize\ExclusionPolicy("all")
  */
 class Contact implements \serializable
 {
@@ -34,6 +36,7 @@ class Contact implements \serializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Expose()
      */
     private $id;
 
@@ -43,6 +46,7 @@ class Contact implements \serializable
      * @ORM\Column(name="firstname", type="string", length=125, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
+     * @Serialize\Expose()
      */
     private $firstname;
 
@@ -51,6 +55,7 @@ class Contact implements \serializable
      *
      * @ORM\Column(name="lastname", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
+     * @Serialize\Expose()
      */
     private $lastname;
 
@@ -68,6 +73,7 @@ class Contact implements \serializable
      * @ORM\OneToMany(indexBy="contact_type_id", targetEntity="PrimaryContactDetail", mappedBy="contact",
      *                                           cascade={"persist"})
      * @Assert\Valid()
+     * @Serialize\Expose()
      */
     private $primaryDetails;
 
@@ -76,6 +82,7 @@ class Contact implements \serializable
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist"})
      * @Assert\Valid()
+     * @Serialize\Expose()
      */
     private $additionalDetails;
 
@@ -292,7 +299,7 @@ class Contact implements \serializable
      */
     public function serialize()
     {
-        return serialize(array($this->id, $this->firstname, $this->lastname));
+        return serialize(array($this->id, $this->firstname, $this->lastname, $this->created, $this->updated));
     }
 
     /**
@@ -300,7 +307,7 @@ class Contact implements \serializable
      */
     public function unserialize($serialized)
     {
-        list($this->id, $this->firstname, $this->lastname) = unserialize($serialized);
+        @list($this->id, $this->firstname, $this->lastname, $this->created, $this->updated) = unserialize($serialized);
     }
 
     /**

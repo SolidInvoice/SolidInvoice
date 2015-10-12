@@ -18,12 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="tax_rates")
  * @ORM\Entity(repositoryClass="CSBill\TaxBundle\Repository\TaxRepository")
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
+ * @Serialize\ExclusionPolicy("all")
  */
 class Tax
 {
@@ -46,7 +48,8 @@ class Tax
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=32)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $name;
 
@@ -56,15 +59,17 @@ class Tax
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Grid\Column(type="percent")
      * @Assert\Type("float")
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $rate;
 
     /**
-     * @ORM\Column(name="tax_type", type="string", length=32)
-     *
      * @var string
-     * @Assert\NotBlank
+     *
+     * @ORM\Column(name="tax_type", type="string", length=32)
+     * @Assert\NotBlank()
+     * @Serialize\Expose()
      */
     private $type;
 
