@@ -12,10 +12,14 @@ matrix:
   allow_failures:
     - php: 7
 
+addons:
+  sauce_connect:
+    username: "csbill"
+    access_key:
+      secure: "CTg3aWzFzbQIT0bieTM3Guv+3g5N4guuiJUdaAcGXgVMqM7FiAzhqSDtsArBq3t3jBCoeuzBVtvCQVtaU7oRgYxsfeiSF/an2UZtjfPu6sKjIqq6ZcTCnkhjplc4tkqLnjX4V1FlUCmRxNHn1j2UJbUkBKujXeRUUGxBGY+cuLc="
+
 env:
   global:
-    - SAUCE_USERNAME=csbill
-    - SAUCE_ACCESS_KEY=dc33d33b-1a56-4333-9195-659844348121
     - SYMFONY_ENV=test
 
 cache:
@@ -40,7 +44,7 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
-  - bash travis/sauce.sh
+  #- bash travis/sauce.sh
 
 script:
   - php app/console security:check
@@ -51,7 +55,6 @@ after_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi;
   - php ./bin/coveralls -v
-  - cat build/logs/coveralls-upload.json
 
 notifications:
   webhooks:
