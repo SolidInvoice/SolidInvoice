@@ -18,14 +18,13 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 {
     public function testRun()
     {
-        $cron = new Runner;
+        $cron = new Runner();
 
         $command = M::mock('CSBill\CronBundle\CommandInterface');
 
         $command->shouldReceive('isDue')
             ->once()
-            ->andReturn(true)
-        ;
+            ->andReturn(true);
 
         $command->shouldReceive('process')
             ->once();
@@ -37,14 +36,13 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunNoCommands()
     {
-        $cron = new Runner;
+        $cron = new Runner();
 
         $command = M::mock('CSBill\CronBundle\CommandInterface');
 
         $command->shouldReceive('isDue')
             ->once()
-            ->andReturn(false)
-        ;
+            ->andReturn(false);
 
         $command->shouldReceive('process')
             ->never();

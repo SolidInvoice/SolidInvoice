@@ -123,14 +123,12 @@ class InvoiceGrid implements GridInterface
         $viewAction = new ActionColumn();
         $viewAction->setIcon('eye')
             ->setTitle('invoice.action.view')
-            ->setRoute('_invoices_view')
-        ;
+            ->setRoute('_invoices_view');
 
         $editAction = new ActionColumn();
         $editAction->setIcon('edit')
             ->setTitle('invoice.action.edit')
-            ->setRoute('_invoices_edit')
-        ;
+            ->setRoute('_invoices_edit');
 
         $payAction = new ActionColumn();
         $payAction->setIcon('credit-card')
@@ -143,8 +141,7 @@ class InvoiceGrid implements GridInterface
                 }
 
                 return $rowAction;
-            })
-        ;
+            });
 
         $collection->add($viewAction);
         $collection->add($editAction);

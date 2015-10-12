@@ -45,8 +45,7 @@ class MoneyFormatterExtensionTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('format')
             ->once()
             ->with($money)
-            ->andReturn('$12,00')
-        ;
+            ->andReturn('$12,00');
 
         $extension = new MoneyFormatterExtension($moneyFormatter);
 

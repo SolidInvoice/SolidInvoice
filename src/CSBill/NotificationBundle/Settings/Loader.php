@@ -153,8 +153,7 @@ class Loader implements SettingsLoaderInterface
             ->select('s.key, s.value')
             ->join('s.section', 'se')
             ->where('se.name = :section')
-            ->setParameter('section', 'hipchat')
-        ;
+            ->setParameter('section', 'hipchat');
 
         $query = $builder->getQuery();
 

@@ -12,11 +12,11 @@
 namespace CSBill\InvoiceBundle\Tests\Manager;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\TaxBundle\Entity\Tax;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\TaxBundle\Entity\Tax;
 use Money\Currency;
 use Money\Money;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

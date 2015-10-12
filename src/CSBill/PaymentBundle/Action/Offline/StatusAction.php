@@ -56,7 +56,6 @@ class StatusAction extends GatewayAwareAction
     {
         return
             $request instanceof StatusRequest &&
-            $request->getModel() instanceof Payment
-        ;
+            $request->getModel() instanceof Payment;
     }
 }

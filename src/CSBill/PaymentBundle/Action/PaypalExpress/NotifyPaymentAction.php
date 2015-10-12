@@ -66,7 +66,6 @@ class NotifyPaymentAction extends GatewayAwareAction
         return
             $request instanceof Notify &&
             $request->getToken() &&
-            $request->getModel() instanceof Payment
-        ;
+            $request->getModel() instanceof Payment;
     }
 }

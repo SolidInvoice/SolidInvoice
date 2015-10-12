@@ -13,8 +13,8 @@ namespace CSBill\CoreBundle\Menu;
 
 use Knp\Menu\Factory\CoreExtension;
 use Knp\Menu\Factory\ExtensionInterface;
-use Knp\Menu\MenuFactory;
 use Knp\Menu\Integration\Symfony\RoutingExtension;
+use Knp\Menu\MenuFactory;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Factory extends MenuFactory

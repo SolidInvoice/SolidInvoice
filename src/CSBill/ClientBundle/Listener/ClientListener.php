@@ -47,7 +47,6 @@ class ClientListener
 
         $this->container
             ->get('notification.manager')
-            ->sendNotification('client_create', $notification)
-        ;
+            ->sendNotification('client_create', $notification);
     }
 }

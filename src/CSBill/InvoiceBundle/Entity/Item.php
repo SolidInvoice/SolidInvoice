@@ -11,13 +11,13 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
-use CSBill\TaxBundle\Entity\Tax;
 use CSBill\CoreBundle\Traits\Entity;
+use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
 use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as Serialize;
 
 /**
  * CSBill\InvoiceBundle\Entity\Item.

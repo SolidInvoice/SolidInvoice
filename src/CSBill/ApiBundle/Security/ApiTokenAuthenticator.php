@@ -16,15 +16,15 @@ use CSBill\UserBundle\Entity\ApiTokenHistory;
 use CSBill\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\SimplePreAuthenticatorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
@@ -149,8 +149,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
             ->setIp($request->getClientIp())
             ->setRequestData($request->request->all())
             ->setUserAgent($request->server->get('HTTP_USER_AGENT'))
-            ->setResource($request->getPathInfo())
-        ;
+            ->setResource($request->getPathInfo());
 
         /** @var ApiTokenHistoryRepository $repository */
         $repository = $this->entityManager->getRepository('CSBillUserBundle:ApiTokenHistory');

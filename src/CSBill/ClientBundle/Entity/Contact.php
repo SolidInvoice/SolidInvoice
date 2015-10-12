@@ -15,8 +15,8 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="contacts")

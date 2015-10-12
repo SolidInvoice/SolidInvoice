@@ -71,10 +71,9 @@ class LoaderTest extends KernelAwareTest
         $user->setEmail('a@b.com')
             ->setMobile('+1234567890')
             ->setUsername('admin')
-            ->setPassword('admin')
-        ;
+            ->setPassword('admin');
 
-        /** @var EntityRepository $setting */
+        /* @var EntityRepository $setting */
         $settingsRepo = $manager->getRepository('CSBillSettingsBundle:Setting');
 
         $settingsRepo
@@ -85,8 +84,7 @@ class LoaderTest extends KernelAwareTest
             ->setParameter('key', 'room_id')
             ->setParameter('value', 12345)
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
 
         $settingsRepo
             ->createQueryBuilder('s')
@@ -96,8 +94,7 @@ class LoaderTest extends KernelAwareTest
             ->setParameter('key', 'auth_token')
             ->setParameter('value', 'abcdef')
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
 
         $manager->persist($user);
         $manager->flush();
@@ -128,7 +125,7 @@ class LoaderTest extends KernelAwareTest
 
         $manager = $doctrine->getManager();
 
-        /** @var EntityRepository $setting */
+        /* @var EntityRepository $setting */
         $settingsRepo = $manager->getRepository('CSBillSettingsBundle:Setting');
         $settingsRepo
             ->createQueryBuilder('s')
@@ -138,8 +135,7 @@ class LoaderTest extends KernelAwareTest
             ->setParameter('key', 'room_id')
             ->setParameter('value', 12345)
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
 
         $this->setExpectedException('Exception', 'You need to set a HipChat Auth token in order to enable HipChat notifications');
 
@@ -157,7 +153,7 @@ class LoaderTest extends KernelAwareTest
         $doctrine = $this->container->get('doctrine');
 
         $manager = $doctrine->getManager();
-        /** @var EntityRepository $setting */
+        /* @var EntityRepository $setting */
         $settingsRepo = $manager->getRepository('CSBillSettingsBundle:Setting');
         $settingsRepo
             ->createQueryBuilder('s')
@@ -167,8 +163,7 @@ class LoaderTest extends KernelAwareTest
             ->setParameter('key', 'auth_token')
             ->setParameter('value', 'ABCDEF')
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
 
         $this->setExpectedException('Exception', 'You need to set a HipChat Room ID in order to enable HipChat notifications');
 
@@ -201,8 +196,7 @@ class LoaderTest extends KernelAwareTest
             ->set('n.hipchat', 0)
             ->set('n.sms', 0)
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
 
         $qb = $setting->createQueryBuilder('s');
         $qb
@@ -211,8 +205,7 @@ class LoaderTest extends KernelAwareTest
             ->where($qb->expr()->in('s.key', array('auth_token', 'room_id')))
             ->setParameter('value', null)
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
     }
 
     /**

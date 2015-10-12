@@ -54,8 +54,7 @@ class ApiTokenHistoryRepository extends EntityRepository
                     ) as history
                 )
                 AND token_id = ?'
-            )
-        ;
+            );
 
         $id = $apiToken->getId();
         $statement->bindParam(1, $id);

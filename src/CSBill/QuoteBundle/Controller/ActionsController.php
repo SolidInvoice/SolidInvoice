@@ -12,8 +12,8 @@
 namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 
 class ActionsController extends BaseController
 {

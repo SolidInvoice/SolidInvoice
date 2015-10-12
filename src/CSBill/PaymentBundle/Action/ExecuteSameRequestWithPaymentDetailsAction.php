@@ -50,7 +50,6 @@ class ExecuteSameRequestWithPaymentDetailsAction extends GatewayAwareAction
     {
         return
             $request instanceof Generic &&
-            $request->getModel() instanceof Payment
-        ;
+            $request->getModel() instanceof Payment;
     }
 }

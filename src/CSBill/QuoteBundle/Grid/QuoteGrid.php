@@ -120,14 +120,12 @@ class QuoteGrid implements GridInterface
         $viewAction = new ActionColumn();
         $viewAction->setIcon('eye')
             ->setTitle('quote.grid.action.view')
-            ->setRoute('_quotes_view')
-        ;
+            ->setRoute('_quotes_view');
 
         $editAction = new ActionColumn();
         $editAction->setIcon('edit')
             ->setTitle('quote.grid.action.edit')
-            ->setRoute('_quotes_edit')
-        ;
+            ->setRoute('_quotes_edit');
 
         $collection->add($viewAction);
         $collection->add($editAction);

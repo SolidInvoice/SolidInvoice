@@ -14,8 +14,8 @@ namespace CSBill\ClientBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Money\Money;
 use JMS\Serializer\Annotation as Serialize;
+use Money\Money;
 
 /**
  * CSBill\ClientBundle\Entity\Credit.

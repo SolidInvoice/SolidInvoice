@@ -17,11 +17,11 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serialize;
 use Money\Money;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
-use Hateoas\Configuration\Annotation as Hateoas;
-use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="quotes")

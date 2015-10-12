@@ -23,8 +23,7 @@ class CronRunCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('cron:run')
-            ->setDescription('Runs the cron commands')
-        ;
+            ->setDescription('Runs the cron commands');
     }
 
     /**

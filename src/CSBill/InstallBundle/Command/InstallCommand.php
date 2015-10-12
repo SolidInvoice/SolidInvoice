@@ -54,8 +54,7 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
 
             ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')
-            ->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use')
-        ;
+            ->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use');
     }
 
     /**

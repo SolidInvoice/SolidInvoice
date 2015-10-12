@@ -12,8 +12,8 @@
 namespace CSBill\CoreBundle\Menu\Core;
 
 use CSBill\CoreBundle\Menu\Builder\BuilderInterface;
-use SYmfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use SYmfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class AuthenticatedMenu extends ContainerAware implements BuilderInterface
 {
