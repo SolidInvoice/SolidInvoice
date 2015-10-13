@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -14,10 +14,7 @@ namespace CSBill\UserBundle\Behat;
 use Behat\Gherkin\Node\TableNode;
 use CSBill\CoreBundle\Behat\DefaultContext;
 use CSBill\UserBundle\Entity\User;
-use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class UserContext extends DefaultContext
 {
@@ -32,13 +29,12 @@ class UserContext extends DefaultContext
     {
         $container = $this->getContainer();
 
-        /** @var PasswordEncoderInterface $encoder */
+        /* @var PasswordEncoderInterface $encoder */
         $encoderFactory = $container->get('security.encoder_factory');
 
         $entityManager = $container->get('doctrine.orm.entity_manager');
 
         foreach ($table as $data) {
-
             $user = new User();
 
             $encoder = $encoderFactory->getEncoder($user);
