@@ -12,15 +12,11 @@ matrix:
   allow_failures:
     - php: 7
 
-addons:
-  sauce_connect:
-    username: "csbill"
-    access_key:
-      secure: "CTg3aWzFzbQIT0bieTM3Guv+3g5N4guuiJUdaAcGXgVMqM7FiAzhqSDtsArBq3t3jBCoeuzBVtvCQVtaU7oRgYxsfeiSF/an2UZtjfPu6sKjIqq6ZcTCnkhjplc4tkqLnjX4V1FlUCmRxNHn1j2UJbUkBKujXeRUUGxBGY+cuLc="
-
 env:
   global:
     - SYMFONY_ENV=test
+    - secure: cJUez1SjrfZlW0GkXpMcXBakzGrAqxDCo4Bb+KfFcI+K6NaWLD5f3AXBWu3LU7BpzKjLDbFc9HCQXETlkfH5S5/bDURuoWN6iW5IO52/8xM44Ld36cF0E9Hl+xSTZ3cGKFTqzJ3fwGVrikXgHFIIslNwjasCnhQz3zlxinaBRSY=
+    - secure: OMe6ZQMB2CEYJoJh9adQhmJVnRB0MmSdBwbLg/dboZLItvO0CVxMvNwJrOqbqMHopyldw/A+8MhpGzVJv3QrEZaznnA90yPO5+f5BabgX3Xu47tYc5yG4q/Uda4hjNrA7nK36O+cnaXLqyVZKsfJx8dXEA2ybHmF65kSW65HubM=
 
 cache:
   directories:
@@ -44,7 +40,7 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
-  #- bash travis/sauce.sh
+  - bash travis/sauce.sh
 
 script:
   - php app/console security:check
