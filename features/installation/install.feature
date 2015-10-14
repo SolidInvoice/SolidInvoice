@@ -23,13 +23,13 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
+      | Driver        | 0          |
       | User          | root       |
       | Database Name | csbill     |
       | Transport     | mail       |
     And I press "continue_step"
     Then The config should contain the following values:
-      | database_driver   | pdo_mysql |
+      | database_driver   | 0         |
       | database_host     | localhost |
       | database_port     | 3306      |
       | database_name     | csbill    |
@@ -43,7 +43,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
+      | Driver        | 0          |
       | User          | root       |
       | Database Name | csbill     |
       | Transport     | mail       |
@@ -61,7 +61,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
+      | Driver        | 0          |
       | User          | root       |
       | Database Name | csbill     |
       | Transport     | mail       |
