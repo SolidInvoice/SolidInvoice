@@ -16,7 +16,7 @@ use CSBill\MoneyBundle\Form\DataTransformer\ViewTransformer;
 use Money\Currency;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MoneyExtension extends AbstractTypeExtension
 {
@@ -46,7 +46,7 @@ class MoneyExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
