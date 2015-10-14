@@ -1,4 +1,21 @@
 
+0.5.0 / 2015-10-14
+==================
+
+  * Added REST API
+  * Fixed modal backdrop overlay
+  * [ApiBundle] Save history of all API calls
+  * Add token authentication for API
+  * Fix discount showing incorrectly
+  * Remove dependency on the intl extension
+  * Don't display internal payment methods to client when paying an invoice
+  * Update email templates for invoices and quotes
+  * Fix #61: Check invoice total instead of balance if invoice is fully paid
+  * Added MoneyBundle to implement Fowler's money pattern
+  * Added current application version as asset version
+  * [CronBundle] Added CronBuundle
+  * [InstallBundle] Add cronjob message to cli installer success
+
 0.4.3 / 2015-08-16
 ==================
 
