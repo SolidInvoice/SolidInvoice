@@ -54,7 +54,7 @@ class PaymentController extends BaseController
         /** @var PaymentMethodRepository $paymentRepository */
         $paymentRepository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
 
-        if ($paymentRepository->getTotalMethodsConfigured(false) < 1) {
+        if ($paymentRepository->getTotalMethodsConfigured($this->isGranted('ROLE_SUPER_ADMIN')) < 1) {
             throw new \Exception('No payment methods available');
         }
 
