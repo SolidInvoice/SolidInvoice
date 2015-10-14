@@ -60,7 +60,7 @@ class PaymentMethodForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('settings'));
-        $resolver->setAllowedTypes(array('settings' => array('string', 'null')));
+        $resolver->setAllowedTypes('settings', array('string', 'null'));
         $resolver->setDefaults(array('internal' => false));
     }
 

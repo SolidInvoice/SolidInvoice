@@ -32,7 +32,7 @@ class DatabaseConfigType extends AbstractType
             array(
                 'help' => 'Only MySQL is supported at the moment',
                 'choices' => array_flip($drivers),
-                'empty_value' => 'Select Database Driver',
+                'placeholder' => 'Select Database Driver',
                 'choices_as_values' => true,
                 'constraints' => array(
                      new Constraints\NotBlank(),
