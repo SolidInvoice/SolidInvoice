@@ -31,9 +31,10 @@ class SystemInformationForm extends AbstractType
                 'locale',
                 'select2',
                 array(
-                    'choices' => Intl::getLocaleBundle()->getLocaleNames(),
+                    'choices' => array_flip(Intl::getLocaleBundle()->getLocaleNames()),
                     'constraints' => new Constraints\NotBlank(array('message' => 'Please select a locale')),
                     'placeholder' => '',
+                    'choices_as_values' => true,
                 )
             );
         } else {
@@ -52,9 +53,10 @@ class SystemInformationForm extends AbstractType
             'currency',
             'select2',
             array(
-                'choices' => $currencies,
+                'choices' => array_flip($currencies),
                 'constraints' => new Constraints\NotBlank(array('message' => 'Please select a currency')),
                 'placeholder' => '',
+                'choices_as_values' => true,
             )
         );
 
