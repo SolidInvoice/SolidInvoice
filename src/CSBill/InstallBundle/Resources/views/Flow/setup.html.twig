@@ -25,12 +25,22 @@
             </fieldset>
         </div>
         <div class="col-md-6">
-            <fieldset>
-                <legend>
-                    {{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
-                </legend>
-                {{ form_row(form) }}
-            </fieldset>
+
+            {% if userCount > 0 %}
+                <div class="alert alert-block alert-warning">
+                    <h3>Notice</h3>
+
+                    The database already contains an admin user.
+                </div>
+            {% else %}
+                <fieldset class="{% if userCount > 0 %} hidden{% endif %}">
+                    <legend>
+                        {{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
+                    </legend>
+                    {{ form_row(form) }}
+                </fieldset>
+            {% endif %}
+
         </div>
     </div>
 

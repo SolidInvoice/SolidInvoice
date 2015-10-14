@@ -15,6 +15,7 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\UserBundle\Entity\User;
+use CSBill\UserBundle\Repository\UserRepository;
 use RandomLib\Factory;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
@@ -29,7 +30,13 @@ class SetupStep extends ControllerStep
     {
         $form = $this->getForm();
 
-        return $this->render('CSBillInstallBundle:Flow:setup.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'CSBillInstallBundle:Flow:setup.html.twig',
+            array(
+                'form' => $form->createView(),
+                'userCount' => $this->getUserCount()
+            )
+        );
     }
 
     /**
@@ -45,7 +52,10 @@ class SetupStep extends ControllerStep
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $this->createAdminUser($data);
+            if (0 === $this->getUserCount()) {
+                $this->createAdminUser($data);
+            }
+
             $this->saveCurrentVersion();
             $this->saveConfig($data);
 
@@ -56,6 +66,7 @@ class SetupStep extends ControllerStep
             'CSBillInstallBundle:Flow:setup.html.twig',
             array(
                 'form' => $form->createView(),
+                'userCount' => $this->getUserCount()
             )
         );
     }
@@ -75,7 +86,7 @@ class SetupStep extends ControllerStep
             ),
         );
 
-        return $this->createForm(new SystemInformationForm(), null, $options);
+        return $this->createForm(new SystemInformationForm($this->getUserCount()), null, $options);
     }
 
     /**
@@ -136,5 +147,24 @@ class SetupStep extends ControllerStep
         );
 
         $this->get('csbill.core.config_writer')->dump($config);
+    }
+
+    /**
+     * @return int
+     */
+    private function getUserCount()
+    {
+        static $userCount;
+
+        if (null === $userCount) {
+            $entityManager = $this->container->get('doctrine.orm.entity_manager');
+
+            /** @var UserRepository $repository */
+            $repository = $entityManager->getRepository('CSBillUserBundle:User');
+
+            $userCount = $repository->getUserCount();
+        }
+
+        return $userCount;
     }
 }
