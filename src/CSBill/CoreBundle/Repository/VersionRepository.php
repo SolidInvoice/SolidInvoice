@@ -33,4 +33,17 @@ class VersionRepository extends EntityRepository
 
         $entityManager->flush();
     }
+
+    /**
+     * @return string
+     */
+    public function getCurrentVersion()
+    {
+        $qb = $this->createQueryBuilder('v');
+
+        $qb->select('v.version')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
