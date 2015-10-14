@@ -1,39 +1,39 @@
 _quotes_index:
-    pattern:   /
+    path:   /
     defaults:  { _controller: CSBillQuoteBundle:Default:index }
 
 _quotes_create:
-    pattern:   /create/{client}
+    path:   /create/{client}
     defaults:
         _controller: CSBillQuoteBundle:Default:create
         client: null
 
 _quotes_edit:
-    pattern:   /edit/{id}
+    path:   /edit/{id}
     defaults:  { _controller: CSBillQuoteBundle:Default:edit }
 
 _quotes_view:
-    pattern:   /view/{id}
+    path:   /view/{id}
     defaults:  { _controller: CSBillQuoteBundle:Default:view }
 
 # Actions routes
 
 _accept_quote:
-    pattern:   /action/accept/{id}
+    path:   /action/accept/{id}
     defaults:  { _controller: CSBillQuoteBundle:Actions:accept }
 
 _decline_quote:
-    pattern:   /action/decline/{id}
+    path:   /action/decline/{id}
     defaults:  { _controller: CSBillQuoteBundle:Actions:decline }
 
 _cancel_quote:
-    pattern:   /action/cancel/{id}
+    path:   /action/cancel/{id}
     defaults:  { _controller: CSBillQuoteBundle:Actions:cancel }
 
 _reopen_quote:
-    pattern:   /action/reopen/{id}
+    path:   /action/reopen/{id}
     defaults:  { _controller: CSBillQuoteBundle:Actions:reopen }
 
 _send_quote:
-    pattern:   /action/send/{id}
+    path:   /action/send/{id}
     defaults:  { _controller: CSBillQuoteBundle:Actions:send }

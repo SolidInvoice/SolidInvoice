@@ -1,28 +1,28 @@
 _clients_index:
-    pattern:   /
+    path:   /
     defaults:  { _controller: CSBillClientBundle:Default:index }
     options:
         expose: true
 
 _clients_add:
-    pattern:   /add
+    path:   /add
     defaults:  { _controller: CSBillClientBundle:Default:add }
 
 _clients_edit:
-    pattern:   /edit/{id}
+    path:   /edit/{id}
     defaults:  { _controller: CSBillClientBundle:Default:edit }
 
 _clients_view:
-    pattern:   /view/{id}
+    path:   /view/{id}
     defaults:  { _controller: CSBillClientBundle:Default:view }
 
 _clients_delete:
-    pattern:   /ajax/delete/{id}
+    path:   /ajax/delete/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:deleteclient }
-    methods: post
+    methods: [POST]
 
 _clients_info:
-    pattern:   /ajax/info/{id}/{type}
+    path:   /ajax/info/{id}/{type}
     defaults:
         _controller: CSBillClientBundle:Ajax:info
         type: quote
@@ -30,26 +30,26 @@ _clients_info:
         expose: true
 
 _clients_add_credit:
-    pattern:   /ajax/credit/add/{id}
+    path:   /ajax/credit/add/{id}
     defaults:  { _controller: CSBillClientBundle:Credit:add }
 
 _clients_add_contact:
-    pattern:   /ajax/contacts/add/{id}
+    path:   /ajax/contacts/add/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:addcontact }
 
 _clients_edit_contact:
-    pattern:   /ajax/contacts/edit/{id}
+    path:   /ajax/contacts/edit/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:editcontact }
 
 _clients_contact_card:
-    pattern:   /ajax/contacts/card/{id}
+    path:   /ajax/contacts/card/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:contactcard }
     options:
         expose: true
 
 _clients_delete_contact:
-    pattern:   /ajax/contacts/delete/{id}
+    path:   /ajax/contacts/delete/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:deletecontact }
-    methods: POST
+    methods: [POST]
     options:
         expose: true
