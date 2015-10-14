@@ -21,6 +21,18 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
     /**
+     * @return int
+     */
+    public function getUserCount()
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->select('COUNT(u.id)');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
      * Searches for a user by username or email.
      *
      * @param string $username
@@ -50,6 +62,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $user;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);
@@ -60,6 +75,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->loadUserByUsername($user->getUsername());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsClass($class)
     {
         return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());

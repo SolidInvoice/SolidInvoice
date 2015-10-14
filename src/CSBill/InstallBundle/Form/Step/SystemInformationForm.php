@@ -19,6 +19,19 @@ use Symfony\Component\Validator\Constraints;
 class SystemInformationForm extends AbstractType
 {
     /**
+     * @var int
+     */
+    private $userCount;
+
+    /**
+     * @param int $userCount
+     */
+    public function __construct($userCount = 0)
+    {
+        $this->userCount = $userCount;
+    }
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
@@ -58,41 +71,43 @@ class SystemInformationForm extends AbstractType
             )
         );
 
-        $builder->add(
-            'username',
-            null,
-            array(
-                'constraints' => new Constraints\NotBlank(array('message' => 'Please enter a username')),
-            )
-        );
+        if (0 === $this->userCount) {
+            $builder->add(
+                'username',
+                null,
+                array(
+                    'constraints' => new Constraints\NotBlank(array('message' => 'Please enter a username')),
+                )
+            );
 
-        $builder->add(
-            'email_address',
-            'email',
-            array(
-                'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'Please enter a email')),
-                    new Constraints\Email(),
-                ),
-            )
-        );
+            $builder->add(
+                'email_address',
+                'email',
+                array(
+                    'constraints' => array(
+                        new Constraints\NotBlank(array('message' => 'Please enter a email')),
+                        new Constraints\Email(),
+                    ),
+                )
+            );
 
-        $builder->add(
-            'password',
-            'repeated',
-            array(
-                'type' => 'password',
-                'invalid_message' => 'The password fields must match.',
-                'options' => array('attr' => array('class' => 'password-field')),
-                'required' => true,
-                'first_options' => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-                'constraints' => array(
-                    new Constraints\NotBlank(array('message' => 'You must enter a secure password')),
-                    new Constraints\Length(array('min' => 6)),
-                ),
-            )
-        );
+            $builder->add(
+                'password',
+                'repeated',
+                array(
+                    'type' => 'password',
+                    'invalid_message' => 'The password fields must match.',
+                    'options' => array('attr' => array('class' => 'password-field')),
+                    'required' => true,
+                    'first_options' => array('label' => 'Password'),
+                    'second_options' => array('label' => 'Repeat Password'),
+                    'constraints' => array(
+                        new Constraints\NotBlank(array('message' => 'You must enter a secure password')),
+                        new Constraints\Length(array('min' => 6)),
+                    ),
+                )
+            );
+        }
     }
 
     /**
