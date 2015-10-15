@@ -32,8 +32,8 @@ class EmailSettingsType extends AbstractType
             'transport',
             'select2',
             array(
-                'choices' => array_flip($transports),
-                'choices_as_values' => true,
+                'choices' => $transports,
+                'choices_as_values' => false,
                 'placeholder' => 'Choose Mail Transport',
                 'constraints' => array(
                      new Constraints\NotBlank(),
@@ -68,8 +68,8 @@ class EmailSettingsType extends AbstractType
             array(
                 'placeholder' => 'None',
                 'choices' => array(
-                    'SSL' => 'ssl',
-                    'TLS' => 'tls',
+                    'ssl' => 'SSL',
+                    'tls' => 'TLS',
                 ),
                 'choices_as_values' => true,
                 'required' => false,

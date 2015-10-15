@@ -33,8 +33,8 @@ class TaxType extends AbstractType
             'type',
             'select2',
             array(
-                'choices' => array_flip(Tax::getTypes()),
-                'choices_as_values' => true,
+                'choices' => Tax::getTypes(),
+                'choices_as_values' => false,
                 'help' => 'tax.rates.explanation',
                 'placeholder' => 'tax.rates.type.select',
             )

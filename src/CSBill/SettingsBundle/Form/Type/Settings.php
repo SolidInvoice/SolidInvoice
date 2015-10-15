@@ -74,8 +74,8 @@ class Settings extends AbstractType
         if (in_array($type, array('choice', 'select2'))) {
             $settingOptions = $setting->getOptions();
 
-            $options['choices'] = array_flip($settingOptions);
-            $options['choices_as_values'] = true;
+            $options['choices'] = $settingOptions;
+            $options['choices_as_values'] = false;
         }
 
         return $type;
