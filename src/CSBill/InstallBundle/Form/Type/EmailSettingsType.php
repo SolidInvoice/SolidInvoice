@@ -71,7 +71,7 @@ class EmailSettingsType extends AbstractType
                     'ssl' => 'SSL',
                     'tls' => 'TLS',
                 ),
-                'choices_as_values' => true,
+                'choices_as_values' => false,
                 'required' => false,
             )
         );
