@@ -22,21 +22,21 @@ interface NotificationMessageInterface
      *
      * @return string
      */
-    public function getHtmlContent(EngineInterface $templating = null);
+    public function getHtmlContent(EngineInterface $templating);
 
     /**
      * @param EngineInterface $templating
      *
      * @return string
      */
-    public function getTextContent(EngineInterface $templating = null);
+    public function getTextContent(EngineInterface $templating);
 
     /**
      * @param TranslatorInterface $translator
      *
      * @return string
      */
-    public function getSubject(TranslatorInterface $translator = null);
+    public function getSubject(TranslatorInterface $translator);
 
     /**
      * @param array $users

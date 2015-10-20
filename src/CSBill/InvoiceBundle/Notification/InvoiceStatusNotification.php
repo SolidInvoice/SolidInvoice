@@ -24,7 +24,7 @@ class InvoiceStatusNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getHtmlContent(EngineInterface $templating = null)
+    public function getHtmlContent(EngineInterface $templating)
     {
         return $templating->render(self::HTML_TEMPLATE, $this->getParameters());
     }
@@ -32,7 +32,7 @@ class InvoiceStatusNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getTextContent(EngineInterface $templating = null)
+    public function getTextContent(EngineInterface $templating)
     {
         return $templating->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
@@ -42,7 +42,7 @@ class InvoiceStatusNotification extends NotificationMessage
      *
      * @return string
      */
-    public function getSubject(TranslatorInterface $translator = null)
+    public function getSubject(TranslatorInterface $translator)
     {
         return $translator->trans('invoice.status.subject', array(), 'email');
     }
