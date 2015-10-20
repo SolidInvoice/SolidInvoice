@@ -10,8 +10,8 @@
  */
 
 use CSBill\CoreBundle\Kernel\ContainerClassKernelInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel implements ContainerClassKernelInterface
 {
@@ -76,7 +76,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
     }
 
     /**
-     * Return the name of the cached container class
+     * Return the name of the cached container class.
      *
      * @return string
      */

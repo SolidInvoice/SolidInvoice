@@ -57,7 +57,16 @@ services:
         class: CSBill\InvoiceBundle\Grid\InvoiceGrid
         arguments: [@doctrine.orm.entity_manager, @invoice.manager, @session]
 
-
     csbill.invoice.grid.archived_grid:
         class: CSBill\InvoiceBundle\Grid\InvoiceArchivedGrid
         arguments: [@doctrine.orm.entity_manager, @session]
+
+    csbill.invoice.grid.recurring_grid:
+        class: CSBill\InvoiceBundle\Grid\InvoiceRecurringGrid
+        arguments: [@doctrine.orm.entity_manager, @invoice.manager, @session]
+
+    csbill.cron.recurring_invoice.create:
+        class: CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate
+        arguments: [@doctrine, @invoice.manager]
+        tags:
+            - { name: cron.command }

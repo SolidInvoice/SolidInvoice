@@ -11,26 +11,22 @@
 
 namespace CSBill\InvoiceBundle\Grid;
 
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Row;
 use APY\DataGridBundle\Grid\Source\Entity;
+use CSBill\DataGridBundle\AbstractGrid;
 use CSBill\DataGridBundle\Action\ActionColumn;
 use CSBill\DataGridBundle\Action\Collection;
 use CSBill\DataGridBundle\Action\DeleteMassAction;
 use CSBill\DataGridBundle\Action\MassAction;
-use CSBill\DataGridBundle\Grid\Filters;
-use CSBill\DataGridBundle\GridInterface;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class InvoiceGrid implements GridInterface
+class InvoiceRecurringGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface
@@ -43,7 +39,7 @@ class InvoiceGrid implements GridInterface
     private $invoiceManager;
 
     /**
-     * @var SessionInterface
+     * @var
      */
     private $session;
 
@@ -58,8 +54,8 @@ class InvoiceGrid implements GridInterface
         SessionInterface $session
     ) {
         $this->entityManager = $entityManager;
-        $this->invoiceManager = $invoiceManager;
         $this->session = $session;
+        $this->invoiceManager = $invoiceManager;
     }
 
     /**
@@ -67,48 +63,19 @@ class InvoiceGrid implements GridInterface
      */
     public function getSource()
     {
+        $this->entityManager->getFilters()->disable('archivable');
+
         $source = new Entity('CSBillInvoiceBundle:Invoice');
 
+        /** @var InvoiceRepository $repo */
         $repo = $this->entityManager->getRepository('CSBillInvoiceBundle:Invoice');
 
         $queryBuilder = $repo->createQueryBuilder('i');
-        $queryBuilder->where('i.recurring = 0');
+        $queryBuilder->where('i.recurring = 1');
 
         $source->initQueryBuilder($queryBuilder);
 
         return $source;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters(Filters $filters)
-    {
-        $callback = function ($status) {
-            return function (QueryBuilder $queryBuilder) use ($status) {
-                $alias = $queryBuilder->getRootAliases();
-
-                $queryBuilder->andWhere($alias[0].'.status = :status')
-                    ->setParameter('status', $status);
-            };
-        };
-
-        $statuses = array(
-            Graph::STATUS_CANCELLED,
-            Graph::STATUS_DRAFT,
-            Graph::STATUS_OVERDUE,
-            Graph::STATUS_PAID,
-            Graph::STATUS_PENDING,
-        );
-
-        foreach ($statuses as $status) {
-            $filters->add(
-                $status,
-                $callback($status)
-            );
-        }
-
-        return $filters;
     }
 
     /**
@@ -122,39 +89,6 @@ class InvoiceGrid implements GridInterface
             ->orWhere($alias[0].'.status LIKE :search')
             ->orWhere($alias[0].'.total LIKE :search')
             ->setParameter('search', "%{$searchString}%");
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRowActions(Collection $collection)
-    {
-        $viewAction = new ActionColumn();
-        $viewAction->setIcon('eye')
-            ->setTitle('invoice.action.view')
-            ->setRoute('_invoices_view');
-
-        $editAction = new ActionColumn();
-        $editAction->setIcon('edit')
-            ->setTitle('invoice.action.edit')
-            ->setRoute('_invoices_edit');
-
-        $payAction = new ActionColumn();
-        $payAction->setIcon('credit-card')
-            ->setTitle('invoice.action.pay_now')
-            ->setRoute('_payments_create')
-            ->setRouteParams(array('uuid'))
-            ->setCallback(function (RowAction $rowAction, Row $row) {
-                if (Graph::STATUS_PENDING !== $row->getField('status')) {
-                    return;
-                }
-
-                return $rowAction;
-            });
-
-        $collection->add($viewAction);
-        $collection->add($editAction);
-        $collection->add($payAction);
     }
 
     /**
@@ -215,8 +149,19 @@ class InvoiceGrid implements GridInterface
     /**
      * {@inheritdoc}
      */
-    public function isFilterable()
+    public function getRowActions(Collection $collection)
     {
-        return true;
+        $viewAction = new ActionColumn();
+        $viewAction->setIcon('eye')
+            ->setTitle('invoice.action.view')
+            ->setRoute('_invoices_view');
+
+        $editAction = new ActionColumn();
+        $editAction->setIcon('edit')
+            ->setTitle('invoice.action.edit')
+            ->setRoute('_invoices_edit');
+
+        $collection->add($viewAction);
+        $collection->add($editAction);
     }
 }

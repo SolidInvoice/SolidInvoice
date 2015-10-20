@@ -64,7 +64,8 @@
         "jms/serializer-bundle": "~0.12",
         "willdurand/hateoas-bundle": "0.4.*",
         "nelmio/api-doc-bundle": "~2.7",
-        "egulias/email-validator": "~1.2"
+        "egulias/email-validator": "~1.2",
+        "mtdowling/cron-expression": "^1.0"
     },
     "require-dev": {
         "behat/behat": "~3.0",

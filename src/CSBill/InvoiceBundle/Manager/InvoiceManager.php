@@ -11,6 +11,7 @@
 
 namespace CSBill\InvoiceBundle\Manager;
 
+use Carbon\Carbon;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
@@ -79,7 +80,7 @@ class InvoiceManager extends ContainerAware
     {
         $invoice = new Invoice();
 
-        $now = new \DateTime('NOW');
+        $now = Carbon::now();
 
         $invoice->setCreated($now);
         $invoice->setClient($quote->getClient());
@@ -126,6 +127,19 @@ class InvoiceManager extends ContainerAware
      */
     public function create(Invoice $invoice)
     {
+        if ($invoice->isRecurring()) {
+            $invoice->setStatus(Graph::STATUS_RECURRING);
+
+            $firstInvoice = clone $invoice;
+            $firstInvoice->setRecurring(false);
+            $firstInvoice->setRecurringInfo(null);
+
+            $this->entityManager->persist($invoice);
+            $this->entityManager->flush();
+
+            $invoice = $firstInvoice;
+        }
+
         // Set the invoice status as new and save, before we transition to the correct status
         $invoice->setStatus(Graph::STATUS_NEW);
         $this->entityManager->persist($invoice);
@@ -179,7 +193,7 @@ class InvoiceManager extends ContainerAware
 
         $this->applyTransition($invoice, Graph::TRANSITION_PAY);
 
-        $invoice->setPaidDate(new \DateTime('NOW'));
+        $invoice->setPaidDate(Carbon::now());
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
@@ -280,6 +294,53 @@ class InvoiceManager extends ContainerAware
     public function __call($method, $args)
     {
         throw new InvalidTransitionException($method);
+    }
+
+    /**
+     * @param Invoice $invoice
+     *
+     * @return Invoice
+     */
+    public function duplicate(Invoice $invoice)
+    {
+        // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
+        // We rather set it manually
+        $newInvoice = new Invoice();
+
+        $now = Carbon::now();
+
+        $newInvoice->setCreated($now);
+        $newInvoice->setClient($invoice->getClient());
+        $newInvoice->setBaseTotal($invoice->getBaseTotal());
+        $newInvoice->setDiscount($invoice->getDiscount());
+        $newInvoice->setNotes($invoice->getNotes());
+        $newInvoice->setTotal($invoice->getTotal());
+        $newInvoice->setTerms($invoice->getTerms());
+        $newInvoice->setUsers($invoice->getUsers()->toArray());
+        $newInvoice->setBalance($newInvoice->getTotal());
+
+        if (null !== $invoice->getTax()) {
+            $newInvoice->setTax($invoice->getTax());
+        }
+
+        foreach ($invoice->getItems() as $item) {
+            $invoiceItem = new Item();
+            $invoiceItem->setCreated($now);
+            $invoiceItem->setTotal($item->getTotal());
+            $invoiceItem->setDescription($item->getDescription());
+            $invoiceItem->setPrice($item->getPrice());
+            $invoiceItem->setQty($item->getQty());
+
+            if (null !== $item->getTax()) {
+                $invoiceItem->setTax($item->getTax());
+            }
+
+            $newInvoice->addItem($invoiceItem);
+        }
+
+        $this->create($newInvoice);
+
+        return $newInvoice;
     }
 
     /**

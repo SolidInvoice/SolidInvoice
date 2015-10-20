@@ -33,6 +33,7 @@ class StatusExtension extends \Twig_Extension
         InvoiceGraph::STATUS_OVERDUE => 'danger',
         InvoiceGraph::STATUS_CANCELLED => 'default',
         InvoiceGraph::STATUS_ARCHIVED => 'warning',
+        InvoiceGraph::STATUS_RECURRING => 'warning',
     );
 
     /**

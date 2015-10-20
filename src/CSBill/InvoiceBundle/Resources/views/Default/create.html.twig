@@ -55,6 +55,24 @@
                             {{ block('form_discount') }}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {{ form_row(form.recurring) }}
+                        </div>
+                        <div class="col-xs-6 hidden" id="recurring-info">
+                            {{ form_row(form.recurringInfo.frequency) }}
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    {{ form_row(form.recurringInfo.date_start) }}
+                                </div>
+                                <div class="col-xs-6">
+                                    {{ form_row(form.recurringInfo.date_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -254,6 +272,14 @@
         {% else %}
             Invoice.counter = {{ form.items|length }};
         {% endif %}
+
+        $('#invoice_recurring').on('change', function () {
+            $('#recurring-info').toggleClass('hidden');
+        });
+
+        if ($('#invoice_recurring').is(':checked')) {
+            $('#recurring-info').removeClass('hidden');
+        }
     {% endspaceless %}
 {% endblock %}
 

@@ -32,6 +32,7 @@ class DefaultController extends BaseController
         $gridCollection = new GridCollection();
         $gridCollection->add('csbill.invoice.grid.default_grid', 'active', 'check');
         $gridCollection->add('csbill.invoice.grid.archived_grid', 'archived', 'archive');
+        $gridCollection->add('csbill.invoice.grid.recurring_grid', 'recurring', 'refresh');
 
         $grid = $this->get('grid')->create($gridCollection);
 

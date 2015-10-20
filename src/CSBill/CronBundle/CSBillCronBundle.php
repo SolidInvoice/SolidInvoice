@@ -11,8 +11,17 @@
 
 namespace CSBill\CronBundle;
 
+use CSBill\CronBundle\DependencyInjection\CompilerPass\CronCommandCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CSBillCronBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new CronCommandCompilerPass());
+    }
 }

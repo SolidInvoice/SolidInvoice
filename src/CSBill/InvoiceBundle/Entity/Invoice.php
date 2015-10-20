@@ -193,6 +193,21 @@ class Invoice
     private $users;
 
     /**
+     * @var RecurringInvoice
+     *
+     * @ORM\OneToOne(targetEntity="CSBill\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"})
+     */
+    private $recurringInfo;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_recurring", type="boolean")
+     * @Grid\Column(visible=false)
+     */
+    private $recurring;
+
+    /**
      * Constructer.
      */
     public function __construct()
@@ -201,6 +216,7 @@ class Invoice
         $this->payments = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
+        $this->recurring = false;
     }
 
     /**
@@ -388,7 +404,7 @@ class Invoice
     /**
      * Get discount.
      *
-     * @return Money
+     * @return float
      */
     public function getDiscount()
     {
@@ -586,5 +602,60 @@ class Invoice
                 $item->setInvoice($this);
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRecurring()
+    {
+        return $this->recurringInfo instanceof RecurringInvoice;
+    }
+
+    /**
+     * @param RecurringInvoice $recurringInfo
+     *
+     * @return Invoice
+     */
+    public function setRecurringInfo(RecurringInvoice $recurringInfo = null)
+    {
+        $this->recurringInfo = $recurringInfo;
+
+        return $this;
+    }
+
+    /**
+     * @return RecurringInvoice
+     */
+    public function getRecurringInfo()
+    {
+        return $this->recurringInfo;
+    }
+
+    /**
+     * @param bool $recurring
+     *
+     * @return Invoice
+     */
+    public function setRecurring($recurring)
+    {
+        $this->recurring = (bool) $recurring;
+
+        return $this;
+    }
+
+    public function __clone()
+    {
+        if (null !== $this->items) {
+            $items = $this->items;
+            $this->items = new ArrayCollection();
+            foreach ($items as $item) {
+                $this->items->add(clone $item);
+            }
+        }
+
+        $this->setUuid(Uuid::uuid1());
+        $this->recurring = false;
+        $this->status = null;
     }
 }
