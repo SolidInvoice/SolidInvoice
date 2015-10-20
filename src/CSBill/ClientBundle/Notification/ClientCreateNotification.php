@@ -24,7 +24,7 @@ class ClientCreateNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getHtmlContent(EngineInterface $templating = null)
+    public function getHtmlContent(EngineInterface $templating)
     {
         return $templating->render(self::HTML_TEMPLATE, $this->getParameters());
     }
@@ -32,7 +32,7 @@ class ClientCreateNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getTextContent(EngineInterface $templating = null)
+    public function getTextContent(EngineInterface $templating)
     {
         return $templating->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
@@ -40,7 +40,7 @@ class ClientCreateNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getSubject(TranslatorInterface $translator = null)
+    public function getSubject(TranslatorInterface $translator)
     {
         return $translator->trans('client.create.subject', array(), 'email');
     }
