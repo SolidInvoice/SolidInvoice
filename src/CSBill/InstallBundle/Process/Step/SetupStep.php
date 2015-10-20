@@ -34,7 +34,7 @@ class SetupStep extends ControllerStep
             'CSBillInstallBundle:Flow:setup.html.twig',
             array(
                 'form' => $form->createView(),
-                'userCount' => $this->getUserCount()
+                'userCount' => $this->getUserCount(),
             )
         );
     }
@@ -66,7 +66,7 @@ class SetupStep extends ControllerStep
             'CSBillInstallBundle:Flow:setup.html.twig',
             array(
                 'form' => $form->createView(),
-                'userCount' => $this->getUserCount()
+                'userCount' => $this->getUserCount(),
             )
         );
     }
