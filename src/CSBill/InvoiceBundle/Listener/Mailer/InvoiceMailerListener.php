@@ -16,6 +16,9 @@ use CSBill\CoreBundle\Mailer\Mailer;
 use CSBill\CoreBundle\Mailer\MailerEvents;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
+use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -34,13 +37,20 @@ class InvoiceMailerListener implements EventSubscriberInterface
     private $mailer;
 
     /**
+     * @var ObjectManager
+     */
+    private $entityManager;
+
+    /**
      * @param EngineInterface $templating
      * @param Mailer          $mailer
+     * @param ManagerRegistry $registry
      */
-    public function __construct(EngineInterface $templating, Mailer $mailer)
+    public function __construct(EngineInterface $templating, Mailer $mailer, ManagerRegistry $registry)
     {
         $this->templating = $templating;
         $this->mailer = $mailer;
+        $this->entityManager = $registry->getManager();
     }
 
     /**
@@ -67,10 +77,15 @@ class InvoiceMailerListener implements EventSubscriberInterface
      */
     public function onInvoiceMail(InvoiceMailEvent $event)
     {
-        $htmlTemplate = $event->getHtmlTemplate();
+        /** @var PaymentMethodRepository $paymentRepository */
+        $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:PaymentMethod');
 
-        $htmlTemplate .= $this->templating->render(self::TEMPLATE, array('invoice' => $event->getInvoice()));
+        if ($paymentRepository->getTotalMethodsConfigured(false) > 0) {
+            $htmlTemplate = $event->getHtmlTemplate();
 
-        $event->setHtmlTemplate($htmlTemplate);
+            $htmlTemplate .= $this->templating->render(self::TEMPLATE, array('invoice' => $event->getInvoice()));
+
+            $event->setHtmlTemplate($htmlTemplate);
+        }
     }
 }
