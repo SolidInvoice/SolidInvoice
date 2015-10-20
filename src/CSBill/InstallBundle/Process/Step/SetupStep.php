@@ -19,6 +19,7 @@ use CSBill\UserBundle\Repository\UserRepository;
 use RandomLib\Factory;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class SetupStep extends ControllerStep
@@ -28,7 +29,7 @@ class SetupStep extends ControllerStep
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        $form = $this->getForm();
+        $form = $this->getForm($context->getRequest());
 
         return $this->render(
             'CSBillInstallBundle:Flow:setup.html.twig',
@@ -45,7 +46,7 @@ class SetupStep extends ControllerStep
     public function forwardAction(ProcessContextInterface $context)
     {
         $request = $context->getRequest();
-        $form = $this->getForm();
+        $form = $this->getForm($context->getRequest());
 
         $form->handleRequest($request);
 
@@ -72,9 +73,11 @@ class SetupStep extends ControllerStep
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Symfony\Component\Form\Form
      */
-    private function getForm()
+    private function getForm(Request $request)
     {
         $options = array(
             'action' => $this->generateUrl(
@@ -86,7 +89,7 @@ class SetupStep extends ControllerStep
             ),
         );
 
-        return $this->createForm(new SystemInformationForm($this->getUserCount()), null, $options);
+        return $this->createForm(new SystemInformationForm($request, $this->getUserCount()), null, $options);
     }
 
     /**
@@ -142,6 +145,7 @@ class SetupStep extends ControllerStep
         $config = array(
             'locale' => $data['locale'],
             'currency' => $data['currency'],
+            'base_url' => $data['base_url'],
             'installed' => $time->format(\DateTime::ISO8601),
             'secret' => $factory->getMediumStrengthGenerator()->generateString(32),
         );

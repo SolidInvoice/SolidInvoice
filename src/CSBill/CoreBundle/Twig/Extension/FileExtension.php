@@ -11,46 +11,18 @@
 
 namespace CSBill\CoreBundle\Twig\Extension;
 
-use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Extension;
 
 class FileExtension extends Twig_Extension
 {
-    /**
-     * @var RequestStack
-     */
-    private $request;
-
-    /**
-     * @param RequestStack $request
-     */
-    public function __construct(RequestStack $request)
-    {
-        $this->request = $request;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('file', array($this, 'getFile'), array('is_safe' => array('css', 'html'))),
+            new \Twig_SimpleFunction('file', 'file_get_contents', array('is_safe' => array('css', 'html'))),
         );
-    }
-
-    /**
-     * @param string $url
-     *
-     * @return string
-     */
-    public function getFile($url)
-    {
-        $request = $this->request->getCurrentRequest();
-
-        $url = str_replace($request->getBaseUrl(), '', $url);
-
-        return file_get_contents($request->getUriForPath($url));
     }
 
     /**
