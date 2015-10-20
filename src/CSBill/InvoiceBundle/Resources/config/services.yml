@@ -21,7 +21,7 @@ services:
 
     invoice.mailer.send_invoice.payments:
         class: %invoice.mailer.send_invoice.payments.class%
-        arguments: [@templating, @billing.mailer]
+        arguments: [@templating, @billing.mailer, @doctrine]
         tags:
             - { name: kernel.event_subscriber }
 
