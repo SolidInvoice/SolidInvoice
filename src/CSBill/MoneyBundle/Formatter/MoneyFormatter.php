@@ -87,9 +87,9 @@ class MoneyFormatter
     public function getPattern()
     {
         if (extension_loaded('intl')) {
-            $pattern = $this->numberFormatter->getPattern();
+            $pattern = explode(';', $this->numberFormatter->getPattern());
 
-            return str_replace(['¤', '#,##0.00'], ['%s', '%v'], $pattern);
+            return str_replace(['¤', '#,##0.00'], ['%s', '%v'], $pattern[0]);
         }
 
         return '%s%v';
