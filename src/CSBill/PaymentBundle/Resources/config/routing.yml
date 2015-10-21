@@ -3,7 +3,7 @@ _payments_index:
     defaults: { _controller: CSBillPaymentBundle:Default:list }
 
 _payment_settings_index:
-    path:  /methods/
+    path:  /methods
     defaults: { _controller: CSBillPaymentBundle:Default:index }
 
 _payment_method_settings:

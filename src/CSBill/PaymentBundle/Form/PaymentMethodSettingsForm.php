@@ -13,7 +13,7 @@ namespace CSBill\PaymentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PaymentMethodSettingsForm extends AbstractType
 {
@@ -47,6 +47,7 @@ class PaymentMethodSettingsForm extends AbstractType
 
             case 'choice':
                 $options['choices'] = $settings['options'];
+                $options['choices_as_values'] = false;
                 $options['placeholder'] = 'Please Choose';
                 $options['attr'] = array('class' => 'select2');
                 break;
@@ -60,9 +61,9 @@ class PaymentMethodSettingsForm extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(
             array(

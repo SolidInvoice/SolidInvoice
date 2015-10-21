@@ -16,14 +16,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 
 class EmailSettingsType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -34,7 +33,8 @@ class EmailSettingsType extends AbstractType
             'select2',
             array(
                 'choices' => $transports,
-                'empty_value' => 'Choose Mail Transport',
+                'choices_as_values' => false,
+                'placeholder' => 'Choose Mail Transport',
                 'constraints' => array(
                      new Constraints\NotBlank(),
                 ),
@@ -66,11 +66,12 @@ class EmailSettingsType extends AbstractType
             'encryption',
             'select2',
             array(
-                'empty_value' => 'None',
+                'placeholder' => 'None',
                 'choices' => array(
                     'ssl' => 'SSL',
                     'tls' => 'TLS',
                 ),
+                'choices_as_values' => false,
                 'required' => false,
             )
         );
@@ -117,9 +118,9 @@ class EmailSettingsType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('transports'));
 

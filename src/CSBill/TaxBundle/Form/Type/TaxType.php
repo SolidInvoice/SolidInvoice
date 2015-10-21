@@ -14,7 +14,7 @@ namespace CSBill\TaxBundle\Form\Type;
 use CSBill\TaxBundle\Entity\Tax;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class Tax.
@@ -34,6 +34,7 @@ class TaxType extends AbstractType
             'select2',
             array(
                 'choices' => Tax::getTypes(),
+                'choices_as_values' => false,
                 'help' => 'tax.rates.explanation',
                 'placeholder' => 'tax.rates.type.select',
             )
@@ -43,7 +44,7 @@ class TaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array('data_class' => 'CSBill\TaxBundle\Entity\Tax'));
     }

@@ -1,26 +1,26 @@
 _invoices_index:
-    pattern:   /
+    path:   /
     defaults:  { _controller: CSBillInvoiceBundle:Default:index }
 
 _invoices_create:
-    pattern:   /create/{client}
+    path:   /create/{client}
     defaults:
         _controller: CSBillInvoiceBundle:Default:create
         client: null
 
 _invoices_edit:
-    pattern:   /edit/{id}
+    path:   /edit/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Default:edit }
 
 _invoices_view:
-    pattern:   /view/{id}
+    path:   /view/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Default:view }
 
 # Actions routes
 _send_invoice:
-    pattern:   /action/send/{id}
+    path:   /action/send/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Actions:send }
 
 _action_invoice:
-    pattern:   /action/{action}/{id}
+    path:   /action/{action}/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Actions:transition }

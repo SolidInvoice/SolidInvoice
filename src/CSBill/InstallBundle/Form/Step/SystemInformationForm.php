@@ -55,6 +55,7 @@ class SystemInformationForm extends AbstractType
                     'choices' => Intl::getLocaleBundle()->getLocaleNames(),
                     'constraints' => new Constraints\NotBlank(array('message' => 'Please select a locale')),
                     'placeholder' => '',
+                    'choices_as_values' => false,
                 )
             );
         } else {
@@ -76,6 +77,7 @@ class SystemInformationForm extends AbstractType
                 'choices' => $currencies,
                 'constraints' => new Constraints\NotBlank(array('message' => 'Please select a currency')),
                 'placeholder' => '',
+                'choices_as_values' => false,
             )
         );
 

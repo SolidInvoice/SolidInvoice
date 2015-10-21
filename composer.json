@@ -63,7 +63,8 @@
         "friendsofsymfony/rest-bundle": "~1.5",
         "jms/serializer-bundle": "~0.12",
         "willdurand/hateoas-bundle": "0.4.*",
-        "nelmio/api-doc-bundle": "~2.7"
+        "nelmio/api-doc-bundle": "~2.7",
+        "egulias/email-validator": "~1.2"
     },
     "require-dev": {
         "behat/behat": "~3.0",

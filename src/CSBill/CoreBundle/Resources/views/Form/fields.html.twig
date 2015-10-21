@@ -198,7 +198,7 @@
             {% set attrs -%}
                 data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}"
             {%- endset %}
-            <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
+            <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
         {% endif %}
     {% endfor %}
 {%- endblock tax_choice_widget_options %}
