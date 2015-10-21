@@ -13,6 +13,7 @@ namespace CSBill\InstallBundle\Form\Step;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Validator\Constraints;
 
@@ -24,11 +25,18 @@ class SystemInformationForm extends AbstractType
     private $userCount;
 
     /**
-     * @param int $userCount
+     * @var Request
      */
-    public function __construct($userCount = 0)
+    private $request;
+
+    /**
+     * @param Request $request
+     * @param int     $userCount
+     */
+    public function __construct(Request $request, $userCount = 0)
     {
         $this->userCount = $userCount;
+        $this->request = $request;
     }
 
     /**
@@ -68,6 +76,15 @@ class SystemInformationForm extends AbstractType
                 'choices' => $currencies,
                 'constraints' => new Constraints\NotBlank(array('message' => 'Please select a currency')),
                 'placeholder' => '',
+            )
+        );
+
+        $builder->add(
+            'base_url',
+            null,
+            array(
+                'constraints' => new Constraints\NotBlank(array('message' => 'Please set the application base url')),
+                'data' => $this->request->getSchemeAndHttpHost().$this->request->getBaseUrl(),
             )
         );
 

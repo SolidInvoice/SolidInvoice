@@ -16,5 +16,6 @@ parameters:
     locale: en_US
     currency: USD
     secret: SecretToken
+    base_url: ~
 
     installed: ~

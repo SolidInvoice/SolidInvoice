@@ -9,12 +9,23 @@
  * with this source code in the file LICENSE.
  */
 
+
+$baseUrl = $container->getParameter('base_url');
+
+$config = [
+    'templating' => [
+        'engines' => ['twig'],
+    ],
+    'assets' => [
+        'version' => CSBill\CoreBundle\CSBillCoreBundle::VERSION,
+    ]
+];
+
+if (null !== $baseUrl) {
+    $config['assets']['base_urls'] = ['%base_url%'];
+}
+
 $container->loadFromExtension(
     'framework',
-    array(
-        'templating' => array(
-            'engines' => array('twig'),
-            'assets_version' => CSBill\CoreBundle\CSBillCoreBundle::VERSION,
-        ),
-    )
+    $config
 );

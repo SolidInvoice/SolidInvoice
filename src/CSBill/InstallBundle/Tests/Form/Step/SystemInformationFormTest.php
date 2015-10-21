@@ -27,10 +27,11 @@ class SystemInformationFormTest extends FormTestCase
             'currency' => $faker->randomKey(Intl::getCurrencyBundle()->getCurrencyNames()),
             'username' => $faker->userName,
             'email_address' => $faker->email,
+            'base_url' => $faker->url,
             'password' => null,
         );
 
-        $type = new SystemInformationForm();
+        $type = new SystemInformationForm($this->getMock('Symfony\Component\HttpFoundation\Request'));
         $form = $this->factory->create($type);
 
         // submit the data to the form directly

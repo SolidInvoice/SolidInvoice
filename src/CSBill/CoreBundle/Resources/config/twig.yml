@@ -22,7 +22,6 @@ services:
 
     csbill_core.twig.file:
         class: %csbill_core.twig.file.class%
-        arguments: [@request_stack]
         tags:
             - { name: twig.extension }
 
