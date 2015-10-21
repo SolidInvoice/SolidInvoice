@@ -94,7 +94,7 @@
 
     <div id="{{ id }}-uploader"></div>
 
-    <script type="text/javascript">{% spaceless %}
+    <script>{% spaceless %}
         {# TODO : move all this to an external js file #}
         $(function(){
 
@@ -106,10 +106,10 @@
 
                 $('#{{ id }}-uploader').hide();
 
-                var img = $('<img />').attr('src', '{{ asset("uploads") }}/' + data.file);
+                var img = $('<img />').attr('src', '{{ absolute_url('/uploads') }}/' + data.file);
                 var a = $('<a />').attr('href', '#').addClass('thumbnail').html(img);
                 var close_img = $('<b />').html('X').addClass('close');
-                var close = $('<a />').attr({'href' : '#', 'title' : '{{ "Remove Image"|trans }}"', 'rel' : 'tooltip'}).addClass('pull-right').html(close_img);
+                var close = $('<a />').attr({'href' : '#', 'title' : '{{ 'Remove Image'|trans }}', 'rel' : 'tooltip'}).addClass('pull-right').html(close_img);
 
                 close.on('click', function(evt){
                     evt.preventDefault();
@@ -118,12 +118,11 @@
                     a.parents('div.image-thumbnail-preview').remove();
 
                     $('#{{ id }}-uploader').show();
-                    $("#{{ id }}").val('');
+                    $('#{{ id }}').val('');
                 });
 
-                var li = $('<li />').addClass('span2').append(close).append(a);
-                var ul = $('<ul />').addClass('thumbnails').append(li);
-                var div = $('<div />').addClass('image-thumbnail-preview').html(ul);
+                var container = $('<div />').addClass('thumbnails').append(close).append(a);
+                var div = $('<div />').addClass('image-thumbnail-preview').html(container);
 
                 $('#{{ id }}').val(data.file);
 
@@ -137,17 +136,17 @@
             // in Chrome (http://stackoverflow.com/a/25135325/833811)
             setTimeout(function () {
                 $('#{{ id }}-uploader').uploadify({
-                    "swf" : "{{ asset('swf/uploadify.swf') }}",
-                    "uploader" : "{{ path("_image_upload") }}",
-                    "formData" : {"sessionId" : "{{ sessionId }}"},
-                    "buttonText" : "{{ "Select File"|trans }}",
-                    "multi"        : false,
-                    "onUploadSuccess" : uploadSuccess
+                    'swf' : '{{ asset('swf/uploadify.swf') }}',
+                    'uploader' : '{{ path('_image_upload') }}',
+                    'formData' : {'sessionId' : '{{ sessionId }}'},
+                    'buttonText' : '{{ 'Select File'|trans }}',
+                    'multi'        : false,
+                    'onUploadSuccess' : uploadSuccess
                 });
             }, 0);
 
             {% if value is not empty %}
-                uploadSuccess(null, {"file" : "{{ value }}"});
+                uploadSuccess(null, {'file' : '{{ value }}'});
             {% endif %}
         });
     {% endspaceless %}</script>
