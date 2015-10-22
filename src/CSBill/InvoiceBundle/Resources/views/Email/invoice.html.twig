@@ -26,7 +26,17 @@
 {% block content %}
     {% set containerClass = '' %}
     {% embed "CSBillInvoiceBundle::invoice_template.html.twig" %}
-        {% block title %}
+        {% block titleBody %}{% endblock %}
+
+        {% block footerBody %}
+            {{ parent() }}
+
+            {% if payments_configured(false) %}
+                <br />
+                <a class="btn btn-primary" href="{{ url('_payments_create', {'uuid' : invoice.uuid}) }}">
+                    {{ 'invoice.pay_now'|trans([], 'email') }}
+                </a>
+            {% endif %}
         {% endblock %}
     {% endembed %}
 {% endblock %}

@@ -11,10 +11,10 @@
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="invoice-create">
     <div class="container">
-        {% block header %}
+        {% block headerBody %}
             <div class="row">
                 <div class="col-xs-12">
-                    {% block title %}
+                    {% block titleBody %}
                         <div class="title">
                             <h2>
                                 {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
@@ -58,7 +58,7 @@
             </div>
         {% endblock %}
 
-        {% block content %}
+        {% block contentBody %}
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
@@ -190,7 +190,7 @@
             </div>
         {% endblock %}
     </div>
-    {% block footer %}
+    {% block footerBody %}
         {% if invoice.terms is not empty %}
             <br class="clear" />
 

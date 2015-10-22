@@ -22,7 +22,7 @@
                                 {{ _self.progress_icon(step) }}
                             </button>
                         {% else %}
-                            <button type="button" class="btn btn-default btn-circle" disabled="disabled">
+                            <button type="button" class="btn btn-default btn-circle bg-white" disabled="disabled">
                                 {{ _self.progress_icon(step) }}
                             </button>
                         {% endif %}
@@ -36,14 +36,14 @@
 
 {% macro progress_icon(step) %}
     {% if step == 'system_check' %}
-        {{ icon('check-circle-o', ['fa-2x']) }}
+        {{ icon('check-circle-o', ['fa-3x']) }}
     {% elseif step == 'config' %}
-        {{ icon('hdd-o', ['fa-2x']) }}
+        {{ icon('hdd-o', ['fa-3x']) }}
     {% elseif step == 'process' %}
-        {{ icon('ellipsis-h', ['fa-2x']) }}
+        {{ icon('ellipsis-h', ['fa-3x']) }}
     {% elseif step == 'setup' %}
-        {{ icon('cog', ['fa-2x']) }}
+        {{ icon('cog', ['fa-3x']) }}
     {% elseif step == 'finish' %}
-        {{ icon('thumbs-up', ['fa-2x']) }}
+        {{ icon('thumbs-up', ['fa-3x']) }}
     {% endif %}
 {% endmacro %}

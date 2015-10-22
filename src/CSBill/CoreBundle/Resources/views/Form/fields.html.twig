@@ -51,7 +51,18 @@
         <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
     {% endif %}
 
-    {{ form_widget(form) }}
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.email) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.sms) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.hipchat) }}
+        </div>
+    </div>
+
     {{ form_errors(form) }}
 {%- endblock notification_widget %}
 
@@ -234,7 +245,7 @@
             </div>
         </div>
 
-        <a href="#" class="btn btn-danger btn-xs btn-remove pull-right" data-related="{{ id }}">
+        <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove pull-right" data-related="{{ id }}">
             {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
         </a>
         <br class="clear" />

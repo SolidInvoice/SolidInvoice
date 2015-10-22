@@ -31,7 +31,7 @@
         <div role="main" class="container">
             {% block logo %}
                 {% if settings.system.general.logo.value is not empty %}
-                    <img src="{{ app.request.uriForPath('/uploads/' ~ settings.system.general.logo) }}" class="logo" />
+                    <img src="{{ asset('/uploads/' ~ settings.system.general.logo, null, true) }}" class="logo" />
                 {% endif %}
             {% endblock %}
             <div class="row">

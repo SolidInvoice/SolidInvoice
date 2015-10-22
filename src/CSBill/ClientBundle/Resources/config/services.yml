@@ -12,6 +12,7 @@ services:
             - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
             - { name: cs_core.menu, menu: clients_view, method: clientViewMenu }
             - { name: cs_core.menu, menu: clients_add, method: clientsMenu }
+            - { name: cs_core.menu, menu: clients_edit, method: clientsMenu }
 
     csbill_client.contact.form.type:
         class: %csbill_client.contact.form.type.class%

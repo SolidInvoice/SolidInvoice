@@ -29,11 +29,17 @@ class TaxType extends AbstractType
         $builder->add('name');
         $builder->add('rate', 'percent', array('precision' => 2));
 
+        $types = Tax::getTypes();
+
+        array_walk($types, function (&$value) {
+            $value = ucwords($value);
+        });
+
         $builder->add(
             'type',
             'select2',
             array(
-                'choices' => Tax::getTypes(),
+                'choices' => $types,
                 'choices_as_values' => false,
                 'help' => 'tax.rates.explanation',
                 'placeholder' => 'tax.rates.type.select',

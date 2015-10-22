@@ -10,11 +10,11 @@
         {{ form_row(form.name) }}
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-            {{ 'profile.api.form.actions.close'|trans }}
+        <button type="button" class="btn btn-warning btn-flat" data-dismiss="modal">
+            {{ icon('close') }} {{ 'profile.api.form.actions.close'|trans }}
         </button>
-        <button type="submit" class="btn btn-primary" id="save-token">
-            {{ 'profile.api.form.actions.save'|trans }}
+        <button type="submit" class="btn btn-success btn-flat" id="save-token">
+            {{ icon('save') }} {{ 'profile.api.form.actions.save'|trans }}
         </button>
     </div>
 {{ form_end(form) }}

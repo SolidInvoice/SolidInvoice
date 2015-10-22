@@ -7,39 +7,36 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block title %}{{ 'payment.methods.title'|trans }}{% endblock title %}
 
+{% block sidebar %}
+    <ul class="nav nav-tabs nav-stacked" role="tablist" id="payment-method-tabs">
+        {% for method in paymentMethods %}
+            <li role="presentation">
+                <a href="#{{ method }}" aria-controls="{{ method }}" data-method="{{ method }}" role="tab" data-toggle="tab">
+                    <span class="icon">
+                        {% if payment_enabled(method) %}
+                            {{ icon('check-circle') }}
+                        {% else %}
+                            {{ icon('times-circle') }}
+                        {% endif %}
+                    </span>
+                    {{ method|trans|humanize|title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock sidebar %}
+
 {% block content %}
-    <div class="row widget">
-        <div role="tabpanel">
-            <div class="col-md-3">
-                <ul class="nav nav-tabs nav-stacked" role="tablist" id="payment-method-tabs">
-                    {% for method in paymentMethods %}
-                        <li role="presentation">
-                            <a href="#{{ method }}" aria-controls="{{ method }}" data-method="{{ method }}" role="tab" data-toggle="tab">
-                                <span class="icon">
-                                    {% if payment_enabled(method) %}
-                                        {{ icon('check-circle') }}
-                                    {% else %}
-                                        {{ icon('times-circle') }}
-                                    {% endif %}
-                                </span>
-                                {{ method|trans|humanize|title }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="col-md-9">
-                <div class="tab-content">
-                    {% for method in paymentMethods %}
-                        <div role="tabpanel" class="tab-pane" id="{{ method }}">
-                        </div>
-                    {% endfor %}
+    <div class="widget">
+        <div class="tab-content">
+            {% for method in paymentMethods %}
+                <div role="tabpanel" class="tab-pane" id="{{ method }}">
                 </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
@@ -47,7 +44,8 @@
 {% block script %}
     var spinIcon = '{{ icon('circle-o-notch', ['fa-spin']) }}',
         enabledIcon = '{{ icon('check-circle') }}',
-        disabledIcon = '{{ icon('times-circle') }}';
+        disabledIcon = '{{ icon('times-circle') }}'
+        loaderHtml = '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%;"></div></div>';
 
     $('#payment-method-tabs a').on('click', function (e) {
         e.preventDefault();
@@ -60,9 +58,12 @@
             iconDiv = $this.find('.icon')
             originalIcon = iconDiv.html(),
             applyFormEvent = function () {
+
+                $.material.init();
+
                 link.find('form').on('submit', function (event) {
                     event.preventDefault();
-                    link.html('{{ icon('spinner', ['fa-spin fa-5x']) }}');
+                    link.html(loaderHtml);
 
                     $.ajax({
                         "url" : url,
@@ -85,7 +86,7 @@
 
         iconDiv.html(spinIcon);
 
-        link.html('{{ icon('spinner', ['fa-spin fa-5x']) }}');
+        link.html(loaderHtml);
 
         $.ajax({"url" : url})
         .success(function (response) {

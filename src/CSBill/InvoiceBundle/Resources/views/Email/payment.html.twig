@@ -8,20 +8,4 @@
  #}
 
 <br />
-<a style="display: inline-block;
-margin-bottom: 0;
-font-weight: normal;
-text-align: center;
-vertical-align: middle;
-cursor: pointer;
-background-image: none;
-border: 1px solid rgba(0, 0, 0, 0);
-white-space: nowrap;
-padding: 6px 12px;
-font-size: 14px;
-line-height: 1.42857143;
-border-radius: 4px;
-color: #FFF;
-background-color: #428BCA;
-border-color: #357EBD;
-text-decoration: none" href="{{ url('_payments_create', {'uuid' : invoice.uuid}) }}">{{ 'invoice.pay_now'|trans([], 'email') }}</a>
+<a class="btn btn-primary" href="{{ url('_payments_create', {'uuid' : invoice.uuid}) }}">{{ 'invoice.pay_now'|trans([], 'email') }}</a>
