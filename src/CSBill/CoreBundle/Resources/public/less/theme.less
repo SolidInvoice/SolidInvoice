@@ -9,7 +9,7 @@ body {
 }
 
 .widget {
-    background: #FFFFFF;
+    background: @white;
     padding: 10px;
     border: 1px solid #cccccc;
     border-radius: 4px
@@ -19,6 +19,9 @@ body {
  * BUTTONS
  */
 .btn {
+
+    margin: 0;
+
     &-default,
     &-primary,
     &-success,
@@ -38,109 +41,6 @@ body {
     &.active {
         background-image: none;
     }
-
-    &-default {
-        text-shadow: 0 1px 0 #fff;
-        #gradient > .vertical(#ffffff, #e0e0e0, 0%, 100%);
-        border-color: #dbdbdb;
-
-        &:hover,
-        &:focus {
-            background-color: #e0e0e0;
-            background-position: 0 -15px;
-        }
-
-        &:active,
-        &.active {
-            background-color: #e0e0e0;
-            border-color: #dbdbdb;
-        }
-    }
-
-    &-primary {
-        #gradient > .vertical(#428bca, #2d6ca2, 0%, 100%);
-        border-color: #2b669a;
-
-        &:hover,
-        &:focus {
-            background-color: #2d6ca2;
-            background-position: 0 -15px;
-        }
-
-        &:active,
-        &.active {
-            background-color: #2d6ca2;
-            border-color: #2b669a;
-        }
-    }
-
-    &-success {
-        #gradient > .vertical(#5cb85c, #419641, 0%, 100%);
-        border-color: #3e8f3e;
-
-        &:hover,
-        &:focus {
-            background-color: #419641;
-            background-position: 0 -15px;
-        }
-
-        &:active,
-        &.active {
-            background-color: #419641;
-            border-color: #3e8f3e;
-        }
-    }
-
-    &-warning {
-        #gradient > .vertical(#f0ad4e, #eb9316, 0%, 100%);
-        border-color: #e38d13;
-
-        &:hover,
-        &:focus {
-            background-color: #eb9316;
-            background-position: 0 -15px;
-        }
-
-        &:active,
-        &.active {
-            background-color: #eb9316;
-            border-color: #e38d13;
-        }
-    }
-
-    &-danger {
-        #gradient > .vertical(#d9534f, #c12e2a, 0%, 100%);
-        border-color: #b92c28;
-
-        &:hover,
-        &:focus {
-            background-color: #c12e2a;
-            background-position: 0 -15px;
-        }
-
-        &:active,
-        &.active {
-            background-color: #c12e2a;
-            border-color: #b92c28;
-        }
-    }
-
-    &-info {
-        #gradient > .vertical(#5bc0de, #2aabd2, 0%, 100%);
-        border-color: #28a4c9;
-
-        &:hover,
-        &:focus {
-            background-color: #2aabd2;
-            background-position: 0 -15px;
-        }
-
-        &:active,
-        &.active {
-            background-color: #2aabd2;
-            border-color: #28a4c9;
-        }
-    }
 }
 
 /**
@@ -159,20 +59,25 @@ body {
         > a {
             &:hover,
             &:focus {
-                background-color: #e8e8e8;
-                #gradient > .vertical(#f5f5f5, #e8e8e8, 0%, 100%);
+                background-color: @grey-400;
+            }
+        }
+
+        &.active {
+            > a {
+                &:hover,
+                &:focus {
+                    background-color: @blue;
+                }
             }
         }
     }
+}
 
-    &.active {
-        > a {
-            &:hover,
-            &:focus {
-                background-color: #357ebd;
-                #gradient > .vertical(#428bca, #357ebd, 0%, 100%);
-            }
-        }
+
+.dropdown-menu {
+    .divider {
+        background-color: @grey-200;
     }
 }
 
@@ -180,43 +85,53 @@ body {
  * NAV
  */
 .navbar {
+    &.navbar {
+        background-color: @white;
+        .box-shadow(0 1px 3px 0 rgba(0, 0, 0, 0.33));
+        color: @gray;
 
-    margin-bottom: auto;
-
-    &-default {
-        #gradient > .vertical(#ffffff, #f8f8f8, 0%, 100%);
-        border-radius: 4px;
-        .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075););
-
-        .navbar-nav > .active > a {
-            #gradient > .vertical(#ebebeb, #ebebeb, 0%, 100%);
-            .box-shadow(inset 0 3px 9px rgba(0, 0, 0, 0.075));
+        .dropdown-menu {
+            > li {
+                &.active {
+                    > a {
+                        &:hover,
+                        &:focus {
+                            background-color: @primary;
+                        }
+                    }
+                }
+            }
         }
     }
 
     &-brand,
-    &-nav > li > a {
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-
-    &-inverse {
-        #gradient > .vertical(#3F3F3F, #222222, 0%, 100%);
-
-        .navbar-nav {
-            > .active > a {
-                #gradient > .vertical(#222222, #282828, 0%, 100%);
-                .box-shadow(inset 0 3px 9px rgba(0, 0, 0, 0.25));
+    .navbar-nav {
+        > li {
+            > a {
+                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
             }
 
-            > li > a {
-                text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            &:hover,
+            &:focus,
+            &.active {
+                color: @primary;
+                background-color: @grey-200;
             }
         }
 
-        .navbar-brand {
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        .dropdown-menu {
+            li > a {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            .divider {
+                background-color: @grey-200;
+            }
         }
     }
+
+    margin-bottom: auto;
 
     &-static-top,
     &-fixed-top,
@@ -251,26 +166,6 @@ body {
 .alert {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
     .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05););
-
-    &-success {
-        #gradient > .vertical(#dff0d8, #c8e5bc, 0%, 100%);
-        border-color: #b2dba1;
-    }
-
-    &-info {
-        #gradient > .vertical(#d9edf7, #b9def0, 0%, 100%);
-        border-color: #9acfea;
-    }
-
-    &-warning {
-        #gradient > .vertical(#fcf8e3, #f8efc0, 0%, 100%);
-        border-color: #f5e79e;
-    }
-
-    &-danger {
-        #gradient > .vertical(#f2dede, #e7c3c3, 0%, 100%);
-        border-color: #dca7a7;
-    }
 }
 
 /**
@@ -324,49 +219,12 @@ body {
  */
 .panel {
     .box-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
-
-    &-default {
-        > .panel-heading {
-            #gradient > .vertical(#f5f5f5, #e8e8e8, 0%, 100%);
-        }
-    }
-
-    &-primary {
-        > .panel-heading {
-            #gradient > .vertical(#428bca, #357ebd, 0%, 100%);
-        }
-    }
-
-    &-success {
-        > .panel-heading {
-            #gradient > .vertical(#dff0d8, #d0e9c6, 0%, 100%);
-        }
-    }
-
-    &-info {
-        > .panel-heading {
-            #gradient > .vertical(#d9edf7, #c4e3f3, 0%, 100%);
-        }
-    }
-
-    &-warning {
-        > .panel-heading {
-            #gradient > .vertical(#fcf8e3, #faf2cc, 0%, 100%);
-        }
-    }
-
-    &-danger {
-        > .panel-heading {
-            #gradient > .vertical(#f2dede, #ebcccc, 0%, 100%);
-        }
-    }
 }
 
 /**
  * MISC
  */
 .well {
-    #gradient > .vertical(#e8e8e8, #f5f5f5, 0%, 100%);
     border-color: #dcdcdc;
     .box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1););
 }
@@ -391,11 +249,37 @@ body {
     }
 }
 
+.nav-tabs {
+    > li {
+        &.active {
+            > a {
+                background: @blue-grey !important;
+                color: #FFFFFF;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
 .left-sidebar {
-    background-color: #3A3633;
+    background-color: #2b323a;
     border-color: @navbar-inverse-border;
     padding: 20px 0 0 0;
     position: fixed;
+
+    .nav-tabs {
+        background: #2b323a;
+
+        > li {
+            &.active {
+                > a {
+                    background: #20252b !important;
+                    color: #FFFFFF;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
 
     .nav {
         li {
@@ -403,16 +287,16 @@ body {
 
             > a {
                 border-radius: 0;
-                color: #A8A8A8;
+                color: rgba(255, 255, 255, 0.5);
                 padding: 8px 15px;
                 &:hover {
-                    background: #616161;
+                    background: #313942;
                 }
             }
 
             &.active {
                 > a {
-                    background: #3A3633;
+                    background: #20252b;
                     color: #FFFFFF;
                     font-weight: bold;
                 }
@@ -432,7 +316,7 @@ body {
 
         h3 {
             font-weight: normal;
-            color: #2679B5;
+            color: @teal;
             font-size: 25px;
             font-style: italic;
         }
@@ -443,3 +327,27 @@ body {
     margin-right: 20px;
 }
 
+.checkbox {
+    .checkbox-material {
+        margin-right: 5px;
+    }
+}
+
+
+.input-group-btn {
+    &.grid-search-reset {
+        padding-right: 10px;
+    }
+}
+
+.list-group {
+    .list-group-item {
+        border: 1px solid @grey;
+        padding: 8px 16px;
+        overflow: visible;
+    }
+}
+
+.bg-white {
+    background: @white !important;
+}

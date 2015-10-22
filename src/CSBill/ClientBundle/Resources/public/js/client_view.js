@@ -74,9 +74,21 @@
                             if ('success' === data.status && undefined !== data.id) {
                                 var promise = $.getJSON(Routing.generate('_clients_contact_card', {"id" : data.id}), function(data) {
 
-                                    var content = $(data.content).hide();
+                                    var content = $(data.content).hide(),
+                                        contactList = $('#client-contacts-list'),
+                                        contactListContainers = $('.client_contact_list', contactList);
 
-                                    $('#client-contacts-list').append(content);
+                                    if (contactListContainers.length > 0) {
+                                        content.show();
+                                        content = $('<div />')
+                                            .addClass('col-lg-6 col-md-6 client_contact_list')
+                                            .append(content)
+                                            .hide()
+                                            ;
+                                    }
+
+                                    contactList.append(content);
+
                                     content.fadeIn(function() {
                                         $('.edit-contact', this).ajaxModal('#contacts-ajax-modal', contactEdit);
                                     });
@@ -85,9 +97,8 @@
                                 callback = promise.done;
                             }
 
-                            modal.modal('loading');
-
                             callback(function() {
+                                modal.modal('loading');
                                 modal.html(data.content);
                                 $('form', modal).on('submit', addContact);
                             });
@@ -127,7 +138,6 @@
                             };
 
                             if ('success' === data.status) {
-
                                 var promise = $.getJSON(Routing.generate('_clients_contact_card', {"id" : contactCard.data('id')}), function(data) {
 
                                     var content = $(data.content).hide();
@@ -165,20 +175,33 @@
             var contact = $(this).parents('.contact-card'),
                 contactId = contact.data('id');
 
-            window.bootbox.confirm('<i class="fa fa-exclamation-circle fa-2x"></i> Are you sure you want to delete this contact?', function(bool) {
-                if (true === bool) {
-                    $('body').modalmanager('loading');
-
-                    $.post(Routing.generate("_clients_delete_contact", {"id" : contactId}), function() {
+            window.bootbox.confirm({
+                'message': '<i class="fa fa-exclamation-circle fa-2x"></i> Are you sure you want to delete this contact?',
+                'buttons' : {
+                    'cancel' : {
+                        'className' : 'btn-warning btn-flat',
+                        'label' : '<i class="fa fa-times"></i> Cancel'
+                    },
+                    'confirm' : {
+                        'className' : 'btn-success btn-flat',
+                        'label' : '<i class="fa fa-check"></i> OK'
+                    }
+                },
+                'callback': function (bool) {
+                    if (true === bool) {
                         $('body').modalmanager('loading');
-                        var div = $('<div class="alert alert-success clearfix">Contact removed successfully!</div>');
-                        contact.replaceWith(div);
-                        setTimeout(function() {
-                            div.fadeOut('slow', function() {
-                                $(this).remove();
-                            });
-                        }, 3000);
-                    });
+
+                        $.post(Routing.generate("_clients_delete_contact", {"id": contactId}), function () {
+                            $('body').modalmanager('loading');
+                            var div = $('<div class="alert alert-success clearfix">Contact removed successfully!</div>');
+                            contact.replaceWith(div);
+                            setTimeout(function () {
+                                div.fadeOut('slow', function () {
+                                    $(this).remove();
+                                });
+                            }, 3000);
+                        });
+                    }
                 }
             });
         });
@@ -191,16 +214,29 @@
 
             var link = $(this);
 
-            window.bootbox.confirm("Are you sure you want to delete this client?", function(bool) {
-                if (true === bool) {
-                    $('body').modalmanager('loading');
-                    $.ajax({
-                        "url" : link.attr("href"),
-                        "dataType" : "json",
-                        "method" : "post"
-                    }).done(function() {
-                        window.document.location = Routing.generate("_clients_index");
-                    });
+            window.bootbox.confirm({
+                'message': '<i class="fa fa-exclamation-circle fa-2x"></i> Are you sure you want to delete this client?',
+                'buttons' : {
+                    'cancel' : {
+                        'className' : 'btn-warning btn-flat',
+                        'label' : '<i class="fa fa-times"></i> Cancel'
+                    },
+                    'confirm' : {
+                        'className' : 'btn-success btn-flat',
+                        'label' : '<i class="fa fa-check"></i> OK'
+                    }
+                },
+                'callback': function (bool) {
+                    if (true === bool) {
+                        $('body').modalmanager('loading');
+                        $.ajax({
+                            "url" : link.attr("href"),
+                            "dataType" : "json",
+                            "method" : "post"
+                        }).done(function() {
+                            window.document.location = Routing.generate("_clients_index");
+                        });
+                    }
                 }
             });
         });

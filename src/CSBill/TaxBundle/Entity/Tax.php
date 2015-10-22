@@ -11,7 +11,7 @@
 
 namespace CSBill\TaxBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as Grid;
+use APY\DataGridBundle\Grid\Mapping as GRID;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,7 +57,7 @@ class Tax
      * @var string
      *
      * @ORM\Column(name="rate", type="float", precision=4)
-     * @Grid\Column(type="percent")
+     * @GRID\Column(type="percent")
      * @Assert\Type("float")
      * @Assert\NotBlank()
      * @Serialize\Expose()

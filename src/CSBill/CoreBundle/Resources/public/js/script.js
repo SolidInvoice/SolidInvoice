@@ -84,26 +84,9 @@ $(function(){
     };
 
     /**
-     * Delete
+     * Material
      */
-    $('a.delete-item').on('click', function(event) {
-        event.preventDefault();
-
-        var link = $(this);
-
-        bootbox.confirm(link.data('confirm'), function(bool) {
-            if (true === bool) {
-                $('body').modalmanager('loading');
-                $.ajax({
-                    'url'      : link.attr('href'),
-                    'dataType' : 'json',
-                    'method'   : 'post'
-                }).done(function() {
-                    window.document.location.reload();
-                });
-            }
-        });
-    });
+    $.material.init();
 });
 
 function percentage(amount, percentage)

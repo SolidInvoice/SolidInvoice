@@ -29,18 +29,18 @@
             </legend>
 
             {% set addressesPrototypeForm %}
-                {{ _macro.widget_prototype(form.addresses, 'client.address.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'} }) }}
+                {{ _macro.widget_prototype(form.addresses, 'client.address.delete'|trans, {'trash' : {'class' : 'pull-right btn-flat btn btn-danger'} }) }}
             {% endset %}
 
             <div class="client_addresses" data-prototype="{{ addressesPrototypeForm|escape }}" data-prototype-name="{{ form.addresses.vars.prototype.vars.name }}">
                 {% for widget in form.addresses %}
-                    {{ _macro.widget_prototype(widget, 'client.address.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
+                    {{ _macro.widget_prototype(widget, 'client.address.delete'|trans, {'trash' : {'class' : 'pull-right btn-flat btn btn-danger'}}) }}
                 {% else %}
                     {{ addressesPrototypeForm|replace({'__name__' : 0})|raw }}
                 {% endfor %}
             </div>
 
-            <a href="#" data-target="client_addresses" class="btn-primary btn-sm btn-add add_form_collection_link">
+            <a href="#" data-target="client_addresses" class="btn-flat btn-add add_form_collection_link">
                 {{ icon('plus', ['circle']) }} {{ "client.address.add"|trans }}
             </a>
         </div>
@@ -51,18 +51,18 @@
             </legend>
 
             {% set prototypeForm %}
-                {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'} }) }}
+                {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-flat btn-danger'} }) }}
             {% endset %}
 
             <div class="client_contacts" data-prototype="{{ prototypeForm|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.vars.name }}">
                 {% for widget in form.contacts %}
-                    {{ _macro.widget_prototype(widget, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-danger'}}) }}
+                    {{ _macro.widget_prototype(widget, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-flat btn-danger'}}) }}
                 {% else %}
                     {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
                 {% endfor %}
             </div>
 
-            <a href="#" data-target="client_contacts" class="btn-primary btn-sm btn-add add_form_collection_link">
+            <a href="#" data-target="client_contacts" class="btn-flat btn-add add_form_collection_link">
                 {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
             </a>
         </div>

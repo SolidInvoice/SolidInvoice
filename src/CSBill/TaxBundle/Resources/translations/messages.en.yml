@@ -8,3 +8,8 @@ tax:
             select: Select
     inclusive: Inclusive
     exclusive: Exclusive
+
+inclusive: Inclusive
+exclusive: Exclusive
+rate: Rate
+type: Type

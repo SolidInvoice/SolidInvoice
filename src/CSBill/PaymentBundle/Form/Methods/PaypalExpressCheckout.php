@@ -32,7 +32,10 @@ class PaypalExpressCheckout extends AbstractType
 
         $builder->add(
             'password',
-            'password'
+            'password',
+            array(
+                'constraints' => new NotBlank(),
+            )
         );
 
         $builder->add(

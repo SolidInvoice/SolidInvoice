@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button data-dismiss="modal" class="btn btn-info">{{ "close"|trans }}</button>
+        <button data-dismiss="modal" class="btn btn-info btn-flat">{{ icon('times') }} {{ "close"|trans }}</button>
     </div>
 {% else %}
     <form action="{{ path("_clients_add_contact", {"id" : client.id}) }}" method="post">
@@ -32,8 +32,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-warning">{{ icon('times') }} {{ "close"|trans }}</button>
-            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "save"|trans }}</button>
+            <button data-dismiss="modal" class="btn btn-warning btn-flat">{{ icon('times') }} {{ "close"|trans }}</button>
+            <button type="submit" class="btn btn-success btn-flat">{{ icon('save') }} {{ "save"|trans }}</button>
         </div>
     </form>
 {% endif %}

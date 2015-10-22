@@ -149,9 +149,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line text-center"><strong>{{ 'quote.subtotal'|trans }}</strong></td>
+                                    <td colspan="4" class="thick-line text-right"><strong>{{ 'quote.subtotal'|trans }}</strong></td>
                                     <td class="thick-line text-right">
                                         <div class="quote-sub-total"></div>
                                     </td>
@@ -159,9 +157,7 @@
                                 </tr>
                                 {% if form.tax is defined %}
                                     <tr>
-                                        <td class="no-line"></td>
-                                        <td class="no-line"></td>
-                                        <td class="no-line text-center"><strong>{{ 'quote.tax'|trans }}</strong></td>
+                                        <td colspan="4" class="no-line text-right"><strong>{{ 'quote.tax'|trans }}</strong></td>
                                         <td class="no-line text-right">
                                             <span class="text-error quote-tax"></span>
                                         </td>
@@ -169,18 +165,14 @@
                                     </tr>
                                 {% endif %}
                                 <tr>
-                                    <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line text-center"><strong>{{ 'quote.discount'|trans }}</strong></td>
+                                    <td colspan="4" class="no-line text-right"><strong>{{ 'quote.discount'|trans }}</strong></td>
                                     <td class="no-line text-right">
                                         <span class="text-success quote-discount"></span>
                                     </td>
                                     <td class="no-line"></td>
                                 </tr>
                                 <tr>
-                                    <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line text-center"><strong>{{ 'quote.total'|trans }}</strong></td>
+                                    <td colspan="4" class="no-line text-right"><strong>{{ 'quote.total'|trans }}</strong></td>
                                     <td class="no-line text-right">
                                         <div class="quote-total"></div>
                                     </td>
@@ -229,6 +221,7 @@
             $('#{{ form.client.vars.id }}-container').html(data.content);
             $('body').modalmanager('loading');
             clientSelectContainer.hide();
+            $.material.init();
         });
     });
 
