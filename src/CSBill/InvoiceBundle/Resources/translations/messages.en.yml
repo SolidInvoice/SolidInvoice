@@ -85,6 +85,7 @@ invoice:
     recurring:
         date_start: Start Date
         date_end: End Date
+        date_end_info: If no end date is specified, the invoice will recur infinately
         view:
             starting: 'starting'
             ending: 'ending on'

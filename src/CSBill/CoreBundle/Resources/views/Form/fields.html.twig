@@ -14,6 +14,8 @@
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {%- endblock widget_attributes %}
 
+{% block form_widget_simple -%}{{ parent() }}{% if help is defined and help is not empty %}<span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>{% endif %}{%- endblock form_widget_simple %}
+
 {% block form_rows -%}
     {{ form_errors(form) }}
     {% for child in form %}
@@ -32,9 +34,9 @@
         {{ form_label(form) }}
         {{ form_widget(form) }}
         {{ form_errors(form) }}
-        {% if help is defined and help is not empty %}
+        {#{% if help is defined and help is not empty %}
             <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
-        {% endif %}
+        {% endif %}#}
     </div>
 {%- endblock form_row %}
 

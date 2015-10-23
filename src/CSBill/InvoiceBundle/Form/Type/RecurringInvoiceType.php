@@ -49,6 +49,8 @@ class RecurringInvoiceType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
                 'label' => 'invoice.recurring.date_end',
+                'help' => 'invoice.recurring.date_end_info',
+                'help_type' => 'block',
                 'attr' => [
                     'class' => 'datepicker',
                     'data-depends' => 'invoice_recurringInfo_date_start',
