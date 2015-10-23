@@ -14,6 +14,7 @@ namespace CSBill\InvoiceBundle\Form\Type;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvoiceType extends AbstractType
@@ -74,6 +75,15 @@ class InvoiceType extends AbstractType
     {
         $resolver->setDefaults(
             [
+                'validation_groups' => function (FormInterface $form) {
+                    $recurring = $form->get('recurring')->getData();
+
+                    if (true === $recurring) {
+                        return ['Default', 'Recurring'];
+                    }
+
+                    return 'Default';
+                },
                 'data_class' => 'CSBill\InvoiceBundle\Entity\Invoice',
             ]
         );

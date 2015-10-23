@@ -17,6 +17,7 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="recurring_invoices")
@@ -54,6 +55,8 @@ class RecurringInvoice
      *
      * @ORM\Column(name="date_start", type="date")
      * @Grid\Column(visible=false)
+     * @Assert\NotBlank(groups={"Recurring"})
+     * @Assert\Date(groups={"Recurring"})
      */
     private $dateStart;
 
@@ -85,7 +88,9 @@ class RecurringInvoice
      */
     public function getFrequency()
     {
-        return CronExpression::factory($this->frequency);
+        if (null !== $this->frequency) {
+            return CronExpression::factory($this->frequency);
+        }
     }
 
     /**
@@ -113,7 +118,7 @@ class RecurringInvoice
      *
      * @return Invoice
      */
-    public function setDateStart(\DateTime $dateStart)
+    public function setDateStart(\DateTime $dateStart = null)
     {
         $this->dateStart = $dateStart;
 

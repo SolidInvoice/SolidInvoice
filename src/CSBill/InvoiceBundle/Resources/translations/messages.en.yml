@@ -82,5 +82,8 @@ invoice:
     balance: Outstanding Balance
     archive:
         success: Invoice has been archived
+    recurring:
+        date_start: Start Date
+        date_end: End Date
 
 invoice: Invoice

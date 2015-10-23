@@ -196,6 +196,7 @@ class Invoice
      * @var RecurringInvoice
      *
      * @ORM\OneToOne(targetEntity="CSBill\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"})
+     * @Assert\Valid()
      */
     private $recurringInfo;
 
