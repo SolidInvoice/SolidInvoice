@@ -12,6 +12,7 @@
 namespace CSBill\InvoiceBundle\Cron;
 
 use Carbon\Carbon;
+use Cron\CronExpression;
 use CSBill\CronBundle\CommandInterface;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
@@ -70,7 +71,7 @@ class RecurringInvoiceCreate implements CommandInterface
                 continue;
             }
 
-            $cron = $recurringInfo->getFrequency();
+            $cron = CronExpression::factory($recurringInfo->getFrequency());
 
             if (true === $cron->isDue(Carbon::now())) {
                 $newInvoice = $this->invoiceManager->duplicate($invoice);

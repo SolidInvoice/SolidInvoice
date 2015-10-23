@@ -12,7 +12,6 @@
 namespace CSBill\InvoiceBundle\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as Grid;
-use Cron\CronExpression;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -71,7 +70,7 @@ class RecurringInvoice
     /**
      * @var Invoice
      *
-     * @ORM\OneToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="Recurring")
+     * @ORM\OneToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="recurringInfo")
      */
     private $invoice;
 
@@ -84,13 +83,11 @@ class RecurringInvoice
     }
 
     /**
-     * @return CronExpression
+     * @return string
      */
     public function getFrequency()
     {
-        if (null !== $this->frequency) {
-            return CronExpression::factory($this->frequency);
-        }
+        return $this->frequency;
     }
 
     /**

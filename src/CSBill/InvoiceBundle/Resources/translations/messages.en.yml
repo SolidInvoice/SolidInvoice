@@ -85,5 +85,8 @@ invoice:
     recurring:
         date_start: Start Date
         date_end: End Date
+        view:
+            starting: 'starting'
+            ending: 'ending on'
 
 invoice: Invoice
