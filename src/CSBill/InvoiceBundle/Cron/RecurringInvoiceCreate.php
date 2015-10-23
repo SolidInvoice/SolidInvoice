@@ -14,6 +14,8 @@ namespace CSBill\InvoiceBundle\Cron;
 use Carbon\Carbon;
 use Cron\CronExpression;
 use CSBill\CronBundle\CommandInterface;
+use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\InvoiceBundle\Entity\Item;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -75,9 +77,44 @@ class RecurringInvoiceCreate implements CommandInterface
 
             if (true === $cron->isDue(Carbon::now())) {
                 $newInvoice = $this->invoiceManager->duplicate($invoice);
+                $this->setItemsDescription($newInvoice);
 
                 $this->invoiceManager->accept($newInvoice);
             };
         }
+    }
+
+    /**
+     * @param Invoice $invoice
+     */
+    private function setItemsDescription(Invoice $invoice)
+    {
+        $now = Carbon::now();
+
+        /** @var Item $item */
+        foreach ($invoice->getItems() as $item) {
+            $description = $item->getDescription();
+
+            $description = str_replace(
+                [
+                    '{day}',
+                    '{day_name}',
+                    '{month}',
+                    '{year}',
+                ],
+                [
+                    $now->day,
+                    $now->format('l'),
+                    $now->format('F'),
+                    $now->year,
+                ],
+                $description
+            );
+
+            $item->setDescription($description);
+        }
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
     }
 }
