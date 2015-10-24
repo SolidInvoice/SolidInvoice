@@ -9,21 +9,21 @@
  * with this source code in the file LICENSE.
  */
 
-require_once __DIR__ . '/SymfonyRequirements.php';
+require_once __DIR__.'/SymfonyRequirements.php';
 
 use Symfony\Component\Intl\Intl;
 
 class AppRequirements extends SymfonyRequirements
 {
-    const REQUIRED_PHP_VERSION  = '5.4.11';
-    const REQUIRED_ICU_VERSION  = '3.8';
+    const REQUIRED_PHP_VERSION = '5.4.11';
+    const REQUIRED_ICU_VERSION = '3.8';
     const EXCLUDE_REQUIREMENTS_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8)|(logout handler)/';
     const EXCLUDE_RECOMMENDED_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8)|(logout handler|PDO)/';
 
     public function __construct()
     {
-        $phpVersion  = phpversion();
-        $icuVersion  = Intl::getIcuVersion();
+        $phpVersion = phpversion();
+        $icuVersion = Intl::getIcuVersion();
 
         $this->addRequirement(
             version_compare($phpVersion, self::REQUIRED_PHP_VERSION, '>='),
@@ -50,21 +50,21 @@ class AppRequirements extends SymfonyRequirements
 
         $this->addRequirement(
             null !== $icuVersion && version_compare($icuVersion, self::REQUIRED_ICU_VERSION, '>='),
-            'icu library must be at least ' . self::REQUIRED_ICU_VERSION,
-            'Install and enable the <strong>icu</strong> library at least ' . self::REQUIRED_ICU_VERSION . ' version'
+            'icu library must be at least '.self::REQUIRED_ICU_VERSION,
+            'Install and enable the <strong>icu</strong> library at least '.self::REQUIRED_ICU_VERSION.' version'
         );
 
-        $baseDir = realpath(__DIR__ . '/..');
+        $baseDir = realpath(__DIR__.'/..');
 
         $this->addRequirement(
-            is_writable($baseDir . '/web/uploads'),
+            is_writable($baseDir.'/web/uploads'),
             'web/uploads/ directory must be writable',
             'Change the permissions of the "<strong>web/uploads/</strong>" directory so that the web server can write into it.'
         );
 
-        if (is_file($baseDir . '/app/config/parameters.yml')) {
+        if (is_file($baseDir.'/app/config/parameters.yml')) {
             $this->addRequirement(
-                is_writable($baseDir . '/app/config/parameters.yml'),
+                is_writable($baseDir.'/app/config/parameters.yml'),
                 'app/config/parameters.yml file must be writable',
                 'Change the permissions of the "<strong>app/config/parameters.yml</strong>" file so that the web server can write into it.'
             );

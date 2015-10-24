@@ -65,7 +65,7 @@
     <br class="clear"/>
 
     {% embed "CSBillInvoiceBundle::invoice_template.html.twig" %}
-        {% block content %}
+        {% block contentBody %}
             {{ parent() }}
 
             {% if invoice.notes is not empty %}
@@ -84,7 +84,41 @@
                 <br class="clear" />
                 {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, 'show_invoice' : false} only %}
             {% endif %}
-        {% endblock content %}
+        {% endblock contentBody %}
+
+        {% block headerBody %}
+            {{ parent() }}
+
+            {% if invoice.recurring %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            {{ icon('refresh') }}
+                            <span id="recurring"></span>
+                            {{ 'invoice.recurring.view.starting'|trans }}
+                            {{ invoice.recurringInfo.dateStart|date('d F Y') }}
+                            {% if invoice.recurringInfo.dateEnd is not empty %}
+                                {{ 'invoice.recurring.view.ending'|trans }}
+                                {{ invoice.recurringInfo.dateEnd|date('d F Y') }}
+                            {% endif %}
+                        </div>
+                        <script>
+                            $(function () {
+                                $('#recurring').jqCron({
+                                    enabled_minute: false,
+                                    enabled_hour: false,
+                                    no_reset_button: true,
+                                    numeric_zero_pad: true,
+                                    default_value: '{{ invoice.recurringInfo.frequency }}'
+                                });
+                                $('.jqCron-selector-list').remove();
+                            });
+                        </script>
+                        <br class="clearfix" />
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
     {% endembed %}
 
     <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label"

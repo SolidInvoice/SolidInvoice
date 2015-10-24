@@ -23,13 +23,13 @@
 
         <div>
             <p>
-                As a final step, you must add a scheduled task to run daily. You can choose what time the command should run, but 12AM is a good default if you are unsure.
+                As a final step, you must add a scheduled task to run every 5 minutes.
             </p>
             <p>
-                Add the following cron job to run daily at 12AM:
+                Add the following cron job:
                 <br />
                 <pre style="color: #c7254e;">
-                    0 0 * * * php {{ rootDir }}/console cron:run -e prod -n
+                    0/5 * * * * php {{ rootDir }}/console cron:run -e prod -n
                 </pre>
             </p>
         </div>

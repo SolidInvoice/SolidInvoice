@@ -11,7 +11,9 @@
 
 namespace CSBill\InvoiceBundle\Repository;
 
+use Carbon\Carbon;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -144,5 +146,22 @@ class InvoiceRepository extends EntityRepository
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @return Invoice[]
+     */
+    public function getRecurringInvoices()
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb
+            ->select('i', 'r')
+            ->join('i.recurringInfo', 'r')
+            ->where('i.recurring = 1')
+            ->andWhere('r.dateStart <= :now')
+            ->setParameter('now', Carbon::now());
+
+        return $qb->getQuery()->getResult();
     }
 }

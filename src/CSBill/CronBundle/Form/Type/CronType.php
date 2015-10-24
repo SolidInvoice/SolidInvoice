@@ -9,20 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Twig\Extension;
+namespace CSBill\CronBundle\Form\Type;
 
-use Twig_Extension;
+use Symfony\Component\Form\AbstractType;
 
-class FileExtension extends Twig_Extension
+class CronType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getParent()
     {
-        return [
-            new \Twig_SimpleFunction('file', 'file_get_contents', array('is_safe' => array('css', 'html'))),
-        ];
+        return 'hidden';
     }
 
     /**
@@ -30,6 +28,6 @@ class FileExtension extends Twig_Extension
      */
     public function getName()
     {
-        return 'csbill_core.twig.file';
+        return 'cron';
     }
 }

@@ -14,6 +14,7 @@ namespace CSBill\InvoiceBundle\Form\Type;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvoiceType extends AbstractType
@@ -26,30 +27,32 @@ class InvoiceType extends AbstractType
         $builder->add(
             'client',
             null,
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'select2',
-                ),
+                ],
                 'placeholder' => 'invoice.client.choose',
-            )
+            ]
         );
 
-        $builder->add('discount', 'percent', array('required' => false));
+        $builder->add('discount', 'percent', ['required' => false]);
+        $builder->add('recurring', 'checkbox', ['required' => false, 'label' => 'Recurring']);
+        $builder->add('recurringInfo', new RecurringInvoiceType());
 
         $builder->add(
             'items',
             'collection',
-            array(
+            [
                 'type' => 'invoice_item',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add('terms');
-        $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
+        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
         $builder->add('total', 'hidden_money');
         $builder->add('baseTotal', 'hidden_money');
         $builder->add('tax', 'hidden_money');
@@ -71,9 +74,18 @@ class InvoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
+                'validation_groups' => function (FormInterface $form) {
+                    $recurring = $form->get('recurring')->getData();
+
+                    if (true === $recurring) {
+                        return ['Default', 'Recurring'];
+                    }
+
+                    return 'Default';
+                },
                 'data_class' => 'CSBill\InvoiceBundle\Entity\Invoice',
-            )
+            ]
         );
     }
 }

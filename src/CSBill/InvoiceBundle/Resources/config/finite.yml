@@ -13,13 +13,19 @@ finite_finite:
             overdue:
                 properties: {editable: true, sendable: true}
             cancelled: ~
-            archived: ~
+            archived:
+                type: final
+            recurring:
+                type: final
             paid:
                 type: final
         transitions:
             new:
                 from: [new]
                 to: draft
+            recurring:
+                from: [new]
+                to: recurring
             accept:
                 from: [new, draft, overdue]
                 to: pending
@@ -36,5 +42,5 @@ finite_finite:
                 from: [cancelled]
                 to: draft
             archive:
-                from: [new, draft, cancelled, paid]
+                from: [new, draft, cancelled, paid, recurring]
                 to: archived
