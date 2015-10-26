@@ -91,7 +91,7 @@
                                             <div class="col-lg-6 col-md-6 client_contact_list">
                                         {% endif %}
 
-                                        {% include "CSBillClientBundle::contact_card.html.twig" %}
+                                        {% include "CSBillClientBundle::contact_card.html.twig" with {"delete" : client.contacts|length > 1 } %}
 
                                         {% if totalAddresses == 0 %}
                                             </div>

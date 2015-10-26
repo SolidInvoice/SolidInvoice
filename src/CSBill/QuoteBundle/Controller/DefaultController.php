@@ -169,7 +169,10 @@ class DefaultController extends BaseController
             $this->save($quote);
             $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
         } else {
-            $finite->apply(Graph::TRANSITION_NEW);
+            if (!$quote->getId()) {
+                $finite->apply(Graph::TRANSITION_NEW);
+            }
+
             $this->save($quote);
         }
     }

@@ -23,7 +23,8 @@
         <a href="{{ path('_clients_edit_contact', {'id' : contact.id}) }}" rel="tooltip" title="{{ "contact_edit"|trans }}" class="text-info edit-contact">
             {{ icon('pencil') }}
         </a>
-        <a href="#" rel="tooltip" title="{{ "contact_delete"|trans }}" class="text-danger delete-contact">
+
+        <a href="#" rel="tooltip" title="{{ "contact_delete"|trans }}" class="text-danger delete-contact{% if not delete %} hidden{% endif %}">
             {{ icon('trash', ['o']) }}
         </a>
     </div>
