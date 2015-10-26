@@ -11,10 +11,12 @@
 
 namespace CSBill\QuoteBundle\Manager;
 
+use Carbon\Carbon;
 use CSBill\CoreBundle\Mailer\Mailer;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\NotificationBundle\Notification\NotificationManager;
+use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Event\QuoteEvent;
 use CSBill\QuoteBundle\Event\QuoteEvents;
@@ -175,6 +177,63 @@ class QuoteManager
         }
 
         return $quote;
+    }
+
+    /**
+     * @param Quote $quote
+     *
+     * @return Quote
+     */
+    public function duplicate(Quote $quote)
+    {
+        // We don't use 'clone', since cloning aq quote will clone all the item id's and nested values.
+        // We rather set it manually
+        $newQuote = new Quote();
+
+        $now = Carbon::now();
+
+        $newQuote->setCreated($now);
+        $newQuote->setClient($quote->getClient());
+        $newQuote->setBaseTotal($quote->getBaseTotal());
+        $newQuote->setDiscount($quote->getDiscount());
+        $newQuote->setNotes($quote->getNotes());
+        $newQuote->setTotal($quote->getTotal());
+        $newQuote->setTerms($quote->getTerms());
+        $newQuote->setUsers($quote->getUsers()->toArray());
+
+        if (null !== $quote->getTax()) {
+            $newQuote->setTax($quote->getTax());
+        }
+
+        foreach ($quote->getItems() as $item) {
+            $invoiceItem = new Item();
+            $invoiceItem->setCreated($now);
+            $invoiceItem->setTotal($item->getTotal());
+            $invoiceItem->setDescription($item->getDescription());
+            $invoiceItem->setPrice($item->getPrice());
+            $invoiceItem->setQty($item->getQty());
+
+            if (null !== $item->getTax()) {
+                $invoiceItem->setTax($item->getTax());
+            }
+
+            $newQuote->addItem($invoiceItem);
+        }
+
+        $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($newQuote));
+
+        $stateMachine = $this->stateMachine->get($newQuote, Graph::GRAPH);
+
+        if ($stateMachine->can(Graph::TRANSITION_NEW)) {
+            $stateMachine->apply(Graph::TRANSITION_NEW);
+        }
+
+        $this->entityManager->persist($newQuote);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($newQuote));
+
+        return $newQuote;
     }
 
     /**

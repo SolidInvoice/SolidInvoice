@@ -16,6 +16,10 @@ _quotes_view:
     path:   /view/{id}
     defaults:  { _controller: CSBillQuoteBundle:Default:view }
 
+_quotes_clone:
+    path:   /clone/{id}
+    defaults:  { _controller: CSBillQuoteBundle:Default:clone }
+
 # Actions routes
 
 _accept_quote:

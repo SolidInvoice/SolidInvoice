@@ -16,6 +16,10 @@ _invoices_view:
     path:   /view/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Default:view }
 
+_invoices_clone:
+    path:   /clone/{id}
+    defaults:  { _controller: CSBillInvoiceBundle:Default:clone }
+
 # Actions routes
 _send_invoice:
     path:   /action/send/{id}

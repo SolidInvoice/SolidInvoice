@@ -19,6 +19,7 @@ use CSBill\QuoteBundle\Event\QuoteEvent;
 use CSBill\QuoteBundle\Event\QuoteEvents;
 use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -171,5 +172,19 @@ class DefaultController extends BaseController
             $finite->apply(Graph::TRANSITION_NEW);
             $this->save($quote);
         }
+    }
+
+    /**
+     * @param Quote $quote
+     *
+     * @return RedirectResponse
+     */
+    public function cloneAction(Quote $quote)
+    {
+        $newQuote = $this->get('quote.manager')->duplicate($quote);
+
+        $this->flash($this->trans('quote.clone.success'), 'success');
+
+        return $this->redirectToRoute('_quotes_view', ['id' => $newQuote->getId()]);
     }
 }
