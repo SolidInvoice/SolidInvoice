@@ -90,6 +90,13 @@
                                     contactList.append(content);
 
                                     content.fadeIn(function() {
+
+                                        if ($('.contact-card').length > 1) {
+                                            $('.delete-contact.hidden').removeClass('hidden');
+                                        } else {
+                                            $('.delete-contact').addClass('hidden');
+                                        }
+
                                         $('.edit-contact', this).ajaxModal('#contacts-ajax-modal', contactEdit);
                                     });
                                 });
@@ -192,14 +199,34 @@
                         $('body').modalmanager('loading');
 
                         $.post(Routing.generate("_clients_delete_contact", {"id": contactId}), function () {
+
                             $('body').modalmanager('loading');
                             var div = $('<div class="alert alert-success clearfix">Contact removed successfully!</div>');
                             contact.replaceWith(div);
+
+                            if ($('.contact-card').length > 1) {
+                                $('.delete-contact.hidden').removeClass('hidden');
+                            } else {
+                                $('.delete-contact').addClass('hidden');
+                            }
+
                             setTimeout(function () {
                                 div.fadeOut('slow', function () {
                                     $(this).remove();
                                 });
                             }, 3000);
+                        }).fail(function (xhr) {
+                            $('body').modalmanager('loading');
+
+                            window.bootbox.alert({
+                                'message': '<i class="fa fa-exclamation-circle fa-2x"></i> ' + xhr.responseJSON.message,
+                                'buttons': {
+                                    'ok': {
+                                        'className': 'btn-success btn-flat',
+                                        'label': '<i class="fa fa-check"></i> OK'
+                                    }
+                                }
+                            });
                         });
                     }
                 }

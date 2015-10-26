@@ -14,6 +14,7 @@ client:
             select: Select Country
         view_map: View Map
     contact:
+        at_least_1: This client needs to have at least 1 contact
         info: Contact Info
         add: Add Contact
         delete: Delete Contact

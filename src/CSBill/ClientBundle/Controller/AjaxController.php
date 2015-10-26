@@ -187,12 +187,15 @@ class AjaxController extends BaseController
      */
     public function contactcardAction(Contact $contact)
     {
+        $client = $contact->getClient();
+
         return $this->json(
             array(
                 'content' => $this->renderView(
                     'CSBillClientBundle::contact_card.html.twig',
                     array(
                         'contact' => $contact,
+                        'delete' => count($client->getContacts()) > 1
                     )
                 ),
             )
@@ -208,6 +211,12 @@ class AjaxController extends BaseController
      */
     public function deletecontactAction(Contact $contact)
     {
+        $client = $contact->getClient();
+
+        if (count($client->getContacts()) === 1) {
+            return $this->json(['message' => $this->trans('client.contact.at_least_1')], 500);
+        }
+
         $entityMnager = $this->getEm();
         $entityMnager->remove($contact);
         $entityMnager->flush();
