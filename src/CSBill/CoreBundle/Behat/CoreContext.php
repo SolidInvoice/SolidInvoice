@@ -25,7 +25,7 @@ class CoreContext extends DefaultContext
         $select2 = $element->getParent()->find('css', '.select2-container');
 
         if (!$select2) {
-            throw new \Exception(sprintf('Field %s found', $field));
+            throw new \Exception(sprintf('Field "%s" not found', $field));
         }
 
         $select2->press();
