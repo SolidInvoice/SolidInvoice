@@ -137,7 +137,12 @@ class InvoiceGrid implements GridInterface
         $editAction = new ActionColumn();
         $editAction->setIcon('edit')
             ->setTitle('invoice.action.edit')
-            ->setRoute('_invoices_edit');
+            ->setRoute('_invoices_edit')
+            ->setCallback(function (RowAction $rowAction, Row $row) {
+                if (Graph::STATUS_PAID !== $row->getField('status')) {
+                    return $rowAction;
+                }
+            });
 
         $payAction = new ActionColumn();
         $payAction->setIcon('credit-card')

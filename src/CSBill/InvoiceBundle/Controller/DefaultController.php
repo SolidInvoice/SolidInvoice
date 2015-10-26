@@ -113,6 +113,12 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Invoice $invoice)
     {
+        if ($invoice->getStatus() === Graph::STATUS_PAID) {
+            $this->flash($this->trans('invoice.edit.paid'), 'warning');
+
+            return $this->redirectToRoute('_invoices_index');
+        }
+
         $form = $this->createForm('invoice', $invoice);
 
         $form->handleRequest($request);
