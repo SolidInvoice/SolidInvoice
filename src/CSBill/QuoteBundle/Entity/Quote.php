@@ -334,7 +334,7 @@ class Quote
     /**
      * Get discount.
      *
-     * @return Money
+     * @return float
      */
     public function getDiscount()
     {

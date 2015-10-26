@@ -40,8 +40,10 @@ quote:
             cancel: Cancel
             edit: Edit
             reopen: Re-Open
-
+            clone: Clone
         online: "View this quote online at: %url%"
+    clone:
+        success: Quote cloned successfully
     accepted: Quote Accepted and invoice created
     declined: Quote Declined
     cancelled: Quote Cancelled

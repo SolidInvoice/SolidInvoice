@@ -17,6 +17,7 @@ use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -168,5 +169,19 @@ class DefaultController extends BaseController
                 'payments' => $payments,
             )
         );
+    }
+
+    /**
+     * @param Invoice $invoice
+     *
+     * @return RedirectResponse
+     */
+    public function cloneAction(Invoice $invoice)
+    {
+        $newInvoice = $this->get('invoice.manager')->duplicate($invoice);
+
+        $this->flash($this->trans('invoice.clone.success'), 'success');
+
+        return $this->redirectToRoute('_invoices_view', ['id' => $newInvoice->getId()]);
     }
 }

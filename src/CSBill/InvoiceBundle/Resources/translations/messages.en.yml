@@ -45,7 +45,10 @@ invoice:
             cancel: Cancel
             edit: Edit
             reopen: Re-Open
+            clone: Clone
         payments: Payments
+    clone:
+        success: Invoice cloned successfully
     payment:
         capture: Do you want to capture a payment for this invoice?
     mark_paid: Mark Paid
