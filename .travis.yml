@@ -12,9 +12,12 @@ matrix:
   allow_failures:
     - php: 7
 
-sudo: false
+env:
+  global:
+    - SYMFONY_ENV=test
+    - secure: "qCWXcvCCmnHUJGqMMpknr6CIKXJpdfiTYRIfJcqYVrX+YtNpMrJhIf+vLXFwTDgl57aoQFahnNb8ybTlZE7cLe3EWZGRibTgiFHalHqw2ufdpJTXdP24D6Zr7/NVZDBkHcFmfi7Fj//jbcc5DkZyoFFiv7PcX+snzMmeWUuFNR6ioZrG7Pz4nDIOaxKPBKZ40aLpivUZvZu9q7uZCqteMSBa4+Z1Jd5/Za4uYpxrdgYdq9JeTnoTa/6hgFqchtl+qrFoQqMZ2uIILafnjeRF/TrWDLBVV979LoTalzFhicuoM5MI3oOM3hDirzfMG//uWsu49MWV71rMNiy26VNOUnsGrKHL3q+nTDcwGY6JRD2dEcNINotGiQG/JbtIKiZSVREMwlFsfW+YxVrXb+hijsoRXQ1UEaPmJcb/ipUIFaKRSCmVLxOYRb+vBb7tmUBbCRlsx50hQ1NQGFgF5fTtSRsE5PpCbPcb37qO5H88QfQfM2/8+MB1YoyKaRXi1Dm/TI20N0rDadt1A/2KctAY4fBmDPLcvWnUuZTwsoV7+DmcjO4SIGGP9pOa2l2Tchl2XGB0V6A8FzbxRw9sxkoUZPnoj6fPo94jJfQB0ISJAw9QGuI5pLUleM6R65aS2hdshr/8aod49gqHS8cvuG0BTC9FfRnIPsbNEfoVjnJLH9s="
+    - secure: "Y/MfxleCFWe5OAW6ggP2tNl7yqbNHwY8vp1XSI35LUoRbzx3tgqKoK2/RRUVIOtbWojsZp5iVI78PqtAVD9KsReRpz2VXYoyG25jf9lx/Dp4pTvNcRrj7QN5qWctPkRE0FZ8lCm2ogSL2mpLreU+it+YNXggawGM4yastcFOxXpVxYbm6nzWJ4iqL/2CIR7tD4nKkYEcXVyZ2tQi17LqDDGQZpDjPqvNZ6sVVd1Ldg/QTxzTGeDnA39HBhrWDq/e5Z+Hqtj2/ibr31+3IX0mDGUvgf/oD3IAm547avlMnE98T4eH9etgsGD1VETzBJ/rqn3aAp2z+/9qm7XVv+0UGdAbCqp/Bnkk8HowxACVd2WFj2fYA86kYqIIX4g3NRGsf6k/Km5H3A112L2rsnaz4SWqrC/UpokhwqMcKftnlnksZarVjeZVYwqvS82JcUSd+aM2mvxhdm/jYAARiyepCorOVUOW4v3Ent7p/EHSH7p/MZk0E7kOaF1YpPwKaVTn3oCqv0jxxxc7yXT13rsvlNmybLIhFXSZAZR1fs43/FaI2MzFLOduhiSnZO3Bbhp9R5I5dvE0IutyRFmyEghYCpaH4IWPKVMsMVMRg9cNI7YBxEbpy4qUqmj+DJj9yncl4lxqHPztG/VLnW8GXnOAXYn1kVvIZUL8cwfpu47d2v0="
 
-# cache vendor dirs
 cache:
   directories:
     - $HOME/.composer/cache/files
@@ -23,21 +26,31 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-source --no-interaction
+  - composer install --prefer-source -n
+  - php app/console assets:install -n
+  - php app/console assetic:dump -n
 
 before_script:
   - mysql -e 'create database csbill;'
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm"* ]]; then echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
   - php app/check.php
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  - bash travis/travis-ci-apache.sh
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3 # give xvfb some time to start
+  - if [[ "$SAUCE_USERNAME" ]]; then bash travis/sauce.sh; fi;
 
 script:
   - php app/console security:check
-  - ./bin/behat --suite=installation -n -f progress
-  - ./bin/phpunit -c app
+  - bash travis/behat.sh
+  - bash travis/phpunit.sh
 
 after_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6"* ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi;
+  - php ./bin/coveralls -v
 
 notifications:
   webhooks:

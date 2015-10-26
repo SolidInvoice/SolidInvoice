@@ -80,7 +80,8 @@
         "johnkary/phpunit-speedtrap": "~1.0@dev",
         "fzaninotto/faker": "~1.3",
         "mockery/mockery": "0.9.*",
-        "sensiolabs/security-checker": "~3.0"
+        "sensiolabs/security-checker": "~3.0",
+        "satooshi/php-coveralls": "dev-master"
     },
     "scripts": {
         "post-root-package-install": [

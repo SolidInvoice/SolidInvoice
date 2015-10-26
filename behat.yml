@@ -1,0 +1,40 @@
+default:
+    formatters:
+        pretty:
+            verbose:  true
+            paths:    false
+            snippets: false
+
+    suites:
+        installation:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - CSBill\CoreBundle\Behat\CoreContext
+                - CSBill\InstallBundle\Behat\InstallContext
+            filters:
+                tags: "@installation"
+
+        login:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - CSBill\CoreBundle\Behat\CoreContext
+                - CSBill\UserBundle\Behat\UserContext
+            filters:
+                tags: "@login"
+
+    extensions:
+        Behat\MinkExtension:
+            base_url: http://localhost
+            default_session: symfony
+            javascript_session: saucelabs
+            sessions:
+                symfony:
+                    symfony2: ~
+                saucelabs:
+                    sauce_labs:
+                        connect: true
+                        capabilities:
+                            custom-data: {travis: true}
+            #browser_name: firefox
+            #show_auto:    false
+        Behat\Symfony2Extension: ~
