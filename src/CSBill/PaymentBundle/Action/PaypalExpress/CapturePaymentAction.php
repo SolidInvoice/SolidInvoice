@@ -19,6 +19,9 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 
+/**
+ * @deprecated This action is not used anymore and will be removed in a future version
+ */
 class CapturePaymentAction extends GatewayAwareAction
 {
     /**
@@ -117,6 +120,8 @@ class CapturePaymentAction extends GatewayAwareAction
      */
     public function supports($request)
     {
+        @trigger_error('This '.__CLASS__.' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
             return false;
         }

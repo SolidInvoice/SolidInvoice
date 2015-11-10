@@ -15,6 +15,8 @@ use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Persistence\ObjectManager;
+use Money\Currency;
+use Money\Money;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -49,24 +51,32 @@ class PaymentCompleteListener
     private $manager;
 
     /**
+     * @var Currency
+     */
+    private $currency;
+
+    /**
      * @param InvoiceManager      $invoiceManager
      * @param ObjectManager       $manager
      * @param SessionInterface    $session
      * @param TranslatorInterface $translator
      * @param RouterInterface     $router
+     * @param Currency            $currency
      */
     public function __construct(
         InvoiceManager $invoiceManager,
         ObjectManager $manager,
         SessionInterface $session,
         TranslatorInterface $translator,
-        RouterInterface $router
+        RouterInterface $router,
+        Currency $currency
     ) {
         $this->invoiceManager = $invoiceManager;
         $this->session = $session;
         $this->translator = $translator;
         $this->router = $router;
         $this->manager = $manager;
+        $this->currency = $currency;
     }
 
     /**
@@ -81,7 +91,10 @@ class PaymentCompleteListener
 
         if ('credit' === $payment->getMethod()->getPaymentMethod()) {
             $creditRepository = $this->manager->getRepository('CSBillClientBundle:Credit');
-            $creditRepository->deductCredit($payment->getClient(), $payment->getTotalAmount());
+            $creditRepository->deductCredit(
+                $payment->getClient(),
+                new Money($payment->getTotalAmount(), $this->currency)
+            );
         }
 
         if (null !== $invoice = $event->getPayment()->getInvoice()) {

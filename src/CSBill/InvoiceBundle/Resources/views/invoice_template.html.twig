@@ -143,7 +143,7 @@
                                         {% endif %}
                                         {% set paid = 0 %}
                                         {% if invoice.payments|length > 0 and not invoice.balance.zero %}
-                                            {% for payment in invoice.payments %}
+                                            {% for payment in invoice.payments if payment.status == 'captured' %}
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td colspan="{{ footerSpan }}" class="no-line text-right">

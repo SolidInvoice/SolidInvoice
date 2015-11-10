@@ -19,6 +19,9 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 
+/**
+ * @deprecated This action is not used anymore and will be removed in a future version
+ */
 class NotifyPaymentAction extends GatewayAwareAction
 {
     /**
@@ -63,6 +66,8 @@ class NotifyPaymentAction extends GatewayAwareAction
      */
     public function supports($request)
     {
+        @trigger_error('This '.__CLASS__.' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
+
         return
             $request instanceof Notify &&
             $request->getToken() &&

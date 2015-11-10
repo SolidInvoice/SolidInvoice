@@ -4,9 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "410398320df89cd397eccb4c50b2fd04",
-    "content-hash": "7865c76e7abc2c95035c62e62156e768",
+    "hash": "51c3d53488bbfa421a468000180110f1",
+    "content-hash": "3912ffc63764725bf30a2c115508f0fc",
     "packages": [
+        {
+            "name": "ajbdev/authorizenet-php-api",
+            "version": "1.1.81",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ajbdev/authorizenet-php-api.git",
+                "reference": "88465a99aa96cc2e991a1f544c4c42042ace8c8e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ajbdev/authorizenet-php-api/zipball/88465a99aa96cc2e991a1f544c4c42042ace8c8e",
+                "reference": "88465a99aa96cc2e991a1f544c4c42042ace8c8e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/",
+                    "AuthorizeNet.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Authorize.NET PHP library with composer support",
+            "keywords": [
+                "authorize.net",
+                "ecommerce",
+                "payment"
+            ],
+            "abandoned": "authorizenet/authorizenet",
+            "time": "2015-09-03 19:58:03"
+        },
         {
             "name": "apy/datagrid-bundle",
             "version": "2.2.1",
@@ -979,6 +1013,38 @@
                 "validator"
             ],
             "time": "2015-10-11 22:34:23"
+        },
+        {
+            "name": "fp/klarna-invoice",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/formapro/KlarnaInvoice.git",
+                "reference": "c0aebad0be069d875619a2ef2455c29e667ed27a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/formapro/KlarnaInvoice/zipball/c0aebad0be069d875619a2ef2455c29e667ed27a",
+                "reference": "c0aebad0be069d875619a2ef2455c29e667ed27a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.16",
+                "phpxmlrpc/phpxmlrpc": "~3.0|~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Klarna.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "It unofficial repo of Klarna Invoice service with Composer added. We use it with https://github.com/Payum/KlarnaInvoice",
+            "homepage": "http://developers.klarna.com",
+            "time": "2015-09-03 08:23:32"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -2009,6 +2075,43 @@
             "time": "2013-12-05 14:36:11"
         },
         {
+            "name": "klarna/checkout",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/klarna/kco_php.git",
+                "reference": "00d5ab4cb4a84252ba506c5e60c87e8ee71f7798"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klarna/kco_php/zipball/00d5ab4cb4a84252ba506c5e60c87e8ee71f7798",
+                "reference": "00d5ab4cb4a84252ba506c5e60c87e8ee71f7798",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.16"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "~1.5",
+                "phpunit/phpunit": "~3.7",
+                "satooshi/php-coveralls": "~0.6",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Klarna": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Wrapper for the Klarna Checkout API",
+            "homepage": "http://developers.klarna.com",
+            "time": "2015-03-18 16:04:58"
+        },
+        {
             "name": "knplabs/knp-menu",
             "version": "v2.1.0",
             "source": {
@@ -2882,6 +2985,123 @@
             "time": "2014-10-06 10:57:25"
         },
         {
+            "name": "payum/authorize-net-aim",
+            "version": "0.15.1",
+            "target-dir": "Payum/AuthorizeNet/Aim",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Payum/AuthorizeNetAim.git",
+                "reference": "0414d1492bf8bc0c786c5071d75a3cc90a930431"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Payum/AuthorizeNetAim/zipball/0414d1492bf8bc0c786c5071d75a3cc90a930431",
+                "reference": "0414d1492bf8bc0c786c5071d75a3cc90a930431",
+                "shasum": ""
+            },
+            "require": {
+                "ajbdev/authorizenet-php-api": "1.1.*",
+                "payum/core": "0.15.*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Payum\\AuthorizeNet\\Aim": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/AuthorizeNetAim/contributors"
+                },
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Payum project",
+                    "homepage": "http://payum.org/"
+                }
+            ],
+            "description": "The Payum extension. It provides Authorize.Net AIM payment integration.",
+            "homepage": "http://payum.org",
+            "keywords": [
+                "authorize.net",
+                "authorizenet",
+                "payment"
+            ],
+            "time": "2015-04-28 06:14:45"
+        },
+        {
+            "name": "payum/be2bill",
+            "version": "0.15.1",
+            "target-dir": "Payum/Be2Bill",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Payum/Be2Bill.git",
+                "reference": "c33a491877730ad718af40292113b0641d3d24de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Payum/Be2Bill/zipball/c33a491877730ad718af40292113b0641d3d24de",
+                "reference": "c33a491877730ad718af40292113b0641d3d24de",
+                "shasum": ""
+            },
+            "require": {
+                "payum/core": "0.15.*",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Payum\\Be2Bill": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/Be2Bill/contributors"
+                },
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Payum project",
+                    "homepage": "http://payum.org/"
+                }
+            ],
+            "description": "The Payum extension. It provides Be2Bill payment integration.",
+            "homepage": "http://payum.org",
+            "keywords": [
+                "be2bill",
+                "payment"
+            ],
+            "time": "2015-04-28 06:14:45"
+        },
+        {
             "name": "payum/core",
             "version": "0.15.3",
             "target-dir": "Payum/Core",
@@ -3053,6 +3273,126 @@
             "time": "2015-04-14 17:23:40"
         },
         {
+            "name": "payum/klarna-checkout",
+            "version": "0.15.1",
+            "target-dir": "Payum/Klarna/Checkout",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Payum/KlarnaCheckout.git",
+                "reference": "70e750b3e4872de8da9a15613f295cadf1374de8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Payum/KlarnaCheckout/zipball/70e750b3e4872de8da9a15613f295cadf1374de8",
+                "reference": "70e750b3e4872de8da9a15613f295cadf1374de8",
+                "shasum": ""
+            },
+            "require": {
+                "klarna/checkout": "~1|~2.0",
+                "payum/core": "0.15.*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Payum\\Klarna\\Checkout": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/KlarnaCheckout/contributors"
+                },
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Payum project",
+                    "homepage": "http://payum.org/"
+                }
+            ],
+            "description": "The Payum extension. It provides Klarna Checkout payment integration.",
+            "homepage": "http://payum.org",
+            "keywords": [
+                "klarna",
+                "payment"
+            ],
+            "time": "2015-04-28 06:14:45"
+        },
+        {
+            "name": "payum/klarna-invoice",
+            "version": "0.15.1",
+            "target-dir": "Payum/Klarna/Invoice",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Payum/KlarnaInvoice.git",
+                "reference": "eda5bac21dcd9521391f51535377241931b1efaa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/eda5bac21dcd9521391f51535377241931b1efaa",
+                "reference": "eda5bac21dcd9521391f51535377241931b1efaa",
+                "shasum": ""
+            },
+            "require": {
+                "fp/klarna-invoice": "0.1.*",
+                "payum/core": "0.15.*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Payum\\Klarna\\Invoice": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Payum project",
+                    "homepage": "http://payum.org/"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/KlarnaInvoice/contributors"
+                }
+            ],
+            "description": "The Payum extension. It provides Klarna Invoice payment integration.",
+            "homepage": "http://payum.org",
+            "keywords": [
+                "klarna",
+                "payment"
+            ],
+            "time": "2015-04-28 06:14:45"
+        },
+        {
             "name": "payum/offline",
             "version": "0.15.1",
             "target-dir": "Payum/Offline",
@@ -3108,6 +3448,72 @@
             "keywords": [
                 "invoice",
                 "offlile",
+                "payment"
+            ],
+            "time": "2015-04-28 06:14:45"
+        },
+        {
+            "name": "payum/payex",
+            "version": "0.15.1",
+            "target-dir": "Payum/Payex",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Payum/Payex.git",
+                "reference": "6a99928444e95dedbf27ff1455ff3bb2f32dd610"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Payum/Payex/zipball/6a99928444e95dedbf27ff1455ff3bb2f32dd610",
+                "reference": "6a99928444e95dedbf27ff1455ff3bb2f32dd610",
+                "shasum": ""
+            },
+            "require": {
+                "ext-soap": "*",
+                "payum/core": "0.15.*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "doctrine/orm": "2.*",
+                "ext-curl": "*",
+                "ext-pdo_sqlite": "*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "doctrine/orm": "If you want store models to database using doctrin2 ORM"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Payum\\Payex": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/Payex/contributors"
+                },
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Payum project",
+                    "homepage": "http://payum.org/"
+                }
+            ],
+            "description": "The Payum extension. It provides Payex payment integration.",
+            "homepage": "http://payum.org",
+            "keywords": [
+                "payex",
                 "payment"
             ],
             "time": "2015-04-28 06:14:45"
@@ -3171,6 +3577,67 @@
                 "payment",
                 "paypal",
                 "recurring payment"
+            ],
+            "time": "2015-04-28 06:14:45"
+        },
+        {
+            "name": "payum/paypal-pro-checkout-nvp",
+            "version": "0.15.1",
+            "target-dir": "Payum/Paypal/ProCheckout/Nvp",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Payum/PaypalProCheckoutNvp.git",
+                "reference": "81d3857c18b25309d156c7d0b7ae698e7ecd5f75"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Payum/PaypalProCheckoutNvp/zipball/81d3857c18b25309d156c7d0b7ae698e7ecd5f75",
+                "reference": "81d3857c18b25309d156c7d0b7ae698e7ecd5f75",
+                "shasum": ""
+            },
+            "require": {
+                "payum/core": "0.15.*",
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Payum\\Paypal\\ProCheckout\\Nvp": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ton Sharp",
+                    "email": "Forma-PRO@66ton99.org.ua"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/PaypalProCheckoutNvp/contributors"
+                },
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Payum project",
+                    "homepage": "http://payum.org/"
+                }
+            ],
+            "description": "The Payum extension. It provides Paypal ProCheckout payment integration.",
+            "homepage": "http://payum.org",
+            "keywords": [
+                "payment",
+                "paypal",
+                "pro checkout"
             ],
             "time": "2015-04-28 06:14:45"
         },
@@ -3264,6 +3731,65 @@
                 "symfony"
             ],
             "time": "2015-04-28 19:35:22"
+        },
+        {
+            "name": "payum/stripe",
+            "version": "0.15.1",
+            "target-dir": "Payum/Stripe",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Payum/Stripe.git",
+                "reference": "397408c7c72d16921fb84b829dea2c00776925ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Payum/Stripe/zipball/397408c7c72d16921fb84b829dea2c00776925ff",
+                "reference": "397408c7c72d16921fb84b829dea2c00776925ff",
+                "shasum": ""
+            },
+            "require": {
+                "payum/core": "0.15.*",
+                "php": ">=5.3.2",
+                "stripe/stripe-php": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Payum\\Stripe": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/Stripe/contributors"
+                },
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Payum project",
+                    "homepage": "http://payum.org/"
+                }
+            ],
+            "description": "The Payum extension. It provides Stripe payment integration.",
+            "homepage": "http://payum.org",
+            "keywords": [
+                "checkout",
+                "payment",
+                "stripe",
+                "stripe.js"
+            ],
+            "time": "2015-04-28 06:14:45"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3364,6 +3890,42 @@
                 "type"
             ],
             "time": "2015-07-25 16:39:46"
+        },
+        {
+            "name": "phpxmlrpc/phpxmlrpc",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gggeek/phpxmlrpc.git",
+                "reference": "490862c33009397151ac39c811b6ee8e24689692"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/490862c33009397151ac39c811b6ee8e24689692",
+                "reference": "490862c33009397151ac39c811b6ee8e24689692",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/xmlrpc.inc",
+                    "lib/xmlrpcs.inc"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A php library for building xmlrpc clients and servers",
+            "homepage": "http://gggeek.github.io/phpxmlrpc/",
+            "keywords": [
+                "webservices",
+                "xmlrpc"
+            ],
+            "time": "2015-04-19 00:17:47"
         },
         {
             "name": "psr/log",
@@ -3688,6 +4250,54 @@
                 "tree"
             ],
             "time": "2015-08-12 16:23:48"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v1.18.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "022c3f21ec1e4141b46738bd5e7ab730d04f78cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/022c3f21ec1e4141b46738bd5e7ab730d04f78cc",
+                "reference": "022c3f21ec1e4141b46738bd5e7ab730d04f78cc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/Stripe/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "time": "2015-01-22 05:01:46"
         },
         {
             "name": "swiftmailer/swiftmailer",

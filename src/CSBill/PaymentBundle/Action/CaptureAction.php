@@ -45,13 +45,11 @@ class CaptureAction extends GatewayAwareAction
      */
     public function supports($request)
     {
-        $model = $request->getModel();
-
-        if (!($request instanceof Capture && $model instanceof Payment)) {
+        if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
             return false;
         }
 
-        $details = ArrayObject::ensureArrayObject($model->getDetails());
+        $details = ArrayObject::ensureArrayObject($request->getModel()->getDetails());
 
         return null === $details[Constants::FIELD_STATUS];
     }

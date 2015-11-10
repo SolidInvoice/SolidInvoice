@@ -21,6 +21,11 @@ class PaymentSettingsManager
     protected $repository;
 
     /**
+     * @var array
+     */
+    private $settings = [];
+
+    /**
      * @param ManagerRegistry $doctrine
      */
     public function __construct(ManagerRegistry $doctrine)
@@ -35,6 +40,10 @@ class PaymentSettingsManager
      */
     public function get($paymentMethod)
     {
-        return $this->repository->getSettingsForMethodArray($paymentMethod);
+        if (!isset($this->settings[$paymentMethod])) {
+            $this->settings[$paymentMethod] = $this->repository->getSettingsForMethodArray($paymentMethod);
+        }
+
+        return $this->settings[$paymentMethod];
     }
 }

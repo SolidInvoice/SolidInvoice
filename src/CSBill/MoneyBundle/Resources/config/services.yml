@@ -13,7 +13,7 @@ services:
 
     csbill.money.formatter.twig.extension:
         class: CSBill\MoneyBundle\Twig\Extension\MoneyFormatterExtension
-        arguments: [@csbill.money.formatter]
+        arguments: [@csbill.money.formatter, @currency]
         tags:
             - { name: twig.extension }
 

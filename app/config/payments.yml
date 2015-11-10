@@ -1,3 +1,6 @@
+parameters:
+    payum.template.layout: CSBillPaymentBundle::layout.html.twig
+
 payum:
     security:
         token_storage:
@@ -15,11 +18,101 @@ payum:
 
         paypal_express_checkout:
             paypal_express_checkout_nvp:
-                username:  NOT USED
-                password:  NOT USED
+                username: NOT USED
+                password: NOT USED
                 signature: NOT USED
                 sandbox: true
                 apis:
                     - csbill.payment.payum.paypal_express_checkout_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        paypal_pro_checkout:
+            paypal_pro_checkout_nvp:
+                username: NOT USED
+                password: NOT USED
+                partner: NOT USED
+                vendor: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.paypal_pro_checkout_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        stripe_checkout:
+            stripe_checkout:
+                publishable_key: NOT USED
+                secret_key: NOT USED
+                apis:
+                    - csbill.payment.payum.stripe_checkout_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        stripe_js:
+            stripe_js:
+                publishable_key: NOT USED
+                secret_key: NOT USED
+                apis:
+                    - csbill.payment.payum.stripe_js_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        klarna_invoice:
+            klarna_invoice:
+                secret: NOT USED
+                eid: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.klarna_invoice_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        klarna_checkout:
+            klarna_checkout:
+                secret: NOT USED
+                merchant_id: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.klarna_checkout_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        be2bill_offsite:
+            be2bill_offsite:
+                identifier: NOT USED
+                password: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.be2bill_offsite_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        be2bill_direct:
+            be2bill_direct:
+                identifier: NOT USED
+                password: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.be2bill_direct_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        authorize_net_aim:
+            authorize_net_aim:
+                login_id: NOT USED
+                transaction_key: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.authorize_net_aim_api
+                extensions:
+                    - csbill.payment.payum.extension.update_payment_details_extension
+
+        payex:
+            payex:
+                account_number: NOT USED
+                encryption_key: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.payex_api
                 extensions:
                     - csbill.payment.payum.extension.update_payment_details_extension
