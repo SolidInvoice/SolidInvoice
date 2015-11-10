@@ -62,7 +62,7 @@ class CSBillPaymentExtension extends Extension
     private function addPaymentForm(ContainerBuilder $container, $class)
     {
         /** @var FormInterface $instance */
-        $instance = new $class;
+        $instance = new $class();
         $name = $instance->getName();
 
         $definition = new Definition($class);
