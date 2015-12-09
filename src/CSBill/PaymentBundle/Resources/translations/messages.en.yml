@@ -1,5 +1,6 @@
 payment:
     create:
+        cancel: Cancel
         force: Force payment status (Optional)
         discount: Discount
         base_total: Base Total

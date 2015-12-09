@@ -26,7 +26,13 @@
                     <div class="row">
                         <div class="col-xs-7">
                             <h4>
-                                {{ invoice.client }}
+                                {% if link_client is defined and link_client == true %}
+                                    <a href="{{ path('_clients_view', {'id' : invoice.client.id}) }}">
+                                        {{ invoice.client }}
+                                    </a>
+                                {% else %}
+                                    {{ invoice.client }}
+                                {% endif %}
                             </h4>
                             {% if invoice.client.website is not empty %}
                                 <p>

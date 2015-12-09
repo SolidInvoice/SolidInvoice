@@ -15,4 +15,15 @@ use Knp\Menu\ItemInterface as BaseInterface;
 
 interface ItemInterface extends BaseInterface
 {
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function addDivider($type = '');
+
+    /**
+     * @return bool
+     */
+    public function isDivider();
 }

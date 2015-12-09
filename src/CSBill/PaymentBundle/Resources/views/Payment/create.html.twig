@@ -59,7 +59,11 @@
                 {{ form_widget(form) }}
 
                 <button type="submit" class="btn btn-info">{{ icon('credit-card') }} {{ 'payment.action.pay'|trans }}</button>
+                <a href="javascript:history.go(-1)" class="btn btn-warning">
+                    {{ icon('reply') }} {{ 'payment.create.cancel'|trans }}
+                </a>
                 {{ form_end(form) }}
+
             </div>
         </div>
     </div>
