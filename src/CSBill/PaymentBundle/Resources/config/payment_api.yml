@@ -65,3 +65,12 @@ services:
         arguments:
             - @csbill.payment.payum.payex.soap.client_factory
             - @=service('csbill.payment.method.options').get('payex')
+
+    csbill.payment.payum.authorize_net_sim_api:
+        class: Omnipay\AuthorizeNet\SIMGateway
+        calls:
+            - [setApiLoginId, ["@=service('csbill.payment.method.options').get('authorizenet_sim')['login_id']"]]
+            - [setHashSecret, ["@=service('csbill.payment.method.options').get('authorizenet_sim')['hash_secret']"]]
+            - [setTransactionKey, ["@=service('csbill.payment.method.options').get('authorizenet_sim')['transaction_key']"]]
+            - [setTestMode, ["@=service('csbill.payment.method.options').get('authorizenet_sim')['test_mode']"]]
+            - [setCurrency, [%currency%]]

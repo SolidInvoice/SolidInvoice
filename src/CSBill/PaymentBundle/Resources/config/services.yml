@@ -42,6 +42,8 @@ services:
     csbill.payment.payum.extension.update_payment_details_extension:
         class: CSBill\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
         arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: payum.extension, all: true }
 
     csbill.payment.method.options:
         class: CSBill\PaymentBundle\Manager\PaymentSettingsManager

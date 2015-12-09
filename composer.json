@@ -72,7 +72,9 @@
         "payum/authorize-net-aim": "~0.13",
         "payum/be2bill": "~0.13",
         "payum/klarna-checkout": "~0.13",
-        "payum/klarna-invoice": "~0.13"
+        "payum/klarna-invoice": "~0.13",
+        "omnipay/omnipay": "~2.3",
+        "payum/omnipay-bridge": "~0.13"
     },
     "require-dev": {
         "behat/behat": "~3.0",

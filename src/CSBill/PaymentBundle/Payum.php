@@ -25,7 +25,11 @@ class Payum extends ContainerAwareRegistry
      */
     public function getGatewayList()
     {
-        return array_keys($this->gateways);
+        $list = array_keys($this->gateways);
+
+        sort($list, SORT_ASC | SORT_STRING | SORT_FLAG_CASE);
+
+        return $list;
     }
 
     /**

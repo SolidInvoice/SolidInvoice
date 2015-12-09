@@ -11,21 +11,33 @@
 
 {% block title %}{{ 'payment.methods.title'|trans }}{% endblock title %}
 
+{% import _self as self%}
+
+{% macro payment_item(method) %}
+    <li role="presentation">
+        <a href="#{{ method }}" aria-controls="{{ method }}" data-method="{{ method }}" role="tab" data-toggle="tab">
+            <span class="icon">
+                {% if payment_enabled(method) %}
+                    {{ icon('check-circle') }}
+                {% else %}
+                    {{ icon('times-circle') }}
+                {% endif %}
+            </span>
+            {{ method|trans|humanize|title }}
+        </a>
+    </li>
+{% endmacro %}
+
 {% block sidebar %}
     <ul class="nav nav-tabs nav-stacked" role="tablist" id="payment-method-tabs">
-        {% for method in paymentMethods %}
-            <li role="presentation">
-                <a href="#{{ method }}" aria-controls="{{ method }}" data-method="{{ method }}" role="tab" data-toggle="tab">
-                    <span class="icon">
-                        {% if payment_enabled(method) %}
-                            {{ icon('check-circle') }}
-                        {% else %}
-                            {{ icon('times-circle') }}
-                        {% endif %}
-                    </span>
-                    {{ method|trans|humanize|title }}
-                </a>
-            </li>
+        {% for method in paymentMethods if payment_enabled(method) %}
+            {{ self.payment_item(method) }}
+        {% endfor %}
+
+        <li class="nav-divider"></li>
+
+        {% for method in paymentMethods if not payment_enabled(method) %}
+            {{ self.payment_item(method) }}
         {% endfor %}
     </ul>
 {% endblock sidebar %}

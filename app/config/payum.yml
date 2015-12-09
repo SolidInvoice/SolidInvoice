@@ -1,0 +1,230 @@
+parameters:
+    payum.template.layout: CSBillPaymentBundle::layout.html.twig
+
+payum:
+    security:
+        token_storage:
+            CSBill\PaymentBundle\Entity\SecurityToken: { doctrine: orm }
+    storages:
+        CSBill\PaymentBundle\Entity\Payment: { doctrine: orm }
+    gateways:
+        credit:
+            offline: ~
+        cash:
+            offline: ~
+
+        bank_transfer:
+            offline: ~
+
+        paypal_express_checkout:
+            paypal_express_checkout_nvp:
+                username: NOT USED
+                password: NOT USED
+                signature: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.paypal_express_checkout_api
+
+        paypal_pro_checkout:
+            paypal_pro_checkout_nvp:
+                username: NOT USED
+                password: NOT USED
+                partner: NOT USED
+                vendor: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.paypal_pro_checkout_api
+
+        stripe_checkout:
+            stripe_checkout:
+                publishable_key: NOT USED
+                secret_key: NOT USED
+                apis:
+                    - csbill.payment.payum.stripe_checkout_api
+
+        stripe_js:
+            stripe_js:
+                publishable_key: NOT USED
+                secret_key: NOT USED
+                apis:
+                    - csbill.payment.payum.stripe_js_api
+
+        klarna_invoice:
+            klarna_invoice:
+                secret: NOT USED
+                eid: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.klarna_invoice_api
+
+        klarna_checkout:
+            klarna_checkout:
+                secret: NOT USED
+                merchant_id: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.klarna_checkout_api
+
+        be2bill_offsite:
+            be2bill_offsite:
+                identifier: NOT USED
+                password: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.be2bill_offsite_api
+
+        be2bill_direct:
+            be2bill_direct:
+                identifier: NOT USED
+                password: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.be2bill_direct_api
+
+        authorize_net_aim:
+            authorize_net_aim:
+                login_id: NOT USED
+                transaction_key: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.authorize_net_aim_api
+
+        payex:
+            payex:
+                account_number: NOT USED
+                encryption_key: NOT USED
+                sandbox: true
+                apis:
+                    - csbill.payment.payum.payex_api
+
+        authorizenet_sim:
+            omnipay_direct:
+                type: AuthorizeNet_SIM
+                options: ~
+                apis:
+                    - csbill.payment.payum.authorize_net_sim_api
+
+        #buckaroo_ideal:
+            #omnipay_direct:
+                #type: Buckaroo_Ideal
+                #options:
+
+        #cardsave:
+            #omnipay_direct:
+                #type: CardSave
+                #options:
+
+        #coinbase:
+            #omnipay_direct:
+                #type: Coinbase
+                #options:
+
+        #eway_rapid:
+            #omnipay_direct:
+                #type: Eway_Rapid
+                #options:
+
+        #firstdata_connect:
+            #omnipay_direct:
+                #type: FirstData_Connect
+                #options:
+
+        #gocardless:
+            #omnipay_direct:
+                #type: GoCardless
+                #options:
+
+        #migs_threeparty:
+            #omnipay_direct:
+                #type: Migs_ThreeParty
+                #options:
+
+        #migs_twoparty:
+            #omnipay_direct:
+                #type: Migs_TwoParty
+                #options:
+
+        #mollie:
+            #omnipay_direct:
+                #type: Mollie
+                #options:
+
+        #multisafepay:
+            #omnipay_direct:
+                #type: MultiSafepay
+                #options:
+
+        #netaxept:
+            #omnipay_direct:
+                #type: Netaxept
+                #options:
+
+        #netbanx:
+            #omnipay_direct:
+                #type: NetBanx
+                #options:
+
+        #payfast:
+            #omnipay_direct:
+                #type: PayFast
+                #options:
+
+        #payflow_pro:
+            #omnipay_direct:
+                #type: Payflow_Pro
+                #options:
+
+        #paymentexpress_pxpay:
+            #omnipay_direct:
+                #type: PaymentExpress_PxPay
+                #options:
+
+        #paymentexpress_pxpost:
+            #omnipay_direct:
+                #type: PaymentExpress_PxPost
+                #options:
+
+        #pin:
+            #omnipay_direct:
+                #type: Pin
+                #options:
+
+        #sagepay_direct:
+            #omnipay_direct:
+                #type: SagePay_Direct
+                #options:
+
+        #sagepay_server:
+            #omnipay_direct:
+                #type: SagePay_Server
+                #options:
+
+        #securepay_directpost:
+            #omnipay_direct:
+                #type: SecurePay_DirectPost
+                #options:
+
+        #targetpay_directebanking:
+            #omnipay_direct:
+                #type: TargetPay_Directebanking
+                #options:
+
+        #targetpay_ideal:
+            #omnipay_direct:
+                #type: TargetPay_Ideal
+                #options:
+
+        #targetpay_mrcash:
+            #omnipay_direct:
+                #type: TargetPay_Mrcash
+                #options:
+
+        #twocheckout:
+            #omnipay_direct:
+                #type: TwoCheckout
+                #options:
+
+        #worldpay:
+            #omnipay_direct:
+                #type: WorldPay
+                #options:
