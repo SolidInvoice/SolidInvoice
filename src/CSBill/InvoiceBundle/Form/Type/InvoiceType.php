@@ -14,6 +14,8 @@ namespace CSBill\InvoiceBundle\Form\Type;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -58,6 +60,14 @@ class InvoiceType extends AbstractType
         $builder->add('tax', 'hidden_money');
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (!array_key_exists('recurring', $data) || (int) $data['recurring'] !== 1) {
+                unset($data['recurringInfo']);
+                $event->setData($data);
+            }
+        });
     }
 
     /**

@@ -24,10 +24,16 @@ class PaymentDetailsStatusAction extends GatewayAwareAction
      */
     public function execute($request)
     {
+        /* @var StatusRequest $request */
+
         RequestNotSupportedException::assertSupports($this, $request);
 
         /** @var Payment $payment */
         $payment = $request->getModel();
+
+        if (!$payment instanceof Payment) {
+            $payment = $request->getFirstModel();
+        }
 
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 

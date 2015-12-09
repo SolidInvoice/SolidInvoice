@@ -620,7 +620,10 @@ class Invoice
      */
     public function setRecurringInfo(RecurringInvoice $recurringInfo = null)
     {
-        $this->recurringInfo = $recurringInfo;
+        if (null !== $recurringInfo->getFrequency() && null !== $recurringInfo->getDateStart()) {
+            $this->recurringInfo = $recurringInfo;
+            $recurringInfo->setInvoice($this);
+        }
 
         return $this;
     }

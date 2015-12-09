@@ -91,7 +91,7 @@ class DefaultController extends BaseController
 
             $invoice->setBalance($invoice->getTotal());
 
-            $invoiceManager->create($invoice);
+            $invoice = $invoiceManager->create($invoice);
 
             if ($action === Graph::STATUS_PENDING) {
                 $invoiceManager->accept($invoice);

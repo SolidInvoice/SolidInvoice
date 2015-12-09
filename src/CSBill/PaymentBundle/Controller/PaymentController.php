@@ -112,9 +112,14 @@ class PaymentController extends BaseController
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
-            $payment->setTotalAmount($data['amount']);
-            $payment->setCurrencyCode($this->container->getParameter('currency'));
+            /** @var \Money\Money $money */
+            $money = $data['amount'];
+            $payment->setTotalAmount($money->getAmount());
+            $payment->setCurrencyCode($money->getCurrency()->getName());
+            $payment->setDescription('');
             $payment->setClient($invoice->getClient());
+            $payment->setNumber($invoice->getId());
+            $payment->setClientEmail($invoice->getClient()->getContacts()->first()->getPrimaryDetail('email'));
             $invoice->addPayment($payment);
             $this->save($payment);
 

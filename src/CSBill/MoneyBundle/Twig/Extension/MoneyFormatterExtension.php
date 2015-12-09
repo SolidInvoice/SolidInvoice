@@ -12,20 +12,29 @@
 namespace CSBill\MoneyBundle\Twig\Extension;
 
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
+use Money\Currency;
+use Money\Money;
 
 class MoneyFormatterExtension extends \Twig_Extension
 {
     /**
-     * @var \CSBill\MoneyBundle\Formatter\MoneyFormatter
+     * @var MoneyFormatter
      */
     private $formatter;
 
     /**
-     * @param \CSBill\MoneyBundle\Formatter\MoneyFormatter $formatter
+     * @var Currency
      */
-    public function __construct(MoneyFormatter $formatter)
+    private $currency;
+
+    /**
+     * @param MoneyFormatter $formatter
+     * @param Currency       $currency
+     */
+    public function __construct(MoneyFormatter $formatter, Currency $currency)
     {
         $this->formatter = $formatter;
+        $this->currency = $currency;
     }
 
     /**
@@ -47,7 +56,12 @@ class MoneyFormatterExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('formatCurrency', function ($money) {
-                return $money ? $this->formatter->format($money) : null;
+
+                if (!$money instanceof Money && is_int($money)) {
+                    $money = new Money($money, $this->currency);
+                }
+
+                return $this->formatter->format($money);
             }),
         ];
     }

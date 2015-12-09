@@ -1,0 +1,21 @@
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block title %}
+    {{ 'payment.action.pay'|trans }}
+{% endblock title %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ block('payum_stylesheets') }}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="widget">
+        {{ block('payum_body') }}
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ block('payum_javascripts') }}
+{% endblock javascripts %}

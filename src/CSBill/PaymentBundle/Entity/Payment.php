@@ -18,8 +18,9 @@ use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Money\Money;
+use Payum\Core\Model\PaymentInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Payum\Core\Model\Payment as BasePayment;
 
 /**
  * @ORM\Table(name="payments")
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable()
  * @GRID\Source(groupBy="created")
  */
-class Payment
+class Payment extends BasePayment implements PaymentInterface
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable;
@@ -52,6 +53,7 @@ class Payment
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="payments")
+     * @ORM\JoinColumn(name="client", fieldName="client")
      * @Grid\Column(type="client", name="client", field="client.name", title="Client", filter="select", selectFrom="source", joinType="inner")
      * @Grid\Column(field="client.id", visible=false, joinType="inner")
      *
@@ -76,31 +78,9 @@ class Payment
     private $status;
 
     /**
-     * @var Money
-     *
-     * @ORM\Column(name="amount", type="money")
-     * @Grid\Column(type="currency", title="Total")
-     */
-    private $totalAmount;
-
-    /**
-     * @ORM\Column(name="currency", type="string", length=24)
-     * @Grid\Column(title="currency")
-     */
-    private $currencyCode;
-
-    /**
      * @ORM\Column(name="message", type="text", nullable=true)
      */
     private $message;
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="details", type="array", nullable=true)
-     * @Grid\Column(visible=false)
-     */
-    private $details;
 
     /**
      * @var \DateTime
@@ -111,10 +91,30 @@ class Payment
      */
     private $completed;
 
-    public function __construct()
-    {
-        $this->details = array();
-    }
+    /**
+     * @GRID\Column(visible=false)
+     */
+    protected $details;
+
+    /**
+     * @GRID\Column(visible=false)
+     */
+    protected $description;
+
+    /**
+     * @GRID\Column(visible=false)
+     */
+    protected $number;
+
+    /**
+     * @GRID\Column(visible=false)
+     */
+    protected $clientEmail;
+
+    /**
+     * @GRID\Column(visible=false)
+     */
+    protected $clientId;
 
     /**
      * Get the id.
@@ -215,64 +215,6 @@ class Payment
     }
 
     /**
-     * Get details.
-     *
-     * @return array
-     */
-    public function getDetails()
-    {
-        return $this->details;
-    }
-
-    /**
-     * Set currency.
-     *
-     * @param float $currencyCode
-     *
-     * @return Payment
-     */
-    public function setCurrencyCode($currencyCode)
-    {
-        $this->currencyCode = $currencyCode;
-
-        return $this;
-    }
-
-    /**
-     * Get currency.
-     *
-     * @return float
-     */
-    public function getCurrencyCode()
-    {
-        return $this->currencyCode;
-    }
-
-    /**
-     * Set amount.
-     *
-     * @param Money $totalAmount
-     *
-     * @return Payment
-     */
-    public function setTotalAmount(Money $totalAmount)
-    {
-        $this->totalAmount = $totalAmount;
-
-        return $this;
-    }
-
-    /**
-     * Get amount.
-     *
-     * @return Money
-     */
-    public function getTotalAmount()
-    {
-        return $this->totalAmount;
-    }
-
-    /**
      * @param string $message
      *
      * @return Payment
@@ -330,5 +272,13 @@ class Payment
         $this->client = $client;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientId()
+    {
+        return $this->getClient()->getId();
     }
 }

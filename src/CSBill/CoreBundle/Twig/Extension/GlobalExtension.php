@@ -106,7 +106,7 @@ class GlobalExtension extends Twig_Extension
                 return $amount->multiply($percentage);
             }
 
-            return ($amount * $percentage);
+            return $amount * $percentage;
         }
 
         return 0;
