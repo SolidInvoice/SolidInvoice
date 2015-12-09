@@ -37,4 +37,6 @@ default:
                             custom-data: {travis: true}
             #browser_name: firefox
             #show_auto:    false
-        Behat\Symfony2Extension: ~
+	Behat\Symfony2Extension:
+	    kernel:
+		debug: false
