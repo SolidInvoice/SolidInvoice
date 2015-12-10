@@ -22,7 +22,7 @@ class MoneyFormatterExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $moneyFormatter = new MoneyFormatter('en_US');
-        $extension = new MoneyFormatterExtension($moneyFormatter);
+        $extension = new MoneyFormatterExtension($moneyFormatter, new Currency('USD'));
 
         $this->assertSame('currency_formatter', $extension->getName());
 
@@ -47,7 +47,7 @@ class MoneyFormatterExtensionTest extends \PHPUnit_Framework_TestCase
             ->with($money)
             ->andReturn('$12,00');
 
-        $extension = new MoneyFormatterExtension($moneyFormatter);
+        $extension = new MoneyFormatterExtension($moneyFormatter, new Currency('USD'));
 
         /** @var \Twig_SimpleFilter[] $filters */
         $filters = $extension->getFilters();
