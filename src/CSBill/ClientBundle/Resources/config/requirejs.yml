@@ -1,0 +1,5 @@
+config:
+    paths:
+        'client/view': 'bundles/csbillclient/js/view'
+        'client/model/view': 'bundles/csbillclient/js/model/view'
+        'client/model/credit': 'bundles/csbillclient/js/model/credit'

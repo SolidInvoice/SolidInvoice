@@ -7,14 +7,21 @@
  * with this source code in the file LICENSE.
  */
 
+require(
+    ['client/model/view', 'client/model/credit'],
+    function (ClientViewModel, ClientCreditModel) {
+    }
+);
+
+/*
 (function($, Routing, window) {
     "use strict";
 
     $(function() {
 
-        /**
+        /!**
          * ADD CONTACT
-         */
+         *!/
         $('#add-credit-button').ajaxModal('#credit-ajax-modal', function() {
             var modal = $(this.$modal),
                 addCredit = function(evt) {
@@ -44,9 +51,9 @@
             $('form', modal).on('submit', addCredit);
         });
 
-        /**
+        /!**
          * ADD CONTACT
-         */
+         *!/
         $('.add-contact-button').ajaxModal('#contacts-ajax-modal', function() {
 
             window.attachContactListeners();
@@ -116,9 +123,9 @@
             $('form', modal).on('submit', addContact);
         });
 
-        /**
+        /!**
          * EDIT CONTACT
-         */
+         *!/
         var contactEdit = function() {
 
             window.attachContactListeners();
@@ -173,9 +180,9 @@
 
         $('.edit-contact').ajaxModal('#contacts-ajax-modal', contactEdit);
 
-        /**
+        /!**
          * DELETE CONTACT
-         */
+         *!/
         $('body').on('click', '.delete-contact', function(evt) {
             evt.preventDefault();
 
@@ -233,9 +240,9 @@
             });
         });
 
-        /**
+        /!**
          * Delete Client
-         */
+         *!/
         $('#delete-client').on('click', function(evt) {
             evt.preventDefault();
 
@@ -268,4 +275,4 @@
             });
         });
     });
-})(window.jQuery, window.Routing, window);
+})(window.jQuery, window.Routing, window);*/

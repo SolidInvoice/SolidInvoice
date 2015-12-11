@@ -4634,6 +4634,50 @@
             "time": "2014-09-17 00:37:18"
         },
         {
+            "name": "oro/requirejs-bundle",
+            "version": "dev-master",
+            "target-dir": "Oro/Bundle/RequireJSBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierredup/RequireJSBundle.git",
+                "reference": "110a66f2210f5e240d252f549fa0abda3ae1cb87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierredup/RequireJSBundle/zipball/110a66f2210f5e240d252f549fa0abda3ae1cb87",
+                "reference": "110a66f2210f5e240d252f549fa0abda3ae1cb87",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/symfony": "^2.3"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Oro\\Bundle\\RequireJSBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "BAP RequireJS Bundle",
+            "homepage": "https://github.com/laboro/RequireJSBundle",
+            "keywords": [
+                "BAP",
+                "RequireJS"
+            ],
+            "support": {
+                "source": "https://github.com/pierredup/RequireJSBundle/tree/master"
+            },
+            "time": "2015-12-10 10:10:24"
+        },
+        {
             "name": "oyejorge/less.php",
             "version": "v1.7.0.9",
             "source": {
@@ -8869,6 +8913,7 @@
         "ircmaxell/password-compat": 20,
         "ircmaxell/random-lib": 20,
         "yohang/finite": 20,
+        "oro/requirejs-bundle": 20,
         "jms/debugging-bundle": 20,
         "johnkary/phpunit-speedtrap": 20,
         "satooshi/php-coveralls": 20

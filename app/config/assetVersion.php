@@ -9,9 +9,6 @@
  * with this source code in the file LICENSE.
  */
 
-
-$baseUrl = $container->getParameter('base_url');
-
 $config = [
     'templating' => [
         'engines' => ['twig'],
@@ -21,7 +18,7 @@ $config = [
     ]
 ];
 
-if (null !== $baseUrl) {
+if ($container->hasParameter('base_url')) {
     $config['assets']['base_urls'] = ['%base_url%'];
 }
 

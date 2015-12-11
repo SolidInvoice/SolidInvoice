@@ -38,11 +38,21 @@
 
     {% javascripts
         "js/modernizr.min.js"
-        "js/jquery-1.11.1.min.js"
         filter="?yui_js"
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    {% include 'OroRequireJSBundle::scripts.html.twig' %}
+
+    <script>
+        require({
+            paths: {
+                'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}'
+            },
+            urlArgs: 'version={{ asset_version('/')|escape('url') }}'
+        });
+    </script>
 
 </head>
 <body>
@@ -62,7 +72,7 @@
     </footer>
 
     {% block javascripts %}
-        {% javascripts
+        {#{% javascripts
             "js/plugins/bootstrap.min.js"
             "@CSBillCoreBundle/Resources/public/js/material/ripples.js"
             "@CSBillCoreBundle/Resources/public/js/material/material.js"
@@ -75,7 +85,7 @@
             filter="?yui_js"
         %}
             <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+        {% endjavascripts %}#}
     {% endblock javascripts %}
 
     {{ block('body_bottom') }}

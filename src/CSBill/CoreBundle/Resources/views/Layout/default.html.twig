@@ -23,11 +23,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData", "_format" : "js"}) }}"></script>
-
     <script type="text/javascript">
-        accounting.settings = {
+        require(['accounting', 'csbillcore/js/app'], function (Accounting) {
+            Accounting.settings = {
                 currency: {
                     symbol : "{{ currencyFormatter().currencySymbol }}",
                     format: "{{ currencyFormatter().pattern }}",
@@ -41,13 +39,12 @@
                     decimal : "{{ currencyFormatter().decimalSeparator }}"
                 }
             };
+        });
 
         {% set script = block("script") %}
 
         {% if script %}
-            $(function(){
-                {{ script|raw }}
-            });
+            {{ script|raw }}
         {% endif %}
     </script>
 {% endblock %}

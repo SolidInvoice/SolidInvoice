@@ -42,6 +42,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new FOS\RestBundle\FOSRestBundle(),
             new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
 
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
