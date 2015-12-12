@@ -10,3 +10,5 @@ web/uploads/*
 !web/uploads/.gitkeep
 app/config/parameters.yml
 /.idea
+web/js/fos_js_routes.js
+web/js/require-config.js
