@@ -9,16 +9,16 @@
 
 define(
     ['jquery', 'marionette', 'backbone', 'material'],
-    function($, Mn, Backbone)
-    {
+    function($, Mn, Backbone) {
+
         var App = new (Mn.Application.extend({
-            'initialize' : function () {
+            'initialize': function() {
                 /**
                  * Tooltip
                  */
                 var tooltip = $('*[rel=tooltip]');
                 if (tooltip.length) {
-                    require(['bootstrap'], function () {
+                    require(['bootstrap'], function() {
                         tooltip.tooltip();
                     });
                 }
@@ -28,7 +28,7 @@ define(
                  */
                 var select2 = $('select.select2');
                 if (select2.length) {
-                    require(['jquery.select2'], function () {
+                    require(['jquery.select2'], function() {
                         select2.select2({
                             allowClear: true
                         });
@@ -40,7 +40,7 @@ define(
                  */
                 var placeholder = $('input[placeholder]');
                 if (placeholder.length) {
-                    require(['jquery.placeholder'], function () {
+                    require(['jquery.placeholder'], function() {
                         placeholder.placeholder();
                     });
                 }

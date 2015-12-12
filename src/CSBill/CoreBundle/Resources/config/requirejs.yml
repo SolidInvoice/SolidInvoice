@@ -62,6 +62,7 @@ config:
         bootstrap.material.datetimepicker: csbillcore/js/lib/bootstrap/material-datetimepicker.js
         fos_routing_data: ../js/fos_js_routes
         'core/datetimepicker': csbillcore/datetimepicker
+        'core/view': csbillcore/js/itemview
     map:
         '*':
             routing: csbillcore/js/extend/routing

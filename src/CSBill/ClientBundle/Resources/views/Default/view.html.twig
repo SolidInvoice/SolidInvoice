@@ -154,7 +154,9 @@
     </div>
 
     <script>
-        require(['client/view']);
+        require(['client/view'], function (ClientView) {
+            new ClientView({'credit' : '{{ client.credit.value.amount }}'});
+        });
     </script>
 {% endblock content %}
 
@@ -178,8 +180,8 @@
                 <h3>{{ total_outstanding|formatCurrency }}</h3>
                 {{ "client.stats.outstanding"|trans }}
             </div>
-            <div class="text-center text-info">
-                <h3 id="client-credit-value">
+            <div id="client-credit">
+                {#<h3 id="client-credit-value">
                     {{ client.credit.value|formatCurrency }}
                 </h3>
 
@@ -188,7 +190,7 @@
                     {{ "client.stats.credit"|trans }}
                 </a>
 
-                <div id="credit-ajax-modal" class="modal fade" tabindex="-1"></div>
+                <div id="credit-ajax-modal" class="modal fade" tabindex="-1"></div>#}
             </div>
         </div>
         <hr />

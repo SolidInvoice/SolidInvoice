@@ -8,8 +8,13 @@
  */
 
 define(
-    ['client/model/view', 'client/model/credit'],
-    function (ClientViewModel, ClientCreditModel) {
+    ['marionette', 'client/view/credit'],
+    function (Mn, ClientCreditView) {
+        return Mn.Object.extend({
+            initialize: function(options) {
+                new ClientCreditView({'credit' : options.credit});
+            }
+        });
     }
 );
 
