@@ -43,7 +43,7 @@ config:
             exports: fos.Router
     paths:
         backbone: csbillcore/js/lib/backbone.min.js
-        underscore: csbillcore/js/lib/underscore.min.js
+        lodash: csbillcore/js/lib/lodash.min.js
         jquery: csbillcore/js/lib/jquery/jquery.min.js
         bootstrap: csbillcore/js/lib/bootstrap.min.js
         accounting: csbillcore/js/lib/accounting.js
@@ -63,6 +63,7 @@ config:
     map:
         '*':
             routing: csbillcore/js/extend/routing
+            underscore: lodash
         'csbillcore/js/extend/routing':
             routing: routing
 build:

@@ -189,5 +189,5 @@ nelmio_api_doc:
 oro_require_js:
     config:
         waitSeconds: 0
-        enforceDefine: true
+        enforceDefine: false
         scriptType: 'text/javascript'
