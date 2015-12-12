@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-require(
+define(
     ['client/model/view', 'client/model/credit'],
     function (ClientViewModel, ClientCreditModel) {
     }
