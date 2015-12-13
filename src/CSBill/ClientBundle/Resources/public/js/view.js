@@ -9,10 +9,12 @@
 
 define(
     ['marionette', 'client/view/credit'],
-    function (Mn, ClientCreditView) {
+    function (Mn, ClientCredit) {
         return Mn.Object.extend({
             initialize: function(options) {
-                new ClientCreditView({'credit' : options.credit});
+                var credit = new ClientCredit({'credit' : options.credit});
+
+                credit.view.render();
             }
         });
     }

@@ -63,17 +63,14 @@ config:
         fos_routing_data: ../js/fos_js_routes
         'core/datetimepicker': csbillcore/datetimepicker
         'core/view': csbillcore/js/itemview
+        'core/modal': csbillcore/js/modal
+        'core/ajaxmodal': csbillcore/js/ajaxmodal
     map:
         '*':
             routing: csbillcore/js/extend/routing
             underscore: lodash
-            bootstrap.modalmanager: csbillcore/modal
         'csbillcore/js/extend/routing':
             routing: routing
-        'csbillcore/modal':
-            jquery: jquery
-            bootstrap.modal: bootstrap.modal
-            bootstrap.modalmanager: bootstrap.modalmanager
 build:
     paths:
         bootstrap.material.datetimepicker: 'empty:'

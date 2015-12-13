@@ -1,3 +1,22 @@
+define(['marionette', 'bootstrap.modalmanager'], function (Mn) {
+    return Mn.Object.extend({
+        modal: null,
+        view: null,
+
+        initialize: function () {
+
+        },
+
+        show: function () {
+            $('body').modalmanager('loading');
+        }
+    });
+
+});
+
+
+/*
+
 (function($) {
     "use strict";
 
@@ -67,4 +86,4 @@
             return new AjaxModal($modal, trigger, that.route, that.callback);
         });
     };
-})(window.jQuery);
+})(window.jQuery);*/
