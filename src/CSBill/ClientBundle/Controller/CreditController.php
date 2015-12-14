@@ -12,6 +12,7 @@
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Credit;
 use CSBill\ClientBundle\Form\Type\CreditType;
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\CoreBundle\Controller\BaseController;
@@ -22,46 +23,22 @@ class CreditController extends BaseController
 {
     /**
      * @param Request $request
-     * @param Client  $client
+     * @param Credit  $credit
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function addAction(Request $request, Client $client)
+    public function addAction(Request $request, Credit $credit)
     {
-        $form = $this->createForm(
-            new CreditType(),
-            null,
-            array(
-                'action' => $this->generateUrl('_clients_add_credit', array('id' => $client->getId())),
-            )
-        );
+        $value = new Money((int) ($request->request->get('credit') * 100), $this->get('currency'));
 
-        $form->handleRequest($request);
+        /** @var CreditRepository $clientRepository */
+        $clientRepository = $this->getRepository('CSBillClientBundle:Credit');
 
-        if ($form->isValid()) {
-            /** @var CreditRepository $clientRepository */
-            $clientRepository = $this->getRepository('CSBillClientBundle:Credit');
+        $credits = $clientRepository->addCredit($credit->getClient(), $value);
 
-            /** @var Money $amount */
-            $amount = $form->get('amount')->getData();
-
-            $credit = $clientRepository->addCredit($client, $amount);
-
-            return $this->json(
-                array(
-                    'status' => 'success',
-                    'amount' => $this->get('csbill.money.formatter')->format($credit->getValue()),
-                )
-            );
-        }
-
-        $content = $this->renderView(
-            'CSBillClientBundle:Ajax:credit_add.html.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
-
-        return $this->json(array('content' => $content));
+        return $this->json([
+            'credit' => $this->get('csbill.money.formatter')->toFloat($credits->getValue()),
+            'id' => $credits->getId(),
+        ]);
     }
 }

@@ -1,6 +1,6 @@
 define(
-    ['core/view', 'marionette', 'core/modal', 'client/model/credit', 'template', 'translator'],
-    function(ItemView, Mn, Modal, ClientCreditModel, Template, __) {
+    ['core/view', 'marionette', 'client/view/credit_modal', 'client/model/credit', 'template', 'translator'],
+    function(ItemView, Mn, CreditModal, ClientCreditModel, Template, __) {
         "use strict";
 
         var CreditView = ItemView.extend({
@@ -15,38 +15,18 @@ define(
             },
 
             initialize: function() {
-                this.listenTo(this.model, "change", this.modelChanged);
+                this.listenTo(this.model, "sync", this.modelSynced);
             },
 
-            modelChanged: function() {
+            modelSynced: function() {
                 this.render();
             },
 
             addCredit: function (event) {
                 event.preventDefault();
 
-                var modal = new Modal({
-                    'template' : Template['client/add_credit'],
-                    'modal': {
-                        'title' : __('client.modal.add_credit'),
-                        'buttons': {
-                            'save' : {
-                                'class': 'success',
-                                'save' : true
-                            },
-                            'close' : {
-                                'close': true,
-                                'class': 'warning',
-                                'flat': true
-                            }
-                        },
-                        'events': {
-                            'modal:save': 'saveCredit'
-                        }
-                    },
-                    'saveCredit': function () {
-                        
-                    }
+                var modal = new CreditModal({
+                    model: this.model
                 });
 
                 modal.render();
@@ -107,7 +87,7 @@ define(
             view: null,
             initialize: function(options) {
                 this.view = new CreditView({
-                    model: new ClientCreditModel({credit: options.credit}),
+                    model: new ClientCreditModel({credit: options.credit, id: options.id}),
                     el: '#client-credit'
                 });
 

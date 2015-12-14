@@ -5,7 +5,7 @@
                 <label class="control-label required control-label required" for="credit_amount">{{trans 'client.modal.credit.amount'}}</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{currency}}</span>
-                    <input type="text" id="credit_amount" name="credit[amount]" data-required="required" class="form-control" value="0.00">
+                    <input type="text" id="credit_amount" name="credit[amount]" data-required="required" class="form-control" value="{{currency 0 symbol=false}}">
                 </div>
             </div>
         </div>

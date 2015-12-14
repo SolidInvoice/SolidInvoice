@@ -155,7 +155,10 @@
 
     <script>
         require(['client/view'], function (ClientView) {
-            new ClientView({'credit' : '{{ client.credit.value.amount }}'});
+            new ClientView({
+                'credit' : '{{ currencyFormatter().toFloat(client.credit.value) }}',
+                'id' : {{ client.credit.id }}
+            });
         });
     </script>
 {% endblock content %}

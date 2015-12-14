@@ -1,4 +1,4 @@
-define(['handlebars.runtime', 'routing', 'accounting', 'translator'], function (Handlebars, Routing, Accounting, __) {
+define(['handlebars.runtime', 'lodash', 'routing', 'accounting', 'translator'], function (Handlebars, _, Routing, Accounting, __) {
     "use strict";
 
     /**
@@ -13,6 +13,10 @@ define(['handlebars.runtime', 'routing', 'accounting', 'translator'], function (
      */
     Handlebars.registerHelper('currency', function(amount, context) {
         if (arguments.length > 1) {
+            if (!_.isUndefined(context.hash.symbol) && context.hash.symbol === false) {
+                return Accounting.formatNumber(amount, Accounting.settings.currency.precision, Accounting.settings.currency.thousand, Accounting.settings.currency.decimal);
+            }
+
             return Accounting.formatMoney(amount);
         }
 

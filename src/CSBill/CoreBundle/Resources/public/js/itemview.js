@@ -1,4 +1,4 @@
-define(['marionette', 'core/ajaxmodal', 'backbone', 'template'], function(Mn, AjaxModal, Backbone, Template) {
+define(['marionette', 'core/ajaxmodal'], function(Mn, AjaxModal) {
     "use strict";
 
     return Mn.ItemView.extend({

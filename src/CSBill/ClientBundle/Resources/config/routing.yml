@@ -32,6 +32,8 @@ _clients_info:
 _clients_add_credit:
     path:   /ajax/credit/add/{id}
     defaults:  { _controller: CSBillClientBundle:Credit:add }
+    options:
+        expose: true
 
 _clients_add_contact:
     path:   /ajax/contacts/add/{id}
