@@ -1,4 +1,4 @@
-define(['handlebars.runtime', 'routing', 'accounting'], function (Handlebars, Routing, Accounting) {
+define(['handlebars.runtime', 'routing', 'accounting', 'translator'], function (Handlebars, Routing, Accounting, __) {
     "use strict";
 
     /**
@@ -17,6 +17,13 @@ define(['handlebars.runtime', 'routing', 'accounting'], function (Handlebars, Ro
         }
 
         return Accounting.settings.currency.symbol;
+    });
+
+    /**
+     * Translation Helper
+     */
+    Handlebars.registerHelper('trans', function(message) {
+        return __(message);
     });
 
     return Handlebars;

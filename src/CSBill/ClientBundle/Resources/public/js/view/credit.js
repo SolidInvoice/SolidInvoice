@@ -1,16 +1,10 @@
 define(
-    ['core/view', 'marionette', 'core/modal', 'client/model/credit', 'accounting', 'template'],
-    function(ItemView, Mn, Modal, ClientCreditModel, Accounting, Template) {
+    ['core/view', 'marionette', 'core/modal', 'client/model/credit', 'template', 'translator'],
+    function(ItemView, Mn, Modal, ClientCreditModel, Template, __) {
         "use strict";
 
         var CreditView = ItemView.extend({
             template: Template['client/credit'],
-
-            templateHelpers: function() {
-                return {
-                    credit: Accounting.formatMoney(this.model.get('credit'))
-                }
-            },
 
             ui: {
                 "addCredit": "#add-credit-button"
@@ -34,7 +28,7 @@ define(
                 var modal = new Modal({
                     'template' : Template['client/add_credit'],
                     'modal': {
-                        'title' : 'Add Some New Credit For Me',
+                        'title' : __('client.modal.add_credit'),
                         'buttons': {
                             /*'save' : {
                                 'class': 'success'

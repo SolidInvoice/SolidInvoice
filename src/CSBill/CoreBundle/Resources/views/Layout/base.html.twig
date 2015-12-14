@@ -46,9 +46,15 @@
     {% include 'OroRequireJSBundle::scripts.html.twig' %}
 
     <script>
+        {% set locale = app.request.locale|split('_')[0] %}
+        {% if locale != 'en' %}
+            {% set locale = 'en,' ~ locale %}
+        {% endif %}
+
         require({
             paths: {
-                'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}'
+                'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
+                'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
             },
             urlArgs: 'version={{ asset_version('/')|escape('url') }}'
         });

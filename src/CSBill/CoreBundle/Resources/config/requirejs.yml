@@ -41,6 +41,11 @@ config:
                 - jquery
         fos_router:
             exports: fos.Router
+        js_translator:
+            exports: Translator
+        translator:
+            deps:
+                - js_translator
     paths:
         backbone: csbillcore/js/lib/backbone/backbone.min.js
         marionette: csbillcore/js/lib/backbone/marionette.min.js
@@ -51,6 +56,8 @@ config:
         moment: csbillcore/js/lib/moment.min.js
         routing: csbillcore/js/extend/routing
         fos_router: fosjsrouting/js/router
+        fos_routing_data: ../js/fos_js_routes
+        js_translator: bazingajstranslation/js/translator.min.js
         material: csbillcore/js/lib/material/material
         material.ripples: csbillcore/js/lib/material/ripples
         jquery.select2: csbillcore/js/lib/jquery/select2.min.js
@@ -61,7 +68,6 @@ config:
         bootstrap.modal: csbillcore/js/lib/bootstrap/modal.js
         bootstrap.modalmanager: csbillcore/js/lib/bootstrap/modalmanager.js
         bootstrap.material.datetimepicker: csbillcore/js/lib/bootstrap/material-datetimepicker.js
-        fos_routing_data: ../js/fos_js_routes
         'core/app': csbillcore/js/app
         'core/datetimepicker': csbillcore/datetimepicker
         'core/view': csbillcore/js/itemview
@@ -71,11 +77,16 @@ config:
         'handlebars.runtime': csbillcore/js/lib/handlebars/handlebars-runtime.js
     map:
         '*':
+            translator: csbillcore/js/extend/translator
             underscore: lodash
             'handlebars.runtime': csbillcore/js/extend/handlebars/helpers
         'csbillcore/js/extend/handlebars/helpers':
             handlebars.runtime: handlebars.runtime
             routing: routing
+        'csbillcore/js/extend/translator':
+            translator: js_translator
+            translation_data: translation_data
 build:
     paths:
         bootstrap.material.datetimepicker: 'empty:'
+        translation_data: 'empty:'

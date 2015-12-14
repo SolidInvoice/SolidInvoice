@@ -58,6 +58,8 @@ client:
         contacts: Contacts
     modal:
         add_credit: Add Credit
+        credit:
+            amount: Amount
         action:
             close: Close
             save: Save
