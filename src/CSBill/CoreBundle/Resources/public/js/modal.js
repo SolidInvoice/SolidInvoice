@@ -32,9 +32,6 @@ define(['marionette', 'handlebars.runtime', 'template', 'lodash'], function(Mn, 
             });
 
             this.$el.modal();
-        },
-        _getUiButtons: function () {
-            console.log(arguments);
         }
     });
 });

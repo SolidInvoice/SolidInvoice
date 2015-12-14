@@ -39,7 +39,7 @@ config:
         material.ripples:
             deps:
                 - jquery
-        routing:
+        fos_router:
             exports: fos.Router
     paths:
         backbone: csbillcore/js/lib/backbone/backbone.min.js
@@ -49,7 +49,8 @@ config:
         bootstrap: csbillcore/js/lib/bootstrap.min.js
         accounting: csbillcore/js/lib/accounting.js
         moment: csbillcore/js/lib/moment.min.js
-        routing: fosjsrouting/js/router
+        routing: csbillcore/js/extend/routing
+        fos_router: fosjsrouting/js/router
         material: csbillcore/js/lib/material/material
         material.ripples: csbillcore/js/lib/material/ripples
         jquery.select2: csbillcore/js/lib/jquery/select2.min.js
@@ -70,9 +71,10 @@ config:
         'handlebars.runtime': csbillcore/js/lib/handlebars/handlebars-runtime.js
     map:
         '*':
-            routing: csbillcore/js/extend/routing
             underscore: lodash
-        'csbillcore/js/extend/routing':
+            'handlebars.runtime': csbillcore/js/extend/handlebars/helpers
+        'csbillcore/js/extend/handlebars/helpers':
+            handlebars.runtime: handlebars.runtime
             routing: routing
 build:
     paths:
