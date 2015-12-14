@@ -12,3 +12,5 @@ app/config/parameters.yml
 /.idea
 web/js/fos_js_routes.js
 web/js/require-config.js
+web/js/hbs-templates.js
+node_modules

@@ -1,23 +1,23 @@
 define(
-    ['core/view', 'marionette', 'underscore', 'client/model/credit', 'accounting'],
-    function(ItemView, Mn, _, ClientCreditModel, Accounting) {
+    ['core/view', 'marionette', 'core/modal', 'client/model/credit', 'accounting', 'template'],
+    function(ItemView, Mn, Modal, ClientCreditModel, Accounting, Template) {
         "use strict";
 
         var CreditView = ItemView.extend({
-            template: _.template('\
-                <div class="text-center text-info"> \
-                    <h3 id="client-credit-value">\
-                        <%= credit %>\
-                    </h3>\
-                    <a href="/app_dev.php/clients/ajax/info/2" rel="tooltip" title="HELLO" id="add-credit-button">\
-                        Client Credit\
-                    </a>\
-                </div>\
-            '),
+            template: Template['client/credit'],
+
             templateHelpers: function() {
                 return {
                     credit: Accounting.formatMoney(this.model.get('credit'))
                 }
+            },
+
+            ui: {
+                "addCredit": "#add-credit-button"
+            },
+
+            events: {
+                "click @ui.addCredit": "addCredit"
             },
 
             initialize: function() {
@@ -28,13 +28,46 @@ define(
                 this.render();
             },
 
-            ui: {
-                "addCredit": "#add-credit-button"
-            },
+            addCredit: function (event) {
+                event.preventDefault();
 
-            events: {
-                "click @ui.addCredit": "ajaxModel"
+                var modal = new Modal({
+                    'template' : Template['client/add_credit'],
+                    'modal': {
+                        'title' : 'Add Some New Credit For Me',
+                        'buttons': {
+                            /*'save' : {
+                                'class': 'success'
+                            },*/
+                            'close' : {
+                                'close': true,
+                                'class': 'warning',
+                                'flat': true
+                            }
+                        }
+                    },
+                    'events': {
+                        'modal:save': 'saveCredit'
+                    },
+                    'saveCredit': function () {
+
+                    }
+                });
+
+                modal.render();
             }
+
+            /*addCredit: function () {
+                var modal = new Modal({
+                    'template' : Template('client.credit')
+                });
+
+                var view = this;
+
+                modal.on('modal:close', function () {
+                    view.model.save();
+                });
+            }*/
 
             /*addCredit: function(e) {
 
@@ -80,8 +113,10 @@ define(
             initialize: function(options) {
                 this.view = new CreditView({
                     model: new ClientCreditModel({credit: options.credit}),
-                    el: "#client-credit"
+                    el: '#client-credit'
                 });
+
+                this.view.render();
             }
         });
     });

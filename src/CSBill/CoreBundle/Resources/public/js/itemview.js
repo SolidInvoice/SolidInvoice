@@ -1,22 +1,30 @@
-define(['marionette', 'core/ajaxmodal'], function(Mn, AjaxModal) {
+define(['marionette', 'core/ajaxmodal', 'backbone', 'template'], function(Mn, AjaxModal, Backbone, Template) {
+    "use strict";
+
     return Mn.ItemView.extend({
-        onShow: function(view, region, options) {
-            var tooltip = $('*[rel=tooltip]');
+        onShow  : function() {
+            this._onRender();
+        },
+        onRender: function() {
+            this._onRender();
+        },
+        _onRender: function() {
+            var tooltip = this.$('*[rel=tooltip]');
             if (tooltip.length) {
-                require(['bootstrap'], function () {
+                require(['bootstrap'], function() {
                     tooltip.tooltip();
                 });
             }
         },
-        ajaxModel: function (event) {
+        ajaxModal: function(event) {
             event.preventDefault();
 
             var ajaxModel = new AjaxModal({
                 model: this.model,
-                el: this.$el
+                el   : this.$el
             });
 
-            ajaxModel.load(event.target);
+            return ajaxModel.load(event.target);
         }
     });
 });

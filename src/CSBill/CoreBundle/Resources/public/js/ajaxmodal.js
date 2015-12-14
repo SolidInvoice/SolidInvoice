@@ -53,23 +53,23 @@ define(['jquery', 'core/modal', 'bootstrap.modal', 'bootstrap.modalmanager'], fu
 
             this.showLoader();
 
-            var $modal = $('#ajax-modal');
-
-            $modal.on('show.bs.modal', function() {
+            this.$el.on('show.bs.modal', function() {
                 view.trigger('modal:show');
             });
 
-            $modal.on('hide.bs.modal', function() {
+            this.$el.on('hide.bs.modal', function() {
                 view.trigger('modal:hide');
             });
 
             $.getJSON(route, function(data) {
                 if (data.content !== undefined) {
-                    $modal.html(data.content);
+                    view.$el.html(data.content);
                 }
 
-                $modal.modal();
+                view.$el.modal();
             });
+
+            return this;
         }
     });
 });

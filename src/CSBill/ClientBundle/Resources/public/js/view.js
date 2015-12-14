@@ -12,9 +12,7 @@ define(
     function (Mn, ClientCredit) {
         return Mn.Object.extend({
             initialize: function(options) {
-                var credit = new ClientCredit({'credit' : options.credit});
-
-                credit.view.render();
+                new ClientCredit({'credit' : options.credit});
             }
         });
     }
