@@ -4,8 +4,8 @@ define(['handlebars.runtime', 'routing', 'accounting', 'translator'], function (
     /**
      * Routing Helper
      */
-    Handlebars.registerHelper('path', function(route, parameters) {
-        return Routing.generate(route, parameters);
+    Handlebars.registerHelper('path', function(route, context) {
+        return Routing.generate(route, context.hash);
     });
 
     /**
@@ -22,8 +22,8 @@ define(['handlebars.runtime', 'routing', 'accounting', 'translator'], function (
     /**
      * Translation Helper
      */
-    Handlebars.registerHelper('trans', function(message) {
-        return __(message);
+    Handlebars.registerHelper('trans', function(message, context) {
+        return __(message, context.hash);
     });
 
     return Handlebars;

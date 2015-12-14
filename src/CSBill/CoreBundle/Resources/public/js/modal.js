@@ -4,6 +4,9 @@ define(['marionette', 'handlebars.runtime', 'template', 'lodash'], function(Mn, 
     return Mn.ItemView.extend({
         'el': '#modal-container',
         'modal' : {},
+        'triggers' : {
+            'click .btn-save': 'modal:save'
+        },
         'getTemplate': function () {
             Handlebars.registerPartial('modalContent', this.getOption('template'));
 
@@ -19,6 +22,12 @@ define(['marionette', 'handlebars.runtime', 'template', 'lodash'], function(Mn, 
             if (modal) {
                 this.options.templateHelpers = _.extend(_.extend(defaults, modal), this.options.templateHelpers);
             }
+
+            var view = this;
+
+            _.each(_.result(modal, 'events'), function (action, event) {
+                view.listenTo(view, event, view.options[action]);
+            });
         },
         onRender: function () {
             var view = this;
@@ -31,7 +40,14 @@ define(['marionette', 'handlebars.runtime', 'template', 'lodash'], function(Mn, 
                 view.trigger('modal:hide');
             });
 
+            this.$el.on('hidden.bs.modal', function() {
+                view.destroy();
+            });
+
             this.$el.modal();
+        },
+        _removeElement: function () {
+            this.$el.empty();
         }
     });
 });
