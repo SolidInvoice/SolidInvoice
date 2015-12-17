@@ -8,11 +8,21 @@
  */
 
 define(
-    ['marionette', 'client/view/credit'],
-    function(Mn, ClientCredit) {
+    ['marionette', 'client/view/credit', 'client/model/credit'],
+    function(Mn, ClientCredit, ClientCreditModel) {
         return Mn.Object.extend({
+            renderCredit: function(options) {
+                var model = new ClientCreditModel({id: options.id});
+
+                new ClientCredit({
+                    model: model,
+                    el: '#client-credit'
+                });
+
+                model.fetch();
+            },
             initialize: function(options) {
-                new ClientCredit({'credit': options.credit, 'id' : options.id});
+                this.renderCredit(options);
             }
         });
     }
@@ -23,39 +33,6 @@ define(
     "use strict";
 
     $(function() {
-
-        /!**
-         * ADD CONTACT
-         *!/
-        $('#add-credit-button').ajaxModal('#credit-ajax-modal', function() {
-            var modal = $(this.$modal),
-                addCredit = function(evt) {
-                    var form = $(this);
-
-                    evt.preventDefault();
-
-                    modal.modal('loading');
-
-                    $.ajax({
-                        "url": form.attr('action'),
-                        "dataType" : "json",
-                        "data" : form.serialize(),
-                        "method": "post",
-                        "success" : function(data) {
-                            if ('success' === data.status) {
-                                modal.modal('hide');
-                                $('#client-credit-value').text(accounting.formatMoney(data.amount));
-                            } else {
-                                modal.html(data.content);
-                                $('form', modal).on('submit', addCredit);
-                            }
-                        }
-                    });
-                };
-
-            $('form', modal).on('submit', addCredit);
-        });
-
         /!**
          * ADD CONTACT
          *!/

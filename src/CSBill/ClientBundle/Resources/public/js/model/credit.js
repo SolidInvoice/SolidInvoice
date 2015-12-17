@@ -2,7 +2,9 @@ define(['backbone', 'routing', 'lodash'], function (Backbone, Routing, _) {
     "use strict";
 
     return Backbone.Model.extend({
-        urlRoot: Routing.generate('_clients_add_credit'),
+        url: function () {
+            return Routing.generate('_clients_credit', {'client': this.id})
+        },
         defaults: {
             credit: 0
         },

@@ -29,9 +29,10 @@ _clients_info:
     options:
         expose: true
 
-_clients_add_credit:
-    path:   /ajax/credit/add/{id}
-    defaults:  { _controller: CSBillClientBundle:Credit:add }
+_clients_credit:
+    path:   /ajax/credit/{client}
+    defaults:  { _controller: CSBillClientBundle:Credit:credit }
+    methods: [GET, PUT]
     options:
         expose: true
 

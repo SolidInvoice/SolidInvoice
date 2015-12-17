@@ -44,6 +44,9 @@ define(
                 this.model.save({}, {
                     'success': function() {
                         view.$el.modal('hide');
+                    },
+                    'error': function () {
+                        view.hideLoader();
                     }
                 });
             }

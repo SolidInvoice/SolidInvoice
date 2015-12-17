@@ -18,6 +18,8 @@ use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\CoreBundle\Controller\BaseController;
 use Money\Money;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class CreditController extends BaseController
 {
@@ -36,9 +38,61 @@ class CreditController extends BaseController
 
         $credits = $clientRepository->addCredit($credit->getClient(), $value);
 
-        return $this->json([
-            'credit' => $this->get('csbill.money.formatter')->toFloat($credits->getValue()),
-            'id' => $credits->getId(),
-        ]);
+        return $this->json(
+            [
+                'credit' => $this->get('csbill.money.formatter')->toFloat($credits->getValue()),
+                'id' => $credits->getId(),
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Client  $client
+     *
+     * @return mixed
+     */
+    public function creditAction(Request $request, Client $client)
+    {
+        $jsonResponse = function (Credit $credit) use ($client) {
+            return $this->json(
+                [
+                    'credit' => $this->get('csbill.money.formatter')->toFloat($credit->getValue()),
+                    'id' => $client->getId(),
+                ]
+            );
+        };
+
+        if ($request->isMethod('GET')) {
+            return $jsonResponse($client->getCredit());
+        }
+
+        if ($request->isMethod('PUT')) {
+            /** @var CreditRepository $repository */
+            $repository = $this->getRepository('CSBillClientBundle:Credit');
+
+            $value = new Money((int) ($request->request->get('credit') * 100), $this->get('currency'));
+
+            return $jsonResponse($repository->addCredit($client, $value));
+        }
+
+        throw new BadRequestHttpException();
+    }
+
+    /**
+     * @param Client $client
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getCreditAction(Client $client)
+    {
+        $credit = $client->getCredit();
+
+        return $this->json(
+            [
+                'credit' => $this->get('csbill.money.formatter')->toFloat($credit->getValue()),
+                'id' => $credit->getId()
+            ]
+        );
     }
 }
