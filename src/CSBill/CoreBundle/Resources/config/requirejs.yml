@@ -54,6 +54,7 @@ config:
         bootstrap: csbillcore/js/lib/bootstrap.min.js
         accounting: csbillcore/js/lib/accounting.js
         moment: csbillcore/js/lib/moment.min.js
+        parsley: csbillcore/js/lib/parsley.min.js
         routing: csbillcore/js/extend/routing
         fos_router: fosjsrouting/js/router
         fos_routing_data: ../js/fos_js_routes
@@ -80,12 +81,15 @@ config:
             translator: csbillcore/js/extend/translator
             underscore: lodash
             'handlebars.runtime': csbillcore/js/extend/handlebars/helpers
+            parsley: csbillcore/js/extend/parsley
         'csbillcore/js/extend/handlebars/helpers':
             handlebars.runtime: handlebars.runtime
             routing: routing
         'csbillcore/js/extend/translator':
             translator: js_translator
             translation_data: translation_data
+        'csbillcore/js/extend/parsley':
+            parsley: parsley
 build:
     paths:
         bootstrap.material.datetimepicker: 'empty:'

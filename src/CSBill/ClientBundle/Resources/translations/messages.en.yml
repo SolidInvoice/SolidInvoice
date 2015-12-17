@@ -60,6 +60,7 @@ client:
         add_credit: Add Credit
         credit:
             amount: Amount
+            tip: "<strong>Tip:</strong> To substract an amount, add a '-' before the amount, E.G <code>%amount%</code>"
         action:
             close: Close
             save: Save
