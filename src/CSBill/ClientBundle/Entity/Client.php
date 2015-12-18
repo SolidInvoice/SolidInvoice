@@ -36,11 +36,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Hateoas\Relation("self", href=@Hateoas\Route("get_clients", absolute=true))
  * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
  */
-class Client
+class Client implements \JsonSerializable
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable,
-        Entity\Archivable;
+        Entity\Archivable,
+        Entity\JsonSerialize;
 
     /**
      * @var int

@@ -11,6 +11,7 @@
 
 namespace CSBill\ClientBundle\Entity;
 
+use CSBill\CoreBundle\Traits\Entity\JsonSerialize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serialize;
@@ -21,8 +22,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactTypeRepository")
  * @Serialize\ExclusionPolicy("all")
  */
-class ContactType
+class ContactType implements \JsonSerializable
 {
+    use JsonSerialize {
+        JsonSerialize::jsonSerialize as serializeJson;
+    }
+
     /**
      * @var int
      *
@@ -210,5 +215,15 @@ class ContactType
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        $this->__serializeExclude[] = 'details';
+
+        return $this->serializeJson();
     }
 }

@@ -8,18 +8,25 @@
  */
 
 define(
-    ['marionette', 'client/view/credit', 'client/model/credit'],
-    function(Mn, ClientCredit, ClientCreditModel) {
-        return Mn.Object.extend({
-            renderCredit: function(options) {
-                var model = new ClientCreditModel({id: options.id});
+    ['core/module', './view/credit', './model/credit'],
+    function(Module, ClientCredit, ClientCreditModel) {
+        'use strict';
 
-                new ClientCredit({
-                    model: model,
-                    el: '#client-credit'
+        return Module.extend({
+            regions: {
+                'clientCredit': '#client-credit'
+            },
+            renderCredit: function(options) {
+                var model = new ClientCreditModel({
+                    credit: options.credit.value,
+                    id: options.id
                 });
 
-                model.fetch();
+                var view = new ClientCredit({
+                    model: model
+                });
+
+                this.app.getRegion('clientCredit').show(view);
             },
             initialize: function(options) {
                 this.renderCredit(options);

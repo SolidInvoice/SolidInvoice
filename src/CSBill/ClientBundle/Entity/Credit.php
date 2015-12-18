@@ -26,10 +26,13 @@ use Money\Money;
  * @Gedmo\SoftDeleteable()
  * @Serialize\ExclusionPolicy("all")
  */
-class Credit
+class Credit implements \JsonSerializable
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\JsonSerialize {
+        Entity\JsonSerialize::jsonSerialize as serializeJson;
+    }
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -103,5 +106,15 @@ class Credit
     public function __toString()
     {
         return $this->value->getAmount();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        $this->__serializeExclude[] = 'client';
+
+        return $this->serializeJson();
     }
 }

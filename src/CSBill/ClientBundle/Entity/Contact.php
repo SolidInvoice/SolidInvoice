@@ -25,10 +25,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable()
  * @Serialize\ExclusionPolicy("all")
  */
-class Contact implements \serializable
+class Contact implements \serializable, \JsonSerializable
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\JsonSerialize {
+        Entity\JsonSerialize::jsonSerialize as serializeJson;
+    }
 
     /**
      * @var int
@@ -316,5 +319,15 @@ class Contact implements \serializable
     public function __toString()
     {
         return $this->firstname.' '.$this->lastname;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        $this->__serializeExclude[] = 'client';
+
+        return $this->serializeJson();
     }
 }

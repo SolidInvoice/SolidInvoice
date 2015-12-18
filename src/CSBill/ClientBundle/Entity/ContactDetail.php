@@ -34,9 +34,12 @@ use JMS\Serializer\Annotation as Serialize;
  * })
  * @Serialize\ExclusionPolicy("all")
  */
-abstract class ContactDetail
+abstract class ContactDetail implements \JsonSerializable
 {
-    use Entity\TimeStampable;
+    use Entity\TimeStampable,
+        Entity\JsonSerialize {
+        Entity\JsonSerialize::jsonSerialize as serializeJson;
+    }
 
     /**
      * @var int
@@ -53,7 +56,7 @@ abstract class ContactDetail
      * @ORM\Column(name="value", type="text", nullable=false)
      * @Serialize\Expose()
      */
-    private $value;
+    protected $value;
 
     /**
      * @var ContactType
@@ -63,7 +66,7 @@ abstract class ContactDetail
      * @Serialize\Expose()
      * @Serialize\Inline()
      */
-    private $type;
+    protected $type;
 
     /**
      * Get id.
@@ -129,5 +132,15 @@ abstract class ContactDetail
     public function __toString()
     {
         return $this->value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        $this->__serializeExclude[] = 'contact';
+
+        return $this->serializeJson();
     }
 }

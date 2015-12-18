@@ -100,7 +100,7 @@ class MoneyFormatter
      *
      * @return float
      */
-    public function toFloat(Money $amount)
+    public static function toFloat(Money $amount)
     {
         return ((float) $amount->getAmount()) / pow(10, 2);
     }

@@ -8,53 +8,77 @@
  */
 
 define(
-    ['jquery', 'marionette', 'backbone', 'material'],
-    function($, Mn, Backbone) {
+    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'material'],
+    function($, Mn, Backbone, _, Module) {
+        'use strict';
 
-        var App = new (Mn.Application.extend({
-            'initialize': function() {
-                /**
-                 * Tooltip
-                 */
-                var tooltip = $('*[rel=tooltip]');
-                if (tooltip.length) {
-                    require(['bootstrap'], function() {
-                        tooltip.tooltip();
-                    });
-                }
+        var ModuleData = requirejs.s.contexts._.config.moduleData,
 
-                /**
-                 * Select2
-                 */
-                var select2 = $('select.select2');
-                if (select2.length) {
-                    require(['jquery.select2'], function() {
-                        select2.select2({
-                            allowClear: true
+            Application = Mn.Application.extend({
+                module : null,
+                initialize: function() {
+                    /**
+                     * Tooltip
+                     */
+                    var tooltip = $('*[rel=tooltip]');
+                    if (tooltip.length) {
+                        require(['bootstrap'], function() {
+                            tooltip.tooltip();
                         });
-                    });
-                }
+                    }
 
-                /**
-                 * PlaceHolder
-                 */
-                var placeholder = $('input[placeholder]');
-                if (placeholder.length) {
-                    require(['jquery.placeholder'], function() {
-                        placeholder.placeholder();
-                    });
-                }
+                    /**
+                     * Select2
+                     */
+                    var select2 = $('select.select2');
+                    if (select2.length) {
+                        require(['jquery.select2'], function() {
+                            select2.select2({
+                                allowClear: true
+                            });
+                        });
+                    }
 
-                /**
-                 * Material
-                 */
-                $.material.init();
-            }
-        }))();
+                    /**
+                     * PlaceHolder
+                     */
+                    var placeholder = $('input[placeholder]');
+                    if (placeholder.length) {
+                        require(['jquery.placeholder'], function() {
+                            placeholder.placeholder();
+                        });
+                    }
+
+                    /**
+                     * Material
+                     */
+                    $.material.init();
+                }
+            });
+
+        var App = new Application({
+            regions : Module.prototype.regions
+        });
 
         App.on('start', function() {
+            this.module = new Module(ModuleData, this);
+
             Backbone.history.start();
         });
+
+        if (!_.isUndefined(Module.prototype.appEvents)) {
+            _.each(Module.prototype.appEvents, function (action, event) {
+                if (_.isFunction(action)) {
+                    App.on(event, action);
+                } else if (-1 !== _.indexOf(_.functions(Module), action)) {
+                    App.on(event, Module[action])
+                } else {
+                    throw "Callback specified for event " + event + " is not a valid callback"
+                }
+            });
+        }
+
+        return App;
 
         /*/!**
          * Form Collection
@@ -97,9 +121,5 @@ define(
 
             return false;
         });*/
-
-        App.start({});
-
-        return App;
     }
 );

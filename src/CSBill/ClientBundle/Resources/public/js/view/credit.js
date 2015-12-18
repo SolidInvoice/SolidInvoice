@@ -1,21 +1,21 @@
 define(
-    ['core/view', 'marionette', 'client/view/credit_modal', 'client/model/credit', 'template', 'translator'],
-    function(ItemView, Mn, CreditModal, ClientCreditModel, Template, __) {
-        "use strict";
+    ['core/view', './credit_modal', 'template'],
+    function(ItemView, CreditModal, Template) {
+        'use strict';
 
         return ItemView.extend({
             template: Template['client/credit'],
 
             ui: {
-                "addCredit": "#add-credit-button"
+                "addCredit": '#add-credit-button'
             },
 
             events: {
-                "click @ui.addCredit": "addCredit"
+                "click @ui.addCredit": 'addCredit'
             },
 
             initialize: function() {
-                this.listenTo(this.model, "sync", this.modelSynced);
+                this.listenTo(this.model, 'sync', this.modelSynced);
             },
 
             modelSynced: function() {

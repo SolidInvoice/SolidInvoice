@@ -24,21 +24,25 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        require(['accounting', 'core/app'], function (Accounting) {
-            Accounting.settings = {
-                currency: {
-                    symbol : "{{ currencyFormatter().currencySymbol }}",
-                    format: "{{ currencyFormatter().pattern }}",
-                    decimal : "{{ currencyFormatter().decimalSeparator }}",
-                    thousand: "{{ currencyFormatter().thousandSeparator }}",
-                    precision : 2
-                },
-                number: {
-                    precision : 0,
-                    thousand: "{{ currencyFormatter().thousandSeparator }}",
-                    decimal : "{{ currencyFormatter().decimalSeparator }}"
-                }
-            };
+        require(['accounting', 'core/app'], function (Accounting, App) {
+            App.on('before:start', function () {
+                Accounting.settings = {
+                    currency: {
+                        symbol : "{{ currencyFormatter().currencySymbol }}",
+                        format: "{{ currencyFormatter().pattern }}",
+                        decimal : "{{ currencyFormatter().decimalSeparator }}",
+                        thousand: "{{ currencyFormatter().thousandSeparator }}",
+                        precision : 2
+                    },
+                    number: {
+                        precision : 0,
+                        thousand: "{{ currencyFormatter().thousandSeparator }}",
+                        decimal : "{{ currencyFormatter().decimalSeparator }}"
+                    }
+                };
+            });
+
+            App.start();
         });
 
         {% set script = block("script") %}

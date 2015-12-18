@@ -9,6 +9,9 @@
 
 {% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
+{% set module = 'client/view' %}
+{% set moduleData = client %}
+
 {% block page_title %}
     {{ client.name }}
 {% endblock page_title %}
@@ -152,18 +155,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        require(['client/view'], function (ClientView) {
-            new ClientView({
-                'id' : {{ client.id }}
-                /*'credit' : {
-                    'credit' : '{{ currencyFormatter().toFloat(client.credit.value) }}',
-                    'id' : {{ client.credit.id }}
-                }*/
-            });
-        });
-    </script>
 {% endblock content %}
 
 {% block sidebar_right %}
