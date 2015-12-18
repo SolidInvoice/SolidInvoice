@@ -6,12 +6,12 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-
+{% set locale = app.request.locale|split('_')[0] %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ locale }}"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="{{ locale }}"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="{{ locale }}"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ locale }}"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
@@ -43,27 +43,7 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    {% include 'OroRequireJSBundle::scripts.html.twig' %}
-
-    <script>
-        {% set locale = app.request.locale|split('_')[0] %}
-        {% if locale != 'en' %}
-            {% set locale = 'en,' ~ locale %}
-        {% endif %}
-        require({
-            paths: {
-                'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
-                'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
-            },
-            urlArgs: 'version={{ asset_version('/')|escape('url') }}'
-        {% if module is defined %}
-            , module: '{{ module }}'
-            {% if moduleData is defined %}
-                , moduleData: {{ moduleData|json_encode|raw }}
-            {% endif %}
-        {% endif %}
-        });
-    </script>
+    {% include 'CSBillCoreBundle:_partials:scripts.html.twig' %}
 </head>
 <body>
     {{ block('body_top') }}
