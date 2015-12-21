@@ -46,6 +46,9 @@ config:
         translator:
             deps:
                 - js_translator
+        translation_data:
+            deps:
+                - js_translator
     paths:
         backbone: csbillcore/js/lib/backbone/backbone.min.js
         marionette: csbillcore/js/lib/backbone/marionette.min.js
