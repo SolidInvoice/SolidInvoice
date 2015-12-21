@@ -7,6 +7,10 @@ define(['jquery', 'core/modal', 'bootstrap.modal', 'bootstrap.modalmanager'], fu
          */
         model: null,
 
+        template: null,
+
+        route: null,
+
         /**
          * @param {{model: Backbone.Model}} options
          */
@@ -14,49 +18,34 @@ define(['jquery', 'core/modal', 'bootstrap.modal', 'bootstrap.modalmanager'], fu
             this.model = options.model;
 
             if (!this.model) {
-                throw 'A "model" must be specified for a view.';
+                throw 'A "model" must be specified for an Ajax Modal.';
+            }
+
+            this.route = options.route;
+
+            if (!this.route) {
+                throw 'A "route" must be specified for an Ajax Modal.';
             }
 
             Modal.call(this, options);
+
+            this._loadContent();
         },
 
-        initialize: function() {
-            this.listenTo(this, "modal:show", this.hideLoader);
-        },
+        _loadContent: function () {
+            var route = this.getOption('route');
 
-        showLoader: function() {
-            this.$el.modalmanager('loading');
-        },
-
-        hideLoader: function() {
-            this.$el.modalmanager('removeLoading');
-        },
-
-        /**
-         * @param {HTMLElement|String} route
-         */
-        load: function(route) {
             var view = this;
 
-            this.showLoader();
+            $('body').modalmanager('loading');
 
-            this.$el.on('show.bs.modal', function() {
-                view.trigger('modal:show');
+            $.getJSON(route, function (data) {
+                view.options.template = data.content;
+
+                $('body').modalmanager('loading');
+
+                view.render();
             });
-
-            this.$el.on('hide.bs.modal', function() {
-                view.trigger('modal:hide');
-            });
-
-            $.getJSON(route, function(data) {
-                if (data.content !== undefined) {
-                    view.$el.html(data.content);
-                }
-
-                view.$el.modal();
-            });
-
-            return this;
         }
     });
 });

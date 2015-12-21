@@ -24,6 +24,14 @@
                         type="{{this.type}}"
                     {{/if}}
             >
+                {{#if this.save}}
+                   <i class="fa fa-save"></i>
+                {{/if}}
+
+                {{#if this.close}}
+                   <i class="fa fa-times"></i>
+                {{/if}}
+
                 {{#if this.title}}
                     {{{this.title}}}
                 {{else}}

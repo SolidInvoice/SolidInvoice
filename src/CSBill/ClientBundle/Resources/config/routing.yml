@@ -43,16 +43,12 @@ _clients_add_contact:
 _clients_edit_contact:
     path:   /ajax/contacts/edit/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:editcontact }
-
-_clients_contact_card:
-    path:   /ajax/contacts/card/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:contactcard }
     options:
         expose: true
 
-_clients_delete_contact:
-    path:   /ajax/contacts/delete/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:deletecontact }
-    methods: [POST]
+_clients_contact:
+    path:   /ajax/contacts/{id}
+    defaults:  { _controller: CSBillClientBundle:Ajax:contact }
+    methods: [POST, DELETE]
     options:
         expose: true

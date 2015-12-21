@@ -27,10 +27,10 @@ define(['marionette', 'core/ajaxmodal'], function(Mn, AjaxModal) {
             return ajaxModel.load(event.target);
         },
         showLoader: function() {
-            this.$el.modal('loading');
+            return this.$el.modal('loading');
         },
         hideLoader: function() {
-            this.$el.modal('removeLoading');
+            return this.$el.modal('loading');
         }
     });
 });

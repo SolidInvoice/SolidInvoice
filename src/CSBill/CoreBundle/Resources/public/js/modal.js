@@ -9,9 +9,9 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
         'constructor': function(options) {
             $.fn.modal.defaults.spinner = $.fn.modalmanager.defaults.spinner =
                 '<div class="loading-spinner">' +
-                '<div class="progress progress-striped active">' +
-                '<div class="progress-bar"></div>' +
-                '</div>' +
+                    '<div class="progress progress-striped active">' +
+                        '<div class="progress-bar"></div>' +
+                    '</div>' +
                 '</div>';
 
             $.fn.modal.defaults.maxHeight = function() {
@@ -19,47 +19,35 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
                 return $(window).height() - 165;
             };
 
-            this.listenTo(this, 'before:render', this.listeners.beforeRender);
             this.listenTo(this, 'render', this.listeners.render);
             this.listenTo(this, 'save', this.listeners.save);
 
             Mn.ItemView.call(this, options);
 
+            var modal = _.result(this, 'modal');
+
+            var defaults = {
+                'titleClose': true
+            };
+
+            if (modal) {
+                this.templateHelpers = _.extend(_.extend(defaults, modal), this.templateHelpers);
+            }
+
+            this._bindModalEvents(modal);
+
+            this._attachListeners();
+
         },
         'getTemplate': function() {
-            Handlebars.registerPartial('modalContent', this.getOption('template'));
+            var template = this.getOption('template');
+
+            Handlebars.registerPartial('modalContent', template);
 
             return Template['modal'];
         },
         listeners: {
-            beforeRender: function() {
-                var modal = _.result(this, 'modal');
-
-                var defaults = {
-                    'titleClose': true
-                };
-
-                if (modal) {
-                    this.templateHelpers = _.extend(_.extend(defaults, modal), this.templateHelpers);
-                }
-
-                this._bindModalEvents(modal);
-            },
             render: function() {
-                var view = this;
-
-                this.$el.on('show.bs.modal', function() {
-                    view.trigger('modal:show');
-                });
-
-                this.$el.on('hide.bs.modal', function() {
-                    view.trigger('modal:hide');
-                });
-
-                this.$el.on('hidden.bs.modal', function() {
-                    view.destroy();
-                });
-
                 this.$el.modal();
             },
             save: function(context) {
@@ -71,15 +59,29 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
             }
         },
         _bindModalEvents: function(modal) {
-            var view = this;
             _.each(_.result(modal, 'events'), function(action, event) {
                 if (_.isFunction(action)) {
-                    view.listenTo(view, event, action);
-                } else if (-1 !== _.indexOf(_.functions(view), action)) {
-                    view.listenTo(view, event, view[action])
+                    this.listenTo(this, event, action);
+                } else if (-1 !== _.indexOf(_.functions(this), action)) {
+                    this.listenTo(this, event, this[action])
                 } else {
                     throw "Callback specified for event " + event + " is not a valid callback"
                 }
+            }, this);
+        },
+        _attachListeners: function () {
+            var view = this;
+
+            this.$el.on('show.bs.modal', function () {
+                view.trigger('modal:show');
+            });
+
+            this.$el.on('hide.bs.modal', function () {
+                view.trigger('modal:hide');
+            });
+
+            this.$el.on('hidden.bs.modal', function () {
+                view.destroy();
             });
         },
         _removeElement: function() {
