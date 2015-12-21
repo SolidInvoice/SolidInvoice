@@ -4,6 +4,10 @@ exception:
     not_found:
         text: Sorry, but the page you were trying to view does not exist.
 
+menu:
+    button:
+        create: Create
+
 powered_by: Powered By
 invalid_file: Invalid File
 upload_error: There was an error uploading the file

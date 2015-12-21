@@ -12,7 +12,7 @@
 namespace CSBill\ClientBundle\Menu;
 
 use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
-use Knp\Menu\ItemInterface;
+use CSBill\CoreBundle\Menu\ItemInterface;
 
 class ClientMenu extends AuthenticatedMenu
 {
@@ -72,6 +72,8 @@ class ClientMenu extends AuthenticatedMenu
         $translator = $this->container->get('translator');
 
         $this->clientsMenu($menu);
+
+        $menu->addDivider();
 
         $menu->addChild(
             $translator->trans('view_client'),

@@ -13,8 +13,11 @@ namespace CSBill\CoreBundle\Menu;
 
 use Knp\Menu\MenuItem as BaseItem;
 
-class MenuItem extends BaseItem
+class MenuItem extends BaseItem implements ItemInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function addDivider($type = '')
     {
         $name = uniqid();
@@ -23,11 +26,12 @@ class MenuItem extends BaseItem
             $type = '-'.$type;
         }
 
-        $child = $this->addChild($name, array('extras' => array('divider' => $type)));
-
-        return $child;
+        return $this->addChild($name, array('extras' => array('divider' => $type)));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isDivider()
     {
         return $this->getExtra('divider') !== null;

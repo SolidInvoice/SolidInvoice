@@ -70,7 +70,7 @@
     <br class="clear"/>
     <br class="clear"/>
 
-    {% embed "CSBillInvoiceBundle::invoice_template.html.twig" %}
+    {% embed "CSBillInvoiceBundle::invoice_template.html.twig" with {'link_client' : true} %}
         {% block contentBody %}
             {{ parent() }}
 
