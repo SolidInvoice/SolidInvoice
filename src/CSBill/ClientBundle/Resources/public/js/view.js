@@ -8,14 +8,15 @@
  */
 
 define(
-    ['core/module', './view/credit', './model/credit', './view/contact_collection', 'csbillclient/js/model/contact_collection'],
-    function(Module, ClientCredit, ClientCreditModel, ContactView, ContactModel) {
+    ['core/module', 'backbone', './view/credit', './model/credit', './view/contact_collection', 'csbillclient/js/model/contact_collection', 'csbillclient/js/view/address_collection', 'template'],
+    function(Module, Backbone, ClientCredit, ClientCreditModel, ContactView, ContactModel, AddressView) {
         'use strict';
 
         return Module.extend({
             regions: {
                 'clientCredit': '#client-credit',
-                'clientContact': '#client-contacts-list'
+                'clientContact': '#client-contacts-list',
+                'clientAddress': '#client-address-list'
             },
             renderCredit: function(options) {
                 var model = new ClientCreditModel({
@@ -41,6 +42,10 @@ define(
             initialize: function(options) {
                 this.renderCredit(options);
                 this.renderContactCollection(options);
+
+                this.app.getRegion('clientAddress').show(new AddressView({
+                    collection: new Backbone.Collection(options.addresses)
+                }));
             }
         });
     }

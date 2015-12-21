@@ -106,25 +106,7 @@
                                         </h3>
                                     </legend>
 
-                                    <div id="client-address-list">
-                                        {% for address in client.addresses %}
-                                            <div class="widget well well-sm">
-                                                <div class="" style="position: absolute;">
-                                                    {{ icon('map-marker') }}
-                                                </div>
-                                                <div style="position: relative; left: 20px;">
-                                                    {{ address|nl2br }}
-                                                </div>
-                                                <div class="pull-right">
-                                                    {{ icon('map-marker') }}
-                                                    <a href="http://maps.google.com/?q={{ address|replace({"\n" : " "}) }}" target="_blank">
-                                                        {{ 'client.address.view_map'|trans }}
-                                                    </a>
-                                                </div>
-                                                <br class="clear" />
-                                            </div>
-                                        {% endfor %}
-                                    </div>
+                                    <div id="client-address-list"></div>
                                 </div>
                             {% endif %}
                         </div>

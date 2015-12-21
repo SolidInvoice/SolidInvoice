@@ -22,10 +22,13 @@ use Symfony\Component\Intl\Intl;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  */
-class Address
+class Address implements \JsonSerializable
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+        Entity\SoftDeleteable,
+        Entity\JsonSerialize {
+        Entity\JsonSerialize::jsonSerialize as serializeJson;
+    }
 
     /**
      * @var int
@@ -254,5 +257,23 @@ class Address
         );
 
         return trim(implode("\n", $info), ', \t\n\r\0\x0B');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        $this->__serializeExclude[] = 'client';
+
+        $string = (string) $this;
+
+        return array_merge(
+            $this->serializeJson(),
+            [
+                'full' => nl2br($string),
+                'compact' => str_replace("\n", ' ', $string),
+            ]
+        );
     }
 }
