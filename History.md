@@ -1,3 +1,24 @@
+0.6.0 / 2015-12-22
+==================
+
+  * Improve Navigation
+  * Added Omnipay payment gateways
+  * Add extra payment gateway
+  * Add option to clone invoices and quotes
+  * Don't allow paid invoices to be edited
+  * Don't allow the only contact on a client to be deleted
+  * Add recurring info to invoice view
+  * Added datepicker to recurring invoices
+  * [InvoiceBundle] Add support for recurring invoices
+  * Added material theme
+  * Added base url to installation and to asset configuration
+  * Fix logo upoad not displaying
+  * Don't add payment button to email if no payment methods are configured
+  * Fix notification templates
+  * Fix payment methods query when no payment methods is configured
+  * Fix money formatter
+  * [InstallBundle] Migrate database if version is outdated
+  * [InstallBundle] Check if user exists in database when installing application
 
 0.5.0 / 2015-10-14
 ==================

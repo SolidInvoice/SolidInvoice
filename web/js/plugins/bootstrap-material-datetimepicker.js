@@ -358,14 +358,14 @@
 				var x = j * Math.sin(Math.PI * 2 * (h / 12));
 				var y = j * Math.cos(Math.PI * 2 * (h / 12));
 				
-				var hour = $('<div>', { class : 'dtp-picker-time' })
+				var hour = $('<div>', { 'class' : 'dtp-picker-time' })
 					.css
 					({
 						marginLeft: (r + x + parseInt(pL) / 2) - (parseInt(pL) + parseInt(mL)) + 'px',
         				marginTop: (r - y - parseInt(mT) / 2) - (parseInt(pT) + parseInt(mT)) + 'px'
 					});
 				var cH = ((this.currentDate.format('h') == 12) ? 0 : this.currentDate.format('h'));
-				var hourLink = $('<a>', { href : 'javascript:void(0);', class : 'dtp-select-hour' }).data('hour', h).text((h == 0 ? 12 : h));
+				var hourLink = $('<a>', { href : 'javascript:void(0);', 'class' : 'dtp-select-hour' }).data('hour', h).text((h == 0 ? 12 : h));
 					if(h == parseInt(cH))
 						hourLink.addClass('selected');
 
@@ -417,14 +417,14 @@
 				var x = j * Math.sin(Math.PI * 2 * (m / 60));
 				var y = j * Math.cos(Math.PI * 2 * (m / 60));
 				
-				var minute = $('<div>', { class : 'dtp-picker-time' })
+				var minute = $('<div>', { 'class' : 'dtp-picker-time' })
 					.css
 					({
 						marginLeft: (r + x + parseInt(pL) / 2) - (parseInt(pL) + parseInt(mL)) + 'px',
         				marginTop: (r - y - parseInt(mT) / 2) - (parseInt(pT) + parseInt(mT)) + 'px'
 					});
 
-				var minuteLink = $('<a>', { href : 'javascript:void(0);', class : 'dtp-select-minute' }).data('minute', m).text(((m.toString().length == 2) ? m : '0' + m));
+				var minuteLink = $('<a>', { href : 'javascript:void(0);', 'class' : 'dtp-select-minute' }).data('minute', m).text(((m.toString().length == 2) ? m : '0' + m));
 					if(m == 5 * Math.round(this.currentDate.minute() / 5))
 					{
 						minuteLink.addClass('selected');
