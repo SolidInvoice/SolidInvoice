@@ -25,28 +25,30 @@
 
             {{ menu('top_right', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
 
-            <div class="btn-group hidden-xs" id="top-menu-create-button">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                    {{ 'menu.button.create'|trans }}
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="{{ path('_clients_add') }}">
-                            {{ icon('user') }} {{ 'dashboard.create.client'|trans }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('_quotes_create') }}">
-                            {{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('_invoices_create') }}">
-                            {{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="btn-group hidden-xs" id="top-menu-create-button">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        {{ 'menu.button.create'|trans }}
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="{{ path('_clients_add') }}">
+                                {{ icon('user') }} {{ 'dashboard.create.client'|trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('_quotes_create') }}">
+                                {{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('_invoices_create') }}">
+                                {{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
         </div>
     </div>
 </nav>
