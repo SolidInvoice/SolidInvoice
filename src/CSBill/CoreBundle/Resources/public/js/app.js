@@ -8,9 +8,13 @@
  */
 
 define(
-    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'material'],
+    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'material', 'bootstrap', 'core/module'],
     function($, Mn, Backbone, _, Module) {
         'use strict';
+
+        if (_.isUndefined(Module)) {
+            Module = require('core/module');
+        }
 
         var ModuleData = requirejs.s.contexts._.config.moduleData,
 
