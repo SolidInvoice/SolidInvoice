@@ -8,7 +8,7 @@
  */
 
 define(
-    ['core/module', 'backbone', './view/credit', './model/credit', './view/contact_collection', 'csbillclient/js/model/contact_collection', 'csbillclient/js/view/address_collection', 'template'],
+    ['core/module', 'backbone', './view/credit', './model/credit', './view/contact_collection', 'csbillclient/js/model/contact_collection', 'csbillclient/js/view/address_collection'],
     function(Module, Backbone, ClientCredit, ClientCreditModel, ContactView, ContactModel, AddressView) {
         'use strict';
 
@@ -18,7 +18,7 @@ define(
                 'clientContact': '#client-contacts-list',
                 'clientAddress': '#client-address-list'
             },
-            renderCredit: function(options) {
+            _renderCredit: function(options) {
                 var model = new ClientCreditModel({
                     credit: options.credit.value,
                     id: options.id
@@ -30,7 +30,7 @@ define(
 
                 this.app.getRegion('clientCredit').show(view);
             },
-            renderContactCollection: function (options) {
+            _renderContactCollection: function(options) {
                 var collection = new ContactModel(options.contacts);
 
                 var view = new ContactView({
@@ -39,13 +39,18 @@ define(
 
                 this.app.getRegion('clientContact').show(view);
             },
+            _renderClientAddresses: function(options) {
+                try {
+                    this.app.getRegion('clientAddress').show(new AddressView({
+                        collection: new Backbone.Collection(options.addresses)
+                    }));
+                } catch (e) {
+                }
+            },
             initialize: function(options) {
-                this.renderCredit(options);
-                this.renderContactCollection(options);
-
-                this.app.getRegion('clientAddress').show(new AddressView({
-                    collection: new Backbone.Collection(options.addresses)
-                }));
+                this._renderCredit(options);
+                this._renderContactCollection(options);
+                this._renderClientAddresses(options);
             }
         });
     }
