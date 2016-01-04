@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5ab911175c8b5ef9bbcdb1c08db09faf",
-    "content-hash": "4001d2c534a41159fbcdfa3e3b2f71df",
+    "hash": "fcc97f0307a161f0c4a2c4e1c5bc4b51",
+    "content-hash": "89150775aab6119e4ed912af82c01d78",
     "packages": [
         {
             "name": "ajbdev/authorizenet-php-api",
@@ -7133,7 +7133,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yohang/Finite/zipball/5c00313c5382c19209e7d0d421c86397692d771d",
+                "url": "https://api.github.com/repos/yohang/Finite/zipball/dc53d484b199f023c5722e5d000877b555331043",
                 "reference": "5c00313c5382c19209e7d0d421c86397692d771d",
                 "shasum": ""
             },
@@ -8482,7 +8482,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/satooshi/php-coveralls/zipball/f2fe833caef2c65620c11f5fabe60040df39339f",
+                "url": "https://api.github.com/repos/satooshi/php-coveralls/zipball/536b23de186ff3e04a138a8d3efbc526946964c4",
                 "reference": "451f524459bd3d26ed73391efb73fe04fecd13ff",
                 "shasum": ""
             },
