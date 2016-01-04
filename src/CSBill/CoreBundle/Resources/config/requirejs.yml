@@ -78,6 +78,7 @@ config:
         'core/modal': csbillcore/js/modal
         'core/ajaxmodal': csbillcore/js/ajaxmodal
         'core/module': csbillcore/js/module
+        'util/form/collection': csbillcore/js/util/form/collection
         'template': ../js/hbs-templates.js
         'handlebars.runtime': csbillcore/js/lib/handlebars/handlebars.js
     map:

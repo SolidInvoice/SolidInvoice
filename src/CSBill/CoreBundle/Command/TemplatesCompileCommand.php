@@ -9,6 +9,7 @@ namespace CSBill\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Process\ExecutableFinder;
@@ -36,7 +37,9 @@ class TemplatesCompileCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('handlebars:compile')
-            ->setDescription('Pre-compiles all the handlebars templates');
+            ->setDescription('Pre-compiles all the handlebars templates')
+            ->addOption('optimize', 'o', InputOption::VALUE_NONE, 'Optimize the compiled templates')
+        ;
     }
 
     /**
@@ -44,6 +47,7 @@ class TemplatesCompileCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $optimize = $input->getOption('optimize');
         $container = $this->getContainer();
 
         $kernel = $container->get('kernel');
@@ -56,9 +60,12 @@ class TemplatesCompileCommand extends ContainerAwareCommand
             }
         }
 
-        $this->process();
+        $this->process($optimize);
     }
 
+    /**
+     * @return string
+     */
     private function getNode()
     {
         $finder = new ExecutableFinder();
@@ -66,7 +73,12 @@ class TemplatesCompileCommand extends ContainerAwareCommand
         return $finder->find('node', $finder->find('nodejs'));
     }
 
-    private function process()
+    /**
+     * @param bool $optimize
+     *
+     * @throws \Exception
+     */
+    private function process($optimize = false)
     {
         $webRoot = $this->getContainer()->getParameter('oro_require_js.web_root');
 
@@ -83,10 +95,13 @@ class TemplatesCompileCommand extends ContainerAwareCommand
             '-f',
             self::OUTPUT_FILE_NAME,
             '-a',
-            '-m',
             '-e',
-            'hbs',
+            'hbs'
         ];
+
+        if (true === $optimize) {
+            $command[] = '-m';
+        }
 
         $builder = new ProcessBuilder($command);
         $builder->setWorkingDirectory($webRoot);
