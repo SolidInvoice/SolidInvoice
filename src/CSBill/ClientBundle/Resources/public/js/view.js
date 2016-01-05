@@ -8,49 +8,47 @@
  */
 
 define(
-    ['core/module', 'backbone', './view/credit', './model/credit', './view/contact_collection', 'csbillclient/js/model/contact_collection', 'csbillclient/js/view/address_collection'],
-    function(Module, Backbone, ClientCredit, ClientCreditModel, ContactView, ContactModel, AddressView) {
+    ['core/module', 'backbone', 'marionette', 'csbillclient/js/credit', 'csbillclient/js/contacts', 'csbillclient/js/view/address_collection', 'template'],
+    function(Module, Backbone, Mn, ClientCredit, ClientContact, AddressView, Template) {
         'use strict';
 
         return Module.extend({
             regions: {
                 'clientCredit': '#client-credit',
-                'clientContact': '#client-contacts-list',
-                'clientAddress': '#client-address-list'
+                'clientInfo': '#client-info'
             },
             _renderCredit: function(options) {
-                var model = new ClientCreditModel({
-                    credit: options.credit.value,
-                    id: options.id
-                });
-
-                var view = new ClientCredit({
-                    model: model
-                });
-
-                this.app.getRegion('clientCredit').show(view);
+                this.app.getRegion('clientCredit').show(ClientCredit.getView(options));
             },
-            _renderContactCollection: function(options) {
-                var collection = new ContactModel(options.contacts);
-
-                var view = new ContactView({
-                    collection: collection
-                });
-
-                this.app.getRegion('clientContact').show(view);
+            _renderContactCollection: function(layoutView, options) {
+                layoutView.getRegion('clientContact').show(ClientContact.getView(options));
             },
-            _renderClientAddresses: function(options) {
+            _renderClientAddresses: function(layoutView, options) {
                 try {
-                    this.app.getRegion('clientAddress').show(new AddressView({
+                    layoutView.getRegion('clientAddress').show(new AddressView({
                         collection: new Backbone.Collection(options.addresses)
                     }));
-                } catch (e) {
-                }
+                } catch (e) {}
             },
             initialize: function(options) {
                 this._renderCredit(options);
-                this._renderContactCollection(options);
-                this._renderClientAddresses(options);
+
+                var LayoutView = Mn.LayoutView.extend({
+                    template: Template['client/info'],
+                    regions: {
+                        'clientContact': '#client-contacts-list',
+                        'clientAddress': '#client-address-list'
+                    }
+                });
+
+                var layoutView = new LayoutView({
+                    model: new Backbone.Model(options)
+                });
+
+                this.app.getRegion('clientInfo').show(layoutView);
+
+                this._renderContactCollection(layoutView, options);
+                this._renderClientAddresses(layoutView, options);
             }
         });
     }
