@@ -180,6 +180,10 @@ class DefaultController extends BaseController
         unset($contact, $key, $toDel);
 
         foreach ($client->getContacts() as $contact) {
+            if (null === $contact->getId()) {
+                continue;
+            }
+
             foreach ($contact->getAdditionalDetails() as $originalContactDetail) {
                 foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
                     if ($toDel->getId() === $originalContactDetail->getId()) {

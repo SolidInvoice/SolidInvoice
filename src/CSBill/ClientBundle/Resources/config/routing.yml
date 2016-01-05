@@ -49,6 +49,6 @@ _clients_edit_contact:
 _clients_contact:
     path:   /ajax/contacts/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:contact }
-    methods: [POST, DELETE]
+    methods: [GET, POST, DELETE]
     options:
         expose: true

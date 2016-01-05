@@ -7,6 +7,16 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="row-fluid">
-    {{ form(form) }}
+<div class="row-fluid" id="client-contact">
+    <div class="prototype-widget">
+        {{ form(form) }}
+    </div>
 </div>
+
+<script>
+    require(['csbillclient/js/contacts_collection'], function (FormCollection) {
+        new FormCollection({
+            'el' : '#client-contact'
+        });
+    });
+</script>
