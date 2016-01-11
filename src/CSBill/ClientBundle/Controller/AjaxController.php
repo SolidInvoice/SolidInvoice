@@ -143,7 +143,7 @@ class AjaxController extends BaseController
                         'contact' => $contact,
                     )
                 ),
-                'status' => $status
+                'status' => $status,
             )
         );
     }

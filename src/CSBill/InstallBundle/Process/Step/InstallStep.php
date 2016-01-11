@@ -29,7 +29,7 @@ class InstallStep extends ControllerStep
             $result = array();
 
             switch ($request->query->get('action')) {
-                case 'createdb' :
+                case 'createdb':
                     $connection = $this->get('doctrine')->getConnection();
                     $params = $connection->getParams();
                     $dbName = $params['dbname'];
@@ -51,7 +51,7 @@ class InstallStep extends ControllerStep
                     }
 
                     break;
-                case 'migrations' :
+                case 'migrations':
                     $migration = $this->get('csbill.installer.database.migration');
 
                     try {

@@ -1,8 +1,12 @@
 <?php
-/**
- * This file is part of the CSBill project.
+
+/*
+ * This file is part of CSBill project.
  *
- * @author    pierre
+ * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace CSBill\CoreBundle\Command;
@@ -16,11 +20,6 @@ use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
-/**
- * Class TemplatesCompileCommand
- *
- * @package CSBill\CoreBundle\Command
- */
 class TemplatesCompileCommand extends ContainerAwareCommand
 {
     const HANDLEBARS_PATH = '../node_modules/handlebars/bin/handlebars';
@@ -54,7 +53,6 @@ class TemplatesCompileCommand extends ContainerAwareCommand
 
         /** @var Bundle $bundle */
         foreach ($kernel->getBundles() as $bundle) {
-
             if (is_dir($dir = $bundle->getPath().'/Resources/public/templates')) {
                 $this->dirs[] = $dir;
             }
@@ -96,7 +94,7 @@ class TemplatesCompileCommand extends ContainerAwareCommand
             self::OUTPUT_FILE_NAME,
             '-a',
             '-e',
-            'hbs'
+            'hbs',
         ];
 
         if (true === $optimize) {

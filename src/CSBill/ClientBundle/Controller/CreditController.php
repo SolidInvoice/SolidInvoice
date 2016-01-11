@@ -13,13 +13,11 @@ namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Credit;
-use CSBill\ClientBundle\Form\Type\CreditType;
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\CoreBundle\Controller\BaseController;
 use Money\Money;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class CreditController extends BaseController
 {
@@ -91,7 +89,7 @@ class CreditController extends BaseController
         return $this->json(
             [
                 'credit' => $this->get('csbill.money.formatter')->toFloat($credit->getValue()),
-                'id' => $credit->getId()
+                'id' => $credit->getId(),
             ]
         );
     }
