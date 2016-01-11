@@ -32,14 +32,10 @@ use JMS\Serializer\Annotation as Serialize;
  *    "primary": "CSBill\ClientBundle\Entity\PrimaryContactDetail",
  *    "additional": "CSBill\ClientBundle\Entity\AdditionalContactDetail",
  * })
- * @Serialize\ExclusionPolicy("all")
  */
-abstract class ContactDetail implements \JsonSerializable
+abstract class ContactDetail
 {
-    use Entity\TimeStampable,
-        Entity\JsonSerialize {
-        Entity\JsonSerialize::jsonSerialize as serializeJson;
-    }
+    use Entity\TimeStampable;
 
     /**
      * @var int
@@ -47,6 +43,7 @@ abstract class ContactDetail implements \JsonSerializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"js"})
      */
     protected $id;
 
@@ -54,7 +51,7 @@ abstract class ContactDetail implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      */
     protected $value;
 
@@ -63,7 +60,7 @@ abstract class ContactDetail implements \JsonSerializable
      *
      * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
      * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      * @Serialize\Inline()
      */
     protected $type;
@@ -132,15 +129,5 @@ abstract class ContactDetail implements \JsonSerializable
     public function __toString()
     {
         return $this->value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function jsonSerialize()
-    {
-        $this->__serializeExclude[] = 'contact';
-
-        return $this->serializeJson();
     }
 }

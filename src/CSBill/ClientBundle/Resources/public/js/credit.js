@@ -15,7 +15,7 @@ define(
         var credit = Mn.Object.extend({
             getView: function(options) {
                 var model = new CreditModel({
-                    credit: options.credit.value,
+                    credit: _.result(options, 'credit', 0),
                     id: options.id
                 });
 

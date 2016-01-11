@@ -14,6 +14,7 @@ namespace CSBill\ClientBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
 use Symfony\Component\Intl\Intl;
 
 /**
@@ -22,13 +23,10 @@ use Symfony\Component\Intl\Intl;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  */
-class Address implements \JsonSerializable
+class Address
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable,
-        Entity\JsonSerialize {
-        Entity\JsonSerialize::jsonSerialize as serializeJson;
-    }
+        Entity\SoftDeleteable;
 
     /**
      * @var int
@@ -36,6 +34,7 @@ class Address implements \JsonSerializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"js"})
      */
     private $id;
 
@@ -43,6 +42,7 @@ class Address implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="street1", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $street1;
 
@@ -50,6 +50,7 @@ class Address implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="street2", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $street2;
 
@@ -57,6 +58,7 @@ class Address implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="city", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $city;
 
@@ -64,6 +66,7 @@ class Address implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="state", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $state;
 
@@ -71,6 +74,7 @@ class Address implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="zip", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $zip;
 
@@ -78,6 +82,7 @@ class Address implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="country", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $country;
 
@@ -85,6 +90,7 @@ class Address implements \JsonSerializable
      * @var Client
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="addresses")
+     * @Serialize\Groups({"js"})
      */
     private $client;
 
@@ -257,23 +263,5 @@ class Address implements \JsonSerializable
         );
 
         return trim(implode("\n", $info), ', \t\n\r\0\x0B');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function jsonSerialize()
-    {
-        $this->__serializeExclude[] = 'client';
-
-        $string = (string) $this;
-
-        return array_merge(
-            $this->serializeJson(),
-            [
-                'full' => nl2br($string),
-                'compact' => str_replace("\n", ' ', $string),
-            ]
-        );
     }
 }

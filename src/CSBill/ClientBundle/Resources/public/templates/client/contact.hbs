@@ -5,8 +5,8 @@
         </h4>
 
         <dl class="dl-horizontal">
-            {{#each primaryDetails }}
-                <dt>{{ this.type.name }}:</dt>
+            {{#each primary_details }}
+                <dt>{{ this.type }}:</dt>
                 <dd>{{ this.value }}</dd>
             {{/each}}
         </dl>
@@ -14,8 +14,8 @@
         {{#if additionalDetails}}
             <h5>{{trans 'client.contact.details.extra'}}</h5>
             <dl class="dl-horizontal">
-                {{#each additionalDetails }}
-                    <dt>{{ this.type.name }}:</dt>
+                {{#each additional_details }}
+                    <dt>{{ this.type }}:</dt>
                     <dd>{{ this.value }}</dd>
                 {{/each}}
             </dl>

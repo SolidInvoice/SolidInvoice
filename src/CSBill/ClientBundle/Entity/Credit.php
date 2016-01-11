@@ -24,20 +24,17 @@ use Money\Money;
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\CreditRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Serialize\ExclusionPolicy("all")
  */
-class Credit implements \JsonSerializable
+class Credit
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable,
-        Entity\JsonSerialize {
-        Entity\JsonSerialize::jsonSerialize as serializeJson;
-    }
+        Entity\SoftDeleteable;
 
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"noneg"})
      */
     private $id;
 
@@ -45,7 +42,7 @@ class Credit implements \JsonSerializable
      * @ORM\Column(name="value", type="money")
      *
      * @var Money
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      * @Serialize\SerializedName("credit")
      */
     private $value;
@@ -53,6 +50,7 @@ class Credit implements \JsonSerializable
     /**
      * @var Client
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
+     * @Serialize\Groups({"js"})
      */
     private $client;
 
@@ -106,15 +104,5 @@ class Credit implements \JsonSerializable
     public function __toString()
     {
         return $this->value->getAmount();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function jsonSerialize()
-    {
-        $this->__serializeExclude[] = 'client';
-
-        return $this->serializeJson();
     }
 }

@@ -40,7 +40,11 @@
         {% if module is defined %}
         , module: '{{ module }}'
         {% if moduleData is defined %}
-        , moduleData: {{ moduleData|json_encode|raw }}
+            {% set context = serialization_context() %}
+
+            {% do context.setGroups(["js"]) %}
+
+        , moduleData: {{ moduleData|serialize("json", context)|raw }}
         {% endif %}
         {% endif %}
     });
