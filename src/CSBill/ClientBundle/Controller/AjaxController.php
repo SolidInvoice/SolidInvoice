@@ -14,8 +14,9 @@ namespace CSBill\ClientBundle\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\CoreBundle\Controller\BaseController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AjaxController extends BaseController
 {
@@ -68,20 +69,12 @@ class AjaxController extends BaseController
         if ($form->isValid()) {
             $this->save($contact);
 
-            $content = $this->renderView(
-                'CSBillClientBundle:Ajax:contact_add.html.twig',
-                array(
-                    'contact' => $contact,
-                )
-            );
+            $response = [
+                'status' => 'success',
+                'contact' => $contact
+            ];
 
-            return $this->json(
-                array(
-                    'status' => 'success',
-                    'content' => $content,
-                    'id' => $contact->getId(),
-                )
-            );
+            return $this->serializeResponse($response);
         } else {
             $response['status'] = 'failure';
         }
@@ -114,7 +107,7 @@ class AjaxController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $status = 'fail';
+        $status = 'success';
 
         $originalContactDetails = $contact->getAdditionalDetails()->toArray();
 
@@ -130,8 +123,8 @@ class AjaxController extends BaseController
             $this->removeContactDetails($contact, $originalContactDetails);
 
             $this->save($contact);
-
-            $status = 'success';
+        } else if ($form->isSubmitted()) {
+            $status = 'failure';
         }
 
         return $this->json(
@@ -197,7 +190,7 @@ class AjaxController extends BaseController
             return $this->json([]);
         }
 
-        return new JsonResponse($contact);
+        return $this->serializeResponse($contact);
     }
 
     /**
@@ -213,8 +206,20 @@ class AjaxController extends BaseController
         $em->remove($client);
         $em->flush();
 
-        $this->flash($this->trans('client_delete_success'), 'success');
+        $this->flash($this->trans('client.delete_success'), 'success');
 
         return $this->json(array('status' => 'success'));
+    }
+
+    /**
+     * @param mixed $response
+     *
+     * @return Response
+     */
+    private function serializeResponse($response)
+    {
+        $context = SerializationContext::create()->setGroups(['js']);
+
+        return new Response($this->get('serializer')->serialize($response, 'json', $context), 200, ['Content-Type' => 'application/json']);
     }
 }

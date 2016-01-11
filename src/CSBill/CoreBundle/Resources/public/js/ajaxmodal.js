@@ -1,4 +1,4 @@
-define(['jquery', 'core/modal', 'bootstrap.modal', 'bootstrap.modalmanager'], function($, Modal) {
+define(['jquery', 'lodash', 'core/modal', 'bootstrap.modal', 'bootstrap.modalmanager'], function($, _, Modal) {
     "use strict";
 
     return Modal.extend({
@@ -15,10 +15,8 @@ define(['jquery', 'core/modal', 'bootstrap.modal', 'bootstrap.modalmanager'], fu
          * @param {{model: Backbone.Model}} options
          */
         constructor: function(options) {
-            this.model = options.model;
-
-            if (!this.model) {
-                throw 'A "model" must be specified for an Ajax Modal.';
+            if (_.has(options, 'model')) {
+                this.model = options.model;
             }
 
             this.route = options.route;

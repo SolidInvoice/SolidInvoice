@@ -1,6 +1,6 @@
 define(
-    ['core/ajaxmodal', 'accounting', 'template', 'translator', 'parsley'],
-    function(AjaxModal, Accounting, Template, __, Parsley) {
+    ['jquery', 'core/ajaxmodal', 'accounting', 'template', 'lodash', 'translator', 'parsley'],
+    function($, AjaxModal, Accounting, Template, _, __, Parsley) {
         "use strict";
 
         return AjaxModal.extend({
@@ -33,15 +33,21 @@ define(
                     "url" : this.getOption('route'),
                     "data" : this.$('form').serialize(),
                     "type" : "post",
-                    success: function (response) {
+                    "success": function (response) {
+                        view.trigger('ajax:response', response);
+
                         if (response.status !== 'success') {
                             view.options.template = response.content;
                             view.hideLoader();
                             view.render();
                         } else {
-                            view.model.fetch({"success": function () {
+                            if (_.has(view, 'model')) {
+                                view.model.fetch({"success": function () {
+                                    view.$el.modal('hide');
+                                }});
+                            } else {
                                 view.$el.modal('hide');
-                            }});
+                            }
                         }
                     }
                 });
