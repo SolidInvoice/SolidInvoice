@@ -1,8 +1,3 @@
 config:
     paths:
-        'client/view': 'csbillclient/js/view'
-        'client/model/credit': 'csbillclient/js/model/credit'
-        'client/view/credit': 'csbillclient/js/view/credit'
-        'client/view/credit_modal': 'csbillclient/js/view/credit_modal'
-
-        'client/create': 'csbillclient/js/create'
+        client: 'csbillclient/js'

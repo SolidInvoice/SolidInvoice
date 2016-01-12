@@ -8,7 +8,7 @@
  */
 
 define(
-    ['jquery', 'core/module', 'backbone', 'bootstrap.bootbox', 'routing', 'translator', 'csbillclient/js/view/info', 'csbillclient/js/credit', 'csbillclient/js/contacts', 'csbillclient/js/view/address_collection'],
+    ['jquery', 'core/module', 'backbone', 'bootstrap.bootbox', 'routing', 'translator', 'client/view/info', './credit', './contacts', 'client/view/address_collection'],
     function($, Module, Backbone, Bootbox, Routing, __, InfoView, ClientCredit, ClientContact, AddressView) {
         'use strict';
 

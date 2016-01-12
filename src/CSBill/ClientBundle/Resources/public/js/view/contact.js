@@ -1,5 +1,5 @@
 define(
-    ['core/view', 'csbillclient/js/view/contact_modal', './credit_modal', 'template', 'bootstrap.bootbox', 'translator'],
+    ['core/view', './contact_modal', './credit_modal', 'template', 'bootstrap.bootbox', 'translator'],
     function(ItemView, ContactModal, CreditModal, Template, Bootbox, __) {
         'use strict';
 

@@ -8,7 +8,7 @@
  */
 
 define(
-    ['marionette', 'client/view/contact_collection', 'csbillclient/js/model/contact_collection'],
+    ['marionette', 'client/view/contact_collection', 'client/model/contact_collection'],
     function(Mn, ContactCollectionView, ContactCollectionModel) {
         'use strict';
 

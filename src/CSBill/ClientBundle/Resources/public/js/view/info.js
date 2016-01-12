@@ -8,7 +8,7 @@
  */
 
 define(
-    ['marionette', 'csbillclient/js/model/contact', 'csbillclient/js/view/contact_modal', 'template'],
+    ['marionette', 'client/model/contact', 'client/view/contact_modal', 'template'],
     function(Mn, Contact, ContactModal, Template) {
         "use strict";
 

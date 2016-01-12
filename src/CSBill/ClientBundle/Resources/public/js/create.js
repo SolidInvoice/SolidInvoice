@@ -8,7 +8,7 @@
  */
 
 define(
-    ['core/module', 'util/form/collection', 'csbillclient/js/contacts_collection'],
+    ['core/module', 'util/form/collection', './contacts_collection'],
     function(Module, FormCollection, ContactCollection) {
         'use strict';
 
