@@ -7,6 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 {% set locale = app.request.locale|split('_')[0] %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ locale }}"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="{{ locale }}"> <![endif]-->
@@ -26,9 +27,6 @@
         {% stylesheets
             'bundles/csbillcore/less/styles.less'
             'bundles/csbillcore/css/*.css'
-            'css/select2.css'
-            'css/select2-bootstrap.css'
-            'css/*.css'
             'bundles/csbillclient/less/*.less'
             filter="lessphp, cssrewrite, ?yui_css"
         %}
@@ -37,7 +35,7 @@
     {% endblock stylesheets %}
 
     {% javascripts
-        "js/modernizr.min.js"
+        "@CSBillCoreBundle/Resources/public/js/lib/modernizr.min.js"
         filter="?yui_js"
     %}
         <script src="{{ asset_url }}"></script>
@@ -57,26 +55,11 @@
         {{ block('body') }}
     </div>
 
-    <footer align="center">
+    <footer class="align-center">
         {{ block('footer') }}
     </footer>
 
-    {% block javascripts %}
-        {#{% javascripts
-            "js/plugins/bootstrap.min.js"
-            "@CSBillCoreBundle/Resources/public/js/material/ripples.js"
-            "@CSBillCoreBundle/Resources/public/js/material/material.js"
-            "@FOSJsRoutingBundle/Resources/public/js/router.js"
-            "js/plugins/moment.min.js"
-            "js/plugins/*.js"
-            "@CSBillCoreBundle/Resources/public/js/plugins.js"
-            "@CSBillClientBundle/Resources/public/js/*.js"
-            "@CSBillCoreBundle/Resources/public/js/script.js"
-            filter="?yui_js"
-        %}
-            <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}#}
-    {% endblock javascripts %}
+    {{ block('javascripts') }}
 
     {{ block('body_bottom') }}
 </body>
