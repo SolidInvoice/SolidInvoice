@@ -21,7 +21,7 @@
             <small>
                 <strong>{{trans 'profile.api.tokens.used.last' }}</strong>
                 {{#if history}}
-                    {{trans 'profile.api.tokens.used.text' date=history.0.created ip=history.0.ip }}
+                    {{trans 'profile.api.tokens.used.text' date=(date history.0.created) ip=history.0.ip }}
                 {{else}}
                     {{trans 'profile.api.tokens.used.never' }}
                 {{/if}}
