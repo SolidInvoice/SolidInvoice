@@ -13,6 +13,7 @@ namespace CSBill\UserBundle\Repository;
 
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Entity\ApiTokenHistory;
+use CSBill\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 class ApiTokenHistoryRepository extends EntityRepository

@@ -24,7 +24,7 @@ profile:
             revoke_mesage: "Are you sure you want to revoke the selected token? All applications using the token will stop working"
             history: View History
             used:
-                text: date from ip
+                text: %date% from %ip%
                 never: Never
                 last: Last Used:
         form:

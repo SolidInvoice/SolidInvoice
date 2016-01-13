@@ -22,7 +22,7 @@ trait TimeStampable
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
-     * @Serialize\Expose()
+     * @Serializer\Groups({"js"})
      */
     protected $created;
 
@@ -32,7 +32,7 @@ trait TimeStampable
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      * @GRID\Column(visible=false)
-     * @Serialize\Expose()
+     * @Serializer\Groups({"js"})
      */
     protected $updated;
 
