@@ -130,10 +130,6 @@ class ApiController extends BaseController
         $this->getEm()->remove($token);
         $this->getEm()->flush();
 
-        return $this->json(
-            array(
-                'status' => 0,
-            )
-        );
+        return $this->json([]);
     }
 }

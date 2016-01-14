@@ -21,7 +21,7 @@ profile:
         tokens:
             empty: "You don't have any API tokens"
             revoke: Revoke
-            revoke_mesage: "Are you sure you want to revoke the selected token? All applications using the token will stop working"
+            revoke_message: "Are you sure you want to revoke this token? This is irreversible, and all applications using the token will be affected"
             history: View History
             used:
                 text: %date% from %ip%

@@ -1,91 +1,44 @@
 define(
-    ['jquery', 'core/module', 'core/ajaxmodal', 'routing', 'translator', 'template'],
-    function ($, Module, AjaxModal, Routing, __, Template) {
+    ['jquery', 'lodash', 'backbone', 'marionette', 'core/module', 'profile/view/modal/create', 'routing', 'template', 'profile/view/token'],
+    function($, _, Backbone, Mn, Module, CreateModal, Routing, Template, TokenView) {
         "use strict";
 
         return Module.extend({
             regions: {
                 'tokenList': '#token-list'
             },
-            initialize: function (options) {
+            collection: null,
+            initialize: function() {
                 var collection = Backbone.Collection.extend({
                     url: Routing.generate('api_keys'),
                     model: Backbone.Model
                 });
 
-                var ApiCollection = new collection();
+                this.collection = new collection();
+                this.collection.fetch();
 
-                ApiCollection.fetch();
-
-                var view = Marionette.ItemView.extend({
-                    template: Template['profile/api']
-                });
-
-                var collectionView = new Marionette.CollectionView({
-                    collection: ApiCollection,
-                    childView: view
+                var collectionView = new Mn.CollectionView({
+                    collection: this.collection,
+                    childView: TokenView,
+                    emptyView: Mn.ItemView.extend({
+                        template: Template['profile/empty_tokens']
+                    })
                 });
 
                 this.app.getRegion('tokenList').show(collectionView);
 
-                $('#create-api-token').on('click', this.createToken)
+                $('#create-api-token').on('click', _.bind(this.createToken, this))
             },
-            createToken: function (event) {
+            createToken: function(event) {
                 event.preventDefault();
 
-                var modal = AjaxModal.extend({
-                    'modal': {
-                        'title': __('profile.api.form.title'),
-                        'buttons': {
-                            'close': {
-                                'class': 'warning',
-                                'close': true,
-                                'flat': true
-                            },
-                            'save': {
-                                'class': 'success',
-                                'save': true,
-                                'flat': true
-                            }
-                        },
-                        'events': {
-                            'modal:save': 'saveApiToken'
-                        }
-                    },
-                    'saveApiToken': function() {
-
-                        this.showLoader();
-
-                        var view = this;
-
-                        $.ajax({
-                            "url" : this.getOption('route'),
-                            "data" : this.$('form').serialize(),
-                            "type" : "post",
-                            "success": function (response) {
-                                view.trigger('ajax:response', response);
-
-                                if (response.status !== 'success') {
-                                    view.options.template = response.content;
-                                    view.hideLoader();
-                                    view.render();
-                                } else {
-                                    if (_.has(view, 'model')) {
-                                        view.model.fetch({"success": function () {
-                                            view.$el.modal('hide');
-                                        }});
-                                    } else {
-                                        view.$el.modal('hide');
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
-
-                new modal({
+                var modal = new CreateModal({
                     route: Routing.generate('api_key_create')
                 });
+
+                this.listenTo(modal, 'ajax:response', _.bind(function (response) {
+                    this.collection.add(response.token);
+                }, this));
             }
         });
-});
+    });

@@ -17,8 +17,8 @@ api_key_create:
         expose: true
 
 api_key_revoke:
-    path: /api/revoke/{id}
+    path: /api/{id}
     defaults: { _controller: CSBillUserBundle:Api:revokeToken }
-    methods: [POST]
+    methods: [DELETE]
     options:
         expose: true
