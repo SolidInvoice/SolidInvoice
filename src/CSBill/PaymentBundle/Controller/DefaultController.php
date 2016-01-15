@@ -13,11 +13,9 @@ namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Form\PaymentMethodForm;
 use CSBill\PaymentBundle\Grid\PaymentGrid;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends BaseController

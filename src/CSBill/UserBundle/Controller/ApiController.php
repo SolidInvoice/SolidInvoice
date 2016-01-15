@@ -13,7 +13,6 @@ namespace CSBill\UserBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\UserBundle\Entity\ApiToken;
-use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Repository\ApiTokenRepository;
 use RandomLib\Factory;
 use RandomLib\Generator;

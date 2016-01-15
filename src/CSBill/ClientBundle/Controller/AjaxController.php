@@ -71,7 +71,7 @@ class AjaxController extends BaseController
 
             $response = [
                 'status' => 'success',
-                'contact' => $contact
+                'contact' => $contact,
             ];
 
             return $this->serializeResponse($response);
@@ -123,7 +123,7 @@ class AjaxController extends BaseController
             $this->removeContactDetails($contact, $originalContactDetails);
 
             $this->save($contact);
-        } else if ($form->isSubmitted()) {
+        } elseif ($form->isSubmitted()) {
             $status = 'failure';
         }
 

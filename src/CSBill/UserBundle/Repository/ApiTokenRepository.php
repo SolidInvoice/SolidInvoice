@@ -12,7 +12,6 @@
 namespace CSBill\UserBundle\Repository;
 
 use CSBill\UserBundle\Entity\User;
-use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr;

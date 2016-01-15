@@ -13,7 +13,6 @@ namespace CSBill\CoreBundle\Traits\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as GRID;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serialize;
 
 trait TimeStampable
 {
