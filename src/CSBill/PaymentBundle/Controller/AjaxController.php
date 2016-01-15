@@ -30,10 +30,12 @@ class AjaxController extends BaseController
      */
     public function loadSettingsAction(Request $request, PaymentMethod $paymentMethod = null)
     {
+        $methodName = $request->attributes->get('method');
+
         if (null === $paymentMethod) {
             $paymentMethod = new PaymentMethod();
-            $paymentMethod->setPaymentMethod($request->attributes->get('method'));
-            $paymentMethod->setName(ucwords(str_replace('_', ' ', $request->attributes->get('method'))));
+            $paymentMethod->setPaymentMethod($methodName);
+            $paymentMethod->setName(ucwords(str_replace('_', ' ', $methodName)));
         }
 
         $originalSettings = $paymentMethod->getSettings();
@@ -45,10 +47,11 @@ class AjaxController extends BaseController
         $form = $this->createForm(
             new PaymentMethodForm(),
             $paymentMethod,
-            array(
+            [
                 'settings' => $registry->hasType($paymentMethod->getPaymentMethod()) ? $paymentMethod->getPaymentMethod() : null,
                 'internal' => $payum->isOffline($paymentMethod->getPaymentMethod()),
-            )
+                'action' => $this->generateUrl('_payment_method_settings', ['method' => $methodName]),
+            ]
         );
 
         $form->handleRequest($request);
@@ -67,32 +70,16 @@ class AjaxController extends BaseController
             $this->flash($this->trans('payment.method.updated'), 'success');
         }
 
-        return new JsonResponse(array(
-            'content' => $this->renderView(
-                'CSBillPaymentBundle:Ajax:loadmethodsettings.html.twig',
-                array(
-                    'form' => $form->createView(),
-                    'method' => $paymentMethod->getPaymentMethod(),
-                )
-            ),
-        ));
-    }
-
-    /**
-     * Deletes a payment method.
-     *
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return JsonResponse
-     */
-    public function deleteAction(PaymentMethod $paymentMethod)
-    {
-        $entityManager = $this->getEm();
-        $entityManager->remove($paymentMethod);
-        $entityManager->flush();
-
-        $this->flash($this->trans('payment_delete_success'), 'success');
-
-        return new JsonResponse(array('status' => 'success'));
+        return $this->json(
+            [
+                'content' => $this->renderView(
+                    'CSBillPaymentBundle:Ajax:loadmethodsettings.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'method' => $paymentMethod->getPaymentMethod(),
+                    ]
+                ),
+            ]
+        );
     }
 }

@@ -5,6 +5,8 @@ _payments_index:
 _payment_settings_index:
     path:  /methods
     defaults: { _controller: CSBillPaymentBundle:Default:index }
+    options:
+        expose: true
 
 _payment_method_settings:
     path:  /method/settings/{method}

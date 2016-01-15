@@ -13,6 +13,7 @@ namespace CSBill\PaymentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PaymentMethodForm extends AbstractType
@@ -24,18 +25,18 @@ class PaymentMethodForm extends AbstractType
     {
         $builder->add('name');
 
-        $builder->add('enabled', null, array('required' => false));
+        $builder->add('enabled', null, ['required' => false]);
 
         if (false === $options['internal']) {
             $builder->add(
                 'internal',
                 null,
-                array(
+                [
                     'label' => 'payment.form.label.internal',
                     'help' => 'payment.form.help.internal',
                     'help_type' => 'block',
                     'required' => false,
-                )
+                ]
             );
         }
 
@@ -46,11 +47,11 @@ class PaymentMethodForm extends AbstractType
         $builder->add(
             'save',
             'submit',
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'btn-success',
-                ),
-            )
+                ],
+            ]
         );
     }
 
@@ -59,9 +60,23 @@ class PaymentMethodForm extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('settings'));
-        $resolver->setAllowedTypes('settings', array('string', 'null'));
-        $resolver->setDefaults(array('internal' => false));
+        $resolver->setRequired(['settings']);
+        $resolver->setAllowedTypes('settings', ['string', 'null']);
+
+        $resolver->setDefaults(
+            [
+                'internal' => false,
+                'validation_groups' => function(FormInterface $form) {
+                    // If the method is disabled, don't use any constraints
+                    if ($form->get('enabled')->getData() === false) {
+                        return false;
+                    }
+
+                    // Otherwise, use the default validation group
+                    return 'Default';
+                }
+            ]
+        );
     }
 
     /**

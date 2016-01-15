@@ -33,6 +33,19 @@ define(
         });
 
         /**
+         * Title Helper
+         */
+        Handlebars.registerHelper('title', function(message) {
+            return message
+                .replace(/[-_]/g, ' ')
+                .toLowerCase()
+                .replace(/\b[a-z]/g, function(letter) {
+                    return letter.toUpperCase();
+                })
+                ;
+        });
+
+        /**
          * Date Helper
          */
         Handlebars.registerHelper('date', function(dateString, context) {
