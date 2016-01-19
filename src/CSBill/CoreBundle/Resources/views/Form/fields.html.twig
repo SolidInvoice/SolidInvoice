@@ -257,7 +257,7 @@
 {% block cron_widget %}
     {% set type = 'hidden' %}
     {{ block('form_widget') }}
-    <script>
+    {#<script>
         $(function () {
             var d = new Date();
 
@@ -276,5 +276,5 @@
                 default_value: (Math.floor(d.getMinutes() / 5) * 5) + ' ' + d.getHours() + ' ' + d.getDate() + ' ' + (d.getMonth() + 1) + ' *'
             });
         });
-    </script>
+    </script>#}
 {% endblock cron_widget %}

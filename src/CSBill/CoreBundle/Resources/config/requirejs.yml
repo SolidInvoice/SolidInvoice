@@ -3,9 +3,6 @@ config:
         bootstrap:
             deps:
                 - jquery
-        bootstrap-model:
-            deps:
-                - jquery
         jquery.select2:
             deps:
                 - jquery
@@ -27,7 +24,6 @@ config:
             deps:
                 - jquery
                 - bootstrap
-                - bootstrap.modal
         bootstrap.material.datetimepicker:
             deps:
                 - jquery
@@ -87,6 +83,7 @@ config:
             underscore: lodash
             'handlebars.runtime': csbillcore/js/extend/handlebars/helpers
             parsley: csbillcore/js/extend/parsley
+            'bootstrap.modal': csbillcore/js/extend/modal
         'csbillcore/js/extend/handlebars/helpers':
             handlebars.runtime: handlebars.runtime
             routing: routing
@@ -95,6 +92,8 @@ config:
             translation_data: translation_data
         'csbillcore/js/extend/parsley':
             parsley: parsley
+        'csbillcore/js/extend/modal':
+            bootstrap.modal: bootstrap.modal
 build:
     paths:
         bootstrap.material.datetimepicker: 'empty:'

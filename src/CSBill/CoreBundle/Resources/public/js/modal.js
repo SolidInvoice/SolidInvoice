@@ -7,18 +7,6 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
             'click .btn-save': 'save'
         },
         'constructor': function(options) {
-            $.fn.modal.defaults.spinner = $.fn.modalmanager.defaults.spinner =
-                '<div class="loading-spinner">' +
-                    '<div class="progress progress-striped active">' +
-                        '<div class="progress-bar"></div>' +
-                    '</div>' +
-                '</div>';
-
-            $.fn.modal.defaults.maxHeight = function() {
-                // subtract the height of the modal header and footer
-                return $(window).height() - 165;
-            };
-
             this.listenTo(this, 'render', this.listeners.render);
             this.listenTo(this, 'save', this.listeners.save);
 

@@ -7,6 +7,14 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set items = form.items.vars.prototype|keys %}
+{% set module = 'invoice/create' %}
+{% set moduleData = {
+    'client': form.client.vars.data,
+    'clientForm': block('form_client')
+    }
+%}
+
 {% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
@@ -16,8 +24,6 @@
 {% block sidebar %}
     {{ menu('invoices_create') }}
 {% endblock sidebar %}
-
-{% set items = form.items.vars.prototype|keys %}
 
 {% block form_row %}
     {% if prototype is not defined %}
@@ -48,8 +54,7 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-xs-6">
-                            {{ block('form_client') }}
+                        <div class="col-xs-6" id="client-info">
                         </div>
                         <div class="col-xs-6 text-right">
                             {{ block('form_discount') }}
@@ -123,9 +128,11 @@
 {% endblock content %}
 
 {% block form_client %}
-    {{ form_row(form.client) }}
+    <div id="client-select">
+        {{ form_row(form.client) }}
+    </div>
 
-    <div id="{{ form.client.vars.id }}-container">
+    <div id="client-select-container">
         {% if form.client.vars.data %}
             {% include "CSBillClientBundle:Ajax:info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
         {% endif %}
@@ -241,10 +248,7 @@
 {% endblock form_buttons %}
 
 {% block script %}
-    {% spaceless %}
-        {% if form.client.vars.data %}
-            $('#{{ form.client.vars.id }}').parents('div.form-group').hide();
-        {% endif %}
+    {#{% spaceless %}
 
         var clientSelect = $('#{{ form.client.vars.id }}');
 
@@ -295,15 +299,15 @@
         if ($('#invoice_recurring').is(':checked')) {
             $('.recurring-info').removeClass('hidden');
         }
-    {% endspaceless %}
+    {% endspaceless %}#}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
-    {% javascripts
+    {#{% javascripts
         "@CSBillInvoiceBundle/Resources/public/js/invoices.js"
         filter="?yui_js" %}
             <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {% endjavascripts %}#}
 {% endblock %}

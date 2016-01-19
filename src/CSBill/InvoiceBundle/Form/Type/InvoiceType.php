@@ -31,7 +31,7 @@ class InvoiceType extends AbstractType
             null,
             [
                 'attr' => [
-                    'class' => 'select2',
+                    'class' => 'select2 client-select',
                 ],
                 'placeholder' => 'invoice.client.choose',
             ]

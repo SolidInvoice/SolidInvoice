@@ -1,36 +1,37 @@
-define(['marionette', 'core/ajaxmodal'], function(Mn, AjaxModal) {
+define(['marionette', 'jquery', 'core/ajaxmodal', 'material', 'bootstrap.modalmanager'], function(Mn, $) {
     "use strict";
 
     return Mn.ItemView.extend({
-        onShow  : function() {
-            this._onRender();
-        },
-        onRender: function() {
-            this._onRender();
-        },
-        _onRender: function() {
-            var tooltip = this.$('*[rel=tooltip]');
-            if (tooltip.length) {
-                require(['bootstrap'], function() {
-                    tooltip.tooltip();
-                });
-            }
-        },
-        ajaxModal: function(event) {
-            event.preventDefault();
+        constructor: function(options) {
+            this.listenTo(this, 'render', function() {
+                setTimeout(function() {
+                    $.material.init();
 
-            var ajaxModel = new AjaxModal({
-                model: this.model,
-                el   : this.$el
+                    var select2 = this.$('select.select2');
+                    if (select2.length) {
+                        require(['jquery.select2'], function() {
+                            select2.select2({
+                                allowClear: true
+                            });
+                        });
+                    }
+
+                    var tooltip = this.$('*[rel=tooltip]');
+                    if (tooltip.length) {
+                        require(['bootstrap'], function() {
+                            tooltip.tooltip();
+                        });
+                    }
+                }, 0);
             });
 
-            return ajaxModel.load(event.target);
+            Mn.ItemView.call(this, options);
         },
         showLoader: function() {
-            return this.$el.modal('loading');
+            return this.$el.modalmanager('loading');
         },
         hideLoader: function() {
-            return this.$el.modal('loading');
+            return this.$el.modalmanager('loading');
         }
     });
 });
