@@ -8,10 +8,18 @@
  #}
 
 {% set items = form.items.vars.prototype|keys %}
+{% set fieldData = {} %}
 {% set module = 'invoice/create' %}
+
+{% for item in items %}
+    {% set fieldData = fieldData|merge({(item): form_widget(form.items.vars.prototype[item])}) %}
+{% endfor %}
+
 {% set moduleData = {
     'client': form.client.vars.data,
-    'clientForm': block('form_client')
+    'clientForm': block('form_client'),
+    'fieldData': fieldData,
+    'invoice': invoice is defined ? invoice : null
     }
 %}
 
@@ -96,11 +104,8 @@
                 </div>
             </div>
 
-            <div class="row">
-                {{ block('form_items') }}
-
-                <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "invoice.item.add"|trans }}</a>
-
+            <div class="row" id="invoice-items">
+                {#{{ block('form_items') }}#}
             </div>
 
             <br class="clear"/>
@@ -144,15 +149,15 @@
 {% endblock form_discount %}
 
 {% block form_items %}
-    <div class="row">
+    {#<div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><strong>{{ 'invoice.summary'|trans }}</strong></h3>
                 </div>
                 <div class="panel-body">
-                    <div class="table-responsive">
-                        <table id="invoice-rows" class="table table-condensed">
+                    <div class="table-responsive" id="invoice-items">
+                        #}{#<table class="table table-condensed">
                             <thead>
                             <tr>
                                 {% for item in items %}
@@ -165,7 +170,7 @@
                                 <th></th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="invoice-rows">
                             {% for item in form.items %}
                                 <tr>
                                     {% for key, field in item.children|keys %}
@@ -224,12 +229,14 @@
                                 <td class="no-line"></td>
                             </tr>
                             </tfoot>
-                        </table>
+                        </table>#}{#
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "invoice.item.add"|trans }}</a>#}
 {% endblock form_items %}
 
 {% block form_buttons %}
@@ -249,31 +256,6 @@
 
 {% block script %}
     {#{% spaceless %}
-
-        var clientSelect = $('#{{ form.client.vars.id }}');
-
-        clientSelect.on('change', function(){
-            $('body').modalmanager('loading');
-
-            var clientSelectContainer = $(this).closest('div.form-group'),
-            client_id = $(':selected', this).val();
-
-            $.getJSON(Routing.generate('_clients_info', {"id" : client_id, "type" : "invoice"}), function(data) {
-                $('#{{ form.client.vars.id }}-container').html(data.content);
-                $('body').modalmanager('loading');
-                clientSelectContainer.hide();
-                $.material.init();
-            });
-        });
-
-        $('#invoice-create-form').on('click', '.client-select-change', function(evt) {
-            evt.preventDefault();
-            $('#{{ form.client.vars.id }}-container').html('');
-            clientSelect.closest('div.form-group').show();
-            clientSelect.val('');
-            clientSelect.trigger('select2-selecting');
-        });
-
         Invoice.setSelector($('#invoice-rows'));
         {% for item in items %}
             {% set field = form.items.vars.prototype[item] %}

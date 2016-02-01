@@ -58,5 +58,14 @@ define(
             return date.calendar();
         });
 
+        /**
+         * Replace Helper
+         */
+        Handlebars.registerHelper('replace', function(string, search, replace) {
+            var regexp = new RegExp(search, 'g');
+
+            return string.replace(regexp, replace);
+        });
+
         return Handlebars;
 });

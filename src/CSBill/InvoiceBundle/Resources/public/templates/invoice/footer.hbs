@@ -1,0 +1,39 @@
+<tr>
+    <td colspan="3" class="thick-line text-right"><strong>{{trans 'invoice.subtotal' }}</strong></td>
+    <td class="thick-line text-right">
+        <div class="invoice-sub-total">
+            {{currency subTotal }}
+        </div>
+    </td>
+    <td class="thick-line">
+    </td>
+</tr>
+<tr>
+    <td colspan="3" class="no-line text-right"><strong>{{trans 'invoice.tax' }}</strong></td>
+    <td class="no-line text-right">
+                                    <span class="text-danger invoice-tax">
+                                        {{currency tax }}
+                                    </span>
+    </td>
+    <td class="no-line">
+    </td>
+</tr>
+<tr>
+    <td colspan="3" class="no-line text-right"><strong>{{trans 'invoice.discount' }}</strong></td>
+    <td class="no-line text-right">
+                                    <span class="text-success invoice-discount">
+                                        {{currency discount }}
+                                    </span>
+    </td>
+    <td class="no-line">
+    </td>
+</tr>
+<tr>
+    <td colspan="3" class="no-line text-right"><strong>{{trans 'invoice.total' }}</strong></td>
+    <td class="no-line text-right">
+        <div class="invoice-total">
+            {{currency total }}
+        </div>
+    </td>
+    <td class="no-line"></td>
+</tr>
