@@ -1,6 +1,6 @@
 define(
-    ['core/module', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select'],
-    function(Module, Mn, Backbone, _, Template, Accounting, ClientSelectView) {
+    ['core/module', 'jquery', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select'],
+    function(Module, $, Mn, Backbone, _, Template, Accounting, ClientSelectView) {
         "use strict";
 
         var ViewModel = Backbone.Model.extend({
@@ -11,6 +11,12 @@ define(
                 total: 0
             }
         });
+        
+        var InvoiceModel = new (Backbone.Model.extend({
+                defaults: {
+                    total: 0
+                }
+            }));
 
         var viewModel = new ViewModel();
 
@@ -24,9 +30,12 @@ define(
                 _.each(this.models, function(model) {
                     total += model.get('total');
                 });
+                
+                var discount = (total * InvoiceModel.get('total')) / 100;
 
-                viewModel.set('total', total);
                 viewModel.set('subTotal', total);
+                viewModel.set('total', total - discount);
+                viewModel.set('discount', discount);
 
                 this.trigger('update:totals');
             }
@@ -44,6 +53,7 @@ define(
                 this.app.getRegion('clientInfo').show(new ClientSelectView(_.merge(options, viewOptions)));
             },
             initialize: function(options) {
+                
                 var Model = Backbone.Model.extend({
                     defaults: {
                         fields: options.fieldData,
@@ -62,6 +72,21 @@ define(
 
                 var collection = new Collection([model]);
                 var counter = collection.size();
+
+                var InvoiceView = new (Mn.ItemView.extend({
+                    el: '#discount',
+                    ui: {
+                        discount: '#invoice_discount'
+                    },
+                    events: {
+                        'keyup @ui.discount': 'setDiscount'
+                    },
+                    setDiscount: function (event) {
+                        this.model.set('total', $(event.target).val());
+                        
+                        collection.trigger('change');
+                    }
+                }))({model: InvoiceModel});
 
                 var childView = Mn.ItemView.extend({
                     template: Template['invoice/row'],
@@ -96,6 +121,8 @@ define(
 
                         this.model.set('total', amount);
                         this.$('.column-total').html(Accounting.formatMoney(this.model.get('total')));
+                        
+                        console.log(InvoiceModel);
                     }
                 });
 

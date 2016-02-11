@@ -13,6 +13,7 @@ namespace CSBill\CoreBundle\Traits\Entity;
 
 use APY\DataGridBundle\Grid\Mapping as GRID;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
 
 trait TimeStampable
 {
@@ -21,7 +22,7 @@ trait TimeStampable
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
-     * @Serializer\Groups({"js"})
+     * @Serialize\Groups({"js"})
      */
     protected $created;
 
@@ -31,7 +32,7 @@ trait TimeStampable
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      * @GRID\Column(visible=false)
-     * @Serializer\Groups({"js"})
+     * @Serialize\Groups({"js"})
      */
     protected $updated;
 
