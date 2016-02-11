@@ -67,5 +67,12 @@ define(
             return string.replace(regexp, replace);
         });
 
+        /**
+         * Ternary Helper
+         */
+        Handlebars.registerHelper('ternary', function(test, yes, no) {
+            return test ? yes : no;
+        });
+
         return Handlebars;
 });

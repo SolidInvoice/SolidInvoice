@@ -19,7 +19,8 @@
     'client': form.client.vars.data,
     'clientForm': block('form_client'),
     'fieldData': fieldData,
-    'invoice': invoice|default(null)
+    'invoice': invoice|default(null),
+    'tax': taxRatesConfigured()
     }
 %}
 
@@ -44,7 +45,6 @@
 {% endblock %}
 
 {% block content %}
-
     {{ form_start(form, {'attr' : {'id' : 'invoice-create-form'} }) }}
 
     {{ form_errors(form) }}

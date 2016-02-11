@@ -47,4 +47,15 @@ class TaxRepository extends EntityRepository
 
         return $query->getArrayResult();
     }
+
+    /**
+     * @return bool
+     */
+    public function taxRatesConfigured()
+    {
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->select('COUNT(t.id)');
+
+        return $queryBuilder->getQuery()->getSingleScalarResult() > 0;
+    }
 }

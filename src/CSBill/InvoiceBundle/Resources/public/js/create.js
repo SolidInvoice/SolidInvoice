@@ -8,7 +8,8 @@ define(
                 subTotal: 0,
                 discount: 0,
                 tax: 0,
-                total: 0
+                total: 0,
+                hasTax: false
             }
         });
 
@@ -53,6 +54,7 @@ define(
                 this.app.getRegion('clientInfo').show(new ClientSelectView(_.merge(options, viewOptions)));
             },
             initialize: function(options) {
+                viewModel.set('hasTax', options.tax);
 
                 var recurring = $('#invoice_recurring'),
                     recurringInfo = $('.recurring-info');
