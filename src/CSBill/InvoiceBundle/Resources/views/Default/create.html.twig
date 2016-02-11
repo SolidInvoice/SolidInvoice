@@ -19,7 +19,7 @@
     'client': form.client.vars.data,
     'clientForm': block('form_client'),
     'fieldData': fieldData,
-    'invoice': invoice is defined ? invoice : null
+    'invoice': invoice|default(null)
     }
 %}
 

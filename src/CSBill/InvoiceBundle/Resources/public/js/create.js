@@ -1,6 +1,6 @@
 define(
-    ['core/module', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select'],
-    function(Module, Mn, Backbone, _, Template, Accounting, ClientSelectView) {
+    ['core/module', 'jquery', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select'],
+    function(Module, $, Mn, Backbone, _, Template, Accounting, ClientSelectView) {
         "use strict";
 
         var ViewModel = Backbone.Model.extend({
@@ -53,6 +53,17 @@ define(
                 this.app.getRegion('clientInfo').show(new ClientSelectView(_.merge(options, viewOptions)));
             },
             initialize: function(options) {
+
+                var recurring = $('#invoice_recurring'),
+                    recurringInfo = $('.recurring-info');
+
+                recurring.on('change', function () {
+                   recurringInfo.toggleClass('hidden');
+                });
+
+                if (recurring.is(':checked')) {
+                    recurringInfo.removeClass('hidden');
+                }
 
                 var Model = Backbone.Model.extend({
                     defaults: {
