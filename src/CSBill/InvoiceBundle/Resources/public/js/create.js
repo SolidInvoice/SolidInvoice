@@ -1,6 +1,6 @@
 define(
-    ['core/module', 'jquery', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select'],
-    function(Module, $, Mn, Backbone, _, Template, Accounting, ClientSelectView) {
+    ['core/module', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select'],
+    function(Module, Mn, Backbone, _, Template, Accounting, ClientSelectView) {
         "use strict";
 
         var ViewModel = Backbone.Model.extend({
@@ -11,7 +11,7 @@ define(
                 total: 0
             }
         });
-        
+
         var InvoiceModel = new (Backbone.Model.extend({
                 defaults: {
                     total: 0
@@ -30,7 +30,7 @@ define(
                 _.each(this.models, function(model) {
                     total += model.get('total');
                 });
-                
+
                 var discount = (total * InvoiceModel.get('total')) / 100;
 
                 viewModel.set('subTotal', total);
@@ -53,7 +53,7 @@ define(
                 this.app.getRegion('clientInfo').show(new ClientSelectView(_.merge(options, viewOptions)));
             },
             initialize: function(options) {
-                
+
                 var Model = Backbone.Model.extend({
                     defaults: {
                         fields: options.fieldData,
@@ -83,7 +83,7 @@ define(
                     },
                     setDiscount: function (event) {
                         this.model.set('total', $(event.target).val());
-                        
+
                         collection.trigger('change');
                     }
                 }))({model: InvoiceModel});
@@ -121,8 +121,6 @@ define(
 
                         this.model.set('total', amount);
                         this.$('.column-total').html(Accounting.formatMoney(this.model.get('total')));
-                        
-                        console.log(InvoiceModel);
                     }
                 });
 
