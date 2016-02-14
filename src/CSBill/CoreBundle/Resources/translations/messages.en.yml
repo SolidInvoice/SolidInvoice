@@ -8,6 +8,12 @@ menu:
     button:
         create: Create
 
+billing:
+    subtotal: SubTotal
+    tax: Tax
+    discount: Discount
+    total: Total
+
 powered_by: Powered By
 invalid_file: Invalid File
 upload_error: There was an error uploading the file

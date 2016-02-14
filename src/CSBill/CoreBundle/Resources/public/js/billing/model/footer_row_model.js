@@ -1,11 +1,11 @@
 define(['backbone'], function (Backbone) {
     return Backbone.Model.extend({
         defaults: {
-            fields: {},
-            description: '',
-            price: 0,
-            qty: 0,
-            total: 0
+            subTotal: 0,
+            discount: 0,
+            tax: {},
+            total: 0,
+            hasTax: false
         }
     });
 });
