@@ -1,42 +1,45 @@
 define(
-    ['core/module', 'jquery', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select'],
-    function(Module, $, Mn, Backbone, _, Template, Accounting, ClientSelectView) {
+    ['core/module', 'jquery', 'marionette', 'backbone', 'lodash', 'template', 'accounting', 'client/view/client_select', 'core/billing/model/row_model', 'core/billing/model/billing_model'],
+    function(Module, $, Mn, Backbone, _, Template, Accounting, ClientSelectView, ViewModel, InvoiceModel) {
         "use strict";
 
-        var ViewModel = Backbone.Model.extend({
-            defaults: {
-                subTotal: 0,
-                discount: 0,
-                tax: 0,
-                total: 0,
-                hasTax: false
-            }
-        });
-
-        var InvoiceModel = new (Backbone.Model.extend({
-                defaults: {
-                    total: 0
-                }
-            }));
-
-        var viewModel = new ViewModel();
+        var invoiceModel = new InvoiceModel(),
+            viewModel = new ViewModel();
 
         var Collection = Backbone.Collection.extend({
             initialize: function() {
                 this.listenTo(this, 'change reset add remove', this.updateTotals);
             },
             updateTotals: function() {
-                var total = 0;
+                var total = 0,
+                    tax = 0,
+                    subTotal = 0;
 
                 _.each(this.models, function(model) {
-                    total += model.get('total');
+                    var rowTotal = model.get('total'),
+                        rowTax = model.get('tax');
+
+                    total += rowTotal;
+                    subTotal += rowTotal;
+
+                    if (!_.isEmpty(rowTax)) {
+                        var taxAmount = rowTotal * parseFloat(rowTax.rate);
+                        tax += taxAmount;
+
+                        if ('inclusive' === rowTax.type) {
+                            subTotal -= taxAmount;
+                        } else {
+                            total += taxAmount;
+                        }
+                    }
                 });
 
-                var discount = (total * InvoiceModel.get('total')) / 100;
+                var discount = (total * invoiceModel.get('total')) / 100;
 
-                viewModel.set('subTotal', total);
+                viewModel.set('subTotal', subTotal);
                 viewModel.set('total', total - discount);
                 viewModel.set('discount', discount);
+                viewModel.set('tax', tax);
 
                 this.trigger('update:totals');
             }
@@ -48,8 +51,8 @@ define(
                 'invoiceRows': '#invoice-items'
             },
             _renderClientSelect: function(options) {
-                var model = new Backbone.Model(options.client);
-                var viewOptions = {type: 'invoice', model: model};
+                var model = new Backbone.Model(options.client),
+                    viewOptions = {type: 'invoice', model: model};
 
                 this.app.getRegion('clientInfo').show(new ClientSelectView(_.merge(options, viewOptions)));
             },
@@ -83,10 +86,10 @@ define(
                     id: 0
                 });
 
-                var collection = new Collection([model]);
-                var counter = collection.size();
+                var collection = new Collection([model]),
+                    counter = collection.size();
 
-                var InvoiceView = new (Mn.ItemView.extend({
+                new (Mn.ItemView.extend({
                     el: '#discount',
                     ui: {
                         discount: '#invoice_discount'
@@ -99,7 +102,7 @@ define(
 
                         collection.trigger('change');
                     }
-                }))({model: InvoiceModel});
+                }))({model: invoiceModel});
 
                 var childView = Mn.ItemView.extend({
                     template: Template['invoice/row'],
@@ -110,7 +113,8 @@ define(
                     },
                     events: {
                         'click @ui.removeItem': 'removeItem',
-                        'keyup @ui.input': 'calcPrice'
+                        'keyup @ui.input': 'calcPrice',
+                        'change @ui.input': 'calcPrice'
                     },
                     removeItem: function(event) {
                         event.preventDefault();
@@ -125,6 +129,10 @@ define(
 
                             if ('price' === type) {
                                 val = Accounting.unformat(val);
+                            }
+
+                            if ('tax' === type) {
+                                val = $this.find(':selected').data();
                             }
 
                             this.model.set(type, val);

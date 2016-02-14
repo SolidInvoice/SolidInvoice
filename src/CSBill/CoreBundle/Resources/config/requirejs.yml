@@ -68,12 +68,8 @@ config:
         bootstrap.modal: csbillcore/js/lib/bootstrap/modal.js
         bootstrap.modalmanager: csbillcore/js/lib/bootstrap/modalmanager.js
         bootstrap.material.datetimepicker: csbillcore/js/lib/bootstrap/material-datetimepicker.js
-        'core/app': csbillcore/js/app
-        'core/datetimepicker': csbillcore/js/datetimepicker
+        'core': csbillcore/js/
         'core/view': csbillcore/js/itemview
-        'core/modal': csbillcore/js/modal
-        'core/ajaxmodal': csbillcore/js/ajaxmodal
-        'core/module': csbillcore/js/module
         'util/form/collection': csbillcore/js/util/form/collection
         'template': ../js/hbs-templates.js
         'handlebars.runtime': csbillcore/js/lib/handlebars/handlebars.js
