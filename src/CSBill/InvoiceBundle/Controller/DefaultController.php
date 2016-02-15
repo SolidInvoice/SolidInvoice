@@ -85,6 +85,7 @@ class DefaultController extends BaseController
 
         $form->handleRequest($request);
 
+
         if ($form->isValid()) {
             $action = $request->request->get('save');
             $invoiceManager = $this->get('invoice.manager');

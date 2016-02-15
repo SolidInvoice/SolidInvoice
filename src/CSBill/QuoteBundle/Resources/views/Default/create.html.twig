@@ -7,6 +7,23 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set items = form.items.vars.prototype|keys %}
+{% set fieldData = {} %}
+{% set module = 'quote/create' %}
+
+{% for item in items %}
+    {% set fieldData = fieldData|merge({(item): form_widget(form.items.vars.prototype[item])}) %}
+{% endfor %}
+
+{% set moduleData = {
+    'client': form.client.vars.data,
+    'clientForm': block('form_client'),
+    'fieldData': fieldData,
+    'invoice': quote|default(null),
+    'tax': taxRatesConfigured()
+    }
+%}
+
 {% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
@@ -48,37 +65,35 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-6" id="client-info">
                             {{ block('form_client') }}
                         </div>
-                        <div class="col-xs-6 text-right">
+                        <div class="col-xs-6 text-right" id="discount">
                             {{ block('form_discount') }}
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{ block('form_items') }}
-
-            <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "quote.item.add"|trans }}</a>
-
-        </div>
-
-        <br class="clear"/>
-
-        <div class="row">
-            <div class="col-lg-6">
-                {{ form_row(form.terms) }}
+            <div class="row" id="quote-items">
             </div>
-            <div class="col-lg-6">
-                {{ form_row(form.notes) }}
+
+            <br class="clear"/>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    {{ form_row(form.terms) }}
+                </div>
+                <div class="col-lg-6">
+                    {{ form_row(form.notes) }}
+                </div>
             </div>
-        </div>
 
-        {{ form_rest(form) }}
+            {{ form_rest(form) }}
 
-        <div class="form-actions">
-            {{ block('form_buttons') }}
+            <div class="form-actions">
+                {{ block('form_buttons') }}
+            </div>
         </div>
     </div>
 
@@ -86,9 +101,11 @@
 {% endblock content %}
 
 {% block form_client %}
-    {{ form_row(form.client) }}
+    <div id="client-select">
+        {{ form_row(form.client) }}
+    </div>
 
-    <div id="{{ form.client.vars.id }}-container">
+    <div id="client-select-container">
         {% if form.client.vars.data %}
             {% include "CSBillClientBundle:Ajax:info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
         {% endif %}
@@ -98,94 +115,6 @@
 {% block form_discount %}
     {{ form_row(form.discount) }}
 {% endblock form_discount %}
-
-{% block form_items %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><strong>{{ 'quote.summary'|trans }}</strong></h3>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-
-                        <table id="quote-rows" class="table table-condensed">
-                            <thead>
-                                <tr>
-                                    {% for item in items %}
-                                        {% set field = form.items.vars.prototype[item] %}
-                                        <th>
-                                            {{ form_label(field) }}
-                                        </th>
-                                    {% endfor %}
-                                    <th class="text-right">{{ 'quote.total'|trans }}</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in form.items %}
-                                    <tr>
-                                        {% for key, field in item.children|keys %}
-                                            <td class="column-{{ field }}">
-                                                {% set error = form_errors(item[field]) %}
-
-                                                {% if error|trim is not empty %}
-                                                    <div class="form-group has-error">
-                                                        {{ form_widget(item[field]) }}
-                                                        {{ error|raw }}
-                                                    </div>
-                                                {% else %}
-                                                    {{ form_widget(item[field]) }}
-                                                {% endif %}
-                                            </td>
-                                        {% endfor %}
-                                        <td class="column-total">
-                                        </td>
-                                        <td>
-                                            <a href="#" class="remove-item" rel="tooltip" title="{{ 'quote.item.remove'|trans }}">{{ icon('trash', ['o']) }}</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" class="thick-line text-right"><strong>{{ 'quote.subtotal'|trans }}</strong></td>
-                                    <td class="thick-line text-right">
-                                        <div class="quote-sub-total"></div>
-                                    </td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                {% if form.tax is defined %}
-                                    <tr>
-                                        <td colspan="4" class="no-line text-right"><strong>{{ 'quote.tax'|trans }}</strong></td>
-                                        <td class="no-line text-right">
-                                            <span class="text-error quote-tax"></span>
-                                        </td>
-                                        <td class="no-line"></td>
-                                    </tr>
-                                {% endif %}
-                                <tr>
-                                    <td colspan="4" class="no-line text-right"><strong>{{ 'quote.discount'|trans }}</strong></td>
-                                    <td class="no-line text-right">
-                                        <span class="text-success quote-discount"></span>
-                                    </td>
-                                    <td class="no-line"></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="no-line text-right"><strong>{{ 'quote.total'|trans }}</strong></td>
-                                    <td class="no-line text-right">
-                                        <div class="quote-total"></div>
-                                    </td>
-                                    <td class="no-line"></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock form_items %}
 
 {% block form_buttons %}
     <div class="pull-left">
@@ -201,67 +130,3 @@
 
     <br class="clear" />
 {% endblock form_buttons %}
-
-{% block script %}
-{% spaceless %}
-    {% if form.client.vars.data %}
-        $('#{{ form.client.vars.id }}').parents('div.form-group').hide();
-    {% endif %}
-
-    var clientSelect = $('#{{ form.client.vars.id }}');
-
-    clientSelect.on('change', function(){
-
-        $('body').modalmanager('loading');
-
-        var clientSelectContainer = $(this).closest('div.form-group'),
-            client_id = $(':selected', this).val();
-
-        $.getJSON(Routing.generate('_clients_info', {"id" : client_id, "type" : "quote"}), function(data) {
-            $('#{{ form.client.vars.id }}-container').html(data.content);
-            $('body').modalmanager('loading');
-            clientSelectContainer.hide();
-            $.material.init();
-        });
-    });
-
-    $('#quote-create-form').on('click', '.client-select-change', function(evt) {
-        evt.preventDefault();
-        $('#{{ form.client.vars.id }}-container').html('');
-        clientSelect.closest('div.form-group').show();
-        clientSelect.val('');
-        clientSelect.trigger('select2-selecting');
-    });
-
-    Quote.setSelector($('#quote-rows'));
-
-    {% for item in items %}
-        {% set field = form.items.vars.prototype[item] %}
-        Quote.addTemplate('{{ item }}', '{{ form_widget(field) }}');
-        Quote.addField("{{ item }}");
-    {% endfor %}
-
-    Quote.addTemplate('total', accounting.formatMoney(0));
-    Quote.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="{{ 'quote.item.remove'|trans }}">{{ icon('trash', ['o']) }}</a>');
-    Quote.addField("total");
-    Quote.addField("trash");
-
-    {% if form.items|length == 0 %}
-        Quote.addRow();
-    {% else %}
-        Quote.counter = {{ form.items|length }};
-    {% endif %}
-
-{% endspaceless %}
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-    {% javascripts
-       "@CSBillQuoteBundle/Resources/public/js/quotes.js"
-       filter="?yui_js"
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
