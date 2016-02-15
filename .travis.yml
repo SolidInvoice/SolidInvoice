@@ -27,7 +27,7 @@ before_install:
 
 install:
   - composer install --prefer-source -n
-  - sed -i 's/base_url:\ ~/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
+  - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
   - php app/console assets:install -n
   - php app/console assetic:dump -n
 
