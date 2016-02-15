@@ -28,7 +28,7 @@ before_install:
 install:
   - composer install --prefer-source -n
   - php app/console assets:install -n
-  - php app/console assetic:dump -n
+  - php app/console assetic:dump -n -vvv
 
 before_script:
   - mysql -e 'create database csbill;'
