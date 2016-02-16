@@ -10,15 +10,20 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Description
+                                    {{trans "invoice.item.heading.description"}}
                                 </th>
                                 <th>
-                                    Price
+                                    {{trans "invoice.item.heading.price"}}
                                 </th>
                                 <th>
-                                    Qty
+                                    {{trans "invoice.item.heading.qty"}}
                                 </th>
-                                <th class="text-right">{{trans 'invoice.total' }}</th>
+                                {{#if hasTax}}
+                                    <th>
+                                        {{trans "invoice.item.heading.tax"}}
+                                    </th>
+                                {{/if}}
+                                <th class="text-right">{{trans 'invoice.item.heading.total' }}</th>
                                 <th></th>
                             </tr>
                         </thead>

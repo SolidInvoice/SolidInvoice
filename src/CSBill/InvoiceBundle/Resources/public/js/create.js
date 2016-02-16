@@ -79,7 +79,8 @@ define(
                                 'collection': collection,
                                 'footerView': new FooterView({model: footerRowModel}),
                                 'selector': '#invoice-footer',
-                                'fieldData': options.fieldData
+                                'fieldData': options.fieldData,
+                                'hasTax': options.tax
                             }
                         )
                     );

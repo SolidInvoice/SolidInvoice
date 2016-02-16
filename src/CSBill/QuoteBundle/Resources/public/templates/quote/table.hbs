@@ -10,15 +10,21 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Description
+                                    {{trans "quote.item.heading.description"}}
                                 </th>
                                 <th>
-                                    Price
+                                    {{trans "quote.item.heading.price"}}
                                 </th>
                                 <th>
-                                    Qty
+                                    {{trans "quote.item.heading.qty"}}
                                 </th>
-                                <th class="text-right">{{trans 'quote.total' }}</th>
+
+                                {{#if hasTax}}
+                                    <th>
+                                        {{trans "quote.item.heading.tax"}}
+                                    </th>
+                                {{/if}}
+                                <th class="text-right">{{trans "quote.item.heading.total"}}</th>
                                 <th></th>
                             </tr>
                         </thead>

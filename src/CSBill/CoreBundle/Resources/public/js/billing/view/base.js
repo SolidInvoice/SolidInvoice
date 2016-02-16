@@ -7,11 +7,16 @@ define(
             selector: null,
             footerView: null,
             counter: 0,
+            hasTax: null,
+            templateHelpers: function() {
+                return { hasTax: this.hasTax };
+            },
             initialize: function (options) {
                 this.footerView = options.footerView;
                 this.selector = options.selector;
                 this.fieldData = options.fieldData;
                 this.counter = this.collection.size();
+                this.hasTax = options.hasTax;
             },
             ui: {
                 'addItem': '.add-item'
