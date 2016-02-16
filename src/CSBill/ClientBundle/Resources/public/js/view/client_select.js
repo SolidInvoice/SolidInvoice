@@ -42,16 +42,25 @@ define(
                     Routing.generate('_clients_info', {id: event.val, type: this.getOption('type')}),
                     _.bind(function(data) {
                         this.$('#client-select-container').html(data.content);
-                        this._toggleContactInfo();
+                        this._toggleContactInfo(true);
 
                         $.material.init();
                         this.hideLoader();
                     }, this)
                 );
             },
-            _toggleContactInfo: function () {
+            _toggleContactInfo: function (show) {
                 this.$('#client-select').toggle();
-                this.$('#client-select-container').toggle();
+
+                if (!_.isUndefined(show)) {
+                    if (true === show) {
+                        this.$('#client-select-container').show();
+                    } else {
+                        this.$('#client-select-container').hide();
+                    }
+                } else {
+                    this.$('#client-select-container').toggle();
+                }
             }
         });
     });
