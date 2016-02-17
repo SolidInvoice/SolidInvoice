@@ -60,13 +60,26 @@ define(
 
                 this._renderClientSelect(options);
 
-                var model = new RowModel({
-                    id: 0,
-                    fields: options.fieldData
-                });
+                var models = [];
+
+                if (!_.isEmpty(options.formData)) {
+                    var counter = 0;
+
+                    _.each(options.formData, function (item) {
+                        models.push(new RowModel({
+                            id: counter++,
+                            fields: item
+                        }));
+                    });
+                } else {
+                    models.push(new RowModel({
+                        id: 0,
+                        fields: options.fieldData
+                    }));
+                }
 
                 /* COLLECTION */
-                var collection = new Collection([model], {"discountModel": discountModel, 'footerModel': footerRowModel});
+                var collection = new Collection(models, {"discountModel": discountModel, 'footerModel': footerRowModel});
 
                 /* DISCOUNT */
                 new Discount({model: discountModel, collection: collection});

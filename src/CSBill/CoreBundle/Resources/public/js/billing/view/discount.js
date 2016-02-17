@@ -8,6 +8,9 @@ define(['marionette'], function (Mn) {
             this.model.set('total', $(event.target).val());
 
             this.getOption('collection').trigger('change');
+        },
+        initialize: function () {
+            this.setDiscount({target: this.ui.discount});
         }
     });
 });

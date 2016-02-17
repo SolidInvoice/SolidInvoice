@@ -15,10 +15,23 @@
     {% set fieldData = fieldData|merge({(item): form_widget(form.items.vars.prototype[item])}) %}
 {% endfor %}
 
+{% for index, item in form.items %}
+    {% set fields = {} %}
+
+    {% for field in item.children|keys %}
+        {% set fields = fields|merge({(field): form_widget(item[field])}) %}
+    {% endfor %}
+
+    {% set formData = formData|merge({(index) : fields}) %}
+
+    {% do item.setRendered() %}
+{% endfor %}
+
 {% set moduleData = {
     'client': form.client.vars.data,
     'clientForm': block('form_client'),
     'fieldData': fieldData,
+    'formData': formData,
     'invoice': invoice|default(null),
     'tax': taxRatesConfigured()
     }

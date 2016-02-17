@@ -1,4 +1,4 @@
-define(['marionette', 'template', 'accounting'], function (Mn, Template, Accounting) {
+define(['marionette', 'template', 'lodash', 'accounting'], function (Mn, Template, _, Accounting) {
     return Mn.ItemView.extend({
         template: Template['invoice/row'],
         tagName: 'tr',
@@ -15,6 +15,9 @@ define(['marionette', 'template', 'accounting'], function (Mn, Template, Account
             event.preventDefault();
 
             this.model.collection.remove(this.model);
+        },
+        initialize: function () {
+            setTimeout(_.bind(this.calcPrice, this), 0);
         },
         calcPrice: function() {
             this.$(':input').each(_.bind(function(index, input) {
