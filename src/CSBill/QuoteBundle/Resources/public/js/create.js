@@ -67,8 +67,6 @@ define(
                 /* COLLECTION */
                 var collection = new Collection(models, {"discountModel": discountModel, 'footerModel': footerRowModel});
 
-                console.log(collection);
-
                 /* DISCOUNT */
                 new Discount({model: discountModel, collection: collection});
 
