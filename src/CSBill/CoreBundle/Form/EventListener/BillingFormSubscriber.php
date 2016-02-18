@@ -12,8 +12,8 @@
 namespace CSBill\CoreBundle\Form\EventListener;
 
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\QuoteBundle\Entity\Item as QuoteItem;
 use CSBill\InvoiceBundle\Entity\Item as InvoiceItem;
+use CSBill\QuoteBundle\Entity\Item as QuoteItem;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\TaxBundle\Entity\Tax;
 use Money\Currency;
@@ -60,7 +60,6 @@ class BillingFormSubscriber implements EventSubscriberInterface
 
         $object->getItems()->forAll(function ($key, $item) use (&$total, &$tax, &$subTotal) {
             /** @var QuoteItem|InvoiceItem $item */
-
             if (null === $item->getQty()) {
                 return false;
             }

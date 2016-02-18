@@ -35,16 +35,16 @@ class TaxExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('taxRatesConfigured', [$this, 'taxRatesConfigured'])
+            new \Twig_SimpleFunction('taxRatesConfigured', [$this, 'taxRatesConfigured']),
         ];
     }
-    
+
     /**
      * @return true
      */
     public function taxRatesConfigured()
     {
-       return $this->repository->taxRatesConfigured();
+        return $this->repository->taxRatesConfigured();
     }
 
     /**

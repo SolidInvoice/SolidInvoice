@@ -37,8 +37,7 @@ class TemplatesCompileCommand extends ContainerAwareCommand
     {
         $this->setName('handlebars:compile')
             ->setDescription('Pre-compiles all the handlebars templates')
-            ->addOption('optimize', 'o', InputOption::VALUE_NONE, 'Optimize the compiled templates')
-        ;
+            ->addOption('optimize', 'o', InputOption::VALUE_NONE, 'Optimize the compiled templates');
     }
 
     /**
