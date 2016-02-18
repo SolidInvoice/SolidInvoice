@@ -12,7 +12,7 @@
     <tr>
         <td colspan="{{ternary hasTax 4 3 }}" class="no-line text-right"><strong>{{trans 'billing.tax' }}</strong></td>
         <td class="no-line text-right">
-            <span class="text-danger tax">
+            <span class="tax">
                 {{currency tax }}
             </span>
         </td>
@@ -23,8 +23,8 @@
 <tr>
     <td colspan="{{ternary hasTax 4 3 }}" class="no-line text-right"><strong>{{trans 'billing.discount' }}</strong></td>
     <td class="no-line text-right">
-        <span class="text-success discount">
-            {{currency discount }}
+        <span class="text-danger discount">
+            -{{currency discount }}
         </span>
     </td>
     <td class="no-line">

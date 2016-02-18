@@ -231,7 +231,7 @@ class Item
      *
      * @return Item
      */
-    public function setTax(Tax $tax)
+    public function setTax(Tax $tax = null)
     {
         $this->tax = $tax;
 

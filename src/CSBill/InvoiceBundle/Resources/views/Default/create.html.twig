@@ -19,7 +19,20 @@
     {% set fields = {} %}
 
     {% for field in item.children|keys %}
-        {% set fields = fields|merge({(field): form_widget(item[field])}) %}
+        {% set fieldValue %}
+            {% set error = form_errors(item[field]) %}
+
+            {% if error|trim is not empty %}
+                <div class="form-group has-error">
+                    {{ form_widget(item[field]) }}
+                    {{ error|raw }}
+                </div>
+            {% else %}
+                {{ form_widget(item[field]) }}
+            {% endif %}
+        {% endset %}
+
+        {% set fields = fields|merge({(field): ''~fieldValue}) %}
     {% endfor %}
 
     {% set formData = formData|merge({(index) : fields}) %}

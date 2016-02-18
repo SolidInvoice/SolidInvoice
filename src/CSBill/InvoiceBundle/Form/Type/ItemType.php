@@ -69,7 +69,7 @@ class ItemType extends AbstractType
             )
         );
 
-        if ($this->taxRepo->getTotal() > 0) {
+        if ($this->taxRepo->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 new Tax(),

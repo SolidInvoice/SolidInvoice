@@ -36,7 +36,7 @@ define(['marionette', 'template', 'lodash', 'accounting'], function (Mn, Templat
                 this.model.set(type, val);
             }, this));
 
-            var amount = this.model.get('qty') * this.model.get('price');
+            var amount = parseFloat(this.model.get('qty')) * this.model.get('price');
 
             this.model.set('total', amount);
             this.$('.column-total').html(Accounting.formatMoney(this.model.get('total')));

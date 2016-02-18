@@ -60,6 +60,11 @@ class BillingFormSubscriber implements EventSubscriberInterface
 
         $object->getItems()->forAll(function ($key, $item) use (&$total, &$tax, &$subTotal) {
             /** @var QuoteItem|InvoiceItem $item */
+
+            if (null === $item->getQty()) {
+                return false;
+            }
+
             $rowTotal = $item->getPrice()->multiply($item->getQty());
 
             $total = $total->add($rowTotal);

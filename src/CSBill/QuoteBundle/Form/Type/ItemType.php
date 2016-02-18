@@ -69,7 +69,7 @@ class ItemType extends AbstractType
             )
         );
 
-        if ($this->taxRepo->getTotal() > 0) {
+        if ($this->taxRepo->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 new Tax(),
@@ -98,10 +98,6 @@ class ItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'CSBill\QuoteBundle\Entity\Item',
-            )
-        );
+        $resolver->setDefaults(['data_class' => 'CSBill\QuoteBundle\Entity\Item']);
     }
 }

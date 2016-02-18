@@ -4,7 +4,7 @@ define(['backbone'], function (Backbone) {
             fields: {},
             description: '',
             price: 0,
-            qty: 0,
+            qty: 1,
             total: 0
         }
     });
