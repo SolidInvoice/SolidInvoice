@@ -206,8 +206,8 @@
     {% set type = 'hidden' %}
     {{ block('form_widget') }}
     <script>
-        require(['util/form/cron'], function (Cron) {
-            Cron.jqCron('#{{ id }}');
+        require(['core/util/form/cron'], function (Cron) {
+            Cron.jqcron('#{{ id }}');
         });
     </script>
 {% endblock cron_widget %}
