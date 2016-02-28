@@ -69,7 +69,7 @@ class Version050 extends AbstractMigration
         $this->addSql('ALTER TABLE quotes CHANGE total total DOUBLE PRECISION NOT NULL, CHANGE base_total base_total DOUBLE PRECISION NOT NULL, CHANGE tax tax DOUBLE PRECISION DEFAULT NULL');
         $this->addSql('UPDATE quotes SET total = total / 100, base_total = base_total / 100, tax = tax / 100');
 
-        $this->addSql('DROP TABLE api_tokens');
         $this->addSql('DROP TABLE api_token_history');
+        $this->addSql('DROP TABLE api_tokens');
     }
 }

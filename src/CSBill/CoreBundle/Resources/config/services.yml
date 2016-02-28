@@ -93,3 +93,7 @@ services:
         public: false
         calls:
             - [setUseInlineStylesBlock, [true]]
+
+    oro.cache.abstract:
+        class: Doctrine\Common\Cache\FilesystemCache
+        arguments: [%kernel.cache_dir%/requirejs]

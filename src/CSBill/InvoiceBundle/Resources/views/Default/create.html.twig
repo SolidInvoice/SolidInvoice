@@ -7,6 +7,50 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set items = form.items.vars.prototype|keys %}
+{% set fieldData = {} %}
+{% set formData = {} %}
+{% set module = 'invoice/create' %}
+
+{% for item in items %}
+    {% set fieldData = fieldData|merge({(item): form_widget(form.items.vars.prototype[item])}) %}
+{% endfor %}
+
+{% for index, item in form.items %}
+    {% set fields = {} %}
+
+    {% for field in item.children|keys %}
+        {% set fieldValue %}
+            {% set error = form_errors(item[field]) %}
+
+            {% if error|trim is not empty %}
+                <div class="form-group has-error">
+                    {{ form_widget(item[field]) }}
+                    {{ error|raw }}
+                </div>
+            {% else %}
+                {{ form_widget(item[field]) }}
+            {% endif %}
+        {% endset %}
+
+        {% set fields = fields|merge({(field): ''~fieldValue}) %}
+    {% endfor %}
+
+    {% set formData = formData|merge({(index) : fields}) %}
+
+    {% do item.setRendered() %}
+{% endfor %}
+
+{% set moduleData = {
+    'client': form.client.vars.data,
+    'clientForm': block('form_client'),
+    'fieldData': fieldData,
+    'formData': formData,
+    'invoice': invoice|default(null),
+    'tax': taxRatesConfigured()
+    }
+%}
+
 {% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
 
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
@@ -16,8 +60,6 @@
 {% block sidebar %}
     {{ menu('invoices_create') }}
 {% endblock sidebar %}
-
-{% set items = form.items.vars.prototype|keys %}
 
 {% block form_row %}
     {% if prototype is not defined %}
@@ -30,7 +72,6 @@
 {% endblock %}
 
 {% block content %}
-
     {{ form_start(form, {'attr' : {'id' : 'invoice-create-form'} }) }}
 
     {{ form_errors(form) }}
@@ -48,10 +89,9 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-xs-6">
-                            {{ block('form_client') }}
+                        <div class="col-xs-6" id="client-info">
                         </div>
-                        <div class="col-xs-6 text-right">
+                        <div class="col-xs-6 text-right" id="discount">
                             {{ block('form_discount') }}
                         </div>
                     </div>
@@ -91,11 +131,7 @@
                 </div>
             </div>
 
-            <div class="row">
-                {{ block('form_items') }}
-
-                <a href="#" class="add-item col-lg-2">{{ icon('plus', ['circle']) }} {{ "invoice.item.add"|trans }}</a>
-
+            <div class="row" id="invoice-items">
             </div>
 
             <br class="clear"/>
@@ -115,17 +151,17 @@
                 {{ block('form_buttons') }}
             </div>
         </div>
-
     </div>
 
     {{ form_end(form) }}
-
 {% endblock content %}
 
 {% block form_client %}
-    {{ form_row(form.client) }}
+    <div id="client-select">
+        {{ form_row(form.client) }}
+    </div>
 
-    <div id="{{ form.client.vars.id }}-container">
+    <div id="client-select-container">
         {% if form.client.vars.data %}
             {% include "CSBillClientBundle:Ajax:info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
         {% endif %}
@@ -135,95 +171,6 @@
 {% block form_discount %}
     {{ form_row(form.discount) }}
 {% endblock form_discount %}
-
-{% block form_items %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><strong>{{ 'invoice.summary'|trans }}</strong></h3>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table id="invoice-rows" class="table table-condensed">
-                            <thead>
-                            <tr>
-                                {% for item in items %}
-                                    {% set field = form.items.vars.prototype[item] %}
-                                    <th>
-                                        {{ form_label(field) }}
-                                    </th>
-                                {% endfor %}
-                                <th class="text-right">{{ 'invoice.total'|trans }}</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in form.items %}
-                                <tr>
-                                    {% for key, field in item.children|keys %}
-                                        <td class="column-{{ field }}">
-                                            {% set error = form_errors(item[field]) %}
-
-                                            {% if error|trim is not empty %}
-                                                <div class="form-group has-error">
-                                                    {{ form_widget(item[field]) }}
-                                                    {{ error|raw }}
-                                                </div>
-                                            {% else %}
-                                                {{ form_widget(item[field]) }}
-                                            {% endif %}
-                                        </td>
-                                    {% endfor %}
-                                    <td class="column-total">
-                                    </td>
-                                    <td>
-                                        <a href="#" class="remove-item" rel="tooltip"
-                                           title="{{ 'invoice.item.remove'|trans }}">{{ icon('trash', ['o']) }}</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td colspan="4" class="thick-line text-right"><strong>{{ 'invoice.subtotal'|trans }}</strong></td>
-                                <td class="thick-line text-right">
-                                    <div class="invoice-sub-total"></div>
-                                </td>
-                                <td class="thick-line">
-                                </td>
-                            </tr>
-                            {% if form.tax is defined %}
-                                <tr>
-                                    <td colspan="4" class="no-line text-right"><strong>{{ 'invoice.tax'|trans }}</strong></td>
-                                    <td class="no-line text-right">
-                                        <span class="text-error invoice-tax"></span>
-                                    </td>
-                                    <td class="no-line"></td>
-                                </tr>
-                            {% endif %}
-                            <tr>
-                                <td colspan="4" class="no-line text-right"><strong>{{ 'invoice.discount'|trans }}</strong></td>
-                                <td class="no-line text-right">
-                                    <span class="text-success invoice-discount"></span>
-                                </td>
-                                <td class="no-line"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="no-line text-right"><strong>{{ 'invoice.total'|trans }}</strong></td>
-                                <td class="no-line text-right">
-                                    <div class="invoice-total"></div>
-                                </td>
-                                <td class="no-line"></td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock form_items %}
 
 {% block form_buttons %}
     <div class="pull-left">
@@ -239,71 +186,3 @@
 
     <br class="clear"/>
 {% endblock form_buttons %}
-
-{% block script %}
-    {% spaceless %}
-        {% if form.client.vars.data %}
-            $('#{{ form.client.vars.id }}').parents('div.form-group').hide();
-        {% endif %}
-
-        var clientSelect = $('#{{ form.client.vars.id }}');
-
-        clientSelect.on('change', function(){
-            $('body').modalmanager('loading');
-
-            var clientSelectContainer = $(this).closest('div.form-group'),
-            client_id = $(':selected', this).val();
-
-            $.getJSON(Routing.generate('_clients_info', {"id" : client_id, "type" : "invoice"}), function(data) {
-                $('#{{ form.client.vars.id }}-container').html(data.content);
-                $('body').modalmanager('loading');
-                clientSelectContainer.hide();
-                $.material.init();
-            });
-        });
-
-        $('#invoice-create-form').on('click', '.client-select-change', function(evt) {
-            evt.preventDefault();
-            $('#{{ form.client.vars.id }}-container').html('');
-            clientSelect.closest('div.form-group').show();
-            clientSelect.val('');
-            clientSelect.trigger('select2-selecting');
-        });
-
-        Invoice.setSelector($('#invoice-rows'));
-        {% for item in items %}
-            {% set field = form.items.vars.prototype[item] %}
-            Invoice.addTemplate('{{ item }}', '{{ form_widget(field) }}');
-            Invoice.addField("{{ item }}");
-        {% endfor %}
-
-        Invoice.addTemplate('total', accounting.formatMoney(0));
-        Invoice.addTemplate('trash', '<a href="#" class="remove-item" rel="tooltip" title="{{ "invoice.item.remove"|trans }}">{{ icon('trash', ['o']) }}</a>');
-        Invoice.addField("total");
-        Invoice.addField("trash");
-
-        {% if form.items|length == 0 %}
-            Invoice.addRow();
-        {% else %}
-            Invoice.counter = {{ form.items|length }};
-        {% endif %}
-
-        $('#invoice_recurring').on('change', function () {
-            $('.recurring-info').toggleClass('hidden');
-        });
-
-        if ($('#invoice_recurring').is(':checked')) {
-            $('.recurring-info').removeClass('hidden');
-        }
-    {% endspaceless %}
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-    {% javascripts
-        "@CSBillInvoiceBundle/Resources/public/js/invoices.js"
-        filter="?yui_js" %}
-            <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}

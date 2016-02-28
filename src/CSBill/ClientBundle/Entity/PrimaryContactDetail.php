@@ -16,7 +16,6 @@ use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Entity()
- * @Serialize\ExclusionPolicy("all")
  */
 class PrimaryContactDetail extends ContactDetail
 {
@@ -25,6 +24,7 @@ class PrimaryContactDetail extends ContactDetail
      *
      * @ORM\ManyToOne(targetEntity="Contact", inversedBy="primaryDetails")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
+     * @Serialize\Groups({"js"})
      */
     private $contact;
 

@@ -12,8 +12,11 @@
 namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Grid\PaymentGrid;
 use CSBill\PaymentBundle\Model\Status;
+use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends BaseController
 {
@@ -27,8 +30,8 @@ class DefaultController extends BaseController
         $grid = $this->get('grid')->create(new PaymentGrid());
 
         return $grid->getGridResponse(
-            array(
-                'status_list' => array(
+            [
+                'status_list' => [
                     Status::STATUS_UNKNOWN,
                     Status::STATUS_FAILED,
                     Status::STATUS_SUSPENDED,
@@ -39,26 +42,41 @@ class DefaultController extends BaseController
                     Status::STATUS_CAPTURED,
                     Status::STATUS_AUTHORIZED,
                     Status::STATUS_REFUNDED,
-                ),
-            )
+                ],
+            ]
         );
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        /** @var \CSBill\PaymentBundle\Payum $payum */
-        $payum = $this->get('payum');
+        if ($request->isXmlHttpRequest()) {
+            /** @var \CSBill\PaymentBundle\Payum $payum */
+            $payum = $this->get('payum');
 
-        $paymentMethods = $payum->getGatewayList();
+            $paymentMethods = $payum->getGatewayList();
 
-        return $this->render(
-            'CSBillPaymentBundle:Default:index.html.twig',
-            array(
-                'paymentMethods' => $paymentMethods,
-            )
-        );
+            /** @var PaymentMethodRepository $repository */
+            $repository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
+
+            $enabledMethods = array_map(
+                function (PaymentMethod $method) {
+                    return strtolower($method->getPaymentMethod());
+                }, $repository->findBy(['enabled' => 1])
+            );
+
+            return $this->json(
+                [
+                    'enabled' => array_intersect($paymentMethods, $enabledMethods),
+                    'disabled' => array_diff($paymentMethods, $enabledMethods),
+                ]
+            );
+        }
+
+        return $this->render('CSBillPaymentBundle:Default:index.html.twig');
     }
 }

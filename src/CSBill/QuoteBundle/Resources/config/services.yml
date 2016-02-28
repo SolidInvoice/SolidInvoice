@@ -30,6 +30,7 @@ services:
 
     quote.form.type:
         class: CSBill\QuoteBundle\Form\Type\QuoteType
+        arguments: [@currency]
         tags:
             - { name: form.type, alias: quote }
 

@@ -1,18 +1,24 @@
 api_keys:
     path: /api
     defaults: { _controller: CSBillUserBundle:Api:index }
+    options:
+        expose: true
 
 api_key_history:
     path: /api/history/{id}
     defaults: { _controller: CSBillUserBundle:Api:tokenHistory }
+    options:
+        expose: true
 
 api_key_create:
     path: /api/create
     defaults: { _controller: CSBillUserBundle:Api:saveToken }
+    options:
+        expose: true
 
 api_key_revoke:
-    path: /api/revoke/{id}
+    path: /api/{id}
     defaults: { _controller: CSBillUserBundle:Api:revokeToken }
-    methods: [POST]
+    methods: [DELETE]
     options:
         expose: true

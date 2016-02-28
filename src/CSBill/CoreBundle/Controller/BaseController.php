@@ -11,8 +11,10 @@
 
 namespace CSBill\CoreBundle\Controller;
 
+use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseController extends Base
 {
@@ -91,5 +93,22 @@ abstract class BaseController extends Base
     protected function json(array $data, $status = 200, array $headers = array())
     {
         return new JsonResponse($data, $status, $headers);
+    }
+
+    /**
+     * @param mixed $data
+     * @param int   $responseCode
+     *
+     * @return Response
+     */
+    protected function serializeJs($data, $responseCode = 200)
+    {
+        $serializer = $this->get('serializer');
+
+        $context = SerializationContext::create()->setGroups(['js']);
+
+        $data = $serializer->serialize($data, 'json', $context);
+
+        return new Response($data, $responseCode, ['Content-Type' => 'application/json']);
     }
 }

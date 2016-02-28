@@ -47,4 +47,12 @@ class TaxRepository extends EntityRepository
 
         return $query->getArrayResult();
     }
+
+    /**
+     * @return bool
+     */
+    public function taxRatesConfigured()
+    {
+        return $this->getTotal() > 0;
+    }
 }

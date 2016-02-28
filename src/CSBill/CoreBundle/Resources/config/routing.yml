@@ -8,6 +8,8 @@ _home:
 _image_upload:
     path:  /upload
     defaults: { _controller: CSBillCoreBundle:Upload:imageUpload }
+    options:
+        expose: true
 
 _view_quote_external:
     path:  /view/quote/{uuid}

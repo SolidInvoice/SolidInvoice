@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="contact_types")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactTypeRepository")
- * @Serialize\ExclusionPolicy("all")
  */
 class ContactType
 {
@@ -29,6 +28,7 @@ class ContactType
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"none"})
      */
     private $id;
 
@@ -38,7 +38,7 @@ class ContactType
      * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      * @Serialize\SerializedName("type")
      */
     private $name;
@@ -49,6 +49,7 @@ class ContactType
      * @ORM\Column(name="type", type="string", length=45)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
+     * @Serialize\Groups({"none"})
      */
     private $type = 'text';
 
@@ -56,6 +57,7 @@ class ContactType
      * @var array
      *
      * @ORM\Column(name="field_options", type="array", nullable=true)
+     * @Serialize\Groups({"none"})
      */
     private $options;
 
@@ -63,6 +65,7 @@ class ContactType
      * @var bool
      *
      * @ORM\Column(name="required", type="boolean", nullable=false)
+     * @Serialize\Groups({"none"})
      */
     private $required = false;
 
@@ -70,6 +73,7 @@ class ContactType
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="type")
+     * @Serialize\Groups({"none"})
      */
     private $details;
 

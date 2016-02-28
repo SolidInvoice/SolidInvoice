@@ -7,32 +7,16 @@
  # with this source code in the file LICENSE.
  #}
 
-{% if success is defined and success == true %}
-    <div class="modal-body">
-        <div class="alert alert-success">
-            <h3>
-                {{ icon('check') }} {{ "success"|trans }}
-            </h3>
-            {{ "contact_saved"|trans }}
-        </div>
+<div class="row-fluid" id="client-contact">
+    <div class="prototype-widget">
+        {{ form(form) }}
     </div>
-    <div class="modal-footer">
-        <button data-dismiss="modal" class="btn btn-info">{{ "close"|trans }}</button>
-    </div>
-{% else %}
-    <form action="{{ path("_clients_edit_contact", {"id" : contact.id}) }}" method="post">
+</div>
 
-        <div class="modal-header">
-            <h3>{{ "contact_edit"|trans }}</h3>
-        </div>
-        <div class="modal-body">
-            <div class="row-fluid">
-                {{ form_widget(form) }}
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-warning btn-flat">{{ icon('times') }} {{ "close"|trans }}</button>
-            <button type="submit" class="btn btn-success btn-flat">{{ icon('save') }} {{ "save"|trans }}</button>
-        </div>
-    </form>
-{% endif %}
+<script>
+    require(['client/contacts_collection'], function (FormCollection) {
+        new FormCollection({
+            'el' : '#client-contact'
+        });
+    });
+</script>

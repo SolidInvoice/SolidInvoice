@@ -11,8 +11,11 @@
 
 namespace CSBill\UserBundle\Repository;
 
+use CSBill\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -43,5 +46,35 @@ class ApiTokenRepository extends EntityRepository
         } catch (NoResultException $e) {
             return;
         }
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getApiTokensForUser(User $user)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $hqb = $this->getEntityManager()
+            ->getRepository('CSBillUserBundle:ApiTokenHistory')
+            ->createQueryBuilder('th');
+
+        $hqb->select($qb->expr()->max('th.created'))
+            ->where('th.token = t')
+            ->setMaxResults(1);
+
+        $qb->select('t', 'h')
+            ->leftJoin(
+                't.history',
+                'h',
+                Join::WITH,
+                $qb->expr()->eq('h.created', '('.$hqb->getDQL().')')
+            )
+            ->where('t.user = :user')
+            ->setParameter('user', $user);
+
+        return $qb->getQuery()->getResult();
     }
 }

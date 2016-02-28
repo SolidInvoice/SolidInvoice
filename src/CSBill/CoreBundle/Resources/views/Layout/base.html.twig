@@ -6,12 +6,13 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% set locale = app.request.locale|split('_')[0] %}
 
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ locale }}"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="{{ locale }}"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="{{ locale }}"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ locale }}"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
@@ -25,10 +26,9 @@
     {% block stylesheets %}
         {% stylesheets
             'bundles/csbillcore/less/styles.less'
+            'bundles/csbillcore/css/select2.css'
+            'bundles/csbillcore/css/select2-bootstrap.css'
             'bundles/csbillcore/css/*.css'
-            'css/select2.css'
-            'css/select2-bootstrap.css'
-            'css/*.css'
             'bundles/csbillclient/less/*.less'
             filter="lessphp, cssrewrite, ?yui_css"
         %}
@@ -37,13 +37,13 @@
     {% endblock stylesheets %}
 
     {% javascripts
-        "js/modernizr.min.js"
-        "js/jquery-1.11.1.min.js"
+        "@CSBillCoreBundle/Resources/public/js/lib/modernizr.min.js"
         filter="?yui_js"
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    {% include 'CSBillCoreBundle:_partials:scripts.html.twig' %}
 </head>
 <body>
     {{ block('body_top') }}
@@ -57,26 +57,11 @@
         {{ block('body') }}
     </div>
 
-    <footer align="center">
+    <footer class="align-center">
         {{ block('footer') }}
     </footer>
 
-    {% block javascripts %}
-        {% javascripts
-            "js/plugins/bootstrap.min.js"
-            "@CSBillCoreBundle/Resources/public/js/material/ripples.js"
-            "@CSBillCoreBundle/Resources/public/js/material/material.js"
-            "@FOSJsRoutingBundle/Resources/public/js/router.js"
-            "js/plugins/moment.min.js"
-            "js/plugins/*.js"
-            "@CSBillCoreBundle/Resources/public/js/plugins.js"
-            "@CSBillClientBundle/Resources/public/js/*.js"
-            "@CSBillCoreBundle/Resources/public/js/script.js"
-            filter="?yui_js"
-        %}
-            <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock javascripts %}
+    {{ block('javascripts') }}
 
     {{ block('body_bottom') }}
 </body>

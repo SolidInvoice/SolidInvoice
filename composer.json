@@ -15,6 +15,12 @@
             "email": "csbill@customscripts.co.za"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/pierredup/RequireJSBundle"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "": "src/",
@@ -75,7 +81,9 @@
         "payum/klarna-checkout": "~0.13",
         "payum/klarna-invoice": "~0.13",
         "omnipay/omnipay": "~2.3",
-        "payum/omnipay-bridge": "~0.13"
+        "payum/omnipay-bridge": "~0.13",
+        "oro/requirejs-bundle": "dev-master",
+        "willdurand/js-translation-bundle": "^2.5"
     },
     "require-dev": {
         "behat/behat": "~3.0",

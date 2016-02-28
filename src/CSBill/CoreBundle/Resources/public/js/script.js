@@ -7,7 +7,8 @@
  * with this source code in the file LICENSE.
  */
 
-$(function(){
+$(function() {
+
     /**
      * Tooltip
      */

@@ -9,6 +9,9 @@
 
 {% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
+{% set module = 'client/view' %}
+{% set moduleData = client %}
+
 {% block page_title %}
     {{ client.name }}
 {% endblock page_title %}
@@ -50,7 +53,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#info" aria-controls="info" role="tab" data-toggle="tab">
+                        <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab">
                             {{ 'client.view.tabs.info'|trans }}
                         </a>
                     </li>
@@ -75,67 +78,16 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="info">
+                    <div role="tabpanel" class="tab-pane active" id="client-info">
 
-                        <div class="row">
-                            <div class="col-lg-{{ totalAddresses > 0 ? 6 : 12 }} col-md-{{ totalAddresses > 0 ? 6 : 12 }} client_contact_list">
-                                <legend>
-                                    <h3>
-                                        {{ icon('users') }} {{ "client.heading.contacts"|trans }}
-                                    </h3>
-                                </legend>
+                            {#<div class="col-lg-12 col-md-12 client_contact_list">
+                                        <div class="pull-right">
+                                            <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success btn-sm add-contact-button" data-id="{{ client.id }}">
+                                                {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
+                                            </a>
+                                            <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
+                                        </div>#}
 
-                                <div id="client-contacts-list">
-                                    {% for contact in client.contacts %}
-                                        {% if totalAddresses == 0 %}
-                                            <div class="col-lg-6 col-md-6 client_contact_list">
-                                        {% endif %}
-
-                                        {% include "CSBillClientBundle::contact_card.html.twig" with {"delete" : client.contacts|length > 1 } %}
-
-                                        {% if totalAddresses == 0 %}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <br class="clear" />
-
-                                <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success add-contact-button" data-id="{{ client.id }}">
-                                    {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
-                                </a>
-                                <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
-                            </div>
-                            {% if totalAddresses > 0 %}
-                                <div class="col-lg-6 col-md-6">
-
-                                    <legend>
-                                        <h3>
-                                            {{ icon('building-o') }} {{ "client.heading.addresses"|trans }}
-                                        </h3>
-                                    </legend>
-
-                                    <div id="client-address-list">
-                                        {% for address in client.addresses %}
-                                            <div class="widget well well-sm">
-                                                <div class="" style="position: absolute;">
-                                                    {{ icon('map-marker') }}
-                                                </div>
-                                                <div style="position: relative; left: 20px;">
-                                                    {{ address|nl2br }}
-                                                </div>
-                                                <div class="pull-right">
-                                                    {{ icon('map-marker') }}
-                                                    <a href="http://maps.google.com/?q={{ address|replace({"\n" : " "}) }}" target="_blank">
-                                                        {{ 'client.address.view_map'|trans }}
-                                                    </a>
-                                                </div>
-                                                <br class="clear" />
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="quotes">
                         {% include "CSBillClientBundle::quote_list.html.twig" %}
@@ -174,18 +126,9 @@
                 <h3>{{ total_outstanding|formatCurrency }}</h3>
                 {{ "client.stats.outstanding"|trans }}
             </div>
-            <div class="text-center text-info">
-                <h3 id="client-credit-value">
-                    {{ client.credit.value|formatCurrency }}
-                </h3>
 
-                <a href="{{ path('_clients_add_credit', {'id' : client.id}) }}" rel="tooltip" title="{{ 'client.view.actions.add_credit'|trans }}" id="add-credit-button">
-                    {{ icon('plus-circle') }}
-                    {{ "client.stats.credit"|trans }}
-                </a>
+            <div id="client-credit"></div>
 
-                <div id="credit-ajax-modal" class="modal fade" tabindex="-1"></div>
-            </div>
         </div>
         <hr />
         <br class="clearfix" />

@@ -14,7 +14,9 @@ namespace CSBill\ClientBundle\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\CoreBundle\Controller\BaseController;
+use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AjaxController extends BaseController
 {
@@ -67,20 +69,12 @@ class AjaxController extends BaseController
         if ($form->isValid()) {
             $this->save($contact);
 
-            $content = $this->renderView(
-                'CSBillClientBundle:Ajax:contact_add.html.twig',
-                array(
-                    'contact' => $contact,
-                )
-            );
+            $response = [
+                'status' => 'success',
+                'contact' => $contact,
+            ];
 
-            return $this->json(
-                array(
-                    'status' => 'success',
-                    'content' => $content,
-                    'id' => $contact->getId(),
-                )
-            );
+            return $this->serializeResponse($response);
         } else {
             $response['status'] = 'failure';
         }
@@ -113,6 +107,8 @@ class AjaxController extends BaseController
             throw $this->createNotFoundException();
         }
 
+        $status = 'success';
+
         $originalContactDetails = $contact->getAdditionalDetails()->toArray();
 
         $form = $this->createForm('contact', $contact, array('allow_delete' => false));
@@ -127,18 +123,8 @@ class AjaxController extends BaseController
             $this->removeContactDetails($contact, $originalContactDetails);
 
             $this->save($contact);
-
-            return $this->json(
-                array(
-                    'content' => $this->renderView(
-                        'CSBillClientBundle:Ajax:contact_edit.html.twig',
-                        array(
-                            'success' => true,
-                        )
-                    ),
-                    'status' => 'success',
-                )
-            );
+        } elseif ($form->isSubmitted()) {
+            $status = 'failure';
         }
 
         return $this->json(
@@ -150,6 +136,7 @@ class AjaxController extends BaseController
                         'contact' => $contact,
                     )
                 ),
+                'status' => $status,
             )
         );
     }
@@ -172,6 +159,7 @@ class AjaxController extends BaseController
         unset($detail);
 
         $em = $this->getEm();
+        /** @var \CSBill\ClientBundle\Entity\AdditionalContactDetail $detail */
         foreach ($originalContactDetails as $detail) {
             $contact->removeAdditionalDetail($detail);
             $em->remove($detail);
@@ -181,47 +169,28 @@ class AjaxController extends BaseController
     /**
      * Renders a contact card.
      *
+     * @param Request $request
      * @param Contact $contact
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function contactcardAction(Contact $contact)
+    public function contactAction(Request $request, Contact $contact)
     {
-        $client = $contact->getClient();
+        if ($request->isMethod('DELETE')) {
+            $client = $contact->getClient();
 
-        return $this->json(
-            array(
-                'content' => $this->renderView(
-                    'CSBillClientBundle::contact_card.html.twig',
-                    array(
-                        'contact' => $contact,
-                        'delete' => count($client->getContacts()) > 1
-                    )
-                ),
-            )
-        );
-    }
+            if (count($client->getContacts()) === 1) {
+                return $this->json(['message' => $this->trans('client.contact.at_least_1')], 500);
+            }
 
-    /**
-     * Deletes a contact.
-     *
-     * @param Contact $contact
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function deletecontactAction(Contact $contact)
-    {
-        $client = $contact->getClient();
+            $entityManager = $this->getEm();
+            $entityManager->remove($contact);
+            $entityManager->flush();
 
-        if (count($client->getContacts()) === 1) {
-            return $this->json(['message' => $this->trans('client.contact.at_least_1')], 500);
+            return $this->json([]);
         }
 
-        $entityMnager = $this->getEm();
-        $entityMnager->remove($contact);
-        $entityMnager->flush();
-
-        return $this->json(array('status' => 'success'));
+        return $this->serializeResponse($contact);
     }
 
     /**
@@ -237,8 +206,20 @@ class AjaxController extends BaseController
         $em->remove($client);
         $em->flush();
 
-        $this->flash($this->trans('client_delete_success'), 'success');
+        $this->flash($this->trans('client.delete_success'), 'success');
 
         return $this->json(array('status' => 'success'));
+    }
+
+    /**
+     * @param mixed $response
+     *
+     * @return Response
+     */
+    private function serializeResponse($response)
+    {
+        $context = SerializationContext::create()->setGroups(['js']);
+
+        return new Response($this->get('serializer')->serialize($response, 'json', $context), 200, ['Content-Type' => 'application/json']);
     }
 }

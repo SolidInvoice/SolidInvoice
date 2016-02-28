@@ -31,7 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Serialize\ExclusionPolicy("all")
  * @Serialize\XmlRoot("client")
  * @Hateoas\Relation("self", href=@Hateoas\Route("get_clients", absolute=true))
  * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
@@ -48,7 +47,7 @@ class Client
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Expose
+     * @Serialize\Groups({"api", "js"})
      */
     private $id;
 
@@ -58,7 +57,7 @@ class Client
      * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
-     * @Serialize\Expose
+     * @Serialize\Groups({"api", "js"})
      */
     private $name;
 
@@ -68,7 +67,7 @@ class Client
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
      * @Assert\Length(max=125)
-     * @Serialize\Expose
+     * @Serialize\Groups({"api", "js"})
      */
     private $website;
 
@@ -77,7 +76,7 @@ class Client
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @GRID\Column(type="status", filter="source", filter="select", selectFrom="source", title="status", label_function="client_label")
-     * @Serialize\Expose
+     * @Serialize\Groups({"api", "js"})
      */
     private $status;
 
@@ -88,6 +87,7 @@ class Client
      * @ORM\OrderBy({"firstname" = "ASC"})
      * @Assert\Valid()
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
+     * @Serialize\Groups({"js"})
      */
     private $contacts;
 
@@ -97,6 +97,7 @@ class Client
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
+     * @Serialize\Groups({"none"})
      */
     private $quotes;
 
@@ -106,6 +107,7 @@ class Client
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
+     * @Serialize\Groups({"none"})
      */
     private $invoices;
 
@@ -113,6 +115,7 @@ class Client
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
+     * @Serialize\Groups({"none"})
      */
     private $payments;
 
@@ -120,6 +123,7 @@ class Client
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
+     * @Serialize\Groups({"js"})
      */
     private $addresses;
 
@@ -128,7 +132,7 @@ class Client
      *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @GRID\Column(field="credit.value", title="Credit", type="currency")
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      * @Serialize\Inline()
      */
     private $credit;

@@ -73,3 +73,6 @@ payum_authorize:
 
 payum_notify:
     resource: "@PayumBundle/Resources/config/routing/notify.xml"
+
+bazinga_jstranslation:
+    resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"

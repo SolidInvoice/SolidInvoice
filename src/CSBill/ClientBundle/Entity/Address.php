@@ -14,6 +14,7 @@ namespace CSBill\ClientBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serialize;
 use Symfony\Component\Intl\Intl;
 
 /**
@@ -33,6 +34,7 @@ class Address
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"js"})
      */
     private $id;
 
@@ -40,6 +42,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="street1", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $street1;
 
@@ -47,6 +50,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="street2", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $street2;
 
@@ -54,6 +58,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="city", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $city;
 
@@ -61,6 +66,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="state", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $state;
 
@@ -68,6 +74,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="zip", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $zip;
 
@@ -75,6 +82,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="country", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
      */
     private $country;
 
@@ -82,6 +90,7 @@ class Address
      * @var Client
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="addresses")
+     * @Serialize\Groups({"js"})
      */
     private $client;
 

@@ -1,4 +1,6 @@
 client:
+    confirm_delete: Are you sure you want to delete this client?
+    delete_success: The client was deleted successfully
     archive:
         success: Client Successfully Archived
     restore:
@@ -18,6 +20,7 @@ client:
         info: Contact Info
         add: Add Contact
         delete: Delete Contact
+        delete_confirm: Are you sure you want to delete this contact?
         details:
             choose: Choose
             extra: Additional Contact Details
@@ -58,6 +61,10 @@ client:
         contacts: Contacts
     modal:
         add_credit: Add Credit
+        edit_contact: Edit Contact
+        credit:
+            amount: Amount
+            tip: "<strong>Tip:</strong> To substract an amount, add a '-' before the amount, E.G <code>%amount%</code>"
         action:
             close: Close
             save: Save
@@ -93,8 +100,6 @@ no_invoices: This client does not have any invoices yet.
 create_now: Create one now.
 created: Created
 delete_client: Delete Client
-confirm_delete: Are you sure you want to delete this client?
-client_delete_success: The client was deleted successfully
 contact_delete_success: The contact was deleted successfully
 contact_delete: Delete Contact
 contact_edit: Edit Contact

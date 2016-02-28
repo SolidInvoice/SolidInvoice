@@ -62,14 +62,14 @@ class ItemType extends AbstractType
             'qty',
             'number',
             array(
-                'data' => 1,
+                'empty_data' => 1,
                 'attr' => array(
                     'class' => 'input-mini quote-item-qty',
                 ),
             )
         );
 
-        if ($this->taxRepo->getTotal() > 0) {
+        if ($this->taxRepo->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 new Tax(),
@@ -98,10 +98,6 @@ class ItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'CSBill\QuoteBundle\Entity\Item',
-            )
-        );
+        $resolver->setDefaults(['data_class' => 'CSBill\QuoteBundle\Entity\Item']);
     }
 }

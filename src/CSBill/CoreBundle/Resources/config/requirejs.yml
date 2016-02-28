@@ -1,0 +1,104 @@
+config:
+    shim:
+        bootstrap:
+            deps:
+                - jquery
+        jquery.select2:
+            deps:
+                - jquery
+            exports: Select2
+        jquery.jqcron:
+            deps:
+                - jquery
+        jquery.placeholder:
+            deps:
+                - jquery
+        jquery.uploadify:
+            deps:
+                - jquery
+        bootstrap.modal:
+            deps:
+                - jquery
+                - bootstrap
+        bootstrap.modalmanager:
+            deps:
+                - jquery
+                - bootstrap
+        bootstrap.material.datetimepicker:
+            deps:
+                - jquery
+                - moment
+        material:
+            deps:
+                - jquery
+                - material.ripples
+        material.ripples:
+            deps:
+                - jquery
+        fos_router:
+            exports: fos.Router
+        js_translator:
+            exports: Translator
+        translator:
+            deps:
+                - js_translator
+        translation_data:
+            deps:
+                - js_translator
+    paths:
+        'backbone': csbillcore/js/lib/backbone/backbone.min.js
+        'marionette': csbillcore/js/lib/backbone/marionette.min.js
+        'lodash': csbillcore/js/lib/lodash.min.js
+        'jquery': csbillcore/js/lib/jquery/jquery.min.js
+        'bootstrap': csbillcore/js/lib/bootstrap.min.js
+        'accounting': csbillcore/js/lib/accounting.js
+        'moment': csbillcore/js/lib/moment.min.js
+        'parsley': csbillcore/js/lib/parsley.min.js
+        'routing': csbillcore/js/extend/routing
+        'fos_router': fosjsrouting/js/router
+        'fos_routing_data': ../js/fos_js_routes
+        'js_translator': bazingajstranslation/js/translator.min.js
+        'material': csbillcore/js/lib/material/material
+        'material.ripples': csbillcore/js/lib/material/ripples
+        'jquery.select2': csbillcore/js/lib/jquery/select2.min.js
+        'jquery.jqcron': csbillcore/js/lib/jquery/jqcron.js
+        'jquery.placeholder': csbillcore/js/lib/jquery/placeholder.js
+        'jquery.uploadify': csbillcore/js/lib/jquery/uploadify.min.js
+        'bootstrap.bootbox': csbillcore/js/lib/bootstrap/bootbox.min.js
+        'bootstrap.modal': csbillcore/js/lib/bootstrap/modal.js
+        'bootstrap.modalmanager': csbillcore/js/lib/bootstrap/modalmanager.js
+        'bootstrap.material.datetimepicker': csbillcore/js/lib/bootstrap/material-datetimepicker.js
+        'core': csbillcore/js/
+        'core/view': csbillcore/js/itemview.js
+        'util/form/collection': csbillcore/js/util/form/collection.js
+        'template': ../js/hbs-templates.js
+        'handlebars.runtime': csbillcore/js/lib/handlebars/handlebars.js
+    map:
+        '*':
+            'translator': csbillcore/js/extend/translator
+            'underscore': lodash
+            'handlebars.runtime': csbillcore/js/extend/handlebars/helpers
+            'parsley': csbillcore/js/extend/parsley
+            'bootstrap.modal': csbillcore/js/extend/modal
+        'csbillcore/js/extend/handlebars/helpers':
+            'handlebars.runtime': handlebars.runtime
+            'routing': routing
+        'csbillcore/js/extend/translator':
+            'translator': js_translator
+            'translation_data': translation_data
+        'csbillcore/js/extend/parsley':
+            'parsley': parsley
+        'csbillcore/js/extend/modal':
+            'bootstrap.modal': bootstrap.modal
+build:
+    paths:
+        'core': 'empty:'
+        'client': 'empty:'
+        'quote': 'empty:'
+        'invoice': 'empty:'
+        'profile': 'empty:'
+        'payments': 'empty:'
+        'moment': 'empty:'
+        'translation_data': 'empty:'
+        'bootstrap.material.datetimepicker': 'empty:'
+        'fos_routing_data': 'empty:'

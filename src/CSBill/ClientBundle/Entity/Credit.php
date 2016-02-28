@@ -24,7 +24,6 @@ use Money\Money;
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\CreditRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Serialize\ExclusionPolicy("all")
  */
 class Credit
 {
@@ -35,6 +34,7 @@ class Credit
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"noneg"})
      */
     private $id;
 
@@ -42,7 +42,7 @@ class Credit
      * @ORM\Column(name="value", type="money")
      *
      * @var Money
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      * @Serialize\SerializedName("credit")
      */
     private $value;
@@ -50,6 +50,7 @@ class Credit
     /**
      * @var Client
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
+     * @Serialize\Groups({"js"})
      */
     private $client;
 

@@ -13,7 +13,7 @@ namespace CSBill\UserBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\UserBundle\Entity\ApiToken;
-use CSBill\UserBundle\Entity\User;
+use CSBill\UserBundle\Repository\ApiTokenRepository;
 use RandomLib\Factory;
 use RandomLib\Generator;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,19 +21,22 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends BaseController
 {
     /**
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        if ($request->isXmlHttpRequest()) {
+            /** @var ApiTokenRepository $repository */
+            $repository = $this->getRepository('CSBillUserBundle:ApiToken');
 
-        return $this->render(
-            'CSBillUserBundle:Api:index.html.twig',
-            array(
-                'tokens' => $user->getApiTokens(),
-            )
-        );
+            $tokens = $repository->getApiTokensForUser($this->getUser());
+
+            return $this->serializeJs($tokens);
+        }
+
+        return $this->render('CSBillUserBundle:Api:index.html.twig');
     }
 
     /**
@@ -92,7 +95,7 @@ class ApiController extends BaseController
 
             $this->save($apiToken);
 
-            $response['status'] = 0;
+            $response['status'] = 'success';
             $response['token'] = array(
                 'token' => $apiToken->getToken(),
                 'name' => $apiToken->getName(),
@@ -101,7 +104,7 @@ class ApiController extends BaseController
 
             return $this->json($response);
         } else {
-            $response['status'] = 1;
+            $response['status'] = 'failure';
         }
 
         $content = $this->renderView(
@@ -126,10 +129,6 @@ class ApiController extends BaseController
         $this->getEm()->remove($token);
         $this->getEm()->flush();
 
-        return $this->json(
-            array(
-                'status' => 0,
-            )
-        );
+        return $this->json([]);
     }
 }

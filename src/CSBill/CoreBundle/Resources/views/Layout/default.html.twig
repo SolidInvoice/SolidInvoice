@@ -23,31 +23,32 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData", "_format" : "js"}) }}"></script>
-
     <script type="text/javascript">
-        accounting.settings = {
-                currency: {
-                    symbol : "{{ currencyFormatter().currencySymbol }}",
-                    format: "{{ currencyFormatter().pattern }}",
-                    decimal : "{{ currencyFormatter().decimalSeparator }}",
-                    thousand: "{{ currencyFormatter().thousandSeparator }}",
-                    precision : 2
-                },
-                number: {
-                    precision : 0,
-                    thousand: "{{ currencyFormatter().thousandSeparator }}",
-                    decimal : "{{ currencyFormatter().decimalSeparator }}"
-                }
-            };
+        require(['accounting', 'core/app'], function (Accounting, App) {
+            App.on('before:start', function () {
+                Accounting.settings = {
+                    currency: {
+                        symbol : "{{ currencyFormatter().currencySymbol }}",
+                        format: "{{ currencyFormatter().pattern }}",
+                        decimal : "{{ currencyFormatter().decimalSeparator }}",
+                        thousand: "{{ currencyFormatter().thousandSeparator }}",
+                        precision : 2
+                    },
+                    number: {
+                        precision : 0,
+                        thousand: "{{ currencyFormatter().thousandSeparator }}",
+                        decimal : "{{ currencyFormatter().decimalSeparator }}"
+                    }
+                };
+            });
+
+            App.start();
+        });
 
         {% set script = block("script") %}
 
         {% if script %}
-            $(function(){
-                {{ script|raw }}
-            });
+            {{ script|raw }}
         {% endif %}
     </script>
 {% endblock %}
@@ -60,3 +61,7 @@
     <hr />
     <small>{{ "powered_by"|trans }} <a href="http://csbill.org">CSBill</a> - {{ app_version }}</small>
 {% endblock footer %}
+
+{% block body_bottom %}
+    <div id="modal-container" class="modal fade" tabindex="-1"></div>
+{% endblock body_bottom %}

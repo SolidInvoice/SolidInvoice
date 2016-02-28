@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-lg-12 col-md-12 client_contact_list">
+        <legend>
+            <h3>
+                <div class="pull-right">
+                    <a href="{{path "_clients_add_contact" id=id }}" class="btn btn-success btn-sm" data-id="{{ id }}" id="add-contact-button">
+                        <i class="fa fa-user"></i> {{trans "client.view.actions.add_contact" }}
+                    </a>
+                    <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
+                </div>
+                <i class="fa fa-users"></i> {{trans "client.heading.contacts" }}
+            </h3>
+        </legend>
+
+        <div id="client-contacts-list"></div>
+
+        <br class="clear" />
+    </div>
+    {{# if addresses }}
+        <div class="col-lg-6 col-md-6">
+            <legend>
+                <h3>
+                    <i class="fa fa-building-o"></i> {{trans "client.heading.addresses" }}
+                </h3>
+            </legend>
+
+            <div id="client-address-list"></div>
+        </div>
+    {{/if}}
+</div>

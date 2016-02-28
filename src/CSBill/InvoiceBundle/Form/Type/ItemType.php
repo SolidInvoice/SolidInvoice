@@ -62,14 +62,14 @@ class ItemType extends AbstractType
             'qty',
             'number',
             array(
-                'data' => 1,
+                'empty_data' => 1,
                 'attr' => array(
                     'class' => 'input-mini invoice-item-qty',
                 ),
             )
         );
 
-        if ($this->taxRepo->getTotal() > 0) {
+        if ($this->taxRepo->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 new Tax(),

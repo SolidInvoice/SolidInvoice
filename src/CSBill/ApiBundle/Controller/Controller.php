@@ -111,4 +111,19 @@ abstract class Controller extends FOSRestController
 
         return $this->handleView($this->view(null, $status));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function view($data = null, $statusCode = null, array $headers = [])
+    {
+        $view = parent::view($data, $statusCode, $headers);
+
+        $context = $view->getSerializationContext();
+        $context->setGroups(['api', 'Default']);
+
+        $view->setSerializationContext($context);
+
+        return $view;
+    }
 }

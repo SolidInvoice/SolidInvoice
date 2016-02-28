@@ -11,13 +11,29 @@
 
 namespace CSBill\QuoteBundle\Form\Type;
 
+use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
+use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
+use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class QuoteType extends AbstractType
 {
+    /**
+     * @var Currency
+     */
+    private $currency;
+
+    /**
+     * @param Currency $currency
+     */
+    public function __construct(Currency $currency)
+    {
+        $this->currency = $currency;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,7 +44,7 @@ class QuoteType extends AbstractType
             null,
             array(
                 'attr' => array(
-                    'class' => 'select2',
+                    'class' => 'select2 client-select',
                 ),
                 'placeholder' => 'quote.client.choose',
             )
@@ -55,6 +71,15 @@ class QuoteType extends AbstractType
         $builder->add('tax', 'hidden_money');
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
+        $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(['data_class' => 'CSBill\QuoteBundle\Entity\Quote']);
     }
 
     /**
@@ -63,17 +88,5 @@ class QuoteType extends AbstractType
     public function getName()
     {
         return 'quote';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'CSBill\QuoteBundle\Entity\Quote',
-            )
-        );
     }
 }

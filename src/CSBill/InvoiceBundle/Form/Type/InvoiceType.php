@@ -11,7 +11,9 @@
 
 namespace CSBill\InvoiceBundle\Form\Type;
 
+use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
+use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -22,6 +24,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class InvoiceType extends AbstractType
 {
     /**
+     * @var Currency
+     */
+    private $currency;
+
+    /**
+     * @param Currency $currency
+     */
+    public function __construct(Currency $currency)
+    {
+        $this->currency = $currency;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,7 +46,7 @@ class InvoiceType extends AbstractType
             null,
             [
                 'attr' => [
-                    'class' => 'select2',
+                    'class' => 'select2 client-select',
                 ],
                 'placeholder' => 'invoice.client.choose',
             ]
@@ -60,6 +75,7 @@ class InvoiceType extends AbstractType
         $builder->add('tax', 'hidden_money');
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
+        $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 

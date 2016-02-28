@@ -32,7 +32,6 @@ use JMS\Serializer\Annotation as Serialize;
  *    "primary": "CSBill\ClientBundle\Entity\PrimaryContactDetail",
  *    "additional": "CSBill\ClientBundle\Entity\AdditionalContactDetail",
  * })
- * @Serialize\ExclusionPolicy("all")
  */
 abstract class ContactDetail
 {
@@ -44,6 +43,7 @@ abstract class ContactDetail
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"js"})
      */
     protected $id;
 
@@ -51,19 +51,19 @@ abstract class ContactDetail
      * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      */
-    private $value;
+    protected $value;
 
     /**
      * @var ContactType
      *
      * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
      * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      * @Serialize\Inline()
      */
-    private $type;
+    protected $type;
 
     /**
      * Get id.

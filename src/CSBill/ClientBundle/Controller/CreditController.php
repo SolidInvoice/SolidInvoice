@@ -12,56 +12,85 @@
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Form\Type\CreditType;
+use CSBill\ClientBundle\Entity\Credit;
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\CoreBundle\Controller\BaseController;
 use Money\Money;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CreditController extends BaseController
 {
     /**
      * @param Request $request
-     * @param Client  $client
+     * @param Credit  $credit
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function addAction(Request $request, Client $client)
+    public function addAction(Request $request, Credit $credit)
     {
-        $form = $this->createForm(
-            new CreditType(),
-            null,
-            array(
-                'action' => $this->generateUrl('_clients_add_credit', array('id' => $client->getId())),
-            )
+        $value = new Money((int) ($request->request->get('credit') * 100), $this->get('currency'));
+
+        /** @var CreditRepository $clientRepository */
+        $clientRepository = $this->getRepository('CSBillClientBundle:Credit');
+
+        $credits = $clientRepository->addCredit($credit->getClient(), $value);
+
+        return $this->json(
+            [
+                'credit' => $this->get('csbill.money.formatter')->toFloat($credits->getValue()),
+                'id' => $credits->getId(),
+            ]
         );
+    }
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            /** @var CreditRepository $clientRepository */
-            $clientRepository = $this->getRepository('CSBillClientBundle:Credit');
-
-            /** @var Money $amount */
-            $amount = $form->get('amount')->getData();
-
-            $credit = $clientRepository->addCredit($client, $amount);
-
+    /**
+     * @param Request $request
+     * @param Client  $client
+     *
+     * @return mixed
+     */
+    public function creditAction(Request $request, Client $client)
+    {
+        $jsonResponse = function (Credit $credit) use ($client) {
             return $this->json(
-                array(
-                    'status' => 'success',
-                    'amount' => $this->get('csbill.money.formatter')->format($credit->getValue()),
-                )
+                [
+                    'credit' => $this->get('csbill.money.formatter')->toFloat($credit->getValue()),
+                    'id' => $client->getId(),
+                ]
             );
+        };
+
+        if ($request->isMethod('GET')) {
+            return $jsonResponse($client->getCredit());
         }
 
-        $content = $this->renderView(
-            'CSBillClientBundle:Ajax:credit_add.html.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
+        if ($request->isMethod('PUT')) {
+            /** @var CreditRepository $repository */
+            $repository = $this->getRepository('CSBillClientBundle:Credit');
 
-        return $this->json(array('content' => $content));
+            $value = new Money((int) ($request->request->get('credit') * 100), $this->get('currency'));
+
+            return $jsonResponse($repository->addCredit($client, $value));
+        }
+
+        throw new BadRequestHttpException();
+    }
+
+    /**
+     * @param Client $client
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getCreditAction(Client $client)
+    {
+        $credit = $client->getCredit();
+
+        return $this->json(
+            [
+                'credit' => $this->get('csbill.money.formatter')->toFloat($credit->getValue()),
+                'id' => $credit->getId(),
+            ]
+        );
     }
 }

@@ -44,6 +44,7 @@ services:
 
     invoice.form.type:
         class: CSBill\InvoiceBundle\Form\Type\InvoiceType
+        arguments: [@currency]
         tags:
             - { name: form.type, alias: invoice }
 

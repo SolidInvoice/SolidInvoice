@@ -23,9 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Serialize\ExclusionPolicy("all")
  */
-class Contact implements \serializable
+class Contact implements \Serializable
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable;
@@ -36,7 +35,7 @@ class Contact implements \serializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      */
     private $id;
 
@@ -46,7 +45,7 @@ class Contact implements \serializable
      * @ORM\Column(name="firstname", type="string", length=125, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      */
     private $firstname;
 
@@ -55,7 +54,7 @@ class Contact implements \serializable
      *
      * @ORM\Column(name="lastname", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      */
     private $lastname;
 
@@ -64,6 +63,7 @@ class Contact implements \serializable
      *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts")
      * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
+     * @Serialize\Groups({"js"})
      */
     private $client;
 
@@ -73,7 +73,7 @@ class Contact implements \serializable
      * @ORM\OneToMany(indexBy="contact_type_id", targetEntity="PrimaryContactDetail", mappedBy="contact",
      *                                           cascade={"persist"})
      * @Assert\Valid()
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      */
     private $primaryDetails;
 
@@ -82,7 +82,7 @@ class Contact implements \serializable
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist"})
      * @Assert\Valid()
-     * @Serialize\Expose()
+     * @Serialize\Groups({"api", "js"})
      */
     private $additionalDetails;
 

@@ -185,3 +185,9 @@ nelmio_api_doc:
         enabled: false
     cache:
         enabled: true
+
+oro_require_js:
+    config:
+        waitSeconds: 0
+        enforceDefine: false
+        scriptType: 'text/javascript'

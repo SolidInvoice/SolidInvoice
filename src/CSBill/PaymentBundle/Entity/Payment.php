@@ -18,9 +18,9 @@ use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Payum\Core\Model\Payment as BasePayment;
 
 /**
  * @ORM\Table(name="payments")

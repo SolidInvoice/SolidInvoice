@@ -12,6 +12,7 @@
 namespace CSBill\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * CSBill\ClientBundle\Entity\AdditionalContactDetail.
@@ -25,6 +26,7 @@ class AdditionalContactDetail extends ContactDetail
      *
      * @ORM\ManyToOne(targetEntity="Contact", inversedBy="additionalDetails")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
+     * @Serialize\Groups({"js"})
      */
     private $contact;
 
