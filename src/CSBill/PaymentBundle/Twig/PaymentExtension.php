@@ -18,16 +18,16 @@ use Twig_SimpleFunction;
 class PaymentExtension extends Twig_Extension
 {
     /**
-     * @var \CSBill\PaymentBundle\Repository\PaymentMethodRepository
+     * @var ManagerRegistry
      */
-    private $repository;
+    private $registry;
 
     /**
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
-        $this->repository = $registry->getRepository('CSBillPaymentBundle:PaymentMethod');
+	$this->registry = $registry;
     }
 
     /**
@@ -48,7 +48,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function paymentEnabled($method)
     {
-        $paymentMethod = $this->repository->findOneBy(array('paymentMethod' => $method));
+	$paymentMethod = $this->registry->getRepository('CSBillPaymentBundle:PaymentMethod')->findOneBy(array('paymentMethod' => $method));
 
         if (null === $paymentMethod) {
             return false;
@@ -64,7 +64,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function paymentConfigured($includeInternal = true)
     {
-        return $this->repository->getTotalMethodsConfigured($includeInternal);
+	return $this->registry->getRepository('CSBillPaymentBundle:PaymentMethod')->getTotalMethodsConfigured($includeInternal);
     }
 
     /**

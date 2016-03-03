@@ -11,7 +11,7 @@
 
 namespace CSBill\MoneyBundle\Formatter;
 
-use Money\Currency;
+use CSBill\MoneyBundle\Currency;
 use Money\Money;
 use Symfony\Component\Intl\Intl;
 
@@ -23,7 +23,7 @@ class MoneyFormatter
     private $locale;
 
     /**
-     * @var \Money\Currency
+     * @var Currency
      */
     private $currency;
 
@@ -62,7 +62,7 @@ class MoneyFormatter
     public function getCurrencySymbol()
     {
         return Intl::getCurrencyBundle()
-            ->getCurrencySymbol($this->currency->getName(), $this->locale);
+	    ->getCurrencySymbol($this->currency->getCurrency()->getName(), $this->locale);
     }
 
     /**

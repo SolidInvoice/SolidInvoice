@@ -79,6 +79,14 @@ class Client
     private $status;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="currency", type="string", length=6, nullable=true)
+     * @Serialize\Groups({"api", "js"})
+     */
+    private $currency;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
@@ -451,6 +459,22 @@ class Client
             $credit->setClient($this);
             $this->setCredit($credit);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+	return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     */
+    public function setCurrency($currency)
+    {
+	$this->currency = $currency;
     }
 
     /**

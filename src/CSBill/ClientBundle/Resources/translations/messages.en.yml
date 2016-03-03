@@ -50,6 +50,7 @@ client:
             edit: Edit
             delete: Delete
             add_credit: Add Credit
+	currency: Currency
         tabs:
             info: Info
             quotes: Quotes

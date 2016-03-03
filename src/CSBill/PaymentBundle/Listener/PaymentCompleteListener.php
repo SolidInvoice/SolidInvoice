@@ -12,10 +12,10 @@
 namespace CSBill\PaymentBundle\Listener;
 
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
+use CSBill\MoneyBundle\Currency;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Persistence\ObjectManager;
-use Money\Currency;
 use Money\Money;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
@@ -93,7 +93,7 @@ class PaymentCompleteListener
             $creditRepository = $this->manager->getRepository('CSBillClientBundle:Credit');
             $creditRepository->deductCredit(
                 $payment->getClient(),
-                new Money($payment->getTotalAmount(), $this->currency)
+		new Money($payment->getTotalAmount(), $this->currency->getCurrency())
             );
         }
 

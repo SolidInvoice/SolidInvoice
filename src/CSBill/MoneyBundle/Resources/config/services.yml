@@ -4,12 +4,12 @@ parameters:
 
 services:
     currency:
-        class: Money\Currency
+	class: CSBill\MoneyBundle\Currency
         arguments: [%currency%]
 
     csbill.money.formatter:
         class: CSBill\MoneyBundle\Formatter\MoneyFormatter
-        arguments: [%locale%, %currency%]
+	arguments: [%locale%, @currency]
 
     csbill.money.formatter.twig.extension:
         class: CSBill\MoneyBundle\Twig\Extension\MoneyFormatterExtension
@@ -28,3 +28,8 @@ services:
         arguments: [@currency]
         tags:
             - { name: form.type, alias: hidden_money}
+
+    csbill.money.request_listener:
+	class: CSBill\MoneyBundle\Listener\RequestListener
+	tags:
+	    - { name: kernel.event_listener, event: kernel.controller, method: onKernelRequest, priority: -255 }

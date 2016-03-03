@@ -70,7 +70,7 @@ class Contact implements \Serializable
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(indexBy="contact_type_id", targetEntity="PrimaryContactDetail", mappedBy="contact",
+     * @ORM\OneToMany(indexBy="contactType", targetEntity="PrimaryContactDetail", mappedBy="contact",
      *                                           cascade={"persist"})
      * @Assert\Valid()
      * @Serialize\Groups({"api", "js"})

@@ -19,7 +19,6 @@ use CSBill\PaymentBundle\Repository\PaymentRepository;
 use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Money\Currency;
 
 class StatsWidget implements WidgetInterface
 {
@@ -29,18 +28,11 @@ class StatsWidget implements WidgetInterface
     private $manager;
 
     /**
-     * @var Currency
-     */
-    private $currency;
-
-    /**
      * @param ManagerRegistry $registry
-     * @param Currency        $currency
      */
-    public function __construct(ManagerRegistry $registry, Currency $currency)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManager();
-        $this->currency = $currency;
     }
 
     /**

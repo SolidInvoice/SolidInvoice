@@ -75,7 +75,7 @@ class Invoice
     /**
      * @var Money
      *
-     * @ORM\Column(name="total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $total;
@@ -83,7 +83,7 @@ class Invoice
     /**
      * @var Money
      *
-     * @ORM\Column(name="base_total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $baseTotal;
@@ -91,7 +91,7 @@ class Invoice
     /**
      * @var Money
      *
-     * @ORM\Column(name="balance", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $balance;
@@ -99,7 +99,7 @@ class Invoice
     /**
      * @var Money
      *
-     * @ORM\Column(name="tax", type="money", nullable=true)
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $tax;
@@ -202,6 +202,11 @@ class Invoice
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
         $this->recurring = false;
+
+	$this->baseTotal = new \CSBill\MoneyBundle\Entity\Money();
+	$this->total = new \CSBill\MoneyBundle\Entity\Money();
+	$this->tax = new \CSBill\MoneyBundle\Entity\Money();
+	$this->balance = new \CSBill\MoneyBundle\Entity\Money();
     }
 
     /**
@@ -323,7 +328,7 @@ class Invoice
      */
     public function setTotal(Money $total)
     {
-        $this->total = $total;
+	$this->total->setMoney($total);
 
         return $this;
     }
@@ -335,7 +340,7 @@ class Invoice
      */
     public function getBaseTotal()
     {
-	return $this->baseTotal;
+	return $this->baseTotal->getMoney();
     }
 
     /**
@@ -347,7 +352,7 @@ class Invoice
      */
     public function setBaseTotal(Money $baseTotal)
     {
-        $this->baseTotal = $baseTotal;
+	$this->baseTotal->setMoney($baseTotal);
 
         return $this;
     }
@@ -357,7 +362,7 @@ class Invoice
      */
     public function getBalance()
     {
-        return $this->balance;
+	return $this->balance->getMoney();
     }
 
     /**
@@ -367,7 +372,7 @@ class Invoice
      */
     public function setBalance(Money $balance)
     {
-        $this->balance = $balance;
+	$this->balance->setMoney($balance);
 
         return $this;
     }
@@ -560,7 +565,7 @@ class Invoice
      */
     public function getTax()
     {
-        return $this->tax;
+	return $this->tax->getMoney();
     }
 
     /**
@@ -570,7 +575,7 @@ class Invoice
      */
     public function setTax(Money $tax)
     {
-        $this->tax = $tax;
+	$this->tax->setMoney($tax);
 
         return $this;
     }

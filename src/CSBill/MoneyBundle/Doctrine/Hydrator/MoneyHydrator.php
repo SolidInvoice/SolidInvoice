@@ -27,7 +27,13 @@ class MoneyHydrator extends AbstractHydrator
      */
     public static function setCurrency($currency)
     {
-        self::$currency = $currency;
+	if (null !== $currency) {
+	    if (!$currency instanceof Currency) {
+		$currency = new Currency($currency);
+	    }
+
+	    self::$currency = $currency;
+	}
     }
 
     /**
@@ -38,7 +44,7 @@ class MoneyHydrator extends AbstractHydrator
         $result = [];
         $cache = [];
         foreach ($this->_stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-            $this->hydrateRowData($row, $cache, $result);
+	    $this->hydrateRowData($row, $result);
         }
 
         return $result;
@@ -47,26 +53,26 @@ class MoneyHydrator extends AbstractHydrator
     /**
      * {@inheritdoc}
      */
-    protected function hydrateRowData(array $row, array &$cache, array &$result)
+    protected function hydrateRowData(array $data, array &$result)
     {
-        if (0 === count($row)) {
+	if (0 === count($data)) {
             return false;
         }
 
-        $keys = array_keys($row);
+	$keys = array_keys($data);
 
         // Assume first column is id field
         /** @var string $id */
         $id = $keys[0];
 
-        if (2 === count($row)) {
+	if (2 === count($data)) {
             // If only one more field assume that this is the value field
             /** @var string $key1 */
             $key1 = $keys[1];
-            $value = $row[$key1];
-        } elseif (1 === count($row)) {
+	    $value = $data[$key1];
+	} elseif (1 === count($data)) {
             // Remove ID field and add remaining fields as value array
-            $value = array_shift($row);
+	    $value = array_shift($data);
         } else {
             throw new \Exception('When hydrating as "money", you cannot return more than 2 values (first one for the id, and second one for the value, or only one for the value)');
         }

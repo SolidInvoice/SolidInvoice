@@ -14,7 +14,7 @@ namespace CSBill\ApiBundle\Security;
 use CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use CSBill\UserBundle\Entity\ApiTokenHistory;
 use CSBill\UserBundle\Repository\ApiTokenHistoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,23 +41,23 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
     private $serializer;
 
     /**
-     * @var EntityManagerInterface
+     * @var ManagerRegistry
      */
-    private $entityManager;
+    private $registry;
 
     /**
-     * @param ApiTokenUserProvider   $userProvider
-     * @param SerializerInterface    $serializer
-     * @param EntityManagerInterface $entityManager
+     * @param ApiTokenUserProvider $userProvider
+     * @param SerializerInterface  $serializer
+     * @param ManagerRegistry      $registry
      */
     public function __construct(
         ApiTokenUserProvider $userProvider,
         SerializerInterface $serializer,
-        EntityManagerInterface $entityManager
+	ManagerRegistry $registry
     ) {
         $this->userProvider = $userProvider;
         $this->serializer = $serializer;
-        $this->entityManager = $entityManager;
+	$this->registry = $registry;
     }
 
     /**
@@ -152,7 +152,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
             ->setResource($request->getPathInfo());
 
         /** @var ApiTokenHistoryRepository $repository */
-        $repository = $this->entityManager->getRepository('CSBillUserBundle:ApiTokenHistory');
+	$repository = $this->registry->getManager()->getRepository('CSBillUserBundle:ApiTokenHistory');
 
         $repository->addHistory($history, $apiToken);
     }

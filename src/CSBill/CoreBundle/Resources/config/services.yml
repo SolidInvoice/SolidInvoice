@@ -4,7 +4,6 @@ parameters:
     csbill_core.menu_storage.class: CSBill\CoreBundle\Menu\Storage\MenuStorage
     csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
     csbill_core.menu.top.class: CSBill\CoreBundle\Menu\Main
-    csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
     csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
     csbill_core.billing.mailer.class: CSBill\CoreBundle\Mailer\Mailer
     csbill_core.form.type.image_upload.class: CSBill\CoreBundle\Form\Type\ImageUpload

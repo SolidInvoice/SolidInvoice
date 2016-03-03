@@ -56,7 +56,7 @@ class Item
     /**
      * @var Money
      *
-     * @ORM\Column(name="price", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Assert\NotBlank
      * @Serialize\Expose()
      */
@@ -87,10 +87,16 @@ class Item
     /**
      * @var Money
      *
-     * @ORM\Column(name="total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $total;
+
+    public function __construct()
+    {
+	$this->price = new \CSBill\MoneyBundle\Entity\Money();
+	$this->total = new \CSBill\MoneyBundle\Entity\Money();
+    }
 
     /**
      * Get id.
@@ -135,7 +141,7 @@ class Item
      */
     public function setPrice(Money $price)
     {
-        $this->price = $price;
+	$this->price->setMoney($price);
 
         return $this;
     }
@@ -147,7 +153,7 @@ class Item
      */
     public function getPrice()
     {
-        return $this->price;
+	return $this->price->getMoney();
     }
 
     /**
@@ -205,7 +211,7 @@ class Item
      */
     public function setTotal(Money $total)
     {
-        $this->total = $total;
+	$this->total->setMoney($total);
 
         return $this;
     }
@@ -217,7 +223,7 @@ class Item
      */
     public function getTotal()
     {
-        return $this->total;
+	return $this->total->getMoney();
     }
 
     /**
@@ -247,7 +253,7 @@ class Item
      */
     public function updateTotal()
     {
-        $this->total = $this->price->multiply($this->qty);
+	$this->total->setMoney($this->price->getMoney()->multiply($this->qty));
     }
 
     /**

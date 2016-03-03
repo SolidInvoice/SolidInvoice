@@ -11,8 +11,9 @@
 
 namespace CSBill\MoneyBundle\Twig\Extension;
 
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
-use Money\Currency;
+use CSBill\MoneyBundle\Currency;
 use Money\Money;
 
 class MoneyFormatterExtension extends \Twig_Extension

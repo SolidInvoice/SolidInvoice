@@ -3,7 +3,6 @@ parameters:
     payum.class: CSBill\PaymentBundle\Payum
 
 services:
-
     payum.static_registry:
         class: CSBill\PaymentBundle\Payum
         arguments: [[], [], []]
@@ -30,7 +29,6 @@ services:
 
     csbill.payment.payum.paypal_express.action.payment_status_action:
         class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
-        arguments: [@payum.security.token_factory, %currency%]
         tags:
             - { name: payum.action, factory: paypal_express_checkout_nvp, prepend: true }
 
