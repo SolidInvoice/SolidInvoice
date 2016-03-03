@@ -27,7 +27,7 @@ use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class QuoteGrid implements GridInterface
+abstract class QuoteGrid implements GridInterface
 {
     /**
      * @var EntityManagerInterface

@@ -48,7 +48,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
-            new CSBill\DataGridBundle\CSBillDataGridBundle(),
+	    new CSBill\DataGridBundle\CSBillDataGridBundle($this),
             new CSBill\QuoteBundle\CSBillQuoteBundle(),
             new CSBill\InvoiceBundle\CSBillInvoiceBundle(),
             new CSBill\ItemBundle\CSBillItemBundle(),

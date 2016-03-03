@@ -6,10 +6,23 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% set rand = random() %}
+{% set id = 'grid-'~gridName~'-'~rand %}
+
+<div id="{{ id }}" class="grid">
+</div>
+
+<script>
+    require(['grid/grid'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (Grid) {
+	new Grid({{ gridOptions|raw }}, '#{{ id }}');
+    });
+</script>
+
+{#
 
 {% extends 'APYDataGridBundle::blocks.html.twig' %}
 
-{# ------------------------------------------------------ grid ------------------------------------------------------ #}
+#}{# ------------------------------------------------------ grid ------------------------------------------------------ #}{#
 {% block grid %}
     <div class="grid">
 
@@ -129,9 +142,9 @@
                                             {{ grid_titles(grid) }}
                                         {% endif %}
 
-                                        {#{% if grid.isFilterSectionVisible %}
+					#}{#{% if grid.isFilterSectionVisible %}
                                             {{ grid_filters(grid) }}
-                                        {% endif %}#}
+					{% endif %}#}{#
 
                                         {{ grid_rows(grid) }}
                                     </table>
@@ -169,7 +182,7 @@
     </div>
 {% endblock grid %}
 
-{# -------------------------------------------------- grid_search -------------------------------------------------- #}
+#}{# -------------------------------------------------- grid_search -------------------------------------------------- #}{#
 {% block grid_search %}
     {% if grid.isFilterSectionVisible %}
         <div class="grid-search" id="{{ grid.hash }}_grid_search">
@@ -200,12 +213,12 @@
     {% endif %}
 {% endblock grid_search %}
 
-{# -------------------------------------------- grid_column_filter_type_massaction --------------------------------------- #}
+#}{# -------------------------------------------- grid_column_filter_type_massaction --------------------------------------- #}{#
 {% block grid_column_filter_type_massaction %}
     <input type="button" class="grid-search-reset form-control" value="R" title="{{ 'Reset'|trans }}" onclick="return {{ grid.hash }}_reset();"/>
 {% endblock grid_column_filter_type_massaction %}
 
-{# ------------------------------------------------ grid_column_actions_cell --------------------------------------------- #}
+#}{# ------------------------------------------------ grid_column_actions_cell --------------------------------------------- #}{#
 {% block grid_column_actions_cell %}
     {% set actions = column.getActionsToRender(row) %}
 
@@ -231,7 +244,7 @@
     {% endif %}
 {% endblock grid_column_actions_cell %}
 
-{# -------------------------------------------- grid_column_operator --------------------------------------- #}
+#}{# -------------------------------------------- grid_column_operator --------------------------------------- #}{#
 {% block grid_column_operator %}
     {% if column.operatorsVisible %}
         <div class="input-group-btn search-panel">
@@ -248,7 +261,7 @@
 {% endblock grid_column_operator %}
 
 
-{# -------------------------------------------------- grid_filters -------------------------------------------------- #}
+#}{# -------------------------------------------------- grid_filters -------------------------------------------------- #}{#
 {% block grid_filters %}
     <tr class="grid-row-filters">
         {% for column in grid.columns %}
@@ -265,7 +278,7 @@
     </tr>
 {% endblock grid_filters %}
 
-{# -------------------------------------------- grid_column_filter_type_input --------------------------------------- #}
+#}{# -------------------------------------------- grid_column_filter_type_input --------------------------------------- #}{#
 {% block grid_column_filter_type_input %}
     {% set btwOperator = constant('APY\\DataGridBundle\\Grid\\Column\\Column::OPERATOR_BTW') %}
     {% set btweOperator = constant('APY\\DataGridBundle\\Grid\\Column\\Column::OPERATOR_BTWE') %}
@@ -282,7 +295,7 @@
 
 </span>
 {% endblock grid_column_filter_type_input %}
-{# -------------------------------------------- grid_column_filter_type_select --------------------------------------- #}
+#}{# -------------------------------------------- grid_column_filter_type_select --------------------------------------- #}{#
 {% block grid_column_filter_type_select %}
     {% set btwOperator = constant('APY\\DataGridBundle\\Grid\\Column\\Column::OPERATOR_BTW') %}
     {% set btweOperator = constant('APY\\DataGridBundle\\Grid\\Column\\Column::OPERATOR_BTWE') %}
@@ -327,7 +340,7 @@
 </span>
 {% endblock grid_column_filter_type_select %}
 
-{# --------------------------------------------------- grid_titles -------------------------------------------------- #}
+#}{# --------------------------------------------------- grid_titles -------------------------------------------------- #}{#
 {% block grid_titles %}
     <tr class="grid-row-titles">
         {% for column in grid.columns %}
@@ -377,3 +390,4 @@
         {% endfor %}
     </tr>
 {% endblock grid_titles %}
+#}

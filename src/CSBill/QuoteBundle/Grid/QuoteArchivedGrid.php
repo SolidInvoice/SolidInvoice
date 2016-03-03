@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class QuoteArchivedGrid extends AbstractGrid
+abstract class QuoteArchivedGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface

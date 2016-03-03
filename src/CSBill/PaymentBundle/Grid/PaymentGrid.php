@@ -15,7 +15,7 @@ use APY\DataGridBundle\Grid\Source\Entity;
 use CSBill\DataGridBundle\AbstractGrid;
 use Doctrine\ORM\QueryBuilder;
 
-class PaymentGrid extends AbstractGrid
+abstract class PaymentGrid extends AbstractGrid
 {
     /**
      * {@inheritdoc}

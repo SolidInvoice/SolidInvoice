@@ -7,9 +7,11 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set parent = "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
+{#
 {% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+#}
 
 {% block title %}{{ 'clients'|trans }}{% endblock title %}
 
@@ -29,3 +31,32 @@
 {% block sidebar %}
     {{ menu('clients_index') }}
 {% endblock sidebar %}
+
+{% block content %}
+    <div class="widget">
+	<div class="grid-selection">
+	    <div class="pull-right">
+		<div class="btn-group btn-group-sm" role="group">
+		    <a href="?grid=active" class="btn btn-default disabled">
+			<i class="fa fa-check"></i>
+			Active
+		    </a>
+		    <a href="?grid=archived" class="btn btn-default">
+			<i class="fa fa-archive"></i>
+			Archived
+		    </a>
+		    <a href="?grid=deleted" class="btn btn-default">
+			<i class="fa fa-times"></i>
+			Deleted
+		    </a>
+		</div>
+	    </div>
+	    <br class="clear" />
+	</div>
+
+	{#{{ render_multiple_grid('client_grid', 'client_grid_archived', 'client_grid_deleted') }}#}
+	{{ render_grid('active_client_grid') }}
+	{{ render_grid('active_client_grid') }}
+	{{ render_grid('active_client_grid') }}
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+datagrid:
+    active_client_grid:
+	title: Active Clients
+	icon: fa-check
+	source:
+	    repository: CSBillClientBundle:Client
+	    method: findAll
+	columns:
+	    id:
+		name: id
+		label: ID
+		editable: false
+		cell: integer
+	    name:
+		name: name
+		label: Name
+		editable: true
+		cell: string
+	    website:
+		name: website
+		label: Website
+		editable: true
+		cell: uri
+	    status:
+		name: status
+		label: Status
+		editable: false
+		cell: client_status
+	    created:
+		name: created
+		label: Created
+		editable: false
+		cell: date
+	filters:
+	    name:
+		type: string
+	    website:
+		type: string
+	    status:
+		type: select
+		multiple: true
+		source:
+		    repository: CSBillClientBundle:Client
+		    method: getStatusList
+	    created:
+		type: date

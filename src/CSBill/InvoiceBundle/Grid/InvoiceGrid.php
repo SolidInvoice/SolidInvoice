@@ -30,7 +30,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class InvoiceGrid implements GridInterface
+abstract class InvoiceGrid implements GridInterface
 {
     /**
      * @var EntityManagerInterface

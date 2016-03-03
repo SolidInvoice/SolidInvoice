@@ -57,6 +57,11 @@ define(
                      * Material
                      */
                     $.material.init();
+
+		    /*require(['grid/grid'], function (Grid) {
+			// Render the grid and attach the Grid's root to your HTML document
+			$(".grid").html(Grid.render().el);
+		    });*/
                 }
             });
 

@@ -26,7 +26,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class InvoiceRecurringGrid extends AbstractGrid
+abstract class InvoiceRecurringGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface

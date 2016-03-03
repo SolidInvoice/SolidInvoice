@@ -18,7 +18,7 @@ use CSBill\DataGridBundle\AbstractGrid;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
-class ClientDeletedGrid extends AbstractGrid
+abstract class ClientDeletedGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface

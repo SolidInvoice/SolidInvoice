@@ -1,0 +1,10 @@
+config:
+    shim:
+	backgrid:
+	    deps:
+		- backbone
+		- lodash
+	    exports: Backgrid
+    paths:
+	backgrid: 'csbilldatagrid/js/backgrid.js'
+	grid: 'csbilldatagrid/js/'

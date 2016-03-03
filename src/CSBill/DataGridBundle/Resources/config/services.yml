@@ -2,6 +2,15 @@ parameters:
     grid.class: CSBill\DataGridBundle\Grid
 
 services:
+    grid.twig.extension:
+	class: CSBill\DataGridBundle\Twig\Extension\GridExtension
+	arguments: [@grid.repository, @serializer]
+	tags:
+	    - { name: twig.extension }
+
+    grid.repository:
+	class: CSBill\DataGridBundle\Repository\GridRepository
+
     grid.column.extension.status_extension:
         class: CSBill\DataGridBundle\Column\StatusColumn
         arguments: [@twig]

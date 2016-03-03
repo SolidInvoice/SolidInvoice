@@ -27,7 +27,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ClientGrid implements GridInterface
+abstract class ClientGrid implements GridInterface
 {
     /**
      * @var ObjectManager

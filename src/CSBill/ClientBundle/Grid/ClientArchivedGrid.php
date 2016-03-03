@@ -22,7 +22,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ClientArchivedGrid extends AbstractGrid
+abstract class ClientArchivedGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface

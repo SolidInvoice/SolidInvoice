@@ -29,7 +29,7 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $gridCollection = new GridCollection();
+	/*$gridCollection = new GridCollection();
 
         $gridCollection->add('csbill.client.grid', 'active', 'check');
         $gridCollection->add('csbill.client.grid.archived', 'archived', 'archive');
@@ -37,7 +37,9 @@ class DefaultController extends BaseController
 
         $grid = $this->get('grid')->create($gridCollection);
 
-        return $grid->getGridResponse();
+	return $grid->getGridResponse();*/
+
+	return $this->render('CSBillClientBundle:Default:index.html.twig');
     }
 
     /**

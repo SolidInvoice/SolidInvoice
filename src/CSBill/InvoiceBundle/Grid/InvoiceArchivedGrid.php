@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class InvoiceArchivedGrid extends AbstractGrid
+abstract class InvoiceArchivedGrid extends AbstractGrid
 {
     /**
      * @var EntityManagerInterface
