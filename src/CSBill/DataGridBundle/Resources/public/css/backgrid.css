@@ -26,7 +26,7 @@
 	  border-radius: 4px;
 }
 
-.backgrid th,
+/*.backgrid th,
 .backgrid td {
   display: none;
   height: 20px;
@@ -39,9 +39,9 @@
   white-space: nowrap;
   vertical-align: middle;
   border-bottom: 1px solid #DDD;
-}
+}*/
 
-.backgrid th.renderable,
+/*.backgrid th.renderable,
 .backgrid td.renderable {
   display: table-cell;
 }
@@ -64,11 +64,11 @@
 
 .backgrid thead th a {
   display: block;
-}
+}*/
 
-.backgrid.backgrid-striped tbody tr:nth-child(even) {
+/*.backgrid.backgrid-striped tbody tr:nth-child(even) {
   background-color: #f9f9f9;
-}
+}*/
 
 .backgrid tbody tr.empty {
   font-style: italic;
@@ -186,7 +186,7 @@
 .backgrid .number-cell.editor input[type=text],
 .backgrid .integer-cell.editor input[type=text],
 .backgrid .percent-cell.editor input[type=text] {
-  text-align: right;
+  /*text-align: right;*/
 }
 
 .backgrid .boolean-cell,

@@ -11,16 +11,21 @@
 namespace CSBill\DataGridBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
+use Symfony\Component\HttpFoundation\Request;
 
 class DataController extends BaseController
 {
     /**
-     * @param string $name
+     * @param Request $request
+     * @param string  $name
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
-    public function getDataAction($name)
+    public function getDataAction(Request $request, $name)
     {
 	$grid = $this->get('grid.repository')->find($name);
 
-	return $this->serializeJs($grid->fetchData($this->getEm()));
+	return $this->serializeJs($grid->fetchData($request, $this->getEm()));
     }
 }

@@ -82,4 +82,16 @@ class ClientRepository extends EntityRepository
 
 	return ArrayUtil::column($qb->getQuery()->getResult(), 'status');
     }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGridQuery()
+    {
+	$qb = $this->createQueryBuilder('c');
+
+	$qb->select('c');
+
+	return $qb;
+    }
 }
