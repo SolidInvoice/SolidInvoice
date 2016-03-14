@@ -50,6 +50,12 @@ class Grid implements GridInterface
     private $filters;
 
     /**
+     * @var array
+     * @Serializer\Exclude()
+     */
+    private $searchFields;
+
+    /**
      * @param array $gridData
      */
     public function __construct(array $gridData)
@@ -68,6 +74,7 @@ class Grid implements GridInterface
 
 	$this->filters = $gridData['filters'];
 	$this->source = $gridData['source'];
+	$this->searchFields = $gridData['search']['fields'];
     }
 
     /**
@@ -95,7 +102,13 @@ class Grid implements GridInterface
 	}
 
 	if ($request->query->has('q')) {
-	    $queryBuilder->where($queryBuilder->getRootAliases()[0].'.name LIKE :q');
+	    $alias = $queryBuilder->getRootAliases()[0];
+
+	    $expr = $queryBuilder->expr();
+
+	    $fields = array_map(function ($field) use ($alias) { return $alias.'.'.$field.' LIKE :q'; }, $this->searchFields);
+
+	    $queryBuilder->orWhere(call_user_func_array([$expr, 'orX'], $fields));
 	    $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
 	}
 

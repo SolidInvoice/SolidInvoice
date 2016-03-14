@@ -1,6 +1,7 @@
 define(['marionette', 'backbone', 'jquery', 'lodash', 'routing', 'backgrid', 'backbone.paginator', 'grid/backgrid-select-all', 'grid/backgrid-paginator', 'grid/backgrid-filter'], function (Mn, Backbone, $, _, Routing, Backgrid) {
     return Mn.Object.extend({
 	initialize: function (options, element) {
+
 	    var GridCollection = Backbone.PageableCollection.extend({
 		model: Backbone.Model,
 		url  : Routing.generate('_grid_data', {'name' : options.name}),
@@ -38,6 +39,14 @@ define(['marionette', 'backbone', 'jquery', 'lodash', 'routing', 'backgrid', 'ba
 		className: 'backgrid table'
 	    };
 
+	    options.columns.unshift({
+		// name is a required parameter, but you don't really want one on a select all column
+		name: "",
+		// Backgrid.Extension.SelectRowCell lets you select individual rows
+		cell: "select-row",
+		// Backgrid.Extension.SelectAllHeaderCell lets you select all the row on a page
+		headerCell: "select-all"
+	    });
 	    var grid = new Backgrid.Grid(_.extend(options, gridOptions));
 
 	    $(element).html(grid.render().el);
@@ -67,7 +76,7 @@ define(['marionette', 'backbone', 'jquery', 'lodash', 'routing', 'backgrid', 'ba
 		collection: collection,
 		// the name of the URL query parameter
 		name: "q",
-		placeholder: "ex: location:your country" // HTML5 placeholder for the search box
+		placeholder: null, //"ex: location:your country" // HTML5 placeholder for the search box
 	    });
 
 	    $(element).before(serverSideFilter.render().el);
