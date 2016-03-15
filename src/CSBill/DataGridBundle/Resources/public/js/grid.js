@@ -1,4 +1,26 @@
-define(['marionette', 'backbone', 'jquery', 'lodash', 'routing', 'backgrid', 'backbone.paginator', 'grid/backgrid-select-all', 'grid/backgrid-paginator', 'grid/backgrid-filter'], function (Mn, Backbone, $, _, Routing, Backgrid) {
+define([
+	'marionette',
+	'backbone',
+	'jquery',
+	'lodash',
+	'routing',
+	'backgrid',
+	'template',
+
+	'backbone.paginator',
+	'grid/backgrid-select-all',
+	'grid/backgrid-paginator',
+	'grid/backgrid-filter'
+    ],
+    function (
+	Mn,
+	Backbone,
+	$,
+	_,
+	Routing,
+	Backgrid,
+	Template
+    ) {
     return Mn.Object.extend({
 	initialize: function (options, element) {
 
@@ -72,11 +94,14 @@ define(['marionette', 'backbone', 'jquery', 'lodash', 'routing', 'backgrid', 'ba
 	    $(element).append(paginator.render().el);
 
 
-	    var serverSideFilter = new Backgrid.Extension.ServerSideFilter({
+	    var filter = Backgrid.Extension.ServerSideFilter.extend({
+		template: Template['grid/search']
+	    });
+
+	    var serverSideFilter = new filter({
 		collection: collection,
 		// the name of the URL query parameter
-		name: "q",
-		placeholder: null, //"ex: location:your country" // HTML5 placeholder for the search box
+		name: "q"
 	    });
 
 	    $(element).before(serverSideFilter.render().el);
