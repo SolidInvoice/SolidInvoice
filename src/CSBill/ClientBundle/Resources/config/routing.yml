@@ -53,4 +53,18 @@ _clients_contact:
     defaults:  { _controller: CSBillClientBundle:Ajax:contact }
     methods: [GET, POST, DELETE]
     options:
+	expose: true
+
+_clients_archive:
+    path:   /archive
+    defaults:  { _controller: CSBillClientBundle:Grid:archive }
+    methods: [POST]
+    options:
+	expose: true
+
+_clients_delete:
+    path:   /delete
+    defaults:  { _controller: CSBillClientBundle:Grid:delete }
+    methods: [POST]
+    options:
         expose: true

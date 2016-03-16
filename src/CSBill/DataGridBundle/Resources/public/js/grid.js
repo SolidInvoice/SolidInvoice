@@ -6,6 +6,8 @@ define([
 	'routing',
 	'backgrid',
 	'template',
+	'bootstrap.bootbox',
+	'core/view',
 
 	'backbone.paginator',
 	'grid/backgrid-select-all',
@@ -19,11 +21,12 @@ define([
 	_,
 	Routing,
 	Backgrid,
-	Template
+	Template,
+	Bootbox,
+	ItemView
     ) {
     return Mn.Object.extend({
 	initialize: function (options, element) {
-
 	    var GridCollection = Backbone.PageableCollection.extend({
 		model: Backbone.Model,
 		url  : Routing.generate('_grid_data', {'name' : options.name}),
@@ -58,7 +61,7 @@ define([
 
 	    var gridOptions = {
 		collection: collection,
-		className: 'backgrid table'
+		className: 'backgrid table table-bordered table-striped table-hover'
 	    };
 
 	    options.columns.unshift({
@@ -71,7 +74,7 @@ define([
 	    });
 	    var grid = new Backgrid.Grid(_.extend(options, gridOptions));
 
-	    $(element).html(grid.render().el);
+	    $(element+'-grid').html(grid.render().el);
 
 	    var paginator = new Backgrid.Extension.Paginator({
 
@@ -91,7 +94,7 @@ define([
 		collection: collection
 	    });
 
-	    $(element).append(paginator.render().el);
+	    $(element+'-grid').append(paginator.render().el);
 
 
 	    var filter = Backgrid.Extension.ServerSideFilter.extend({
@@ -104,7 +107,72 @@ define([
 		name: "q"
 	    });
 
-	    $(element).before(serverSideFilter.render().el);
+	    $(element+'-search').append(serverSideFilter.render().el);
+
+
+
+	    var ActionView = ItemView.extend({
+		tagName: 'span',
+		template: _.template('<button type="submit" class="btn btn-<%=className%> btn-xs"><i class="fa fa-<%=icon%>"></i><%=label%></button>&nbsp;'),
+		ui: {
+		    button: ".btn"
+		},
+		events: {
+		    'click @ui.button': 'confirm'
+		},
+		confirm: function () {
+		    if (_.isEmpty(grid.getSelectedModels())) {
+			return Bootbox.alert('You need to select at least one row');
+		    }
+
+		    if (!_.isEmpty(this.model.get('confirm'))) {
+			var view = this;
+			Bootbox.confirm(this.model.get('confirm'), function (response) {
+			    if (true === response) {
+				view._executeAction();
+			    }
+			});
+		    } else {
+			this._executeAction();
+		    }
+		},
+		_executeAction: function () {
+		    this.showLoader();
+
+		    var models = _.map(this.getOption('grid').getSelectedModels(), function (model) {
+			return model.id;
+		    }),
+
+		    view = this,
+			promise = $.ajax({
+			url: Routing.generate(this.model.get('action')),
+			data: {'data': models},
+			method: 'POST'
+		    });
+
+		    promise.done(function () {
+			collection.fetch({
+			    success: function () {
+				view.getOption('grid').clearSelectedModels();
+				view.hideLoader();
+			    }
+			});
+		    });
+		}
+	    }),
+
+	    actionElement = $(element+'-actions');
+
+	    _.each(options.actions, function (action) {
+		var view = new ActionView(
+		    {
+			model: new Backbone.Model(action),
+			grid: grid
+		    }
+		);
+
+		actionElement.append(view.render().el);
+	    });
 	}
     });
 });

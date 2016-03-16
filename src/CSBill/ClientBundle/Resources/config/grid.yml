@@ -14,12 +14,12 @@ datagrid:
 	    name:
 		name: name
 		label: Name
-		editable: true
+		editable: false
 		cell: string
 	    website:
 		name: website
 		label: Website
-		editable: true
+		editable: false
 		cell: uri
 	    status:
 		name: status
@@ -36,6 +36,19 @@ datagrid:
 		- name
 		- website
 		- status
+	actions:
+	    archive:
+		label: Archive
+		icon: archive
+		confirm: "Are you sure you want to archive the selected rows?"
+		action: _clients_archive
+		className: warning
+	    delete:
+		label: Delete
+		icon: ban
+		confirm: "Are you sure you want to delete the selected rows?"
+		action: _clients_delete
+		className: danger
 	filters:
 	    name:
 		type: string

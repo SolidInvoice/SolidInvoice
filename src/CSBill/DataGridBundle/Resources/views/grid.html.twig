@@ -6,11 +6,49 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% set rand = random() %}
-{% set id = 'grid-'~gridName~'-'~rand %}
+{% set id = 'grid-' ~ gridName ~ '-' ~ random() %}
 
-<div id="{{ id }}" class="grid">
+<div class="panel panel-primary filterable" id="{{ id }}">
+    <div class="panel-heading">
+
+	<h3 class="panel-title">
+	    <span id="{{ id }}-actions"></span>
+	    {#<div class="pull-right">
+		<div class="dropdown">
+		    <button class="btn btn-info btn-xs btn-filter dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			<i class="fa fa-filter"></i>
+			Filter
+			<div class="ripple-wrapper"><div class="ripple ripple-on ripple-out" style="left: 16.0156px; top: -8.39062px; transform: scale(4.09574); background-color: rgba(255, 255, 255, 0.843137);"></div></div></button>
+		    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+			<li role="presentation">
+			    <a role="menuitem" tabindex="-1" href="/clients/?filter=active_clients">
+				Active Clients
+			    </a>
+			</li>
+			<li role="presentation">
+			    <a role="menuitem" tabindex="-1" href="/clients/?filter=inactive_clients">
+				Inactive Clients
+			    </a>
+			</li>
+
+		    </ul>
+		</div>
+	    </div>
+	    <br class="clearfix">#}
+
+	</h3>
+    </div>
+    <div class="panel-body">
+	<div id="{{ id }}-search">
+	</div>
+    </div>
+
+    <div id="{{ id }}-grid" class="grid">
+    </div>
+
 </div>
+
+
 
 <script>
     require(['grid/grid'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (Grid) {
