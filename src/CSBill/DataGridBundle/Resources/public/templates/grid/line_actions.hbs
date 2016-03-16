@@ -1,0 +1,20 @@
+<!-- Single button -->
+<div class="btn-group btn-group-xs dropdown">
+    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	...
+    </button>
+    <ul class="dropdown-menu">
+	{{#each actions}}
+	    <li>
+		<a href="{{path this.route this.routeParams}}">
+		    {{#if this.icon}}
+			<i class="fa fa-{{this.icon}}"></i>
+		    {{/if}}
+		    {{#if this.label}}
+			{{trans this.label}}
+		    {{/if}}
+		</a>
+	    </li>
+	{{/each}}
+    </ul>
+</div>

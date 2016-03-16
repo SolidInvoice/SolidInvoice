@@ -98,6 +98,37 @@ class GridConfiguration implements ConfigurationInterface
 			    ->end()
 			->end()
 		    ->end()
+		    ->arrayNode('line_actions')
+			->prototype('array')
+			->validate()
+			    ->ifTrue(function ($data) {
+				    return empty($data['icon']) && empty($data['label']);
+				})
+				->thenInvalid('At least one of "icon" or "label" needs to be set')
+			    ->end()
+			    ->children()
+				->scalarNode('label')
+				->defaultNull()
+				->end()
+				->scalarNode('icon')
+				    ->defaultNull()
+				->end()
+				->scalarNode('route')
+				    ->isRequired()
+				    ->cannotBeEmpty()
+				->end()
+				->arrayNode('route_params')
+				    ->useAttributeAsKey('name')
+				    ->prototype('scalar')
+				    ->end()
+				->end()
+				->arrayNode('conditions')
+				    ->prototype('scalar')
+				    ->end()
+				->end()
+			    ->end()
+			->end()
+		    ->end()
 		    ->arrayNode('filters')
 			->prototype('array')
 			    ->children()
@@ -126,9 +157,6 @@ class GridConfiguration implements ConfigurationInterface
 		->end()
 	    ->end();
 
-	// Here you should define the parameters that are allowed to
-	// configure your bundle. See the documentation linked above for
-	// more information on that topic.
 	return $treeBuilder;
     }
 }

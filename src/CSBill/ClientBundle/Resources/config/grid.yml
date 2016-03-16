@@ -36,6 +36,19 @@ datagrid:
 		- name
 		- website
 		- status
+	line_actions:
+	    view:
+		icon: eye
+		label: client.grid.actions.view
+		route: _clients_view
+		route_params:
+		    id: id
+	    edit:
+		icon: edit
+		label: client.grid.actions.edit
+		route: _clients_edit
+		route_params:
+		    id: id
 	actions:
 	    archive:
 		label: Archive

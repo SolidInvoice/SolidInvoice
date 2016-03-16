@@ -11,10 +11,14 @@ _clients_add:
 _clients_edit:
     path:   /edit/{id}
     defaults:  { _controller: CSBillClientBundle:Default:edit }
+    options:
+	expose: true
 
 _clients_view:
     path:   /view/{id}
     defaults:  { _controller: CSBillClientBundle:Default:view }
+    options:
+	expose: true
 
 _clients_delete:
     path:   /ajax/delete/{id}

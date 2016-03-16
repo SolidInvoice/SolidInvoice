@@ -238,3 +238,8 @@
 .backgrid .select-cell.editor option::-o-focus-inner {
   border: 0;
 }
+
+.backgrid .dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}

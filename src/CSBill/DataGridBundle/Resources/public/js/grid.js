@@ -12,7 +12,8 @@ define([
 	'backbone.paginator',
 	'grid/backgrid-select-all',
 	'grid/backgrid-paginator',
-	'grid/backgrid-filter'
+	'grid/backgrid-filter',
+	'grid/cell/actioncell'
     ],
     function (
 	Mn,
@@ -70,8 +71,20 @@ define([
 		// Backgrid.Extension.SelectRowCell lets you select individual rows
 		cell: "select-row",
 		// Backgrid.Extension.SelectAllHeaderCell lets you select all the row on a page
-		headerCell: "select-all"
+		headerCell: "select-all",
+		editable: false,
+		sortable: false
 	    });
+
+	    options.columns.push({
+		// name is a required parameter, but you don't really want one on a select all column
+		name: "Actions",
+		// Backgrid.Extension.SelectRowCell lets you select individual rows
+		cell: Backgrid.Extension.ActionCell.extend({'lineActions': options.line_actions}),
+		editable: false,
+		sortable: false
+	    });
+
 	    var grid = new Backgrid.Grid(_.extend(options, gridOptions));
 
 	    $(element+'-grid').html(grid.render().el);

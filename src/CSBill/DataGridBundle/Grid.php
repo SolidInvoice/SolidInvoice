@@ -62,6 +62,12 @@ class Grid implements GridInterface
     private $actions;
 
     /**
+     * @var array
+     * @Serializer\Expose()
+     */
+    private $lineActions;
+
+    /**
      * @param array $gridData
      */
     public function __construct(array $gridData)
@@ -82,6 +88,7 @@ class Grid implements GridInterface
 	$this->source = $gridData['source'];
 	$this->searchFields = $gridData['search']['fields'];
 	$this->actions = $gridData['actions'];
+	$this->lineActions = $gridData['line_actions'];
     }
 
     /**
