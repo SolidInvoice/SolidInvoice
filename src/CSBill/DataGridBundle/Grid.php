@@ -11,6 +11,7 @@
 
 namespace CSBill\DataGridBundle;
 
+use CSBill\DataGridBundle\Source\Source;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,9 +69,10 @@ class Grid implements GridInterface
     private $lineActions;
 
     /**
-     * @param array $gridData
+     * @param Source $source
+     * @param array  $gridData
      */
-    public function __construct(array $gridData)
+    public function __construct(Source $source, array $gridData)
     {
 	$this->name = $gridData['name'];
 	$this->columns = new ArrayCollection(array_values($gridData['columns']));
@@ -82,10 +84,10 @@ class Grid implements GridInterface
 
 		unset($filter['source']);
             }
-        }
+	}
 
 	$this->filters = $gridData['filters'];
-	$this->source = $gridData['source'];
+	$this->source = $source;
 	$this->searchFields = $gridData['search']['fields'];
 	$this->actions = $gridData['actions'];
 	$this->lineActions = $gridData['line_actions'];
@@ -100,13 +102,7 @@ class Grid implements GridInterface
      */
     public function fetchData(Request $request, EntityManagerInterface $entityManager)
     {
-	$method = $this->source['method'];
-
-	$queryBuilder = $entityManager->getRepository($this->source['repository'])->$method();
-
-	if (!$queryBuilder instanceof QueryBuilder) {
-	    throw new \Exception('Grid should return a query builder');
-	}
+	$queryBuilder = $this->source->fetch();
 
 	$queryBuilder->setMaxResults($request->query->get('per_page'));
 	$queryBuilder->setFirstResult(($request->query->get('page') - 1) * $request->query->get('per_page'));

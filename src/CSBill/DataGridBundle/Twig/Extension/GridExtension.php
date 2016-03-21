@@ -57,7 +57,6 @@ class GridExtension extends \Twig_Extension
      */
     public function renderGrid(\Twig_Environment $env, $gridName)
     {
-
 	$grid = $this->repository->find($gridName);
 	$gridOptions = $this->serializer->serialize($grid, 'json');
 

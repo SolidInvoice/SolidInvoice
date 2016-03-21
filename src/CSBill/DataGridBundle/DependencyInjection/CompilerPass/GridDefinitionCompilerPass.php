@@ -91,10 +91,23 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
 		}
 	    }
 
+	    $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
 	    $gridDefinition->addArgument($gridConfig);
 
 	    $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
 	}
 
+    }
+
+    /**
+     * @param array $arguments
+     *
+     * @return Definition
+     */
+    private function getGridSource(array $arguments)
+    {
+	array_unshift($arguments, new Reference('doctrine'));
+
+	return new Definition('CSBill\DataGridBundle\Source\ORMSource', $arguments);
     }
 }
