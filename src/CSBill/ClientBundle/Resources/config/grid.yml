@@ -62,16 +62,3 @@ datagrid:
 		confirm: "Are you sure you want to delete the selected rows?"
 		action: _clients_delete
 		className: danger
-	filters:
-	    name:
-		type: string
-	    website:
-		type: string
-	    status:
-		type: select
-		multiple: true
-		source:
-		    repository: CSBillClientBundle:Client
-		    method: getStatusList
-	    created:
-		type: date

@@ -11,12 +11,11 @@
 
 namespace CSBill\DataGridBundle;
 
+use CSBill\DataGridBundle\Filter\FilterInterface;
 use CSBill\DataGridBundle\Source\Source;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,34 +26,27 @@ use Symfony\Component\HttpFoundation\Request;
 class Grid implements GridInterface
 {
     /**
-     * @var ArrayCollection
-     * @Serializer\Expose()
-     */
-    private $columns;
-
-    /**
      * @var string
      * @Serializer\Expose()
      */
     private $name;
 
     /**
-     * @var array
+     * @var ArrayCollection
+     * @Serializer\Expose()
+     */
+    private $columns;
+
+    /**
+     * @var Source
      * @Serializer\Exclude()
      */
     private $source;
 
     /**
-     * @var array
-     * @Serializer\Expose()
+     * @var FilterInterface
      */
-    private $filters;
-
-    /**
-     * @var array
-     * @Serializer\Exclude()
-     */
-    private $searchFields;
+    private $filter;
 
     /**
      * @var array
@@ -69,28 +61,25 @@ class Grid implements GridInterface
     private $lineActions;
 
     /**
-     * @param Source $source
-     * @param array  $gridData
+     * @var array
+     * @Serializer\Expose()
      */
-    public function __construct(Source $source, array $gridData)
+    private $properties;
+
+    /**
+     * @param Source          $source
+     * @param FilterInterface $filter
+     * @param array           $gridData
+     */
+    public function __construct(Source $source, FilterInterface $filter, array $gridData)
     {
 	$this->name = $gridData['name'];
 	$this->columns = new ArrayCollection(array_values($gridData['columns']));
-
-	foreach ($gridData['filters'] as &$filter) {
-	    if (array_key_exists('data', $filter) && $filter['data'] instanceof EntityRepository) {
-		$method = $filter['source']['method'];
-		$filter['data'] = $filter['data']->$method();
-
-		unset($filter['source']);
-            }
-	}
-
-	$this->filters = $gridData['filters'];
 	$this->source = $source;
-	$this->searchFields = $gridData['search']['fields'];
 	$this->actions = $gridData['actions'];
 	$this->lineActions = $gridData['line_actions'];
+	$this->properties = $gridData['properties'];
+	$this->filter = $filter;
     }
 
     /**
@@ -104,23 +93,7 @@ class Grid implements GridInterface
     {
 	$queryBuilder = $this->source->fetch();
 
-	$queryBuilder->setMaxResults($request->query->get('per_page'));
-	$queryBuilder->setFirstResult(($request->query->get('page') - 1) * $request->query->get('per_page'));
-
-	if ($request->query->has('sort')) {
-	    $queryBuilder->orderBy($queryBuilder->getRootAliases()[0].'.'.$request->query->get('sort'), $request->query->get('order'));
-	}
-
-	if ($request->query->has('q')) {
-	    $alias = $queryBuilder->getRootAliases()[0];
-
-	    $expr = $queryBuilder->expr();
-
-	    $fields = array_map(function ($field) use ($alias) { return $alias.'.'.$field.' LIKE :q'; }, $this->searchFields);
-
-	    $queryBuilder->orWhere(call_user_func_array([$expr, 'orX'], $fields));
-	    $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
-	}
+	$this->filter->filter($request, $queryBuilder);
 
 	$paginator = new Paginator($queryBuilder);
 

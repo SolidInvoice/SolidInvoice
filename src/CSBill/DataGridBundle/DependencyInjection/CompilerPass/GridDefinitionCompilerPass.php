@@ -77,21 +77,12 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
     private function setGridDefinition(Definition $gridService, array $config)
     {
 	foreach ($config as $gridName => $gridConfig) {
-	    $gridDefinition = new Definition('CSBill\\DataGridBundle\\Grid');
+	    $gridDefinition = new Definition('CSBill\DataGridBundle\Grid');
 
 	    $gridConfig['name'] = $gridName;
 
-	    foreach ($gridConfig['filters'] as &$filter) {
-		if (array_key_exists('source', $filter)) {
-		    $def = new Definition();
-		    $def->setFactory([new Reference('doctrine.orm.entity_manager'), 'getRepository']);
-		    $def->setArguments([$filter['source']['repository']]);
-
-		    $filter['data'] = $def;
-		}
-	    }
-
 	    $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
+	    $gridDefinition->addArgument($this->getFilterService($gridConfig));
 	    $gridDefinition->addArgument($gridConfig);
 
 	    $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
@@ -109,5 +100,33 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
 	array_unshift($arguments, new Reference('doctrine'));
 
 	return new Definition('CSBill\DataGridBundle\Source\ORMSource', $arguments);
+    }
+
+    /**
+     * @param array $gridData
+     *
+     * @return Definition
+     */
+    private function getFilterService(array &$gridData)
+    {
+	$definition = new Definition('CSBill\DataGridBundle\Filter\ChainFilter');
+
+	if (true === $gridData['properties']['sortable']) {
+	    $sortFilter = new Definition('CSBill\DataGridBundle\Filter\SortFilter');
+	    $definition->addMethodCall('addFilter', [$sortFilter]);
+	}
+
+	if (true === $gridData['properties']['sortable']) {
+	    $paginateFilter = new Definition('CSBill\DataGridBundle\Filter\PaginateFilter');
+	    $definition->addMethodCall('addFilter', [$paginateFilter]);
+	}
+
+	if (!empty($gridData['search']['fields'])) {
+	    $searchFilter = new Definition('CSBill\DataGridBundle\Filter\SearchFilter', [$gridData['search']['fields']]);
+	    $definition->addMethodCall('addFilter', [$searchFilter]);
+	    $gridData['properties']['search'] = true;
+	}
+
+	return $definition;
     }
 }

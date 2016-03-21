@@ -65,127 +65,134 @@ define([
 		className: 'backgrid table table-bordered table-striped table-hover'
 	    };
 
-	    options.columns.unshift({
-		// name is a required parameter, but you don't really want one on a select all column
-		name: "",
-		// Backgrid.Extension.SelectRowCell lets you select individual rows
-		cell: "select-row",
-		// Backgrid.Extension.SelectAllHeaderCell lets you select all the row on a page
-		headerCell: "select-all",
-		editable: false,
-		sortable: false
-	    });
+	    if (_.size(options.line_actions) > 0) {
+		options.columns.push({
+		    // name is a required parameter, but you don't really want one on a select all column
+		    name: "Actions",
+		    // Backgrid.Extension.SelectRowCell lets you select individual rows
+		    cell: Backgrid.Extension.ActionCell.extend({'lineActions': options.line_actions}),
+		    editable: false,
+		    sortable: false
+		});
+	    }
 
-	    options.columns.push({
-		// name is a required parameter, but you don't really want one on a select all column
-		name: "Actions",
-		// Backgrid.Extension.SelectRowCell lets you select individual rows
-		cell: Backgrid.Extension.ActionCell.extend({'lineActions': options.line_actions}),
-		editable: false,
-		sortable: false
-	    });
+	    if (_.size(options.actions) > 0) {
+		options.columns.unshift({
+		    // name is a required parameter, but you don't really want one on a select all column
+		    name: "",
+		    // Backgrid.Extension.SelectRowCell lets you select individual rows
+		    cell: "select-row",
+		    // Backgrid.Extension.SelectAllHeaderCell lets you select all the row on a page
+		    headerCell: "select-all",
+		    editable: false,
+		    sortable: false
+		});
+	    }
 
 	    var grid = new Backgrid.Grid(_.extend(options, gridOptions));
 
 	    $(element+'-grid').html(grid.render().el);
 
-	    var paginator = new Backgrid.Extension.Paginator({
+	    if (options.properties.paginate) {
+		var paginator = new Backgrid.Extension.Paginator({
 
-		// If you anticipate a large number of pages, you can adjust
-		// the number of page handles to show. The sliding window
-		// will automatically show the next set of page handles when
-		// you click next at the end of a window.
-		windowSize: 20, // Default is 10
+		    // If you anticipate a large number of pages, you can adjust
+		    // the number of page handles to show. The sliding window
+		    // will automatically show the next set of page handles when
+		    // you click next at the end of a window.
+		    windowSize: 20, // Default is 10
 
-		// Used to multiple windowSize to yield a number of pages to slide,
-		// in the case the number is 5
-		slideScale: 0.25, // Default is 0.5
+		    // Used to multiple windowSize to yield a number of pages to slide,
+		    // in the case the number is 5
+		    slideScale: 0.25, // Default is 0.5
 
-		// Whether sorting should go back to the first page
-		goBackFirstOnSort: false, // Default is true
+		    // Whether sorting should go back to the first page
+		    goBackFirstOnSort: false, // Default is true
 
-		collection: collection
-	    });
+		    collection: collection
+		});
 
-	    $(element+'-grid').append(paginator.render().el);
+		$(element+'-grid').append(paginator.render().el);
+	    }
 
+	    if (options.properties.search) {
+		var filter = Backgrid.Extension.ServerSideFilter.extend({
+		    template: Template['grid/search']
+		});
 
-	    var filter = Backgrid.Extension.ServerSideFilter.extend({
-		template: Template['grid/search']
-	    });
+		var serverSideFilter = new filter({
+		    collection: collection,
+		    // the name of the URL query parameter
+		    name: "q"
+		});
 
-	    var serverSideFilter = new filter({
-		collection: collection,
-		// the name of the URL query parameter
-		name: "q"
-	    });
+		$(element+'-search').append(serverSideFilter.render().el);
+	    }
 
-	    $(element+'-search').append(serverSideFilter.render().el);
+	    if (_.size(options.line_actions) > 0) {
+		var ActionView = ItemView.extend({
+		    tagName: 'span',
+		    template: _.template('<button type="submit" class="btn btn-<%=className%> btn-xs"><i class="fa fa-<%=icon%>"></i><%=label%></button>&nbsp;'),
+		    ui: {
+			button: ".btn"
+		    },
+		    events: {
+			'click @ui.button': 'confirm'
+		    },
+		    confirm: function () {
+			if (_.isEmpty(grid.getSelectedModels())) {
+			    return Bootbox.alert('You need to select at least one row');
+			}
 
+			if (!_.isEmpty(this.model.get('confirm'))) {
+			    var view = this;
+			    Bootbox.confirm(this.model.get('confirm'), function (response) {
+				if (true === response) {
+				    view._executeAction();
+				}
+			    });
+			} else {
+			    this._executeAction();
+			}
+		    },
+		    _executeAction: function () {
+			this.showLoader();
 
+			var models = _.map(this.getOption('grid').getSelectedModels(), function (model) {
+				return model.id;
+			    }),
 
-	    var ActionView = ItemView.extend({
-		tagName: 'span',
-		template: _.template('<button type="submit" class="btn btn-<%=className%> btn-xs"><i class="fa fa-<%=icon%>"></i><%=label%></button>&nbsp;'),
-		ui: {
-		    button: ".btn"
-		},
-		events: {
-		    'click @ui.button': 'confirm'
-		},
-		confirm: function () {
-		    if (_.isEmpty(grid.getSelectedModels())) {
-			return Bootbox.alert('You need to select at least one row');
-		    }
+			    view = this,
+			    promise = $.ajax({
+				url: Routing.generate(this.model.get('action')),
+				data: {'data': models},
+				method: 'POST'
+			    });
 
-		    if (!_.isEmpty(this.model.get('confirm'))) {
-			var view = this;
-			Bootbox.confirm(this.model.get('confirm'), function (response) {
-			    if (true === response) {
-				view._executeAction();
-			    }
+			promise.done(function () {
+			    collection.fetch({
+				success: function () {
+				    view.getOption('grid').clearSelectedModels();
+				    view.hideLoader();
+				}
+			    });
 			});
-		    } else {
-			this._executeAction();
 		    }
-		},
-		_executeAction: function () {
-		    this.showLoader();
+		}),
 
-		    var models = _.map(this.getOption('grid').getSelectedModels(), function (model) {
-			return model.id;
-		    }),
+		actionElement = $(element+'-actions');
 
-		    view = this,
-			promise = $.ajax({
-			url: Routing.generate(this.model.get('action')),
-			data: {'data': models},
-			method: 'POST'
-		    });
+		_.each(options.actions, function (action) {
+		    var view = new ActionView(
+			{
+			    model: new Backbone.Model(action),
+			    grid: grid
+			}
+		    );
 
-		    promise.done(function () {
-			collection.fetch({
-			    success: function () {
-				view.getOption('grid').clearSelectedModels();
-				view.hideLoader();
-			    }
-			});
-		    });
-		}
-	    }),
-
-	    actionElement = $(element+'-actions');
-
-	    _.each(options.actions, function (action) {
-		var view = new ActionView(
-		    {
-			model: new Backbone.Model(action),
-			grid: grid
-		    }
-		);
-
-		actionElement.append(view.render().el);
-	    });
+		    actionElement.append(view.render().el);
+		});
+	    }
 	}
     });
 });
