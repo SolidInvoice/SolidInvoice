@@ -1,6 +1,6 @@
-web/bundles/
-web/css
-web/js
+web/bundles/*
+web/css/*
+web/js/*
 app/bootstrap.php.cache
 app/cache/*
 app/logs/*
@@ -10,6 +10,8 @@ bin
 composer.phar
 web/uploads/*
 !web/uploads/.gitkeep
+!web/js/.gitkeep
+!web/css/.gitkeep
 app/config/parameters.yml
 /.idea
 web/js/fos_js_routes.js
