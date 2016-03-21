@@ -9,6 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+
+try {
+    $baseUrl = $container->getParameter('base_url');
+} catch (ParameterNotFoundException $e) {
+    $baseUrl = null;
+}
+
 $config = [
     'templating' => [
         'engines' => ['twig'],
@@ -18,7 +26,7 @@ $config = [
     ]
 ];
 
-if ($container->hasParameter('base_url')) {
+if (null !== $baseUrl) {
     $config['assets']['base_urls'] = ['%base_url%'];
 }
 
