@@ -4,6 +4,8 @@ define([
 	'jquery',
 	'lodash',
 	'backgrid',
+	'core/view',
+	'template',
 	'grid/model/grid_collection',
 	'grid/extension/paginate',
 	'grid/extension/search',
@@ -17,6 +19,8 @@ define([
 	     $,
 	     _,
 	     Backgrid,
+	     ItemView,
+	     Template,
 	     GridCollection,
 	     Paginate,
 	     Search,
@@ -56,37 +60,44 @@ define([
 		    });
 		}
 
+		var container;
+
+		if (_.size(options.line_actions) > 0) {
+		    var ActionContainer = Mn.CompositeView.extend({
+			template: Template['grid/grid_container'],
+			childView: ActionView,
+			childViewContainer: '.actions'
+		    });
+
+		    container = new ActionContainer({
+			collection: new Backbone.Collection(_.values(options.actions))
+		    });
+		} else {
+		    container = new ItemView({
+			template: Template['grid/grid_container_no_actions']
+		    });
+		}
+
+		var gridContainer = $(container.render().el);
+
+		$(element).append(container.render().el);
+
 		var grid = new Backgrid.Grid(_.extend(options, gridOptions));
 
-		$(element + '-grid').html(grid.render().el);
+		$('.grid', gridContainer).html(grid.render().el);
 
 		if (options.properties.paginate) {
 		    var paginator = new Paginate({collection: collection});
 
-		    $(element + '-grid').append(paginator.render().el);
+		    $('.grid', gridContainer).append(paginator.render().el);
 		}
 
 		if (options.properties.search) {
 		    var serverSideFilter = new Search({
-			collection: collection,
+			collection: collection
 		    });
 
-		    $(element + '-search').append(serverSideFilter.render().el);
-		}
-
-		if (_.size(options.line_actions) > 0) {
-		    var actionElement = $(element + '-actions');
-
-		    _.each(options.actions, function(action) {
-			var view = new ActionView(
-			    {
-				model: new Backbone.Model(action),
-				grid: grid
-			    }
-			);
-
-			actionElement.append(view.render().el);
-		    });
+		    $('.search', gridContainer).append(serverSideFilter.render().el);
 		}
 	    }
 	});
