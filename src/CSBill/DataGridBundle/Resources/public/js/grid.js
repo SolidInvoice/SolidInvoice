@@ -47,6 +47,8 @@ define([
 		    });
 		}
 
+		var container;
+
 		if (_.size(options.actions) > 0) {
 		    options.columns.unshift({
 			// name is a required parameter, but you don't really want one on a select all column
@@ -58,11 +60,7 @@ define([
 			editable: false,
 			sortable: false
 		    });
-		}
 
-		var container;
-
-		if (_.size(options.line_actions) > 0) {
 		    var ActionContainer = Mn.CompositeView.extend({
 			template: Template['grid/grid_container'],
 			childView: ActionView,
