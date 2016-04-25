@@ -11,6 +11,7 @@ define([
 	'grid/extension/search',
 	'grid/view/action',
 
+	'bootstrap.modalmanager',
 	'grid/backgrid-select-all',
 	'grid/cell/actioncell'
     ],
@@ -28,6 +29,14 @@ define([
 	return Mn.Object.extend({
 	    initialize: function(options, element) {
 		var collection = new GridCollection(options.name);
+
+		collection.on('request', function () {
+		    $('body').modalmanager('loading');
+		});
+
+		collection.on('sync', function () {
+		    $('body').modalmanager('loading');
+		});
 
 		collection.fetch();
 

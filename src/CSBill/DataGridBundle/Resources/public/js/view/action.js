@@ -27,8 +27,6 @@ define(['core/view', 'jquery', 'template', 'lodash', 'routing', 'bootstrap.bootb
 	_executeAction: function() {
 	    var grid = this.getOption('grid');
 
-	    this.showLoader();
-
 	    var models = _.map(
 		grid.getSelectedModels(),
 		function(model) {
@@ -46,7 +44,6 @@ define(['core/view', 'jquery', 'template', 'lodash', 'routing', 'bootstrap.bootb
 		grid.collection.fetch({
 		    success: function() {
 			grid.clearSelectedModels();
-			view.hideLoader();
 		    }
 		});
 	    }, this));
