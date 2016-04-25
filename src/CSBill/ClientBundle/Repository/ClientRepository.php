@@ -94,4 +94,20 @@ class ClientRepository extends EntityRepository
 
 	return $qb;
     }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getArchivedGridQuery()
+    {
+	$this->getEntityManager()->getFilters()->disable('archivable');
+
+	$qb = $this->createQueryBuilder('c');
+
+	$qb->select('c');
+
+	$qb->where('c.archived is not null');
+
+	return $qb;
+    }
 }

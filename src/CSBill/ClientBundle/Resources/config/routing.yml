@@ -20,11 +20,6 @@ _clients_view:
     options:
 	expose: true
 
-_clients_delete:
-    path:   /ajax/delete/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:deleteclient }
-    methods: [POST]
-
 _clients_info:
     path:   /ajax/info/{id}/{type}
     defaults:
@@ -62,6 +57,13 @@ _clients_contact:
 _clients_archive:
     path:   /archive
     defaults:  { _controller: CSBillClientBundle:Grid:archive }
+    methods: [POST]
+    options:
+	expose: true
+
+_clients_restore:
+    path:   /restore
+    defaults:  { _controller: CSBillClientBundle:Grid:restore }
     methods: [POST]
     options:
 	expose: true

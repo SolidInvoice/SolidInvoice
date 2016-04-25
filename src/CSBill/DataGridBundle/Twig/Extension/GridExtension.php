@@ -44,7 +44,15 @@ class GridExtension extends \Twig_Extension
 		    'is_safe' => ['html'],
 		    'needs_environment' => true
 		]
-	    )
+	    ),
+	    new \Twig_SimpleFunction(
+		'render_multiple_grid',
+		[$this, 'renderMultipleGrid'],
+		[
+		    'is_safe' => ['html'],
+		    'needs_environment' => true
+		]
+	    ),
 	];
     }
 
@@ -77,6 +85,41 @@ class GridExtension extends \Twig_Extension
 	);
 
 	return $html;
+    }
+
+
+
+    /**
+     * @param \Twig_Environment $env
+     *
+     * @return string
+     * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
+     */
+    public function renderMultipleGrid(\Twig_Environment $env)
+    {
+	$args = func_get_args();
+	$grids = array_splice($args, 1);
+
+	$requiresStatus = false;
+
+	$renderGrids = [];
+
+	foreach ($grids as $gridName) {
+	    $grid = $this->repository->find($gridName);
+	    $gridOptions = $this->serializer->serialize($grid, 'json');
+
+	    $requiresStatus = $requiresStatus || $grid->requiresStatus();
+
+	    $renderGrids[$gridName] = json_decode($gridOptions, true);
+	}
+
+	return $env->render(
+	    'CSBillDataGridBundle::multiple_grid.html.twig',
+	    [
+		'grids' => $renderGrids,
+		'requiresStatus' => $requiresStatus
+	    ]
+	);
     }
 
     /**

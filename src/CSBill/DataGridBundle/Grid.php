@@ -67,18 +67,32 @@ class Grid implements GridInterface
     private $properties;
 
     /**
+     * @var string
+     * @Serializer\Expose()
+     */
+    private $icon;
+
+    /**
+     * @var string
+     * @Serializer\Expose()
+     */
+    private $title;
+
+    /**
      * @param Source          $source
      * @param FilterInterface $filter
      * @param array           $gridData
      */
     public function __construct(Source $source, FilterInterface $filter, array $gridData)
     {
+	$this->title = $gridData['title'];
 	$this->name = $gridData['name'];
 	$this->columns = new ArrayCollection(array_values($gridData['columns']));
 	$this->source = $source;
 	$this->actions = $gridData['actions'];
 	$this->lineActions = $gridData['line_actions'];
 	$this->properties = $gridData['properties'];
+	$this->icon = $gridData['icon'];
 	$this->filter = $filter;
     }
 
@@ -112,5 +126,21 @@ class Grid implements GridInterface
 	$criteria->where($criteria->expr()->contains('cell', 'status'));
 
 	return count($this->columns->matching($criteria)) > 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon()
+    {
+	return $this->icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+	return $this->title;
     }
 }

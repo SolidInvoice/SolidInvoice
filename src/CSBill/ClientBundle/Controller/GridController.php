@@ -12,12 +12,8 @@
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\DataGridBundle\Grid\GridCollection;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class GridController extends BaseController
@@ -39,6 +35,35 @@ class GridController extends BaseController
 	$em = $this->getEm();
 	foreach ($clients as $client) {
 	    $client->setArchived(true);
+	    $client->setStatus(Status::STATUS_ARCHIVED);
+	    $em->persist($client);
+	}
+
+	$em->flush();
+
+	return $this->json([]);
+    }
+
+    /**
+     * Restores a list of archived clients
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function restoreAction(Request $request)
+    {
+	$data = $request->request->get('data');
+
+	$this->getEm()->getFilters()->disable('archivable');
+
+	/** @var Client[] $clients */
+	$clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
+
+	$em = $this->getEm();
+	foreach ($clients as $client) {
+	    $client->setArchived(null);
+	    $client->setStatus(Status::STATUS_ACTIVE);
 	    $em->persist($client);
 	}
 

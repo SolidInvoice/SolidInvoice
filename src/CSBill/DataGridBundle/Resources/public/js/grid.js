@@ -36,7 +36,7 @@ define([
 		    className: 'backgrid table table-bordered table-striped table-hover'
 		};
 
-		if (_.size(options.line_actions) > 0) {
+		if (_.size(options.line_actions) > 0 && _.isUndefined(_.find(options.columns, {'name': 'Actions'}))) {
 		    options.columns.push({
 			// name is a required parameter, but you don't really want one on a select all column
 			name: "Actions",
@@ -50,20 +50,26 @@ define([
 		var container;
 
 		if (_.size(options.actions) > 0) {
-		    options.columns.unshift({
-			// name is a required parameter, but you don't really want one on a select all column
-			name: "",
-			// Backgrid.Extension.SelectRowCell lets you select individual rows
-			cell: "select-row",
-			// Backgrid.Extension.SelectAllHeaderCell lets you select all the row on a page
-			headerCell: "select-all",
-			editable: false,
-			sortable: false
-		    });
+		    if (_.isUndefined(_.find(options.columns, {'cell': 'select-row'}))) {
+			options.columns.unshift({
+			    // name is a required parameter, but you don't really want one on a select all column
+			    name: "",
+			    // Backgrid.Extension.SelectRowCell lets you select individual rows
+			    cell: "select-row",
+			    // Backgrid.Extension.SelectAllHeaderCell lets you select all the row on a page
+			    headerCell: "select-all",
+			    editable: false,
+			    sortable: false
+			});
+		    }
+		}
 
+		var grid = new Backgrid.Grid(_.extend(_.clone(options), gridOptions));
+
+		if (_.size(options.actions) > 0) {
 		    var ActionContainer = Mn.CompositeView.extend({
 			template: Template['grid/grid_container'],
-			childView: ActionView,
+			childView: ActionView.extend({'grid': grid}),
 			childViewContainer: '.actions'
 		    });
 
@@ -79,8 +85,6 @@ define([
 		var gridContainer = $(container.render().el);
 
 		$(element).append(container.render().el);
-
-		var grid = new Backgrid.Grid(_.extend(options, gridOptions));
 
 		$('.grid', gridContainer).html(grid.render().el);
 
