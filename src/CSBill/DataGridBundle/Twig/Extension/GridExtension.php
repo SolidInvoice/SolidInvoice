@@ -59,14 +59,20 @@ class GridExtension extends \Twig_Extension
     /**
      * @param \Twig_Environment $env
      * @param string            $gridName
+     * @param array             $parameters
      *
      * @return string
      *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
-    public function renderGrid(\Twig_Environment $env, $gridName)
+    public function renderGrid(\Twig_Environment $env, $gridName, array $parameters = [])
     {
 	$grid = $this->repository->find($gridName);
+
+	if (!empty($parameters)) {
+	    $grid->setParameters($parameters);
+	}
+
 	$gridOptions = $this->serializer->serialize($grid, 'json');
 
 	$html = '';

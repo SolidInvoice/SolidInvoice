@@ -12,6 +12,7 @@ namespace CSBill\DataGridBundle\DependencyInjection\CompilerPass;
 
 use CSBill\DataGridBundle\DependencyInjection\GridConfiguration;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -51,6 +52,8 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
 	    } catch (\InvalidArgumentException $e) {
 		continue;
 	    }
+
+	    $container->addResource(new FileResource($file));
 
 	    $grid = Yaml::parse(file_get_contents($file));
 

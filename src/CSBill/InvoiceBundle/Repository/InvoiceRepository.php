@@ -164,4 +164,40 @@ class InvoiceRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGridQuery(array $parameters = [])
+    {
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select(['i', 'c'])
+	    ->join('i.client', 'c');
+
+	if (!empty($parameters['client'])) {
+	    $qb->where('i.client = :client')
+		->setParameter('client', $parameters['client']);
+	}
+
+	return $qb;
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getArchivedGridQuery()
+    {
+	$this->getEntityManager()->getFilters()->disable('archivable');
+
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select(['i', 'c'])
+	    ->join('i.client', 'c')
+	    ->where('i.archived is not null');
+
+	return $qb;
+    }
 }

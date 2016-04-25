@@ -30,36 +30,22 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $gridCollection = new GridCollection();
-        $gridCollection->add('csbill.invoice.grid.default_grid', 'active', 'check');
-        $gridCollection->add('csbill.invoice.grid.archived_grid', 'archived', 'archive');
-        $gridCollection->add('csbill.invoice.grid.recurring_grid', 'recurring', 'refresh');
-
-        $grid = $this->get('grid')->create($gridCollection);
-
         /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
 
-        // Return the response of the grid to the template
-        return $grid->getGridResponse(
-            array(
-                'status_list' => array(
-                    Graph::STATUS_PENDING,
-                    Graph::STATUS_PAID,
-                    Graph::STATUS_CANCELLED,
-                    Graph::STATUS_DRAFT,
-                    Graph::STATUS_OVERDUE,
-                ),
-                'status_list_count' => array(
+	return $this->render(
+	    'CSBillInvoiceBundle:Default:index.html.twig',
+	    [
+		'status_list_count' => [
                     Graph::STATUS_PENDING => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),
                     Graph::STATUS_PAID => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID),
                     Graph::STATUS_CANCELLED => $invoiceRepository->getCountByStatus(Graph::STATUS_CANCELLED),
                     Graph::STATUS_DRAFT => $invoiceRepository->getCountByStatus(Graph::STATUS_DRAFT),
                     Graph::STATUS_OVERDUE => $invoiceRepository->getCountByStatus(Graph::STATUS_OVERDUE),
-                ),
+		],
                 'total_income' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome(),
                 'total_outstanding' => $invoiceRepository->getTotalOutstanding(),
-            )
+	    ]
         );
     }
 
@@ -99,10 +85,10 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('invoice.create.success'), 'success');
 
-            return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
+	    return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
         }
 
-        return $this->render('CSBillInvoiceBundle:Default:create.html.twig', array('form' => $form->createView()));
+	return $this->render('CSBillInvoiceBundle:Default:create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -143,15 +129,15 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('invoice.edit.success'), 'success');
 
-            return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
+	    return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
         }
 
         return $this->render(
             'CSBillInvoiceBundle:Default:edit.html.twig',
-            array(
+	    [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-            )
+	    ]
         );
     }
 
@@ -170,10 +156,10 @@ class DefaultController extends BaseController
 
         return $this->render(
             'CSBillInvoiceBundle:Default:view.html.twig',
-            array(
+	    [
                 'invoice' => $invoice,
                 'payments' => $payments,
-            )
+	    ]
         );
     }
 

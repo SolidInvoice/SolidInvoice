@@ -28,4 +28,9 @@ interface GridInterface
      * @return mixed
      */
     public function fetchData(Request $request, EntityManagerInterface $em);
+
+    /**
+     * @param array $params
+     */
+    public function setParameters(array $params);
 }

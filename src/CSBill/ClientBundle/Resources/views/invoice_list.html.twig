@@ -14,27 +14,5 @@
 </legend>
 
 <div class="widget">
-    {% for invoice in client.invoices %}
-        <div class="row">
-            <div class="col-lg-2 col-md-2">
-                {{ invoice_label(invoice.status) }}
-            </div>
-            <div class="col-lg-1 col-md-1">
-                {{ invoice.id }}
-            </div>
-            <div class="col-lg-3 col-md-3">
-                {{ invoice.created|date }}
-            </div>
-            <div class="col-lg-3 col-md-3">
-                {{ invoice.total|formatCurrency }}
-            </div>
-            <div class="col-lg-2 col-md-2">
-                <a href="{{ path("_invoices_view", {"id" : invoice.id}) }}" class="btn">
-                    {{ icon('eye') }} {{ "view"|trans }}
-                </a>
-            </div>
-        </div>
-    {% else %}
-        <span class="muted">{{ "no_invoices"|trans }} <a href="{{ path("_invoices_create", {"client" : client.id}) }}">{{ "create_now"|trans }}</a></span>
-    {% endfor %}
+    {{ render_grid('active_invoice_grid', {'client' : client.id}) }}
 </div>

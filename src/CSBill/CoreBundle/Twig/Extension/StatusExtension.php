@@ -265,7 +265,7 @@ class StatusExtension extends \Twig_Extension
 	    $response[$status] = $this->renderStatusLabel(['status' => $status, 'status_label' => $label]);
 	}
 
-	return json_encode($response, JSON_PRETTY_PRINT);
+	return $response;
     }
 
     /**

@@ -1,12 +1,14 @@
 define(['backbone', 'routing', 'backbone.paginator'], function(Backbone, Routing) {
     return Backbone.PageableCollection.extend({
 	name: null,
+	parameters: {},
 	model: Backbone.Model,
-	initialize: function(name) {
+	initialize: function(name, parameters) {
 	    this.name = name;
+	    this.parameters = parameters;
 	},
 	url: function() {
-	    return Routing.generate('_grid_data', {'name': this.name});
+	    return Routing.generate('_grid_data', {'name': this.name, 'parameters': this.parameters});
 	},
 
 	// Initial pagination states

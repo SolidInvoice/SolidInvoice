@@ -79,6 +79,12 @@ class Grid implements GridInterface
     private $title;
 
     /**
+     * @var array
+     * @Serializer\Expose()
+     */
+    private $parameters = [];
+
+    /**
      * @param Source          $source
      * @param FilterInterface $filter
      * @param array           $gridData
@@ -106,7 +112,7 @@ class Grid implements GridInterface
      */
     public function fetchData(Request $request, EntityManagerInterface $entityManager)
     {
-	$queryBuilder = $this->source->fetch();
+	$queryBuilder = $this->source->fetch($this->parameters);
 
 	$this->filter->filter($request, $queryBuilder);
 
@@ -143,5 +149,13 @@ class Grid implements GridInterface
     public function getTitle()
     {
 	return $this->title;
+    }
+
+    /**
+     * @param array $params
+     */
+    public function setParameters(array $params)
+    {
+	$this->parameters = $params;
     }
 }

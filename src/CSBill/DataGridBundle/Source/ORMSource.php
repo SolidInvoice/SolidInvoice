@@ -47,12 +47,12 @@ class ORMSource implements Source
     /**
      * {@inheritdoc}
      */
-    public function fetch()
+    public function fetch(array $paramters = [])
     {
 	$repository = $this->registry->getRepository($this->repository);
 
 	$method = $this->method;
-	$qb = $repository->{$method}();
+	$qb = $repository->{$method}($paramters);
 
 	if (!$qb instanceof QueryBuilder) {
 	    throw new \Exception('Grid source should return a query builder');

@@ -27,6 +27,8 @@ class DataController extends BaseController
     {
 	$grid = $this->get('grid.repository')->find($name);
 
+	$grid->setParameters($request->get('parameters', []));
+
 	return $this->serializeJs($grid->fetchData($request, $this->getEm()));
     }
 }

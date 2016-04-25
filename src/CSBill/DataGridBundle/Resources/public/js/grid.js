@@ -13,7 +13,8 @@ define([
 
 	'bootstrap.modalmanager',
 	'grid/backgrid-select-all',
-	'grid/cell/actioncell'
+	'grid/cell/actioncell',
+	'grid/cell/clientcell'
     ],
     function(Mn,
 	     Backbone,
@@ -28,7 +29,7 @@ define([
 	     ActionView) {
 	return Mn.Object.extend({
 	    initialize: function(options, element) {
-		var collection = new GridCollection(options.name);
+		var collection = new GridCollection(options.name, options.parameters);
 
 		collection.on('request', function () {
 		    $('body').modalmanager('loading');

@@ -78,6 +78,11 @@ invoice:
             paid: "{0} Paid Invoices|{1} Paid Invoice|]1,Inf] Paid Invoices"
             cancelled: "{0} Cancelled Invoices|{1} Cancelled Invoice|]1,Inf] Cancelled Invoices"
             overdue: "{0} Overdue Invoices|{1} Overdue Invoice|]1,Inf] Overdue Invoices"
+    grid:
+	actions:
+	    view: View
+	    edit: Edit
+	    delete: Delete
     action:
         create: Create Invoice
         edit: Edit Invoice

@@ -17,5 +17,5 @@ interface Source
     /**
      * @return QueryBuilder
      */
-    public function fetch();
+    public function fetch(array $paramters = []);
 }
