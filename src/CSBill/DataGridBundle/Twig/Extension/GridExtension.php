@@ -42,7 +42,7 @@ class GridExtension extends \Twig_Extension
 		[$this, 'renderGrid'],
 		[
 		    'is_safe' => ['html'],
-		    'needs_environment' => true
+		    'needs_environment' => true,
 		]
 	    ),
 	    new \Twig_SimpleFunction(
@@ -50,7 +50,7 @@ class GridExtension extends \Twig_Extension
 		[$this, 'renderMultipleGrid'],
 		[
 		    'is_safe' => ['html'],
-		    'needs_environment' => true
+		    'needs_environment' => true,
 		]
 	    ),
 	];
@@ -61,6 +61,7 @@ class GridExtension extends \Twig_Extension
      * @param string            $gridName
      *
      * @return string
+     *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
     public function renderGrid(\Twig_Environment $env, $gridName)
@@ -80,19 +81,18 @@ class GridExtension extends \Twig_Extension
 	    [
 		'gridName' => $gridName,
 		'gridOptions' => $gridOptions,
-		'requiresStatus' => $grid->requiresStatus()
+		'requiresStatus' => $grid->requiresStatus(),
 	    ]
 	);
 
 	return $html;
     }
 
-
-
     /**
      * @param \Twig_Environment $env
      *
      * @return string
+     *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
     public function renderMultipleGrid(\Twig_Environment $env)
@@ -117,7 +117,7 @@ class GridExtension extends \Twig_Extension
 	    'CSBillDataGridBundle::multiple_grid.html.twig',
 	    [
 		'grids' => $renderGrids,
-		'requiresStatus' => $requiresStatus
+		'requiresStatus' => $requiresStatus,
 	    ]
 	);
     }

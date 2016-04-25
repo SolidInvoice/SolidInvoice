@@ -25,7 +25,6 @@ class ORMSourceTest extends \PHPUnit_Framework_TestCase
 	    ->with('a')
 	    ->andReturn($repository);
 
-
 	$repository->shouldReceive('b')
 	    ->andReturn($qb);
 

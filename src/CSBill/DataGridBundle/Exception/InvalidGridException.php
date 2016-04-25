@@ -10,8 +10,6 @@
 
 namespace CSBill\DataGridBundle\Exception;
 
-use Exception;
-
 class InvalidGridException extends \Exception
 {
     /**

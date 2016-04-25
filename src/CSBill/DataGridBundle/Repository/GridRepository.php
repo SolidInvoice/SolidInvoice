@@ -33,6 +33,7 @@ class GridRepository
      * @param string $name
      *
      * @return GridInterface
+     *
      * @throws InvalidGridException
      */
     public function find($name)

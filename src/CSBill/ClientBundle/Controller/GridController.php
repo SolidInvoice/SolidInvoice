@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 class GridController extends BaseController
 {
     /**
-     * Archives a list of clients
+     * Archives a list of clients.
      *
      * @param Request $request
      *
@@ -45,7 +45,7 @@ class GridController extends BaseController
     }
 
     /**
-     * Restores a list of archived clients
+     * Restores a list of archived clients.
      *
      * @param Request $request
      *
@@ -73,7 +73,7 @@ class GridController extends BaseController
     }
 
     /**
-     * Deletes a list of clients
+     * Deletes a list of clients.
      *
      * @param Request $request
      *

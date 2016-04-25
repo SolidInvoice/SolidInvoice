@@ -49,7 +49,7 @@ class SearchFilter implements FilterInterface
 	    );
 
 	    $queryBuilder->orWhere(call_user_func_array([$expr, 'orX'], $fields));
-	    $queryBuilder->setParameter('q', '%' . $request->query->get('q') . '%');
+	    $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
 	}
     }
 }

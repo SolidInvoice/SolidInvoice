@@ -20,6 +20,7 @@ class DataController extends BaseController
      * @param string  $name
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
     public function getDataAction(Request $request, $name)

@@ -101,6 +101,7 @@ class Grid implements GridInterface
      * @param EntityManagerInterface $entityManager
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function fetchData(Request $request, EntityManagerInterface $entityManager)
@@ -113,7 +114,7 @@ class Grid implements GridInterface
 
 	return [
 	    'count' => count($paginator),
-	    'items' => $paginator->getQuery()->getArrayResult()
+	    'items' => $paginator->getQuery()->getArrayResult(),
 	];
     }
 

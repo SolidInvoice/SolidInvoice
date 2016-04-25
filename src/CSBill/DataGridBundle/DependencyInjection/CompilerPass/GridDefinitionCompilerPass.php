@@ -87,7 +87,6 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
 
 	    $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
 	}
-
     }
 
     /**
