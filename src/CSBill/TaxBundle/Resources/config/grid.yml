@@ -1,0 +1,50 @@
+datagrid:
+    tax_grid:
+	source:
+	    repository: CSBillTaxBundle:Tax
+	    method: getGridQuery
+	columns:
+	    id:
+		name: id
+		label: ID
+		editable: false
+		cell: integer
+	    name:
+		name: name
+		label: Name
+		editable: false
+		cell: string
+	    rate:
+		name: rate
+		label: Rate
+		editable: false
+		cell: percent
+	    type:
+		name: type
+		label: Type
+		editable: false
+		cell: string
+	    created:
+		name: created
+		label: Created
+		editable: false
+		cell: date
+	search:
+	    fields:
+		- rate
+		- name
+		- type
+	line_actions:
+	    edit:
+		icon: edit
+		label: tax.grid.actions.edit
+		route: _edit_tax_rate
+		route_params:
+		    id: id
+	actions:
+	    delete:
+		label: Delete
+		icon: ban
+		confirm: "Are you sure you want to delete the selected rows?"
+		action: _delete_tax_rate
+		className: danger
