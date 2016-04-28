@@ -13,32 +13,10 @@
     </h3>
 </legend>
 
+{% if data is not defined %}
+    {% set data = {} %}
+{% endif %}
+
 <div class="widget">
-    {% for payment in payments %}
-        <div class="row">
-            <div class="col-md-2">
-                {{ payment_label(payment.status, payment.message) }}
-            </div>
-            {% if show_invoice %}
-                <div class="col-md-2">
-                    {{ 'invoice'|trans }} #<a href="{{ path('_invoices_view', {'id' : payment.invoice}) }}">
-                        {{ payment.invoice }}
-                    </a>
-                </div>
-            {% endif %}
-            <div class="col-md-2">
-                {{ payment.method }}
-            </div>
-            <div class="col-md-2">
-                {{ payment.completed|date }}
-            </div>
-            <div class="col-md-2">
-                {{ payment.currencyCode }}
-            </div>
-            <div class="col-md-2">
-                {{ payment.totalAmount|formatCurrency }}
-            </div>
-        </div>
-        <hr />
-    {% endfor %}
+    {{ render_grid(grid, data) }}
 </div>

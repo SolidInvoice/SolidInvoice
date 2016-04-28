@@ -88,7 +88,7 @@
 
             {% if payments|length > 0 %}
                 <br class="clear" />
-                {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, 'show_invoice' : false} only %}
+		{% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
             {% endif %}
         {% endblock contentBody %}
 
@@ -153,8 +153,12 @@
 {% endblock content %}
 
 {% block script %}
+    require(['jquery'], function ($) {
+    $(function () {
     $('#pay-now').on('click', function(event) {
-        event.preventDefault();
-        $('#payment-modal').modal();
+    event.preventDefault();
+    $('#payment-modal').modal();
+    });
+    });
     });
 {% endblock script %}

@@ -97,7 +97,7 @@
                     </div>
                     {% if payments|length > 0 %}
                         <div role="tabpanel" class="tab-pane" id="payments">
-                            {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, "show_invoice" : true} only %}
+			    {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
                         </div>
                     {% endif %}
                 </div>

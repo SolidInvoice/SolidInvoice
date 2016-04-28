@@ -8,6 +8,15 @@
  * with this source code in the file LICENSE.
  */
 
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 /*
  * This file is part of CSBill project.
  *
@@ -283,9 +292,11 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
+     * @param array $parameters
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGridQuery()
+    public function getGridQuery(array $parameters = [])
     {
 	$qb = $this->createQueryBuilder('p');
 
@@ -293,6 +304,16 @@ class PaymentRepository extends EntityRepository
 	    ->join('p.client', 'c')
 	    ->join('p.invoice', 'i')
 	    ->join('p.method', 'm');
+
+	if (isset($parameters['invoice'])) {
+	    $qb->where('p.invoice = :invoice');
+	    $qb->setParameter('invoice', $parameters['invoice']);
+	}
+
+	if (isset($parameters['client'])) {
+	    $qb->where('p.client = :client');
+	    $qb->setParameter('client', $parameters['client']);
+	}
 
 	return $qb;
     }
