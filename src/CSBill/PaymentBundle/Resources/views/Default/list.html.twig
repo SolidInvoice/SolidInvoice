@@ -7,9 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set parent = "CSBillCoreBundle:Layout:single_column.html.twig" %}
-
-{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
 {% block sidebar %}
     {{ menu('payments_list') }}
@@ -18,12 +16,13 @@
 {% block title %}{{ 'payment.list.title'|trans }}{% endblock title %}
 
 {% block content %}
-
-    {{ parent() }}
+    <div class="widget">
+	{{ render_grid('payment_grid') }}
+    </div>
 
     <h5>{{ "payment.list.status_legend"|trans }}</h5>
 
-    {% for status in status_list %}
-        {{ payment_label(status) }}
+    {% for status in payment_label() %}
+	{{ status|raw }}
     {% endfor %}
 {% endblock content %}

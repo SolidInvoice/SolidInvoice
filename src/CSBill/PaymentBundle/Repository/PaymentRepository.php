@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -72,6 +80,38 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
+     * @param string $orderField
+     * @param string $sort
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getPaymentQueryBuilder($orderField = null, $sort = 'DESC')
+    {
+	if (null === $orderField) {
+	    $orderField = 'p.created';
+	}
+
+	$queryBuilder = $this->createQueryBuilder('p');
+
+	$queryBuilder->select(
+	    'p.id',
+	    'p.totalAmount',
+	    'p.currencyCode',
+	    'p.created',
+	    'p.completed',
+	    'p.status',
+	    'i.id as invoice',
+	    'm.name as method',
+	    'p.message'
+	)
+	    ->join('p.method', 'm')
+	    ->join('p.invoice', 'i')
+	    ->orderBy($orderField, $sort);
+
+	return $queryBuilder;
+    }
+
+    /**
      * Returns an array of all the payments for an invoice.
      *
      * @param Invoice $invoice
@@ -114,38 +154,6 @@ class PaymentRepository extends EntityRepository
         $query = $queryBuilder->getQuery();
 
         return $query->getArrayResult();
-    }
-
-    /**
-     * @param string $orderField
-     * @param string $sort
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getPaymentQueryBuilder($orderField = null, $sort = 'DESC')
-    {
-        if (null === $orderField) {
-            $orderField = 'p.created';
-        }
-
-        $queryBuilder = $this->createQueryBuilder('p');
-
-        $queryBuilder->select(
-            'p.id',
-            'p.totalAmount',
-            'p.currencyCode',
-            'p.created',
-            'p.completed',
-            'p.status',
-            'i.id as invoice',
-            'm.name as method',
-            'p.message'
-        )
-            ->join('p.method', 'm')
-            ->join('p.invoice', 'i')
-            ->orderBy($orderField, $sort);
-
-        return $queryBuilder;
     }
 
     /**
@@ -201,6 +209,29 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
+     * @param \Doctrine\ORM\Query $query
+     * @param string              $dateFormat
+     *
+     * @return array
+     */
+    private function formatDate($query, $dateFormat = 'Y-m-d')
+    {
+	$payments = [];
+
+	foreach ($query->getArrayResult() as $result) {
+	    /** @var \DateTime $created */
+	    $created = $result['created'];
+	    $date = $created->format($dateFormat);
+	    if (!isset($payments[$date])) {
+		$payments[$date] = 0;
+	    }
+	    $payments[$date] += $result['totalAmount'];
+	}
+
+	return $payments;
+    }
+
+    /**
      * @return array
      */
     public function getPaymentsByMonth()
@@ -220,29 +251,6 @@ class PaymentRepository extends EntityRepository
         $query = $queryBuilder->getQuery();
 
         $payments = $this->formatDate($query, 'F Y');
-
-        return $payments;
-    }
-
-    /**
-     * @param \Doctrine\ORM\Query $query
-     * @param string              $dateFormat
-     *
-     * @return array
-     */
-    private function formatDate($query, $dateFormat = 'Y-m-d')
-    {
-        $payments = array();
-
-        foreach ($query->getArrayResult() as $result) {
-            /** @var \DateTime $created */
-            $created = $result['created'];
-            $date = $created->format($dateFormat);
-            if (!isset($payments[$date])) {
-                $payments[$date] = 0;
-            }
-            $payments[$date] += $result['totalAmount'];
-        }
 
         return $payments;
     }
@@ -272,5 +280,20 @@ class PaymentRepository extends EntityRepository
             ->setParameter('payments', $payments);
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGridQuery()
+    {
+	$qb = $this->createQueryBuilder('p');
+
+	$qb->select(['p', 'c', 'i', 'm'])
+	    ->join('p.client', 'c')
+	    ->join('p.invoice', 'i')
+	    ->join('p.method', 'm');
+
+	return $qb;
     }
 }

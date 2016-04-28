@@ -45,6 +45,7 @@ datagrid:
 	    fields:
 		- status
 		- total
+		- 'c.name'
 	line_actions:
 	    view:
 		icon: eye
@@ -117,6 +118,7 @@ datagrid:
 	    fields:
 		- status
 		- total
+		- 'c.name'
 	actions:
 	    delete:
 		label: Delete

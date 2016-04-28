@@ -1,0 +1,65 @@
+datagrid:
+    payment_grid:
+	source:
+	    repository: CSBillPaymentBundle:Payment
+	    method: getGridQuery
+	columns:
+	    id:
+		name: id
+		label: ID
+		editable: false
+		cell: integer
+	    invoice:
+		name: invoice
+		label: Invoice
+		editable: false
+		cell: invoice
+	    client:
+		name: client
+		label: Client
+		editable: false
+		cell: client
+	    total_amount:
+		name: totalAmount
+		label: Total
+		editable: false
+		cell: string
+	    currency_code:
+		name: currencyCode
+		label: Currency
+		editable: false
+		cell: string
+	    method:
+		name: method
+		label: Method
+		editable: false
+		cell: string
+		formatter: object
+	    status:
+		name: status
+		label: Status
+		editable: false
+		cell: payment_status
+	    message:
+		name: message
+		label: Message
+		editable: false
+		cell: string
+	    completed:
+		name: completed
+		label: Completed
+		editable: false
+		cell: date
+	    created:
+		name: created
+		label: Created
+		editable: false
+		cell: date
+	search:
+	    fields:
+		- totalAmount
+		- currencyCode
+		- 'm.name'
+		- status
+		- message
+		- 'c.name'
