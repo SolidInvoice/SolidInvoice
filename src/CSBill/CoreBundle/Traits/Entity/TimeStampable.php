@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -11,7 +19,6 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
 
@@ -31,10 +38,19 @@ trait TimeStampable
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
-     * @GRID\Column(visible=false)
      * @Serialize\Groups({"js"})
      */
     protected $updated;
+
+    /**
+     * Returns created.
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+	return $this->created;
+    }
 
     /**
      * Sets created.
@@ -51,13 +67,13 @@ trait TimeStampable
     }
 
     /**
-     * Returns created.
+     * Returns updated.
      *
      * @return \DateTime
      */
-    public function getCreated()
+    public function getUpdated()
     {
-        return $this->created;
+	return $this->updated;
     }
 
     /**
@@ -72,15 +88,5 @@ trait TimeStampable
         $this->updated = $updated;
 
         return $this;
-    }
-
-    /**
-     * Returns updated.
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
     }
 }

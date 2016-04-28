@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -11,7 +19,6 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\PaymentBundle\Entity\Payment;
@@ -54,7 +61,6 @@ class Invoice
      * @var Uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
-     * @Grid\Column(visible=false)
      */
     private $uuid;
 
@@ -62,7 +68,6 @@ class Invoice
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Grid\Column(name="status", type="status", field="status", title="status", filter="select", selectFrom="source", safe=false, label_function="invoice_label")
      * @Serialize\Expose()
      */
     private $status;
@@ -72,8 +77,6 @@ class Invoice
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
-     * @Grid\Column(type="client", name="clients", field="client.name", title="client", filter="select", selectFrom="source", joinType="inner")
-     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      */
     private $client;
 
@@ -81,7 +84,6 @@ class Invoice
      * @var Money
      *
      * @ORM\Column(name="total", type="money")
-     * @Grid\Column(type="currency")
      * @Serialize\Expose()
      */
     private $total;
@@ -90,7 +92,6 @@ class Invoice
      * @var Money
      *
      * @ORM\Column(name="base_total", type="money")
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $baseTotal;
@@ -99,7 +100,6 @@ class Invoice
      * @var Money
      *
      * @ORM\Column(name="balance", type="money")
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $balance;
@@ -108,7 +108,6 @@ class Invoice
      * @var Money
      *
      * @ORM\Column(name="tax", type="money", nullable=true)
-     * @Grid\Column(type="currency")
      * @Serialize\Expose()
      */
     private $tax;
@@ -117,7 +116,6 @@ class Invoice
      * @var Money
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
-     * @Grid\Column(type="percent")
      * @Serialize\Expose()
      */
     private $discount;
@@ -126,7 +124,6 @@ class Invoice
      * @var string
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $terms;
@@ -135,7 +132,6 @@ class Invoice
      * @var string
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $notes;
@@ -145,7 +141,6 @@ class Invoice
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $due;
@@ -155,7 +150,6 @@ class Invoice
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $paidDate;
@@ -187,7 +181,6 @@ class Invoice
      *
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
-     * @Grid\Column(visible=false)
      * @Serialize\Exclude()
      */
     private $users;
@@ -204,7 +197,6 @@ class Invoice
      * @var bool
      *
      * @ORM\Column(name="is_recurring", type="boolean")
-     * @Grid\Column(visible=false)
      */
     private $recurring;
 
@@ -221,6 +213,14 @@ class Invoice
     }
 
     /**
+     * @return Uuid
+     */
+    public function getUuid()
+    {
+	return $this->uuid;
+    }
+
+    /**
      * @param Uuid $uuid
      *
      * @return Invoice
@@ -230,14 +230,6 @@ class Invoice
         $this->uuid = $uuid;
 
         return $this;
-    }
-
-    /**
-     * @return Uuid
-     */
-    public function getUuid()
-    {
-        return $this->uuid;
     }
 
     /**
@@ -273,6 +265,16 @@ class Invoice
     }
 
     /**
+     * Get status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+	return $this->status;
+    }
+
+    /**
      * Set status.
      *
      * @param string $status
@@ -287,13 +289,13 @@ class Invoice
     }
 
     /**
-     * Get status.
+     * Get Client.
      *
-     * @return string
+     * @return Client
      */
-    public function getStatus()
+    public function getClient()
     {
-        return $this->status;
+	return $this->client;
     }
 
     /**
@@ -311,13 +313,13 @@ class Invoice
     }
 
     /**
-     * Get Client.
+     * Get total.
      *
-     * @return Client
+     * @return Money
      */
-    public function getClient()
+    public function getTotal()
     {
-        return $this->client;
+	return $this->total;
     }
 
     /**
@@ -335,13 +337,13 @@ class Invoice
     }
 
     /**
-     * Get total.
+     * Get base total.
      *
      * @return Money
      */
-    public function getTotal()
+    public function getBaseTotal()
     {
-        return $this->total;
+	return $this->baseTotal;
     }
 
     /**
@@ -356,16 +358,6 @@ class Invoice
         $this->baseTotal = $baseTotal;
 
         return $this;
-    }
-
-    /**
-     * Get base total.
-     *
-     * @return Money
-     */
-    public function getBaseTotal()
-    {
-        return $this->baseTotal;
     }
 
     /**
@@ -389,6 +381,16 @@ class Invoice
     }
 
     /**
+     * Get discount.
+     *
+     * @return float
+     */
+    public function getDiscount()
+    {
+	return $this->discount;
+    }
+
+    /**
      * Set discount.
      *
      * @param float $discount
@@ -403,13 +405,13 @@ class Invoice
     }
 
     /**
-     * Get discount.
+     * Get due.
      *
-     * @return float
+     * @return \DateTime
      */
-    public function getDiscount()
+    public function getDue()
     {
-        return $this->discount;
+	return $this->due;
     }
 
     /**
@@ -427,13 +429,13 @@ class Invoice
     }
 
     /**
-     * Get due.
+     * Get paidDate.
      *
      * @return \DateTime
      */
-    public function getDue()
+    public function getPaidDate()
     {
-        return $this->due;
+	return $this->paidDate;
     }
 
     /**
@@ -448,16 +450,6 @@ class Invoice
         $this->paidDate = $paidDate;
 
         return $this;
-    }
-
-    /**
-     * Get paidDate.
-     *
-     * @return \DateTime
-     */
-    public function getPaidDate()
-    {
-        return $this->paidDate;
     }
 
     /**
@@ -614,16 +606,13 @@ class Invoice
     }
 
     /**
-     * @param RecurringInvoice $recurringInfo
+     * @param bool $recurring
      *
      * @return Invoice
      */
-    public function setRecurringInfo(RecurringInvoice $recurringInfo = null)
+    public function setRecurring($recurring)
     {
-        if (null !== $recurringInfo->getFrequency() && null !== $recurringInfo->getDateStart()) {
-            $this->recurringInfo = $recurringInfo;
-            $recurringInfo->setInvoice($this);
-        }
+	$this->recurring = (bool) $recurring;
 
         return $this;
     }
@@ -637,13 +626,16 @@ class Invoice
     }
 
     /**
-     * @param bool $recurring
+     * @param RecurringInvoice $recurringInfo
      *
      * @return Invoice
      */
-    public function setRecurring($recurring)
+    public function setRecurringInfo(RecurringInvoice $recurringInfo = null)
     {
-        $this->recurring = (bool) $recurring;
+	if (null !== $recurringInfo->getFrequency() && null !== $recurringInfo->getDateStart()) {
+	    $this->recurringInfo = $recurringInfo;
+	    $recurringInfo->setInvoice($this);
+	}
 
         return $this;
     }

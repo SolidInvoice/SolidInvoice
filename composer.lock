@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fcc97f0307a161f0c4a2c4e1c5bc4b51",
-    "content-hash": "89150775aab6119e4ed912af82c01d78",
+    "hash": "726c392f09586d63378a994b4d238f44",
+    "content-hash": "64fc2320da53bfb15550a2fede8498cc",
     "packages": [
         {
             "name": "ajbdev/authorizenet-php-api",
@@ -40,65 +40,6 @@
             ],
             "abandoned": "authorizenet/authorizenet",
             "time": "2015-09-03 19:58:03"
-        },
-        {
-            "name": "apy/datagrid-bundle",
-            "version": "2.2.1",
-            "target-dir": "APY/DataGridBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/APY/APYDataGridBundle.git",
-                "reference": "4192fd0f6e6d6a3788e68029ac7cf64b8dd6ddfd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/APY/APYDataGridBundle/zipball/4192fd0f6e6d6a3788e68029ac7cf64b8dd6ddfd",
-                "reference": "4192fd0f6e6d6a3788e68029ac7cf64b8dd6ddfd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "symfony/symfony": ">=2.0.0",
-                "twig/twig": ">=1.5.0"
-            },
-            "suggest": {
-                "PHPExcel": "Export the grid (Excel, HTML or PDF)",
-                "ext-intl": "Translate the grid",
-                "ext-mbstring": "Convert your data with the right charset"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "APY\\DataGridBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Stanislav Turza",
-                    "email": "stanislav.turza@gmail.com"
-                },
-                {
-                    "name": "Evan Owens",
-                    "email": "eaowens@gmail.com"
-                },
-                {
-                    "name": "Yoann Petit",
-                    "email": "abhoryo@free.fr"
-                }
-            ],
-            "description": "Symfony2 Datagrid Bundle",
-            "homepage": "https://github.com/Abhoryo/APYDataGridBundle",
-            "keywords": [
-                "datagrid",
-                "symfony"
-            ],
-            "time": "2013-12-16 16:34:58"
         },
         {
             "name": "behat/transliterator",
@@ -2707,7 +2648,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/moontoast-math/zipball/fce28a9d1e73e73376cb44e5e581675d15fbe2f3",
+		"url": "https://api.github.com/repos/ramsey/moontoast-math/zipball/1.1.0",
                 "reference": "1.1.0",
                 "shasum": ""
             },
@@ -7182,7 +7123,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yohang/Finite/zipball/dc53d484b199f023c5722e5d000877b555331043",
+		"url": "https://api.github.com/repos/yohang/Finite/zipball/5c00313c5382c19209e7d0d421c86397692d771d",
                 "reference": "5c00313c5382c19209e7d0d421c86397692d771d",
                 "shasum": ""
             },
@@ -8531,7 +8472,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/satooshi/php-coveralls/zipball/50c60bb64054974f8ed7540ae6e75fd7981a5fd3",
+		"url": "https://api.github.com/repos/satooshi/php-coveralls/zipball/451f524459bd3d26ed73391efb73fe04fecd13ff",
                 "reference": "451f524459bd3d26ed73391efb73fe04fecd13ff",
                 "shasum": ""
             },

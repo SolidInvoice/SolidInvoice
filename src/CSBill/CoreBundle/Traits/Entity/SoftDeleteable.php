@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -11,17 +19,25 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
 use JMS\Serializer\Annotation as Serialize;
 
 trait SoftDeleteable
 {
     /**
      * @ORM\Column(type="datetime", name="deleted", nullable=true)
-     * @GRID\Column(visible=false)
      * @Serialize\Exclude()
      */
     protected $deletedAt;
+
+    /**
+     * Returns deletedAt.
+     *
+     * @return \DateTime
+     */
+    public function getDeletedAt()
+    {
+	return $this->deletedAt;
+    }
 
     /**
      * Sets deletedAt.
@@ -35,16 +51,6 @@ trait SoftDeleteable
         $this->deletedAt = $deletedAt;
 
         return $this;
-    }
-
-    /**
-     * Returns deletedAt.
-     *
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
     }
 
     /**

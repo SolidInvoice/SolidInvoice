@@ -1,6 +1,3 @@
-parameters:
-    grid.class: CSBill\DataGridBundle\Grid
-
 services:
     grid.twig.extension:
 	class: CSBill\DataGridBundle\Twig\Extension\GridExtension
@@ -10,26 +7,3 @@ services:
 
     grid.repository:
 	class: CSBill\DataGridBundle\Repository\GridRepository
-
-    grid.column.extension.status_extension:
-        class: CSBill\DataGridBundle\Column\StatusColumn
-        arguments: [@twig]
-        tags:
-            - { name: grid.column.extension }
-
-    grid.column.extension.currency_extension:
-        class: CSBill\DataGridBundle\Column\CurrencyColumn
-        arguments: [@csbill.money.formatter]
-        tags:
-            - { name: grid.column.extension }
-
-    grid.column.extension.percent_extension:
-        class: CSBill\DataGridBundle\Column\PercentColumn
-        tags:
-            - { name: grid.column.extension }
-
-    grid.column.extension.client_extension:
-            class: CSBill\DataGridBundle\Column\ClientColumn
-            arguments: [@twig]
-            tags:
-                - { name: grid.column.extension }

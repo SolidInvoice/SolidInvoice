@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill package.
@@ -31,7 +39,6 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
 
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new APY\DataGridBundle\APYDataGridBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\UserBundle\FOSUserBundle(),
@@ -87,6 +94,11 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
         return $this->getContainerClass();
     }
 
+    public function registerContainerConfiguration(LoaderInterface $loader)
+    {
+	$loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
+    }
+
     protected function getContainerBaseClass()
     {
         if (in_array($this->getEnvironment(), array('dev'))) {
@@ -94,10 +106,5 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
         }
 
         return parent::getContainerBaseClass();
-    }
-
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 }

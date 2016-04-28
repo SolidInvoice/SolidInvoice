@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -11,7 +19,6 @@
 
 namespace CSBill\TaxBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,7 +64,6 @@ class Tax
      * @var string
      *
      * @ORM\Column(name="rate", type="float", precision=4)
-     * @GRID\Column(type="percent")
      * @Assert\Type("float")
      * @Assert\NotBlank()
      * @Serialize\Expose()
@@ -87,6 +93,21 @@ class Tax
     {
         $this->invoiceItems = new ArrayCollection();
         $this->quoteItems = new ArrayCollection();
+    }
+
+    /**
+     * @return array
+     *
+     * @static
+     */
+    public static function getTypes()
+    {
+	$types = [
+	    self::TYPE_INCLUSIVE,
+	    self::TYPE_EXCLUSIVE,
+	];
+
+	return array_combine($types, $types);
     }
 
     /**
@@ -157,21 +178,6 @@ class Tax
         $this->type = $type;
 
         return $this;
-    }
-
-    /**
-     * @return array
-     *
-     * @static
-     */
-    public static function getTypes()
-    {
-        $types = array(
-            self::TYPE_INCLUSIVE,
-            self::TYPE_EXCLUSIVE,
-        );
-
-        return array_combine($types, $types);
     }
 
     /**

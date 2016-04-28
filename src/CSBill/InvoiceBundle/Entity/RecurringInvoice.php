@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -11,7 +19,6 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -45,7 +52,6 @@ class RecurringInvoice
      * @var string
      *
      * @ORM\Column(name="frequency", type="string", nullable=true)
-     * @Grid\Column(visible=false)
      */
     private $frequency;
 
@@ -53,7 +59,6 @@ class RecurringInvoice
      * @var \DateTime
      *
      * @ORM\Column(name="date_start", type="date")
-     * @Grid\Column(visible=false)
      * @Assert\NotBlank(groups={"Recurring"})
      * @Assert\Date(groups={"Recurring"})
      */
@@ -63,7 +68,6 @@ class RecurringInvoice
      * @var \DateTime
      *
      * @ORM\Column(name="date_end", type="date", nullable=true)
-     * @Grid\Column(visible=false)
      */
     private $dateEnd;
 
