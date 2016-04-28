@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -17,7 +25,6 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
-use Money\Money;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -38,6 +45,36 @@ class InvoiceRepository extends EntityRepository
         );
 
         return $this->getTotalByStatus(Graph::STATUS_PAID, $client, 'money');
+    }
+
+    /**
+     * Get the total amount for a specific invoice status.
+     *
+     * @param string $status
+     * @param Client $client filter per client
+     * @param int    $hydrate
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR)
+    {
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select('SUM(i.total)')
+	    ->where('i.status = :status')
+	    ->setParameter('status', $status);
+
+	if (null !== $client) {
+	    $qb->andWhere('i.client = :client')
+		->setParameter('client', $client);
+	}
+
+	$query = $qb->getQuery();
+
+	return $query->getSingleResult($hydrate);
     }
 
     /**
@@ -98,36 +135,6 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Get the total amount for a specific invoice status.
-     *
-     * @param string $status
-     * @param Client $client  filter per client
-     * @param int    $hydrate
-     *
-     * @return int
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR)
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb->select('SUM(i.total)')
-            ->where('i.status = :status')
-            ->setParameter('status', $status);
-
-        if (null !== $client) {
-            $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client);
-        }
-
-        $query = $qb->getQuery();
-
-        return $query->getSingleResult($hydrate);
-    }
-
-    /**
      * Gets the most recent created invoices.
      *
      * @param int $limit
@@ -165,9 +172,9 @@ class InvoiceRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-
-
     /**
+     * @param array $parameters
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getGridQuery(array $parameters = [])

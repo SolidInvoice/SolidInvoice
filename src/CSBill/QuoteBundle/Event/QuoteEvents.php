@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -27,4 +35,7 @@ final class QuoteEvents
 
     const QUOTE_PRE_SEND = 'quote.pre_send';
     const QUOTE_POST_SEND = 'quote.post_send';
+
+    const QUOTE_PRE_ARCHIVE = 'quote.pre_archive';
+    const QUOTE_POST_ARCHIVE = 'quote.post_archive';
 }

@@ -60,9 +60,10 @@ quote:
     archive:
         success: Quote Archived
     grid:
-        action:
-            view: View Quote
-            edit: Edit Quote
+	actions:
+	    view: View
+	    edit: Edit
+	    delete: Delete
 
     stats:
         count:

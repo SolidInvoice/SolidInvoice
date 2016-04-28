@@ -18,15 +18,15 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-
-    {{ parent() }}
+    <div class="widget">
+	{{ render_multiple_grid('active_quote_grid', 'archive_quote_grid') }}
+    </div>
 
     <h5>{{ "quote.list.status_legend"|trans }}</h5>
 
-    {% for status in status_list %}
-        {{ quote_label(status) }}
+    {% for status in quote_label() %}
+	{{ status|raw }}
     {% endfor %}
-
 {% endblock content %}
 
 {% block sidebar_right %}

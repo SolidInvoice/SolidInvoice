@@ -11,7 +11,8 @@ finite_finite:
             pending:
                 properties: {editable: true, sendable: true}
             cancelled: ~
-            archived: ~
+	    archived:
+		type: final
             accepted:
                 type: final
             declined: ~

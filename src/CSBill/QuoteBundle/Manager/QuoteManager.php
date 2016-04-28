@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -101,6 +109,67 @@ class QuoteManager
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_ACCEPT, new QuoteEvent($quote));
 
         return $invoice;
+    }
+
+    /**
+     * @param Quote  $quote
+     * @param string $transition
+     *
+     * @return bool
+     *
+     * @throws InvalidTransitionException
+     */
+    private function applyTransition(Quote $quote, $transition)
+    {
+	$stateMachine = $this->stateMachine->get($quote, Graph::GRAPH);
+
+	if ($stateMachine->can($transition)) {
+	    $oldStatus = $quote->getStatus();
+
+	    $stateMachine->apply($transition);
+
+	    $this->entityManager->persist($quote);
+	    $this->entityManager->flush();
+
+	    $newStatus = $quote->getStatus();
+
+	    $parameters = [
+		'quote' => $quote,
+		'old_status' => $oldStatus,
+		'new_status' => $newStatus,
+		'transition' => $transition,
+	    ];
+
+	    $notification = new QuoteStatusNotification($parameters);
+
+	    $this->notification->sendNotification('quote_status_update', $notification);
+
+	    return true;
+	}
+
+	throw new InvalidTransitionException($transition);
+    }
+
+    /**
+     * @param Quote $quote
+     *
+     * @return Quote
+     *
+     * @throws InvalidTransitionException
+     */
+    public function archive(Quote $quote)
+    {
+	$this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_ARCHIVE, new QuoteEvent($quote));
+
+	$this->applyTransition($quote, Graph::TRANSITION_ARCHIVE);
+	$quote->archive();
+
+	$this->entityManager->persist($quote);
+	$this->entityManager->flush();
+
+	$this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_ARCHIVE, new QuoteEvent($quote));
+
+	return $quote;
     }
 
     /**
@@ -234,44 +303,5 @@ class QuoteManager
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($newQuote));
 
         return $newQuote;
-    }
-
-    /**
-     * @param Quote  $quote
-     * @param string $transition
-     *
-     * @return bool
-     *
-     * @throws InvalidTransitionException
-     */
-    private function applyTransition(Quote $quote, $transition)
-    {
-        $stateMachine = $this->stateMachine->get($quote, Graph::GRAPH);
-
-        if ($stateMachine->can($transition)) {
-            $oldStatus = $quote->getStatus();
-
-            $stateMachine->apply($transition);
-
-            $this->entityManager->persist($quote);
-            $this->entityManager->flush();
-
-            $newStatus = $quote->getStatus();
-
-            $parameters = array(
-                'quote' => $quote,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-                'transition' => $transition,
-            );
-
-            $notification = new QuoteStatusNotification($parameters);
-
-            $this->notification->sendNotification('quote_status_update', $notification);
-
-            return true;
-        }
-
-        throw new InvalidTransitionException($transition);
     }
 }
