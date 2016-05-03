@@ -79,15 +79,6 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="client-info">
-
-                            {#<div class="col-lg-12 col-md-12 client_contact_list">
-                                        <div class="pull-right">
-                                            <a href="{{ path("_clients_add_contact", {"id" : client.id}) }}" class="btn btn-success btn-sm add-contact-button" data-id="{{ client.id }}">
-                                                {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
-                                            </a>
-                                            <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
-                                        </div>#}
-
                     </div>
                     <div role="tabpanel" class="tab-pane" id="quotes">
                         {% include "CSBillClientBundle::quote_list.html.twig" %}
