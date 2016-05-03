@@ -14,5 +14,5 @@
 </legend>
 
 <div class="widget">
-    {{ render_grid('active_invoice_grid', {'client' : client.id}) }}
+    {{ render_multiple_grid(['active_invoice_grid', 'recurring_invoice_grid'], {'client' : client.id}) }}
 </div>

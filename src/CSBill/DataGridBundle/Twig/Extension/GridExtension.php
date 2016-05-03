@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace CSBill\DataGridBundle\Twig\Extension;
 
@@ -7,17 +15,15 @@ use JMS\Serializer\SerializerInterface;
 
 class GridExtension extends \Twig_Extension
 {
+    private static $statusRendered = false;
     /**
      * @var GridRepository
      */
     private $repository;
-
     /**
      * @var SerializerInterface
      */
     private $serializer;
-
-    private static $statusRendered = false;
 
     /**
      * GridExtension constructor.
@@ -103,8 +109,18 @@ class GridExtension extends \Twig_Extension
      */
     public function renderMultipleGrid(\Twig_Environment $env)
     {
+	$parameters = [];
+
 	$args = func_get_args();
 	$grids = array_splice($args, 1);
+
+	if (is_array($grids[0])) {
+	    if (!empty($grids[1]) && is_array($grids[1])) {
+		$parameters = $grids[1];
+	    }
+
+	    $grids = $grids[0];
+	}
 
 	$requiresStatus = false;
 
@@ -112,6 +128,8 @@ class GridExtension extends \Twig_Extension
 
 	foreach ($grids as $gridName) {
 	    $grid = $this->repository->find($gridName);
+	    $grid->setParameters($parameters);
+
 	    $gridOptions = $this->serializer->serialize($grid, 'json');
 
 	    $requiresStatus = $requiresStatus || $grid->requiresStatus();
