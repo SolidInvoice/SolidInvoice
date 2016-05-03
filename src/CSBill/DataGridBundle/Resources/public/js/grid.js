@@ -7,6 +7,15 @@
  * with this source code in the file LICENSE.
  */
 
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 define([
 	'marionette',
 	'backbone',
@@ -43,11 +52,31 @@ define([
 		var collection = new GridCollection(options.name, options.parameters);
 
 		collection.on('request', function () {
-		    $('body').modalmanager('loading');
+		    var body = $('body'),
+			modalManager = body.data('modalmanager');
+
+		    if (_.isUndefined(modalManager)) {
+			body.modalmanager('loading');
+
+			return;
+		    }
+
+		    if (!modalManager.isLoading) {
+			modalManager.loading();
+		    }
 		});
 
 		collection.on('sync', function () {
-		    $('body').modalmanager('loading');
+		    var body = $('body'),
+			modalManager = body.data('modalmanager');
+
+		    if (_.isUndefined(modalManager)) {
+			return;
+		    }
+
+		    if (modalManager.isLoading) {
+			modalManager.removeLoading();
+		    }
 		});
 
 		collection.fetch();
