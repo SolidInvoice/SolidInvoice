@@ -47,7 +47,7 @@ config:
                 - js_translator
     paths:
         'backbone': csbillcore/js/lib/backbone/backbone.js
-	'backbone.paginator': csbillcore/js/lib/backbone/backbone.paginator.js
+	    'backbone.paginator': csbillcore/js/lib/backbone/backbone.paginator.js
         'marionette': csbillcore/js/lib/backbone/marionette.js
         'lodash': csbillcore/js/lib/lodash.min.js
         'jquery': csbillcore/js/lib/jquery/jquery.min.js
