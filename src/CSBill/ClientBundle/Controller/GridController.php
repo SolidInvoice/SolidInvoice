@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of CSBill project.
  *
  * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>

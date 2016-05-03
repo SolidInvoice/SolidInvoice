@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of CSBill project.
  *
  * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
@@ -26,7 +27,7 @@ class GridRepository
      */
     public function addGrid($name, GridInterface $grid)
     {
-	$this->grids[$name] = $grid;
+        $this->grids[$name] = $grid;
     }
 
     /**
@@ -38,10 +39,10 @@ class GridRepository
      */
     public function find($name)
     {
-	if (!array_key_exists($name, $this->grids)) {
-	    throw new InvalidGridException($name);
-	}
+        if (!array_key_exists($name, $this->grids)) {
+            throw new InvalidGridException($name);
+        }
 
-	return $this->grids[$name];
+        return $this->grids[$name];
     }
 }
