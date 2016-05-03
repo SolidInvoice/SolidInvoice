@@ -12,13 +12,13 @@ _invoices_edit:
     path:   /edit/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Default:edit }
     options:
-	expose: true
+        expose: true
 
 _invoices_view:
     path:   /view/{id}
     defaults:  { _controller: CSBillInvoiceBundle:Default:view }
     options:
-	expose: true
+        expose: true
 
 _invoices_clone:
     path:   /clone/{id}
@@ -38,11 +38,11 @@ _invoices_archive:
     defaults:  { _controller: CSBillInvoiceBundle:Grid:archive }
     methods: [POST]
     options:
-	expose: true
+        expose: true
 
 _invoices_delete:
     path:   /delete
     defaults:  { _controller: CSBillInvoiceBundle:Grid:delete }
     methods: [POST]
     options:
-	expose: true
+        expose: true

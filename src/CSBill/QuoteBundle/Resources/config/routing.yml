@@ -12,13 +12,13 @@ _quotes_edit:
     path:   /edit/{id}
     defaults:  { _controller: CSBillQuoteBundle:Default:edit }
     options:
-	expose: true
+        expose: true
 
 _quotes_view:
     path:   /view/{id}
     defaults:  { _controller: CSBillQuoteBundle:Default:view }
     options:
-	expose: true
+        expose: true
 
 _quotes_clone:
     path:   /clone/{id}
@@ -31,14 +31,14 @@ _quotes_archive:
     defaults:  { _controller: CSBillQuoteBundle:Grid:archive }
     methods: [POST]
     options:
-	expose: true
+        expose: true
 
 _quotess_delete:
     path:   /delete
     defaults:  { _controller: CSBillQuoteBundle:Grid:delete }
     methods: [POST]
     options:
-	expose: true
+        expose: true
 
 _accept_quote:
     path:   /action/accept/{id}

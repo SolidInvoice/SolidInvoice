@@ -1,19 +1,19 @@
 config:
     shim:
-	backgrid:
-	    deps:
-		- backbone
-		- lodash
-	    exports: Backgrid
-	'grid/backgrid-filter':
-	    deps:
-		- backgrid
-	'grid/backgrid-paginator':
-	    deps:
-		- backgrid
-	'grid/backgrid-select-all':
-	    deps:
-		- backgrid
+        backgrid:
+            deps:
+                - backbone
+                - lodash
+            exports: Backgrid
+        'grid/backgrid-filter':
+            deps:
+                - backgrid
+        'grid/backgrid-paginator':
+            deps:
+                - backgrid
+        'grid/backgrid-select-all':
+            deps:
+                - backgrid
     paths:
-	backgrid: 'csbilldatagrid/js/backgrid.js'
-	grid: 'csbilldatagrid/js/'
+        backgrid: 'csbilldatagrid/js/backgrid.js'
+        grid: 'csbilldatagrid/js/'

@@ -1,211 +1,211 @@
 datagrid:
     active_invoice_grid:
-	title: Active
-	icon: check
-	source:
-	    repository: CSBillInvoiceBundle:Invoice
-	    method: getGridQuery
-	columns:
-	    id:
-		name: id
-		label: ID
-		editable: false
-		cell: integer
-	    status:
-		name: status
-		label: Status
-		editable: false
-		cell: invoice_status
-	    client:
-		name: client
-		label: Client
-		editable: false
-		cell: client
-	    total:
-		name: total
-		label: Total
-		editable: false
-		cell: string
-	    tax:
-		name: tax
-		label: Tax
-		editable: false
-		cell: string
-	    discount:
-		name: discount
-		label: Discount
-		editable: false
-		cell: string
-	    created:
-		name: created
-		label: Created
-		editable: false
-		cell: date
-	search:
-	    fields:
-		- status
-		- total
-		- 'c.name'
-	line_actions:
-	    view:
-		icon: eye
-		label: invoice.grid.actions.view
-		route: _invoices_view
-		route_params:
-		    id: id
-	    edit:
-		icon: edit
-		label: invoice.grid.actions.edit
-		route: _invoices_edit
-		route_params:
-		    id: id
-	actions:
-	    archive:
-		label: Archive
-		icon: archive
-		confirm: "Are you sure you want to archive the selected rows?"
-		action: _invoices_archive
-		className: warning
-	    delete:
-		label: Delete
-		icon: ban
-		confirm: "Are you sure you want to delete the selected rows?"
-		action: _invoices_delete
-		className: danger
+        title: Active
+        icon: check
+        source:
+            repository: CSBillInvoiceBundle:Invoice
+            method: getGridQuery
+        columns:
+            id:
+                name: id
+                label: ID
+                editable: false
+                cell: integer
+            status:
+                name: status
+                label: Status
+                editable: false
+                cell: invoice_status
+            client:
+                name: client
+                label: Client
+                editable: false
+                cell: client
+            total:
+                name: total
+                label: Total
+                editable: false
+                cell: string
+            tax:
+                name: tax
+                label: Tax
+                editable: false
+                cell: string
+            discount:
+                name: discount
+                label: Discount
+                editable: false
+                cell: string
+            created:
+                name: created
+                label: Created
+                editable: false
+                cell: date
+        search:
+            fields:
+                - status
+                - total
+                - 'c.name'
+        line_actions:
+            view:
+                icon: eye
+                label: invoice.grid.actions.view
+                route: _invoices_view
+                route_params:
+                    id: id
+            edit:
+                icon: edit
+                label: invoice.grid.actions.edit
+                route: _invoices_edit
+                route_params:
+                    id: id
+        actions:
+            archive:
+                label: Archive
+                icon: archive
+                confirm: "Are you sure you want to archive the selected rows?"
+                action: _invoices_archive
+                className: warning
+            delete:
+                label: Delete
+                icon: ban
+                confirm: "Are you sure you want to delete the selected rows?"
+                action: _invoices_delete
+                className: danger
     recurring_invoice_grid:
-	title: Recurring
-	icon: refresh
-	source:
-	    repository: CSBillInvoiceBundle:Invoice
-	    method: getRecurringGridQuery
-	columns:
-	    id:
-		name: id
-		label: ID
-		editable: false
-		cell: integer
-	    client:
-		name: client
-		label: Client
-		editable: false
-		cell: client
-	    total:
-		name: total
-		label: Total
-		editable: false
-		cell: string
-	    tax:
-		name: tax
-		label: Tax
-		editable: false
-		cell: string
-	    discount:
-		name: discount
-		label: Discount
-		editable: false
-		cell: string
-	    dateStart:
-		name: dateStart
-		label: Start Date
-		editable: false
-		cell: recurringInvoiceStart
-	    dateEnd:
-		name: dateEnd
-		label: End Date
-		editable: false
-		cell: recurringInvoiceEnd
-	    frequency:
-		name: frequency
-		label: Frequency
-		editable: false
-		cell: recurringInvoiceFrequency
-	    created:
-		name: created
-		label: Created
-		editable: false
-		cell: date
-	search:
-	    fields:
-		- status
-		- total
-		- 'c.name'
-	line_actions:
-	    view:
-		icon: eye
-		label: invoice.grid.actions.view
-		route: _invoices_view
-		route_params:
-		    id: id
-	    edit:
-		icon: edit
-		label: invoice.grid.actions.edit
-		route: _invoices_edit
-		route_params:
-		    id: id
-	actions:
-	    archive:
-		label: Archive
-		icon: archive
-		confirm: "Are you sure you want to archive the selected rows?"
-		action: _invoices_archive
-		className: warning
-	    delete:
-		label: Delete
-		icon: ban
-		confirm: "Are you sure you want to delete the selected rows?"
-		action: _invoices_delete
-		className: danger
+        title: Recurring
+        icon: refresh
+        source:
+            repository: CSBillInvoiceBundle:Invoice
+            method: getRecurringGridQuery
+        columns:
+            id:
+                name: id
+                label: ID
+                editable: false
+                cell: integer
+            client:
+                name: client
+                label: Client
+                editable: false
+                cell: client
+            total:
+                name: total
+                label: Total
+                editable: false
+                cell: string
+            tax:
+                name: tax
+                label: Tax
+                editable: false
+                cell: string
+            discount:
+                name: discount
+                label: Discount
+                editable: false
+                cell: string
+            dateStart:
+                name: dateStart
+                label: Start Date
+                editable: false
+                cell: recurringInvoiceStart
+            dateEnd:
+                name: dateEnd
+                label: End Date
+                editable: false
+                cell: recurringInvoiceEnd
+            frequency:
+                name: frequency
+                label: Frequency
+                editable: false
+                cell: recurringInvoiceFrequency
+            created:
+                name: created
+                label: Created
+                editable: false
+                cell: date
+        search:
+            fields:
+                - status
+                - total
+                - 'c.name'
+        line_actions:
+            view:
+                icon: eye
+                label: invoice.grid.actions.view
+                route: _invoices_view
+                route_params:
+                    id: id
+            edit:
+                icon: edit
+                label: invoice.grid.actions.edit
+                route: _invoices_edit
+                route_params:
+                    id: id
+        actions:
+            archive:
+                label: Archive
+                icon: archive
+                confirm: "Are you sure you want to archive the selected rows?"
+                action: _invoices_archive
+                className: warning
+            delete:
+                label: Delete
+                icon: ban
+                confirm: "Are you sure you want to delete the selected rows?"
+                action: _invoices_delete
+                className: danger
     archive_invoice_grid:
-	title: Archived
-	icon: archive
-	source:
-	    repository: CSBillInvoiceBundle:Invoice
-	    method: getArchivedGridQuery
-	columns:
-	    id:
-		name: id
-		label: ID
-		editable: false
-		cell: integer
-	    status:
-		name: status
-		label: Status
-		editable: false
-		cell: invoice_status
-	    client:
-		name: client
-		label: Client
-		editable: false
-		cell: client
-	    total:
-		name: total
-		label: Total
-		editable: false
-		cell: string
-	    tax:
-		name: tax
-		label: Tax
-		editable: false
-		cell: string
-	    discount:
-		name: discount
-		label: Discount
-		editable: false
-		cell: string
-	    created:
-		name: created
-		label: Created
-		editable: false
-		cell: date
-	search:
-	    fields:
-		- status
-		- total
-		- 'c.name'
-	actions:
-	    delete:
-		label: Delete
-		icon: ban
-		confirm: "Are you sure you want to delete the selected rows?"
-		action: _invoices_delete
-		className: danger
+        title: Archived
+        icon: archive
+        source:
+            repository: CSBillInvoiceBundle:Invoice
+            method: getArchivedGridQuery
+        columns:
+            id:
+                name: id
+                label: ID
+                editable: false
+                cell: integer
+            status:
+                name: status
+                label: Status
+                editable: false
+                cell: invoice_status
+            client:
+                name: client
+                label: Client
+                editable: false
+                cell: client
+            total:
+                name: total
+                label: Total
+                editable: false
+                cell: string
+            tax:
+                name: tax
+                label: Tax
+                editable: false
+                cell: string
+            discount:
+                name: discount
+                label: Discount
+                editable: false
+                cell: string
+            created:
+                name: created
+                label: Created
+                editable: false
+                cell: date
+        search:
+            fields:
+                - status
+                - total
+                - 'c.name'
+        actions:
+            delete:
+                label: Delete
+                icon: ban
+                confirm: "Are you sure you want to delete the selected rows?"
+                action: _invoices_delete
+                className: danger

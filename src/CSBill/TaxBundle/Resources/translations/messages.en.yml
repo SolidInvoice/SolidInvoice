@@ -9,8 +9,8 @@ tax:
     inclusive: Inclusive
     exclusive: Exclusive
     grid:
-	actions:
-	    edit: Edit
+        actions:
+            edit: Edit
 
 inclusive: Inclusive
 exclusive: Exclusive
