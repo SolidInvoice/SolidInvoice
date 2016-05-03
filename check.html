@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SensioLabs DeprecationDetector</title>
+    <style type="text/css">
+        body {
+            background-color: #F9F9F9;
+            color: #222;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container-fluid {
+            margin: 0 auto;
+            max-width: 1200px;
+            padding: 0 1em;
+        }
+
+        #header {
+            background-color: #222;
+            height: 36px;
+        }
+
+        #header h1 {
+            color: #FFF;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 36px;
+            margin: 0;
+        }
+
+        #header h1 span {
+            color: #CCC;
+        }
+
+        .summary {
+            border: solid rgba(0, 0, 0, 0.1);
+            border-width: 2px 0;
+            color: #FFF;
+        }
+
+        .summary.summary-success {
+            background: #5E976E;
+        }
+
+        .summary.summary-error {
+            background: #B0413E;
+        }
+
+        h2 {
+            font-size: 21px;
+            font-weight: 500;
+            margin: 1em 0 0;
+        }
+
+        .empty {
+            border: 4px dashed #E0E0E0;
+            color: #999;
+            font-size: 16px;
+            margin: 1em 0;
+            padding: .5em 2em;
+        }
+
+        table, tr, th, td {
+            background: #FFF;
+            border-collapse: collapse;
+            line-height: 1.5;
+            vertical-align: top;
+        }
+
+        table {
+            background: #FFF;
+            border: 1px solid #E0E0E0;
+            box-shadow: 0px 0px 1px rgba(128, 128, 128, .2);
+            margin: 1em 0;
+            width: 100%;
+        }
+
+        table th, table td {
+            padding: 8px 10px;
+        }
+
+        table th {
+            font-weight: bold;
+            text-align: left;
+        }
+
+        table thead th {
+            background-color: #666;
+            border: 1px solid #666;
+            color: #F9F9F9;
+        }
+
+        table tbody td {
+            border: 1px solid #E0E0E0;
+            border-width: 1px 0;
+        }
+
+        table tbody td {
+            -ms-word-break: break-all;
+            word-break: break-all;
+            word-break: break-word;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            hyphens: auto;
+        }
+
+        table tbody tr:hover td {
+            background: rgba(255, 255, 200, 0.4);
+        }
+
+        table tr.file.info td.filename {
+            background-color: #E0E0E0;
+            font-weight: bold;
+        }
+
+        table tr.violation td.index {
+            color: #999;
+            font-size: 12px;
+        }
+
+        table tr.violation td.index, table tr.violation td.line {
+            word-break: normal;
+        }
+
+        .metrics {
+            overflow: auto;
+        }
+
+        .metrics .metric {
+            float: left;
+            margin-right: 1.5em;
+        }
+
+        .metric {
+            min-width: 140px;
+            position: relative;
+        }
+
+        .metric .value {
+            float: left;
+            font-size: 36px;
+            padding: 4px 4px 4px 0;
+        }
+
+        .metric .value.date {
+            min-width: 180px;
+        }
+
+        .metric .label {
+            float: left;
+            font-size: 13px;
+            line-height: 1.2;
+            opacity: 0.8;
+            padding: 5px;
+            position: absolute;
+            top: 8px;
+            text-transform: lowercase;
+        }
+
+        #footer, #footer a {
+            color: #999;
+            font-size: 13px;
+        }
+
+        #footer a:hover {
+            color: #218BC3;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div class="container-fluid">
+            <h1><span>SensioLabs</span> Deprecation Detector</h1>
+        </div>
+    </div>
+
+    <div class="summary summary-error">
+        <div class="container-fluid">
+            <div class="metrics">
+                <div class="metric">
+                    <span class="value">9</span>
+                    <span class="label">Deprecations <br> detected</span>
+                </div>
+
+                <div class="metric">
+                    <span class="value">4</span>
+                    <span class="label">Analyzed <br> files</span>
+                </div>
+
+                <div class="metric">
+                    <span class="value date">2016-04-28</span>
+                    <span class="label">Analysis <br> date</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <h2>Deprecation details</h2>
+                        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Usage</th>
+                    <th>Line</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                            <tr class="file info">
+                    <td colspan="4" class="filename">/Users/pierre/projects/csbill/application/src/CSBill/CoreBundle/Twig/Extension/GlobalExtension.php</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">1</td>
+                    <td class="usage">Overriding deprecated method CSBill\CoreBundle\Twig\Extension\GlobalExtension->getGlobals()</td>
+                    <td class="line">43</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_GlobalsInterface instead</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">2</td>
+                    <td class="usage">Overriding deprecated method CSBill\CoreBundle\Twig\Extension\GlobalExtension->getGlobals()</td>
+                    <td class="line">43</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_GlobalsInterface instead</td>
+                </tr>
+                                            <tr class="file info">
+                    <td colspan="4" class="filename">/Users/pierre/projects/csbill/application/src/CSBill/CoreBundle/Twig/Extension/StatusExtension.php</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">3</td>
+                    <td class="usage">Overriding deprecated method CSBill\CoreBundle\Twig\Extension\StatusExtension->initRuntime()</td>
+                    <td class="line">85</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterface instead</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">4</td>
+                    <td class="usage">Overriding deprecated method CSBill\CoreBundle\Twig\Extension\StatusExtension->initRuntime()</td>
+                    <td class="line">85</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterace instead</td>
+                </tr>
+                                            <tr class="file info">
+                    <td colspan="4" class="filename">/Users/pierre/projects/csbill/application/src/CSBill/DashboardBundle/Twig/Extension/WidgetExtension.php</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">5</td>
+                    <td class="usage">Calling deprecated static method Twig_Extension::initRuntime()</td>
+                    <td class="line">54</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterface instead</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">6</td>
+                    <td class="usage">Calling deprecated static method Twig_ExtensionInterface::initRuntime()</td>
+                    <td class="line">54</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterace instead</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">7</td>
+                    <td class="usage">Overriding deprecated method CSBill\DashboardBundle\Twig\Extension\WidgetExtension->initRuntime()</td>
+                    <td class="line">50</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterface instead</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">8</td>
+                    <td class="usage">Overriding deprecated method CSBill\DashboardBundle\Twig\Extension\WidgetExtension->initRuntime()</td>
+                    <td class="line">50</td>
+                    <td class="comment">since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterace instead</td>
+                </tr>
+                                            <tr class="file info">
+                    <td colspan="4" class="filename">/Users/pierre/projects/csbill/application/src/CSBill/InstallBundle/Process/Step/InstallStep.php</td>
+                </tr>
+                                <tr class="violation">
+                    <td class="index">9</td>
+                    <td class="usage">Calling deprecated method Symfony\Bundle\FrameworkBundle\Controller\Controller->getRequest()</td>
+                    <td class="line">26</td>
+                    <td class="comment">since version 2.4, to be removed in 3.0.
+ Ask Symfony to inject the Request object into your controller
+ method instead by type hinting it in the method's signature.</td>
+                </tr>
+                                        </tbody>
+        </table>
+        
+        
+        <div id="footer">
+            Generated by <a href="https://github.com/sensiolabs-de/deprecation-detector">SensioLabs Deprecation Detector</a>
+            using PHP <span class="php-version">7.0.4</span> at <span class="date">2016-04-28 20:12:53</span>.
+        </div>
+    </div>
+</body>
+</html>

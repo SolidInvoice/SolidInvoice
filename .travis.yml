@@ -45,7 +45,7 @@ before_script:
   - if [[ "$SAUCE_USERNAME" ]]; then bash travis/sauce.sh; fi;
 
 script:
-  - composer validate --strict
+  - composer validate
   - php app/console security:check
   - bash travis/behat.sh
   - bash travis/phpunit.sh
