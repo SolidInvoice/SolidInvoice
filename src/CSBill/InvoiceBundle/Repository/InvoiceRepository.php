@@ -8,6 +8,15 @@
  * with this source code in the file LICENSE.
  */
 
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 /*
  * This file is part of CSBill project.
  *
@@ -25,6 +34,7 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -182,7 +192,29 @@ class InvoiceRepository extends EntityRepository
 	$qb = $this->createQueryBuilder('i');
 
 	$qb->select(['i', 'c'])
-	    ->join('i.client', 'c');
+	    ->join('i.client', 'c')
+	    ->where('i.recurring = 0');
+
+	if (!empty($parameters['client'])) {
+	    $qb->where('i.client = :client')
+		->setParameter('client', $parameters['client']);
+	}
+
+	return $qb;
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getRecurringGridQuery(array $parameters = [])
+    {
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select(['i', 'c', 'r'])
+	    ->join('i.client', 'c')
+	    ->join('i.recurringInfo', 'r', Join::WITH, 'i.recurring = 1');
 
 	if (!empty($parameters['client'])) {
 	    $qb->where('i.client = :client')
