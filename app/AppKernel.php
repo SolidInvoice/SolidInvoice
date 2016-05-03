@@ -9,7 +9,7 @@
  */
 
 /*
- * This file is part of CSBill package.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  *

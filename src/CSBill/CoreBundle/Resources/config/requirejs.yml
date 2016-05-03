@@ -46,9 +46,9 @@ config:
             deps:
                 - js_translator
     paths:
-        'backbone': csbillcore/js/lib/backbone/backbone.min.js
+        'backbone': csbillcore/js/lib/backbone/backbone.js
 	'backbone.paginator': csbillcore/js/lib/backbone/backbone.paginator.js
-        'marionette': csbillcore/js/lib/backbone/marionette.min.js
+        'marionette': csbillcore/js/lib/backbone/marionette.js
         'lodash': csbillcore/js/lib/lodash.min.js
         'jquery': csbillcore/js/lib/jquery/jquery.min.js
         'bootstrap': csbillcore/js/lib/bootstrap.min.js
