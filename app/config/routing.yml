@@ -45,6 +45,10 @@ csbill_user:
     resource: "@CSBillUserBundle/Resources/config/routing.yml"
     prefix:   /profile
 
+csbill_datagrid:
+    resource: "@CSBillDataGridBundle/Resources/config/routing.yml"
+    prefix:   /grid
+
 # External Routes
 
 fos_js_routing:

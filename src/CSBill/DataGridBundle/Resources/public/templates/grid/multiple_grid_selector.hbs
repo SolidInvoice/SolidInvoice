@@ -1,0 +1,18 @@
+<div class="grid-selection">
+    <div class="pull-right">
+	<div class="btn-group btn-group-sm" role="group">
+	    {{#each grids}}
+		<a href="#" class="btn btn-default{{#if this.disabled}} disabled{{/if}}" data-grid="{{@key}}">
+		    {{#if this.icon}}
+			<i class="fa fa-{{this.icon}}"></i>
+		    {{/if}}
+
+		    {{this.title}}
+		</a>
+	    {{/each}}
+	</div>
+    </div>
+    <br class="clear" />
+</div>
+
+<div id="{{gridId}}"></div>

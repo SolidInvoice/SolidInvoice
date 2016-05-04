@@ -1,0 +1,26 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set id = 'multiple-grid-' ~ random() %}
+{% set gridId = 'grid-' ~ id %}
+
+<div class="grid" id="{{ id }}"></div>
+
+{% if requiresStatus %}
+    {% include 'CSBillCoreBundle:_partials:status_labels.html.twig' %}
+{% endif %}
+
+<script>
+    require(['grid/multiple_grid', 'backbone'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (MultipleGrid, Backbone) {
+	new MultipleGrid({
+	    'model': new Backbone.Model({'grids': {{ grids|json_encode|raw }}, 'gridId': '{{ gridId }}'}),
+	    'el': '#{{ id }}'
+	});
+    });
+</script>

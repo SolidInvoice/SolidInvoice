@@ -11,6 +11,7 @@
 
 namespace CSBill\ClientBundle\Repository;
 
+use CSBill\CoreBundle\Util\ArrayUtil;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -68,5 +69,45 @@ class ClientRepository extends EntityRepository
         $query = $qb->getQuery();
 
         return $query->getArrayResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function getStatusList()
+    {
+	$qb = $this->createQueryBuilder('c');
+
+	$qb->select('DISTINCT c.status');
+
+	return ArrayUtil::column($qb->getQuery()->getResult(), 'status');
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGridQuery()
+    {
+	$qb = $this->createQueryBuilder('c');
+
+	$qb->select('c');
+
+	return $qb;
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getArchivedGridQuery()
+    {
+	$this->getEntityManager()->getFilters()->disable('archivable');
+
+	$qb = $this->createQueryBuilder('c');
+
+	$qb->select('c');
+
+	$qb->where('c.archived is not null');
+
+	return $qb;
     }
 }

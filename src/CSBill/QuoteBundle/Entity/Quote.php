@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -11,7 +19,6 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,7 +60,6 @@ class Quote
      * @var Uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
-     * @Grid\Column(visible=false)
      */
     private $uuid;
 
@@ -61,7 +67,6 @@ class Quote
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", safe=false, label_function="quote_label")
      * @Serialize\Expose()
      */
     private $status;
@@ -71,8 +76,6 @@ class Quote
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
-     * @Grid\Column(type="client", name="clients", field="client.name", title="client", filter="select", selectFrom="source", joinType="inner")
-     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      */
     private $client;
 
@@ -80,7 +83,6 @@ class Quote
      * @var Money
      *
      * @ORM\Column(name="total", type="money")
-     * @Grid\Column(type="currency")
      * @Serialize\Expose()
      */
     private $total;
@@ -89,7 +91,6 @@ class Quote
      * @var Money
      *
      * @ORM\Column(name="base_total", type="money")
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $baseTotal;
@@ -98,7 +99,6 @@ class Quote
      * @var Money
      *
      * @ORM\Column(name="tax", type="money", nullable=true)
-     * @Grid\Column(type="currency")
      * @Serialize\Expose()
      */
     private $tax;
@@ -107,7 +107,6 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
-     * @Grid\Column(type="percent")
      * @Serialize\Expose()
      */
     private $discount;
@@ -116,7 +115,6 @@ class Quote
      * @var string
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $terms;
@@ -125,7 +123,6 @@ class Quote
      * @var string
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
-     * @Grid\Column(visible=false)
      * @Serialize\Expose()
      */
     private $notes;
@@ -135,7 +132,6 @@ class Quote
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
-     * @Grid\Column(visible=false)
      * @Serialize\Exclude()
      */
     private $due;
@@ -153,7 +149,6 @@ class Quote
     /**
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
-     * @Grid\Column(visible=false)
      *
      * @var ArrayCollection
      */
@@ -222,6 +217,16 @@ class Quote
     }
 
     /**
+     * Get status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+	return $this->status;
+    }
+
+    /**
      * Set status.
      *
      * @param string $status
@@ -236,13 +241,13 @@ class Quote
     }
 
     /**
-     * Get status.
+     * Get Client.
      *
-     * @return string
+     * @return Client
      */
-    public function getStatus()
+    public function getClient()
     {
-        return $this->status;
+	return $this->client;
     }
 
     /**
@@ -260,13 +265,13 @@ class Quote
     }
 
     /**
-     * Get Client.
+     * Get total.
      *
-     * @return Client
+     * @return Money
      */
-    public function getClient()
+    public function getTotal()
     {
-        return $this->client;
+	return $this->total;
     }
 
     /**
@@ -284,13 +289,13 @@ class Quote
     }
 
     /**
-     * Get total.
+     * Get base total.
      *
      * @return Money
      */
-    public function getTotal()
+    public function getBaseTotal()
     {
-        return $this->total;
+	return $this->baseTotal;
     }
 
     /**
@@ -308,13 +313,13 @@ class Quote
     }
 
     /**
-     * Get base total.
+     * Get discount.
      *
-     * @return Money
+     * @return float
      */
-    public function getBaseTotal()
+    public function getDiscount()
     {
-        return $this->baseTotal;
+	return $this->discount;
     }
 
     /**
@@ -332,13 +337,13 @@ class Quote
     }
 
     /**
-     * Get discount.
+     * Get due.
      *
-     * @return float
+     * @return \DateTime
      */
-    public function getDiscount()
+    public function getDue()
     {
-        return $this->discount;
+	return $this->due;
     }
 
     /**
@@ -353,16 +358,6 @@ class Quote
         $this->due = $due;
 
         return $this;
-    }
-
-    /**
-     * Get due.
-     *
-     * @return \DateTime
-     */
-    public function getDue()
-    {
-        return $this->due;
     }
 
     /**

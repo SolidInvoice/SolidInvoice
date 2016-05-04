@@ -7,9 +7,8 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set parent = "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
-{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
 {% block title %}{{ "invoice.list.title"|trans }}{% endblock %}
 
@@ -18,13 +17,14 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-
-    {{ parent() }}
+    <div class="widget">
+	{{ render_multiple_grid('active_invoice_grid', 'recurring_invoice_grid', 'archive_invoice_grid') }}
+    </div>
 
     <h5>{{ "invoice.list.status_legend"|trans }}</h5>
 
-    {% for status in status_list %}
-        {{ invoice_label(status) }}
+    {% for status in invoice_label() %}
+	{{ status|raw }}
     {% endfor %}
 {% endblock content %}
 

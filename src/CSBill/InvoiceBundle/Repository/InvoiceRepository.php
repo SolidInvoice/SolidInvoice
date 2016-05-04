@@ -17,7 +17,7 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
-use Money\Money;
+use Doctrine\ORM\Query\Expr\Join;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -38,6 +38,36 @@ class InvoiceRepository extends EntityRepository
         );
 
         return $this->getTotalByStatus(Graph::STATUS_PAID, $client, 'money');
+    }
+
+    /**
+     * Get the total amount for a specific invoice status.
+     *
+     * @param string $status
+     * @param Client $client filter per client
+     * @param int    $hydrate
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR)
+    {
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select('SUM(i.total)')
+	    ->where('i.status = :status')
+	    ->setParameter('status', $status);
+
+	if (null !== $client) {
+	    $qb->andWhere('i.client = :client')
+		->setParameter('client', $client);
+	}
+
+	$query = $qb->getQuery();
+
+	return $query->getSingleResult($hydrate);
     }
 
     /**
@@ -98,36 +128,6 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Get the total amount for a specific invoice status.
-     *
-     * @param string $status
-     * @param Client $client  filter per client
-     * @param int    $hydrate
-     *
-     * @return int
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR)
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb->select('SUM(i.total)')
-            ->where('i.status = :status')
-            ->setParameter('status', $status);
-
-        if (null !== $client) {
-            $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client);
-        }
-
-        $query = $qb->getQuery();
-
-        return $query->getSingleResult($hydrate);
-    }
-
-    /**
      * Gets the most recent created invoices.
      *
      * @param int $limit
@@ -163,5 +163,63 @@ class InvoiceRepository extends EntityRepository
             ->setParameter('now', Carbon::now());
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGridQuery(array $parameters = [])
+    {
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select(['i', 'c'])
+	    ->join('i.client', 'c')
+	    ->where('i.recurring = 0');
+
+	if (!empty($parameters['client'])) {
+	    $qb->andWhere('i.client = :client')
+		->setParameter('client', $parameters['client']);
+	}
+
+	return $qb;
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getRecurringGridQuery(array $parameters = [])
+    {
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select(['i', 'c', 'r'])
+	    ->join('i.client', 'c')
+	    ->join('i.recurringInfo', 'r', Join::WITH, 'i.recurring = 1');
+
+	if (!empty($parameters['client'])) {
+	    $qb->where('i.client = :client')
+		->setParameter('client', $parameters['client']);
+	}
+
+	return $qb;
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getArchivedGridQuery()
+    {
+	$this->getEntityManager()->getFilters()->disable('archivable');
+
+	$qb = $this->createQueryBuilder('i');
+
+	$qb->select(['i', 'c'])
+	    ->join('i.client', 'c')
+	    ->where('i.archived is not null');
+
+	return $qb;
     }
 }

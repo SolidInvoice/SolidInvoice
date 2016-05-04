@@ -127,15 +127,6 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
-apy_data_grid:
-    limits: [10, 15, 20, 25, 50]
-    pagerfanta:
-        enable: true    #default false
-        view_class: Pagerfanta\View\TwitterBootstrapView
-        options:            #all options of pager fanta view constructor
-           prev_message : « Prev
-           next_message : Next »
-
 stof_doctrine_extensions:
     default_locale: %locale%
     orm: ~

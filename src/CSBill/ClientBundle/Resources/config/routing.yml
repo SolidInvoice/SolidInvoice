@@ -11,15 +11,14 @@ _clients_add:
 _clients_edit:
     path:   /edit/{id}
     defaults:  { _controller: CSBillClientBundle:Default:edit }
+    options:
+        expose: true
 
 _clients_view:
     path:   /view/{id}
     defaults:  { _controller: CSBillClientBundle:Default:view }
-
-_clients_delete:
-    path:   /ajax/delete/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:deleteclient }
-    methods: [POST]
+    options:
+        expose: true
 
 _clients_info:
     path:   /ajax/info/{id}/{type}
@@ -52,5 +51,26 @@ _clients_contact:
     path:   /ajax/contacts/{id}
     defaults:  { _controller: CSBillClientBundle:Ajax:contact }
     methods: [GET, POST, DELETE]
+    options:
+        expose: true
+
+_clients_archive:
+    path:   /archive
+    defaults:  { _controller: CSBillClientBundle:Grid:archive }
+    methods: [POST]
+    options:
+        expose: true
+
+_clients_restore:
+    path:   /restore
+    defaults:  { _controller: CSBillClientBundle:Grid:restore }
+    methods: [POST]
+    options:
+        expose: true
+
+_clients_delete:
+    path:   /delete
+    defaults:  { _controller: CSBillClientBundle:Grid:delete }
+    methods: [POST]
     options:
         expose: true

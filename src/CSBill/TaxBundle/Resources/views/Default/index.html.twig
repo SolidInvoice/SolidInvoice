@@ -7,15 +7,19 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set parent = "CSBillCoreBundle:Layout:single_column.html.twig" %}
-
-{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
 {% block sidebar %}
     {{ menu('tax_index') }}
 {% endblock sidebar %}
 
 {% block title %}{{ 'tax.rates.title'|trans }}{% endblock title %}
+
+{% block content %}
+    <div class="widget">
+	{{ render_grid('tax_grid') }}
+    </div>
+{% endblock %}
 
 {% block heading %}
 <fieldset class="page-heading">

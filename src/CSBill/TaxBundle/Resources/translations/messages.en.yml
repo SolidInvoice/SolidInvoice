@@ -8,6 +8,9 @@ tax:
             select: Select
     inclusive: Inclusive
     exclusive: Exclusive
+    grid:
+        actions:
+            edit: Edit
 
 inclusive: Inclusive
 exclusive: Exclusive

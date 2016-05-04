@@ -11,15 +11,31 @@
 
 namespace CSBill\DataGridBundle;
 
+use CSBill\DataGridBundle\DependencyInjection\CompilerPass\GridDefinitionCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class CSBillDataGridBundle extends Bundle
 {
     /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @param KernelInterface $kernel
+     */
+    public function __construct(KernelInterface $kernel)
+    {
+	$this->kernel = $kernel;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function build(ContainerBuilder $container)
     {
-        return 'APYDataGridBundle';
+	$container->addCompilerPass(new GridDefinitionCompilerPass($this->kernel));
     }
 }

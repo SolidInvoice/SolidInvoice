@@ -54,11 +54,11 @@ define(
                     }
 
                     /**
-                     * Material
-                     */
-                    $.material.init();
-                }
-            });
+		     * Material
+		     */
+		    $.material.init();
+		}
+	    });
 
         var App = new Application({
             regions : Module.prototype.regions

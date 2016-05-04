@@ -11,15 +11,12 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
-
 trait Archivable
 {
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", name="archived", nullable=true)
-     * @GRID\Column(visible=false)
      */
     protected $archived;
 

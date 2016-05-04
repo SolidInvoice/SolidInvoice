@@ -11,7 +11,6 @@
 
 namespace CSBill\ClientBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\Payment;
@@ -75,7 +74,6 @@ class Client
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @GRID\Column(type="status", filter="source", filter="select", selectFrom="source", title="status", label_function="client_label")
      * @Serialize\Groups({"api", "js"})
      */
     private $status;
@@ -131,7 +129,6 @@ class Client
      * @var Credit
      *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
-     * @GRID\Column(field="credit.value", title="Credit", type="currency")
      * @Serialize\Groups({"api", "js"})
      * @Serialize\Inline()
      */
@@ -160,6 +157,16 @@ class Client
     }
 
     /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+	return $this->name;
+    }
+
+    /**
      * Set name.
      *
      * @param string $name
@@ -174,13 +181,13 @@ class Client
     }
 
     /**
-     * Get name.
+     * Get status.
      *
      * @return string
      */
-    public function getName()
+    public function getStatus()
     {
-        return $this->name;
+	return $this->status;
     }
 
     /**
@@ -198,13 +205,13 @@ class Client
     }
 
     /**
-     * Get status.
+     * Get website.
      *
      * @return string
      */
-    public function getStatus()
+    public function getWebsite()
     {
-        return $this->status;
+	return $this->website;
     }
 
     /**
@@ -219,16 +226,6 @@ class Client
         $this->website = $website;
 
         return $this;
-    }
-
-    /**
-     * Get website.
-     *
-     * @return string
-     */
-    public function getWebsite()
-    {
-        return $this->website;
     }
 
     /**

@@ -88,7 +88,7 @@
 
             {% if payments|length > 0 %}
                 <br class="clear" />
-                {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"payments" : payments, 'show_invoice' : false} only %}
+		{% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
             {% endif %}
         {% endblock contentBody %}
 
@@ -108,18 +108,6 @@
                                 {{ invoice.recurringInfo.dateEnd|date('d F Y') }}
                             {% endif %}
                         </div>
-                        <script>
-                            $(function () {
-                                $('#recurring').jqCron({
-                                    enabled_minute: false,
-                                    enabled_hour: false,
-                                    no_reset_button: true,
-                                    numeric_zero_pad: true,
-                                    default_value: '{{ invoice.recurringInfo.frequency }}'
-                                });
-                                $('.jqCron-selector-list').remove();
-                            });
-                        </script>
                         <br class="clearfix" />
                     </div>
                 </div>
@@ -153,8 +141,24 @@
 {% endblock content %}
 
 {% block script %}
+    require(['jquery'{% if invoice.recurring %}, 'jquery.jqcron'{% endif %}], function ($) {
+    $(function () {
+    {% if invoice.recurring %}
+	$('#recurring').jqCron({
+	enabled_minute: false,
+	enabled_hour: false,
+	no_reset_button: true,
+	numeric_zero_pad: true,
+	default_value: '{{ invoice.recurringInfo.frequency }}'
+	});
+
+	$('.jqCron-selector-list').remove();
+    {% endif %}
+
     $('#pay-now').on('click', function(event) {
-        event.preventDefault();
-        $('#payment-modal').modal();
+    event.preventDefault();
+    $('#payment-modal').modal();
+    });
+    });
     });
 {% endblock script %}

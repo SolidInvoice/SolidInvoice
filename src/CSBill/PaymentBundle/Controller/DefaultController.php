@@ -13,8 +13,6 @@ namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Grid\PaymentGrid;
-use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,24 +25,7 @@ class DefaultController extends BaseController
      */
     public function listAction()
     {
-        $grid = $this->get('grid')->create(new PaymentGrid());
-
-        return $grid->getGridResponse(
-            [
-                'status_list' => [
-                    Status::STATUS_UNKNOWN,
-                    Status::STATUS_FAILED,
-                    Status::STATUS_SUSPENDED,
-                    Status::STATUS_EXPIRED,
-                    Status::STATUS_PENDING,
-                    Status::STATUS_CANCELLED,
-                    Status::STATUS_NEW,
-                    Status::STATUS_CAPTURED,
-                    Status::STATUS_AUTHORIZED,
-                    Status::STATUS_REFUNDED,
-                ],
-            ]
-        );
+	return $this->render('CSBillPaymentBundle:Default:list.html.twig');
     }
 
     /**

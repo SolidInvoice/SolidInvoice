@@ -11,7 +11,6 @@
 
 namespace CSBill\PaymentBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Exception\UnexpectedTypeException;
 use CSBill\CoreBundle\Traits\Entity;
@@ -27,7 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @GRID\Source(groupBy="created")
  */
 class Payment extends BasePayment implements PaymentInterface
 {
@@ -42,79 +40,47 @@ class Payment extends BasePayment implements PaymentInterface
      * @var int
      */
     protected $id;
-
+    protected $details;
+    protected $description;
+    protected $number;
+    protected $clientEmail;
+    protected $clientId;
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
-     * @Grid\Column(name="invoice", field="invoice.id", title="Invoice", filter="select", selectFrom="source")
      *
      * @var Invoice
      */
     private $invoice;
-
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="payments")
      * @ORM\JoinColumn(name="client", fieldName="client")
-     * @Grid\Column(type="client", name="client", field="client.name", title="Client", filter="select", selectFrom="source", joinType="inner")
-     * @Grid\Column(field="client.id", visible=false, joinType="inner")
      *
      * @var Client
      */
     private $client;
-
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
-     * @Grid\Column(name="method", field="method.name", title="Method", filter="select", selectFrom="source")
      *
      * @var PaymentMethod
      */
     private $method;
-
     /**
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Grid\Column(name="status", type="status", title="status", filter="select", selectFrom="source", label_function="payment_label")
      */
     private $status;
-
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
      */
     private $message;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
-     * @Grid\Column(sortable=true, order="desc")
      */
     private $completed;
-
-    /**
-     * @GRID\Column(visible=false)
-     */
-    protected $details;
-
-    /**
-     * @GRID\Column(visible=false)
-     */
-    protected $description;
-
-    /**
-     * @GRID\Column(visible=false)
-     */
-    protected $number;
-
-    /**
-     * @GRID\Column(visible=false)
-     */
-    protected $clientEmail;
-
-    /**
-     * @GRID\Column(visible=false)
-     */
-    protected $clientId;
 
     /**
      * Get the id.
@@ -167,6 +133,16 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
+     * Get status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+	return $this->status;
+    }
+
+    /**
      * Set status.
      *
      * @param string $status
@@ -178,16 +154,6 @@ class Payment extends BasePayment implements PaymentInterface
         $this->status = $status;
 
         return $this;
-    }
-
-    /**
-     * Get status.
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -215,6 +181,14 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
+     * @return string
+     */
+    public function getMessage()
+    {
+	return $this->message;
+    }
+
+    /**
      * @param string $message
      *
      * @return Payment
@@ -224,14 +198,6 @@ class Payment extends BasePayment implements PaymentInterface
         $this->message = $message;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
     }
 
     /**
@@ -247,11 +213,19 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return Payment
      */
-    public function setCompleted(\DateTIme $completed)
+    public function setCompleted(\DateTime $completed)
     {
         $this->completed = $completed;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientId()
+    {
+	return $this->getClient()->getId();
     }
 
     /**
@@ -272,13 +246,5 @@ class Payment extends BasePayment implements PaymentInterface
         $this->client = $client;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClientId()
-    {
-        return $this->getClient()->getId();
     }
 }

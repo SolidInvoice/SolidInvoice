@@ -7,9 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set parent = "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
-
-{% extends "CSBillDataGridBundle:Grid:default.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block title %}{{ 'clients'|trans }}{% endblock title %}
 
@@ -29,3 +27,9 @@
 {% block sidebar %}
     {{ menu('clients_index') }}
 {% endblock sidebar %}
+
+{% block content %}
+    <div class="widget">
+	{{ render_multiple_grid('active_client_grid', 'archive_client_grid') }}
+    </div>
+{% endblock %}

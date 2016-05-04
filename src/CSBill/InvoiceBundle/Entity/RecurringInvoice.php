@@ -11,7 +11,6 @@
 
 namespace CSBill\InvoiceBundle\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as Grid;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -45,7 +44,6 @@ class RecurringInvoice
      * @var string
      *
      * @ORM\Column(name="frequency", type="string", nullable=true)
-     * @Grid\Column(visible=false)
      */
     private $frequency;
 
@@ -53,7 +51,6 @@ class RecurringInvoice
      * @var \DateTime
      *
      * @ORM\Column(name="date_start", type="date")
-     * @Grid\Column(visible=false)
      * @Assert\NotBlank(groups={"Recurring"})
      * @Assert\Date(groups={"Recurring"})
      */
@@ -63,7 +60,6 @@ class RecurringInvoice
      * @var \DateTime
      *
      * @ORM\Column(name="date_end", type="date", nullable=true)
-     * @Grid\Column(visible=false)
      */
     private $dateEnd;
 

@@ -11,58 +11,26 @@
 
 namespace CSBill\DataGridBundle;
 
-use CSBill\DataGridBundle\Action\Collection;
-use CSBill\DataGridBundle\Grid\Filters;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 interface GridInterface
 {
     /**
-     * @return \APY\DataGridBundle\Grid\Source\Source
+     * @return bool
      */
-    public function getSource();
+    public function requiresStatus();
 
     /**
-     * @param Filters $filters
-     *
-     * @return Filters
-     */
-    public function getFilters(Filters $filters);
-
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param string       $searchString
+     * @param Request                $request
+     * @param EntityManagerInterface $em
      *
      * @return mixed
      */
-    public function search(QueryBuilder $queryBuilder, $searchString);
+    public function fetchData(Request $request, EntityManagerInterface $em);
 
     /**
-     * @param Collection $collection
-     *
-     * @return Collection
+     * @param array $params
      */
-    public function getRowActions(Collection $collection);
-
-    /**
-     * @return array
-     */
-    public function getMassActions();
-
-    /**
-     * Get the template to render for the grid.
-     *
-     * @return string
-     */
-    public function getTemplate();
-
-    /**
-     * @return bool
-     */
-    public function isSearchable();
-
-    /**
-     * @return bool
-     */
-    public function isFilterable();
+    public function setParameters(array $params);
 }

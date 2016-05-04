@@ -1,0 +1,116 @@
+/*
+  backgrid-filter
+  http://github.com/wyuenho/backgrid
+
+  Copyright (c) 2013 Jimmy Yuen Ho Wong and contributors
+  Licensed under the MIT @license.
+*/
+
+/*
+  Search Icon CSS derived from:
+
+  PURE CSS GUI ICONS
+  by Nicolas Gallagher
+  - http://nicolasgallagher.com/pure-css-gui-icons/
+
+  http://nicolasgallagher.com
+  http://twitter.com/necolas
+
+  Created: 29 July 2010
+  Version: 1.0.1
+
+  Dual licensed under MIT and GNU GPLv2 (c) Nicolas Gallagher
+*/
+
+.backgrid-filter.form-search {
+  position: relative;
+  height: 30px;
+  margin: 20px;
+}
+
+/*
+  Search Icon
+*/
+
+.backgrid-filter .search {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  z-index: 1000;
+  width: 10px;
+  height: 20px;
+  margin-top: -10px;
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+	  box-sizing: content-box;
+}
+
+.backgrid-filter .search:before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  margin-top: -6px;
+  background: transparent;
+  border: 3px solid gray;
+  -webkit-border-radius: 12px;
+     -moz-border-radius: 12px;
+	  border-radius: 12px;
+  content: "";
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+	  box-sizing: content-box;
+}
+
+.backgrid-filter .search:after {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 3px;
+  height: 7px;
+  margin-top: 2px;
+  background-color: gray;
+  content: "";
+  -webkit-transform: rotate(-45deg);
+     -moz-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+       -o-transform: rotate(-45deg);
+	  transform: rotate(-45deg);
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+	  box-sizing: content-box;
+}
+
+/*
+  Clear button
+ */
+
+.backgrid-filter .clear {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  z-index: 1000;
+  width: 10px;
+  height: 20px;
+  margin-top: -10px;
+  font-family: sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+  color: gray;
+  text-decoration: none;
+}
+
+/*
+ * Re-set default cursor for disabled elements.
+ */
+
+.backgrid-filter input[disabled] {
+  cursor: default;
+}
+
+.backgrid-filter input[type="search"] {
+  padding-right: 18px;
+  padding-left: 22px;
+}

@@ -9,10 +9,15 @@ _add_tax_rate:
 _edit_tax_rate:
     path: /rates/edit/{id}
     defaults: { _controller: CSBillTaxBundle:Default:add }
+    options:
+        expose: true
 
 _delete_tax_rate:
-    path: /rates/delete/{id}
+    path: /rates/delete
     defaults: { _controller: CSBillTaxBundle:Default:delete }
+    methods: [POST]
+    options:
+        expose: true
 
 _get_tax_rate:
     path: /rates/get/{id}

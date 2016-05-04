@@ -7,7 +7,17 @@ define(
          * Routing Helper
          */
         Handlebars.registerHelper('path', function(route, context) {
-            return Routing.generate(route, context.hash);
+	    var params = {};
+
+	    if (_.isObject(context)) {
+		params = context;
+	    }
+
+	    if (!_.isUndefined(context.hash)) {
+		params = context.hash;
+	    }
+
+	    return Routing.generate(route, params);
         });
 
         /**

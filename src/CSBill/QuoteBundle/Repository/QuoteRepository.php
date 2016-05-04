@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -57,5 +65,41 @@ class QuoteRepository extends EntityRepository
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGridQuery(array $parameters = [])
+    {
+	$qb = $this->createQueryBuilder('q');
+
+	$qb->select(['q', 'c'])
+	    ->join('q.client', 'c');
+
+	if (!empty($parameters['client'])) {
+	    $qb->where('q.client = :client')
+		->setParameter('client', $parameters['client']);
+	}
+
+	return $qb;
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getArchivedGridQuery()
+    {
+	$this->getEntityManager()->getFilters()->disable('archivable');
+
+	$qb = $this->createQueryBuilder('q');
+
+	$qb->select(['q', 'c'])
+	    ->join('q.client', 'c')
+	    ->where('q.archived is not null');
+
+	return $qb;
     }
 }

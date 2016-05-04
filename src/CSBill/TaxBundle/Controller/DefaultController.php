@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -14,7 +22,6 @@ namespace CSBill\TaxBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\TaxBundle\Entity\Tax;
 use CSBill\TaxBundle\Form\Type\TaxType;
-use CSBill\TaxBundle\Grid\TaxGrid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,9 +34,7 @@ class DefaultController extends BaseController
      */
     public function ratesAction()
     {
-        $grid = $this->get('grid')->create(new TaxGrid());
-
-        return $grid->getGridResponse();
+	return $this->render('CSBillTaxBundle:Default:index.html.twig');
     }
 
     /**
@@ -54,32 +59,38 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('_tax_rates'));
         }
 
-        return $this->render('CSBillTaxBundle:Default:add.html.twig', array('form' => $form->createView()));
+	return $this->render('CSBillTaxBundle:Default:add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @param Tax $tax
+     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Tax $tax)
+    public function deleteAction(Request $request)
     {
-        $entityMnager = $this->getEm();
-
         /** @var \CSBill\InvoiceBundle\Repository\ItemRepository $invoiceRepository */
         $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Item');
-        $invoiceRepository->removeTax($tax);
 
         /** @var \CSBill\QuoteBundle\Repository\ItemRepository $quoteRepository */
         $quoteRepository = $this->getRepository('CSBillQuoteBundle:Item');
-        $quoteRepository->removeTax($tax);
 
-        $entityMnager->remove($tax);
-        $entityMnager->flush();
+	$data = $request->request->get('data');
 
-        $this->flash($this->trans('Tax Deleted'), 'success');
+	/** @var Tax[] $taxes */
+	$taxes = $this->getRepository('CSBillTaxBundle:Tax')->findBy(['id' => $data]);
 
-        return new JsonResponse(array('status' => 'success'));
+	$em = $this->getEm();
+	foreach ($taxes as $tax) {
+	    $invoiceRepository->removeTax($tax);
+	    $quoteRepository->removeTax($tax);
+
+	    $em->remove($tax);
+	}
+
+	$em->flush();
+
+	return $this->json([]);
     }
 
     /**
@@ -89,13 +100,13 @@ class DefaultController extends BaseController
      */
     public function getAction(Tax $tax)
     {
-        $result = array(
+	$result = [
             'id' => $tax->getId(),
             'name' => $tax->getName(),
             'type' => $tax->getType(),
             'rate' => $tax->getRate(),
-        );
+	];
 
-        return new JsonResponse($result);
+	return $this->json($result);
     }
 }

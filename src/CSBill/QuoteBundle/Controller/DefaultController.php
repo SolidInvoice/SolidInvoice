@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -13,7 +21,6 @@ namespace CSBill\QuoteBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Event\QuoteEvent;
 use CSBill\QuoteBundle\Event\QuoteEvents;
@@ -32,33 +39,21 @@ class DefaultController extends BaseController
      */
     public function indexAction()
     {
-        $gridCollection = new GridCollection();
-        $gridCollection->add('csbill.quote.grid.default_grid', 'active', 'check');
-        $gridCollection->add('csbill.quote.grid.archived_grid', 'archived', 'archive');
-
-        $grid = $this->get('grid')->create($gridCollection);
-
         /** @var QuoteRepository $quoteRepository */
         $quoteRepository = $this->getRepository('CSBillQuoteBundle:Quote');
 
         // Return the response of the grid to the template
-        return $grid->getGridResponse(
-            array(
-                'status_list' => array(
-                    Graph::STATUS_PENDING,
-                    Graph::STATUS_ACCEPTED,
-                    Graph::STATUS_CANCELLED,
-                    Graph::STATUS_DRAFT,
-                    Graph::STATUS_DECLINED,
-                ),
-                'status_list_count' => array(
+	return $this->render(
+	    'CSBillQuoteBundle:Default:index.html.twig',
+	    [
+		'status_list_count' => [
                     Graph::STATUS_PENDING => $quoteRepository->getTotalQuotes(Graph::STATUS_PENDING),
                     Graph::STATUS_ACCEPTED => $quoteRepository->getTotalQuotes(Graph::STATUS_ACCEPTED),
                     Graph::STATUS_CANCELLED => $quoteRepository->getTotalQuotes(Graph::STATUS_CANCELLED),
                     Graph::STATUS_DRAFT => $quoteRepository->getTotalQuotes(Graph::STATUS_DRAFT),
                     Graph::STATUS_DECLINED => $quoteRepository->getTotalQuotes(Graph::STATUS_DECLINED),
-                ),
-            )
+		],
+	    ]
         );
     }
 
@@ -95,15 +90,42 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('quote.action.create.success'), 'success');
 
-            return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
+	    return $this->redirect($this->generateUrl('_quotes_view', ['id' => $quote->getId()]));
         }
 
         return $this->render(
             'CSBillQuoteBundle:Default:create.html.twig',
-            array(
+	    [
                 'form' => $form->createView(),
-            )
+	    ]
         );
+    }
+
+    /**
+     * @param Quote  $quote
+     * @param string $action
+     */
+    private function saveQuote(Quote $quote, $action = null)
+    {
+	$finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
+	$dispatcher = $this->get('event_dispatcher');
+
+	if (!$quote->getId()) {
+	    $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
+	}
+
+	if ($action === Graph::STATUS_PENDING) {
+	    $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
+	    $finite->apply(Graph::TRANSITION_SEND);
+	    $this->save($quote);
+	    $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
+	} else {
+	    if (!$quote->getId()) {
+		$finite->apply(Graph::TRANSITION_NEW);
+	    }
+
+	    $this->save($quote);
+	}
     }
 
     /**
@@ -126,15 +148,15 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('quote.action.edit.success'), 'success');
 
-            return $this->redirect($this->generateUrl('_quotes_view', array('id' => $quote->getId())));
+	    return $this->redirect($this->generateUrl('_quotes_view', ['id' => $quote->getId()]));
         }
 
         return $this->render(
             'CSBillQuoteBundle:Default:edit.html.twig',
-            array(
+	    [
                 'form' => $form->createView(),
                 'quote' => $quote,
-            )
+	    ]
         );
     }
 
@@ -147,34 +169,7 @@ class DefaultController extends BaseController
      */
     public function viewAction(Quote $quote)
     {
-        return $this->render('CSBillQuoteBundle:Default:view.html.twig', array('quote' => $quote));
-    }
-
-    /**
-     * @param Quote  $quote
-     * @param string $action
-     */
-    private function saveQuote(Quote $quote, $action = null)
-    {
-        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
-        $dispatcher = $this->get('event_dispatcher');
-
-        if (!$quote->getId()) {
-            $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
-        }
-
-        if ($action === Graph::STATUS_PENDING) {
-            $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
-            $finite->apply(Graph::TRANSITION_SEND);
-            $this->save($quote);
-            $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
-        } else {
-            if (!$quote->getId()) {
-                $finite->apply(Graph::TRANSITION_NEW);
-            }
-
-            $this->save($quote);
-        }
+	return $this->render('CSBillQuoteBundle:Default:view.html.twig', ['quote' => $quote]);
     }
 
     /**

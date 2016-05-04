@@ -11,17 +11,25 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
 use JMS\Serializer\Annotation as Serialize;
 
 trait SoftDeleteable
 {
     /**
      * @ORM\Column(type="datetime", name="deleted", nullable=true)
-     * @GRID\Column(visible=false)
      * @Serialize\Exclude()
      */
     protected $deletedAt;
+
+    /**
+     * Returns deletedAt.
+     *
+     * @return \DateTime
+     */
+    public function getDeletedAt()
+    {
+	return $this->deletedAt;
+    }
 
     /**
      * Sets deletedAt.
@@ -35,16 +43,6 @@ trait SoftDeleteable
         $this->deletedAt = $deletedAt;
 
         return $this;
-    }
-
-    /**
-     * Returns deletedAt.
-     *
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
     }
 
     /**

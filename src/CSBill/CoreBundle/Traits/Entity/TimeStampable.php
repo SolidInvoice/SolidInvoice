@@ -11,7 +11,6 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use APY\DataGridBundle\Grid\Mapping as GRID;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
 
@@ -31,10 +30,19 @@ trait TimeStampable
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
-     * @GRID\Column(visible=false)
      * @Serialize\Groups({"js"})
      */
     protected $updated;
+
+    /**
+     * Returns created.
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+	return $this->created;
+    }
 
     /**
      * Sets created.
@@ -51,13 +59,13 @@ trait TimeStampable
     }
 
     /**
-     * Returns created.
+     * Returns updated.
      *
      * @return \DateTime
      */
-    public function getCreated()
+    public function getUpdated()
     {
-        return $this->created;
+	return $this->updated;
     }
 
     /**
@@ -72,15 +80,5 @@ trait TimeStampable
         $this->updated = $updated;
 
         return $this;
-    }
-
-    /**
-     * Returns updated.
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
     }
 }
