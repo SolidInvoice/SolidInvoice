@@ -163,9 +163,9 @@ class Quote
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
 
-	$this->baseTotal = new \CSBill\MoneyBundle\Entity\Money();
-	$this->total = new \CSBill\MoneyBundle\Entity\Money();
-	$this->tax = new \CSBill\MoneyBundle\Entity\Money();
+        $this->baseTotal = new \CSBill\MoneyBundle\Entity\Money();
+        $this->total = new \CSBill\MoneyBundle\Entity\Money();
+        $this->tax = new \CSBill\MoneyBundle\Entity\Money();
     }
 
     /**
@@ -227,7 +227,7 @@ class Quote
      */
     public function getStatus()
     {
-	return $this->status;
+	    return $this->status;
     }
 
     /**
@@ -251,7 +251,7 @@ class Quote
      */
     public function getClient()
     {
-	return $this->client;
+	    return $this->client;
     }
 
     /**
@@ -275,7 +275,7 @@ class Quote
      */
     public function getTotal()
     {
-	return $this->total;
+	    return $this->total;
     }
 
     /**
@@ -287,7 +287,7 @@ class Quote
      */
     public function setTotal(Money $total)
     {
-	$this->total->setMoney($total);
+	    $this->total->setMoney($total);
 
         return $this;
     }
@@ -299,7 +299,7 @@ class Quote
      */
     public function getBaseTotal()
     {
-	return $this->baseTotal->getMoney();
+	    return $this->baseTotal->getMoney();
     }
 
     /**
@@ -311,7 +311,7 @@ class Quote
      */
     public function setBaseTotal(Money $baseTotal)
     {
-	$this->baseTotal->setMoney($baseTotal);
+	    $this->baseTotal->setMoney($baseTotal);
 
         return $this;
     }
@@ -323,7 +323,7 @@ class Quote
      */
     public function getDiscount()
     {
-	return $this->discount;
+	    return $this->discount;
     }
 
     /**
@@ -347,7 +347,7 @@ class Quote
      */
     public function getDue()
     {
-	return $this->due;
+	    return $this->due;
     }
 
     /**
@@ -449,7 +449,7 @@ class Quote
      */
     public function getTax()
     {
-	return $this->tax->getMoney();
+	    return $this->tax->getMoney();
     }
 
     /**
@@ -459,7 +459,7 @@ class Quote
      */
     public function setTax(Money $tax)
     {
-	$this->tax->setMoney($tax);
+	    $this->tax->setMoney($tax);
 
         return $this;
     }

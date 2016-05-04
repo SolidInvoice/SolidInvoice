@@ -203,10 +203,10 @@ class Invoice
         $this->setUuid(Uuid::uuid1());
         $this->recurring = false;
 
-	$this->baseTotal = new \CSBill\MoneyBundle\Entity\Money();
-	$this->total = new \CSBill\MoneyBundle\Entity\Money();
-	$this->tax = new \CSBill\MoneyBundle\Entity\Money();
-	$this->balance = new \CSBill\MoneyBundle\Entity\Money();
+        $this->baseTotal = new \CSBill\MoneyBundle\Entity\Money();
+        $this->total = new \CSBill\MoneyBundle\Entity\Money();
+        $this->tax = new \CSBill\MoneyBundle\Entity\Money();
+        $this->balance = new \CSBill\MoneyBundle\Entity\Money();
     }
 
     /**
@@ -214,7 +214,7 @@ class Invoice
      */
     public function getUuid()
     {
-	return $this->uuid;
+	    return $this->uuid;
     }
 
     /**
@@ -328,7 +328,7 @@ class Invoice
      */
     public function setTotal(Money $total)
     {
-	$this->total->setMoney($total);
+	    $this->total->setMoney($total);
 
         return $this;
     }
@@ -352,7 +352,7 @@ class Invoice
      */
     public function setBaseTotal(Money $baseTotal)
     {
-	$this->baseTotal->setMoney($baseTotal);
+	    $this->baseTotal->setMoney($baseTotal);
 
         return $this;
     }
@@ -362,7 +362,7 @@ class Invoice
      */
     public function getBalance()
     {
-	return $this->balance->getMoney();
+	    return $this->balance->getMoney();
     }
 
     /**
@@ -372,7 +372,7 @@ class Invoice
      */
     public function setBalance(Money $balance)
     {
-	$this->balance->setMoney($balance);
+	    $this->balance->setMoney($balance);
 
         return $this;
     }
@@ -384,7 +384,7 @@ class Invoice
      */
     public function getDiscount()
     {
-	return $this->discount;
+	    return $this->discount;
     }
 
     /**
@@ -408,7 +408,7 @@ class Invoice
      */
     public function getDue()
     {
-	return $this->due;
+	    return $this->due;
     }
 
     /**
@@ -432,7 +432,7 @@ class Invoice
      */
     public function getPaidDate()
     {
-	return $this->paidDate;
+	    return $this->paidDate;
     }
 
     /**
@@ -565,7 +565,7 @@ class Invoice
      */
     public function getTax()
     {
-	return $this->tax->getMoney();
+	    return $this->tax->getMoney();
     }
 
     /**
@@ -575,7 +575,7 @@ class Invoice
      */
     public function setTax(Money $tax)
     {
-	$this->tax->setMoney($tax);
+	    $this->tax->setMoney($tax);
 
         return $this;
     }
@@ -609,7 +609,7 @@ class Invoice
      */
     public function setRecurring($recurring)
     {
-	$this->recurring = (bool) $recurring;
+    	$this->recurring = (bool) $recurring;
 
         return $this;
     }
@@ -629,14 +629,14 @@ class Invoice
      */
     public function setRecurringInfo(RecurringInvoice $recurringInfo = null)
     {
-	if (null === $recurringInfo) {
-	    return $this;
-	}
+	    if (null === $recurringInfo) {
+	        return $this;
+	    }
 
-	if (null !== $recurringInfo->getFrequency() && null !== $recurringInfo->getDateStart()) {
-	    $this->recurringInfo = $recurringInfo;
-	    $recurringInfo->setInvoice($this);
-	}
+	    if (null !== $recurringInfo->getFrequency() && null !== $recurringInfo->getDateStart()) {
+	        $this->recurringInfo = $recurringInfo;
+	        $recurringInfo->setInvoice($this);
+	    }
 
         return $this;
     }
