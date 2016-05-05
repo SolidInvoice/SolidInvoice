@@ -32,7 +32,15 @@ class Money
      */
     public static function setBaseCurrency($baseCurrency)
     {
-	self::$baseCurrency = $baseCurrency;
+        self::$baseCurrency = $baseCurrency;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getBaseCurrency()
+    {
+        return self::$baseCurrency;
     }
 
     /**
@@ -40,7 +48,7 @@ class Money
      */
     public function getMoney()
     {
-	return new MoneyObject($this->amount ?: 0, new Currency($this->currency ?: self::$baseCurrency));
+        return new MoneyObject($this->amount ?: 0, new Currency($this->currency ?: self::$baseCurrency));
     }
 
     /**
@@ -48,7 +56,7 @@ class Money
      */
     public function setMoney(MoneyObject $money)
     {
-	$this->amount = $money->getAmount();
-	$this->currency = $money->getCurrency()->getName();
+        $this->amount = $money->getAmount();
+        $this->currency = $money->getCurrency()->getName();
     }
 }

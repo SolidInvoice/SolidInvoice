@@ -13,6 +13,7 @@ namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\MoneyBundle\Entity\Money;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,7 +33,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable()
  * @Serialize\XmlRoot("client")
  * @Hateoas\Relation("self", href=@Hateoas\Route("get_clients", absolute=true))
- * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
+ * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" :
+ *                                      "expr(object.getId())"}, absolute=true))
  */
 class Client
 {
@@ -100,7 +102,8 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY",
+     *                                                                cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
      * @Serialize\Groups({"none"})
@@ -110,7 +113,8 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY",
+     *                                                                    cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Assert\Valid()
      * @Serialize\Groups({"none"})
@@ -120,7 +124,8 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist",
+     *                                                                    "remove"})
      * @Serialize\Groups({"none"})
      */
     private $payments;
@@ -128,7 +133,8 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist",
+     *                                                                   "remove"})
      * @Serialize\Groups({"js"})
      */
     private $addresses;
@@ -136,7 +142,8 @@ class Client
     /**
      * @var Credit
      *
-     * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY",
+     *                                                                 cascade={"persist", "remove"})
      * @Serialize\Groups({"api", "js"})
      * @Serialize\Inline()
      */
@@ -171,7 +178,7 @@ class Client
      */
     public function getName()
     {
-	return $this->name;
+        return $this->name;
     }
 
     /**
@@ -195,7 +202,7 @@ class Client
      */
     public function getStatus()
     {
-	return $this->status;
+        return $this->status;
     }
 
     /**
@@ -219,7 +226,7 @@ class Client
      */
     public function getWebsite()
     {
-	return $this->website;
+        return $this->website;
     }
 
     /**
@@ -466,7 +473,7 @@ class Client
      */
     public function getCurrency()
     {
-	return $this->currency;
+        return $this->currency ?: Money::getBaseCurrency();
     }
 
     /**
@@ -474,7 +481,7 @@ class Client
      */
     public function setCurrency($currency)
     {
-	$this->currency = $currency;
+        $this->currency = $currency;
     }
 
     /**

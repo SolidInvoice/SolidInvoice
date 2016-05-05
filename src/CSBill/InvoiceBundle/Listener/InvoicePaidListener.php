@@ -13,9 +13,9 @@ namespace CSBill\InvoiceBundle\Listener;
 
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
+use CSBill\MoneyBundle\Currency;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Money\Currency;
 use Money\Money;
 
 class InvoicePaidListener
@@ -37,7 +37,7 @@ class InvoicePaidListener
     public function __construct(ObjectManager $manager, Currency $currency)
     {
         $this->manager = $manager;
-        $this->currency = $currency;
+        $this->currency = $currency->getCurrency();
     }
 
     /**

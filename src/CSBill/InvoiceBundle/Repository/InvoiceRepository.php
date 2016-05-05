@@ -15,9 +15,11 @@ use Carbon\Carbon;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\MoneyBundle\Doctrine\Hydrator\MoneyHydrator;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+use Money\Currency;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -79,9 +81,13 @@ class InvoiceRepository extends EntityRepository
      */
     public function getTotalOutstanding(Client $client = null)
     {
+        if (null !== $client && null !== $client->getCurrency()) {
+            MoneyHydrator::setCurrency(new Currency($client->getCurrency()));
+        }
+
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('SUM(i.balance)')
+        $qb->select('SUM(i.balance.amount)')
             ->where('i.status = :status')
             ->setParameter('status', Graph::STATUS_PENDING);
 

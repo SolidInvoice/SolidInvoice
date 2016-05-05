@@ -316,7 +316,7 @@ class Invoice
      */
     public function getTotal()
     {
-	return $this->total;
+	    return $this->total->getMoney();
     }
 
     /**

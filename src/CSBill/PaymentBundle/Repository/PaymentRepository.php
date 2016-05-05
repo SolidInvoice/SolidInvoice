@@ -52,9 +52,9 @@ class PaymentRepository extends EntityRepository
      */
     public function getTotalIncome(Client $client = null)
     {
-	if (null !== $client) {
-	    MoneyHydrator::setCurrency(new Currency($client->getCurrency()));
-	}
+	    if (null !== $client && null !== $client->getCurrency()) {
+	        MoneyHydrator::setCurrency(new Currency($client->getCurrency()));
+	    }
 
         $qb = $this->createQueryBuilder('p');
 
@@ -135,7 +135,7 @@ class PaymentRepository extends EntityRepository
      */
     public function getTotalPaidForInvoice(Invoice $invoice)
     {
-	MoneyHydrator::setCurrency(new Currency($invoice->getClient()->getCurrency()));
+	    MoneyHydrator::setCurrency(new Currency($invoice->getClient()->getCurrency()));
 
         $queryBuilder = $this->createQueryBuilder('p');
 

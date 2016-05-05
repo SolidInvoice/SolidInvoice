@@ -18,7 +18,7 @@ class Version070 extends AbstractMigration
 	// this up() migration is auto-generated, please modify it to your needs
 	$this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-	//$this->addSql('ALTER TABLE clients ADD currency VARCHAR(6) DEFAULT NULL');
+	$this->addSql('ALTER TABLE clients ADD currency VARCHAR(6) DEFAULT NULL');
 
 	$this->addSql('ALTER TABLE client_credit ADD value_amount INT DEFAULT NULL, ADD value_currency VARCHAR(3) DEFAULT NULL, DROP value');
 	$this->addSql('ALTER TABLE quotes ADD total_currency VARCHAR(3) DEFAULT NULL, ADD baseTotal_amount INT DEFAULT NULL, ADD baseTotal_currency VARCHAR(3) DEFAULT NULL, ADD tax_amount INT DEFAULT NULL, ADD tax_currency VARCHAR(3) DEFAULT NULL, DROP total, DROP base_total, CHANGE tax total_amount INT DEFAULT NULL');

@@ -44,9 +44,11 @@ class MoneyFormatterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('currencyFormatter', function () {
+            new \Twig_SimpleFunction(
+                'currencyFormatter', function () {
                 return $this->formatter;
-            }),
+            }
+            ),
         ];
     }
 
@@ -56,14 +58,16 @@ class MoneyFormatterExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('formatCurrency', function ($money) {
+            new \Twig_SimpleFilter(
+                'formatCurrency', function ($money) {
 
                 if (!$money instanceof Money && is_int($money)) {
                     $money = new Money($money, $this->currency);
                 }
 
                 return $this->formatter->format($money);
-            }),
+            }
+            ),
         ];
     }
 

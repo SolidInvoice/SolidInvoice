@@ -24,7 +24,7 @@ class Currency
      */
     public function __construct($baseCurrency)
     {
-	$this->baseCurrency = $baseCurrency;
+        $this->baseCurrency = $baseCurrency;
     }
 
     /**
@@ -32,7 +32,7 @@ class Currency
      */
     public static function setClientCurrency(Client $client)
     {
-	self::$clientCurrency = $client->getCurrency();
+        self::$clientCurrency = $client->getCurrency();
     }
 
     /**
@@ -43,9 +43,9 @@ class Currency
      */
     public function __call($method, $args)
     {
-	$currency = $this->getCurrency();
+        $currency = $this->getCurrency();
 
-	return call_user_func_array([$currency, $method], $args);
+        return call_user_func_array([$currency, $method], $args);
     }
 
     /**
@@ -53,8 +53,8 @@ class Currency
      */
     public function getCurrency()
     {
-	$currency = (null !== self::$clientCurrency) ? self::$clientCurrency : $this->baseCurrency;
+        $currency = (null !== self::$clientCurrency) ? self::$clientCurrency : $this->baseCurrency;
 
-	return new MoneyCurrency($currency);
+        return new MoneyCurrency($currency);
     }
 }

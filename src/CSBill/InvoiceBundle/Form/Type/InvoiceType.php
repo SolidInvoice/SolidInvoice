@@ -13,7 +13,7 @@ namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
-use Money\Currency;
+use CSBill\MoneyBundle\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -75,15 +75,17 @@ class InvoiceType extends AbstractType
         $builder->add('tax', 'hidden_money');
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
-        $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventSubscriber(new BillingFormSubscriber($this->currency->getCurrency()));
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
             if (!array_key_exists('recurring', $data) || (int) $data['recurring'] !== 1) {
                 unset($data['recurringInfo']);
                 $event->setData($data);
             }
-        });
+        }
+        );
     }
 
     /**
