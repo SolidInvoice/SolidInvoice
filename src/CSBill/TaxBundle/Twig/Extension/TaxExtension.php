@@ -17,16 +17,16 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 class TaxExtension extends \Twig_Extension
 {
     /**
-     * @var TaxRepository
+     * @var ManagerRegistry
      */
-    private $repository;
+    private $registry;
 
     /**
-     * @param $doctrine
+     * @param $registry
      */
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->repository = $doctrine->getManager()->getRepository('CSBillTaxBundle:Tax');
+	$this->registry = $registry;
     }
 
     /**
@@ -44,7 +44,7 @@ class TaxExtension extends \Twig_Extension
      */
     public function taxRatesConfigured()
     {
-        return $this->repository->taxRatesConfigured();
+	return $this->registry->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured();
     }
 
     /**

@@ -80,25 +80,25 @@ class Quote
     private $client;
 
     /**
-     * @var Money
+     * @var \CSBill\MoneyBundle\Entity\Money
      *
-     * @ORM\Column(name="total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $total;
 
     /**
-     * @var Money
+     * @var \CSBill\MoneyBundle\Entity\Money
      *
-     * @ORM\Column(name="base_total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $baseTotal;
 
     /**
-     * @var Money
+     * @var \CSBill\MoneyBundle\Entity\Money
      *
-     * @ORM\Column(name="tax", type="money", nullable=true)
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $tax;
@@ -162,6 +162,10 @@ class Quote
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
+
+        $this->baseTotal = new \CSBill\MoneyBundle\Entity\Money();
+        $this->total = new \CSBill\MoneyBundle\Entity\Money();
+        $this->tax = new \CSBill\MoneyBundle\Entity\Money();
     }
 
     /**
@@ -223,7 +227,7 @@ class Quote
      */
     public function getStatus()
     {
-	return $this->status;
+	    return $this->status;
     }
 
     /**
@@ -247,7 +251,7 @@ class Quote
      */
     public function getClient()
     {
-	return $this->client;
+	    return $this->client;
     }
 
     /**
@@ -271,7 +275,7 @@ class Quote
      */
     public function getTotal()
     {
-	return $this->total;
+	    return $this->total;
     }
 
     /**
@@ -283,7 +287,7 @@ class Quote
      */
     public function setTotal(Money $total)
     {
-        $this->total = $total;
+	    $this->total->setMoney($total);
 
         return $this;
     }
@@ -295,7 +299,7 @@ class Quote
      */
     public function getBaseTotal()
     {
-	return $this->baseTotal;
+	    return $this->baseTotal->getMoney();
     }
 
     /**
@@ -307,7 +311,7 @@ class Quote
      */
     public function setBaseTotal(Money $baseTotal)
     {
-        $this->baseTotal = $baseTotal;
+	    $this->baseTotal->setMoney($baseTotal);
 
         return $this;
     }
@@ -319,7 +323,7 @@ class Quote
      */
     public function getDiscount()
     {
-	return $this->discount;
+	    return $this->discount;
     }
 
     /**
@@ -343,7 +347,7 @@ class Quote
      */
     public function getDue()
     {
-	return $this->due;
+	    return $this->due;
     }
 
     /**
@@ -445,7 +449,7 @@ class Quote
      */
     public function getTax()
     {
-        return $this->tax;
+	    return $this->tax->getMoney();
     }
 
     /**
@@ -455,7 +459,7 @@ class Quote
      */
     public function setTax(Money $tax)
     {
-        $this->tax = $tax;
+	    $this->tax->setMoney($tax);
 
         return $this;
     }

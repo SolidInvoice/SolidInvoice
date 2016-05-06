@@ -10,7 +10,7 @@ services:
 
     dashboard.widget.stats:
         class: CSBill\DashboardBundle\Widgets\StatsWidget
-        arguments: [@doctrine, @currency]
+        arguments: [@doctrine]
         tags:
             - { name: dashboard.widget, priority: 100, location: top }
 

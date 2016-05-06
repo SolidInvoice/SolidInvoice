@@ -26,10 +26,10 @@ class DataController extends BaseController
      */
     public function getDataAction(Request $request, $name)
     {
-	$grid = $this->get('grid.repository')->find($name);
+        $grid = $this->get('grid.repository')->find($name);
 
-	$grid->setParameters($request->get('parameters', []));
-
-	return $this->serializeJs($grid->fetchData($request, $this->getEm()));
+        $grid->setParameters($request->get('parameters', []));
+        
+        return $this->serializeJs($grid->fetchData($request, $this->getEm()));
     }
 }

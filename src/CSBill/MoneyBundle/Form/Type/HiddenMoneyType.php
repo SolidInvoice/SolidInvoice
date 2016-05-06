@@ -13,19 +13,19 @@ namespace CSBill\MoneyBundle\Form\Type;
 
 use CSBill\MoneyBundle\Form\DataTransformer\ModelTransformer;
 use CSBill\MoneyBundle\Form\DataTransformer\ViewTransformer;
-use Money\Currency;
+use CSBill\MoneyBundle\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class HiddenMoneyType extends AbstractType
 {
     /**
-     * @var \Money\Currency
+     * @var Currency
      */
     private $currency;
 
     /**
-     * @param \Money\Currency $currency
+     * @param Currency $currency
      */
     public function __construct(Currency $currency)
     {
@@ -37,9 +37,10 @@ class HiddenMoneyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	$currency = $this->currency->getCurrency();
         $builder
-            ->addViewTransformer(new ViewTransformer($this->currency), true)
-            ->addModelTransformer(new ModelTransformer($this->currency), true);
+	    ->addViewTransformer(new ViewTransformer($currency), true)
+	    ->addModelTransformer(new ModelTransformer($currency), true);
     }
 
     /**

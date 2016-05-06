@@ -30,10 +30,12 @@ namespace CSBill\PaymentBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\MoneyBundle\Doctrine\Hydrator\MoneyHydrator;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
+use Money\Currency;
 use Money\Money;
 
 class PaymentRepository extends EntityRepository
@@ -50,6 +52,10 @@ class PaymentRepository extends EntityRepository
      */
     public function getTotalIncome(Client $client = null)
     {
+	    if (null !== $client && null !== $client->getCurrency()) {
+	        MoneyHydrator::setCurrency(new Currency($client->getCurrency()));
+	    }
+
         $qb = $this->createQueryBuilder('p');
 
         $qb->select('SUM(p.totalAmount)')
@@ -129,6 +135,8 @@ class PaymentRepository extends EntityRepository
      */
     public function getTotalPaidForInvoice(Invoice $invoice)
     {
+	    MoneyHydrator::setCurrency(new Currency($invoice->getClient()->getCurrency()));
+
         $queryBuilder = $this->createQueryBuilder('p');
 
         $queryBuilder

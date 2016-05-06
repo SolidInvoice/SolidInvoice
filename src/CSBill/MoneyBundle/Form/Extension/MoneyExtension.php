@@ -13,7 +13,7 @@ namespace CSBill\MoneyBundle\Form\Extension;
 
 use CSBill\MoneyBundle\Form\DataTransformer\ModelTransformer;
 use CSBill\MoneyBundle\Form\DataTransformer\ViewTransformer;
-use Money\Currency;
+use CSBill\MoneyBundle\Currency;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,9 +38,10 @@ class MoneyExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	$currency = $this->currency->getCurrency();
         $builder
-            ->addViewTransformer(new ViewTransformer($this->currency), true)
-            ->addModelTransformer(new ModelTransformer($this->currency), true);
+	    ->addViewTransformer(new ViewTransformer($currency), true)
+	    ->addModelTransformer(new ModelTransformer($currency), true);
     }
 
     /**
@@ -50,7 +51,7 @@ class MoneyExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(
             [
-                'currency' => $this->currency->getName(),
+		'currency' => $this->currency->getCurrency()->getName(),
             ]
         );
     }

@@ -12,10 +12,10 @@
 namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
+use Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
-use Money\Money;
 
 /**
  * CSBill\ClientBundle\Entity\Credit.
@@ -39,7 +39,7 @@ class Credit
     private $id;
 
     /**
-     * @ORM\Column(name="value", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      *
      * @var Money
      * @Serialize\Groups({"api", "js"})
@@ -53,6 +53,11 @@ class Credit
      * @Serialize\Groups({"js"})
      */
     private $client;
+
+    public function __construct()
+    {
+	$this->value = new \CSBill\MoneyBundle\Entity\Money();
+    }
 
     /**
      * @return mixed
@@ -83,7 +88,7 @@ class Credit
      */
     public function getValue()
     {
-        return $this->value;
+	return $this->value->getMoney();
     }
 
     /**
@@ -93,7 +98,7 @@ class Credit
      */
     public function setValue(Money $value)
     {
-        $this->value = $value;
+	$this->value->setMoney($value);
 
         return $this;
     }
@@ -103,6 +108,6 @@ class Credit
      */
     public function __toString()
     {
-        return $this->value->getAmount();
+	return $this->getValue()->getAmount();
     }
 }

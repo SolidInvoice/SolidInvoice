@@ -33,6 +33,11 @@
                 {% if client.website %}
                     {{ icon('external-link') }} <a href="{{ client.website }}" rel="external">{{ client.website }}</a>
                 {% endif %}
+
+		{% if client.currency %}
+		    <br />
+		    <strong>{{ 'client.view.currency'|trans }}</strong> {{ client.currency }}
+		{% endif %}
             </div>
 
             <div class="col-md-6 col-lg-6" align="right">

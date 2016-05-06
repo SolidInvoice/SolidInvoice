@@ -14,7 +14,7 @@ namespace CSBill\QuoteBundle\Form\Type;
 use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
-use Money\Currency;
+use CSBill\MoneyBundle\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,7 +29,7 @@ class QuoteType extends AbstractType
     /**
      * @param Currency $currency
      */
-    public function __construct(Currency $currency)
+    public function __construct(Currency $currency = null)
     {
         $this->currency = $currency;
     }
@@ -71,7 +71,7 @@ class QuoteType extends AbstractType
         $builder->add('tax', 'hidden_money');
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
-        $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
+	$builder->addEventSubscriber(new BillingFormSubscriber($this->currency->getCurrency()));
     }
 
     /**

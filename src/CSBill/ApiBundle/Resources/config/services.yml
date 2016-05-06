@@ -1,9 +1,8 @@
 services:
-
     api_token_authenticator:
         class:     CSBill\ApiBundle\Security\ApiTokenAuthenticator
-        arguments: [@api_token_user_provider, @serializer, @doctrine.orm.entity_manager]
+        arguments: [@api_token_user_provider, @serializer, @doctrine]
 
     api_token_user_provider:
         class: CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine]
