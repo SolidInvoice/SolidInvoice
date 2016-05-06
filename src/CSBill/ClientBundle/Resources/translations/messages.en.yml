@@ -69,9 +69,10 @@ client:
             close: Close
             save: Save
     menu:
-        index: Clients
+        main: Clients
         list: List Clients
         add: Add Client
+        view: View Client
         create:
             invoice: Create Invoice
             quote: Create Quote
@@ -83,7 +84,6 @@ add_client: Add Client
 save: Save
 contact_details: Contact Details
 client_saved: Client Successfully Saved!
-view_client: View Client
 id: Id
 name: Name
 website: Website

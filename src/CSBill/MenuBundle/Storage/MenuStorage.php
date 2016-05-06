@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu\Storage;
+namespace CSBill\MenuBundle\Storage;
 
 class MenuStorage implements MenuStorageInterface
 {
@@ -32,7 +32,7 @@ class MenuStorage implements MenuStorageInterface
     public function get($name, array $options = array())
     {
         if (!$this->has($name)) {
-            $this->list[$name] = new \SplObjectStorage();
+            $this->list[$name] = new \SplPriorityQueue();
         }
 
         return $this->list[$name];

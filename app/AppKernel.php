@@ -47,7 +47,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new CSBill\CoreBundle\CSBillCoreBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
-	    new CSBill\DataGridBundle\CSBillDataGridBundle($this),
+	        new CSBill\DataGridBundle\CSBillDataGridBundle($this),
             new CSBill\QuoteBundle\CSBillQuoteBundle(),
             new CSBill\InvoiceBundle\CSBillInvoiceBundle(),
             new CSBill\ItemBundle\CSBillItemBundle(),
@@ -60,6 +60,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new CSBill\ApiBundle\CSBillApiBundle(),
             new CSBill\CronBundle\CSBillCronBundle(),
             new CSBill\MoneyBundle\CSBillMoneyBundle(),
+            new CSBill\MenuBundle\CSBillMenuBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

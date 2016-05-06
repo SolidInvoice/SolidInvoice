@@ -43,17 +43,17 @@ class DefaultController extends BaseController
         $quoteRepository = $this->getRepository('CSBillQuoteBundle:Quote');
 
         // Return the response of the grid to the template
-	return $this->render(
-	    'CSBillQuoteBundle:Default:index.html.twig',
-	    [
-		'status_list_count' => [
+        return $this->render(
+            'CSBillQuoteBundle:Default:index.html.twig',
+            [
+                'status_list_count' => [
                     Graph::STATUS_PENDING => $quoteRepository->getTotalQuotes(Graph::STATUS_PENDING),
                     Graph::STATUS_ACCEPTED => $quoteRepository->getTotalQuotes(Graph::STATUS_ACCEPTED),
                     Graph::STATUS_CANCELLED => $quoteRepository->getTotalQuotes(Graph::STATUS_CANCELLED),
                     Graph::STATUS_DRAFT => $quoteRepository->getTotalQuotes(Graph::STATUS_DRAFT),
                     Graph::STATUS_DECLINED => $quoteRepository->getTotalQuotes(Graph::STATUS_DECLINED),
-		],
-	    ]
+                ],
+            ]
         );
     }
 
@@ -90,14 +90,14 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('quote.action.create.success'), 'success');
 
-	    return $this->redirect($this->generateUrl('_quotes_view', ['id' => $quote->getId()]));
+            return $this->redirect($this->generateUrl('_quotes_view', ['id' => $quote->getId()]));
         }
 
         return $this->render(
             'CSBillQuoteBundle:Default:create.html.twig',
-	    [
+            [
                 'form' => $form->createView(),
-	    ]
+            ]
         );
     }
 
@@ -107,25 +107,25 @@ class DefaultController extends BaseController
      */
     private function saveQuote(Quote $quote, $action = null)
     {
-	$finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
-	$dispatcher = $this->get('event_dispatcher');
+        $finite = $this->get('finite.factory')->get($quote, Graph::GRAPH);
+        $dispatcher = $this->get('event_dispatcher');
 
-	if (!$quote->getId()) {
-	    $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
-	}
+        if (!$quote->getId()) {
+            $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
+        }
 
-	if ($action === Graph::STATUS_PENDING) {
-	    $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
-	    $finite->apply(Graph::TRANSITION_SEND);
-	    $this->save($quote);
-	    $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
-	} else {
-	    if (!$quote->getId()) {
-		$finite->apply(Graph::TRANSITION_NEW);
-	    }
+        if ($action === Graph::STATUS_PENDING) {
+            $dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
+            $finite->apply(Graph::TRANSITION_SEND);
+            $this->save($quote);
+            $dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
+        } else {
+            if (!$quote->getId()) {
+                $finite->apply(Graph::TRANSITION_NEW);
+            }
 
-	    $this->save($quote);
-	}
+            $this->save($quote);
+        }
     }
 
     /**
@@ -148,15 +148,15 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('quote.action.edit.success'), 'success');
 
-	    return $this->redirect($this->generateUrl('_quotes_view', ['id' => $quote->getId()]));
+            return $this->redirect($this->generateUrl('_quotes_view', ['id' => $quote->getId()]));
         }
 
         return $this->render(
             'CSBillQuoteBundle:Default:edit.html.twig',
-	    [
+            [
                 'form' => $form->createView(),
                 'quote' => $quote,
-	    ]
+            ]
         );
     }
 
@@ -169,7 +169,7 @@ class DefaultController extends BaseController
      */
     public function viewAction(Quote $quote)
     {
-	return $this->render('CSBillQuoteBundle:Default:view.html.twig', ['quote' => $quote]);
+        return $this->render('CSBillQuoteBundle:Default:view.html.twig', ['quote' => $quote]);
     }
 
     /**

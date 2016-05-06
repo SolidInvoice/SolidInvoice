@@ -34,7 +34,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      */
     public function __construct(KernelInterface $kernel)
     {
-	$this->kernel = $kernel;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -42,36 +42,36 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-	$resourceLocator = new FileLocator($this->kernel);
-	$definition = $container->getDefinition('grid.repository');
+        $resourceLocator = new FileLocator($this->kernel);
+        $definition = $container->getDefinition('grid.repository');
 
-	$configs = [];
+        $configs = [];
 
-	foreach ($this->kernel->getBundles() as $bundle) {
-	    try {
-		$file = $resourceLocator->locate(sprintf('@%s/Resources/config/grid.yml', $bundle->getName()));
-	    } catch (\InvalidArgumentException $e) {
-		continue;
-	    }
+        foreach ($this->kernel->getBundles() as $bundle) {
+            try {
+                $file = $resourceLocator->locate(sprintf('@%s/Resources/config/grid.yml', $bundle->getName()));
+            } catch (\InvalidArgumentException $e) {
+                continue;
+            }
 
-	    $container->addResource(new FileResource($file));
+            $container->addResource(new FileResource($file));
 
-	    $grid = Yaml::parse(file_get_contents($file));
+            $grid = Yaml::parse(file_get_contents($file));
 
-	    $config = $this->processConfiguration($grid);
+            $config = $this->processConfiguration($grid);
 
-	    $this->setGridDefinition($definition, $config);
-	}
+            $this->setGridDefinition($definition, $config);
+        }
 
-	$container->setParameter('grid.definitions', $configs);
+        $container->setParameter('grid.definitions', $configs);
     }
 
     private function processConfiguration(array $grid)
     {
-	$process = new Processor();
-	$config = new GridConfiguration();
+        $process = new Processor();
+        $config = new GridConfiguration();
 
-	return $process->processConfiguration($config, $grid);
+        return $process->processConfiguration($config, $grid);
     }
 
     /**
@@ -80,17 +80,17 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      */
     private function setGridDefinition(Definition $gridService, array $config)
     {
-	foreach ($config as $gridName => $gridConfig) {
-	    $gridDefinition = new Definition('CSBill\DataGridBundle\Grid');
+        foreach ($config as $gridName => $gridConfig) {
+            $gridDefinition = new Definition('CSBill\DataGridBundle\Grid');
 
-	    $gridConfig['name'] = $gridName;
+            $gridConfig['name'] = $gridName;
 
-	    $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
-	    $gridDefinition->addArgument($this->getFilterService($gridConfig));
-	    $gridDefinition->addArgument($gridConfig);
+            $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
+            $gridDefinition->addArgument($this->getFilterService($gridConfig));
+            $gridDefinition->addArgument($gridConfig);
 
-	    $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
-	}
+            $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
+        }
     }
 
     /**
@@ -100,9 +100,9 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      */
     private function getGridSource(array $arguments)
     {
-	array_unshift($arguments, new Reference('doctrine'));
+        array_unshift($arguments, new Reference('doctrine'));
 
-	return new Definition('CSBill\DataGridBundle\Source\ORMSource', $arguments);
+        return new Definition('CSBill\DataGridBundle\Source\ORMSource', $arguments);
     }
 
     /**
@@ -112,24 +112,26 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      */
     private function getFilterService(array &$gridData)
     {
-	$definition = new Definition('CSBill\DataGridBundle\Filter\ChainFilter');
+        $definition = new Definition('CSBill\DataGridBundle\Filter\ChainFilter');
 
-	if (true === $gridData['properties']['sortable']) {
-	    $sortFilter = new Definition('CSBill\DataGridBundle\Filter\SortFilter');
-	    $definition->addMethodCall('addFilter', [$sortFilter]);
-	}
+        if (true === $gridData['properties']['sortable']) {
+            $sortFilter = new Definition('CSBill\DataGridBundle\Filter\SortFilter');
+            $definition->addMethodCall('addFilter', [$sortFilter]);
+        }
 
-	if (true === $gridData['properties']['sortable']) {
-	    $paginateFilter = new Definition('CSBill\DataGridBundle\Filter\PaginateFilter');
-	    $definition->addMethodCall('addFilter', [$paginateFilter]);
-	}
+        if (true === $gridData['properties']['sortable']) {
+            $paginateFilter = new Definition('CSBill\DataGridBundle\Filter\PaginateFilter');
+            $definition->addMethodCall('addFilter', [$paginateFilter]);
+        }
 
-	if (!empty($gridData['search']['fields'])) {
-	    $searchFilter = new Definition('CSBill\DataGridBundle\Filter\SearchFilter', [$gridData['search']['fields']]);
-	    $definition->addMethodCall('addFilter', [$searchFilter]);
-	    $gridData['properties']['search'] = true;
-	}
+        if (!empty($gridData['search']['fields'])) {
+            $searchFilter = new Definition(
+                'CSBill\DataGridBundle\Filter\SearchFilter', [$gridData['search']['fields']]
+            );
+            $definition->addMethodCall('addFilter', [$searchFilter]);
+            $gridData['properties']['search'] = true;
+        }
 
-	return $definition;
+        return $definition;
     }
 }

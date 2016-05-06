@@ -47,3 +47,6 @@ payment:
         updated: Payment Method Successfully Updated!
     methods:
         title: Payment Methods
+    menu:
+        main: Payments
+        methods: Payment Methods

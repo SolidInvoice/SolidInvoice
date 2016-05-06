@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu;
+namespace CSBill\MenuBundle;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface as Item;
@@ -59,7 +59,7 @@ class Renderer extends ListRenderer implements RendererInterface
             // We just gracefully continue
         }
 
-        parent::__construct($matcher, array('allow_safe_labels' => true, 'currentClass' => 'active'));
+        parent::__construct($matcher, ['allow_safe_labels' => true, 'currentClass' => 'active']);
     }
 
     /**
@@ -84,7 +84,7 @@ class Renderer extends ListRenderer implements RendererInterface
 
         $html = '';
         foreach ($item->getChildren() as $child) {
-            /* @var \CSBill\CoreBundle\Menu\MenuItem $child */
+            /* @var \CSBill\MenuBundle\MenuItem $child */
             if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {
@@ -110,11 +110,14 @@ class Renderer extends ListRenderer implements RendererInterface
             $icon = $this->renderIcon($item->getExtra('icon'));
         }
 
+        $translator = $this->container->get('translator');
+
         if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
-            return $icon.$item->getLabel();
+            return $icon . $translator->trans($item->getLabel());
         }
 
-        return $icon.$this->escape($item->getLabel());
+
+        return $icon . $this->escape($translator->trans($item->getLabel()));
     }
 
     /**
@@ -135,13 +138,13 @@ class Renderer extends ListRenderer implements RendererInterface
      *
      * @return string
      */
-    protected function renderDivider(Item $item, array $options = array())
+    protected function renderDivider(Item $item, array $options = [])
     {
         return $this->format(
-            '<li'.$this->renderHtmlAttributes(
-                array(
-                    'class' => 'divider'.$item->getExtra('divider'), )
-            ).'>',
+            '<li' . $this->renderHtmlAttributes(
+                [
+                    'class' => 'divider' . $item->getExtra('divider'),]
+            ) . '>',
             'li',
             $item->getLevel(),
             $options
@@ -151,12 +154,12 @@ class Renderer extends ListRenderer implements RendererInterface
     /**
      * Renders a menu at a specific location.
      *
-     * @param \SplObjectStorage $storage
+     * @param \SplPriorityQueue $storage
      * @param array             $options
      *
      * @return string
      */
-    public function build(\SplObjectStorage $storage, array $options = array())
+    public function build(\SplPriorityQueue $storage, array $options = [])
     {
         $menu = $this->factory->createItem('root');
 
@@ -164,11 +167,11 @@ class Renderer extends ListRenderer implements RendererInterface
             $menu->setChildrenAttributes($options['attr']);
         } else {
             // TODO : this should be set per menu, instead of globally
-            $menu->setChildrenAttributes(array('class' => 'nav nav-pills nav-stacked'));
+            $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-stacked']);
         }
 
         foreach ($storage as $builder) {
-            /* @var \CSBill\CoreBundle\Menu\Builder\MenuBuilder $builder */
+            /* @var \CSBill\MenuBundle\Builder\MenuBuilder $builder */
             $builder->setContainer($this->container);
             $builder->invoke($menu, $options);
         }

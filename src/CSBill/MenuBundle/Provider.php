@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu;
+namespace CSBill\MenuBundle;
 
-use CSBill\CoreBundle\Menu\Builder\BuilderInterface;
-use CSBill\CoreBundle\Menu\Builder\MenuBuilder;
-use CSBill\CoreBundle\Menu\Storage\MenuStorageInterface;
+use CSBill\MenuBundle\Builder\BuilderInterface;
+use CSBill\MenuBundle\Builder\MenuBuilder;
+use CSBill\MenuBundle\Storage\MenuStorageInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 
 class Provider implements MenuProviderInterface
@@ -37,9 +37,9 @@ class Provider implements MenuProviderInterface
      * @param string $name
      * @param array  $options
      *
-     * @return \Knp\Menu\ItemInterface|\SplObjectStorage
+     * @return \SplObjectStorage
      */
-    public function get($name, array $options = array())
+    public function get($name, array $options = [])
     {
         return $this->storage->get($name, $options);
     }
@@ -52,7 +52,7 @@ class Provider implements MenuProviderInterface
      *
      * @return bool
      */
-    public function has($name, array $options = array())
+    public function has($name, array $options = [])
     {
         return $this->storage->has($name, $options);
     }
@@ -63,11 +63,12 @@ class Provider implements MenuProviderInterface
      * @param BuilderInterface $class
      * @param string           $name   The name of the menu the builder should be attached to
      * @param string           $method The method to call to build the menu
+     * @param int              $priority
      */
-    public function addBuilder(BuilderInterface $class, $name, $method)
+    public function addBuilder(BuilderInterface $class, $name, $method, $priority)
     {
         $builder = new MenuBuilder($class, $method);
 
-        $this->storage->get($name)->attach($builder);
+        $this->storage->get($name)->insert($builder, $priority);
     }
 }

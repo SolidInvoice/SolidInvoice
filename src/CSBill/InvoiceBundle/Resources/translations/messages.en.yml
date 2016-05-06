@@ -104,5 +104,8 @@ invoice:
             day_name: "The name of the day (E.G 'Wednesday')"
             month: "The name of the month (E.G 'Subscription for {month}' will become 'Subscription for December')"
             year: "The year (E.G 'Yearly subscription for {year}' will become 'Yearly subscription for 2016')"
-
-invoice: Invoice
+    menu:
+        main: Invoices
+        list: List Invoices
+        create: Create Invoice
+        view: View Invoice

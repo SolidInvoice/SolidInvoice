@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu\Storage;
+namespace CSBill\MenuBundle\Storage;
 
 interface MenuStorageInterface
 {
@@ -29,7 +29,7 @@ interface MenuStorageInterface
      * @param string $name
      * @param array  $options
      *
-     * @return \Knp\Menu\ItemInterface|\SplObjectStorage
+     * @return \SplPriorityQueue
      */
     public function get($name, array $options = array());
 }

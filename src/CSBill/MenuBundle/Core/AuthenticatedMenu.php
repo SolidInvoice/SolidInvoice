@@ -9,14 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu\Core;
+namespace CSBill\MenuBundle\Core;
 
-use CSBill\CoreBundle\Menu\Builder\BuilderInterface;
+use CSBill\MenuBundle\Builder\BuilderInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use SYmfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
-class AuthenticatedMenu extends ContainerAware implements BuilderInterface
+class AuthenticatedMenu implements ContainerAwareInterface, BuilderInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @return bool
      */

@@ -1,5 +1,5 @@
 parameters:
-    csbill_payment.menu.top.class: CSBill\PaymentBundle\Menu\PaymentsMenu
+    csbill_payment.menu.top.class: CSBill\PaymentBundle\Menu\Builder
     payum.class: CSBill\PaymentBundle\Payum
 
 services:
@@ -14,7 +14,7 @@ services:
         class: %csbill_payment.menu.top.class%
         tags:
             - { name: cs_core.menu, menu: top_right, method: topRightMenu }
-            - { name: cs_core.menu, menu: top, method: topMenu }
+            - { name: cs_core.menu, menu: top, method: topMenu, priority: -1 }
 
     #csbill.payment.payum.paypal_express.action.capture_payment_action:
         #class: CSBill\PaymentBundle\Action\PaypalExpress\CapturePaymentAction

@@ -9,25 +9,47 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Menu;
+namespace CSBill\InvoiceBundle\Menu;
 
-use CSBill\CoreBundle\Icon;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\HttpFoundation\Request;
 
-class ClientMenu
+/**
+ * Menu items for invoices.
+ */
+class InvoiceMenu
 {
+    /**
+     * @param Request|null $request
+     *
+     * @return array
+     */
+    public static function create(Request $request = null)
+    {
+        return [
+            'client.menu.create.invoice',
+            [
+                'extras' => [
+                    'icon' => 'file-text-o',
+                ],
+                'route' => '_invoices_create',
+                'routeParameters' => null !== $request ? ['client' => $request->get('id')] : [],
+            ],
+        ];
+    }
+
     /**
      * @return array
      */
     public static function main()
     {
         return [
-            'client.menu.main',
+            'invoice.menu.main',
             [
+                'route' => '_invoices_index',
                 'extras' => [
-                    'icon' => Icon::CLIENT,
+                    'icon' => 'file-text-o',
                 ],
-                'route' => '_clients_index',
             ],
         ];
     }
@@ -38,48 +60,32 @@ class ClientMenu
     public static function listMenu()
     {
         return [
-            'client.menu.list',
+            'invoice.menu.list',
             [
+                'route' => '_invoices_index',
                 'extras' => [
-                    'icon' => Icon::CLIENT,
+                    'icon' => 'file-text-o',
                 ],
-                'route' => '_clients_index',
             ],
         ];
     }
 
     /**
-     * @return array
-     */
-    public static function add()
-    {
-        return [
-            'client.menu.add',
-            [
-                'extras' => [
-                    'icon' => 'user-plus',
-                ],
-                'route' => '_clients_add',
-            ],
-        ];
-    }
-
-    /**
-     * @param Request $request
+     * @param Invoice $invoice
      *
      * @return array
      */
-    public static function view(Request $request)
+    public static function view(Invoice $invoice)
     {
         return [
-            'client.menu.view',
+            'invoice.menu.view',
             [
                 'extras' => [
                     'icon' => 'eye',
                 ],
-                'route' => '_clients_view',
+                'route' => '_invoices_view',
                 'routeParameters' => [
-                    'id' => $request->get('id'),
+                    'id' => $invoice->getId(),
                 ],
             ],
         ];

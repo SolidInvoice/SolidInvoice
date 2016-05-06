@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu\Builder;
+namespace CSBill\MenuBundle\Builder;
 
 interface BuilderInterface
 {
