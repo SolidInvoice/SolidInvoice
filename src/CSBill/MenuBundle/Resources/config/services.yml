@@ -1,4 +1,5 @@
 parameters:
+    csbill_menu.twig.class: CSBill\MenuBundle\Twig\Extension\MenuExtension
     csbill_menu.renderer.class: CSBill\MenuBundle\Renderer
     csbill_menu.provider.class: CSBill\MenuBundle\Provider
     csbill_menu_storage.class: CSBill\MenuBundle\Storage\MenuStorage
@@ -19,3 +20,11 @@ services:
 
     csbill_menu.storage:
         class: '%csbill_menu_storage.class%'
+
+    csbill_menu.twig.extension:
+        class: '%csbill_menu.twig.class%'
+        calls:
+            - [ setRenderer, [ '@csbill_menu.renderer' ] ]
+            - [ setProvider, [ '@csbill_menu.provider' ] ]
+        tags:
+            - { name: twig.extension }

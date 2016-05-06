@@ -1,18 +1,9 @@
 parameters:
-    csbill_menu.twig.class: CSBill\MenuBundle\Twig\Extension\MenuExtension
     csbill_core.twig.globals.class: CSBill\CoreBundle\Twig\Extension\GlobalExtension
     csbill_core.twig.file.class: CSBill\CoreBundle\Twig\Extension\FileExtension
     csbill_core.twig.status.class: CSBill\CoreBundle\Twig\Extension\StatusExtension
 
 services:
-    csbill_menu.twig.extension:
-        class: '%csbill_menu.twig.class%'
-        calls:
-            - [ setRenderer, [ '@csbill_menu.renderer' ] ]
-            - [ setProvider, [ '@csbill_menu.provider' ] ]
-        tags:
-            - { name: twig.extension }
-
     csbill_core.twig.gobals:
         class: '%csbill_core.twig.globals.class%'
         calls:
