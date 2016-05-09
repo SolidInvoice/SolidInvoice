@@ -11,10 +11,10 @@
 
 namespace CSBill\PaymentBundle\Menu;
 
-use CSBill\CoreBundle\Menu\Core\AuthenticatedMenu;
+use CSBill\MenuBundle\Core\AuthenticatedMenu;
 use Knp\Menu\ItemInterface;
 
-class PaymentsMenu extends AuthenticatedMenu
+class Builder extends AuthenticatedMenu
 {
     /**
      * Renders the top menu for payments.
@@ -23,12 +23,7 @@ class PaymentsMenu extends AuthenticatedMenu
      */
     public function topMenu(ItemInterface $menu)
     {
-        $menu->addChild(
-            'Payments',
-            array(
-                'route' => '_payments_index',
-            )
-        );
+        $menu->addChild(PaymentMenu::main());
     }
 
     /**
@@ -38,12 +33,7 @@ class PaymentsMenu extends AuthenticatedMenu
      */
     public function topRightMenu(ItemInterface $menu)
     {
-        $menu['system']->addChild(
-            'Payment Methods',
-            array(
-                'route' => '_payment_settings_index',
-                'extras' => array('icon' => 'credit-card'),
-            )
-        );
+
+        $menu['menu.top.system']->addChild(PaymentMenu::methods());
     }
 }

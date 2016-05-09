@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu;
+namespace CSBill\MenuBundle;
 
 use Knp\Menu\Renderer\RendererInterface as BaseInterface;
 
@@ -18,10 +18,10 @@ interface RendererInterface extends BaseInterface
     /**
      * Build and render a menu.
      *
-     * @param \SplObjectStorage $storage
+     * @param \SplPriorityQueue $storage
      * @param array             $options
      *
      * @return mixed
      */
-    public function build(\SplObjectStorage $storage, array $options = array());
+    public function build(\SplPriorityQueue $storage, array $options = []);
 }

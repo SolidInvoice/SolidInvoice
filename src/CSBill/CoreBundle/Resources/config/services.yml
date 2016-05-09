@@ -1,9 +1,4 @@
 parameters:
-    csbill_core.menu.renderer.class: CSBill\CoreBundle\Menu\Renderer
-    csbill_core.menu.provider.class: CSBill\CoreBundle\Menu\Provider
-    csbill_core.menu_storage.class: CSBill\CoreBundle\Menu\Storage\MenuStorage
-    csbill_core.menu.factory.class: CSBill\CoreBundle\Menu\Factory
-    csbill_core.menu.top.class: CSBill\CoreBundle\Menu\Main
     csbill_core.currrency.class: CSBill\CoreBundle\Util\Currency
     csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
     csbill_core.billing.mailer.class: CSBill\CoreBundle\Mailer\Mailer
@@ -12,32 +7,12 @@ parameters:
     csbill_core.security.encryption.class: CSBill\CoreBundle\Security\Encryption
     csbill_core.session.request.listener.class: CSBill\CoreBundle\Listener\SessionRequestListener
     csbill_core.settings.loader.class: CSBill\CoreBundle\Settings\SettingsLoader
+    csbill_menu.top.class: CSBill\CoreBundle\Menu\Builder
 
 services:
     csbill.core.config_writer:
         class: CSBill\CoreBundle\ConfigWriter
         arguments: [%kernel.root_dir%, @kernel, @filesystem]
-
-    csbill_core.menu.factory:
-        class: %csbill_core.menu.factory.class%
-        arguments: [@router]
-
-    csbill_core.menu.renderer:
-        class: %csbill_core.menu.renderer.class%
-        arguments: [@service_container, @csbill_core.menu.factory]
-
-    csbill_core.menu.provider:
-        class: %csbill_core.menu.provider.class%
-        arguments: [@csbill_core.menu.storage]
-
-    csbill_core.menu.storage:
-        class: %csbill_core.menu_storage.class%
-
-    csbill_core.menu.top:
-        class: %csbill_core.menu.top.class%
-        tags:
-            - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
-            - { name: cs_core.menu, menu: top_right, method: userMenu }
 
     csbill_core.form.help.extension:
         class: %csbill_core.form.help.extension.class%
@@ -97,3 +72,9 @@ services:
     oro.cache.abstract:
         class: Doctrine\Common\Cache\FilesystemCache
         arguments: [%kernel.cache_dir%/requirejs]
+
+    csbill_menu.top:
+        class: '%csbill_menu.top.class%'
+        tags:
+            - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
+            - { name: cs_core.menu, menu: top_right, method: userMenu, priority: 255 }

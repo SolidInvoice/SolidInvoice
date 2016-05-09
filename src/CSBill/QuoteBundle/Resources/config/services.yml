@@ -1,6 +1,6 @@
 parameters:
     quote.manager.class: CSBill\QuoteBundle\Manager\QuoteManager
-    csbill_quote.menu.class: CSBill\QuoteBundle\Menu\Main
+    csbill_quote.menu.class: CSBill\QuoteBundle\Menu\Builder
     csbill.mailer.send_quotes.listener.class: CSBill\QuoteBundle\Listener\Mailer\QuoteMailerListener
 
 services:
@@ -39,11 +39,3 @@ services:
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: quote_item }
-
-    csbill.quote.grid.default_grid:
-        class: CSBill\QuoteBundle\Grid\QuoteGrid
-        arguments: [@doctrine.orm.entity_manager, @finite.factory, @session]
-
-    csbill.quote.grid.archived_grid:
-        class: CSBill\QuoteBundle\Grid\QuoteArchivedGrid
-        arguments: [@doctrine.orm.entity_manager, @session]

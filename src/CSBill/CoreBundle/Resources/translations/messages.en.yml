@@ -1,12 +1,19 @@
+menu:
+    button:
+        create: Create
+    top:
+        profile: Profile
+        api: API Tokens
+        logout: Logout
+        system: 'System <b class="caret"></b>'
+        settings: Settings
+        tax: Tax Rates
+
 exception:
     error:
         text: The following error occurred:
     not_found:
         text: Sorry, but the page you were trying to view does not exist.
-
-menu:
-    button:
-        create: Create
 
 billing:
     subtotal: SubTotal

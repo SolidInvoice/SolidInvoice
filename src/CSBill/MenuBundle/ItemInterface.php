@@ -9,12 +9,19 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu;
+namespace CSBill\MenuBundle;
 
 use Knp\Menu\ItemInterface as BaseInterface;
 
 interface ItemInterface extends BaseInterface
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @return ItemInterface
+     */
+    public function addChild($child, array $options = array());
+
     /**
      * @param string $type
      *

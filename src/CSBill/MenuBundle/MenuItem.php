@@ -9,12 +9,27 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu;
+namespace CSBill\MenuBundle;
 
 use Knp\Menu\MenuItem as BaseItem;
 
 class MenuItem extends BaseItem implements ItemInterface
 {
+    /**
+     * @param \Knp\Menu\ItemInterface|string|array $child
+     * @param array                                $options
+     *
+     * @return \Knp\Menu\ItemInterface|string
+     */
+    public function addChild($child, array $options = [])
+    {
+        if (is_array($child) && empty($options)) {
+            list($child, $options) = $child;
+        }
+
+        return parent::addChild($child, $options);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,10 +38,10 @@ class MenuItem extends BaseItem implements ItemInterface
         $name = uniqid();
 
         if (!empty($type)) {
-            $type = '-'.$type;
+            $type = '-' . $type;
         }
 
-        return $this->addChild($name, array('extras' => array('divider' => $type)));
+        return $this->addChild($name, ['extras' => ['divider' => $type]]);
     }
 
     /**

@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of CSBill project.
@@ -9,7 +17,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\DependencyInjection\Compiler;
+namespace CSBill\MenuBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,11 +30,11 @@ class MenuCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('csbill_core.menu.provider')) {
+        if (!$container->hasDefinition('csbill_menu.provider')) {
             return;
         }
 
-        $definition = $container->getDefinition('csbill_core.menu.provider');
+        $definition = $container->getDefinition('csbill_menu.provider');
 
         $taggedServices = $container->findTaggedServiceIds('cs_core.menu');
 
@@ -34,7 +42,11 @@ class MenuCompilerPass implements CompilerPassInterface
             foreach ($tagAttributes as $attributes) {
                 $definition->addMethodCall(
                     'addBuilder',
-                    array(new Reference($id), $attributes['menu'], $attributes['method'])
+                    [
+                        new Reference($id),
+                        $attributes['menu'],
+                        $attributes['method'],
+                        array_key_exists('priority', $attributes) ? $attributes['priority'] : 0]
                 );
             }
         }

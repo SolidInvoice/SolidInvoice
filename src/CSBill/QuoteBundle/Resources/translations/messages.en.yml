@@ -72,6 +72,12 @@ quote:
             draft: "{0} Draft Quotes|{1} Draft Quote|]1,Inf] Draft Quotes"
             cancelled: "{0} Cancelled Quotes|{1} Cancelled Quote|]1,Inf] Cancelled Quotes"
             declined: "{0} Declined Quotes|{1} Declined Quote|]1,Inf] Declined Quotes"
+    menu:
+        main: Quotes
+        list: List Quotes
+        create: Create Quote
+        view: View Quote
+
 status: Status
 client: Client
 search: Search

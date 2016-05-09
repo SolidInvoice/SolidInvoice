@@ -1,5 +1,5 @@
 parameters:
-    csbill_client.menu.class: CSBill\ClientBundle\Menu\ClientMenu
+    csbill_client.menu.class: CSBill\ClientBundle\Menu\Builder
     csbill_client.contact_type.repository.class: CSBill\ClientBundle\Repository\ContactTypeRepository
     csbill_client.contact_types.twig.extension.class: CSBill\ClientBundle\Twig\Extension\ContactTypesExtension
     csbill_client.contact.form.type.class: CSBill\ClientBundle\Form\Contact
@@ -37,18 +37,6 @@ services:
         class: %csbill_client.contact_type.repository.class%
         factory_service: csbill_client.contact_type.repository
         factory_method:  findAll
-
-    csbill.client.grid:
-        class: CSBill\ClientBundle\Grid\ClientGrid
-        arguments: [@doctrine, @session]
-
-    csbill.client.grid.archived:
-        class: CSBill\ClientBundle\Grid\ClientArchivedGrid
-        arguments: [@doctrine.orm.entity_manager, @session]
-
-    csbill.client.grid.deleted:
-        class: CSBill\ClientBundle\Grid\ClientDeletedGrid
-        arguments: [@doctrine.orm.entity_manager]
 
     client.notification.listener:
         class: CSBill\ClientBundle\Listener\ClientListener

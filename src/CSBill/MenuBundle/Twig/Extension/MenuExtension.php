@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Twig\Extension;
+namespace CSBill\MenuBundle\Twig\Extension;
 
-use CSBill\CoreBundle\Menu\RendererInterface;
+use CSBill\MenuBundle\RendererInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Twig_Extension;
 
@@ -48,13 +48,13 @@ class MenuExtension extends Twig_Extension
     }
 
     /**
-     * (non-phpdoc).
+     * @return \Twig_SimpleFunction[]
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('menu', array($this, 'renderMenu'), array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFunction('menu', [$this, 'renderMenu'], ['is_safe' => ['html']]),
+        ];
     }
 
     /**
@@ -65,8 +65,9 @@ class MenuExtension extends Twig_Extension
      *
      * @return string
      */
-    public function renderMenu($location, array $options = array())
+    public function renderMenu($location, array $options = [])
     {
+        /** @var \SplPriorityQueue $menu */
         $menu = $this->provider->get($location);
 
         return $this->renderer->build($menu, $options);
@@ -77,6 +78,6 @@ class MenuExtension extends Twig_Extension
      */
     public function getName()
     {
-        return 'csbill_core.twig.menu';
+        return 'csbill_menu.twig.extension';
     }
 }

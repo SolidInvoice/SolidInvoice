@@ -9,77 +9,67 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Menu;
+namespace CSBill\QuoteBundle\Menu;
 
-use CSBill\CoreBundle\Icon;
+use CSBill\QuoteBundle\Entity\Quote;
 use Symfony\Component\HttpFoundation\Request;
 
-class ClientMenu
+/**
+ * Menu items for quotes.
+ */
+class QuoteMenu
 {
-    /**
-     * @return array
-     */
     public static function main()
     {
         return [
-            'client.menu.main',
+            'quote.menu.main',
             [
+                'route' => '_quotes_index',
                 'extras' => [
-                    'icon' => Icon::CLIENT,
+                    'icon' => 'file-text-o',
                 ],
-                'route' => '_clients_index',
             ],
         ];
     }
 
-    /**
-     * @return array
-     */
+    public static function create(Request $request = null)
+    {
+        return [
+            'client.menu.create.quote',
+            [
+                'extras' => [
+                    'icon' => 'file-text-o',
+                ],
+                'route' => '_quotes_create',
+                'routeParameters' => null !== $request ? ['client' => $request->get('id')] : [],
+            ],
+        ];
+    }
+
     public static function listMenu()
     {
         return [
-            'client.menu.list',
+            'quote.menu.list',
             [
+                'route' => '_quotes_index',
                 'extras' => [
-                    'icon' => Icon::CLIENT,
+                    'icon' => 'file-text-o',
                 ],
-                'route' => '_clients_index',
             ],
         ];
     }
 
-    /**
-     * @return array
-     */
-    public static function add()
+    public static function view(Quote $quote)
     {
         return [
-            'client.menu.add',
-            [
-                'extras' => [
-                    'icon' => 'user-plus',
-                ],
-                'route' => '_clients_add',
-            ],
-        ];
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return array
-     */
-    public static function view(Request $request)
-    {
-        return [
-            'client.menu.view',
+            'View Quote',
             [
                 'extras' => [
                     'icon' => 'eye',
                 ],
-                'route' => '_clients_view',
+                'route' => '_quotes_view',
                 'routeParameters' => [
-                    'id' => $request->get('id'),
+                    'id' => $quote->getId(),
                 ],
             ],
         ];

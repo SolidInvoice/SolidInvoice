@@ -9,19 +9,19 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Menu\Storage;
+namespace CSBill\MenuBundle\Storage;
 
 class MenuStorage implements MenuStorageInterface
 {
     /**
      * @var array
      */
-    protected $list = array();
+    protected $list = [];
 
     /**
      * {@inheritdoc}
      */
-    public function has($name, array $options = array())
+    public function has($name)
     {
         return isset($this->list[$name]);
     }
@@ -29,10 +29,10 @@ class MenuStorage implements MenuStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name, array $options = array())
+    public function get($name)
     {
         if (!$this->has($name)) {
-            $this->list[$name] = new \SplObjectStorage();
+            $this->list[$name] = new \SplPriorityQueue();
         }
 
         return $this->list[$name];
