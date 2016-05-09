@@ -50,13 +50,11 @@ class Factory extends MenuFactory
      */
     public function createItem($name, array $options = array())
     {
-        foreach (clone $this->extensions as $extension) {
-            $options = $extension->buildOptions($options);
-        }
-
         $item = new MenuItem($name, $this);
 
         foreach (clone $this->extensions as $extension) {
+            $options = $extension->buildOptions($options);
+
             $extension->buildItem($item, $options);
         }
 

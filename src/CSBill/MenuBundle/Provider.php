@@ -41,7 +41,7 @@ class Provider implements MenuProviderInterface
      */
     public function get($name, array $options = [])
     {
-        return $this->storage->get($name, $options);
+        return $this->storage->get($name);
     }
 
     /**
@@ -54,7 +54,7 @@ class Provider implements MenuProviderInterface
      */
     public function has($name, array $options = [])
     {
-        return $this->storage->has($name, $options);
+        return $this->storage->has($name);
     }
 
     /**
