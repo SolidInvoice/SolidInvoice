@@ -29,6 +29,16 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 class InstallCommand extends ContainerAwareCommand
 {
     /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        $container = $this->getContainer();
+
+        return null === $container->getParameter('installed');
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -64,10 +74,6 @@ class InstallCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
 
-        if (null !== $container->getParameter('installed')) {
-            throw new ApplicationInstalledException();
-        }
-
         $this->validate($input);
 
         if (1 === ($return = $this->checkRequirements())) {
@@ -97,52 +103,62 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritdoc}
+     * @param InputInterface $input
+     *
+     * @throws \Exception
      */
-    protected function interact(InputInterface $input, OutputInterface $output)
+    private function validate(InputInterface $input)
     {
-        if (null !== $this->getContainer()->getParameter('installed')) {
-            throw new ApplicationInstalledException();
+        $values = [
+            'database-host',
+            'database-user',
+            'admin-username',
+            'admin-password',
+            'admin-email',
+            'locale',
+            'currency',
+        ];
+
+        foreach ($values as $option) {
+            if (null === $input->getOption($option)) {
+                throw new \Exception(sprintf('The --%s option needs to be specified', $option));
+            }
         }
 
-        $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
-        $locales = Intl::getLocaleBundle()->getLocaleNames();
+        $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
+        $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
 
-        $localeQuestion = new Question('<question>Please enter a locale:</question> ');
-        $localeQuestion->setAutocompleterValues($locales);
+        if (!array_key_exists($locale = $input->getOption('locale'), $locales)) {
+            throw new \InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
+        }
 
-        $currencyQuestion = new Question('<question>Please enter a currency:</question> ');
-        $currencyQuestion->setAutocompleterValues($currencies);
+        if (!array_key_exists($currency = $input->getOption('currency'), $currencies)) {
+            throw new \InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
+        }
 
-        $passwordQuestion = new Question('<question>Please enter a password for the admin account:</question> ');
-        $passwordQuestion->setHidden(true);
+        if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
+            if (null == $input->getOption('mailer-host')) {
+                throw new \Exception(
+                    'The --mailer-host option needs to be specified when using SMTP as email transport'
+                );
+            }
 
-        $options = array(
-            'database-user' => new Question('<question>Please enter your database user name:</question> '),
-            'admin-username' => new Question('<question>Please enter a username for the admin account:</question> '),
-            'admin-password' => $passwordQuestion,
-            'admin-email' => new Question('<question>Please enter an email address for the admin account:</question> '),
-            'locale' => $localeQuestion,
-            'currency' => $currencyQuestion,
-        );
+            if (null == $input->getOption('mailer-port')) {
+                throw new \Exception(
+                    'The --mailer-port option needs to be specified when using SMTP as email transport'
+                );
+            }
+        } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
+            if (null == $input->getOption('mailer-user')) {
+                throw new \Exception(
+                    'The --mailer-user option needs to be specified when using Gmail as email transport'
+                );
+            }
 
-        /** @var QuestionHelper $dialog */
-        $dialog = $this->getHelper('question');
-
-        /** @var Question $question */
-        foreach ($options as $option => $question) {
-            if (null === $input->getOption($option)) {
-                $value = null;
-
-                while (empty($value)) {
-                    $value = $dialog->ask($input, $output, $question);
-
-                    if ($values = $question->getAutocompleterValues()) {
-                        $value = array_search($value, $values);
-                    }
-                }
-
-                $input->setOption($option, $value);
+            if (null == $input->getOption('mailer-password')) {
+                throw new \Exception(
+                    'The --mailer-password option needs to be specified when using Gmail as email transport'
+                );
             }
         }
     }
@@ -155,7 +171,6 @@ class InstallCommand extends ContainerAwareCommand
     private function checkRequirements()
     {
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
-        $return = true;
 
         return require_once $rootDir.DIRECTORY_SEPARATOR.'app_check.php';
     }
@@ -186,39 +201,6 @@ class InstallCommand extends ContainerAwareCommand
 
             $this->getContainer()->get('csbill.core.config_writer')->dump($config);
         }
-    }
-
-    /**
-     * @param InputInterface $input
-     *
-     * @return $this
-     */
-    private function saveConfig(InputInterface $input)
-    {
-        $factory = new Factory();
-
-        // Don't update installed here, in case something goes wrong with the rest of the installation process
-        $config = array(
-            'database_driver' => $input->getOption('database-driver'),
-            'database_host' => $input->getOption('database-host'),
-            'database_port' => $input->getOption('database-port'),
-            'database_name' => $input->getOption('database-name'),
-            'database_user' => $input->getOption('database-user'),
-            'database_password' => $input->getOption('database-password'),
-            'mailer_transport' => $input->getOption('mailer-transport'),
-            'mailer_host' => $input->getOption('mailer-host'),
-            'mailer_user' => $input->getOption('mailer-user'),
-            'mailer_password' => $input->getOption('mailer-password'),
-            'mailer_port' => $input->getOption('mailer-port'),
-            'mailer_encryption' => $input->getOption('mailer-encryption'),
-            'locale' => $input->getOption('locale'),
-            'currency' => $input->getOption('currency'),
-            'secret' => $factory->getMediumStrengthGenerator()->generateString(32),
-        );
-
-        $this->getContainer()->get('csbill.core.config_writer')->dump($config);
-
-        return $this;
     }
 
     /**
@@ -337,52 +319,83 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * @param InputInterface $input
      *
-     * @throws \Exception
+     * @return $this
      */
-    private function validate(Inputinterface $input)
+    private function saveConfig(InputInterface $input)
     {
-        $values = array(
-            'database-host',
-            'database-user',
-            'admin-username',
-            'admin-password',
-            'admin-email',
-            'locale',
-            'currency',
+        $factory = new Factory();
+
+        // Don't update installed here, in case something goes wrong with the rest of the installation process
+        $config = array(
+            'database_driver' => $input->getOption('database-driver'),
+            'database_host' => $input->getOption('database-host'),
+            'database_port' => $input->getOption('database-port'),
+            'database_name' => $input->getOption('database-name'),
+            'database_user' => $input->getOption('database-user'),
+            'database_password' => $input->getOption('database-password'),
+            'mailer_transport' => $input->getOption('mailer-transport'),
+            'mailer_host' => $input->getOption('mailer-host'),
+            'mailer_user' => $input->getOption('mailer-user'),
+            'mailer_password' => $input->getOption('mailer-password'),
+            'mailer_port' => $input->getOption('mailer-port'),
+            'mailer_encryption' => $input->getOption('mailer-encryption'),
+            'locale' => $input->getOption('locale'),
+            'currency' => $input->getOption('currency'),
+            'secret' => $factory->getMediumStrengthGenerator()->generateString(32),
         );
 
-        foreach ($values as $option) {
+        $this->getContainer()->get('csbill.core.config_writer')->dump($config);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        if (null !== $this->getContainer()->getParameter('installed')) {
+            throw new ApplicationInstalledException();
+        }
+
+        $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
+        $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
+
+        $localeQuestion = new Question('<question>Please enter a locale:</question> ');
+        $localeQuestion->setAutocompleterValues($locales);
+
+        $currencyQuestion = new Question('<question>Please enter a currency:</question> ');
+        $currencyQuestion->setAutocompleterValues($currencies);
+
+        $passwordQuestion = new Question('<question>Please enter a password for the admin account:</question> ');
+        $passwordQuestion->setHidden(true);
+
+        $options = [
+            'database-user' => new Question('<question>Please enter your database user name:</question> '),
+            'admin-username' => new Question('<question>Please enter a username for the admin account:</question> '),
+            'admin-password' => $passwordQuestion,
+            'admin-email' => new Question('<question>Please enter an email address for the admin account:</question> '),
+            'locale' => $localeQuestion,
+            'currency' => $currencyQuestion,
+        ];
+
+        /** @var QuestionHelper $dialog */
+        $dialog = $this->getHelper('question');
+
+        /** @var Question $question */
+        foreach ($options as $option => $question) {
             if (null === $input->getOption($option)) {
-                throw new \Exception(sprintf('The --%s option needs to be specified', $option));
-            }
-        }
+                $value = null;
 
-        $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
-        $locales = Intl::getLocaleBundle()->getLocaleNames();
+                while (empty($value)) {
+                    $value = $dialog->ask($input, $output, $question);
 
-        if (!array_key_exists($locale = $input->getOption('locale'), $locales)) {
-            throw new \InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
-        }
+                    if ($values = $question->getAutocompleterValues()) {
+                        $value = array_search($value, $values);
+                    }
+                }
 
-        if (!array_key_exists($currency = $input->getOption('currency'), $currencies)) {
-            throw new \InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
-        }
-
-        if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
-            if (null == $input->getOption('mailer-host')) {
-                throw new \Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
-            }
-
-            if (null == $input->getOption('mailer-port')) {
-                throw new \Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
-            }
-        } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
-            if (null == $input->getOption('mailer-user')) {
-                throw new \Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
-            }
-
-            if (null == $input->getOption('mailer-password')) {
-                throw new \Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
+                $input->setOption($option, $value);
             }
         }
     }
