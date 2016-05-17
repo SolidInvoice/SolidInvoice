@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 /**
  * This file is part of CSBill project.
  *
@@ -102,12 +112,12 @@ class Tax
      */
     public static function getTypes()
     {
-	$types = [
-	    self::TYPE_INCLUSIVE,
-	    self::TYPE_EXCLUSIVE,
-	];
+        $types = [
+        self::TYPE_INCLUSIVE,
+        self::TYPE_EXCLUSIVE,
+    ];
 
-	return array_combine($types, $types);
+        return array_combine($types, $types);
     }
 
     /**

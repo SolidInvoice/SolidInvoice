@@ -21,9 +21,9 @@ class PaginateFilter implements FilterInterface
      */
     public function filter(Request $request, QueryBuilder $queryBuilder)
     {
-	if ($request->query->has('per_page') && $request->query->has('page')) {
-	    $queryBuilder->setMaxResults($request->query->get('per_page'));
-	    $queryBuilder->setFirstResult(($request->query->get('page') - 1) * $request->query->get('per_page'));
-	}
+        if ($request->query->has('per_page') && $request->query->has('page')) {
+            $queryBuilder->setMaxResults($request->query->get('per_page'));
+            $queryBuilder->setFirstResult(($request->query->get('page') - 1) * $request->query->get('per_page'));
+        }
     }
 }

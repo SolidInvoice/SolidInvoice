@@ -22,7 +22,7 @@ class MainMenu
      */
     public static function user(User $user)
     {
-        $username = $user->getUsername() . ' <b class="caret"></b>';
+        $username = $user->getUsername().' <b class="caret"></b>';
 
         return [
             'user',

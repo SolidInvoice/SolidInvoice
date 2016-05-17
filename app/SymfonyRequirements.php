@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of CSBill project.
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 /*

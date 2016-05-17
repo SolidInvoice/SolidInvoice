@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -139,7 +139,7 @@ class Payment extends BasePayment implements PaymentInterface
      */
     public function getStatus()
     {
-	return $this->status;
+        return $this->status;
     }
 
     /**
@@ -185,7 +185,7 @@ class Payment extends BasePayment implements PaymentInterface
      */
     public function getMessage()
     {
-	return $this->message;
+        return $this->message;
     }
 
     /**
@@ -225,7 +225,7 @@ class Payment extends BasePayment implements PaymentInterface
      */
     public function getClientId()
     {
-	return $this->getClient()->getId();
+        return $this->getClient()->getId();
     }
 
     /**

@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -132,9 +132,9 @@ class StatusExtension extends \Twig_Extension
      */
     public function renderInvoiceStatusLabel($status = null, $tooltip = null)
     {
-	if (null === $status) {
-	    return $this->getAllStatusLabels($this->invoiceLabelMap);
-	}
+        if (null === $status) {
+            return $this->getAllStatusLabels($this->invoiceLabelMap);
+        }
 
         if (!isset($this->invoiceLabelMap[$status])) {
             throw new \Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
@@ -158,9 +158,9 @@ class StatusExtension extends \Twig_Extension
      */
     public function renderQuoteStatusLabel($status = null, $tooltip = null)
     {
-	if (null === $status) {
-	    return $this->getAllStatusLabels($this->quoteLabelMap);
-	}
+        if (null === $status) {
+            return $this->getAllStatusLabels($this->quoteLabelMap);
+        }
 
         if (!isset($this->quoteLabelMap[$status])) {
             throw new \Exception(sprintf('The quote status "%s" does not have an associative label', $status));
@@ -184,9 +184,9 @@ class StatusExtension extends \Twig_Extension
      */
     public function renderPaymentStatusLabel($status = null, $tooltip = null)
     {
-	if (null === $status) {
-	    return $this->getAllStatusLabels($this->paymentLabelMap);
-	}
+        if (null === $status) {
+            return $this->getAllStatusLabels($this->paymentLabelMap);
+        }
 
         if (!isset($this->paymentLabelMap[$status])) {
             throw new \Exception(sprintf('The payment status "%s" does not have an associative label', $status));
@@ -210,9 +210,9 @@ class StatusExtension extends \Twig_Extension
      */
     public function renderClientStatusLabel($status = null, $tooltip = null)
     {
-	if (null === $status) {
-	    return $this->getAllStatusLabels($this->clientLabelMap);
-	}
+        if (null === $status) {
+            return $this->getAllStatusLabels($this->clientLabelMap);
+        }
 
         if (!isset($this->clientLabelMap[$status])) {
             throw new \Exception(sprintf('The client status "%s" does not have an associative label', $status));
@@ -223,7 +223,7 @@ class StatusExtension extends \Twig_Extension
             'status_label' => $this->clientLabelMap[$status],
         );
 
-	return trim($this->renderStatusLabel($statusLabel, $tooltip));
+        return trim($this->renderStatusLabel($statusLabel, $tooltip));
     }
 
     /**
@@ -259,13 +259,13 @@ class StatusExtension extends \Twig_Extension
      */
     private function getAllStatusLabels(array $labelMap)
     {
-	$response = [];
+        $response = [];
 
-	foreach ($labelMap as $status => $label) {
-	    $response[$status] = $this->renderStatusLabel(['status' => $status, 'status_label' => $label]);
-	}
+        foreach ($labelMap as $status => $label) {
+            $response[$status] = $this->renderStatusLabel(['status' => $status, 'status_label' => $label]);
+        }
 
-	return $response;
+        return $response;
     }
 
     /**

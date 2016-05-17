@@ -27,21 +27,21 @@ class GridController extends BaseController
      */
     public function archiveAction(Request $request)
     {
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	/** @var Client[] $clients */
-	$clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
+    /** @var Client[] $clients */
+    $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
 
-	$em = $this->getEm();
-	foreach ($clients as $client) {
-	    $client->setArchived(true);
-	    $client->setStatus(Status::STATUS_ARCHIVED);
-	    $em->persist($client);
-	}
+        $em = $this->getEm();
+        foreach ($clients as $client) {
+            $client->setArchived(true);
+            $client->setStatus(Status::STATUS_ARCHIVED);
+            $em->persist($client);
+        }
 
-	$em->flush();
+        $em->flush();
 
-	return $this->json([]);
+        return $this->json([]);
     }
 
     /**
@@ -53,23 +53,23 @@ class GridController extends BaseController
      */
     public function restoreAction(Request $request)
     {
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	$this->getEm()->getFilters()->disable('archivable');
+        $this->getEm()->getFilters()->disable('archivable');
 
-	/** @var Client[] $clients */
-	$clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
+    /** @var Client[] $clients */
+    $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
 
-	$em = $this->getEm();
-	foreach ($clients as $client) {
-	    $client->setArchived(null);
-	    $client->setStatus(Status::STATUS_ACTIVE);
-	    $em->persist($client);
-	}
+        $em = $this->getEm();
+        foreach ($clients as $client) {
+            $client->setArchived(null);
+            $client->setStatus(Status::STATUS_ACTIVE);
+            $em->persist($client);
+        }
 
-	$em->flush();
+        $em->flush();
 
-	return $this->json([]);
+        return $this->json([]);
     }
 
     /**
@@ -81,18 +81,18 @@ class GridController extends BaseController
      */
     public function deleteAction(Request $request)
     {
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	/** @var Client[] $clients */
-	$clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
+    /** @var Client[] $clients */
+    $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
 
-	$em = $this->getEm();
-	foreach ($clients as $client) {
-	    $em->remove($client);
-	}
+        $em = $this->getEm();
+        foreach ($clients as $client) {
+            $em->remove($client);
+        }
 
-	$em->flush();
+        $em->flush();
 
-	return $this->json([]);
+        return $this->json([]);
     }
 }

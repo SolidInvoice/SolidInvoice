@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -25,30 +25,30 @@ class GridController extends BaseController
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws InvalidTransitionException
      */
     public function archiveAction(Request $request)
     {
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	/** @var Invoice[] $invoices */
-	$invoices = $this->getRepository('CSBillInvoiceBundle:Invoice')->findBy(['id' => $data]);
+    /** @var Invoice[] $invoices */
+    $invoices = $this->getRepository('CSBillInvoiceBundle:Invoice')->findBy(['id' => $data]);
 
-	$invoiceManager = $this->get('invoice.manager');
+        $invoiceManager = $this->get('invoice.manager');
 
-	$em = $this->getEm();
-	foreach ($invoices as $invoice) {
+        $em = $this->getEm();
+        foreach ($invoices as $invoice) {
+            if (!$this->get('finite.factory')->get($invoice, Graph::GRAPH)->can('archive')) {
+                throw new InvalidTransitionException('archive');
+            }
 
-	    if (!$this->get('finite.factory')->get($invoice, Graph::GRAPH)->can('archive')) {
-		throw new InvalidTransitionException('archive');
-	    }
+            $invoiceManager->archive($invoice);
+        }
 
-	    $invoiceManager->archive($invoice);
-	}
+        $em->flush();
 
-	$em->flush();
-
-	return $this->json([]);
+        return $this->json([]);
     }
 
     /**
@@ -60,18 +60,18 @@ class GridController extends BaseController
      */
     public function deleteAction(Request $request)
     {
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	/** @var Invoice[] $invoice */
-	$invoices = $this->getRepository('CSBillInvoiceBundle:Invoice')->findBy(['id' => $data]);
+    /* @var Invoice[] $invoice */
+    $invoices = $this->getRepository('CSBillInvoiceBundle:Invoice')->findBy(['id' => $data]);
 
-	$em = $this->getEm();
-	foreach ($invoices as $invoice) {
-	    $em->remove($invoice);
-	}
+        $em = $this->getEm();
+        foreach ($invoices as $invoice) {
+            $em->remove($invoice);
+        }
 
-	$em->flush();
+        $em->flush();
 
-	return $this->json([]);
+        return $this->json([]);
     }
 }

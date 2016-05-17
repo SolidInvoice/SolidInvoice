@@ -40,9 +40,9 @@ class ORMSource implements Source
      */
     public function __construct(ManagerRegistry $registry, $repository, $method)
     {
-	$this->registry = $registry;
-	$this->repository = $repository;
-	$this->method = $method;
+        $this->registry = $registry;
+        $this->repository = $repository;
+        $this->method = $method;
     }
 
     /**
@@ -50,15 +50,15 @@ class ORMSource implements Source
      */
     public function fetch(array $paramters = [])
     {
-	$repository = $this->registry->getRepository($this->repository);
+        $repository = $this->registry->getRepository($this->repository);
 
-	$method = $this->method;
-	$qb = $repository->{$method}($paramters);
+        $method = $this->method;
+        $qb = $repository->{$method}($paramters);
 
-	if (!$qb instanceof QueryBuilder) {
-	    throw new \Exception('Grid source should return a query builder');
-	}
+        if (!$qb instanceof QueryBuilder) {
+            throw new \Exception('Grid source should return a query builder');
+        }
 
-	return $qb;
+        return $qb;
     }
 }

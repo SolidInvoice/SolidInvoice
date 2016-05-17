@@ -18,8 +18,8 @@ class InvalidGridException extends \Exception
      */
     public function __construct($grid)
     {
-	$message = sprintf('The grid "%s" does not exist.', $grid);
+        $message = sprintf('The grid "%s" does not exist.', $grid);
 
-	parent::__construct($message);
+        parent::__construct($message);
     }
 }

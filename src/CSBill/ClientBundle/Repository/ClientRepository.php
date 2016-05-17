@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -76,11 +76,11 @@ class ClientRepository extends EntityRepository
      */
     public function getStatusList()
     {
-	$qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c');
 
-	$qb->select('DISTINCT c.status');
+        $qb->select('DISTINCT c.status');
 
-	return ArrayUtil::column($qb->getQuery()->getResult(), 'status');
+        return ArrayUtil::column($qb->getQuery()->getResult(), 'status');
     }
 
     /**
@@ -88,11 +88,11 @@ class ClientRepository extends EntityRepository
      */
     public function getGridQuery()
     {
-	$qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c');
 
-	$qb->select('c');
+        $qb->select('c');
 
-	return $qb;
+        return $qb;
     }
 
     /**
@@ -100,14 +100,14 @@ class ClientRepository extends EntityRepository
      */
     public function getArchivedGridQuery()
     {
-	$this->getEntityManager()->getFilters()->disable('archivable');
+        $this->getEntityManager()->getFilters()->disable('archivable');
 
-	$qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c');
 
-	$qb->select('c');
+        $qb->select('c');
 
-	$qb->where('c.archived is not null');
+        $qb->where('c.archived is not null');
 
-	return $qb;
+        return $qb;
     }
 }

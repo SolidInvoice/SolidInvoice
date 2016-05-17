@@ -23,11 +23,11 @@ class SortFilter implements FilterInterface
      */
     public function filter(Request $request, QueryBuilder $queryBuilder)
     {
-	$order = $request->query->get('order') ?: self::DEFAULT_ORDER;
+        $order = $request->query->get('order') ?: self::DEFAULT_ORDER;
 
-	if ($request->query->has('sort')) {
-	    $alias = $queryBuilder->getRootAliases()[0];
-	    $queryBuilder->orderBy($alias.'.'.$request->query->get('sort'), $order);
-	}
+        if ($request->query->has('sort')) {
+            $alias = $queryBuilder->getRootAliases()[0];
+            $queryBuilder->orderBy($alias.'.'.$request->query->get('sort'), $order);
+        }
     }
 }

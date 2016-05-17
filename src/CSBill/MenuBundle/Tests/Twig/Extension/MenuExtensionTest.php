@@ -51,7 +51,7 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension->setRenderer($renderer);
 
         $location = 'abc';
-        $menu = new \SplPriorityQueue;
+        $menu = new \SplPriorityQueue();
 
         $provider->shouldReceive('get')
             ->once()

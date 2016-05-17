@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -25,30 +25,30 @@ class GridController extends BaseController
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws InvalidTransitionException
      */
     public function archiveAction(Request $request)
     {
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	/** @var Quote[] $quotes */
-	$quotes = $this->getRepository('CSBillQuoteBundle:Quote')->findBy(['id' => $data]);
+    /** @var Quote[] $quotes */
+    $quotes = $this->getRepository('CSBillQuoteBundle:Quote')->findBy(['id' => $data]);
 
-	$quoteManager = $this->get('quote.manager');
+        $quoteManager = $this->get('quote.manager');
 
-	$em = $this->getEm();
-	foreach ($quotes as $quote) {
+        $em = $this->getEm();
+        foreach ($quotes as $quote) {
+            if (!$this->get('finite.factory')->get($quote, Graph::GRAPH)->can('archive')) {
+                throw new InvalidTransitionException('archive');
+            }
 
-	    if (!$this->get('finite.factory')->get($quote, Graph::GRAPH)->can('archive')) {
-		throw new InvalidTransitionException('archive');
-	    }
+            $quoteManager->archive($quote);
+        }
 
-	    $quoteManager->archive($quote);
-	}
+        $em->flush();
 
-	$em->flush();
-
-	return $this->json([]);
+        return $this->json([]);
     }
 
     /**
@@ -60,18 +60,18 @@ class GridController extends BaseController
      */
     public function deleteAction(Request $request)
     {
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	/** @var Quote[] $quote */
-	$quotes = $this->getRepository('CSBillQuoteBundle:Quote')->findBy(['id' => $data]);
+    /* @var Quote[] $quote */
+    $quotes = $this->getRepository('CSBillQuoteBundle:Quote')->findBy(['id' => $data]);
 
-	$em = $this->getEm();
-	foreach ($quotes as $quote) {
-	    $em->remove($quote);
-	}
+        $em = $this->getEm();
+        foreach ($quotes as $quote) {
+            $em->remove($quote);
+        }
 
-	$em->flush();
+        $em->flush();
 
-	return $this->json([]);
+        return $this->json([]);
     }
 }

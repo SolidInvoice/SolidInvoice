@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -61,8 +61,8 @@ class Provider implements MenuProviderInterface
      * Adds a builder to the storage.
      *
      * @param BuilderInterface $class
-     * @param string           $name   The name of the menu the builder should be attached to
-     * @param string           $method The method to call to build the menu
+     * @param string           $name     The name of the menu the builder should be attached to
+     * @param string           $method   The method to call to build the menu
      * @param int              $priority
      */
     public function addBuilder(BuilderInterface $class, $name, $method, $priority)
