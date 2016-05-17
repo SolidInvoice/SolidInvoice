@@ -24,17 +24,7 @@
     <meta name="viewport" content="width=device-width">
 
     {% block stylesheets %}
-        {% stylesheets
-            'bundles/csbillcore/less/styles.less'
-            'bundles/csbillcore/css/select2.css'
-            'bundles/csbillcore/css/select2-bootstrap.css'
-            'bundles/csbillcore/css/*.css'
-            'bundles/csbillclient/less/*.less'
-	    'bundles/csbilldatagrid/css/*.css'
-            filter="lessphp, cssrewrite, ?yui_css"
-        %}
-            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
-        {% endstylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css" />
     {% endblock stylesheets %}
 
     {% javascripts

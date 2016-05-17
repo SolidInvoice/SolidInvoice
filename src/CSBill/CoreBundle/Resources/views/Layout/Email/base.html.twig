@@ -14,14 +14,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>{{ block('title') }}</title>
 
-        {% stylesheets
-            'bundles/csbillcore/less/email.less'
-            filter="lessphp, cssrewrite, yui_css"
-        %}
-            <style type="text/css" rel="stylesheet">
-                {{ file(asset(asset_url)) }}
-            </style>
-        {% endstylesheets %}
+	<style type="text/css" rel="stylesheet">
+	    {{ file(asset('css/email.css')) }}
+	</style>
     </head>
     <body>
         <header>
