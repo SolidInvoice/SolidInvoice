@@ -23,12 +23,14 @@ before_install:
 
 install:
   - composer install --prefer-source -n
+  - npm install
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
   - php app/console cache:clear
   - php app/console assets:install -n
   - php app/console assetic:dump -n
 
 before_script:
+  - npm install -g gulp
   - mysql -e 'create database csbill;'
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm"* ]]; then echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
   - php app/check.php
@@ -39,6 +41,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
   - if [[ "$SAUCE_USERNAME" ]]; then bash travis/sauce.sh; fi;
+  - gulp
 
 script:
   - composer validate
