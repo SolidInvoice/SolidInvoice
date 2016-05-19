@@ -22,14 +22,14 @@ class SystemInformationFormTest extends FormTestCase
     {
         $faker = Factory::create();
 
-        $formData = array(
+        $formData = [
             'locale' => $faker->randomKey(Intl::getLocaleBundle()->getLocaleNames()),
             'currency' => $faker->randomKey(Intl::getCurrencyBundle()->getCurrencyNames()),
             'username' => $faker->userName,
             'email_address' => $faker->email,
             'base_url' => $faker->url,
             'password' => null,
-        );
+        ];
 
         $type = new SystemInformationForm($this->getMock('Symfony\Component\HttpFoundation\Request'));
         $form = $this->factory->create($type);

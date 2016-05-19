@@ -29,7 +29,7 @@ class StatusAction extends GatewayAwareAction
 
         /** @var Payment $payment */
         $payment = $request->getModel();
-        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?: array());
+        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?: []);
 
         $details[Constants::FIELD_STATUS] = Constants::STATUS_CAPTURED;
 

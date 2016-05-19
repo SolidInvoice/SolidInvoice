@@ -35,12 +35,12 @@ class ContactDetail extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $options = array(
+        $options = [
             'data_class' => null,
-            'attr' => array(
+            'attr' => [
                 'class' => 'input-group-select-val',
-            ),
-        );
+            ],
+        ];
 
         $builder->add(
             $builder

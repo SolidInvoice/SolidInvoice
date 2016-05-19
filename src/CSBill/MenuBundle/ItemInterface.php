@@ -20,7 +20,7 @@ interface ItemInterface extends BaseInterface
      *
      * @return ItemInterface
      */
-    public function addChild($child, array $options = array());
+    public function addChild($child, array $options = []);
 
     /**
      * @param string $type

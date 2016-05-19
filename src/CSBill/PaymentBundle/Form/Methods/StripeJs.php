@@ -25,17 +25,17 @@ class StripeJs extends AbstractType
         $builder->add(
             'publishable_key',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'secret_key',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
     }
 

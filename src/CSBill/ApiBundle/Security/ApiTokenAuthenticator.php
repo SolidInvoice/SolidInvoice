@@ -105,9 +105,9 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
 
         $roles = array_merge(
             $user->getRoles(),
-            array(
+            [
                 'ROLE_API_AUTHENTICATED',
-            )
+            ]
         );
 
         return new PreAuthenticatedToken($user, $apiToken, $providerKey, $roles);
@@ -129,7 +129,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $response = array('message' => $exception->getMessage());
+        $response = ['message' => $exception->getMessage()];
 
         $content = $this->serializer->serialize($response, $request->getRequestFormat());
 

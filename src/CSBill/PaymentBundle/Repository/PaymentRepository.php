@@ -218,10 +218,10 @@ class PaymentRepository extends EntityRepository
 
         $payments = $this->formatDate($query);
 
-        $results = array();
+        $results = [];
 
         foreach ($payments as $date => $amount) {
-            $results[] = array(strtotime($date) * 1000, $amount);
+            $results[] = [strtotime($date) * 1000, $amount];
         }
 
         return $results;
@@ -283,7 +283,7 @@ class PaymentRepository extends EntityRepository
     public function updatePaymentStatus($payments, $status)
     {
         if (!is_array($payments) && !$payments instanceof \Traversable) {
-            $payments = array($payments);
+            $payments = [$payments];
         }
 
         if ($payments instanceof Collection) {

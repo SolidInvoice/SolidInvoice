@@ -48,15 +48,15 @@ class ApiController extends BaseController
     {
         $content = $this->renderView(
             'CSBillUserBundle:Api:history.html.twig',
-            array(
+            [
                 'history' => $token->getHistory(),
-            )
+            ]
         );
 
         return $this->json(
-            array(
+            [
                 'content' => $content,
-            )
+            ]
         );
     }
 
@@ -72,10 +72,10 @@ class ApiController extends BaseController
 
         $formBuilder = $this->createFormBuilder(
             $apiToken,
-            array(
+            [
                 'action' => $this->generateUrl('api_key_create'),
                 'data_class' => 'CSBill\UserBundle\Entity\ApiToken',
-            )
+            ]
         );
 
         $formBuilder->add('name');
@@ -84,7 +84,7 @@ class ApiController extends BaseController
 
         $form->handleRequest($request);
 
-        $response = array();
+        $response = [];
 
         if ($form->isValid()) {
             $factory = new Factory();
@@ -96,11 +96,11 @@ class ApiController extends BaseController
             $this->save($apiToken);
 
             $response['status'] = 'success';
-            $response['token'] = array(
+            $response['token'] = [
                 'token' => $apiToken->getToken(),
                 'name' => $apiToken->getName(),
                 'id' => $apiToken->getId(),
-            );
+            ];
 
             return $this->json($response);
         } else {
@@ -109,9 +109,9 @@ class ApiController extends BaseController
 
         $content = $this->renderView(
             'CSBillUserBundle:Api:create.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
-            )
+            ]
         );
 
         $response['content'] = $content;

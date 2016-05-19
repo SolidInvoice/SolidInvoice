@@ -18,7 +18,7 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $manager = \Mockery::mock('Doctrine\Common\Persistence\ObjectManager');
-        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager' => $manager));
+        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', ['getManager' => $manager]);
 
         $extension = new ContactTypesExtension($registry);
 
@@ -32,17 +32,17 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContactTypes()
     {
-        $array = array(
+        $array = [
             1,
             3,
             5,
             7,
             9,
-        );
+        ];
 
         $manager = \Mockery::mock('Doctrine\Common\Persistence\ObjectManager');
-        $objectRepository = \Mockery::mock('Doctrine\Common\Persistence\ObjectRepository', array('findAll' => $array));
-        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager' => $manager));
+        $objectRepository = \Mockery::mock('Doctrine\Common\Persistence\ObjectRepository', ['findAll' => $array]);
+        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', ['getManager' => $manager]);
 
         $manager->shouldReceive('getRepository')
             ->once()
@@ -61,7 +61,7 @@ class ContactTypesExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $manager = \Mockery::mock('Doctrine\Common\Persistence\ObjectManager');
-        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', array('getManager' => $manager));
+        $registry = \Mockery::mock('Doctrine\Bundle\DoctrineBundle\Registry', ['getManager' => $manager]);
 
         $extension = new ContactTypesExtension($registry);
 

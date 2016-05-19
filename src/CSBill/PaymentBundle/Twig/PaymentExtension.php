@@ -35,10 +35,10 @@ class PaymentExtension extends Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new Twig_SimpleFunction('payment_enabled', array($this, 'paymentEnabled')),
-            new Twig_SimpleFunction('payments_configured', array($this, 'paymentConfigured')),
-        );
+        return [
+            new Twig_SimpleFunction('payment_enabled', [$this, 'paymentEnabled']),
+            new Twig_SimpleFunction('payments_configured', [$this, 'paymentConfigured']),
+        ];
     }
 
     /**
@@ -48,7 +48,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function paymentEnabled($method)
     {
-        $paymentMethod = $this->repository->findOneBy(array('paymentMethod' => $method));
+        $paymentMethod = $this->repository->findOneBy(['paymentMethod' => $method]);
 
         if (null === $paymentMethod) {
             return false;

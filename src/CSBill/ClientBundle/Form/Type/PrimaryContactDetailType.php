@@ -46,23 +46,23 @@ class PrimaryContactDetailType extends AbstractType
         $builder->add(
             'value',
             $this->item->getType(),
-            array(
+            [
                 'constraints' => array_merge(
                     ConstraintBuilder::build(
-                        isset($itemOptions['constraints']) ? $itemOptions['constraints'] : array()
+                        isset($itemOptions['constraints']) ? $itemOptions['constraints'] : []
                     ),
-                    array(new NotBlank())
+                    [new NotBlank()]
                 ),
                 'label' => $this->item->getName(),
-            )
+            ]
         );
 
         $type = $builder->create(
             'type',
             'hidden',
-            array(
+            [
                 'data' => $this->item->getType(),
-            )
+            ]
         );
 
         $type->addViewTransformer(new ViewTransformer\ContactTypeTransformer($this->item));
@@ -76,9 +76,9 @@ class PrimaryContactDetailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'CSBill\ClientBundle\Entity\PrimaryContactDetail',
-            )
+            ]
         );
     }
 

@@ -30,13 +30,13 @@ class AddressType extends AbstractType
         $builder->add(
             'country',
             'country',
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'select2',
-                ),
+                ],
                 'placeholder' => 'client.address.country.select',
                 'required' => false,
-            )
+            ]
         );
     }
 
@@ -46,9 +46,9 @@ class AddressType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'CSBill\ClientBundle\Entity\Address',
-            )
+            ]
         );
     }
 

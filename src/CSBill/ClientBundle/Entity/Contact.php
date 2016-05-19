@@ -299,7 +299,7 @@ class Contact implements \Serializable
      */
     public function serialize()
     {
-        return serialize(array($this->id, $this->firstname, $this->lastname, $this->created, $this->updated));
+        return serialize([$this->id, $this->firstname, $this->lastname, $this->created, $this->updated]);
     }
 
     /**

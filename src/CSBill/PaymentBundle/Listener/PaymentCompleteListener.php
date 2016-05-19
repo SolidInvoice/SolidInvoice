@@ -110,7 +110,7 @@ class PaymentCompleteListener
 
             $event->setResponse(
                 new RedirectResponse(
-                    $this->router->generate('_view_invoice_external', array('uuid' => $invoice->getUuid()))
+                    $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()])
                 )
             );
         }
@@ -177,7 +177,7 @@ class PaymentCompleteListener
 
         /** @var FlashBag $flashBag */
         $flashBag = $this->session->getBag('flashes');
-        $parameters = array('%message%' => $errorMessage);
+        $parameters = ['%message%' => $errorMessage];
 
         $flashBag->add($type, $this->translator->trans($message, $parameters));
     }

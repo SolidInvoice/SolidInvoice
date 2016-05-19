@@ -58,9 +58,9 @@ class ConfigWriter
      */
     public function dump(array $config, $mode = 0777)
     {
-        $values = array(
+        $values = [
             'parameters' => array_merge($this->getConfigValues(), $config),
-        );
+        ];
 
         $yaml = Yaml::dump($values);
 

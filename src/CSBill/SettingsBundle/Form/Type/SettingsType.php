@@ -50,6 +50,6 @@ class SettingsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('manager'));
+        $resolver->setRequired(['manager']);
     }
 }

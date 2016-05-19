@@ -43,7 +43,7 @@ class ClientListener
         }
 
         // client is created
-        $notification = new ClientCreateNotification(array('client' => $entity));
+        $notification = new ClientCreateNotification(['client' => $entity]);
 
         $this->container
             ->get('notification.manager')

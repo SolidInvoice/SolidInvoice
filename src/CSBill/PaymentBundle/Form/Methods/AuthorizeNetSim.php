@@ -25,33 +25,33 @@ class AuthorizeNetSim extends AbstractType
         $builder->add(
             'login_id',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'transaction_key',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'hash_secret',
             'password',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'test_mode',
             'checkbox',
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
     }
 

@@ -17,6 +17,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('CSBillItemBundle:Default:index.html.twig', array());
+        return $this->render('CSBillItemBundle:Default:index.html.twig', []);
     }
 }

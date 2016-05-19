@@ -27,15 +27,15 @@ class Builder extends AuthenticatedMenu
 
         $userMenu = $menu->addChild(MainMenu::user($user));
 
-        $userMenu->setAttributes(array('class' => 'dropdown'));
-        $userMenu->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
+        $userMenu->setAttributes(['class' => 'dropdown']);
+        $userMenu->setLinkAttributes(['class' => 'dropdown-toggle', 'data-toggle' => 'dropdown']);
 
         $userMenu->addChild(MainMenu::profile());
         $userMenu->addChild(MainMenu::api());
         $userMenu->addDivider();
         $userMenu->addChild(MainMenu::logout());
 
-        $userMenu->setChildrenAttributes(array('class' => 'dropdown-menu'));
+        $userMenu->setChildrenAttributes(['class' => 'dropdown-menu']);
     }
 
     /**
@@ -47,11 +47,11 @@ class Builder extends AuthenticatedMenu
     {
         $system = $menu->addChild(MainMenu::system());
 
-        $system->setAttributes(array('class' => 'dropdown'));
-        $system->setLinkAttributes(array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
+        $system->setAttributes(['class' => 'dropdown']);
+        $system->setLinkAttributes(['class' => 'dropdown-toggle', 'data-toggle' => 'dropdown']);
         $system->addChild(MainMenu::settings());
 
         $system->addChild(MainMenu::tax());
-        $system->setChildrenAttributes(array('class' => 'dropdown-menu'));
+        $system->setChildrenAttributes(['class' => 'dropdown-menu']);
     }
 }
