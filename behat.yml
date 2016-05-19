@@ -34,7 +34,7 @@ default:
                     sauce_labs:
                         connect: true
                         capabilities:
-			    custom-data: {travis: true}
-	    #browser_name: firefox
-	    #show_auto:    false
-	Behat\Symfony2Extension: ~
+		custom-data: {travis: true}
+	#browser_name: firefox
+	#show_auto:    false
+    Behat\Symfony2Extension: ~

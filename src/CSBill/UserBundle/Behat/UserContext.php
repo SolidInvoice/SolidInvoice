@@ -64,7 +64,6 @@ class UserContext extends DefaultContext
     {
         $entityManager = $this->getContainer()->get('doctrine')->getManager();
         $userRepository = $entityManager->getRepository('CSBillUserBundle:User');
-        $passwordEncoder = $this->getContainer()->get('security.password_encoder');
 
         /** @var User[] $users */
         $users = $userRepository->findAll();
@@ -75,7 +74,7 @@ class UserContext extends DefaultContext
                 if (
                     $user->getUsername() === $row['username'] &&
                     $user->getEmail() === $row['email'] &&
-                    $user->getPassword() === $passwordEncoder->encodePassword($user, $row['password'])
+		    password_verify($row['password'], $user->getPassword())
                 ) {
                     $match = true;
                     break;
