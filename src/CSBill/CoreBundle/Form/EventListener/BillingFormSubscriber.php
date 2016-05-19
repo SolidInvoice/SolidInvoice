@@ -32,7 +32,7 @@ class BillingFormSubscriber implements EventSubscriberInterface
     /**
      * @param Currency $currency
      */
-    public function __construct(Currency $currency)
+    public function __construct(Currency $currency = null)
     {
         $this->currency = $currency;
     }

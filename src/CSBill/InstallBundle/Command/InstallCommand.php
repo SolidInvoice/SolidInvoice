@@ -16,7 +16,6 @@ use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Exception\ApplicationInstalledException;
 use CSBill\UserBundle\Entity\User;
 use Doctrine\DBAL\DriverManager;
-use RandomLib\Factory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -323,8 +322,6 @@ class InstallCommand extends ContainerAwareCommand
      */
     private function saveConfig(InputInterface $input)
     {
-        $factory = new Factory();
-
         // Don't update installed here, in case something goes wrong with the rest of the installation process
         $config = array(
             'database_driver' => $input->getOption('database-driver'),
@@ -341,7 +338,7 @@ class InstallCommand extends ContainerAwareCommand
             'mailer_encryption' => $input->getOption('mailer-encryption'),
             'locale' => $input->getOption('locale'),
             'currency' => $input->getOption('currency'),
-            'secret' => $factory->getMediumStrengthGenerator()->generateString(32),
+	    'secret' => bin2hex(random_bytes(32)),
         );
 
         $this->getContainer()->get('csbill.core.config_writer')->dump($config);
