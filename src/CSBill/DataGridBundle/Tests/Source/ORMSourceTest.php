@@ -18,40 +18,40 @@ class ORMSourceTest extends \PHPUnit_Framework_TestCase
 {
     public function testFetch()
     {
-	$qb = M::mock('Doctrine\ORM\QueryBuilder');
-	$repository = M::mock('Doctrine\ORM\EntityManager');
-	$registry = M::mock('Doctrine\Common\Persistence\ManagerRegistry');
+        $qb = M::mock('Doctrine\ORM\QueryBuilder');
+        $repository = M::mock('Doctrine\ORM\EntityManager');
+        $registry = M::mock('Doctrine\Common\Persistence\ManagerRegistry');
 
-	$registry->shouldReceive('getRepository')
-	    ->with('a')
-	    ->andReturn($repository);
+        $registry->shouldReceive('getRepository')
+        ->with('a')
+        ->andReturn($repository);
 
-	$repository->shouldReceive('b')
-	    ->andReturn($qb);
+        $repository->shouldReceive('b')
+        ->andReturn($qb);
 
-	$source = new ORMSource($registry, 'a', 'b');
+        $source = new ORMSource($registry, 'a', 'b');
 
-	$data = $source->fetch();
+        $data = $source->fetch();
 
-	$this->assertSame($qb, $data);
+        $this->assertSame($qb, $data);
     }
 
     public function testFetchException()
     {
-	$this->setExpectedException('Exception', 'Grid source should return a query builder');
+        $this->setExpectedException('Exception', 'Grid source should return a query builder');
 
-	$repository = M::mock('Doctrine\ORM\EntityManager');
-	$registry = M::mock('Doctrine\Common\Persistence\ManagerRegistry');
+        $repository = M::mock('Doctrine\ORM\EntityManager');
+        $registry = M::mock('Doctrine\Common\Persistence\ManagerRegistry');
 
-	$registry->shouldReceive('getRepository')
-	    ->with('a')
-	    ->andReturn($repository);
+        $registry->shouldReceive('getRepository')
+        ->with('a')
+        ->andReturn($repository);
 
-	$repository->shouldReceive('b')
-	    ->andReturn([]);
+        $repository->shouldReceive('b')
+        ->andReturn([]);
 
-	$source = new ORMSource($registry, 'a', 'b');
+        $source = new ORMSource($registry, 'a', 'b');
 
-	$data = $source->fetch();
+        $data = $source->fetch();
     }
 }

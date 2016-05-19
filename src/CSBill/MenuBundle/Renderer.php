@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -113,11 +113,10 @@ class Renderer extends ListRenderer implements RendererInterface
         $translator = $this->container->get('translator');
 
         if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
-            return $icon . $translator->trans($item->getLabel());
+            return $icon.$translator->trans($item->getLabel());
         }
 
-
-        return $icon . $this->escape($translator->trans($item->getLabel()));
+        return $icon.$this->escape($translator->trans($item->getLabel()));
     }
 
     /**
@@ -141,10 +140,10 @@ class Renderer extends ListRenderer implements RendererInterface
     protected function renderDivider(Item $item, array $options = [])
     {
         return $this->format(
-            '<li' . $this->renderHtmlAttributes(
+            '<li'.$this->renderHtmlAttributes(
                 [
-                    'class' => 'divider' . $item->getExtra('divider'),]
-            ) . '>',
+                    'class' => 'divider'.$item->getExtra('divider'), ]
+            ).'>',
             'li',
             $item->getLevel(),
             $options

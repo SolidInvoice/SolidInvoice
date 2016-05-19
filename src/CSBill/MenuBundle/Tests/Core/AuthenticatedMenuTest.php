@@ -81,7 +81,7 @@ class AuthenticatedMenuTest extends \PHPUnit_Framework_TestCase
         $this->container->shouldReceive('get')
             ->once()
             ->withArgs(['security.authorization_checker'])
-            ->andThrow(new AuthenticationCredentialsNotFoundException);
+            ->andThrow(new AuthenticationCredentialsNotFoundException());
 
         $this->assertFalse($menu->validate());
 

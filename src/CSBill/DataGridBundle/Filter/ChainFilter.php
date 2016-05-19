@@ -26,9 +26,9 @@ class ChainFilter implements FilterInterface
      */
     public function filter(Request $request, QueryBuilder $queryBuilder)
     {
-	foreach ($this->filters as $filter) {
-	    $filter->filter($request, $queryBuilder);
-	}
+        foreach ($this->filters as $filter) {
+            $filter->filter($request, $queryBuilder);
+        }
     }
 
     /**
@@ -36,6 +36,6 @@ class ChainFilter implements FilterInterface
      */
     public function addFilter(FilterInterface $filter)
     {
-	$this->filters[] = $filter;
+        $this->filters[] = $filter;
     }
 }

@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -13,7 +13,6 @@ namespace CSBill\InvoiceBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\DataGridBundle\Grid\GridCollection;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
@@ -33,19 +32,19 @@ class DefaultController extends BaseController
         /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
 
-	return $this->render(
-	    'CSBillInvoiceBundle:Default:index.html.twig',
-	    [
-		'status_list_count' => [
+        return $this->render(
+        'CSBillInvoiceBundle:Default:index.html.twig',
+        [
+        'status_list_count' => [
                     Graph::STATUS_PENDING => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),
                     Graph::STATUS_PAID => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID),
                     Graph::STATUS_CANCELLED => $invoiceRepository->getCountByStatus(Graph::STATUS_CANCELLED),
                     Graph::STATUS_DRAFT => $invoiceRepository->getCountByStatus(Graph::STATUS_DRAFT),
                     Graph::STATUS_OVERDUE => $invoiceRepository->getCountByStatus(Graph::STATUS_OVERDUE),
-		],
+        ],
                 'total_income' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome(),
                 'total_outstanding' => $invoiceRepository->getTotalOutstanding(),
-	    ]
+        ]
         );
     }
 
@@ -85,10 +84,10 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('invoice.create.success'), 'success');
 
-	    return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
+            return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
         }
 
-	return $this->render('CSBillInvoiceBundle:Default:create.html.twig', ['form' => $form->createView()]);
+        return $this->render('CSBillInvoiceBundle:Default:create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -129,15 +128,15 @@ class DefaultController extends BaseController
 
             $this->flash($this->trans('invoice.edit.success'), 'success');
 
-	    return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
+            return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
         }
 
         return $this->render(
             'CSBillInvoiceBundle:Default:edit.html.twig',
-	    [
+        [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-	    ]
+        ]
         );
     }
 
@@ -156,10 +155,10 @@ class DefaultController extends BaseController
 
         return $this->render(
             'CSBillInvoiceBundle:Default:view.html.twig',
-	    [
+        [
                 'invoice' => $invoice,
                 'payments' => $payments,
-	    ]
+        ]
         );
     }
 

@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 /**
  * This file is part of CSBill project.
  *
@@ -34,7 +44,7 @@ class DefaultController extends BaseController
      */
     public function ratesAction()
     {
-	return $this->render('CSBillTaxBundle:Default:index.html.twig');
+        return $this->render('CSBillTaxBundle:Default:index.html.twig');
     }
 
     /**
@@ -59,7 +69,7 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('_tax_rates'));
         }
 
-	return $this->render('CSBillTaxBundle:Default:add.html.twig', ['form' => $form->createView()]);
+        return $this->render('CSBillTaxBundle:Default:add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -75,22 +85,22 @@ class DefaultController extends BaseController
         /** @var \CSBill\QuoteBundle\Repository\ItemRepository $quoteRepository */
         $quoteRepository = $this->getRepository('CSBillQuoteBundle:Item');
 
-	$data = $request->request->get('data');
+        $data = $request->request->get('data');
 
-	/** @var Tax[] $taxes */
-	$taxes = $this->getRepository('CSBillTaxBundle:Tax')->findBy(['id' => $data]);
+    /** @var Tax[] $taxes */
+    $taxes = $this->getRepository('CSBillTaxBundle:Tax')->findBy(['id' => $data]);
 
-	$em = $this->getEm();
-	foreach ($taxes as $tax) {
-	    $invoiceRepository->removeTax($tax);
-	    $quoteRepository->removeTax($tax);
+        $em = $this->getEm();
+        foreach ($taxes as $tax) {
+            $invoiceRepository->removeTax($tax);
+            $quoteRepository->removeTax($tax);
 
-	    $em->remove($tax);
-	}
+            $em->remove($tax);
+        }
 
-	$em->flush();
+        $em->flush();
 
-	return $this->json([]);
+        return $this->json([]);
     }
 
     /**
@@ -100,13 +110,13 @@ class DefaultController extends BaseController
      */
     public function getAction(Tax $tax)
     {
-	$result = [
+        $result = [
             'id' => $tax->getId(),
             'name' => $tax->getName(),
             'type' => $tax->getType(),
             'rate' => $tax->getRate(),
-	];
+    ];
 
-	return $this->json($result);
+        return $this->json($result);
     }
 }

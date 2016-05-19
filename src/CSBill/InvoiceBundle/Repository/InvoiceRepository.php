@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -44,7 +44,7 @@ class InvoiceRepository extends EntityRepository
      * Get the total amount for a specific invoice status.
      *
      * @param string $status
-     * @param Client $client filter per client
+     * @param Client $client  filter per client
      * @param int    $hydrate
      *
      * @return int
@@ -54,20 +54,20 @@ class InvoiceRepository extends EntityRepository
      */
     public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR)
     {
-	$qb = $this->createQueryBuilder('i');
+        $qb = $this->createQueryBuilder('i');
 
-	$qb->select('SUM(i.total)')
-	    ->where('i.status = :status')
-	    ->setParameter('status', $status);
+        $qb->select('SUM(i.total)')
+        ->where('i.status = :status')
+        ->setParameter('status', $status);
 
-	if (null !== $client) {
-	    $qb->andWhere('i.client = :client')
-		->setParameter('client', $client);
-	}
+        if (null !== $client) {
+            $qb->andWhere('i.client = :client')
+        ->setParameter('client', $client);
+        }
 
-	$query = $qb->getQuery();
+        $query = $qb->getQuery();
 
-	return $query->getSingleResult($hydrate);
+        return $query->getSingleResult($hydrate);
     }
 
     /**
@@ -172,18 +172,18 @@ class InvoiceRepository extends EntityRepository
      */
     public function getGridQuery(array $parameters = [])
     {
-	$qb = $this->createQueryBuilder('i');
+        $qb = $this->createQueryBuilder('i');
 
-	$qb->select(['i', 'c'])
-	    ->join('i.client', 'c')
-	    ->where('i.recurring = 0');
+        $qb->select(['i', 'c'])
+        ->join('i.client', 'c')
+        ->where('i.recurring = 0');
 
-	if (!empty($parameters['client'])) {
-	    $qb->andWhere('i.client = :client')
-		->setParameter('client', $parameters['client']);
-	}
+        if (!empty($parameters['client'])) {
+            $qb->andWhere('i.client = :client')
+        ->setParameter('client', $parameters['client']);
+        }
 
-	return $qb;
+        return $qb;
     }
 
     /**
@@ -193,18 +193,18 @@ class InvoiceRepository extends EntityRepository
      */
     public function getRecurringGridQuery(array $parameters = [])
     {
-	$qb = $this->createQueryBuilder('i');
+        $qb = $this->createQueryBuilder('i');
 
-	$qb->select(['i', 'c', 'r'])
-	    ->join('i.client', 'c')
-	    ->join('i.recurringInfo', 'r', Join::WITH, 'i.recurring = 1');
+        $qb->select(['i', 'c', 'r'])
+        ->join('i.client', 'c')
+        ->join('i.recurringInfo', 'r', Join::WITH, 'i.recurring = 1');
 
-	if (!empty($parameters['client'])) {
-	    $qb->where('i.client = :client')
-		->setParameter('client', $parameters['client']);
-	}
+        if (!empty($parameters['client'])) {
+            $qb->where('i.client = :client')
+        ->setParameter('client', $parameters['client']);
+        }
 
-	return $qb;
+        return $qb;
     }
 
     /**
@@ -212,14 +212,14 @@ class InvoiceRepository extends EntityRepository
      */
     public function getArchivedGridQuery()
     {
-	$this->getEntityManager()->getFilters()->disable('archivable');
+        $this->getEntityManager()->getFilters()->disable('archivable');
 
-	$qb = $this->createQueryBuilder('i');
+        $qb = $this->createQueryBuilder('i');
 
-	$qb->select(['i', 'c'])
-	    ->join('i.client', 'c')
-	    ->where('i.archived is not null');
+        $qb->select(['i', 'c'])
+        ->join('i.client', 'c')
+        ->where('i.archived is not null');
 
-	return $qb;
+        return $qb;
     }
 }

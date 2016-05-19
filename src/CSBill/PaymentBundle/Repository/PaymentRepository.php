@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 /**
  * This file is part of CSBill project.
  *
@@ -96,28 +106,28 @@ class PaymentRepository extends EntityRepository
      */
     protected function getPaymentQueryBuilder($orderField = null, $sort = 'DESC')
     {
-	if (null === $orderField) {
-	    $orderField = 'p.created';
-	}
+        if (null === $orderField) {
+            $orderField = 'p.created';
+        }
 
-	$queryBuilder = $this->createQueryBuilder('p');
+        $queryBuilder = $this->createQueryBuilder('p');
 
-	$queryBuilder->select(
-	    'p.id',
-	    'p.totalAmount',
-	    'p.currencyCode',
-	    'p.created',
-	    'p.completed',
-	    'p.status',
-	    'i.id as invoice',
-	    'm.name as method',
-	    'p.message'
-	)
-	    ->join('p.method', 'm')
-	    ->join('p.invoice', 'i')
-	    ->orderBy($orderField, $sort);
+        $queryBuilder->select(
+        'p.id',
+        'p.totalAmount',
+        'p.currencyCode',
+        'p.created',
+        'p.completed',
+        'p.status',
+        'i.id as invoice',
+        'm.name as method',
+        'p.message'
+    )
+        ->join('p.method', 'm')
+        ->join('p.invoice', 'i')
+        ->orderBy($orderField, $sort);
 
-	return $queryBuilder;
+        return $queryBuilder;
     }
 
     /**
@@ -225,19 +235,19 @@ class PaymentRepository extends EntityRepository
      */
     private function formatDate($query, $dateFormat = 'Y-m-d')
     {
-	$payments = [];
+        $payments = [];
 
-	foreach ($query->getArrayResult() as $result) {
-	    /** @var \DateTime $created */
-	    $created = $result['created'];
-	    $date = $created->format($dateFormat);
-	    if (!isset($payments[$date])) {
-		$payments[$date] = 0;
-	    }
-	    $payments[$date] += $result['totalAmount'];
-	}
+        foreach ($query->getArrayResult() as $result) {
+            /** @var \DateTime $created */
+        $created = $result['created'];
+            $date = $created->format($dateFormat);
+            if (!isset($payments[$date])) {
+                $payments[$date] = 0;
+            }
+            $payments[$date] += $result['totalAmount'];
+        }
 
-	return $payments;
+        return $payments;
     }
 
     /**
@@ -298,23 +308,23 @@ class PaymentRepository extends EntityRepository
      */
     public function getGridQuery(array $parameters = [])
     {
-	$qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p');
 
-	$qb->select(['p', 'c', 'i', 'm'])
-	    ->join('p.client', 'c')
-	    ->join('p.invoice', 'i')
-	    ->join('p.method', 'm');
+        $qb->select(['p', 'c', 'i', 'm'])
+        ->join('p.client', 'c')
+        ->join('p.invoice', 'i')
+        ->join('p.method', 'm');
 
-	if (isset($parameters['invoice'])) {
-	    $qb->where('p.invoice = :invoice');
-	    $qb->setParameter('invoice', $parameters['invoice']);
-	}
+        if (isset($parameters['invoice'])) {
+            $qb->where('p.invoice = :invoice');
+            $qb->setParameter('invoice', $parameters['invoice']);
+        }
 
-	if (isset($parameters['client'])) {
-	    $qb->where('p.client = :client');
-	    $qb->setParameter('client', $parameters['client']);
-	}
+        if (isset($parameters['client'])) {
+            $qb->where('p.client = :client');
+            $qb->setParameter('client', $parameters['client']);
+        }
 
-	return $qb;
+        return $qb;
     }
 }

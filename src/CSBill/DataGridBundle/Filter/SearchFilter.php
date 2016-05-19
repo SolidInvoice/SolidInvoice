@@ -28,7 +28,7 @@ class SearchFilter implements FilterInterface
      */
     public function __construct(array $searchFields)
     {
-	$this->searchFields = $searchFields;
+        $this->searchFields = $searchFields;
     }
 
     /**
@@ -36,24 +36,24 @@ class SearchFilter implements FilterInterface
      */
     public function filter(Request $request, QueryBuilder $queryBuilder)
     {
-	if ($request->query->has('q')) {
-	    $alias = $queryBuilder->getRootAliases()[0];
+        if ($request->query->has('q')) {
+            $alias = $queryBuilder->getRootAliases()[0];
 
-	    $expr = $queryBuilder->expr();
+            $expr = $queryBuilder->expr();
 
-	    $fields = array_map(
-		function ($field) use ($alias) {
-		    if (false !== strpos($field, '.')) {
-			list($alias, $field) = explode('.', $field);
-		    }
+            $fields = array_map(
+        function ($field) use ($alias) {
+            if (false !== strpos($field, '.')) {
+                list($alias, $field) = explode('.', $field);
+            }
 
-		    return sprintf('%s.%s LIKE :q', $alias, $field);
-		},
-		$this->searchFields
-	    );
+            return sprintf('%s.%s LIKE :q', $alias, $field);
+        },
+        $this->searchFields
+        );
 
-	    $queryBuilder->orWhere(call_user_func_array([$expr, 'orX'], $fields));
-	    $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
-	}
+            $queryBuilder->orWhere(call_user_func_array([$expr, 'orX'], $fields));
+            $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
+        }
     }
 }

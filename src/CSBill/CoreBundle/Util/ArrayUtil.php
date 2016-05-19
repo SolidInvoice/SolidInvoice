@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -44,9 +44,9 @@ class ArrayUtil
 
         foreach ($array as $item) {
             if (is_array($item) || $item instanceof \ArrayAccess) {
-		if ($column[0] !== '[') {
-		    $column = '['.$column.']';
-		}
+                if ($column[0] !== '[') {
+                    $column = '['.$column.']';
+                }
             }
 
             $return[] = $accessor->getValue($item, $column);

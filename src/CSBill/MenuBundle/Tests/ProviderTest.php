@@ -11,7 +11,6 @@
 
 namespace CSBill\MenuBundle\Tests;
 
-use CSBill\MenuBundle\Builder\MenuBuilder;
 use CSBill\MenuBundle\Provider;
 use Mockery as M;
 

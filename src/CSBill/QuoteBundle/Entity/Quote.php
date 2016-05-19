@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 /**
  * This file is part of CSBill project.
  *
@@ -223,7 +233,7 @@ class Quote
      */
     public function getStatus()
     {
-	return $this->status;
+        return $this->status;
     }
 
     /**
@@ -247,7 +257,7 @@ class Quote
      */
     public function getClient()
     {
-	return $this->client;
+        return $this->client;
     }
 
     /**
@@ -271,7 +281,7 @@ class Quote
      */
     public function getTotal()
     {
-	return $this->total;
+        return $this->total;
     }
 
     /**
@@ -295,7 +305,7 @@ class Quote
      */
     public function getBaseTotal()
     {
-	return $this->baseTotal;
+        return $this->baseTotal;
     }
 
     /**
@@ -319,7 +329,7 @@ class Quote
      */
     public function getDiscount()
     {
-	return $this->discount;
+        return $this->discount;
     }
 
     /**
@@ -343,7 +353,7 @@ class Quote
      */
     public function getDue()
     {
-	return $this->due;
+        return $this->due;
     }
 
     /**

@@ -34,8 +34,8 @@ class GridExtension extends \Twig_Extension
      */
     public function __construct(GridRepository $repository, SerializerInterface $serializer)
     {
-	$this->repository = $repository;
-	$this->serializer = $serializer;
+        $this->repository = $repository;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -43,24 +43,24 @@ class GridExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-	return [
-	    new \Twig_SimpleFunction(
-		'render_grid',
-		[$this, 'renderGrid'],
-		[
-		    'is_safe' => ['html'],
-		    'needs_environment' => true,
-		]
-	    ),
-	    new \Twig_SimpleFunction(
-		'render_multiple_grid',
-		[$this, 'renderMultipleGrid'],
-		[
-		    'is_safe' => ['html'],
-		    'needs_environment' => true,
-		]
-	    ),
-	];
+        return [
+        new \Twig_SimpleFunction(
+        'render_grid',
+        [$this, 'renderGrid'],
+        [
+            'is_safe' => ['html'],
+            'needs_environment' => true,
+        ]
+        ),
+        new \Twig_SimpleFunction(
+        'render_multiple_grid',
+        [$this, 'renderMultipleGrid'],
+        [
+            'is_safe' => ['html'],
+            'needs_environment' => true,
+        ]
+        ),
+    ];
     }
 
     /**
@@ -74,31 +74,31 @@ class GridExtension extends \Twig_Extension
      */
     public function renderGrid(\Twig_Environment $env, $gridName, array $parameters = [])
     {
-	$grid = $this->repository->find($gridName);
+        $grid = $this->repository->find($gridName);
 
-	if (!empty($parameters)) {
-	    $grid->setParameters($parameters);
-	}
+        if (!empty($parameters)) {
+            $grid->setParameters($parameters);
+        }
 
-	$gridOptions = $this->serializer->serialize($grid, 'json');
+        $gridOptions = $this->serializer->serialize($grid, 'json');
 
-	$html = '';
+        $html = '';
 
-	if ($grid->requiresStatus() && false === self::$statusRendered) {
-	    $html .= $env->render('CSBillCoreBundle:_partials:status_labels.html.twig');
-	    self::$statusRendered = true;
-	}
+        if ($grid->requiresStatus() && false === self::$statusRendered) {
+            $html .= $env->render('CSBillCoreBundle:_partials:status_labels.html.twig');
+            self::$statusRendered = true;
+        }
 
-	$html .= $env->render(
-	    'CSBillDataGridBundle::grid.html.twig',
-	    [
-		'gridName' => $gridName,
-		'gridOptions' => $gridOptions,
-		'requiresStatus' => $grid->requiresStatus(),
-	    ]
-	);
+        $html .= $env->render(
+        'CSBillDataGridBundle::grid.html.twig',
+        [
+        'gridName' => $gridName,
+        'gridOptions' => $gridOptions,
+        'requiresStatus' => $grid->requiresStatus(),
+        ]
+    );
 
-	return $html;
+        return $html;
     }
 
     /**
@@ -110,41 +110,41 @@ class GridExtension extends \Twig_Extension
      */
     public function renderMultipleGrid(\Twig_Environment $env)
     {
-	$parameters = [];
+        $parameters = [];
 
-	$args = func_get_args();
-	$grids = array_splice($args, 1);
+        $args = func_get_args();
+        $grids = array_splice($args, 1);
 
-	if (is_array($grids[0])) {
-	    if (!empty($grids[1]) && is_array($grids[1])) {
-		$parameters = $grids[1];
-	    }
+        if (is_array($grids[0])) {
+            if (!empty($grids[1]) && is_array($grids[1])) {
+                $parameters = $grids[1];
+            }
 
-	    $grids = $grids[0];
-	}
+            $grids = $grids[0];
+        }
 
-	$requiresStatus = false;
+        $requiresStatus = false;
 
-	$renderGrids = [];
+        $renderGrids = [];
 
-	foreach ($grids as $gridName) {
-	    $grid = $this->repository->find($gridName);
-	    $grid->setParameters($parameters);
+        foreach ($grids as $gridName) {
+            $grid = $this->repository->find($gridName);
+            $grid->setParameters($parameters);
 
-	    $gridOptions = $this->serializer->serialize($grid, 'json');
+            $gridOptions = $this->serializer->serialize($grid, 'json');
 
-	    $requiresStatus = $requiresStatus || $grid->requiresStatus();
+            $requiresStatus = $requiresStatus || $grid->requiresStatus();
 
-	    $renderGrids[$gridName] = json_decode($gridOptions, true);
-	}
+            $renderGrids[$gridName] = json_decode($gridOptions, true);
+        }
 
-	return $env->render(
-	    'CSBillDataGridBundle::multiple_grid.html.twig',
-	    [
-		'grids' => $renderGrids,
-		'requiresStatus' => $requiresStatus,
-	    ]
-	);
+        return $env->render(
+        'CSBillDataGridBundle::multiple_grid.html.twig',
+        [
+        'grids' => $renderGrids,
+        'requiresStatus' => $requiresStatus,
+        ]
+    );
     }
 
     /**
@@ -152,6 +152,6 @@ class GridExtension extends \Twig_Extension
      */
     public function getName()
     {
-	return 'grid_extension';
+        return 'grid_extension';
     }
 }

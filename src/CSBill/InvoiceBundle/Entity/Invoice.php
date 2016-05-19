@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -209,7 +209,7 @@ class Invoice
      */
     public function getUuid()
     {
-	return $this->uuid;
+        return $this->uuid;
     }
 
     /**
@@ -263,7 +263,7 @@ class Invoice
      */
     public function getStatus()
     {
-	return $this->status;
+        return $this->status;
     }
 
     /**
@@ -287,7 +287,7 @@ class Invoice
      */
     public function getClient()
     {
-	return $this->client;
+        return $this->client;
     }
 
     /**
@@ -311,7 +311,7 @@ class Invoice
      */
     public function getTotal()
     {
-	return $this->total;
+        return $this->total;
     }
 
     /**
@@ -335,7 +335,7 @@ class Invoice
      */
     public function getBaseTotal()
     {
-	return $this->baseTotal;
+        return $this->baseTotal;
     }
 
     /**
@@ -379,7 +379,7 @@ class Invoice
      */
     public function getDiscount()
     {
-	return $this->discount;
+        return $this->discount;
     }
 
     /**
@@ -403,7 +403,7 @@ class Invoice
      */
     public function getDue()
     {
-	return $this->due;
+        return $this->due;
     }
 
     /**
@@ -427,7 +427,7 @@ class Invoice
      */
     public function getPaidDate()
     {
-	return $this->paidDate;
+        return $this->paidDate;
     }
 
     /**
@@ -604,7 +604,7 @@ class Invoice
      */
     public function setRecurring($recurring)
     {
-	$this->recurring = (bool) $recurring;
+        $this->recurring = (bool) $recurring;
 
         return $this;
     }
@@ -624,14 +624,14 @@ class Invoice
      */
     public function setRecurringInfo(RecurringInvoice $recurringInfo = null)
     {
-	if (null === $recurringInfo) {
-	    return $this;
-	}
+        if (null === $recurringInfo) {
+            return $this;
+        }
 
-	if (null !== $recurringInfo->getFrequency() && null !== $recurringInfo->getDateStart()) {
-	    $this->recurringInfo = $recurringInfo;
-	    $recurringInfo->setInvoice($this);
-	}
+        if (null !== $recurringInfo->getFrequency() && null !== $recurringInfo->getDateStart()) {
+            $this->recurringInfo = $recurringInfo;
+            $recurringInfo->setInvoice($this);
+        }
 
         return $this;
     }

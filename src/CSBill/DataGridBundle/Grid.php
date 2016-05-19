@@ -3,7 +3,7 @@
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -91,15 +91,15 @@ class Grid implements GridInterface
      */
     public function __construct(Source $source, FilterInterface $filter, array $gridData)
     {
-	$this->title = $gridData['title'];
-	$this->name = $gridData['name'];
-	$this->columns = new ArrayCollection(array_values($gridData['columns']));
-	$this->source = $source;
-	$this->actions = $gridData['actions'];
-	$this->lineActions = $gridData['line_actions'];
-	$this->properties = $gridData['properties'];
-	$this->icon = $gridData['icon'];
-	$this->filter = $filter;
+        $this->title = $gridData['title'];
+        $this->name = $gridData['name'];
+        $this->columns = new ArrayCollection(array_values($gridData['columns']));
+        $this->source = $source;
+        $this->actions = $gridData['actions'];
+        $this->lineActions = $gridData['line_actions'];
+        $this->properties = $gridData['properties'];
+        $this->icon = $gridData['icon'];
+        $this->filter = $filter;
     }
 
     /**
@@ -112,16 +112,16 @@ class Grid implements GridInterface
      */
     public function fetchData(Request $request, EntityManagerInterface $entityManager)
     {
-	$queryBuilder = $this->source->fetch($this->parameters);
+        $queryBuilder = $this->source->fetch($this->parameters);
 
-	$this->filter->filter($request, $queryBuilder);
+        $this->filter->filter($request, $queryBuilder);
 
-	$paginator = new Paginator($queryBuilder);
+        $paginator = new Paginator($queryBuilder);
 
-	return [
-	    'count' => count($paginator),
-	    'items' => $paginator->getQuery()->getArrayResult(),
-	];
+        return [
+        'count' => count($paginator),
+        'items' => $paginator->getQuery()->getArrayResult(),
+    ];
     }
 
     /**
@@ -129,10 +129,10 @@ class Grid implements GridInterface
      */
     public function requiresStatus()
     {
-	$criteria = Criteria::create();
-	$criteria->where($criteria->expr()->contains('cell', 'status'));
+        $criteria = Criteria::create();
+        $criteria->where($criteria->expr()->contains('cell', 'status'));
 
-	return count($this->columns->matching($criteria)) > 0;
+        return count($this->columns->matching($criteria)) > 0;
     }
 
     /**
@@ -140,7 +140,7 @@ class Grid implements GridInterface
      */
     public function getIcon()
     {
-	return $this->icon;
+        return $this->icon;
     }
 
     /**
@@ -148,7 +148,7 @@ class Grid implements GridInterface
      */
     public function getTitle()
     {
-	return $this->title;
+        return $this->title;
     }
 
     /**
@@ -156,6 +156,6 @@ class Grid implements GridInterface
      */
     public function setParameters(array $params)
     {
-	$this->parameters = $params;
+        $this->parameters = $params;
     }
 }
