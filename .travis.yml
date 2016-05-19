@@ -7,7 +7,7 @@ php:
 
 matrix:
   fast_finish: true
-g
+
 env:
   global:
     - SYMFONY_ENV=test
