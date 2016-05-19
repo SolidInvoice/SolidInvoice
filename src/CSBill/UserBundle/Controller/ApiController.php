@@ -14,8 +14,6 @@ namespace CSBill\UserBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Repository\ApiTokenRepository;
-use RandomLib\Factory;
-use RandomLib\Generator;
 use Symfony\Component\HttpFoundation\Request;
 
 class ApiController extends BaseController
@@ -87,10 +85,7 @@ class ApiController extends BaseController
         $response = array();
 
         if ($form->isValid()) {
-            $factory = new Factory();
-            $generator = $factory->getMediumStrengthGenerator();
-
-            $token = $generator->generateString(64, Generator::CHAR_ALNUM);
+	    $token = bin2hex(random_bytes(32));
             $apiToken->setToken($token);
 
             $this->save($apiToken);

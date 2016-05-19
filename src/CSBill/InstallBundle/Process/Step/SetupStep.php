@@ -16,7 +16,6 @@ use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Repository\UserRepository;
-use RandomLib\Factory;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
 use Symfony\Component\HttpFoundation\Request;
@@ -138,8 +137,6 @@ class SetupStep extends ControllerStep
      */
     protected function saveConfig(array $data)
     {
-        $factory = new Factory();
-
         $time = new \DateTime('NOW');
 
         $config = array(
@@ -147,7 +144,7 @@ class SetupStep extends ControllerStep
             'currency' => $data['currency'],
             'base_url' => $data['base_url'],
             'installed' => $time->format(\DateTime::ISO8601),
-            'secret' => $factory->getMediumStrengthGenerator()->generateString(32),
+	    'secret' => bin2hex(random_bytes(32)),
         );
 
         $this->get('csbill.core.config_writer')->dump($config);
