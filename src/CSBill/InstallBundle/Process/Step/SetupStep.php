@@ -101,7 +101,7 @@ class SetupStep extends ControllerStep
         /** @var PasswordEncoderInterface $encoder */
         $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
 
-        $password = $encoder->encodePassword($data['password'], $user->getSalt());
+	$password = $encoder->encodePassword($data['password'], null);
 
         $user->setUsername($data['username'])
             ->setEmail($data['email_address'])

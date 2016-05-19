@@ -51,6 +51,16 @@ class User extends BaseUser
     private $apiTokens;
 
     /**
+     * Don't return the salt, and rely on password_hash to generate a sal
+     *
+     * @return null
+     */
+    public function getSalt()
+    {
+	return null;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getApiTokens()

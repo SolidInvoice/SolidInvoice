@@ -39,7 +39,7 @@ class UserContext extends DefaultContext
 
             $encoder = $encoderFactory->getEncoder($user);
 
-            $password = $encoder->encodePassword($data['password'], $user->getSalt());
+	    $password = $encoder->encodePassword($data['password'], null);
 
             $user->setUsername($data['username'])
                 ->setEmail($data['username'].'@local.dev')
