@@ -26,5 +26,5 @@ interface SettingsLoaderInterface
     /**
      * @param array $settings
      */
-    public function saveSettings(array $settings = array());
+    public function saveSettings(array $settings = []);
 }

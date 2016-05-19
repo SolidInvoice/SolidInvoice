@@ -50,7 +50,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->userRepository->findOneBy(array('username' => $username));
+        $user = $this->userRepository->findOneBy(['username' => $username]);
 
         if (!$user) {
             throw new UsernameNotFoundException();

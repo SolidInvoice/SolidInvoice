@@ -74,25 +74,25 @@ class ViewController extends BaseController
     {
         $repository = $this->getRepository($this->repository);
 
-        $entity = $repository->findOneBy(array('uuid' => Uuid::fromString($uuid)));
+        $entity = $repository->findOneBy(['uuid' => Uuid::fromString($uuid)]);
 
         if (null === $entity) {
             throw $this->createNotFoundException(sprintf('"%s" with id %s does not exist', $object, $uuid));
         }
 
         if (true === $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirect($this->generateUrl($this->route, array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl($this->route, ['id' => $entity->getId()]));
         }
 
         $template = 'CSBillCoreBundle:View:'.$object.'.html.twig';
 
         return $this->render(
             $template,
-            array(
+            [
                 $object => $entity,
                 'title' => $object.' #'.$entity->getId(),
                 'template' => $this->template,
-            )
+            ]
         );
     }
 }

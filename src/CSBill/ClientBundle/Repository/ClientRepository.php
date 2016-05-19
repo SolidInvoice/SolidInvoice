@@ -56,12 +56,12 @@ class ClientRepository extends EntityRepository
         $qb = $this->createQueryBuilder('c');
 
         $qb->select(
-            array(
+            [
                 'c.id',
                 'c.name',
                 'c.created',
                 'c.status',
-            )
+            ]
         )
             ->orderBy('c.created', 'DESC')
             ->setMaxResults($limit);

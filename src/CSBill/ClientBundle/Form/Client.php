@@ -29,26 +29,26 @@ class Client extends AbstractType
         $builder->add(
             'contacts',
             new ContactType(),
-            array(
+            [
                 'type' => 'contact',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'prototype' => true,
                 'prototype_name' => '__contact_prototype__',
-            )
+            ]
         );
 
         $builder->add(
             'addresses',
             'collection',
-            array(
+            [
                 'type' => new AddressType(),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required' => false,
-            )
+            ]
         );
     }
 
@@ -57,7 +57,7 @@ class Client extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'CSBill\ClientBundle\Entity\Client'));
+        $resolver->setDefaults(['data_class' => 'CSBill\ClientBundle\Entity\Client']);
     }
 
     /**

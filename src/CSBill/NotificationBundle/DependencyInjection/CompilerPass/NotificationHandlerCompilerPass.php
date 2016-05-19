@@ -31,7 +31,7 @@ class NotificationHandlerCompilerPass implements CompilerPassInterface
         $services = $container->findTaggedServiceIds('notification.handler');
 
         foreach ($services as $id => $parameters) {
-            $definition->addMethodCall('addHandler', array(new Reference($id)));
+            $definition->addMethodCall('addHandler', [new Reference($id)]);
         }
     }
 }

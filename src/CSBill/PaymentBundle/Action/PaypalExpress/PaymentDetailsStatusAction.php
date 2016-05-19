@@ -37,7 +37,7 @@ class PaymentDetailsStatusAction extends GatewayAwareAction
 
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $message = array();
+        $message = [];
 
         foreach (range(0, 9) as $index) {
             if ($details['L_ERRORCODE'.$index]) {

@@ -36,9 +36,9 @@ class QuoteMailerListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             QuoteEvents::QUOTE_POST_SEND => 'onQuoteSend',
-        );
+        ];
     }
 
     /**

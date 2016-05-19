@@ -31,71 +31,71 @@ class EmailSettingsType extends AbstractType
         $builder->add(
             'transport',
             'select2',
-            array(
+            [
                 'choices' => $transports,
                 'choices_as_values' => false,
                 'placeholder' => 'Choose Mail Transport',
-                'constraints' => array(
+                'constraints' => [
                      new Constraints\NotBlank(),
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'host',
             null,
-            array(
-                'constraints' => array(
-                    new Constraints\NotBlank(array('groups' => 'smtp')),
-                ),
-            )
+            [
+                'constraints' => [
+                    new Constraints\NotBlank(['groups' => 'smtp']),
+                ],
+            ]
         );
 
         $builder->add(
             'port',
             'integer',
-            array(
-                'constraints' => array(
-                    new Constraints\Type(array('groups' => array('smtp'), 'type' => 'integer')),
-                ),
+            [
+                'constraints' => [
+                    new Constraints\Type(['groups' => ['smtp'], 'type' => 'integer']),
+                ],
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add(
             'encryption',
             'select2',
-            array(
+            [
                 'placeholder' => 'None',
-                'choices' => array(
+                'choices' => [
                     'ssl' => 'SSL',
                     'tls' => 'TLS',
-                ),
+                ],
                 'choices_as_values' => false,
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add(
             'user',
             null,
-            array(
-                'constraints' => array(
-                    new Constraints\NotBlank(array('groups' => 'gmail')),
-                ),
+            [
+                'constraints' => [
+                    new Constraints\NotBlank(['groups' => 'gmail']),
+                ],
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add(
             'password',
             'password',
-            array(
-                'constraints' => array(
-                    new Constraints\NotBlank(array('groups' => 'gmail')),
-                ),
+            [
+                'constraints' => [
+                    new Constraints\NotBlank(['groups' => 'gmail']),
+                ],
                 'required' => false,
-            )
+            ]
         );
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
@@ -122,24 +122,24 @@ class EmailSettingsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('transports'));
+        $resolver->setRequired(['transports']);
 
         $resolver->setDefaults(
-            array(
+            [
                 'validation_groups' => function (FormInterface $form) {
                     $data = $form->getData();
 
                     if ('smtp' === $data['transport']) {
-                        return array('Default', 'smtp');
+                        return ['Default', 'smtp'];
                     }
 
                     if ('gmail' === $data['transport']) {
-                        return array('Default', 'gmail');
+                        return ['Default', 'gmail'];
                     }
 
-                    return array('Default');
+                    return ['Default'];
                 },
-            )
+            ]
         );
     }
 

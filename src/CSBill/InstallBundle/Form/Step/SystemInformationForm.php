@@ -51,80 +51,80 @@ class SystemInformationForm extends AbstractType
             $builder->add(
                 'locale',
                 'select2',
-                array(
+                [
                     'choices' => Intl::getLocaleBundle()->getLocaleNames(),
-                    'constraints' => new Constraints\NotBlank(array('message' => 'Please select a locale')),
+                    'constraints' => new Constraints\NotBlank(['message' => 'Please select a locale']),
                     'placeholder' => '',
                     'choices_as_values' => false,
-                )
+                ]
             );
         } else {
             $builder->add(
                 'locale',
                 null,
-                array(
+                [
                     'data' => 'en',
                     'read_only' => true,
                     'help' => 'The only currently supported locale is "en". To choose a different locale, please install the \'intl\' extension',
-                )
+                ]
             );
         }
 
         $builder->add(
             'currency',
             'select2',
-            array(
+            [
                 'choices' => $currencies,
-                'constraints' => new Constraints\NotBlank(array('message' => 'Please select a currency')),
+                'constraints' => new Constraints\NotBlank(['message' => 'Please select a currency']),
                 'placeholder' => '',
                 'choices_as_values' => false,
-            )
+            ]
         );
 
         $builder->add(
             'base_url',
             null,
-            array(
-                'constraints' => new Constraints\NotBlank(array('message' => 'Please set the application base url')),
+            [
+                'constraints' => new Constraints\NotBlank(['message' => 'Please set the application base url']),
                 'data' => $this->request->getSchemeAndHttpHost().$this->request->getBaseUrl(),
-            )
+            ]
         );
 
         if (0 === $this->userCount) {
             $builder->add(
                 'username',
                 null,
-                array(
-                    'constraints' => new Constraints\NotBlank(array('message' => 'Please enter a username')),
-                )
+                [
+                    'constraints' => new Constraints\NotBlank(['message' => 'Please enter a username']),
+                ]
             );
 
             $builder->add(
                 'email_address',
                 'email',
-                array(
-                    'constraints' => array(
-                        new Constraints\NotBlank(array('message' => 'Please enter a email')),
+                [
+                    'constraints' => [
+                        new Constraints\NotBlank(['message' => 'Please enter a email']),
                         new Constraints\Email(),
-                    ),
-                )
+                    ],
+                ]
             );
 
             $builder->add(
                 'password',
                 'repeated',
-                array(
+                [
                     'type' => 'password',
                     'invalid_message' => 'The password fields must match.',
-                    'options' => array('attr' => array('class' => 'password-field')),
+                    'options' => ['attr' => ['class' => 'password-field']],
                     'required' => true,
-                    'first_options' => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Repeat Password'),
-                    'constraints' => array(
-                        new Constraints\NotBlank(array('message' => 'You must enter a secure password')),
-                        new Constraints\Length(array('min' => 6)),
-                    ),
-                )
+                    'first_options' => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Repeat Password'],
+                    'constraints' => [
+                        new Constraints\NotBlank(['message' => 'You must enter a secure password']),
+                        new Constraints\Length(['min' => 6]),
+                    ],
+                ]
             );
         }
     }

@@ -25,25 +25,25 @@ class Be2billDirect extends AbstractType
         $builder->add(
             'identifier',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'password',
             'password',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'sandbox',
             'checkbox',
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
     }
 

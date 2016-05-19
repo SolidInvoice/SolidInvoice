@@ -219,7 +219,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setUsers(array $users = array())
+    public function setUsers(array $users = [])
     {
         $this->users = new ArrayCollection($users);
 

@@ -33,7 +33,7 @@ class SettingsLoaderCompilerPass implements CompilerPassInterface
 
         if (count($services) > 0) {
             foreach ($services as $id => $parameters) {
-                $container->getDefinition('csbill_settings.manager')->addMethodCall('addSettingsLoader', array(new Reference($id)));
+                $container->getDefinition('csbill_settings.manager')->addMethodCall('addSettingsLoader', [new Reference($id)]);
             }
         }
     }

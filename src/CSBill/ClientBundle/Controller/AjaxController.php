@@ -32,13 +32,13 @@ class AjaxController extends BaseController
     {
         $content = $this->renderView(
             'CSBillClientBundle:Ajax:info.html.twig',
-            array(
+            [
                 'client' => $client,
                 'type' => $type,
-            )
+            ]
         );
 
-        return $this->json(array('content' => $content));
+        return $this->json(['content' => $content]);
     }
 
     /**
@@ -60,9 +60,9 @@ class AjaxController extends BaseController
         $contact = new Contact();
         $contact->setClient($client);
 
-        $form = $this->createForm('contact', $contact, array('allow_delete' => false));
+        $form = $this->createForm('contact', $contact, ['allow_delete' => false]);
 
-        $response = array();
+        $response = [];
 
         $form->handleRequest($request);
 
@@ -81,10 +81,10 @@ class AjaxController extends BaseController
 
         $content = $this->renderView(
             'CSBillClientBundle:Ajax:contact_add.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
                 'client' => $client,
-            )
+            ]
         );
         $response['content'] = $content;
 
@@ -111,7 +111,7 @@ class AjaxController extends BaseController
 
         $originalContactDetails = $contact->getAdditionalDetails()->toArray();
 
-        $form = $this->createForm('contact', $contact, array('allow_delete' => false));
+        $form = $this->createForm('contact', $contact, ['allow_delete' => false]);
 
         if ($request->isMethod('POST')) {
             $contact->getAdditionalDetails()->clear();
@@ -128,16 +128,16 @@ class AjaxController extends BaseController
         }
 
         return $this->json(
-            array(
+            [
                 'content' => $this->renderView(
                     'CSBillClientBundle:Ajax:contact_edit.html.twig',
-                    array(
+                    [
                         'form' => $form->createView(),
                         'contact' => $contact,
-                    )
+                    ]
                 ),
                 'status' => $status,
-            )
+            ]
         );
     }
 
@@ -208,7 +208,7 @@ class AjaxController extends BaseController
 
         $this->flash($this->trans('client.delete_success'), 'success');
 
-        return $this->json(array('status' => 'success'));
+        return $this->json(['status' => 'success']);
     }
 
     /**

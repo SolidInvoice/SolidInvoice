@@ -25,17 +25,17 @@ class KlarnaCheckout extends AbstractType
         $builder->add(
             'merchant_id',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'secret',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
     }
 

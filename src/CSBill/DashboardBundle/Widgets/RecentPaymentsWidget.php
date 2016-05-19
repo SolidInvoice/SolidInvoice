@@ -39,7 +39,7 @@ class RecentPaymentsWidget implements WidgetInterface
 
         $payments = $paymentRepository->getRecentPayments();
 
-        return array('payments' => $payments);
+        return ['payments' => $payments];
     }
 
     /**

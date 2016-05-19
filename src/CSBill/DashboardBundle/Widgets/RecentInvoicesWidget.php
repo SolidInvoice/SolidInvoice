@@ -39,7 +39,7 @@ class RecentInvoicesWidget implements WidgetInterface
 
         $invoices = $invoiceRepository->getRecentInvoices();
 
-        return array('invoices' => $invoices);
+        return ['invoices' => $invoices];
     }
 
     /**

@@ -44,6 +44,6 @@ class QuoteStatusNotification extends NotificationMessage
      */
     public function getSubject(TranslatorInterface $translator)
     {
-        return $translator->trans('quote.status.subject', array(), 'email');
+        return $translator->trans('quote.status.subject', [], 'email');
     }
 }

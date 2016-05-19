@@ -43,10 +43,10 @@ class Settings extends AbstractType
                 $builder->add($key, new self($setting));
             } else {
                 /* @var \CSBill\SettingsBundle\Model\Setting $setting */
-                $options = array(
+                $options = [
                     'help' => $setting->getDescription(),
                     'required' => false,
-                );
+                ];
 
                 $type = $this->getFieldType($setting, $options);
 
@@ -61,7 +61,7 @@ class Settings extends AbstractType
      *
      * @return string
      */
-    protected function getFieldType(Setting $setting, array &$options = array())
+    protected function getFieldType(Setting $setting, array &$options = [])
     {
         $type = $setting->getType();
 
@@ -71,7 +71,7 @@ class Settings extends AbstractType
             $options['multiple'] = false;
         }
 
-        if (in_array($type, array('choice', 'select2'))) {
+        if (in_array($type, ['choice', 'select2'])) {
             $settingOptions = $setting->getOptions();
 
             $options['choices'] = $settingOptions;

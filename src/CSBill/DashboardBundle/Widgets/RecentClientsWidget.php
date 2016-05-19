@@ -39,7 +39,7 @@ class RecentClientsWidget implements WidgetInterface
 
         $clients = $clientRepository->getRecentClients();
 
-        return array('clients' => $clients);
+        return ['clients' => $clients];
     }
 
     /**

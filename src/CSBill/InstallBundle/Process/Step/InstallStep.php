@@ -26,7 +26,7 @@ class InstallStep extends ControllerStep
         $request = $this->getRequest();
 
         if ($request->query->has('action')) {
-            $result = array();
+            $result = [];
 
             switch ($request->query->get('action')) {
                 case 'createdb':

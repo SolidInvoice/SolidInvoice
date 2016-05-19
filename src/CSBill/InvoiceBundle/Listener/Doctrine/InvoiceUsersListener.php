@@ -28,9 +28,9 @@ class InvoiceUsersListener
         if ($entity instanceof Invoice && count($entity->getUsers()) > 0) {
             $contacts = $em->getRepository('CSBillClientBundle:Contact')
                 ->findBy(
-                    array(
+                    [
                         'id' => ArrayUtil::column($entity->getUsers()->toArray(), 'id'),
-                    )
+                    ]
                 );
 
             $entity->setUsers($contacts);

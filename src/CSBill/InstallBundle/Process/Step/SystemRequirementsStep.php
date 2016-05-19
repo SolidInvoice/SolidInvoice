@@ -37,9 +37,9 @@ class SystemRequirementsStep extends ControllerStep
 
         return $this->render(
             'CSBillInstallBundle:Flow:system_check.html.twig',
-            array(
+            [
                 'requirements' => $requirements,
-            )
+            ]
         );
     }
 

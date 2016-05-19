@@ -23,7 +23,7 @@ class ConstraintBuilder
      */
     public static function build(array $options)
     {
-        $constraints = array();
+        $constraints = [];
 
         foreach ($options as $constraint) {
             $constraint = str_replace(' ', '', self::humanize($constraint));

@@ -39,9 +39,9 @@ class WidgetExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('render_dashboard_widget', array($this, 'renderDashboardWidget'), array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFunction('render_dashboard_widget', [$this, 'renderDashboardWidget'], ['is_safe' => ['html']]),
+        ];
     }
 
     /**
