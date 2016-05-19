@@ -30,7 +30,7 @@ class PaymentForm extends AbstractType
         $builder->add(
             'payment_method',
             'entity',
-            array(
+            [
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
                 'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
@@ -55,17 +55,17 @@ class PaymentForm extends AbstractType
                 'preferred_choices' => $options['preferred_choices'],
                 'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
-                'attr' => array(
+                'attr' => [
                     'class' => 'select2',
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'amount',
             'money',
-            array(
-                'constraints' => array(
+            [
+                'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Callback(function (Money $money, ExecutionContextInterface $context) {
                         if ($money->isZero() || $money->isNegative()) {
@@ -75,12 +75,12 @@ class PaymentForm extends AbstractType
                                 ->addViolation();
                         }
                     }),
-                ),
-            )
+                ],
+            ]
         );
 
         if (null !== $options['user']) {
-            $builder->add('capture_online', 'checkbox', array('data' => true));
+            $builder->add('capture_online', 'checkbox', ['data' => true]);
         }
     }
 
@@ -89,7 +89,7 @@ class PaymentForm extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('user', 'preferred_choices'));
+        $resolver->setRequired(['user', 'preferred_choices']);
     }
 
     /**

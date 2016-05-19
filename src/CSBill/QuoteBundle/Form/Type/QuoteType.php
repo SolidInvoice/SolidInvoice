@@ -42,30 +42,30 @@ class QuoteType extends AbstractType
         $builder->add(
             'client',
             null,
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'select2 client-select',
-                ),
+                ],
                 'placeholder' => 'quote.client.choose',
-            )
+            ]
         );
 
-        $builder->add('discount', 'percent', array('required' => false));
+        $builder->add('discount', 'percent', ['required' => false]);
 
         $builder->add(
             'items',
             'collection',
-            array(
+            [
                 'type' => 'quote_item',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add('terms');
-        $builder->add('notes', null, array('help' => 'Notes will not be visible to the client'));
+        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
         $builder->add('total', 'hidden_money');
         $builder->add('baseTotal', 'hidden_money');
         $builder->add('tax', 'hidden_money');

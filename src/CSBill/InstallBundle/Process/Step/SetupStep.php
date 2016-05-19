@@ -32,10 +32,10 @@ class SetupStep extends ControllerStep
 
         return $this->render(
             'CSBillInstallBundle:Flow:setup.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
                 'userCount' => $this->getUserCount(),
-            )
+            ]
         );
     }
 
@@ -64,10 +64,10 @@ class SetupStep extends ControllerStep
 
         return $this->render(
             'CSBillInstallBundle:Flow:setup.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
                 'userCount' => $this->getUserCount(),
-            )
+            ]
         );
     }
 
@@ -78,15 +78,15 @@ class SetupStep extends ControllerStep
      */
     private function getForm(Request $request)
     {
-        $options = array(
+        $options = [
             'action' => $this->generateUrl(
                 'sylius_flow_forward',
-                array(
+                [
                     'scenarioAlias' => 'install',
                     'stepName' => 'setup',
-                )
+                ]
             ),
-        );
+        ];
 
         return $this->createForm(new SystemInformationForm($request, $this->getUserCount()), null, $options);
     }
@@ -139,13 +139,13 @@ class SetupStep extends ControllerStep
     {
         $time = new \DateTime('NOW');
 
-        $config = array(
+        $config = [
             'locale' => $data['locale'],
             'currency' => $data['currency'],
             'base_url' => $data['base_url'],
             'installed' => $time->format(\DateTime::ISO8601),
-	    'secret' => bin2hex(random_bytes(32)),
-        );
+        'secret' => bin2hex(random_bytes(32)),
+        ];
 
         $this->get('csbill.core.config_writer')->dump($config);
     }

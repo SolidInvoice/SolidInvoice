@@ -25,41 +25,41 @@ class PaypalProCheckout extends AbstractType
         $builder->add(
             'username',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'password',
             'password',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'partner',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'vendor',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'sandbox',
             'checkbox',
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
     }
 

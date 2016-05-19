@@ -39,7 +39,7 @@ class RecentQuotesWidget implements WidgetInterface
 
         $quotes = $quoteRepository->getRecentQuotes();
 
-        return array('quotes' => $quotes);
+        return ['quotes' => $quotes];
     }
 
     /**

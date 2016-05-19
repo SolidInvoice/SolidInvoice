@@ -43,7 +43,7 @@ class DoctrineLoader implements SettingsLoaderInterface
     /**
      * @param array $settings
      */
-    public function saveSettings(array $settings = array())
+    public function saveSettings(array $settings = [])
     {
         $this->save($settings);
         $this->manager->flush();
@@ -52,7 +52,7 @@ class DoctrineLoader implements SettingsLoaderInterface
     /**
      * @param array $settings
      */
-    protected function save(array $settings = array())
+    protected function save(array $settings = [])
     {
         if (!empty($settings)) {
             foreach ($settings as $setting) {
@@ -71,7 +71,7 @@ class DoctrineLoader implements SettingsLoaderInterface
     public function getSettings()
     {
         if (!$this->checkConnection()) {
-            return array();
+            return [];
         }
 
         return $this->addSettings($this->sections);
@@ -84,7 +84,7 @@ class DoctrineLoader implements SettingsLoaderInterface
      */
     protected function addSettings($sections)
     {
-        $settings = array();
+        $settings = [];
 
         /** @var \CSBill\SettingsBundle\Repository\SettingsRepository $repository */
         $repository = $this->manager->getRepository('CSBillSettingsBundle:Setting');

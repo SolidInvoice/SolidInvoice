@@ -21,9 +21,9 @@ class ArchiveListener extends MappedEventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'loadClassMetadata',
-        );
+        ];
     }
 
     /**

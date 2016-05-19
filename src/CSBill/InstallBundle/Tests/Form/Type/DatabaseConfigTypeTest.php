@@ -18,21 +18,21 @@ class DatabaseConfigTypeTest extends FormTestCase
 {
     public function testSubmitValidData()
     {
-        $drivers = array(
+        $drivers = [
             'pdo_mysql' => 'MySQL',
-        );
+        ];
 
-        $formData = array(
+        $formData = [
             'driver' => 'pdo_mysql',
             'host' => 'localhost',
             'port' => 1234,
             'user' => 'root',
             'password' => 'password',
             'name' => 'testdb',
-        );
+        ];
 
         $type = new DatabaseConfigType();
-        $form = $this->factory->create($type, null, array('drivers' => $drivers));
+        $form = $this->factory->create($type, null, ['drivers' => $drivers]);
 
         // submit the data to the form directly
         $form->submit($formData);

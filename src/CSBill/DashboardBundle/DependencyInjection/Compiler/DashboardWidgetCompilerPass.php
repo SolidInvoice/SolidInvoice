@@ -41,7 +41,7 @@ class DashboardWidgetCompilerPass implements CompilerPassInterface
 
                 $definition->addMethodCall(
                     'add',
-                    array(new Reference($id), $attributes['location'], $attributes['priority'])
+                    [new Reference($id), $attributes['location'], $attributes['priority']]
                 );
             }
         }

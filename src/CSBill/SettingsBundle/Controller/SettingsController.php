@@ -37,7 +37,7 @@ class SettingsController extends BaseController
             $setting = $setting->getValue();
         });
 
-        $form = $this->createForm(new SettingsType(), $settings, array('manager' => $manager));
+        $form = $this->createForm(new SettingsType(), $settings, ['manager' => $manager]);
 
         $form->handleRequest($request);
 
@@ -57,10 +57,10 @@ class SettingsController extends BaseController
 
         return $this->render(
             'CSBillSettingsBundle:Settings:index.html.twig',
-            array(
+            [
                 'settings' => $settings,
                 'form' => $form->createView(),
-            )
+            ]
         );
     }
 }

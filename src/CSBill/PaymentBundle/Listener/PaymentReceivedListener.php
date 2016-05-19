@@ -35,7 +35,7 @@ class PaymentReceivedListener
      */
     public function onPaymentCapture(PaymentCompleteEvent $event)
     {
-        $notification = new PaymentReceivedNotification(array('payment' => $event->getPayment()));
+        $notification = new PaymentReceivedNotification(['payment' => $event->getPayment()]);
 
         $this->notification->sendNotification('payment_made', $notification);
     }

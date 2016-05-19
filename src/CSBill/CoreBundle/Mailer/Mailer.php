@@ -99,12 +99,12 @@ class Mailer implements MailerInterface
     public function sendInvoice(Invoice $invoice)
     {
         // TODO : this needs to come from settings or somewhere so it can be extended
-        $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', array('invoice' => $invoice));
-        $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', array('invoice' => $invoice));
+        $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', ['invoice' => $invoice]);
+        $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', ['invoice' => $invoice]);
 
         $subject = $this->getSubject('invoice.email_subject', $invoice->getId());
 
-        $users = array();
+        $users = [];
 
         foreach ($invoice->getUsers() as $user) {
             /* @var \CSBill\ClientBundle\Entity\Contact $user */
@@ -127,7 +127,7 @@ class Mailer implements MailerInterface
      *
      * @return null|string
      */
-    protected function getTemplate($template, array $parameters = array())
+    protected function getTemplate($template, array $parameters = [])
     {
         return $this->templating->exists($template) ? $this->templating->render($template, $parameters) : null;
     }
@@ -235,12 +235,12 @@ class Mailer implements MailerInterface
     public function sendQuote(Quote $quote)
     {
         // TODO : this needs to come from settings or somewhere so it can be extended
-        $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', array('quote' => $quote));
-        $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', array('quote' => $quote));
+        $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', ['quote' => $quote]);
+        $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', ['quote' => $quote]);
 
         $subject = $this->getSubject('quote.email_subject', $quote->getId());
 
-        $users = array();
+        $users = [];
 
         foreach ($quote->getUsers() as $user) {
             /* @var \CSBill\ClientBundle\Entity\Contact $user */

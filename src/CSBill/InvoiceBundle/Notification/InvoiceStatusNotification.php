@@ -44,6 +44,6 @@ class InvoiceStatusNotification extends NotificationMessage
      */
     public function getSubject(TranslatorInterface $translator)
     {
-        return $translator->trans('invoice.status.subject', array(), 'email');
+        return $translator->trans('invoice.status.subject', [], 'email');
     }
 }

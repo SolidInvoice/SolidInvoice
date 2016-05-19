@@ -22,19 +22,19 @@ class ConfigStep extends ControllerStep
      *
      * @var array
      */
-    protected $implementedDrivers = array(
+    protected $implementedDrivers = [
         'mysql',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $mailerTransports = array(
+    protected $mailerTransports = [
         'mail' => 'PHP Mail',
         'sendmail' => 'Sendmail',
         'smtp' => 'SMTP',
         'gmail' => 'Gmail',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -43,7 +43,7 @@ class ConfigStep extends ControllerStep
     {
         $form = $this->getForm();
 
-        return $this->render('CSBillInstallBundle:Flow:config.html.twig', array('form' => $form->createView()));
+        return $this->render('CSBillInstallBundle:Flow:config.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -58,7 +58,7 @@ class ConfigStep extends ControllerStep
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $config = array();
+            $config = [];
 
             // sets the database details
             foreach ($data['database_config'] as $key => $param) {
@@ -79,9 +79,9 @@ class ConfigStep extends ControllerStep
 
         return $this->render(
             'CSBillInstallBundle:Flow:config.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
-            )
+            ]
         );
     }
 
@@ -103,25 +103,25 @@ class ConfigStep extends ControllerStep
 
         $config = $this->get('csbill.core.config_writer')->getConfigValues();
 
-        $data = array(
-            'database_config' => array(
+        $data = [
+            'database_config' => [
                 'host' => $config['database_host'],
                 'port' => $config['database_port'],
                 'name' => $config['database_name'],
-            ),
-        );
+            ],
+        ];
 
-        $options = array(
+        $options = [
             'drivers' => $drivers,
             'mailer_transports' => $this->mailerTransports,
             'action' => $this->generateUrl(
                 'sylius_flow_forward',
-                array(
+                [
                     'scenarioAlias' => 'install',
                     'stepName' => 'config',
-                )
+                ]
             ),
-        );
+        ];
 
         return $this->createForm(new ConfigStepForm(), $data, $options);
     }

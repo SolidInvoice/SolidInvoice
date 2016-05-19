@@ -27,13 +27,13 @@ class SettingsLoader implements SettingsLoaderInterface
     /**
      * @var array
      */
-    protected $mailerTransports = array(
+    protected $mailerTransports = [
         '' => 'Choose Mail Transport',
         'mail' => 'PHP Mail',
         'sendmail' => 'Sendmail',
         'smtp' => 'SMTP',
         'gmail' => 'Gmail',
-    );
+    ];
 
     /**
      * @var ConfigWriter
@@ -55,7 +55,7 @@ class SettingsLoader implements SettingsLoaderInterface
      *
      * @return array
      */
-    protected function getEmailSettings(array $settings = array())
+    protected function getEmailSettings(array $settings = [])
     {
         $transport = new Setting();
         $transport->setKey('transport')
@@ -75,7 +75,7 @@ class SettingsLoader implements SettingsLoaderInterface
         $encryption->setKey('encryption')
             ->setValue($settings['mailer_encryption'])
             ->setType('select2')
-            ->setOptions(array('' => 'None', 'ssl' => 'SSL', 'tls' => 'TLS'));
+            ->setOptions(['' => 'None', 'ssl' => 'SSL', 'tls' => 'TLS']);
 
         $user = new Setting();
         $user->setKey('user')
@@ -86,14 +86,14 @@ class SettingsLoader implements SettingsLoaderInterface
             ->setValue($settings['mailer_password'])
             ->setType('password');
 
-        return array(
+        return [
             'transport' => $transport,
             'host' => $host,
             'port' => $port,
             'encryption' => $encryption,
             'user' => $user,
             'password' => $password,
-        );
+        ];
     }
 
     /**
@@ -111,24 +111,24 @@ class SettingsLoader implements SettingsLoaderInterface
 
         $emailSettings = $this->getEmailSettings($settings);
 
-        return array(
-            'system' => array(
-                'general' => array(
+        return [
+            'system' => [
+                'general' => [
                     'currency' => $currency,
-                ),
-            ),
-            'email' => array(
+                ],
+            ],
+            'email' => [
                 'sending_options' => $emailSettings,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @param array $settings
      */
-    public function saveSettings(array $settings = array())
+    public function saveSettings(array $settings = [])
     {
-        $parameters = array();
+        $parameters = [];
 
         // Currency Options
         /** @var Setting $currency */

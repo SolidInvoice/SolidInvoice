@@ -40,9 +40,9 @@ class ContactTypesExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('contactTypes', array($this, 'getContactTypes')),
-        );
+        return [
+            new \Twig_SimpleFunction('contactTypes', [$this, 'getContactTypes']),
+        ];
     }
 
     /**

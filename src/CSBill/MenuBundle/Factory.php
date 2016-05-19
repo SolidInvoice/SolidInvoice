@@ -40,7 +40,7 @@ class Factory extends MenuFactory
      *
      * @return MenuItem|\Knp\Menu\MenuItem
      */
-    public function createItem($name, array $options = array())
+    public function createItem($name, array $options = [])
     {
         $item = new MenuItem($name, $this);
 

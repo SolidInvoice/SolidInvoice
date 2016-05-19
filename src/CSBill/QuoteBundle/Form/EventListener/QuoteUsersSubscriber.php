@@ -25,10 +25,10 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData',
             FormEvents::PRE_SUBMIT => 'preSetData',
-        );
+        ];
     }
 
     /**
@@ -53,10 +53,10 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
             $form->add(
                 'users',
                 'entity',
-                array(
-                    'constraints' => array(
+                [
+                    'constraints' => [
                         new NotBlank(),
-                    ),
+                    ],
                     'multiple' => true,
                     'expanded' => true,
                     'class' => 'CSBillClientBundle:Contact',
@@ -65,7 +65,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                             ->where('c.client = :client')
                             ->setParameter('client', $clientId);
                     },
-                )
+                ]
             );
         }
     }

@@ -28,32 +28,32 @@ class LoaderTest extends KernelAwareTest
 
         $clientCreate = (new Setting())
             ->setKey('client_create')
-            ->setValue(array('email' => true, 'hipchat' => false, 'sms' => false))
+            ->setValue(['email' => true, 'hipchat' => false, 'sms' => false])
             ->setType('notification');
 
         $invoiceStatus = (new Setting())
             ->setKey('invoice_status_update')
-            ->setValue(array('email' => true, 'hipchat' => false, 'sms' => false))
+            ->setValue(['email' => true, 'hipchat' => false, 'sms' => false])
             ->setType('notification');
 
         $quoteStatus = (new Setting())
             ->setKey('quote_status_update')
-            ->setValue(array('email' => true, 'hipchat' => false, 'sms' => false))
+            ->setValue(['email' => true, 'hipchat' => false, 'sms' => false])
             ->setType('notification');
 
         $paymentMade = (new Setting())
             ->setKey('payment_made')
-            ->setValue(array('email' => true, 'hipchat' => false, 'sms' => false))
+            ->setValue(['email' => true, 'hipchat' => false, 'sms' => false])
             ->setType('notification');
 
-        $values = array(
-            'notification' => array(
+        $values = [
+            'notification' => [
                 'client_create' => $clientCreate,
                 'invoice_status_update' => $invoiceStatus,
                 'quote_status_update' => $quoteStatus,
                 'payment_made' => $paymentMade,
-            ),
-        );
+            ],
+        ];
 
         $this->assertEquals($values, $settings);
     }
@@ -181,7 +181,7 @@ class LoaderTest extends KernelAwareTest
             ->getRepository('CSBillUserBundle:User')
             ->findAll();
 
-        array_walk($users, array($manager, 'remove'));
+        array_walk($users, [$manager, 'remove']);
         $manager->flush();
 
         /** @var EntityRepository $repo */
@@ -202,7 +202,7 @@ class LoaderTest extends KernelAwareTest
         $qb
             ->update()
             ->set('s.value', ':value')
-            ->where($qb->expr()->in('s.key', array('auth_token', 'room_id')))
+            ->where($qb->expr()->in('s.key', ['auth_token', 'room_id']))
             ->setParameter('value', null)
             ->getQuery()
             ->execute();
@@ -215,41 +215,41 @@ class LoaderTest extends KernelAwareTest
     {
         $clientCreate = (new Setting())
             ->setKey('client_create')
-            ->setValue(array(
+            ->setValue([
                 'hipchat' => true,
                 'sms' => true,
-            ));
+            ]);
 
         $invoiceStatus = (new Setting())
             ->setKey('invoice_status_update')
-            ->setValue(array(
+            ->setValue([
                 'hipchat' => true,
                 'sms' => true,
-            ));
+            ]);
 
         $quoteStatus = (new Setting())
             ->setKey('quote_status_update')
-            ->setValue(array(
+            ->setValue([
                 'hipchat' => true,
                 'sms' => true,
-            ));
+            ]);
 
         $paymentMade = (new Setting())
             ->setKey('payment_made')
-            ->setValue(array(
+            ->setValue([
                 'hipchat' => true,
                 'sms' => true,
-            ));
+            ]);
 
-        $settings = array(
-            'notification' => array(
+        $settings = [
+            'notification' => [
                 'client_create' => $clientCreate,
                 'invoice_status_update' => $invoiceStatus,
                 'quote_status_update' => $quoteStatus,
                 'payment_made' => $paymentMade,
-            ),
-        );
+            ],
+        ];
 
-        return array(array($settings));
+        return [[$settings]];
     }
 }

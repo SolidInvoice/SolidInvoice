@@ -25,7 +25,7 @@ abstract class Status
      *
      * @var array
      */
-    protected $statusLabels = array();
+    protected $statusLabels = [];
 
     /**
      * Converts a status into a label.
@@ -52,7 +52,7 @@ abstract class Status
      */
     public function getHtml($status)
     {
-        $status = str_replace(array('-', '_'), ' ', strtolower((string) $status));
+        $status = str_replace(['-', '_'], ' ', strtolower((string) $status));
 
         return '<label class="label label-'.$this->getStatusLabel($status).'">'.ucwords($status).'</label>';
     }

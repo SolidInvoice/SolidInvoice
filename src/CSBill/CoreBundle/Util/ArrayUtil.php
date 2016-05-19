@@ -40,7 +40,7 @@ class ArrayUtil
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        $return = array();
+        $return = [];
 
         foreach ($array as $item) {
             if (is_array($item) || $item instanceof \ArrayAccess) {

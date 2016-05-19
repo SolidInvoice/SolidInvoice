@@ -23,6 +23,6 @@ class FinishStep extends ControllerStep
     {
         $rootDir = $this->container->getParameter('kernel.root_dir');
 
-        return $this->render('CSBillInstallBundle:Flow:finish.html.twig', array('rootDir' => $rootDir));
+        return $this->render('CSBillInstallBundle:Flow:finish.html.twig', ['rootDir' => $rootDir]);
     }
 }

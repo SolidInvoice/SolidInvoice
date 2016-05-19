@@ -25,9 +25,9 @@ class CreditType extends AbstractType
         $builder->add(
             'amount',
             'money',
-            array(
+            [
                 'constraints' => new Assert\NotBlank(),
-            )
+            ]
         );
     }
 

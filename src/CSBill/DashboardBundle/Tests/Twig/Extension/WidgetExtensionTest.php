@@ -59,10 +59,10 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $widget = \Mockery::mock(
             'CSBill\DashboardBundle\Widgets\WidgetInterface',
-            array(
+            [
                 'getTemplate' => 'test_template.html.twig',
-                'getData' => array('a' => '1', 'b' => '2', 'c' => '3'),
-            )
+                'getData' => ['a' => '1', 'b' => '2', 'c' => '3'],
+            ]
         );
 
         $environment = \Mockery::mock('Twig_Environment');
@@ -71,12 +71,12 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('get')
             ->once()
             ->with('top')
-            ->andReturn(array($widget));
+            ->andReturn([$widget]);
 
         $environment
             ->shouldReceive('render')
             ->once()
-            ->with('test_template.html.twig', array('a' => '1', 'b' => '2', 'c' => '3'))
+            ->with('test_template.html.twig', ['a' => '1', 'b' => '2', 'c' => '3'])
             ->andReturn('123');
 
         $this->extension->initRuntime($environment);

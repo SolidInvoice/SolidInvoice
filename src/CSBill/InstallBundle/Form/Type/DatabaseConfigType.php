@@ -29,66 +29,66 @@ class DatabaseConfigType extends AbstractType
         $builder->add(
             'driver',
             'select2',
-            array(
+            [
                 'help' => 'Only MySQL is supported at the moment',
                 'choices' => $drivers,
                 'placeholder' => 'Select Database Driver',
                 'choices_as_values' => false,
-                'constraints' => array(
+                'constraints' => [
                      new Constraints\NotBlank(),
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'host',
             null,
-            array(
-                'constraints' => array(
+            [
+                'constraints' => [
                     new Constraints\NotBlank(),
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'port',
             'integer',
-            array(
-                'constraints' => array(
-                    new Constraints\Type(array('type' => 'integer')),
-                ),
+            [
+                'constraints' => [
+                    new Constraints\Type(['type' => 'integer']),
+                ],
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add(
             'user',
             null,
-            array(
-                'constraints' => array(
+            [
+                'constraints' => [
                     new Constraints\NotBlank(),
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'password',
             'password',
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add(
             'name',
             null,
-            array(
+            [
                 'label' => 'Database Name',
-                'constraints' => array(
+                'constraints' => [
                     new Constraints\NotBlank(),
-                ),
+                ],
                 'required' => false,
-            )
+            ]
         );
     }
 
@@ -98,9 +98,9 @@ class DatabaseConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(
-            array(
+            [
                 'drivers',
-            )
+            ]
         );
     }
 

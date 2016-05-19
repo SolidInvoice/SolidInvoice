@@ -27,7 +27,7 @@ class TaxType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name');
-        $builder->add('rate', 'percent', array('precision' => 2));
+        $builder->add('rate', 'percent', ['precision' => 2]);
 
         $types = Tax::getTypes();
 
@@ -38,12 +38,12 @@ class TaxType extends AbstractType
         $builder->add(
             'type',
             'select2',
-            array(
+            [
                 'choices' => $types,
                 'choices_as_values' => false,
                 'help' => 'tax.rates.explanation',
                 'placeholder' => 'tax.rates.type.select',
-            )
+            ]
         );
     }
 
@@ -52,7 +52,7 @@ class TaxType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'CSBill\TaxBundle\Entity\Tax'));
+        $resolver->setDefaults(['data_class' => 'CSBill\TaxBundle\Entity\Tax']);
     }
 
     /**
