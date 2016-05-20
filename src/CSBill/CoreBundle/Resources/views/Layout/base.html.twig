@@ -27,12 +27,7 @@
 	<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css" />
     {% endblock stylesheets %}
 
-    {% javascripts
-        "@CSBillCoreBundle/Resources/public/js/lib/modernizr.min.js"
-        filter="?yui_js"
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('bundles/csbillcore/js/lib/modernizr.min.js') }}"></script>
 
     {% include 'CSBillCoreBundle:_partials:scripts.html.twig' %}
 </head>
