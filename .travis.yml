@@ -27,7 +27,6 @@ install:
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
   - php app/console cache:clear
   - php app/console assets:install -n
-  - php app/console assetic:dump -n
 
 before_script:
   - npm install -g gulp
