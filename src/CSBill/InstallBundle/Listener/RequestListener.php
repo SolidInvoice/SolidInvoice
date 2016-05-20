@@ -91,10 +91,6 @@ class RequestListener
         $route = $event->getRequest()->get('_route');
 
         if (!in_array($route, $this->allowRoutes)) {
-            if ($this->debug && false !== strpos($route, '_assetic')) {
-                return;
-            }
-
             $response = new RedirectResponse($this->router->generate(self::INSTALLER_ROUTE));
 
             $event->setResponse($response);
