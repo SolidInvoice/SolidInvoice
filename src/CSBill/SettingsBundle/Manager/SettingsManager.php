@@ -50,7 +50,7 @@ class SettingsManager implements ManagerInterface
     /**
      * @var array
      */
-    protected $loaders = array();
+    protected $loaders = [];
 
     const LEFT_TOKEN = '[';
     const RIGHT_TOKEN = ']';
@@ -61,7 +61,7 @@ class SettingsManager implements ManagerInterface
     public function __construct()
     {
         $this->initialized = false;
-        $this->settings = array();
+        $this->settings = [];
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -173,7 +173,7 @@ class SettingsManager implements ManagerInterface
      *
      * @return mixed|void
      */
-    public function set(array $settings = array())
+    public function set(array $settings = [])
     {
         $this->initialize();
 
@@ -181,7 +181,7 @@ class SettingsManager implements ManagerInterface
             foreach ($this->collection->getSections() as $collectionSection) {
                 $this->collection->startSection($collectionSection);
 
-                $collectionSettings = array();
+                $collectionSettings = [];
 
                 foreach ($settings as $key => $value) {
                     $config = $this->collection->getSettings();
@@ -208,7 +208,7 @@ class SettingsManager implements ManagerInterface
      */
     protected function setData(array $config, array $settings)
     {
-        $settingsArray = array();
+        $settingsArray = [];
 
         foreach ($config as $section => $setting) {
             foreach ($settings as $key => $value) {

@@ -27,21 +27,21 @@ class UploadController extends BaseController
         $file = $request->files->get('Filedata');
 
         if ($file === null) {
-            $data = array('status' => 'error', 'message' => $this->trans('invalid_file'));
+            $data = ['status' => 'error', 'message' => $this->trans('invalid_file')];
         } else {
-            $errors = $this->get('validator')->validateValue($file, new Image(array('maxSize' => '1024k')));
+            $errors = $this->get('validator')->validateValue($file, new Image(['maxSize' => '1024k']));
 
             if (count($errors) > 0) {
-                $data = array('status' => 'error', 'message' => $errors[0]->getMessage());
+                $data = ['status' => 'error', 'message' => $errors[0]->getMessage()];
             } else {
                 $path = dirname($this->get('kernel')->getRootDir()).'/web/uploads';
 
                 $fileName = uniqid().'.'.$file->guessExtension();
 
                 if ($file->move($path, $fileName)) {
-                    $data = array('status' => 'success', 'file' => $fileName);
+                    $data = ['status' => 'success', 'file' => $fileName];
                 } else {
-                    $data = array('status' => 'error', 'message' => $this->trans('upload_error'));
+                    $data = ['status' => 'error', 'message' => $this->trans('upload_error')];
                 }
             }
         }

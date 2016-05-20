@@ -25,25 +25,25 @@ class Payex extends AbstractType
         $builder->add(
             'account_number',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'encryption_key',
             'password',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'sandbox',
             'checkbox',
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
     }
 

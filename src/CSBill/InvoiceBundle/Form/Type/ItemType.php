@@ -41,46 +41,46 @@ class ItemType extends AbstractType
         $builder->add(
             'description',
             'textarea',
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'input-medium invoice-item-name',
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'price',
             'money',
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'input-small invoice-item-price',
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'qty',
             'number',
-            array(
+            [
                 'empty_data' => 1,
-                'attr' => array(
+                'attr' => [
                     'class' => 'input-mini invoice-item-qty',
-                ),
-            )
+                ],
+            ]
         );
 
         if ($this->taxRepo->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 new Tax(),
-                array(
+                [
                     'class' => 'CSBill\TaxBundle\Entity\Tax',
                     'placeholder' => 'Choose Tax Type',
-                    'attr' => array(
+                    'attr' => [
                         'class' => 'input-mini invoice-item-tax',
-                    ),
+                    ],
                     'required' => false,
-                )
+                ]
             );
         }
     }
@@ -99,9 +99,9 @@ class ItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'CSBill\InvoiceBundle\Entity\Item',
-            )
+            ]
         );
     }
 }

@@ -36,9 +36,9 @@ class InvoiceMailerListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             InvoiceEvents::INVOICE_POST_ACCEPT => 'onInvoiceAccepted',
-        );
+        ];
     }
 
     /**

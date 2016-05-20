@@ -32,7 +32,7 @@ class ConfigStepForm extends AbstractType
         $builder->add(
             'database_config',
             new DatabaseConfigType(),
-            array(
+            [
                 'drivers' => $drivers,
                 'constraints' => new Constraints\Callback(
                     function ($data, ExecutionContextInterface $executionContext) {
@@ -45,15 +45,15 @@ class ConfigStepForm extends AbstractType
                         }
                     }
                 ),
-            )
+            ]
         );
 
         $builder->add(
             'email_settings',
             new EmailSettingsType(),
-            array(
+            [
                 'transports' => $options['mailer_transports'],
-            )
+            ]
         );
     }
 
@@ -63,10 +63,10 @@ class ConfigStepForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(
-            array(
+            [
                 'drivers',
                 'mailer_transports',
-            )
+            ]
         );
     }
 

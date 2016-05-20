@@ -16,7 +16,7 @@ class Runner
     /**
      * @var CommandInterface[]
      */
-    protected $commands = array();
+    protected $commands = [];
 
     /**
      * @param CommandInterface $command

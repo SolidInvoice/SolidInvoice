@@ -38,7 +38,7 @@ class PaymentMethodSettingsForm extends AbstractType
      */
     private function getOptions(array $settings)
     {
-        $options = array();
+        $options = [];
 
         switch ($settings['type']) {
             case 'password':
@@ -49,7 +49,7 @@ class PaymentMethodSettingsForm extends AbstractType
                 $options['choices'] = $settings['options'];
                 $options['choices_as_values'] = false;
                 $options['placeholder'] = 'Please Choose';
-                $options['attr'] = array('class' => 'select2');
+                $options['attr'] = ['class' => 'select2'];
                 break;
 
             case 'checkbox':
@@ -66,9 +66,9 @@ class PaymentMethodSettingsForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(
-            array(
+            [
                 'settings',
-            )
+            ]
         );
     }
 

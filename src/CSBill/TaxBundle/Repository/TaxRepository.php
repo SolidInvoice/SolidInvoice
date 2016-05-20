@@ -40,11 +40,11 @@ class TaxRepository extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('t')
             ->select(
-                array(
+                [
                     't.name',
                     't.rate',
                     't.type',
-                )
+                ]
             );
 
         $query = $queryBuilder->getQuery();

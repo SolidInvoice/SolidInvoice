@@ -23,7 +23,7 @@ class TraceLogger implements SQLLogger
      *
      * @var array
      */
-    public $queries = array();
+    public $queries = [];
 
     /**
      * If the logger is enabled (log queries) or not.
@@ -51,7 +51,7 @@ class TraceLogger implements SQLLogger
             $backtrace = $this->getBactrace();
 
             $this->start = microtime(true);
-            $this->queries[++$this->currentQuery] = array('sql' => $sql, 'params' => $params, 'types' => $types, 'executionMS' => 0, 'trace' => $backtrace);
+            $this->queries[++$this->currentQuery] = ['sql' => $sql, 'params' => $params, 'types' => $types, 'executionMS' => 0, 'trace' => $backtrace];
         }
     }
 
@@ -77,12 +77,12 @@ class TraceLogger implements SQLLogger
             }
         }
 
-        return array();
+        return [];
     }
 
     private function formatTrace(array $trace)
     {
-        $backtrace = array();
+        $backtrace = [];
 
         foreach ($trace as $index => $line) {
             $backtrace[$index] = '';

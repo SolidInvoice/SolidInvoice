@@ -59,17 +59,17 @@ class PaymentController extends BaseController
         }
 
         $preferredChoices = $paymentRepository
-            ->findBy(array('paymentMethod' => 'credit'));
+            ->findBy(['paymentMethod' => 'credit']);
 
         $form = $this->createForm(
             new PaymentForm(),
-            array(
+            [
                 'amount' => $invoice->getBalance(),
-            ),
-            array(
+            ],
+            [
                 'user' => $this->getUser(),
                 'preferred_choices' => $preferredChoices,
-            )
+            ]
         );
 
         $form->handleRequest($request);
@@ -99,9 +99,9 @@ class PaymentController extends BaseController
 
                     return $this->redirectToRoute(
                         '_payments_create',
-                        array(
+                        [
                             'uuid' => $invoice->getUuid(),
-                        )
+                        ]
                     );
                 }
 
@@ -149,10 +149,10 @@ class PaymentController extends BaseController
 
         return $this->render(
             'CSBillPaymentBundle:Payment:create.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-            )
+            ]
         );
     }
 

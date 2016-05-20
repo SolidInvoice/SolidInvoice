@@ -52,7 +52,7 @@ class Loader implements SettingsLoaderInterface
     /**
      * @param array $settings
      */
-    public function saveSettings(array $settings = array())
+    public function saveSettings(array $settings = [])
     {
         /** @var EntityRepository $repository */
         $repository = $this->manager->getRepository('CSBillNotificationBundle:Notification');
@@ -87,10 +87,10 @@ class Loader implements SettingsLoaderInterface
     public function getSettings()
     {
         if (!$this->checkConnection()) {
-            return array();
+            return [];
         }
 
-        $settings = array('notification' => array());
+        $settings = ['notification' => []];
 
         /** @var \CSBill\SettingsBundle\Repository\SettingsRepository $repository */
         $repository = $this->manager->getRepository('CSBillNotificationBundle:Notification');
@@ -102,11 +102,11 @@ class Loader implements SettingsLoaderInterface
 
             $setting = new Setting();
             $setting->setKey($value->getEvent())
-                ->setValue(array(
+                ->setValue([
                     'email' => $value->getEmail(),
                     'hipchat' => $value->getHipchat(),
                     'sms' => $value->getSms(),
-                ))
+                ])
                 ->setType('notification');
 
             $settings['notification'][$value->getEvent()] = $setting;

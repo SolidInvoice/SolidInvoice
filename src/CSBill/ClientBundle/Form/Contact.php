@@ -29,7 +29,7 @@ class Contact extends AbstractType
     /**
      * @param array $types
      */
-    public function __construct(array $types = array())
+    public function __construct(array $types = [])
     {
         $this->types = $types;
     }
@@ -47,11 +47,11 @@ class Contact extends AbstractType
                 $contactDetails = $builder->create(
                     'details_'.$item->getName(),
                     new PrimaryContactDetailType($item),
-                    array(
+                    [
                         'required' => true,
                         'property_path' => 'primaryDetails',
                         'by_reference' => true,
-                    )
+                    ]
                 );
 
                 $contactDetails->addModelTransformer(new DataTransformer\ContactDetailTransformer($item));
@@ -65,7 +65,7 @@ class Contact extends AbstractType
         $builder->add(
             'additionalDetails',
             new ContactDetailType(),
-            array(
+            [
                 'type' => new ContactDetail($this->types),
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -76,10 +76,10 @@ class Contact extends AbstractType
                 'prototype' => true,
                 'prototype_name' => '__contact_details_prototype__',
                 'error_bubbling' => false,
-                'options' => array(
+                'options' => [
                     'data_class' => 'CSBill\ClientBundle\Entity\AdditionalContactDetail',
-                ),
-            )
+                ],
+            ]
         );
     }
 
@@ -97,11 +97,11 @@ class Contact extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'CSBill\ClientBundle\Entity\Contact',
                 'csrf_protection' => false,
                 'allow_delete' => true,
-            )
+            ]
         );
     }
 

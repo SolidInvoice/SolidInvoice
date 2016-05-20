@@ -33,10 +33,10 @@ class FormHelpExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'help' => null,
                 'help_type' => 'inline',
-            )
+            ]
         );
     }
 

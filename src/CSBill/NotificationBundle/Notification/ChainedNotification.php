@@ -19,14 +19,14 @@ class ChainedNotification extends Notification implements ChainedNotificationInt
     /**
      * @var NotificationInterface[]
      */
-    protected $notifications = array();
+    protected $notifications = [];
 
     /**
      * @param NotificationInterface[] $notifications
      * @param string                  $message
      * @param array                   $parameters
      */
-    public function __construct(array $notifications = array(), $message = null, array $parameters = array())
+    public function __construct(array $notifications = [], $message = null, array $parameters = [])
     {
         parent::__construct($message, $parameters);
 

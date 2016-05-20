@@ -18,11 +18,11 @@ class NotificationTypeTest extends TypeTestCase
 {
     public function testSubmitValidData()
     {
-        $formData = array(
+        $formData = [
             'email' => true,
             'hipchat' => false,
             'sms' => true,
-        );
+        ];
 
         $type = new NotificationType();
         $form = $this->factory->create($type);

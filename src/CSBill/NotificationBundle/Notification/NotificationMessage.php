@@ -21,12 +21,12 @@ abstract class NotificationMessage implements NotificationMessageInterface
     /**
      * @var array
      */
-    private $users = array();
+    private $users = [];
 
     /**
      * @param array $parameters
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
     }

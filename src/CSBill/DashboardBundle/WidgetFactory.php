@@ -20,9 +20,9 @@ class WidgetFactory
     /**
      * @var \SplPriorityQueue[]
      */
-    private $queues = array();
+    private $queues = [];
 
-    private $locations = array('top', 'left_column', 'right_column');
+    private $locations = ['top', 'left_column', 'right_column'];
 
     public function __construct()
     {

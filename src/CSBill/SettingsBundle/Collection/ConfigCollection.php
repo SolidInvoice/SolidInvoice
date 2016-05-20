@@ -19,7 +19,7 @@ class ConfigCollection
     /**
      * @var array
      */
-    protected $elements = array();
+    protected $elements = [];
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class ConfigCollection
     /**
      * @var array
      */
-    protected $sections = array();
+    protected $sections = [];
 
     /**
      * Start a new section.

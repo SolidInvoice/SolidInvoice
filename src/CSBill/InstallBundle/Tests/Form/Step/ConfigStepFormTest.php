@@ -18,35 +18,35 @@ class ConfigStepFormTest extends FormTestCase
 {
     public function testSubmitData()
     {
-        $drivers = array(
+        $drivers = [
             'pdo_mysql' => 'MySQL',
-        );
+        ];
 
-        $transports = array(
+        $transports = [
             'mail' => 'PHPMail',
-        );
+        ];
 
-        $formData = array(
-            'database_config' => array(
+        $formData = [
+            'database_config' => [
                 'driver' => 'pdo_mysql',
                 'host' => 'localhost',
                 'port' => 1234,
                 'user' => 'root',
                 'password' => 'password',
                 'name' => 'testdb',
-            ),
-            'email_settings' => array(
+            ],
+            'email_settings' => [
                 'transport' => 'mail',
                 'host' => null,
                 'port' => null,
                 'encryption' => null,
                 'user' => null,
                 'password' => null,
-            ),
-        );
+            ],
+        ];
 
         $type = new ConfigStepForm();
-        $form = $this->factory->create($type, null, array('drivers' => $drivers, 'mailer_transports' => $transports));
+        $form = $this->factory->create($type, null, ['drivers' => $drivers, 'mailer_transports' => $transports]);
 
         // submit the data to the form directly
         $form->submit($formData);

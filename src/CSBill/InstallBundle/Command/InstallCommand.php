@@ -194,9 +194,9 @@ class InstallCommand extends ContainerAwareCommand
 
             $time = new \DateTime('NOW');
 
-            $config = array(
+            $config = [
                 'installed' => $time->format(\DateTime::ISO8601),
-            );
+            ];
 
             $this->getContainer()->get('csbill.core.config_writer')->dump($config);
         }
@@ -242,15 +242,15 @@ class InstallCommand extends ContainerAwareCommand
     {
         $dbName = $input->getOption('database-name');
 
-        $params = array(
+        $params = [
             'driver' => $input->getOption('database-driver'),
             'host' => $input->getOption('database-host'),
             'port' => $input->getOption('database-port'),
             'user' => $input->getOption('database-user'),
             'password' => $input->getOption('database-password'),
             'charset' => 'UTF8',
-            'driverOptions' => array(),
-        );
+            'driverOptions' => [],
+        ];
 
         $tmpConnection = DriverManager::getConnection($params);
 
@@ -323,7 +323,7 @@ class InstallCommand extends ContainerAwareCommand
     private function saveConfig(InputInterface $input)
     {
         // Don't update installed here, in case something goes wrong with the rest of the installation process
-        $config = array(
+        $config = [
             'database_driver' => $input->getOption('database-driver'),
             'database_host' => $input->getOption('database-host'),
             'database_port' => $input->getOption('database-port'),
@@ -338,8 +338,8 @@ class InstallCommand extends ContainerAwareCommand
             'mailer_encryption' => $input->getOption('mailer-encryption'),
             'locale' => $input->getOption('locale'),
             'currency' => $input->getOption('currency'),
-	    'secret' => bin2hex(random_bytes(32)),
-        );
+        'secret' => bin2hex(random_bytes(32)),
+        ];
 
         $this->getContainer()->get('csbill.core.config_writer')->dump($config);
 

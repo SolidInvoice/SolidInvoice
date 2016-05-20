@@ -41,46 +41,46 @@ class ItemType extends AbstractType
         $builder->add(
             'description',
             'textarea',
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'input-medium quote-item-name',
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'price',
             'money',
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'class' => 'input-small quote-item-price',
-                ),
-            )
+                ],
+            ]
         );
 
         $builder->add(
             'qty',
             'number',
-            array(
+            [
                 'empty_data' => 1,
-                'attr' => array(
+                'attr' => [
                     'class' => 'input-mini quote-item-qty',
-                ),
-            )
+                ],
+            ]
         );
 
         if ($this->taxRepo->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 new Tax(),
-                array(
+                [
                     'class' => 'CSBill\TaxBundle\Entity\Tax',
                     'placeholder' => 'Choose Tax Type',
-                    'attr' => array(
+                    'attr' => [
                         'class' => 'input-mini quote-item-tax',
-                    ),
+                    ],
                     'required' => false,
-                )
+                ]
             );
         }
     }

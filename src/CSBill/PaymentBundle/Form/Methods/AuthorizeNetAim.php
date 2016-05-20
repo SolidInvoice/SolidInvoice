@@ -25,25 +25,25 @@ class AuthorizeNetAim extends AbstractType
         $builder->add(
             'login_id',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'transaction_key',
             'text',
-            array(
+            [
                 'constraints' => new NotBlank(),
-            )
+            ]
         );
 
         $builder->add(
             'sandbox',
             'checkbox',
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
     }
 

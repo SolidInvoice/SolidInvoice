@@ -34,7 +34,7 @@ class CronCommandCompilerPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('cron.command');
 
         foreach ($taggedServices as $id => $tagAttributes) {
-            $definition->addMethodCall('addCommand', array(new Reference($id)));
+            $definition->addMethodCall('addCommand', [new Reference($id)]);
         }
     }
 }

@@ -30,7 +30,7 @@ class ApiTokenHistoryRepository extends EntityRepository
         /** @var ApiToken $apiToken */
         $apiToken = $entityManager
             ->getRepository('CSBillUserBundle:ApiToken')
-            ->findOneBy(array('token' => $token));
+            ->findOneBy(['token' => $token]);
 
         $apiToken->addHistory($history);
 

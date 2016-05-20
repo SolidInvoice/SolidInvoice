@@ -16,12 +16,12 @@ use CSBill\InstallBundle\Form\Type\EmailSettingsType;
 
 class EmailSettingsTypeTest extends FormTestCase
 {
-    private $transports = array(
+    private $transports = [
         'mail' => 'PHP Mail',
         'sendmail' => 'Sendmail',
         'smtp' => 'SMTP',
         'gmail' => 'Gmail',
-    );
+    ];
 
     /**
      * @dataProvider formData
@@ -32,7 +32,7 @@ class EmailSettingsTypeTest extends FormTestCase
     public function testMailSettings(array $formData, array $assert)
     {
         $type = new EmailSettingsType();
-        $form = $this->factory->create($type, null, array('transports' => $this->transports));
+        $form = $this->factory->create($type, null, ['transports' => $this->transports]);
 
         // submit the data to the form directly
         $form->submit($formData);
@@ -53,79 +53,79 @@ class EmailSettingsTypeTest extends FormTestCase
      */
     public function formData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'transport' => 'mail',
                     'host' => 'localhost',
                     'port' => 1234,
                     'encryption' => 'ssl',
                     'user' => 'root',
                     'password' => 'password',
-                ),
-                array(
+                ],
+                [
                     'transport' => 'mail',
                     'host' => null,
                     'port' => null,
                     'encryption' => null,
                     'user' => null,
                     'password' => null,
-                ),
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'transport' => 'sendmail',
                     'host' => 'localhost',
                     'port' => 1234,
                     'encryption' => 'ssl',
                     'user' => 'root',
                     'password' => 'password',
-                ),
-                array(
+                ],
+                [
                     'transport' => 'sendmail',
                     'host' => null,
                     'port' => null,
                     'encryption' => null,
                     'user' => null,
                     'password' => null,
-                ),
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'transport' => 'smtp',
                     'host' => 'localhost',
                     'port' => 1234,
                     'encryption' => 'ssl',
                     'user' => 'root',
                     'password' => 'password',
-                ),
-                array(
+                ],
+                [
                     'transport' => 'smtp',
                     'host' => 'localhost',
                     'port' => 1234,
                     'encryption' => 'ssl',
                     'user' => 'root',
                     'password' => 'password',
-                ),
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'transport' => 'gmail',
                     'host' => 'localhost',
                     'port' => 1234,
                     'encryption' => 'ssl',
                     'user' => 'root',
                     'password' => 'password',
-                ),
-                array(
+                ],
+                [
                     'transport' => 'gmail',
                     'host' => null,
                     'port' => null,
                     'encryption' => null,
                     'user' => 'root',
                     'password' => 'password',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

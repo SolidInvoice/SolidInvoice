@@ -23,13 +23,13 @@ class PaymentFactoryCompilerPass implements CompilerPassInterface
     {
         $payum = $container->getDefinition('payum.static_registry');
 
-        $gatewaysIds = array();
+        $gatewaysIds = [];
         foreach ($container->findTaggedServiceIds('payum.gateway') as $gatewaysId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
                 $gatewaysIds[$attributes['gateway']] = $attributes['factory'];
             }
         }
 
-        $payum->addMethodCall('setGatewayFactories', array($gatewaysIds));
+        $payum->addMethodCall('setGatewayFactories', [$gatewaysIds]);
     }
 }

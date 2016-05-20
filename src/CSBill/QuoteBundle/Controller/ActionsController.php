@@ -30,7 +30,7 @@ class ActionsController extends BaseController
 
         $this->flash($this->trans('quote.accepted'), 'success');
 
-        return $this->redirectToRoute('_invoices_view', array('id' => $invoice->getId()));
+        return $this->redirectToRoute('_invoices_view', ['id' => $invoice->getId()]);
     }
 
     /**
@@ -46,7 +46,7 @@ class ActionsController extends BaseController
 
         $this->flash($this->trans('quote.declined'), 'success');
 
-        return $this->redirectToRoute('_quotes_view', array('id' => $quote->getId()));
+        return $this->redirectToRoute('_quotes_view', ['id' => $quote->getId()]);
     }
 
     /**
@@ -62,7 +62,7 @@ class ActionsController extends BaseController
 
         $this->flash($this->trans('quote.cancelled'), 'success');
 
-        return $this->redirectToRoute('_quotes_view', array('id' => $quote->getId()));
+        return $this->redirectToRoute('_quotes_view', ['id' => $quote->getId()]);
     }
 
     /**
@@ -78,7 +78,7 @@ class ActionsController extends BaseController
 
         $this->flash($this->trans('quote.reopened'), 'success');
 
-        return $this->redirectToRoute('_quotes_view', array('id' => $quote->getId()));
+        return $this->redirectToRoute('_quotes_view', ['id' => $quote->getId()]);
     }
 
     /**
@@ -94,6 +94,6 @@ class ActionsController extends BaseController
 
         $this->flash($this->trans('quote.sent'), 'success');
 
-        return $this->redirectToRoute('_quotes_view', array('id' => $quote->getId()));
+        return $this->redirectToRoute('_quotes_view', ['id' => $quote->getId()]);
     }
 }

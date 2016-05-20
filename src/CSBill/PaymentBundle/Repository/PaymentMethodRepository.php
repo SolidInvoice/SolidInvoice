@@ -32,7 +32,7 @@ class PaymentMethodRepository extends EntityRepository
         try {
             $settings = $queryBuilder->getQuery()->getSingleResult();
         } catch (NoResultException $e) {
-            return array();
+            return [];
         }
 
         return $settings['settings'];

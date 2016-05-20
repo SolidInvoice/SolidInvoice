@@ -42,6 +42,6 @@ class ClientCreateNotification extends NotificationMessage
      */
     public function getSubject(TranslatorInterface $translator)
     {
-        return $translator->trans('client.create.subject', array(), 'email');
+        return $translator->trans('client.create.subject', [], 'email');
     }
 }

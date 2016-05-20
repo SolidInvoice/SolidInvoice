@@ -38,7 +38,7 @@ interface ManagerInterface
      *
      * @return mixed|void
      */
-    public function set(array $settings = array());
+    public function set(array $settings = []);
 
     /**
      * @return array

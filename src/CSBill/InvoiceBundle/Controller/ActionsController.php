@@ -36,7 +36,7 @@ class ActionsController extends BaseController
 
         $this->flash($this->trans('invoice.transition.action.'.$action), 'success');
 
-        return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
+        return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
     }
 
     /**
@@ -54,6 +54,6 @@ class ActionsController extends BaseController
 
         $this->flash($this->trans('invoice.transition.action.sent'), 'success');
 
-        return $this->redirect($this->generateUrl('_invoices_view', array('id' => $invoice->getId())));
+        return $this->redirect($this->generateUrl('_invoices_view', ['id' => $invoice->getId()]));
     }
 }

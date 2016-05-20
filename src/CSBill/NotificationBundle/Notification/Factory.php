@@ -59,7 +59,7 @@ class Factory
     {
         $swiftMessage = \Swift_Message::newInstance();
 
-        $from = array($this->settings->get('email.from_address') => $this->settings->get('email.from_name'));
+        $from = [$this->settings->get('email.from_address') => $this->settings->get('email.from_name')];
 
         $swiftMessage->setFrom($from);
         $swiftMessage->setSubject($message->getSubject($this->translator));
@@ -104,10 +104,10 @@ class Factory
             $content,
             $this->settings->get('system.general.app_name'),
             $this->settings->get('hipchat.room_id'),
-            array(
+            [
                 'hipchat_color' => $this->settings->get('hipchat.message_color'),
                 'hipchat_notify' => (string) $this->settings->get('hipchat.notify'),
-            )
+            ]
         );
     }
 

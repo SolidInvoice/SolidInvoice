@@ -29,24 +29,24 @@ class RequestListener
      *
      * @var array
      */
-    private $allowRoutes = array(
+    private $allowRoutes = [
         self::INSTALLER_ROUTE,
         'sylius_flow_display',
         'sylius_flow_forward',
         'fos_js_routing_js',
-    );
+    ];
 
     /**
      * @var array
      */
-    private $debugRoutes = array(
+    private $debugRoutes = [
         '_wdt',
         '_profiler',
         '_profiler_search',
         '_profiler_search_bar',
         '_profiler_search_results',
         '_profiler_router',
-    );
+    ];
 
     /**
      * @var string

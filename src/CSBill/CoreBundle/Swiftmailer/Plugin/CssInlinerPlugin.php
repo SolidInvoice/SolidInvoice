@@ -39,7 +39,7 @@ class CssInlinerPlugin implements \Swift_Events_SendListener
 
         $children = $message->getChildren();
 
-        array_walk($children, array($this, 'convert'));
+        array_walk($children, [$this, 'convert']);
     }
 
     /**
