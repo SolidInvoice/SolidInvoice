@@ -119,7 +119,7 @@ class InstallContext extends DefaultContext
                 if (
                     $user->getUsername() === $row['username'] &&
                     $user->getEmail() === $row['email'] &&
-		    password_verify($row['password'], $user->getPassword())
+                    password_verify($row['password'], $user->getPassword())
                 ) {
                     $match = true;
                     break;

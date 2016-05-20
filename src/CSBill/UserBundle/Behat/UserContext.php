@@ -39,7 +39,7 @@ class UserContext extends DefaultContext
 
             $encoder = $encoderFactory->getEncoder($user);
 
-	    $password = $encoder->encodePassword($data['password'], null);
+            $password = $encoder->encodePassword($data['password'], null);
 
             $user->setUsername($data['username'])
                 ->setEmail($data['username'].'@local.dev')
@@ -74,7 +74,7 @@ class UserContext extends DefaultContext
                 if (
                     $user->getUsername() === $row['username'] &&
                     $user->getEmail() === $row['email'] &&
-		    password_verify($row['password'], $user->getPassword())
+                    password_verify($row['password'], $user->getPassword())
                 ) {
                     $match = true;
                     break;
