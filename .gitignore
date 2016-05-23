@@ -1,6 +1,8 @@
 web/bundles/*
 web/css/*
 web/js/*
+web/fonts/*
+web/img/*
 app/bootstrap.php.cache
 app/cache/*
 app/logs/*
@@ -12,9 +14,8 @@ web/uploads/*
 !web/uploads/.gitkeep
 !web/js/.gitkeep
 !web/css/.gitkeep
+!web/fonts/.gitkeep
+!web/img/.gitkeep
 app/config/parameters.yml
 /.idea
-web/js/fos_js_routes.js
-web/js/require-config.js
-web/js/hbs-templates.js
 node_modules

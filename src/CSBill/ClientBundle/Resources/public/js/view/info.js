@@ -13,7 +13,7 @@ define(
         "use strict";
 
         return Mn.LayoutView.extend({
-            template: Template['client/info'],
+            template: Template.client.info,
             contactCollection: null,
             regions: {
                 'clientContact': '#client-contacts-list',

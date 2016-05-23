@@ -4,7 +4,7 @@ define(
         'use strict';
 
         return ItemView.extend({
-            template: Template['client/credit'],
+            template: Template.client.credit,
 
             ui: {
                 "addCredit": '#add-credit-button'

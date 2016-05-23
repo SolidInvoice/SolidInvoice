@@ -4,7 +4,7 @@ define(
         "use strict";
 
         return Modal.extend({
-            'template': Template['client/add_credit'],
+            'template': Template.client.add_credit,
             'modal': {
                 'title': __('client.modal.add_credit'),
                 'buttons': {

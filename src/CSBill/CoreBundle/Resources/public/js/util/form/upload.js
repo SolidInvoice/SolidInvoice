@@ -41,7 +41,7 @@ define(['jquery', 'marionette', 'lodash', 'routing', 'translator', 'template', '
             var uploadEl = $('#' + this.id + '-uploader'),
                 el = $('#' + this.id),
                 queueEl = $('#' + this.id + '-uploader-queue'),
-                html = $(Template['upload']({'imagePath' : this.absolutePath + data.file}));
+                html = $(Template.core.upload({'imagePath' : this.absolutePath + data.file}));
 
             html.find('.remove-image').on('click', function(evt) {
                 evt.preventDefault();

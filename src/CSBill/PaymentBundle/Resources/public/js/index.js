@@ -14,10 +14,10 @@ define(
                 var model = new PaymentModel,
                     controller = new Controller(module, model);
 
-                Handlebars.registerPartial('menuItem', Template['payment/menu_item']);
+                Handlebars.registerPartial('menuItem', Template.payment.menu_item);
 
                 var ItemView = Mn.ItemView.extend({
-                    template: Template['payment/menu'],
+                    template: Template.payment.menu,
                     el: '#payment-method-tabs',
                     router: null,
                     modelEvents: {

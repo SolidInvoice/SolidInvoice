@@ -1,6 +1,6 @@
-define(['template', 'grid/backgrid-filter'], function (Template) {
+define(['template', 'grid/backgrid-filter'], function(Template) {
     return Backgrid.Extension.ServerSideFilter.extend({
-	template: Template['grid/search'],
-	name: "q"
+        template: Template.datagrid.search,
+        name: "q"
     });
 });

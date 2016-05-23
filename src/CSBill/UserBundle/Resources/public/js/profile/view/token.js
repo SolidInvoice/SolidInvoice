@@ -1,10 +1,10 @@
 define(
     ['marionette', 'bootstrap.bootbox', 'core/ajaxmodal', 'template', 'translator'],
-    function (Mn, Bootbox, AjaxModal, Template, __) {
+    function(Mn, Bootbox, AjaxModal, Template, __) {
         "use strict";
 
         return Mn.ItemView.extend({
-            template: Template['profile/api'],
+            template: Template.user.api,
             ui: {
                 'revokeBtn': '.revoke-token',
                 'historyBtn': '.view-token-history'
@@ -23,11 +23,11 @@ define(
                     }
                 });
             },
-            showHistory: function (event) {
+            showHistory: function(event) {
                 event.preventDefault();
 
                 var modal = AjaxModal.extend({
-                    'modal' : {
+                    'modal': {
                         'title': __('profile.api.history.title'),
                         'buttons': {
                             'close': {
@@ -44,4 +44,4 @@ define(
                 });
             }
         });
-});
+    });

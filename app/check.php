@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 require_once dirname(__FILE__).'/SymfonyRequirements.php';
 
 $lineSize = 70;
@@ -28,7 +19,7 @@ echo PHP_EOL.PHP_EOL;
 
 echo '> Checking Symfony requirements:'.PHP_EOL.'  ';
 
-$messages = [];
+$messages = array();
 foreach ($symfonyRequirements->getRequirements() as $req) {
     /** @var $req Requirement */
     if ($helpText = get_error_message($req, $lineSize)) {
@@ -108,7 +99,7 @@ function echo_title($title, $style = null)
 function echo_style($style, $message)
 {
     // ANSI color codes
-    $styles = [
+    $styles = array(
         'reset' => "\033[0m",
         'red' => "\033[31m",
         'green' => "\033[32m",
@@ -116,7 +107,7 @@ function echo_style($style, $message)
         'error' => "\033[37;41m",
         'success' => "\033[37;42m",
         'title' => "\033[34m",
-    ];
+    );
     $supports = has_color_support();
 
     echo($supports ? $styles[$style] : '').$message.($supports ? $styles['reset'] : '');

@@ -9,7 +9,7 @@
 
 define(['backgrid', 'backbone', 'lodash', 'template', 'jquery.jqcron'], function(Backgrid, Backbone, _, Template) {
     Backgrid.Extension.InvoiceCell = Backgrid.Cell.extend({
-	template: Template['grid/invoice_link'],
+	template: Template.datagrid.invoice_link,
 	_setRouteParams: function(action) {
 	    action.routeParams = {};
 
