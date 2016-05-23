@@ -29,7 +29,7 @@
                     {{ icon('envelope-o') }} {{ 'installation.config.title.email_settings'|trans }}
                 </legend>
                 {{ form_row(form.email_settings.transport) }}
-                <div id="smtp_settings" style="display: none">
+		<div id="smtp_settings">
                     {{ form_row(form.email_settings.host) }}
                     {{ form_row(form.email_settings.port) }}
                     {{ form_row(form.email_settings.encryption) }}
@@ -51,7 +51,7 @@
 
     <script>
         require(['core/util/form/mail'], function (MailSettings) {
-            new MailSettings('config_step_email_settings', '{{ form.email_settings.transport.vars.value }}');
+	    MailSettings('config_step_email_settings', '{{ form.email_settings.transport.vars.value }}');
         });
     </script>
 {% endblock %}

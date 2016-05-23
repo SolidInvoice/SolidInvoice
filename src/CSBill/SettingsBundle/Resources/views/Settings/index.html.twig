@@ -44,7 +44,7 @@
 
     <script>
         require(['core/util/form/mail'], function (MailSettings) {
-            new MailSettings('settings_email_sending_options', '{{ form.email.sending_options.transport.vars.value }}');
+	    MailSettings('settings_email_sending_options', '{{ form.email.sending_options.transport.vars.value }}');
         });
     </script>
 {% endblock %}
