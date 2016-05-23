@@ -51,23 +51,26 @@ Now you need to get composer
 $ curl -s http://getcomposer.org/installer | php
 ```
 
-When composer is finished downloading, you can install the optional dependencies:
+When composer is finished downloading, you can install the required dependencies:
 
 ```bash
 $ php composer.phar install
 ```
 
-After all the depencies has been installed, the last step is to install all the web assets
+After all the dependencies has been installed, the next step is to install all the web assets
 
 ```bash
 $ php app/console assets:install --symlink web
 ```
 
+The final step is to install the Node packages, and compile all the assets
+
+```bash
+$ npm install
+$ ./node_modules/.bin/gulp
+```
+
 Now you should have a fully working copy of CSBill.
-
-#### Lesscss
-
-The stylesheets are built using [lesscss][3], and uses LessPHP to compile the stylesheets to plain CSS.
 
 Features
 --------
