@@ -1,5 +1,22 @@
 {
-  "dependencies": {
+  "name": "csbill",
+  "description": "CSBill Billing Application",
+  "version": "0.7.0",
+  "main": "Gulpfile.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSBill/CSBill.git"
+  },
+  "keywords": [
+    "billing"
+  ],
+  "author": "Pierre du Plessis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CSBill/CSBill/issues"
+  },
+  "homepage": "http://csbill.org",
+  "devDependencies": {
     "del": "^2.2.0",
     "glob": "^7.0.3",
     "gulp": "^3.9.1",
