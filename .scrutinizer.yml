@@ -1,7 +1,7 @@
 application:
     environment:
         php:
-            version: 5.4
+            version: 5.6
     dependencies:
         before:
             - composer install --no-interaction
@@ -16,6 +16,20 @@ filter:
 
 before_commands:
     - composer install
+
+checks:
+    php:
+        code_rating: true
+        duplication: true
+
+build:
+    tests:
+        override:
+            -
+                command: 'bin/phpunit -c app --coverage-clover=clover.xml'
+                coverage:
+                    file: 'clover.xml'
+                    format: 'clover'
 
 tools:
     php_mess_detector:
