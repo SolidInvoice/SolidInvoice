@@ -4,7 +4,7 @@ define(
         'use strict';
 
         return ItemView.extend({
-            template: Template['client/contact'],
+            template: Template.client.contact,
 
             templateHelpers: function () {
                 return {

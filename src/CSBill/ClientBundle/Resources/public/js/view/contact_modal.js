@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'core/ajaxmodal', 'accounting', 'template', 'lodash', 'translator', 'parsley'],
-    function($, AjaxModal, Accounting, Template, _, __, Parsley) {
+    ['jquery', 'core/ajaxmodal', 'accounting', 'lodash', 'translator', 'parsley'],
+    function($, AjaxModal, Accounting, _, __, Parsley) {
         "use strict";
 
         return AjaxModal.extend({

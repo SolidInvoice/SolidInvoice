@@ -32,7 +32,7 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
 
             Handlebars.registerPartial('modalContent', template);
 
-            return Template['modal'];
+            return Template.core.modal;
         },
         listeners: {
             render: function() {

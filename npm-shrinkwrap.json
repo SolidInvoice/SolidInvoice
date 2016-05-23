@@ -638,6 +638,18 @@
         }
       }
     },
+    "gulp-define-module": {
+      "version": "0.1.4",
+      "from": "gulp-define-module@latest",
+      "resolved": "https://registry.npmjs.org/gulp-define-module/-/gulp-define-module-0.1.4.tgz",
+      "dependencies": {
+        "lodash": {
+          "version": "3.10.1",
+          "from": "lodash@>=3.6.0 <4.0.0",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz"
+        }
+      }
+    },
     "gulp-filter": {
       "version": "4.0.0",
       "from": "gulp-filter@latest",
@@ -647,6 +659,50 @@
       "version": "0.2.0",
       "from": "gulp-flatten@latest",
       "resolved": "https://registry.npmjs.org/gulp-flatten/-/gulp-flatten-0.2.0.tgz"
+    },
+    "gulp-handlebars": {
+      "version": "4.0.0",
+      "from": "gulp-handlebars@latest",
+      "resolved": "https://registry.npmjs.org/gulp-handlebars/-/gulp-handlebars-4.0.0.tgz",
+      "dependencies": {
+        "async": {
+          "version": "0.2.10",
+          "from": "async@>=0.2.6 <0.3.0",
+          "resolved": "https://registry.npmjs.org/async/-/async-0.2.10.tgz"
+        },
+        "handlebars": {
+          "version": "3.0.3",
+          "from": "handlebars@>=3.0.0 <4.0.0",
+          "resolved": "https://registry.npmjs.org/handlebars/-/handlebars-3.0.3.tgz"
+        },
+        "readable-stream": {
+          "version": "1.0.34",
+          "from": "readable-stream@>=1.0.33-1 <1.1.0-0",
+          "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-1.0.34.tgz"
+        },
+        "source-map": {
+          "version": "0.1.43",
+          "from": "source-map@>=0.1.40 <0.2.0",
+          "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.1.43.tgz"
+        },
+        "through2": {
+          "version": "0.6.5",
+          "from": "through2@>=0.6.3 <0.7.0",
+          "resolved": "https://registry.npmjs.org/through2/-/through2-0.6.5.tgz"
+        },
+        "uglify-js": {
+          "version": "2.3.6",
+          "from": "uglify-js@>=2.3.0 <2.4.0",
+          "resolved": "https://registry.npmjs.org/uglify-js/-/uglify-js-2.3.6.tgz",
+          "dependencies": {
+            "optimist": {
+              "version": "0.3.7",
+              "from": "optimist@>=0.3.5 <0.4.0",
+              "resolved": "https://registry.npmjs.org/optimist/-/optimist-0.3.7.tgz"
+            }
+          }
+        }
+      }
     },
     "gulp-less": {
       "version": "3.1.0",
@@ -1552,6 +1608,11 @@
       "version": "0.1.3",
       "from": "tempfile@>=0.1.2 <0.2.0",
       "resolved": "https://registry.npmjs.org/tempfile/-/tempfile-0.1.3.tgz"
+    },
+    "through": {
+      "version": "2.3.8",
+      "from": "through@>=2.3.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/through/-/through-2.3.8.tgz"
     },
     "through2": {
       "version": "2.0.1",

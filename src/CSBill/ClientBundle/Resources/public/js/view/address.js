@@ -4,6 +4,6 @@ define(
         'use strict';
 
         return ItemView.extend({
-            template: Template['client/address']
+            template: Template.client.address
         });
     });

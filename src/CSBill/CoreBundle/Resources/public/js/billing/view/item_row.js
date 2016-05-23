@@ -1,6 +1,6 @@
 define(['marionette', 'template', 'lodash', 'accounting'], function (Mn, Template, _, Accounting) {
     return Mn.ItemView.extend({
-        template: Template['invoice/row'],
+        template: Template.invoice.row,
         tagName: 'tr',
         ui: {
             removeItem: '.remove-item',

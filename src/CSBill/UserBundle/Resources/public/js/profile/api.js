@@ -21,7 +21,7 @@ define(
                     collection: this.collection,
                     childView: TokenView,
                     emptyView: Mn.ItemView.extend({
-                        template: Template['profile/empty_tokens']
+                        template: Template.user.empty_tokens
                     })
                 });
 

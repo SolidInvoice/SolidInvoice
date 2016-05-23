@@ -3,13 +3,13 @@ define(
     function($, Mn, Backbone, _, Routing, Template) {
         "use strict";
 
-        return function (module, model) {
+        return function(module, model) {
             var LoaderView = Mn.ItemView.extend({
-                template: Template['payment/loader']
+                template: Template.payment.loader
             });
 
             return {
-                showMethod : function (routeFragment) {
+                showMethod: function(routeFragment) {
                     var fragment = Backbone.history.getFragment();
 
                     if (_.isEmpty(fragment)) {
@@ -19,10 +19,10 @@ define(
                     $('li', '#payment-method-tabs').removeClass('active');
                     $('a[data-method="' + fragment + '"]').closest('li').addClass('active');
 
-                    var route = Routing.generate('_payment_method_settings', {'method' : fragment});
+                    var route = Routing.generate('_payment_method_settings', {'method': fragment});
                     module.app.getRegion('paymentMethodData').show(new LoaderView);
 
-                    $.get(route, function (response) {
+                    $.get(route, function(response) {
                         var view = response.content;
 
                         var ItemView = Mn.ItemView.extend({
@@ -33,7 +33,7 @@ define(
                             events: {
                                 'click @ui.save': 'saveMethod'
                             },
-                            saveMethod: function (event) {
+                            saveMethod: function(event) {
                                 event.preventDefault();
 
                                 module.app.getRegion('paymentMethodData').show(new LoaderView);
@@ -46,14 +46,14 @@ define(
                                     url: url,
                                     data: data,
                                     method: 'POST',
-                                    success: function (response) {
+                                    success: function(response) {
                                         module.app.getRegion('paymentMethodData').show(new ItemView({template: response.content}));
                                         model.fetch();
                                     }
                                 });
                             },
-                            onRender: function () {
-                                setTimeout(function () {
+                            onRender: function() {
+                                setTimeout(function() {
                                     $.material.init();
                                 }, 0);
                             }
@@ -64,4 +64,4 @@ define(
                 }
             };
         };
-});
+    });
