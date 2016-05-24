@@ -16,10 +16,9 @@
             </button>
 
             <a class="navbar-brand" href="{{ url('_dashboard') }}">
+
                 {% if settings.system.general.logo.value is defined and settings.system.general.logo.value is not empty %}
                     {% set logo = 'uploads/' ~ settings.system.general.logo.value %}
-                {% elseif settings.system.general.logo is defined and settings.system.general.logo is not empty %}
-                    {% set logo = 'uploads/' ~ settings.system.general.logo %}
                 {% else %}
                     {% set logo = 'img/logo.png' %}
                 {% endif %}

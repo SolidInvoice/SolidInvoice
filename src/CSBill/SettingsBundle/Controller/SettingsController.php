@@ -58,7 +58,7 @@ class SettingsController extends BaseController
         return $this->render(
             'CSBillSettingsBundle:Settings:index.html.twig',
             [
-                'settings' => $settings,
+                'appSettings' => $settings,
                 'form' => $form->createView(),
             ]
         );

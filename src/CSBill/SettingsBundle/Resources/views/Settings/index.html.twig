@@ -15,7 +15,7 @@
 
 {% block sidebar %}
     <ul class="nav nav-tabs nav-stacked">
-        {% for section,setting in settings %}
+        {% for section, setting in appSettings %}
             <li{{ loop.first ? ' class="active"' }}>
                 <a href="#{{ section }}" data-toggle="tab">
                     {{ section|trans|title }}
@@ -29,7 +29,7 @@
     <div class="widget">
         {{ form_start(form) }}
             <div class="tab-content">
-                {% for section, setting in settings %}
+                {% for section, setting in appSettings %}
                     <div class="tab-pane{{ loop.first ? ' active' }}" id="{{ section }}">
                         {{ _macro.settings_section(section, setting, form) }}
                     </div>
@@ -44,7 +44,7 @@
 
     <script>
         require(['core/util/form/mail'], function (MailSettings) {
-	    MailSettings('settings_email_sending_options', '{{ form.email.sending_options.transport.vars.value }}');
+            MailSettings('settings_email_sending_options', '{{ form.email.sending_options.transport.vars.value }}');
         });
     </script>
 {% endblock %}
