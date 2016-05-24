@@ -338,7 +338,7 @@ class InstallCommand extends ContainerAwareCommand
             'mailer_encryption' => $input->getOption('mailer-encryption'),
             'locale' => $input->getOption('locale'),
             'currency' => $input->getOption('currency'),
-        'secret' => bin2hex(random_bytes(32)),
+            'secret' => bin2hex(random_bytes(16)),
         ];
 
         $this->getContainer()->get('csbill.core.config_writer')->dump($config);
