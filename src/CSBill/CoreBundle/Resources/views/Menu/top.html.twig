@@ -16,7 +16,15 @@
             </button>
 
             <a class="navbar-brand" href="{{ url('_dashboard') }}">
-                <img src="{{ asset('img/logo.png') }}" width="25" style="display: inline" /> {{ title }}
+                {% if settings.system.general.logo.value is defined and settings.system.general.logo.value is not empty %}
+                    {% set logo = 'uploads/' ~ settings.system.general.logo.value %}
+                {% elseif settings.system.general.logo is defined and settings.system.general.logo is not empty %}
+                    {% set logo = 'uploads/' ~ settings.system.general.logo %}
+                {% else %}
+                    {% set logo = 'img/logo.png' %}
+                {% endif %}
+
+                <img src="{{ asset(logo) }}" width="25" style="display: inline" /> {{ title }}
             </a>
         </div>
 
