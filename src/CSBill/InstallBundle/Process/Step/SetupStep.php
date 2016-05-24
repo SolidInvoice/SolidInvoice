@@ -144,7 +144,7 @@ class SetupStep extends ControllerStep
             'currency' => $data['currency'],
             'base_url' => $data['base_url'],
             'installed' => $time->format(\DateTime::ISO8601),
-        'secret' => bin2hex(random_bytes(32)),
+            'secret' => bin2hex(random_bytes(16)),
         ];
 
         $this->get('csbill.core.config_writer')->dump($config);
