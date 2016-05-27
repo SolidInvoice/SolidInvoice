@@ -1,23 +1,23 @@
 define(
     ['handlebars.runtime', 'lodash', 'routing', 'accounting', 'moment', 'translator'],
-    function (Handlebars, _, Routing, Accounting, Moment, __) {
+    function(Handlebars, _, Routing, Accounting, Moment, __) {
         "use strict";
 
         /**
          * Routing Helper
          */
         Handlebars.registerHelper('path', function(route, context) {
-	    var params = {};
+            var params = {};
 
-	    if (_.isObject(context)) {
-		params = context;
-	    }
+            if (_.isObject(context)) {
+                params = context;
+            }
 
-	    if (!_.isUndefined(context.hash)) {
-		params = context.hash;
-	    }
+            if (!_.isUndefined(context.hash)) {
+                params = context.hash;
+            }
 
-	    return Routing.generate(route, params);
+            return Routing.generate(route, params);
         });
 
         /**
@@ -46,6 +46,10 @@ define(
          * Title Helper
          */
         Handlebars.registerHelper('title', function(message) {
+            if (_.isObject(message) && !_.isUndefined(_.get(message, 'data.root.title'))) {
+                return message.data.root.title;
+            }
+
             return message
                 .replace(/[-_]/g, ' ')
                 .toLowerCase()
@@ -85,4 +89,4 @@ define(
         });
 
         return Handlebars;
-});
+    });
