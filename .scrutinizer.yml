@@ -22,15 +22,6 @@ checks:
         code_rating: true
         duplication: true
 
-build:
-    tests:
-        override:
-            -
-                command: 'bin/phpunit -c app --coverage-clover=clover.xml'
-                coverage:
-                    file: 'clover.xml'
-                    format: 'clover'
-
 tools:
     php_mess_detector:
         filter:
@@ -61,5 +52,6 @@ tools:
             excluded_paths: [vendor/*, web/*, app/*, bin/*]
     php_loc: true
     external_code_coverage:
+        runs: 3
         filter:
             excluded_paths: [vendor/*, web/*, app/*, bin/*]
