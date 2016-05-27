@@ -41,35 +41,7 @@ define([
         return Mn.Object.extend({
             initialize: function(options, element) {
                 var collection = new GridCollection(options.name, options.parameters);
-
-                collection.on('request', function() {
-                    var body = $('body'),
-                        modalManager = body.data('modalmanager');
-
-                    if (_.isUndefined(modalManager)) {
-                        body.modalmanager('loading');
-
-                        return;
-                    }
-
-                    if (!modalManager.isLoading) {
-                        modalManager.loading();
-                    }
-                });
-
-                collection.on('sync', function() {
-                    var body = $('body'),
-                        modalManager = body.data('modalmanager');
-
-                    if (_.isUndefined(modalManager)) {
-                        return;
-                    }
-
-                    if (modalManager.isLoading) {
-                        modalManager.loading();
-                    }
-                });
-
+                
                 collection.fetch();
 
                 var gridOptions = {
