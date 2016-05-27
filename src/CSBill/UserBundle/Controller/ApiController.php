@@ -84,22 +84,24 @@ class ApiController extends BaseController
 
         $response = [];
 
-        if ($form->isValid()) {
-            $token = bin2hex(random_bytes(32));
-            $apiToken->setToken($token);
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()) {
+                $token = bin2hex(random_bytes(32));
+                $apiToken->setToken($token);
 
-            $this->save($apiToken);
+                $this->save($apiToken);
 
-            $response['status'] = 'success';
-            $response['token'] = [
-                'token' => $apiToken->getToken(),
-                'name' => $apiToken->getName(),
-                'id' => $apiToken->getId(),
-            ];
+                $response['status'] = 'success';
+                $response['token'] = [
+                    'token' => $apiToken->getToken(),
+                    'name' => $apiToken->getName(),
+                    'id' => $apiToken->getId(),
+                ];
 
-            return $this->json($response);
-        } else {
-            $response['status'] = 'failure';
+                return $this->json($response);
+            } else {
+                $response['status'] = 'failure';
+            }
         }
 
         $content = $this->renderView(
