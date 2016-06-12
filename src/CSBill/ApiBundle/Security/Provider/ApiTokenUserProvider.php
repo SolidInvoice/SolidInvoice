@@ -12,6 +12,7 @@
 namespace CSBill\ApiBundle\Security\Provider;
 
 use CSBill\UserBundle\Entity\User;
+use CSBill\UserBundle\Repository\ApiTokenRepository;
 use CSBill\UserBundle\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -25,6 +26,11 @@ class ApiTokenUserProvider implements UserProviderInterface
      * @var UserRepository
      */
     private $userRepository;
+
+    /**
+     * @var ApiTokenRepository
+     */
+    private $tokenRepository;
 
     /**
      * @param EntityManagerInterface $entityManager
