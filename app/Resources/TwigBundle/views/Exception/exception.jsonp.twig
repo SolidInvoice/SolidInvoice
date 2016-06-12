@@ -1,0 +1,1 @@
+{{ app.request.get('callback') }}({{ { 'error': { 'code': exception.code == 0 ? status_code : exception.code, 'message': exception.message } }|json_encode|raw }});
