@@ -74,6 +74,7 @@ class ClientController extends Controller
      * @param int $clientId
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function getClientAction($clientId)

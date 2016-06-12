@@ -56,7 +56,6 @@ class MoneyFormatterExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('formatCurrency', function ($money) {
-
                 if (!$money instanceof Money && is_int($money)) {
                     $money = new Money($money, $this->currency);
                 }

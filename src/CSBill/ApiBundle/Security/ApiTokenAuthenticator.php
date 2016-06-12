@@ -62,6 +62,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      * @param string  $providerKey
      *
      * @return PreAuthenticatedToken
+     *
      * @throws AuthenticationCredentialsNotFoundException
      */
     public function createToken(Request $request, $providerKey)
