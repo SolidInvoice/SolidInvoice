@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @Serialize\XmlRoot("client")
- * @Hateoas\Relation("self", href=@Hateoas\Route("get_clients", absolute=true))
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_client", absolute=true, parameters={"clientId" : "expr(object.getId())"}))
  * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
  */
 class Client

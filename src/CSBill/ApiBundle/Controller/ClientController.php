@@ -55,6 +55,43 @@ class ClientController extends Controller
 
     /**
      * @ApiDoc(
+     *    statusCodes={
+     *        200="Returned when successful",
+     *        403="Returned when the user is not authorized",
+     *        404="Returned when the client does not exist",
+     *     },
+     *     resource=true,
+     *     description="Returns a specific client",
+     *     output={
+     *         "class"="CSBill\ClientBundle\Entity\Client",
+     *         "groups"={"api"}
+     *     },
+     *     authentication=true
+     * )
+     *
+     * @RestRoute\Get(path="/client/{clientId}")
+     *
+     * @param int $clientId
+     *
+     * @return Response
+     * @throws \Exception
+     */
+    public function getClientAction($clientId)
+    {
+        $clientRepository = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('CSBillClientBundle:Client');
+
+        $client = $clientRepository->find($clientId);
+
+        if (null === $client) {
+            throw new \Exception(sprintf('Client %d does not exist', $clientId));
+        }
+
+        return $this->handleView($this->view($client));
+    }
+
+    /**
+     * @ApiDoc(
      *     statusCodes={
      *         200="Returned when successful",
      *         403="Returned when the user is not authorized",
@@ -71,7 +108,7 @@ class ClientController extends Controller
      * @param ParamFetcherInterface $fetcher
      * @param int                   $clientId
      *
-     * @RestRoute\Get(path="/clients/{clientId}/contacts")
+     * @RestRoute\Get(path="/client/{clientId}/contacts")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -97,7 +134,10 @@ class ClientController extends Controller
      *     resource=true,
      *     description="Create a new client",
      *     input="CSBill\ClientBundle\Form\Client",
-     *     output="CSBill\ClientBundle\Entity\Client",
+     *     output={
+     *         "class"="CSBill\ClientBundle\Entity\Client",
+     *         "groups"={"api"}
+     *     },
      *     authentication=true,
      * )
      *
@@ -122,14 +162,17 @@ class ClientController extends Controller
      *     resource=true,
      *     description="Update a client",
      *     input="CSBill\ClientBundle\Form\Client",
-     *     output="CSBill\ClientBundle\Entity\Client",
+     *     output={
+     *         "class"="CSBill\ClientBundle\Entity\Client",
+     *         "groups"={"api"}
+     *     },
      *     authentication=true,
      * )
      *
      * @param Request       $request
      * @param Entity\Client $client
      *
-     * @RestRoute\Put(path="/clients/{clientId}")
+     * @RestRoute\Put(path="/client/{clientId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
@@ -153,7 +196,7 @@ class ClientController extends Controller
      *
      * @param Entity\Client $client
      *
-     * @RestRoute\Delete(path="/clients/{clientId}")
+     * @RestRoute\Delete(path="/client/{clientId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
@@ -174,7 +217,10 @@ class ClientController extends Controller
      *     resource=true,
      *     description="Create a new contact",
      *     input="CSBill\ClientBundle\Form\Contact",
-     *     output="CSBill\ClientBundle\Entity\Contact",
+     *     output={
+     *         "class"="CSBill\ClientBundle\Entity\Contact",
+     *         "groups"={"api"}
+     *     },
      *     authentication=true,
      * )
      *
@@ -183,7 +229,7 @@ class ClientController extends Controller
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
-     * @RestRoute\Post(path="/clients/{clientId}/contacts")
+     * @RestRoute\Post(path="/client/{clientId}/contacts")
      *
      * @return Response
      */
@@ -205,7 +251,10 @@ class ClientController extends Controller
      *     resource=true,
      *     description="Update a contact",
      *     input="CSBill\ClientBundle\Form\Contact",
-     *     output="CSBill\ClientBundle\Entity\Contact",
+     *     output={
+     *         "class"="CSBill\ClientBundle\Entity\Contact",
+     *         "groups"={"api"}
+     *     },
      *     authentication=true,
      * )
      *
@@ -216,7 +265,7 @@ class ClientController extends Controller
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
      *
-     * @RestRoute\Put(path="/clients/{clientId}/contacts/{contactId}")
+     * @RestRoute\Put(path="/client/{clientId}/contact/{contactId}")
      *
      * @return Response
      */
@@ -242,7 +291,7 @@ class ClientController extends Controller
      * @param Entity\Client  $client
      * @param Entity\Contact $contact
      *
-     * @RestRoute\Delete(path="/clients/{clientId}/contacts/{contactId}")
+     * @RestRoute\Delete(path="/client/{clientId}/contact/{contactId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
