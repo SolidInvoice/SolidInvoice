@@ -86,8 +86,7 @@ class ApiController extends BaseController
 
         if ($request->isMethod('POST')) {
             if ($form->isValid()) {
-                $token = bin2hex(random_bytes(32));
-                $apiToken->setToken($token);
+                $apiToken->setToken($this->get('api.token.manager')->generateToken());
 
                 $this->save($apiToken);
 
