@@ -132,6 +132,120 @@ class ClientController extends Controller
      *         404="Returned when the page is out of range",
      *     },
      *     resource=true,
+     *     description="Returns a list of all invoices for a specific client",
+     *     authentication=true,
+     * )
+     *
+     * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
+     * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
+     *
+     * @param ParamFetcherInterface $fetcher
+     * @param int                   $clientId
+     *
+     * @Rest\Get(path="/client/{clientId}/invoices")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getClientInvoicesAction(ParamFetcherInterface $fetcher, $clientId)
+    {
+        $invoiceRepository = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('CSBillInvoiceBundle:Invoice');
+
+        $data = $invoiceRepository->createQueryBuilder('i');
+        $data->where('i.client = :client')
+            ->setParameter('client', $clientId);
+
+        return $this->manageCollection(
+            $fetcher,
+            $data,
+            new Route('get_client_invoices', ['clientId' => $clientId], true, $this->get('router'))
+        );
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         403="Returned when the user is not authorized",
+     *         404="Returned when the page is out of range",
+     *     },
+     *     resource=true,
+     *     description="Returns a list of all quotes for a specific client",
+     *     authentication=true,
+     * )
+     *
+     * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
+     * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
+     *
+     * @param ParamFetcherInterface $fetcher
+     * @param int                   $clientId
+     *
+     * @Rest\Get(path="/client/{clientId}/quotes")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getClientQuotesAction(ParamFetcherInterface $fetcher, $clientId)
+    {
+        $quoteRepository = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('CSBillQuoteBundle:Quote');
+
+        $data = $quoteRepository->createQueryBuilder('q');
+        $data->where('q.client = :client')
+            ->setParameter('client', $clientId);
+
+        return $this->manageCollection(
+            $fetcher,
+            $data,
+            new Route('get_client_quotes', ['clientId' => $clientId], true, $this->get('router'))
+        );
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         403="Returned when the user is not authorized",
+     *         404="Returned when the page is out of range",
+     *     },
+     *     resource=true,
+     *     description="Returns a list of all contacts for a specific client",
+     *     authentication=true,
+     * )
+     *
+     * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
+     * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
+     *
+     * @param ParamFetcherInterface $fetcher
+     * @param int                   $clientId
+     *
+     * @Rest\Get(path="/client/{clientId}/payments")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getClientPaymentsAction(ParamFetcherInterface $fetcher, $clientId)
+    {
+        $paymentRepository = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('CSBillPaymentBundle:Payment');
+
+        $data = $paymentRepository->createQueryBuilder('p');
+        $data->where('p.client = :client')
+            ->setParameter('client', $clientId);
+
+        return $this->manageCollection(
+            $fetcher,
+            $data,
+            new Route('get_client_payments', ['clientId' => $clientId], true, $this->get('router'))
+        );
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         403="Returned when the user is not authorized",
+     *         404="Returned when the page is out of range",
+     *     },
+     *     resource=true,
      *     description="Returns a list of all contacts for a specific client",
      *     authentication=true,
      *     output={
