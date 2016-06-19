@@ -16,8 +16,8 @@ use CSBill\DataGridBundle\Source\Source;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -119,9 +119,9 @@ class Grid implements GridInterface
         $paginator = new Paginator($queryBuilder);
 
         return [
-        'count' => count($paginator),
-        'items' => $paginator->getQuery()->getArrayResult(),
-    ];
+            'count' => count($paginator),
+            'items' => $paginator->getQuery()->getArrayResult(),
+        ];
     }
 
     /**

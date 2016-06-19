@@ -33,6 +33,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Serialize\XmlRoot("client")
  * @Hateoas\Relation("self", href=@Hateoas\Route("get_client", absolute=true, parameters={"clientId" : "expr(object.getId())"}))
  * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
+ * @Hateoas\Relation("client.invoices", href=@Hateoas\Route("get_client_invoices", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
+ * @Hateoas\Relation("client.quotes",   href=@Hateoas\Route("get_client_quotes",   parameters={"clientId" : "expr(object.getId())"}, absolute=true))
+ * @Hateoas\Relation("client.payments", href=@Hateoas\Route("get_client_payments", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
  */
 class Client
 {
