@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  * @Serialize\ExclusionPolicy("all")
  * @Serialize\XmlRoot("invoice")
- * @Hateoas\Relation("self", href=@Hateoas\Route("get_invoices", absolute=true))
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_invoice", absolute=true, parameters={"invoiceId" : "expr(object.getId())"}))
  */
 class Invoice
 {

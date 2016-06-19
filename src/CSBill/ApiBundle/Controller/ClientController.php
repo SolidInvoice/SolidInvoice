@@ -73,23 +73,16 @@ class ClientController extends Controller
      *
      * @Rest\Get(path="/client/{clientId}")
      *
-     * @param int $clientId
+     * @param Entity\Client $client
+     *
+     * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
      * @return Response
      *
      * @throws \Exception
      */
-    public function getClientAction($clientId)
+    public function getClientAction(Entity\Client $client)
     {
-        $clientRepository = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('CSBillClientBundle:Client');
-
-        $client = $clientRepository->find($clientId);
-
-        if (null === $client) {
-            throw new \Exception(sprintf('Client %d does not exist', $clientId));
-        }
-
         return $this->handleView($this->view($client));
     }
 

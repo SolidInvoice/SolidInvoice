@@ -54,6 +54,37 @@ class QuoteController extends Controller
 
     /**
      * @ApiDoc(
+     *    statusCodes={
+     *        200="Returned when successful",
+     *        403="Returned when the user is not authorized",
+     *        404="Returned when the quote does not exist",
+     *     },
+     *     resource=true,
+     *     description="Returns a Quote",
+     *     output={
+     *         "class"="CSBill\QuoteBundle\Entity\Quote",
+     *         "groups"={"api"}
+     *     },
+     *     authentication=true
+     * )
+     *
+     * @Rest\Get(path="/quote/{quoteId}")
+     *
+     * @param Entity\Quote $quote
+     *
+     * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    public function getQuoteAction(Entity\Quote $quote)
+    {
+        return $this->handleView($this->view($quote));
+    }
+
+    /**
+     * @ApiDoc(
      *     statusCodes={
      *         201="Returned when successful",
      *         400="Returned when the validation fails",
@@ -74,7 +105,12 @@ class QuoteController extends Controller
      */
     public function createQuoteAction(Request $request)
     {
-        return $this->manageForm($request, 'quote', new Entity\Quote(), Response::HTTP_CREATED);
+        $entity = new Entity\Quote();
+        $entity->setStatus($request->request->get('status', Graph::STATUS_DRAFT));
+
+        $request->request->remove('status');
+
+        return $this->manageForm($request, 'quote', $entity, Response::HTTP_CREATED);
     }
 
     /**
@@ -94,7 +130,7 @@ class QuoteController extends Controller
      * @param Request      $request
      * @param Entity\Quote $quote
      *
-     * @Rest\Patch(path="/quotes/{quoteId}")
+     * @Rest\Patch(path="/quote/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *
@@ -125,7 +161,7 @@ class QuoteController extends Controller
      *
      * @throws \Exception
      *
-     * @Rest\Patch(path="/quotes/{quoteId}/status")
+     * @Rest\Patch(path="/quote/{quoteId}/status")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      */
@@ -162,7 +198,7 @@ class QuoteController extends Controller
      *
      * @param Entity\Quote $quote
      *
-     * @Rest\Delete(path="/quotes/{quoteId}")
+     * @Rest\Delete(path="/quote/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *

@@ -55,6 +55,37 @@ class InvoiceController extends Controller
 
     /**
      * @ApiDoc(
+     *    statusCodes={
+     *        200="Returned when successful",
+     *        403="Returned when the user is not authorized",
+     *        404="Returned when the invoice does not exist",
+     *     },
+     *     resource=true,
+     *     description="Returns an Invoice",
+     *     output={
+     *         "class"="CSBill\InvoiceBundle\Entity\Invoice",
+     *         "groups"={"api"}
+     *     },
+     *     authentication=true
+     * )
+     *
+     * @Rest\Get(path="/invoice/{invoiceId}")
+     *
+     * @param Entity\Invoice $invoice
+     *
+     * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    public function getInvoiceAction(Entity\Invoice $invoice)
+    {
+        return $this->handleView($this->view($invoice));
+    }
+
+    /**
+     * @ApiDoc(
      *     statusCodes={
      *         201="Returned when successful",
      *         400="Returned when the validation fails",
@@ -79,16 +110,12 @@ class InvoiceController extends Controller
 
         $form = $this->get('form.factory')->create('invoice', $invoice);
 
-        $form->handleRequest($request);
+        $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $this->get('invoice.manager')->create($invoice);
 
             return $this->handleView($this->view($invoice, Response::HTTP_CREATED));
-        }
-
-        if (!$form->isSubmitted()) {
-            $form->submit([]);
         }
 
         return $this->handleView($this->view($form));
@@ -115,7 +142,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @Rest\Patch(path="/invoices/{invoiceId}")
+     * @Rest\Patch(path="/invoice/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -166,7 +193,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @Rest\Patch(path="/invoices/{invoiceId}/status")
+     * @Rest\Patch(path="/invoice/{invoiceId}/status")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -203,7 +230,7 @@ class InvoiceController extends Controller
      *
      * @param Entity\Invoice $invoice
      *
-     * @Rest\Delete(path="/invoices/{invoiceId}")
+     * @Rest\Delete(path="/invoice/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      *
@@ -229,7 +256,7 @@ class InvoiceController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @Rest\Get(path="/invoices/{invoiceId}/payments")
+     * @Rest\Get(path="/invoice/{invoiceId}/payments")
      *
      * @param ParamFetcherInterface $fetcher
      * @param int                   $invoiceId
