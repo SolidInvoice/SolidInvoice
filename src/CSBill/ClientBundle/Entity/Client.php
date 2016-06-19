@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @Serialize\XmlRoot("client")
- * @Hateoas\Relation("self", href=@Hateoas\Route("get_clients", absolute=true))
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_client", absolute=true, parameters={"clientId" : "expr(object.getId())"}))
  * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
  */
 class Client
@@ -83,7 +83,6 @@ class Client
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @ORM\OrderBy({"firstname" = "ASC"})
-     * @Assert\Valid()
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
      * @Serialize\Groups({"js"})
      */
@@ -94,7 +93,6 @@ class Client
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
-     * @Assert\Valid()
      * @Serialize\Groups({"none"})
      */
     private $quotes;
@@ -104,7 +102,6 @@ class Client
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
-     * @Assert\Valid()
      * @Serialize\Groups({"none"})
      */
     private $invoices;

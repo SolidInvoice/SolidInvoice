@@ -1,3 +1,6 @@
+api_login_check:
+    path: /login
+
 api_doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /docs

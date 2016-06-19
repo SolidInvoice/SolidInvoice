@@ -13,7 +13,7 @@ namespace CSBill\ApiBundle\Controller;
 
 use CSBill\InvoiceBundle\Entity;
 use CSBill\InvoiceBundle\Model\Graph;
-use FOS\RestBundle\Controller\Annotations as RestRoute;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Hateoas\Configuration\Route;
@@ -39,7 +39,7 @@ class InvoiceController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/invoices")
+     * @Rest\Get(path="/invoices")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -51,6 +51,37 @@ class InvoiceController extends Controller
             ->getRepository('CSBillInvoiceBundle:Invoice');
 
         return $this->manageCollection($fetcher, $repository->createQueryBuilder('c'), 'get_invoices');
+    }
+
+    /**
+     * @ApiDoc(
+     *    statusCodes={
+     *        200="Returned when successful",
+     *        403="Returned when the user is not authorized",
+     *        404="Returned when the invoice does not exist",
+     *     },
+     *     resource=true,
+     *     description="Returns an Invoice",
+     *     output={
+     *         "class"="CSBill\InvoiceBundle\Entity\Invoice",
+     *         "groups"={"api"}
+     *     },
+     *     authentication=true
+     * )
+     *
+     * @Rest\Get(path="/invoice/{invoiceId}")
+     *
+     * @param Entity\Invoice $invoice
+     *
+     * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    public function getInvoiceAction(Entity\Invoice $invoice)
+    {
+        return $this->handleView($this->view($invoice));
     }
 
     /**
@@ -69,7 +100,7 @@ class InvoiceController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/invoices")
+     * @Rest\Post(path="/invoices")
      *
      * @return Response
      */
@@ -79,16 +110,12 @@ class InvoiceController extends Controller
 
         $form = $this->get('form.factory')->create('invoice', $invoice);
 
-        $form->handleRequest($request);
+        $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $this->get('invoice.manager')->create($invoice);
 
             return $this->handleView($this->view($invoice, Response::HTTP_CREATED));
-        }
-
-        if (!$form->isSubmitted()) {
-            $form->submit([]);
         }
 
         return $this->handleView($this->view($form));
@@ -115,7 +142,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Put(path="/invoices/{invoiceId}")
+     * @Rest\Patch(path="/invoice/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -166,7 +193,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Patch(path="/invoices/{invoiceId}/status")
+     * @Rest\Patch(path="/invoice/{invoiceId}/status")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -203,7 +230,7 @@ class InvoiceController extends Controller
      *
      * @param Entity\Invoice $invoice
      *
-     * @RestRoute\Delete(path="/invoices/{invoiceId}")
+     * @Rest\Delete(path="/invoice/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      *
@@ -229,7 +256,7 @@ class InvoiceController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/invoices/{invoiceId}/payments")
+     * @Rest\Get(path="/invoice/{invoiceId}/payments")
      *
      * @param ParamFetcherInterface $fetcher
      * @param int                   $invoiceId

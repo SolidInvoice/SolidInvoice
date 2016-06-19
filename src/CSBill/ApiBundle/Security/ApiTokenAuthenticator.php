@@ -17,18 +17,15 @@ use CSBill\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\SimplePreAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
-class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface, AuthenticationSuccessHandlerInterface
+class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationSuccessHandlerInterface
 {
     /**
      * @var ApiTokenUserProvider
@@ -65,6 +62,8 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      * @param string  $providerKey
      *
      * @return PreAuthenticatedToken
+     *
+     * @throws AuthenticationCredentialsNotFoundException
      */
     public function createToken(Request $request, $providerKey)
     {
@@ -81,6 +80,16 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
             $token,
             $providerKey
         );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    private function getToken(Request $request)
+    {
+        return $request->headers->get('X-API-TOKEN', $request->query->get('token'));
     }
 
     /**
@@ -127,18 +136,6 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
     /**
      * {@inheritdoc}
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
-    {
-        $response = ['message' => $exception->getMessage()];
-
-        $content = $this->serializer->serialize($response, $request->getRequestFormat());
-
-        return new Response($content, 401);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         $apiToken = $this->getToken($request);
@@ -155,15 +152,5 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $repository = $this->entityManager->getRepository('CSBillUserBundle:ApiTokenHistory');
 
         $repository->addHistory($history, $apiToken);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return string
-     */
-    private function getToken(Request $request)
-    {
-        return $request->headers->get('token', $request->query->get('token'));
     }
 }

@@ -14,6 +14,7 @@ namespace CSBill\ClientBundle\Serializer\Handler;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use JMS\Serializer\Context;
 use JMS\Serializer\JsonSerializationVisitor;
+use JMS\Serializer\XmlSerializationVisitor;
 use Money\Money;
 
 class CreditHandler
@@ -39,8 +40,22 @@ class CreditHandler
      *
      * @return float
      */
-    public function serializeMoney(JsonSerializationVisitor $visitor, Money $money, array $type, Context $context)
+    public function serializeMoneyJson(JsonSerializationVisitor $visitor, Money $money, array $type, Context $context)
     {
-        return $this->formatter->toFloat($money);
+        return $this->formatter->format($money);
+    }
+
+    /**
+     * @param XmlSerializationVisitor $visitor
+     * @param Money                   $money
+     * @param array                   $type
+     * @param Context                 $context
+     */
+    public function serializeMoneyXml(XmlSerializationVisitor $visitor, Money $money, array $type, Context $context)
+    {
+        /** @var \DOMElement $node */
+        $node = $visitor->getCurrentNode();
+
+        $node->nodeValue = $this->formatter->format($money);
     }
 }

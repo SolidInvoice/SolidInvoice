@@ -31,6 +31,16 @@ security:
             pattern:  ^/api/docs
             anonymous: ~
 
+        api_login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path: /api/login
+                require_previous_session: false
+                success_handler: api.success
+                failure_handler: api.failure
+
         api:
             pattern: ^/api
             stateless: true
@@ -91,6 +101,8 @@ security:
                 target: /
 
     access_control:
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
         - { path: "^/view/(quote|invoice)/([a-zA-Z0-9-]{36})$", roles: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -13,7 +13,7 @@ namespace CSBill\ApiBundle\Controller;
 
 use CSBill\QuoteBundle\Entity;
 use CSBill\QuoteBundle\Model\Graph;
-use FOS\RestBundle\Controller\Annotations as RestRoute;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -38,7 +38,7 @@ class QuoteController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/quotes")
+     * @Rest\Get(path="/quotes")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -50,6 +50,37 @@ class QuoteController extends Controller
             ->getRepository('CSBillQuoteBundle:Quote');
 
         return $this->manageCollection($fetcher, $repository->createQueryBuilder('c'), 'get_quotes');
+    }
+
+    /**
+     * @ApiDoc(
+     *    statusCodes={
+     *        200="Returned when successful",
+     *        403="Returned when the user is not authorized",
+     *        404="Returned when the quote does not exist",
+     *     },
+     *     resource=true,
+     *     description="Returns a Quote",
+     *     output={
+     *         "class"="CSBill\QuoteBundle\Entity\Quote",
+     *         "groups"={"api"}
+     *     },
+     *     authentication=true
+     * )
+     *
+     * @Rest\Get(path="/quote/{quoteId}")
+     *
+     * @param Entity\Quote $quote
+     *
+     * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    public function getQuoteAction(Entity\Quote $quote)
+    {
+        return $this->handleView($this->view($quote));
     }
 
     /**
@@ -68,13 +99,18 @@ class QuoteController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/quotes")
+     * @Rest\Post(path="/quotes")
      *
      * @return Response
      */
     public function createQuoteAction(Request $request)
     {
-        return $this->manageForm($request, 'quote', new Entity\Quote(), Response::HTTP_CREATED);
+        $entity = new Entity\Quote();
+        $entity->setStatus($request->request->get('status', Graph::STATUS_DRAFT));
+
+        $request->request->remove('status');
+
+        return $this->manageForm($request, 'quote', $entity, Response::HTTP_CREATED);
     }
 
     /**
@@ -94,7 +130,7 @@ class QuoteController extends Controller
      * @param Request      $request
      * @param Entity\Quote $quote
      *
-     * @RestRoute\Put(path="/quotes/{quoteId}")
+     * @Rest\Patch(path="/quote/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *
@@ -125,7 +161,7 @@ class QuoteController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Patch(path="/quotes/{quoteId}/status")
+     * @Rest\Patch(path="/quote/{quoteId}/status")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      */
@@ -162,7 +198,7 @@ class QuoteController extends Controller
      *
      * @param Entity\Quote $quote
      *
-     * @RestRoute\Delete(path="/quotes/{quoteId}")
+     * @Rest\Delete(path="/quote/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *
