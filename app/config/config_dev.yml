@@ -20,3 +20,9 @@ monolog:
 
 swiftmailer:
     delivery_address: test@localhost
+
+nelmio_api_doc:
+    sandbox:
+        enabled: true
+    cache:
+        enabled: false

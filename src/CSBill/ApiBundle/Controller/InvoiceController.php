@@ -13,7 +13,7 @@ namespace CSBill\ApiBundle\Controller;
 
 use CSBill\InvoiceBundle\Entity;
 use CSBill\InvoiceBundle\Model\Graph;
-use FOS\RestBundle\Controller\Annotations as RestRoute;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Hateoas\Configuration\Route;
@@ -39,7 +39,7 @@ class InvoiceController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/invoices")
+     * @Rest\Get(path="/invoices")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -69,7 +69,7 @@ class InvoiceController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/invoices")
+     * @Rest\Post(path="/invoices")
      *
      * @return Response
      */
@@ -115,7 +115,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Put(path="/invoices/{invoiceId}")
+     * @Rest\Patch(path="/invoices/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -166,7 +166,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Patch(path="/invoices/{invoiceId}/status")
+     * @Rest\Patch(path="/invoices/{invoiceId}/status")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
@@ -203,7 +203,7 @@ class InvoiceController extends Controller
      *
      * @param Entity\Invoice $invoice
      *
-     * @RestRoute\Delete(path="/invoices/{invoiceId}")
+     * @Rest\Delete(path="/invoices/{invoiceId}")
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      *
@@ -229,7 +229,7 @@ class InvoiceController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/invoices/{invoiceId}/payments")
+     * @Rest\Get(path="/invoices/{invoiceId}/payments")
      *
      * @param ParamFetcherInterface $fetcher
      * @param int                   $invoiceId

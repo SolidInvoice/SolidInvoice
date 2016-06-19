@@ -35,9 +35,9 @@ abstract class Controller extends FOSRestController
      */
     protected function manageForm(Request $request, $form, $entity, $status = Response::HTTP_OK)
     {
-        $form = $this->get('form.factory')->create($form, $entity);
+        $form = $this->get('form.factory')->create($form, $entity, ['method' => $entity ? 'PATCH' : 'POST']);
 
-        $form->handleRequest($request);
+        $form->submit($request->request->all(), null === $entity->getId());
 
         if ($form->isValid()) {
             $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -48,11 +48,22 @@ abstract class Controller extends FOSRestController
             return $this->handleView($this->view($entity, $status));
         }
 
-        if (!$form->isSubmitted()) {
-            $form->submit([]);
-        }
-
         return $this->handleView($this->view($form, Response::HTTP_BAD_REQUEST));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function view($data = null, $statusCode = null, array $headers = [])
+    {
+        $view = parent::view($data, $statusCode, $headers);
+
+        $context = $view->getSerializationContext();
+        $context->setGroups(['api', 'Default']);
+
+        $view->setSerializationContext($context);
+
+        return $view;
     }
 
     /**
@@ -110,20 +121,5 @@ abstract class Controller extends FOSRestController
         }
 
         return $this->handleView($this->view(null, $status));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function view($data = null, $statusCode = null, array $headers = [])
-    {
-        $view = parent::view($data, $statusCode, $headers);
-
-        $context = $view->getSerializationContext();
-        $context->setGroups(['api', 'Default']);
-
-        $view->setSerializationContext($context);
-
-        return $view;
     }
 }

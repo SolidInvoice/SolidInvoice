@@ -14,9 +14,11 @@ namespace CSBill\ApiBundle\Controller;
 use CSBill\ClientBundle\Entity;
 use CSBill\ClientBundle\Form\Client;
 use CSBill\ClientBundle\Form\Contact;
-use FOS\RestBundle\Controller\Annotations as RestRoute;
+use CSBill\ClientBundle\Model\Status;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use Hateoas\Configuration\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +41,7 @@ class ClientController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/clients")
+     * @Rest\Get(path="/clients")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -61,7 +63,7 @@ class ClientController extends Controller
      *        404="Returned when the client does not exist",
      *     },
      *     resource=true,
-     *     description="Returns a specific client",
+     *     description="Returns a client",
      *     output={
      *         "class"="CSBill\ClientBundle\Entity\Client",
      *         "groups"={"api"}
@@ -69,7 +71,7 @@ class ClientController extends Controller
      *     authentication=true
      * )
      *
-     * @RestRoute\Get(path="/client/{clientId}")
+     * @Rest\Get(path="/client/{clientId}")
      *
      * @param int $clientId
      *
@@ -96,7 +98,7 @@ class ClientController extends Controller
      *     statusCodes={
      *         200="Returned when successful",
      *         403="Returned when the user is not authorized",
-     *         404="Returned when the page is out of range",
+     *         404="Returned when the client or contact does not exist",
      *     },
      *     resource=true,
      *     description="Returns a list of all contacts for a specific client",
@@ -109,20 +111,59 @@ class ClientController extends Controller
      * @param ParamFetcherInterface $fetcher
      * @param int                   $clientId
      *
-     * @RestRoute\Get(path="/client/{clientId}/contacts")
+     * @Rest\Get(path="/client/{clientId}/contacts")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getClientContactsAction(ParamFetcherInterface $fetcher, $clientId)
     {
-        $clientRepository = $this->get('doctrine.orm.entity_manager')
+        $contactRepository = $this->get('doctrine.orm.entity_manager')
             ->getRepository('CSBillClientBundle:Contact');
 
-        $data = $clientRepository->createQueryBuilder('c');
+        $data = $contactRepository->createQueryBuilder('c');
         $data->where('c.client = :client')
             ->setParameter('client', $clientId);
 
-        return $this->manageCollection($fetcher, $data, 'get_clients');
+        return $this->manageCollection(
+            $fetcher,
+            $data,
+            new Route('get_client_contacts', ['clientId' => $clientId], true, $this->get('router'))
+        );
+    }
+
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         403="Returned when the user is not authorized",
+     *         404="Returned when the page is out of range",
+     *     },
+     *     resource=true,
+     *     description="Returns a list of all contacts for a specific client",
+     *     authentication=true,
+     *     output={
+     *         "class"="CSBill\ClientBundle\Entity\Contact",
+     *         "groups"={"api"}
+     *     },
+     * )
+     *
+     * @param Entity\Client  $client
+     * @param Entity\Contact $contact
+     *
+     * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
+     * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
+     *
+     * @return Response
+     *
+     * @Rest\Get(path="/client/{clientId}/contact/{contactId}")
+     */
+    public function getClientContactAction(Entity\Client $client, Entity\Contact $contact)
+    {
+        if (!$client->getContacts()->contains($contact)) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->handleView($this->view($contact));
     }
 
     /**
@@ -144,13 +185,16 @@ class ClientController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/clients")
+     * @Rest\Post(path="/clients")
      *
      * @return Response
      */
     public function createClientAction(Request $request)
     {
-        return $this->manageForm($request, new Client(), new Entity\Client(), Response::HTTP_CREATED);
+        $entity = new Entity\Client();
+        $entity->setStatus(Status::STATUS_ACTIVE);
+
+        return $this->manageForm($request, new Client(), $entity, Response::HTTP_CREATED);
     }
 
     /**
@@ -173,7 +217,7 @@ class ClientController extends Controller
      * @param Request       $request
      * @param Entity\Client $client
      *
-     * @RestRoute\Put(path="/client/{clientId}")
+     * @Rest\Patch(path="/client/{clientId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
@@ -197,7 +241,7 @@ class ClientController extends Controller
      *
      * @param Entity\Client $client
      *
-     * @RestRoute\Delete(path="/client/{clientId}")
+     * @Rest\Delete(path="/client/{clientId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
@@ -230,7 +274,7 @@ class ClientController extends Controller
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      *
-     * @RestRoute\Post(path="/client/{clientId}/contacts")
+     * @Rest\Post(path="/client/{clientId}/contacts")
      *
      * @return Response
      */
@@ -266,7 +310,7 @@ class ClientController extends Controller
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
      *
-     * @RestRoute\Put(path="/client/{clientId}/contact/{contactId}")
+     * @Rest\Patch(path="/client/{clientId}/contact/{contactId}")
      *
      * @return Response
      */
@@ -292,7 +336,7 @@ class ClientController extends Controller
      * @param Entity\Client  $client
      * @param Entity\Contact $contact
      *
-     * @RestRoute\Delete(path="/client/{clientId}/contact/{contactId}")
+     * @Rest\Delete(path="/client/{clientId}/contact/{contactId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
@@ -301,7 +345,7 @@ class ClientController extends Controller
      */
     public function deleteContactAction(Entity\Client $client, Entity\Contact $contact)
     {
-        if ($client->getContacts()->contains($contact)) {
+        if (!$client->getContacts()->contains($contact)) {
             throw $this->createNotFoundException();
         }
 

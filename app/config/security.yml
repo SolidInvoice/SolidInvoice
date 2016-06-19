@@ -36,7 +36,7 @@ security:
             stateless: true
             anonymous: true
             form_login:
-                check_path:               /api/login_check
+                check_path: /api/login
                 require_previous_session: false
                 success_handler: api.success
                 failure_handler: api.failure

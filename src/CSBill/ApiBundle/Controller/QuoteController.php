@@ -13,7 +13,7 @@ namespace CSBill\ApiBundle\Controller;
 
 use CSBill\QuoteBundle\Entity;
 use CSBill\QuoteBundle\Model\Graph;
-use FOS\RestBundle\Controller\Annotations as RestRoute;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -38,7 +38,7 @@ class QuoteController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/quotes")
+     * @Rest\Get(path="/quotes")
      *
      * @param ParamFetcherInterface $fetcher
      *
@@ -68,7 +68,7 @@ class QuoteController extends Controller
      *
      * @param Request $request
      *
-     * @RestRoute\Post(path="/quotes")
+     * @Rest\Post(path="/quotes")
      *
      * @return Response
      */
@@ -94,7 +94,7 @@ class QuoteController extends Controller
      * @param Request      $request
      * @param Entity\Quote $quote
      *
-     * @RestRoute\Put(path="/quotes/{quoteId}")
+     * @Rest\Patch(path="/quotes/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *
@@ -125,7 +125,7 @@ class QuoteController extends Controller
      *
      * @throws \Exception
      *
-     * @RestRoute\Patch(path="/quotes/{quoteId}/status")
+     * @Rest\Patch(path="/quotes/{quoteId}/status")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      */
@@ -162,7 +162,7 @@ class QuoteController extends Controller
      *
      * @param Entity\Quote $quote
      *
-     * @RestRoute\Delete(path="/quotes/{quoteId}")
+     * @Rest\Delete(path="/quotes/{quoteId}")
      *
      * @ParamConverter("quote", class="CSBillQuoteBundle:Quote", options={"id" : "quoteId"})
      *

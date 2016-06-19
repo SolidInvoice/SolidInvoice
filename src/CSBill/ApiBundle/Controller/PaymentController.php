@@ -11,7 +11,7 @@
 
 namespace CSBill\ApiBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations as RestRoute;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -33,7 +33,7 @@ class PaymentController extends Controller
      * @QueryParam(name="page", requirements="\d+", default="1", description="Current page of listing")
      * @QueryParam(name="limit", requirements="\d+", default="10", description="Number of results to return")
      *
-     * @RestRoute\Get(path="/payments")
+     * @Rest\Get(path="/payments")
      *
      * @param ParamFetcherInterface $fetcher
      *
