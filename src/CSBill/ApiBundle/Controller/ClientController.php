@@ -242,11 +242,10 @@ class ClientController extends Controller
      * @ApiDoc(
      *     statusCodes={
      *         200="Returned when successful",
-     *         403="Returned when the user is not authorized",
-     *         404="Returned when the page is out of range",
+     *         403="Returned when the user is not authorized"
      *     },
      *     resource=true,
-     *     description="Returns a list of all contacts for a specific client",
+     *     description="Returns a contact for a specific client",
      *     authentication=true,
      *     output={
      *         "class"="CSBill\ClientBundle\Entity\Contact",
