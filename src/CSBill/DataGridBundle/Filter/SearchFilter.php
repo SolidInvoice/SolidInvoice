@@ -42,17 +42,17 @@ class SearchFilter implements FilterInterface
             $expr = $queryBuilder->expr();
 
             $fields = array_map(
-        function ($field) use ($alias) {
-            if (false !== strpos($field, '.')) {
-                list($alias, $field) = explode('.', $field);
-            }
+                function ($field) use ($alias) {
+                    if (false !== strpos($field, '.')) {
+                        list($alias, $field) = explode('.', $field);
+                    }
 
-            return sprintf('%s.%s LIKE :q', $alias, $field);
-        },
-        $this->searchFields
-        );
+                    return sprintf('%s.%s LIKE :q', $alias, $field);
+                },
+                $this->searchFields
+            );
 
-            $queryBuilder->orWhere(call_user_func_array([$expr, 'orX'], $fields));
+            $queryBuilder->andWhere(call_user_func_array([$expr, 'orX'], $fields));
             $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
         }
     }
