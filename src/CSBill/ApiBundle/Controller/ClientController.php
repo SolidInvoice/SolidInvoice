@@ -208,7 +208,7 @@ class ClientController extends Controller
      *         404="Returned when the page is out of range",
      *     },
      *     resource=true,
-     *     description="Returns a list of all contacts for a specific client",
+     *     description="Returns a list of all payments for a specific client",
      *     authentication=true,
      * )
      *
