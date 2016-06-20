@@ -3,7 +3,7 @@ CSBill
 
 [![Build Status](https://travis-ci.org/CSBill/CSBill.png?branch=master)](https://travis-ci.org/CSBill/CSBill)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/CSBill/CSBill/badges/quality-score.png?s=fdd7a5f5080807e95a317b9c0db07e8d5ce8cb63)](https://scrutinizer-ci.com/g/CSBill/CSBill/)
-[![Dependencies](https://www.versioneye.com/user/projects/539ec1c183add760b0000002/badge.svg)](https://www.versioneye.com)
+[![Dependency Status](https://www.versioneye.com/user/projects/557ebccc61626613850000cc/badge.svg?style=flat)](https://www.versioneye.com/user/projects/557ebccc61626613850000cc)
 
 Open-Source General Billing Manager
 
