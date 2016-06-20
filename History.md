@@ -1,3 +1,66 @@
+0.7.0 / 2016-06-20
+==================
+
+  * Fix datagrid not filtering correctly
+  * Added related api content for a client
+  * Added get api method for quotes and invoices
+  * Allow user to generate a token by sending a username and password to a login url
+  * Added token manager, to handle token generation in a more generic place
+  * Fix missing property
+  * Add api route to get a specific client
+  * Change token header to X-API-TOKEN
+  * Added custom error pages for json and jsonp exceptions
+  * Fix API token create title
+  * Show quotes grid on client info page
+  * Remove loader for data grid, since it didn't always hide after loading was done
+  * Update login page style
+  * Fix settings variable overwritten on settings page
+  * Update logo in header when a new logo is uploaded
+  * Update secret generation to use less bits
+  * Fix email settings not showing the proper config when switching between smtp and gmail
+  * Remove assetic
+  * Added task to watch and compile templates
+  * Added gulp tasks for assets
+  * Remove PHP 7 from allowed failures in travis
+  * Remove salt form user and use auto-generated salt from password_hash
+  * Update dependencies and update min PHP version to 5.6
+  * Update doctrine/migrations to allow PHP 5.4
+  * Fix install command not validating currency and locale correctly
+  * Refactor menu into separate bundle
+  * Render recurring invoices grid on client view
+  * Properly show and hide modals on grid request
+  * Added recurring invoices grid
+  * Remove APYDataGrid
+  * Replaced invoice grid with new grid
+  * Added multiple grid handling
+  * Fix installation scripts
+  * Fix asset url error when no base url is set
+  * Update email settings scripts
+  * Update logo upload and cron settings
+  * Update Symfony to latest 2.7 version
+  * Handle fields when editing a quote or invoice
+  * Fix label translations and set tax label on invoice and quote tables
+  * Calculate totals when saving quotes and invoices
+  * Cleanup invoice create and split modules
+  * Disable tax if no tax methods is configured
+  * Display recurring info
+  * Added module for invoice create and client select view
+  * Update API token index page
+  * Update select2
+  * Optimize client view
+  * Update client info view
+  * Added basic validation using Parsley.js
+  * Added currency helper to handlebars
+  * Fix routing module and add path helper for handlebars
+  * Added handlebars for templates and created generic modal template
+  * Added basic credit display to client view
+  * Split some default components into separate modules
+  * Added lodash library
+  * Update jQuery to version 2
+  * Replace underscore with lodash
+  * Added initial requirejs config
+  * Fix create button to not show when user is not logged in
+
 0.6.0 / 2015-12-22
 ==================
 
