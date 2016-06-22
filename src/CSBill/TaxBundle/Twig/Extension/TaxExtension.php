@@ -25,7 +25,7 @@ class TaxExtension extends \Twig_Extension
      */
     public function __construct(ManagerRegistry $registry)
     {
-        $this->repository = $registry;
+        $this->registry = $registry;
     }
 
     /**
@@ -45,7 +45,7 @@ class TaxExtension extends \Twig_Extension
     {
         static $taxConfigured;
 
-        if ($taxConfigured) {
+        if (null !== $taxConfigured) {
             return $taxConfigured;
         }
 
