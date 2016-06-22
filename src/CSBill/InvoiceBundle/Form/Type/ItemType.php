@@ -29,7 +29,7 @@ class ItemType extends AbstractType
      */
     public function __construct(ManagerRegistry $registry)
     {
-        $this->registry = $registry->getRepository('CSBillTaxBundle:Tax');
+        $this->registry = $registry;
     }
 
     /**
