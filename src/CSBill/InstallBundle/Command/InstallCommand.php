@@ -309,7 +309,7 @@ class InstallCommand extends ContainerAwareCommand
             ->setEnabled(true)
             ->setSuperAdmin(true);
 
-        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $entityManager = $this->getContainer()->get('doctrine')->getManager();
 
         $entityManager->persist($user);
         $entityManager->flush();

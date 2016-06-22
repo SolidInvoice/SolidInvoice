@@ -15,21 +15,21 @@ use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class InvoiceCancelListener
 {
     /**
-     * @var ObjectManager
+     * @var ManagerRegistry
      */
-    private $manager;
+    private $registry;
 
     /**
-     * @param ObjectManager $manager
+     * @param ManagerRegistry $registry
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->manager = $manager;
+        $this->registry = $registry;
     }
 
     /**
@@ -40,10 +40,12 @@ class InvoiceCancelListener
         $invoice = $event->getInvoice();
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
+        $paymentRepository = $this->registry->getRepository('CSBillPaymentBundle:Payment');
+
+        $em = $this->registry->getManager();
 
         $invoice->setBalance($invoice->getTotal());
-        $this->manager->persist($invoice);
+        $em->persist($invoice);
 
         $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
@@ -51,11 +53,11 @@ class InvoiceCancelListener
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);
 
             /** @var CreditRepository $creditRepository */
-            $creditRepository = $this->manager->getRepository('CSBillClientBundle:Credit');
+            $creditRepository = $this->registry->getRepository('CSBillClientBundle:Credit');
 
             $creditRepository->addCredit($invoice->getClient(), $totalPaid);
         }
 
-        $this->manager->flush();
+        $em->flush();
     }
 }

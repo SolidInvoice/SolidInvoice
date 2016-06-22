@@ -11,6 +11,7 @@
 
 namespace CSBill\PaymentBundle\Twig;
 
+use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -18,7 +19,12 @@ use Twig_SimpleFunction;
 class PaymentExtension extends Twig_Extension
 {
     /**
-     * @var \CSBill\PaymentBundle\Repository\PaymentMethodRepository
+     * @var ManagerRegistry
+     */
+    private $registry;
+
+    /**
+     * @var PaymentMethodRepository
      */
     private $repository;
 
@@ -27,7 +33,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function __construct(ManagerRegistry $registry)
     {
-        $this->repository = $registry->getRepository('CSBillPaymentBundle:PaymentMethod');
+        $this->registry = $registry;
     }
 
     /**
@@ -48,7 +54,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function paymentEnabled($method)
     {
-        $paymentMethod = $this->repository->findOneBy(['paymentMethod' => $method]);
+        $paymentMethod = $this->getRepository()->findOneBy(['paymentMethod' => $method]);
 
         if (null === $paymentMethod) {
             return false;
@@ -58,13 +64,25 @@ class PaymentExtension extends Twig_Extension
     }
 
     /**
+     * @return PaymentMethodRepository
+     */
+    public function getRepository()
+    {
+        if (null === $this->repository) {
+            $this->repository = $this->registry->getRepository('CSBillPaymentBundle:PaymentMethod');
+        }
+
+        return $this->repository;
+    }
+
+    /**
      * @param bool $includeInternal
      *
      * @return int
      */
     public function paymentConfigured($includeInternal = true)
     {
-        return $this->repository->getTotalMethodsConfigured($includeInternal);
+        return $this->getRepository()->getTotalMethodsConfigured($includeInternal);
     }
 
     /**

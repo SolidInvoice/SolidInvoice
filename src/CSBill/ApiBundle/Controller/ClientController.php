@@ -49,7 +49,7 @@ class ClientController extends Controller
      */
     public function getClientsAction(ParamFetcherInterface $fetcher)
     {
-        $clientRepository = $this->get('doctrine.orm.entity_manager')
+        $clientRepository = $this->get('doctrine')
             ->getRepository('CSBillClientBundle:Client');
 
         return $this->manageCollection($fetcher, $clientRepository->createQueryBuilder('c'), 'get_clients');
@@ -110,7 +110,7 @@ class ClientController extends Controller
      */
     public function getClientContactsAction(ParamFetcherInterface $fetcher, $clientId)
     {
-        $contactRepository = $this->get('doctrine.orm.entity_manager')
+        $contactRepository = $this->get('doctrine')
             ->getRepository('CSBillClientBundle:Contact');
 
         $data = $contactRepository->createQueryBuilder('c');
@@ -148,7 +148,7 @@ class ClientController extends Controller
      */
     public function getClientInvoicesAction(ParamFetcherInterface $fetcher, $clientId)
     {
-        $invoiceRepository = $this->get('doctrine.orm.entity_manager')
+        $invoiceRepository = $this->get('doctrine')
             ->getRepository('CSBillInvoiceBundle:Invoice');
 
         $data = $invoiceRepository->createQueryBuilder('i');
@@ -186,7 +186,7 @@ class ClientController extends Controller
      */
     public function getClientQuotesAction(ParamFetcherInterface $fetcher, $clientId)
     {
-        $quoteRepository = $this->get('doctrine.orm.entity_manager')
+        $quoteRepository = $this->get('doctrine')
             ->getRepository('CSBillQuoteBundle:Quote');
 
         $data = $quoteRepository->createQueryBuilder('q');
@@ -224,7 +224,7 @@ class ClientController extends Controller
      */
     public function getClientPaymentsAction(ParamFetcherInterface $fetcher, $clientId)
     {
-        $paymentRepository = $this->get('doctrine.orm.entity_manager')
+        $paymentRepository = $this->get('doctrine')
             ->getRepository('CSBillPaymentBundle:Payment');
 
         $data = $paymentRepository->createQueryBuilder('p');

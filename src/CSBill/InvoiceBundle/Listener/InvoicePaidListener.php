@@ -14,16 +14,16 @@ namespace CSBill\InvoiceBundle\Listener;
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 
 class InvoicePaidListener
 {
     /**
-     * @var ObjectManager
+     * @var ManagerRegistry
      */
-    private $manager;
+    private $registry;
 
     /**
      * @var Currency
@@ -31,12 +31,12 @@ class InvoicePaidListener
     private $currency;
 
     /**
-     * @param ObjectManager $manager
-     * @param Currency      $currency
+     * @param ManagerRegistry $registry
+     * @param Currency        $currency
      */
-    public function __construct(ObjectManager $manager, Currency $currency)
+    public function __construct(ManagerRegistry $registry, Currency $currency)
     {
-        $this->manager = $manager;
+        $this->registry = $registry;
         $this->currency = $currency;
     }
 
@@ -48,10 +48,12 @@ class InvoicePaidListener
         $invoice = $event->getInvoice();
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
+        $paymentRepository = $this->registry->getRepository('CSBillPaymentBundle:Payment');
+
+        $em = $this->registry->getManager();
 
         $invoice->setBalance(new Money(0, $this->currency));
-        $this->manager->persist($invoice);
+        $em->persist($invoice);
 
         $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
@@ -59,10 +61,10 @@ class InvoicePaidListener
             $client = $invoice->getClient();
 
             /** @var CreditRepository $creditRepository */
-            $creditRepository = $this->manager->getRepository('CSBillClientBundle:Credit');
+            $creditRepository = $this->registry->getRepository('CSBillClientBundle:Credit');
             $creditRepository->addCredit($client, $totalPaid->subtract($invoice->getTotal()));
         }
 
-        $this->manager->flush();
+        $em->flush();
     }
 }

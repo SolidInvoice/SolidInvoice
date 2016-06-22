@@ -46,7 +46,7 @@ class QuoteController extends Controller
      */
     public function getQuotesAction(ParamFetcherInterface $fetcher)
     {
-        $repository = $this->get('doctrine.orm.entity_manager')
+        $repository = $this->get('doctrine')
             ->getRepository('CSBillQuoteBundle:Quote');
 
         return $this->manageCollection($fetcher, $repository->createQueryBuilder('c'), 'get_quotes');

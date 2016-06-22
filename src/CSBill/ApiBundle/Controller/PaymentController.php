@@ -41,7 +41,7 @@ class PaymentController extends Controller
      */
     public function getPaymentsAction(ParamFetcherInterface $fetcher)
     {
-        $repository = $this->get('doctrine.orm.entity_manager')
+        $repository = $this->get('doctrine')
             ->getRepository('CSBillPaymentBundle:Payment');
 
         return $this->manageCollection($fetcher, $repository->createQueryBuilder('c'), 'get_payments');

@@ -32,7 +32,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $generator = M::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
 
         $generator->shouldReceive('generate')
-            ->with('test_route', [], false)
+            ->once()
+            ->with('test_route', [], 1)
             ->andReturn('/test/route');
 
         $factory = new Factory($generator);
@@ -45,6 +46,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('def', $item->getLabel());
 
         $generator->shouldHaveReceived('generate')
-            ->with('test_route', [], false);
+            ->with('test_route', [], 1);
     }
 }

@@ -36,9 +36,8 @@ class MoneyHydrator extends AbstractHydrator
     protected function hydrateAllData()
     {
         $result = [];
-        $cache = [];
         foreach ($this->_stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-            $this->hydrateRowData($row, $cache, $result);
+            $this->hydrateRowData($row, $result);
         }
 
         return $result;
@@ -47,7 +46,7 @@ class MoneyHydrator extends AbstractHydrator
     /**
      * {@inheritdoc}
      */
-    protected function hydrateRowData(array $row, array &$cache, array &$result)
+    protected function hydrateRowData(array $row, array &$result)
     {
         if (0 === count($row)) {
             return false;

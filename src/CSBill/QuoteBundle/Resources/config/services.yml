@@ -36,6 +36,6 @@ services:
 
     quote.item.form.type:
         class: CSBill\QuoteBundle\Form\Type\ItemType
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine]
         tags:
             - { name: form.type, alias: quote_item }
