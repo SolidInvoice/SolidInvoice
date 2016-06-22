@@ -40,6 +40,45 @@ class SetupStep extends ControllerStep
     }
 
     /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    private function getForm(Request $request)
+    {
+        $options = [
+            'action' => $this->generateUrl(
+                'sylius_flow_forward',
+                [
+                    'scenarioAlias' => 'install',
+                    'stepName' => 'setup',
+                ]
+            ),
+        ];
+
+        return $this->createForm(new SystemInformationForm($request, $this->getUserCount()), null, $options);
+    }
+
+    /**
+     * @return int
+     */
+    private function getUserCount()
+    {
+        static $userCount;
+
+        if (null === $userCount) {
+            $entityManager = $this->container->get('doctrine');
+
+            /** @var UserRepository $repository */
+            $repository = $entityManager->getRepository('CSBillUserBundle:User');
+
+            $userCount = $repository->getUserCount();
+        }
+
+        return $userCount;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function forwardAction(ProcessContextInterface $context)
@@ -72,26 +111,6 @@ class SetupStep extends ControllerStep
     }
 
     /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    private function getForm(Request $request)
-    {
-        $options = [
-            'action' => $this->generateUrl(
-                'sylius_flow_forward',
-                [
-                    'scenarioAlias' => 'install',
-                    'stepName' => 'setup',
-                ]
-            ),
-        ];
-
-        return $this->createForm(new SystemInformationForm($request, $this->getUserCount()), null, $options);
-    }
-
-    /**
      * @param array $data
      */
     private function createAdminUser(array $data)
@@ -109,7 +128,7 @@ class SetupStep extends ControllerStep
             ->setEnabled(true)
             ->setSuperAdmin(true);
 
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        $entityManager = $this->container->get('doctrine')->getManager();
 
         $entityManager->persist($user);
         $entityManager->flush();
@@ -148,24 +167,5 @@ class SetupStep extends ControllerStep
         ];
 
         $this->get('csbill.core.config_writer')->dump($config);
-    }
-
-    /**
-     * @return int
-     */
-    private function getUserCount()
-    {
-        static $userCount;
-
-        if (null === $userCount) {
-            $entityManager = $this->container->get('doctrine.orm.entity_manager');
-
-            /** @var UserRepository $repository */
-            $repository = $entityManager->getRepository('CSBillUserBundle:User');
-
-            $userCount = $repository->getUserCount();
-        }
-
-        return $userCount;
     }
 }

@@ -12,9 +12,7 @@
 namespace CSBill\ApiBundle\Security\Provider;
 
 use CSBill\UserBundle\Entity\User;
-use CSBill\UserBundle\Repository\ApiTokenRepository;
-use CSBill\UserBundle\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,22 +21,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class ApiTokenUserProvider implements UserProviderInterface
 {
     /**
-     * @var UserRepository
+     * @var ManagerRegistry
      */
-    private $userRepository;
+    private $registry;
 
     /**
-     * @var ApiTokenRepository
+     * @param ManagerRegistry $registry
      */
-    private $tokenRepository;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->userRepository = $entityManager->getRepository('CSBillUserBundle:User');
-        $this->tokenRepository = $entityManager->getRepository('CSBillUserBundle:ApiToken');
+        $this->registry = $registry;
     }
 
     /**
@@ -48,7 +40,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function getUsernameForToken($token)
     {
-        return $this->tokenRepository->getUsernameForToken($token);
+        return $this->registry->getRepository('CSBillUserBundle:ApiToken')->getUsernameForToken($token);
     }
 
     /**
@@ -56,7 +48,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->userRepository->findOneBy(['username' => $username]);
+        $user = $this->registry->getRepository('CSBillUserBundle:User')->findOneBy(['username' => $username]);
 
         if (!$user) {
             throw new UsernameNotFoundException();
@@ -82,6 +74,6 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return 'CSBill\UserBundle\Entity\User' === $class;
+        return User::class === $class;
     }
 }

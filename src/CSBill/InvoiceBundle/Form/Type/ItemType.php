@@ -12,8 +12,7 @@
 namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\TaxBundle\Form\Type\Tax;
-use CSBill\TaxBundle\Repository\TaxRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,16 +20,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ItemType extends AbstractType
 {
     /**
-     * @var TaxRepository
+     * @var ManagerRegistry
      */
-    private $taxRepo;
+    private $registry;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param ManagerRegistry $registry
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->taxRepo = $entityManager->getRepository('CSBillTaxBundle:Tax');
+        $this->registry = $registry->getRepository('CSBillTaxBundle:Tax');
     }
 
     /**
@@ -69,7 +68,7 @@ class ItemType extends AbstractType
             ]
         );
 
-        if ($this->taxRepo->taxRatesConfigured()) {
+        if ($this->registry->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 new Tax(),

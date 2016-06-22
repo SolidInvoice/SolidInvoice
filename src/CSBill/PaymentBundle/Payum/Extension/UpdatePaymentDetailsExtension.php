@@ -12,7 +12,7 @@
 namespace CSBill\PaymentBundle\Payum\Extension;
 
 use CSBill\PaymentBundle\Entity\Payment;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
@@ -22,16 +22,16 @@ use Payum\Paypal\ExpressCheckout\Nvp\Action\CaptureAction;
 class UpdatePaymentDetailsExtension implements ExtensionInterface
 {
     /**
-     * @var ObjectManager
+     * @var ManagerRegistry
      */
-    private $objectManager;
+    private $registry;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param ManagerRegistry $registry
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->objectManager = $objectManager;
+        $this->registry = $registry;
     }
 
     /**
@@ -63,8 +63,10 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
 
             $payment->setDetails($details);
 
-            $this->objectManager->persist($payment);
-            $this->objectManager->flush();
+            $em = $this->registry->getManager();
+
+            $em->persist($payment);
+            $em->flush();
         }
     }
 

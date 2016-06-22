@@ -11,22 +11,21 @@
 
 namespace CSBill\TaxBundle\Twig\Extension;
 
-use CSBill\TaxBundle\Repository\TaxRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class TaxExtension extends \Twig_Extension
 {
     /**
-     * @var TaxRepository
+     * @var ManagerRegistry
      */
-    private $repository;
+    private $registry;
 
     /**
-     * @param $doctrine
+     * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->repository = $doctrine->getManager()->getRepository('CSBillTaxBundle:Tax');
+        $this->repository = $registry;
     }
 
     /**
@@ -44,7 +43,16 @@ class TaxExtension extends \Twig_Extension
      */
     public function taxRatesConfigured()
     {
-        return $this->repository->taxRatesConfigured();
+        static $taxConfigured;
+
+        if ($taxConfigured) {
+            return $taxConfigured;
+        }
+
+
+        $taxConfigured = $this->registry->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured();
+
+        return $taxConfigured;
     }
 
     /**

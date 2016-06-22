@@ -24,7 +24,7 @@ services:
 
     #csbill.payment.payum.paypal_express.action.notify_payment_action:
         #class: CSBill\PaymentBundle\Action\PaypalExpress\NotifyPaymentAction
-        #arguments: [@doctrine.orm.entity_manager]
+        #arguments: [@doctrine]
         #tags:
             #- { name: payum.action, factory: paypal_express_checkout_nvp }
 
@@ -41,7 +41,7 @@ services:
 
     csbill.payment.payum.extension.update_payment_details_extension:
         class: CSBill\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine]
         tags:
             - { name: payum.extension, all: true }
 
@@ -57,7 +57,7 @@ services:
 
     csbill.payment.listener.payment_complete_listener:
         class: CSBill\PaymentBundle\Listener\PaymentCompleteListener
-        arguments: [@invoice.manager, @doctrine.orm.entity_manager, @session, @translator, @router, @currency]
+        arguments: [@invoice.manager, @doctrine, @session, @translator, @router, @currency]
         tags:
             - { name: kernel.event_listener, event: payment.complete, method: onPaymentComplete }
 

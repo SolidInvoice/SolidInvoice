@@ -32,7 +32,7 @@ class UserContext extends DefaultContext
         /* @var PasswordEncoderInterface $encoder */
         $encoderFactory = $container->get('security.encoder_factory');
 
-        $entityManager = $container->get('doctrine.orm.entity_manager');
+        $entityManager = $container->get('doctrine')->getManager();
 
         foreach ($table as $data) {
             $user = new User();

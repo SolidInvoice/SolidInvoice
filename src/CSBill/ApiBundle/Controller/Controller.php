@@ -40,7 +40,7 @@ abstract class Controller extends FOSRestController
         $form->submit($request->request->all(), null === $entity->getId());
 
         if ($form->isValid()) {
-            $entityManager = $this->get('doctrine.orm.entity_manager');
+            $entityManager = $this->get('doctrine')->getManager();
 
             $entityManager->persist($entity);
             $entityManager->flush();

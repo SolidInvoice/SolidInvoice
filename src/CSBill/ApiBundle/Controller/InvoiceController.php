@@ -47,7 +47,7 @@ class InvoiceController extends Controller
      */
     public function getInvoicesAction(ParamFetcherInterface $fetcher)
     {
-        $repository = $this->get('doctrine.orm.entity_manager')
+        $repository = $this->get('doctrine')
             ->getRepository('CSBillInvoiceBundle:Invoice');
 
         return $this->manageCollection($fetcher, $repository->createQueryBuilder('c'), 'get_invoices');
@@ -158,7 +158,7 @@ class InvoiceController extends Controller
                 throw new \Exception('To change the status of an invoice, use the dedicated "status" method', 400);
             }
 
-            $entityManager = $this->get('doctrine.orm.entity_manager');
+            $entityManager = $this->get('doctrine')->getManager();
 
             $entityManager->persist($invoice);
             $entityManager->flush();
@@ -265,7 +265,7 @@ class InvoiceController extends Controller
      */
     public function getInvoicePaymentsAction(ParamFetcherInterface $fetcher, $invoiceId)
     {
-        $repository = $this->get('doctrine.orm.entity_manager')
+        $repository = $this->get('doctrine')
             ->getRepository('CSBillPaymentBundle:Payment');
 
         $queryBuilder = $repository->createQueryBuilder('i')
