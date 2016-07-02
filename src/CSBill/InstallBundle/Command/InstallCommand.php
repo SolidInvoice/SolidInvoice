@@ -14,7 +14,6 @@ namespace CSBill\InstallBundle\Command;
 use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Exception\ApplicationInstalledException;
-use CSBill\UserBundle\Entity\User;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -23,7 +22,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Intl\Intl;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class InstallCommand extends ContainerAwareCommand
 {
@@ -297,23 +295,24 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Creating Admin User</info>');
 
-        $user = new User();
+        $fos = $this->getContainer()->get('fos_user.user_manager');
+        $username = $input->getOption('admin-username');
 
-        /** @var PasswordEncoderInterface $encoder */
-        $encoder = $this->getContainer()->get('security.encoder_factory')->getEncoder($user);
+        if (null !== $fos->findUserBy(['username' => $username])) {
+            $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
 
-        $password = $encoder->encodePassword($input->getOption('admin-password'), $user->getSalt());
+            return;
+        }
+
+        $user = $fos->createUser();
 
         $user->setUsername($input->getOption('admin-username'))
             ->setEmail($input->getOption('admin-email'))
-            ->setPassword($password)
+            ->setPlainPassword($input->getOption('admin-password'))
             ->setEnabled(true)
             ->setSuperAdmin(true);
 
-        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $fos->updateUser($user);
     }
 
     /**
