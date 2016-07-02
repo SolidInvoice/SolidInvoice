@@ -170,6 +170,7 @@ class InstallCommand extends ContainerAwareCommand
     private function checkRequirements()
     {
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
+        $return = true;
 
         return require_once $rootDir.DIRECTORY_SEPARATOR.'app_check.php';
     }
