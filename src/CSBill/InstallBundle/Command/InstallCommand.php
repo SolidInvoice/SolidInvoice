@@ -127,11 +127,11 @@ class InstallCommand extends ContainerAwareCommand
         $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
         $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
 
-        if (!array_key_exists($locale = $input->getOption('locale'), $locales)) {
+        if (!array_search($locale = $input->getOption('locale'), $locales)) {
             throw new \InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
-        if (!array_key_exists($currency = $input->getOption('currency'), $currencies)) {
+        if (!array_search($currency = $input->getOption('currency'), $currencies)) {
             throw new \InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 
@@ -386,10 +386,6 @@ class InstallCommand extends ContainerAwareCommand
 
                 while (empty($value)) {
                     $value = $dialog->ask($input, $output, $question);
-
-                    if ($values = $question->getAutocompleterValues()) {
-                        $value = array_search($value, $values);
-                    }
                 }
 
                 $input->setOption($option, $value);
