@@ -1,3 +1,4 @@
 _dashboard:
-    path:  /dashboard
-    defaults: { _controller: CSBillDashboardBundle:Default:index }
+    path: /dashboard
+    defaults:
+        _controller: 'CSBillDashboardBundle:Default:index'

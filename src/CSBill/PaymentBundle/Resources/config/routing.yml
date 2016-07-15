@@ -1,25 +1,26 @@
 _payments_index:
-    path:  /
-    defaults: { _controller: CSBillPaymentBundle:Default:list }
-
+    path: /
+    defaults:
+        _controller: 'CSBillPaymentBundle:Default:list'
 _payment_settings_index:
-    path:  /methods
-    defaults: { _controller: CSBillPaymentBundle:Default:index }
+    path: /methods
+    defaults:
+        _controller: 'CSBillPaymentBundle:Default:index'
     options:
         expose: true
-
 _payment_method_settings:
-    path:  /method/settings/{method}
-    defaults: { _controller: CSBillPaymentBundle:Ajax:loadSettings }
+    path: '/method/settings/{method}'
+    defaults:
+        _controller: 'CSBillPaymentBundle:Ajax:loadSettings'
     options:
         expose: true
-
 _payments_create:
-    path: /create/{uuid}
-    defaults: { _controller: CSBillPaymentBundle:Payment:preparePayment }
+    path: '/create/{uuid}'
+    defaults:
+        _controller: 'CSBillPaymentBundle:Payment:preparePayment'
     requirements:
-        uuid: "[a-zA-Z0-9-]{36}"
-
+        uuid: '[a-zA-Z0-9-]{36}'
 _payments_done:
     path: /done
-    defaults: { _controller: CSBillPaymentBundle:Payment:captureDone }
+    defaults:
+        _controller: 'CSBillPaymentBundle:Payment:captureDone'

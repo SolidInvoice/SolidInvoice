@@ -1,76 +1,84 @@
 _clients_index:
-    path:   /
-    defaults:  { _controller: CSBillClientBundle:Default:index }
-    options:
-        expose: true
-
-_clients_add:
-    path:   /add
-    defaults:  { _controller: CSBillClientBundle:Default:add }
-
-_clients_edit:
-    path:   /edit/{id}
-    defaults:  { _controller: CSBillClientBundle:Default:edit }
-    options:
-        expose: true
-
-_clients_view:
-    path:   /view/{id}
-    defaults:  { _controller: CSBillClientBundle:Default:view }
-    options:
-        expose: true
-
-_clients_info:
-    path:   /ajax/info/{id}/{type}
+    path: /
     defaults:
-        _controller: CSBillClientBundle:Ajax:info
+        _controller: 'CSBillClientBundle:Default:index'
+    options:
+        expose: true
+_clients_add:
+    path: /add
+    defaults:
+        _controller: 'CSBillClientBundle:Default:add'
+_clients_edit:
+    path: '/edit/{id}'
+    defaults:
+        _controller: 'CSBillClientBundle:Default:edit'
+    options:
+        expose: true
+_clients_view:
+    path: '/view/{id}'
+    defaults:
+        _controller: 'CSBillClientBundle:Default:view'
+    options:
+        expose: true
+_clients_info:
+    path: '/ajax/info/{id}/{type}'
+    defaults:
+        _controller: 'CSBillClientBundle:Ajax:info'
         type: quote
     options:
         expose: true
-
 _clients_credit:
-    path:   /ajax/credit/{client}
-    defaults:  { _controller: CSBillClientBundle:Credit:credit }
-    methods: [GET, PUT]
+    path: '/ajax/credit/{client}'
+    defaults:
+        _controller: 'CSBillClientBundle:Credit:credit'
+    methods:
+        - GET
+        - PUT
     options:
         expose: true
-
 _clients_add_contact:
-    path:   /ajax/contacts/add/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:addcontact }
+    path: '/ajax/contacts/add/{id}'
+    defaults:
+        _controller: 'CSBillClientBundle:Ajax:addcontact'
     options:
         expose: true
-
 _clients_edit_contact:
-    path:   /ajax/contacts/edit/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:editcontact }
+    path: '/ajax/contacts/edit/{id}'
+    defaults:
+        _controller: 'CSBillClientBundle:Ajax:editcontact'
     options:
         expose: true
-
 _clients_contact:
-    path:   /ajax/contacts/{id}
-    defaults:  { _controller: CSBillClientBundle:Ajax:contact }
-    methods: [GET, POST, DELETE]
+    path: '/ajax/contacts/{id}'
+    defaults:
+        _controller: 'CSBillClientBundle:Ajax:contact'
+    methods:
+        - GET
+        - POST
+        - DELETE
     options:
         expose: true
-
 _clients_archive:
-    path:   /archive
-    defaults:  { _controller: CSBillClientBundle:Grid:archive }
-    methods: [POST]
+    path: /archive
+    defaults:
+        _controller: 'CSBillClientBundle:Grid:archive'
+    methods:
+        - POST
     options:
         expose: true
-
 _clients_restore:
-    path:   /restore
-    defaults:  { _controller: CSBillClientBundle:Grid:restore }
-    methods: [POST]
+    path: /restore
+    defaults:
+        _controller: 'CSBillClientBundle:Grid:restore'
+    methods:
+        - POST
     options:
         expose: true
-
 _clients_delete:
-    path:   /delete
-    defaults:  { _controller: CSBillClientBundle:Grid:delete }
-    methods: [POST]
+    path: /delete
+    defaults:
+        _controller: 'CSBillClientBundle:Grid:delete'
+    methods:
+        - POST
     options:
         expose: true

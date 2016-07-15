@@ -1,56 +1,56 @@
 dashboard:
     title: Dashboard
-    active_clients: Active Clients
-    income_received: Income Received
-    pending_quotes: Pending Quotes
-    outstanding_invoices: Outstanding Invoices
+    active_clients: 'Active Clients'
+    income_received: 'Income Received'
+    pending_quotes: 'Pending Quotes'
+    outstanding_invoices: 'Outstanding Invoices'
     create:
-       new: Create New
-       client: Client
-       invoice: Invoice
-       quote: Quote
+        new: 'Create New'
+        client: Client
+        invoice: Invoice
+        quote: Quote
     quick_nav:
-        title: Quick Nav
+        title: 'Quick Nav'
         clients: Clients
         invoices: Invoices
         quotes: Quotes
         settings: Settings
         profile: Profile
     client:
-        recent: Recent Clients
-        create: Create New Client
-        empty: There are no clients available
-        view_all: View All >>
+        recent: 'Recent Clients'
+        create: 'Create New Client'
+        empty: 'There are no clients available'
+        view_all: 'View All >>'
         actions:
             view: View
             edit: Edit
-            created: Created:
+            created: 'Created:'
             create:
-                quote: Create Quote
-                invoice: Create Invoice
+                quote: 'Create Quote'
+                invoice: 'Create Invoice'
     quote:
-        recent: Recent Quotes
-        create: Create New Quote
-        empty: There are no quotes available
-        view_all: View All >>
+        recent: 'Recent Quotes'
+        create: 'Create New Quote'
+        empty: 'There are no quotes available'
+        view_all: 'View All >>'
         actions:
             view: View
             edit: Edit
-            created: Created:
+            created: 'Created:'
     invoice:
-        recent: Recent Invoices
-        create: Create New Invoice
-        empty: There are no invoices available
-        view_all: View All >>
+        recent: 'Recent Invoices'
+        create: 'Create New Invoice'
+        empty: 'There are no invoices available'
+        view_all: 'View All >>'
         actions:
             view: View
-            pay: Pay Now
+            pay: 'Pay Now'
             edit: Edit
-            created: Created:
+            created: 'Created:'
     payment:
-        recent: Recent Payments
-        view_all: View All >>
+        recent: 'Recent Payments'
+        view_all: 'View All >>'
         actions:
-            created: Created:
-            invoice: Invoice:
-        no_payments: There are no recent payments available
+            created: 'Created:'
+            invoice: 'Invoice:'
+        no_payments: 'There are no recent payments available'

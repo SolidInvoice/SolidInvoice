@@ -1,26 +1,26 @@
 quote:
     list:
-        status_legend: Quote Status Legend
+        status_legend: 'Quote Status Legend'
         title: Quotes
-    summary: Quote Summary
-    create: Create Quote
+    summary: 'Quote Summary'
+    create: 'Create Quote'
     created: Created
     total: Total
     subtotal: Sub-Total
     tax: Tax
     discount: Discount
-    edit: Edit Quote
+    edit: 'Edit Quote'
     terms: Terms
     notes: Notes
-    title: "Quote #%id%"
+    title: 'Quote #%id%'
     save:
-        send: Save and Send
-        draft: Save as Draft
+        send: 'Save and Send'
+        draft: 'Save as Draft'
         update: Update
         cancel: Cancel
     item:
-        add: Add Item
-        remove: Remove Item
+        add: 'Add Item'
+        remove: 'Remove Item'
         heading:
             description: Description
             price: Price
@@ -29,9 +29,9 @@ quote:
             total: Total
     action:
         edit:
-            success: Quote updated successfully
+            success: 'Quote updated successfully'
         create:
-            success: Quote created successfully
+            success: 'Quote created successfully'
     view:
         toolbar:
             accept: Accept
@@ -41,43 +41,41 @@ quote:
             edit: Edit
             reopen: Re-Open
             clone: Clone
-        online: "View this quote online at: %url%"
+        online: 'View this quote online at: %url%'
     clone:
-        success: Quote cloned successfully
-    accepted: Quote Accepted and invoice created
-    declined: Quote Declined
-    cancelled: Quote Cancelled
-    reopened: Quote Re-Opened
-    sent: Quote Sent
+        success: 'Quote cloned successfully'
+    accepted: 'Quote Accepted and invoice created'
+    declined: 'Quote Declined'
+    cancelled: 'Quote Cancelled'
+    reopened: 'Quote Re-Opened'
+    sent: 'Quote Sent'
     client:
-        choose: Choose a client
-        empty: You have not created any clients yet.
-        create: Please add one now
+        choose: 'Choose a client'
+        empty: 'You have not created any clients yet.'
+        create: 'Please add one now'
     transition:
         exception:
-            accept: Quote cannot be accepted
-            archive: Quote cannot be archived
+            accept: 'Quote cannot be accepted'
+            archive: 'Quote cannot be archived'
     archive:
-        success: Quote Archived
+        success: 'Quote Archived'
     grid:
         actions:
             view: View
             edit: Edit
             delete: Delete
-
     stats:
         count:
-            pending: "{0} Pending Quotes|{1} Pending Quote|]1,Inf] Pending Quotes"
-            accepted: "{0} Accepted Quotes|{1} Accepted Quote|]1,Inf] Accepted Quotes"
-            draft: "{0} Draft Quotes|{1} Draft Quote|]1,Inf] Draft Quotes"
-            cancelled: "{0} Cancelled Quotes|{1} Cancelled Quote|]1,Inf] Cancelled Quotes"
-            declined: "{0} Declined Quotes|{1} Declined Quote|]1,Inf] Declined Quotes"
+            pending: '{0} Pending Quotes|{1} Pending Quote|]1,Inf] Pending Quotes'
+            accepted: '{0} Accepted Quotes|{1} Accepted Quote|]1,Inf] Accepted Quotes'
+            draft: '{0} Draft Quotes|{1} Draft Quote|]1,Inf] Draft Quotes'
+            cancelled: '{0} Cancelled Quotes|{1} Cancelled Quote|]1,Inf] Cancelled Quotes'
+            declined: '{0} Declined Quotes|{1} Declined Quote|]1,Inf] Declined Quotes'
     menu:
         main: Quotes
-        list: List Quotes
-        create: Create Quote
-        view: View Quote
-
+        list: 'List Quotes'
+        create: 'Create Quote'
+        view: 'View Quote'
 status: Status
 client: Client
 search: Search

@@ -3,10 +3,9 @@ parameters:
     csbill_client.contact_type.repository.class: CSBill\ClientBundle\Repository\ContactTypeRepository
     csbill_client.contact_types.twig.extension.class: CSBill\ClientBundle\Twig\Extension\ContactTypesExtension
     csbill_client.contact.form.type.class: CSBill\ClientBundle\Form\Contact
-
 services:
     csbill_client.menu:
-        class: %csbill_client.menu.class%
+        class: '%csbill_client.menu.class%'
         tags:
             - { name: cs_core.menu, menu: top, method: topMenu }
             - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
@@ -15,38 +14,40 @@ services:
             - { name: cs_core.menu, menu: clients_edit, method: clientsMenu }
 
     csbill_client.contact.form.type:
-        class: %csbill_client.contact.form.type.class%
-        arguments: [@csbill_client.contact_type.values]
+        class: '%csbill_client.contact.form.type.class%'
+        arguments:
+            - '@csbill_client.contact_type.values'
         tags:
             - { name: form.type, alias: contact }
 
     csbill_client.contact_types.twig.extension:
-        class: %csbill_client.contact_types.twig.extension.class%
-        arguments: [@doctrine]
+        class: '%csbill_client.contact_types.twig.extension.class%'
+        arguments:
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 
     csbill_client.contact_type.repository:
-        class: %csbill_client.contact_type.repository.class%
+        class: '%csbill_client.contact_type.repository.class%'
         factory_service: doctrine
-        factory_method:  getRepository
+        factory_method: getRepository
         arguments:
-            - "CSBillClientBundle:ContactType"
-
+            - 'CSBillClientBundle:ContactType'
     csbill_client.contact_type.values:
-        class: %csbill_client.contact_type.repository.class%
+        class: '%csbill_client.contact_type.repository.class%'
         factory_service: csbill_client.contact_type.repository
-        factory_method:  findAll
-
+        factory_method: findAll
     client.notification.listener:
         class: CSBill\ClientBundle\Listener\ClientListener
-        arguments: [@service_container]
+        arguments:
+            - '@service_container'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
     csbill.serializer.credit.handler:
         class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
-        arguments: [@csbill.money.formatter]
+        arguments:
+            - '@csbill.money.formatter'
         tags:
             - { name: jms_serializer.handler, type: "Money\Money", direction: serialization, format: json, method: serializeMoneyJson }
             - { name: jms_serializer.handler, type: "Money\Money", direction: serialization, format: xml, method: serializeMoneyXml }

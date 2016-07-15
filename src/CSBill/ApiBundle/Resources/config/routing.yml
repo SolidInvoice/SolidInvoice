@@ -1,26 +1,21 @@
 api_login_check:
     path: /login
-
 api_doc:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /docs
-
+    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
+    prefix: /docs
 client_api:
-    type:     rest
+    type: rest
     resource: CSBill\ApiBundle\Controller\ClientController
-    prefix:   /
-
+    prefix: /
 invoice_api:
-    type:     rest
+    type: rest
     resource: CSBill\ApiBundle\Controller\InvoiceController
-    prefix:   /
-
+    prefix: /
 quote_api:
-    type:     rest
+    type: rest
     resource: CSBill\ApiBundle\Controller\QuoteController
-    prefix:   /
-
+    prefix: /
 payment_api:
-    type:     rest
+    type: rest
     resource: CSBill\ApiBundle\Controller\PaymentController
-    prefix:   /
+    prefix: /

@@ -17,11 +17,11 @@ use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Repository\UserRepository;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
+use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
-class SetupStep extends ControllerStep
+class SetupStep extends AbstractControllerStep
 {
     /**
      * {@inheritdoc}

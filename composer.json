@@ -7,12 +7,12 @@
         "general billing",
         "open-source billing"
     ],
-    "homepage": "http://csbill.github.io",
+    "homepage": "http://csbill.org",
     "license": "MIT",
     "authors": [
         {
             "name": "Pierre du Plessis",
-            "email": "csbill@customscripts.co.za"
+            "email": "info@csbill.org"
         }
     ],
     "repositories": [
@@ -23,9 +23,9 @@
     ],
     "autoload": {
         "psr-0": {
-            "": "src/",
-            "SymfonyStandard": "app/"
-        }
+            "": "src/"
+        },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "require": {
         "php": ">=5.6.10",
@@ -45,7 +45,7 @@
         "twig/extensions": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3",
         "symfony/monolog-bundle": "^2.4",
-        "sensio/distribution-bundle": "^4.0",
+        "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/security-extra-bundle": "^1.5",
@@ -55,40 +55,42 @@
         "stof/doctrine-extensions-bundle": "^1.1",
         "friendsofsymfony/jsrouting-bundle": "^1.5",
         "knplabs/knp-menu-bundle": "^2.0",
-        "ramsey/uuid": "^2.8",
+        "ramsey/uuid": "^3.4",
         "moontoast/math": "^1.1",
         "oyejorge/less.php": "^1.7",
         "friendsofsymfony/user-bundle": "^1.3",
         "twig/twig": "^1.16",
         "swiftmailer/swiftmailer": "^5.3",
-        "payum/payum-bundle": "^0.15",
-        "payum/offline": "^0.15",
-        "payum/paypal-express-checkout-nvp": "^0.15",
-        "nesbot/carbon": "1.*",
-        "sylius/flow-bundle" : "0.14.*",
+        "payum/payum-bundle": "^2.1",
+        "payum/offline": "^1.3",
+        "payum/paypal-express-checkout-nvp": "^1.3",
+        "nesbot/carbon": "^1.21",
+        "sylius/flow-bundle" : "0.18.*",
         "yohang/finite": "^1.1",
         "namshi/notificator": "^4.0",
         "hipchat/hipchat-php": "^1.4",
         "twilio/sdk": "^4.2",
-        "tijsverkoyen/css-to-inline-styles": "^1.5",
+        "tijsverkoyen/css-to-inline-styles": "^2.0",
         "mathiasverraes/money": "^1.2",
-        "friendsofsymfony/rest-bundle": "^1.5",
+        "friendsofsymfony/rest-bundle": "^1.7",
         "jms/serializer-bundle": "^1.1",
         "willdurand/hateoas-bundle": "^1.1",
         "nelmio/api-doc-bundle": "^2.7",
         "egulias/email-validator": "^1.2",
         "mtdowling/cron-expression": "^1.0",
-        "payum/stripe": "^0.15",
-        "payum/paypal-pro-checkout-nvp": "^0.15",
-        "payum/payex": "^0.15",
-        "payum/authorize-net-aim": "^0.15",
-        "payum/be2bill": "^0.15",
-        "payum/klarna-checkout": "^0.15",
-        "payum/klarna-invoice": "^0.15",
+        "payum/stripe": "^1.3",
+        "payum/paypal-pro-checkout-nvp": "^1.3",
+        "payum/payex": "^1.3",
+        "payum/authorize-net-aim": "^1.3",
+        "payum/be2bill": "^1.3",
+        "payum/klarna-checkout": "^1.3",
+        "payum/klarna-invoice": "^1.3",
         "omnipay/omnipay": "^2.3",
-        "payum/omnipay-bridge": "^0.15",
+        "payum/omnipay-bridge": "^1.2",
         "oro/requirejs-bundle": "^1.4",
-        "willdurand/js-translation-bundle": "^2.5"
+        "willdurand/js-translation-bundle": "^2.5",
+        "php-http/guzzle6-adapter": "^1.1",
+        "ramsey/uuid-doctrine": "^1.2"
     },
     "require-dev": {
         "behat/behat": "^3.0",
@@ -97,8 +99,8 @@
         "behat/mink-browserkit-driver": "^1.2",
         "behat/mink-selenium2-driver": "^1.2",
         "behat/mink": "^1.6",
-        "sensio/generator-bundle": "^2.3",
-        "phpunit/phpunit": "^4.4",
+        "sensio/generator-bundle": "^3.0",
+        "phpunit/phpunit": "^5.4",
         "johnkary/phpunit-speedtrap": "^1.0",
         "fzaninotto/faker": "^1.3",
         "mockery/mockery": "^0.9",
@@ -134,6 +136,8 @@
     },
     "extra": {
         "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {

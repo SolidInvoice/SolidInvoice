@@ -1,39 +1,45 @@
 services:
     dashboard.widget.factory:
         class: CSBill\DashboardBundle\WidgetFactory
-
     dashboard.widget.twig.extension:
         class: CSBill\DashboardBundle\Twig\Extension\WidgetExtension
-        arguments: [@dashboard.widget.factory]
+        arguments:
+            - '@dashboard.widget.factory'
         tags:
             - { name: twig.extension }
 
     dashboard.widget.stats:
         class: CSBill\DashboardBundle\Widgets\StatsWidget
-        arguments: [@doctrine, @currency]
+        arguments:
+            - '@doctrine'
+            - '@currency'
         tags:
             - { name: dashboard.widget, priority: 100, location: top }
 
     dashboard.widget.recent_clients:
         class: CSBill\DashboardBundle\Widgets\RecentClientsWidget
-        arguments: [@doctrine]
+        arguments:
+            - '@doctrine'
         tags:
             - { name: dashboard.widget, priority: 100, location: left_column }
 
     dashboard.widget.recent_payments:
         class: CSBill\DashboardBundle\Widgets\RecentPaymentsWidget
-        arguments: [@doctrine]
+        arguments:
+            - '@doctrine'
         tags:
             - { name: dashboard.widget, priority: 90, location: left_column }
 
     dashboard.widget.recent_quotes:
         class: CSBill\DashboardBundle\Widgets\RecentQuotesWidget
-        arguments: [@doctrine]
+        arguments:
+            - '@doctrine'
         tags:
             - { name: dashboard.widget, priority: 100, location: right_column }
 
     dashboard.widget.recent_invoices:
         class: CSBill\DashboardBundle\Widgets\RecentInvoicesWidget
-        arguments: [@doctrine]
+        arguments:
+            - '@doctrine'
         tags:
             - { name: dashboard.widget, priority: 90, location: right_column }

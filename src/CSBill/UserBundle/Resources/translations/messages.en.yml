@@ -1,52 +1,52 @@
 profile:
     show:
-        title: Profile - %username%
-        yes: Yes
-        no: No
+        title: 'Profile - %username%'
+        'yes': 'Yes'
+        'no': 'No'
         username: Username
         email: Email
         mobile: Mobile
-        last_login: Last Login
+        last_login: 'Last Login'
         enabled: Enabled
         locked: Locked
         expired: Expired
         roles: Roles
-        change_password: Change Password
-        update_profile: Update Profile
+        change_password: 'Change Password'
+        update_profile: 'Update Profile'
     edit:
         cancel: Cancel
     api:
-        title: API Tokens
-        create: Create Token
+        title: 'API Tokens'
+        create: 'Create Token'
         tokens:
-            empty: "You don't have any API tokens"
+            empty: 'You don''t have any API tokens'
             revoke: Revoke
-            revoke_message: "Are you sure you want to revoke this token? This is irreversible, and all applications using the token will be affected"
-            history: View History
+            revoke_message: 'Are you sure you want to revoke this token? This is irreversible, and all applications using the token will be affected'
+            history: 'View History'
             used:
-                text: %date% from %ip%
+                text: '%date% from %ip%'
                 never: Never
-                last: Last Used:
+                last: 'Last Used:'
         form:
-            title: Create API Token
+            title: 'Create API Token'
             actions:
                 save: Save
                 close: Close
         history:
-            title: API History
+            title: 'API History'
             actions:
                 close: Close
-            last_calls_shown: Only the last 100 calls are shown
-            last_calls_shown_note: Note:
+            last_calls_shown: 'Only the last 100 calls are shown'
+            last_calls_shown_note: 'Note:'
             list:
                 date: Date
-                ip: IP Address
+                ip: 'IP Address'
                 resource: Resource
-                user_agent: User Agent
+                user_agent: 'User Agent'
 security:
     login:
         login: Login
-        username: Username or Email
+        username: 'Username or Email'
         password: Password
-        remember: Keep me logged in
-        forgot_password: Forgot Password
+        remember: 'Keep me logged in'
+        forgot_password: 'Forgot Password'

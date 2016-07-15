@@ -11,7 +11,7 @@
 
 namespace CSBill\PaymentBundle;
 
-use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
+use Payum\Core\Bridge\Symfony\ContainerAwareRegistry;
 
 class Payum extends ContainerAwareRegistry
 {

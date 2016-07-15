@@ -3,60 +3,50 @@ imports:
     - { resource: security.yml }
     - { resource: payum.yml }
     - { resource: assetVersion.php }
-    - { resource: @CSBillInvoiceBundle/Resources/config/finite.yml }
-    - { resource: @CSBillQuoteBundle/Resources/config/finite.yml }
+    - { resource: '@CSBillInvoiceBundle/Resources/config/finite.yml' }
+    - { resource: '@CSBillQuoteBundle/Resources/config/finite.yml' }
 
 framework:
-    esi:             ~
-    translator:      { fallback: en }
-    secret:          %secret%
+    esi: null
+    translator:
+        fallback: en
+    secret: '%secret%'
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: ~
-    form:            ~
-    csrf_protection: ~
+        resource: '%kernel.root_dir%/config/routing.yml'
+        strict_requirements: null
+    form: null
+    csrf_protection: null
     validation:
         enabled: true
         api: 2.5
         enable_annotations: true
         strict_email: true
-    #templating:
-        #engines: ['twig']
-        #assets_version: SomeVersionScheme
-    default_locale:  %locale%
-    trusted_proxies: ~
+    default_locale: '%locale%'
+    trusted_proxies: null
     session:
         name: CSBILL_APP
-    fragments:       ~
+    fragments: null
     http_method_override: true
-
-# Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
     form:
         resources:
             - 'CSBillCoreBundle:Form:fields.html.twig'
-
-# Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
-        charset:  UTF8
+        driver: '%database_driver%'
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
         types:
-            uuid: Rhumsaa\Uuid\Doctrine\UuidType
+            uuid: Ramsey\Uuid\Doctrine\UuidType
             money: CSBill\MoneyBundle\Doctrine\Types\MoneyType
-        # if using pdo_sqlite as your database driver, add the path in parameters.yml
-        # e.g. database_path: %kernel.root_dir%/data/data.db3
-        # path:     %database_path%
-
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
+        auto_generate_proxy_classes: '%kernel.debug%'
         entity_managers:
             default:
                 hydrators:
@@ -73,47 +63,42 @@ doctrine:
                     gedmo_translatable:
                         type: annotation
                         prefix: Gedmo\Translatable\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
-                        alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity'
+                        alias: GedmoTranslatable
                         is_bundle: false
                     gedmo_translator:
                         type: annotation
                         prefix: Gedmo\Translator\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
-                        alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity'
+                        alias: GedmoTranslator
                         is_bundle: false
                     gedmo_loggable:
                         type: annotation
                         prefix: Gedmo\Loggable\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
-                        alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
+                        alias: GedmoLoggable
                         is_bundle: false
                     gedmo_tree:
                         type: annotation
                         prefix: Gedmo\Tree\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
-                        alias: GedmoTree # this one is optional and will default to the name set for the mapping
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
+                        alias: GedmoTree
                         is_bundle: false
                     payum:
                         is_bundle: false
                         type: xml
-                        #dir: %kernel.root_dir%/../vendor/payum/core/Bridge/Doctrine/Resources/mapping
-                        # set this dir instead if you use `payum/payum` library
-                        dir: %kernel.root_dir%/../vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping
+                        dir: '%kernel.root_dir%/../vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping'
                         prefix: Payum\Core\Model
-
-# Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
-
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool:
+        type: memory
 stof_doctrine_extensions:
-    default_locale: %locale%
-    orm: ~
-
+    default_locale: '%locale%'
+    orm: null
 fos_user:
     db_driver: orm
     firewall_name: main
@@ -122,9 +107,8 @@ fos_user:
         form:
             type: profile_form
     service:
-        email_canonicalizer:    csbill.user.canonicalizer
+        email_canonicalizer: csbill.user.canonicalizer
         username_canonicalizer: csbill.user.canonicalizer
-
 fos_rest:
     param_fetcher_listener: true
     allowed_methods_listener: true
@@ -145,7 +129,7 @@ fos_rest:
             html: false
         serialize_null: true
         failed_validation: HTTP_BAD_REQUEST
-        exception_wrapper_handler:  null
+        exception_wrapper_handler: null
     disable_csrf_role: ROLE_API_AUTHENTICATED
     body_listener: true
     format_listener: true
@@ -153,15 +137,13 @@ fos_rest:
         json: true
         xml: true
         jsonp: true
-
 nelmio_api_doc:
     sandbox:
         enabled: false
     cache:
         enabled: true
-
 oro_require_js:
     config:
         waitSeconds: 0
         enforceDefine: false
-        scriptType: 'text/javascript'
+        scriptType: text/javascript

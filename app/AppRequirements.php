@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-require_once __DIR__.'/SymfonyRequirements.php';
+require_once dirname(__DIR__).'/var/SymfonyRequirements.php';
 
 use Symfony\Component\Intl\Intl;
 

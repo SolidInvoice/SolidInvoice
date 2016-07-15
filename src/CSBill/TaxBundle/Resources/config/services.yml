@@ -1,6 +1,7 @@
 services:
     csbill.tax.twig.extension:
         class: CSBill\TaxBundle\Twig\Extension\TaxExtension
-        arguments: [@doctrine]
+        arguments:
+            - '@doctrine'
         tags:
             - { name: twig.extension, alias: tax_extension }

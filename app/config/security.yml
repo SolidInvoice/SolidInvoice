@@ -1,38 +1,34 @@
 jms_security_extra:
     secure_all_services: false
     expressions: true
-
 security:
     acl:
         connection: default
     encoders:
         FOS\UserBundle\Model\UserInterface:
             algorithm: bcrypt
-            cost:      10
-
+            cost: 10
     role_hierarchy:
-        ROLE_ADMIN:       ~
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-        ROLE_CLIENT:      ROLE_USER
-        ROLE_USER: ~
-
+        ROLE_ADMIN: null
+        ROLE_SUPER_ADMIN:
+            - ROLE_ADMIN
+            - ROLE_ALLOWED_TO_SWITCH
+        ROLE_CLIENT: ROLE_USER
+        ROLE_USER: null
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username_email
         api_token_user_provider:
             id: api_token_user_provider
-
     firewalls:
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
         api_doc:
-            pattern:  ^/api/docs
-            anonymous: ~
-
+            pattern: ^/api/docs
+            anonymous: null
         api_login:
-            pattern:  ^/api/login
+            pattern: ^/api/login
             stateless: true
             anonymous: true
             form_login:
@@ -40,56 +36,44 @@ security:
                 require_previous_session: false
                 success_handler: api.success
                 failure_handler: api.failure
-
         api:
             pattern: ^/api
             stateless: true
             simple_preauth:
                 authenticator: api_token_authenticator
             provider: api_token_user_provider
-
         installer:
-            pattern:  ^/install(.*)
-            anonymous: ~
-
+            pattern: '^/install(.*)'
+            anonymous: null
         external:
-            pattern:  ^/view/(quote|invoice)/([a-zA-Z0-9-]{36})
+            pattern: '^/view/(quote|invoice)/([a-zA-Z0-9-]{36})'
             anonymous: true
             context: frontend
-
-         # Payments
         create:
-            pattern:  ^/payments/create/([a-zA-Z0-9-]{36})
+            pattern: '^/payments/create/([a-zA-Z0-9-]{36})'
             anonymous: true
             context: frontend
-
         capture:
-            pattern:  ^/payment/(capture|notify|done)/(.*)
+            pattern: '^/payment/(capture|notify|done)/(.*)'
             anonymous: true
             context: frontend
-
         done:
-            pattern:  ^/payments/done$
+            pattern: ^/payments/done$
             anonymous: true
             context: frontend
-
-        # Login
         login:
-            pattern:  ^/login$
-            anonymous: ~
-
+            pattern: ^/login$
+            anonymous: null
         password_reset:
-            pattern:  ^/resetting(.*)
-            anonymous: ~
-
-        # Main
+            pattern: '^/resetting(.*)'
+            anonymous: null
         main:
             remember_me:
-                key:      "%secret%"
+                key: '%secret%'
                 lifetime: 3600
-                path:     /
-                domain:   ~ # Defaults to the current domain from $_SERVER
-            pattern:    ^/
+                path: /
+                domain: null
+            pattern: ^/
             context: frontend
             form_login:
                 provider: fos_userbundle
@@ -97,20 +81,19 @@ security:
                 check_path: /login_check
                 login_path: /login
             logout:
-                path:   /logout
+                path: /logout
                 target: /
-
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
-        - { path: "^/view/(quote|invoice)/([a-zA-Z0-9-]{36})$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/view/(quote|invoice)/([a-zA-Z0-9-]{36})$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/install(.*), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/install(.*)', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
         # payments
-        - { path: "^/payments/create/([a-zA-Z0-9-]{36})$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/payments/create/([a-zA-Z0-9-]{36})$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/payment/capture/(.*), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/payments/done$, roles: IS_AUTHENTICATED_ANONYMOUSLY }

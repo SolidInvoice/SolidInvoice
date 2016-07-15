@@ -13,9 +13,9 @@ namespace CSBill\InstallBundle\Process\Step;
 
 use CSBill\InstallBundle\Form\Step\ConfigStepForm;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
+use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 
-class ConfigStep extends ControllerStep
+class ConfigStep extends AbstractControllerStep
 {
     /**
      * Array of currently implemented database drivers.
