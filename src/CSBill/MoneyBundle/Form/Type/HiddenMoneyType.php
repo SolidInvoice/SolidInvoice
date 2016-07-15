@@ -15,6 +15,7 @@ use CSBill\MoneyBundle\Form\DataTransformer\ModelTransformer;
 use CSBill\MoneyBundle\Form\DataTransformer\ViewTransformer;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class HiddenMoneyType extends AbstractType
@@ -47,13 +48,13 @@ class HiddenMoneyType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
+        return HiddenType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'hidden_money';
     }

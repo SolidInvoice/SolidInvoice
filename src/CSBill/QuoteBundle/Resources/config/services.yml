@@ -38,11 +38,11 @@ services:
         arguments:
             - '@currency'
         tags:
-            - { name: form.type, alias: quote }
+            - { name: form.type }
 
     quote.item.form.type:
         class: CSBill\QuoteBundle\Form\Type\ItemType
         arguments:
             - '@doctrine'
         tags:
-            - { name: form.type, alias: quote_item }
+            - { name: form.type }

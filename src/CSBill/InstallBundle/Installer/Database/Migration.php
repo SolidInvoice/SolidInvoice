@@ -14,8 +14,8 @@ namespace CSBill\InstallBundle\Installer\Database;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration as VersionMigration;
 use Doctrine\DBAL\Migrations\OutputWriter;
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -23,8 +23,10 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * Performs database migrations
  */
-class Migration extends ContainerAware
+class Migration implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var Filesystem
      */

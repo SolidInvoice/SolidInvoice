@@ -17,7 +17,7 @@ services:
     csbill_core.form.help.extension:
         class: '%csbill_core.form.help.extension.class%'
         tags:
-            - { name: form.type_extension, alias: form}
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
     billing.mailer:
         class: '%csbill_core.billing.mailer.class%'

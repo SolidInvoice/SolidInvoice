@@ -15,6 +15,7 @@ use CSBill\MoneyBundle\Form\DataTransformer\ModelTransformer;
 use CSBill\MoneyBundle\Form\DataTransformer\ViewTransformer;
 use Money\Currency;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -60,6 +61,6 @@ class MoneyExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'money';
+        return MoneyType::class;
     }
 }

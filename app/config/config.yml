@@ -18,7 +18,6 @@ framework:
     csrf_protection: null
     validation:
         enabled: true
-        api: 2.5
         enable_annotations: true
         strict_email: true
     default_locale: '%locale%'
@@ -30,9 +29,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    form:
-        resources:
-            - 'CSBillCoreBundle:Form:fields.html.twig'
+    form_themes:
+        - 'CSBillCoreBundle:Form:fields.html.twig'
 doctrine:
     dbal:
         driver: '%database_driver%'

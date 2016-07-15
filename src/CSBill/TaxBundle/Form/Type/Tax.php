@@ -11,6 +11,7 @@
 
 namespace CSBill\TaxBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 
 /**
@@ -23,7 +24,7 @@ class Tax extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return EntityType::class;
     }
 
     /**
@@ -31,7 +32,7 @@ class Tax extends AbstractType
      *
      * @return string The name of this type
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'tax_field';
     }

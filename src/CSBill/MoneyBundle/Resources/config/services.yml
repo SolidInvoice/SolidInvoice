@@ -24,11 +24,11 @@ services:
         arguments:
             - '@currency'
         tags:
-            - { name: form.type_extension, alias: money}
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\MoneyType }
 
     csbill_money.form.hidden_money.type:
         class: '%csbill_money.form.type.hidden_money.class%'
         arguments:
             - '@currency'
         tags:
-            - { name: form.type, alias: hidden_money}
+            - { name: form.type }

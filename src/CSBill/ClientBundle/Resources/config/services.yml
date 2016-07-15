@@ -29,14 +29,12 @@ services:
 
     csbill_client.contact_type.repository:
         class: '%csbill_client.contact_type.repository.class%'
-        factory_service: doctrine
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
             - 'CSBillClientBundle:ContactType'
     csbill_client.contact_type.values:
         class: '%csbill_client.contact_type.repository.class%'
-        factory_service: csbill_client.contact_type.repository
-        factory_method: findAll
+        factory: ['@csbill_client.contact_type.repository', findAll]
     client.notification.listener:
         class: CSBill\ClientBundle\Listener\ClientListener
         arguments:
@@ -49,5 +47,5 @@ services:
         arguments:
             - '@csbill.money.formatter'
         tags:
-            - { name: jms_serializer.handler, type: "Money\Money", direction: serialization, format: json, method: serializeMoneyJson }
-            - { name: jms_serializer.handler, type: "Money\Money", direction: serialization, format: xml, method: serializeMoneyXml }
+            - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: json, method: serializeMoneyJson }
+            - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: xml, method: serializeMoneyXml }

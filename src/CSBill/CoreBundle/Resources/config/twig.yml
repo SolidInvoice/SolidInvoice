@@ -19,8 +19,3 @@ services:
         class: '%csbill_core.twig.status.class%'
         tags:
             - { name: twig.extension }
-
-    twig.loader.string:
-        class: Twig_Loader_String
-        tags:
-            - { name: twig.loader }

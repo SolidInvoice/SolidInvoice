@@ -34,6 +34,7 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Event\QuoteEvent;
 use CSBill\QuoteBundle\Event\QuoteEvents;
+use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -87,7 +88,7 @@ class DefaultController extends BaseController
         $quote = new Quote();
         $quote->setClient($client);
 
-        $form = $this->createForm('quote', $quote);
+        $form = $this->createForm(QuoteType::class, $quote);
 
         $form->handleRequest($request);
 
@@ -148,7 +149,7 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Quote $quote)
     {
-        $form = $this->createForm('quote', $quote);
+        $form = $this->createForm(QuoteType::class, $quote);
 
         $form->handleRequest($request);
 

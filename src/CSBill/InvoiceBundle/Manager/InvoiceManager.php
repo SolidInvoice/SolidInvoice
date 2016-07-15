@@ -26,11 +26,14 @@ use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Finite\Factory\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class InvoiceManager extends ContainerAware
+class InvoiceManager implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var ObjectManager
      */
@@ -155,6 +158,45 @@ class InvoiceManager extends ContainerAware
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CREATE, new InvoiceEvent($invoice));
 
         return $invoice;
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @param string  $transition
+     *
+     * @return bool
+     *
+     * @throws InvalidTransitionException
+     */
+    private function applyTransition(Invoice $invoice, $transition)
+    {
+        $stateMachine = $this->stateMachine->get($invoice, Graph::GRAPH);
+
+        if ($stateMachine->can($transition)) {
+            $oldStatus = $invoice->getStatus();
+
+            $stateMachine->apply($transition);
+
+            $newStatus = $invoice->getStatus();
+
+            $parameters = [
+                'invoice' => $invoice,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'transition' => $transition,
+            ];
+
+            // Do not send status updates for new invoices
+            if ($transition !== Graph::TRANSITION_NEW) {
+                $notification = new InvoiceStatusNotification($parameters);
+
+                $this->notification->sendNotification('invoice_status_update', $notification);
+            }
+
+            return true;
+        }
+
+        throw new InvalidTransitionException($transition);
     }
 
     /**
@@ -341,44 +383,5 @@ class InvoiceManager extends ContainerAware
         $this->create($newInvoice);
 
         return $newInvoice;
-    }
-
-    /**
-     * @param Invoice $invoice
-     * @param string  $transition
-     *
-     * @return bool
-     *
-     * @throws InvalidTransitionException
-     */
-    private function applyTransition(Invoice $invoice, $transition)
-    {
-        $stateMachine = $this->stateMachine->get($invoice, Graph::GRAPH);
-
-        if ($stateMachine->can($transition)) {
-            $oldStatus = $invoice->getStatus();
-
-            $stateMachine->apply($transition);
-
-            $newStatus = $invoice->getStatus();
-
-            $parameters = [
-                'invoice' => $invoice,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-                'transition' => $transition,
-            ];
-
-            // Do not send status updates for new invoices
-            if ($transition !== Graph::TRANSITION_NEW) {
-                $notification = new InvoiceStatusNotification($parameters);
-
-                $this->notification->sendNotification('invoice_status_update', $notification);
-            }
-
-            return true;
-        }
-
-        throw new InvalidTransitionException($transition);
     }
 }

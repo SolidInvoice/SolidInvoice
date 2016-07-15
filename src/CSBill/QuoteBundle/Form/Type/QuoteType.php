@@ -12,10 +12,13 @@
 namespace CSBill\QuoteBundle\Form\Type;
 
 use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
+use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -50,13 +53,13 @@ class QuoteType extends AbstractType
             ]
         );
 
-        $builder->add('discount', 'percent', ['required' => false]);
+        $builder->add('discount', PercentType::class, ['required' => false]);
 
         $builder->add(
             'items',
-            'collection',
+            CollectionType::class,
             [
-                'type' => 'quote_item',
+                'entry_type' => ItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -66,9 +69,9 @@ class QuoteType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
-        $builder->add('total', 'hidden_money');
-        $builder->add('baseTotal', 'hidden_money');
-        $builder->add('tax', 'hidden_money');
+        $builder->add('total', HiddenMoneyType::class);
+        $builder->add('baseTotal', HiddenMoneyType::class);
+        $builder->add('tax', HiddenMoneyType::class);
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
         $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
@@ -85,7 +88,7 @@ class QuoteType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'quote';
     }
