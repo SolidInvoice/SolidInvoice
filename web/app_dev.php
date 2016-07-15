@@ -27,7 +27,7 @@ use Symfony\Component\Debug\Debug;
 }*/
 
 /**
- * @var Composer\Autoload\ClassLoader $loader
+ * @var Composer\Autoload\ClassLoader
  */
 $loader = require __DIR__.'/../app/autoload.php';
 Debug::enable();

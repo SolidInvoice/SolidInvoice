@@ -99,7 +99,7 @@ class Renderer extends ListRenderer implements RendererInterface
      * This method updates the depth for the children.
      *
      * @param Item  $item
-     * @param array $options The options to render the item.
+     * @param array $options The options to render the item
      *
      * @return string
      */
@@ -132,10 +132,7 @@ class Renderer extends ListRenderer implements RendererInterface
     protected function renderDivider(Item $item, array $options = [])
     {
         return $this->format(
-            '<li'.$this->renderHtmlAttributes(
-                [
-                    'class' => 'divider'.$item->getExtra('divider'),]
-            ).'>',
+            '<li'.$this->renderHtmlAttributes(['class' => 'divider'.$item->getExtra('divider')]).'>',
             'li',
             $item->getLevel(),
             $options

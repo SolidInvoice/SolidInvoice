@@ -111,6 +111,7 @@ class StatusExtension extends \Twig_Extension
      * @param string            $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderInvoiceStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
@@ -181,6 +182,7 @@ class StatusExtension extends \Twig_Extension
      * @param string            $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderQuoteStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
@@ -207,6 +209,7 @@ class StatusExtension extends \Twig_Extension
      * @param string            $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderPaymentStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
@@ -233,6 +236,7 @@ class StatusExtension extends \Twig_Extension
      * @param string            $tooltip
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function renderClientStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
