@@ -32,16 +32,7 @@ class SystemInformationFormTest extends FormTestCase
             'password' => null,
         ];
 
-        $request = M::mock('Symfony\Component\HttpFoundation\Request');
-
-        $request->shouldReceive('getSchemeAndHttpHost')
-            ->once();
-
-        $request->shouldReceive('getBaseUrl')
-            ->once();
-
-        $type = new SystemInformationForm($request);
-        $form = $this->factory->create($type);
+        $form = $this->factory->create(SystemInformationForm::class, null, ['userCount' => 0]);
 
         // submit the data to the form directly
         $form->submit($formData);
