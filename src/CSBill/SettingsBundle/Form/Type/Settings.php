@@ -76,7 +76,6 @@ class Settings extends AbstractType
             $settingOptions = $setting->getOptions();
 
             $options['choices'] = $settingOptions;
-            $options['choices_as_values'] = false;
         }
 
         return $type;

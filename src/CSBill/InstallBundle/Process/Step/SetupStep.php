@@ -54,9 +54,14 @@ class SetupStep extends AbstractControllerStep
                     'stepName' => 'setup',
                 ]
             ),
+            'userCount' => $this->getUserCount(),
         ];
 
-        return $this->createForm(new SystemInformationForm($request, $this->getUserCount()), null, $options);
+        $data = [
+            'base_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl(),
+        ];
+
+        return $this->createForm(SystemInformationForm::class, $data, $options);
     }
 
     /**

@@ -42,7 +42,6 @@ class TaxType extends AbstractType
             Select2::class,
             [
                 'choices' => $types,
-                'choices_as_values' => false,
                 'help' => 'tax.rates.explanation',
                 'placeholder' => 'tax.rates.type.select',
             ]

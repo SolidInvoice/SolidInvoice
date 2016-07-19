@@ -17,49 +17,27 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 
 class SystemInformationForm extends AbstractType
 {
-    /**
-     * @var int
-     */
-    private $userCount;
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @param Request $request
-     * @param int     $userCount
-     */
-    public function __construct(Request $request, $userCount = 0)
-    {
-        $this->userCount = $userCount;
-        $this->request = $request;
-    }
-
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
-
         if (extension_loaded('intl')) {
             $builder->add(
                 'locale',
                 Select2::class,
                 [
-                    'choices' => Intl::getLocaleBundle()->getLocaleNames(),
+                    'choices' => array_flip(Intl::getLocaleBundle()->getLocaleNames()),
+                    'choices_as_values' => true,
                     'constraints' => new Constraints\NotBlank(['message' => 'Please select a locale']),
-                    'placeholder' => '',
-                    'choices_as_values' => false,
+                    'placeholder' => 'Please select a locale',
                 ]
             );
         } else {
@@ -70,6 +48,7 @@ class SystemInformationForm extends AbstractType
                     'data' => 'en',
                     'read_only' => true,
                     'help' => 'The only currently supported locale is "en". To choose a different locale, please install the \'intl\' extension',
+                    'placeholder' => 'Please select a locale',
                 ]
             );
         }
@@ -78,10 +57,10 @@ class SystemInformationForm extends AbstractType
             'currency',
             Select2::class,
             [
-                'choices' => $currencies,
+                'choices' => array_flip(Intl::getCurrencyBundle()->getCurrencyNames()),
+                'choices_as_values' => true,
                 'constraints' => new Constraints\NotBlank(['message' => 'Please select a currency']),
-                'placeholder' => '',
-                'choices_as_values' => false,
+                'placeholder' => 'Please select a currency',
             ]
         );
 
@@ -90,11 +69,10 @@ class SystemInformationForm extends AbstractType
             null,
             [
                 'constraints' => new Constraints\NotBlank(['message' => 'Please set the application base url']),
-                'data' => $this->request->getSchemeAndHttpHost().$this->request->getBaseUrl(),
             ]
         );
 
-        if (0 === $this->userCount) {
+        if (0 === $options['userCount']) {
             $builder->add(
                 'username',
                 null,
@@ -131,6 +109,15 @@ class SystemInformationForm extends AbstractType
                 ]
             );
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('userCount');
+        $resolver->setAllowedTypes('userCount', ['int']);
     }
 
     /**
