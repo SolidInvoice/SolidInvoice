@@ -13,6 +13,7 @@ namespace CSBill\CoreBundle\Form\Type;
 
 use CSBill\CoreBundle\Security\Encryption;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -56,13 +57,13 @@ class ImageUpload extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'image_upload';
     }

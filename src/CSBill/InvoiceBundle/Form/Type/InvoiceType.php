@@ -12,9 +12,14 @@
 namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
+use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -52,15 +57,15 @@ class InvoiceType extends AbstractType
             ]
         );
 
-        $builder->add('discount', 'percent', ['required' => false]);
-        $builder->add('recurring', 'checkbox', ['required' => false, 'label' => 'Recurring']);
-        $builder->add('recurringInfo', new RecurringInvoiceType());
+        $builder->add('discount', PercentType::class, ['required' => false]);
+        $builder->add('recurring', CheckboxType::class, ['required' => false, 'label' => 'Recurring']);
+        $builder->add('recurringInfo', RecurringInvoiceType::class);
 
         $builder->add(
             'items',
-            'collection',
+            CollectionType::class,
             [
-                'type' => 'invoice_item',
+                'entry_type' => ItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -70,9 +75,9 @@ class InvoiceType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
-        $builder->add('total', 'hidden_money');
-        $builder->add('baseTotal', 'hidden_money');
-        $builder->add('tax', 'hidden_money');
+        $builder->add('total', HiddenMoneyType::class);
+        $builder->add('baseTotal', HiddenMoneyType::class);
+        $builder->add('tax', HiddenMoneyType::class);
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
         $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
@@ -89,7 +94,7 @@ class InvoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'invoice';
     }
@@ -110,7 +115,7 @@ class InvoiceType extends AbstractType
 
                     return 'Default';
                 },
-                'data_class' => 'CSBill\InvoiceBundle\Entity\Invoice',
+                'data_class' => Invoice::class,
             ]
         );
     }

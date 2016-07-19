@@ -12,6 +12,8 @@
 namespace CSBill\PaymentBundle\Form\Methods;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -24,7 +26,7 @@ class KlarnaInvoice extends AbstractType
     {
         $builder->add(
             'secret',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -32,7 +34,7 @@ class KlarnaInvoice extends AbstractType
 
         $builder->add(
             'eid',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -40,7 +42,7 @@ class KlarnaInvoice extends AbstractType
 
         $builder->add(
             'sandbox',
-            'checkbox',
+            CheckboxType::class,
             [
                 'required' => false,
             ]
@@ -50,7 +52,7 @@ class KlarnaInvoice extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'klarna_invoice';
     }

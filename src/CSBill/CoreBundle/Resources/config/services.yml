@@ -35,19 +35,21 @@ services:
             - '@session'
             - '@security.encryption'
         tags:
-            - { name: form.type, alias: image_upload }
+            - { name: form.type }
 
     csbill_core.form.type.select2:
         class: '%csbill_core.form.type.select2.class%'
         tags:
-            - { name: form.type, alias: select2 }
+            - { name: form.type }
 
     csbill_core.security.encryption:
         class: '%csbill_core.security.encryption.class%'
         arguments:
             - '%kernel.secret%'
+
     security.encryption:
         alias: csbill_core.security.encryption
+
     csbill_core.session.request.listener:
         class: '%csbill_core.session.request.listener.class%'
         arguments:

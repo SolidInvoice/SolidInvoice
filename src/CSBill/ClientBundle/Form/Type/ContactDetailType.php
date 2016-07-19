@@ -12,6 +12,7 @@
 namespace CSBill\ClientBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ContactDetailType extends AbstractType
 {
@@ -20,13 +21,13 @@ class ContactDetailType extends AbstractType
      */
     public function getParent()
     {
-        return 'collection';
+        return CollectionType::class;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'contact_details';
     }

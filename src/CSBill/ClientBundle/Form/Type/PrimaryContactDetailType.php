@@ -15,6 +15,7 @@ use CSBill\ClientBundle\Entity\ContactType as Entity;
 use CSBill\ClientBundle\Form\ConstraintBuilder;
 use CSBill\ClientBundle\Form\ViewTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -41,7 +42,7 @@ class PrimaryContactDetailType extends AbstractType
     {
         $itemOptions = $this->item->getOptions();
 
-        $builder->add('id', 'hidden');
+        $builder->add('id', HiddenType::class);
 
         $builder->add(
             'value',
@@ -59,7 +60,7 @@ class PrimaryContactDetailType extends AbstractType
 
         $type = $builder->create(
             'type',
-            'hidden',
+            HiddenType::class,
             [
                 'data' => $this->item->getType(),
             ]
@@ -75,17 +76,13 @@ class PrimaryContactDetailType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => 'CSBill\ClientBundle\Entity\PrimaryContactDetail',
-            ]
-        );
+        $resolver->setDefaults(['data_class' => 'CSBill\ClientBundle\Entity\PrimaryContactDetail']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'primary_contact_details';
     }

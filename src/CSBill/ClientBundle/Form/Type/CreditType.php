@@ -12,6 +12,7 @@
 namespace CSBill\ClientBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,7 +25,7 @@ class CreditType extends AbstractType
     {
         $builder->add(
             'amount',
-            'money',
+            MoneyType::class,
             [
                 'constraints' => new Assert\NotBlank(),
             ]
@@ -34,7 +35,7 @@ class CreditType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'credit';
     }

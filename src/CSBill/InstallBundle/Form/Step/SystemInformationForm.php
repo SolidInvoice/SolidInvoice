@@ -11,7 +11,11 @@
 
 namespace CSBill\InstallBundle\Form\Step;
 
+use CSBill\CoreBundle\Form\Type\Select2;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Intl\Intl;
@@ -50,7 +54,7 @@ class SystemInformationForm extends AbstractType
         if (extension_loaded('intl')) {
             $builder->add(
                 'locale',
-                'select2',
+                Select2::class,
                 [
                     'choices' => Intl::getLocaleBundle()->getLocaleNames(),
                     'constraints' => new Constraints\NotBlank(['message' => 'Please select a locale']),
@@ -72,7 +76,7 @@ class SystemInformationForm extends AbstractType
 
         $builder->add(
             'currency',
-            'select2',
+            Select2::class,
             [
                 'choices' => $currencies,
                 'constraints' => new Constraints\NotBlank(['message' => 'Please select a currency']),
@@ -101,7 +105,7 @@ class SystemInformationForm extends AbstractType
 
             $builder->add(
                 'email_address',
-                'email',
+                EmailType::class,
                 [
                     'constraints' => [
                         new Constraints\NotBlank(['message' => 'Please enter a email']),
@@ -112,9 +116,9 @@ class SystemInformationForm extends AbstractType
 
             $builder->add(
                 'password',
-                'repeated',
+                RepeatedType::class,
                 [
-                    'type' => 'password',
+                    'type' => PasswordType::class,
                     'invalid_message' => 'The password fields must match.',
                     'options' => ['attr' => ['class' => 'password-field']],
                     'required' => true,
@@ -132,7 +136,7 @@ class SystemInformationForm extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'system_information';
     }

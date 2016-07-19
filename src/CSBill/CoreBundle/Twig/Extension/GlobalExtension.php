@@ -16,10 +16,8 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
-use Twig_Extension;
-use Twig_Extension_GlobalsInterface;
 
-class GlobalExtension extends Twig_Extension implements Twig_Extension_GlobalsInterface
+class GlobalExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     /**
      * @var ContainerInterface

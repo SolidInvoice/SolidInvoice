@@ -11,6 +11,7 @@
 
 namespace CSBill\UserBundle\Form;
 
+use FOS\UserBundle\Form\Type\ProfileFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -30,13 +31,13 @@ class ProfileForm extends AbstractType
      */
     public function getParent()
     {
-        return 'fos_user_profile';
+        return ProfileFormType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'profile_form';
     }

@@ -12,6 +12,7 @@
 namespace CSBill\PaymentBundle\Form\Methods;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -24,7 +25,7 @@ class KlarnaCheckout extends AbstractType
     {
         $builder->add(
             'merchant_id',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -32,7 +33,7 @@ class KlarnaCheckout extends AbstractType
 
         $builder->add(
             'secret',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -42,7 +43,7 @@ class KlarnaCheckout extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'klarna_checkout';
     }

@@ -64,7 +64,7 @@ class Contact extends AbstractType
 
         $builder->add(
             'additionalDetails',
-            new ContactDetailType(),
+            ContactDetailType::class,
             [
                 'type' => new ContactDetail($this->types),
                 'allow_add' => true,
@@ -108,7 +108,7 @@ class Contact extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'contact';
     }

@@ -11,7 +11,10 @@
 
 namespace CSBill\InstallBundle\Form\Type;
 
+use CSBill\CoreBundle\Form\Type\Select2;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -30,14 +33,12 @@ class EmailSettingsType extends AbstractType
 
         $builder->add(
             'transport',
-            'select2',
+            Select2::class,
             [
                 'choices' => $transports,
                 'choices_as_values' => false,
                 'placeholder' => 'Choose Mail Transport',
-                'constraints' => [
-                     new Constraints\NotBlank(),
-                ],
+                'constraints' => new Constraints\NotBlank(),
             ]
         );
 
@@ -45,26 +46,22 @@ class EmailSettingsType extends AbstractType
             'host',
             null,
             [
-                'constraints' => [
-                    new Constraints\NotBlank(['groups' => 'smtp']),
-                ],
+                'constraints' => new Constraints\NotBlank(['groups' => 'smtp']),
             ]
         );
 
         $builder->add(
             'port',
-            'integer',
+            IntegerType::class,
             [
-                'constraints' => [
-                    new Constraints\Type(['groups' => ['smtp'], 'type' => 'integer']),
-                ],
+                'constraints' => new Constraints\Type(['groups' => ['smtp'], 'type' => 'integer']),
                 'required' => false,
             ]
         );
 
         $builder->add(
             'encryption',
-            'select2',
+            Select2::class,
             [
                 'placeholder' => 'None',
                 'choices' => [
@@ -80,20 +77,16 @@ class EmailSettingsType extends AbstractType
             'user',
             null,
             [
-                'constraints' => [
-                    new Constraints\NotBlank(['groups' => 'gmail']),
-                ],
+                'constraints' => new Constraints\NotBlank(['groups' => 'gmail']),
                 'required' => false,
             ]
         );
 
         $builder->add(
             'password',
-            'password',
+            PasswordType::class,
             [
-                'constraints' => [
-                    new Constraints\NotBlank(['groups' => 'gmail']),
-                ],
+                'constraints' => new Constraints\NotBlank(['groups' => 'gmail']),
                 'required' => false,
             ]
         );
@@ -146,7 +139,7 @@ class EmailSettingsType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'email_settings';
     }

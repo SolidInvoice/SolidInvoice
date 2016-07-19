@@ -14,16 +14,20 @@ namespace CSBill\PaymentBundle\Action\PaypalExpress;
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Persistence\ObjectManager;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 
 /**
  * @deprecated This action is not used anymore and will be removed in a future version
  */
-class NotifyPaymentAction extends GatewayAwareAction
+class NotifyPaymentAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * @var ObjectManager
      */

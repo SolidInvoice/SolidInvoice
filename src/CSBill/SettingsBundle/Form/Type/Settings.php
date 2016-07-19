@@ -13,6 +13,7 @@ namespace CSBill\SettingsBundle\Form\Type;
 
 use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -66,7 +67,7 @@ class Settings extends AbstractType
         $type = $setting->getType();
 
         if ('radio' === $type) {
-            $type = 'choice';
+            $type = ChoiceType::class;
             $options['expanded'] = true;
             $options['multiple'] = false;
         }
@@ -84,7 +85,7 @@ class Settings extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'settings';
     }

@@ -12,6 +12,7 @@
 namespace CSBill\CronBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class CronType extends AbstractType
 {
@@ -20,13 +21,13 @@ class CronType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
+        return HiddenType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'cron';
     }

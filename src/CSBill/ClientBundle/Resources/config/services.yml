@@ -18,7 +18,7 @@ services:
         arguments:
             - '@csbill_client.contact_type.values'
         tags:
-            - { name: form.type, alias: contact }
+            - { name: form.type }
 
     csbill_client.contact_types.twig.extension:
         class: '%csbill_client.contact_types.twig.extension.class%'

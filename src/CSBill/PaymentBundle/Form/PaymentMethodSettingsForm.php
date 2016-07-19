@@ -65,11 +65,7 @@ class PaymentMethodSettingsForm extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(
-            [
-                'settings',
-            ]
-        );
+        $resolver->setRequired(['settings']);
     }
 
     /**
@@ -77,7 +73,7 @@ class PaymentMethodSettingsForm extends AbstractType
      *
      * @return string The name of this type
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'method_settings';
     }

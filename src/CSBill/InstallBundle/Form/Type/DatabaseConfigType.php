@@ -11,7 +11,10 @@
 
 namespace CSBill\InstallBundle\Form\Type;
 
+use CSBill\CoreBundle\Form\Type\Select2;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
@@ -28,7 +31,7 @@ class DatabaseConfigType extends AbstractType
 
         $builder->add(
             'driver',
-            'select2',
+            Select2::class,
             [
                 'help' => 'Only MySQL is supported at the moment',
                 'choices' => $drivers,
@@ -52,11 +55,9 @@ class DatabaseConfigType extends AbstractType
 
         $builder->add(
             'port',
-            'integer',
+            IntegerType::class,
             [
-                'constraints' => [
-                    new Constraints\Type(['type' => 'integer']),
-                ],
+                'constraints' => new Constraints\Type(['type' => 'integer']),
                 'required' => false,
             ]
         );
@@ -65,15 +66,13 @@ class DatabaseConfigType extends AbstractType
             'user',
             null,
             [
-                'constraints' => [
-                    new Constraints\NotBlank(),
-                ],
+                'constraints' => new Constraints\NotBlank(),
             ]
         );
 
         $builder->add(
             'password',
-            'password',
+            PasswordType::class,
             [
                 'required' => false,
             ]
@@ -84,9 +83,7 @@ class DatabaseConfigType extends AbstractType
             null,
             [
                 'label' => 'Database Name',
-                'constraints' => [
-                    new Constraints\NotBlank(),
-                ],
+                'constraints' => new Constraints\NotBlank(),
                 'required' => false,
             ]
         );
@@ -97,17 +94,13 @@ class DatabaseConfigType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(
-            [
-                'drivers',
-            ]
-        );
+        $resolver->setRequired(['drivers']);
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'database_config';
     }

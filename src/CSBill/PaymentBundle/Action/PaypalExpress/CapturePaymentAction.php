@@ -13,17 +13,21 @@ namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use CSBill\PaymentBundle\Entity\Payment;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 
 /**
  * @deprecated This action is not used anymore and will be removed in a future version
  */
-class CapturePaymentAction extends GatewayAwareAction
+class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * @var GenericTokenFactoryInterface
      */

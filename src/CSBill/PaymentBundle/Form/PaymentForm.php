@@ -12,9 +12,11 @@
 namespace CSBill\PaymentBundle\Form;
 
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
-use Doctrine\ORM\Query\Expr;
 use Money\Money;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,7 +31,7 @@ class PaymentForm extends AbstractType
     {
         $builder->add(
             'payment_method',
-            'entity',
+            EntityType::class,
             [
                 'class' => 'CSBillPaymentBundle:PaymentMethod',
                 'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
@@ -63,7 +65,7 @@ class PaymentForm extends AbstractType
 
         $builder->add(
             'amount',
-            'money',
+            MoneyType::class,
             [
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -80,7 +82,7 @@ class PaymentForm extends AbstractType
         );
 
         if (null !== $options['user']) {
-            $builder->add('capture_online', 'checkbox', ['data' => true]);
+            $builder->add('capture_online', CheckboxType::class, ['data' => true]);
         }
     }
 
@@ -95,7 +97,7 @@ class PaymentForm extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'payment';
     }
