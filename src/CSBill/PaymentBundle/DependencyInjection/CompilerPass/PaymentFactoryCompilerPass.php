@@ -11,8 +11,10 @@
 
 namespace CSBill\PaymentBundle\DependencyInjection\CompilerPass;
 
+use CSBill\PaymentBundle\Factory\PaymentFactories;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class PaymentFactoryCompilerPass implements CompilerPassInterface
 {
@@ -21,15 +23,19 @@ class PaymentFactoryCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $payum = $container->getDefinition('payum.static_registry');
+        $definition = new Definition(PaymentFactories::class);
+
+        $builder = $container->getDefinition('payum.builder');
 
         $gatewaysIds = [];
-        foreach ($container->findTaggedServiceIds('payum.gateway') as $gatewaysId => $tagAttributes) {
-            foreach ($tagAttributes as $attributes) {
-                $gatewaysIds[$attributes['gateway']] = $attributes['factory'];
+        foreach ($builder->getMethodCalls() as $call) {
+            if ($call[0] === 'addGateway') {
+                $gatewaysIds[$call[1][0]] = $call[1][1]['factory'];
             }
         }
 
-        $payum->addMethodCall('setGatewayFactories', [$gatewaysIds]);
+        $definition->addMethodCall('setGatewayFactories', [$gatewaysIds]);
+
+        $container->setDefinition('payum.factories', $definition);
     }
 }

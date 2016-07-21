@@ -14,4 +14,4 @@ services:
     csbiill.user.profile.form.type:
         class: CSBill\UserBundle\Form\ProfileForm
         tags:
-            - { name: form.type, alias: profile_form }
+            - { name: form.type }
