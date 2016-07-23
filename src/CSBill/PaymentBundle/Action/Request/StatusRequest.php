@@ -176,16 +176,14 @@ class StatusRequest extends BaseGetStatus
         $this->status = Status::STATUS_REFUNDED;
     }
 
-    /**
-     * @return void
-     */
+
     public function markPayedout()
     {
         // noop
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPayedout()
     {
