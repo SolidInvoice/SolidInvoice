@@ -1,4 +1,14 @@
 services:
+    payum.http_api.guzzle:
+        class: GuzzleHttp\Client
+
+    payum.http_api:
+        class: Payum\Core\Bridge\Guzzle\HttpClient
+        arguments: ['@payum.http_api.guzzle']
+
+    payum.http_api.message_factory:
+        class: Http\Message\MessageFactory\GuzzleMessageFactory
+
     csbill.payment.payum.stripe_checkout_api:
         class: Payum\Stripe\Keys
         arguments:
@@ -7,18 +17,20 @@ services:
     csbill.payment.payum.stripe_js_api:
         class: Payum\Stripe\Keys
         arguments:
-            - '@=service(''csbill.payment.method.options'').get(''stripe_js'')[''publishable_key'']'
+            - '@=service(''csbill.payment.method.options'').get(''stripe_js'')[''publiGuzzleHttp\ClientInterfaceshable_key'']'
             - '@=service(''csbill.payment.method.options'').get(''stripe_js'')[''secret_key'']'
-    #csbill.payment.payum.paypal_express_checkout_api:
-    #    class: Payum\Paypal\ExpressCheckout\Nvp\Api
-    #    arguments:
-    #        - '@=service(''csbill.payment.method.options'').get(''paypal_express_checkout'')'
-    #        - '@httplug.client'
-    #csbill.payment.payum.paypal_pro_checkout_api:
-    #    class: Payum\Paypal\ProCheckout\Nvp\Api
-    #    arguments:
-    #        - '@=service(''csbill.payment.method.options'').get(''paypal_pro_checkout'')'
-    #        - '@http'
+    csbill.payment.payum.paypal_express_checkout_api:
+        class: Payum\Paypal\ExpressCheckout\Nvp\Api
+        arguments:
+            - '@=service(''csbill.payment.method.options'').get(''paypal_express_checkout'')'
+            - '@payum.http_api'
+            - '@payum.http_api.message_factory'
+    csbill.payment.payum.paypal_pro_checkout_api:
+        class: Payum\Paypal\ProCheckout\Nvp\Api
+        arguments:
+            - '@=service(''csbill.payment.method.options'').get(''paypal_pro_checkout'')'
+            - '@payum.http_api'
+            - '@payum.http_api.message_factory'
     csbill.payment.payum.klarna_invoice_api:
         class: Payum\Klarna\Invoice\Config
         properties:
@@ -30,16 +42,18 @@ services:
         properties:
             merchantId: '@=service(''csbill.payment.method.options'').get(''klarna_checkout'')[''merchant_id'']'
             secret: '@=service(''csbill.payment.method.options'').get(''klarna_checkout'')[''secret'']'
-    #csbill.payment.payum.be2bill_offsite_api:
-    #    class: Payum\Be2Bill\Api
-    #    arguments:
-    #        - '@=service(''csbill.payment.method.options'').get(''be2bill_offsite'')'
-    #        - '@payum.http_client'
-    #csbill.payment.payum.be2bill_direct_api:
-    #    class: Payum\Be2Bill\Api
-    #    arguments:
-    #        - '@=service(''csbill.payment.method.options'').get(''be2bill_direct'')'
-    #        - '@payum.http_client'
+    csbill.payment.payum.be2bill_offsite_api:
+        class: Payum\Be2Bill\Api
+        arguments:
+            - '@=service(''csbill.payment.method.options'').get(''be2bill_offsite'')'
+            - '@payum.http_api'
+            - '@payum.http_api.message_factory'
+    csbill.payment.payum.be2bill_direct_api:
+        class: Payum\Be2Bill\Api
+        arguments:
+            - '@=service(''csbill.payment.method.options'').get(''be2bill_direct'')'
+            - '@payum.http_api'
+            - '@payum.http_api.message_factory'
     csbill.payment.payum.authorize_net_aim_api:
         class: Payum\AuthorizeNet\Aim\Bridge\AuthorizeNet\AuthorizeNetAIM
         arguments:
@@ -51,11 +65,11 @@ services:
     csbill.payment.payum.payex.soap.client_factory:
         class: Payum\Payex\Api\SoapClientFactory
         public: false
-    #csbill.payment.payum.payex_api:
-    #    class: Payum\Paypal\ExpressCheckout\Nvp\Api
-    #    arguments:
-    #        - '@csbill.payment.payum.payex.soap.client_factory'
-    #        - '@=service(''csbill.payment.method.options'').get(''payex'')'
+    csbill.payment.payum.payex_api:
+        class: Payum\Payex\Api\OrderApi
+        arguments:
+            - '@csbill.payment.payum.payex.soap.client_factory'
+            - '@=service(''csbill.payment.method.options'').get(''payex'')'
     csbill.payment.payum.authorize_net_sim_api:
         class: Omnipay\AuthorizeNet\SIMGateway
         calls:
