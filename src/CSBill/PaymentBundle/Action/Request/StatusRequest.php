@@ -37,7 +37,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markSuspended()
     {
-        $this->status = STATUS::STATUS_SUSPENDED;
+        $this->status = Status::STATUS_SUSPENDED;
     }
 
     /**
@@ -45,7 +45,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isSuspended()
     {
-        return $this->status === STATUS::STATUS_SUSPENDED;
+        return $this->status === Status::STATUS_SUSPENDED;
     }
 
     /**
@@ -53,7 +53,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markExpired()
     {
-        $this->status = STATUS::STATUS_EXPIRED;
+        $this->status = Status::STATUS_EXPIRED;
     }
 
     /**
@@ -61,7 +61,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isExpired()
     {
-        return $this->status === STATUS::STATUS_EXPIRED;
+        return $this->status === Status::STATUS_EXPIRED;
     }
 
     /**
@@ -69,7 +69,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markCanceled()
     {
-        $this->status = STATUS::STATUS_CANCELLED;
+        $this->status = Status::STATUS_CANCELLED;
     }
 
     /**
@@ -77,7 +77,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isCanceled()
     {
-        return $this->status === STATUS::STATUS_CANCELLED;
+        return $this->status === Status::STATUS_CANCELLED;
     }
 
     /**
@@ -85,7 +85,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markPending()
     {
-        $this->status = STATUS::STATUS_PENDING;
+        $this->status = Status::STATUS_PENDING;
     }
 
     /**
@@ -93,7 +93,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isPending()
     {
-        return $this->status === STATUS::STATUS_PENDING;
+        return $this->status === Status::STATUS_PENDING;
     }
 
     /**
@@ -101,7 +101,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markFailed()
     {
-        $this->status = STATUS::STATUS_FAILED;
+        $this->status = Status::STATUS_FAILED;
     }
 
     /**
@@ -109,7 +109,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isFailed()
     {
-        return $this->status === STATUS::STATUS_FAILED;
+        return $this->status === Status::STATUS_FAILED;
     }
 
     /**
@@ -117,7 +117,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markUnknown()
     {
-        $this->status = STATUS::STATUS_UNKNOWN;
+        $this->status = Status::STATUS_UNKNOWN;
     }
 
     /**
@@ -125,7 +125,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isUnknown()
     {
-        return $this->status === STATUS::STATUS_UNKNOWN;
+        return $this->status === Status::STATUS_UNKNOWN;
     }
 
     /**
@@ -133,7 +133,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markCaptured()
     {
-        $this->status = STATUS::STATUS_CAPTURED;
+        $this->status = Status::STATUS_CAPTURED;
     }
 
     /**
@@ -141,7 +141,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isCaptured()
     {
-        return $this->status === STATUS::STATUS_CAPTURED;
+        return $this->status === Status::STATUS_CAPTURED;
     }
 
     /**
@@ -149,7 +149,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isAuthorized()
     {
-        return $this->status === STATUS::STATUS_AUTHORIZED;
+        return $this->status === Status::STATUS_AUTHORIZED;
     }
 
     /**
@@ -157,7 +157,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function markAuthorized()
     {
-        $this->status = STATUS::STATUS_AUTHORIZED;
+        $this->status = Status::STATUS_AUTHORIZED;
     }
 
     /**
@@ -165,7 +165,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isRefunded()
     {
-        return $this->status === STATUS::STATUS_REFUNDED;
+        return $this->status === Status::STATUS_REFUNDED;
     }
 
     /**
@@ -173,6 +173,22 @@ class StatusRequest extends BaseGetStatus
      */
     public function markRefunded()
     {
-        $this->status = STATUS::STATUS_REFUNDED;
+        $this->status = Status::STATUS_REFUNDED;
+    }
+
+    /**
+     * @return void
+     */
+    public function markPayedout()
+    {
+        // noop
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPayedout()
+    {
+        return false;
     }
 }
