@@ -74,7 +74,7 @@ class Settings extends AbstractType
         $type = $setting->getType();
 
         switch (strtolower($type)) {
-	    case 'select2':
+            case 'select2':
                 $type = Select2::class;
                 $settingOptions = $setting->getOptions();
                 $options['choices'] = array_flip($settingOptions);
