@@ -145,3 +145,4 @@ oro_require_js:
         waitSeconds: 0
         enforceDefine: false
         scriptType: text/javascript
+    js_engine: node

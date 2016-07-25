@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e725cc99fd10b29ecfa9d0d2f396a875",
-    "content-hash": "934bbce59b3c2938c76797203db126c6",
+    "hash": "fb1e0b7a24fd689736456fee76a7ed25",
+    "content-hash": "7f168224733f53fa1e22cdbcff2995fb",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -4573,22 +4573,22 @@
         },
         {
             "name": "oro/requirejs-bundle",
-            "version": "1.4.0",
+            "version": "dev-master",
             "target-dir": "Oro/Bundle/RequireJSBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pierredup/RequireJSBundle.git",
-                "reference": "110a66f2210f5e240d252f549fa0abda3ae1cb87"
+                "url": "https://github.com/CSBill/RequireJSBundle.git",
+                "reference": "fad310f5c487654a70fa8eb13e10ea2b779d5895"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pierredup/RequireJSBundle/zipball/110a66f2210f5e240d252f549fa0abda3ae1cb87",
-                "reference": "110a66f2210f5e240d252f549fa0abda3ae1cb87",
+                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/fad310f5c487654a70fa8eb13e10ea2b779d5895",
+                "reference": "fad310f5c487654a70fa8eb13e10ea2b779d5895",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "symfony/symfony": "^2.3"
+                "symfony/symfony": "^2.7|^3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -4611,9 +4611,10 @@
                 "RequireJS"
             ],
             "support": {
-                "source": "https://github.com/pierredup/RequireJSBundle/tree/master"
+                "source": "https://github.com/CSBill/RequireJSBundle/tree/master",
+                "issues": "https://github.com/CSBill/RequireJSBundle/issues"
             },
-            "time": "2015-12-10 10:10:24"
+            "time": "2016-07-25 10:49:52"
         },
         {
             "name": "oyejorge/less.php",
@@ -10334,7 +10335,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "oro/requirejs-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
