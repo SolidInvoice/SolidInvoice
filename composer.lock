@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fb1e0b7a24fd689736456fee76a7ed25",
-    "content-hash": "7f168224733f53fa1e22cdbcff2995fb",
+    "hash": "f646faf3a3ee891f1fe46160c503bcaf",
+    "content-hash": "413c290ba4d2bdf7f2408cbaaa672665",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -4578,12 +4578,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CSBill/RequireJSBundle.git",
-                "reference": "fad310f5c487654a70fa8eb13e10ea2b779d5895"
+                "reference": "2f0b4e081691d9045f7a8d7889fbadf07c6c7b51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/fad310f5c487654a70fa8eb13e10ea2b779d5895",
-                "reference": "fad310f5c487654a70fa8eb13e10ea2b779d5895",
+                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/2f0b4e081691d9045f7a8d7889fbadf07c6c7b51",
+                "reference": "2f0b4e081691d9045f7a8d7889fbadf07c6c7b51",
                 "shasum": ""
             },
             "require": {
@@ -4614,7 +4614,7 @@
                 "source": "https://github.com/CSBill/RequireJSBundle/tree/master",
                 "issues": "https://github.com/CSBill/RequireJSBundle/issues"
             },
-            "time": "2016-07-25 10:49:52"
+            "time": "2016-07-25 13:56:19"
         },
         {
             "name": "oyejorge/less.php",
