@@ -13,17 +13,17 @@ namespace CSBill\InstallBundle\Process\Step;
 
 use Doctrine\DBAL\DriverManager;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
+use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class InstallStep extends ControllerStep
+class InstallStep extends AbstractControllerStep
 {
     /**
      * {@inheritdoc}
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        $request = $this->getRequest();
+        $request = $context->getRequest();
 
         if ($request->query->has('action')) {
             $result = [];

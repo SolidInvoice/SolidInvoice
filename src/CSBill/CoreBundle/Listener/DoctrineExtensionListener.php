@@ -11,12 +11,15 @@
 
 namespace CSBill\CoreBundle\Listener;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-class DoctrineExtensionListener extends ContainerAware
+class DoctrineExtensionListener implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @param GetResponseEvent $event
      */

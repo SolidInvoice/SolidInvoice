@@ -25,8 +25,6 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new JMS\AopBundle\JMSAopBundle(),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -70,6 +68,30 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
         }
 
         return $bundles;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRootDir()
+    {
+        return __DIR__;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
     }
 
     /**

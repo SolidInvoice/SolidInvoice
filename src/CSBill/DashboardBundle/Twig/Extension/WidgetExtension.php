@@ -17,11 +17,6 @@ use CSBill\DashboardBundle\Widgets\WidgetInterface;
 class WidgetExtension extends \Twig_Extension
 {
     /**
-     * @var \Twig_Environment
-     */
-    private $environment;
-
-    /**
      * @var WidgetFactory
      */
     private $widgetFactory;
@@ -40,28 +35,19 @@ class WidgetExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('render_dashboard_widget', [$this, 'renderDashboardWidget'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('render_dashboard_widget', [$this, 'renderDashboardWidget'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initRuntime(\Twig_Environment $environment)
-    {
-        $this->environment = $environment;
-
-        parent::initRuntime($environment);
     }
 
     /**
      * Renders a dashboard widget at a specific location.
      *
-     * @param string $location
+     * @param \Twig_Environment $environment
+     * @param string            $location
      *
      * @return string
      */
-    public function renderDashboardWidget($location)
+    public function renderDashboardWidget(\Twig_Environment $environment, $location)
     {
         /** @var WidgetInterface[] $widgets */
         $widgets = $this->widgetFactory->get($location);
@@ -69,7 +55,7 @@ class WidgetExtension extends \Twig_Extension
         $content = '';
 
         foreach ($widgets as $widget) {
-            $content .= $this->environment->render($widget->getTemplate(), $widget->getData());
+            $content .= $environment->render($widget->getTemplate(), $widget->getData());
         }
 
         return $content;

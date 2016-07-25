@@ -7,34 +7,55 @@ finite_finite:
             new:
                 type: initial
             draft:
-                properties: {editable: true, sendable: true}
+                properties:
+                    editable: true
+                    sendable: true
             pending:
-                properties: {editable: true, sendable: true}
-            cancelled: ~
+                properties:
+                    editable: true
+                    sendable: true
+            cancelled: null
             archived:
                 type: final
             accepted:
                 type: final
-            declined: ~
+            declined: null
         transitions:
             new:
-                from: [new, cancelled]
+                from:
+                    - new
+                    - cancelled
                 to: draft
             send:
-                from: [new, draft]
+                from:
+                    - new
+                    - draft
                 to: pending
             cancel:
-                from: [draft, pending]
+                from:
+                    - draft
+                    - pending
                 to: cancelled
             decline:
-                from: [new, draft, pending]
+                from:
+                    - new
+                    - draft
+                    - pending
                 to: declined
             accept:
-                from: [pending]
+                from:
+                    - pending
                 to: accepted
             reopen:
-                from: [cancelled, declined]
+                from:
+                    - cancelled
+                    - declined
                 to: draft
             archive:
-                from: [new, draft, cancelled, accepted, declined]
+                from:
+                    - new
+                    - draft
+                    - cancelled
+                    - accepted
+                    - declined
                 to: archived

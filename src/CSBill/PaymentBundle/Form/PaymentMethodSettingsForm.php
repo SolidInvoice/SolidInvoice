@@ -47,7 +47,6 @@ class PaymentMethodSettingsForm extends AbstractType
 
             case 'choice':
                 $options['choices'] = $settings['options'];
-                $options['choices_as_values'] = false;
                 $options['placeholder'] = 'Please Choose';
                 $options['attr'] = ['class' => 'select2'];
                 break;
@@ -65,11 +64,7 @@ class PaymentMethodSettingsForm extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(
-            [
-                'settings',
-            ]
-        );
+        $resolver->setRequired(['settings']);
     }
 
     /**
@@ -77,7 +72,7 @@ class PaymentMethodSettingsForm extends AbstractType
      *
      * @return string The name of this type
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'method_settings';
     }

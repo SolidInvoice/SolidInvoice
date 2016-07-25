@@ -1,7 +1,7 @@
 datagrid:
     payment_grid:
         source:
-            repository: CSBillPaymentBundle:Payment
+            repository: 'CSBillPaymentBundle:Payment'
             method: getGridQuery
         columns:
             id:
@@ -59,13 +59,13 @@ datagrid:
             fields:
                 - totalAmount
                 - currencyCode
-                - 'm.name'
+                - m.name
                 - status
                 - message
-                - 'c.name'
+                - c.name
     invoice_payment_grid:
         source:
-            repository: CSBillPaymentBundle:Payment
+            repository: 'CSBillPaymentBundle:Payment'
             method: getGridQuery
         columns:
             status:
@@ -103,12 +103,12 @@ datagrid:
             fields:
                 - totalAmount
                 - currencyCode
-                - 'm.name'
+                - m.name
                 - status
                 - message
     client_payment_grid:
         source:
-            repository: CSBillPaymentBundle:Payment
+            repository: 'CSBillPaymentBundle:Payment'
             method: getGridQuery
         columns:
             invoice:

@@ -4,23 +4,22 @@ parameters:
     csbill_menu.provider.class: CSBill\MenuBundle\Provider
     csbill_menu_storage.class: CSBill\MenuBundle\Storage\MenuStorage
     csbill_menu.factory.class: CSBill\MenuBundle\Factory
-
 services:
     csbill_menu.factory:
         class: '%csbill_menu.factory.class%'
-        arguments: ['@router']
-
+        arguments:
+            - '@router'
     csbill_menu.renderer:
         class: '%csbill_menu.renderer.class%'
-        arguments: ['@service_container', '@csbill_menu.factory']
-
+        arguments:
+            - '@service_container'
+            - '@csbill_menu.factory'
     csbill_menu.provider:
         class: '%csbill_menu.provider.class%'
-        arguments: ['@csbill_menu.storage']
-
+        arguments:
+            - '@csbill_menu.storage'
     csbill_menu.storage:
         class: '%csbill_menu_storage.class%'
-
     csbill_menu.twig.extension:
         class: '%csbill_menu.twig.class%'
         calls:

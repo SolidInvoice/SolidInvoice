@@ -1,38 +1,16 @@
 parameters:
     csbill_payment.menu.top.class: CSBill\PaymentBundle\Menu\Builder
-    payum.class: CSBill\PaymentBundle\Payum
-
 services:
-
-    payum.static_registry:
-        class: CSBill\PaymentBundle\Payum
-        arguments: [[], [], []]
-        calls:
-            - [setContainer, [@service_container]]
-
     csbill_payment.menu.top:
-        class: %csbill_payment.menu.top.class%
+        class: '%csbill_payment.menu.top.class%'
         tags:
             - { name: cs_core.menu, menu: top_right, method: topRightMenu }
             - { name: cs_core.menu, menu: top, method: topMenu, priority: -1 }
 
-    #csbill.payment.payum.paypal_express.action.capture_payment_action:
-        #class: CSBill\PaymentBundle\Action\PaypalExpress\CapturePaymentAction
-        #arguments: [@payum.security.token_factory, @csbill.money.formatter]
-        #tags:
-            #- { name: payum.action, factory: paypal_express_checkout_nvp }
-
-    #csbill.payment.payum.paypal_express.action.notify_payment_action:
-        #class: CSBill\PaymentBundle\Action\PaypalExpress\NotifyPaymentAction
-        #arguments: [@doctrine]
-        #tags:
-            #- { name: payum.action, factory: paypal_express_checkout_nvp }
-
     csbill.payment.payum.paypal_express.action.payment_status_action:
         class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
-        arguments: [@payum.security.token_factory, %currency%]
         tags:
-            - { name: payum.action, factory: paypal_express_checkout_nvp, prepend: true }
+            - { name: payum.action, factory: paypal_express_checkout, prepend: true }
 
     csbill.payment.payum.offline.action.status_action:
         class: CSBill\PaymentBundle\Action\Offline\StatusAction
@@ -41,28 +19,37 @@ services:
 
     csbill.payment.payum.extension.update_payment_details_extension:
         class: CSBill\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
-        arguments: [@doctrine]
+        arguments:
+            - '@doctrine'
         tags:
             - { name: payum.extension, all: true }
 
     csbill.payment.method.options:
         class: CSBill\PaymentBundle\Manager\PaymentSettingsManager
-        arguments: [@doctrine]
-
+        arguments:
+            - '@doctrine'
     csbill.payment.twig_extension:
         class: CSBill\PaymentBundle\Twig\PaymentExtension
-        arguments: [@doctrine]
+        arguments:
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 
     csbill.payment.listener.payment_complete_listener:
         class: CSBill\PaymentBundle\Listener\PaymentCompleteListener
-        arguments: [@invoice.manager, @doctrine, @session, @translator, @router, @currency]
+        arguments:
+            - '@invoice.manager'
+            - '@doctrine'
+            - '@session'
+            - '@translator'
+            - '@router'
+            - '@currency'
         tags:
             - { name: kernel.event_listener, event: payment.complete, method: onPaymentComplete }
 
     csbill.payment.notification.listener.payment_listener:
         class: CSBill\PaymentBundle\Listener\PaymentReceivedListener
-        arguments: [@notification.manager]
+        arguments:
+            - '@notification.manager'
         tags:
             - { name: kernel.event_listener, event: payment.complete, method: onPaymentCapture }

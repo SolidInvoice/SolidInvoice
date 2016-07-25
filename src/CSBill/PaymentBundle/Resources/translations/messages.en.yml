@@ -1,52 +1,52 @@
 payment:
     create:
         cancel: Cancel
-        force: Force payment status (Optional)
+        force: 'Force payment status (Optional)'
         discount: Discount
-        base_total: Base Total
+        base_total: 'Base Total'
         total: Total
-        tite: "Payment for invoice #%id%"
-        balance: Outstanding balance
-        credit: Credit:
+        tite: 'Payment for invoice #%id%'
+        balance: 'Outstanding balance'
+        credit: 'Credit:'
         exception:
-            not_enough_credit: Not have enough credit available
-            amount_exceeds_balance: Amount captured exceeds outstanding balance
+            not_enough_credit: 'Not have enough credit available'
+            amount_exceeds_balance: 'Amount captured exceeds outstanding balance'
     flash:
         status:
-            success: Payment has been completed
-            cancelled: Payment has been cancelled
-            pending: Payment is pending
-            expired: Payment has expired
-            failed: Payment failed: %message%
-            new: New payment created
-            suspended: Payment has been suspended
-            unknown: An unknown error occurred
-            authorized: Payment has been authorized
-            refunded: Payment has been refunded
+            success: 'Payment has been completed'
+            cancelled: 'Payment has been cancelled'
+            pending: 'Payment is pending'
+            expired: 'Payment has expired'
+            failed: 'Payment failed: %message%'
+            new: 'New payment created'
+            suspended: 'Payment has been suspended'
+            unknown: 'An unknown error occurred'
+            authorized: 'Payment has been authorized'
+            refunded: 'Payment has been refunded'
     form:
         help:
-            internal: "Selecting this option, will make this payment option only available for internal use."
+            internal: 'Selecting this option, will make this payment option only available for internal use.'
         label:
-            internal: Internal use only
+            internal: 'Internal use only'
     action:
-        pay: Pay Now
+        pay: 'Pay Now'
     list:
         title: Payments
-        status_legend: Payment Status Legend
+        status_legend: 'Payment Status Legend'
         grid:
             invoice: Invoice
-            payment_id: Payment Id
-            method: Payment Method
+            payment_id: 'Payment Id'
+            method: 'Payment Method'
             amount: Amount
             currency: Currency
-            payment_date: Payment Date
+            payment_date: 'Payment Date'
             status: Status
     method:
-        add: Add Payment Method
-        added: Payment Method Successfully Added!
-        updated: Payment Method Successfully Updated!
+        add: 'Add Payment Method'
+        added: 'Payment Method Successfully Added!'
+        updated: 'Payment Method Successfully Updated!'
     methods:
-        title: Payment Methods
+        title: 'Payment Methods'
     menu:
         main: Payments
-        methods: Payment Methods
+        methods: 'Payment Methods'

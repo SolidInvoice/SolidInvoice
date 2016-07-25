@@ -16,9 +16,8 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
-use Twig_Extension;
 
-class GlobalExtension extends Twig_Extension
+class GlobalExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     /**
      * @var ContainerInterface
@@ -50,6 +49,32 @@ class GlobalExtension extends Twig_Extension
             'app_name' => $appName,
             'settings' => $this->container->get('settings')->getSettings(),
         ];
+    }
+
+    /**
+     * Get the url query.
+     *
+     * @throws InactiveScopeException
+     *
+     * @return array
+     */
+    protected function getQuery()
+    {
+        try {
+            $request = $this->container->get('request');
+
+            $params = array_merge($request->query->all(), $request->attributes->all());
+
+            foreach (array_keys($params) as $key) {
+                if (substr($key, 0, 1) == '_') {
+                    unset($params[$key]);
+                }
+            }
+
+            return $params;
+        } catch (InactiveScopeException $e) {
+            return [];
+        }
     }
 
     /**
@@ -132,31 +157,5 @@ class GlobalExtension extends Twig_Extension
     public function getName()
     {
         return 'csbill_core.twig.globals';
-    }
-
-    /**
-     * Get the url query.
-     *
-     * @throws InactiveScopeException
-     *
-     * @return array
-     */
-    protected function getQuery()
-    {
-        try {
-            $request = $this->container->get('request');
-
-            $params = array_merge($request->query->all(), $request->attributes->all());
-
-            foreach (array_keys($params) as $key) {
-                if (substr($key, 0, 1) == '_') {
-                    unset($params[$key]);
-                }
-            }
-
-            return $params;
-        } catch (InactiveScopeException $e) {
-            return [];
-        }
     }
 }

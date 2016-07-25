@@ -14,6 +14,7 @@ namespace CSBill\PaymentBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Form\PaymentMethodForm;
+use Doctrine\Common\Util\Inflector;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,16 +41,15 @@ class AjaxController extends BaseController
 
         $originalSettings = $paymentMethod->getSettings();
 
-        /** @var \CSBill\PaymentBundle\Payum $payum */
-        $payum = $this->get('payum');
-        $registry = $this->get('form.registry');
+        $formClass = 'CSBill\\PaymentBundle\\Form\\Methods\\'.Inflector::classify($paymentMethod->getPaymentMethod());
+        $formType = class_exists($formClass) ? $formClass : null;
 
         $form = $this->createForm(
-            new PaymentMethodForm(),
+            PaymentMethodForm::class,
             $paymentMethod,
             [
-                'settings' => $registry->hasType($paymentMethod->getPaymentMethod()) ? $paymentMethod->getPaymentMethod() : null,
-                'internal' => $payum->isOffline($paymentMethod->getPaymentMethod()),
+                'settings' => $formType,
+                'internal' => $this->get('payum.factories')->isOffline($paymentMethod->getPaymentMethod()),
                 'action' => $this->generateUrl('_payment_method_settings', ['method' => $methodName]),
             ]
         );

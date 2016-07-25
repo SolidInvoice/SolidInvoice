@@ -13,6 +13,8 @@ namespace CSBill\ClientBundle\Form;
 
 use CSBill\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ContactDetail extends AbstractType
@@ -44,17 +46,17 @@ class ContactDetail extends AbstractType
 
         $builder->add(
             $builder
-                ->create('type', 'hidden', $options)
+                ->create('type', HiddenType::class, $options)
                 ->addModelTransformer(new ContactTypeTransformer($this->types))
         );
 
-        $builder->add('value', 'text');
+        $builder->add('value', TextType::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'contact_detail';
     }

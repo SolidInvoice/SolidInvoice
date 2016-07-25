@@ -12,6 +12,7 @@
 namespace CSBill\PaymentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,7 +47,7 @@ class PaymentMethodForm extends AbstractType
 
         $builder->add(
             'save',
-            'submit',
+            SubmitType::class,
             [
                 'attr' => [
                     'class' => 'btn-success',
@@ -82,7 +83,7 @@ class PaymentMethodForm extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'payment_methods';
     }

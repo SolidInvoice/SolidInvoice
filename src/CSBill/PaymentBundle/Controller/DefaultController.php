@@ -36,10 +36,7 @@ class DefaultController extends BaseController
     public function indexAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            /** @var \CSBill\PaymentBundle\Payum $payum */
-            $payum = $this->get('payum');
-
-            $paymentMethods = $payum->getGatewayList();
+            $paymentMethods = array_keys($this->get('payum')->getGateways());
 
             /** @var PaymentMethodRepository $repository */
             $repository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');

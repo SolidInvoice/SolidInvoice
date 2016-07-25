@@ -1,6 +1,8 @@
-define(['fos_router', 'fos_routing_data'], function (Router, data) {
+define(['lodash', 'fos_router', 'fos_routing_data'], function(_, Router, data) {
 
-    Router.setData(data);
+    if (!_.isUndefined(data)) {
+        Router.setData(data);
+    }
 
     return Routing;
 });

@@ -12,6 +12,7 @@
 namespace CSBill\NotificationBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class NotificationType extends AbstractType
@@ -21,15 +22,15 @@ class NotificationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', 'checkbox');
-        $builder->add('hipchat', 'checkbox');
-        $builder->add('sms', 'checkbox');
+        $builder->add('email', CheckboxType::class);
+        $builder->add('hipchat', CheckboxType::class);
+        $builder->add('sms', CheckboxType::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'notification';
     }

@@ -124,11 +124,13 @@ class PaymentController extends BaseController
             $this->save($payment);
 
             if (array_key_exists('capture_online', $data) && true === $data['capture_online']) {
-                $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
-                    $paymentName,
-                    $payment,
-                    '_payments_done' // the route to redirect after capture;
-                );
+                $captureToken = $this->get('payum')
+                    ->getTokenFactory()
+                    ->createCaptureToken(
+                        $paymentName,
+                        $payment,
+                        '_payments_done' // the route to redirect after capture;
+                    );
 
                 return $this->redirect($captureToken->getTargetUrl());
             } else {
@@ -159,7 +161,7 @@ class PaymentController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @throws \Exception
      * @throws \Payum\Core\Reply\ReplyInterface
@@ -167,7 +169,7 @@ class PaymentController extends BaseController
     public function captureDoneAction(Request $request)
     {
         /** @var Token $token */
-        $token = $this->get('payum.security.http_request_verifier')->verify($request);
+        $token = $this->get('payum')->getHttpRequestVerifier()->verify($request);
 
         $paymentMethod = $this->get('payum')->getGateway($token->getGatewayName());
         $paymentMethod->execute($status = new StatusRequest($token));

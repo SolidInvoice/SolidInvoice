@@ -14,6 +14,7 @@ namespace CSBill\ClientBundle\Form;
 use CSBill\ClientBundle\Form\Type\AddressType;
 use CSBill\ClientBundle\Form\Type\ContactType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,9 +29,9 @@ class Client extends AbstractType
         $builder->add('website');
         $builder->add(
             'contacts',
-            new ContactType(),
+            ContactType::class,
             [
-                'type' => 'contact',
+                'entry_type' => Contact::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -41,9 +42,9 @@ class Client extends AbstractType
 
         $builder->add(
             'addresses',
-            'collection',
+            CollectionType::class,
             [
-                'type' => new AddressType(),
+                'entry_type' => AddressType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -63,7 +64,7 @@ class Client extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'client';
     }

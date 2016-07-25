@@ -13,9 +13,9 @@ namespace CSBill\InstallBundle\Process\Step;
 
 use CSBill\InstallBundle\Form\Step\ConfigStepForm;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
+use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 
-class ConfigStep extends ControllerStep
+class ConfigStep extends AbstractControllerStep
 {
     /**
      * Array of currently implemented database drivers.
@@ -41,48 +41,7 @@ class ConfigStep extends ControllerStep
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        $form = $this->getForm();
-
-        return $this->render('CSBillInstallBundle:Flow:config.html.twig', ['form' => $form->createView()]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function forwardAction(ProcessContextInterface $context)
-    {
-        $request = $context->getRequest();
-        $form = $this->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $data = $form->getData();
-            $config = [];
-
-            // sets the database details
-            foreach ($data['database_config'] as $key => $param) {
-                $key = sprintf('database_%s', $key);
-                $config[$key] = $param;
-            }
-
-            // sets the database details
-            foreach ($data['email_settings'] as $key => $param) {
-                $key = sprintf('mailer_%s', $key);
-                $config[$key] = $param;
-            }
-
-            $this->get('csbill.core.config_writer')->dump($config);
-
-            return $this->complete();
-        }
-
-        return $this->render(
-            'CSBillInstallBundle:Flow:config.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
+        return $this->render('CSBillInstallBundle:Flow:config.html.twig', ['form' => $this->getForm()->createView()]);
     }
 
     /**
@@ -123,6 +82,40 @@ class ConfigStep extends ControllerStep
             ),
         ];
 
-        return $this->createForm(new ConfigStepForm(), $data, $options);
+        return $this->createForm(ConfigStepForm::class, $data, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function forwardAction(ProcessContextInterface $context)
+    {
+        $request = $context->getRequest();
+        $form = $this->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $config = [];
+
+            // sets the database details
+            foreach ($data['database_config'] as $key => $param) {
+                $key = sprintf('database_%s', $key);
+                $config[$key] = $param;
+            }
+
+            // sets the database details
+            foreach ($data['email_settings'] as $key => $param) {
+                $key = sprintf('mailer_%s', $key);
+                $config[$key] = $param;
+            }
+
+            $this->get('csbill.core.config_writer')->dump($config);
+
+            return $this->complete();
+        }
+
+        return $this->render('CSBillInstallBundle:Flow:config.html.twig', ['form' => $form->createView()]);
     }
 }

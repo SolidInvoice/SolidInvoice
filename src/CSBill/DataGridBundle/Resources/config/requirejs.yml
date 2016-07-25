@@ -5,15 +5,15 @@ config:
                 - backbone
                 - lodash
             exports: Backgrid
-        'grid/backgrid-filter':
+        grid/backgrid-filter:
             deps:
                 - backgrid
-        'grid/backgrid-paginator':
+        grid/backgrid-paginator:
             deps:
                 - backgrid
-        'grid/backgrid-select-all':
+        grid/backgrid-select-all:
             deps:
                 - backgrid
     paths:
-        backgrid: 'csbilldatagrid/js/backgrid.js'
-        grid: 'csbilldatagrid/js/'
+        backgrid: csbilldatagrid/js/backgrid.js
+        grid: csbilldatagrid/js/

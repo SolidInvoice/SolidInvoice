@@ -49,7 +49,6 @@ class TaxExtension extends \Twig_Extension
             return $taxConfigured;
         }
 
-
         $taxConfigured = $this->registry->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured();
 
         return $taxConfigured;

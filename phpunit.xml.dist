@@ -11,11 +11,11 @@
     processIsolation            = "false"
     stopOnFailure               = "false"
     syntaxCheck                 = "false"
-    bootstrap                   = "bootstrap.php.cache" >
+    bootstrap                   = "app/autoload.php" >
 
     <testsuites>
         <testsuite name="CSBill Test Suite">
-            <directory>../src/*/*Bundle/Tests</directory>
+            <directory>src/*/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -32,12 +32,12 @@
 
     <filter>
         <whitelist>
-            <directory>../src</directory>
+            <directory>src</directory>
             <exclude>
-                <directory>../src/*/*Bundle/Behat</directory>
-                <directory>../src/*/*Bundle/Controller</directory>
-                <directory>../src/*/*Bundle/Resources</directory>
-                <directory>../src/*/*Bundle/Tests</directory>
+                <directory>src/*/*Bundle/Behat</directory>
+                <directory>src/*/*Bundle/Controller</directory>
+                <directory>src/*/*Bundle/Resources</directory>
+                <directory>src/*/*Bundle/Tests</directory>
             </exclude>
         </whitelist>
     </filter>

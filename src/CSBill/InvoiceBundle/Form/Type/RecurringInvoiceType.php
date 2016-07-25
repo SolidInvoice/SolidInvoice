@@ -14,6 +14,7 @@ namespace CSBill\InvoiceBundle\Form\Type;
 use Carbon\Carbon;
 use CSBill\CronBundle\Form\Type\CronType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,13 +25,13 @@ class RecurringInvoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('frequency', new CronType());
+        $builder->add('frequency', CronType::class);
 
         $now = Carbon::now();
 
         $builder->add(
             'date_start',
-            'date',
+            DateType::class,
             [
                 'widget' => 'single_text',
                 'data' => $now,
@@ -44,7 +45,7 @@ class RecurringInvoiceType extends AbstractType
 
         $builder->add(
             'date_end',
-            'date',
+            DateType::class,
             [
                 'required' => false,
                 'widget' => 'single_text',
@@ -62,7 +63,7 @@ class RecurringInvoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'recurring_invoice';
     }
@@ -72,10 +73,6 @@ class RecurringInvoiceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => 'CSBill\InvoiceBundle\Entity\RecurringInvoice',
-            ]
-        );
+        $resolver->setDefaults(['data_class' => 'CSBill\InvoiceBundle\Entity\RecurringInvoice']);
     }
 }

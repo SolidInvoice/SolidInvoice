@@ -12,6 +12,7 @@
 namespace CSBill\PaymentBundle\Form\Methods;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -24,7 +25,7 @@ class StripeCheckout extends AbstractType
     {
         $builder->add(
             'publishable_key',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -32,7 +33,7 @@ class StripeCheckout extends AbstractType
 
         $builder->add(
             'secret_key',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -42,7 +43,7 @@ class StripeCheckout extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'stripe_checkout';
     }

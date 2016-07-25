@@ -1,26 +1,16 @@
-#
-# This file is part of the CSSettingsBundle package.
-#
-# (c) Pierre du Plessis <info@customscripts.co.za>
-#
-# For the full copyright and license information, please view the LICENSE
-# file that was distributed with this source code.
-#
-
 parameters:
     csbill.settings.class: CSBill\SettingsBundle\Manager\SettingsManager
     csbill_settings.doctrine.loader.class: CSBill\SettingsBundle\Loader\DoctrineLoader
-
 services:
     csbill_settings.manager:
-        class: %csbill.settings.class%
-        arguments: [@doctrine]
-
+        class: '%csbill.settings.class%'
+        arguments:
+            - '@doctrine'
     settings:
         alias: csbill_settings.manager
-
     csbill_settings.doctrine.loader:
-            class: %csbill_settings.doctrine.loader.class%
-            arguments: [@doctrine]
-            tags:
-                - { name: settings.loader }
+        class: '%csbill_settings.doctrine.loader.class%'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: settings.loader }

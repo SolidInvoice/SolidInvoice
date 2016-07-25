@@ -7,12 +7,18 @@ finite_finite:
             new:
                 type: initial
             draft:
-                properties: {editable: true, sendable: true}
+                properties:
+                    editable: true
+                    sendable: true
             pending:
-                properties: {editable: true, sendable: true}
+                properties:
+                    editable: true
+                    sendable: true
             overdue:
-                properties: {editable: true, sendable: true}
-            cancelled: ~
+                properties:
+                    editable: true
+                    sendable: true
+            cancelled: null
             archived:
                 type: final
             recurring:
@@ -21,26 +27,43 @@ finite_finite:
                 type: final
         transitions:
             new:
-                from: [new]
+                from:
+                    - new
                 to: draft
             recurring:
-                from: [new]
+                from:
+                    - new
                 to: recurring
             accept:
-                from: [new, draft, overdue]
+                from:
+                    - new
+                    - draft
+                    - overdue
                 to: pending
             cancel:
-                from: [draft, pending, overdue]
+                from:
+                    - draft
+                    - pending
+                    - overdue
                 to: cancelled
             overdue:
-                from: [pending]
+                from:
+                    - pending
                 to: overdue
             pay:
-                from: [pending, overdue]
+                from:
+                    - pending
+                    - overdue
                 to: paid
             reopen:
-                from: [cancelled]
+                from:
+                    - cancelled
                 to: draft
             archive:
-                from: [new, draft, cancelled, paid, recurring]
+                from:
+                    - new
+                    - draft
+                    - cancelled
+                    - paid
+                    - recurring
                 to: archived

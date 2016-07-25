@@ -12,6 +12,9 @@
 namespace CSBill\PaymentBundle\Form\Methods;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -24,7 +27,7 @@ class AuthorizeNetSim extends AbstractType
     {
         $builder->add(
             'login_id',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -32,7 +35,7 @@ class AuthorizeNetSim extends AbstractType
 
         $builder->add(
             'transaction_key',
-            'text',
+            TextType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -40,7 +43,7 @@ class AuthorizeNetSim extends AbstractType
 
         $builder->add(
             'hash_secret',
-            'password',
+            PasswordType::class,
             [
                 'constraints' => new NotBlank(),
             ]
@@ -48,7 +51,7 @@ class AuthorizeNetSim extends AbstractType
 
         $builder->add(
             'test_mode',
-            'checkbox',
+            CheckboxType::class,
             [
                 'required' => false,
             ]
@@ -58,7 +61,7 @@ class AuthorizeNetSim extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'authorizenet_sim';
     }

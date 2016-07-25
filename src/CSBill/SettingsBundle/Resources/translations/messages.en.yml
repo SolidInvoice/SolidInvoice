@@ -1,4 +1,4 @@
 settings:
     save: Save
     saved:
-        success: Settings saved successfully!
+        success: 'Settings saved successfully!'

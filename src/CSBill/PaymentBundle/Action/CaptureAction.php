@@ -13,14 +13,18 @@ namespace CSBill\PaymentBundle\Action;
 
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Model\Status;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
 
-class CaptureAction extends GatewayAwareAction
+class CaptureAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * {@inheritdoc}
      */

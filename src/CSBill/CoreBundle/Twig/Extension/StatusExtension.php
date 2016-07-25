@@ -75,19 +75,6 @@ class StatusExtension extends \Twig_Extension
     ];
 
     /**
-     * @var \Twig_Environment
-     */
-    protected $environment;
-
-    /**
-     * @param \Twig_Environment $environment
-     */
-    public function initRuntime(\Twig_Environment $environment)
-    {
-        $this->environment = $environment;
-    }
-
-    /**
      * Returns an array of all the helper functions for the client status.
      *
      * @return \Twig_SimpleFunction[]
@@ -98,42 +85,39 @@ class StatusExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'invoice_label',
                 [$this, 'renderInvoiceStatusLabel'],
-                ['is_safe' => ['html'],
-                ]
+                ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new \Twig_SimpleFunction(
                 'quote_label',
                 [$this, 'renderQuoteStatusLabel'],
-                ['is_safe' => ['html'],
-                ]
+                ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new \Twig_SimpleFunction(
                 'payment_label',
                 [$this, 'renderPaymentStatusLabel'],
-                ['is_safe' => ['html'],
-                ]
+                ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new \Twig_SimpleFunction(
                 'client_label',
                 [$this, 'renderClientStatusLabel'],
-                ['is_safe' => ['html'],
-                ]
+                ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
+     * @param \Twig_Environment $environment
+     * @param string            $status
+     * @param string            $tooltip
      *
      * @return string
      *
      * @throws \Exception
      */
-    public function renderInvoiceStatusLabel($status = null, $tooltip = null)
+    public function renderInvoiceStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
     {
         if (null === $status) {
-            return $this->getAllStatusLabels($this->invoiceLabelMap);
+            return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
         }
 
         if (!isset($this->invoiceLabelMap[$status])) {
@@ -145,21 +129,66 @@ class StatusExtension extends \Twig_Extension
             'status_label' => $this->invoiceLabelMap[$status],
         ];
 
-        return $this->renderStatusLabel($statusLabel, $tooltip);
+        return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
+     * @param \Twig_Environment $environment
+     * @param array             $labelMap
+     *
+     * @return array
+     */
+    private function getAllStatusLabels(\Twig_Environment $environment, array $labelMap)
+    {
+        $response = [];
+
+        foreach ($labelMap as $status => $label) {
+            $response[$status] = $this->renderStatusLabel($environment, ['status' => $status, 'status_label' => $label]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Return the status converted into a label string.
+     *
+     * @param \Twig_Environment $environment
+     * @param mixed             $object
+     * @param string            $tooltip
+     *
+     * @return string
+     */
+    private function renderStatusLabel(\Twig_Environment $environment, $object, $tooltip = null)
+    {
+        if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
+            $object = [
+                'name' => $object['status'],
+                'label' => $object['status_label'],
+            ];
+        }
+
+        return $environment->render(
+            'CSBillCoreBundle:Status:label.html.twig',
+            [
+                'entity' => $object,
+                'tooltip' => $tooltip,
+            ]
+        );
+    }
+
+    /**
+     * @param \Twig_Environment $environment
+     * @param string            $status
+     * @param string            $tooltip
      *
      * @return string
      *
      * @throws \Exception
      */
-    public function renderQuoteStatusLabel($status = null, $tooltip = null)
+    public function renderQuoteStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
     {
         if (null === $status) {
-            return $this->getAllStatusLabels($this->quoteLabelMap);
+            return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
         }
 
         if (!isset($this->quoteLabelMap[$status])) {
@@ -171,21 +200,22 @@ class StatusExtension extends \Twig_Extension
             'status_label' => $this->quoteLabelMap[$status],
         ];
 
-        return $this->renderStatusLabel($statusLabel, $tooltip);
+        return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
+     * @param \Twig_Environment $environment
+     * @param string            $status
+     * @param string            $tooltip
      *
      * @return string
      *
      * @throws \Exception
      */
-    public function renderPaymentStatusLabel($status = null, $tooltip = null)
+    public function renderPaymentStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
     {
         if (null === $status) {
-            return $this->getAllStatusLabels($this->paymentLabelMap);
+            return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
         }
 
         if (!isset($this->paymentLabelMap[$status])) {
@@ -197,21 +227,22 @@ class StatusExtension extends \Twig_Extension
             'status_label' => $this->paymentLabelMap[$status],
         ];
 
-        return $this->renderStatusLabel($statusLabel, $tooltip);
+        return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
+     * @param \Twig_Environment $environment
+     * @param string            $status
+     * @param string            $tooltip
      *
      * @return string
      *
      * @throws \Exception
      */
-    public function renderClientStatusLabel($status = null, $tooltip = null)
+    public function renderClientStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
     {
         if (null === $status) {
-            return $this->getAllStatusLabels($this->clientLabelMap);
+            return $this->getAllStatusLabels($environment, $this->clientLabelMap);
         }
 
         if (!isset($this->clientLabelMap[$status])) {
@@ -223,49 +254,7 @@ class StatusExtension extends \Twig_Extension
             'status_label' => $this->clientLabelMap[$status],
         ];
 
-        return trim($this->renderStatusLabel($statusLabel, $tooltip));
-    }
-
-    /**
-     * Return the status converted into a label string.
-     *
-     * @param mixed  $object
-     * @param string $tooltip
-     *
-     * @return string
-     */
-    private function renderStatusLabel($object, $tooltip = null)
-    {
-        if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
-            $object = [
-                'name' => $object['status'],
-                'label' => $object['status_label'],
-            ];
-        }
-
-        return $this->environment->render(
-            'CSBillCoreBundle:Status:label.html.twig',
-            [
-                'entity' => $object,
-                'tooltip' => $tooltip,
-            ]
-        );
-    }
-
-    /**
-     * @param array $labelMap
-     *
-     * @return array
-     */
-    private function getAllStatusLabels(array $labelMap)
-    {
-        $response = [];
-
-        foreach ($labelMap as $status => $label) {
-            $response[$status] = $this->renderStatusLabel(['status' => $status, 'status_label' => $label]);
-        }
-
-        return $response;
+        return trim($this->renderStatusLabel($environment, $statusLabel, $tooltip));
     }
 
     /**

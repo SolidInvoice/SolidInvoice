@@ -13,10 +13,16 @@ namespace CSBill\InstallBundle\Process;
 
 use Sylius\Bundle\FlowBundle\Process\Builder\ProcessBuilderInterface;
 use Sylius\Bundle\FlowBundle\Process\Scenario\ProcessScenarioInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class InstallScenario extends ContainerAware implements ProcessScenarioInterface
+class InstallScenario implements ContainerAwareInterface, ProcessScenarioInterface
 {
+    use ContainerAwareTrait;
+
+    /**
+     * {@inheritdoc}
+     */
     public function build(ProcessBuilderInterface $builder)
     {
         $builder->add('system_check', new Step\SystemRequirementsStep());

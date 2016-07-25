@@ -11,8 +11,10 @@
 
 namespace CSBill\TaxBundle\Form\Type;
 
+use CSBill\CoreBundle\Form\Type\Select2;
 use CSBill\TaxBundle\Entity\Tax;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,7 +29,7 @@ class TaxType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name');
-        $builder->add('rate', 'percent', ['precision' => 2]);
+        $builder->add('rate', PercentType::class, ['precision' => 2]);
 
         $types = Tax::getTypes();
 
@@ -37,10 +39,9 @@ class TaxType extends AbstractType
 
         $builder->add(
             'type',
-            'select2',
+            Select2::class,
             [
                 'choices' => $types,
-                'choices_as_values' => false,
                 'help' => 'tax.rates.explanation',
                 'placeholder' => 'tax.rates.type.select',
             ]
@@ -58,7 +59,7 @@ class TaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'tax';
     }

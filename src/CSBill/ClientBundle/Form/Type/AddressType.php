@@ -12,6 +12,7 @@
 namespace CSBill\ClientBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,7 +30,7 @@ class AddressType extends AbstractType
         $builder->add('zip');
         $builder->add(
             'country',
-            'country',
+            CountryType::class,
             [
                 'attr' => [
                     'class' => 'select2',
@@ -45,17 +46,13 @@ class AddressType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => 'CSBill\ClientBundle\Entity\Address',
-            ]
-        );
+        $resolver->setDefaults(['data_class' => 'CSBill\ClientBundle\Entity\Address']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'address';
     }

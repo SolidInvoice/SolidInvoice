@@ -1,7 +1,7 @@
 tax:
     rates:
-        title: Tax Rates
-        add: Add Tax Rate
+        title: 'Tax Rates'
+        add: 'Add Tax Rate'
         save: Save
         explanation: "Inclusive: Tax is included in the item price\nExclusive: Tax is calculated on the item price"
         type:
@@ -11,7 +11,6 @@ tax:
     grid:
         actions:
             edit: Edit
-
 inclusive: Inclusive
 exclusive: Exclusive
 rate: Rate

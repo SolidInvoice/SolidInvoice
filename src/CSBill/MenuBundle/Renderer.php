@@ -63,6 +63,34 @@ class Renderer extends ListRenderer implements RendererInterface
     }
 
     /**
+     * Renders a menu at a specific location.
+     *
+     * @param \SplPriorityQueue $storage
+     * @param array             $options
+     *
+     * @return string
+     */
+    public function build(\SplPriorityQueue $storage, array $options = [])
+    {
+        $menu = $this->factory->createItem('root');
+
+        if (isset($options['attr'])) {
+            $menu->setChildrenAttributes($options['attr']);
+        } else {
+            // TODO : this should be set per menu, instead of globally
+            $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-stacked']);
+        }
+
+        foreach ($storage as $builder) {
+            /* @var \CSBill\MenuBundle\Builder\MenuBuilder $builder */
+            $builder->setContainer($this->container);
+            $builder->invoke($menu, $options);
+        }
+
+        return $this->render($menu, $options);
+    }
+
+    /**
      * Renders all of the children of this menu.
      *
      * This calls ->renderItem() on each menu item, which instructs each
@@ -71,7 +99,7 @@ class Renderer extends ListRenderer implements RendererInterface
      * This method updates the depth for the children.
      *
      * @param Item  $item
-     * @param array $options The options to render the item.
+     * @param array $options The options to render the item
      *
      * @return string
      */
@@ -93,6 +121,22 @@ class Renderer extends ListRenderer implements RendererInterface
         }
 
         return $html;
+    }
+
+    /**
+     * @param Item  $item
+     * @param array $options
+     *
+     * @return string
+     */
+    protected function renderDivider(Item $item, array $options = [])
+    {
+        return $this->format(
+            '<li'.$this->renderHtmlAttributes(['class' => 'divider'.$item->getExtra('divider')]).'>',
+            'li',
+            $item->getLevel(),
+            $options
+        );
     }
 
     /**
@@ -128,53 +172,6 @@ class Renderer extends ListRenderer implements RendererInterface
      */
     protected function renderIcon($icon)
     {
-        return $this->container->get('templating')->render(sprintf('{{ icon("%s") }} ', $icon));
-    }
-
-    /**
-     * @param Item  $item
-     * @param array $options
-     *
-     * @return string
-     */
-    protected function renderDivider(Item $item, array $options = [])
-    {
-        return $this->format(
-            '<li'.$this->renderHtmlAttributes(
-                [
-                    'class' => 'divider'.$item->getExtra('divider'), ]
-            ).'>',
-            'li',
-            $item->getLevel(),
-            $options
-        );
-    }
-
-    /**
-     * Renders a menu at a specific location.
-     *
-     * @param \SplPriorityQueue $storage
-     * @param array             $options
-     *
-     * @return string
-     */
-    public function build(\SplPriorityQueue $storage, array $options = [])
-    {
-        $menu = $this->factory->createItem('root');
-
-        if (isset($options['attr'])) {
-            $menu->setChildrenAttributes($options['attr']);
-        } else {
-            // TODO : this should be set per menu, instead of globally
-            $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-stacked']);
-        }
-
-        foreach ($storage as $builder) {
-            /* @var \CSBill\MenuBundle\Builder\MenuBuilder $builder */
-            $builder->setContainer($this->container);
-            $builder->invoke($menu, $options);
-        }
-
-        return $this->render($menu, $options);
+        return $this->container->get('templating')->render('CSBillMenuBundle::icon.html.twig', ['icon' => $icon]);
     }
 }

@@ -13,19 +13,23 @@ namespace CSBill\PaymentBundle\Action\PaypalExpress;
 
 use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Model\PaymentInterface;
 
-class PaymentDetailsStatusAction extends GatewayAwareAction
+class PaymentDetailsStatusAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * {@inheritdoc}
      */
     public function execute($request)
     {
         /* @var StatusRequest $request */
-
         RequestNotSupportedException::assertSupports($this, $request);
 
         /** @var Payment $payment */
@@ -72,6 +76,6 @@ class PaymentDetailsStatusAction extends GatewayAwareAction
     {
         return
             $request instanceof StatusRequest &&
-            $request->getModel() instanceof Payment;
+            $request->getModel() instanceof PaymentInterface;
     }
 }

@@ -11,8 +11,16 @@
 
 namespace CSBill\SettingsBundle\Form\Type;
 
+use CSBill\CoreBundle\Form\Type\ImageUpload;
+use CSBill\CoreBundle\Form\Type\Select2;
+use CSBill\NotificationBundle\Form\Type\NotificationType;
 use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -65,17 +73,54 @@ class Settings extends AbstractType
     {
         $type = $setting->getType();
 
-        if ('radio' === $type) {
-            $type = 'choice';
-            $options['expanded'] = true;
-            $options['multiple'] = false;
-        }
+        switch (strtolower($type)) {
+            case 'select2':
+                $type = Select2::class;
+                $settingOptions = $setting->getOptions();
+                $options['choices'] = array_flip($settingOptions);
+                $options['choices_as_values'] = true;
+                break;
 
-        if (in_array($type, ['choice', 'select2'])) {
-            $settingOptions = $setting->getOptions();
+            case 'choice':
+                $type = ChoiceType::class;
+                $settingOptions = $setting->getOptions();
+                $options['choices'] = array_flip($settingOptions);
+                $options['choices_as_values'] = true;
+                break;
 
-            $options['choices'] = $settingOptions;
-            $options['choices_as_values'] = false;
+            case 'radio':
+                $type = ChoiceType::class;
+                $options['expanded'] = true;
+                $options['multiple'] = false;
+                $settingOptions = $setting->getOptions();
+                $options['choices'] = array_flip($settingOptions);
+                $options['choices_as_values'] = true;
+                break;
+
+            case '':
+            case 'text':
+                $type = TextType::class;
+                break;
+
+            case 'email':
+                $type = EmailType::class;
+                break;
+
+            case 'checkbox':
+                $type = CheckboxType::class;
+                break;
+
+            case 'notification':
+                $type = NotificationType::class;
+                break;
+
+            case 'image_upload':
+                $type = ImageUpload::class;
+                break;
+
+            case 'password':
+                $type = PasswordType::class;
+                break;
         }
 
         return $type;
@@ -84,7 +129,7 @@ class Settings extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'settings';
     }

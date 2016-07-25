@@ -1,7 +1,9 @@
 services:
     grid.twig.extension:
         class: CSBill\DataGridBundle\Twig\Extension\GridExtension
-        arguments: [@grid.repository, @serializer]
+        arguments:
+            - '@grid.repository'
+            - '@serializer'
         tags:
             - { name: twig.extension }
 

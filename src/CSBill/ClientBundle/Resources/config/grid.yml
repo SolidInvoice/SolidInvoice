@@ -3,7 +3,7 @@ datagrid:
         title: Active
         icon: check
         source:
-            repository: CSBillClientBundle:Client
+            repository: 'CSBillClientBundle:Client'
             method: getGridQuery
         columns:
             id:
@@ -53,20 +53,20 @@ datagrid:
             archive:
                 label: Archive
                 icon: archive
-                confirm: "Are you sure you want to archive the selected rows?"
+                confirm: 'Are you sure you want to archive the selected rows?'
                 action: _clients_archive
                 className: warning
             delete:
                 label: Delete
                 icon: ban
-                confirm: "Are you sure you want to delete the selected rows?"
+                confirm: 'Are you sure you want to delete the selected rows?'
                 action: _clients_delete
                 className: danger
     archive_client_grid:
         title: Archived
         icon: archive
         source:
-            repository: CSBillClientBundle:Client
+            repository: 'CSBillClientBundle:Client'
             method: getArchivedGridQuery
         columns:
             id:
@@ -103,12 +103,12 @@ datagrid:
             restore:
                 label: Restore
                 icon: archive
-                confirm: "Are you sure you want to restore the selected rows?"
+                confirm: 'Are you sure you want to restore the selected rows?'
                 action: _clients_restore
                 className: info
             delete:
                 label: Delete
                 icon: ban
-                confirm: "Are you sure you want to delete the selected rows?"
+                confirm: 'Are you sure you want to delete the selected rows?'
                 action: _clients_delete
                 className: danger

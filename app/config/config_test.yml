@@ -2,15 +2,13 @@ imports:
     - { resource: config_dev.yml }
 
 framework:
-    test: ~
+    test: null
     session:
         storage_id: session.storage.mock_file
     profiler:
         enabled: false
-
 web_profiler:
     toolbar: false
     intercept_redirects: false
-
 swiftmailer:
     disable_delivery: true

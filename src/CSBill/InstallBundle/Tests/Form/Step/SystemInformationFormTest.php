@@ -14,6 +14,7 @@ namespace CSBill\InstallBundle\Tests\Form\Step;
 use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use Faker\Factory;
+use Mockery as M;
 use Symfony\Component\Intl\Intl;
 
 class SystemInformationFormTest extends FormTestCase
@@ -31,8 +32,7 @@ class SystemInformationFormTest extends FormTestCase
             'password' => null,
         ];
 
-        $type = new SystemInformationForm($this->getMock('Symfony\Component\HttpFoundation\Request'));
-        $form = $this->factory->create($type);
+        $form = $this->factory->create(SystemInformationForm::class, null, ['userCount' => 0]);
 
         // submit the data to the form directly
         $form->submit($formData);

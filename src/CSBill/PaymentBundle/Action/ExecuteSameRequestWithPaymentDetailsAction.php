@@ -12,13 +12,17 @@
 namespace CSBill\PaymentBundle\Action;
 
 use CSBill\PaymentBundle\Entity\Payment;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Generic;
 
-class ExecuteSameRequestWithPaymentDetailsAction extends GatewayAwareAction
+class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * {@inheritdoc}
      *

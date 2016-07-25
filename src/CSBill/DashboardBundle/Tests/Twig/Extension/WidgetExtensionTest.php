@@ -46,15 +46,6 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('render_dashboard_widget', $functions[0]->getName());
     }
 
-    public function testInitRuntime()
-    {
-        $env = new \Twig_Environment();
-
-        $this->extension->initRuntime($env);
-
-        $this->assertSame($env, \PHPUnit_Framework_Assert::readAttribute($this->extension, 'environment'));
-    }
-
     public function testRenderDashboardWidget()
     {
         $widget = \Mockery::mock(
@@ -79,8 +70,7 @@ class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
             ->with('test_template.html.twig', ['a' => '1', 'b' => '2', 'c' => '3'])
             ->andReturn('123');
 
-        $this->extension->initRuntime($environment);
-        $content = $this->extension->renderDashboardWidget('top');
+        $content = $this->extension->renderDashboardWidget($environment, 'top');
 
         $this->assertSame('123', $content);
     }

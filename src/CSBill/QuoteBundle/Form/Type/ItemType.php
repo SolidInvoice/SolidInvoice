@@ -14,6 +14,9 @@ namespace CSBill\QuoteBundle\Form\Type;
 use CSBill\TaxBundle\Form\Type\Tax;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,7 +42,7 @@ class ItemType extends AbstractType
     {
         $builder->add(
             'description',
-            'textarea',
+            TextareaType::class,
             [
                 'attr' => [
                     'class' => 'input-medium quote-item-name',
@@ -49,7 +52,7 @@ class ItemType extends AbstractType
 
         $builder->add(
             'price',
-            'money',
+            MoneyType::class,
             [
                 'attr' => [
                     'class' => 'input-small quote-item-price',
@@ -59,7 +62,7 @@ class ItemType extends AbstractType
 
         $builder->add(
             'qty',
-            'number',
+            NumberType::class,
             [
                 'empty_data' => 1,
                 'attr' => [
@@ -71,7 +74,7 @@ class ItemType extends AbstractType
         if ($this->registry->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured()) {
             $builder->add(
                 'tax',
-                new Tax(),
+                Tax::class,
                 [
                     'class' => 'CSBill\TaxBundle\Entity\Tax',
                     'placeholder' => 'Choose Tax Type',
@@ -87,7 +90,7 @@ class ItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'quote_item';
     }

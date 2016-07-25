@@ -31,7 +31,7 @@ class ConfigStepForm extends AbstractType
 
         $builder->add(
             'database_config',
-            new DatabaseConfigType(),
+            DatabaseConfigType::class,
             [
                 'drivers' => $drivers,
                 'constraints' => new Constraints\Callback(
@@ -50,7 +50,7 @@ class ConfigStepForm extends AbstractType
 
         $builder->add(
             'email_settings',
-            new EmailSettingsType(),
+            EmailSettingsType::class,
             [
                 'transports' => $options['mailer_transports'],
             ]
@@ -73,7 +73,7 @@ class ConfigStepForm extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'config_step';
     }

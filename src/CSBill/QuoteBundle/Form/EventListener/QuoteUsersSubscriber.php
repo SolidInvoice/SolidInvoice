@@ -13,6 +13,7 @@ namespace CSBill\QuoteBundle\Form\EventListener;
 
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -52,11 +53,9 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         if (!empty($clientId)) {
             $form->add(
                 'users',
-                'entity',
+                EntityType::class,
                 [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
+                    'constraints' => new NotBlank(),
                     'multiple' => true,
                     'expanded' => true,
                     'class' => 'CSBillClientBundle:Contact',

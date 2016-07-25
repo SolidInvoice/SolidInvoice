@@ -3,12 +3,13 @@ web/css/*
 web/js/*
 web/fonts/*
 web/img/*
-app/bootstrap.php.cache
-app/cache/*
-app/logs/*
+var/bootstrap.php.cache
+var/cache/*
+var/logs/*
 build/
 vendor
-bin
+bin/*
+!bin/console
 composer.phar
 web/uploads/*
 !web/uploads/.gitkeep
@@ -17,5 +18,5 @@ web/uploads/*
 !web/fonts/.gitkeep
 !web/img/.gitkeep
 app/config/parameters.yml
-/.idea
+.idea
 node_modules
