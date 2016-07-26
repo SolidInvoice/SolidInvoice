@@ -15,17 +15,18 @@ use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Payum\Core\Model\GatewayConfigInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="payment_methods")
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentMethodRepository")
- * @UniqueEntity("paymentMethod")
+ * @UniqueEntity("gatewayName")
  * @Gedmo\SoftDeleteable()
  * @Gedmo\Loggable()
  */
-class PaymentMethod
+class PaymentMethod implements GatewayConfigInterface
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable;
@@ -50,16 +51,23 @@ class PaymentMethod
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_method", type="string", length=125, unique=true)
+     * @ORM\Column(name="gateway_name", type="string", length=125, unique=true)
      */
-    private $paymentMethod;
+    private $gatewayName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="factory", type="string", length=125)
+     */
+    private $factoryName;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="settings", type="array", nullable=true)
+     * @ORM\Column(name="config", type="array", nullable=true)
      */
-    private $settings;
+    private $config;
 
     /**
      * @ORM\Column(name="internal", type="boolean", nullable=true)
@@ -124,19 +132,19 @@ class PaymentMethod
     /**
      * @return string
      */
-    public function getPaymentMethod()
+    public function getGatewayName()
     {
-        return $this->paymentMethod;
+        return $this->gatewayName;
     }
 
     /**
-     * @param string $paymentMethod
+     * @param string $gatewayName
      *
      * @return PaymentMethod
      */
-    public function setPaymentMethod($paymentMethod)
+    public function setGatewayName($gatewayName)
     {
-        $this->paymentMethod = $paymentMethod;
+        $this->gatewayName = $gatewayName;
 
         return $this;
     }
@@ -144,13 +152,13 @@ class PaymentMethod
     /**
      * Set settings.
      *
-     * @param array $settings
+     * @param array $config
      *
      * @return PaymentMethod
      */
-    public function setSettings(array $settings)
+    public function setConfig(array $config)
     {
-        $this->settings = $settings;
+        $this->config = $config;
 
         return $this;
     }
@@ -160,9 +168,9 @@ class PaymentMethod
      *
      * @return array
      */
-    public function getSettings()
+    public function getConfig()
     {
-        return $this->settings;
+        return $this->config;
     }
 
     /**
@@ -201,6 +209,16 @@ class PaymentMethod
     public function setEnabled($enabled)
     {
         $this->enabled = (bool) $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function enable()
+    {
+        $this->enabled = true;
 
         return $this;
     }
@@ -251,6 +269,22 @@ class PaymentMethod
     public function getPayments()
     {
         return $this->payments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFactoryName()
+    {
+        return $this->factoryName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFactoryName($factory)
+    {
+        $this->factoryName = $factory;
     }
 
     /**

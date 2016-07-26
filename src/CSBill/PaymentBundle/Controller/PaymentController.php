@@ -59,10 +59,10 @@ class PaymentController extends BaseController
         }
 
         $preferredChoices = $paymentRepository
-            ->findBy(['paymentMethod' => 'credit']);
+            ->findBy(['gatewayName' => 'credit']);
 
         $form = $this->createForm(
-            new PaymentForm(),
+            PaymentForm::class,
             [
                 'amount' => $invoice->getBalance(),
             ],
@@ -82,7 +82,7 @@ class PaymentController extends BaseController
             /** @var Entity $paymentMethod */
             $paymentMethod = $data['payment_method'];
 
-            $paymentName = $paymentMethod->getPaymentMethod();
+            $paymentName = $paymentMethod->getGatewayName();
 
             if ('credit' === $paymentName) {
                 $clientCredit = $invoice->getClient()->getCredit()->getValue();

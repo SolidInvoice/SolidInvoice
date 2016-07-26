@@ -50,3 +50,6 @@ payment:
     menu:
         main: Payments
         methods: 'Payment Methods'
+    settings:
+        password:
+            hint: 'Keep this empty to keep the existing value'

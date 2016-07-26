@@ -89,7 +89,7 @@ class PaymentCompleteListener
 
         $this->addFlashMessage($status, $payment->getMessage());
 
-        if ('credit' === $payment->getMethod()->getPaymentMethod()) {
+        if ('credit' === $payment->getMethod()->getGatewayName()) {
             $creditRepository = $this->registry->getRepository('CSBillClientBundle:Credit');
             $creditRepository->deductCredit(
                 $payment->getClient(),

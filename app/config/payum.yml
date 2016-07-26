@@ -1,5 +1,6 @@
 parameters:
     payum.template.layout: 'CSBillPaymentBundle::layout.html.twig'
+
 payum:
     security:
         token_storage:
@@ -8,6 +9,13 @@ payum:
     storages:
         CSBill\PaymentBundle\Entity\Payment:
             doctrine: orm
+    dynamic_gateways:
+        sonata_admin: false
+        config_storage:
+            CSBill\PaymentBundle\Entity\PaymentMethod:
+                doctrine: orm
+
+payment:
     gateways:
         credit:
             factory: offline
@@ -17,75 +25,41 @@ payum:
             factory: offline
         paypal_express_checkout:
             factory: paypal_express_checkout
-            username: 'NOT USED'
-            password: 'NOT USED'
-            signature: 'NOT USED'
-            sandbox: true
-            tender: C
-            payum.api: '@csbill.payment.payum.paypal_express_checkout_api'
+            form: CSBill\PaymentBundle\Form\Methods\PaypalExpressCheckout
         paypal_pro_checkout:
             factory: paypal_pro_checkout
-            username: 'NOT USED'
-            password: 'NOT USED'
-            partner: 'NOT USED'
-            vendor: 'NOT USED'
-            sandbox: true
-            tender: C
-            payum.api: '@csbill.payment.payum.paypal_pro_checkout_api'
+            form: CSBill\PaymentBundle\Form\Methods\PaypalProCheckout
         stripe_checkout:
             factory: stripe_checkout
-            publishable_key: 'NOT USED'
-            secret_key: 'NOT USED'
-            payum.api: '@csbill.payment.payum.stripe_checkout_api'
+            form: CSBill\PaymentBundle\Form\Methods\StripeCheckout
         stripe_js:
             factory: stripe_js
-            publishable_key: 'NOT USED'
-            secret_key: 'NOT USED'
-            payum.api: '@csbill.payment.payum.stripe_js_api'
+            form: CSBill\PaymentBundle\Form\Methods\StripeJs
         klarna_invoice:
             factory: klarna_invoice
-            secret: 'NOT USED'
-            eid: 'NOT USED'
-            sandbox: true
-            country: ZA
-            language: EN
-            currency: eur
-            payum.api: '@csbill.payment.payum.klarna_invoice_api'
+            form: CSBill\PaymentBundle\Form\Methods\KlarnaInvoice
         klarna_checkout:
             factory: klarna_checkout
-            secret: 'NOT USED'
-            merchant_id: 'NOT USED'
-            sandbox: true
-            payum.api: '@csbill.payment.payum.klarna_checkout_api'
+            form: CSBill\PaymentBundle\Form\Methods\KlarnaCheckout
         be2bill_offsite:
             factory: be2bill_offsite
-            identifier: 'NOT USED'
-            password: 'NOT USED'
-            sandbox: true
-            payum.api: '@csbill.payment.payum.be2bill_offsite_api'
+            form: CSBill\PaymentBundle\Form\Methods\Be2billOffsite
         be2bill_direct:
             factory: be2bill_direct
-            identifier: 'NOT USED'
-            password: 'NOT USED'
-            sandbox: true
-            payum.api: '@csbill.payment.payum.be2bill_direct_api'
+            form: CSBill\PaymentBundle\Form\Methods\Be2billDirect
         authorize_net_aim:
             factory: authorize_net_aim
-            login_id: 'NOT USED'
-            transaction_key: 'NOT USED'
-            sandbox: true
-            payum.api: '@csbill.payment.payum.authorize_net_aim_api'
+            form: CSBill\PaymentBundle\Form\Methods\AuthorizeNetAim
         payex:
             factory: payex
-            account_number: 'NOT USED'
-            encryption_key: 'NOT USED'
-            sandbox: true
-            payum.api: '@csbill.payment.payum.payex_api'
-        authorizenet_sim:
-            factory: omnipay_direct
-            type: AuthorizeNet_SIM
-            options: null
-            payum.api: '@csbill.payment.payum.authorize_net_sim_api'
+            form: CSBill\PaymentBundle\Form\Methods\Payex
+
+        #authorizenet_sim:
+        #    factory: omnipay_direct
+        #    type: AuthorizeNet_SIM
+        #    options: null
+        #    payum.api: '@csbill.payment.payum.authorize_net_sim_api'
+
 
         #buckaroo_ideal:
             #omnipay_direct:

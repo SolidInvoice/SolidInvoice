@@ -14,7 +14,6 @@ namespace CSBill\PaymentBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Form\PaymentMethodForm;
-use Doctrine\Common\Util\Inflector;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 class AjaxController extends BaseController
 {
     /**
-     * @ParamConverter("paymentMethod", options={"mapping": {"method": "paymentMethod"}})
+     * @ParamConverter("paymentMethod", options={"mapping": {"method": "gatewayName"}})
      *
      * @param Request       $request
      * @param PaymentMethod $paymentMethod
@@ -32,24 +31,23 @@ class AjaxController extends BaseController
     public function loadSettingsAction(Request $request, PaymentMethod $paymentMethod = null)
     {
         $methodName = $request->attributes->get('method');
+        $paymentFactories = $this->get('payum.factories');
 
         if (null === $paymentMethod) {
             $paymentMethod = new PaymentMethod();
-            $paymentMethod->setPaymentMethod($methodName);
+            $paymentMethod->setGatewayName($methodName);
+            $paymentMethod->setFactoryName($paymentFactories->getFactory($methodName));
             $paymentMethod->setName(ucwords(str_replace('_', ' ', $methodName)));
         }
 
-        $originalSettings = $paymentMethod->getSettings();
-
-        $formClass = 'CSBill\\PaymentBundle\\Form\\Methods\\'.Inflector::classify($paymentMethod->getPaymentMethod());
-        $formType = class_exists($formClass) ? $formClass : null;
+        $originalSettings = $paymentMethod->getConfig();
 
         $form = $this->createForm(
             PaymentMethodForm::class,
             $paymentMethod,
             [
-                'settings' => $formType,
-                'internal' => $this->get('payum.factories')->isOffline($paymentMethod->getPaymentMethod()),
+                'config' => $paymentFactories->getForm($paymentMethod->getGatewayName()),
+                'internal' => $paymentFactories->isOffline($paymentMethod->getGatewayName()),
                 'action' => $this->generateUrl('_payment_method_settings', ['method' => $methodName]),
             ]
         );
@@ -57,7 +55,7 @@ class AjaxController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $settings = (array) $paymentMethod->getSettings();
+            $settings = (array) $paymentMethod->getConfig();
 
             foreach ($settings as $key => $value) {
                 if ('password' === $key && null === $value && !empty($originalSettings[$key])) {
@@ -65,7 +63,7 @@ class AjaxController extends BaseController
                 }
             }
 
-            $paymentMethod->setSettings($settings);
+            $paymentMethod->setConfig($settings);
             $this->save($paymentMethod);
             $this->flash($this->trans('payment.method.updated'), 'success');
         }
@@ -76,7 +74,7 @@ class AjaxController extends BaseController
                     'CSBillPaymentBundle:Ajax:loadmethodsettings.html.twig',
                     [
                         'form' => $form->createView(),
-                        'method' => $paymentMethod->getPaymentMethod(),
+                        'method' => $paymentMethod->getGatewayName(),
                     ]
                 ),
             ]
