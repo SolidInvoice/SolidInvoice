@@ -38,7 +38,7 @@ class PaypalExpressCheckout extends AbstractType
             PasswordType::class,
             [
                 //'constraints' => new NotBlank(),
-                'help' => 'payment.settings.password.hint'
+		'help' => 'payment.settings.password.hint',
             ]
         );
 

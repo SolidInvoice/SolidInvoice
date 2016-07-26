@@ -63,6 +63,7 @@ class PaymentFactories
      * @param string $gateway
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function getFactory($gateway)

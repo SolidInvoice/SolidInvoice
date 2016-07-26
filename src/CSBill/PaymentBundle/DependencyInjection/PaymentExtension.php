@@ -45,7 +45,6 @@ class PaymentExtension extends Extension
         $container->setDefinition('payum.factories', $definition);
     }
 
-
     /**
      * {@inheritdoc}
      */
