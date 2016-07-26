@@ -16,11 +16,6 @@ use Doctrine\ORM\NoResultException;
 
 class PaymentMethodRepository extends EntityRepository
 {
-    /*public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
-    {
-
-    }*/
-
     /**
      * @param string $gatewayName
      *
