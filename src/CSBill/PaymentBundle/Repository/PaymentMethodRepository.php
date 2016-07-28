@@ -17,17 +17,17 @@ use Doctrine\ORM\NoResultException;
 class PaymentMethodRepository extends EntityRepository
 {
     /**
-     * @param string $paymentMethod
+     * @param string $gatewayName
      *
      * @return array
      */
-    public function getSettingsForMethodArray($paymentMethod)
+    public function getSettingsForMethodArray($gatewayName)
     {
         $queryBuilder = $this->createQueryBuilder('pm');
 
-        $queryBuilder->select('pm.settings')
-            ->where('pm.paymentMethod = :paymentMethod')
-            ->setParameter('paymentMethod', $paymentMethod);
+        $queryBuilder->select('pm.config')
+            ->where('pm.gatewayName = :gatewayName')
+            ->setParameter('gatewayName', $gatewayName);
 
         try {
             $settings = $queryBuilder->getQuery()->getSingleResult();

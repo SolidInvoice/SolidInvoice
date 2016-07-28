@@ -41,8 +41,8 @@ class PaymentMethodForm extends AbstractType
             );
         }
 
-        if (null !== $options['settings']) {
-            $builder->add('settings', $options['settings']);
+        if (null !== $options['config']) {
+            $builder->add('config', $options['config']);
         }
 
         $builder->add(
@@ -61,8 +61,8 @@ class PaymentMethodForm extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['settings']);
-        $resolver->setAllowedTypes('settings', ['string', 'null']);
+        $resolver->setRequired(['config']);
+        $resolver->setAllowedTypes('config', ['string', 'null']);
 
         $resolver->setDefaults(
             [

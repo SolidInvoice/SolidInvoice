@@ -54,7 +54,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function paymentEnabled($method)
     {
-        $paymentMethod = $this->getRepository()->findOneBy(['paymentMethod' => $method]);
+        $paymentMethod = $this->getRepository()->findOneBy(['gatewayName' => $method]);
 
         if (null === $paymentMethod) {
             return false;

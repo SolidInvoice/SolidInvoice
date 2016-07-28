@@ -13,10 +13,7 @@ namespace CSBill\PaymentBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -35,39 +32,5 @@ class CSBillPaymentExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('payment_api.yml');
-
-        $files = Finder::create()
-            ->in(__DIR__.'/../Form/Methods')
-            ->files()
-            ->ignoreDotFiles(true)
-            ->getIterator();
-
-        /** @var \SplFileInfo $file */
-        foreach ($files as $key => $file) {
-            $class = $file->getBasename('.'.$file->getExtension());
-
-            if (class_exists($class = self::NS.'\\'.$class)) {
-                $this->addPaymentForm($container, $class);
-            }
-        }
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @param string           $class
-     *
-     * @return Definition
-     */
-    private function addPaymentForm(ContainerBuilder $container, $class)
-    {
-        /** @var FormInterface $instance */
-        $instance = new $class();
-        $name = $instance->getName();
-
-        $definition = new Definition($class);
-        $definition->addTag('form.type', ['alias' => $name]);
-
-        $container->setDefinition(sprintf('csbill_payment.method.%s', $name), $definition);
     }
 }
