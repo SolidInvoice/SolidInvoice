@@ -42,11 +42,22 @@ class PaymentFactories
     }
 
     /**
+     * @param string $type
+     *
      * @return array
      */
-    public function getFactories()
+    public function getFactories($type = null)
     {
-        return $this->factories;
+        if (null === $type) {
+            return $this->factories;
+        }
+
+        return array_filter(
+            $this->factories,
+            function ($factory) use ($type) {
+                return $type === $factory;
+            }
+        );
     }
 
     /**

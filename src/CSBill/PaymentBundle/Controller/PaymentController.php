@@ -74,6 +74,8 @@ class PaymentController extends BaseController
 
         $form->handleRequest($request);
 
+        $paymentFactories = array_keys($this->get('payum.factories')->getFactories('offline'));
+
         if ($form->isValid()) {
             $data = $form->getData();
             /** @var Money $amount */
@@ -84,25 +86,29 @@ class PaymentController extends BaseController
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if ('credit' === $paymentName) {
-                $clientCredit = $invoice->getClient()->getCredit()->getValue();
+            if (in_array($paymentName, $paymentFactories)) {
+                if ('credit' === $paymentName) {
+                    $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
-                $invalid = '';
-                if ($amount->greaterThan($clientCredit)) {
-                    $invalid = 'payment.create.exception.not_enough_credit';
-                } elseif ($amount->greaterThan($invoice->getBalance())) {
-                    $invalid = 'payment.create.exception.amount_exceeds_balance';
-                }
+                    $invalid = '';
+                    if ($amount->greaterThan($clientCredit)) {
+                        $invalid = 'payment.create.exception.not_enough_credit';
+                    } elseif ($amount->greaterThan($invoice->getBalance())) {
+                        $invalid = 'payment.create.exception.amount_exceeds_balance';
+                    }
 
-                if (!empty($invalid)) {
-                    $this->flash($this->trans($invalid), 'error');
+                    if (!empty($invalid)) {
+                        $this->flash($this->trans($invalid), 'error');
 
-                    return $this->redirectToRoute(
-                        '_payments_create',
-                        [
-                            'uuid' => $invoice->getUuid(),
-                        ]
-                    );
+                        return $this->render(
+                            'CSBillPaymentBundle:Payment:create.html.twig',
+                            [
+                                'form' => $form->createView(),
+                                'invoice' => $invoice,
+                                'internal' => array_keys($paymentFactories),
+                            ]
+                        );
+                    }
                 }
 
                 $data['capture_online'] = true;
@@ -154,6 +160,7 @@ class PaymentController extends BaseController
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
+                'internal' => $paymentFactories,
             ]
         );
     }

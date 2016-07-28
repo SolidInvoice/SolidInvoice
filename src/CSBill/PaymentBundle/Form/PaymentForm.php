@@ -11,6 +11,7 @@
 
 namespace CSBill\PaymentBundle\Form;
 
+use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Money\Money;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -57,6 +58,9 @@ class PaymentForm extends AbstractType
                 'preferred_choices' => $options['preferred_choices'],
                 'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
+                'choice_attr' => function (PaymentMethod $paymentMethod) {
+                    return ['data-gateway' => $paymentMethod->getGatewayName()];
+                },
                 'attr' => [
                     'class' => 'select2',
                 ],
