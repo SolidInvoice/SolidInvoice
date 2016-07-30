@@ -13,6 +13,7 @@ namespace CSBill\QuoteBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Traits\Entity;
+use CSBill\QuoteBundle\Traits\QuoteStatusTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -20,6 +21,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serialize;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -36,7 +38,10 @@ class Quote
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable,
-        Entity\Archivable;
+        Entity\Archivable,
+        QuoteStatusTrait {
+        Entity\Archivable::isArchived insteadof QuoteStatusTrait;
+    }
 
     /**
      * @var int
@@ -175,11 +180,11 @@ class Quote
     }
 
     /**
-     * @param Uuid $uuid
+     * @param UuidInterface $uuid
      *
      * @return Quote
      */
-    public function setUuid(Uuid $uuid)
+    public function setUuid(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
 

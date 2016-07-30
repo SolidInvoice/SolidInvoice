@@ -10,7 +10,7 @@
 {% extends "CSBillCoreBundle:View:template.html.twig" %}
 
 {% block heading %}
-    {% if payments_configured(false) > 0 %}
+    {% if not invoice.paid and payments_configured(false) > 0 %}
         <fieldset class="page-heading">
             <legend>
                 <div class="pull-right header-button">

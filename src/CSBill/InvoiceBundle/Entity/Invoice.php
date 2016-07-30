@@ -13,6 +13,7 @@ namespace CSBill\InvoiceBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Traits\Entity;
+use CSBill\InvoiceBundle\Traits\InvoiceStatusTrait;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +22,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serialize;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -37,7 +39,10 @@ class Invoice
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable,
-        Entity\Archivable;
+        Entity\Archivable,
+        InvoiceStatusTrait {
+            Entity\Archivable::isArchived insteadof InvoiceStatusTrait;
+        }
 
     /**
      * @var int
@@ -105,7 +110,7 @@ class Invoice
     private $tax;
 
     /**
-     * @var Money
+     * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
      * @Serialize\Expose()
@@ -213,11 +218,11 @@ class Invoice
     }
 
     /**
-     * @param Uuid $uuid
+     * @param UuidInterface $uuid
      *
      * @return Invoice
      */
-    public function setUuid(Uuid $uuid)
+    public function setUuid(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
 
