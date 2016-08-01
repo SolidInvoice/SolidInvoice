@@ -12,6 +12,7 @@
 namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\ContactDetail;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Controller\BaseController;
@@ -69,14 +70,15 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Client $client)
     {
-        $form = $this->createForm(new ClientForm(), $client);
-
+        $originalContacts = $client->getContacts()->toArray();
         $originalContactsDetails = $this->getClientContactDetails($request, $client);
+
+        $form = $this->createForm(ClientForm::class, $client);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->removeClientContacts($client, $originalContactsDetails);
+            $this->removeClientContacts($client, $originalContacts, $originalContactsDetails);
 
             $this->save($client);
             $this->flash($this->trans('client_saved'), 'success');
@@ -147,13 +149,12 @@ class DefaultController extends BaseController
 
     /**
      * @param Client $client
+     * @param array  $originalContacts
      * @param array  $originalContactsDetails
      */
-    private function removeClientContacts(Client $client, array $originalContactsDetails)
+    private function removeClientContacts(Client $client, array $originalContacts, array $originalContactsDetails)
     {
         $entityManager = $this->getEm();
-
-        $originalContacts = $client->getContacts()->toArray();
 
         foreach ($client->getContacts() as $originalContact) {
             foreach ($originalContacts as $key => $toDel) {
@@ -164,8 +165,8 @@ class DefaultController extends BaseController
         }
 
         foreach ($originalContacts as $contact) {
-            $entityManager->remove($contact);
             $client->removeContact($contact);
+            $entityManager->remove($contact);
         }
 
         unset($contact, $key, $toDel);
@@ -176,6 +177,10 @@ class DefaultController extends BaseController
             }
 
             foreach ($contact->getAdditionalDetails() as $originalContactDetail) {
+                /**
+                 * @var ContactDetail $toDel
+                 * @var ContactDetail $originalContactDetail
+                 */
                 foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
                     if ($toDel->getId() === $originalContactDetail->getId()) {
                         unset($originalContactsDetails[$contact->getId()][$key]);

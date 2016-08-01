@@ -13,6 +13,7 @@ namespace CSBill\ClientBundle\Controller;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
+use CSBill\ClientBundle\Form\Contact as ContactType;
 use CSBill\CoreBundle\Controller\BaseController;
 use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,7 +61,7 @@ class AjaxController extends BaseController
         $contact = new Contact();
         $contact->setClient($client);
 
-        $form = $this->createForm('contact', $contact, ['allow_delete' => false]);
+        $form = $this->createForm(ContactType::class, $contact, ['allow_delete' => false]);
 
         $response = [];
 
@@ -111,7 +112,7 @@ class AjaxController extends BaseController
 
         $originalContactDetails = $contact->getAdditionalDetails()->toArray();
 
-        $form = $this->createForm('contact', $contact, ['allow_delete' => false]);
+        $form = $this->createForm(ContactType::class, $contact, ['allow_delete' => false]);
 
         if ($request->isMethod('POST')) {
             $contact->getAdditionalDetails()->clear();
