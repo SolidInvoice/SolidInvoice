@@ -15,6 +15,7 @@ services:
             - '@api.token.manager'
     api.failure:
         class: CSBill\ApiBundle\Event\Listener\AuthenticationFailHandler
+
     api.token.manager:
         class: CSBill\ApiBundle\ApiTokenManager
         arguments:
