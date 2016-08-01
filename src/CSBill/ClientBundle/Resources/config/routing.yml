@@ -58,6 +58,14 @@ _clients_contact:
         - DELETE
     options:
         expose: true
+_clients_address:
+    path: '/ajax/address/{id}'
+    defaults:
+        _controller: 'CSBillClientBundle:Ajax:address'
+    methods:
+        - DELETE
+    options:
+        expose: true
 _clients_archive:
     path: /archive
     defaults:

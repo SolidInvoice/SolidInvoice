@@ -12,6 +12,7 @@ client:
         info: 'Address Info'
         add: 'Add Address'
         delete: 'Delete Address'
+        delete_confirm: 'Are you sure you want to delete this address?'
         country:
             select: 'Select Country'
         view_map: 'View Map'

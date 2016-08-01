@@ -11,6 +11,7 @@
 
 namespace CSBill\ClientBundle\Controller;
 
+use CSBill\ClientBundle\Entity\Address;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Contact as ContactType;
@@ -90,6 +91,38 @@ class AjaxController extends BaseController
         $response['content'] = $content;
 
         return $this->json($response);
+    }
+
+    /**
+     * @param mixed $response
+     *
+     * @return Response
+     */
+    private function serializeResponse($response)
+    {
+        $context = SerializationContext::create()->setGroups(['js']);
+
+        return new Response($this->get('serializer')->serialize($response, 'json', $context), 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @param Address $address
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|Response
+     */
+    public function addressAction(Request $request, Address $address)
+    {
+        if ($request->isMethod('DELETE')) {
+            $entityManager = $this->getEm();
+            $entityManager->remove($address);
+            $entityManager->flush();
+
+            return $this->json([]);
+        }
+
+        return $this->serializeResponse($address);
     }
 
     /**
@@ -210,17 +243,5 @@ class AjaxController extends BaseController
         $this->flash($this->trans('client.delete_success'), 'success');
 
         return $this->json(['status' => 'success']);
-    }
-
-    /**
-     * @param mixed $response
-     *
-     * @return Response
-     */
-    private function serializeResponse($response)
-    {
-        $context = SerializationContext::create()->setGroups(['js']);
-
-        return new Response($this->get('serializer')->serialize($response, 'json', $context), 200, ['Content-Type' => 'application/json']);
     }
 }
