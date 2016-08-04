@@ -8,8 +8,8 @@
  */
 
 define(
-    ['jquery', 'core/module', 'backbone', 'bootstrap.bootbox', 'routing', 'translator', 'client/view/info', './credit', './contacts', 'client/view/address_collection'],
-    function($, Module, Backbone, Bootbox, Routing, __, InfoView, ClientCredit, ClientContact, AddressView) {
+    ['jquery', 'core/module', 'backbone', 'bootstrap.bootbox', 'routing', 'translator', 'client/view/info', './credit', './contacts', 'client/view/address_collection', 'client/model/address_collection'],
+    function($, Module, Backbone, Bootbox, Routing, __, InfoView, ClientCredit, ClientContact, AddressView, AddressCollection) {
         'use strict';
 
         return Module.extend({
@@ -26,7 +26,7 @@ define(
             _renderClientAddresses: function(layoutView, options) {
                 try {
                     layoutView.getRegion('clientAddress').show(new AddressView({
-                        collection: new Backbone.Collection(options.addresses)
+                        collection: new AddressCollection(options.addresses)
                     }));
                 } catch (e) {
                 }

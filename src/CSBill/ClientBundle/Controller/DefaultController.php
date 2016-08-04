@@ -71,6 +71,7 @@ class DefaultController extends BaseController
     public function editAction(Request $request, Client $client)
     {
         $originalContacts = $client->getContacts()->toArray();
+        $originalAddresses = $client->getAddresses()->toArray();
         $originalContactsDetails = $this->getClientContactDetails($request, $client);
 
         $form = $this->createForm(ClientForm::class, $client);
@@ -79,6 +80,7 @@ class DefaultController extends BaseController
 
         if ($form->isValid()) {
             $this->removeClientContacts($client, $originalContacts, $originalContactsDetails);
+            $this->removeClientAddresses($client, $originalAddresses);
 
             $this->save($client);
             $this->flash($this->trans('client_saved'), 'success');
@@ -91,35 +93,6 @@ class DefaultController extends BaseController
             [
                 'client' => $client,
                 'form' => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * View a client.
-     *
-     * @param Client $client
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function viewAction(Client $client)
-    {
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
-        $payments = $paymentRepository->getPaymentsForClient($client);
-
-        /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
-
-        return $this->render(
-            'CSBillClientBundle:Default:view.html.twig',
-            [
-                'client' => $client,
-                'payments' => $payments,
-                'total_invoices_pending' => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
-                'total_invoices_paid' => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
-                'total_income' => $paymentRepository->getTotalIncome($client),
-                'total_outstanding' => $invoiceRepository->getTotalOutstanding($client),
             ]
         );
     }
@@ -193,5 +166,56 @@ class DefaultController extends BaseController
                 $contact->removeAdditionalDetail($contactDetail);
             }
         }
+    }
+
+    /**
+     * @param Client $client
+     * @param array  $originalAddresses
+     */
+    private function removeClientAddresses(Client $client, array $originalAddresses)
+    {
+        $entityManager = $this->getEm();
+
+        foreach ($client->getAddresses() as $originalAddress) {
+            foreach ($originalAddresses as $key => $toDel) {
+                if ($toDel->getId() === $originalAddress->getId()) {
+                    unset($originalAddresses[$key]);
+                }
+            }
+        }
+
+        foreach ($originalAddresses as $address) {
+            $client->removeAddress($address);
+            $entityManager->remove($address);
+        }
+    }
+
+    /**
+     * View a client.
+     *
+     * @param Client $client
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewAction(Client $client)
+    {
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
+        $payments = $paymentRepository->getPaymentsForClient($client);
+
+        /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
+        $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
+
+        return $this->render(
+            'CSBillClientBundle:Default:view.html.twig',
+            [
+                'client' => $client,
+                'payments' => $payments,
+                'total_invoices_pending' => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
+                'total_invoices_paid' => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
+                'total_income' => $paymentRepository->getTotalIncome($client),
+                'total_outstanding' => $invoiceRepository->getTotalOutstanding($client),
+            ]
+        );
     }
 }

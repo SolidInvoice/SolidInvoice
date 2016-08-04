@@ -11,9 +11,11 @@
 
 namespace CSBill\ClientBundle\Controller;
 
+use CSBill\ClientBundle\Entity\Address;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Contact as ContactType;
+use CSBill\ClientBundle\Form\Type\AddressType;
 use CSBill\CoreBundle\Controller\BaseController;
 use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,6 +95,38 @@ class AjaxController extends BaseController
     }
 
     /**
+     * @param mixed $response
+     *
+     * @return Response
+     */
+    private function serializeResponse($response)
+    {
+        $context = SerializationContext::create()->setGroups(['js']);
+
+        return new Response($this->get('serializer')->serialize($response, 'json', $context), 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @param Address $address
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|Response
+     */
+    public function addressAction(Request $request, Address $address)
+    {
+        if ($request->isMethod('DELETE')) {
+            $entityManager = $this->getEm();
+            $entityManager->remove($address);
+            $entityManager->flush();
+
+            return $this->json([]);
+        }
+
+        return $this->serializeResponse($address);
+    }
+
+    /**
      * Edits a contact.
      *
      * @param Request $request
@@ -168,6 +202,48 @@ class AjaxController extends BaseController
     }
 
     /**
+     * Edits a contact.
+     *
+     * @param Request $request
+     * @param Address $address
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAddressAction(Request $request, Address $address)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
+        $status = 'success';
+
+        $form = $this->createForm(AddressType::class, $address, ['canDelete' => false]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $this->save($address);
+        } elseif ($form->isSubmitted()) {
+            $status = 'failure';
+        }
+
+        return $this->json(
+            [
+                'content' => $this->renderView(
+                    'CSBillClientBundle:Ajax:address_edit.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'address' => $address,
+                    ]
+                ),
+                'status' => $status,
+            ]
+        );
+    }
+
+    /**
      * Renders a contact card.
      *
      * @param Request $request
@@ -210,17 +286,5 @@ class AjaxController extends BaseController
         $this->flash($this->trans('client.delete_success'), 'success');
 
         return $this->json(['status' => 'success']);
-    }
-
-    /**
-     * @param mixed $response
-     *
-     * @return Response
-     */
-    private function serializeResponse($response)
-    {
-        $context = SerializationContext::create()->setGroups(['js']);
-
-        return new Response($this->get('serializer')->serialize($response, 'json', $context), 200, ['Content-Type' => 'application/json']);
     }
 }

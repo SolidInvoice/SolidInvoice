@@ -1,14 +1,14 @@
 define(
-    ['core/view', './contact_modal', './credit_modal', 'template', 'bootstrap.bootbox', 'translator'],
-    function(ItemView, ContactModal, CreditModal, Template, Bootbox, __) {
+    ['core/view', './contact_modal', 'template', 'bootstrap.bootbox', 'translator'],
+    function(ItemView, ContactModal, Template, Bootbox, __) {
         'use strict';
 
         return ItemView.extend({
             template: Template.client.contact,
 
-            templateHelpers: function () {
+            templateHelpers: function() {
                 return {
-                    'canDelete' : this.model.collection.length > 1
+                    'canDelete': this.model.collection.length > 1
                 };
             },
 
@@ -30,17 +30,17 @@ define(
                 this.render();
             },
 
-            deleteContact: function (event) {
+            deleteContact: function(event) {
                 event.preventDefault();
 
                 var view = this;
 
-                Bootbox.confirm(__('client.contact.delete_confirm'), function (confirm) {
+                Bootbox.confirm(__('client.contact.delete_confirm'), function(confirm) {
                     if (true === confirm) {
                         view.model.destroy(
                             {
                                 wait: true,
-                                error: function (model, xhr) {
+                                error: function(model, xhr) {
                                     Bootbox.alert(xhr.responseJSON);
                                 }
                             }
@@ -49,7 +49,7 @@ define(
                 });
             },
 
-            editContact: function (event) {
+            editContact: function(event) {
                 event.preventDefault();
 
                 this.trigger('before:model:edit');
