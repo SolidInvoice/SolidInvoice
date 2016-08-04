@@ -12,6 +12,7 @@ client:
         info: 'Address Info'
         add: 'Add Address'
         delete: 'Delete Address'
+        edit: 'Edit Address'
         delete_confirm: 'Are you sure you want to delete this address?'
         country:
             select: 'Select Country'
@@ -63,6 +64,7 @@ client:
     modal:
         add_credit: 'Add Credit'
         edit_contact: 'Edit Contact'
+        edit_address: 'Edit Address'
         credit:
             amount: Amount
             tip: '<strong>Tip:</strong> To substract an amount, add a ''-'' before the amount, E.G <code>%amount%</code>'

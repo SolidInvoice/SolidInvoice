@@ -1,18 +1,19 @@
 define(
-    ['core/view', 'template', 'bootstrap.bootbox', 'translator'],
-    function(ItemView, Template, Bootbox, __) {
+    ['core/view', './address_modal', 'template', 'bootstrap.bootbox', 'translator'],
+    function(ItemView, AddressModal, Template, Bootbox, __) {
         'use strict';
 
         return ItemView.extend({
             template: Template.client.address,
+
             ui: {
                 'deleteAddress': '.delete-address',
-                //'editAddress': '.edit-address'
+                'editAddress': '.edit-address'
             },
 
             events: {
                 "click @ui.deleteAddress": 'deleteAddress',
-                //"click @ui.editAddress": 'editAddress'
+                "click @ui.editAddress": 'editAddress'
             },
 
             initialize: function() {
@@ -22,6 +23,7 @@ define(
             modelSynced: function() {
                 this.render();
             },
+
             deleteAddress: function(event) {
                 event.preventDefault();
 
@@ -41,17 +43,17 @@ define(
                 });
             },
 
-            /*editAddress: function (event) {
-             event.preventDefault();
+            editAddress: function(event) {
+                event.preventDefault();
 
-             this.trigger('before:model:edit');
+                this.trigger('before:model:edit');
 
-             new AddressModal({
-             model: this.model,
-             route: this.$(event.currentTarget).prop('href')
-             });
+                new AddressModal({
+                    model: this.model,
+                    route: this.$(event.currentTarget).prop('href')
+                });
 
-             this.trigger('model:edit');
-             }*/
+                this.trigger('model:edit');
+            }
         });
     });

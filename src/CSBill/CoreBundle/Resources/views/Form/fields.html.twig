@@ -195,9 +195,11 @@
             </div>
         </div>
 
-        <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove pull-right" data-related="{{ id }}">
-            {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
-        </a>
+        {% if canDelete %}
+            <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove pull-right" data-related="{{ id }}">
+                {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
+            </a>
+        {% endif %}
         <br class="clear" />
     </div>
 {% endblock address_widget %}

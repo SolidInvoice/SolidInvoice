@@ -15,6 +15,7 @@ use CSBill\ClientBundle\Entity\Address;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Contact as ContactType;
+use CSBill\ClientBundle\Form\Type\AddressType;
 use CSBill\CoreBundle\Controller\BaseController;
 use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
@@ -198,6 +199,48 @@ class AjaxController extends BaseController
             $contact->removeAdditionalDetail($detail);
             $em->remove($detail);
         }
+    }
+
+    /**
+     * Edits a contact.
+     *
+     * @param Request $request
+     * @param Address $address
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAddressAction(Request $request, Address $address)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
+        $status = 'success';
+
+        $form = $this->createForm(AddressType::class, $address, ['canDelete' => false]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $this->save($address);
+        } elseif ($form->isSubmitted()) {
+            $status = 'failure';
+        }
+
+        return $this->json(
+            [
+                'content' => $this->renderView(
+                    'CSBillClientBundle:Ajax:address_edit.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'address' => $address,
+                    ]
+                ),
+                'status' => $status,
+            ]
+        );
     }
 
     /**
