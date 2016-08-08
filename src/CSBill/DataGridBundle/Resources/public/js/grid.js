@@ -26,7 +26,8 @@ define([
         'grid/cell/clientcell',
         'grid/cell/invoicecell',
         'grid/formatter/objectformatter',
-        'grid/formatter/discountformatter'
+        'grid/formatter/discountformatter',
+        'grid/formatter/moneyformatter'
     ],
     function(Mn,
              Backbone,
