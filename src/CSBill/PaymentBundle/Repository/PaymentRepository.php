@@ -9,33 +9,6 @@
  * with this source code in the file LICENSE.
  */
 
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace CSBill\PaymentBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
@@ -44,6 +17,7 @@ use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Money\Money;
 
 class PaymentRepository extends EntityRepository
@@ -113,19 +87,21 @@ class PaymentRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('p');
 
         $queryBuilder->select(
-        'p.id',
-        'p.totalAmount',
-        'p.currencyCode',
-        'p.created',
-        'p.completed',
-        'p.status',
-        'i.id as invoice',
-        'm.name as method',
-        'p.message'
-    )
-        ->join('p.method', 'm')
-        ->join('p.invoice', 'i')
-        ->orderBy($orderField, $sort);
+            [
+                'p.id',
+                'p.totalAmount',
+                'p.currencyCode',
+                'p.created',
+                'p.completed',
+                'p.status',
+                'i.id as invoice',
+                'm.name as method',
+                'p.message',
+            ]
+        )
+            ->join('p.method', 'm')
+            ->join('p.invoice', 'i')
+            ->orderBy($orderField, $sort);
 
         return $queryBuilder;
     }
@@ -187,8 +163,10 @@ class PaymentRepository extends EntityRepository
         $qb = $this->getPaymentQueryBuilder();
 
         $qb->addSelect(
-            'c.name as client',
-            'c.id as client_id'
+            [
+                'c.name as client',
+                'c.id as client_id',
+            ]
         )
             ->join('p.client', 'c')
             ->setMaxResults($limit);
@@ -228,22 +206,24 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
-     * @param \Doctrine\ORM\Query $query
-     * @param string              $dateFormat
+     * @param Query  $query
+     * @param string $dateFormat
      *
      * @return array
      */
-    private function formatDate($query, $dateFormat = 'Y-m-d')
+    private function formatDate(Query $query, $dateFormat = 'Y-m-d')
     {
         $payments = [];
 
         foreach ($query->getArrayResult() as $result) {
             /** @var \DateTime $created */
-        $created = $result['created'];
+            $created = $result['created'];
+
             $date = $created->format($dateFormat);
             if (!isset($payments[$date])) {
                 $payments[$date] = 0;
             }
+
             $payments[$date] += $result['totalAmount'];
         }
 
@@ -258,8 +238,10 @@ class PaymentRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('p');
 
         $queryBuilder->select(
-            'p.totalAmount',
-            'p.created'
+            [
+                'p.totalAmount',
+                'p.created',
+            ]
         )
             ->join('p.method', 'm')
             ->where('p.created >= :date')
@@ -311,9 +293,9 @@ class PaymentRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p');
 
         $qb->select(['p', 'c', 'i', 'm'])
-        ->join('p.client', 'c')
-        ->join('p.invoice', 'i')
-        ->join('p.method', 'm');
+            ->join('p.client', 'c')
+            ->join('p.invoice', 'i')
+            ->join('p.method', 'm');
 
         if (isset($parameters['invoice'])) {
             $qb->where('p.invoice = :invoice');

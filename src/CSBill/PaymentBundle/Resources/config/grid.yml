@@ -24,6 +24,7 @@ datagrid:
                 label: Total
                 editable: false
                 cell: string
+                formatter: money
             currency_code:
                 name: currencyCode
                 label: Currency
@@ -94,6 +95,7 @@ datagrid:
                 label: Total
                 editable: false
                 cell: string
+                formatter: money
             message:
                 name: message
                 label: Message
@@ -142,6 +144,7 @@ datagrid:
                 label: Total
                 editable: false
                 cell: string
+                formatter: money
             message:
                 name: message
                 label: Message
