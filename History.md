@@ -1,3 +1,22 @@
+0.8.0 / 2016-08-08
+==================
+
+  * Format payments as money (#116)
+  * Format discount properly in grid (#115)
+  * Edit and Delete addresses from client view (#114)
+  * Fix contacts not deleting when updating a client (#113)
+  * Update Tests (#111)
+  * Don't display pay button if invoice is already paid (#112)
+  * Update payments to use dynamic gateways
+  * Add Symfony 3 compatibility
+  * Skip user creation if user already exists during installation
+  * Fix requirements check exiting when installing through the command line
+  * Fix invalid locale and currency when passed through command line flags
+  * Fixed repository fetch
+  * Update other dependencies
+  * Upgrade Symfony to V2.8
+  * Upgrade Doctrine to V2.5
+
 0.7.0 / 2016-06-20
 ==================
 
