@@ -108,7 +108,6 @@ class AjaxController extends BaseController
 
     /**
      * @param Request $request
-     *
      * @param Address $address
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|Response
@@ -183,7 +182,7 @@ class AjaxController extends BaseController
     private function removeContactDetails(Contact $contact, array $originalContactDetails)
     {
         foreach ($contact->getAdditionalDetails() as $detail) {
-            /* @var \CSBill\ClientBundle\Entity\ContactDetail $detail */
+            /* @var \CSBill\ClientBundle\Entity\AdditionalContactDetail $detail */
             foreach ($originalContactDetails as $key => $toDel) {
                 if ($toDel->getId() === $detail->getId()) {
                     unset($originalContactDetails[$key]);

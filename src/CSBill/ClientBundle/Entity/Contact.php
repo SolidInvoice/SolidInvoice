@@ -13,13 +13,14 @@ namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="contacts")
+ * @ORM\Table(name="contacts", indexes={@ORM\Index(name="email", columns={"email"})})
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
@@ -42,21 +43,21 @@ class Contact implements \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="firstname", type="string", length=125, nullable=false)
+     * @ORM\Column(name="firstName", type="string", length=125, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"api", "js"})
      */
-    private $firstname;
+    private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lastname", type="string", length=125, nullable=true)
+     * @ORM\Column(name="lastName", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
      * @Serialize\Groups({"api", "js"})
      */
-    private $lastname;
+    private $lastName;
 
     /**
      * @var Client
@@ -68,14 +69,14 @@ class Contact implements \Serializable
     private $client;
 
     /**
-     * @var ArrayCollection
+     * @var string
      *
-     * @ORM\OneToMany(indexBy="contact_type_id", targetEntity="PrimaryContactDetail", mappedBy="contact",
-     *                                           cascade={"persist"})
-     * @Assert\Valid()
+     * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Email(strict=true)
      * @Serialize\Groups({"api", "js"})
      */
-    private $primaryDetails;
+    private $email;
 
     /**
      * @var ArrayCollection
@@ -86,12 +87,8 @@ class Contact implements \Serializable
      */
     private $additionalDetails;
 
-    /**
-     * Constructer.
-     */
     public function __construct()
     {
-        $this->primaryDetails = new ArrayCollection();
         $this->additionalDetails = new ArrayCollection();
     }
 
@@ -106,25 +103,25 @@ class Contact implements \Serializable
     }
 
     /**
-     * Get firstname.
+     * Get firstName.
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstName()
     {
-        return $this->firstname;
+        return $this->firstName;
     }
 
     /**
-     * Set firstname.
+     * Set firstName.
      *
-     * @param string $firstname
+     * @param string $firstName
      *
      * @return Contact
      */
-    public function setFirstname($firstname)
+    public function setFirstName($firstName)
     {
-        $this->firstname = $firstname;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -134,21 +131,21 @@ class Contact implements \Serializable
      *
      * @return string
      */
-    public function getLastname()
+    public function getLastName()
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
     /**
      * Set lastname.
      *
-     * @param string $lastname
+     * @param string $lastName
      *
      * @return Contact
      */
-    public function setLastname($lastname)
+    public function setLastName($lastName)
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -193,20 +190,6 @@ class Contact implements \Serializable
     }
 
     /**
-     * Removes primary detail from the current contact.
-     *
-     * @param PrimaryContactDetail $detail
-     *
-     * @return Contact
-     */
-    public function removePrimaryDetail(PrimaryContactDetail $detail)
-    {
-        $this->primaryDetails->removeElement($detail);
-
-        return $this;
-    }
-
-    /**
      * Removes additional detail from the current contact.
      *
      * @param AdditionalContactDetail $detail
@@ -221,59 +204,13 @@ class Contact implements \Serializable
     }
 
     /**
-     * Get primary details.
-     *
-     * @return ArrayCollection
-     */
-    public function getPrimaryDetails()
-    {
-        return $this->primaryDetails;
-    }
-
-    /**
-     * Add primary detail.
-     *
-     * @param PrimaryContactDetail $detail
-     *
-     * @return Contact
-     */
-    public function setPrimaryDetails(PrimaryContactDetail $detail)
-    {
-        if (!$this->primaryDetails->containsKey($detail->getType()->getId())) {
-            $this->primaryDetails->add($detail);
-        }
-
-        $detail->setContact($this);
-
-        return $this;
-    }
-
-    /**
      * Get additional details.
      *
-     * @return ArrayCollection
+     * @return Collection|AdditionalContactDetail[]
      */
     public function getAdditionalDetails()
     {
         return $this->additionalDetails;
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return null|PrimaryContactDetail
-     */
-    public function getPrimaryDetail($type)
-    {
-        if (count($this->primaryDetails) > 0) {
-            foreach ($this->primaryDetails as $detail) {
-                if (strtolower((string) $detail->getType()) === strtolower($type)) {
-                    return $detail;
-                }
-            }
-        }
-
-        return;
     }
 
     /**
@@ -290,6 +227,8 @@ class Contact implements \Serializable
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -297,7 +236,7 @@ class Contact implements \Serializable
      */
     public function serialize()
     {
-        return serialize([$this->id, $this->firstname, $this->lastname, $this->created, $this->updated]);
+        return serialize([$this->id, $this->firstName, $this->lastName, $this->created, $this->updated]);
     }
 
     /**
@@ -305,7 +244,7 @@ class Contact implements \Serializable
      */
     public function unserialize($serialized)
     {
-        @list($this->id, $this->firstname, $this->lastname, $this->created, $this->updated) = unserialize($serialized);
+        @list($this->id, $this->firstName, $this->lastName, $this->created, $this->updated) = unserialize($serialized);
     }
 
     /**
@@ -313,6 +252,26 @@ class Contact implements \Serializable
      */
     public function __toString()
     {
-        return $this->firstname.' '.$this->lastname;
+        return $this->firstName.' '.$this->lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return Contact
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

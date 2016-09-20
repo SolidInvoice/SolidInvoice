@@ -16,17 +16,15 @@
 
     <div class="child row">
         <div class="col-lg-6 col-md-6">
-            {{ form_row(form.firstname) }}
+            {{ form_row(form.firstName) }}
         </div>
         <div class="col-lg-6 col-md-6">
-            {{ form_row(form.lastname) }}
+            {{ form_row(form.lastName) }}
         </div>
     </div>
 
     <div class="collection-container">
-        {% for item in contactTypes() if item.required %}
-            {{ form_row(form['details_' ~ item.name]) }}
-        {% endfor %}
+        {{ form_row(form.email) }}
     </div>
 
     {% set additional_details = form_row(form.additionalDetails.vars.prototype) %}

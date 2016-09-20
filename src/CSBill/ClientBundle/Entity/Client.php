@@ -16,6 +16,7 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -85,8 +86,9 @@ class Client
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"firstname" = "ASC"})
+     * @ORM\OrderBy({"firstName" = "ASC"})
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
+     * @Assert\Valid()
      * @Serialize\Groups({"js"})
      */
     private $contacts;
@@ -260,7 +262,7 @@ class Client
     /**
      * Get contacts.
      *
-     * @return ArrayCollection
+     * @return Collection|Contact[]
      */
     public function getContacts()
     {

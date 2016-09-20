@@ -72,7 +72,7 @@ class ContactType
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="ContactDetail", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type")
      * @Serialize\Groups({"none"})
      */
     private $details;
@@ -146,11 +146,11 @@ class ContactType
     /**
      * Add detail.
      *
-     * @param ContactDetail $detail
+     * @param AdditionalContactDetail $detail
      *
      * @return ContactType
      */
-    public function addDetail(ContactDetail $detail)
+    public function addDetail(AdditionalContactDetail $detail)
     {
         $this->details[] = $detail;
         $detail->setType($this);

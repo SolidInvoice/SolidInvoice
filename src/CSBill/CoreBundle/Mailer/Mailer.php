@@ -108,7 +108,7 @@ class Mailer implements MailerInterface
 
         foreach ($invoice->getUsers() as $user) {
             /* @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
+            $users[(string) $user->getEmail()] = $user->getFirstName().' '.$user->getLastName();
         }
 
         $event = new InvoiceMailEvent();
@@ -244,7 +244,7 @@ class Mailer implements MailerInterface
 
         foreach ($quote->getUsers() as $user) {
             /* @var \CSBill\ClientBundle\Entity\Contact $user */
-            $users[(string) $user->getPrimaryDetail('email')] = $user->getFirstname().' '.$user->getLastname();
+            $users[(string) $user->getEmail()] = $user->getFirstName().' '.$user->getLastName();
         }
 
         $event = new QuoteEvent();

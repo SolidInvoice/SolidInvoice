@@ -11,8 +11,8 @@
 
 namespace CSBill\ClientBundle\Form;
 
+use CSBill\ClientBundle\Entity\AdditionalContactDetail;
 use CSBill\ClientBundle\Form\Type\ContactDetailType;
-use CSBill\ClientBundle\Form\Type\PrimaryContactDetailType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -39,28 +39,9 @@ class Contact extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('firstname');
-        $builder->add('lastname');
-
-        foreach ($this->types as $item) {
-            if ($item->isRequired()) {
-                $contactDetails = $builder->create(
-                    'details_'.$item->getName(),
-                    new PrimaryContactDetailType($item),
-                    [
-                        'required' => true,
-                        'property_path' => 'primaryDetails',
-                        'by_reference' => true,
-                    ]
-                );
-
-                $contactDetails->addModelTransformer(new DataTransformer\ContactDetailTransformer($item));
-
-                $builder->add(
-                    $contactDetails
-                );
-            }
-        }
+        $builder->add('firstName');
+        $builder->add('lastName');
+        $builder->add('email');
 
         $builder->add(
             'additionalDetails',
@@ -77,7 +58,7 @@ class Contact extends AbstractType
                 'prototype_name' => '__contact_details_prototype__',
                 'error_bubbling' => false,
                 'options' => [
-                    'data_class' => 'CSBill\ClientBundle\Entity\AdditionalContactDetail',
+                    'data_class' => AdditionalContactDetail::class,
                 ],
             ]
         );
@@ -98,7 +79,7 @@ class Contact extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'CSBill\ClientBundle\Entity\Contact',
+                'data_class' => \CSBill\ClientBundle\Entity\Contact::class,
                 'csrf_protection' => false,
                 'allow_delete' => true,
             ]
