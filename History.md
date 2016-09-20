@@ -1,3 +1,8 @@
+1.0.0 / 2016-09-20
+==================
+
+  * Move email from contact_details to contact table (#117)
+
 0.8.1 / 2016-08-10
 ==================
 

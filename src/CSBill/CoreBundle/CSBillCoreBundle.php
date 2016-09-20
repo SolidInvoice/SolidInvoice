@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CSBillCoreBundle extends Bundle
 {
-    const VERSION = '0.9.0-dev';
+    const VERSION = '1.0.0';
 
     /**
      * {@inheritdoc}
