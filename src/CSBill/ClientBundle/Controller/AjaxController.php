@@ -108,7 +108,6 @@ class AjaxController extends BaseController
 
     /**
      * @param Request $request
-     *
      * @param Address $address
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|Response

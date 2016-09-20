@@ -16,6 +16,7 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -261,7 +262,7 @@ class Client
     /**
      * Get contacts.
      *
-     * @return ArrayCollection
+     * @return Collection|Contact[]
      */
     public function getContacts()
     {

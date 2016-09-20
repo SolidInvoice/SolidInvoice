@@ -13,6 +13,7 @@ namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
@@ -205,7 +206,7 @@ class Contact implements \Serializable
     /**
      * Get additional details.
      *
-     * @return ArrayCollection
+     * @return Collection|AdditionalContactDetail[]
      */
     public function getAdditionalDetails()
     {
