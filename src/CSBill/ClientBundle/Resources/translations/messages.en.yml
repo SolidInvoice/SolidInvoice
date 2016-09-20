@@ -26,6 +26,7 @@ client:
         details:
             choose: Choose
             extra: 'Additional Contact Details'
+            email: Email
     grid:
         actions:
             view: View
@@ -79,6 +80,7 @@ client:
         create:
             invoice: 'Create Invoice'
             quote: 'Create Quote'
+
 email: Email
 clients: Clients
 add_client: 'Add Client'

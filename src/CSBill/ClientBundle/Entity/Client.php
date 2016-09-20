@@ -85,8 +85,9 @@ class Client
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"firstname" = "ASC"})
+     * @ORM\OrderBy({"firstName" = "ASC"})
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
+     * @Assert\Valid()
      * @Serialize\Groups({"js"})
      */
     private $contacts;

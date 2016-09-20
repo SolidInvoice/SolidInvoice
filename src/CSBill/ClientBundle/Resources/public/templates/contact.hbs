@@ -1,14 +1,12 @@
 <div class="col-lg-6 col-md-6">
     <div class="widget well well-sm contact-card" data-id="{{ id }}">
         <h4>
-            <i class="fa fa-user"></i> {{ firstname }} {{ lastname }}
+            <i class="fa fa-user"></i> {{ first_name }} {{ last_name }}
         </h4>
 
         <dl class="dl-horizontal">
-            {{#each primary_details }}
-                <dt>{{ this.type }}:</dt>
-                <dd>{{ this.value }}</dd>
-            {{/each}}
+            <dt>{{trans 'client.contact.details.email'}}:</dt>
+            <dd>{{ email }}</dd>
         </dl>
 
         {{#if additionalDetails}}

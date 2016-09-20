@@ -11,8 +11,8 @@
 
 namespace CSBill\ClientBundle\Controller;
 
+use CSBill\ClientBundle\Entity\AdditionalContactDetail;
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Entity\ContactDetail;
 use CSBill\ClientBundle\Form\Client as ClientForm;
 use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Controller\BaseController;
@@ -151,8 +151,8 @@ class DefaultController extends BaseController
 
             foreach ($contact->getAdditionalDetails() as $originalContactDetail) {
                 /**
-                 * @var ContactDetail $toDel
-                 * @var ContactDetail $originalContactDetail
+                 * @var AdditionalContactDetail $toDel
+                 * @var AdditionalContactDetail $originalContactDetail
                  */
                 foreach ($originalContactsDetails[$contact->getId()] as $key => $toDel) {
                     if ($toDel->getId() === $originalContactDetail->getId()) {
