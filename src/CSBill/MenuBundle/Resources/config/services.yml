@@ -9,17 +9,23 @@ services:
         class: '%csbill_menu.factory.class%'
         arguments:
             - '@router'
+
     csbill_menu.renderer:
         class: '%csbill_menu.renderer.class%'
         arguments:
-            - '@service_container'
+            - '@request_stack'
             - '@csbill_menu.factory'
+        calls:
+            - ['setContainer', ['@service_container']]
+
     csbill_menu.provider:
         class: '%csbill_menu.provider.class%'
         arguments:
             - '@csbill_menu.storage'
+
     csbill_menu.storage:
         class: '%csbill_menu_storage.class%'
+
     csbill_menu.twig.extension:
         class: '%csbill_menu.twig.class%'
         calls:

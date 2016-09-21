@@ -13,6 +13,7 @@ namespace CSBill\CoreBundle\Traits\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
+use Doctrine\ORM\Mapping as ORM;
 
 trait TimeStampable
 {

@@ -12,6 +12,7 @@
 namespace CSBill\CoreBundle\Traits\Entity;
 
 use JMS\Serializer\Annotation as Serialize;
+use Doctrine\ORM\Mapping as ORM;
 
 trait SoftDeleteable
 {

@@ -29,18 +29,11 @@ class StatsWidget implements WidgetInterface
     private $manager;
 
     /**
-     * @var Currency
-     */
-    private $currency;
-
-    /**
      * @param ManagerRegistry $registry
-     * @param Currency        $currency
      */
-    public function __construct(ManagerRegistry $registry, Currency $currency)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManager();
-        $this->currency = $currency;
     }
 
     /**

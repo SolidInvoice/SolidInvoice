@@ -125,7 +125,7 @@ class PaymentController extends BaseController
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());
             $payment->setNumber($invoice->getId());
-            $payment->setClientEmail($invoice->getClient()->getContacts()->first()->getPrimaryDetail('email'));
+            $payment->setClientEmail($invoice->getClient()->getContacts()->first()->getEmail());
             $invoice->addPayment($payment);
             $this->save($payment);
 

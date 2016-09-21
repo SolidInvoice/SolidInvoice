@@ -14,25 +14,13 @@ namespace CSBill\CoreBundle\Twig\Extension;
 use Carbon\Carbon;
 use CSBill\CoreBundle\CSBillCoreBundle;
 use Money\Money;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
-class GlobalExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class GlobalExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface, ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * Sets the container.
-     *
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    use ContainerAwareTrait;
 
     /**
      * Get global twig variables.

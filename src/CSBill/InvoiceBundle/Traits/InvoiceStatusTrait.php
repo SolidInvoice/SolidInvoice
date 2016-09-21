@@ -14,7 +14,7 @@ use CSBill\InvoiceBundle\Model\Graph;
 
 trait InvoiceStatusTrait
 {
-    abstract function getStatus();
+    abstract public function getStatus();
 
     /**
      * @return bool

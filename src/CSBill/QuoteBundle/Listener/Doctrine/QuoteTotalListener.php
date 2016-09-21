@@ -11,7 +11,6 @@
 
 namespace CSBill\QuoteBundle\Listener\Doctrine;
 
-use CSBill\ClientBundle\Entity\Contact;
 use CSBill\CoreBundle\Util\ArrayUtil;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\Event\LifecycleEventArgs;

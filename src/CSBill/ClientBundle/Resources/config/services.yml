@@ -32,13 +32,15 @@ services:
         factory: ['@doctrine', getRepository]
         arguments:
             - 'CSBillClientBundle:ContactType'
+
     csbill_client.contact_type.values:
         class: '%csbill_client.contact_type.repository.class%'
         factory: ['@csbill_client.contact_type.repository', findAll]
+
     client.notification.listener:
         class: CSBill\ClientBundle\Listener\ClientListener
-        arguments:
-            - '@service_container'
+        calls:
+            - ['setContainer', ['@service_container']]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 

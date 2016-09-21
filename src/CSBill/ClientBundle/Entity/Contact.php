@@ -244,7 +244,7 @@ class Contact implements \Serializable
      */
     public function unserialize($serialized)
     {
-        @list($this->id, $this->firstName, $this->lastName, $this->created, $this->updated) = unserialize($serialized);
+        list($this->id, $this->firstName, $this->lastName, $this->created, $this->updated) = unserialize($serialized);
     }
 
     /**

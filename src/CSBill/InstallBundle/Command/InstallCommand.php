@@ -48,18 +48,15 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'csbill')
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
-
             ->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'mail')
             ->addOption('mailer-host', null, InputOption::VALUE_REQUIRED, 'The email host (only applicable for SMTP)', 'localhost')
             ->addOption('mailer-user', null, InputOption::VALUE_REQUIRED, 'The user for email authentication (only applicable for SMTP and Gmail)')
             ->addOption('mailer-password', null, InputOption::VALUE_REQUIRED, 'The password for the email user (only applicable for SMTP and Gmail)')
             ->addOption('mailer-port', null, InputOption::VALUE_REQUIRED, 'The email port to use  (only applicable for SMTP and Gmail)', 25)
             ->addOption('mailer-encryption', null, InputOption::VALUE_REQUIRED, 'The encryption to use for email, if any')
-
             ->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')
             ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
-
             ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')
             ->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use');
     }
@@ -134,25 +131,25 @@ class InstallCommand extends ContainerAwareCommand
         }
 
         if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
-            if (null == $input->getOption('mailer-host')) {
+            if (null === $input->getOption('mailer-host')) {
                 throw new \Exception(
                     'The --mailer-host option needs to be specified when using SMTP as email transport'
                 );
             }
 
-            if (null == $input->getOption('mailer-port')) {
+            if (null === $input->getOption('mailer-port')) {
                 throw new \Exception(
                     'The --mailer-port option needs to be specified when using SMTP as email transport'
                 );
             }
         } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
-            if (null == $input->getOption('mailer-user')) {
+            if (null === $input->getOption('mailer-user')) {
                 throw new \Exception(
                     'The --mailer-user option needs to be specified when using Gmail as email transport'
                 );
             }
 
-            if (null == $input->getOption('mailer-password')) {
+            if (null === $input->getOption('mailer-password')) {
                 throw new \Exception(
                     'The --mailer-password option needs to be specified when using Gmail as email transport'
                 );

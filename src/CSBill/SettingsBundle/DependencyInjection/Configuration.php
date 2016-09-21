@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('csbill_settings');
+        $treeBuilder->root('csbill_settings');
 
         return $treeBuilder;
     }

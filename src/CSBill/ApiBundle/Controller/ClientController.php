@@ -13,7 +13,6 @@ namespace CSBill\ApiBundle\Controller;
 
 use CSBill\ClientBundle\Entity;
 use CSBill\ClientBundle\Form\Client;
-use CSBill\ClientBundle\Form\Contact;
 use CSBill\ClientBundle\Model\Status;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;

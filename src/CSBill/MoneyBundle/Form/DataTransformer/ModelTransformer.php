@@ -52,7 +52,6 @@ class ModelTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if ($value instanceof Money) {
-            //return $value->getAmount();
             return $value;
         }
 

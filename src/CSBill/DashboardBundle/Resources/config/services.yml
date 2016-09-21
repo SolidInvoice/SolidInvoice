@@ -12,7 +12,6 @@ services:
         class: CSBill\DashboardBundle\Widgets\StatsWidget
         arguments:
             - '@doctrine'
-            - '@currency'
         tags:
             - { name: dashboard.widget, priority: 100, location: top }
 

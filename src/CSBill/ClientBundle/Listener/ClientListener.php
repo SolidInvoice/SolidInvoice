@@ -14,22 +14,13 @@ namespace CSBill\ClientBundle\Listener;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Notification\ClientCreateNotification;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ClientListener
+class ClientListener implements ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    use ContainerAwareTrait;
 
     /**
      * @param LifecycleEventArgs $event

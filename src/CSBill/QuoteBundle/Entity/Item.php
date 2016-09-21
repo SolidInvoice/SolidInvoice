@@ -11,6 +11,7 @@
 
 namespace CSBill\QuoteBundle\Entity;
 
+use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable()
  * @Serialize\ExclusionPolicy("all")
  */
-class Item
+class Item implements ItemInterface
 {
     use Entity\TimeStampable,
         Entity\SoftDeleteable;
