@@ -53,14 +53,12 @@
                     </td>
                 </tr>
                 <tr>
-                    {% for contactDetail in contact.primaryDetails %}
-                        <th>
-                            {{ contactDetail.type|humanize|title }}
-                        </th>
-                        <td>
-                            {{ contactDetail.value }}
-                        </td>
-                    {% endfor %}
+                    <th>
+                        {{ 'client.contact.details.email'|trans }}
+                    </th>
+                    <td>
+                        {{ contact.email }}
+                    </td>
                 </tr>
             </table>
         </p>
