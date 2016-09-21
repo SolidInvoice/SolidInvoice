@@ -14,6 +14,7 @@ namespace CSBill\InvoiceBundle\Controller;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -66,7 +67,7 @@ class DefaultController extends BaseController
         $invoice = new Invoice();
         $invoice->setClient($client);
 
-        $form = $this->createForm('invoice', $invoice);
+        $form = $this->createForm(InvoiceType::class, $invoice);
 
         $form->handleRequest($request);
 

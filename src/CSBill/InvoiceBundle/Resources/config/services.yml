@@ -54,14 +54,14 @@ services:
         arguments:
             - '@currency'
         tags:
-            - { name: form.type, alias: invoice }
+            - { name: form.type }
 
     invoice.item.form.type:
         class: CSBill\InvoiceBundle\Form\Type\ItemType
         arguments:
             - '@doctrine'
         tags:
-            - { name: form.type, alias: invoice_item }
+            - { name: form.type }
 
     csbill.cron.recurring_invoice.create:
         class: CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate
