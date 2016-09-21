@@ -20,7 +20,6 @@
 
 {% for contact in client.contacts %}
     {{ 'client.create.contacts.name'|trans({}, 'email') }}: {{ contact.firstName }} {{ contact.lastName }}
-    {% for contactDetail in contact.primaryDetails %}
-        {{ contactDetail.type }}:{{ contactDetail.value }}
-    {% endfor %}
+
+    {{ 'client.contact.details.email'|trans }}:{{ contact.email }}
 {% endfor %}
