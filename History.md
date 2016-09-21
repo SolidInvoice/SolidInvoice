@@ -1,3 +1,10 @@
+1.0.1 / 2016-09-21
+==================
+
+  * Remove references to primary details on contact (#119)
+  * Fix incorrect usage of invoice form type (#120)
+  * Add migrations to set factory for payment methods (#121)
+
 1.0.0 / 2016-09-20
 ==================
 
