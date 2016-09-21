@@ -13,6 +13,7 @@ namespace CSBill\ApiBundle\Tests;
 use CSBill\ApiBundle\ApiTokenManager;
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Mockery as M;
@@ -70,7 +71,7 @@ class ApiTokenManagerTest extends \PHPUnit_Framework_TestCase
         $token2 = new ApiToken();
         $token2->setName('token2');
 
-        $user->setApiTokens([$token1, $token2,]);
+        $user->setApiTokens(new ArrayCollection([$token1, $token2]));
 
         $tm = new ApiTokenManager($registry);
 

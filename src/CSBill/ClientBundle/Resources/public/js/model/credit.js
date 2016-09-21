@@ -1,4 +1,4 @@
-define(['backbone', 'routing', 'lodash'], function (Backbone, Routing, _) {
+define(['backbone', 'routing'], function (Backbone, Routing) {
     "use strict";
 
     return Backbone.Model.extend({

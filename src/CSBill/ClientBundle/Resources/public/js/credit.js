@@ -8,8 +8,8 @@
  */
 
 define(
-    ['marionette', 'client/view/credit', 'client/model/credit'],
-    function(Mn, CreditView, CreditModel) {
+    ['marionette', 'lodash', 'client/view/credit', 'client/model/credit'],
+    function(Mn, _, CreditView, CreditModel) {
         'use strict';
 
         var credit = Mn.Object.extend({
