@@ -12,7 +12,6 @@
 namespace CSBill\ClientBundle\Serializer\Handler;
 
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
-use JMS\Serializer\Context;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\XmlSerializationVisitor;
 use Money\Money;

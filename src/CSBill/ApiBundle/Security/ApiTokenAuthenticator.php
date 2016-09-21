@@ -15,7 +15,6 @@ use CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use CSBill\UserBundle\Entity\ApiTokenHistory;
 use CSBill\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -64,7 +63,6 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         if (!$token) {
             throw new AuthenticationCredentialsNotFoundException('No API token found');
             // when we allow other methods of authentication against the api, skip api key authentication by returning null
-
         }
 
         return new PreAuthenticatedToken(
@@ -90,6 +88,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      * @param string                $providerKey
      *
      * @return PreAuthenticatedToken
+     *
      * @throws BadCredentialsException
      */
     public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)

@@ -16,7 +16,6 @@ use CSBill\ClientBundle\Notification\ClientCreateNotification;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ClientListener implements ContainerAwareInterface
 {

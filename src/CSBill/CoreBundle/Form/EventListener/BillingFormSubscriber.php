@@ -13,8 +13,6 @@ namespace CSBill\CoreBundle\Form\EventListener;
 
 use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Entity\Item as InvoiceItem;
-use CSBill\QuoteBundle\Entity\Item as QuoteItem;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\TaxBundle\Entity\Tax;
 use Money\Currency;

@@ -18,8 +18,6 @@ use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Renderer\ListRenderer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Templating\EngineInterface;
 

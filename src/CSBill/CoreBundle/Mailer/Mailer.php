@@ -154,6 +154,7 @@ class Mailer implements MailerInterface
      * @param string       $bccAddress
      *
      * @return int
+     *
      * @throws UnexpectedFormatException
      */
     protected function sendMessage(

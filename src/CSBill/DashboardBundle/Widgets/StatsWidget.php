@@ -19,7 +19,6 @@ use CSBill\PaymentBundle\Repository\PaymentRepository;
 use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Money\Currency;
 
 class StatsWidget implements WidgetInterface
 {

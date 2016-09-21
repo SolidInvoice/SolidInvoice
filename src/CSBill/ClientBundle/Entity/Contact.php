@@ -228,7 +228,7 @@ class Contact implements \Serializable
             }
         }
 
-        return null;
+        return;
     }
 
     /**
