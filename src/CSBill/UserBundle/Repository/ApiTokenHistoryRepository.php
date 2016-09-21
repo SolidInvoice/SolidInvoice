@@ -42,18 +42,18 @@ class ApiTokenHistoryRepository extends EntityRepository
         $tableName = $this->getClassMetadata()->getTableName();
         $statement = $this->getEntityManager()
             ->getConnection()
-            ->prepare('
-                  DELETE FROM '.$tableName.'
+            ->prepare("
+                  DELETE FROM ${tableName}
                   WHERE id NOT IN (
                     SELECT id FROM (
                         SELECT id
-                        FROM '.$tableName.'
+                        FROM ${tableName}
                         WHERE token_id = ?
                         ORDER BY id DESC
                         LIMIT 100
                     ) as history
                 )
-                AND token_id = ?'
+                AND token_id = ?"
             );
 
         $id = $apiToken->getId();
