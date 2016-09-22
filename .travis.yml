@@ -24,10 +24,9 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-source -n
-  - npm install
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
-  - php bin/console cache:clear
+  - composer install -n --profile
+  - npm install
   - php bin/console assets:install -n
 
 before_script:
