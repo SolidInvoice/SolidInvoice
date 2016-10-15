@@ -13,9 +13,6 @@ namespace CSBill\CoreBundle\Kernel;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
-/**
- * Interface KernelInterface.
- */
 interface ContainerClassKernelInterface extends KernelInterface
 {
     /**
@@ -24,4 +21,9 @@ interface ContainerClassKernelInterface extends KernelInterface
      * @return string
      */
     public function getContainerCacheClass();
+
+    /**
+     * Sets the path to the config directory.
+     */
+    public function getConfigDir();
 }
