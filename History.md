@@ -1,3 +1,12 @@
+1.0.2 / 2016-10-15
+==================
+
+  * Allow to set custom config path (#125)
+  * Fix additional details display on contact card (#124)
+  * Fix address not pulling through to Google maps (#123)
+  * Disable running of cron if application is not installed (#122)
+  * Update travis config to not install composer dependencies from source
+
 1.0.1 / 2016-09-21
 ==================
 

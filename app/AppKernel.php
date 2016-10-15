@@ -81,6 +81,14 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
     /**
      * {@inheritdoc}
      */
+    public function getConfigDir()
+    {
+        return $this->getRootDir().'/config';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCacheDir()
     {
         return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();

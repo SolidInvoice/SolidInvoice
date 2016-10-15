@@ -21,7 +21,7 @@ class ConfigWriter
     /**
      * @var string
      */
-    private $rootDir;
+    private $configDir;
 
     /**
      * @var Filesystem
@@ -39,16 +39,15 @@ class ConfigWriter
     private $configFile;
 
     /**
-     * @param string                        $rootDir
      * @param ContainerClassKernelInterface $kernel
      * @param Filesystem                    $fileSystem
      */
-    public function __construct($rootDir, ContainerClassKernelInterface $kernel, Filesystem $fileSystem)
+    public function __construct(ContainerClassKernelInterface $kernel, Filesystem $fileSystem)
     {
-        $this->rootDir = $rootDir;
+        $this->configDir = $kernel->getConfigDir();
         $this->fileSystem = $fileSystem;
         $this->kernel = $kernel;
-        $this->configFile = $this->rootDir.'/config/parameters.yml';
+        $this->configFile = $this->configDir.'/parameters.yml';
     }
 
     /**
@@ -79,6 +78,8 @@ class ConfigWriter
      * Get all values from the config file.
      *
      * @return array
+     *
+     * @throws \RuntimeException
      */
     public function getConfigValues()
     {

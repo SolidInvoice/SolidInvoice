@@ -24,11 +24,12 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-source -n
-  - npm install
+  - composer install -n --profile
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
   - php bin/console cache:clear
+  - npm install
   - php bin/console assets:install -n
+  - node_modules/.bin/gulp
 
 before_script:
   - mysql -e 'create database csbill;'

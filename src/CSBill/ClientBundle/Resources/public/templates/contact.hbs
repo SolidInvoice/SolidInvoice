@@ -9,11 +9,11 @@
             <dd>{{ email }}</dd>
         </dl>
 
-        {{#if additionalDetails}}
+        {{#if additional_details}}
             <h5>{{trans 'client.contact.details.extra'}}</h5>
             <dl class="dl-horizontal">
                 {{#each additional_details }}
-                    <dt>{{ this.type }}:</dt>
+                    <dt>{{title this.type }}:</dt>
                     <dd>{{ this.value }}</dd>
                 {{/each}}
             </dl>

@@ -31,8 +31,12 @@ class CronRunCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cronRunner = $this->getContainer()->get('cron.runner');
+        $container = $this->getContainer();
 
-        $cronRunner->run();
+        if (!$container->getParameter('installed')) {
+            return;
+        }
+
+        $container->get('cron.runner')->run();
     }
 }
