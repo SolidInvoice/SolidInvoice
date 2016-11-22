@@ -1,4 +1,4 @@
-define(['translator', 'translation_data'], function (Translator) {
+define(['translation_data'], function (Translator) {
     "use strict";
 
     return function (message, parameters, domain, locale) {

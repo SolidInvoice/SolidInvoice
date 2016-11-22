@@ -37,14 +37,6 @@ config:
                 - jquery
         fos_router:
             exports: fos.Router
-        js_translator:
-            exports: Translator
-        translator:
-            deps:
-                - js_translator
-        translation_data:
-            deps:
-                - js_translator
     paths:
         backbone: csbillcore/js/lib/backbone/backbone.js
         backbone.paginator: csbillcore/js/lib/backbone/backbone.paginator.js
@@ -58,7 +50,7 @@ config:
         routing: csbillcore/js/extend/routing
         fos_router: fosjsrouting/js/router
         fos_routing_data: ../js/fos_js_routes
-        js_translator: bazingajstranslation/js/translator.min.js
+        Translator: bazingajstranslation/js/translator.min.js
         material: csbillcore/js/lib/material/material
         material.ripples: csbillcore/js/lib/material/ripples
         jquery.select2: csbillcore/js/lib/jquery/select2.min.js
@@ -85,7 +77,6 @@ config:
             handlebars.runtime: handlebars.runtime
             routing: routing
         csbillcore/js/extend/translator:
-            translator: js_translator
             translation_data: translation_data
         csbillcore/js/extend/parsley:
             parsley: parsley

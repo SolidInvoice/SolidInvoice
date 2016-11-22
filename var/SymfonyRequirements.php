@@ -447,7 +447,7 @@ class SymfonyRequirements extends RequirementCollection
             );
         }
 
-	if (false !== $requiredPhpVersion && version_compare($installedPhpVersion, $requiredPhpVersion, '>=')) {
+        if (false !== $requiredPhpVersion && version_compare($installedPhpVersion, $requiredPhpVersion, '>=')) {
             $timezones = array();
             foreach (DateTimeZone::listAbbreviations() as $abbreviations) {
                 foreach ($abbreviations as $abbreviation) {
@@ -695,17 +695,17 @@ class SymfonyRequirements extends RequirementCollection
 
             if (class_exists('Symfony\Component\Intl\Intl')) {
                 $this->addRecommendation(
-		    \Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion(),
-		    sprintf('intl ICU version installed on your system is outdated (%s) and does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
-		    'To get the latest internationalization data upgrade the ICU system package and the intl PHP extension.'
+                    \Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion(),
+                    sprintf('intl ICU version installed on your system is outdated (%s) and does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
+                    'To get the latest internationalization data upgrade the ICU system package and the intl PHP extension.'
                 );
-		if (\Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion()) {
-		    $this->addRecommendation(
-			\Symfony\Component\Intl\Intl::getIcuDataVersion() === \Symfony\Component\Intl\Intl::getIcuVersion(),
-			sprintf('intl ICU version installed on your system (%s) does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
-			'To avoid internationalization data inconsistencies upgrade the symfony/intl component.'
-		    );
-		}
+                if (\Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion()) {
+                    $this->addRecommendation(
+                        \Symfony\Component\Intl\Intl::getIcuDataVersion() === \Symfony\Component\Intl\Intl::getIcuVersion(),
+                        sprintf('intl ICU version installed on your system (%s) does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
+                        'To avoid internationalization data inconsistencies upgrade the symfony/intl component.'
+                    );
+                }
             }
 
             $this->addPhpIniRecommendation(
@@ -739,9 +739,9 @@ class SymfonyRequirements extends RequirementCollection
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $this->addRecommendation(
-		$this->getRealpathCacheSize() >= 5 * 1024 * 1024,
-		'realpath_cache_size should be at least 5M in php.ini',
-		'Setting "<strong>realpath_cache_size</strong>" to e.g. "<strong>5242880</strong>" or "<strong>5M</strong>" in php.ini<a href="#phpini">*</a> may improve performance on Windows significantly in some cases.'
+                $this->getRealpathCacheSize() >= 5 * 1024 * 1024,
+                'realpath_cache_size should be at least 5M in php.ini',
+                'Setting "<strong>realpath_cache_size</strong>" to e.g. "<strong>5242880</strong>" or "<strong>5M</strong>" in php.ini<a href="#phpini">*</a> may improve performance on Windows significantly in some cases.'
             );
         }
 
@@ -800,20 +800,20 @@ class SymfonyRequirements extends RequirementCollection
      */
     protected function getPhpRequiredVersion()
     {
-	if (!file_exists($path = __DIR__.'/../composer.lock')) {
-	    return false;
-	}
+        if (!file_exists($path = __DIR__.'/../composer.lock')) {
+            return false;
+        }
 
-	$composerLock = json_decode(file_get_contents($path), true);
-	foreach ($composerLock['packages'] as $package) {
-	    $name = $package['name'];
-	    if ('symfony/symfony' !== $name && 'symfony/http-kernel' !== $name) {
-		continue;
-	    }
+        $composerLock = json_decode(file_get_contents($path), true);
+        foreach ($composerLock['packages'] as $package) {
+            $name = $package['name'];
+            if ('symfony/symfony' !== $name && 'symfony/http-kernel' !== $name) {
+                continue;
+            }
 
-	    return (int) $package['version'][1] > 2 ? self::REQUIRED_PHP_VERSION : self::LEGACY_REQUIRED_PHP_VERSION;
-	}
+            return (int) $package['version'][1] > 2 ? self::REQUIRED_PHP_VERSION : self::LEGACY_REQUIRED_PHP_VERSION;
+        }
 
-	return false;
+        return false;
     }
 }
