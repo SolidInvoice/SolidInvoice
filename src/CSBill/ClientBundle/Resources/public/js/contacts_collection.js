@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-define(['jquery', 'util/form/collection'], function($, FormCollection) {
+define(['jquery', 'lodash', 'util/form/collection'], function($, _, FormCollection) {
     "use strict";
 
     return FormCollection.extend({

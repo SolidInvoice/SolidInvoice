@@ -19,6 +19,7 @@ use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\SettingsBundle\Manager\SettingsManager;
+use CSBill\UserBundle\Entity\User;
 use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -98,7 +99,6 @@ class Mailer implements MailerInterface
      */
     public function sendInvoice(Invoice $invoice)
     {
-        // TODO : this needs to come from settings or somewhere so it can be extended
         $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', ['invoice' => $invoice]);
         $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', ['invoice' => $invoice]);
 
@@ -154,6 +154,8 @@ class Mailer implements MailerInterface
      * @param string       $bccAddress
      *
      * @return int
+     *
+     * @throws UnexpectedFormatException
      */
     protected function sendMessage(
         $subject,
@@ -175,6 +177,7 @@ class Mailer implements MailerInterface
             // if a from address is not specified in the config, then we use the currently logged-in users address
             $token = $this->securityToken->getToken();
 
+            /** @var User $user */
             $user = $token->getUser();
 
             $message->setFrom($user->getEmail());
@@ -234,7 +237,6 @@ class Mailer implements MailerInterface
      */
     public function sendQuote(Quote $quote)
     {
-        // TODO : this needs to come from settings or somewhere so it can be extended
         $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', ['quote' => $quote]);
         $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', ['quote' => $quote]);
 

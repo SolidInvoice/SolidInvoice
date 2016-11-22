@@ -82,7 +82,7 @@ class QuoteType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'CSBill\QuoteBundle\Entity\Quote']);
+        $resolver->setDefaults(['data_class' => Quote::class]);
     }
 
     /**

@@ -16,48 +16,37 @@ use Knp\Menu\ItemInterface as Item;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Renderer\ListRenderer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Templating\EngineInterface;
 
-class Renderer extends ListRenderer implements RendererInterface
+class Renderer extends ListRenderer implements RendererInterface, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var FactoryInterface
      */
     protected $factory;
 
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var \Symfony\Bundle\TwigBundle\TwigEngine
+     * @var EngineInterface
      */
     protected $templating;
 
     /**
      * Constructor.
      *
-     * @param ContainerInterface $container
-     * @param FactoryInterface   $factory
+     * @param RequestStack     $requestStack
+     * @param FactoryInterface $factory
      */
-    public function __construct(ContainerInterface $container, FactoryInterface $factory)
+    public function __construct(RequestStack $requestStack, FactoryInterface $factory)
     {
-        $this->container = $container;
         $this->factory = $factory;
 
         $matcher = new Matcher();
-
-        try {
-            $request = $this->container->get('request_stack')->getCurrentRequest();
-
-            $voter = new RouteVoter($request);
-            $matcher->addVoter($voter);
-        } catch (InactiveScopeException $e) {
-            // We are most probably running from the command line, which means there is no 'request' service.
-            // We just gracefully continue
-        }
+        $matcher->addVoter(new RouteVoter($requestStack->getCurrentRequest()));
 
         parent::__construct($matcher, ['allow_safe_labels' => true, 'currentClass' => 'active']);
     }
@@ -77,7 +66,6 @@ class Renderer extends ListRenderer implements RendererInterface
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
         } else {
-            // TODO : this should be set per menu, instead of globally
             $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-stacked']);
         }
 

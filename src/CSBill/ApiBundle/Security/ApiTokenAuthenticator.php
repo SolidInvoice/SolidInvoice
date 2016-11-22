@@ -15,7 +15,6 @@ use CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use CSBill\UserBundle\Entity\ApiTokenHistory;
 use CSBill\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -33,27 +32,19 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
     protected $userProvider;
 
     /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * @var ManagerRegistry
      */
     private $registry;
 
     /**
      * @param ApiTokenUserProvider $userProvider
-     * @param SerializerInterface  $serializer
      * @param ManagerRegistry      $registry
      */
     public function __construct(
         ApiTokenUserProvider $userProvider,
-        SerializerInterface $serializer,
         ManagerRegistry $registry
     ) {
         $this->userProvider = $userProvider;
-        $this->serializer = $serializer;
         $this->registry = $registry;
     }
 
@@ -71,8 +62,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
 
         if (!$token) {
             throw new AuthenticationCredentialsNotFoundException('No API token found');
-            // skip api key authentication when we allow other methods of authentication against the api
-            // return null;
+            // when we allow other methods of authentication against the api, skip api key authentication by returning null
         }
 
         return new PreAuthenticatedToken(
@@ -98,6 +88,8 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      * @param string                $providerKey
      *
      * @return PreAuthenticatedToken
+     *
+     * @throws BadCredentialsException
      */
     public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
     {

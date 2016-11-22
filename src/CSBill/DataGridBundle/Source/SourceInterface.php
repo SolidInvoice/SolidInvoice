@@ -13,10 +13,12 @@ namespace CSBill\DataGridBundle\Source;
 
 use Doctrine\ORM\QueryBuilder;
 
-interface Source
+interface SourceInterface
 {
     /**
+     * @param array $parameters
+     *
      * @return QueryBuilder
      */
-    public function fetch(array $paramters = []);
+    public function fetch(array $parameters = []);
 }

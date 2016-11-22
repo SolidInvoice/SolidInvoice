@@ -14,7 +14,7 @@ namespace CSBill\DataGridBundle\Source;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class ORMSource implements Source
+class ORMSource implements SourceInterface
 {
     /**
      * @var ManagerRegistry
@@ -48,12 +48,12 @@ class ORMSource implements Source
     /**
      * {@inheritdoc}
      */
-    public function fetch(array $paramters = [])
+    public function fetch(array $parameters = [])
     {
         $repository = $this->registry->getRepository($this->repository);
 
         $method = $this->method;
-        $qb = $repository->{$method}($paramters);
+        $qb = $repository->{$method}($parameters);
 
         if (!$qb instanceof QueryBuilder) {
             throw new \Exception('Grid source should return a query builder');

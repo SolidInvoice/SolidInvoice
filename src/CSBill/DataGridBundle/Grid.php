@@ -12,7 +12,7 @@
 namespace CSBill\DataGridBundle;
 
 use CSBill\DataGridBundle\Filter\FilterInterface;
-use CSBill\DataGridBundle\Source\Source;
+use CSBill\DataGridBundle\Source\SourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,7 +38,7 @@ class Grid implements GridInterface
     private $columns;
 
     /**
-     * @var Source
+     * @var SourceInterface
      * @Serializer\Exclude()
      */
     private $source;
@@ -85,11 +85,11 @@ class Grid implements GridInterface
     private $parameters = [];
 
     /**
-     * @param Source          $source
+     * @param SourceInterface $source
      * @param FilterInterface $filter
      * @param array           $gridData
      */
-    public function __construct(Source $source, FilterInterface $filter, array $gridData)
+    public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData)
     {
         $this->title = $gridData['title'];
         $this->name = $gridData['name'];

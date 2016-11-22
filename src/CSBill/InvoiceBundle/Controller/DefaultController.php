@@ -117,8 +117,6 @@ class DefaultController extends BaseController
             $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
             $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
-            // @TODO: If current invoice total is updated to less than the total amount paid,
-            // then the balance needs to be added as credit
             $invoice->setBalance($invoice->getTotal()->subtract($totalPaid));
 
             if ($action === Graph::STATUS_PENDING) {

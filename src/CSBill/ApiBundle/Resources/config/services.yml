@@ -3,16 +3,18 @@ services:
         class: CSBill\ApiBundle\Security\ApiTokenAuthenticator
         arguments:
             - '@api_token_user_provider'
-            - '@serializer'
             - '@doctrine'
+
     api_token_user_provider:
         class: CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider
         arguments:
             - '@doctrine'
+
     api.success:
         class: CSBill\ApiBundle\Event\Listener\AuthenticationSuccessHandler
         arguments:
             - '@api.token.manager'
+
     api.failure:
         class: CSBill\ApiBundle\Event\Listener\AuthenticationFailHandler
 

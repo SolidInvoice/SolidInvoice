@@ -8,6 +8,7 @@
  */
 
 define(
+    /** global: requirejs */
     ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'material', 'bootstrap', 'core/module'],
     function($, Mn, Backbone, _, Module) {
         'use strict';

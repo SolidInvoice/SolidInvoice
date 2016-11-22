@@ -14,7 +14,6 @@ namespace CSBill\UserBundle\Behat;
 use Behat\Gherkin\Node\TableNode;
 use CSBill\CoreBundle\Behat\DefaultContext;
 use CSBill\UserBundle\Entity\User;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class UserContext extends DefaultContext
 {
@@ -29,7 +28,6 @@ class UserContext extends DefaultContext
     {
         $container = $this->getContainer();
 
-        /* @var PasswordEncoderInterface $encoder */
         $encoderFactory = $container->get('security.encoder_factory');
 
         $entityManager = $container->get('doctrine')->getManager();

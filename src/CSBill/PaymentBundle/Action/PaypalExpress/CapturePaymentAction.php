@@ -95,13 +95,6 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
             $details['L_PAYMENTREQUEST_0_QTY'.$counter] = 1;
         }
 
-        /*$notifyUrl = $this->tokenFactory->createNotifyToken(
-            $request->getToken()->getGatewayName(),
-            $payment
-        )->getTargetUrl();
-
-        $details['PAYMENTREQUEST_0_NOTIFYURL'] = $notifyUrl;*/
-
         $payment->setDetails($details);
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 

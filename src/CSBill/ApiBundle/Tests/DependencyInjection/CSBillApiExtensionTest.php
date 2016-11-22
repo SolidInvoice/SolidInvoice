@@ -34,8 +34,7 @@ class CSBillApiExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasService('api_token_authenticator', 'CSBill\ApiBundle\Security\ApiTokenAuthenticator');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 0, 'api_token_user_provider');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 1, 'serializer');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 2, 'doctrine');
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 1, 'doctrine');
 
         $this->assertContainerBuilderHasService('api_token_user_provider', 'CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_user_provider', 0, 'doctrine');

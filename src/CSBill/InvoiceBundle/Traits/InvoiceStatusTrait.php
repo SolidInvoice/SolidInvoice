@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of CSBill project.
  *
@@ -14,7 +15,7 @@ use CSBill\InvoiceBundle\Model\Graph;
 
 trait InvoiceStatusTrait
 {
-    abstract function getStatus();
+    abstract public function getStatus();
 
     /**
      * @return bool

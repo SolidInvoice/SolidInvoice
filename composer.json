@@ -22,8 +22,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "": "src/"
+        "psr-4": {
+            "CSBill\\": "src/CSBill/"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -89,7 +89,7 @@
         "payum/klarna-invoice": "^1.3",
         "omnipay/omnipay": "^2.3",
         "payum/omnipay-bridge": "^1.2",
-        "oro/requirejs-bundle": "dev-master",
+        "oro/requirejs-bundle": "^1.0",
         "willdurand/js-translation-bundle": "^2.5",
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid-doctrine": "^1.2"

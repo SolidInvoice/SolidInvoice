@@ -11,6 +11,8 @@
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait Archivable
 {
     /**
