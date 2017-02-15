@@ -1,3 +1,10 @@
+
+1.1.0 / 2017-02-15
+==================
+
+  * Add multi-currency support (#148)
+  * Fix JS translations not setting global Translator variable anymore (#126)
+
 1.0.2 / 2016-10-15
 ==================
 
