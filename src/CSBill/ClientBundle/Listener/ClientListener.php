@@ -39,4 +39,31 @@ class ClientListener implements ContainerAwareInterface
             ->get('notification.manager')
             ->sendNotification('client_create', $notification);
     }
+
+    /**
+     * @param LifecycleEventArgs $event
+     */
+    public function postUpdate(LifecycleEventArgs $event)
+    {
+        $entity = $event->getEntity();
+
+        if (!$entity instanceof Client) {
+            return;
+        }
+
+        $entityChangeSet = $event->getEntityManager()->getUnitOfWork()->getEntityChangeSet($entity);
+
+        $em = $event->getEntityManager();
+        $em->getRepository('CSBillInvoiceBundle:Invoice')->updateCurrency($entity);
+
+        // Only update the currencies when the client currency changed
+        if (array_key_exists('currency', $entityChangeSet)) {
+            $em = $event->getEntityManager();
+
+            $em->getRepository('CSBillInvoiceBundle:Invoice')->updateCurrency($entity);
+            $em->getRepository('CSBillQuoteBundle:Quote')->updateCurrency($entity);
+            $em->getRepository('CSBillPaymentBundle:Payment')->updateCurrency($entity);
+            $em->getRepository('CSBillClientBundle:Credit')->updateCurrency($entity);
+        }
+    }
 }

@@ -17,6 +17,7 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
+use Money\Currency;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,18 +35,18 @@ class DefaultController extends BaseController
         $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
 
         return $this->render(
-        'CSBillInvoiceBundle:Default:index.html.twig',
-        [
-        'status_list_count' => [
+            'CSBillInvoiceBundle:Default:index.html.twig',
+            [
+                'status_list_count' => [
                     Graph::STATUS_PENDING => $invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),
                     Graph::STATUS_PAID => $invoiceRepository->getCountByStatus(Graph::STATUS_PAID),
                     Graph::STATUS_CANCELLED => $invoiceRepository->getCountByStatus(Graph::STATUS_CANCELLED),
                     Graph::STATUS_DRAFT => $invoiceRepository->getCountByStatus(Graph::STATUS_DRAFT),
                     Graph::STATUS_OVERDUE => $invoiceRepository->getCountByStatus(Graph::STATUS_OVERDUE),
-        ],
+                ],
                 'total_income' => $this->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome(),
                 'total_outstanding' => $invoiceRepository->getTotalOutstanding(),
-        ]
+            ]
         );
     }
 
@@ -67,7 +68,13 @@ class DefaultController extends BaseController
         $invoice = new Invoice();
         $invoice->setClient($client);
 
-        $form = $this->createForm(InvoiceType::class, $invoice);
+        $options = [];
+
+        if ($client && $client->getCurrency()) {
+            $options['currency'] = $client->getCurrency();
+        }
+
+        $form = $this->createForm(InvoiceType::class, $invoice, $options);
 
         $form->handleRequest($request);
 
@@ -105,7 +112,7 @@ class DefaultController extends BaseController
             return $this->redirectToRoute('_invoices_index');
         }
 
-        $form = $this->createForm('invoice', $invoice);
+        $form = $this->createForm(InvoiceType::class, $invoice, ['currency' => $invoice->getClient()->getCurrency()]);
 
         $form->handleRequest($request);
 
@@ -132,11 +139,23 @@ class DefaultController extends BaseController
 
         return $this->render(
             'CSBillInvoiceBundle:Default:edit.html.twig',
-        [
+            [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-        ]
+            ]
         );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getFieldsAction(Request $request)
+    {
+        $form = $this->createForm(InvoiceType::class, null, ['currency' => new Currency($request->get('currency'))]);
+
+        return $this->json($this->get('csbill_core.field.renderer')->render($form->createView(), 'children[items].vars[prototype]'));
     }
 
     /**
@@ -154,10 +173,10 @@ class DefaultController extends BaseController
 
         return $this->render(
             'CSBillInvoiceBundle:Default:view.html.twig',
-        [
+            [
                 'invoice' => $invoice,
                 'payments' => $payments,
-        ]
+            ]
         );
     }
 

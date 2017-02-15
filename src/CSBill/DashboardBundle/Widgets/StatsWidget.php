@@ -60,7 +60,7 @@ class StatsWidget implements WidgetInterface
             'totalClients' => $clientRepository->getTotalClients(ClientStatus::STATUS_ACTIVE),
             'totalQuotes' => $quoteRepository->getTotalQuotes(QuoteGraph::STATUS_PENDING),
             'totalInvoices' => $totalInvoices,
-            'totalIncome' => $paymentRepository->getTotalIncome(),
+            'totalIncome' => $paymentRepository->getTotalIncome(null, true),
         ];
     }
 

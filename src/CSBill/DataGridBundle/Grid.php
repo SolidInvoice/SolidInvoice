@@ -13,6 +13,7 @@ namespace CSBill\DataGridBundle;
 
 use CSBill\DataGridBundle\Filter\FilterInterface;
 use CSBill\DataGridBundle\Source\SourceInterface;
+use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -85,11 +86,17 @@ class Grid implements GridInterface
     private $parameters = [];
 
     /**
+     * @var MoneyFormatter
+     */
+    private $moneyFormatter;
+
+    /**
      * @param SourceInterface $source
      * @param FilterInterface $filter
      * @param array           $gridData
+     * @param MoneyFormatter  $moneyFormatter
      */
-    public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData)
+    public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData, MoneyFormatter $moneyFormatter)
     {
         $this->title = $gridData['title'];
         $this->name = $gridData['name'];
@@ -100,6 +107,7 @@ class Grid implements GridInterface
         $this->properties = $gridData['properties'];
         $this->icon = $gridData['icon'];
         $this->filter = $filter;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
     /**
@@ -118,9 +126,17 @@ class Grid implements GridInterface
 
         $paginator = new Paginator($queryBuilder);
 
+        $resultSet = $paginator->getQuery()->getArrayResult();
+
+        array_walk_recursive($resultSet, function (&$value, $key) {
+            if (false !== strpos($key, 'currency')) {
+                $value = $this->moneyFormatter->getCurrencySymbol($value);
+            }
+        });
+
         return [
             'count' => count($paginator),
-            'items' => $paginator->getQuery()->getArrayResult(),
+            'items' => $resultSet,
         ];
     }
 

@@ -11,8 +11,11 @@
 
 namespace CSBill\PaymentBundle\Twig;
 
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Currency;
+use Money\Money;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
@@ -29,11 +32,18 @@ class PaymentExtension extends Twig_Extension
     private $repository;
 
     /**
-     * @param ManagerRegistry $registry
+     * @var Currency
      */
-    public function __construct(ManagerRegistry $registry)
+    private $currency;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param Currency        $currency
+     */
+    public function __construct(ManagerRegistry $registry, Currency $currency)
     {
         $this->registry = $registry;
+        $this->currency = $currency;
     }
 
     /**
@@ -44,7 +54,34 @@ class PaymentExtension extends Twig_Extension
         return [
             new Twig_SimpleFunction('payment_enabled', [$this, 'paymentEnabled']),
             new Twig_SimpleFunction('payments_configured', [$this, 'paymentConfigured']),
+
+            new Twig_SimpleFunction('total_income', [$this, 'getTotalIncome']),
+            new Twig_SimpleFunction('total_outstanding', [$this, 'getTotalOutstanding']),
         ];
+    }
+
+    /**
+     * @param Client|null $client
+     *
+     * @return Money
+     */
+    public function getTotalIncome(Client $client = null)
+    {
+        $income = $this->registry->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome($client);
+
+        return new Money($income, $client->getCurrency() ?: $this->currency);
+    }
+
+    /**
+     * @param Client|null $client
+     *
+     * @return Money
+     */
+    public function getTotalOutstanding(Client $client = null)
+    {
+        $outstanding = $this->registry->getRepository('CSBillInvoiceBundle:Invoice')->getTotalOutstanding($client);
+
+        return new Money($outstanding, $client->getCurrency() ?: $this->currency);
     }
 
     /**

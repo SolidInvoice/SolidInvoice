@@ -71,6 +71,7 @@ class PaymentForm extends AbstractType
             'amount',
             MoneyType::class,
             [
+                'currency' => $options['currency'],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Callback(function (Money $money, ExecutionContextInterface $context) {
@@ -96,6 +97,7 @@ class PaymentForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['user', 'preferred_choices']);
+        $resolver->setDefault('currency', null);
     }
 
     /**

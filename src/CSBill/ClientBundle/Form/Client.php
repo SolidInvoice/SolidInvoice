@@ -13,6 +13,8 @@ namespace CSBill\ClientBundle\Form;
 
 use CSBill\ClientBundle\Form\Type\AddressType;
 use CSBill\ClientBundle\Form\Type\ContactType;
+use CSBill\CoreBundle\Form\Type\Select2;
+use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,6 +29,17 @@ class Client extends AbstractType
     {
         $builder->add('name');
         $builder->add('website');
+        $builder->add(
+            'currency',
+            Select2::class,
+            [
+                'attr' => ['class' => 'select2'],
+                'empty_value' => 'client.form.currency.empty_value',
+                'choices' => array_flip(Currency::getCurrencies()),
+                'choices_as_values' => true,
+            ]
+        );
+
         $builder->add(
             'contacts',
             ContactType::class,

@@ -17,6 +17,7 @@ use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HiddenMoneyType extends AbstractType
 {
@@ -39,8 +40,17 @@ class HiddenMoneyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->addViewTransformer(new ViewTransformer($this->currency), true)
-            ->addModelTransformer(new ModelTransformer($this->currency), true);
+            ->addViewTransformer(new ViewTransformer($options['currency']), true)
+            ->addModelTransformer(new ModelTransformer($options['currency']), true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('currency');
+        $resolver->setAllowedTypes('currency', ['string', Currency::class]);
     }
 
     /**

@@ -26,6 +26,7 @@ use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Finite\Factory\FactoryInterface;
+use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -321,8 +322,9 @@ class InvoiceManager implements ContainerAwareInterface
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
 
-        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
         $invoiceTotal = $invoice->getTotal();
+
+        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoiceTotal->getCurrency());
 
         return $totalPaid->equals($invoiceTotal) || $totalPaid->greaterThan($invoiceTotal);
     }

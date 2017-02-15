@@ -13,6 +13,7 @@ namespace CSBill\QuoteBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Traits\Entity;
+use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\QuoteBundle\Traits\QuoteStatusTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,8 +41,8 @@ class Quote
         Entity\SoftDeleteable,
         Entity\Archivable,
         QuoteStatusTrait {
-        Entity\Archivable::isArchived insteadof QuoteStatusTrait;
-    }
+            Entity\Archivable::isArchived insteadof QuoteStatusTrait;
+        }
 
     /**
      * @var int
@@ -50,6 +51,7 @@ class Quote
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Serialize\Expose
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $id;
 
@@ -65,6 +67,7 @@ class Quote
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $status;
 
@@ -73,30 +76,38 @@ class Quote
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
+     * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js"})
      */
     private $client;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\AccessType(type="public_method")
      */
     private $total;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="base_total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\AccessType(type="public_method")
      */
     private $baseTotal;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="tax", type="money", nullable=true)
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\AccessType(type="public_method")
      */
     private $tax;
 
@@ -105,6 +116,7 @@ class Quote
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $discount;
 
@@ -113,6 +125,7 @@ class Quote
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $terms;
 
@@ -121,6 +134,7 @@ class Quote
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $notes;
 
@@ -140,6 +154,7 @@ class Quote
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $items;
 
@@ -159,6 +174,10 @@ class Quote
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
+
+        $this->baseTotal = new MoneyEntity();
+        $this->tax = new MoneyEntity();
+        $this->total = new MoneyEntity();
     }
 
     /**
@@ -262,56 +281,46 @@ class Quote
     }
 
     /**
-     * Get total.
-     *
      * @return Money
      */
     public function getTotal()
     {
-        return $this->total;
+        return $this->total->getMoney();
     }
 
     /**
-     * Set total.
-     *
      * @param Money $total
      *
      * @return Quote
      */
     public function setTotal(Money $total)
     {
-        $this->total = $total;
+        $this->total = new MoneyEntity($total);
 
         return $this;
     }
 
     /**
-     * Get base total.
-     *
      * @return Money
      */
     public function getBaseTotal()
     {
-        return $this->baseTotal;
+        return $this->baseTotal->getMoney();
     }
 
     /**
-     * Set base total.
-     *
      * @param Money $baseTotal
      *
      * @return Quote
      */
     public function setBaseTotal(Money $baseTotal)
     {
-        $this->baseTotal = $baseTotal;
+        $this->baseTotal = new MoneyEntity($baseTotal);
 
         return $this;
     }
 
     /**
-     * Get discount.
-     *
      * @return float
      */
     public function getDiscount()
@@ -320,8 +329,6 @@ class Quote
     }
 
     /**
-     * Set discount.
-     *
      * @param float $discount
      *
      * @return Quote
@@ -334,8 +341,6 @@ class Quote
     }
 
     /**
-     * Get due.
-     *
      * @return \DateTime
      */
     public function getDue()
@@ -344,8 +349,6 @@ class Quote
     }
 
     /**
-     * Set due.
-     *
      * @param \DateTime $due
      *
      * @return Quote
@@ -358,8 +361,6 @@ class Quote
     }
 
     /**
-     * Add item.
-     *
      * @param Item $item
      *
      * @return Quote
@@ -373,8 +374,6 @@ class Quote
     }
 
     /**
-     * Removes an item.
-     *
      * @param Item $item
      *
      * @return Quote
@@ -388,8 +387,6 @@ class Quote
     }
 
     /**
-     * Get items.
-     *
      * @return ArrayCollection
      */
     public function getItems()
@@ -442,7 +439,7 @@ class Quote
      */
     public function getTax()
     {
-        return $this->tax;
+        return $this->tax->getMoney();
     }
 
     /**
@@ -452,7 +449,7 @@ class Quote
      */
     public function setTax(Money $tax)
     {
-        $this->tax = $tax;
+        $this->tax = new MoneyEntity($tax);
 
         return $this;
     }

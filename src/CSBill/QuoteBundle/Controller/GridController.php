@@ -32,8 +32,8 @@ class GridController extends BaseController
     {
         $data = $request->request->get('data');
 
-    /** @var Quote[] $quotes */
-    $quotes = $this->getRepository('CSBillQuoteBundle:Quote')->findBy(['id' => $data]);
+        /** @var Quote[] $quotes */
+        $quotes = $this->getRepository('CSBillQuoteBundle:Quote')->findBy(['id' => $data]);
 
         $quoteManager = $this->get('quote.manager');
 

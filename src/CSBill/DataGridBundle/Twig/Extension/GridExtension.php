@@ -17,10 +17,12 @@ use JMS\Serializer\SerializerInterface;
 class GridExtension extends \Twig_Extension
 {
     private static $statusRendered = false;
+
     /**
      * @var GridRepository
      */
     private $repository;
+
     /**
      * @var SerializerInterface
      */
@@ -44,23 +46,23 @@ class GridExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-        new \Twig_SimpleFunction(
-        'render_grid',
-        [$this, 'renderGrid'],
-        [
-            'is_safe' => ['html'],
-            'needs_environment' => true,
-        ]
-        ),
-        new \Twig_SimpleFunction(
-        'render_multiple_grid',
-        [$this, 'renderMultipleGrid'],
-        [
-            'is_safe' => ['html'],
-            'needs_environment' => true,
-        ]
-        ),
-    ];
+            new \Twig_SimpleFunction(
+                'render_grid',
+                [$this, 'renderGrid'],
+                [
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+            new \Twig_SimpleFunction(
+                'render_multiple_grid',
+                [$this, 'renderMultipleGrid'],
+                [
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+        ];
     }
 
     /**
@@ -90,13 +92,13 @@ class GridExtension extends \Twig_Extension
         }
 
         $html .= $env->render(
-        'CSBillDataGridBundle::grid.html.twig',
-        [
-        'gridName' => $gridName,
-        'gridOptions' => $gridOptions,
-        'requiresStatus' => $grid->requiresStatus(),
-        ]
-    );
+            'CSBillDataGridBundle::grid.html.twig',
+            [
+                'gridName' => $gridName,
+                'gridOptions' => $gridOptions,
+                'requiresStatus' => $grid->requiresStatus(),
+            ]
+        );
 
         return $html;
     }
@@ -139,12 +141,12 @@ class GridExtension extends \Twig_Extension
         }
 
         return $env->render(
-        'CSBillDataGridBundle::multiple_grid.html.twig',
-        [
-        'grids' => $renderGrids,
-        'requiresStatus' => $requiresStatus,
-        ]
-    );
+            'CSBillDataGridBundle::multiple_grid.html.twig',
+            [
+                'grids' => $renderGrids,
+                'requiresStatus' => $requiresStatus,
+            ]
+        );
     }
 
     /**

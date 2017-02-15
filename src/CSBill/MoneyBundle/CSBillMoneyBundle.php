@@ -11,8 +11,7 @@
 
 namespace CSBill\MoneyBundle;
 
-use CSBill\MoneyBundle\Doctrine\Hydrator\MoneyHydrator;
-use CSBill\MoneyBundle\Doctrine\Types\MoneyType;
+use CSBill\MoneyBundle\Entity\Money;
 use Money\Currency;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -26,7 +25,6 @@ class CSBillMoneyBundle extends Bundle
         /** @var Currency $currency */
         $currency = $this->container->get('currency');
 
-        MoneyType::setCurrency($currency);
-        MoneyHydrator::setCurrency($currency);
+        Money::setBaseCurrency($currency->getName());
     }
 }

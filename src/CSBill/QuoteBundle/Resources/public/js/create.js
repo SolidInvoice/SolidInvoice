@@ -1,6 +1,7 @@
 define(
     [
         'core/module',
+        'jquery',
         'backbone',
         'lodash',
         'client/view/client_select',
@@ -10,39 +11,85 @@ define(
         'core/billing/model/collection',
         'core/billing/view/footer',
         'quote/view',
-        'quote/discount'
+        'quote/discount',
+        'routing',
+        'accounting'
     ],
-    function(
-        Module,
-        Backbone,
-        _,
-        ClientSelectView,
-        FooterRowModel,
-        RowModel,
-        DiscountModel,
-        Collection,
-        FooterView,
-        QuoteView,
-        Discount
-    ) {
+    function(Module,
+             $,
+             Backbone,
+             _,
+             ClientSelectView,
+             FooterRowModel,
+             RowModel,
+             DiscountModel,
+             Collection,
+             FooterView,
+             QuoteView,
+             Discount,
+             Routing,
+             Accounting) {
+
         "use strict";
 
         return Module.extend({
+            collection: null,
+            footerRowModel: null,
             regions: {
                 'clientInfo': '#client-info',
-                'quoteRows': '#quote-items'
+                'quoteRows': '#quote-items',
+                'quoteForm': '#quote-create-form'
             },
             _renderClientSelect: function(options) {
                 var model = new Backbone.Model(options.client),
-                    viewOptions = {type: 'quote', model: model};
+                    viewOptions = {type: 'quote', model: model, 'hideLoader': false},
+                    module = this,
+                    clientSelectView = new ClientSelectView(_.merge(options, viewOptions));
 
-                this.app.getRegion('clientInfo').show(new ClientSelectView(_.merge(options, viewOptions)));
+                clientSelectView.on('currency:update', function(clientOptions) {
+                    Accounting.settings.currency.symbol = clientOptions.currency_format;
+
+                    $.getJSON(
+                        Routing.generate('_quotes_get_fields', {'currency': clientOptions.currency})
+                    ).done(_.bind(function(fieldData) {
+                        module.collection.each(function(model) {
+                            model.set('fields', fieldData);
+                        });
+
+                        var quoteView = module._getQuoteView(fieldData);
+
+                        this.hideLoader();
+
+                        module.app
+                            .getRegion('quoteRows')
+                            .reset()
+                            .show(quoteView)
+                        ;
+
+                        module.app.getRegion('quoteForm').$el.attr('action', Routing.generate('_quotes_create', {'client' : clientOptions.client}));
+
+                        module.app.initialize();
+                    }, this));
+                });
+
+                this.app.getRegion('clientInfo').show(clientSelectView);
+            },
+            _getQuoteView: function(fieldData) {
+                return new QuoteView(
+                    {
+                        'collection': this.collection,
+                        'footerView': new FooterView({model: this.footerRowModel}),
+                        'selector': '#quote-footer',
+                        'fieldData': !_.isUndefined(fieldData) ? fieldData : this.options.fieldData,
+                        'hasTax': this.options.tax
+                    }
+                );
             },
             initialize: function(options) {
-                var discountModel = new DiscountModel(),
-                    footerRowModel = new FooterRowModel();
+                var discountModel = new DiscountModel();
 
-                footerRowModel.set('hasTax', options.tax);
+                this.footerRowModel = new FooterRowModel();
+                this.footerRowModel.set('hasTax', options.tax);
 
                 this._renderClientSelect(options);
 
@@ -51,7 +98,7 @@ define(
                 if (!_.isEmpty(options.formData)) {
                     var counter = 0;
 
-                    _.each(options.formData, function (item) {
+                    _.each(options.formData, function(item) {
                         models.push(new RowModel({
                             id: counter++,
                             fields: item
@@ -65,24 +112,14 @@ define(
                 }
 
                 /* COLLECTION */
-                var collection = new Collection(models, {"discountModel": discountModel, 'footerModel': footerRowModel});
+                this.collection = new Collection(models, {"discountModel": discountModel, 'footerModel': this.footerRowModel});
 
                 /* DISCOUNT */
-                new Discount({model: discountModel, collection: collection});
+                new Discount({model: discountModel, collection: this.collection});
 
                 this.app
                     .getRegion('quoteRows')
-                    .show(
-                        new QuoteView(
-                            {
-                                'collection': collection,
-                                'footerView': new FooterView({model: footerRowModel}),
-                                'selector': '#quote-footer',
-                                'fieldData': options.fieldData,
-                                'hasTax': options.tax
-                            }
-                        )
-                    );
+                    .show(this._getQuoteView());
             }
         });
     }

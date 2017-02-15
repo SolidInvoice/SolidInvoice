@@ -11,6 +11,7 @@
 
 namespace CSBill\QuoteBundle\Form\Type;
 
+use CSBill\QuoteBundle\Entity\Item;
 use CSBill\TaxBundle\Form\Type\Tax;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
@@ -57,6 +58,7 @@ class ItemType extends AbstractType
                 'attr' => [
                     'class' => 'input-small quote-item-price',
                 ],
+                'currency' => $options['currency'],
             ]
         );
 
@@ -79,7 +81,7 @@ class ItemType extends AbstractType
                     'class' => 'CSBill\TaxBundle\Entity\Tax',
                     'placeholder' => 'Choose Tax Type',
                     'attr' => [
-                        'class' => 'input-mini quote-item-tax',
+                        'class' => 'select2 input-mini quote-item-tax',
                     ],
                     'required' => false,
                 ]
@@ -100,6 +102,8 @@ class ItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'CSBill\QuoteBundle\Entity\Item']);
+        $resolver->setDefault('data_class', Item::class)
+            ->setRequired('currency')
+            ->setAllowedTypes('currency', ['string']);
     }
 }

@@ -7,6 +7,8 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set currency = client.currency %}
+
 {% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
 
 {% set module = 'client/view' %}
@@ -31,7 +33,15 @@
         <div class="row">
             <div class="col-md-6 col-lg-6">
                 {% if client.website %}
-                    {{ icon('external-link') }} <a href="{{ client.website }}" rel="external">{{ client.website }}</a>
+                    {{ icon('globe') }} <a href="{{ client.website }}" rel="external">{{ client.website }}</a>
+                    <small>
+                        {{ icon('external-link') }}
+                    </small>
+                {% endif %}
+
+                {% if client.currency %}
+                    <br />
+                    <strong>{{ 'client.view.currency'|trans }}</strong> {{ client.currency }}
                 {% endif %}
             </div>
 
@@ -88,7 +98,7 @@
                     </div>
                     {% if payments|length > 0 %}
                         <div role="tabpanel" class="tab-pane" id="payments">
-			    {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
+                            {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
                         </div>
                     {% endif %}
                 </div>
@@ -110,11 +120,11 @@
         <hr />
         <div class="row">
             <div class="text-center text-success">
-                <h3>{{ total_income|formatCurrency }}</h3>
+                <h3>{{ total_income(client)|formatCurrency }}</h3>
                 {{ "client.stats.income"|trans }}
             </div>
             <div class="text-center text-danger">
-                <h3>{{ total_outstanding|formatCurrency }}</h3>
+                <h3>{{ total_outstanding(client)|formatCurrency }}</h3>
                 {{ "client.stats.outstanding"|trans }}
             </div>
 

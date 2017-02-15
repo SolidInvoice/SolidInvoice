@@ -88,6 +88,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
             $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
             $gridDefinition->addArgument($this->getFilterService($gridConfig));
             $gridDefinition->addArgument($gridConfig);
+            $gridDefinition->addArgument(new Reference('csbill.money.formatter'));
 
             $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
         }

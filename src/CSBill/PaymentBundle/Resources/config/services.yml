@@ -32,6 +32,7 @@ services:
         class: CSBill\PaymentBundle\Twig\PaymentExtension
         arguments:
             - '@doctrine'
+            - '@currency'
         tags:
             - { name: twig.extension }
 

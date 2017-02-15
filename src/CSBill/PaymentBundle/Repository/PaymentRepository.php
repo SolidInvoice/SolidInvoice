@@ -18,7 +18,6 @@ use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
-use Money\Money;
 
 class PaymentRepository extends EntityRepository
 {
@@ -26,19 +25,22 @@ class PaymentRepository extends EntityRepository
      * Gets the total income that was received.
      *
      * @param \CSBill\ClientBundle\Entity\Client $client
+     * @param bool                               $groupByCurrency
      *
-     * @return \Money\Money
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return array|int
      */
-    public function getTotalIncome(Client $client = null)
+    public function getTotalIncome(Client $client = null, $groupByCurrency = false)
     {
         $qb = $this->createQueryBuilder('p');
 
         $qb->select('SUM(p.totalAmount)')
             ->where('p.status = :status')
             ->setParameter('status', Status::STATUS_CAPTURED);
+
+        if ($groupByCurrency) {
+            $qb->select('SUM(p.totalAmount) as totalAmount', 'p.currencyCode')
+                ->groupBy('p.currencyCode');
+        }
 
         if (null !== $client) {
             $qb->andWhere('p.client = :client')
@@ -47,7 +49,11 @@ class PaymentRepository extends EntityRepository
 
         $query = $qb->getQuery();
 
-        return $query->getSingleResult('money');
+        if ($groupByCurrency) {
+            return $query->getArrayResult();
+        }
+
+        return (int) $query->getSingleScalarResult();
     }
 
     /**
@@ -111,7 +117,7 @@ class PaymentRepository extends EntityRepository
      *
      * @param Invoice $invoice
      *
-     * @return Money
+     * @return int
      */
     public function getTotalPaidForInvoice(Invoice $invoice)
     {
@@ -126,7 +132,7 @@ class PaymentRepository extends EntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        return $query->getSingleResult('money');
+        return (int) $query->getSingleScalarResult();
     }
 
     /**
@@ -308,5 +314,30 @@ class PaymentRepository extends EntityRepository
         }
 
         return $qb;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function updateCurrency(Client $client)
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+        $filters->disable('softdeleteable');
+
+        $currency = $client->getCurrency();
+
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->update()
+            ->set('p.currencyCode', ':currency')
+            ->where('p.client = :client')
+            ->setParameter('client', $client)
+            ->setParameter('currency', $currency);
+
+        $qb->getQuery()->execute();
+
+        $filters->enable('archivable');
+        $filters->enable('softdeleteable');
     }
 }

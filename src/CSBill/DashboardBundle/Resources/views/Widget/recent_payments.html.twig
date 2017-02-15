@@ -31,7 +31,7 @@
                     </a>
 
                     <div class="pull-right">
-                        {{ payment.totalAmount|formatCurrency }}
+                        {{ payment.totalAmount|formatCurrency(payment.currencyCode) }}
                         <br />
                         <small>
                             <strong>

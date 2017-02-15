@@ -13,6 +13,7 @@ namespace CSBill\QuoteBundle\Entity;
 
 use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
+use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -40,6 +41,7 @@ class Item implements ItemInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $id;
 
@@ -49,15 +51,18 @@ class Item implements ItemInterface
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $description;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="price", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Assert\NotBlank()
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\AccessType(type="public_method")
      */
     private $price;
 
@@ -67,6 +72,7 @@ class Item implements ItemInterface
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank()
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $qty;
 
@@ -80,16 +86,25 @@ class Item implements ItemInterface
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="quoteItems")
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
      */
     private $tax;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
+     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\AccessType(type="public_method")
      */
     private $total;
+
+    public function __construct()
+    {
+        $this->total = new MoneyEntity();
+        $this->price = new MoneyEntity();
+    }
 
     /**
      * Get id.
@@ -126,32 +141,26 @@ class Item implements ItemInterface
     }
 
     /**
-     * Set the price.
-     *
      * @param Money $price
      *
      * @return Item
      */
     public function setPrice(Money $price)
     {
-        $this->price = $price;
+        $this->price = new MoneyEntity($price);
 
         return $this;
     }
 
     /**
-     * Get the price.
-     *
      * @return Money
      */
     public function getPrice()
     {
-        return $this->price;
+        return $this->price->getMoney();
     }
 
     /**
-     * Set the qty.
-     *
      * @param int $qty
      *
      * @return Item
@@ -164,8 +173,6 @@ class Item implements ItemInterface
     }
 
     /**
-     * Get qty.
-     *
      * @return int
      */
     public function getQty()
@@ -174,8 +181,6 @@ class Item implements ItemInterface
     }
 
     /**
-     * Set quote.
-     *
      * @param Quote $quote
      *
      * @return Item
@@ -188,8 +193,6 @@ class Item implements ItemInterface
     }
 
     /**
-     * Get quote.
-     *
      * @return Quote
      */
     public function getQuote()
@@ -204,19 +207,17 @@ class Item implements ItemInterface
      */
     public function setTotal(Money $total)
     {
-        $this->total = $total;
+        $this->total = new MoneyEntity($total);
 
         return $this;
     }
 
     /**
-     * Get the line item total.
-     *
      * @return Money
      */
     public function getTotal()
     {
-        return $this->total;
+        return $this->total->getMoney();
     }
 
     /**
@@ -246,7 +247,7 @@ class Item implements ItemInterface
      */
     public function updateTotal()
     {
-        $this->total = $this->price->multiply($this->qty);
+        $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));
     }
 
     /**

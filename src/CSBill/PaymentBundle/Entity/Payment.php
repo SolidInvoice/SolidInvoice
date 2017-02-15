@@ -45,12 +45,14 @@ class Payment extends BasePayment implements PaymentInterface
     protected $number;
     protected $clientEmail;
     protected $clientId;
+
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
      *
      * @var Invoice
      */
     private $invoice;
+
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="payments")
      * @ORM\JoinColumn(name="client", fieldName="client")
@@ -58,22 +60,26 @@ class Payment extends BasePayment implements PaymentInterface
      * @var Client
      */
     private $client;
+
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
      *
      * @var PaymentMethod
      */
     private $method;
+
     /**
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
      */
     private $status;
+
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
      */
     private $message;
+
     /**
      * @var \DateTime
      *

@@ -99,12 +99,12 @@ class InvoiceManagerTest extends KernelTestCase
 
         $invoice = $this->manager->createFromQuote($quote);
 
-        $this->assertSame($quote->getTotal(), $invoice->getTotal());
-        $this->assertSame($quote->getBaseTotal(), $invoice->getBaseTotal());
+        $this->assertEquals($quote->getTotal(), $invoice->getTotal());
+        $this->assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
         $this->assertSame($quote->getDiscount(), $invoice->getDiscount());
         $this->assertSame($quote->getNotes(), $invoice->getNotes());
         $this->assertSame($quote->getTerms(), $invoice->getTerms());
-        $this->assertSame($quote->getTax(), $invoice->getTax());
+        $this->assertEquals($quote->getTax(), $invoice->getTax());
         $this->assertSame($client, $invoice->getClient());
         $this->assertSame('new', $invoice->getStatus());
 
@@ -120,7 +120,7 @@ class InvoiceManagerTest extends KernelTestCase
         $this->assertSame($item->getTax(), $invoiceItem[0]->getTax());
         $this->assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
         $this->assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
-        $this->assertSame($item->getPrice(), $invoiceItem[0]->getPrice());
+        $this->assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         $this->assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 

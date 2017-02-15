@@ -10,6 +10,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    csbill_core.twig.billing:
+        class: 'CSBill\CoreBundle\Twig\Extension\BillingExtension'
+        arguments: ['@csbill_core.field.renderer']
+        tags:
+            - { name: twig.extension }
+
     csbill_core.twig.file:
         class: '%csbill_core.twig.file.class%'
         tags:

@@ -70,17 +70,20 @@ class InvoiceType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required' => false,
+                'entry_options' => [
+                    'currency' => $options['currency']->getName(),
+                ],
             ]
         );
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
-        $builder->add('total', HiddenMoneyType::class);
-        $builder->add('baseTotal', HiddenMoneyType::class);
-        $builder->add('tax', HiddenMoneyType::class);
+        $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
-        $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
+        $builder->addEventSubscriber(new BillingFormSubscriber($options['currency']));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
@@ -124,7 +127,9 @@ class InvoiceType extends AbstractType
                     return 'Default';
                 },
                 'data_class' => Invoice::class,
+                'currency' => $this->currency,
             ]
-        );
+        )
+            ->setAllowedTypes('currency', [Currency::class]);
     }
 }

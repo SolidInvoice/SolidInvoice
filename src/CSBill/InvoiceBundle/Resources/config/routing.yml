@@ -2,11 +2,22 @@ _invoices_index:
     path: /
     defaults:
         _controller: 'CSBillInvoiceBundle:Default:index'
+
 _invoices_create:
     path: '/create/{client}'
     defaults:
         _controller: 'CSBillInvoiceBundle:Default:create'
         client: null
+    options:
+        expose: true
+
+_invoices_get_fields:
+    path: '/fields/get'
+    defaults:
+        _controller: 'CSBillInvoiceBundle:Default:getFields'
+    options:
+        expose: true
+
 _invoices_edit:
     path: '/edit/{id}'
     defaults:

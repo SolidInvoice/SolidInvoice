@@ -85,3 +85,7 @@ services:
         tags:
             - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
             - { name: cs_core.menu, menu: top_right, method: userMenu, priority: 255 }
+
+    csbill_core.field.renderer:
+        class: CSBill\CoreBundle\Form\FieldRenderer
+        arguments: ['@twig']

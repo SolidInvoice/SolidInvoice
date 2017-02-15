@@ -8,13 +8,9 @@
  #}
 
 {% set items = form.items.vars.prototype|keys %}
-{% set fieldData = {} %}
 {% set formData = {} %}
 {% set module = 'quote/create' %}
-
-{% for item in items %}
-    {% set fieldData = fieldData|merge({(item): form_widget(form.items.vars.prototype[item])}) %}
-{% endfor %}
+{% set currency = form.client.vars.data ? form.client.vars.data.currency : null %}
 
 {% for index, item in form.items %}
     {% set fields = {} %}
@@ -44,10 +40,10 @@
 {% set moduleData = {
     'client': form.client.vars.data,
     'clientForm': block('form_client'),
-    'fieldData': fieldData,
+    'fieldData': billing_fields(form),
     'formData': formData,
     'invoice': quote|default(null),
-    'tax': taxRatesConfigured()
+    'tax': taxRatesConfigured(),
     }
 %}
 
@@ -60,8 +56,6 @@
 {% block sidebar %}
     {{ menu('quotes_create') }}
 {% endblock sidebar %}
-
-{% set items = form.items.vars.prototype|keys %}
 
 {% block form_row -%}
     {% if prototype is not defined %}

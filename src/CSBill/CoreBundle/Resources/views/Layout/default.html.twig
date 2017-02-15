@@ -28,7 +28,7 @@
             App.on('before:start', function () {
                 Accounting.settings = {
                     currency: {
-                        symbol : "{{ currencyFormatter().currencySymbol }}",
+                        symbol : "{{ currencyFormatter().currencySymbol(currency is defined  ? currency : null) }}",
                         format: "{{ currencyFormatter().pattern }}",
                         decimal : "{{ currencyFormatter().decimalSeparator }}",
                         thousand: "{{ currencyFormatter().thousandSeparator }}",

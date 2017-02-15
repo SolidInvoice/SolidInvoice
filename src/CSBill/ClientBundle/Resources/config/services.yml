@@ -43,6 +43,7 @@ services:
             - ['setContainer', ['@service_container']]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
 
     csbill.serializer.credit.handler:
         class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
@@ -51,3 +52,4 @@ services:
         tags:
             - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: json, method: serializeMoneyJson }
             - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: xml, method: serializeMoneyXml }
+            - { name: jms_serializer.handler, type: 'CSBill\MoneyBundle\Entity\Money', direction: serialization, format: xml, method: serializeMoneyXml }

@@ -37,6 +37,7 @@ use CSBill\QuoteBundle\Event\QuoteEvents;
 use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
+use Money\Currency;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,7 +89,13 @@ class DefaultController extends BaseController
         $quote = new Quote();
         $quote->setClient($client);
 
-        $form = $this->createForm(QuoteType::class, $quote);
+        $options = [];
+
+        if ($client && $client->getCurrency()) {
+            $options['currency'] = $client->getCurrency();
+        }
+
+        $form = $this->createForm(QuoteType::class, $quote, $options);
 
         $form->handleRequest($request);
 
@@ -110,6 +117,18 @@ class DefaultController extends BaseController
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getFieldsAction(Request $request)
+    {
+        $form = $this->createForm(QuoteType::class, null, ['currency' => new Currency($request->get('currency'))]);
+
+        return $this->json($this->get('csbill_core.field.renderer')->render($form->createView(), 'children[items].vars[prototype]'));
     }
 
     /**
@@ -149,7 +168,7 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Quote $quote)
     {
-        $form = $this->createForm(QuoteType::class, $quote);
+        $form = $this->createForm(QuoteType::class, $quote, ['currency' => $quote->getClient()->getCurrency()]);
 
         $form->handleRequest($request);
 
