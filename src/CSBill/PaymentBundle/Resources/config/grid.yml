@@ -23,7 +23,7 @@ datagrid:
                 name: totalAmount
                 label: Total
                 editable: false
-                cell: string
+                cell: money
                 formatter: money
             currency_code:
                 name: currencyCode
@@ -85,11 +85,6 @@ datagrid:
                 label: Completed
                 editable: false
                 cell: date
-            currency_code:
-                name: currencyCode
-                label: Currency
-                editable: false
-                cell: string
             total_amount:
                 name: totalAmount
                 label: Total
@@ -134,11 +129,6 @@ datagrid:
                 label: Completed
                 editable: false
                 cell: date
-            currency_code:
-                name: currencyCode
-                label: Currency
-                editable: false
-                cell: string
             total_amount:
                 name: totalAmount
                 label: Total

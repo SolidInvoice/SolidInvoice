@@ -61,6 +61,7 @@ class PaymentController extends BaseController
         $preferredChoices = $paymentRepository
             ->findBy(['gatewayName' => 'credit']);
 
+        $currency = $invoice->getClient()->getCurrency();
         $form = $this->createForm(
             PaymentForm::class,
             [
@@ -68,6 +69,7 @@ class PaymentController extends BaseController
             ],
             [
                 'user' => $this->getUser(),
+                'currency' => $currency ? $currency->getName() : $this->getParameter('currency'),
                 'preferred_choices' => $preferredChoices,
             ]
         );

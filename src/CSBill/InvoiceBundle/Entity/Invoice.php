@@ -14,6 +14,7 @@ namespace CSBill\InvoiceBundle\Entity;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Traits\InvoiceStatusTrait;
+use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -78,33 +79,33 @@ class Invoice
     private $client;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $total;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="base_total", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $baseTotal;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="balance", type="money")
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $balance;
 
     /**
-     * @var Money
+     * @var MoneyEntity
      *
-     * @ORM\Column(name="tax", type="money", nullable=true)
+     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Serialize\Expose()
      */
     private $tax;
@@ -207,6 +208,10 @@ class Invoice
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
         $this->recurring = false;
+
+        $this->baseTotal = new MoneyEntity();
+        $this->tax = new MoneyEntity();
+        $this->total = new MoneyEntity();
     }
 
     /**
@@ -316,7 +321,7 @@ class Invoice
      */
     public function getTotal()
     {
-        return $this->total;
+        return $this->total->getMoney();
     }
 
     /**
@@ -328,7 +333,7 @@ class Invoice
      */
     public function setTotal(Money $total)
     {
-        $this->total = $total;
+        $this->total = new MoneyEntity($total);
 
         return $this;
     }
@@ -340,7 +345,7 @@ class Invoice
      */
     public function getBaseTotal()
     {
-        return $this->baseTotal;
+        return $this->baseTotal->getMoney();
     }
 
     /**
@@ -352,7 +357,7 @@ class Invoice
      */
     public function setBaseTotal(Money $baseTotal)
     {
-        $this->baseTotal = $baseTotal;
+        $this->baseTotal = new MoneyEntity($baseTotal);
 
         return $this;
     }
@@ -362,7 +367,7 @@ class Invoice
      */
     public function getBalance()
     {
-        return $this->balance;
+        return $this->balance->getMoney();
     }
 
     /**
@@ -372,7 +377,7 @@ class Invoice
      */
     public function setBalance(Money $balance)
     {
-        $this->balance = $balance;
+        $this->balance = new MoneyEntity($balance);
 
         return $this;
     }
@@ -565,7 +570,7 @@ class Invoice
      */
     public function getTax()
     {
-        return $this->tax;
+        return $this->tax->getMoney();
     }
 
     /**
@@ -575,7 +580,7 @@ class Invoice
      */
     public function setTax(Money $tax)
     {
-        $this->tax = $tax;
+        $this->tax = new MoneyEntity($tax);
 
         return $this;
     }

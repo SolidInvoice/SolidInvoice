@@ -29,8 +29,8 @@ class GridController extends BaseController
     {
         $data = $request->request->get('data');
 
-    /** @var Client[] $clients */
-    $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
+        /** @var Client[] $clients */
+        $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
 
         $em = $this->getEm();
         foreach ($clients as $client) {
@@ -57,8 +57,8 @@ class GridController extends BaseController
 
         $this->getEm()->getFilters()->disable('archivable');
 
-    /** @var Client[] $clients */
-    $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
+        /** @var Client[] $clients */
+        $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
 
         $em = $this->getEm();
         foreach ($clients as $client) {
@@ -83,8 +83,8 @@ class GridController extends BaseController
     {
         $data = $request->request->get('data');
 
-    /** @var Client[] $clients */
-    $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
+        /** @var Client[] $clients */
+        $clients = $this->getRepository('CSBillClientBundle:Client')->findBy(['id' => $data]);
 
         $em = $this->getEm();
         foreach ($clients as $client) {

@@ -62,19 +62,22 @@ class QuoteType extends AbstractType
                 'entry_type' => ItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false,
+                'by_reference' => true,
                 'required' => false,
+                'entry_options' => [
+                    'currency' => $options['currency']->getName(),
+                ],
             ]
         );
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
-        $builder->add('total', HiddenMoneyType::class);
-        $builder->add('baseTotal', HiddenMoneyType::class);
-        $builder->add('tax', HiddenMoneyType::class);
+        $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
-        $builder->addEventSubscriber(new BillingFormSubscriber($this->currency));
+        $builder->addEventSubscriber(new BillingFormSubscriber($options['currency']));
     }
 
     /**
@@ -82,7 +85,17 @@ class QuoteType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => Quote::class]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Quote::class,
+                'currency' => $this->currency,
+            ]
+        )
+            ->setAllowedTypes(
+                [
+                    'currency' => [Currency::class],
+                ]
+            );
     }
 
     /**

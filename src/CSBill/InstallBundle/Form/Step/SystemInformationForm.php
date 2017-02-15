@@ -12,6 +12,7 @@
 namespace CSBill\InstallBundle\Form\Step;
 
 use CSBill\CoreBundle\Form\Type\Select2;
+use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -57,7 +58,7 @@ class SystemInformationForm extends AbstractType
             'currency',
             Select2::class,
             [
-                'choices' => array_flip(Intl::getCurrencyBundle()->getCurrencyNames()),
+                'choices' => array_flip(Currency::getCurrencies()),
                 'choices_as_values' => true,
                 'constraints' => new Constraints\NotBlank(['message' => 'Please select a currency']),
                 'placeholder' => 'Please select a currency',

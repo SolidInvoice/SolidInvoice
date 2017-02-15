@@ -57,12 +57,18 @@ class MoneyFormatter
     }
 
     /**
+     * @param string $currency
+     *
      * @return string
      */
-    public function getCurrencySymbol()
+    public function getCurrencySymbol($currency = null)
     {
+        if ($currency instanceof Currency) {
+            $currency = $currency->getName();
+        }
+
         return Intl::getCurrencyBundle()
-            ->getCurrencySymbol($this->currency->getName(), $this->locale);
+            ->getCurrencySymbol($currency ?: $this->currency->getName(), $this->locale);
     }
 
     /**

@@ -45,7 +45,15 @@ define(
                         this._toggleContactInfo(true);
 
                         $.material.init();
-                        this.hideLoader();
+
+                        if (this.options.hideLoader) {
+                            this.hideLoader();
+                        }
+
+                        if (data.currency) {
+                            data.client = event.val;
+                            this.trigger('currency:update', data);
+                        }
                     }, this)
                 );
             },

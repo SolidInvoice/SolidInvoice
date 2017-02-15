@@ -22,7 +22,7 @@ class CreditRepository extends EntityRepository
      * @param Client $client
      * @param Money  $amount
      *
-     * @return \CSBill\ClientBundle\Entity\Credit
+     * @return Credit
      */
     public function addCredit(Client $client, Money $amount)
     {
@@ -60,5 +60,28 @@ class CreditRepository extends EntityRepository
         $entityManager->flush();
 
         return $credit;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function updateCurrency(Client $client)
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+        $filters->disable('softdeleteable');
+
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->update()
+            ->set('c.value.currency', ':currency')
+            ->where('c.client = :client')
+            ->setParameter('currency', $client->getCurrency())
+            ->setParameter('client', $client);
+
+        $qb->getQuery()->execute();
+
+        $filters->enable('archivable');
+        $filters->enable('softdeleteable');
     }
 }

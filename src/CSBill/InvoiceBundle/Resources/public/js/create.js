@@ -11,7 +11,9 @@ define(
         'core/billing/model/collection',
         'core/billing/view/footer',
         'invoice/view',
-        'invoice/discount'
+        'invoice/discount',
+        'routing',
+        'accounting'
     ],
     function(
         Module,
@@ -25,30 +27,74 @@ define(
         Collection,
         FooterView,
         InvoiceView,
-        Discount
+        Discount,
+        Routing,
+        Accounting
     ) {
         "use strict";
 
         return Module.extend({
+            collection : null,
+            footerRowModel: null,
             regions: {
                 'clientInfo': '#client-info',
-                'invoiceRows': '#invoice-items'
+                'invoiceRows': '#invoice-items',
+                'invoiceForm': '#invoice-create-form'
             },
             _renderClientSelect: function(options) {
                 var model = new Backbone.Model(options.client),
-                    viewOptions = {type: 'invoice', model: model};
+                    viewOptions = {type: 'invoice', model: model, 'hideLoader': false},
+                    module = this,
+                    clientSelectView = new ClientSelectView(_.merge(options, viewOptions));
 
-                this.app.getRegion('clientInfo').show(new ClientSelectView(_.merge(options, viewOptions)));
+                clientSelectView.on('currency:update', function (clientOptions) {
+                    Accounting.settings.currency.symbol = clientOptions.currency_format;
+
+                    $.getJSON(
+                        Routing.generate('_invoices_get_fields', {'currency': clientOptions.currency})
+                    ).done(_.bind(function (fieldData) {
+                        module.collection.each(function (model) {
+                            model.set('fields', fieldData);
+                        });
+
+                        var invoiceView = module._getInvoiceView(fieldData);
+
+                        this.hideLoader();
+
+                        module.app
+                            .getRegion('invoiceRows')
+                            .reset()
+                            .show(invoiceView)
+                        ;
+
+                        module.app.getRegion('invoiceForm').$el.attr('action', Routing.generate('_invoices_create', {'client' : clientOptions.client}));
+
+                        module.app.initialize();
+                    }, this));
+                });
+
+                this.app.getRegion('clientInfo').show(clientSelectView);
+            },
+            _getInvoiceView: function() {
+                return new InvoiceView(
+                    {
+                        'collection': this.collection,
+                        'footerView': new FooterView({model: this.footerRowModel}),
+                        'selector': '#invoice-footer',
+                        'fieldData': this.options.fieldData,
+                        'hasTax': this.options.tax
+                    }
+                );
+
             },
             initialize: function(options) {
-
                 var discountModel = new DiscountModel(),
-                    footerRowModel = new FooterRowModel();
-
-                footerRowModel.set('hasTax', options.tax);
-
-                var recurring = $('#invoice_recurring'),
+                    recurring = $('#invoice_recurring'),
                     recurringInfo = $('.recurring-info');
+
+                this.footerRowModel = new FooterRowModel();
+
+                this.footerRowModel.set('hasTax', options.tax);
 
                 recurring.on('change', function () {
                    recurringInfo.toggleClass('hidden');
@@ -79,24 +125,14 @@ define(
                 }
 
                 /* COLLECTION */
-                var collection = new Collection(models, {"discountModel": discountModel, 'footerModel': footerRowModel});
+                this.collection = new Collection(models, {"discountModel": discountModel, 'footerModel': this.footerRowModel});
 
                 /* DISCOUNT */
-                new Discount({model: discountModel, collection: collection});
+                new Discount({model: discountModel, collection: this.collection});
 
                 this.app
                     .getRegion('invoiceRows')
-                    .show(
-                        new InvoiceView(
-                            {
-                                'collection': collection,
-                                'footerView': new FooterView({model: footerRowModel}),
-                                'selector': '#invoice-footer',
-                                'fieldData': options.fieldData,
-                                'hasTax': options.tax
-                            }
-                        )
-                    );
+                    .show(this._getInvoiceView());
             }
         });
     }

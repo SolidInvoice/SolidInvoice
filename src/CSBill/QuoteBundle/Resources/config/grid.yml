@@ -25,12 +25,14 @@ datagrid:
                 name: total
                 label: Total
                 editable: false
-                cell: string
+                cell: money
+                formatter: money
             tax:
                 name: tax
                 label: Tax
                 editable: false
-                cell: string
+                cell: money
+                formatter: money
             discount:
                 name: discount
                 label: Discount

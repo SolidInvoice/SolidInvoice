@@ -57,12 +57,12 @@ class InvoiceRepository extends EntityRepository
         $qb = $this->createQueryBuilder('i');
 
         $qb->select('SUM(i.total)')
-        ->where('i.status = :status')
-        ->setParameter('status', $status);
+            ->where('i.status = :status')
+            ->setParameter('status', $status);
 
         if (null !== $client) {
             $qb->andWhere('i.client = :client')
-        ->setParameter('client', $client);
+                ->setParameter('client', $client);
         }
 
         $query = $qb->getQuery();
@@ -81,7 +81,7 @@ class InvoiceRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('SUM(i.balance)')
+        $qb->select('SUM(i.balance.value)')
             ->where('i.status = :status')
             ->setParameter('status', Graph::STATUS_PENDING);
 
@@ -92,7 +92,7 @@ class InvoiceRepository extends EntityRepository
 
         $query = $qb->getQuery();
 
-        return $query->getSingleResult('money');
+        return (int) $query->getSingleScalarResult();
     }
 
     /**
@@ -175,12 +175,12 @@ class InvoiceRepository extends EntityRepository
         $qb = $this->createQueryBuilder('i');
 
         $qb->select(['i', 'c'])
-        ->join('i.client', 'c')
-        ->where('i.recurring = 0');
+            ->join('i.client', 'c')
+            ->where('i.recurring = 0');
 
         if (!empty($parameters['client'])) {
             $qb->andWhere('i.client = :client')
-        ->setParameter('client', $parameters['client']);
+                ->setParameter('client', $parameters['client']);
         }
 
         return $qb;
@@ -196,12 +196,12 @@ class InvoiceRepository extends EntityRepository
         $qb = $this->createQueryBuilder('i');
 
         $qb->select(['i', 'c', 'r'])
-        ->join('i.client', 'c')
-        ->join('i.recurringInfo', 'r', Join::WITH, 'i.recurring = 1');
+            ->join('i.client', 'c')
+            ->join('i.recurringInfo', 'r', Join::WITH, 'i.recurring = 1');
 
         if (!empty($parameters['client'])) {
             $qb->where('i.client = :client')
-        ->setParameter('client', $parameters['client']);
+                ->setParameter('client', $parameters['client']);
         }
 
         return $qb;
@@ -217,9 +217,57 @@ class InvoiceRepository extends EntityRepository
         $qb = $this->createQueryBuilder('i');
 
         $qb->select(['i', 'c'])
-        ->join('i.client', 'c')
-        ->where('i.archived is not null');
+            ->join('i.client', 'c')
+            ->where('i.archived is not null');
 
         return $qb;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function updateCurrency(Client $client)
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+        $filters->disable('softdeleteable');
+
+        $currency = $client->getCurrency();
+
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->update()
+            ->set('i.total.currency', ':currency')
+            ->set('i.baseTotal.currency', ':currency')
+            ->set('i.balance.currency', ':currency')
+            ->set('i.tax.currency', ':currency')
+            ->where('i.client = :client')
+            ->setParameter('client', $client)
+            ->setParameter('currency', $currency);
+
+        if ($qb->getQuery()->execute()) {
+            $qbi = $this->getEntityManager()->createQueryBuilder();
+
+            $qbi->update()
+                ->from('CSBillInvoiceBundle:Item', 'it')
+                ->set('it.price.currency', ':currency')
+                ->set('it.total.currency', ':currency')
+                ->where(
+                    $qbi->expr()->in(
+                        'it.invoice',
+                        $this->createQueryBuilder('i')
+                            ->select('i.id')
+                            ->where('i.client = :client')
+                            ->getDQL()
+                    )
+                )
+                ->setParameter('client', $client)
+                ->setParameter('currency', $currency);
+
+            $qbi->getQuery()->execute();
+        }
+
+        $filters->enable('archivable');
+        $filters->enable('softdeleteable');
     }
 }

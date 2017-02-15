@@ -7,6 +7,8 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set currency = invoice.client.currency %}
+
 {% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block page_title %}
@@ -88,7 +90,7 @@
 
             {% if payments|length > 0 %}
                 <br class="clear" />
-		{% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
+                {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
             {% endif %}
         {% endblock contentBody %}
 
@@ -142,23 +144,23 @@
 
 {% block script %}
     require(['jquery'{% if invoice.recurring %}, 'jquery.jqcron'{% endif %}], function ($) {
-    $(function () {
-    {% if invoice.recurring %}
-	$('#recurring').jqCron({
-	enabled_minute: false,
-	enabled_hour: false,
-	no_reset_button: true,
-	numeric_zero_pad: true,
-	default_value: '{{ invoice.recurringInfo.frequency }}'
-	});
+        $(function () {
+            {% if invoice.recurring %}
+	            $('#recurring').jqCron({
+	                enabled_minute: false,
+	                enabled_hour: false,
+	                no_reset_button: true,
+	                numeric_zero_pad: true,
+	                default_value: '{{ invoice.recurringInfo.frequency }}'
+	            });
 
-	$('.jqCron-selector-list').remove();
-    {% endif %}
+	            $('.jqCron-selector-list').remove();
+            {% endif %}
 
-    $('#pay-now').on('click', function(event) {
-    event.preventDefault();
-    $('#payment-modal').modal();
-    });
-    });
+            $('#pay-now').on('click', function(event) {
+                event.preventDefault();
+                $('#payment-modal').modal();
+            });
+        });
     });
 {% endblock script %}

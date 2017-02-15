@@ -1,4 +1,4 @@
-define(['marionette', 'template', 'lodash', 'accounting'], function (Mn, Template, _, Accounting) {
+define(['marionette', 'template', 'lodash', 'accounting'], function(Mn, Template, _, Accounting) {
     return Mn.ItemView.extend({
         template: Template.invoice.row,
         tagName: 'tr',
@@ -16,8 +16,23 @@ define(['marionette', 'template', 'lodash', 'accounting'], function (Mn, Templat
 
             this.model.collection.remove(this.model);
         },
-        initialize: function () {
+        initialize: function() {
+            setTimeout(_.bind(this.setModel, this), 0);
             setTimeout(_.bind(this.calcPrice, this), 0);
+        },
+        setModel: function() {
+            this.$(':input').each(_.bind(function(index, input) {
+                var $this = $(input),
+                    type = $this.closest('td')[0].className.split('-')[1];
+
+                if (this.model.get(type)) {
+                    if ('tax' === type) {
+                        $this.select2('val', this.model.get(type).id);
+                    } else {
+                        $this.val(this.model.get(type));
+                    }
+                }
+            }, this));
         },
         calcPrice: function() {
             this.$(':input').each(_.bind(function(index, input) {

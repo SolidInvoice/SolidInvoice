@@ -157,7 +157,7 @@
             </optgroup>
         {% else %}
             {% set attrs -%}
-                data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}"
+                data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}" data-id="{{ choice.data.id }}"
             {%- endset %}
             <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
         {% endif %}

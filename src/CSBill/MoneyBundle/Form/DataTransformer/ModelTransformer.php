@@ -18,16 +18,26 @@ use Symfony\Component\Form\DataTransformerInterface;
 class ModelTransformer implements DataTransformerInterface
 {
     /**
-     * @var \Money\Currency
+     * @var Currency
      */
     private $currency;
 
     /**
-     * @param \Money\Currency $currency
+     * @param Currency|string $currency
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct(Currency $currency)
+    public function __construct($currency)
     {
-        $this->currency = $currency;
+        if (is_string($currency)) {
+            $this->currency = new Currency($currency);
+        } elseif ($currency instanceof Currency) {
+            $this->currency = $currency;
+        } else {
+            throw new \InvalidArgumentException(
+                sprintf(__METHOD__.' expects a Currency object or string, %s given', is_object($currency) ? get_class($currency) : gettype($currency))
+            );
+        }
     }
 
     /**

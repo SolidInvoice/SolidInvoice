@@ -11,6 +11,7 @@
 
 namespace CSBill\InvoiceBundle\Form\Type;
 
+use CSBill\InvoiceBundle\Entity\Item;
 use CSBill\TaxBundle\Form\Type\Tax;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
@@ -57,6 +58,7 @@ class ItemType extends AbstractType
                 'attr' => [
                     'class' => 'input-small invoice-item-price',
                 ],
+                'currency' => $options['currency'],
             ]
         );
 
@@ -79,7 +81,7 @@ class ItemType extends AbstractType
                     'class' => 'CSBill\TaxBundle\Entity\Tax',
                     'placeholder' => 'Choose Tax Type',
                     'attr' => [
-                        'class' => 'input-mini invoice-item-tax',
+                        'class' => 'select2 input-mini invoice-item-tax',
                     ],
                     'required' => false,
                 ]
@@ -100,6 +102,8 @@ class ItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'CSBill\InvoiceBundle\Entity\Item']);
+        $resolver->setDefault('data_class', Item::class)
+            ->setRequired('currency')
+            ->setAllowedTypes('currency', ['string']);
     }
 }

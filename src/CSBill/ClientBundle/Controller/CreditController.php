@@ -16,6 +16,7 @@ use CSBill\ClientBundle\Entity\Credit;
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\CoreBundle\Controller\BaseController;
 use Money\Money;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -29,12 +30,14 @@ class CreditController extends BaseController
      */
     public function addAction(Request $request, Credit $credit)
     {
-        $value = new Money((int) ($request->request->get('credit') * 100), $this->get('currency'));
-
         /** @var CreditRepository $clientRepository */
         $clientRepository = $this->getRepository('CSBillClientBundle:Credit');
 
-        $credits = $clientRepository->addCredit($credit->getClient(), $value);
+        $client = $credit->getClient();
+
+        $value = new Money((int) ($request->request->get('credit') * 100), $client->getCurrency() ? $client->getCurrency() : $this->get('currency'));
+
+        $credits = $clientRepository->addCredit($client, $value);
 
         return $this->json(
             [
@@ -48,7 +51,9 @@ class CreditController extends BaseController
      * @param Request $request
      * @param Client  $client
      *
-     * @return mixed
+     * @return JsonResponse
+     *
+     * @throws BadRequestHttpException
      */
     public function creditAction(Request $request, Client $client)
     {
@@ -69,7 +74,7 @@ class CreditController extends BaseController
             /** @var CreditRepository $repository */
             $repository = $this->getRepository('CSBillClientBundle:Credit');
 
-            $value = new Money((int) ($request->request->get('credit') * 100), $this->get('currency'));
+            $value = new Money((int) ($request->request->get('credit') * 100), $client->getCurrency() ? $client->getCurrency() : $this->get('currency'));
 
             return $jsonResponse($repository->addCredit($client, $value));
         }

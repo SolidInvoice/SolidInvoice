@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serialize;
+use Money\Currency;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -81,6 +82,14 @@ class Client
      * @Serialize\Groups({"api", "js"})
      */
     private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="currency", type="string", length=3, nullable=true)
+     * @Serialize\Groups({"api", "js"})
+     */
+    private $currency;
 
     /**
      * @var ArrayCollection
@@ -463,5 +472,25 @@ class Client
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Currency|null
+     */
+    public function getCurrency()
+    {
+        return $this->currency ? new Currency($this->currency) : null;
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @return Client
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
     }
 }

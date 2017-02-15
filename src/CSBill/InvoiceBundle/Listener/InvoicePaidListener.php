@@ -52,10 +52,12 @@ class InvoicePaidListener
 
         $em = $this->registry->getManager();
 
-        $invoice->setBalance(new Money(0, $this->currency));
+        $currency = $invoice->getClient()->getCurrency() ? $invoice->getClient()->getCurrency() : $this->currency;
+
+        $invoice->setBalance(new Money(0, $currency));
         $em->persist($invoice);
 
-        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $currency);
 
         if ($totalPaid->greaterThan($invoice->getTotal())) {
             $client = $invoice->getClient();

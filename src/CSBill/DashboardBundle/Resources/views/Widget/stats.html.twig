@@ -40,9 +40,11 @@
                                 {{ 'dashboard.income_received'|trans }}
                             </div>
 
-                            <h3>
-                                {{ totalIncome|formatCurrency }}
-                            </h3>
+                            {% for income in totalIncome %}
+                                <h3>
+                                    {{ income.totalAmount|formatCurrency(income.currencyCode) }}
+                                </h3>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

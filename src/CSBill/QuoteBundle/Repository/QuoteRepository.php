@@ -29,6 +29,7 @@
 
 namespace CSBill\QuoteBundle\Repository;
 
+use CSBill\ClientBundle\Entity\Client;
 use Doctrine\ORM\EntityRepository;
 
 class QuoteRepository extends EntityRepository
@@ -87,11 +88,11 @@ class QuoteRepository extends EntityRepository
         $qb = $this->createQueryBuilder('q');
 
         $qb->select(['q', 'c'])
-        ->join('q.client', 'c');
+            ->join('q.client', 'c');
 
         if (!empty($parameters['client'])) {
             $qb->where('q.client = :client')
-        ->setParameter('client', $parameters['client']);
+                ->setParameter('client', $parameters['client']);
         }
 
         return $qb;
@@ -107,9 +108,56 @@ class QuoteRepository extends EntityRepository
         $qb = $this->createQueryBuilder('q');
 
         $qb->select(['q', 'c'])
-        ->join('q.client', 'c')
-        ->where('q.archived is not null');
+            ->join('q.client', 'c')
+            ->where('q.archived is not null');
 
         return $qb;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function updateCurrency(Client $client)
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+        $filters->disable('softdeleteable');
+
+        $currency = $client->getCurrency();
+
+        $qb = $this->createQueryBuilder('q');
+
+        $qb->update()
+            ->set('q.total.currency', ':currency')
+            ->set('q.baseTotal.currency', ':currency')
+            ->set('q.tax.currency', ':currency')
+            ->where('q.client = :client')
+            ->setParameter('client', $client)
+            ->setParameter('currency', $currency);
+
+        if ($qb->getQuery()->execute()) {
+            $qbi = $this->getEntityManager()->createQueryBuilder();
+
+            $qbi->update()
+                ->from('CSBillQuoteBundle:Item', 'qt')
+                ->set('qt.price.currency', ':currency')
+                ->set('qt.total.currency', ':currency')
+                ->where(
+                    $qbi->expr()->in(
+                        'qt.quote',
+                        $this->createQueryBuilder('q')
+                            ->select('q.id')
+                            ->where('q.client = :client')
+                            ->getDQL()
+                    )
+                )
+                ->setParameter('client', $client)
+                ->setParameter('currency', $currency);
+
+            $qbi->getQuery()->execute();
+        }
+
+        $filters->enable('archivable');
+        $filters->enable('softdeleteable');
     }
 }

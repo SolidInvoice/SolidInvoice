@@ -41,7 +41,15 @@ class AjaxController extends BaseController
             ]
         );
 
-        return $this->json(['content' => $content]);
+        $currency = $client->getCurrency() ?: $this->getParameter('currency');
+
+        return $this->json(
+            [
+                'content' => $content,
+                'currency' => $currency->getName(),
+                'currency_format' => $this->get('csbill.money.formatter')->getCurrencySymbol($currency),
+            ]
+        );
     }
 
     /**

@@ -25,6 +25,7 @@ define([
         'grid/cell/actioncell',
         'grid/cell/clientcell',
         'grid/cell/invoicecell',
+        'grid/cell/moneycell',
         'grid/formatter/objectformatter',
         'grid/formatter/discountformatter',
         'grid/formatter/moneyformatter'
