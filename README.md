@@ -63,10 +63,20 @@ After all the dependencies has been installed, the next step is to install all t
 $ php app/console assets:install --symlink web
 ```
 
-The final step is to install the Node packages, and compile all the assets
+The final step is to install the Node packages, and compile all the assets.
+
+To install the node packages, you can use Yarn.
+
+To install Yarn, run the following command:
 
 ```bash
-$ npm install
+$ curl -o- -L https://yarnpkg.com/install.sh | bash
+```
+
+Then you can run the final step
+
+```bash
+$ yarn
 $ ./node_modules/.bin/gulp
 ```
 
