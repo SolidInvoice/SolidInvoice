@@ -9223,74 +9223,25 @@
             "time": "2015-06-15T20:19:33+00:00"
         },
         {
-            "name": "johnkary/phpunit-speedtrap",
-            "version": "v1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/johnkary/phpunit-speedtrap.git",
-                "reference": "ad242a6e84b0d63d2e50832babad77d6d545bc0a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/johnkary/phpunit-speedtrap/zipball/ad242a6e84b0d63d2e50832babad77d6d545bc0a",
-                "reference": "ad242a6e84b0d63d2e50832babad77d6d545bc0a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6",
-                "phpunit/phpunit": ">=4.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "JohnKary": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "John Kary",
-                    "email": "john@johnkary.net"
-                }
-            ],
-            "description": "Find slow tests in your PHPUnit test suite",
-            "homepage": "https://github.com/johnkary/phpunit-speedtrap",
-            "keywords": [
-                "phpunit",
-                "profile",
-                "slow"
-            ],
-            "time": "2017-02-13T15:22:35+00:00"
-        },
-        {
             "name": "matthiasnoback/symfony-config-test",
-            "version": "v2.1.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/SymfonyConfigTest.git",
-                "reference": "dbf93be91b8004203029301bf98142bd06de4f5a"
+                "reference": "e1539aa8552126b9ce41852ab23957a2315f1709"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/SymfonyConfigTest/zipball/dbf93be91b8004203029301bf98142bd06de4f5a",
-                "reference": "dbf93be91b8004203029301bf98142bd06de4f5a",
+                "url": "https://api.github.com/repos/matthiasnoback/SymfonyConfigTest/zipball/e1539aa8552126b9ce41852ab23957a2315f1709",
+                "reference": "e1539aa8552126b9ce41852ab23957a2315f1709",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3|^7.0",
-                "sebastian/exporter": "^1.0|^2.0",
+                "php": "^7.0",
                 "symfony/config": "^2.3|^3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0|^5.0"
+                "phpunit/phpunit": "^6.0"
             },
             "type": "library",
             "autoload": {
@@ -9316,31 +9267,31 @@
                 "phpunit",
                 "symfony"
             ],
-            "time": "2016-11-30T15:53:12+00:00"
+            "time": "2017-02-08T11:30:13+00:00"
         },
         {
             "name": "matthiasnoback/symfony-dependency-injection-test",
-            "version": "v1.1.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/SymfonyDependencyInjectionTest.git",
-                "reference": "95c3b8f0f708fcc49360412f84186d562add50dc"
+                "reference": "55c7be9cf700eaeeadf7164a4c4cccd946efb5bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/SymfonyDependencyInjectionTest/zipball/95c3b8f0f708fcc49360412f84186d562add50dc",
-                "reference": "95c3b8f0f708fcc49360412f84186d562add50dc",
+                "url": "https://api.github.com/repos/matthiasnoback/SymfonyDependencyInjectionTest/zipball/55c7be9cf700eaeeadf7164a4c4cccd946efb5bb",
+                "reference": "55c7be9cf700eaeeadf7164a4c4cccd946efb5bb",
                 "shasum": ""
             },
             "require": {
-                "matthiasnoback/symfony-config-test": "^1.0|^2.0",
-                "sebastian/exporter": "^1.0|^2.0",
+                "matthiasnoback/symfony-config-test": "^3.0",
+                "php": "^7.0",
                 "symfony/config": "^2.3|^3.0",
                 "symfony/dependency-injection": "^2.3|^3.0",
                 "symfony/yaml": "^2.7|^3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0|^5.0"
+                "phpunit/phpunit": "^6.0"
             },
             "type": "library",
             "autoload": {
@@ -9366,7 +9317,7 @@
                 "dependency injection",
                 "phpunit"
             ],
-            "time": "2016-11-30T15:51:50+00:00"
+            "time": "2017-02-08T11:26:19+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -9686,40 +9637,39 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "4.0.5",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "c19cfc7cbb0e9338d8c469c7eedecc2a428b0971"
+                "reference": "e7d7a4acca58e45bdfd00221563d131cfb04ba96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c19cfc7cbb0e9338d8c469c7eedecc2a428b0971",
-                "reference": "c19cfc7cbb0e9338d8c469c7eedecc2a428b0971",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/e7d7a4acca58e45bdfd00221563d131cfb04ba96",
+                "reference": "e7d7a4acca58e45bdfd00221563d131cfb04ba96",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0",
-                "phpunit/php-file-iterator": "~1.3",
-                "phpunit/php-text-template": "~1.2",
+                "php": "^7.0",
+                "phpunit/php-file-iterator": "^1.3",
+                "phpunit/php-text-template": "^1.2",
                 "phpunit/php-token-stream": "^1.4.2",
-                "sebastian/code-unit-reverse-lookup": "~1.0",
-                "sebastian/environment": "^1.3.2 || ^2.0",
-                "sebastian/version": "~1.0|~2.0"
+                "sebastian/code-unit-reverse-lookup": "^1.0",
+                "sebastian/environment": "^2.0",
+                "sebastian/version": "^2.0"
             },
             "require-dev": {
-                "ext-xdebug": ">=2.1.4",
-                "phpunit/phpunit": "^5.4"
+                "ext-xdebug": "^2.5",
+                "phpunit/phpunit": "^6.0"
             },
             "suggest": {
                 "ext-dom": "*",
-                "ext-xdebug": ">=2.4.0",
                 "ext-xmlwriter": "*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0.x-dev"
+                    "dev-master": "5.0.x-dev"
                 }
             },
             "autoload": {
@@ -9745,7 +9695,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-01-20T15:06:43+00:00"
+            "time": "2017-02-02T10:35:41+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -9930,16 +9880,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.13",
+            "version": "6.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "60ebeed87a35ea46fd7f7d8029df2d6f013ebb34"
+                "reference": "e702506af102d0dc5312dd24b8e97fd6e58ce3ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/60ebeed87a35ea46fd7f7d8029df2d6f013ebb34",
-                "reference": "60ebeed87a35ea46fd7f7d8029df2d6f013ebb34",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e702506af102d0dc5312dd24b8e97fd6e58ce3ba",
+                "reference": "e702506af102d0dc5312dd24b8e97fd6e58ce3ba",
                 "shasum": ""
             },
             "require": {
@@ -9948,33 +9898,33 @@
                 "ext-libxml": "*",
                 "ext-mbstring": "*",
                 "ext-xml": "*",
-                "myclabs/deep-copy": "~1.3",
-                "php": "^5.6 || ^7.0",
+                "myclabs/deep-copy": "^1.3",
+                "php": "^7.0",
                 "phpspec/prophecy": "^1.6.2",
-                "phpunit/php-code-coverage": "^4.0.4",
-                "phpunit/php-file-iterator": "~1.4",
-                "phpunit/php-text-template": "~1.2",
+                "phpunit/php-code-coverage": "^5.0",
+                "phpunit/php-file-iterator": "^1.4",
+                "phpunit/php-text-template": "^1.2",
                 "phpunit/php-timer": "^1.0.6",
-                "phpunit/phpunit-mock-objects": "^3.2",
+                "phpunit/phpunit-mock-objects": "^4.0",
                 "sebastian/comparator": "^1.2.4",
-                "sebastian/diff": "~1.2",
-                "sebastian/environment": "^1.3.4 || ^2.0",
-                "sebastian/exporter": "~2.0",
+                "sebastian/diff": "^1.2",
+                "sebastian/environment": "^2.0",
+                "sebastian/exporter": "^2.0",
                 "sebastian/global-state": "^1.1",
-                "sebastian/object-enumerator": "~2.0",
-                "sebastian/resource-operations": "~1.0",
-                "sebastian/version": "~1.0|~2.0",
-                "symfony/yaml": "~2.1|~3.0"
+                "sebastian/object-enumerator": "^2.0",
+                "sebastian/resource-operations": "^1.0",
+                "sebastian/version": "^2.0"
             },
             "conflict": {
-                "phpdocumentor/reflection-docblock": "3.0.2"
+                "phpdocumentor/reflection-docblock": "3.0.2",
+                "phpunit/dbunit": "<3.0"
             },
             "require-dev": {
                 "ext-pdo": "*"
             },
             "suggest": {
                 "ext-xdebug": "*",
-                "phpunit/php-invoker": "~1.1"
+                "phpunit/php-invoker": "^1.1"
             },
             "bin": [
                 "phpunit"
@@ -9982,7 +9932,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.7.x-dev"
+                    "dev-master": "6.0.x-dev"
                 }
             },
             "autoload": {
@@ -10008,33 +9958,33 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-02-10T09:05:10+00:00"
+            "time": "2017-02-08T05:57:26+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "3.4.3",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "3ab72b65b39b491e0c011e2e09bb2206c2aa8e24"
+                "reference": "3819745c44f3aff9518fd655f320c4535d541af7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3ab72b65b39b491e0c011e2e09bb2206c2aa8e24",
-                "reference": "3ab72b65b39b491e0c011e2e09bb2206c2aa8e24",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3819745c44f3aff9518fd655f320c4535d541af7",
+                "reference": "3819745c44f3aff9518fd655f320c4535d541af7",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
-                "php": "^5.6 || ^7.0",
+                "php": "^7.0",
                 "phpunit/php-text-template": "^1.2",
-                "sebastian/exporter": "^1.2 || ^2.0"
+                "sebastian/exporter": "^2.0"
             },
             "conflict": {
-                "phpunit/phpunit": "<5.4.0"
+                "phpunit/phpunit": "<6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.4"
+                "phpunit/phpunit": "^6.0"
             },
             "suggest": {
                 "ext-soap": "*"
@@ -10042,7 +9992,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -10067,7 +10017,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2016-12-08T20:27:08+00:00"
+            "time": "2017-02-02T10:36:38+00:00"
         },
         {
             "name": "psr/container",

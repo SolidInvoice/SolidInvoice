@@ -17,7 +17,7 @@ use Mockery as M;
 use Money\Currency;
 use Money\Money;
 
-class MoneyFormatterExtensionTest extends \PHPUnit_Framework_TestCase
+class MoneyFormatterExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetFunctions()
     {

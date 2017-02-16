@@ -103,13 +103,12 @@
         "behat/mink-selenium2-driver": "^1.2",
         "behat/mink": "^1.6",
         "sensio/generator-bundle": "^3.0",
-        "phpunit/phpunit": "^5.4",
-        "johnkary/phpunit-speedtrap": "^1.0",
+        "phpunit/phpunit": "^6.0",
         "fzaninotto/faker": "^1.3",
         "mockery/mockery": "^0.9",
         "sensiolabs/security-checker": "^3.0",
         "satooshi/php-coveralls": "^1.0",
-        "matthiasnoback/symfony-dependency-injection-test": "^1.0"
+        "matthiasnoback/symfony-dependency-injection-test": "^2.0"
     },
     "scripts": {
         "post-root-package-install": [

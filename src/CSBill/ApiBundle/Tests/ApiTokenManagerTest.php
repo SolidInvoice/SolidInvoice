@@ -18,7 +18,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Mockery as M;
 
-class ApiTokenManagerTest extends \PHPUnit_Framework_TestCase
+class ApiTokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     public function testGenerateToken()
     {

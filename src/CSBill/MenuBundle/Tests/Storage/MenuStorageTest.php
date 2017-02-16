@@ -13,7 +13,7 @@ namespace CSBill\MenuBundle\Tests\Storage;
 
 use CSBill\MenuBundle\Storage\MenuStorage;
 
-class MenuStorageTest extends \PHPUnit_Framework_TestCase
+class MenuStorageTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider storageItems

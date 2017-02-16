@@ -15,7 +15,7 @@ use CSBill\MenuBundle\MenuItem;
 use Knp\Menu\Factory\CoreExtension;
 use Mockery as M;
 
-class MenuItemTest extends \PHPUnit_Framework_TestCase
+class MenuItemTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddDivider()
     {

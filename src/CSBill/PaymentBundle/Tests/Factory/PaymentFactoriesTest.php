@@ -13,7 +13,7 @@ namespace CSBill\PaymentBundle\Tests\Factory;
 use CSBill\PaymentBundle\Exception\InvalidGatewayException;
 use CSBill\PaymentBundle\Factory\PaymentFactories;
 
-class PaymentFactoriesTest extends \PHPUnit_Framework_TestCase
+class PaymentFactoriesTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGatewayFactories()
     {

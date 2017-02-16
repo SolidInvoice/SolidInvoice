@@ -137,7 +137,8 @@ class LoaderTest extends KernelAwareTest
             ->getQuery()
             ->execute();
 
-        $this->setExpectedException('Exception', 'You need to set a HipChat Auth token in order to enable HipChat notifications');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('You need to set a HipChat Auth token in order to enable HipChat notifications');
 
         $settingsLoader = new Loader($doctrine);
 
@@ -165,7 +166,8 @@ class LoaderTest extends KernelAwareTest
             ->getQuery()
             ->execute();
 
-        $this->setExpectedException('Exception', 'You need to set a HipChat Room ID in order to enable HipChat notifications');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('You need to set a HipChat Room ID in order to enable HipChat notifications');
 
         $settingsLoader = new Loader($doctrine);
 
