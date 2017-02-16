@@ -1,7 +1,7 @@
 application:
     environment:
         php:
-            version: 5.6
+            version: 7.1
     dependencies:
         before:
             - composer install --no-interaction

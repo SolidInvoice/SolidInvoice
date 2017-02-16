@@ -12,7 +12,7 @@ CSBill is an open-source application that allows you to manage clients and conta
 Requirements
 ------------
 
-CSBill requires minimum PHP 5.6.10.
+CSBill requires minimum PHP 7.1.0.
 
 *Note:* The latest version of PHP is always recommended
 
