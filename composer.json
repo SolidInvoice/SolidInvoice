@@ -91,7 +91,9 @@
         "oro/requirejs-bundle": "^1.0",
         "willdurand/js-translation-bundle": "^2.5",
         "php-http/guzzle6-adapter": "^1.1",
-        "ramsey/uuid-doctrine": "^1.2"
+        "ramsey/uuid-doctrine": "^1.2",
+        "symfony/yaml": "^3.2",
+        "symfony/config": "3.3.x-dev"
     },
     "require-dev": {
         "behat/behat": "^3.0",
