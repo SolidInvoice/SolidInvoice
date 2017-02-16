@@ -14,7 +14,7 @@ namespace CSBill\DataGridBundle\Tests\Source;
 use CSBill\DataGridBundle\Source\ORMSource;
 use Mockery as M;
 
-class ORMSourceTest extends \PHPUnit_Framework_TestCase
+class ORMSourceTest extends \PHPUnit\Framework\TestCase
 {
     public function testFetch()
     {
@@ -38,7 +38,8 @@ class ORMSourceTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchException()
     {
-        $this->setExpectedException('Exception', 'Grid source should return a query builder');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Grid source should return a query builder');
 
         $repository = M::mock('Doctrine\ORM\EntityManager');
         $registry = M::mock('Doctrine\Common\Persistence\ManagerRegistry');

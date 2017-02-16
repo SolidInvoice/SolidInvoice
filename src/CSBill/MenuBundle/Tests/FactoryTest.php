@@ -14,7 +14,7 @@ namespace CSBill\MenuBundle\Tests;
 use CSBill\MenuBundle\Factory;
 use Mockery as M;
 
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddExtension()
     {

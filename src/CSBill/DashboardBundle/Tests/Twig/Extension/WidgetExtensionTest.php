@@ -13,7 +13,7 @@ namespace CSBill\DashboardBundle\Tests\Twig\Extension;
 
 use CSBill\DashboardBundle\Twig\Extension\WidgetExtension;
 
-class WidgetExtensionTest extends \PHPUnit_Framework_TestCase
+class WidgetExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var WidgetExtension

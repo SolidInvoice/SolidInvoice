@@ -11,18 +11,13 @@
     processIsolation            = "false"
     stopOnFailure               = "false"
     syntaxCheck                 = "false"
-    bootstrap                   = "app/autoload.php" >
+    bootstrap                   = "tests/bootstrap.php" >
 
     <testsuites>
         <testsuite name="CSBill Test Suite">
             <directory>src/*/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
-
-    <listeners>
-        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
-        <listener class="Mockery\Adapter\Phpunit\TestListener" />
-    </listeners>
 
     <!--
     <php>

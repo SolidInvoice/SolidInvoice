@@ -15,7 +15,7 @@ use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use Money\Currency;
 use Money\Money;
 
-class MoneyFormatterTest extends \PHPUnit_Framework_TestCase
+class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @param string $locale

@@ -14,7 +14,7 @@ namespace CSBill\MenuBundle\Tests\Twig\Extension;
 use CSBill\MenuBundle\Twig\Extension\MenuExtension;
 use Mockery as M;
 
-class MenuExtensionTest extends \PHPUnit_Framework_TestCase
+class MenuExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MenuExtension

@@ -17,7 +17,7 @@ use Mockery as M;
 use Money\Currency;
 use Money\Money;
 
-class MoneyTypeTest extends \PHPUnit_Framework_TestCase
+class MoneyTypeTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
     {
@@ -119,10 +119,8 @@ class MoneyTypeTest extends \PHPUnit_Framework_TestCase
         /** @var MoneyType $type */
         $type = Type::getType('money');
 
-        $this->setExpectedException(
-            'Doctrine\Dbal\Types\ConversionException',
-            'Could not convert database value "0.2" to Doctrine Type money'
-        );
+        $this->expectException('Doctrine\Dbal\Types\ConversionException');
+        $this->expectExceptionMessage('Could not convert database value "0.2" to Doctrine Type money');
 
         $type->convertToDatabaseValue(0.2, $platform);
     }

@@ -14,7 +14,7 @@ namespace CSBill\MenuBundle\Tests;
 use CSBill\MenuBundle\Provider;
 use Mockery as M;
 
-class ProviderTest extends \PHPUnit_Framework_TestCase
+class ProviderTest extends \PHPUnit\Framework\TestCase
 {
     public function testGet()
     {
