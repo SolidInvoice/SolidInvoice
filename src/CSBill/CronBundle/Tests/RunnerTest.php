@@ -14,7 +14,7 @@ namespace CSBill\CronBundle\Tests;
 use CSBill\CronBundle\Runner;
 use Mockery as M;
 
-class RunnerTest extends \PHPUnit_Framework_TestCase
+class RunnerTest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {

@@ -13,7 +13,7 @@ namespace CSBill\DashboardBundle\Tests;
 
 use CSBill\DashboardBundle\WidgetFactory;
 
-class WidgetFactoryTest extends \PHPUnit_Framework_TestCase
+class WidgetFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testAdd()
     {
@@ -54,7 +54,8 @@ class WidgetFactoryTest extends \PHPUnit_Framework_TestCase
 
         $widget = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
 
-        $this->setExpectedException('Exception', 'Invalid widget location: bottom');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Invalid widget location: bottom');
 
         $factory->add($widget, 'bottom');
     }

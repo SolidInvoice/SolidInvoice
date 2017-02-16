@@ -14,7 +14,7 @@ namespace CSBill\MenuBundle\Tests\Builder;
 use CSBill\MenuBundle\Builder\MenuBuilder;
 use Mockery as M;
 
-class MenuBuilderTest extends \PHPUnit_Framework_TestCase
+class MenuBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testInvoke()
     {
