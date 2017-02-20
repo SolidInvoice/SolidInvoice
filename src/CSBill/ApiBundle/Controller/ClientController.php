@@ -12,7 +12,7 @@
 namespace CSBill\ApiBundle\Controller;
 
 use CSBill\ClientBundle\Entity;
-use CSBill\ClientBundle\Form\Client;
+use CSBill\ClientBundle\Form\Type\ClientType;
 use CSBill\ClientBundle\Model\Status;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
@@ -255,10 +255,10 @@ class ClientController extends Controller
      * @param Entity\Client  $client
      * @param Entity\Contact $contact
      *
+     * @return Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
-     *
-     * @return Response
      *
      * @Rest\Get(path="/client/{clientId}/contact/{contactId}")
      */
@@ -280,7 +280,7 @@ class ClientController extends Controller
      *     },
      *     resource=true,
      *     description="Create a new client",
-     *     input="CSBill\ClientBundle\Form\Client",
+     *     input="CSBill\ClientBundle\Form\Type\ClientType",
      *     output={
      *         "class"="CSBill\ClientBundle\Entity\Client",
      *         "groups"={"api"}
@@ -299,7 +299,7 @@ class ClientController extends Controller
         $entity = new Entity\Client();
         $entity->setStatus(Status::STATUS_ACTIVE);
 
-        return $this->manageForm($request, new Client(), $entity, Response::HTTP_CREATED);
+	return $this->manageForm($request, ClientType::class, $entity, Response::HTTP_CREATED);
     }
 
     /**
@@ -311,7 +311,7 @@ class ClientController extends Controller
      *     },
      *     resource=true,
      *     description="Update a client",
-     *     input="CSBill\ClientBundle\Form\Client",
+     *     input="CSBill\ClientBundle\Form\Type\ClientType",
      *     output={
      *         "class"="CSBill\ClientBundle\Entity\Client",
      *         "groups"={"api"}
@@ -366,7 +366,7 @@ class ClientController extends Controller
      *     },
      *     resource=true,
      *     description="Create a new contact",
-     *     input="CSBill\ClientBundle\Form\Contact",
+     *     input="CSBill\ClientBundle\Form\Type\ContactType",
      *     output={
      *         "class"="CSBill\ClientBundle\Entity\Contact",
      *         "groups"={"api"}
@@ -400,7 +400,7 @@ class ClientController extends Controller
      *     },
      *     resource=true,
      *     description="Update a contact",
-     *     input="CSBill\ClientBundle\Form\Contact",
+     *     input="CSBill\ClientBundle\Form\Type\ContactType",
      *     output={
      *         "class"="CSBill\ClientBundle\Entity\Contact",
      *         "groups"={"api"}
@@ -441,12 +441,13 @@ class ClientController extends Controller
      * @param Entity\Client  $client
      * @param Entity\Contact $contact
      *
+     * @return Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @Rest\Delete(path="/client/{clientId}/contact/{contactId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
      *
-     * @return Response
      */
     public function deleteContactAction(Entity\Client $client, Entity\Contact $contact)
     {

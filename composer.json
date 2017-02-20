@@ -93,7 +93,8 @@
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid-doctrine": "^1.2",
         "symfony/yaml": "^3.2",
-        "symfony/config": "3.3.x-dev"
+        "symfony/config": "3.3.x-dev",
+        "symfony/form": "3.3.x-dev"
     },
     "require-dev": {
         "behat/behat": "^3.0",

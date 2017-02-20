@@ -11,6 +11,8 @@
 
 namespace CSBill\ClientBundle\Form\DataTransformer;
 
+use CSBill\ClientBundle\Entity\ContactType;
+use CSBill\ClientBundle\Form\Type\ContactDetailType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -30,23 +32,21 @@ class ContactTypeTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param mixed $type
+     * @param ContactDetailType $type
      *
      * @return string
      */
     public function transform($type)
     {
-        if (null !== $type) {
+	if ($type) {
             return $type->getId();
         }
-
-        return;
     }
 
     /**
      * @param string $value
      *
-     * @return \CSBill\ClientBundle\Entity\ContactType
+     * @return ContactType
      *
      * @throws TransformationFailedException
      */
