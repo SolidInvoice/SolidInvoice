@@ -18,6 +18,7 @@ use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Money\Currency;
+use Money\Money;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -124,7 +125,7 @@ class DefaultController extends BaseController
             $paymentRepository = $this->getRepository('CSBillPaymentBundle:Payment');
             $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
-            $invoice->setBalance($invoice->getTotal()->subtract($totalPaid));
+            $invoice->setBalance($invoice->getTotal()->subtract(new Money($totalPaid, $invoice->getTotal()->getCurrency())));
 
             if ($action === Graph::STATUS_PENDING) {
                 $invoiceManager->accept($invoice);
