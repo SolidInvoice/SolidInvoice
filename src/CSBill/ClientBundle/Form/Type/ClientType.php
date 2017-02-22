@@ -27,44 +27,44 @@ class ClientType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-	$builder->add('name');
-	$builder->add('website', UrlType::class);
+        $builder->add('name');
+        $builder->add('website', UrlType::class);
 
-	$builder->add(
-	    'currency',
-	    Select2::class,
-	    [
-		'attr' => ['class' => 'select2'],
-		'placeholder' => 'client.form.currency.empty_value',
-		'choices' => array_flip(Currency::getCurrencies()),
-		'required' => false,
-	    ]
-	);
+        $builder->add(
+            'currency',
+            Select2::class,
+            [
+                'attr' => ['class' => 'select2'],
+                'placeholder' => 'client.form.currency.empty_value',
+                'choices' => array_flip(Currency::getCurrencies()),
+                'required' => false,
+            ]
+        );
 
-	$builder->add(
-	    'contacts',
-	    ContactCollectionType::class,
-	    [
-		'entry_type' => ContactType::class,
-		'allow_add' => true,
-		'allow_delete' => true,
-		'by_reference' => false,
-		'prototype' => true,
-		'prototype_name' => '__contact_prototype__',
-	    ]
-	);
+        $builder->add(
+            'contacts',
+            ContactCollectionType::class,
+            [
+                'entry_type' => ContactType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'prototype' => true,
+                'prototype_name' => '__contact_prototype__',
+            ]
+        );
 
-	$builder->add(
-	    'addresses',
-	    CollectionType::class,
-	    [
-		'entry_type' => AddressType::class,
-		'allow_add' => true,
-		'allow_delete' => true,
-		'by_reference' => false,
-		'required' => false,
-	    ]
-	);
+        $builder->add(
+            'addresses',
+            CollectionType::class,
+            [
+                'entry_type' => AddressType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+            ]
+        );
     }
 
     /**
@@ -72,7 +72,7 @@ class ClientType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-	$resolver->setDefaults(['data_class' => Client::class]);
+        $resolver->setDefaults(['data_class' => Client::class]);
     }
 
     /**
@@ -80,6 +80,6 @@ class ClientType extends AbstractType
      */
     public function getBlockPrefix()
     {
-	return 'client';
+        return 'client';
     }
 }

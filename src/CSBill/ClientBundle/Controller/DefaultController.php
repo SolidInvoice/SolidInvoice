@@ -42,7 +42,7 @@ class DefaultController extends BaseController
     {
         $client = new Client();
 
-	$form = $this->createForm(ClientType::class, $client);
+        $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -73,7 +73,7 @@ class DefaultController extends BaseController
         $originalAddresses = $client->getAddresses()->toArray();
         $originalContactsDetails = $this->getClientContactDetails($request, $client);
 
-	$form = $this->createForm(ClientType::class, $client);
+        $form = $this->createForm(ClientType::class, $client);
 
         $form->handleRequest($request);
 

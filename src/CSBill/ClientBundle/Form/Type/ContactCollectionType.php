@@ -21,7 +21,7 @@ class ContactCollectionType extends AbstractType
      */
     public function getParent()
     {
-	return CollectionType::class;
+        return CollectionType::class;
     }
 
     /**
@@ -29,6 +29,6 @@ class ContactCollectionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-	return 'contacts';
+        return 'contacts';
     }
 }

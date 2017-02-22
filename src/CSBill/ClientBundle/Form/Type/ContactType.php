@@ -26,29 +26,29 @@ class ContactType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-	$builder->add('firstName');
-	$builder->add('lastName');
-	$builder->add('email');
+        $builder->add('firstName');
+        $builder->add('lastName');
+        $builder->add('email');
 
-	$builder->add(
-	    'additionalDetails',
-	    ContactDetailCollectionType::class,
-	    [
-		'entry_type' => ContactDetailType::class,
-		'allow_add' => true,
-		'allow_delete' => true,
-		'delete_empty' => true,
-		'required' => false,
-		'by_reference' => false,
-		'label' => 'contact_details',
-		'prototype' => true,
-		'prototype_name' => '__contact_details_prototype__',
-		'error_bubbling' => false,
-		'entry_options' => [
-		    'data_class' => AdditionalContactDetail::class,
-		],
-	    ]
-	);
+        $builder->add(
+            'additionalDetails',
+            ContactDetailCollectionType::class,
+            [
+                'entry_type' => ContactDetailType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'delete_empty' => true,
+                'required' => false,
+                'by_reference' => false,
+                'label' => 'contact_details',
+                'prototype' => true,
+                'prototype_name' => '__contact_details_prototype__',
+                'error_bubbling' => false,
+                'entry_options' => [
+                    'data_class' => AdditionalContactDetail::class,
+                ],
+            ]
+        );
     }
 
     /**
@@ -56,7 +56,7 @@ class ContactType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-	$view->vars['allow_delete'] = $options['allow_delete'];
+        $view->vars['allow_delete'] = $options['allow_delete'];
     }
 
     /**
@@ -64,13 +64,13 @@ class ContactType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-	$resolver->setDefaults(
-	    [
-		'data_class' => Contact::class,
-		'csrf_protection' => false,
-		'allow_delete' => true,
-	    ]
-	);
+        $resolver->setDefaults(
+            [
+                'data_class' => Contact::class,
+                'csrf_protection' => false,
+                'allow_delete' => true,
+            ]
+        );
     }
 
     /**
@@ -78,6 +78,6 @@ class ContactType extends AbstractType
      */
     public function getBlockPrefix()
     {
-	return 'contact';
+        return 'contact';
     }
 }

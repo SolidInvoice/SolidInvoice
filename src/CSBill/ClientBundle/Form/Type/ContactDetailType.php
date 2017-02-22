@@ -34,7 +34,7 @@ class ContactDetailType extends AbstractType
      */
     public function __construct(array $types)
     {
-	$this->types = $types;
+        $this->types = $types;
     }
 
     /**
@@ -42,7 +42,7 @@ class ContactDetailType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-	$view->vars['contactTypes'] = $this->types;
+        $view->vars['contactTypes'] = $this->types;
     }
 
     /**
@@ -50,32 +50,31 @@ class ContactDetailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add(
+            $builder
+                ->create(
+                    'type',
+                    HiddenType::class,
+                    [
+                        'attr' => [
+                        'class' => 'input-group-select-val',
+                        ],
+                    ]
+                )
+            ->addModelTransformer(new ContactTypeTransformer($this->types))
+        );
 
-	$builder->add(
-	    $builder
-		->create(
-		    'type',
-		    HiddenType::class,
-		    [
-			'attr' => [
-			    'class' => 'input-group-select-val',
-			],
-		    ]
-		)
-		->addModelTransformer(new ContactTypeTransformer($this->types))
-	);
-
-	$builder->add(
-	    'value',
-	    TextType::class,
-	    [
-		'constraints' => [
-		    // @TODO: This constraints should not be hard-coded
-		    new NotBlank(['groups' => 'not_blank']),
-		    new Email(['groups' => 'email']),
-		],
-	    ]
-	);
+        $builder->add(
+            'value',
+            TextType::class,
+            [
+                'constraints' => [
+                    // @TODO: This constraints should not be hard-coded
+                    new NotBlank(['groups' => 'not_blank']),
+                    new Email(['groups' => 'email']),
+                ],
+            ]
+        );
     }
 
     /**
@@ -83,20 +82,20 @@ class ContactDetailType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-	$resolver->setDefault('validation_groups', function (FormInterface $form) {
-	    $type = $form->get('type')->getData()->getName();
-	    $value = $form->get('value')->getData();
+        $resolver->setDefault('validation_groups', function (FormInterface $form) {
+            $type = $form->get('type')->getData()->getName();
+            $value = $form->get('value')->getData();
 
-	    if (!empty($type) && empty($value)) {
-		return ['Default', 'not_blank'];
-	    }
+            if (!empty($type) && empty($value)) {
+                return ['Default', 'not_blank'];
+            }
 
-	    switch (strtolower($form->get('type')->getData()->getName())) {
-		case 'email':
-		    return ['Default', 'email'];
-		    break;
-	    }
-	});
+            switch (strtolower($form->get('type')->getData()->getName())) {
+                case 'email':
+                    return ['Default', 'email'];
+                    break;
+            }
+        });
     }
 
     /**
@@ -104,6 +103,6 @@ class ContactDetailType extends AbstractType
      */
     public function getBlockPrefix()
     {
-	return 'contact_detail';
+        return 'contact_detail';
     }
 }

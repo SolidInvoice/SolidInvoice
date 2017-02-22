@@ -12,7 +12,7 @@
 namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\TaxBundle\Form\Type\Tax;
+use CSBill\TaxBundle\Form\Type\TaxEntityType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -76,7 +76,7 @@ class ItemType extends AbstractType
         if ($this->registry->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured()) {
             $builder->add(
                 'tax',
-                Tax::class,
+                TaxEntityType::class,
                 [
                     'class' => 'CSBill\TaxBundle\Entity\Tax',
                     'placeholder' => 'Choose Tax Type',

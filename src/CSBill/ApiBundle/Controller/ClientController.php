@@ -256,6 +256,7 @@ class ClientController extends Controller
      * @param Entity\Contact $contact
      *
      * @return Response
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
@@ -299,7 +300,7 @@ class ClientController extends Controller
         $entity = new Entity\Client();
         $entity->setStatus(Status::STATUS_ACTIVE);
 
-	return $this->manageForm($request, ClientType::class, $entity, Response::HTTP_CREATED);
+        return $this->manageForm($request, ClientType::class, $entity, Response::HTTP_CREATED);
     }
 
     /**
@@ -442,12 +443,12 @@ class ClientController extends Controller
      * @param Entity\Contact $contact
      *
      * @return Response
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @Rest\Delete(path="/client/{clientId}/contact/{contactId}")
      *
      * @ParamConverter("client", class="CSBillClientBundle:Client", options={"id" : "clientId"})
      * @ParamConverter("contact", class="CSBillClientBundle:Contact", options={"id" : "contactId"})
-     *
      */
     public function deleteContactAction(Entity\Client $client, Entity\Contact $contact)
     {
