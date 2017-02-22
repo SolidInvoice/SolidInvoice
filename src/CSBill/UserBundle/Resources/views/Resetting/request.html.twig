@@ -13,16 +13,15 @@
 
 {% block content %}
 
-    <div class="widget">
+    <div class="widget col-md-6 col-md-offset-3">
         <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
             <div class="form-group">
                 {% if invalid_username is defined %}
                     <div class="alert alert-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</div>
                 {% endif %}
                 <label for="username">{{ 'resetting.request.username'|trans({}, 'FOSUserBundle') }}</label>
-                <div class="input-group">
-                    <input type="text" id="username" name="username" required="required" class="form-control" />
-                </div>
+                    <input type="text" id="username" name="username" required="required" class="form-control">
+
             </div>
             <div>
                 <button type="submit" class="btn btn-primary">

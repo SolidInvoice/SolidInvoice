@@ -104,9 +104,6 @@ fos_user:
     profile:
         form:
             type: CSBill\UserBundle\Form\ProfileForm
-    service:
-        email_canonicalizer: csbill.user.canonicalizer
-        username_canonicalizer: csbill.user.canonicalizer
 fos_rest:
     param_fetcher_listener: true
     allowed_methods_listener: true

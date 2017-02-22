@@ -14,8 +14,8 @@ namespace CSBill\UserBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManager as BaseUserManager;
-use FOS\UserBundle\Util\CanonicalizerInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use FOS\UserBundle\Util\CanonicalFieldsUpdater;
+use FOS\UserBundle\Util\PasswordUpdaterInterface;
 
 /**
  * Class UserManager.
@@ -30,23 +30,9 @@ class UserManager extends BaseUserManager
 
     private $entity;
 
-    /**
-     * Constructor.
-     *
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param CanonicalizerInterface  $usernameCanonicalizer
-     * @param CanonicalizerInterface  $emailCanonicalizer
-     * @param ObjectManager           $om
-     * @param string                  $class
-     */
-    public function __construct(
-        EncoderFactoryInterface $encoderFactory,
-        CanonicalizerInterface $usernameCanonicalizer,
-        CanonicalizerInterface $emailCanonicalizer,
-        ObjectManager $om,
-        $class
-    ) {
-        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer);
+    public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, $class)
+    {
+        parent::__construct($passwordUpdater, $canonicalFieldsUpdater);
 
         $this->objectManager = $om;
         $this->entity = $class;

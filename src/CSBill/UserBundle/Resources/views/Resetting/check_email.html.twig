@@ -14,7 +14,7 @@
 {% block content %}
     <div class="widget">
         <div class="alert alert-info">
-        {{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}
+        {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime}, 'FOSUserBundle') }}
         </div>
 
         <a class="btn btn-success" href="{{ path('fos_user_security_login') }}">
