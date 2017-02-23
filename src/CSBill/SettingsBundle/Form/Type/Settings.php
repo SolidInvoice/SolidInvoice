@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class Settings.
@@ -29,37 +30,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 class Settings extends AbstractType
 {
     /**
-     * @var array
-     */
-    protected $settings;
-
-    /**
-     * @param array $settings
-     */
-    public function __construct(array $settings)
-    {
-        $this->settings = $settings;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->settings as $key => $setting) {
+        foreach ($options['section'] as $key => $setting) {
             if (is_array($setting)) {
-                $builder->add($key, new self($setting));
-            } else {
-                /* @var \CSBill\SettingsBundle\Model\Setting $setting */
-                $options = [
-                    'help' => $setting->getDescription(),
-                    'required' => false,
-                ];
-
-                $type = $this->getFieldType($setting, $options);
-
-                $builder->add($setting->getKey(), $type, $options);
+                $builder->add($key, Settings::class, ['section' => $setting]);
+                continue;
             }
+
+            /* @var Setting $setting */
+            $options = [
+                'help' => $setting->getDescription(),
+                'required' => false,
+            ];
+
+            $builder->add(...$this->getFieldType($setting, $options));
         }
     }
 
@@ -69,7 +56,7 @@ class Settings extends AbstractType
      *
      * @return string
      */
-    protected function getFieldType(Setting $setting, array &$options = [])
+    protected function getFieldType(Setting $setting, array $options)
     {
         $type = $setting->getType();
 
@@ -123,7 +110,16 @@ class Settings extends AbstractType
                 break;
         }
 
-        return $type;
+        return [$setting->getKey(), $type, $options];
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('section');
+        $resolver->setAllowedTypes('section', 'array');
     }
 
     /**

@@ -37,7 +37,7 @@ class SettingsController extends BaseController
             $setting = $setting->getValue();
         });
 
-        $form = $this->createForm(new SettingsType(), $settings, ['manager' => $manager]);
+        $form = $this->createForm(SettingsType::class, $settings, ['manager' => $manager]);
 
         $form->handleRequest($request);
 

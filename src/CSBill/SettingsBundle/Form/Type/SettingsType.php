@@ -33,7 +33,7 @@ class SettingsType extends AbstractType
         $settings = $this->manager->getSettings();
 
         foreach ($settings as $section => $setting) {
-            $builder->add($section, new Settings($this->manager->get($section)));
+            $builder->add($section, Settings::class, ['section' => $this->manager->get($section)]);
         }
     }
 
