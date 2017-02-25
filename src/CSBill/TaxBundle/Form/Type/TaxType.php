@@ -11,7 +11,7 @@
 
 namespace CSBill\TaxBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\Select2;
+use CSBill\CoreBundle\Form\Type\Select2Type;
 use CSBill\TaxBundle\Entity\Tax;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
@@ -30,7 +30,7 @@ class TaxType extends AbstractType
 
         $builder->add(
             'type',
-            Select2::class,
+            Select2Type::class,
             [
                 'choices' => array_map('ucwords', Tax::getTypes()),
                 'help' => 'tax.rates.explanation',

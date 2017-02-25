@@ -63,8 +63,8 @@ class FormTestCase extends TypeTestCase
     protected function getTypes()
     {
         return [
-            'select2' => new Type\Select2(),
-            'image_upload' => new Type\ImageUpload(
+            'select2' => new Type\Select2Type(),
+            'image_upload' => new Type\ImageUploadType(
                 \Mockery::mock('Symfony\Component\HttpFoundation\Session\SessionInterface'),
                 new Encryption(rand())
             ),

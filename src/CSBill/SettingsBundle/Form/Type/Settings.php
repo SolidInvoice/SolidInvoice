@@ -11,8 +11,8 @@
 
 namespace CSBill\SettingsBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\ImageUpload;
-use CSBill\CoreBundle\Form\Type\Select2;
+use CSBill\CoreBundle\Form\Type\ImageUploadType;
+use CSBill\CoreBundle\Form\Type\Select2Type;
 use CSBill\NotificationBundle\Form\Type\NotificationType;
 use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\Form\AbstractType;
@@ -62,7 +62,7 @@ class Settings extends AbstractType
 
         switch (strtolower($type)) {
             case 'select2':
-                $type = Select2::class;
+                $type = Select2Type::class;
                 $settingOptions = $setting->getOptions();
                 $options['choices'] = array_flip($settingOptions);
                 $options['choices_as_values'] = true;
@@ -102,7 +102,7 @@ class Settings extends AbstractType
                 break;
 
             case 'image_upload':
-                $type = ImageUpload::class;
+                $type = ImageUploadType::class;
                 break;
 
             case 'password':

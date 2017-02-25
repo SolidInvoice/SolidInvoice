@@ -11,7 +11,7 @@
 
 namespace CSBill\InstallBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\Select2;
+use CSBill\CoreBundle\Form\Type\Select2Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -31,7 +31,7 @@ class DatabaseConfigType extends AbstractType
 
         $builder->add(
             'driver',
-            Select2::class,
+            Select2Type::class,
             [
                 'help' => 'Only MySQL is supported at the moment',
                 'choices' => array_flip($drivers),
