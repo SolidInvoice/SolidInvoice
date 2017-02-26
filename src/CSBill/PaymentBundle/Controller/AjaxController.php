@@ -13,7 +13,7 @@ namespace CSBill\PaymentBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Form\PaymentMethodForm;
+use CSBill\PaymentBundle\Form\PaymentMethodType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +43,7 @@ class AjaxController extends BaseController
         $originalSettings = $paymentMethod->getConfig();
 
         $form = $this->createForm(
-            PaymentMethodForm::class,
+            PaymentMethodType::class,
             $paymentMethod,
             [
                 'config' => $paymentFactories->getForm($paymentMethod->getGatewayName()),

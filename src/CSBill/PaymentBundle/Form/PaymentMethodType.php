@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PaymentMethodForm extends AbstractType
+class PaymentMethodType extends AbstractType
 {
     /**
      * {@inheritdoc}
