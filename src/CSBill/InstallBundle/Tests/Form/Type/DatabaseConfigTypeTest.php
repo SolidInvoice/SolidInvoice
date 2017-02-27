@@ -16,7 +16,7 @@ use CSBill\InstallBundle\Form\Type\DatabaseConfigType;
 
 class DatabaseConfigTypeTest extends FormTestCase
 {
-    public function testSubmitValidData()
+    public function testSubmit()
     {
         $drivers = [
             'pdo_mysql' => 'MySQL',
@@ -31,20 +31,6 @@ class DatabaseConfigTypeTest extends FormTestCase
             'name' => 'testdb',
         ];
 
-        $type = new DatabaseConfigType();
-        $form = $this->factory->create($type, null, ['drivers' => $drivers]);
-
-        // submit the data to the form directly
-        $form->submit($formData);
-
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($formData, $form->getData());
-
-        $view = $form->createView();
-        $children = $view->children;
-
-        foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
-        }
+        $this->assertFormData($this->factory->create(DatabaseConfigType::class, null, ['drivers' => $drivers]), $formData, $formData);
     }
 }
