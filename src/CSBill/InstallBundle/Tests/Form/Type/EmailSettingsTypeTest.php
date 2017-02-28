@@ -31,21 +31,9 @@ class EmailSettingsTypeTest extends FormTestCase
      */
     public function testMailSettings(array $formData, array $assert)
     {
-        $type = new EmailSettingsType();
-        $form = $this->factory->create($type, null, ['transports' => $this->transports]);
+        $form = $this->factory->create(EmailSettingsType::class, null, ['transports' => $this->transports]);
 
-        // submit the data to the form directly
-        $form->submit($formData);
-
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($assert, $form->getData());
-
-        $view = $form->createView();
-        $children = $view->children;
-
-        foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
-        }
+        $this->assertFormData($form, $formData, $assert);
     }
 
     /**

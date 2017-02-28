@@ -13,6 +13,7 @@ namespace CSBill\InvoiceBundle\Form\Type;
 
 use Carbon\Carbon;
 use CSBill\CronBundle\Form\Type\CronType;
+use CSBill\InvoiceBundle\Entity\RecurringInvoice;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -73,6 +74,6 @@ class RecurringInvoiceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'CSBill\InvoiceBundle\Entity\RecurringInvoice']);
+        $resolver->setDefaults(['data_class' => RecurringInvoice::class]);
     }
 }

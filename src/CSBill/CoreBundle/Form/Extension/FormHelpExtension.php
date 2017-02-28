@@ -37,6 +37,7 @@ class FormHelpExtension extends AbstractTypeExtension
             [
                 'help' => null,
                 'help_type' => 'inline',
+                'placeholder' => null,
             ]
         );
     }
