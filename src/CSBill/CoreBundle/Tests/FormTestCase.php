@@ -15,14 +15,22 @@ use CSBill\CoreBundle\Form\Extension;
 use CSBill\CoreBundle\Form\Type;
 use CSBill\CoreBundle\Security\Encryption;
 use CSBill\MoneyBundle\Form\Extension\MoneyExtension;
+use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\Generator;
+use Mockery as M;
 use Money\Currency;
+use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FormTestCase extends TypeTestCase
 {
@@ -34,7 +42,7 @@ class FormTestCase extends TypeTestCase
     protected function setUp()
     {
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addExtensions($this->getExtensions())
+            ->addExtensions($this->getInternalExtension())
             ->addTypeExtensions($this->getTypedExtensions())
             ->addTypes($this->getTypes())
             ->getFormFactory();
@@ -52,17 +60,48 @@ class FormTestCase extends TypeTestCase
      */
     protected function getTypedExtensions()
     {
-        $validator = \Mockery::mock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = M::mock(ValidatorInterface::class);
 
         $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn([]);
 
         return [
             new Extension\FormHelpExtension(),
             new MoneyExtension(new Currency('USD')),
-            new FormTypeValidatorExtension(
-                $validator
-            ),
+            new FormTypeValidatorExtension($validator),
         ];
+    }
+
+    protected function createRegistryMock($name, $em)
+    {
+        $registry = M::mock(ManagerRegistry::class);
+        $registry->shouldReceive('getManager')
+            ->with($name)
+            ->andReturn($em);
+
+        $registry->shouldReceive('getManagerForClass')
+            ->andReturn($em);
+
+        return $registry;
+    }
+
+    protected function createSchema($em)
+    {
+        $schemaTool = new SchemaTool($em);
+        $classes = [];
+
+        foreach ($this->getEntities() as $entityClass) {
+            $classes[] = $em->getClassMetadata($entityClass);
+        }
+
+        try {
+            $schemaTool->dropSchema($classes);
+        } catch (\Exception $e) {
+        }
+
+        try {
+            $schemaTool->createSchema($classes);
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -81,8 +120,20 @@ class FormTestCase extends TypeTestCase
         ];
     }
 
+    protected function getEntityNamespaces()
+    {
+        return [];
+    }
+
+    protected function getEntities()
+    {
+        return [];
+    }
+
     protected function assertFormData($form, array $formData, $object)
     {
+        $this->assertNotEmpty($formData);
+
         if (!$form instanceof FormInterface) {
             $form = $this->factory->create($form);
         }
@@ -99,5 +150,25 @@ class FormTestCase extends TypeTestCase
         foreach (array_keys($formData) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
+    }
+
+    private function getInternalExtension()
+    {
+        $entityManager = DoctrineTestHelper::createTestEntityManager();
+
+        $entityManager->getConfiguration()->setEntityNamespaces($this->getEntityNamespaces());
+
+        $registry = $this->createRegistryMock('default', $entityManager);
+
+        $this->createSchema($entityManager);
+
+        $type = new EntityType($registry);
+
+        $extensions = array_merge([
+            new PreloadedExtension([$type], []),
+            new DoctrineOrmExtension($registry),
+        ], $this->getExtensions());
+
+        return $extensions;
     }
 }

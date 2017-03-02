@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Form;
+namespace CSBill\PaymentBundle\Form\Type;
 
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
