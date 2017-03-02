@@ -15,12 +15,9 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Form\Type\ItemType;
 use CSBill\MoneyBundle\Entity\Money;
-use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
 use CSBill\TaxBundle\Repository\TaxRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Mockery as M;
 use Money\Currency;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\PreloadedExtension;
 
 class InvoiceTypeTest extends FormTestCase
@@ -67,22 +64,36 @@ class InvoiceTypeTest extends FormTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $registry = M::mock(ManagerRegistry::class);
-
-        $registry->shouldReceive('getRepository')
+        $this->registry->shouldReceive('getRepository')
             ->with('CSBillTaxBundle:Tax')
             ->andReturn($repository);
 
         $currency = new Currency('USD');
 
         $invoiceType = new InvoiceType($currency);
-        $itemType = new ItemType($registry);
-        $moneyType = new HiddenMoneyType($currency);
-        $entityType = new EntityType($registry);
+        $itemType = new ItemType($this->registry);
 
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$invoiceType, $itemType, $moneyType, $entityType], []),
+            new PreloadedExtension([$invoiceType, $itemType], []),
+        ];
+    }
+
+    protected function getEntityNamespaces()
+    {
+        return [
+            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
+            'CSBillInvoiceBundle' => 'CSBill\InvoiceBundle\Entity',
+            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
+        ];
+    }
+
+    protected function getEntities()
+    {
+        return [
+            'CSBillClientBundle:Client',
+            'CSBillInvoiceBundle:Invoice',
+            'CSBillTaxBundle:Tax',
         ];
     }
 }

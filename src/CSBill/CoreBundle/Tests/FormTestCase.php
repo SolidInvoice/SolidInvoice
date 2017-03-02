@@ -15,11 +15,14 @@ use CSBill\CoreBundle\Form\Extension;
 use CSBill\CoreBundle\Form\Type;
 use CSBill\CoreBundle\Security\Encryption;
 use CSBill\MoneyBundle\Form\Extension\MoneyExtension;
+use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
+use Doctrine\DBAL\Types\Type as DoctrineType;
 use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\Generator;
 use Mockery as M;
 use Money\Currency;
+use Ramsey\Uuid\Doctrine\UuidType;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -38,6 +41,10 @@ class FormTestCase extends TypeTestCase
      * @var Generator
      */
     protected $faker;
+
+    protected $registry;
+
+    protected $em;
 
     protected function setUp()
     {
@@ -73,15 +80,19 @@ class FormTestCase extends TypeTestCase
 
     protected function createRegistryMock($name, $em)
     {
-        $registry = M::mock(ManagerRegistry::class);
-        $registry->shouldReceive('getManager')
+        $this->registry = M::mock(ManagerRegistry::class);
+        $this->registry->shouldReceive('getManager')
             ->with($name)
             ->andReturn($em);
 
-        $registry->shouldReceive('getManagerForClass')
+        $this->registry->shouldReceive('getManagers')
+            ->with()
+            ->andReturn(['default' => $em]);
+
+        $this->registry->shouldReceive('getManagerForClass')
             ->andReturn($em);
 
-        return $registry;
+        return $this->registry;
     }
 
     protected function createSchema($em)
@@ -93,15 +104,8 @@ class FormTestCase extends TypeTestCase
             $classes[] = $em->getClassMetadata($entityClass);
         }
 
-        try {
-            $schemaTool->dropSchema($classes);
-        } catch (\Exception $e) {
-        }
-
-        try {
-            $schemaTool->createSchema($classes);
-        } catch (\Exception $e) {
-        }
+        $schemaTool->dropSchema($classes);
+        $schemaTool->createSchema($classes);
     }
 
     /**
@@ -154,19 +158,23 @@ class FormTestCase extends TypeTestCase
 
     private function getInternalExtension()
     {
-        $entityManager = DoctrineTestHelper::createTestEntityManager();
+        $this->em = DoctrineTestHelper::createTestEntityManager();
 
-        $entityManager->getConfiguration()->setEntityNamespaces($this->getEntityNamespaces());
+        $this->em->getConfiguration()->setEntityNamespaces($this->getEntityNamespaces());
 
-        $registry = $this->createRegistryMock('default', $entityManager);
+        $this->createRegistryMock('default', $this->em);
+        $this->createSchema($this->em);
 
-        $this->createSchema($entityManager);
+        if (!DoctrineType::hasType('uuid')) {
+            DoctrineType::addType('uuid', UuidType::class);
+        }
 
-        $type = new EntityType($registry);
+        $type = new EntityType($this->registry);
+        $moneyType = new HiddenMoneyType(new Currency('USD'));
 
         $extensions = array_merge([
-            new PreloadedExtension([$type], []),
-            new DoctrineOrmExtension($registry),
+            new PreloadedExtension([$type, $moneyType], []),
+            new DoctrineOrmExtension($this->registry),
         ], $this->getExtensions());
 
         return $extensions;
