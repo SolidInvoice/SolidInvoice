@@ -35,7 +35,7 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class FormTestCase extends TypeTestCase
+abstract class FormTestCase extends TypeTestCase
 {
     /**
      * @var Generator
@@ -179,4 +179,6 @@ class FormTestCase extends TypeTestCase
 
         return $extensions;
     }
+
+    abstract public function testSubmit();
 }

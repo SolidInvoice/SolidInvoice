@@ -19,7 +19,7 @@ use Symfony\Component\Intl\Intl;
 
 class SystemInformationFormTest extends FormTestCase
 {
-    public function testSubmitData()
+    public function testSubmit()
     {
         $faker = Factory::create();
 

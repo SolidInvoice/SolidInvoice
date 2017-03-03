@@ -16,7 +16,7 @@ use CSBill\NotificationBundle\Form\Type\NotificationType;
 
 class NotificationTypeTest extends FormTestCase
 {
-    public function testSubmitValidData()
+    public function testSubmit()
     {
         $formData = [
             'email' => $this->faker->boolean,

@@ -23,97 +23,93 @@ class EmailSettingsTypeTest extends FormTestCase
         'gmail' => 'Gmail',
     ];
 
-    /**
-     * @dataProvider formData
-     *
-     * @param array $formData
-     * @param array $assert
-     */
-    public function testMailSettings(array $formData, array $assert)
+    public function testSubmit()
     {
-        $form = $this->factory->create(EmailSettingsType::class, null, ['transports' => $this->transports]);
-
-        $this->assertFormData($form, $formData, $assert);
+        foreach ($this->getFormData() as $data) {
+            $form = $this->factory->create(EmailSettingsType::class, null, ['transports' => $this->transports]);
+            $this->assertFormData($form, $data[0], $data[1]);
+        }
     }
 
     /**
      * @return array
      */
-    public function formData()
+    private function getFormData()
     {
-        return [
+        yield [
             [
-                [
-                    'transport' => 'mail',
-                    'host' => 'localhost',
-                    'port' => 1234,
-                    'encryption' => 'ssl',
-                    'user' => 'root',
-                    'password' => 'password',
-                ],
-                [
-                    'transport' => 'mail',
-                    'host' => null,
-                    'port' => null,
-                    'encryption' => null,
-                    'user' => null,
-                    'password' => null,
-                ],
+                'transport' => 'mail',
+                'host' => 'localhost',
+                'port' => 1234,
+                'encryption' => 'ssl',
+                'user' => 'root',
+                'password' => 'password',
             ],
             [
-                [
-                    'transport' => 'sendmail',
-                    'host' => 'localhost',
-                    'port' => 1234,
-                    'encryption' => 'ssl',
-                    'user' => 'root',
-                    'password' => 'password',
-                ],
-                [
-                    'transport' => 'sendmail',
-                    'host' => null,
-                    'port' => null,
-                    'encryption' => null,
-                    'user' => null,
-                    'password' => null,
-                ],
-            ],
-            [
-                [
-                    'transport' => 'smtp',
-                    'host' => 'localhost',
-                    'port' => 1234,
-                    'encryption' => 'ssl',
-                    'user' => 'root',
-                    'password' => 'password',
-                ],
-                [
-                    'transport' => 'smtp',
-                    'host' => 'localhost',
-                    'port' => 1234,
-                    'encryption' => 'ssl',
-                    'user' => 'root',
-                    'password' => 'password',
-                ],
-            ],
-            [
-                [
-                    'transport' => 'gmail',
-                    'host' => 'localhost',
-                    'port' => 1234,
-                    'encryption' => 'ssl',
-                    'user' => 'root',
-                    'password' => 'password',
-                ],
-                [
-                    'transport' => 'gmail',
-                    'host' => null,
-                    'port' => null,
-                    'encryption' => null,
-                    'user' => 'root',
-                    'password' => 'password',
-                ],
+                'transport' => 'mail',
+                'host' => null,
+                'port' => null,
+                'encryption' => null,
+                'user' => null,
+                'password' => null,
             ],
         ];
+
+        yield [
+            [
+                'transport' => 'sendmail',
+                'host' => 'localhost',
+                'port' => 1234,
+                'encryption' => 'ssl',
+                'user' => 'root',
+                'password' => 'password',
+            ],
+            [
+                'transport' => 'sendmail',
+                'host' => null,
+                'port' => null,
+                'encryption' => null,
+                'user' => null,
+                'password' => null,
+            ],
+        ];
+
+        yield [
+            [
+                'transport' => 'smtp',
+                'host' => 'localhost',
+                'port' => 1234,
+                'encryption' => 'ssl',
+                'user' => 'root',
+                'password' => 'password',
+            ],
+            [
+                'transport' => 'smtp',
+                'host' => 'localhost',
+                'port' => 1234,
+                'encryption' => 'ssl',
+                'user' => 'root',
+                'password' => 'password',
+            ],
+        ];
+
+       yield [
+           [
+               'transport' => 'gmail',
+               'host' => 'localhost',
+               'port' => 1234,
+               'encryption' => 'ssl',
+               'user' => 'root',
+               'password' => 'password',
+           ],
+           [
+               'transport' => 'gmail',
+               'host' => null,
+               'port' => null,
+               'encryption' => null,
+               'user' => 'root',
+               'password' => 'password',
+           ],
+       ];
     }
 }

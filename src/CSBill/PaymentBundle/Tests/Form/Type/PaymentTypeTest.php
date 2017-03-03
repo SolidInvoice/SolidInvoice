@@ -17,7 +17,7 @@ use Money\Money;
 
 class PaymentTypeTest extends FormTestCase
 {
-    public function testSubmitForm()
+    public function testSubmit()
     {
         $paymentMethod = $this->faker->name;
         $amount = $this->faker->randomNumber();

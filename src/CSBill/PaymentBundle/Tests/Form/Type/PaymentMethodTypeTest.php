@@ -15,7 +15,7 @@ use CSBill\PaymentBundle\Form\Type\PaymentMethodType;
 
 class PaymentMethodTypeTest extends FormTestCase
 {
-    public function testSubmitForm()
+    public function testSubmit()
     {
         $name = $this->faker->name;
         $enabled = $this->faker->boolean;

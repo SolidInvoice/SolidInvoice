@@ -16,7 +16,7 @@ use CSBill\InstallBundle\Form\Step\ConfigStepForm;
 
 class ConfigStepFormTest extends FormTestCase
 {
-    public function testSubmitData()
+    public function testSubmit()
     {
         $drivers = [
             'pdo_mysql' => 'MySQL',
