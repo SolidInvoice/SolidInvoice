@@ -162,12 +162,13 @@ abstract class FormTestCase extends TypeTestCase
 
         $this->em->getConfiguration()->setEntityNamespaces($this->getEntityNamespaces());
 
-        $this->createRegistryMock('default', $this->em);
-        $this->createSchema($this->em);
-
         if (!DoctrineType::hasType('uuid')) {
             DoctrineType::addType('uuid', UuidType::class);
         }
+
+        $this->createRegistryMock('default', $this->em);
+        $this->createSchema($this->em);
+
 
         $type = new EntityType($this->registry);
         $moneyType = new HiddenMoneyType(new Currency('USD'));
