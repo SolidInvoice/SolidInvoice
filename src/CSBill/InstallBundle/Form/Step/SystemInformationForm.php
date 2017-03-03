@@ -11,7 +11,7 @@
 
 namespace CSBill\InstallBundle\Form\Step;
 
-use CSBill\CoreBundle\Form\Type\Select2;
+use CSBill\CoreBundle\Form\Type\Select2Type;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -33,7 +33,7 @@ class SystemInformationForm extends AbstractType
         if (extension_loaded('intl')) {
             $builder->add(
                 'locale',
-                Select2::class,
+                Select2Type::class,
                 [
                     'choices' => array_flip(Intl::getLocaleBundle()->getLocaleNames()),
                     'choices_as_values' => true,
@@ -56,7 +56,7 @@ class SystemInformationForm extends AbstractType
 
         $builder->add(
             'currency',
-            Select2::class,
+            Select2Type::class,
             [
                 'choices' => array_flip(Currency::getCurrencies()),
                 'choices_as_values' => true,

@@ -168,7 +168,9 @@ class DefaultController extends BaseController
      */
     public function editAction(Request $request, Quote $quote)
     {
-        $form = $this->createForm(QuoteType::class, $quote, ['currency' => $quote->getClient()->getCurrency()]);
+        $currency = $quote->getClient()->getCurrency() ?: new Currency($this->getParameter('currency'));
+
+        $form = $this->createForm(QuoteType::class, $quote, ['currency' => $currency]);
 
         $form->handleRequest($request);
 

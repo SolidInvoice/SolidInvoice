@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ImageUpload extends AbstractType
+class ImageUploadType extends AbstractType
 {
     /**
      * @var \Symfony\Component\HttpFoundation\Session\Session

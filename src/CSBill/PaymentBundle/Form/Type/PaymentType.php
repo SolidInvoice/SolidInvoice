@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Form;
+namespace CSBill\PaymentBundle\Form\Type;
 
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class PaymentForm extends AbstractType
+class PaymentType extends AbstractType
 {
     /**
      * {@inheritdoc}

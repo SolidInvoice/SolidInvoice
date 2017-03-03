@@ -113,9 +113,9 @@ class Tax
     public static function getTypes()
     {
         $types = [
-        self::TYPE_INCLUSIVE,
-        self::TYPE_EXCLUSIVE,
-    ];
+            self::TYPE_INCLUSIVE,
+            self::TYPE_EXCLUSIVE,
+        ];
 
         return array_combine($types, $types);
     }

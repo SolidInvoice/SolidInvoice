@@ -11,7 +11,7 @@
 
 namespace CSBill\InstallBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\Select2;
+use CSBill\CoreBundle\Form\Type\Select2Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -33,7 +33,7 @@ class EmailSettingsType extends AbstractType
 
         $builder->add(
             'transport',
-            Select2::class,
+            Select2Type::class,
             [
                 'choices' => array_flip($transports),
                 'choices_as_values' => true,
@@ -61,7 +61,7 @@ class EmailSettingsType extends AbstractType
 
         $builder->add(
             'encryption',
-            Select2::class,
+            Select2Type::class,
             [
                 'placeholder' => 'None',
                 'choices' => [

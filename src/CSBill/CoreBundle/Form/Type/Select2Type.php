@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class Select2 extends AbstractType
+class Select2Type extends AbstractType
 {
     /**
      * @param FormView      $view

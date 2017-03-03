@@ -9,18 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Form;
+namespace CSBill\ClientBundle\Form\Type;
 
-use CSBill\ClientBundle\Form\Type\AddressType;
-use CSBill\ClientBundle\Form\Type\ContactType;
-use CSBill\CoreBundle\Form\Type\Select2;
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Form\Type\Select2Type;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Client extends AbstractType
+class ClientType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -28,23 +28,24 @@ class Client extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name');
-        $builder->add('website');
+        $builder->add('website', UrlType::class, ['required' => false]);
+
         $builder->add(
             'currency',
-            Select2::class,
+            Select2Type::class,
             [
                 'attr' => ['class' => 'select2'],
-                'empty_value' => 'client.form.currency.empty_value',
+                'placeholder' => 'client.form.currency.empty_value',
                 'choices' => array_flip(Currency::getCurrencies()),
-                'choices_as_values' => true,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'contacts',
-            ContactType::class,
+            ContactCollectionType::class,
             [
-                'entry_type' => Contact::class,
+                'entry_type' => ContactType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -71,7 +72,7 @@ class Client extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'CSBill\ClientBundle\Entity\Client']);
+        $resolver->setDefaults(['data_class' => Client::class]);
     }
 
     /**

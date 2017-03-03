@@ -113,7 +113,9 @@ class DefaultController extends BaseController
             return $this->redirectToRoute('_invoices_index');
         }
 
-        $form = $this->createForm(InvoiceType::class, $invoice, ['currency' => $invoice->getClient()->getCurrency()]);
+        $currency = $invoice->getClient()->getCurrency() ?: new Currency($this->getParameter('currency'));
+
+        $form = $this->createForm(InvoiceType::class, $invoice, ['currency' => $currency]);
 
         $form->handleRequest($request);
 

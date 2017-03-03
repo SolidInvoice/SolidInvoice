@@ -1,8 +1,8 @@
 parameters:
     csbill_core.form.help.extension.class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
     csbill_core.billing.mailer.class: CSBill\CoreBundle\Mailer\Mailer
-    csbill_core.form.type.image_upload.class: CSBill\CoreBundle\Form\Type\ImageUpload
-    csbill_core.form.type.select2.class: CSBill\CoreBundle\Form\Type\Select2
+    csbill_core.form.type.image_upload.class: CSBill\CoreBundle\Form\Type\ImageUploadType
+    csbill_core.form.type.select2.class: CSBill\CoreBundle\Form\Type\Select2Type
     csbill_core.security.encryption.class: CSBill\CoreBundle\Security\Encryption
     csbill_core.session.request.listener.class: CSBill\CoreBundle\Listener\SessionRequestListener
     csbill_core.settings.loader.class: CSBill\CoreBundle\Settings\SettingsLoader

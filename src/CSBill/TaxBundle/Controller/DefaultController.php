@@ -57,7 +57,7 @@ class DefaultController extends BaseController
     {
         $tax = $tax ?: new Tax();
 
-        $form = $this->createForm(new TaxType(), $tax);
+        $form = $this->createForm(TaxType::class, $tax);
 
         $form->handleRequest($request);
 
@@ -87,8 +87,8 @@ class DefaultController extends BaseController
 
         $data = $request->request->get('data');
 
-    /** @var Tax[] $taxes */
-    $taxes = $this->getRepository('CSBillTaxBundle:Tax')->findBy(['id' => $data]);
+        /** @var Tax[] $taxes */
+        $taxes = $this->getRepository('CSBillTaxBundle:Tax')->findBy(['id' => $data]);
 
         $em = $this->getEm();
         foreach ($taxes as $tax) {
@@ -115,7 +115,7 @@ class DefaultController extends BaseController
             'name' => $tax->getName(),
             'type' => $tax->getType(),
             'rate' => $tax->getRate(),
-    ];
+        ];
 
         return $this->json($result);
     }

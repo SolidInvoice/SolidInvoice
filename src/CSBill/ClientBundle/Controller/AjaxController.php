@@ -14,10 +14,11 @@ namespace CSBill\ClientBundle\Controller;
 use CSBill\ClientBundle\Entity\Address;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
-use CSBill\ClientBundle\Form\Contact as ContactType;
 use CSBill\ClientBundle\Form\Type\AddressType;
+use CSBill\ClientBundle\Form\Type\ContactType;
 use CSBill\CoreBundle\Controller\BaseController;
 use JMS\Serializer\SerializationContext;
+use Money\Currency;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,7 +42,7 @@ class AjaxController extends BaseController
             ]
         );
 
-        $currency = $client->getCurrency() ?: $this->getParameter('currency');
+        $currency = $client->getCurrency() ?: new Currency($this->getParameter('currency'));
 
         return $this->json(
             [

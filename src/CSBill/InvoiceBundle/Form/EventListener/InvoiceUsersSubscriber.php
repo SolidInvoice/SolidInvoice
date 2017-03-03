@@ -13,6 +13,7 @@ namespace CSBill\InvoiceBundle\Form\EventListener;
 
 use CSBill\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -53,7 +54,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
 
             $form->add(
                 'users',
-                'entity',
+                EntityType::class,
                 [
                     'constraints' => [
                         new NotBlank(),

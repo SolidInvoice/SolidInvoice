@@ -11,24 +11,98 @@
 
 namespace CSBill\ClientBundle\Form\Type;
 
+use CSBill\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ContactDetailType extends AbstractType
 {
     /**
-     * @return string
+     * @var \CSBill\ClientBundle\Entity\ContactType[]
      */
-    public function getParent()
+    protected $types;
+
+    /**
+     * @param \CSBill\ClientBundle\Entity\ContactType[] $types
+     */
+    public function __construct(array $types)
     {
-        return CollectionType::class;
+        $this->types = $types;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['contactTypes'] = $this->types;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            $builder
+                ->create(
+                    'type',
+                    HiddenType::class,
+                    [
+                        'attr' => [
+                        'class' => 'input-group-select-val',
+                        ],
+                    ]
+                )
+            ->addModelTransformer(new ContactTypeTransformer($this->types))
+        );
+
+        $builder->add(
+            'value',
+            TextType::class,
+            [
+                'constraints' => [
+                    // @TODO: This constraints should not be hard-coded
+                    new NotBlank(['groups' => 'not_blank']),
+                    new Email(['groups' => 'email']),
+                ],
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('validation_groups', function (FormInterface $form) {
+            $type = $form->get('type')->getData()->getName();
+            $value = $form->get('value')->getData();
+
+            if (!empty($type) && empty($value)) {
+                return ['Default', 'not_blank'];
+            }
+
+            switch (strtolower($form->get('type')->getData()->getName())) {
+                case 'email':
+                    return ['Default', 'email'];
+                    break;
+            }
+        });
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
-        return 'contact_details';
+        return 'contact_detail';
     }
 }

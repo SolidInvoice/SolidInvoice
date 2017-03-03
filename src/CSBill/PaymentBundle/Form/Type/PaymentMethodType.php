@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Form;
+namespace CSBill\PaymentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PaymentMethodForm extends AbstractType
+class PaymentMethodType extends AbstractType
 {
     /**
      * {@inheritdoc}

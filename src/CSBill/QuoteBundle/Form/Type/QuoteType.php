@@ -91,11 +91,11 @@ class QuoteType extends AbstractType
                 'currency' => $this->currency,
             ]
         )
-            ->setAllowedTypes(
-                [
-                    'currency' => [Currency::class],
-                ]
-            );
+        ->setAllowedTypes(
+            [
+                'currency' => [Currency::class],
+            ]
+        );
     }
 
     /**

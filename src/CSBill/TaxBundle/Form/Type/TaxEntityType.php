@@ -15,9 +15,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Class Tax.
+ * Class TaxEntityType.
  */
-class Tax extends AbstractType
+class TaxEntityType extends AbstractType
 {
     /**
      * @return string

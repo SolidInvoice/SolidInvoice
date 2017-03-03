@@ -1,8 +1,7 @@
 parameters:
     csbill_client.menu.class: CSBill\ClientBundle\Menu\Builder
     csbill_client.contact_type.repository.class: CSBill\ClientBundle\Repository\ContactTypeRepository
-    csbill_client.contact_types.twig.extension.class: CSBill\ClientBundle\Twig\Extension\ContactTypesExtension
-    csbill_client.contact.form.type.class: CSBill\ClientBundle\Form\Contact
+
 services:
     csbill_client.menu:
         class: '%csbill_client.menu.class%'
@@ -14,18 +13,16 @@ services:
             - { name: cs_core.menu, menu: clients_edit, method: clientsMenu }
 
     csbill_client.contact.form.type:
-        class: '%csbill_client.contact.form.type.class%'
+        class: CSBill\ClientBundle\Form\Type\ContactType
+        tags:
+            - { name: form.type }
+
+    csbill_client.contact_detail.form.type:
+        class: CSBill\ClientBundle\Form\Type\ContactDetailType
         arguments:
             - '@csbill_client.contact_type.values'
         tags:
             - { name: form.type }
-
-    csbill_client.contact_types.twig.extension:
-        class: '%csbill_client.contact_types.twig.extension.class%'
-        arguments:
-            - '@doctrine'
-        tags:
-            - { name: twig.extension }
 
     csbill_client.contact_type.repository:
         class: '%csbill_client.contact_type.repository.class%'

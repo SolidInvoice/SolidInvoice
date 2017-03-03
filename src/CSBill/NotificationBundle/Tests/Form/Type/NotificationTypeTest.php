@@ -11,33 +11,19 @@
 
 namespace CSBill\NotificationBundle\Tests\Form\Type;
 
+use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\NotificationBundle\Form\Type\NotificationType;
-use Symfony\Component\Form\Test\TypeTestCase;
 
-class NotificationTypeTest extends TypeTestCase
+class NotificationTypeTest extends FormTestCase
 {
-    public function testSubmitValidData()
+    public function testSubmit()
     {
         $formData = [
-            'email' => true,
-            'hipchat' => false,
-            'sms' => true,
+            'email' => $this->faker->boolean,
+            'hipchat' => $this->faker->boolean,
+            'sms' => $this->faker->boolean,
         ];
 
-        $type = new NotificationType();
-        $form = $this->factory->create($type);
-
-        // submit the data to the form directly
-        $form->submit($formData);
-
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($formData, $form->getData());
-
-        $view = $form->createView();
-        $children = $view->children;
-
-        foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
-        }
+        $this->assertFormData(NotificationType::class, $formData, $formData);
     }
 }

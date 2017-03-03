@@ -12,7 +12,7 @@
 namespace CSBill\SettingsBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
-use CSBill\SettingsBundle\Form\Type\SettingsType;
+use CSBill\SettingsBundle\Form\Type\SettingSectionType;
 use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,7 +37,7 @@ class SettingsController extends BaseController
             $setting = $setting->getValue();
         });
 
-        $form = $this->createForm(new SettingsType(), $settings, ['manager' => $manager]);
+        $form = $this->createForm(SettingSectionType::class, $settings, ['manager' => $manager]);
 
         $form->handleRequest($request);
 

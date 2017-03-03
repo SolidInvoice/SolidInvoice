@@ -19,7 +19,7 @@ use CSBill\PaymentBundle\Entity\Payment;
 use CSBill\PaymentBundle\Entity\PaymentMethod as Entity;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
-use CSBill\PaymentBundle\Form\PaymentForm;
+use CSBill\PaymentBundle\Form\Type\PaymentType;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Money\Money;
@@ -63,7 +63,7 @@ class PaymentController extends BaseController
 
         $currency = $invoice->getClient()->getCurrency();
         $form = $this->createForm(
-            PaymentForm::class,
+            PaymentType::class,
             [
                 'amount' => $invoice->getBalance(),
             ],

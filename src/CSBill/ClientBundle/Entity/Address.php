@@ -264,4 +264,22 @@ class Address
 
         return trim(implode("\n", $info), ', \t\n\r\0\x0B');
     }
+
+    /**
+     * @param array $data
+     *
+     * @return static
+     */
+    public static function fromArray(array $data)
+    {
+        $address = new static();
+        $address->setStreet1($data['street1']);
+        $address->setStreet2($data['street2']);
+        $address->setCity($data['city']);
+        $address->setState($data['state']);
+        $address->setZip($data['zip']);
+        $address->setCountry($data['country']);
+
+        return $address;
+    }
 }
