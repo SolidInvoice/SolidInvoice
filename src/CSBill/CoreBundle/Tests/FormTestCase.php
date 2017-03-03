@@ -48,16 +48,16 @@ class FormTestCase extends TypeTestCase
 
     protected function setUp()
     {
+        $this->faker = Factory::create();
+
         $this->factory = Forms::createFormFactoryBuilder()
             ->addExtensions($this->getInternalExtension())
             ->addTypeExtensions($this->getTypedExtensions())
             ->addTypes($this->getTypes())
             ->getFormFactory();
 
-        $this->dispatcher = \Mockery::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = M::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
-
-        $this->faker = Factory::create();
     }
 
     /**
