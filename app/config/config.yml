@@ -103,7 +103,7 @@ fos_user:
     user_class: CSBill\UserBundle\Entity\User
     profile:
         form:
-            type: CSBill\UserBundle\Form\ProfileForm
+            type: CSBill\UserBundle\Form\Type\ProfileType
 fos_rest:
     param_fetcher_listener: true
     allowed_methods_listener: true
