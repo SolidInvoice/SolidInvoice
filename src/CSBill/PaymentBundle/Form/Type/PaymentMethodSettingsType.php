@@ -12,6 +12,10 @@
 namespace CSBill\PaymentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,8 +29,7 @@ class PaymentMethodSettingsType extends AbstractType
         $settings = $options['settings'];
 
         foreach ($settings as $setting) {
-            $options = $this->getOptions($setting);
-            $builder->add($setting['name'], $setting['type'], $options);
+            $builder->add($setting['name'], $this->getType($setting['type']), $this->getOptions($setting));
         }
     }
 
@@ -45,7 +48,7 @@ class PaymentMethodSettingsType extends AbstractType
                 break;
 
             case 'choice':
-                $options['choices'] = $settings['options'];
+                $options['choices'] = array_flip($settings['options']);
                 $options['placeholder'] = 'Please Choose';
                 $options['attr'] = ['class' => 'select2'];
                 break;
@@ -72,5 +75,23 @@ class PaymentMethodSettingsType extends AbstractType
     public function getBlockPrefix()
     {
         return 'method_settings';
+    }
+
+    private function getType($type)
+    {
+        switch ($type) {
+            case 'password':
+                return PasswordType::class;
+
+            case 'choice':
+                return ChoiceType::class;
+
+            case 'checkbox':
+                return CheckboxType::class;
+
+            case 'text':
+            default:
+                return TextType::class;
+        }
     }
 }

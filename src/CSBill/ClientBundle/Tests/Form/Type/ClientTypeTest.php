@@ -26,7 +26,7 @@ class ClientTypeTest extends FormTestCase
 
         $company = $faker->company;
         $url = $faker->url;
-        $currencyCode = $faker->randomElement(Currency::getCurrencies());
+        $currencyCode = $faker->randomKey(Currency::getCurrencies());
 
         $formData = [
             'name' => $company,

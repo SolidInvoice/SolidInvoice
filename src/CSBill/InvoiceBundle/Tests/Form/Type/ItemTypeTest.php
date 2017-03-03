@@ -25,19 +25,19 @@ class ItemTypeTest extends FormTestCase
     public function testSubmit()
     {
         $description = $this->faker->text;
-        $price = $this->faker->randomNumber();
+        $price = $this->faker->randomNumber(3);
         $qty = $this->faker->randomFloat(2);
 
         $formData = [
             'description' => $description,
-            'price' => $price / 100,
+            'price' => $price,
             'qty' => $qty,
         ];
 
         $object = new Item();
         $object->setDescription($description);
         $object->setQty($qty);
-        $object->setPrice(new Money($price, new Currency('USD')));
+        $object->setPrice(new Money($price * 100, new Currency('USD')));
 
         $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => 'USD']), $formData, $object);
     }

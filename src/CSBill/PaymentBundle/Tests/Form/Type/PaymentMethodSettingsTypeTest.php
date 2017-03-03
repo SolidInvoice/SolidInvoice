@@ -17,12 +17,12 @@ class PaymentMethodSettingsTypeTest extends FormTestCase
 {
     public function testSubmit()
     {
-        $rgbColors = $this->faker->rgbColorAsArray;
+        $paragraphs = $this->faker->paragraphs;
 
         $one = $this->faker->name;
         $two = $this->faker->boolean;
         $three = $this->faker->password;
-        $four = $this->faker->randomKey($rgbColors);
+        $four = $this->faker->randomKey($paragraphs);
 
         $formData = [
             'one' => $one,
@@ -55,7 +55,7 @@ class PaymentMethodSettingsTypeTest extends FormTestCase
                 [
                     'name' => 'four',
                     'type' => 'choice',
-                    'options' => $rgbColors,
+                    'options' => $paragraphs,
                 ],
             ],
         ];

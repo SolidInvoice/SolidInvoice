@@ -19,8 +19,9 @@ class TaxTypeTest extends FormTestCase
     public function testSubmit()
     {
         $name = $this->faker->name;
-        $rate = $this->faker->randomFloat();
-        $type = $this->faker->randomElement(Tax::getTypes());
+        $rate = $this->faker->randomFloat(2, 0, 100);
+        $type = ucwords($this->faker->randomKey(Tax::getTypes()));
+
         $formData = [
             'name' => $name,
             'rate' => $rate,

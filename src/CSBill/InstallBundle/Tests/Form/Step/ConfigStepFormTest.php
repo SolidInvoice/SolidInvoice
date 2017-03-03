@@ -45,20 +45,6 @@ class ConfigStepFormTest extends FormTestCase
             ],
         ];
 
-        $type = new ConfigStepForm();
-        $form = $this->factory->create($type, null, ['drivers' => $drivers, 'mailer_transports' => $transports]);
-
-        // submit the data to the form directly
-        $form->submit($formData);
-
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($formData, $form->getData());
-
-        $view = $form->createView();
-        $children = $view->children;
-
-        foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
-        }
+        $this->assertFormData($this->factory->create(ConfigStepForm::class, null, ['drivers' => $drivers, 'mailer_transports' => $transports]), $formData, $formData);
     }
 }
