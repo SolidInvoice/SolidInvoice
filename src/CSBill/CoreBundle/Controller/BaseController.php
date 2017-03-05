@@ -13,7 +13,6 @@ namespace CSBill\CoreBundle\Controller;
 
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseController extends Base
