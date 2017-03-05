@@ -25,6 +25,6 @@ class CSBillMoneyBundle extends Bundle
         /** @var Currency $currency */
         $currency = $this->container->get('currency');
 
-        Money::setBaseCurrency($currency->getName());
+        Money::setBaseCurrency($currency->getCode());
     }
 }

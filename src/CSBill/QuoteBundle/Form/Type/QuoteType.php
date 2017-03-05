@@ -65,7 +65,7 @@ class QuoteType extends AbstractType
                 'by_reference' => true,
                 'required' => false,
                 'entry_options' => [
-                    'currency' => $options['currency']->getName(),
+                    'currency' => $options['currency']->getCode(),
                 ],
             ]
         );
@@ -91,11 +91,7 @@ class QuoteType extends AbstractType
                 'currency' => $this->currency,
             ]
         )
-        ->setAllowedTypes(
-            [
-                'currency' => [Currency::class],
-            ]
-        );
+            ->setAllowedTypes('currency', [Currency::class]);
     }
 
     /**

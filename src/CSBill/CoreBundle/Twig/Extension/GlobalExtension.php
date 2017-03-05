@@ -48,21 +48,17 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      */
     protected function getQuery()
     {
-        try {
-            $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
 
-            $params = array_merge($request->query->all(), $request->attributes->all());
+        $params = array_merge($request->query->all(), $request->attributes->all());
 
-            foreach (array_keys($params) as $key) {
-                if (substr($key, 0, 1) == '_') {
-                    unset($params[$key]);
-                }
+        foreach (array_keys($params) as $key) {
+            if (substr($key, 0, 1) == '_') {
+                unset($params[$key]);
             }
-
-            return $params;
-        } catch (InactiveScopeException $e) {
-            return [];
         }
+
+        return $params;
     }
 
     /**
@@ -116,7 +112,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
     {
         if ($percentage > 0) {
             if ($amount instanceof Money) {
-                return $amount->multiply($percentage);
+                return $amount->multiply($percentage)->getAmount();
             }
 
             return $amount * $percentage;

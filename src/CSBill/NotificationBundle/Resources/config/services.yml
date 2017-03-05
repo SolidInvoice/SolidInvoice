@@ -64,7 +64,7 @@ services:
             - '@=service(''settings'').get(''hipchat.auth_token'')'
             - '@=service(''settings'').get(''hipchat.server_url'')'
     twilio.client:
-        class: Services_Twilio
+        class: Twilio\Rest\Client
         arguments:
             - '@=service(''settings'').get(''sms.twilio.sid'')'
             - '@=service(''settings'').get(''sms.twilio.token'')'

@@ -13,38 +13,30 @@ namespace CSBill\InstallBundle\Tests\Form\Step;
 
 use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
-use Faker\Factory;
-use Mockery as M;
+use CSBill\MoneyBundle\Form\Type\CurrencyType;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Intl\Intl;
 
 class SystemInformationFormTest extends FormTestCase
 {
     public function testSubmit()
     {
-        $faker = Factory::create();
-
         $formData = [
-            'locale' => $faker->randomKey(Intl::getLocaleBundle()->getLocaleNames()),
-            'username' => $faker->userName,
-            'email_address' => $faker->email,
-            'base_url' => $faker->url,
+            'locale' => $this->faker->randomKey(Intl::getLocaleBundle()->getLocaleNames()),
+            'username' => $this->faker->userName,
+            'email_address' => $this->faker->email,
+            'base_url' => $this->faker->url,
             'password' => null,
-            'currency' => null,
+            'currency' => 'USD',
         ];
 
-        $form = $this->factory->create(SystemInformationForm::class, null, ['userCount' => 0]);
+        $this->assertFormData($this->factory->create(SystemInformationForm::class, null, ['userCount' => 0]), $formData, $formData);
+    }
 
-        // submit the data to the form directly
-        $form->submit($formData);
-
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($formData, $form->getData());
-
-        $view = $form->createView();
-        $children = $view->children;
-
-        foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
-        }
+    protected function getExtensions()
+    {
+        return [
+            new PreloadedExtension([new CurrencyType('en')], []),
+        ];
     }
 }

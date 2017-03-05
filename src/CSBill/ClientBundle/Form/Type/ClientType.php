@@ -12,8 +12,7 @@
 namespace CSBill\ClientBundle\Form\Type;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\CoreBundle\Form\Type\Select2Type;
-use Money\Currency;
+use CSBill\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -32,11 +31,9 @@ class ClientType extends AbstractType
 
         $builder->add(
             'currency',
-            Select2Type::class,
+            CurrencyType::class,
             [
-                'attr' => ['class' => 'select2'],
                 'placeholder' => 'client.form.currency.empty_value',
-                'choices' => array_flip(Currency::getCurrencies()),
                 'required' => false,
             ]
         );

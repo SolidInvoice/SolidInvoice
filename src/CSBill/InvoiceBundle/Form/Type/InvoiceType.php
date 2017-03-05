@@ -71,7 +71,7 @@ class InvoiceType extends AbstractType
                 'by_reference' => false,
                 'required' => false,
                 'entry_options' => [
-                    'currency' => $options['currency']->getName(),
+                    'currency' => $options['currency']->getCode(),
                 ],
             ]
         );

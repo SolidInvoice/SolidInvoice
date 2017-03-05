@@ -82,20 +82,6 @@ abstract class BaseController extends Base
     }
 
     /**
-     * Returns a new JsonResponse.
-     *
-     * @param array $data
-     * @param int   $status
-     * @param array $headers
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    protected function json(array $data, $status = 200, array $headers = [])
-    {
-        return new JsonResponse($data, $status, $headers);
-    }
-
-    /**
      * @param mixed $data
      * @param int   $responseCode
      *

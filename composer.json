@@ -19,6 +19,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/CSBill/RequireJSBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/MiWayInsurance/SyliusFlowBundle"
         }
     ],
     "autoload": {
@@ -32,7 +36,7 @@
     },
     "require": {
         "php": ">=7.1",
-        "symfony/symfony": "2.8.*",
+        "symfony/symfony": "3.3.x-dev",
         "symfony/polyfill-iconv": "^1.2",
         "symfony/polyfill-intl-icu": "^1.2",
         "symfony/polyfill-intl-normalizer": "^1.2",
@@ -46,7 +50,7 @@
         "doctrine/doctrine-bundle": "^1.4",
         "twig/extensions": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "^2.4",
+        "symfony/monolog-bundle": "^3.0",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
@@ -66,18 +70,18 @@
         "payum/offline": "^1.3",
         "payum/paypal-express-checkout-nvp": "^1.3",
         "nesbot/carbon": "^1.21",
-        "sylius/flow-bundle": "0.18.*",
+        "sylius/flow-bundle": "0.19.1",
         "yohang/finite": "^1.1",
         "namshi/notificator": "^4.0",
         "hipchat/hipchat-php": "^1.4",
-        "twilio/sdk": "^4.2",
+        "twilio/sdk": "^5.5",
         "tijsverkoyen/css-to-inline-styles": "^2.0",
-        "mathiasverraes/money": "^1.2",
-        "friendsofsymfony/rest-bundle": "^1.7",
+        "mathiasverraes/money": "^3.0",
+        "friendsofsymfony/rest-bundle": "^2.1",
         "jms/serializer-bundle": "^1.1",
         "willdurand/hateoas-bundle": "^1.1",
         "nelmio/api-doc-bundle": "^2.7",
-        "egulias/email-validator": "^1.2",
+        "egulias/email-validator": "^2.1",
         "mtdowling/cron-expression": "^1.0",
         "payum/stripe": "^1.3",
         "payum/paypal-pro-checkout-nvp": "^1.3",
@@ -86,16 +90,10 @@
         "payum/be2bill": "^1.3",
         "payum/klarna-checkout": "^1.3",
         "payum/klarna-invoice": "^1.3",
-        "omnipay/omnipay": "^2.3",
-        "payum/omnipay-bridge": "^1.2",
         "oro/requirejs-bundle": "^1.0",
         "willdurand/js-translation-bundle": "^2.5",
         "php-http/guzzle6-adapter": "^1.1",
-        "ramsey/uuid-doctrine": "^1.2",
-        "symfony/yaml": "^3.2",
-        "symfony/config": "3.3.x-dev",
-        "symfony/intl": "3.3.x-dev",
-        "symfony/form": "^3.2"
+        "ramsey/uuid-doctrine": "^1.2"
     },
     "require-dev": {
         "behat/behat": "^3.0",
@@ -113,9 +111,6 @@
         "matthiasnoback/symfony-dependency-injection-test": "^2.0"
     },
     "scripts": {
-        "post-root-package-install": [
-            "SymfonyStandard\\Composer::hookRootPackageInstall"
-        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
