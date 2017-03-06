@@ -30,7 +30,7 @@ install:
 
 before_script:
   - mysql -e 'create database csbill;'
-  - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
+  - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
