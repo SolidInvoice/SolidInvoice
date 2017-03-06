@@ -21,6 +21,7 @@ before_install:
   # Repo for newer Node.js versions
   - curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
   - sudo apt-get install nodejs
+  - ls -la /home/travis/.nvm
   - /usr/bin/nodejs -v
   # Repo for Yarn
   - sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
