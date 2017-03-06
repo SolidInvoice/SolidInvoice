@@ -93,7 +93,7 @@ class EmailSettingsTypeTest extends FormTestCase
             ],
         ];
 
-       yield [
+        yield [
            [
                'transport' => 'gmail',
                'host' => 'localhost',

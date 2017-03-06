@@ -176,7 +176,6 @@ class StatusRequest extends BaseGetStatus
         $this->status = Status::STATUS_REFUNDED;
     }
 
-
     public function markPayedout()
     {
         // noop

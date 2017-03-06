@@ -33,6 +33,6 @@ class PaymentMethodTypeTest extends FormTestCase
             'internal' => $internal,
         ];
 
-        $this->assertFormData($this->factory->create(PaymentMethodType::class,  [], ['config' => null]), $formData, $object);
+        $this->assertFormData($this->factory->create(PaymentMethodType::class, [], ['config' => null]), $formData, $object);
     }
 }

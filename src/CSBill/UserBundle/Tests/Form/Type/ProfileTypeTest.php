@@ -37,7 +37,7 @@ class ProfileTypeTest extends FormTestCase
         $type = new ProfileFormType(User::class);
 
         return [
-            new PreloadedExtension([$type], [])
+            new PreloadedExtension([$type], []),
         ];
     }
 }

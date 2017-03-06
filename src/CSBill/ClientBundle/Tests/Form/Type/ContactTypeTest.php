@@ -41,7 +41,7 @@ class ContactTypeTest extends FormTestCase
     protected function getExtensions()
     {
         // create a type instance with the mocked dependencies
-        $contactType = new Entity\ContactType;
+        $contactType = new Entity\ContactType();
         $ref = new \ReflectionProperty($contactType, 'id');
         $ref->setAccessible(true);
         $ref->setValue($contactType, 1);
