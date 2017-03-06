@@ -69,7 +69,7 @@ class PaymentController extends BaseController
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => $currency ? $currency->getName() : $this->getParameter('currency'),
+                'currency' => $currency ? $currency->getCode() : $this->getParameter('currency'),
                 'preferred_choices' => $preferredChoices,
             ]
         );
@@ -123,7 +123,7 @@ class PaymentController extends BaseController
             /** @var \Money\Money $money */
             $money = $data['amount'];
             $payment->setTotalAmount($money->getAmount());
-            $payment->setCurrencyCode($money->getCurrency()->getName());
+            $payment->setCurrencyCode($money->getCurrency()->getCode());
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());
             $payment->setNumber($invoice->getId());

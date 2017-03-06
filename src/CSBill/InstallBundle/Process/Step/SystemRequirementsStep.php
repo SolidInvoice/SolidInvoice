@@ -33,12 +33,10 @@ class SystemRequirementsStep extends AbstractControllerStep
             return $this->redirectToRoute('_home');
         }
 
-        $requirements = $this->getSystemRequirements();
-
         return $this->render(
             'CSBillInstallBundle:Flow:system_check.html.twig',
             [
-                'requirements' => $requirements,
+                'requirements' => new \AppRequirements(),
             ]
         );
     }
@@ -50,24 +48,12 @@ class SystemRequirementsStep extends AbstractControllerStep
      */
     public function forwardAction(ProcessContextInterface $context)
     {
-        $requirements = $this->getSystemRequirements();
+        $requirements = new \AppRequirements();
 
         if (0 !== count($requirements->getFailedRequirements())) {
             return $this->redirectToRoute('_install_flow');
         }
 
         return $this->complete();
-    }
-
-    /**
-     * @return \AppRequirements
-     */
-    private function getSystemRequirements()
-    {
-        $rootDir = $this->get('kernel')->getRootDir();
-
-        require_once $rootDir.DIRECTORY_SEPARATOR.'AppRequirements.php';
-
-        return new \AppRequirements();
     }
 }

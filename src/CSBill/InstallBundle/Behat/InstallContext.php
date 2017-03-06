@@ -47,7 +47,7 @@ class InstallContext extends DefaultContext
         $yaml = Yaml::parse(file_get_contents($configFile));
         $yaml['parameters']['installed'] = null;
 
-        $fs->dumpFile($configFile, Yaml::dump($yaml), 0755);
+        $fs->dumpFile($configFile, Yaml::dump($yaml));
 
         $fs->remove($this->kernel->getCacheDir().'/'.$this->kernel->getContainerCacheClass());
     }

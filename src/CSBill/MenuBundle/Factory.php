@@ -11,7 +11,6 @@
 
 namespace CSBill\MenuBundle;
 
-use Knp\Menu\Factory\CoreExtension;
 use Knp\Menu\Factory\ExtensionInterface;
 use Knp\Menu\Integration\Symfony\RoutingExtension;
 use Knp\Menu\MenuFactory;
@@ -30,7 +29,9 @@ class Factory extends MenuFactory
     public function __construct(UrlGeneratorInterface $generator)
     {
         $this->extensions = new \SplPriorityQueue();
-        $this->addExtension(new CoreExtension(), -10);
+
+        parent::__construct();
+
         $this->addExtension(new RoutingExtension($generator));
     }
 

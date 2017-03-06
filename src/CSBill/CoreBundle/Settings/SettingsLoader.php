@@ -186,7 +186,7 @@ class SettingsLoader implements SettingsLoaderInterface
     {
         $configFile = $this->getParametersPath();
 
-        $parameters = Yaml::Parse(file_get_contents($configFile));
+        $parameters = Yaml::parse(file_get_contents($configFile));
 
         return $parameters['parameters'];
     }

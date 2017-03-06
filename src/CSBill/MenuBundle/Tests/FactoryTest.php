@@ -24,7 +24,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
 
         $factory->addExtension($extension);
 
-        $this->assertCount(3, \PHPUnit_Framework_Assert::getObjectAttribute($factory, 'extensions'));
+        $this->assertCount(3, self::getObjectAttribute($factory, 'extensions'));
     }
 
     public function testCreateItem()

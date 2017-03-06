@@ -28,6 +28,11 @@ class MoneyFormatter
     private $currency;
 
     /**
+     * @var \NumberFormatter
+     */
+    private $numberFormatter;
+
+    /**
      * @param string          $locale
      * @param Currency|string $currency
      */

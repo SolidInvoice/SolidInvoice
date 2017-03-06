@@ -12,14 +12,13 @@
 namespace CSBill\ClientBundle\Form\DataTransformer;
 
 use CSBill\ClientBundle\Entity\ContactType;
-use CSBill\ClientBundle\Form\Type\ContactDetailType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ContactTypeTransformer implements DataTransformerInterface
 {
     /**
-     * @var \CSBill\ClientBundle\Entity\ContactType[]
+     * @var ContactType[]
      */
     private $types;
 
@@ -32,7 +31,7 @@ class ContactTypeTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param ContactDetailType $type
+     * @param ContactType $type
      *
      * @return string
      */

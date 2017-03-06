@@ -11,6 +11,7 @@
 
 namespace CSBill\ApiBundle\Controller;
 
+use CSBill\PaymentBundle\Repository\PaymentRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -41,6 +42,7 @@ class PaymentController extends Controller
      */
     public function getPaymentsAction(ParamFetcherInterface $fetcher)
     {
+        /* @var PaymentRepository $repository */
         $repository = $this->get('doctrine')
             ->getRepository('CSBillPaymentBundle:Payment');
 

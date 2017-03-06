@@ -12,7 +12,9 @@
 namespace CSBill\ApiBundle\Controller;
 
 use CSBill\QuoteBundle\Entity;
+use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Model\Graph;
+use CSBill\QuoteBundle\Repository\QuoteRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -46,6 +48,7 @@ class QuoteController extends Controller
      */
     public function getQuotesAction(ParamFetcherInterface $fetcher)
     {
+        /* @var QuoteRepository $repository */
         $repository = $this->get('doctrine')
             ->getRepository('CSBillQuoteBundle:Quote');
 
@@ -110,7 +113,7 @@ class QuoteController extends Controller
 
         $request->request->remove('status');
 
-        return $this->manageForm($request, 'quote', $entity, Response::HTTP_CREATED);
+        return $this->manageForm($request, QuoteType::class, $entity, Response::HTTP_CREATED);
     }
 
     /**
@@ -138,7 +141,7 @@ class QuoteController extends Controller
      */
     public function updateQuoteAction(Request $request, Entity\Quote $quote)
     {
-        return $this->manageForm($request, 'quote', $quote);
+        return $this->manageForm($request, QuoteType::class, $quote);
     }
 
     /**

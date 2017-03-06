@@ -1,0 +1,2 @@
+parameters:
+    bootstrap: %rootDir%/../../../app/autoload.php
