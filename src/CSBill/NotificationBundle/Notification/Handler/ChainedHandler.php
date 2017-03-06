@@ -44,7 +44,7 @@ class ChainedHandler implements HandlerInterface
      */
     public function handle(NotificationInterface $notification)
     {
-        /** @var ChainedNotificationInterface $notification */
+        /* @var ChainedNotificationInterface $notification */
         foreach ($notification->getNotifications() as $notify) {
             $this->manager->trigger($notify);
         }

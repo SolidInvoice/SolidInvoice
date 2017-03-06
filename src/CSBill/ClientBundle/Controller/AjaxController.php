@@ -47,7 +47,7 @@ class AjaxController extends BaseController
         return $this->json(
             [
                 'content' => $content,
-                'currency' => $currency->getName(),
+                'currency' => $currency->getCode(),
                 'currency_format' => $this->get('csbill.money.formatter')->getCurrencySymbol($currency),
             ]
         );

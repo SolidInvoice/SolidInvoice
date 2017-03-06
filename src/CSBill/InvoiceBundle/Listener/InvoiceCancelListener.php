@@ -16,6 +16,8 @@ use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Currency;
+use Money\Money;
 
 class InvoiceCancelListener
 {
@@ -25,11 +27,18 @@ class InvoiceCancelListener
     private $registry;
 
     /**
-     * @param ManagerRegistry $registry
+     * @var Currency
      */
-    public function __construct(ManagerRegistry $registry)
+    private $currency;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param Currency        $currency
+     */
+    public function __construct(ManagerRegistry $registry, Currency $currency)
     {
         $this->registry = $registry;
+        $this->currency = $currency;
     }
 
     /**
@@ -47,7 +56,7 @@ class InvoiceCancelListener
         $invoice->setBalance($invoice->getTotal());
         $em->persist($invoice);
 
-        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoice->getClient()->getCurrency() ?: $this->currency);
 
         if ($totalPaid->isPositive()) {
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);

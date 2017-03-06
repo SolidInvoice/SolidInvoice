@@ -13,7 +13,13 @@ namespace CSBill\ApiBundle\Controller;
 
 use CSBill\ClientBundle\Entity;
 use CSBill\ClientBundle\Form\Type\ClientType;
+use CSBill\ClientBundle\Form\Type\ContactType;
 use CSBill\ClientBundle\Model\Status;
+use CSBill\ClientBundle\Repository\ClientRepository;
+use CSBill\ClientBundle\Repository\ContactRepository;
+use CSBill\InvoiceBundle\Repository\InvoiceRepository;
+use CSBill\PaymentBundle\Repository\PaymentRepository;
+use CSBill\QuoteBundle\Repository\QuoteRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -48,6 +54,7 @@ class ClientController extends Controller
      */
     public function getClientsAction(ParamFetcherInterface $fetcher)
     {
+        /* @var ClientRepository $clientRepository */
         $clientRepository = $this->get('doctrine')
             ->getRepository('CSBillClientBundle:Client');
 
@@ -109,6 +116,7 @@ class ClientController extends Controller
      */
     public function getClientContactsAction(ParamFetcherInterface $fetcher, $clientId)
     {
+        /* @var ContactRepository $contactRepository */
         $contactRepository = $this->get('doctrine')
             ->getRepository('CSBillClientBundle:Contact');
 
@@ -147,6 +155,7 @@ class ClientController extends Controller
      */
     public function getClientInvoicesAction(ParamFetcherInterface $fetcher, $clientId)
     {
+        /* @var InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->get('doctrine')
             ->getRepository('CSBillInvoiceBundle:Invoice');
 
@@ -185,6 +194,7 @@ class ClientController extends Controller
      */
     public function getClientQuotesAction(ParamFetcherInterface $fetcher, $clientId)
     {
+        /* @var QuoteRepository $quoteRepository */
         $quoteRepository = $this->get('doctrine')
             ->getRepository('CSBillQuoteBundle:Quote');
 
@@ -223,6 +233,7 @@ class ClientController extends Controller
      */
     public function getClientPaymentsAction(ParamFetcherInterface $fetcher, $clientId)
     {
+        /* @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->get('doctrine')
             ->getRepository('CSBillPaymentBundle:Payment');
 
@@ -331,7 +342,7 @@ class ClientController extends Controller
      */
     public function updateClientAction(Request $request, Entity\Client $client)
     {
-        return $this->manageForm($request, new Client(), $client);
+        return $this->manageForm($request, ClientType::class, $client);
     }
 
     /**
@@ -389,7 +400,7 @@ class ClientController extends Controller
         $contact = new Entity\Contact();
         $contact->setClient($client);
 
-        return $this->manageForm($request, 'contact', $contact, Response::HTTP_CREATED);
+        return $this->manageForm($request, ContactType::class, $contact, Response::HTTP_CREATED);
     }
 
     /**
@@ -424,7 +435,7 @@ class ClientController extends Controller
     {
         $contact->setClient($client);
 
-        return $this->manageForm($request, 'contact', $contact);
+        return $this->manageForm($request, ContactType::class, $contact);
     }
 
     /**

@@ -12,6 +12,7 @@
 namespace CSBill\DashboardBundle\Tests;
 
 use CSBill\DashboardBundle\WidgetFactory;
+use Mockery as M;
 
 class WidgetFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -19,11 +20,11 @@ class WidgetFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget1 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget2 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget3 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget4 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget5 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget1 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget2 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget3 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget4 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget5 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);
@@ -31,7 +32,7 @@ class WidgetFactoryTest extends \PHPUnit\Framework\TestCase
         $factory->add($widget4, null, 400);
         $factory->add($widget5, 'left_column');
 
-        $property = \PHPUnit_Framework_Assert::readAttribute($factory, 'queues');
+        $property = self::readAttribute($factory, 'queues');
 
         $this->assertTrue(is_array($property));
 
@@ -52,7 +53,7 @@ class WidgetFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Invalid widget location: bottom');
@@ -64,11 +65,11 @@ class WidgetFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget1 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget2 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget3 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget4 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget5 = \Mockery::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget1 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget2 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget3 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget4 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget5 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);

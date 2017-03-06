@@ -44,6 +44,7 @@ before_script:
 script:
   - composer validate
   - php bin/console security:check
+  - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
   - bash travis/behat.sh
   - bash travis/phpunit.sh
 

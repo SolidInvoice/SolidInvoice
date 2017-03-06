@@ -18,4 +18,7 @@ use Composer\Autoload\ClassLoader;
 $loader = require __DIR__.'/../vendor/autoload.php';
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
+// Load the requirement classes
+require_once 'AppRequirements.php';
+
 return $loader;

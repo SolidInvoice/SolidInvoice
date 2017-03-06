@@ -55,7 +55,7 @@ class ConfigWriter
      *
      * @param array $config
      */
-    public function dump(array $config, $mode = 0777)
+    public function dump(array $config)
     {
         $values = [
             'parameters' => array_merge($this->getConfigValues(), $config),
@@ -63,7 +63,7 @@ class ConfigWriter
 
         $yaml = Yaml::dump($values);
 
-        $this->fileSystem->dumpFile($this->configFile, $yaml, $mode);
+        $this->fileSystem->dumpFile($this->configFile, $yaml);
 
         $this->fileSystem->remove(
             sprintf(

@@ -44,8 +44,7 @@ services:
 
     invoice.listener.cancel:
         class: CSBill\InvoiceBundle\Listener\InvoiceCancelListener
-        arguments:
-            - '@doctrine'
+        arguments: ['@doctrine', '@currency']
         tags:
             - { name: kernel.event_listener, event: invoice.post_cancel, method: onInvoiceCancelled }
 

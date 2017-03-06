@@ -34,7 +34,7 @@ class ArchiveListener extends MappedEventSubscriber
     public function loadClassMetadata(EventArgs $eventArgs)
     {
         $ea = $this->getEventAdapter($eventArgs);
-        $this->loadMetadataForObjectClass($ea->getObjectManager(), $eventArgs->getClassMetadata());
+        $this->loadMetadataForObjectClass($ea->getObjectManager(), $this->loadClassMetadata($eventArgs));
     }
 
     /**

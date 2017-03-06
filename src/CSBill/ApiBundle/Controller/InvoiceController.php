@@ -12,7 +12,10 @@
 namespace CSBill\ApiBundle\Controller;
 
 use CSBill\InvoiceBundle\Entity;
+use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\InvoiceBundle\Repository\InvoiceRepository;
+use CSBill\PaymentBundle\Repository\PaymentRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -47,6 +50,7 @@ class InvoiceController extends Controller
      */
     public function getInvoicesAction(ParamFetcherInterface $fetcher)
     {
+        /* @var InvoiceRepository $repository */
         $repository = $this->get('doctrine')
             ->getRepository('CSBillInvoiceBundle:Invoice');
 
@@ -149,7 +153,7 @@ class InvoiceController extends Controller
     public function updateInvoiceAction(Request $request, Entity\Invoice $invoice)
     {
         $originalStatus = $invoice->getStatus();
-        $form = $this->get('form.factory')->create('invoice', $invoice);
+        $form = $this->get('form.factory')->create(InvoiceType::class, $invoice);
 
         $form->handleRequest($request);
 
@@ -265,6 +269,7 @@ class InvoiceController extends Controller
      */
     public function getInvoicePaymentsAction(ParamFetcherInterface $fetcher, $invoiceId)
     {
+        /* @var PaymentRepository $repository */
         $repository = $this->get('doctrine')
             ->getRepository('CSBillPaymentBundle:Payment');
 
