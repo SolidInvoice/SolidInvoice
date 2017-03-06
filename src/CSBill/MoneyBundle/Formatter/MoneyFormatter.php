@@ -53,7 +53,7 @@ class MoneyFormatter
     {
         $amount = $this->toFloat($money);
 
-        return $this->numberFormatter->formatCurrency($amount, $money->getCurrency()->getName());
+        return $this->numberFormatter->formatCurrency($amount, $money->getCurrency()->getCode());
     }
 
     /**
@@ -64,11 +64,11 @@ class MoneyFormatter
     public function getCurrencySymbol($currency = null)
     {
         if ($currency instanceof Currency) {
-            $currency = $currency->getName();
+            $currency = $currency->getCode();
         }
 
         return Intl::getCurrencyBundle()
-            ->getCurrencySymbol($currency ?: $this->currency->getName(), $this->locale);
+            ->getCurrencySymbol($currency ?: $this->currency->getCode(), $this->locale);
     }
 
     /**

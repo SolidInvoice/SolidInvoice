@@ -106,7 +106,6 @@ class SettingsType extends AbstractType
 
             case '':
             case 'text':
-            default:
                 $type = TextType::class;
                 break;
         }

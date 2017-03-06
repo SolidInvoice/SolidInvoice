@@ -12,9 +12,9 @@
 namespace CSBill\CoreBundle\Settings;
 
 use CSBill\CoreBundle\ConfigWriter;
+use CSBill\MoneyBundle\Form\Type\CurrencyType;
 use CSBill\SettingsBundle\Entity\Setting;
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
 
 class SettingsLoader implements SettingsLoaderInterface
@@ -106,8 +106,7 @@ class SettingsLoader implements SettingsLoaderInterface
         $currency = new Setting();
         $currency->setKey('currency')
             ->setValue($settings['currency'])
-            ->setType('select2')
-            ->setOptions(Intl::getCurrencyBundle()->getCurrencyNames($settings['locale']));
+            ->setType(CurrencyType::class);
 
         $emailSettings = $this->getEmailSettings($settings);
 

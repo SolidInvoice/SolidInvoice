@@ -32,3 +32,9 @@ services:
             - '@currency'
         tags:
             - { name: form.type }
+
+    csbill_money.form.currency.type:
+        class: CSBill\MoneyBundle\Form\Type\CurrencyType
+        arguments: ['%locale%']
+        tags:
+            - { name: form.type }

@@ -62,7 +62,7 @@ class Money
     {
         if ($money) {
             $this->value = $money->getAmount();
-            $this->currency = $money->getCurrency()->getName();
+            $this->currency = $money->getCurrency()->getCode();
         }
     }
 

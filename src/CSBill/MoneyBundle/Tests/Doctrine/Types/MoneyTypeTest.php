@@ -57,8 +57,8 @@ class MoneyTypeTest extends \PHPUnit\Framework\TestCase
         $value = $type->convertToPHPValue(1200, $platform);
 
         $this->assertInstanceOf('Money\Money', $value);
-        $this->assertSame(1200, $value->getAmount());
-        $this->assertSame('USD', $value->getCurrency()->getName());
+        $this->assertSame('1200', $value->getAmount());
+        $this->assertSame('USD', $value->getCurrency()->getCode());
     }
 
     public function testConvertToPHPValueWithEmptyValue()
@@ -71,7 +71,7 @@ class MoneyTypeTest extends \PHPUnit\Framework\TestCase
         $value = $type->convertToPHPValue(null, $platform);
 
         $this->assertInstanceOf('Money\Money', $value);
-        $this->assertSame(0, $value->getAmount());
+        $this->assertSame('0', $value->getAmount());
     }
 
     public function testConvertToPHPValueWithMoneyValue()
@@ -109,7 +109,7 @@ class MoneyTypeTest extends \PHPUnit\Framework\TestCase
         $money = new Money(1200, new Currency('USD'));
         $value = $type->convertToDatabaseValue($money, $platform);
 
-        $this->assertSame(1200, $value);
+        $this->assertSame('1200', $value);
     }
 
     public function testConvertToDatabaseValueInvalidValue()

@@ -13,7 +13,6 @@ namespace CSBill\CoreBundle\Controller;
 
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseController extends Base
@@ -79,20 +78,6 @@ abstract class BaseController extends Base
         $entityManager->flush();
 
         return $this;
-    }
-
-    /**
-     * Returns a new JsonResponse.
-     *
-     * @param array $data
-     * @param int   $status
-     * @param array $headers
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    protected function json(array $data, $status = 200, array $headers = [])
-    {
-        return new JsonResponse($data, $status, $headers);
     }
 
     /**

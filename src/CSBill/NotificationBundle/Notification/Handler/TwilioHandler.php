@@ -14,12 +14,12 @@ namespace CSBill\NotificationBundle\Notification\Handler;
 use CSBill\NotificationBundle\Notification\TwilioNotification;
 use Namshi\Notificator\Notification\Handler\HandlerInterface;
 use Namshi\Notificator\NotificationInterface;
-use Services_Twilio;
+use Twilio\Rest\Client;
 
 class TwilioHandler implements HandlerInterface
 {
     /**
-     * @var Services_Twilio
+     * @var Client
      */
     private $twilio;
 
@@ -29,10 +29,10 @@ class TwilioHandler implements HandlerInterface
     private $twilioNumber;
 
     /**
-     * @param Services_Twilio $twilio
-     * @param string          $twilioNumber
+     * @param Client $twilio
+     * @param string $twilioNumber
      */
-    public function __construct(Services_Twilio $twilio, $twilioNumber)
+    public function __construct(Client $twilio, $twilioNumber)
     {
         $this->twilio = $twilio;
         $this->twilioNumber = $twilioNumber;
@@ -54,12 +54,13 @@ class TwilioHandler implements HandlerInterface
         /* @var TwilioNotification $notification */
 
         $this->twilio
-            ->account
             ->messages
-            ->sendMessage(
-                $this->twilioNumber,
+            ->create(
                 $notification->getRecipientNumber(),
-                $notification->getMessage()
+                [
+                    'from' => $this->twilioNumber,
+                    'body' => $notification->getMessage(),
+                ]
             );
     }
 }

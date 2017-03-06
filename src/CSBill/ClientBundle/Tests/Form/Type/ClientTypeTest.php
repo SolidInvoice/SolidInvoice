@@ -14,19 +14,16 @@ use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Form\Type\ClientType;
 use CSBill\ClientBundle\Form\Type\ContactDetailType;
 use CSBill\CoreBundle\Tests\FormTestCase;
-use Faker\Factory;
-use Money\Currency;
+use CSBill\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ClientTypeTest extends FormTestCase
 {
     public function testSubmit()
     {
-        $faker = Factory::create();
-
-        $company = $faker->company;
-        $url = $faker->url;
-        $currencyCode = $faker->randomKey(Currency::getCurrencies());
+        $company = $this->faker->company;
+        $url = $this->faker->url;
+        $currencyCode = 'USD';
 
         $formData = [
             'name' => $company,
@@ -51,7 +48,7 @@ class ClientTypeTest extends FormTestCase
 
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$type], []),
+            new PreloadedExtension([$type, new CurrencyType('en')], []),
         ];
     }
 }
