@@ -5879,12 +5879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "f9d0d3d35acb17fc8edcdcca98ad5b555d10c487"
+                "reference": "26204114a8ba783c466089d25ff2e56c42801cf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/f9d0d3d35acb17fc8edcdcca98ad5b555d10c487",
-                "reference": "f9d0d3d35acb17fc8edcdcca98ad5b555d10c487",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/26204114a8ba783c466089d25ff2e56c42801cf4",
+                "reference": "26204114a8ba783c466089d25ff2e56c42801cf4",
                 "shasum": ""
             },
             "require": {
@@ -6021,7 +6021,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-03 15:20:25"
+            "time": "2017-03-05 16:23:14"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
