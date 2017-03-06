@@ -1,0 +1,39 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="row-fluid">
+    <fieldset>
+	<legend>
+	    <h4>
+		{{ client.name }}
+		<small>
+		    (<a href="#" id="client-select-change">{{ "change"|trans }}</a>)
+		</small>
+	    </h4>
+	</legend>
+
+	{% if form is defined %}
+	    {{ form_errors(form.users) }}
+	    {{ form_row(form.users) }}
+	{% else %}
+	    <ul class="unstyled">
+		{% for contact in client.contacts %}
+		    <li>
+			<div class="checkbox">
+			    <label for="client-contact-{{ contact.id }}">
+				<input type="checkbox" name="{{ type }}[users][]" value="{{ contact.id }}" id="client-contact-{{ contact.id }}" />
+				{{ contact }}
+			    </label>
+			</div>
+		    </li>
+		{% endfor %}
+	    </ul>
+	{% endif %}
+    </fieldset>
+</div>

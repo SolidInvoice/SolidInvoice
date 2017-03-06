@@ -1,0 +1,25 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% for type, flashMessage in app.session.flashbag.all() %}
+    {% set translation_domain = null %}
+    {% if type == 'error' %}
+	{% set type = 'danger' %}
+    {% elseif type == 'fos_user_success' %}
+	{% set type = 'success' %}
+	{% set translation_domain = 'FOSUserBundle' %}
+    {% endif %}
+
+    {% for message in flashMessage %}
+	<div class="alert alert-{{ type }} fade in">
+	    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		{{ message|trans({}, translation_domain) }} <br />
+	</div>
+    {% endfor %}
+{% endfor %}

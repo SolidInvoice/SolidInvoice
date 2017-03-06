@@ -1,0 +1,45 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillCoreBundle:Layout/Email:notification.html.twig" %}
+
+{% block title %}
+    {{ 'invoice.status_change.heading'|trans({}, 'email') }}
+{% endblock %}
+
+{% block content %}
+    <table>
+	<tr>
+	    <th>
+		{{ 'invoice.status_change.id'|trans({}, 'email') }}
+	    </th>
+	    <td>
+		<a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">
+		    {{ invoice.id }}
+		</a>
+	    </td>
+	</tr>
+	<tr>
+	    <th>
+		{{ 'invoice.status_change.old_status'|trans({}, 'email') }}
+	    </th>
+	    <td>
+		{{ invoice_label(old_status) }}
+	    </td>
+	</tr>
+	<tr>
+	    <th>
+		{{ 'invoice.status_change.new_status'|trans({}, 'email') }}
+	    </th>
+	    <td>
+		{{ invoice_label(new_status) }}
+	    </td>
+	</tr>
+    </table>
+{% endblock %}

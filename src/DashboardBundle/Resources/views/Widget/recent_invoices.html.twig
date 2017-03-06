@@ -1,0 +1,88 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+	<div class="pull-right">
+	    {% if invoices is not empty %}
+		<a href="{{ path('_invoices_index') }}">
+		    {{ 'dashboard.invoice.view_all'|trans }}
+		</a>
+	    {% endif %}
+	</div>
+	<h3 class="panel-title">
+	    {{ icon('file-text-o') }} {{ 'dashboard.invoice.recent'|trans }}
+	</h3>
+    </div>
+    {% if invoices is not empty %}
+	<ul class="list-group">
+	    {% for invoice in invoices %}
+		<li class="list-group-item">
+		    <div class="btn-group">
+			<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			    {{ icon('cog') }}
+			</button>
+			<ul class="dropdown-menu" role="menu">
+			    <li>
+				<a href="{{ path('_invoices_view', {'id' : invoice.id}) }}">
+				    {{ icon('eye') }} {{ 'dashboard.invoice.actions.view'|trans }}
+				</a>
+			    </li>
+			    {% if finite_has(invoice, 'editable', constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH')) %}
+				<li>
+				    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
+					{{ icon('edit') }} {{ 'dashboard.invoice.actions.edit'|trans }}
+				    </a>
+				</li>
+			    {% endif %}
+			    {% if finite_can(invoice, 'pay', constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH')) %}
+				<li class="divider"></li>
+				<li>
+				    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}">
+					{{ icon('credit-card') }} {{ 'dashboard.invoice.actions.pay'|trans }}
+				    </a>
+				</li>
+			    {% endif %}
+			</ul>
+		    </div>
+
+		    {{ invoice_label(invoice.status) }}
+
+		    <a href="{{ path('_clients_view', {'id' : invoice.client.id}) }}">
+			{{ invoice.client }}
+		    </a>
+		    <div class="pull-right">
+			{{ invoice.total|formatCurrency }}
+			<br />
+			<small>
+			    <strong>
+				{{ 'dashboard.invoice.actions.created'|trans }}
+			    </strong>
+			    {{ invoice.created|diff }}
+			</small>
+		    </div>
+		    <br class="clear" />
+		</li>
+	    {% endfor %}
+	</ul>
+    {% else %}
+	<div class="panel-body">
+	    <div class="pull-left">
+		<h4>
+		    {{ 'dashboard.invoice.empty'|trans }}
+		</h4>
+	    </div>
+	    <div class="pull-right">
+		<a href="{{ path('_invoices_create') }}" class="btn btn-info">
+		    {{ icon('plus') }} {{ 'dashboard.invoice.create'|trans }}
+		</a>
+	    </div>
+	</div>
+    {% endif %}
+</div>

@@ -1,0 +1,61 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
+
+{% block page_title %}{{ 'dashboard.title'|trans }}{% endblock %}
+
+{% block title %}
+    {{ icon('dashboard') }} {{ block('page_title') }}
+
+    <div class="pull-right">
+	<div class="btn-group">
+	    <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+		{{ icon('plus') }} {{ 'dashboard.create.new'|trans }} <span class="caret"></span>
+	    </button>
+	    <ul class="dropdown-menu" role="menu">
+		<li>
+		    <a href="{{ path('_clients_add') }}">
+			{{ icon('user-plus') }} {{ 'dashboard.create.client'|trans }}
+		    </a>
+		</li>
+		<li>
+		    <a href="{{ path('_quotes_create') }}">
+			{{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
+		    </a>
+		</li>
+		<li>
+		    <a href="{{ path('_invoices_create') }}">
+			{{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
+		    </a>
+		</li>
+	    </ul>
+	</div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <br class="clear" />
+
+    <div class="widget">
+
+	<div class="row">
+	    {{ render_dashboard_widget('top') }}
+	</div>
+	<div class="row">
+	    <div class="col-md-6">
+		{{ render_dashboard_widget('left_column') }}
+	    </div>
+	    <div class="col-md-6">
+		{{ render_dashboard_widget('right_column') }}
+	    </div>
+	</div>
+    </div>
+{% endblock content %}

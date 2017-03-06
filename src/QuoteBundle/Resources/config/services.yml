@@ -1,0 +1,48 @@
+parameters:
+    quote.manager.class: CSBill\QuoteBundle\Manager\QuoteManager
+    csbill_quote.menu.class: CSBill\QuoteBundle\Menu\Builder
+    csbill.mailer.send_quotes.listener.class: CSBill\QuoteBundle\Listener\Mailer\QuoteMailerListener
+services:
+    quote.manager:
+	class: '%quote.manager.class%'
+	arguments:
+	    - '@doctrine'
+	    - '@event_dispatcher'
+	    - '@finite.factory'
+	    - '@invoice.manager'
+	    - '@billing.mailer'
+	    - '@notification.manager'
+    csbill_quote.menu:
+	class: '%csbill_quote.menu.class%'
+	tags:
+	    - { name: cs_core.menu, menu: top, method: topMenu }
+	    - { name: cs_core.menu, menu: quotes_index,  method: quotesMenu }
+	    - { name: cs_core.menu, menu: quotes_view,   method: quotesMenu }
+	    - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
+	    - { name: cs_core.menu, menu: quotes_edit, method: quotesEditMenu }
+
+    quote.total.listener:
+	class: CSBill\QuoteBundle\Listener\Doctrine\QuoteTotalListener
+	tags:
+	    - { name: doctrine.event_listener, event: postLoad }
+
+    quote.mailer.send_quote.listener:
+	class: '%csbill.mailer.send_quotes.listener.class%'
+	arguments:
+	    - '@billing.mailer'
+	tags:
+	    - { name: kernel.event_subscriber }
+
+    quote.form.type:
+	class: CSBill\QuoteBundle\Form\Type\QuoteType
+	arguments:
+	    - '@currency'
+	tags:
+	    - { name: form.type }
+
+    quote.item.form.type:
+	class: CSBill\QuoteBundle\Form\Type\ItemType
+	arguments:
+	    - '@doctrine'
+	tags:
+	    - { name: form.type }

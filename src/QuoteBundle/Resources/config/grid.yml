@@ -1,0 +1,132 @@
+datagrid:
+    active_quote_grid:
+	title: Active
+	icon: check
+	source:
+	    repository: 'CSBillQuoteBundle:Quote'
+	    method: getGridQuery
+	columns:
+	    id:
+		name: id
+		label: ID
+		editable: false
+		cell: integer
+	    status:
+		name: status
+		label: Status
+		editable: false
+		cell: quote_status
+	    client:
+		name: client
+		label: Client
+		editable: false
+		cell: client
+	    total:
+		name: total
+		label: Total
+		editable: false
+		cell: money
+		formatter: money
+	    tax:
+		name: tax
+		label: Tax
+		editable: false
+		cell: money
+		formatter: money
+	    discount:
+		name: discount
+		label: Discount
+		editable: false
+		cell: string
+		formatter: discount
+	    created:
+		name: created
+		label: Created
+		editable: false
+		cell: date
+	search:
+	    fields:
+		- status
+		- total
+		- c.name
+	line_actions:
+	    view:
+		icon: eye
+		label: quote.grid.actions.view
+		route: _quotes_view
+		route_params:
+		    id: id
+	    edit:
+		icon: edit
+		label: quote.grid.actions.edit
+		route: _quotes_edit
+		route_params:
+		    id: id
+	actions:
+	    archive:
+		label: Archive
+		icon: archive
+		confirm: 'Are you sure you want to archive the selected rows?'
+		action: _quotes_archive
+		className: warning
+	    delete:
+		label: Delete
+		icon: ban
+		confirm: 'Are you sure you want to delete the selected rows?'
+		action: _quotes_delete
+		className: danger
+    archive_quote_grid:
+	title: Archived
+	icon: archive
+	source:
+	    repository: 'CSBillQuoteBundle:Quote'
+	    method: getArchivedGridQuery
+	columns:
+	    id:
+		name: id
+		label: ID
+		editable: false
+		cell: integer
+	    status:
+		name: status
+		label: Status
+		editable: false
+		cell: quote_status
+	    client:
+		name: client
+		label: Client
+		editable: false
+		cell: client
+	    total:
+		name: total
+		label: Total
+		editable: false
+		cell: string
+	    tax:
+		name: tax
+		label: Tax
+		editable: false
+		cell: string
+	    discount:
+		name: discount
+		label: Discount
+		editable: false
+		cell: string
+		formatter: discount
+	    created:
+		name: created
+		label: Created
+		editable: false
+		cell: date
+	search:
+	    fields:
+		- status
+		- total
+		- c.name
+	actions:
+	    delete:
+		label: Delete
+		icon: ban
+		confirm: 'Are you sure you want to delete the selected rows?'
+		action: _quotes_delete
+		className: danger

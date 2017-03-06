@@ -1,0 +1,110 @@
+invoice:
+    list:
+	status_legend: 'Invoice Status Legend'
+	title: Invoices
+	outstanding: Outstanding
+	income: Income
+    created: Created
+    summary: 'Invoice Summary'
+    total: Total
+    subtotal: Sub-Total
+    tax: Tax
+    discount: Discount
+    title: 'Invoice #%id%'
+    notes: Notes
+    terms: Terms
+    client:
+	choose: 'Choose a client'
+	empty: 'You have not created any clients yet.'
+	create: 'Please add one now'
+    create:
+	new: 'Create Invoice'
+	success: 'Invoice created successfully'
+    edit:
+	success: 'Invoice updated successfully'
+	paid: 'You can''t edit invoices that is already paid'
+    item:
+	add: 'Add Item'
+	remove: 'Remove Item'
+	heading:
+	    description: Description
+	    price: Price
+	    qty: Qty
+	    total: Total
+	    tax: Tax
+    save:
+	send: 'Save and Send'
+	draft: 'Save as Draft'
+	cancel: Cancel
+	update: Update
+    view:
+	online: 'View this invoice online at: %url%'
+	toolbar:
+	    mark_paid: 'Mark Paid'
+	    send: Send
+	    pay_now: 'Pay Now'
+	    cancel: Cancel
+	    edit: Edit
+	    reopen: Re-Open
+	    clone: Clone
+	payments: Payments
+    clone:
+	success: 'Invoice cloned successfully'
+    payment:
+	capture: 'Do you want to capture a payment for this invoice?'
+    mark_paid: 'Mark Paid'
+    capture_payment: 'Capture Payment'
+    add_payment: 'Add Payment'
+    transition:
+	exception:
+	    accept: 'Invoice cannot be accepted'
+	    cancel: 'Invoice cannot be cancelled'
+	    pay: 'Invoice cannot be paid'
+	    sent: 'Invoice cannot be sent'
+	    reopen: 'Invoice cannot be re-opened'
+	    archive: 'Invoice cannot be archived'
+	action:
+	    accept: 'Invoice has been accepted'
+	    cancel: 'Invoice has been cancelled'
+	    pay: 'Invoice has been paid'
+	    sent: 'Invoice has been sent'
+	    reopen: 'Invoice has been re-opened'
+	    archive: 'Invoice has been archived'
+    stats:
+	count:
+	    pending: '{0} Pending Invoices|{1} Pending Invoice|]1,Inf] Pending Invoices'
+	    draft: '{0} Draft Invoices|{1} Draft Invoice|]1,Inf] Draft Invoices'
+	    paid: '{0} Paid Invoices|{1} Paid Invoice|]1,Inf] Paid Invoices'
+	    cancelled: '{0} Cancelled Invoices|{1} Cancelled Invoice|]1,Inf] Cancelled Invoices'
+	    overdue: '{0} Overdue Invoices|{1} Overdue Invoice|]1,Inf] Overdue Invoices'
+    grid:
+	actions:
+	    view: View
+	    edit: Edit
+	    delete: Delete
+    action:
+	create: 'Create Invoice'
+	edit: 'Edit Invoice'
+	view: 'View Invoice'
+	pay_now: 'Pay Now'
+    balance: 'Outstanding Balance'
+    archive:
+	success: 'Invoice has been archived'
+    recurring:
+	date_start: 'Start Date'
+	date_end: 'End Date'
+	date_end_info: 'If no end date is specified, the invoice will recur infinately'
+	view:
+	    starting: starting
+	    ending: 'ending on'
+	variables:
+	    text: 'You can use the following values in the description that will be replaced with the actual value when the invoice is created:'
+	    day: 'The day of the invoice (E.G ''15'')'
+	    day_name: 'The name of the day (E.G ''Wednesday'')'
+	    month: 'The name of the month (E.G ''Subscription for {month}'' will become ''Subscription for December'')'
+	    year: 'The year (E.G ''Yearly subscription for {year}'' will become ''Yearly subscription for 2016'')'
+    menu:
+	main: Invoices
+	list: 'List Invoices'
+	create: 'Create Invoice'
+	view: 'View Invoice'

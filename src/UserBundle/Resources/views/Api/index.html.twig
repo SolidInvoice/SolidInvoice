@@ -1,0 +1,30 @@
+{##
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% set module = 'profile/api' %}
+
+{% block title %}{{ "profile.api.title"|trans }}{% endblock title %}
+
+{% block content %}
+    <div class="widget">
+
+	<div class="pull-right">
+	    <a href="{{ path('api_key_create') }}" class="btn btn-default" id="create-api-token">
+		{{ icon('plus') }} {{ 'profile.api.create'|trans }}
+	    </a>
+	</div>
+
+	<br class="clear" />
+	<br class="clear" />
+
+	<ul class="list-group" id="token-list"></ul>
+    </div>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% macro settings_section(section, settings, form) %}
+
+    {% set form_extras %}
+	{% for parent, setting in settings %}
+	    {% if setting is iterable %}
+		{{ _self.settings_section(parent, setting, form[section]) }}
+	    {% endif %}
+	{% endfor %}
+    {% endset %}
+
+    {% if not form[section].rendered %}
+	<legend>
+	    {{ section|replace({"_" : " "})|title }}
+	</legend>
+
+	{{ form_widget(form[section]) }}
+    {% endif %}
+
+    {{ form_extras }}
+
+{% endmacro %}

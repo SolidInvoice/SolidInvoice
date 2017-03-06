@@ -1,0 +1,35 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillQuoteBundle:Default:create.html.twig" %}
+
+{% block title %}{{ "quote.edit"|trans }}{% endblock %}
+{% block page_title %}{{ "quote.edit"|trans }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('quotes_edit', {'quote' : quote}) }}
+{% endblock sidebar %}
+
+{% block form_buttons %}
+    <div class="pull-left">
+	<a href="{{ path('_quotes_view', {'id' : quote.id}) }}" class="btn btn-warning">
+	    {{ icon('reply') }} {{ "quote.save.cancel"|trans }}
+	</a>
+	<button type="submit" class="btn btn-success" name="save" value="pending">
+	    {{ icon('envelope', ['o']) }} {{ "quote.save.send"|trans }}
+	</button>
+    </div>
+    <div class="pull-right">
+	<button type="submit" class="btn btn-primary" name="save" value="draft">
+	    {{ icon('save') }} {{ "quote.save.update"|trans }}
+	</button>
+    </div>
+
+    <br class="clear" />
+{% endblock form_buttons %}

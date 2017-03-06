@@ -1,0 +1,61 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<nav class="navbar navbar-fixed-top" role="navigation">
+    <div class="container">
+	<div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#top_menu">
+		<span class="sr-only">Toggle navigation</span>
+		{{ icon('bars') }}
+	    </button>
+
+	    <a class="navbar-brand" href="{{ url('_dashboard') }}">
+
+		{% if settings.system.general.logo.value is defined and settings.system.general.logo.value is not empty %}
+		    {% set logo = 'uploads/' ~ settings.system.general.logo.value %}
+		{% else %}
+		    {% set logo = 'img/logo.png' %}
+		{% endif %}
+
+		<img src="{{ asset(logo) }}" width="25" style="display: inline" /> {{ title }}
+	    </a>
+	</div>
+
+	<div class="collapse navbar-collapse" id="top_menu">
+	    {{ menu('top', {'attr' : {'class' : 'nav navbar-nav'}}) }}
+
+	    {{ menu('top_right', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
+
+	    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+		<div class="btn-group hidden-xs" id="top-menu-create-button">
+		    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+			{{ 'menu.button.create'|trans }}
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li>
+			    <a href="{{ path('_clients_add') }}">
+				{{ icon('user-plus') }} {{ 'dashboard.create.client'|trans }}
+			    </a>
+			</li>
+			<li>
+			    <a href="{{ path('_quotes_create') }}">
+				{{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
+			    </a>
+			</li>
+			<li>
+			    <a href="{{ path('_invoices_create') }}">
+				{{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
+			    </a>
+			</li>
+		    </ul>
+		</div>
+	    {% endif %}
+	</div>
+    </div>
+</nav>

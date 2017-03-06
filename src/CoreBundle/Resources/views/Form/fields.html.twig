@@ -1,0 +1,215 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'bootstrap_3_layout.html.twig' %}
+
+{% block widget_attributes -%}
+    id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}
+    {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+{%- endblock widget_attributes %}
+
+{% block form_widget_simple -%}{{ parent() }}{% if help is defined and help is not empty %}<span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>{% endif %}{%- endblock form_widget_simple %}
+
+{% block form_rows -%}
+    {{ form_errors(form) }}
+    {% for child in form %}
+	{% if prototype is defined %}
+	    <div class="content">
+	{% endif %}
+	{{ form_row(child) }}
+	{% if prototype is defined %}
+	    </div>
+	{% endif %}
+    {% endfor %}
+{%- endblock form_rows %}
+
+{% block form_row -%}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+	{{ form_label(form) }}
+	{{ form_widget(form) }}
+	{{ form_errors(form) }}
+	{#{% if help is defined and help is not empty %}
+	    <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
+	{% endif %}#}
+    </div>
+{%- endblock form_row %}
+
+{% block checkbox_widget -%}
+    {{ parent() }}
+
+    {% if help is defined and help is not empty %}
+	<span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
+    {% endif %}
+{%- endblock checkbox_widget %}
+
+{% block notification_widget -%}
+    {% if help is defined and help is not empty %}
+	<span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
+    {% endif %}
+
+    <div class="row">
+	<div class="col-md-2">
+	    {{ form_row(form.email) }}
+	</div>
+	<div class="col-md-2">
+	    {{ form_row(form.sms) }}
+	</div>
+	<div class="col-md-2">
+	    {{ form_row(form.hipchat) }}
+	</div>
+    </div>
+
+    {{ form_errors(form) }}
+{%- endblock notification_widget %}
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+	{% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
+	    <ul class="list-unstyled">
+		{%- for error in errors -%}
+		    <li>
+			{{ icon('exclamation-sign') }}
+			{{ error.messagePluralization is null
+			    ? error.messageTemplate|trans(error.messageParameters, 'validators')
+			    : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+			}}
+		    </li>
+		{%- endfor -%}
+	    </ul>
+	{% if form.parent %}</span>{% else %}</div>{% endif %}
+	{%- endif %}
+{%- endblock form_errors %}
+
+{% block form_label -%}
+    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label')|trim}) %}
+    {% if label is empty %}
+	{% set label = name|humanize %}
+    {% endif %}
+
+    {% if not compound %}
+	{% if required %}
+	    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+	{% endif %}
+
+	{{- parent() -}}
+    {% endif %}
+{%- endblock form_label %}
+
+{% block image_upload_widget -%}
+    {{ block('form_widget_simple') }}
+
+    <div id="{{ id }}-uploader"></div>
+
+    <script>
+	require(['core/util/form/upload'], function (Upload) {
+	    new Upload('{{ id }}', '{{ sessionId }}', '{{ asset("swf/uploadify.swf") }}', '{{ absolute_url("/uploads") }}/', '{{ value }}');
+	});
+    </script>
+{%- endblock image_upload_widget %}
+
+{% block contact_detail_widget %}
+    {% include "CSBillClientBundle:Form:contact_details.html.twig" %}
+{% endblock contact_detail_widget %}
+
+{% block contact_widget %}
+    {% include "CSBillClientBundle:Form:contacts.html.twig" %}
+{% endblock contact_widget %}
+
+{% block tax_field_widget -%}
+{% spaceless %}
+    {% if expanded %}
+	{{- block('choice_widget_expanded') -}}
+    {% else %}
+	{% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+	{% if required and placeholder is none and not placeholder_in_choices %}
+	    {% set required = false %}
+	{% endif %}
+	<select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+	    {% if placeholder is not none %}
+		<option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
+	    {% endif %}
+	    {% if preferred_choices|length > 0 %}
+		{% set options = preferred_choices %}
+		{{ block('choice_widget_options') }}
+		{% if choices|length > 0 and separator is not none %}
+		    <option disabled="disabled">{{ separator }}</option>
+		{% endif %}
+	    {% endif %}
+	    {% set options = choices %}
+	    {{ block('tax_choice_widget_options') }}
+	</select>
+    {% endif %}
+{% endspaceless %}
+{%- endblock %}
+
+{% block tax_choice_widget_options -%}
+    {% for group_label, choice in options %}
+	{% if choice is iterable %}
+	    <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+		{% set options = choice %}
+		{{ block('choice_widget_options') }}
+	    </optgroup>
+	{% else %}
+	    {% set attrs -%}
+		data-type="{{ choice.data.type }}" data-rate="{{ choice.data.rate }}" data-id="{{ choice.data.id }}"
+	    {%- endset %}
+	    <option value="{{ choice.value }}" {{ attrs }} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
+	{% endif %}
+    {% endfor %}
+{%- endblock tax_choice_widget_options %}
+
+{% block address_widget %}
+    {% set id = random() %}
+    <div class="widget" data-content="{{ id }}">
+
+	<div class="row">
+	    <div class="col-md-6">
+		{{ form_row(form.street1) }}
+	    </div>
+	    <div class="col-md-6">
+		{{ form_row(form.street2) }}
+	    </div>
+	</div>
+
+	<div class="row">
+	    <div class="col-md-6">
+		{{ form_row(form.city) }}
+	    </div>
+	    <div class="col-md-6">
+		{{ form_row(form.state) }}
+	    </div>
+	</div>
+
+	<div class="row">
+	    <div class="col-md-6">
+		{{ form_row(form.zip) }}
+	    </div>
+	    <div class="col-md-6">
+		{{ form_row(form.country) }}
+	    </div>
+	</div>
+
+	{% if canDelete %}
+	    <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove pull-right" data-related="{{ id }}">
+		{{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
+	    </a>
+	{% endif %}
+	<br class="clear" />
+    </div>
+{% endblock address_widget %}
+
+{% block cron_widget %}
+    {% set type = 'hidden' %}
+    {{ block('form_widget') }}
+    <script>
+	require(['core/util/form/cron'], function (Cron) {
+	    Cron.jqcron('#{{ id }}');
+	});
+    </script>
+{% endblock cron_widget %}

@@ -1,0 +1,56 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'CSBillInstallBundle::layout.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+	<div class="col-md-6">
+	    <fieldset>
+		<legend>
+		    {{ icon('cog') }} {{ 'installation.setup.title.system_settings'|trans }}
+		</legend>
+		{{ form_row(form.locale) }}
+		{{ form_row(form.currency) }}
+		{{ form_row(form.base_url) }}
+	    </fieldset>
+	</div>
+	<div class="col-md-6">
+
+	    {% if userCount > 0 %}
+		<div class="alert alert-block alert-warning">
+		    <h3>Notice</h3>
+
+		    The database already contains an admin user.
+		</div>
+	    {% else %}
+		<fieldset class="{% if userCount > 0 %} hidden{% endif %}">
+		    <legend>
+			{{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
+		    </legend>
+		    {{ form_row(form) }}
+		</fieldset>
+	    {% endif %}
+
+	</div>
+    </div>
+
+    <div class="control-group pull-right" id="next_button">
+	<button type="submit" class="btn btn-success" id="continue_step">
+	    {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+	</button>
+    </div>
+    <br class="clear" />
+
+    {{ form_end(form) }}
+{% endblock %}

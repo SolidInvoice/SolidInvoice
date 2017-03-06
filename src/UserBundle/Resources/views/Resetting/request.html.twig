@@ -1,0 +1,37 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block title %}{{ "Reset Password" }}{% endblock title %}
+
+{% block content %}
+
+    <div class="widget col-md-6 col-md-offset-3">
+	<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+	    <div class="form-group">
+		{% if invalid_username is defined %}
+		    <div class="alert alert-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</div>
+		{% endif %}
+		<label for="username">{{ 'resetting.request.username'|trans({}, 'FOSUserBundle') }}</label>
+		    <input type="text" id="username" name="username" required="required" class="form-control">
+
+	    </div>
+	    <div>
+		<button type="submit" class="btn btn-primary">
+		    {{ icon('lock') }} {{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}
+		</button>
+		<a href="{{ path('fos_user_security_login') }}" class="btn btn-success">
+		    {{ icon('key') }} {{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}
+		</a>
+	    </div>
+	</form>
+
+    </div>
+{% endblock content %}

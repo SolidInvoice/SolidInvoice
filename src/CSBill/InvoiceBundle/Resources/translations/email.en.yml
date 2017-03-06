@@ -1,9 +1,0 @@
-invoice:
-    pay_now: 'Pay Now'
-    status:
-        subject: 'Invoice Status Change'
-    status_change:
-        heading: 'An Invoice status has changed'
-        id: ID
-        old_status: 'Original Status'
-        new_status: 'New Status'

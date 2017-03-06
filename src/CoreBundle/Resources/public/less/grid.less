@@ -1,0 +1,78 @@
+/* Grid Search
+ **************/
+.grid-search .control-group {
+    label {
+	width: 120px;
+    }
+
+    .controls {
+	padding: 5px 0;
+    }
+
+    span {
+	padding: 0 4px;
+    }
+}
+
+/* Grid Sorting
+ ***************/
+.sort_down, .sort_up {
+    float: right;
+}
+
+.sort_down:after {
+    content: "↓";
+}
+
+.sort_up:after {
+    content: "↑";
+}
+
+/* Mass Actions
+ ***************/
+.grid {
+    .mass-actions {
+	margin-bottom: 20px;
+
+	.grid_massactions .btn {
+	    margin-left: 8px;
+	}
+    }
+
+    .filterable {
+	margin-top: 15px;
+
+	.filters {
+	    input[disabled] {
+		background-color: transparent;
+		border: none;
+		cursor: auto;
+		box-shadow: none;
+		padding: 0;
+		height: auto;
+
+		&::-webkit-input-placeholder {
+		    color: #333;
+		}
+
+		&::-moz-placeholder {
+		    color: #333;
+		}
+
+		&:-ms-input-placeholder {
+		    color: #333;
+		}
+	    }
+	}
+    }
+}
+
+.grid-row-titles {
+    .dropdown-toggle {
+	padding: 4px 6px;
+
+	.caret {
+	    margin-left: 2px;
+	}
+    }
+}
