@@ -12,5 +12,7 @@
 class_alias("PHPUnit\\Framework\\TestCase", "PHPUnit_Framework_TestCase");
 class_alias("PHPUnit\\Framework\\TestListener", "PHPUnit_Framework_TestListener");
 class_alias("PHPUnit\\Framework\\Assert", "PHPUnit_Framework_Assert");
+class_alias("PHPUnit\\Util\\Test", "PHPUnit_Util_Test");
+class_alias("PHPUnit\\Util\\ErrorHandler", "PHPUnit_Util_ErrorHandler");
 
 require_once dirname(__DIR__).'/app/autoload.php';
