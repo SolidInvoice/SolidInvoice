@@ -65,14 +65,12 @@ class SettingsType extends AbstractType
                 $type = Select2Type::class;
                 $settingOptions = $setting->getOptions();
                 $options['choices'] = array_flip($settingOptions);
-                $options['choices_as_values'] = true;
                 break;
 
             case 'choice':
                 $type = ChoiceType::class;
                 $settingOptions = $setting->getOptions();
                 $options['choices'] = array_flip($settingOptions);
-                $options['choices_as_values'] = true;
                 break;
 
             case 'radio':
@@ -81,7 +79,6 @@ class SettingsType extends AbstractType
                 $options['multiple'] = false;
                 $settingOptions = $setting->getOptions();
                 $options['choices'] = array_flip($settingOptions);
-                $options['choices_as_values'] = true;
                 break;
 
             case 'email':
