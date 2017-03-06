@@ -37,8 +37,8 @@ class MoneyType extends Type
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array                                     $fieldDeclaration The field declaration.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform         The currently used database platform.
+     * @param array                                     $fieldDeclaration the field declaration
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform         the currently used database platform
      *
      * @return string
      */

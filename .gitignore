@@ -21,3 +21,4 @@ app/config/parameters.yml
 .idea
 node_modules
 .rules
+.php_cs.cache

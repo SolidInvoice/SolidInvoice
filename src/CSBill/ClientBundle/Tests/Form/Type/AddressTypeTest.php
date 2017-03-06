@@ -21,14 +21,14 @@ class AddressTypeTest extends FormTestCase
     {
         $faker = Factory::create();
 
-        $formData = array(
+        $formData = [
             'street1' => $faker->buildingNumber.' '.$faker->streetName,
             'street2' => $faker->randomNumber(2).' '.$faker->streetName.' '.$faker->streetSuffix,
             'city' => $faker->city,
             'state' => $faker->state,
             'zip' => $faker->postcode,
             'country' => $faker->countryCode,
-        );
+        ];
 
         $object = Address::fromArray($formData);
 

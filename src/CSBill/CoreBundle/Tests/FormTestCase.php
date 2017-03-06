@@ -169,7 +169,6 @@ abstract class FormTestCase extends TypeTestCase
         $this->createRegistryMock('default', $this->em);
         $this->createSchema($this->em);
 
-
         $type = new EntityType($this->registry);
         $moneyType = new HiddenMoneyType(new Currency('USD'));
 

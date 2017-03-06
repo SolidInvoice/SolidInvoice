@@ -21,7 +21,7 @@ class CSBillApiExtensionTest extends AbstractExtensionTestCase
     protected function getContainerExtensions()
     {
         return [
-            new CSBillApiExtension,
+            new CSBillApiExtension(),
         ];
     }
 
