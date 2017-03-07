@@ -11,7 +11,7 @@
 
 namespace CSBill\CoreBundle\Tests;
 
-require_once __DIR__.'/../../../../app/AppKernel.php';
+require_once __DIR__.'/../../../app/AppKernel.php';
 
 abstract class KernelAwareTest extends \PHPUnit\Framework\TestCase
 {
