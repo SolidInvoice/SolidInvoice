@@ -36,7 +36,6 @@ class SystemInformationForm extends AbstractType
                 Select2Type::class,
                 [
                     'choices' => array_flip(Intl::getLocaleBundle()->getLocaleNames()),
-                    'choices_as_values' => true,
                     'constraints' => new Constraints\NotBlank(['message' => 'Please select a locale']),
                     'placeholder' => 'Please select a locale',
                 ]
