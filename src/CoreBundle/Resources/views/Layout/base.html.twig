@@ -1,0 +1,54 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% set locale = app.request.locale|split('_')[0] %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ locale }}"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="{{ locale }}"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="{{ locale }}"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ locale }}"> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>{{ block('page_title') ?: block('title') }}</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    {% block stylesheets %}
+	    <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css" />
+    {% endblock stylesheets %}
+
+    <script src="{{ asset('bundles/csbillcore/js/lib/modernizr.min.js') }}"></script>
+
+    {% include 'CSBillCoreBundle:_partials:scripts.html.twig' %}
+</head>
+<body>
+    {{ block('body_top') }}
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+    <header>
+	{{ block('header') }}
+    </header>
+
+    <div role="main" class="container">
+	{{ block('body') }}
+    </div>
+
+    <footer class="align-center">
+	{{ block('footer') }}
+    </footer>
+
+    {{ block('javascripts') }}
+
+    {{ block('body_bottom') }}
+</body>
+</html>

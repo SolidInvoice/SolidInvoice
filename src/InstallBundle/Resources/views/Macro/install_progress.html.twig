@@ -1,0 +1,49 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% macro progress(steps, contect) %}
+    <div class="widget">
+	<div class="process">
+	    <div class="process-row">
+		{% for step in steps %}
+		    <div class="process-step">
+			{% if step in context.stepHistory and step != context.currentStep.name %}
+			    <button type="button" class="btn btn-success btn-circle" disabled="disabled">
+				{{ _self.progress_icon(step) }}
+			    </button>
+			{% elseif step == context.currentStep.name %}
+			    <button type="button" class="btn btn-primary btn-circle" disabled="disabled">
+				{{ _self.progress_icon(step) }}
+			    </button>
+			{% else %}
+			    <button type="button" class="btn btn-default btn-circle bg-white" disabled="disabled">
+				{{ _self.progress_icon(step) }}
+			    </button>
+			{% endif %}
+			<p>{{ ('installation.progress.step.' ~ step)|trans }}</p>
+		    </div>
+		{% endfor %}
+	    </div>
+	</div>
+    </div>
+{% endmacro %}
+
+{% macro progress_icon(step) %}
+    {% if step == 'system_check' %}
+	{{ icon('check-circle-o', ['fa-3x']) }}
+    {% elseif step == 'config' %}
+	{{ icon('hdd-o', ['fa-3x']) }}
+    {% elseif step == 'process' %}
+	{{ icon('ellipsis-h', ['fa-3x']) }}
+    {% elseif step == 'setup' %}
+	{{ icon('cog', ['fa-3x']) }}
+    {% elseif step == 'finish' %}
+	{{ icon('thumbs-up', ['fa-3x']) }}
+    {% endif %}
+{% endmacro %}

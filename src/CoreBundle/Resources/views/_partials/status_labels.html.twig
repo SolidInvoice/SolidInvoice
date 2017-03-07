@@ -1,0 +1,10 @@
+<script>
+    define('status_labels', function() {
+	return {
+	    'client': {{ client_label()|json_encode|raw }},
+	    'invoice': {{ invoice_label()|json_encode|raw }},
+	    'quote': {{ quote_label()|json_encode|raw }},
+	    'payment': {{ payment_label()|json_encode|raw }}
+	};
+    });
+</script>

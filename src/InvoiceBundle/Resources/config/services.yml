@@ -1,0 +1,71 @@
+parameters:
+    csbill_invoice.menu.class: CSBill\InvoiceBundle\Menu\Builder
+    csbill_invoice.manager.class: CSBill\InvoiceBundle\Manager\InvoiceManager
+    invoice.mailer.send_invoice.payments.class: CSBill\InvoiceBundle\Listener\Mailer\InvoiceMailerListener
+services:
+    csbill_invoice.menu:
+	class: '%csbill_invoice.menu.class%'
+	tags:
+	    - { name: cs_core.menu, menu: top, method: topMenu }
+	    - { name: cs_core.menu, menu: invoices_index,  method: invoicesMenu }
+	    - { name: cs_core.menu, menu: invoices_view,   method: invoicesMenu }
+	    - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
+	    - { name: cs_core.menu, menu: invoices_edit, method: invoicesEditMenu }
+
+    invoice.manager:
+	class: '%csbill_invoice.manager.class%'
+	arguments:
+	    - '@doctrine'
+	    - '@event_dispatcher'
+	    - '@finite.factory'
+	    - '@notification.manager'
+	calls:
+	    - [ setContainer, ['@service_container']]
+
+    invoice.mailer.send_invoice.payments:
+	class: '%invoice.mailer.send_invoice.payments.class%'
+	arguments:
+	    - '@billing.mailer'
+	tags:
+	    - { name: kernel.event_subscriber }
+
+    invoice.user.listener:
+	class: CSBill\InvoiceBundle\Listener\Doctrine\InvoiceUsersListener
+	tags:
+	    - { name: doctrine.event_listener, event: postLoad }
+
+    invoice.listener.paid:
+	class: CSBill\InvoiceBundle\Listener\InvoicePaidListener
+	arguments:
+	    - '@doctrine'
+	    - '@currency'
+	tags:
+	    - { name: kernel.event_listener, event: invoice.post_paid, method: onInvoicePaid }
+
+    invoice.listener.cancel:
+	class: CSBill\InvoiceBundle\Listener\InvoiceCancelListener
+	arguments: ['@doctrine', '@currency']
+	tags:
+	    - { name: kernel.event_listener, event: invoice.post_cancel, method: onInvoiceCancelled }
+
+    invoice.form.type:
+	class: CSBill\InvoiceBundle\Form\Type\InvoiceType
+	arguments:
+	    - '@currency'
+	tags:
+	    - { name: form.type }
+
+    invoice.item.form.type:
+	class: CSBill\InvoiceBundle\Form\Type\ItemType
+	arguments:
+	    - '@doctrine'
+	tags:
+	    - { name: form.type }
+
+    csbill.cron.recurring_invoice.create:
+	class: CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate
+	arguments:
+	    - '@doctrine'
+	    - '@invoice.manager'
+	tags:
+	    - { name: cron.command }

@@ -1,0 +1,11 @@
+payment:
+    description: 'A new payment has been made'
+    capture:
+	subject: 'A Payment has been made'
+    details:
+	amount: Amount
+	currency: Currency
+	invoice: Invoice
+	client: Client
+	status: Status
+	method: 'Payment Method'

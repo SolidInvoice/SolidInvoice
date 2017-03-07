@@ -1,0 +1,48 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
+
+{% from "CSBillInstallBundle:Macro:install_progress.html.twig" import progress %}
+
+{% set title = "installation.title"|trans({"%app_name%" : 'CSBill'}) ~ ' - ' ~ ('installation.progress.step.' ~ context.currentStep.name)|trans %}
+
+{% block header %}
+	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : "installation.title"|trans({"%app_name%" : 'CSBill'})} %}
+{% endblock header %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block body %}
+    <div class="row">
+	<section class="col-lg-12 col-md-12 content">
+	    {{ block('heading') }}
+
+	    {% set steps = context.process.steps|keys %}
+
+	    {{ progress(steps, context) }}
+
+	    {% include "CSBillCoreBundle::flash.html.twig" %}
+
+	    <br class="clear" />
+
+	    <div class="widget">
+		{{ block('content') }}
+	    </div>
+	</section>
+    </div>
+{% endblock body %}
+
+{% block sidebar %}
+    <ul class="nav nav-list">
+	<li class="nav-header">
+	    {{ "installation.progess"|trans }}
+	</li>
+    </ul>
+{% endblock sidebar %}

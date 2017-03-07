@@ -1,0 +1,53 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block title %}
+    {{ 'payment.method.add'|trans }}
+{% endblock title %}
+
+{% block content %}
+    <div class="widget">
+	{{ form_start(form) }}
+	{{ form_row(form) }}
+	<button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'save'|trans }}</button>
+	{{ form_end(form) }}
+    </div>
+
+    <script type="text/javascript">
+	$(function () {
+	    $('#payment_methods_payment_method').on('change', function () {
+		var $this = $(this);
+
+		if ($this.val() === '') {
+		    $('#payment_methods_settings').html('');
+		} else {
+
+		    $('body').modalmanager('loading');
+
+		    var $form = $this.closest('form'),
+			data = {};
+
+		    data[$this.attr('name')] = $this.val();
+
+		    $.ajax({
+			"url"  : Routing.generate('_payments_load_settings'),
+			"type" : $form.attr('method'),
+			"data" : data,
+			"success" : function (data) {
+			    $('#payment_methods_settings').replaceWith($(data.content).find('#payment_methods_settings'));
+			    $('body').modalmanager('loading');
+			}
+		    });
+		}
+	    });
+	});
+    </script>
+{% endblock content %}

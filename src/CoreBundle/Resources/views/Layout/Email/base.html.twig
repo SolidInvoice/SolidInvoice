@@ -1,0 +1,49 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>{{ block('title') }}</title>
+
+	<style type="text/css" rel="stylesheet">
+	    {{ file(asset('css/email.css')) }}
+	</style>
+    </head>
+    <body>
+	<header>
+	    {{ block('header') }}
+	</header>
+
+	<div role="main" class="container">
+	    {% block logo %}
+		{% if settings.system.general.logo.value is not empty %}
+		    <img src="{{ asset('/uploads/' ~ settings.system.general.logo, null, true) }}" class="logo" />
+		{% endif %}
+	    {% endblock %}
+	    <div class="row">
+		<div class="col-xs-10 col-xs-offset-1">
+		    <div class="widget">
+			<h2>
+			    {{ block('title') }}
+			</h2>
+			<hr />
+			{{ block('content') }}
+			<br class="clear" />
+		    </div>
+		    <div class="footer">
+			{{ block('footer') }}
+		    </div>
+		</div>
+	    </div>
+	</div>
+    </body>
+</html>

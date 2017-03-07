@@ -1,0 +1,186 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set footerSpan = quote.tax is empty ? 2 : 3 %}
+
+<div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="quote-create">
+    <div class="container">
+	{% block header %}
+	    <div class="row">
+		<div class="col-xs-12">
+		    {% block title %}
+			<div class="title">
+			    <h2>
+				{{ "quote.title"|trans({"%id%" : quote.id}) }}
+				<small>{{ quote_label(quote.status) }}</small>
+			    </h2>
+			</div>
+			<hr>
+		    {% endblock %}
+		    <div class="row">
+			<div class="col-xs-7">
+			    <h4>
+				{% if link_client is defined and link_client == true %}
+				    <a href="{{ path('_clients_view', {'id' : quote.client.id}) }}">
+					{{ quote.client }}
+				    </a>
+				{% else %}
+				    {{ quote.client }}
+				{% endif %}
+			    </h4>
+			    {% if quote.client.website is not empty %}
+				<p>
+				    <a href="{{ quote.client.website }}" rel="external" target="_blank">
+					{{ quote.client.website }}
+				    </a>
+				</p>
+			    {% endif %}
+			    <p>
+				{% for user in quote.users %}
+				    {{ user }}<br />
+				{% endfor %}
+			    </p>
+			</div>
+			<div class="col-xs-5 text-right">
+			    <dl class="dl-horizontal">
+				<dt>{{ "quote.title"|trans({"%id%" : ''}) }}</dt>
+				<dd>{{ quote.id }}</dd>
+
+				<dt>{{ "quote.total"|trans }}</dt>
+				<dd>{{ quote.total|formatCurrency }}</dd>
+
+				<dt>{{ "quote.created"|trans }}</dt>
+				<dd>{{ quote.created | date }}</dd>
+			    </dl>
+			</div>
+		    </div>
+		</div>
+	    </div>
+	{% endblock %}
+
+	{% block content %}
+	    <div class="row">
+		<div class="col-md-12">
+		    <div class="panel panel-default">
+			<div class="panel-heading">
+			    <h3 class="panel-title"><strong>{{ 'quote.summary'|trans }}</strong></h3>
+			</div>
+			<div class="panel-body">
+			    <div class="table-responsive">
+
+				<table id="quote-rows" class="table table-condensed">
+				    <thead>
+				    <tr>
+					<th>{{ 'quote.item.heading.description'|trans }}</th>
+					<th>{{ 'quote.item.heading.price'|trans }}</th>
+					<th>{{ 'quote.item.heading.qty'|trans }}</th>
+					{% if quote.tax is not empty %}
+					    <th>{{ 'quote.item.heading.tax'|trans }}</th>
+					{% endif %}
+					<th class="text-right">{{ 'quote.item.heading.total'|trans }}</th>
+				    </tr>
+				    </thead>
+				    <tbody>
+				    {% for item in quote.items %}
+					<tr>
+					    <td class="column-description">
+						{{ item.description }}
+					    </td>
+					    <td class="column-price">
+						{{ item.price|formatCurrency }}
+					    </td>
+					    <td class="column-qty">
+						{{ item.qty }}
+					    </td>
+					    {% if quote.tax is not empty %}
+						<td class="column-tax">
+						    {{ item.tax }}
+						</td>
+					    {% endif %}
+					    <td class="column-total">
+						{{ item.total|formatCurrency }}
+					    </td>
+					</tr>
+				    {% endfor %}
+				    </tbody>
+				    <tfoot>
+					<tr>
+					    <td class="no-line"></td>
+					    <td colspan="{{ footerSpan }}" class="thick-line text-right">
+						<strong>{{ 'quote.subtotal'|trans }}</strong>
+					    </td>
+					    <td class="thick-line text-right">
+						<div class="quote-sub-total">
+						    {{ quote.baseTotal|formatCurrency }}
+						</div>
+					    </td>
+					</tr>
+					{% if quote.tax.positive %}
+					    <tr>
+						<td class="no-line"></td>
+						<td colspan="{{ footerSpan }}" class="no-line text-right">
+						    <strong>{{ 'quote.tax'|trans }}</strong>
+						</td>
+						<td class="no-line text-right">
+						    <span class="text-error quote-tax">
+							{{ quote.tax|formatCurrency }}
+						    </span>
+						</td>
+					    </tr>
+					{% endif %}
+					{% if quote.discount is not empty %}
+					    <tr>
+						<td class="no-line"></td>
+						<td colspan="{{ footerSpan }}" class="no-line text-right">
+						    <strong>{{ 'quote.discount'|trans }}</strong>
+						</td>
+						<td class="no-line text-right">
+						    <span class="text-danger quote-discount">
+							-{{ (quote.baseTotal.add(quote.tax))|percentage(quote.discount)|formatCurrency }}
+						    </span>
+						</td>
+					    </tr>
+					{% endif %}
+					<tr>
+					    <td class="no-line"></td>
+					    <td colspan="{{ footerSpan }}" class="no-line text-right">
+						<strong>
+						    {{ 'quote.total'|trans }}
+						</strong>
+					    </td>
+					    <td class="no-line text-right">
+						<div class="quote-total">
+						    {{ quote.total|formatCurrency }}
+						</div>
+					    </td>
+					</tr>
+				    </tfoot>
+				</table>
+			    </div>
+			</div>
+		    </div>
+		</div>
+	    </div>
+	{% endblock %}
+    </div>
+
+    {% block footer %}
+	{% if quote.terms is not empty %}
+
+	    <br class="clear" />
+
+	    <div>
+		<strong>{{ 'quote.terms'|trans }}</strong>
+		<p>
+		    {{ quote.terms|nl2br }}
+		</p>
+	    </div>
+	{% endif %}
+    {% endblock %}
+</div>

@@ -1,0 +1,35 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
+
+{% block sidebar %}
+    {{ menu('tax_index') }}
+{% endblock sidebar %}
+
+{% block title %}{{ 'tax.rates.title'|trans }}{% endblock title %}
+
+{% block content %}
+    <div class="widget">
+	    {{ render_grid('tax_grid') }}
+    </div>
+{% endblock %}
+
+{% block heading %}
+<fieldset class="page-heading">
+    <legend>
+	<div class="pull-right header-button">
+	    <a class="btn btn-info" href="{{ path("_add_tax_rate") }}">
+	    {{ icon('money') }} {{ "tax.rates.add"|trans }}
+	    </a>
+	</div>
+	<h3>{{ block('title') }}</h3>
+    </legend>
+</fieldset>
+{% endblock %}

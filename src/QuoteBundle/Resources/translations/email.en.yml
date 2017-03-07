@@ -1,0 +1,8 @@
+quote:
+    status:
+	subject: 'Quote Status Change'
+    status_change:
+	heading: 'A Quote status has changed'
+	id: ID
+	old_status: 'Original Status'
+	new_status: 'New Status'

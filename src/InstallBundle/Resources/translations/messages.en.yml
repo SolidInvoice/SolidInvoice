@@ -1,0 +1,48 @@
+installation:
+    already_installed: 'The application is already installed'
+    progess: 'Installation Progress'
+    title: '%app_name% Installation'
+    step:
+	license_agreement: 'License Agreement'
+	system_check: 'System Check'
+	database_configuration: 'Database Configuration'
+	system_information: 'System Information'
+	info:
+	    company: 'Company Information'
+	    user: 'Admin User Information'
+    action:
+	next: Next
+	refresh: Refresh
+	restart: Restart
+	restart_process: 'Restart the installation process'
+    requirements:
+	not_met: 'Some requirements were not met'
+	message: 'Please ensure your system meets the minimum requirements before proceeding.'
+	mandatory: Mandatory
+	optional: Optional
+    progress:
+	step:
+	    system_check: 'Requirements Check'
+	    config: 'Database Config'
+	    process: 'Installation Process'
+	    setup: 'System Setup'
+	    finish: Finish
+    process:
+	title:
+	    busy: Installing...
+	    done: Done
+	step:
+	    createdb: 'Creating database'
+	    migrations: 'Creating database schema'
+    config:
+	title:
+	    database_config: 'Database Config'
+	    email_settings: 'Email Settings'
+    setup:
+	title:
+	    system_settings: 'System Settings'
+	    admin_user: 'Admin User'
+    finish:
+	success: Success
+	success_message: 'You have successfully installed CSBill!'
+	login: 'Log In Now'

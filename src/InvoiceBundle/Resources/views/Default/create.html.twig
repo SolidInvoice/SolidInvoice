@@ -1,0 +1,184 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set items = form.items.vars.prototype|keys %}
+{% set formData = {} %}
+{% set module = 'invoice/create' %}
+{% set currency = form.client.vars.data ? form.client.vars.data.currency : null %}
+
+{% for index, item in form.items %}
+    {% set fields = {} %}
+
+    {% for field in item.children|keys %}
+	{% set fieldValue %}
+	    {% set error = form_errors(item[field]) %}
+
+	    {% if error|trim is not empty %}
+		<div class="form-group has-error">
+		    {{ form_widget(item[field]) }}
+		    {{ error|raw }}
+		</div>
+	    {% else %}
+		{{ form_widget(item[field]) }}
+	    {% endif %}
+	{% endset %}
+
+	{% set fields = fields|merge({(field): ''~fieldValue}) %}
+    {% endfor %}
+
+    {% set formData = formData|merge({(index) : fields}) %}
+
+    {% do item.setRendered() %}
+{% endfor %}
+
+{% set moduleData = {
+    'client': form.client.vars.data,
+    'clientForm': block('form_client'),
+    'fieldData': billing_fields(form),
+    'formData': formData,
+    'invoice': invoice|default(null),
+    'tax': taxRatesConfigured()
+    }
+%}
+
+{% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
+
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block page_title %}{{ "invoice.action.create"|trans }}{% endblock %}
+
+{% block sidebar %}
+    {{ menu('invoices_create') }}
+{% endblock sidebar %}
+
+{% block form_row %}
+    {% if prototype is not defined %}
+	<div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+	    {{ form_label(form) }}
+	    {{ form_widget(form) }}
+	    {{ form_errors(form) }}
+	</div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {'attr' : {'id' : 'invoice-create-form'} }) }}
+
+    {{ form_errors(form) }}
+
+    <div class="widget" id="invoice-create">
+	<div class="container">
+	    <div class="row">
+		<div class="col-xs-12">
+		    <div class="title">
+			{% if invoice is defined %}
+			    <h2>{{ 'invoice.title'|trans({'%id%' : invoice.id}) }}</h2>
+			{% else %}
+			    <h2>{{ 'invoice.action.create'|trans }}</h2>
+			{% endif %}
+		    </div>
+		    <hr>
+		    <div class="row">
+			<div class="col-xs-6" id="client-info">
+			</div>
+			<div class="col-xs-6 text-right" id="discount">
+			    {{ block('form_discount') }}
+			</div>
+		    </div>
+		    <div class="row">
+			<div class="col-xs-6">
+			    {{ form_row(form.recurring) }}
+
+			    <div class="recurring-info hidden">
+				{{ 'invoice.recurring.variables.text'|trans }}
+				<br />
+				<ul>
+				    <li>
+					<strong>{day}</strong> - {{ 'invoice.recurring.variables.day'|trans }}</li>
+				    <li>
+					<strong>{day_name}</strong> - {{ 'invoice.recurring.variables.day_name'|trans }}</li>
+				    <li>
+					<strong>{month}</strong> - {{ 'invoice.recurring.variables.month'|trans }}</li>
+				    <li>
+					<strong>{year}</strong> - {{ 'invoice.recurring.variables.year'|trans }}</li>
+				</ul>
+			    </div>
+			</div>
+			<div class="col-xs-6 hidden recurring-info">
+			    {{ form_row(form.recurringInfo.frequency) }}
+			    <br />
+			    <br />
+			    <div class="row">
+				<div class="col-xs-6">
+				    {{ form_row(form.recurringInfo.date_start) }}
+				</div>
+				<div class="col-xs-6">
+				    {{ form_row(form.recurringInfo.date_end) }}
+				</div>
+			    </div>
+			</div>
+		    </div>
+		</div>
+	    </div>
+
+	    <div class="row" id="invoice-items">
+	    </div>
+
+	    <br class="clear"/>
+
+	    <div class="row">
+		<div class="col-lg-6">
+		    {{ form_row(form.terms) }}
+		</div>
+		<div class="col-lg-6">
+		    {{ form_row(form.notes) }}
+		</div>
+	    </div>
+
+	    {{ form_rest(form) }}
+
+	    <div class="form-actions">
+		{{ block('form_buttons') }}
+	    </div>
+	</div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock content %}
+
+{% block form_client %}
+    <div id="client-select">
+	{{ form_row(form.client) }}
+    </div>
+
+    <div id="client-select-container">
+	{% if form.client.vars.data %}
+	    {% include "CSBillClientBundle:Ajax:info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
+	{% endif %}
+    </div>
+{% endblock form_client %}
+
+{% block form_discount %}
+    {{ form_row(form.discount) }}
+{% endblock form_discount %}
+
+{% block form_buttons %}
+    <div class="pull-left">
+	<button type="submit" class="btn btn-success" name="save" value="pending">
+	    {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
+	</button>
+    </div>
+    <div class="pull-right">
+	<button type="submit" class="btn btn-primary" name="save" value="save">
+	    {{ icon('save') }} {{ "invoice.save.draft"|trans }}
+	</button>
+    </div>
+
+    <br class="clear"/>
+{% endblock form_buttons %}

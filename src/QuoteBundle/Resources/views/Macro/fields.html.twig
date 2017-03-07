@@ -1,0 +1,38 @@
+{% macro getFieldData(items, form) %}
+    {% set fieldData = {} %}
+
+    {% if items is not iterable %}
+	{% set items = [] %}
+    {% endif %}
+
+    {% for item in items %}
+	{% set fieldData = fieldData|merge({(item): form_widget(form.items.vars.prototype[item])}) %}
+    {% endfor %}
+
+    {% for index, item in form.items %}
+	{% set fields = {} %}
+
+	{% for field in item.children|keys %}
+	    {% set fieldValue %}
+		{% set error = form_errors(item[field]) %}
+
+		{% if error|trim is not empty %}
+		    <div class="form-group has-error">
+			{{ form_widget(item[field]) }}
+			{{ error|raw }}
+		    </div>
+		{% else %}
+		    {{ form_widget(item[field]) }}
+		{% endif %}
+	    {% endset %}
+
+	    {% set fields = fields|merge({(field): ''~fieldValue}) %}
+	{% endfor %}
+
+	{% set formData = formData|merge({(index) : fields}) %}
+
+	{% do item.setRendered() %}
+    {% endfor %}
+
+    {{ fieldData }}
+{% endmacro %}

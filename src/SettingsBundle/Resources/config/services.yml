@@ -1,0 +1,16 @@
+parameters:
+    csbill.settings.class: CSBill\SettingsBundle\Manager\SettingsManager
+    csbill_settings.doctrine.loader.class: CSBill\SettingsBundle\Loader\DoctrineLoader
+services:
+    csbill_settings.manager:
+	class: '%csbill.settings.class%'
+	arguments:
+	    - '@doctrine'
+    settings:
+	alias: csbill_settings.manager
+    csbill_settings.doctrine.loader:
+	class: '%csbill_settings.doctrine.loader.class%'
+	arguments:
+	    - '@doctrine'
+	tags:
+	    - { name: settings.loader }

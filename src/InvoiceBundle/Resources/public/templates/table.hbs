@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-12">
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+		<h3 class="panel-title"><strong>{{trans 'invoice.summary' }}</strong></h3>
+	    </div>
+	    <div class="panel-body">
+		<div class="table-responsive">
+		    <table class="table table-condensed">
+			<thead>
+			    <tr>
+				<th>
+				    {{trans "invoice.item.heading.description"}}
+				</th>
+				<th>
+				    {{trans "invoice.item.heading.price"}}
+				</th>
+				<th>
+				    {{trans "invoice.item.heading.qty"}}
+				</th>
+				{{#if hasTax}}
+				    <th>
+					{{trans "invoice.item.heading.tax"}}
+				    </th>
+				{{/if}}
+				<th class="text-right">{{trans 'invoice.item.heading.total' }}</th>
+				<th></th>
+			    </tr>
+			</thead>
+			<tbody id="invoice-rows">
+			</tbody>
+			<tfoot id="invoice-footer">
+			</tfoot>
+		    </table>
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
+
+<a href="#" class="add-item col-lg-2">
+    <i class="fa fa-plus-circle"></i> {{trans "invoice.item.add" }}
+</a>

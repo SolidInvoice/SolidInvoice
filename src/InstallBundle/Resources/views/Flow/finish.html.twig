@@ -1,0 +1,42 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'CSBillInstallBundle::layout.html.twig' %}
+
+{% block content %}
+    <fieldset>
+	<legend>
+	    <h2>
+		{{ "installation.finish.success"|trans }}
+	    </h2>
+	</legend>
+
+	<h4>
+	    {{ "installation.finish.success_message"|trans }}
+	</h4>
+
+	<div>
+	    <p>
+		As a final step, you must add a scheduled task to run every 5 minutes.
+	    </p>
+	    <p>
+		Add the following cron job:
+		<br />
+		<pre style="color: #c7254e;">
+		    0/5 * * * * php {{ rootDir }}/console cron:run -e prod -n
+		</pre>
+	    </p>
+	</div>
+	<br class="clear" />
+
+	<a id="login" href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
+	    {{ icon('user') }} {{ "installation.finish.login"|trans }}
+	</a>
+    </fieldset>
+{% endblock %}

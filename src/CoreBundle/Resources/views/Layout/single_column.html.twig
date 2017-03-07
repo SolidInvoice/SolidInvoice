@@ -1,0 +1,22 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
+
+{% block body %}
+	<div class="row">
+		<section class="col-lg-12 col-md-12 content">
+			{{ block('heading') }}
+
+	    {% include "CSBillCoreBundle::flash.html.twig" %}
+
+			{{ block('content') }}
+		</section>
+	</div>
+{% endblock body %}

@@ -27,7 +27,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "CSBill\\": "src/CSBill/"
+	    "CSBill\\": "src/"
         },
         "classmap": [
             "app/AppKernel.php",
