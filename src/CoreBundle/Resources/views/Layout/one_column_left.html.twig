@@ -12,15 +12,15 @@
 {% block body %}
 	<div class="row">
 		<aside class="col-lg-2 col-md-2 left-sidebar">
-			{{ block('sidebar') }}
+			{{ block('sidebar') is defined ? block('sidebar') }}
 		</aside>
 
 		<section class="col-lg-10 col-md-10 col-md-offset-2 col-lg-offset-2 content">
-			{{ block('heading') }}
+			{{ block('heading') is defined ? block('heading') }}
 
             {% include "CSBillCoreBundle::flash.html.twig" %}
 
-			{{ block('content') }}
+			{{ block('content') is defined ? block('content') }}
 		</section>
 	</div>
 {% endblock body %}

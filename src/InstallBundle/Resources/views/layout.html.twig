@@ -9,7 +9,7 @@
 
 {% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
 
-{% from "CSBillInstallBundle:Macro:install_progress.html.twig" import progress %}
+{% from "@CSBillInstall/Macro/install_progress.html.twig" import progress %}
 
 {% set title = "installation.title"|trans({"%app_name%" : 'CSBill'}) ~ ' - ' ~ ('installation.progress.step.' ~ context.currentStep.name)|trans %}
 
@@ -22,7 +22,7 @@
 {% block body %}
     <div class="row">
         <section class="col-lg-12 col-md-12 content">
-            {{ block('heading') }}
+            {{ block('heading') is defined ? block('heading') }}
 
             {% set steps = context.process.steps|keys %}
 
@@ -33,7 +33,7 @@
             <br class="clear" />
 
             <div class="widget">
-                {{ block('content') }}
+                {{ block('content') is defined ? block('content') }}
             </div>
         </section>
     </div>

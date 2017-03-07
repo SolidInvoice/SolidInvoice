@@ -9,6 +9,8 @@
 
 {% extends 'CSBillInstallBundle::layout.html.twig' %}
 
+{% from _self import requirementCheck %}
+
 {% macro requirementCheck(requirement) %}
     <li class="list-group-item">
         {% if requirement.fulfilled %}
@@ -57,7 +59,7 @@
                 </legend>
                 <ul class="list-group">
                     {% for requirement in requirements.requirements %}
-                        {{ _self.requirementCheck(requirement) }}
+                        {{ requirementCheck(requirement) }}
                     {% endfor %}
                 </ul>
             </fieldset>
@@ -69,7 +71,7 @@
                 </legend>
             <ul class="list-group">
             {% for requirement in requirements.recommendations %}
-                {{ _self.requirementCheck(requirement) }}
+                {{ requirementCheck(requirement) }}
             {% endfor %}
             </ul>
             </fieldset>

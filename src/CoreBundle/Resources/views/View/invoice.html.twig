@@ -18,7 +18,7 @@
                         {{ icon('credit-card') }} {{ "invoice.action.pay_now"|trans }}
                     </a>
                 </div>
-                <h3>{{ block('title') }}</h3>
+                <h3>{{ block('title') is defined ? block('title') }}</h3>
             </legend>
         </fieldset>
     {% else %}

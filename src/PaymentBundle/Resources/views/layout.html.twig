@@ -6,16 +6,16 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ block('payum_stylesheets') }}
+    {{ block('payum_stylesheets') is defined ? block('payum_stylesheets') }}
 {% endblock stylesheets %}
 
 {% block content %}
     <div class="widget">
-        {{ block('payum_body') }}
+        {{ block('payum_body') is defined ? block('payum_body') }}
     </div>
 {% endblock content %}
 
-{% block javascripts %}
+{% block scripts %}
     {{ parent() }}
-    {{ block('payum_javascripts') }}
-{% endblock javascripts %}
+    {{ block('payum_javascripts') is defined ? block('payum_javascripts') }}
+{% endblock scripts %}

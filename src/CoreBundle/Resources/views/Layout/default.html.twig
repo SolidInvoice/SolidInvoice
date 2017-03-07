@@ -10,7 +10,7 @@
 {% extends 'CSBillCoreBundle:Layout:base.html.twig' %}
 
 {% block heading %}
-    {% set title = block('title') %}
+    {% set title = block('title') is defined ? block('title') %}
 
     {% if title is not empty %}
         <fieldset class="page-heading">
@@ -21,7 +21,7 @@
     {% endif %}
 {% endblock %}
 
-{% block javascripts %}
+{% block scripts %}
     {{ parent() }}
     <script type="text/javascript">
         require(['accounting', 'core/app'], function (Accounting, App) {
@@ -45,9 +45,9 @@
             App.start();
         });
 
-        {% set script = block("script") %}
+        {% set script = block("script") is defined ? block("script") %}
 
-        {% if script %}
+        {% if script is not empty %}
             {{ script|raw }}
         {% endif %}
     </script>

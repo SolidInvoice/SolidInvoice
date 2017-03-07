@@ -64,7 +64,7 @@
         "moontoast/math": "^1.1",
         "oyejorge/less.php": "^1.7",
         "friendsofsymfony/user-bundle": "^2.0.0-beta2",
-        "twig/twig": "^1.16",
+        "twig/twig": "^2.0",
         "swiftmailer/swiftmailer": "^5.3",
         "payum/payum-bundle": "^2.1",
         "payum/offline": "^1.3",
