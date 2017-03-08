@@ -12,7 +12,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>{{ block('title') }}</title>
+        <title>{{ block('title') is defined ? block('title') }}</title>
 
 	<style type="text/css" rel="stylesheet">
 	    {{ file(asset('css/email.css')) }}
@@ -20,7 +20,7 @@
     </head>
     <body>
         <header>
-            {{ block('header') }}
+            {{ block('header') is defined ? block('header') }}
         </header>
 
         <div role="main" class="container">
@@ -33,14 +33,14 @@
                 <div class="col-xs-10 col-xs-offset-1">
                     <div class="widget">
                         <h2>
-                            {{ block('title') }}
+                            {{ block('title') is defined ? block('title') }}
                         </h2>
                         <hr />
-                        {{ block('content') }}
+                        {{ block('content') is defined ? block('content') }}
                         <br class="clear" />
                     </div>
                     <div class="footer">
-                        {{ block('footer') }}
+                        {{ block('footer') is defined ? block('footer') }}
                     </div>
                 </div>
             </div>

@@ -19,7 +19,7 @@
 {% endblock page_title %}
 
 {% block title %}
-    {{ block('page_title') }} <small>{{ client_label(client.status) }}</small>
+    {{ block('page_title') is defined ? block('page_title') }} <small>{{ client_label(client.status) }}</small>
 {% endblock title %}
 
 {% block sidebar_left %}

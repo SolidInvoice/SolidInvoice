@@ -7,7 +7,11 @@
  # with this source code in the file LICENSE.
  #}
 
+
 {% macro progress(steps, contect) %}
+
+{% from _self import progress_icon %}
+
     <div class="widget">
         <div class="process">
             <div class="process-row">
@@ -15,15 +19,15 @@
                     <div class="process-step">
                         {% if step in context.stepHistory and step != context.currentStep.name %}
                             <button type="button" class="btn btn-success btn-circle" disabled="disabled">
-                                {{ _self.progress_icon(step) }}
+                                {{ progress_icon(step) }}
                             </button>
                         {% elseif step == context.currentStep.name %}
                             <button type="button" class="btn btn-primary btn-circle" disabled="disabled">
-                                {{ _self.progress_icon(step) }}
+                                {{ progress_icon(step) }}
                             </button>
                         {% else %}
                             <button type="button" class="btn btn-default btn-circle bg-white" disabled="disabled">
-                                {{ _self.progress_icon(step) }}
+                                {{ progress_icon(step) }}
                             </button>
                         {% endif %}
                         <p>{{ ('installation.progress.step.' ~ step)|trans }}</p>

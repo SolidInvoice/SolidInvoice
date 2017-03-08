@@ -29,7 +29,7 @@
             {{ icon('money') }} {{ "tax.rates.add"|trans }}
             </a>
         </div>
-        <h3>{{ block('title') }}</h3>
+        <h3>{{ block('title') is defined ? block('title') }}</h3>
     </legend>
 </fieldset>
 {% endblock %}

@@ -12,7 +12,7 @@
 {% block page_title %}{{ 'dashboard.title'|trans }}{% endblock %}
 
 {% block title %}
-    {{ icon('dashboard') }} {{ block('page_title') }}
+    {{ icon('dashboard') }} {{ block('page_title') is defined ? block('page_title') }}
 
     <div class="pull-right">
         <div class="btn-group">

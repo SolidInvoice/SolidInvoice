@@ -12,19 +12,19 @@
 {% block body %}
 	<div class="row">
 		<aside class="col-lg-2 col-md-2 left-sidebar">
-			{{ block('sidebar_left') }}
+			{{ block('sidebar_left') is defined ? block('sidebar_left') }}
 		</aside>
 
 		<section class="col-lg-10 col-md-10 col-md-offset-2 col-lg-offset-2 content">
-			{{ block('heading') }}
+			{{ block('heading') is defined ? block('heading') }}
 
             <div class="row">
                 <div class="col-lg-9 col-md-9">
                     {% include "CSBillCoreBundle::flash.html.twig" %}
-                    {{ block('content') }}
+                    {{ block('content') is defined ? block('content') }}
                 </div>
                 <aside class="col-lg-3 col-md-3 right-sidebar">
-                    {{ block('sidebar_right') }}
+                    {{ block('sidebar_right') is defined ? block('sidebar_right') }}
                 </aside>
             </div>
 		</section>

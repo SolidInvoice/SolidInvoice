@@ -39,7 +39,7 @@
 
 {% set moduleData = {
     'client': form.client.vars.data,
-    'clientForm': block('form_client'),
+    'clientForm': block('form_client') is defined ? block('form_client'),
     'fieldData': billing_fields(form),
     'formData': formData,
     'invoice': quote|default(null),
@@ -86,10 +86,10 @@
                     <hr>
                     <div class="row">
                         <div class="col-xs-6" id="client-info">
-                            {{ block('form_client') }}
+                            {{ block('form_client') is defined ? block('form_client') }}
                         </div>
                         <div class="col-xs-6 text-right" id="discount">
-                            {{ block('form_discount') }}
+                            {{ block('form_discount') is defined ? block('form_discount') }}
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
             {{ form_rest(form) }}
 
             <div class="form-actions">
-                {{ block('form_buttons') }}
+                {{ block('form_buttons') is defined ? block('form_buttons') }}
             </div>
         </div>
     </div>
