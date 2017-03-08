@@ -5,7 +5,6 @@
 {% endblock title %}
 
 {% block stylesheets %}
-    {{ parent() }}
     {{ block('payum_stylesheets') is defined ? block('payum_stylesheets') }}
 {% endblock stylesheets %}
 
@@ -16,6 +15,5 @@
 {% endblock content %}
 
 {% block scripts %}
-    {{ parent() }}
     {{ block('payum_javascripts') is defined ? block('payum_javascripts') }}
 {% endblock scripts %}

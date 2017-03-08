@@ -22,7 +22,6 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ parent() }}
     <script type="text/javascript">
         require(['accounting', 'core/app'], function (Accounting, App) {
             App.on('before:start', function () {
