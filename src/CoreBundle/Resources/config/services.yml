@@ -89,3 +89,10 @@ services:
     csbill_core.field.renderer:
         class: CSBill\CoreBundle\Form\FieldRenderer
         arguments: ['@twig']
+
+    csbill_core.template.listener:
+        class: CSBill\CoreBundle\Listener\TemplateListener
+        arguments:
+            - '@twig'
+        tags:
+            - { name: kernel.event_subscriber }
