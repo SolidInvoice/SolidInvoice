@@ -30,10 +30,10 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
     public static function getSubscribedEvents()
     {
 	return [
-	KernelEvents::REQUEST => [
-	['onKernelRequest'],
+    KernelEvents::REQUEST => [
+    ['onKernelRequest'],
     ['onLateKernelRequest', -10],
-	],
+    ],
     ];
     }
 
