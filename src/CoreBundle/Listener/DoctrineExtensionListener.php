@@ -29,12 +29,12 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
      */
     public static function getSubscribedEvents()
     {
-	return [
-    KernelEvents::REQUEST => [
-    ['onKernelRequest'],
-    ['onLateKernelRequest', -10],
-    ],
-    ];
+        return [
+            KernelEvents::REQUEST => [
+                ['onKernelRequest'],
+                ['onLateKernelRequest', -10],
+            ],
+        ];
     }
 
     /**
@@ -53,9 +53,9 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
      */
     public function onKernelRequest()
     {
-	/* @var TokenStorageInterface  $securityStorage */
+        /* @var TokenStorageInterface  $securityStorage */
         $securityStorage = $this->container->get('security.token_storage', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    /* @var AuthorizationCheckerInterface $securityChecker */
+        /* @var AuthorizationCheckerInterface $securityChecker */
         $securityChecker = $this->container->get('security.authorization_checker', ContainerInterface::NULL_ON_INVALID_REFERENCE);
 
         if (

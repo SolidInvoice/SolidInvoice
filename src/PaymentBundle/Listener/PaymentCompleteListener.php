@@ -62,9 +62,9 @@ class PaymentCompleteListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-	return [
-    PaymentEvents::PAYMENT_COMPLETE => 'onPaymentComplete',
-    ];
+        return [
+            PaymentEvents::PAYMENT_COMPLETE => 'onPaymentComplete',
+        ];
     }
 
     /**
