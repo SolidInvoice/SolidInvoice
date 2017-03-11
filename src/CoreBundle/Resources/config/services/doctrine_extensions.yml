@@ -16,7 +16,7 @@ services:
             - [ setDefaultLocale, [ '%locale%' ] ]
             - [ setTranslationFallback, [ false ] ]
 
-    Gedmo\Timestampanble\TimestampableListener:
+    Gedmo\Timestampable\TimestampableListener:
         calls:
             - [ setAnnotationReader, [ '@annotation_reader' ] ]
 
