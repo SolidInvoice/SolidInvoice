@@ -64,7 +64,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
     {
 	return [
     PaymentEvents::PAYMENT_COMPLETE => 'onPaymentComplete',
-	];
+    ];
     }
 
     /**

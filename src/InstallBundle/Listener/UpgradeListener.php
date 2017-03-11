@@ -47,7 +47,7 @@ class UpgradeListener implements EventSubscriberInterface
     {
 	return [
     KernelEvents::REQUEST => ['onKernelRequest', 10],
-	];
+    ];
     }
 
     /**

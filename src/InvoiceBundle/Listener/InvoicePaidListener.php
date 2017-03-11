@@ -39,7 +39,7 @@ class InvoicePaidListener implements EventSubscriberInterface
     {
 	return [
     InvoiceEvents::INVOICE_POST_PAID => 'onInvoicePaid',
-	];
+    ];
     }
 
     /**

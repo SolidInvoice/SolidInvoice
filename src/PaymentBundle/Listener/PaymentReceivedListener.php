@@ -31,7 +31,7 @@ class PaymentReceivedListener implements EventSubscriberInterface
     {
 	return [
     PaymentEvents::PAYMENT_COMPLETE => 'onPaymentCapture',
-	];
+    ];
     }
 
     /**

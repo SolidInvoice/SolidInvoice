@@ -72,7 +72,7 @@ class RequestListener implements EventSubscriberInterface
     {
 	return [
     KernelEvents::REQUEST => ['onKernelRequest', 10],
-	];
+    ];
     }
 
     /**

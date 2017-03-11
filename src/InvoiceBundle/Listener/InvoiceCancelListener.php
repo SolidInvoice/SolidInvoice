@@ -29,8 +29,8 @@ class InvoiceCancelListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
 	return [
-	    InvoiceEvents::INVOICE_POST_CANCEL => 'onInvoiceCancelled',
-	];
+	InvoiceEvents::INVOICE_POST_CANCEL => 'onInvoiceCancelled',
+    ];
     }
 
     /**
