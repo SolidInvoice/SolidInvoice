@@ -1,0 +1,3 @@
+services:
+    dashboard.widget.factory:
+	class: CSBill\DashboardBundle\WidgetFactory

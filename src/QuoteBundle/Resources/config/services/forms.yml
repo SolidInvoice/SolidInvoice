@@ -1,0 +1,11 @@
+services:
+    _defaults:
+	public: false
+	tags:
+	    - { name: form.type }
+
+    CSBill\QuoteBundle\Form\Type\QuoteType:
+	arguments: ['@currency']
+
+    CSBill\QuoteBundle\Form\Type\ItemType:
+	arguments: ['@doctrine']

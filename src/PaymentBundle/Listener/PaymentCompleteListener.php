@@ -13,17 +13,19 @@ namespace CSBill\PaymentBundle\Listener;
 
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
+use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class PaymentCompleteListener
+class PaymentCompleteListener implements EventSubscriberInterface
 {
     /**
      * @var InvoiceManager
@@ -54,6 +56,16 @@ class PaymentCompleteListener
      * @var Currency
      */
     private $currency;
+
+    /**
+     * {@inheritdoc
+     */
+    public static function getSubscribedEvents()
+    {
+	return [
+	    PaymentEvents::PAYMENT_COMPLETE => 'onPaymentComplete'
+	];
+    }
 
     /**
      * @param InvoiceManager      $invoiceManager

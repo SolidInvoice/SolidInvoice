@@ -12,11 +12,13 @@
 namespace CSBill\CoreBundle\Listener;
 
 use CSBill\CoreBundle\Security\Encryption;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-class SessionRequestListener
+class SessionRequestListener implements EventSubscriberInterface
 {
     /**
      * @var SessionInterface
@@ -27,6 +29,16 @@ class SessionRequestListener
      * @var Encryption
      */
     protected $encryption;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+	return [
+	    KernelEvents::REQUEST => ['onKernelRequest', 200],
+	];
+    }
 
     /**
      * @param SessionInterface $session

@@ -15,14 +15,16 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Installer\Database\Migration;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Listener class to intercept requests and upgrade the database if necessary.
  */
-class UpgradeListener
+class UpgradeListener implements EventSubscriberInterface
 {
     /**
      * @var string
@@ -40,6 +42,16 @@ class UpgradeListener
     private $migration;
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+	return [
+	    KernelEvents::REQUEST => ['onKernelRequest', 10]
+	];
+    }
+
+    /**
      * @param string          $installed
      * @param ManagerRegistry $registry
      * @param Migration       $migration
@@ -53,8 +65,6 @@ class UpgradeListener
 
     /**
      * @param GetResponseEvent $event
-     *
-     * @return Response
      */
     public function onKernelRequest(GetResponseEvent $event)
     {

@@ -1,0 +1,3 @@
+services:
+    grid.repository:
+	class: CSBill\DataGridBundle\Repository\GridRepository

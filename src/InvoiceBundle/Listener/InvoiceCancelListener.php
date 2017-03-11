@@ -13,14 +13,26 @@ namespace CSBill\InvoiceBundle\Listener;
 
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
+use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class InvoiceCancelListener
+class InvoiceCancelListener implements EventSubscriberInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+	return [
+	    InvoiceEvents::INVOICE_POST_CANCEL => 'onInvoiceCancelled',
+	];
+    }
+
     /**
      * @var ManagerRegistry
      */

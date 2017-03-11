@@ -1,4 +1,3 @@
 _settings:
     path: /settings
-    defaults:
-        _controller: 'CSBillSettingsBundle:Settings:index'
+    defaults: { _controller: 'CSBillSettingsBundle:Settings:index' }

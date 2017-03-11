@@ -1,0 +1,21 @@
+parameters:
+    sylius.controller.process.class: CSBill\InstallBundle\Controller\ProcessController
+
+services:
+    installer.controller.process:
+	parent: sylius.controller.process
+	calls:
+	    - [setContainer, ['@service_container']]
+
+    installation.scenario.flow:
+	class: CSBill\InstallBundle\Process\InstallScenario
+	calls:
+	    - [setContainer, ['@service_container']]
+	tags:
+	     - { name: sylius.process.scenario, alias: install }
+
+    csbill.installer.database.migration:
+	class: CSBill\InstallBundle\Installer\Database\Migration
+	arguments: ['@filesystem']
+	calls:
+	    - [setContainer, ['@service_container']]

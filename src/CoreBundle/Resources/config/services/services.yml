@@ -1,0 +1,54 @@
+services:
+    csbill.core.config_writer:
+	class: CSBill\CoreBundle\ConfigWriter
+	arguments: ['@kernel', '@filesystem']
+
+    csbill_core.form.help.extension:
+	class: CSBill\CoreBundle\Form\Extension\FormHelpExtension
+	tags:
+	    - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    billing.mailer:
+	class: CSBill\CoreBundle\Mailer\Mailer
+	arguments: ['@mailer', '@settings']
+	calls:
+	    - [setEventDispatcher, ['@event_dispatcher']]
+	    - [setTemplating, ['@templating']]
+	    - [setSecurity, ['@security.token_storage']]
+
+    csbill_core.security.encryption:
+	class: CSBill\CoreBundle\Security\Encryption
+	arguments: ['%kernel.secret%']
+
+    security.encryption:
+	alias: csbill_core.security.encryption
+
+    csbill_core.settings.loader:
+	class: CSBill\CoreBundle\Settings\SettingsLoader
+	arguments: ['@kernel', '@csbill.core.config_writer']
+	tags:
+	    - { name: settings.loader }
+
+    csbill_core.swiftmailer.plugin.cssinline:
+	class: CSBill\CoreBundle\Swiftmailer\Plugin\CssInlinerPlugin
+	arguments: ['@csbill_core.cssinline']
+	tags:
+	    - { name: swiftmailer.default.plugin }
+
+    csbill_core.cssinline:
+	class: TijsVerkoyen\CssToInlineStyles\CssToInlineStyles
+	public: false
+
+    oro.cache.abstract:
+	class: Doctrine\Common\Cache\FilesystemCache
+	arguments: ['%kernel.cache_dir%/requirejs']
+
+    csbill_menu.top:
+	class: CSBill\CoreBundle\Menu\Builder
+	tags:
+	    - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
+	    - { name: cs_core.menu, menu: top_right, method: userMenu, priority: 255 }
+
+    csbill_core.field.renderer:
+	class: CSBill\CoreBundle\Form\FieldRenderer
+	arguments: ['@twig']

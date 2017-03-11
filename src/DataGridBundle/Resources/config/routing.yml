@@ -1,6 +1,5 @@
 _grid_data:
     path: '/data/{name}'
-    defaults:
-        _controller: 'CSBillDataGridBundle:Data:getData'
+    defaults: { _controller: 'CSBillDataGridBundle:Data:getData' }
     options:
         expose: true

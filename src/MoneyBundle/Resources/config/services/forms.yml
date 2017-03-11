@@ -1,0 +1,11 @@
+services:
+    _defaults:
+	public: false
+	tags:
+	    - { name: form.type }
+
+    CSBill\MoneyBundle\Form\Type\HiddenMoneyType:
+	arguments: ['@currency']
+
+    CSBill\MoneyBundle\Form\Type\CurrencyType:
+	arguments: ['%locale%']

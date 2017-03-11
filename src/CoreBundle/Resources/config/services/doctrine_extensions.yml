@@ -1,0 +1,37 @@
+services:
+    _defaults:
+	public: false
+	tags:
+	    - { name: doctrine.event_subscriber, connection: default }
+
+    Gedmo\Tree\TreeListener:
+	calls:
+	    - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    gedmo.listener.translatable:
+	class: Gedmo\Translatable\TranslatableListener
+	public: true
+	calls:
+	    - [ setAnnotationReader, [ '@annotation_reader' ] ]
+	    - [ setDefaultLocale, [ '%locale%' ] ]
+	    - [ setTranslationFallback, [ false ] ]
+
+    Gedmo\Timestampable\TimestampableListener:
+	calls:
+	    - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Sluggable\SluggableListener:
+	calls:
+	    - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Sortable\SortableListener:
+	calls:
+	    - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Loggable\LoggableListener:
+	calls:
+	    - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\SoftDeleteable\SoftDeleteableListener:
+	calls:
+	    - [ setAnnotationReader, [ '@annotation_reader' ] ]

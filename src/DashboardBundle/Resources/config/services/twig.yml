@@ -1,0 +1,8 @@
+services:
+    _defaults:
+	public: false
+	tags:
+	    - { name: twig.extension }
+
+    CSBill\DashboardBundle\Twig\Extension\WidgetExtension:
+	arguments: ['@dashboard.widget.factory']

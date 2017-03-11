@@ -13,12 +13,14 @@ namespace CSBill\InvoiceBundle\Listener;
 
 use CSBill\ClientBundle\Repository\CreditRepository;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
+use CSBill\InvoiceBundle\Event\InvoiceEvents;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class InvoicePaidListener
+class InvoicePaidListener implements EventSubscriberInterface
 {
     /**
      * @var ManagerRegistry
@@ -29,6 +31,16 @@ class InvoicePaidListener
      * @var Currency
      */
     private $currency;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+	return [
+	    InvoiceEvents::INVOICE_POST_PAID => 'onInvoicePaid'
+	];
+    }
 
     /**
      * @param ManagerRegistry $registry

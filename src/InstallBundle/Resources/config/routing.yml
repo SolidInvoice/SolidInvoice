@@ -1,17 +1,11 @@
 _install_flow:
     path: /install
-    defaults:
-        _controller: 'installer.controller.process:startAction'
-        scenarioAlias: install
+    defaults: { _controller: 'installer.controller.process:startAction', scenarioAlias: install }
 sylius_flow_display:
     path: '/install/{stepName}'
-    defaults:
-        _controller: 'installer.controller.process:displayAction'
-        scenarioAlias: install
+    defaults: { _controller: 'installer.controller.process:displayAction', scenarioAlias: install }
     options:
         expose: true
 sylius_flow_forward:
     path: '/install/{stepName}/forward'
-    defaults:
-        _controller: 'installer.controller.process:forwardAction'
-        scenarioAlias: install
+    defaults: { _controller: 'installer.controller.process:forwardAction', scenarioAlias: install }

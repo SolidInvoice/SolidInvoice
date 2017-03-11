@@ -1,4 +1,3 @@
 csbill_item_index:
     path: /
-    defaults:
-        _controller: 'CSBillItemBundle:Default:index'
+    defaults: { _controller: 'CSBillItemBundle:Default:index' }

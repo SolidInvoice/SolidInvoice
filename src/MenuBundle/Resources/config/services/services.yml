@@ -1,0 +1,17 @@
+services:
+    csbill_menu.factory:
+	class: CSBill\MenuBundle\Factory
+	arguments: ['@router']
+
+    csbill_menu.renderer:
+	class: CSBill\MenuBundle\Renderer
+	arguments: ['@request_stack', '@csbill_menu.factory']
+	calls:
+	    - ['setContainer', ['@service_container']]
+
+    csbill_menu.provider:
+	class: CSBill\MenuBundle\Provider
+	arguments: ['@csbill_menu.storage']
+
+    csbill_menu.storage:
+	class: CSBill\MenuBundle\Storage\MenuStorage

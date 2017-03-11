@@ -1,0 +1,8 @@
+services:
+    _defaults:
+	public: false
+
+    CSBill\MoneyBundle\Form\Extension\MoneyExtension:
+	arguments: ['@currency']
+	tags:
+	    - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\MoneyType }

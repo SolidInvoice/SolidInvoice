@@ -1,0 +1,8 @@
+services:
+    _defaults:
+	public: false
+	tags:
+	    - { name: twig.extension }
+
+    CSBill\MoneyBundle\Twig\Extension\MoneyFormatterExtension:
+	arguments: ['@csbill.money.formatter', '@currency']
