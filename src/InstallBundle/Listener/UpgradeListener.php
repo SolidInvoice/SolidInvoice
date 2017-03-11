@@ -16,7 +16,6 @@ use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Installer\Database\Migration;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -47,7 +46,7 @@ class UpgradeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
 	return [
-	    KernelEvents::REQUEST => ['onKernelRequest', 10]
+	    KernelEvents::REQUEST => ['onKernelRequest', 10],
 	];
     }
 

@@ -32,13 +32,13 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
 	return [
 	    KernelEvents::REQUEST => [
 		['onKernelRequest'],
-		['onLateKernelRequest', -10]
+		['onLateKernelRequest', -10],
 	    ],
 	];
     }
 
     /**
-     * Translatable sets locale after router processing
+     * Translatable sets locale after router processing.
      *
      * @param GetResponseEvent $event
      */
