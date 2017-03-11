@@ -1,22 +1,22 @@
 services:
     csbill_payment.menu.top:
-	class: CSBill\PaymentBundle\Menu\Builder
-	tags:
-	    - { name: cs_core.menu, menu: top_right, method: topRightMenu }
-	    - { name: cs_core.menu, menu: top, method: topMenu, priority: -1 }
+        class: CSBill\PaymentBundle\Menu\Builder
+        tags:
+            - { name: cs_core.menu, menu: top_right, method: topRightMenu }
+            - { name: cs_core.menu, menu: top, method: topMenu, priority: -1 }
 
     csbill.payment.payum.paypal_express.action.payment_status_action:
-	class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
-	tags:
-	    - { name: payum.action, factory: paypal_express_checkout, prepend: true }
+        class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
+        tags:
+            - { name: payum.action, factory: paypal_express_checkout, prepend: true }
 
     csbill.payment.payum.offline.action.status_action:
-	class: CSBill\PaymentBundle\Action\Offline\StatusAction
-	tags:
-	    - { name: payum.action, factory: offline }
+        class: CSBill\PaymentBundle\Action\Offline\StatusAction
+        tags:
+            - { name: payum.action, factory: offline }
 
     csbill.payment.payum.extension.update_payment_details_extension:
-	class: CSBill\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
-	arguments: ['@doctrine']
-	tags:
-	    - { name: payum.extension, all: true }
+        class: CSBill\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
+        arguments: ['@doctrine']
+        tags:
+            - { name: payum.extension, all: true }

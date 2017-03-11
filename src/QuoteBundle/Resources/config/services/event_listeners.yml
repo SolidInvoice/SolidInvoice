@@ -1,8 +1,8 @@
 services:
     _defaults:
-	public: false
-	tags:
-	    - { name: kernel.event_subscriber }
+        public: false
+        tags:
+            - { name: kernel.event_subscriber }
 
     CSBill\QuoteBundle\Listener\Mailer\QuoteMailerListener:
-	arguments: ['@billing.mailer']
+        arguments: ['@billing.mailer']

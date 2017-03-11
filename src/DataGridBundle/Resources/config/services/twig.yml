@@ -1,8 +1,8 @@
 services:
     _defaults:
-	public: false
-	tags:
-	    - { name: twig.extension }
+        public: false
+        tags:
+            - { name: twig.extension }
 
     CSBill\DataGridBundle\Twig\Extension\GridExtension:
-	arguments: ['@grid.repository', '@serializer']
+        arguments: ['@grid.repository', '@serializer']

@@ -1,11 +1,11 @@
 services:
     _defaults:
-	public: false
-	tags:
-	    - { name: kernel.event_subscriber }
+        public: false
+        tags:
+            - { name: kernel.event_subscriber }
 
     CSBill\InstallBundle\Listener\RequestListener:
-	arguments: ['%installed%', '@router', '%kernel.debug%']
+        arguments: ['%installed%', '@router', '%kernel.debug%']
 
     CSBill\InstallBundle\Listener\UpgradeListener:
-	arguments: ['%installed%', '@doctrine', '@csbill.installer.database.migration']
+        arguments: ['%installed%', '@doctrine', '@csbill.installer.database.migration']

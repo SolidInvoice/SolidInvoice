@@ -1,11 +1,11 @@
 services:
     _defaults:
-	public: false
-	tags:
-	    - { name: form.type }
+        public: false
+        tags:
+            - { name: form.type }
 
     CSBill\InvoiceBundle\Form\Type\InvoiceType:
-	arguments: ['@currency']
+        arguments: ['@currency']
 
     CSBill\InvoiceBundle\Form\Type\ItemType:
-	arguments: ['@doctrine']
+        arguments: ['@doctrine']

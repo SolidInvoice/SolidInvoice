@@ -1,17 +1,17 @@
 services:
     _defaults:
-	public: false
-	tags:
-	    - { name: notification.handler }
+        public: false
+        tags:
+            - { name: notification.handler }
 
     CSBill\NotificationBundle\Notification\Handler\ChainedHandler:
-	arguments: ['@notification.sender']
+        arguments: ['@notification.sender']
 
     CSBill\NotificationBundle\Notification\Handler\TwilioHandler:
-	arguments: ['@twilio.client', '@=service(''settings'').get(''sms.twilio.number'')']
+        arguments: ['@twilio.client', '@=service(''settings'').get(''sms.twilio.number'')']
 
     Namshi\Notificator\Notification\Handler\SwiftMailer:
-	arguments: ['@mailer']
+        arguments: ['@mailer']
 
     Namshi\Notificator\Notification\Handler\HipChat:
-	arguments: ['@hipchat.client']
+        arguments: ['@hipchat.client']

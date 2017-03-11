@@ -1,26 +1,26 @@
 services:
     csbill.notification.settings.loader:
-	class: CSBill\NotificationBundle\Settings\Loader
-	arguments: ['@doctrine']
-	tags:
-	    - { name: settings.loader }
+        class: CSBill\NotificationBundle\Settings\Loader
+        arguments: ['@doctrine']
+        tags:
+            - { name: settings.loader }
 
     notification.sender:
-	class: Namshi\Notificator\Manager
-	arguments: [{}, '@logger']
+        class: Namshi\Notificator\Manager
+        arguments: [{}, '@logger']
 
     notification.manager:
-	class: CSBill\NotificationBundle\Notification\NotificationManager
-	arguments: ['@notification.factory', '@settings', '@notification.sender', '@doctrine']
+        class: CSBill\NotificationBundle\Notification\NotificationManager
+        arguments: ['@notification.factory', '@settings', '@notification.sender', '@doctrine']
 
     notification.factory:
-	class: CSBill\NotificationBundle\Notification\Factory
-	arguments: ['@templating', '@translator', '@settings']
+        class: CSBill\NotificationBundle\Notification\Factory
+        arguments: ['@templating', '@translator', '@settings']
 
     hipchat.client:
-	class: HipChat\HipChat
-	arguments: ['@=service(''settings'').get(''hipchat.auth_token'')', '@=service(''settings'').get(''hipchat.server_url'')']
+        class: HipChat\HipChat
+        arguments: ['@=service(''settings'').get(''hipchat.auth_token'')', '@=service(''settings'').get(''hipchat.server_url'')']
 
     twilio.client:
-	class: Twilio\Rest\Client
-	arguments: ['@=service(''settings'').get(''sms.twilio.sid'')', '@=service(''settings'').get(''sms.twilio.token'')']
+        class: Twilio\Rest\Client
+        arguments: ['@=service(''settings'').get(''sms.twilio.sid'')', '@=service(''settings'').get(''sms.twilio.token'')']

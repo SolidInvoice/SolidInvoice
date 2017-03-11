@@ -1,27 +1,27 @@
 services:
     csbill_client.menu:
-	class: CSBill\ClientBundle\Menu\Builder
-	tags:
-	    - { name: cs_core.menu, menu: top, method: topMenu }
-	    - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
-	    - { name: cs_core.menu, menu: clients_view, method: clientViewMenu }
-	    - { name: cs_core.menu, menu: clients_add, method: clientsMenu }
-	    - { name: cs_core.menu, menu: clients_edit, method: clientsMenu }
+        class: CSBill\ClientBundle\Menu\Builder
+        tags:
+            - { name: cs_core.menu, menu: top, method: topMenu }
+            - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
+            - { name: cs_core.menu, menu: clients_view, method: clientViewMenu }
+            - { name: cs_core.menu, menu: clients_add, method: clientsMenu }
+            - { name: cs_core.menu, menu: clients_edit, method: clientsMenu }
 
     # @TODO: Repository classes should be autowired
     csbill_client.contact_type.repository:
-	class: CSBill\ClientBundle\Repository\ContactTypeRepository
-	factory: ['@doctrine', getRepository]
-	arguments: ['CSBillClientBundle:ContactType']
+        class: CSBill\ClientBundle\Repository\ContactTypeRepository
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillClientBundle:ContactType']
 
     csbill_client.contact_type.values:
-	class: CSBill\ClientBundle\Repository\ContactTypeRepository
-	factory: ['@csbill_client.contact_type.repository', findAll]
+        class: CSBill\ClientBundle\Repository\ContactTypeRepository
+        factory: ['@csbill_client.contact_type.repository', findAll]
 
     csbill.serializer.credit.handler:
-	class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
-	arguments: ['@csbill.money.formatter']
-	tags:
-	    - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: json, method: serializeMoneyJson }
-	    - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: xml, method: serializeMoneyXml }
-	    - { name: jms_serializer.handler, type: 'CSBill\MoneyBundle\Entity\Money', direction: serialization, format: xml, method: serializeMoneyXml }
+        class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
+        arguments: ['@csbill.money.formatter']
+        tags:
+            - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: json, method: serializeMoneyJson }
+            - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: xml, method: serializeMoneyXml }
+            - { name: jms_serializer.handler, type: 'CSBill\MoneyBundle\Entity\Money', direction: serialization, format: xml, method: serializeMoneyXml }

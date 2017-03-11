@@ -1,7 +1,7 @@
 services:
     _defaults:
-	tags:
-	    - { name: form.type }
+        tags:
+            - { name: form.type }
 
     CSBill\CoreBundle\Form\Type\ImageUploadType:
-	arguments: ['@session', '@security.encryption']
+        arguments: ['@session', '@security.encryption']

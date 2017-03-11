@@ -1,15 +1,15 @@
 services:
     _defaults:
-	public: false
-	tags:
-	    - { name: twig.extension }
+        public: false
+        tags:
+            - { name: twig.extension }
 
     CSBill\CoreBundle\Twig\Extension\GlobalExtension:
-	calls:
-	    - [ setContainer, [ '@service_container' ] ]
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
 
     CSBill\CoreBundle\Twig\Extension\BillingExtension:
-	arguments: ['@csbill_core.field.renderer']
+        arguments: ['@csbill_core.field.renderer']
 
     CSBill\CoreBundle\Twig\Extension\FileExtension: ~
 

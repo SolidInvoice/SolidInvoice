@@ -1,7 +1,7 @@
 services:
     _defaults:
-	tags:
-	    - { name: form.type }
+        tags:
+            - { name: form.type }
 
     CSBill\ClientBundle\Form\Type\ContactDetailType:
-	arguments: ['@csbill_client.contact_type.values']
+        arguments: ['@csbill_client.contact_type.values']

@@ -1,19 +1,19 @@
 services:
     api_token_authenticator:
-	class: CSBill\ApiBundle\Security\ApiTokenAuthenticator
-	arguments: ['@api_token_user_provider', '@doctrine']
+        class: CSBill\ApiBundle\Security\ApiTokenAuthenticator
+        arguments: ['@api_token_user_provider', '@doctrine']
 
     api_token_user_provider:
-	class: CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider
-	arguments: ['@doctrine']
+        class: CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider
+        arguments: ['@doctrine']
 
     api.success:
-	class: CSBill\ApiBundle\Event\Listener\AuthenticationSuccessHandler
-	arguments: ['@api.token.manager']
+        class: CSBill\ApiBundle\Event\Listener\AuthenticationSuccessHandler
+        arguments: ['@api.token.manager']
 
     api.failure:
-	class: CSBill\ApiBundle\Event\Listener\AuthenticationFailHandler
+        class: CSBill\ApiBundle\Event\Listener\AuthenticationFailHandler
 
     api.token.manager:
-	class: CSBill\ApiBundle\ApiTokenManager
-	arguments: ['@doctrine']
+        class: CSBill\ApiBundle\ApiTokenManager
+        arguments: ['@doctrine']
