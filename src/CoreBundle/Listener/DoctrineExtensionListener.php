@@ -32,7 +32,7 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
 	return [
 	    KernelEvents::REQUEST => [
 		['onKernelRequest'],
-		['onLateKernelRequest', -10],
+	['onLateKernelRequest', -10],
 	    ],
 	];
     }

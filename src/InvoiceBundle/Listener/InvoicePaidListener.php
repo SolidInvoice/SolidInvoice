@@ -38,7 +38,7 @@ class InvoicePaidListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
 	return [
-	    InvoiceEvents::INVOICE_POST_PAID => 'onInvoicePaid',
+	InvoiceEvents::INVOICE_POST_PAID => 'onInvoicePaid',
 	];
     }
 
