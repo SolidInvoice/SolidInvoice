@@ -1,24 +1,21 @@
 _home:
     path: /
-    defaults:
-        _controller: 'FrameworkBundle:Redirect:redirect'
-        route: _dashboard
-        permanent: true
+    defaults: { _controller: 'FrameworkBundle:Redirect:redirect', route: _dashboard, permanent: true }
+
 _image_upload:
     path: /upload
-    defaults:
-        _controller: 'CSBillCoreBundle:Upload:imageUpload'
+    defaults: { _controller: 'CSBillCoreBundle:Upload:imageUpload' }
     options:
         expose: true
+
 _view_quote_external:
     path: '/view/quote/{uuid}'
-    defaults:
-        _controller: 'CSBillCoreBundle:View:viewquote'
+    defaults: { _controller: 'CSBillCoreBundle:View:viewquote' }
     requirements:
         uuid: '[a-zA-Z0-9-]{36}'
+
 _view_invoice_external:
     path: '/view/invoice/{uuid}'
-    defaults:
-        _controller: 'CSBillCoreBundle:View:viewinvoice'
+    defaults: { _controller: 'CSBillCoreBundle:View:viewinvoice' }
     requirements:
         uuid: '[a-zA-Z0-9-]{36}'

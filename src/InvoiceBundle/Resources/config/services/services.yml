@@ -1,0 +1,26 @@
+services:
+    csbill_invoice.menu:
+        class: CSBill\InvoiceBundle\Menu\Builder
+        tags:
+            - { name: cs_core.menu, menu: top, method: topMenu }
+            - { name: cs_core.menu, menu: invoices_index,  method: invoicesMenu }
+            - { name: cs_core.menu, menu: invoices_view,   method: invoicesMenu }
+            - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
+            - { name: cs_core.menu, menu: invoices_edit, method: invoicesEditMenu }
+
+    invoice.manager:
+        class: CSBill\InvoiceBundle\Manager\InvoiceManager
+        arguments: ['@doctrine', '@event_dispatcher', '@finite.factory', '@notification.manager']
+        calls:
+            - [ setContainer, ['@service_container']]
+
+    invoice.user.listener:
+        class: CSBill\InvoiceBundle\Listener\Doctrine\InvoiceUsersListener
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+
+    csbill.cron.recurring_invoice.create:
+        class: CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate
+        arguments: ['@doctrine', '@invoice.manager']
+        tags:
+            - { name: cron.command }

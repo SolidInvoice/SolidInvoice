@@ -36,9 +36,7 @@ _clients_credit:
     path: '/ajax/credit/{client}'
     defaults:
         _controller: 'CSBillClientBundle:Credit:credit'
-    methods:
-        - GET
-        - PUT
+    methods: [GET, PUT]
     options:
         expose: true
 
@@ -65,48 +63,35 @@ _clients_edit_address:
 
 _clients_contact:
     path: '/ajax/contacts/{id}'
-    defaults:
-        _controller: 'CSBillClientBundle:Ajax:contact'
-    methods:
-        - GET
-        - POST
-        - DELETE
+    defaults: { _controller: 'CSBillClientBundle:Ajax:contact' }
+    methods: [GET, POST, DELETE]
     options:
         expose: true
 
 _clients_address:
     path: '/ajax/address/{id}'
-    defaults:
-        _controller: 'CSBillClientBundle:Ajax:address'
-    methods:
-        - DELETE
-        - GET
+    defaults: { _controller: 'CSBillClientBundle:Ajax:address' }
+    methods: [DELETE, GET]
     options:
         expose: true
 
 _clients_archive:
     path: /archive
-    defaults:
-        _controller: 'CSBillClientBundle:Grid:archive'
-    methods:
-        - POST
+    defaults: { _controller: 'CSBillClientBundle:Grid:archive' }
+    methods: [POST]
     options:
         expose: true
 
 _clients_restore:
     path: /restore
-    defaults:
-        _controller: 'CSBillClientBundle:Grid:restore'
-    methods:
-        - POST
+    defaults: { _controller: 'CSBillClientBundle:Grid:restore' }
+    methods: [POST]
     options:
         expose: true
 
 _clients_delete:
     path: /delete
-    defaults:
-        _controller: 'CSBillClientBundle:Grid:delete'
-    methods:
-        - POST
+    defaults: { _controller: 'CSBillClientBundle:Grid:delete' }
+    methods: [POST]
     options:
         expose: true

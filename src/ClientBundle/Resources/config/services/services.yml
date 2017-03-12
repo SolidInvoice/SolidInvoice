@@ -1,10 +1,6 @@
-parameters:
-    csbill_client.menu.class: CSBill\ClientBundle\Menu\Builder
-    csbill_client.contact_type.repository.class: CSBill\ClientBundle\Repository\ContactTypeRepository
-
 services:
     csbill_client.menu:
-        class: '%csbill_client.menu.class%'
+        class: CSBill\ClientBundle\Menu\Builder
         tags:
             - { name: cs_core.menu, menu: top, method: topMenu }
             - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
@@ -12,40 +8,19 @@ services:
             - { name: cs_core.menu, menu: clients_add, method: clientsMenu }
             - { name: cs_core.menu, menu: clients_edit, method: clientsMenu }
 
-    csbill_client.contact.form.type:
-        class: CSBill\ClientBundle\Form\Type\ContactType
-        tags:
-            - { name: form.type }
-
-    csbill_client.contact_detail.form.type:
-        class: CSBill\ClientBundle\Form\Type\ContactDetailType
-        arguments:
-            - '@csbill_client.contact_type.values'
-        tags:
-            - { name: form.type }
-
+    # @TODO: Repository classes should be autowired
     csbill_client.contact_type.repository:
-        class: '%csbill_client.contact_type.repository.class%'
+        class: CSBill\ClientBundle\Repository\ContactTypeRepository
         factory: ['@doctrine', getRepository]
-        arguments:
-            - 'CSBillClientBundle:ContactType'
+        arguments: ['CSBillClientBundle:ContactType']
 
     csbill_client.contact_type.values:
-        class: '%csbill_client.contact_type.repository.class%'
+        class: CSBill\ClientBundle\Repository\ContactTypeRepository
         factory: ['@csbill_client.contact_type.repository', findAll]
-
-    client.notification.listener:
-        class: CSBill\ClientBundle\Listener\ClientListener
-        calls:
-            - ['setContainer', ['@service_container']]
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: postUpdate }
 
     csbill.serializer.credit.handler:
         class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
-        arguments:
-            - '@csbill.money.formatter'
+        arguments: ['@csbill.money.formatter']
         tags:
             - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: json, method: serializeMoneyJson }
             - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: xml, method: serializeMoneyXml }

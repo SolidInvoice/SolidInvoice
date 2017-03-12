@@ -1,0 +1,25 @@
+services:
+    CSBill\DashboardBundle\Widgets\StatsWidget:
+        arguments: ['@doctrine']
+        tags:
+            - { name: dashboard.widget, priority: 100, location: top }
+
+    CSBill\DashboardBundle\Widgets\RecentClientsWidget:
+        arguments: ['@doctrine']
+        tags:
+            - { name: dashboard.widget, priority: 100, location: left_column }
+
+    CSBill\DashboardBundle\Widgets\RecentPaymentsWidget:
+        arguments: ['@doctrine']
+        tags:
+            - { name: dashboard.widget, priority: 90, location: left_column }
+
+    CSBill\DashboardBundle\Widgets\RecentQuotesWidget:
+        arguments: ['@doctrine']
+        tags:
+            - { name: dashboard.widget, priority: 100, location: right_column }
+
+    CSBill\DashboardBundle\Widgets\RecentInvoicesWidget:
+        arguments: ['@doctrine']
+        tags:
+            - { name: dashboard.widget, priority: 90, location: right_column }

@@ -1,0 +1,19 @@
+services:
+    quote.manager:
+        class: CSBill\QuoteBundle\Manager\QuoteManager
+        arguments: ['@doctrine', '@event_dispatcher', '@finite.factory', '@invoice.manager', '@billing.mailer', '@notification.manager']
+
+    CSBill\QuoteBundle\Menu\Builder:
+        public: false
+        tags:
+            - { name: cs_core.menu, menu: top, method: topMenu }
+            - { name: cs_core.menu, menu: quotes_index,  method: quotesMenu }
+            - { name: cs_core.menu, menu: quotes_view,   method: quotesMenu }
+            - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
+            - { name: cs_core.menu, menu: quotes_edit, method: quotesEditMenu }
+
+    CSBill\QuoteBundle\Listener\Doctrine\QuoteTotalListener:
+        public: false
+        lazy: true
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }

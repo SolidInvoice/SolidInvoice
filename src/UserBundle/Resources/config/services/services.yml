@@ -1,0 +1,6 @@
+services:
+    fos_user.user_manager.default:
+        class: CSBill\UserBundle\Manager\UserManager
+        public: false
+        lazy: true
+        arguments: ['@fos_user.util.password_updater', '@fos_user.util.canonical_fields_updater', '@fos_user.object_manager', '%fos_user.model.user.class%']

@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        public: false
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CSBill\InvoiceBundle\Listener\InvoicePaidListener:
+        arguments: ['@doctrine', '@currency']
+
+    CSBill\InvoiceBundle\Listener\InvoiceCancelListener:
+        arguments: ['@doctrine', '@currency']
+
+    CSBill\InvoiceBundle\Listener\Mailer\InvoiceMailerListener:
+        arguments: ['@billing.mailer']

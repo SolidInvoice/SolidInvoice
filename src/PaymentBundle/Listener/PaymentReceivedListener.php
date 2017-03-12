@@ -13,14 +13,26 @@ namespace CSBill\PaymentBundle\Listener;
 
 use CSBill\NotificationBundle\Notification\NotificationManager;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
+use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Notification\PaymentReceivedNotification;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PaymentReceivedListener
+class PaymentReceivedListener implements EventSubscriberInterface
 {
     /**
      * @var NotificationManager
      */
     private $notification;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            PaymentEvents::PAYMENT_COMPLETE => 'onPaymentCapture',
+        ];
+    }
 
     /**
      * @param NotificationManager $notification

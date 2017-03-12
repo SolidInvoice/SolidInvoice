@@ -11,16 +11,18 @@
 
 namespace CSBill\InstallBundle\Listener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
 
 /**
  * Listener class to intercept requests
  * and redirect to the installer if necessary.
  */
-class RequestListener
+class RequestListener implements EventSubscriberInterface
 {
     const INSTALLER_ROUTE = '_install_flow';
 
@@ -62,6 +64,16 @@ class RequestListener
      * @var bool
      */
     private $debug;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => ['onKernelRequest', 10],
+        ];
+    }
 
     /**
      * @param string $installed

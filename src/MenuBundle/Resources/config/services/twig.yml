@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    csbill_menu.twig.extension:
+        class: CSBill\MenuBundle\Twig\Extension\MenuExtension
+        calls:
+            - [ setRenderer, [ '@csbill_menu.renderer' ] ]
+            - [ setProvider, [ '@csbill_menu.provider' ] ]

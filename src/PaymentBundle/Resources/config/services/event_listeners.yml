@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: false
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CSBill\PaymentBundle\Listener\PaymentCompleteListener:
+        arguments: ['@invoice.manager', '@doctrine', '@session', '@translator', '@router', '@currency']
+
+    CSBill\PaymentBundle\Listener\PaymentReceivedListener:
+        arguments: ['@notification.manager']
