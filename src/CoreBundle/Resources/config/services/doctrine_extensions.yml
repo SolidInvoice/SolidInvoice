@@ -28,7 +28,9 @@ services:
         calls:
             - [ setAnnotationReader, [ '@annotation_reader' ] ]
 
-    Gedmo\Loggable\LoggableListener:
+    gedmo.listener.loggable:
+        class: Gedmo\Loggable\LoggableListener
+        public: true
         calls:
             - [ setAnnotationReader, [ '@annotation_reader' ] ]
 
