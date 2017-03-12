@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -112,6 +113,8 @@ class TraceLogger implements SQLLogger
 
     private function isInternalClass(&$class)
     {
-        return substr($class, 0, strpos($class, '\\')) === 'Doctrine' || $class === __CLASS__;
+        $length = false !== $pos = strpos($class, '\\');
+
+        return substr($class, 0, $length ? $pos : strlen($class)) === 'Doctrine' || $class === __CLASS__;
     }
 }
