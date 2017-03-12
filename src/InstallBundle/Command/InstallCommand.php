@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -122,11 +123,11 @@ class InstallCommand extends ContainerAwareCommand
         $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
         $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
 
-        if (!array_search($locale = $input->getOption('locale'), $locales)) {
+        if (!array_search($locale = $input->getOption('locale'), $locales, true)) {
             throw new \InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
-        if (!array_search($currency = $input->getOption('currency'), $currencies)) {
+        if (!array_search($currency = $input->getOption('currency'), $currencies, true)) {
             throw new \InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 

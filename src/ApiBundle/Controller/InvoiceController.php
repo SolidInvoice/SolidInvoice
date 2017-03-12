@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -212,7 +214,7 @@ class InvoiceController extends Controller
 
         $transitions = $this->get('finite.factory')->get($invoice, Graph::GRAPH)->getTransitions();
 
-        if (!in_array($status, $transitions)) {
+        if (!in_array($status, $transitions, true)) {
             throw new \Exception(sprintf('The value "%s" is not valid', $status), Response::HTTP_BAD_REQUEST);
         }
 

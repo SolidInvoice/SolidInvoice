@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -88,7 +89,7 @@ class PaymentController extends BaseController
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (in_array($paymentName, $paymentFactories)) {
+            if (in_array($paymentName, $paymentFactories, true)) {
                 if ('credit' === $paymentName) {
                     $clientCredit = $invoice->getClient()->getCredit()->getValue();
 

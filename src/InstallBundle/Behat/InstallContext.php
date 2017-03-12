@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -33,7 +34,7 @@ class InstallContext extends DefaultContext
         $connection = DriverManager::getConnection($params);
         $name = $connection->getDatabasePlatform()->quoteSingleIdentifier($name);
 
-        if (in_array($name, $connection->getSchemaManager()->listDatabases())) {
+        if (in_array($name, $connection->getSchemaManager()->listDatabases(), true)) {
             // Drop the current database
             $connection->getSchemaManager()->dropDatabase($name);
             // recreate current database

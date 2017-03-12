@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -60,7 +61,7 @@ class Encryption
             mcrypt_decrypt(
                 self::CIPHER,
                 $this->salt,
-                base64_decode($data),
+                base64_decode($data, true),
                 self::MODE,
                 mcrypt_create_iv(mcrypt_get_iv_size(self::CIPHER, self::MODE), MCRYPT_RAND)
             )

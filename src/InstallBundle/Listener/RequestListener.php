@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -102,7 +103,7 @@ class RequestListener implements EventSubscriberInterface
 
         $route = $event->getRequest()->get('_route');
 
-        if (!in_array($route, $this->allowRoutes)) {
+        if (!in_array($route, $this->allowRoutes, true)) {
             $response = new RedirectResponse($this->router->generate(self::INSTALLER_ROUTE));
 
             $event->setResponse($response);
