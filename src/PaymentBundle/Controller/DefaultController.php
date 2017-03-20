@@ -45,9 +45,9 @@ class DefaultController extends BaseController
             $repository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
 
             $enabledMethods = array_map(
-	function (PaymentMethod $method): Response {
-	    return strtolower($method->getGatewayName());
-	}, $repository->findBy(['enabled' => 1])
+                function (PaymentMethod $method): Response {
+                    return strtolower($method->getGatewayName());
+                }, $repository->findBy(['enabled' => 1])
             );
 
             return $this->json(
