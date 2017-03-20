@@ -82,7 +82,7 @@ class RequestListener implements EventSubscriberInterface
      * @param Router $router
      * @param bool   $debug
      */
-    public function __construct(string $installed, Router $router, bool $debug = false)
+    public function __construct(?string $installed, Router $router, bool $debug = false)
     {
         $this->installed = $installed;
         $this->router = $router;

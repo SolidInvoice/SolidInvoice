@@ -35,8 +35,7 @@ class ArrayUtil
 
         reset($array);
 
-        // Forward-compatible with PHP 5.5
-        if (function_exists('array_column') && is_array($array[key($array)])) {
+        if (is_array($array[key($array)])) {
             return array_column($array, $column);
         }
 
@@ -54,7 +53,7 @@ class ArrayUtil
             $return[] = $accessor->getValue($item, $column);
         }
 
-        return array_filter($return, function ($item): array {
+        return array_filter($return, function ($item): bool {
             return $item !== null;
         });
     }

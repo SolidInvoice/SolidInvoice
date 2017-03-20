@@ -57,7 +57,7 @@ class UpgradeListener implements EventSubscriberInterface
      * @param ManagerRegistry $registry
      * @param Migration       $migration
      */
-    public function __construct(string $installed, ManagerRegistry $registry, Migration $migration)
+    public function __construct(?string $installed, ManagerRegistry $registry, Migration $migration)
     {
         $this->installed = $installed;
         $this->registry = $registry;

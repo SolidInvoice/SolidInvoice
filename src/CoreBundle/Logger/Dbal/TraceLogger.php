@@ -72,7 +72,7 @@ class TraceLogger implements SQLLogger
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS);
 
         foreach ($backtrace as $key => $debug) {
-            if (!$this->isInternalClass($debug['class'])) {
+            if (!$this->isInternalClass($debug['class'] ?? null)) {
                 $trace = array_slice($backtrace, $key - 1, 10);
 
                 return $this->formatTrace($trace);
@@ -111,8 +111,12 @@ class TraceLogger implements SQLLogger
         return $backtrace;
     }
 
-    private function isInternalClass(&$class)
+    private function isInternalClass(?string $class): bool
     {
+        if (!$class) {
+            return false;
+        }
+
         $length = false !== $pos = strpos($class, '\\');
 
         return substr($class, 0, $length ? $pos : strlen($class)) === 'Doctrine' || $class === __CLASS__;
