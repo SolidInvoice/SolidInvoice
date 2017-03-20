@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -14,6 +15,7 @@ namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -58,7 +60,7 @@ class ApiToken
     private $token;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|ApiTokenHistory[]
      *
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @ORM\OrderBy({"created" = "DESC"})
@@ -128,9 +130,9 @@ class ApiToken
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ApiTokenHistory[]
      */
-    public function getHistory(): ArrayCollection
+    public function getHistory(): Collection
     {
         return $this->history;
     }

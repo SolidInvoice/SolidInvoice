@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -49,9 +50,9 @@ class Section
     private $children;
 
     /**
-     * @ORM\OneToMany(targetEntity="Setting", mappedBy="section")
+     * @var Collection|Setting[]
      *
-     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Setting", mappedBy="section")
      */
     private $settings;
 
@@ -122,7 +123,7 @@ class Section
     /**
      * Get children.
      *
-     * @return Collection
+     * @return Collection|Section[]
      */
     public function getChildren(): Collection
     {
@@ -161,9 +162,9 @@ class Section
     /**
      * Get settings.
      *
-     * @return ArrayCollection
+     * @return Collection|Setting[]
      */
-    public function getSettings(): ArrayCollection
+    public function getSettings(): Collection
     {
         return $this->settings;
     }

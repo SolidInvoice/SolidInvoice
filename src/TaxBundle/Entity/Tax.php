@@ -1,23 +1,6 @@
 <?php
 
 declare(strict_types=1);
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
 
 /*
  * This file is part of CSBill project.
@@ -30,8 +13,10 @@ declare(strict_types=1);
 
 namespace CSBill\TaxBundle\Entity;
 
+use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
@@ -91,11 +76,15 @@ class Tax
     private $type;
 
     /**
+     * @vat Collection|ItemInterface[]
+     *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
+     * @var Collection|ItemInterface[]
+     *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Item", mappedBy="tax")
      */
     private $quoteItems;
@@ -192,9 +181,9 @@ class Tax
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getInvoiceItems(): ArrayCollection
+    public function getInvoiceItems(): Collection
     {
         return $this->invoiceItems;
     }
@@ -212,9 +201,9 @@ class Tax
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getQuoteItems(): ArrayCollection
+    public function getQuoteItems(): Collection
     {
         return $this->quoteItems;
     }

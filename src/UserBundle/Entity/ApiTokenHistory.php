@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -74,7 +75,7 @@ class ApiTokenHistory
     private $userAgent;
 
     /**
-     * @var User
+     * @var ApiToken
      *
      * @ORM\ManyToOne(targetEntity="ApiToken", inversedBy="history")
      * @ORM\JoinColumn(name="token_id", referencedColumnName="id")

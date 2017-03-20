@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -13,10 +14,12 @@ declare(strict_types=1);
 namespace CSBill\QuoteBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\QuoteBundle\Traits\QuoteStatusTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -149,7 +152,7 @@ class Quote
     private $due;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|ItemInterface[]
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -160,10 +163,10 @@ class Quote
     private $items;
 
     /**
+     * @var Collection|string[]
+     *
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
-     *
-     * @var ArrayCollection
      */
     private $users;
 
@@ -214,9 +217,9 @@ class Quote
     /**
      * Return users array.
      *
-     * @return ArrayCollection
+     * @return Collection|string[]
      */
-    public function getUsers(): ArrayCollection
+    public function getUsers(): Collection
     {
         return $this->users;
     }
@@ -388,9 +391,9 @@ class Quote
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getItems(): ArrayCollection
+    public function getItems(): Collection
     {
         return $this->items;
     }

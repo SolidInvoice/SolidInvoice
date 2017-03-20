@@ -81,7 +81,7 @@ class Contact implements \Serializable
     private $email;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|AdditionalContactDetail[]
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist"})
      * @Assert\Valid()
@@ -210,7 +210,7 @@ class Contact implements \Serializable
      *
      * @return Collection|AdditionalContactDetail[]
      */
-    public function getAdditionalDetails()
+    public function getAdditionalDetails(): Collection
     {
         return $this->additionalDetails;
     }
@@ -220,7 +220,7 @@ class Contact implements \Serializable
      *
      * @return null|AdditionalContactDetail
      */
-    public function getAdditionalDetail(string $type)
+    public function getAdditionalDetail(string $type): ?AdditionalContactDetail
     {
         if (count($this->additionalDetails) > 0) {
             foreach ($this->additionalDetails as $detail) {
@@ -230,7 +230,7 @@ class Contact implements \Serializable
             }
         }
 
-        return;
+        return null;
     }
 
     /**

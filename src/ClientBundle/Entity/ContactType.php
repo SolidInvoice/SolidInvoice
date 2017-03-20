@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\ClientBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -72,7 +73,7 @@ class ContactType
     private $required = false;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|AdditionalContactDetail[]
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type")
      * @Serialize\Groups({"none"})
@@ -163,9 +164,9 @@ class ContactType
     /**
      * Get details.
      *
-     * @return ArrayCollection
+     * @return Collection|AdditionalContactDetail[]
      */
-    public function getDetails(): ArrayCollection
+    public function getDetails(): Collection
     {
         return $this->details;
     }

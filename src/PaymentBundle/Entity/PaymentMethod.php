@@ -15,6 +15,7 @@ namespace CSBill\PaymentBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
@@ -86,7 +87,7 @@ class PaymentMethod implements GatewayConfigInterface
     private $enabled;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Payment[]
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -266,9 +267,9 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Get payments.
      *
-     * @return ArrayCollection
+     * @return Collection|Payment[]
      */
-    public function getPayments(): ArrayCollection
+    public function getPayments(): Collection
     {
         return $this->payments;
     }

@@ -94,7 +94,7 @@ class Client
     private $currency;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Contact[]
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @ORM\OrderBy({"firstName" = "ASC"})
@@ -105,7 +105,7 @@ class Client
     private $contacts;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Quote[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
@@ -114,7 +114,7 @@ class Client
     private $quotes;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Invoice[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
@@ -123,7 +123,7 @@ class Client
     private $invoices;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Payment[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
      * @Serialize\Groups({"none"})
@@ -131,7 +131,7 @@ class Client
     private $payments;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Address[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
      * @Serialize\Groups({"js"})
@@ -312,9 +312,9 @@ class Client
     /**
      * Get quotes.
      *
-     * @return ArrayCollection
+     * @return Collection|Quote[]
      */
-    public function getQuotes(): ArrayCollection
+    public function getQuotes(): Collection
     {
         return $this->quotes;
     }
@@ -351,9 +351,9 @@ class Client
     /**
      * Get invoices.
      *
-     * @return ArrayCollection
+     * @return Collection|Invoice[]
      */
-    public function getInvoices(): ArrayCollection
+    public function getInvoices(): Collection
     {
         return $this->invoices;
     }
@@ -390,9 +390,9 @@ class Client
     /**
      * Get payments.
      *
-     * @return ArrayCollection
+     * @return Collection|Payment[]
      */
-    public function getPayments(): ArrayCollection
+    public function getPayments(): Collection
     {
         return $this->payments;
     }
@@ -431,9 +431,9 @@ class Client
     /**
      * Get addresses.
      *
-     * @return ArrayCollection
+     * @return Collection|Address[]
      */
-    public function getAddresses(): ArrayCollection
+    public function getAddresses(): Collection
     {
         return $this->addresses;
     }

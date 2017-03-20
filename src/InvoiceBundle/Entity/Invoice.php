@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Traits\InvoiceStatusTrait;
 use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -155,7 +157,7 @@ class Invoice
     private $paidDate;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|ItemInterface[]
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -165,7 +167,7 @@ class Invoice
     private $items;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Payment[]
      *
      * @ORM\OneToMany(
      *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
@@ -177,7 +179,7 @@ class Invoice
     private $payments;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|int[]
      *
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
@@ -239,9 +241,9 @@ class Invoice
     /**
      * Return users array.
      *
-     * @return ArrayCollection
+     * @return Collection|int[]
      */
-    public function getUsers(): ArrayCollection
+    public function getUsers(): Collection
     {
         return $this->users;
     }
@@ -489,9 +491,9 @@ class Invoice
     /**
      * Get items.
      *
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getItems(): ArrayCollection
+    public function getItems(): Collection
     {
         return $this->items;
     }
@@ -528,9 +530,9 @@ class Invoice
     /**
      * Get payments.
      *
-     * @return ArrayCollection
+     * @return Collection|Payment[]
      */
-    public function getPayments(): ArrayCollection
+    public function getPayments(): Collection
     {
         return $this->payments;
     }
