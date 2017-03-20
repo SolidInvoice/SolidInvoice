@@ -36,7 +36,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @return mixed
      */
-    abstract public function getEvent();
+    abstract public function getEvent(): string;
 
     /**
      * @param Swift_Message $message

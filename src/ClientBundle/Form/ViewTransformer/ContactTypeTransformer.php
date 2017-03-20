@@ -46,7 +46,7 @@ class ContactTypeTransformer implements DataTransformerInterface
      *
      * @return \CSBill\ClientBundle\Entity\ContactType
      */
-    public function reverseTransform(string $value): ContactType
+    public function reverseTransform($value): ContactType
     {
         return $this->type;
     }

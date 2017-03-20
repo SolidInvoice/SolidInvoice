@@ -31,7 +31,7 @@ class ApiTokenRepository extends EntityRepository
      *
      * @throws UsernameNotFoundException
      */
-    public function getUsernameForToken(string $token): UserInterface
+    public function getUsernameForToken(string $token): ?UserInterface
     {
         $q = $this
             ->createQueryBuilder('t')
@@ -45,7 +45,7 @@ class ApiTokenRepository extends EntityRepository
             // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
             return $q->getSingleScalarResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
