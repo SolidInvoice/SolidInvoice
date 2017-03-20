@@ -55,7 +55,7 @@ class ConfigStep extends AbstractControllerStep
         $availableDrivers = array_intersect($this->implementedDrivers, \PDO::getAvailableDrivers());
         $drivers = array_combine(
             array_map(
-                function ($value) : Form{
+		function ($value): Form {
                     return sprintf('pdo_%s', $value);
                 },
                 $availableDrivers
