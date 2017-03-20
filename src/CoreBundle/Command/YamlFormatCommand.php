@@ -48,7 +48,7 @@ class YamlFormatCommand extends ContainerAwareCommand
     /**
      * @return \Iterator
      */
-    private function findFiles()
+    private function findFiles(): Iterator
     {
         $container = $this->getContainer();
         $finder = Finder::create()

@@ -22,7 +22,7 @@ interface ChainedNotificationInterface extends NotificationInterface
      *
      * @return NotificationInterface[]
      */
-    public function getNotifications();
+    public function getNotifications(): array;
 
     /**
      * Add a notification to the chain.

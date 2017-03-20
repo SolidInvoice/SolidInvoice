@@ -26,7 +26,7 @@ class Encryption
     /**
      * @param string $salt
      */
-    public function __construct($salt)
+    public function __construct(string $salt)
     {
         $this->salt = $salt;
     }
@@ -36,7 +36,7 @@ class Encryption
      *
      * @return string
      */
-    public function encrypt($data)
+    public function encrypt(string $data): string
     {
         return trim(
             base64_encode(
@@ -56,7 +56,7 @@ class Encryption
      *
      * @return string
      */
-    public function decrypt($data)
+    public function decrypt(string $data): string
     {
         return trim(
             mcrypt_decrypt(

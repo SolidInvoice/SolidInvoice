@@ -75,7 +75,7 @@ class RecurringInvoice
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -83,7 +83,7 @@ class RecurringInvoice
     /**
      * @return string
      */
-    public function getFrequency()
+    public function getFrequency(): ?string
     {
         return $this->frequency;
     }
@@ -91,9 +91,9 @@ class RecurringInvoice
     /**
      * @param string $frequency
      *
-     * @return Invoice
+     * @return RecurringInvoice
      */
-    public function setFrequency($frequency)
+    public function setFrequency(string $frequency): RecurringInvoice
     {
         $this->frequency = $frequency;
 
@@ -103,7 +103,7 @@ class RecurringInvoice
     /**
      * @return \DateTime
      */
-    public function getDateStart()
+    public function getDateStart(): \DateTime
     {
         return $this->dateStart;
     }
@@ -111,9 +111,9 @@ class RecurringInvoice
     /**
      * @param \DateTime $dateStart
      *
-     * @return Invoice
+     * @return RecurringInvoice
      */
-    public function setDateStart(\DateTime $dateStart = null)
+    public function setDateStart(\DateTime $dateStart = null): RecurringInvoice
     {
         $this->dateStart = $dateStart;
 
@@ -123,7 +123,7 @@ class RecurringInvoice
     /**
      * @return \DateTime
      */
-    public function getDateEnd()
+    public function getDateEnd(): \DateTime
     {
         return $this->dateEnd;
     }
@@ -131,9 +131,9 @@ class RecurringInvoice
     /**
      * @param \DateTime $dateEnd
      *
-     * @return Invoice
+     * @return RecurringInvoice
      */
-    public function setDateEnd(\DateTime $dateEnd = null)
+    public function setDateEnd(\DateTime $dateEnd = null): RecurringInvoice
     {
         $this->dateEnd = $dateEnd;
 
@@ -143,7 +143,7 @@ class RecurringInvoice
     /**
      * @return Invoice
      */
-    public function getInvoice()
+    public function getInvoice(): Invoice
     {
         return $this->invoice;
     }
@@ -151,9 +151,9 @@ class RecurringInvoice
     /**
      * @param Invoice $invoice
      *
-     * @return Invoice
+     * @return RecurringInvoice
      */
-    public function setInvoice(Invoice $invoice)
+    public function setInvoice(Invoice $invoice): RecurringInvoice
     {
         $this->invoice = $invoice;
 

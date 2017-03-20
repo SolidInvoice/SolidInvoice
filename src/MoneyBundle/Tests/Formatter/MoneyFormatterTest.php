@@ -25,7 +25,7 @@ class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
      *
      * @dataProvider localeProvider
      */
-    public function testFormatCurrencyWithDefaultValues($locale, $currency, $format)
+    public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format)
     {
         $formatter = new MoneyFormatter($locale);
 
@@ -42,7 +42,7 @@ class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
      *
      * @dataProvider symbolProvider
      */
-    public function testGetCurrencySymbol($locale, $currency, $symbol)
+    public function testGetCurrencySymbol(string $locale, string $currency, string $symbol)
     {
         $formatter = new MoneyFormatter($locale, $currency);
 
@@ -55,7 +55,7 @@ class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
      *
      * @dataProvider thousandSeparatorProvider
      */
-    public function testGetThousandSeparator($locale, $separator)
+    public function testGetThousandSeparator(string $locale, string $separator)
     {
         $formatter = new MoneyFormatter($locale);
 
@@ -68,7 +68,7 @@ class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
      *
      * @dataProvider decimalSeparatorProvider
      */
-    public function testGetDecimalSeparator($locale, $separator)
+    public function testGetDecimalSeparator(string $locale, string $separator)
     {
         $formatter = new MoneyFormatter($locale);
 
@@ -81,7 +81,7 @@ class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
      *
      * @dataProvider patternProvider
      */
-    public function testGetPattern($locale, $pattern)
+    public function testGetPattern(string $locale, string $pattern)
     {
         $formatter = new MoneyFormatter($locale);
 
@@ -91,7 +91,7 @@ class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function localeProvider()
+    public function localeProvider(): array
     {
         return [
             [
@@ -112,7 +112,7 @@ class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function symbolProvider()
+    public function symbolProvider(): array
     {
         return [
             [

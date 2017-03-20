@@ -20,7 +20,7 @@ class UnexpectedFormatException extends UnexpectedValueException
     /**
      * @param string $format
      */
-    public function __construct($format)
+    public function __construct(string $format)
     {
         $message = sprintf('Invalid email format "%s" given', $format);
         parent::__construct($message, 0);

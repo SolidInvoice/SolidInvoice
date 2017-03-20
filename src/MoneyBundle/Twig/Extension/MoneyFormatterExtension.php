@@ -54,10 +54,10 @@ class MoneyFormatterExtension extends \Twig_Extension
     /**
      * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('formatCurrency', function ($money, $currency = null) {
+            new \Twig_SimpleFilter('formatCurrency', function ($money, $currency = null): string {
                 if (!$money instanceof Money && is_numeric($money)) {
                     $money = new Money((int) $money, $currency ? new Currency($currency) : $this->currency);
                 }

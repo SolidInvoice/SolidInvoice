@@ -46,7 +46,7 @@ class SetupStep extends AbstractControllerStep
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function getForm(Request $request)
+    private function getForm(Request $request): Form
     {
         $options = [
             'action' => $this->generateUrl(

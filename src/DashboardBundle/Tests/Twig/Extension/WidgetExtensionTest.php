@@ -59,11 +59,13 @@ class WidgetExtensionTest extends \PHPUnit\Framework\TestCase
 
         $environment = \Mockery::mock('Twig_Environment');
 
+        $q = new \SplPriorityQueue();
+        $q->insert($widget, 0);
         $this->factory
             ->shouldReceive('get')
             ->once()
             ->with('top')
-            ->andReturn([$widget]);
+            ->andReturn($q);
 
         $environment
             ->shouldReceive('render')

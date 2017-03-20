@@ -62,7 +62,7 @@ class User extends BaseUser
     /**
      * @return ArrayCollection
      */
-    public function getApiTokens()
+    public function getApiTokens(): ArrayCollection
     {
         return $this->apiTokens;
     }
@@ -72,7 +72,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setApiTokens($apiTokens)
+    public function setApiTokens(\Doctrine\Common\Collections\ArrayCollection $apiTokens): User
     {
         $this->apiTokens = $apiTokens;
 
@@ -82,7 +82,7 @@ class User extends BaseUser
     /**
      * @return string
      */
-    public function getMobile()
+    public function getMobile(): ?string
     {
         return $this->mobile;
     }
@@ -92,7 +92,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setMobile($mobile)
+    public function setMobile(string $mobile): User
     {
         $this->mobile = $mobile;
 

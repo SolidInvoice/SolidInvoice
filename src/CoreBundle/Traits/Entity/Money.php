@@ -36,7 +36,7 @@ trait Money
      *
      * @return MoneyObject
      */
-    public function getAmount()
+    public function getAmount(): Money
     {
         if (!$this->priceCurrency) {
             return;

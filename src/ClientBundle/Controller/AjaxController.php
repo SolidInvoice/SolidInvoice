@@ -34,7 +34,7 @@ class AjaxController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function infoAction(Client $client, $type = 'quote')
+    public function infoAction(Client $client, string $type = 'quote'): Response
     {
         $content = $this->renderView(
             'CSBillClientBundle:Ajax:info.html.twig',
@@ -65,7 +65,7 @@ class AjaxController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addcontactAction(Request $request, Client $client)
+    public function addcontactAction(Request $request, Client $client): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();

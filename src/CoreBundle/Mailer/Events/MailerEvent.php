@@ -34,7 +34,7 @@ class MailerEvent extends Event
     /**
      * @return Swift_Message
      */
-    public function getMessage()
+    public function getMessage(): Swift_Message
     {
         return $this->message;
     }

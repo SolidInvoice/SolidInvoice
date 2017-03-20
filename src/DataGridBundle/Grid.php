@@ -120,7 +120,7 @@ class Grid implements GridInterface
      *
      * @throws \Exception
      */
-    public function fetchData(Request $request, EntityManagerInterface $entityManager)
+    public function fetchData(Request $request, EntityManagerInterface $entityManager): array
     {
         $queryBuilder = $this->source->fetch($this->parameters);
 
@@ -130,7 +130,7 @@ class Grid implements GridInterface
 
         $resultSet = $paginator->getQuery()->getArrayResult();
 
-        array_walk_recursive($resultSet, function (&$value, $key) {
+        array_walk_recursive($resultSet, function (&$value, $key) : array{
             if (false !== strpos($key, 'currency')) {
                 $value = $this->moneyFormatter->getCurrencySymbol($value);
             }
@@ -145,7 +145,7 @@ class Grid implements GridInterface
     /**
      * @return bool
      */
-    public function requiresStatus()
+    public function requiresStatus(): bool
     {
         $criteria = Criteria::create();
         $criteria->where($criteria->expr()->contains('cell', 'status'));
@@ -156,7 +156,7 @@ class Grid implements GridInterface
     /**
      * @return string
      */
-    public function getIcon()
+    public function getIcon(): string
     {
         return $this->icon;
     }
@@ -164,7 +164,7 @@ class Grid implements GridInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

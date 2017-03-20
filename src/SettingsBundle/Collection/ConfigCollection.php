@@ -37,7 +37,7 @@ class ConfigCollection
      *
      * @param string $sectionName
      */
-    public function startSection($sectionName)
+    public function startSection(string $sectionName)
     {
         $this->current = $sectionName;
 
@@ -59,7 +59,7 @@ class ConfigCollection
      *
      * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->elements[$this->current];
     }
@@ -69,7 +69,7 @@ class ConfigCollection
      *
      * @return array
      */
-    public function getSections()
+    public function getSections(): array
     {
         return $this->sections;
     }

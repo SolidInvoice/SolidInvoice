@@ -30,7 +30,7 @@ interface ManagerInterface
      *
      * @throws \CSBill\SettingsBundle\Exception\InvalidSettingException
      */
-    public function get($setting = null);
+    public function get(string $setting = null);
 
     /**
      * Recursively set settings from an array.
@@ -44,5 +44,5 @@ interface ManagerInterface
     /**
      * @return array
      */
-    public function getSettings();
+    public function getSettings(): array;
 }

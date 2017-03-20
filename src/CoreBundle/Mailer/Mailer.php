@@ -75,7 +75,7 @@ class Mailer implements MailerInterface
     /**
      * {@inheritdoc}
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): Mailer
     {
         $this->dispatcher = $eventDispatcher;
 
@@ -99,7 +99,7 @@ class Mailer implements MailerInterface
      *
      * @return int If the email was successfully sent
      */
-    public function sendInvoice(Invoice $invoice)
+    public function sendInvoice(Invoice $invoice): int
     {
         $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', ['invoice' => $invoice]);
         $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', ['invoice' => $invoice]);
@@ -129,7 +129,7 @@ class Mailer implements MailerInterface
      *
      * @return null|string
      */
-    protected function getTemplate($template, array $parameters = [])
+    protected function getTemplate(string $template, array $parameters = [])
     {
         return $this->templating->exists($template) ? $this->templating->render($template, $parameters) : null;
     }
@@ -142,7 +142,7 @@ class Mailer implements MailerInterface
      *
      * @return string
      */
-    public function getSubject($settingsKey, $id = null)
+    public function getSubject(string $settingsKey, int $id = null): string
     {
         return str_replace('{id}', $id, $this->settings->get($settingsKey));
     }
@@ -162,11 +162,11 @@ class Mailer implements MailerInterface
     protected function sendMessage(
         $subject,
         $users,
-        $htmlTemplate = null,
+        string $htmlTemplate = null,
         $textTemplate = null,
         MessageEvent $event = null,
         $bccAddress = null
-    ) {
+    ) : int{
         $message = \Swift_Message::newInstance();
 
         $fromAddress = (string) $this->settings->get('email.from_address');
@@ -237,7 +237,7 @@ class Mailer implements MailerInterface
      *
      * @return int If the email was successfully sent
      */
-    public function sendQuote(Quote $quote)
+    public function sendQuote(Quote $quote): int
     {
         $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', ['quote' => $quote]);
         $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', ['quote' => $quote]);

@@ -72,7 +72,7 @@ class Tax
     private $name;
 
     /**
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Assert\Type("float")
@@ -111,7 +111,7 @@ class Tax
      *
      * @static
      */
-    public static function getTypes()
+    public static function getTypes(): array
     {
         $types = [
             self::TYPE_INCLUSIVE,
@@ -126,7 +126,7 @@ class Tax
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -134,7 +134,7 @@ class Tax
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -144,7 +144,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setName($name)
+    public function setName(string $name): Tax
     {
         $this->name = $name;
 
@@ -152,19 +152,19 @@ class Tax
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getRate()
+    public function getRate(): ?float
     {
         return $this->rate;
     }
 
     /**
-     * @param string $rate
+     * @param float $rate
      *
      * @return Tax
      */
-    public function setRate($rate)
+    public function setRate(float $rate): Tax
     {
         $this->rate = $rate;
 
@@ -174,7 +174,7 @@ class Tax
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -184,7 +184,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setType($type)
+    public function setType(string $type): Tax
     {
         $this->type = $type;
 
@@ -194,7 +194,7 @@ class Tax
     /**
      * @return ArrayCollection
      */
-    public function getInvoiceItems()
+    public function getInvoiceItems(): ArrayCollection
     {
         return $this->invoiceItems;
     }
@@ -204,7 +204,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setInvoiceItems(array $invoiceItems)
+    public function setInvoiceItems(array $invoiceItems): Tax
     {
         $this->invoiceItems = $invoiceItems;
 
@@ -214,7 +214,7 @@ class Tax
     /**
      * @return ArrayCollection
      */
-    public function getQuoteItems()
+    public function getQuoteItems(): ArrayCollection
     {
         return $this->quoteItems;
     }
@@ -224,7 +224,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setQuoteItems(array $quoteItems)
+    public function setQuoteItems(array $quoteItems): Tax
     {
         $this->quoteItems = $quoteItems;
 
@@ -234,7 +234,7 @@ class Tax
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $type = $this->type === self::TYPE_INCLUSIVE ? 'inc' : 'exl';
         $rate = $this->rate * 100;

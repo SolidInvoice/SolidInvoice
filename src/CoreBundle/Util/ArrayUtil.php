@@ -27,7 +27,7 @@ class ArrayUtil
      *
      * @return array
      */
-    public static function column($array, $column)
+    public static function column($array, string $column): array
     {
         if (!is_array($array) && !$array instanceof \Traversable) {
             throw new \Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
@@ -54,7 +54,7 @@ class ArrayUtil
             $return[] = $accessor->getValue($item, $column);
         }
 
-        return array_filter($return, function ($item) {
+        return array_filter($return, function ($item) : array{
             return $item !== null;
         });
     }

@@ -53,7 +53,7 @@ abstract class DefaultContext extends RawMinkContext implements Context, KernelA
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->kernel->getContainer();
     }

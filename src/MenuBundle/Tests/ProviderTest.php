@@ -23,11 +23,13 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
 
         $provider = new Provider($storage);
 
+        $q = new \SplPriorityQueue();
+        $q->insert('def', 0);
         $storage->shouldReceive('get')
             ->with('abc')
-            ->andReturn('def');
+            ->andReturn($q);
 
-        $this->assertSame('def', $provider->get('abc', []));
+        $this->assertSame($q, $provider->get('abc', []));
 
         $storage->shouldHaveReceived('get')
             ->with('abc');

@@ -42,7 +42,7 @@ class QuoteRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalQuotes($status = null)
+    public function getTotalQuotes(string $status = null): int
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -65,7 +65,7 @@ class QuoteRepository extends EntityRepository
      *
      * @return array
      */
-    public function getRecentQuotes($limit = 5)
+    public function getRecentQuotes($limit = 5): array
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -84,7 +84,7 @@ class QuoteRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGridQuery(array $parameters = [])
+    public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -102,7 +102,7 @@ class QuoteRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getArchivedGridQuery()
+    public function getArchivedGridQuery(): QueryBuilder
     {
         $this->getEntityManager()->getFilters()->disable('archivable');
 

@@ -49,7 +49,7 @@ class Migration implements ContainerAwareInterface
      *
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      */
-    public function migrate(\Closure $outputWriter = null)
+    public function migrate(\Closure $outputWriter = null): array
     {
         $dir = $this->container->getParameter('doctrine_migrations.dir_name');
 
@@ -79,7 +79,7 @@ class Migration implements ContainerAwareInterface
      *
      * @return Configuration
      */
-    private function getConfiguration($dir, \Closure $outputWriter = null)
+    private function getConfiguration($dir, \Closure $outputWriter = null): Configuration
     {
         $connection = $this->container->get('database_connection');
 

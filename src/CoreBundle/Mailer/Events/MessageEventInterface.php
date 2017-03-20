@@ -20,7 +20,7 @@ interface MessageEventInterface
     /**
      * @return string
      */
-    public function getEvent();
+    public function getEvent(): string;
 
     /**
      * @param Swift_Message $message
@@ -30,25 +30,25 @@ interface MessageEventInterface
     /**
      * @return Swift_Message
      */
-    public function getMessage();
+    public function getMessage(): Swift_Message;
 
     /**
      * @param string $template
      */
-    public function setHtmlTemplate($template);
+    public function setHtmlTemplate(string $template);
 
     /**
      * @return string
      */
-    public function getHtmlTemplate();
+    public function getHtmlTemplate(): string;
 
     /**
      * @param string $template
      */
-    public function setTextTemplate($template);
+    public function setTextTemplate(string $template);
 
     /**
      * @return string
      */
-    public function getTextTemplate();
+    public function getTextTemplate(): string;
 }

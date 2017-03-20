@@ -34,7 +34,7 @@ class PaymentCompleteEvent extends ResponseEvent
     /**
      * @return Payment
      */
-    public function getPayment()
+    public function getPayment(): Payment
     {
         return $this->payment;
     }

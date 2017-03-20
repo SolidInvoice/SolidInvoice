@@ -102,7 +102,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -114,7 +114,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return PaymentMethod
      */
-    public function setName($name)
+    public function setName(string $name): PaymentMethod
     {
         $this->name = $name;
 
@@ -126,7 +126,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -134,7 +134,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @return string
      */
-    public function getGatewayName()
+    public function getGatewayName(): string
     {
         return $this->gatewayName;
     }
@@ -144,7 +144,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return PaymentMethod
      */
-    public function setGatewayName($gatewayName)
+    public function setGatewayName($gatewayName): PaymentMethod
     {
         $this->gatewayName = $gatewayName;
 
@@ -158,7 +158,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return PaymentMethod
      */
-    public function setConfig(array $config)
+    public function setConfig(array $config): PaymentMethod
     {
         $this->config = $config;
 
@@ -170,7 +170,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -178,7 +178,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @return bool
      */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return (bool) $this->internal;
     }
@@ -188,7 +188,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return $this
      */
-    public function setInternal($internal)
+    public function setInternal(bool $internal)
     {
         $this->internal = (bool) $internal;
 
@@ -198,7 +198,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return (bool) $this->enabled;
     }
@@ -208,7 +208,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return $this
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled)
     {
         $this->enabled = (bool) $enabled;
 
@@ -268,7 +268,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return ArrayCollection
      */
-    public function getPayments()
+    public function getPayments(): ArrayCollection
     {
         return $this->payments;
     }
@@ -294,7 +294,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }

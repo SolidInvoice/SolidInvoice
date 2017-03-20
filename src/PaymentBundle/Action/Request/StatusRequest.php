@@ -186,7 +186,7 @@ class StatusRequest extends BaseGetStatus
     /**
      * @return bool
      */
-    public function isPayedout()
+    public function isPayedout(): bool
     {
         return false;
     }

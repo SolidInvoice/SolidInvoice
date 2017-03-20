@@ -42,5 +42,5 @@ interface MailerInterface
      *
      * @return Mailer
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher);
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): Mailer;
 }

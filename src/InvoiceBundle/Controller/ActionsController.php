@@ -28,7 +28,7 @@ class ActionsController extends BaseController
      *
      * @throws InvalidTransitionException
      */
-    public function transitionAction($action, Invoice $invoice)
+    public function transitionAction(string $action, Invoice $invoice): RedirectResponse
     {
         if (!$this->get('finite.factory')->get($invoice, Graph::GRAPH)->can($action)) {
             throw new InvalidTransitionException($action);
@@ -46,7 +46,7 @@ class ActionsController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function sendAction(Invoice $invoice)
+    public function sendAction(Invoice $invoice): RedirectResponse
     {
         if ($invoice->getStatus() !== Graph::STATUS_PENDING) {
             $this->get('invoice.manager')->accept($invoice);

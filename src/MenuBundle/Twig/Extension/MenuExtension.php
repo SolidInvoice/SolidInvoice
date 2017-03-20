@@ -52,7 +52,7 @@ class MenuExtension extends Twig_Extension
     /**
      * @return \Twig_SimpleFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction('menu', [$this, 'renderMenu'], ['is_safe' => ['html']]),
@@ -67,7 +67,7 @@ class MenuExtension extends Twig_Extension
      *
      * @return string
      */
-    public function renderMenu($location, array $options = [])
+    public function renderMenu(string $location, array $options = []): string
     {
         /** @var \SplPriorityQueue $menu */
         $menu = $this->provider->get($location);

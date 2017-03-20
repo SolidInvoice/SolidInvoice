@@ -22,7 +22,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isPaid()
+    public function isPaid(): bool
     {
         return Graph::STATUS_PAID === $this->getStatus();
     }
@@ -30,7 +30,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return Graph::STATUS_ARCHIVED === $this->getStatus();
     }
@@ -38,7 +38,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isCancelled()
+    public function isCancelled(): bool
     {
         return Graph::STATUS_CANCELLED === $this->getStatus();
     }
@@ -46,7 +46,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isDraft()
+    public function isDraft(): bool
     {
         return Graph::STATUS_DRAFT === $this->getStatus();
     }
@@ -54,7 +54,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isNew()
+    public function isNew(): bool
     {
         return Graph::STATUS_NEW === $this->getStatus();
     }
@@ -62,7 +62,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isOverdue()
+    public function isOverdue(): bool
     {
         return Graph::STATUS_OVERDUE === $this->getStatus();
     }
@@ -70,7 +70,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isPending()
+    public function isPending(): bool
     {
         return Graph::STATUS_PENDING === $this->getStatus();
     }
@@ -78,7 +78,7 @@ trait InvoiceStatusTrait
     /**
      * @return bool
      */
-    public function isRecurring()
+    public function isRecurring(): bool
     {
         return Graph::STATUS_RECURRING === $this->getStatus();
     }

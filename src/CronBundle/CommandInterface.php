@@ -20,7 +20,7 @@ interface CommandInterface
      *
      * @return bool
      */
-    public function isDue();
+    public function isDue(): bool;
 
     /**
      * Process command.

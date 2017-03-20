@@ -17,7 +17,7 @@ class InvalidTransitionException extends \Exception
     /**
      * @param string $transition
      */
-    public function __construct($transition)
+    public function __construct(string $transition)
     {
         $message = 'quote.transition.exception.'.$transition;
 

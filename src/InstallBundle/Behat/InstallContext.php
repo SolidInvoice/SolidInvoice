@@ -61,7 +61,7 @@ class InstallContext extends DefaultContext
      *
      * @throws \Exception
      */
-    public function configIsNotEmpty($config)
+    public function configIsNotEmpty(string $config)
     {
         $configFile = $this->kernel->getRootDir().'/config/parameters.yml';
 

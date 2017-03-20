@@ -57,7 +57,7 @@ class Factory
      *
      * @return NotificationInterface
      */
-    public function createEmailNotification(NotificationMessageInterface $message)
+    public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {
         $swiftMessage = \Swift_Message::newInstance();
 
@@ -98,7 +98,7 @@ class Factory
      *
      * @return NotificationInterface
      */
-    public function createHipchatNotification(NotificationMessageInterface $message)
+    public function createHipchatNotification(NotificationMessageInterface $message): NotificationInterface
     {
         $content = $message->getTextContent($this->templating);
 
@@ -119,7 +119,7 @@ class Factory
      *
      * @return NotificationInterface
      */
-    public function createSmsNotification($cellphone, NotificationMessageInterface $message)
+    public function createSmsNotification(string $cellphone, NotificationMessageInterface $message): NotificationInterface
     {
         return new TwilioNotification($cellphone, $message->getTextContent($this->templating));
     }

@@ -22,10 +22,12 @@ interface ContainerClassKernelInterface extends KernelInterface
      *
      * @return string
      */
-    public function getContainerCacheClass();
+    public function getContainerCacheClass(): string;
 
     /**
      * Sets the path to the config directory.
+     *
+     * @return string
      */
-    public function getConfigDir();
+    public function getConfigDir(): string;
 }

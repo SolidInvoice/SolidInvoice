@@ -43,7 +43,7 @@ class DefaultController extends BaseController
      *
      * @throws \Exception
      */
-    public function ratesAction()
+    public function ratesAction(): Response
     {
         return $this->render('CSBillTaxBundle:Default:index.html.twig');
     }
@@ -54,7 +54,7 @@ class DefaultController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(Request $request, Tax $tax = null)
+    public function addAction(Request $request, Tax $tax = null): Response
     {
         $tax = $tax ?: new Tax();
 

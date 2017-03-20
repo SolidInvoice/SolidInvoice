@@ -31,7 +31,7 @@ class ApiTokenRepository extends EntityRepository
      *
      * @throws UsernameNotFoundException
      */
-    public function getUsernameForToken($token)
+    public function getUsernameForToken(string $token): UserInterface
     {
         $q = $this
             ->createQueryBuilder('t')
@@ -54,7 +54,7 @@ class ApiTokenRepository extends EntityRepository
      *
      * @return array
      */
-    public function getApiTokensForUser(User $user)
+    public function getApiTokensForUser(User $user): array
     {
         $qb = $this->createQueryBuilder('t');
 

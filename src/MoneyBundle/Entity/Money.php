@@ -52,7 +52,7 @@ class Money
     /**
      * @return string
      */
-    public static function getBaseCurrency()
+    public static function getBaseCurrency(): string
     {
         return self::$baseCurrency;
     }
@@ -69,10 +69,10 @@ class Money
     }
 
     /**
-     * @return \Money\Money
+     * @return BaseMoney
      */
-    public function getMoney()
+    public function getMoney(): BaseMoney
     {
-        return new \Money\Money($this->value, new Currency($this->currency ?: self::$baseCurrency));
+        return new BaseMoney($this->value, new Currency($this->currency ?: self::$baseCurrency));
     }
 }

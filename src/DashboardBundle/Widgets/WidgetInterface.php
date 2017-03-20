@@ -18,10 +18,10 @@ interface WidgetInterface
     /**
      * @return array
      */
-    public function getData();
+    public function getData(): array;
 
     /**
      * @return string
      */
-    public function getTemplate();
+    public function getTemplate(): string;
 }

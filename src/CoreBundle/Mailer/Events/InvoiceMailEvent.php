@@ -26,7 +26,7 @@ class InvoiceMailEvent extends MessageEvent
     /**
      * @return string
      */
-    public function getEvent()
+    public function getEvent(): string
     {
         return MailerEvents::MAILER_SEND_INVOICE;
     }
@@ -42,7 +42,7 @@ class InvoiceMailEvent extends MessageEvent
     /**
      * @return Invoice
      */
-    public function getInvoice()
+    public function getInvoice(): Invoice
     {
         return $this->invoice;
     }

@@ -214,7 +214,7 @@ class LoaderTest extends KernelAwareTest
     /**
      * @return array
      */
-    public function settingsDataProvider()
+    public function settingsDataProvider(): array
     {
         $clientCreate = (new Setting())
             ->setKey('client_create')

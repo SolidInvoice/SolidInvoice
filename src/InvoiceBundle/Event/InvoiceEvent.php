@@ -42,7 +42,7 @@ class InvoiceEvent extends Event
     /**
      * @return Invoice
      */
-    public function getInvoice()
+    public function getInvoice(): Invoice
     {
         return $this->invoice;
     }

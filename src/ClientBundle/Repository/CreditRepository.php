@@ -26,7 +26,7 @@ class CreditRepository extends EntityRepository
      *
      * @return Credit
      */
-    public function addCredit(Client $client, Money $amount)
+    public function addCredit(Client $client, Money $amount): Credit
     {
         $credit = $client->getCredit();
 
@@ -41,7 +41,7 @@ class CreditRepository extends EntityRepository
      *
      * @return \CSBill\ClientBundle\Entity\Credit
      */
-    public function deductCredit(Client $client, Money $amount)
+    public function deductCredit(Client $client, Money $amount): Credit
     {
         $credit = $client->getCredit();
 
@@ -55,7 +55,7 @@ class CreditRepository extends EntityRepository
      *
      * @return Credit
      */
-    private function save(Credit $credit)
+    private function save(Credit $credit): Credit
     {
         $entityManager = $this->getEntityManager();
         $entityManager->persist($credit);

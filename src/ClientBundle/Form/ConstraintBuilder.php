@@ -23,7 +23,7 @@ class ConstraintBuilder
      * @return array
      * @static
      */
-    public static function build(array $options)
+    public static function build(array $options): array
     {
         $constraints = [];
 
@@ -43,7 +43,7 @@ class ConstraintBuilder
      * @return string
      * @static
      */
-    private static function humanize($text)
+    private static function humanize(string $text): string
     {
         return ucwords(str_replace('_', ' ', $text));
     }

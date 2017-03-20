@@ -59,7 +59,7 @@ class TaxRepository extends EntityRepository
     /**
      * @return bool
      */
-    public function taxRatesConfigured()
+    public function taxRatesConfigured(): bool
     {
         return $this->getTotal() > 0;
     }
@@ -78,7 +78,7 @@ class TaxRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGridQuery()
+    public function getGridQuery(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('t');
 

@@ -24,7 +24,7 @@ class ApiTokenHistoryRepository extends EntityRepository
      *
      * @return mixed|null
      */
-    public function addHistory(ApiTokenHistory $history, $token)
+    public function addHistory(ApiTokenHistory $history, string $token)
     {
         $entityManager = $this->getEntityManager();
 

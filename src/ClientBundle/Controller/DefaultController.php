@@ -28,7 +28,7 @@ class DefaultController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->render('CSBillClientBundle:Default:index.html.twig');
     }

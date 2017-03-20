@@ -69,7 +69,7 @@ class DoctrineLoader implements SettingsLoaderInterface
     /**
      * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         if (!$this->checkConnection()) {
             return [];
@@ -83,7 +83,7 @@ class DoctrineLoader implements SettingsLoaderInterface
      *
      * @return array
      */
-    protected function addSettings($sections)
+    protected function addSettings($sections): array
     {
         $settings = [];
 
@@ -118,7 +118,7 @@ class DoctrineLoader implements SettingsLoaderInterface
      *
      * @return bool
      */
-    protected function checkConnection()
+    protected function checkConnection(): bool
     {
         try {
             /** @var \CSBill\SettingsBundle\Repository\SectionRepository $repository */

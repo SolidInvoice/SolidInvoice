@@ -75,7 +75,7 @@ class Credit
     /**
      * @return Client
      */
-    public function getClient()
+    public function getClient(): Client
     {
         return $this->client;
     }
@@ -91,7 +91,7 @@ class Credit
     /**
      * @return Money
      */
-    public function getValue()
+    public function getValue(): Money
     {
         return $this->value->getMoney();
     }

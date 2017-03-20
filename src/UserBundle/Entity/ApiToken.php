@@ -90,7 +90,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -100,7 +100,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function setName($name)
+    public function setName(string $name): ApiToken
     {
         $this->name = $name;
 
@@ -110,7 +110,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -120,7 +120,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function setToken($token)
+    public function setToken(string $token): ApiToken
     {
         $this->token = $token;
 
@@ -130,7 +130,7 @@ class ApiToken
     /**
      * @return ArrayCollection
      */
-    public function getHistory()
+    public function getHistory(): ArrayCollection
     {
         return $this->history;
     }
@@ -140,7 +140,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function addHistory(ApiTokenHistory $history)
+    public function addHistory(ApiTokenHistory $history): ApiToken
     {
         $this->history[] = $history;
         $history->setToken($this);
@@ -153,7 +153,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function removeHistory(ApiTokenHistory $history)
+    public function removeHistory(ApiTokenHistory $history): ApiToken
     {
         $this->history->removeElement($history);
 
@@ -173,7 +173,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function setUser($user)
+    public function setUser($user): ApiToken
     {
         $this->user = $user;
 

@@ -21,7 +21,7 @@ trait QuoteStatusTrait
     /**
      * @return bool
      */
-    public function isPending()
+    public function isPending(): bool
     {
         return Graph::STATUS_PENDING === $this->getStatus();
     }
@@ -29,7 +29,7 @@ trait QuoteStatusTrait
     /**
      * @return bool
      */
-    public function isDraft()
+    public function isDraft(): bool
     {
         return Graph::STATUS_DRAFT === $this->getStatus();
     }
@@ -37,7 +37,7 @@ trait QuoteStatusTrait
     /**
      * @return bool
      */
-    public function isCancelled()
+    public function isCancelled(): bool
     {
         return Graph::STATUS_CANCELLED === $this->getStatus();
     }
@@ -45,7 +45,7 @@ trait QuoteStatusTrait
     /**
      * @return bool
      */
-    public function isAccepted()
+    public function isAccepted(): bool
     {
         return Graph::STATUS_ACCEPTED === $this->getStatus();
     }
@@ -53,7 +53,7 @@ trait QuoteStatusTrait
     /**
      * @return bool
      */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return Graph::STATUS_ARCHIVED === $this->getStatus();
     }
@@ -61,7 +61,7 @@ trait QuoteStatusTrait
     /**
      * @return bool
      */
-    public function isDeclined()
+    public function isDeclined(): bool
     {
         return Graph::STATUS_DECLINED === $this->getStatus();
     }

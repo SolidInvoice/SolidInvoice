@@ -21,7 +21,7 @@ interface GridInterface
     /**
      * @return bool
      */
-    public function requiresStatus();
+    public function requiresStatus(): bool;
 
     /**
      * @param Request                $request

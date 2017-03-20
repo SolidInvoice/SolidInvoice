@@ -29,10 +29,10 @@ interface ItemInterface extends BaseInterface
      *
      * @return $this
      */
-    public function addDivider($type = '');
+    public function addDivider(string $type = '');
 
     /**
      * @return bool
      */
-    public function isDivider();
+    public function isDivider(): bool;
 }

@@ -92,7 +92,7 @@ class ContactType
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -104,7 +104,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setName($name)
+    public function setName(string $name): ContactType
     {
         $this->name = $name;
 
@@ -116,7 +116,7 @@ class ContactType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -128,7 +128,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setRequired($required)
+    public function setRequired(bool $required): ContactType
     {
         $this->required = (bool) $required;
 
@@ -140,7 +140,7 @@ class ContactType
      *
      * @return bool
      */
-    public function isRequired()
+    public function isRequired(): bool
     {
         return $this->required;
     }
@@ -152,7 +152,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function addDetail(AdditionalContactDetail $detail)
+    public function addDetail(AdditionalContactDetail $detail): ContactType
     {
         $this->details[] = $detail;
         $detail->setType($this);
@@ -165,7 +165,7 @@ class ContactType
      *
      * @return ArrayCollection
      */
-    public function getDetails()
+    public function getDetails(): ArrayCollection
     {
         return $this->details;
     }
@@ -173,7 +173,7 @@ class ContactType
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -183,7 +183,7 @@ class ContactType
      *
      * @return $this
      */
-    public function setType($type)
+    public function setType(string $type)
     {
         $this->type = $type;
 
@@ -193,7 +193,7 @@ class ContactType
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }

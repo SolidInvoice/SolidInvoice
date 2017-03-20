@@ -22,7 +22,7 @@ class MainMenu
      *
      * @return array
      */
-    public static function user(User $user)
+    public static function user(User $user): array
     {
         $username = $user->getUsername().' <b class="caret"></b>';
 
@@ -43,7 +43,7 @@ class MainMenu
     /**
      * @return array
      */
-    public static function profile()
+    public static function profile(): array
     {
         return [
             'menu.top.profile', ['route' => 'fos_user_profile_show', 'extras' => ['icon' => 'user']],
@@ -53,7 +53,7 @@ class MainMenu
     /**
      * @return array
      */
-    public static function api()
+    public static function api(): array
     {
         return [
             'menu.top.api', ['route' => 'api_keys', 'extras' => ['icon' => 'user-secret']],
@@ -63,7 +63,7 @@ class MainMenu
     /**
      * @return array
      */
-    public static function logout()
+    public static function logout(): array
     {
         return [
             'menu.top.logout',
@@ -77,7 +77,7 @@ class MainMenu
     /**
      * @return array
      */
-    public static function system()
+    public static function system(): array
     {
         return [
             'menu.top.system',
@@ -95,7 +95,7 @@ class MainMenu
     /**
      * @return array
      */
-    public static function settings()
+    public static function settings(): array
     {
         return [
             'menu.top.settings',
@@ -109,7 +109,7 @@ class MainMenu
     /**
      * @return array
      */
-    public static function tax()
+    public static function tax(): array
     {
         return [
             'menu.top.tax',

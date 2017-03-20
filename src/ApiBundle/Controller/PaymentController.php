@@ -42,7 +42,7 @@ class PaymentController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getPaymentsAction(ParamFetcherInterface $fetcher)
+    public function getPaymentsAction(ParamFetcherInterface $fetcher): Response
     {
         /* @var PaymentRepository $repository */
         $repository = $this->get('doctrine')

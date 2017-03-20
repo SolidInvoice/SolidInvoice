@@ -29,7 +29,7 @@ trait SoftDeleteable
      *
      * @return \DateTime
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): \DateTime
     {
         return $this->deletedAt;
     }
@@ -53,7 +53,7 @@ trait SoftDeleteable
      *
      * @return bool
      */
-    public function isDeleted()
+    public function isDeleted(): bool
     {
         return null !== $this->deletedAt;
     }

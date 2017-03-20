@@ -36,7 +36,7 @@ abstract class Status
      *
      * @return string
      */
-    public function getStatusLabel($status)
+    public function getStatusLabel(string $status): string
     {
         if (isset($this->statusLabels[$status])) {
             return $this->statusLabels[$status];
@@ -52,7 +52,7 @@ abstract class Status
      *
      * @return string
      */
-    public function getHtml($status)
+    public function getHtml(string $status): string
     {
         $status = str_replace(['-', '_'], ' ', strtolower((string) $status));
 
@@ -64,7 +64,7 @@ abstract class Status
      *
      * @return array
      */
-    public function getStatusList()
+    public function getStatusList(): array
     {
         return array_keys($this->statusLabels);
     }

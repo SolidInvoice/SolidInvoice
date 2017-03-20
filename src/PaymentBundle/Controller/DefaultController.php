@@ -17,6 +17,7 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends BaseController
 {
@@ -25,7 +26,7 @@ class DefaultController extends BaseController
      *
      * @throws \Exception
      */
-    public function listAction()
+    public function listAction(): Response
     {
         return $this->render('CSBillPaymentBundle:Default:list.html.twig');
     }
@@ -35,7 +36,7 @@ class DefaultController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
             $paymentMethods = array_keys($this->get('payum.factories')->getFactories());
@@ -44,7 +45,7 @@ class DefaultController extends BaseController
             $repository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
 
             $enabledMethods = array_map(
-                function (PaymentMethod $method) {
+                function (PaymentMethod $method) : Response{
                     return strtolower($method->getGatewayName());
                 }, $repository->findBy(['enabled' => 1])
             );

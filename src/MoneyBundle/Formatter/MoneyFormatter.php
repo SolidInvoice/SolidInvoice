@@ -38,7 +38,7 @@ class MoneyFormatter
      * @param string          $locale
      * @param Currency|string $currency
      */
-    public function __construct($locale, $currency = null)
+    public function __construct(string $locale, $currency = null)
     {
         $this->numberFormatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
         $this->numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
@@ -56,7 +56,7 @@ class MoneyFormatter
      *
      * @return string
      */
-    public function format(Money $money)
+    public function format(Money $money): string
     {
         $amount = $this->toFloat($money);
 
@@ -68,7 +68,7 @@ class MoneyFormatter
      *
      * @return string
      */
-    public function getCurrencySymbol($currency = null)
+    public function getCurrencySymbol(string $currency = null): string
     {
         if ($currency instanceof Currency) {
             $currency = $currency->getCode();
@@ -89,7 +89,7 @@ class MoneyFormatter
     /**
      * @return string
      */
-    public function getDecimalSeparator()
+    public function getDecimalSeparator(): string
     {
         return $this->numberFormatter->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
     }
@@ -97,7 +97,7 @@ class MoneyFormatter
     /**
      * @return string
      */
-    public function getPattern()
+    public function getPattern(): string
     {
         if (extension_loaded('intl')) {
             $pattern = explode(';', $this->numberFormatter->getPattern());
@@ -113,7 +113,7 @@ class MoneyFormatter
      *
      * @return float
      */
-    public static function toFloat(Money $amount)
+    public static function toFloat(Money $amount): float
     {
         return ((float) $amount->getAmount()) / pow(10, 2);
     }

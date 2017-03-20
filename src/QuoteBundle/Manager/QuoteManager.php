@@ -109,7 +109,7 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    public function accept(Quote $quote)
+    public function accept(Quote $quote): Invoice
     {
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_ACCEPT, new QuoteEvent($quote));
 
@@ -130,7 +130,7 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    private function applyTransition(Quote $quote, $transition)
+    private function applyTransition(Quote $quote, string $transition): bool
     {
         $stateMachine = $this->stateMachine->get($quote, Graph::GRAPH);
 
@@ -168,7 +168,7 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    public function archive(Quote $quote)
+    public function archive(Quote $quote): Quote
     {
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_ARCHIVE, new QuoteEvent($quote));
 
@@ -190,7 +190,7 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    public function decline(Quote $quote)
+    public function decline(Quote $quote): RedirectResponse
     {
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_DECLINE, new QuoteEvent($quote));
 
@@ -208,7 +208,7 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    public function cancel(Quote $quote)
+    public function cancel(Quote $quote): RedirectResponse
     {
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CANCEL, new QuoteEvent($quote));
 
@@ -226,7 +226,7 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    public function reopen(Quote $quote)
+    public function reopen(Quote $quote): RedirectResponse
     {
         $this->applyTransition($quote, Graph::TRANSITION_REOPEN);
 
@@ -240,7 +240,7 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    public function send(Quote $quote)
+    public function send(Quote $quote): RedirectResponse
     {
         $finite = $this->stateMachine->get($quote, Graph::GRAPH);
 
@@ -264,7 +264,7 @@ class QuoteManager
      *
      * @return Quote
      */
-    public function duplicate(Quote $quote)
+    public function duplicate(Quote $quote): Quote
     {
         // We don't use 'clone', since cloning aq quote will clone all the item id's and nested values.
         // We rather set it manually

@@ -53,7 +53,7 @@ class RecurringInvoiceCreate implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function isDue()
+    public function isDue(): bool
     {
         // We want to run this process always when a cron runs, to ensure we always send out the invoices
         return true;

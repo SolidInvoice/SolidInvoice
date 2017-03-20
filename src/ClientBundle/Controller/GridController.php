@@ -27,7 +27,7 @@ class GridController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function archiveAction(Request $request)
+    public function archiveAction(Request $request): Response
     {
         $data = $request->request->get('data');
 
@@ -53,7 +53,7 @@ class GridController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function restoreAction(Request $request)
+    public function restoreAction(Request $request): Response
     {
         $data = $request->request->get('data');
 
@@ -81,7 +81,7 @@ class GridController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         $data = $request->request->get('data');
 

@@ -41,7 +41,7 @@ class PaymentController extends BaseController
      *
      * @throws \Exception
      */
-    public function preparePaymentAction(Request $request, Invoice $invoice = null)
+    public function preparePaymentAction(Request $request, Invoice $invoice = null): Response
     {
         if (null === $invoice) {
             throw $this->createNotFoundException();

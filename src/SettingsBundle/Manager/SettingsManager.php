@@ -108,7 +108,7 @@ class SettingsManager implements ManagerInterface
      *
      * @throws \CSBill\SettingsBundle\Exception\InvalidSettingException
      */
-    public function get($setting = null)
+    public function get(string $setting = null)
     {
         $this->initialize();
 
@@ -160,7 +160,7 @@ class SettingsManager implements ManagerInterface
     /**
      * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         $this->initialize();
 
@@ -207,7 +207,7 @@ class SettingsManager implements ManagerInterface
      *
      * @return array
      */
-    protected function setData(array $config, array $settings)
+    protected function setData(array $config, array $settings): array
     {
         $settingsArray = [];
 

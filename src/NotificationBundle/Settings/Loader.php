@@ -86,7 +86,7 @@ class Loader implements SettingsLoaderInterface
     /**
      * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         if (!$this->checkConnection()) {
             return [];
@@ -122,7 +122,7 @@ class Loader implements SettingsLoaderInterface
      *
      * @return bool
      */
-    protected function checkConnection()
+    protected function checkConnection(): bool
     {
         try {
             /** @var \CSBill\SettingsBundle\Repository\SectionRepository $repository */

@@ -22,7 +22,7 @@ class PaymentMethodRepository extends EntityRepository
      *
      * @return array
      */
-    public function getSettingsForMethodArray($gatewayName)
+    public function getSettingsForMethodArray(string $gatewayName): array
     {
         $queryBuilder = $this->createQueryBuilder('pm');
 
@@ -46,7 +46,7 @@ class PaymentMethodRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalMethodsConfigured($includeInternal = true)
+    public function getTotalMethodsConfigured(bool $includeInternal = true): int
     {
         $queryBuilder = $this->createQueryBuilder('pm');
 

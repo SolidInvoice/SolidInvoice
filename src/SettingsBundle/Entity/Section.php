@@ -63,7 +63,7 @@ class Section
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -73,7 +73,7 @@ class Section
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -85,7 +85,7 @@ class Section
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
 
@@ -97,7 +97,7 @@ class Section
      *
      * @return Section
      */
-    public function getParent()
+    public function getParent(): Section
     {
         return $this->parent;
     }
@@ -109,7 +109,7 @@ class Section
      *
      * @return Section
      */
-    public function setParent(Section $parent)
+    public function setParent(Section $parent): Section
     {
         $this->parent = $parent;
 
@@ -121,7 +121,7 @@ class Section
      *
      * @return ArrayCollection
      */
-    public function getChildren()
+    public function getChildren(): ArrayCollection
     {
         return $this->children;
     }
@@ -133,7 +133,7 @@ class Section
      *
      * @return Section
      */
-    public function addChild(Section $child)
+    public function addChild(Section $child): Section
     {
         $this->children[] = $child;
         $child->setParent($this);
@@ -148,7 +148,7 @@ class Section
      *
      * @return Section
      */
-    public function removeChild(Section $child)
+    public function removeChild(Section $child): Section
     {
         $this->children->removeElement($child);
 
@@ -160,7 +160,7 @@ class Section
      *
      * @return ArrayCollection
      */
-    public function getSettings()
+    public function getSettings(): ArrayCollection
     {
         return $this->settings;
     }
@@ -172,7 +172,7 @@ class Section
      *
      * @return Section
      */
-    public function addSetting(Setting $setting)
+    public function addSetting(Setting $setting): Section
     {
         $this->settings[] = $setting;
         $setting->setSection($this);
@@ -187,7 +187,7 @@ class Section
      *
      * @return Section
      */
-    public function removeSetting(Setting $setting)
+    public function removeSetting(Setting $setting): Section
     {
         $this->settings->removeElement($setting);
 
@@ -197,7 +197,7 @@ class Section
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }

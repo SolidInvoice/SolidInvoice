@@ -28,7 +28,7 @@ class SettingsRepository extends EntityRepository
      *
      * @return array
      */
-    public function getSettingsBySection($section, $combineArray = true)
+    public function getSettingsBySection(string $section, bool $combineArray = true): array
     {
         $qb = $this->createQueryBuilder('s')
                     ->where('s.section = :section')

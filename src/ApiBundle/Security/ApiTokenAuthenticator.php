@@ -58,7 +58,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      *
      * @throws AuthenticationCredentialsNotFoundException
      */
-    public function createToken(Request $request, $providerKey)
+    public function createToken(Request $request, string $providerKey): PreAuthenticatedToken
     {
         $token = $this->getToken($request);
 
@@ -79,7 +79,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      *
      * @return string
      */
-    private function getToken(Request $request)
+    private function getToken(Request $request): string
     {
         return $request->headers->get('X-API-TOKEN', $request->query->get('token'));
     }
@@ -93,7 +93,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      *
      * @throws BadCredentialsException
      */
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
+    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, string $providerKey): PreAuthenticatedToken
     {
         /* @var ApiTokenUserProvider $userProvider */
 
@@ -122,7 +122,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      *
      * @return bool
      */
-    public function supportsToken(TokenInterface $token, $providerKey)
+    public function supportsToken(TokenInterface $token, string $providerKey): bool
     {
         return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }

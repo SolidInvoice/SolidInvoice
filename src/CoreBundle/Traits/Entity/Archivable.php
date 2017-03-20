@@ -27,7 +27,7 @@ trait Archivable
     /**
      * @return bool
      */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return true === $this->archived;
     }
@@ -37,7 +37,7 @@ trait Archivable
      *
      * @return $this
      */
-    public function setArchived($archived)
+    public function setArchived(bool $archived)
     {
         $this->archived = $archived;
 
@@ -49,7 +49,7 @@ trait Archivable
      *
      * @return Archivable
      */
-    public function archive()
+    public function archive(): Archivable
     {
         return $this->setArchived(true);
     }

@@ -81,7 +81,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @return \Twig_SimpleFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction(
@@ -116,7 +116,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderInvoiceStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
+    public function renderInvoiceStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null): string
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
@@ -140,7 +140,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @return array
      */
-    private function getAllStatusLabels(\Twig_Environment $environment, array $labelMap)
+    private function getAllStatusLabels(\Twig_Environment $environment, array $labelMap): array
     {
         $response = [];
 
@@ -160,7 +160,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @return string
      */
-    private function renderStatusLabel(\Twig_Environment $environment, $object, $tooltip = null)
+    private function renderStatusLabel(\Twig_Environment $environment, $object, string $tooltip = null): string
     {
         if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
             $object = [
@@ -187,7 +187,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderQuoteStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
+    public function renderQuoteStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null): string
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
@@ -214,7 +214,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderPaymentStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
+    public function renderPaymentStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null): string
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
@@ -241,7 +241,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderClientStatusLabel(\Twig_Environment $environment, $status = null, $tooltip = null)
+    public function renderClientStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null): string
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->clientLabelMap);
@@ -264,7 +264,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'csbill_core.status';
     }

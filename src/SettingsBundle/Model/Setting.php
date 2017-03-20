@@ -55,7 +55,7 @@ abstract class Setting
      *
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -67,7 +67,7 @@ abstract class Setting
      *
      * @return Setting
      */
-    public function setKey($key)
+    public function setKey(string $key): Setting
     {
         $this->key = $key;
 
@@ -77,7 +77,7 @@ abstract class Setting
     /**
      * Get value.
      *
-     * @return string
+     * @return mixed
      */
     public function getValue()
     {
@@ -91,7 +91,7 @@ abstract class Setting
      *
      * @return Setting
      */
-    public function setValue($value)
+    public function setValue($value): Setting
     {
         $this->value = $value;
 
@@ -103,7 +103,7 @@ abstract class Setting
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -115,7 +115,7 @@ abstract class Setting
      *
      * @return Setting
      */
-    public function setDescription($description)
+    public function setDescription(string $description): Setting
     {
         $this->description = $description;
 
@@ -127,7 +127,7 @@ abstract class Setting
      *
      * @return Section
      */
-    public function getSection()
+    public function getSection(): Section
     {
         return $this->section;
     }
@@ -139,7 +139,7 @@ abstract class Setting
      *
      * @return Setting
      */
-    public function setSection(Section $section)
+    public function setSection(Section $section): Setting
     {
         $this->section = $section;
 
@@ -151,7 +151,7 @@ abstract class Setting
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -163,7 +163,7 @@ abstract class Setting
      *
      * @return Setting
      */
-    public function setType($type)
+    public function setType(string $type): Setting
     {
         $this->type = $type;
 
@@ -177,7 +177,7 @@ abstract class Setting
      *
      * @return Setting
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): Setting
     {
         $this->options = $options;
 
@@ -189,7 +189,7 @@ abstract class Setting
      *
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -197,7 +197,7 @@ abstract class Setting
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->value;
     }

@@ -25,7 +25,7 @@ class ActionsController extends BaseController
      *
      * @throws InvalidTransitionException
      */
-    public function acceptAction(Quote $quote)
+    public function acceptAction(Quote $quote): RedirectResponse
     {
         $invoice = $this->get('quote.manager')->accept($quote);
 
@@ -41,7 +41,7 @@ class ActionsController extends BaseController
      *
      * @throws InvalidTransitionException
      */
-    public function declineAction(Quote $quote)
+    public function declineAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->decline($quote);
 
@@ -57,7 +57,7 @@ class ActionsController extends BaseController
      *
      * @throws InvalidTransitionException
      */
-    public function cancelAction(Quote $quote)
+    public function cancelAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->cancel($quote);
 
@@ -73,7 +73,7 @@ class ActionsController extends BaseController
      *
      * @throws InvalidTransitionException
      */
-    public function reopenAction(Quote $quote)
+    public function reopenAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->reopen($quote);
 
@@ -89,7 +89,7 @@ class ActionsController extends BaseController
      *
      * @throws InvalidTransitionException
      */
-    public function sendAction(Quote $quote)
+    public function sendAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->send($quote);
 

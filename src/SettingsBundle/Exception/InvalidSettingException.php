@@ -20,7 +20,7 @@ class InvalidSettingException extends \RuntimeException
     /**
      * @param string $value The name of the invalid setting
      */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $message = sprintf('Invalid settings option: %s', $value);
 

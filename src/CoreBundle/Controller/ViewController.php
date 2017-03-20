@@ -39,7 +39,7 @@ class ViewController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewquoteAction($uuid)
+    public function viewquoteAction(string $uuid): Response
     {
         $this->repository = 'CSBillQuoteBundle:Quote';
         $this->route = '_quotes_view';
@@ -55,7 +55,7 @@ class ViewController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewinvoiceAction($uuid)
+    public function viewinvoiceAction($uuid): Response
     {
         $this->repository = 'CSBillInvoiceBundle:Invoice';
         $this->route = '_invoices_view';
@@ -72,7 +72,7 @@ class ViewController extends BaseController
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function createResponse($uuid, $object)
+    private function createResponse($uuid, string $object): Response
     {
         $repository = $this->getRepository($this->repository);
 

@@ -22,7 +22,7 @@ interface SettingsLoaderInterface
      *
      * @return array
      */
-    public function getSettings();
+    public function getSettings(): array;
 
     /**
      * @param array $settings

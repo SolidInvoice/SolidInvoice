@@ -48,7 +48,7 @@ class QuoteController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getQuotesAction(ParamFetcherInterface $fetcher)
+    public function getQuotesAction(ParamFetcherInterface $fetcher): Response
     {
         /* @var QuoteRepository $repository */
         $repository = $this->get('doctrine')
@@ -83,7 +83,7 @@ class QuoteController extends Controller
      *
      * @throws \Exception
      */
-    public function getQuoteAction(Entity\Quote $quote)
+    public function getQuoteAction(Entity\Quote $quote): Response
     {
         return $this->handleView($this->view($quote));
     }
@@ -108,7 +108,7 @@ class QuoteController extends Controller
      *
      * @return Response
      */
-    public function createQuoteAction(Request $request)
+    public function createQuoteAction(Request $request): Response
     {
         $entity = new Entity\Quote();
         $entity->setStatus($request->request->get('status', Graph::STATUS_DRAFT));

@@ -30,7 +30,7 @@ class ClientRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalClients($status = null)
+    public function getTotalClients(string $status = null): int
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -53,7 +53,7 @@ class ClientRepository extends EntityRepository
      *
      * @return array
      */
-    public function getRecentClients($limit = 5)
+    public function getRecentClients($limit = 5): array
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -76,7 +76,7 @@ class ClientRepository extends EntityRepository
     /**
      * @return array
      */
-    public function getStatusList()
+    public function getStatusList(): array
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -88,7 +88,7 @@ class ClientRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGridQuery()
+    public function getGridQuery(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -100,7 +100,7 @@ class ClientRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getArchivedGridQuery()
+    public function getArchivedGridQuery(): QueryBuilder
     {
         $this->getEntityManager()->getFilters()->disable('archivable');
 

@@ -18,7 +18,7 @@ class InvalidGridException extends \Exception
     /**
      * @param string $grid
      */
-    public function __construct($grid)
+    public function __construct(string $grid)
     {
         $message = sprintf('The grid "%s" does not exist.', $grid);
 

@@ -26,7 +26,7 @@ class DataController extends BaseController
      *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
-    public function getDataAction(Request $request, $name)
+    public function getDataAction(Request $request, string $name): Response
     {
         $grid = $this->get('grid.repository')->find($name);
 

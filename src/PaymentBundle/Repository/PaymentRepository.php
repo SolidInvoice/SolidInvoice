@@ -66,7 +66,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return array
      */
-    public function getPaymentsForInvoice(Invoice $invoice, $orderField = null, $sort = 'DESC')
+    public function getPaymentsForInvoice(Invoice $invoice, string $orderField = null, $sort = 'DESC'): array
     {
         $queryBuilder = $this->getPaymentQueryBuilder($orderField, $sort);
 
@@ -85,7 +85,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function getPaymentQueryBuilder($orderField = null, $sort = 'DESC')
+    protected function getPaymentQueryBuilder(string $orderField = null, $sort = 'DESC'): QueryBuilder
     {
         if (null === $orderField) {
             $orderField = 'p.created';
@@ -120,7 +120,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalPaidForInvoice(Invoice $invoice)
+    public function getTotalPaidForInvoice(Invoice $invoice): int
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
@@ -145,7 +145,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return array
      */
-    public function getPaymentsForClient(Client $client, $orderField = null, $sort = 'DESC')
+    public function getPaymentsForClient(Client $client, string $orderField = null, $sort = 'DESC'): array
     {
         $queryBuilder = $this->getPaymentQueryBuilder($orderField, $sort);
 
@@ -165,7 +165,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return array
      */
-    public function getRecentPayments($limit = 5)
+    public function getRecentPayments(int $limit = 5): array
     {
         $qb = $this->getPaymentQueryBuilder();
 
@@ -188,7 +188,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return array
      */
-    public function getPaymentsList(\DateTime $timestamp = null)
+    public function getPaymentsList(\DateTime $timestamp = null): array
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
@@ -218,7 +218,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return array
      */
-    private function formatDate(Query $query, $dateFormat = 'Y-m-d')
+    private function formatDate(Query $query, string $dateFormat = 'Y-m-d'): array
     {
         $payments = [];
 
@@ -240,7 +240,7 @@ class PaymentRepository extends EntityRepository
     /**
      * @return array
      */
-    public function getPaymentsByMonth()
+    public function getPaymentsByMonth(): array
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
@@ -269,7 +269,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return mixed
      */
-    public function updatePaymentStatus($payments, $status)
+    public function updatePaymentStatus($payments, string $status)
     {
         if (!is_array($payments) && !$payments instanceof \Traversable) {
             $payments = [$payments];
@@ -295,7 +295,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGridQuery(array $parameters = [])
+    public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p');
 

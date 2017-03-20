@@ -28,7 +28,7 @@ class SectionRepository extends EntityRepository
      *
      * @return array
      */
-    public function getTopLevelSections($cache = false, $cacheKey = 'csbill_settings_top_section_sections', $lifetime = 604800)
+    public function getTopLevelSections(bool $cache = false, $cacheKey = 'csbill_settings_top_section_sections', int $lifetime = 604800): array
     {
         $qb = $this->createQueryBuilder('s')
                    ->where('s.parent IS NULL');

@@ -61,7 +61,7 @@ class Notification
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -69,7 +69,7 @@ class Notification
     /**
      * @return string
      */
-    public function getEvent()
+    public function getEvent(): string
     {
         return $this->event;
     }
@@ -79,7 +79,7 @@ class Notification
      *
      * @return Notification
      */
-    public function setEvent($event)
+    public function setEvent(string $event): Notification
     {
         $this->event = $event;
 
@@ -87,19 +87,19 @@ class Notification
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getEmail()
+    public function getEmail(): bool
     {
         return (bool) $this->email;
     }
 
     /**
-     * @param string $email
+     * @param bool $email
      *
      * @return Notification
      */
-    public function setEmail($email)
+    public function setEmail(bool $email): Notification
     {
         $this->email = $email;
 
@@ -107,19 +107,19 @@ class Notification
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getHipchat()
+    public function getHipchat(): bool
     {
         return (bool) $this->hipchat;
     }
 
     /**
-     * @param string $hipchat
+     * @param bool $hipchat
      *
      * @return Notification
      */
-    public function setHipchat($hipchat)
+    public function setHipchat(bool $hipchat): Notification
     {
         $this->hipchat = $hipchat;
 
@@ -127,19 +127,19 @@ class Notification
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getSms()
+    public function getSms(): bool
     {
         return (bool) $this->sms;
     }
 
     /**
-     * @param string $sms
+     * @param bool $sms
      *
      * @return Notification
      */
-    public function setSms($sms)
+    public function setSms(bool $sms): Notification
     {
         $this->sms = $sms;
 

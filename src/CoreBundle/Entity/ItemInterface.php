@@ -23,7 +23,7 @@ interface ItemInterface
      *
      * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set description.
@@ -32,14 +32,14 @@ interface ItemInterface
      *
      * @return ItemInterface
      */
-    public function setDescription($description);
+    public function setDescription(string $description): ItemInterface;
 
     /**
      * Get description.
      *
      * @return string
      */
-    public function getDescription();
+    public function getDescription(): ?string;
 
     /**
      * Set the price.
@@ -48,54 +48,54 @@ interface ItemInterface
      *
      * @return ItemInterface
      */
-    public function setPrice(Money $price);
+    public function setPrice(Money $price): ItemInterface;
 
     /**
      * Get the price.
      *
      * @return Money
      */
-    public function getPrice();
+    public function getPrice(): Money;
 
     /**
      * Set the qty.
      *
-     * @param int $qty
+     * @param float $qty
      *
      * @return ItemInterface
      */
-    public function setQty($qty);
+    public function setQty(float $qty): ItemInterface;
 
     /**
      * Get qty.
      *
-     * @return int
+     * @return float
      */
-    public function getQty();
+    public function getQty(): ?float;
 
     /**
      * @param Money $total
      *
      * @return ItemInterface
      */
-    public function setTotal(Money $total);
+    public function setTotal(Money $total): ItemInterface;
 
     /**
      * Get the line item total.
      *
      * @return Money
      */
-    public function getTotal();
+    public function getTotal(): Money;
 
     /**
      * @return Tax
      */
-    public function getTax();
+    public function getTax(): Tax;
 
     /**
      * @param Tax $tax
      *
      * @return ItemInterface
      */
-    public function setTax(Tax $tax = null);
+    public function setTax(Tax $tax = null): ItemInterface;
 }

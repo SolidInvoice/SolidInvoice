@@ -25,7 +25,7 @@ class SystemRequirementsStep extends AbstractControllerStep
      *
      * @throws \Exception
      */
-    public function displayAction(ProcessContextInterface $context)
+    public function displayAction(ProcessContextInterface $context): Response
     {
         if ($this->container->getParameter('installed')) {
             $flashBag = $this->get('session')->getFlashBag();

@@ -41,7 +41,7 @@ class QuoteEvent extends Event
     /**
      * @return Quote
      */
-    public function getQuote()
+    public function getQuote(): Quote
     {
         return $this->quote;
     }

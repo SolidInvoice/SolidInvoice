@@ -42,7 +42,7 @@ class TaxExtension extends \Twig_Extension
     /**
      * @return true
      */
-    public function taxRatesConfigured()
+    public function taxRatesConfigured(): bool
     {
         static $taxConfigured;
 

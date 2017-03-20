@@ -39,7 +39,7 @@ class VersionRepository extends EntityRepository
     /**
      * @return string
      */
-    public function getCurrentVersion()
+    public function getCurrentVersion(): string
     {
         $qb = $this->createQueryBuilder('v');
 

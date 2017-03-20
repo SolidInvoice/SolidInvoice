@@ -19,7 +19,7 @@ class UnexpectedTypeException extends \InvalidArgumentException
      * @param string $value
      * @param string $expectedType
      */
-    public function __construct($value, $expectedType)
+    public function __construct(string $value, string $expectedType)
     {
         parent::__construct(
             sprintf(

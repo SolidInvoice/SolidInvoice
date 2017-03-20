@@ -48,7 +48,7 @@ class PaymentFactories
      *
      * @return array
      */
-    public function getFactories($type = null)
+    public function getFactories(string $type = null): ?array
     {
         if (null === $type) {
             return $this->factories;
@@ -56,7 +56,7 @@ class PaymentFactories
 
         return array_filter(
             $this->factories,
-            function ($factory) use ($type) {
+            function ($factory) use ($type): bool {
                 return $type === $factory;
             }
         );
@@ -65,9 +65,9 @@ class PaymentFactories
     /**
      * @param string $gateway
      *
-     * @return array
+     * @return string
      */
-    public function getForm($gateway)
+    public function getForm(string $gateway): ?string
     {
         return isset($this->forms[$gateway]) ? $this->forms[$gateway] : null;
     }
@@ -75,11 +75,11 @@ class PaymentFactories
     /**
      * @param string $gateway
      *
-     * @return array
+     * @return string
      *
      * @throws \Exception
      */
-    public function getFactory($gateway)
+    public function getFactory(string $gateway): ?string
     {
         if (isset($this->factories[$gateway])) {
             return $this->factories[$gateway];
@@ -93,7 +93,7 @@ class PaymentFactories
      *
      * @return bool
      */
-    public function isOffline($gateway)
+    public function isOffline(string $gateway): bool
     {
         return isset($this->factories[$gateway]) && $this->factories[$gateway] === 'offline';
     }

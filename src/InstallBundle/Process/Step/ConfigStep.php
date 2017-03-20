@@ -16,6 +16,7 @@ namespace CSBill\InstallBundle\Process\Step;
 use CSBill\InstallBundle\Form\Step\ConfigStepForm;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Symfony\Component\Form\Form;
 
 class ConfigStep extends AbstractControllerStep
 {
@@ -49,12 +50,12 @@ class ConfigStep extends AbstractControllerStep
     /**
      * @return \Symfony\Component\Form\Form
      */
-    private function getForm()
+    private function getForm(): Form
     {
         $availableDrivers = array_intersect($this->implementedDrivers, \PDO::getAvailableDrivers());
         $drivers = array_combine(
             array_map(
-                function ($value) {
+                function ($value) : Form{
                     return sprintf('pdo_%s', $value);
                 },
                 $availableDrivers

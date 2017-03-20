@@ -37,7 +37,7 @@ class FieldRenderer
      *
      * @return array
      */
-    public function render(FormView $form, $path = null)
+    public function render(FormView $form, string $path = null): array
     {
         $items = [];
 

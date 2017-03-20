@@ -17,7 +17,7 @@ class PaymentMenu
     /**
      * @return array
      */
-    public static function main()
+    public static function main(): array
     {
         return [
             'payment.menu.main',
@@ -33,7 +33,7 @@ class PaymentMenu
     /**
      * @return array
      */
-    public static function methods()
+    public static function methods(): array
     {
         return [
             'payment.menu.methods',

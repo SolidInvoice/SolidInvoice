@@ -24,7 +24,7 @@ class ApiController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
             /** @var ApiTokenRepository $repository */
@@ -43,7 +43,7 @@ class ApiController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function tokenHistoryAction(ApiToken $token)
+    public function tokenHistoryAction(ApiToken $token): Response
     {
         $content = $this->renderView(
             'CSBillUserBundle:Api:history.html.twig',
@@ -64,7 +64,7 @@ class ApiController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function saveTokenAction(Request $request)
+    public function saveTokenAction(Request $request): JsonResponse
     {
         $apiToken = new ApiToken();
         $apiToken->setUser($this->getUser());
@@ -121,7 +121,7 @@ class ApiController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function revokeTokenAction(ApiToken $token)
+    public function revokeTokenAction(ApiToken $token): JsonResponse
     {
         $this->getEm()->remove($token);
         $this->getEm()->flush();
