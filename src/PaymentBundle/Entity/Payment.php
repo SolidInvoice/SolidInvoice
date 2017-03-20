@@ -180,7 +180,7 @@ class Payment extends BasePayment implements PaymentInterface
         }
 
         if (!is_array($details)) {
-            throw new UnexpectedTypeException($details, 'array');
+            throw new UnexpectedTypeException((string) $details, 'array');
         }
 
         $this->details = $details;
@@ -211,7 +211,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return \DateTime
      */
-    public function getCompleted(): DateTime
+    public function getCompleted(): \DateTime
     {
         return $this->completed;
     }
@@ -229,9 +229,9 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getClientId(): string
+    public function getClientId(): int
     {
         return $this->getClient()->getId();
     }

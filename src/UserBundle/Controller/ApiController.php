@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -15,14 +16,16 @@ namespace CSBill\UserBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Repository\ApiTokenRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends BaseController
 {
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request): Response
     {
@@ -41,7 +44,7 @@ class ApiController extends BaseController
     /**
      * @param ApiToken $token
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function tokenHistoryAction(ApiToken $token): Response
     {
@@ -62,7 +65,7 @@ class ApiController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function saveTokenAction(Request $request): JsonResponse
     {
@@ -119,7 +122,7 @@ class ApiController extends BaseController
     /**
      * @param ApiToken $token
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function revokeTokenAction(ApiToken $token): JsonResponse
     {

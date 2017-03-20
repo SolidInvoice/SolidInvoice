@@ -15,13 +15,14 @@ namespace CSBill\InstallBundle\Process\Step;
 
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Symfony\Component\HttpFoundation\Response;
 
 class SystemRequirementsStep extends AbstractControllerStep
 {
     /**
      * @param ProcessContextInterface $context
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Exception
      */

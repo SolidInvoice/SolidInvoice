@@ -19,6 +19,7 @@ use CSBill\PaymentBundle\Model\Status;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 class PaymentRepository extends EntityRepository
 {
@@ -83,7 +84,7 @@ class PaymentRepository extends EntityRepository
      * @param string $orderField
      * @param string $sort
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     protected function getPaymentQueryBuilder(string $orderField = null, $sort = 'DESC'): QueryBuilder
     {

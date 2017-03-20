@@ -1,23 +1,6 @@
 <?php
 
 declare(strict_types=1);
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
 
 /*
  * This file is part of CSBill project.
@@ -31,13 +14,15 @@ declare(strict_types=1);
 namespace CSBill\TaxBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class TaxRepository extends EntityRepository
 {
     /**
      * Gets an array of all the available tax rates.
+     * @return array
      */
-    public function getTaxList()
+    public function getTaxList(): array
     {
         $queryBuilder = $this->createQueryBuilder('t')
             ->select(
@@ -66,8 +51,10 @@ class TaxRepository extends EntityRepository
 
     /**
      * Gets an array of all the available tax rates.
+     *
+     * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         $queryBuilder = $this->createQueryBuilder('t')
         ->select('COUNT(t.id)');
@@ -76,7 +63,7 @@ class TaxRepository extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getGridQuery(): QueryBuilder
     {

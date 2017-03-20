@@ -15,6 +15,7 @@ namespace CSBill\DataGridBundle\Controller;
 
 use CSBill\CoreBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DataController extends BaseController
 {
@@ -22,7 +23,7 @@ class DataController extends BaseController
      * @param Request $request
      * @param string  $name
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */

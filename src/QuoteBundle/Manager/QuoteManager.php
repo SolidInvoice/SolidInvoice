@@ -1,23 +1,6 @@
 <?php
 
 declare(strict_types=1);
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
 
 /*
  * This file is part of CSBill project.
@@ -186,11 +169,11 @@ class QuoteManager
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Quote
      *
      * @throws InvalidTransitionException
      */
-    public function decline(Quote $quote): RedirectResponse
+    public function decline(Quote $quote): Quote
     {
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_DECLINE, new QuoteEvent($quote));
 
@@ -204,11 +187,11 @@ class QuoteManager
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Quote
      *
      * @throws InvalidTransitionException
      */
-    public function cancel(Quote $quote): RedirectResponse
+    public function cancel(Quote $quote): Quote
     {
         $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CANCEL, new QuoteEvent($quote));
 
@@ -222,11 +205,11 @@ class QuoteManager
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Quote
      *
      * @throws InvalidTransitionException
      */
-    public function reopen(Quote $quote): RedirectResponse
+    public function reopen(Quote $quote): Quote
     {
         $this->applyTransition($quote, Graph::TRANSITION_REOPEN);
 
@@ -236,11 +219,11 @@ class QuoteManager
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Quote
      *
      * @throws InvalidTransitionException
      */
-    public function send(Quote $quote): RedirectResponse
+    public function send(Quote $quote): Quote
     {
         $finite = $this->stateMachine->get($quote, Graph::GRAPH);
 

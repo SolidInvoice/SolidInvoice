@@ -15,13 +15,14 @@ namespace CSBill\QuoteBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ActionsController extends BaseController
 {
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
@@ -37,7 +38,7 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
@@ -53,7 +54,7 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
@@ -69,7 +70,7 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
@@ -85,7 +86,7 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */

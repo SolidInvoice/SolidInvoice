@@ -20,6 +20,7 @@ use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -170,7 +171,7 @@ class InvoiceRepository extends EntityRepository
     /**
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
@@ -191,7 +192,7 @@ class InvoiceRepository extends EntityRepository
     /**
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getRecurringGridQuery(array $parameters = []): QueryBuilder
     {
@@ -210,7 +211,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getArchivedGridQuery(): QueryBuilder
     {

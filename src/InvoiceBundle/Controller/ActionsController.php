@@ -17,6 +17,7 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
 use CSBill\InvoiceBundle\Model\Graph;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ActionsController extends BaseController
 {
@@ -24,7 +25,7 @@ class ActionsController extends BaseController
      * @param string  $action
      * @param Invoice $invoice
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
@@ -44,7 +45,7 @@ class ActionsController extends BaseController
     /**
      * @param Invoice $invoice
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function sendAction(Invoice $invoice): RedirectResponse
     {

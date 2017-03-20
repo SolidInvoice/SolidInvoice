@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\CoreBundle\Controller;
 
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Response;
 
 class ViewController extends BaseController
 {
@@ -37,7 +38,7 @@ class ViewController extends BaseController
      *
      * @param string $uuid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function viewquoteAction(string $uuid): Response
     {
@@ -53,7 +54,7 @@ class ViewController extends BaseController
      *
      * @param $uuid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function viewinvoiceAction($uuid): Response
     {
@@ -68,7 +69,7 @@ class ViewController extends BaseController
      * @param $uuid
      * @param string $object
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */

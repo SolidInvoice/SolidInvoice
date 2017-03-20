@@ -18,7 +18,7 @@ use CSBill\DataGridBundle\Source\SourceInterface;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,14 +113,14 @@ class Grid implements GridInterface
     }
 
     /**
-     * @param Request                $request
-     * @param EntityManagerInterface $entityManager
+     * @param Request       $request
+     * @param ObjectManager $objectManger
      *
      * @return array
      *
      * @throws \Exception
      */
-    public function fetchData(Request $request, EntityManagerInterface $entityManager): array
+    public function fetchData(Request $request, ObjectManager $objectManger): array
     {
         $queryBuilder = $this->source->fetch($this->parameters);
 

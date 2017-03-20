@@ -17,6 +17,7 @@ use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 use CSBill\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GridController extends BaseController
 {
@@ -25,7 +26,7 @@ class GridController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws InvalidTransitionException
      */
@@ -57,7 +58,7 @@ class GridController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function deleteAction(Request $request): Response
     {

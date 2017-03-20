@@ -15,6 +15,7 @@ namespace CSBill\ClientBundle\Repository;
 
 use CSBill\CoreBundle\Util\ArrayUtil;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * ClientRepository.
@@ -86,7 +87,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getGridQuery(): QueryBuilder
     {
@@ -98,7 +99,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getArchivedGridQuery(): QueryBuilder
     {

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +26,7 @@ abstract class BaseController extends Base
      *
      * @param string $repository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return ObjectRepository
      */
     protected function getRepository(string $repository): ObjectRepository
     {
@@ -34,9 +36,9 @@ abstract class BaseController extends Base
     /**
      * Return a instance of the doctrine entity manager.
      *
-     * @return \Doctrine\ORM\EntityManagerInterface
+     * @return ObjectManager
      */
-    protected function getEm(): EntityManagerInterface
+    protected function getEm(): ObjectManager
     {
         return $this->getDoctrine()->getManager();
     }

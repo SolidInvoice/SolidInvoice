@@ -19,6 +19,7 @@ use Behat\Symfony2Extension\Context\KernelAwareContext;
 use CSBill\CoreBundle\Kernel\ContainerClassKernelInterface;
 use Faker\Factory;
 use Faker\Generator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class DefaultContext extends RawMinkContext implements Context, KernelAwareContext
@@ -51,7 +52,7 @@ abstract class DefaultContext extends RawMinkContext implements Context, KernelA
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * @return ContainerInterface
      */
     protected function getContainer(): ContainerInterface
     {

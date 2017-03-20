@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\DataGridBundle;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 
 interface GridInterface
@@ -24,12 +24,12 @@ interface GridInterface
     public function requiresStatus(): bool;
 
     /**
-     * @param Request                $request
-     * @param EntityManagerInterface $em
+     * @param Request       $request
+     * @param ObjectManager $em
      *
      * @return mixed
      */
-    public function fetchData(Request $request, EntityManagerInterface $em);
+    public function fetchData(Request $request, ObjectManager $em): array;
 
     /**
      * @param array $params
