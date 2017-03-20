@@ -35,7 +35,7 @@ class SettingsController extends BaseController
 
         $settings = $manager->getSettings();
 
-        array_walk_recursive($settings, function (Setting &$setting) : Response{
+        array_walk_recursive($settings, function (Setting &$setting): Response {
             $setting = $setting->getValue();
         });
 
