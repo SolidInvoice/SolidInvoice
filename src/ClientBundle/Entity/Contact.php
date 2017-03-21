@@ -99,7 +99,7 @@ class Contact implements \Serializable
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -121,7 +121,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setFirstName(string $firstName): Contact
+    public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
 
@@ -145,7 +145,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setLastName(string $lastName): Contact
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
 
@@ -157,7 +157,7 @@ class Contact implements \Serializable
      *
      * @return Client
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         return $this->client;
     }
@@ -169,7 +169,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setClient(Client $client): Contact
+    public function setClient(Client $client): self
     {
         $this->client = $client;
 
@@ -183,7 +183,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function addAdditionalDetail(AdditionalContactDetail $detail): Contact
+    public function addAdditionalDetail(AdditionalContactDetail $detail): self
     {
         $this->additionalDetails->add($detail);
         $detail->setContact($this);
@@ -198,7 +198,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function removeAdditionalDetail(AdditionalContactDetail $detail): Contact
+    public function removeAdditionalDetail(AdditionalContactDetail $detail): self
     {
         $this->additionalDetails->removeElement($detail);
 
@@ -222,9 +222,10 @@ class Contact implements \Serializable
      */
     public function getAdditionalDetail(string $type): ?AdditionalContactDetail
     {
-        if (count($this->additionalDetails) > 0) {
+        $type = strtolower($type);
+        if (count($this->additionalDetails)) {
             foreach ($this->additionalDetails as $detail) {
-                if (strtolower((string) $detail->getType()) === strtolower($type)) {
+                if (strtolower((string) $detail->getType()) === $type) {
                     return $detail;
                 }
             }
@@ -270,7 +271,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setEmail(string $email): Contact
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 

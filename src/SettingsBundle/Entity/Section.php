@@ -67,7 +67,7 @@ class Section
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -77,7 +77,7 @@ class Section
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -87,9 +87,9 @@ class Section
      *
      * @param string $name
      *
-     * @return $this
+     * @return Section
      */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -101,7 +101,7 @@ class Section
      *
      * @return Section
      */
-    public function getParent(): Section
+    public function getParent(): ?Section
     {
         return $this->parent;
     }
@@ -113,7 +113,7 @@ class Section
      *
      * @return Section
      */
-    public function setParent(Section $parent): Section
+    public function setParent(Section $parent): self
     {
         $this->parent = $parent;
 
@@ -137,7 +137,7 @@ class Section
      *
      * @return Section
      */
-    public function addChild(Section $child): Section
+    public function addChild(Section $child): self
     {
         $this->children[] = $child;
         $child->setParent($this);
@@ -152,7 +152,7 @@ class Section
      *
      * @return Section
      */
-    public function removeChild(Section $child): Section
+    public function removeChild(Section $child): self
     {
         $this->children->removeElement($child);
 
@@ -176,7 +176,7 @@ class Section
      *
      * @return Section
      */
-    public function addSetting(Setting $setting): Section
+    public function addSetting(Setting $setting): self
     {
         $this->settings[] = $setting;
         $setting->setSection($this);
@@ -191,7 +191,7 @@ class Section
      *
      * @return Section
      */
-    public function removeSetting(Setting $setting): Section
+    public function removeSetting(Setting $setting): self
     {
         $this->settings->removeElement($setting);
 
@@ -201,7 +201,7 @@ class Section
     /**
      * @return string
      */
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->name;
     }

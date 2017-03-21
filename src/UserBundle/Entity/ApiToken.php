@@ -82,9 +82,9 @@ class ApiToken
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -92,7 +92,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -102,7 +102,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function setName(string $name): ApiToken
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -112,7 +112,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getToken(): string
+    public function getToken(): ?string
     {
         return $this->token;
     }
@@ -122,7 +122,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function setToken(string $token): ApiToken
+    public function setToken(string $token): self
     {
         $this->token = $token;
 
@@ -142,7 +142,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function addHistory(ApiTokenHistory $history): ApiToken
+    public function addHistory(ApiTokenHistory $history): self
     {
         $this->history[] = $history;
         $history->setToken($this);
@@ -155,7 +155,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function removeHistory(ApiTokenHistory $history): ApiToken
+    public function removeHistory(ApiTokenHistory $history): self
     {
         $this->history->removeElement($history);
 
@@ -163,19 +163,19 @@ class ApiToken
     }
 
     /**
-     * @return mixed
+     * @return User
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
     /**
-     * @param mixed $user
+     * @param User $user
      *
      * @return ApiToken
      */
-    public function setUser($user): ApiToken
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

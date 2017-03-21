@@ -83,9 +83,9 @@ class ApiTokenHistory
     private $token;
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -93,7 +93,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getIp(): string
+    public function getIp(): ?string
     {
         return $this->ip;
     }
@@ -103,7 +103,7 @@ class ApiTokenHistory
      *
      * @return ApiTokenHistory
      */
-    public function setIp(string $ip): ApiTokenHistory
+    public function setIp(string $ip): self
     {
         $this->ip = $ip;
 
@@ -113,7 +113,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getResource(): string
+    public function getResource(): ?string
     {
         return $this->resource;
     }
@@ -123,7 +123,7 @@ class ApiTokenHistory
      *
      * @return ApiTokenHistory
      */
-    public function setResource(string $resource): ApiTokenHistory
+    public function setResource(string $resource): self
     {
         $this->resource = $resource;
 
@@ -133,7 +133,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getMethod(): string
+    public function getMethod(): ?string
     {
         return $this->method;
     }
@@ -143,7 +143,7 @@ class ApiTokenHistory
      *
      * @return ApiTokenHistory
      */
-    public function setMethod(string $method): ApiTokenHistory
+    public function setMethod(string $method): self
     {
         $this->method = $method;
 
@@ -153,7 +153,7 @@ class ApiTokenHistory
     /**
      * @return array
      */
-    public function getRequestData(): array
+    public function getRequestData(): ?array
     {
         return $this->requestData;
     }
@@ -163,7 +163,7 @@ class ApiTokenHistory
      *
      * @return ApiTokenHistory
      */
-    public function setRequestData(array $requestData): ApiTokenHistory
+    public function setRequestData(array $requestData): self
     {
         $this->requestData = $requestData;
 
@@ -173,7 +173,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getUserAgent(): string
+    public function getUserAgent(): ?string
     {
         return $this->userAgent;
     }
@@ -183,7 +183,7 @@ class ApiTokenHistory
      *
      * @return ApiTokenHistory
      */
-    public function setUserAgent(string $userAgent): ApiTokenHistory
+    public function setUserAgent(string $userAgent): self
     {
         $this->userAgent = $userAgent;
 
@@ -193,7 +193,7 @@ class ApiTokenHistory
     /**
      * @return ApiToken
      */
-    public function getToken(): ApiToken
+    public function getToken(): ?ApiToken
     {
         return $this->token;
     }
@@ -203,7 +203,7 @@ class ApiTokenHistory
      *
      * @return ApiTokenHistory
      */
-    public function setToken(ApiToken $token): ApiTokenHistory
+    public function setToken(ApiToken $token): self
     {
         $this->token = $token;
 

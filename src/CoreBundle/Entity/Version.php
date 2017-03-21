@@ -44,9 +44,9 @@ class Version
      *
      * @param string $version
      *
-     * @return $this
+     * @return Version
      */
-    public function setVersion($version)
+    public function setVersion(?string $version): self
     {
         $this->version = $version;
 
@@ -58,7 +58,7 @@ class Version
      *
      * @return string
      */
-    public function getVersion(): string
+    public function getVersion(): ?string
     {
         return $this->version;
     }
@@ -68,7 +68,7 @@ class Version
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->version;
     }

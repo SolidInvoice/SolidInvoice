@@ -64,11 +64,11 @@ class MoneyFormatter
     }
 
     /**
-     * @param string $currency
+     * @param Currency|string $currency
      *
      * @return string
      */
-    public function getCurrencySymbol(string $currency = null): string
+    public function getCurrencySymbol($currency = null): string
     {
         if ($currency instanceof Currency) {
             $currency = $currency->getCode();

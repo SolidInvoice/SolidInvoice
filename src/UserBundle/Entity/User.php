@@ -63,7 +63,7 @@ class User extends BaseUser
     /**
      * Don't return the salt, and rely on password_hash to generate a salt.
      */
-    public function getSalt()
+    public function getSalt(): void
     {
         return;
     }
@@ -81,7 +81,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setApiTokens(Collection $apiTokens): User
+    public function setApiTokens(Collection $apiTokens): self
     {
         $this->apiTokens = $apiTokens;
 
@@ -101,7 +101,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setMobile(string $mobile): User
+    public function setMobile(string $mobile): self
     {
         $this->mobile = $mobile;
 

@@ -41,7 +41,7 @@ class CreditHandler
      */
     public function serializeMoneyJson(JsonSerializationVisitor $visitor, Money $money): float
     {
-        return $this->formatter->format($money);
+        return (float) $this->formatter->format($money);
     }
 
     /**

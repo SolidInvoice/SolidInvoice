@@ -101,7 +101,7 @@ class Address
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -119,7 +119,7 @@ class Address
      *
      * @return Address
      */
-    public function setStreet1(string $street1): self
+    public function setStreet1(?string $street1): self
     {
         $this->street1 = $street1;
 
@@ -139,7 +139,7 @@ class Address
      *
      * @return Address
      */
-    public function setStreet2(string $street2): self
+    public function setStreet2(?string $street2): self
     {
         $this->street2 = $street2;
 
@@ -159,7 +159,7 @@ class Address
      *
      * @return Address
      */
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
@@ -179,7 +179,7 @@ class Address
      *
      * @return Address
      */
-    public function setState(string $state): self
+    public function setState(?string $state): self
     {
         $this->state = $state;
 
@@ -199,7 +199,7 @@ class Address
      *
      * @return Address
      */
-    public function setZip(string $zip): self
+    public function setZip(?string $zip): self
     {
         $this->zip = $zip;
 
@@ -219,7 +219,7 @@ class Address
      *
      * @return Address
      */
-    public function setCountry(string $country): self
+    public function setCountry(?string $country): self
     {
         $this->country = $country;
 
@@ -229,7 +229,7 @@ class Address
     /**
      * @return Client
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         return $this->client;
     }
@@ -264,7 +264,7 @@ class Address
                 $this->city,
                 $this->state,
                 $this->zip,
-                isset($countries[$this->country]) ? $countries[$this->country] : null,
+                $countries[$this->country] ?? null,
             ]
         );
 
@@ -279,12 +279,12 @@ class Address
     public static function fromArray(array $data): Address
     {
         $address = new static();
-        $address->setStreet1($data['street1']);
-        $address->setStreet2($data['street2']);
-        $address->setCity($data['city']);
-        $address->setState($data['state']);
-        $address->setZip($data['zip']);
-        $address->setCountry($data['country']);
+        $address->setStreet1($data['street1'] ?? null);
+        $address->setStreet2($data['street2'] ?? null);
+        $address->setCity($data['city'] ?? null);
+        $address->setState($data['state'] ?? null);
+        $address->setZip($data['zip'] ?? null);
+        $address->setCountry($data['country'] ?? null);
 
         return $address;
     }

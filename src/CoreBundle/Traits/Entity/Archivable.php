@@ -47,9 +47,9 @@ trait Archivable
     /**
      * Archives a record.
      *
-     * @return Archivable
+     * @return $this|Archivable
      */
-    public function archive(): Archivable
+    public function archive(): self
     {
         return $this->setArchived(true);
     }

@@ -65,9 +65,9 @@ class Credit
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -75,17 +75,21 @@ class Credit
     /**
      * @return Client
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
     /**
      * @param Client $client
+     *
+     * @return Credit
      */
-    public function setClient(Client $client)
+    public function setClient(Client $client): self
     {
         $this->client = $client;
+
+        return $this;
     }
 
     /**
@@ -99,9 +103,9 @@ class Credit
     /**
      * @param Money $value
      *
-     * @return $this
+     * @return $this|Credit
      */
-    public function setValue(Money $value)
+    public function setValue(Money $value): self
     {
         $this->value = new MoneyEntity($value);
 
@@ -109,10 +113,10 @@ class Credit
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->value->getMoney()->getAmount();
+        return (string) $this->value->getMoney()->getAmount();
     }
 }

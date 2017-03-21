@@ -107,7 +107,7 @@ class Item implements ItemInterface
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -191,7 +191,7 @@ class Item implements ItemInterface
      *
      * @return ItemInterface
      */
-    public function setInvoice(Invoice $invoice = null): ItemInterface
+    public function setInvoice(?Invoice $invoice): ItemInterface
     {
         $this->invoice = $invoice;
 
@@ -203,7 +203,7 @@ class Item implements ItemInterface
      *
      * @return Invoice
      */
-    public function getInvoice(): Invoice
+    public function getInvoice(): ?Invoice
     {
         return $this->invoice;
     }
@@ -233,7 +233,7 @@ class Item implements ItemInterface
     /**
      * @return Tax
      */
-    public function getTax(): Tax
+    public function getTax(): ?Tax
     {
         return $this->tax;
     }
@@ -243,7 +243,7 @@ class Item implements ItemInterface
      *
      * @return ItemInterface
      */
-    public function setTax(Tax $tax = null): ItemInterface
+    public function setTax(?Tax $tax): ItemInterface
     {
         $this->tax = $tax;
 
@@ -265,7 +265,7 @@ class Item implements ItemInterface
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->getDescription();
     }

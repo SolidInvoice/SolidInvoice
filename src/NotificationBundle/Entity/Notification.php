@@ -38,30 +38,30 @@ class Notification
     private $event;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="email", type="string")
+     * @ORM\Column(name="email", type="boolean")
      */
     private $email;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="hipchat", type="string")
+     * @ORM\Column(name="hipchat", type="boolean")
      */
     private $hipchat;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="sms", type="string")
+     * @ORM\Column(name="sms", type="boolean")
      */
     private $sms;
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -69,7 +69,7 @@ class Notification
     /**
      * @return string
      */
-    public function getEvent(): string
+    public function getEvent(): ?string
     {
         return $this->event;
     }
@@ -79,7 +79,7 @@ class Notification
      *
      * @return Notification
      */
-    public function setEvent(string $event): Notification
+    public function setEvent(string $event): self
     {
         $this->event = $event;
 
@@ -91,7 +91,7 @@ class Notification
      */
     public function getEmail(): bool
     {
-        return (bool) $this->email;
+        return $this->email;
     }
 
     /**
@@ -99,7 +99,7 @@ class Notification
      *
      * @return Notification
      */
-    public function setEmail(bool $email): Notification
+    public function setEmail(bool $email): self
     {
         $this->email = $email;
 
@@ -111,7 +111,7 @@ class Notification
      */
     public function getHipchat(): bool
     {
-        return (bool) $this->hipchat;
+        return $this->hipchat;
     }
 
     /**
@@ -119,7 +119,7 @@ class Notification
      *
      * @return Notification
      */
-    public function setHipchat(bool $hipchat): Notification
+    public function setHipchat(bool $hipchat): self
     {
         $this->hipchat = $hipchat;
 
@@ -131,7 +131,7 @@ class Notification
      */
     public function getSms(): bool
     {
-        return (bool) $this->sms;
+        return $this->sms;
     }
 
     /**
@@ -139,7 +139,7 @@ class Notification
      *
      * @return Notification
      */
-    public function setSms(bool $sms): Notification
+    public function setSms(bool $sms): self
     {
         $this->sms = $sms;
 

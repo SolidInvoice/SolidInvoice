@@ -115,7 +115,7 @@ class Tax
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -133,7 +133,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setName(string $name): Tax
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -153,7 +153,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setRate(float $rate): Tax
+    public function setRate(float $rate): self
     {
         $this->rate = $rate;
 
@@ -173,7 +173,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setType(string $type): Tax
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -189,11 +189,11 @@ class Tax
     }
 
     /**
-     * @param array $invoiceItems
+     * @param ItemInterface[] $invoiceItems
      *
      * @return Tax
      */
-    public function setInvoiceItems(array $invoiceItems): Tax
+    public function setInvoiceItems(array $invoiceItems): self
     {
         $this->invoiceItems = $invoiceItems;
 
@@ -209,11 +209,11 @@ class Tax
     }
 
     /**
-     * @param array $quoteItems
+     * @param ItemInterface[] $quoteItems
      *
      * @return Tax
      */
-    public function setQuoteItems(array $quoteItems): Tax
+    public function setQuoteItems(array $quoteItems): self
     {
         $this->quoteItems = $quoteItems;
 

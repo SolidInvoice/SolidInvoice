@@ -113,7 +113,7 @@ class Item implements ItemInterface
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -197,7 +197,7 @@ class Item implements ItemInterface
     /**
      * @return Quote
      */
-    public function getQuote(): Quote
+    public function getQuote(): ?Quote
     {
         return $this->quote;
     }
@@ -225,7 +225,7 @@ class Item implements ItemInterface
     /**
      * @return Tax
      */
-    public function getTax(): Tax
+    public function getTax(): ?Tax
     {
         return $this->tax;
     }
@@ -257,7 +257,7 @@ class Item implements ItemInterface
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->getDescription();
     }

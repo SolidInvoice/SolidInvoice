@@ -35,7 +35,7 @@ class Setting extends BaseClass
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

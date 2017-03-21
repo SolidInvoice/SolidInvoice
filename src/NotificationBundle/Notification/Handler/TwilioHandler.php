@@ -34,7 +34,7 @@ class TwilioHandler implements HandlerInterface
      * @param Client $twilio
      * @param string $twilioNumber
      */
-    public function __construct(Client $twilio, string $twilioNumber)
+    public function __construct(Client $twilio, ?string $twilioNumber)
     {
         $this->twilio = $twilio;
         $this->twilioNumber = $twilioNumber;
@@ -54,7 +54,6 @@ class TwilioHandler implements HandlerInterface
     public function handle(NotificationInterface $notification)
     {
         /* @var TwilioNotification $notification */
-
         $this->twilio
             ->messages
             ->create(

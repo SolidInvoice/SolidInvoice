@@ -207,7 +207,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setUuid(UuidInterface $uuid): Quote
+    public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
 
@@ -225,11 +225,11 @@ class Quote
     }
 
     /**
-     * @param array $users
+     * @param int[] $users
      *
      * @return Quote
      */
-    public function setUsers(array $users = []): Quote
+    public function setUsers(array $users = []): self
     {
         $this->users = new ArrayCollection($users);
 
@@ -241,7 +241,7 @@ class Quote
      *
      * @return string
      */
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -253,7 +253,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setStatus(string $status): Quote
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -277,7 +277,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setClient(Client $client = null): Quote
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 
@@ -297,7 +297,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTotal(Money $total): Quote
+    public function setTotal(Money $total): self
     {
         $this->total = new MoneyEntity($total);
 
@@ -317,7 +317,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setBaseTotal(Money $baseTotal): Quote
+    public function setBaseTotal(Money $baseTotal): self
     {
         $this->baseTotal = new MoneyEntity($baseTotal);
 
@@ -337,7 +337,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setDiscount(float $discount): Quote
+    public function setDiscount(float $discount): self
     {
         $this->discount = $discount;
 
@@ -347,7 +347,7 @@ class Quote
     /**
      * @return \DateTime
      */
-    public function getDue(): \DateTime
+    public function getDue(): ?\DateTime
     {
         return $this->due;
     }
@@ -357,7 +357,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setDue(\DateTime $due): Quote
+    public function setDue(\DateTime $due): self
     {
         $this->due = $due;
 
@@ -369,7 +369,7 @@ class Quote
      *
      * @return Quote
      */
-    public function addItem(Item $item): Quote
+    public function addItem(Item $item): self
     {
         $this->items[] = $item;
         $item->setQuote($this);
@@ -382,7 +382,7 @@ class Quote
      *
      * @return Quote
      */
-    public function removeItem(Item $item): Quote
+    public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
         $item->setQuote(null);
@@ -411,7 +411,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTerms(string $terms): Quote
+    public function setTerms(string $terms): self
     {
         $this->terms = $terms;
 
@@ -431,7 +431,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setNotes(string $notes): Quote
+    public function setNotes(string $notes): self
     {
         $this->notes = $notes;
 
@@ -451,7 +451,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTax(Money $tax): Quote
+    public function setTax(Money $tax): self
     {
         $this->tax = new MoneyEntity($tax);
 

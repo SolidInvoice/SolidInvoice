@@ -67,9 +67,9 @@ class AjaxController extends BaseController
      */
     public function addcontactAction(Request $request, Client $client): Response
     {
-        if (!$request->isXmlHttpRequest()) {
+        /*if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
-        }
+        }*/
 
         $contact = new Contact();
         $contact->setClient($client);
@@ -80,17 +80,19 @@ class AjaxController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $this->save($contact);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->save($contact);
 
-            $response = [
-                'status' => 'success',
-                'contact' => $contact,
-            ];
+                $response = [
+                    'status' => 'success',
+                    'contact' => $contact,
+                ];
 
-            return $this->serializeResponse($response);
-        } else {
-            $response['status'] = 'failure';
+                return $this->serializeResponse($response);
+            } else {
+                $response['status'] = 'failure';
+            }
         }
 
         $content = $this->renderView(
@@ -100,6 +102,7 @@ class AjaxController extends BaseController
                 'client' => $client,
             ]
         );
+
         $response['content'] = $content;
 
         return $this->json($response);

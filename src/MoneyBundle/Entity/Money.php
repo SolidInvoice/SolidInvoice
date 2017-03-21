@@ -52,7 +52,7 @@ class Money
     /**
      * @return string
      */
-    public static function getBaseCurrency(): string
+    public static function getBaseCurrency(): ?string
     {
         return self::$baseCurrency;
     }
@@ -60,7 +60,7 @@ class Money
     /**
      * @param BaseMoney $money
      */
-    public function __construct(BaseMoney $money = null)
+    public function __construct(?BaseMoney $money = null)
     {
         if ($money) {
             $this->value = $money->getAmount();
@@ -73,6 +73,6 @@ class Money
      */
     public function getMoney(): BaseMoney
     {
-        return new BaseMoney($this->value, new Currency($this->currency ?: self::$baseCurrency));
+        return new BaseMoney((int) $this->value, new Currency($this->currency ?: self::$baseCurrency));
     }
 }

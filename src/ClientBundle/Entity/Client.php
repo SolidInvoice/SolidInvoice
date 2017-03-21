@@ -164,7 +164,7 @@ class Client
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -186,7 +186,7 @@ class Client
      *
      * @return Client
      */
-    public function setName(string $name): Client
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -198,7 +198,7 @@ class Client
      *
      * @return string
      */
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -210,7 +210,7 @@ class Client
      *
      * @return Client
      */
-    public function setStatus(string $status): Client
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -234,7 +234,7 @@ class Client
      *
      * @return Client
      */
-    public function setWebsite(string $website): Client
+    public function setWebsite(string $website): self
     {
         $this->website = $website;
 
@@ -248,7 +248,7 @@ class Client
      *
      * @return Client
      */
-    public function addContact(Contact $contact): Client
+    public function addContact(Contact $contact): self
     {
         $this->contacts[] = $contact;
         $contact->setClient($this);
@@ -263,7 +263,7 @@ class Client
      *
      * @return Client
      */
-    public function removeContact(Contact $contact): Client
+    public function removeContact(Contact $contact): self
     {
         $this->contacts->removeElement($contact);
 
@@ -275,7 +275,7 @@ class Client
      *
      * @return Collection|Contact[]
      */
-    public function getContacts()
+    public function getContacts(): Collection
     {
         return $this->contacts;
     }
@@ -287,7 +287,7 @@ class Client
      *
      * @return Client
      */
-    public function addQuote(Quote $quote): Client
+    public function addQuote(Quote $quote): self
     {
         $this->quotes[] = $quote;
         $quote->setClient($this);
@@ -302,7 +302,7 @@ class Client
      *
      * @return Client
      */
-    public function removeQuote(Quote $quote): Client
+    public function removeQuote(Quote $quote): self
     {
         $this->quotes->removeElement($quote);
 
@@ -326,7 +326,7 @@ class Client
      *
      * @return Client
      */
-    public function addInvoice(Invoice $invoice): Client
+    public function addInvoice(Invoice $invoice): self
     {
         $this->invoices[] = $invoice;
         $invoice->setClient($this);
@@ -341,7 +341,7 @@ class Client
      *
      * @return Client
      */
-    public function removeInvoice(Invoice $invoice): Client
+    public function removeInvoice(Invoice $invoice): self
     {
         $this->invoices->removeElement($invoice);
 
@@ -365,7 +365,7 @@ class Client
      *
      * @return Client
      */
-    public function addPayment(Payment $payment): Client
+    public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
         $payment->setClient($this);
@@ -380,7 +380,7 @@ class Client
      *
      * @return Client
      */
-    public function removePayment(Payment $payment): Client
+    public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
 
@@ -404,7 +404,7 @@ class Client
      *
      * @return Client
      */
-    public function addAddress(Address $address = null): Client
+    public function addAddress(?Address $address): self
     {
         if (null !== $address) {
             $this->addresses[] = $address;
@@ -421,7 +421,7 @@ class Client
      *
      * @return Client
      */
-    public function removeAddress(Address $address): Client
+    public function removeAddress(Address $address): self
     {
         $this->addresses->removeElement($address);
 
@@ -441,17 +441,21 @@ class Client
     /**
      * @return Credit
      */
-    public function getCredit(): Credit
+    public function getCredit(): ?Credit
     {
         return $this->credit;
     }
 
     /**
      * @param Credit $credit
+     *
+     * @return Client
      */
-    public function setCredit(Credit $credit)
+    public function setCredit(Credit $credit): self
     {
         $this->credit = $credit;
+
+        return $this;
     }
 
     /**
@@ -479,7 +483,7 @@ class Client
     /**
      * @return Currency|null
      */
-    public function getCurrency()
+    public function getCurrency(): ?Currency
     {
         return $this->currency ? new Currency($this->currency) : null;
     }
@@ -489,7 +493,7 @@ class Client
      *
      * @return Client
      */
-    public function setCurrency(string $currency): Client
+    public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
 

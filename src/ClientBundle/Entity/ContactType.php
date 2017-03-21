@@ -93,7 +93,7 @@ class ContactType
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -105,7 +105,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setName(string $name): ContactType
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -117,7 +117,7 @@ class ContactType
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -129,9 +129,9 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setRequired(bool $required): ContactType
+    public function setRequired(bool $required): self
     {
-        $this->required = (bool) $required;
+        $this->required = $required;
 
         return $this;
     }
@@ -143,7 +143,7 @@ class ContactType
      */
     public function isRequired(): bool
     {
-        return $this->required;
+        return (bool) $this->required;
     }
 
     /**
@@ -153,7 +153,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function addDetail(AdditionalContactDetail $detail): ContactType
+    public function addDetail(AdditionalContactDetail $detail): self
     {
         $this->details[] = $detail;
         $detail->setType($this);
@@ -166,7 +166,7 @@ class ContactType
      *
      * @return Collection|AdditionalContactDetail[]
      */
-    public function getDetails(): Collection
+    public function getDetails(): ?Collection
     {
         return $this->details;
     }
@@ -174,7 +174,7 @@ class ContactType
     /**
      * @return string
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -182,9 +182,9 @@ class ContactType
     /**
      * @param string $type
      *
-     * @return $this
+     * @return ContactType
      */
-    public function setType(string $type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -194,7 +194,7 @@ class ContactType
     /**
      * @return array
      */
-    public function getOptions(): array
+    public function getOptions(): ?array
     {
         return $this->options;
     }
@@ -202,9 +202,9 @@ class ContactType
     /**
      * @param array $options
      *
-     * @return $this
+     * @return ContactType
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
@@ -214,7 +214,7 @@ class ContactType
     /**
      * Return the contact type as a string.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

@@ -17,6 +17,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseController extends Base
@@ -82,6 +83,16 @@ abstract class BaseController extends Base
         $entityManager->flush();
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function json($data, $status = 200, $headers = [], $_ = []): Response
+    {
+        $json = $this->container->get('serializer')->serialize($data, 'json');
+
+        return new JsonResponse($json, $status, $headers, true);
     }
 
     /**
