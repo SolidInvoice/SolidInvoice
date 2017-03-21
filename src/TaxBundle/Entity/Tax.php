@@ -76,7 +76,7 @@ class Tax
     private $type;
 
     /**
-     * @vat Collection|ItemInterface[]
+     * @var Collection|ItemInterface[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
