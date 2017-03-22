@@ -1,7 +1,8 @@
 <?php
 
 declare(strict_types=1);
-/**
+
+/*
  * This file is part of CSBill project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
