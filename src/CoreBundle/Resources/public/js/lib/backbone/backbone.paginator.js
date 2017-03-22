@@ -2,7 +2,7 @@
   backbone.paginator
   http://github.com/backbone-paginator/backbone.paginator
 
-  Copyright (c) 2016 Jimmy Yuen Ho Wong and contributors
+  Copyright (c) 2017 Jimmy Yuen Ho Wong and contributors
   Licensed under the MIT @license.
 */
 
