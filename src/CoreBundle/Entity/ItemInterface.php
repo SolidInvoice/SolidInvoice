@@ -97,5 +97,5 @@ interface ItemInterface
      *
      * @return ItemInterface
      */
-    public function setTax(Tax $tax = null): self;
+    public function setTax(?Tax $tax): self;
 }

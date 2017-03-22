@@ -235,7 +235,7 @@ class Item implements ItemInterface
      *
      * @return ItemInterface
      */
-    public function setTax(Tax $tax = null): ItemInterface
+    public function setTax(?Tax $tax): ItemInterface
     {
         $this->tax = $tax;
 
