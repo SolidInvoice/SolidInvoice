@@ -20,6 +20,7 @@ class TaxRepository extends EntityRepository
 {
     /**
      * Gets an array of all the available tax rates.
+     *
      * @return array
      */
     public function getTaxList(): array
