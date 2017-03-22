@@ -2,7 +2,7 @@
  backgrid 0.3.7
  http://github.com/wyuenho/backgrid
 
- Copyright (c) 2016 Jimmy Yuen Ho Wong and contributors <wyuenho@gmail.com>
+ Copyright (c) 2017 Jimmy Yuen Ho Wong and contributors <wyuenho@gmail.com>
  Licensed under the MIT license.
  */
 
