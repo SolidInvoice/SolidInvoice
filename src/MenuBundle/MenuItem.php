@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -33,7 +35,7 @@ class MenuItem extends BaseItem implements ItemInterface
     /**
      * {@inheritdoc}
      */
-    public function addDivider($type = '')
+    public function addDivider(string $type = '')
     {
         $name = uniqid();
 
@@ -47,7 +49,7 @@ class MenuItem extends BaseItem implements ItemInterface
     /**
      * {@inheritdoc}
      */
-    public function isDivider()
+    public function isDivider(): bool
     {
         return $this->getExtra('divider') !== null;
     }

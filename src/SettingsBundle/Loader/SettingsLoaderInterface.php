@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -21,7 +22,7 @@ interface SettingsLoaderInterface
      *
      * @return array
      */
-    public function getSettings();
+    public function getSettings(): array;
 
     /**
      * @param array $settings

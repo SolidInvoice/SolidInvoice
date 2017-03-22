@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -93,7 +96,7 @@ class ApiTokenManagerTest extends \PHPUnit\Framework\TestCase
         $token2 = new ApiToken();
         $token2->setName('token2');
 
-        $user->setApiTokens([$token1, $token2]);
+        $user->setApiTokens(new ArrayCollection([$token1, $token2]));
 
         $manager = M::mock(ObjectManager::class);
 

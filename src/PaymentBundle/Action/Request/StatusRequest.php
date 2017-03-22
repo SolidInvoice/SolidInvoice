@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -184,7 +186,7 @@ class StatusRequest extends BaseGetStatus
     /**
      * @return bool
      */
-    public function isPayedout()
+    public function isPayedout(): bool
     {
         return false;
     }

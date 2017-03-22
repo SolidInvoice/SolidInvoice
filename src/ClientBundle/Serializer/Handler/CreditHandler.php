@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -37,9 +39,9 @@ class CreditHandler
      *
      * @return float
      */
-    public function serializeMoneyJson(JsonSerializationVisitor $visitor, Money $money)
+    public function serializeMoneyJson(JsonSerializationVisitor $visitor, Money $money): float
     {
-        return $this->formatter->format($money);
+        return (float) $this->formatter->format($money);
     }
 
     /**

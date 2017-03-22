@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -13,6 +15,7 @@ namespace CSBill\PaymentBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
@@ -84,7 +87,7 @@ class PaymentMethod implements GatewayConfigInterface
     private $enabled;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Payment[]
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -100,7 +103,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -112,7 +115,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return PaymentMethod
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -124,7 +127,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -132,7 +135,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @return string
      */
-    public function getGatewayName()
+    public function getGatewayName(): ?string
     {
         return $this->gatewayName;
     }
@@ -142,7 +145,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return PaymentMethod
      */
-    public function setGatewayName($gatewayName)
+    public function setGatewayName($gatewayName): self
     {
         $this->gatewayName = $gatewayName;
 
@@ -156,7 +159,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return PaymentMethod
      */
-    public function setConfig(array $config)
+    public function setConfig(array $config): self
     {
         $this->config = $config;
 
@@ -168,7 +171,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): ?array
     {
         return $this->config;
     }
@@ -176,7 +179,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @return bool
      */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return (bool) $this->internal;
     }
@@ -184,9 +187,9 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @param bool $internal
      *
-     * @return $this
+     * @return PaymentMethod
      */
-    public function setInternal($internal)
+    public function setInternal(bool $internal): self
     {
         $this->internal = (bool) $internal;
 
@@ -196,7 +199,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return (bool) $this->enabled;
     }
@@ -204,9 +207,9 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @param bool $enabled
      *
-     * @return $this
+     * @return PaymentMethod
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = (bool) $enabled;
 
@@ -214,9 +217,9 @@ class PaymentMethod implements GatewayConfigInterface
     }
 
     /**
-     * @return $this
+     * @return PaymentMethod
      */
-    public function enable()
+    public function enable(): self
     {
         $this->enabled = true;
 
@@ -224,9 +227,9 @@ class PaymentMethod implements GatewayConfigInterface
     }
 
     /**
-     * @return $this
+     * @return PaymentMethod
      */
-    public function disable()
+    public function disable(): self
     {
         $this->enabled = false;
 
@@ -238,9 +241,9 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @param Payment $payment
      *
-     * @return $this
+     * @return PaymentMethod
      */
-    public function addPayment(Payment $payment)
+    public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
 
@@ -252,9 +255,9 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @param Payment $payment
      *
-     * @return $this
+     * @return PaymentMethod
      */
-    public function removePayment(Payment $payment)
+    public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
 
@@ -264,9 +267,9 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Get payments.
      *
-     * @return ArrayCollection
+     * @return Collection|Payment[]
      */
-    public function getPayments()
+    public function getPayments(): Collection
     {
         return $this->payments;
     }
@@ -274,7 +277,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getFactoryName()
+    public function getFactoryName(): ?string
     {
         return $this->factoryName;
     }
@@ -282,9 +285,11 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setFactoryName($factory)
+    public function setFactoryName($factory): self
     {
         $this->factoryName = $factory;
+
+        return $this;
     }
 
     /**
@@ -292,7 +297,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->name;
     }

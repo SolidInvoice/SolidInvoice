@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -59,7 +61,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      *
      * @return string
      */
-    public function build(\SplPriorityQueue $storage, array $options = [])
+    public function build(\SplPriorityQueue $storage, array $options = []): string
     {
         $menu = $this->factory->createItem('root');
 
@@ -91,7 +93,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      *
      * @return string
      */
-    protected function renderChildren(Item $item, array $options)
+    protected function renderChildren(Item $item, array $options): string
     {
         // render children with a depth - 1
         if (null !== $options['depth']) {
@@ -117,7 +119,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      *
      * @return string
      */
-    protected function renderDivider(Item $item, array $options = [])
+    protected function renderDivider(Item $item, array $options = []): string
     {
         return $this->format(
             '<li'.$this->renderHtmlAttributes(['class' => 'divider'.$item->getExtra('divider')]).'>',
@@ -135,7 +137,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      *
      * @return string
      */
-    protected function renderLabel(Item $item, array $options)
+    protected function renderLabel(Item $item, array $options): string
     {
         $icon = '';
         if ($item->getExtra('icon')) {
@@ -158,7 +160,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      *
      * @return string
      */
-    protected function renderIcon($icon)
+    protected function renderIcon(string $icon): string
     {
         return $this->container->get('templating')->render('CSBillMenuBundle::icon.html.twig', ['icon' => $icon]);
     }

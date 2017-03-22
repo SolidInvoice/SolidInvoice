@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -32,7 +34,7 @@ class PaymentCompleteEvent extends ResponseEvent
     /**
      * @return Payment
      */
-    public function getPayment()
+    public function getPayment(): Payment
     {
         return $this->payment;
     }

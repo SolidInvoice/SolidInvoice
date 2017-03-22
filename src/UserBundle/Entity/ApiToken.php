@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -13,6 +15,7 @@ namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -57,7 +60,7 @@ class ApiToken
     private $token;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|ApiTokenHistory[]
      *
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @ORM\OrderBy({"created" = "DESC"})
@@ -79,9 +82,9 @@ class ApiToken
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -89,7 +92,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -99,7 +102,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -109,7 +112,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->token;
     }
@@ -119,7 +122,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function setToken($token)
+    public function setToken(string $token): self
     {
         $this->token = $token;
 
@@ -127,9 +130,9 @@ class ApiToken
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ApiTokenHistory[]
      */
-    public function getHistory()
+    public function getHistory(): Collection
     {
         return $this->history;
     }
@@ -139,7 +142,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function addHistory(ApiTokenHistory $history)
+    public function addHistory(ApiTokenHistory $history): self
     {
         $this->history[] = $history;
         $history->setToken($this);
@@ -152,7 +155,7 @@ class ApiToken
      *
      * @return ApiToken
      */
-    public function removeHistory(ApiTokenHistory $history)
+    public function removeHistory(ApiTokenHistory $history): self
     {
         $this->history->removeElement($history);
 
@@ -160,19 +163,19 @@ class ApiToken
     }
 
     /**
-     * @return mixed
+     * @return User
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
     /**
-     * @param mixed $user
+     * @param User $user
      *
      * @return ApiToken
      */
-    public function setUser($user)
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

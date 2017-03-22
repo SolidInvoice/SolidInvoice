@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -28,7 +30,7 @@ class CreditController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function addAction(Request $request, Credit $credit)
+    public function addAction(Request $request, Credit $credit): JsonResponse
     {
         /** @var CreditRepository $clientRepository */
         $clientRepository = $this->getRepository('CSBillClientBundle:Credit');
@@ -55,9 +57,9 @@ class CreditController extends BaseController
      *
      * @throws BadRequestHttpException
      */
-    public function creditAction(Request $request, Client $client)
+    public function creditAction(Request $request, Client $client): JsonResponse
     {
-        $jsonResponse = function (Credit $credit) use ($client) {
+        $jsonResponse = function (Credit $credit) use ($client): JsonResponse {
             return $this->json(
                 [
                     'credit' => $this->get('csbill.money.formatter')->toFloat($credit->getValue()),
@@ -87,7 +89,7 @@ class CreditController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getCreditAction(Client $client)
+    public function getCreditAction(Client $client): JsonResponse
     {
         $credit = $client->getCredit();
 

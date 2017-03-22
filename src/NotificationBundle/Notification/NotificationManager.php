@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -61,7 +63,7 @@ class NotificationManager
      * @param string                       $event
      * @param NotificationMessageInterface $message
      */
-    public function sendNotification($event, NotificationMessageInterface $message)
+    public function sendNotification(string $event, NotificationMessageInterface $message)
     {
         /** @var EntityRepository $repository */
         $repository = $this->entityManager->getRepository('CSBillUserBundle:User');

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -14,17 +15,18 @@ namespace CSBill\QuoteBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ActionsController extends BaseController
 {
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
-    public function acceptAction(Quote $quote)
+    public function acceptAction(Quote $quote): RedirectResponse
     {
         $invoice = $this->get('quote.manager')->accept($quote);
 
@@ -36,11 +38,11 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
-    public function declineAction(Quote $quote)
+    public function declineAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->decline($quote);
 
@@ -52,11 +54,11 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
-    public function cancelAction(Quote $quote)
+    public function cancelAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->cancel($quote);
 
@@ -68,11 +70,11 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
-    public function reopenAction(Quote $quote)
+    public function reopenAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->reopen($quote);
 
@@ -84,11 +86,11 @@ class ActionsController extends BaseController
     /**
      * @param Quote $quote
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
-    public function sendAction(Quote $quote)
+    public function sendAction(Quote $quote): RedirectResponse
     {
         $this->get('quote.manager')->send($quote);
 

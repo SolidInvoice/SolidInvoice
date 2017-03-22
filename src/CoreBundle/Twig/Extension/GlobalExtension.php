@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -27,7 +29,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      *
      * @return array
      */
-    public function getGlobals()
+    public function getGlobals(): array
     {
         $appName = $this->container->get('settings')->get('system.general.app_name');
 
@@ -46,7 +48,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      *
      * @return array
      */
-    protected function getQuery()
+    protected function getQuery(): array
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
 
@@ -90,7 +92,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      *
      * @return string
      */
-    public function displayIcon($iconName, array $options = [])
+    public function displayIcon(string $iconName, array $options = []): string
     {
         $options = implode('-', $options);
         $class = sprintf('fa fa-%s', $iconName);
@@ -108,7 +110,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      *
      * @return float|int
      */
-    public function formatPercentage($amount, $percentage = 0)
+    public function formatPercentage($amount, int $percentage = 0)
     {
         if ($percentage > 0) {
             if ($amount instanceof Money) {
@@ -128,7 +130,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      *
      * @return string
      */
-    public function dateDiff(\DateTime $date)
+    public function dateDiff(\DateTime $date): string
     {
         $carbon = Carbon::instance($date);
 

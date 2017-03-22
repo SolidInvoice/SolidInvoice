@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -99,11 +101,11 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      *
      * @return Definition
      */
-    private function getGridSource(array $arguments)
+    private function getGridSource(array $arguments): Definition
     {
         array_unshift($arguments, new Reference('doctrine'));
 
-        return new Definition('CSBill\DataGridBundle\Source\ORMSource', $arguments);
+        return new Definition('CSBill\DataGridBundle\Source\ORMSource', array_values($arguments));
     }
 
     /**
@@ -111,7 +113,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      *
      * @return Definition
      */
-    private function getFilterService(array &$gridData)
+    private function getFilterService(array &$gridData): Definition
     {
         $definition = new Definition('CSBill\DataGridBundle\Filter\ChainFilter');
 

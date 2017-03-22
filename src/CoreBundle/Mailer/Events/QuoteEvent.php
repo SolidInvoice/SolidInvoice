@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -24,7 +26,7 @@ class QuoteEvent extends MessageEvent
     /**
      * @return string
      */
-    public function getEvent()
+    public function getEvent(): string
     {
         return MailerEvents::MAILER_SEND_QUOTE;
     }
@@ -40,7 +42,7 @@ class QuoteEvent extends MessageEvent
     /**
      * @return Quote
      */
-    public function getQuote()
+    public function getQuote(): Quote
     {
         return $this->quote;
     }

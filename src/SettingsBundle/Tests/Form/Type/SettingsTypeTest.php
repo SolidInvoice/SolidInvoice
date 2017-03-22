@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file is part of CSBill project.
  *
@@ -34,7 +36,7 @@ class SettingsTypeTest extends FormTestCase
 
             $value = $this->faker->name;
 
-            if (in_array($type, ['select2', 'choice'])) {
+            if (in_array($type, ['select2', 'choice'], true)) {
                 $values = $this->faker->rgbColorAsArray;
                 $setting->setOptions($values);
 

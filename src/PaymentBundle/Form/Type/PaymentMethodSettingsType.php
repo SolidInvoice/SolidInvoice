@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -38,7 +40,7 @@ class PaymentMethodSettingsType extends AbstractType
      *
      * @return array
      */
-    private function getOptions(array $settings)
+    private function getOptions(array $settings): array
     {
         $options = [];
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -12,11 +14,13 @@
 namespace CSBill\InvoiceBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Traits\InvoiceStatusTrait;
 use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -153,7 +157,7 @@ class Invoice
     private $paidDate;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|ItemInterface[]
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -163,7 +167,7 @@ class Invoice
     private $items;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Payment[]
      *
      * @ORM\OneToMany(
      *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
@@ -175,7 +179,7 @@ class Invoice
     private $payments;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|int[]
      *
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
@@ -217,7 +221,7 @@ class Invoice
     /**
      * @return Uuid
      */
-    public function getUuid()
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }
@@ -227,7 +231,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setUuid(UuidInterface $uuid)
+    public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
 
@@ -237,19 +241,19 @@ class Invoice
     /**
      * Return users array.
      *
-     * @return ArrayCollection
+     * @return Collection|int[]
      */
-    public function getUsers()
+    public function getUsers(): Collection
     {
         return $this->users;
     }
 
     /**
-     * @param array $users
+     * @param int[] $users
      *
      * @return Invoice
      */
-    public function setUsers(array $users = [])
+    public function setUsers(array $users = []): self
     {
         $this->users = new ArrayCollection($users);
 
@@ -261,7 +265,7 @@ class Invoice
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -271,7 +275,7 @@ class Invoice
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -283,7 +287,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setStatus($status)
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -295,7 +299,7 @@ class Invoice
      *
      * @return Client
      */
-    public function getClient()
+    public function getClient(): ?Client
     {
         return $this->client;
     }
@@ -307,7 +311,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setClient(Client $client = null)
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 
@@ -319,7 +323,7 @@ class Invoice
      *
      * @return Money
      */
-    public function getTotal()
+    public function getTotal(): Money
     {
         return $this->total->getMoney();
     }
@@ -331,7 +335,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setTotal(Money $total)
+    public function setTotal(Money $total): self
     {
         $this->total = new MoneyEntity($total);
 
@@ -343,7 +347,7 @@ class Invoice
      *
      * @return Money
      */
-    public function getBaseTotal()
+    public function getBaseTotal(): Money
     {
         return $this->baseTotal->getMoney();
     }
@@ -355,7 +359,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setBaseTotal(Money $baseTotal)
+    public function setBaseTotal(Money $baseTotal): self
     {
         $this->baseTotal = new MoneyEntity($baseTotal);
 
@@ -365,7 +369,7 @@ class Invoice
     /**
      * @return Money
      */
-    public function getBalance()
+    public function getBalance(): Money
     {
         return $this->balance->getMoney();
     }
@@ -375,7 +379,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setBalance(Money $balance)
+    public function setBalance(Money $balance): self
     {
         $this->balance = new MoneyEntity($balance);
 
@@ -387,7 +391,7 @@ class Invoice
      *
      * @return float
      */
-    public function getDiscount()
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
@@ -399,7 +403,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setDiscount($discount)
+    public function setDiscount(float $discount): self
     {
         $this->discount = $discount;
 
@@ -411,7 +415,7 @@ class Invoice
      *
      * @return \DateTime
      */
-    public function getDue()
+    public function getDue(): ?\DateTime
     {
         return $this->due;
     }
@@ -423,7 +427,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setDue(\DateTime $due)
+    public function setDue(\DateTime $due): self
     {
         $this->due = $due;
 
@@ -435,7 +439,7 @@ class Invoice
      *
      * @return \DateTime
      */
-    public function getPaidDate()
+    public function getPaidDate(): ?\DateTime
     {
         return $this->paidDate;
     }
@@ -447,7 +451,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setPaidDate(\DateTime $paidDate)
+    public function setPaidDate(\DateTime $paidDate): self
     {
         $this->paidDate = $paidDate;
 
@@ -461,7 +465,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function addItem(Item $item)
+    public function addItem(Item $item): self
     {
         $this->items[] = $item;
         $item->setInvoice($this);
@@ -476,7 +480,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function removeItem(Item $item)
+    public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
         $item->setInvoice(null);
@@ -487,9 +491,9 @@ class Invoice
     /**
      * Get items.
      *
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getItems()
+    public function getItems(): Collection
     {
         return $this->items;
     }
@@ -501,7 +505,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function addPayment(Payment $payment)
+    public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
         $payment->setInvoice($this);
@@ -516,7 +520,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function removePayment(Payment $payment)
+    public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
 
@@ -526,9 +530,9 @@ class Invoice
     /**
      * Get payments.
      *
-     * @return ArrayCollection
+     * @return Collection|Payment[]
      */
-    public function getPayments()
+    public function getPayments(): Collection
     {
         return $this->payments;
     }
@@ -536,39 +540,47 @@ class Invoice
     /**
      * @return string
      */
-    public function getTerms()
+    public function getTerms(): ?string
     {
         return $this->terms;
     }
 
     /**
      * @param string $terms
+     *
+     * @return Invoice
      */
-    public function setTerms($terms)
+    public function setTerms(string $terms): self
     {
         $this->terms = $terms;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getNotes()
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
 
     /**
      * @param string $notes
+     *
+     * @return Invoice
      */
-    public function setNotes($notes)
+    public function setNotes(string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
     }
 
     /**
      * @return Money
      */
-    public function getTax()
+    public function getTax(): Money
     {
         return $this->tax->getMoney();
     }
@@ -578,7 +590,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setTax(Money $tax)
+    public function setTax(Money $tax): self
     {
         $this->tax = new MoneyEntity($tax);
 
@@ -602,7 +614,7 @@ class Invoice
     /**
      * @return bool
      */
-    public function isRecurring()
+    public function isRecurring(): bool
     {
         return $this->recurringInfo instanceof RecurringInvoice;
     }
@@ -612,9 +624,9 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setRecurring($recurring)
+    public function setRecurring(bool $recurring): self
     {
-        $this->recurring = (bool) $recurring;
+        $this->recurring = $recurring;
 
         return $this;
     }
@@ -622,7 +634,7 @@ class Invoice
     /**
      * @return RecurringInvoice
      */
-    public function getRecurringInfo()
+    public function getRecurringInfo(): ?RecurringInvoice
     {
         return $this->recurringInfo;
     }
@@ -632,7 +644,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setRecurringInfo(RecurringInvoice $recurringInfo = null)
+    public function setRecurringInfo(RecurringInvoice $recurringInfo = null): self
     {
         if (null === $recurringInfo) {
             return $this;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -39,7 +41,7 @@ class Select2Type extends AbstractType
     /**
      * @return string
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -43,7 +45,7 @@ class GridExtension extends \Twig_Extension
     /**
      * @return \Twig_SimpleFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction(
@@ -74,7 +76,7 @@ class GridExtension extends \Twig_Extension
      *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
-    public function renderGrid(\Twig_Environment $env, $gridName, array $parameters = [])
+    public function renderGrid(\Twig_Environment $env, string $gridName, array $parameters = []): string
     {
         $grid = $this->repository->find($gridName);
 
@@ -110,7 +112,7 @@ class GridExtension extends \Twig_Extension
      *
      * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
      */
-    public function renderMultipleGrid(\Twig_Environment $env)
+    public function renderMultipleGrid(\Twig_Environment $env): string
     {
         $parameters = [];
 

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -76,7 +77,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         $tax = new Tax();
         $tax->setName('VAT');
-        $tax->setRate('14');
+        $tax->setRate(14.00);
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
         $item = new Item();
@@ -89,7 +90,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         $quote = new Quote();
         $quote->setBaseTotal(new Money(123, $currency));
-        $quote->setDiscount(new Money(12, $currency));
+        $quote->setDiscount(12);
         $quote->setNotes('Notes');
         $quote->setTax(new Money(432, $currency));
         $quote->setTerms('Terms');

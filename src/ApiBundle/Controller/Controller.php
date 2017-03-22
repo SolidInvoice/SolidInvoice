@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -33,7 +35,7 @@ abstract class Controller extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function manageForm(Request $request, $form, $entity, $status = Response::HTTP_OK)
+    protected function manageForm(Request $request, $form, $entity, int $status = Response::HTTP_OK): Response
     {
         $form = $this->get('form.factory')->create($form, $entity, ['method' => $entity ? 'PATCH' : 'POST']);
 
@@ -73,7 +75,7 @@ abstract class Controller extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function manageCollection(ParamFetcherInterface $fetcher, QueryBuilder $queryBuilder, $route)
+    protected function manageCollection(ParamFetcherInterface $fetcher, QueryBuilder $queryBuilder, string $route): Response
     {
         $limit = $fetcher->get('limit');
         $page = $fetcher->get('page');
@@ -107,7 +109,7 @@ abstract class Controller extends FOSRestController
      *
      * @return Response
      */
-    protected function deleteEntity($entity)
+    protected function deleteEntity($entity): Response
     {
         $status = Response::HTTP_NO_CONTENT;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -46,7 +48,7 @@ class QuoteController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getQuotesAction(ParamFetcherInterface $fetcher)
+    public function getQuotesAction(ParamFetcherInterface $fetcher): Response
     {
         /* @var QuoteRepository $repository */
         $repository = $this->get('doctrine')
@@ -81,7 +83,7 @@ class QuoteController extends Controller
      *
      * @throws \Exception
      */
-    public function getQuoteAction(Entity\Quote $quote)
+    public function getQuoteAction(Entity\Quote $quote): Response
     {
         return $this->handleView($this->view($quote));
     }
@@ -106,7 +108,7 @@ class QuoteController extends Controller
      *
      * @return Response
      */
-    public function createQuoteAction(Request $request)
+    public function createQuoteAction(Request $request): Response
     {
         $entity = new Entity\Quote();
         $entity->setStatus($request->request->get('status', Graph::STATUS_DRAFT));
@@ -179,7 +181,7 @@ class QuoteController extends Controller
 
         $transitions = $this->get('finite.factory')->get($quote, Graph::GRAPH)->getTransitions();
 
-        if (!in_array($status, $transitions)) {
+        if (!in_array($status, $transitions, true)) {
             throw new \Exception(sprintf('The value "%s" is not valid', $status), Response::HTTP_BAD_REQUEST);
         }
 

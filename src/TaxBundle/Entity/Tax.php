@@ -1,22 +1,6 @@
 <?php
 
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+declare(strict_types=1);
 
 /*
  * This file is part of CSBill project.
@@ -29,8 +13,10 @@
 
 namespace CSBill\TaxBundle\Entity;
 
+use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serialize;
@@ -71,7 +57,7 @@ class Tax
     private $name;
 
     /**
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Assert\Type("float")
@@ -90,11 +76,15 @@ class Tax
     private $type;
 
     /**
+     * @var Collection|ItemInterface[]
+     *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
+     * @var Collection|ItemInterface[]
+     *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Item", mappedBy="tax")
      */
     private $quoteItems;
@@ -110,7 +100,7 @@ class Tax
      *
      * @static
      */
-    public static function getTypes()
+    public static function getTypes(): array
     {
         $types = [
             self::TYPE_INCLUSIVE,
@@ -125,7 +115,7 @@ class Tax
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -133,7 +123,7 @@ class Tax
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -143,7 +133,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -151,19 +141,19 @@ class Tax
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getRate()
+    public function getRate(): ?float
     {
         return $this->rate;
     }
 
     /**
-     * @param string $rate
+     * @param float $rate
      *
      * @return Tax
      */
-    public function setRate($rate)
+    public function setRate(float $rate): self
     {
         $this->rate = $rate;
 
@@ -173,7 +163,7 @@ class Tax
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -183,7 +173,7 @@ class Tax
      *
      * @return Tax
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -191,19 +181,19 @@ class Tax
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getInvoiceItems()
+    public function getInvoiceItems(): Collection
     {
         return $this->invoiceItems;
     }
 
     /**
-     * @param array $invoiceItems
+     * @param ItemInterface[] $invoiceItems
      *
      * @return Tax
      */
-    public function setInvoiceItems(array $invoiceItems)
+    public function setInvoiceItems(array $invoiceItems): self
     {
         $this->invoiceItems = $invoiceItems;
 
@@ -211,19 +201,19 @@ class Tax
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getQuoteItems()
+    public function getQuoteItems(): Collection
     {
         return $this->quoteItems;
     }
 
     /**
-     * @param array $quoteItems
+     * @param ItemInterface[] $quoteItems
      *
      * @return Tax
      */
-    public function setQuoteItems(array $quoteItems)
+    public function setQuoteItems(array $quoteItems): self
     {
         $this->quoteItems = $quoteItems;
 
@@ -233,7 +223,7 @@ class Tax
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $type = $this->type === self::TYPE_INCLUSIVE ? 'inc' : 'exl';
         $rate = $this->rate * 100;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -22,7 +24,7 @@ class UploadController extends BaseController
      *
      * @return JsonResponse
      */
-    public function imageUploadAction(Request $request)
+    public function imageUploadAction(Request $request): JsonResponse
     {
         $file = $request->files->get('Filedata');
 

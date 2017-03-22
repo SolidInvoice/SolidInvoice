@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -37,7 +39,7 @@ class VersionRepository extends EntityRepository
     /**
      * @return string
      */
-    public function getCurrentVersion()
+    public function getCurrentVersion(): string
     {
         $qb = $this->createQueryBuilder('v');
 

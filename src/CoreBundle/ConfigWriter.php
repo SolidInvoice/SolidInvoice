@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -81,7 +83,7 @@ class ConfigWriter
      *
      * @throws \RuntimeException
      */
-    public function getConfigValues()
+    public function getConfigValues(): array
     {
         try {
             $value = Yaml::parse(file_get_contents($this->configFile));

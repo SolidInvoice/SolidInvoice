@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -25,7 +27,7 @@ class MoneyHydrator extends AbstractHydrator
     /**
      * @param Currency $currency
      */
-    public static function setCurrency($currency)
+    public static function setCurrency(\Money\Currency $currency)
     {
         self::$currency = $currency;
     }

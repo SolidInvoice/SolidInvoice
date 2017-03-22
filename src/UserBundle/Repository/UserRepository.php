@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -23,7 +24,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     /**
      * @return int
      */
-    public function getUserCount()
+    public function getUserCount(): int
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -41,7 +42,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @throws UsernameNotFoundException
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): UserInterface
     {
         $q = $this
             ->createQueryBuilder('u')

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -12,6 +14,7 @@
 namespace CSBill\ClientBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -70,7 +73,7 @@ class ContactType
     private $required = false;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|AdditionalContactDetail[]
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type")
      * @Serialize\Groups({"none"})
@@ -90,7 +93,7 @@ class ContactType
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -102,7 +105,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -114,7 +117,7 @@ class ContactType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -126,9 +129,9 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setRequired($required)
+    public function setRequired(bool $required): self
     {
-        $this->required = (bool) $required;
+        $this->required = $required;
 
         return $this;
     }
@@ -138,9 +141,9 @@ class ContactType
      *
      * @return bool
      */
-    public function isRequired()
+    public function isRequired(): bool
     {
-        return $this->required;
+        return (bool) $this->required;
     }
 
     /**
@@ -150,7 +153,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function addDetail(AdditionalContactDetail $detail)
+    public function addDetail(AdditionalContactDetail $detail): self
     {
         $this->details[] = $detail;
         $detail->setType($this);
@@ -161,9 +164,9 @@ class ContactType
     /**
      * Get details.
      *
-     * @return ArrayCollection
+     * @return Collection|AdditionalContactDetail[]
      */
-    public function getDetails()
+    public function getDetails(): ?Collection
     {
         return $this->details;
     }
@@ -171,7 +174,7 @@ class ContactType
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -179,9 +182,9 @@ class ContactType
     /**
      * @param string $type
      *
-     * @return $this
+     * @return ContactType
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -191,7 +194,7 @@ class ContactType
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): ?array
     {
         return $this->options;
     }
@@ -199,9 +202,9 @@ class ContactType
     /**
      * @param array $options
      *
-     * @return $this
+     * @return ContactType
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
@@ -211,7 +214,7 @@ class ContactType
     /**
      * Return the contact type as a string.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

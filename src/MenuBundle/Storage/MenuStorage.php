@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -21,7 +23,7 @@ class MenuStorage implements MenuStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return isset($this->list[$name]);
     }
@@ -29,7 +31,7 @@ class MenuStorage implements MenuStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name)
+    public function get(string $name): \SplPriorityQueue
     {
         if (!$this->has($name)) {
             $this->list[$name] = new \SplPriorityQueue();

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -135,7 +136,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
      * @param string $status
      * @param string $errorMessage
      */
-    private function addFlashMessage($status, $errorMessage = null)
+    private function addFlashMessage(string $status, string $errorMessage = null)
     {
         switch ($status) {
             case Status::STATUS_CAPTURED:

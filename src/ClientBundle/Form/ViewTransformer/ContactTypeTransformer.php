@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -34,7 +36,7 @@ class ContactTypeTransformer implements DataTransformerInterface
      *
      * @return int
      */
-    public function transform($value)
+    public function transform($value): int
     {
         return $this->type->getId();
     }
@@ -44,7 +46,7 @@ class ContactTypeTransformer implements DataTransformerInterface
      *
      * @return \CSBill\ClientBundle\Entity\ContactType
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ContactType
     {
         return $this->type;
     }

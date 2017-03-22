@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -18,15 +20,16 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends BaseController
 {
     /**
      * List all the clients.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->render('CSBillClientBundle:Default:index.html.twig');
     }

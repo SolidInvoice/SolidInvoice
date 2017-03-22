@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -16,7 +18,7 @@ class InvalidGridException extends \Exception
     /**
      * @param string $grid
      */
-    public function __construct($grid)
+    public function __construct(string $grid)
     {
         $message = sprintf('The grid "%s" does not exist.', $grid);
 

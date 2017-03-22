@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -30,7 +32,7 @@ class DefaultController extends BaseController
      *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         /** @var \CSBill\InvoiceBundle\Repository\InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Invoice');
@@ -57,7 +59,7 @@ class DefaultController extends BaseController
      *
      * @return Response
      */
-    public function createAction(Request $request, Client $client = null)
+    public function createAction(Request $request, Client $client = null): Response
     {
         /** @var \CSBill\ClientBundle\Repository\ClientRepository $clients */
         $clients = $this->getRepository('CSBillClientBundle:Client');

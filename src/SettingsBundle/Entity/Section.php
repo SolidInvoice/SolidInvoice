@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -12,6 +14,7 @@
 namespace CSBill\SettingsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -40,14 +43,16 @@ class Section
     private $parent;
 
     /**
+     * @var Collection|Section[]
+     *
      * @ORM\OneToMany(targetEntity="Section", mappedBy="parent")
      */
     private $children;
 
     /**
-     * @ORM\OneToMany(targetEntity="Setting", mappedBy="section")
+     * @var Collection|Setting[]
      *
-     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Setting", mappedBy="section")
      */
     private $settings;
 
@@ -62,7 +67,7 @@ class Section
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -72,7 +77,7 @@ class Section
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -82,9 +87,9 @@ class Section
      *
      * @param string $name
      *
-     * @return $this
+     * @return Section
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -96,7 +101,7 @@ class Section
      *
      * @return Section
      */
-    public function getParent()
+    public function getParent(): ?Section
     {
         return $this->parent;
     }
@@ -108,7 +113,7 @@ class Section
      *
      * @return Section
      */
-    public function setParent(Section $parent)
+    public function setParent(Section $parent): self
     {
         $this->parent = $parent;
 
@@ -118,9 +123,9 @@ class Section
     /**
      * Get children.
      *
-     * @return ArrayCollection
+     * @return Collection|Section[]
      */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
@@ -132,7 +137,7 @@ class Section
      *
      * @return Section
      */
-    public function addChild(Section $child)
+    public function addChild(Section $child): self
     {
         $this->children[] = $child;
         $child->setParent($this);
@@ -147,7 +152,7 @@ class Section
      *
      * @return Section
      */
-    public function removeChild(Section $child)
+    public function removeChild(Section $child): self
     {
         $this->children->removeElement($child);
 
@@ -157,9 +162,9 @@ class Section
     /**
      * Get settings.
      *
-     * @return ArrayCollection
+     * @return Collection|Setting[]
      */
-    public function getSettings()
+    public function getSettings(): Collection
     {
         return $this->settings;
     }
@@ -171,7 +176,7 @@ class Section
      *
      * @return Section
      */
-    public function addSetting(Setting $setting)
+    public function addSetting(Setting $setting): self
     {
         $this->settings[] = $setting;
         $setting->setSection($this);
@@ -186,7 +191,7 @@ class Section
      *
      * @return Section
      */
-    public function removeSetting(Setting $setting)
+    public function removeSetting(Setting $setting): self
     {
         $this->settings->removeElement($setting);
 
@@ -196,7 +201,7 @@ class Section
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->name;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -24,7 +26,7 @@ class ResponseEvent extends Event
     /**
      * @return Response
      */
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->response;
     }
@@ -32,7 +34,7 @@ class ResponseEvent extends Event
     /**
      * @param Response $response
      */
-    public function setResponse($response)
+    public function setResponse(\Symfony\Component\HttpFoundation\Response $response)
     {
         $this->response = $response;
     }

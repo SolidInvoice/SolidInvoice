@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -34,7 +36,7 @@ trait Money
      *
      * @return MoneyObject
      */
-    public function getAmount()
+    public function getAmount(): Money
     {
         if (!$this->priceCurrency) {
             return;

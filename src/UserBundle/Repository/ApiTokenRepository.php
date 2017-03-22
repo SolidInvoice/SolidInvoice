@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -30,7 +31,7 @@ class ApiTokenRepository extends EntityRepository
      *
      * @throws UsernameNotFoundException
      */
-    public function getUsernameForToken($token)
+    public function getUsernameForToken(string $token): ?UserInterface
     {
         $q = $this
             ->createQueryBuilder('t')
@@ -44,7 +45,7 @@ class ApiTokenRepository extends EntityRepository
             // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
             return $q->getSingleScalarResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
@@ -53,7 +54,7 @@ class ApiTokenRepository extends EntityRepository
      *
      * @return array
      */
-    public function getApiTokensForUser(User $user)
+    public function getApiTokensForUser(User $user): array
     {
         $qb = $this->createQueryBuilder('t');
 

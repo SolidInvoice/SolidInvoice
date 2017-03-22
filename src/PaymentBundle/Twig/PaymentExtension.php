@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -49,7 +50,7 @@ class PaymentExtension extends Twig_Extension
     /**
      * @return Twig_SimpleFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction('payment_enabled', [$this, 'paymentEnabled']),
@@ -65,7 +66,7 @@ class PaymentExtension extends Twig_Extension
      *
      * @return Money
      */
-    public function getTotalIncome(Client $client = null)
+    public function getTotalIncome(Client $client = null): Money
     {
         $income = $this->registry->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome($client);
 
@@ -77,7 +78,7 @@ class PaymentExtension extends Twig_Extension
      *
      * @return Money
      */
-    public function getTotalOutstanding(Client $client = null)
+    public function getTotalOutstanding(Client $client = null): Money
     {
         $outstanding = $this->registry->getRepository('CSBillInvoiceBundle:Invoice')->getTotalOutstanding($client);
 
@@ -89,7 +90,7 @@ class PaymentExtension extends Twig_Extension
      *
      * @return bool
      */
-    public function paymentEnabled($method)
+    public function paymentEnabled($method): bool
     {
         $paymentMethod = $this->getRepository()->findOneBy(['gatewayName' => $method]);
 
@@ -103,7 +104,7 @@ class PaymentExtension extends Twig_Extension
     /**
      * @return PaymentMethodRepository
      */
-    public function getRepository()
+    public function getRepository(): PaymentMethodRepository
     {
         if (null === $this->repository) {
             $this->repository = $this->registry->getRepository('CSBillPaymentBundle:PaymentMethod');
@@ -117,7 +118,7 @@ class PaymentExtension extends Twig_Extension
      *
      * @return int
      */
-    public function paymentConfigured($includeInternal = true)
+    public function paymentConfigured(bool $includeInternal = true): int
     {
         return $this->getRepository()->getTotalMethodsConfigured($includeInternal);
     }
@@ -125,7 +126,7 @@ class PaymentExtension extends Twig_Extension
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'payment_extension';
     }

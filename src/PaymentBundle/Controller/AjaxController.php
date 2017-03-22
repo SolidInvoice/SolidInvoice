@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -28,7 +30,7 @@ class AjaxController extends BaseController
      *
      * @return JsonResponse
      */
-    public function loadSettingsAction(Request $request, PaymentMethod $paymentMethod = null)
+    public function loadSettingsAction(Request $request, PaymentMethod $paymentMethod = null): JsonResponse
     {
         $methodName = $request->attributes->get('method');
         $paymentFactories = $this->get('payum.factories');

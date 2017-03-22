@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -15,6 +17,7 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
 use CSBill\InvoiceBundle\Model\Graph;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ActionsController extends BaseController
 {
@@ -22,11 +25,11 @@ class ActionsController extends BaseController
      * @param string  $action
      * @param Invoice $invoice
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws InvalidTransitionException
      */
-    public function transitionAction($action, Invoice $invoice)
+    public function transitionAction(string $action, Invoice $invoice): RedirectResponse
     {
         if (!$this->get('finite.factory')->get($invoice, Graph::GRAPH)->can($action)) {
             throw new InvalidTransitionException($action);
@@ -42,9 +45,9 @@ class ActionsController extends BaseController
     /**
      * @param Invoice $invoice
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function sendAction(Invoice $invoice)
+    public function sendAction(Invoice $invoice): RedirectResponse
     {
         if ($invoice->getStatus() !== Graph::STATUS_PENDING) {
             $this->get('invoice.manager')->accept($invoice);

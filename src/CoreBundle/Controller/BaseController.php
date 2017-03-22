@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -11,8 +13,11 @@
 
 namespace CSBill\CoreBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseController extends Base
@@ -22,9 +27,9 @@ abstract class BaseController extends Base
      *
      * @param string $repository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return ObjectRepository
      */
-    protected function getRepository($repository)
+    protected function getRepository(string $repository): ObjectRepository
     {
         return $this->getEm()->getRepository($repository);
     }
@@ -32,9 +37,9 @@ abstract class BaseController extends Base
     /**
      * Return a instance of the doctrine entity manager.
      *
-     * @return \Doctrine\ORM\EntityManagerInterface
+     * @return ObjectManager
      */
-    protected function getEm()
+    protected function getEm(): ObjectManager
     {
         return $this->getDoctrine()->getManager();
     }
@@ -47,7 +52,7 @@ abstract class BaseController extends Base
      *
      * @return $this
      */
-    protected function flash($message, $type = 'notice')
+    protected function flash(string $message, string $type = 'notice')
     {
         $this->get('session')->getFlashBag()->add($type, $message);
 
@@ -61,7 +66,7 @@ abstract class BaseController extends Base
      *
      * @return string
      */
-    protected function trans($message)
+    protected function trans(string $message): string
     {
         return $this->get('translator')->trans($message);
     }
@@ -81,12 +86,22 @@ abstract class BaseController extends Base
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function json($data, $status = 200, $headers = [], $_ = []): Response
+    {
+        $json = $this->container->get('serializer')->serialize($data, 'json');
+
+        return new JsonResponse($json, $status, $headers, true);
+    }
+
+    /**
      * @param mixed $data
      * @param int   $responseCode
      *
      * @return Response
      */
-    protected function serializeJs($data, $responseCode = 200)
+    protected function serializeJs($data, int $responseCode = 200): Response
     {
         $serializer = $this->get('serializer');
 

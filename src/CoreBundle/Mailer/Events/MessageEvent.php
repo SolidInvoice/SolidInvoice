@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -34,7 +36,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @return mixed
      */
-    abstract public function getEvent();
+    abstract public function getEvent(): string;
 
     /**
      * @param Swift_Message $message
@@ -47,7 +49,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @return Swift_Message
      */
-    public function getMessage()
+    public function getMessage(): Swift_Message
     {
         return $this->message;
     }
@@ -55,7 +57,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @param string $template
      */
-    public function setHtmlTemplate($template)
+    public function setHtmlTemplate(string $template)
     {
         $this->htmlTemplate = $template;
     }
@@ -63,7 +65,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @return string
      */
-    public function getHtmlTemplate()
+    public function getHtmlTemplate(): string
     {
         return $this->htmlTemplate;
     }
@@ -71,7 +73,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @param string $template
      */
-    public function setTextTemplate($template)
+    public function setTextTemplate(string $template)
     {
         $this->txtTemplate = $template;
     }
@@ -79,7 +81,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @return string
      */
-    public function getTextTemplate()
+    public function getTextTemplate(): string
     {
         return $this->txtTemplate;
     }

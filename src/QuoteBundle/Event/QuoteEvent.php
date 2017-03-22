@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -40,7 +41,7 @@ class QuoteEvent extends Event
     /**
      * @return Quote
      */
-    public function getQuote()
+    public function getQuote(): Quote
     {
         return $this->quote;
     }

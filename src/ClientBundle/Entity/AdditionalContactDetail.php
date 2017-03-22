@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -69,7 +71,7 @@ class AdditionalContactDetail
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -79,7 +81,7 @@ class AdditionalContactDetail
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
@@ -91,7 +93,7 @@ class AdditionalContactDetail
      *
      * @return AdditionalContactDetail
      */
-    public function setValue($value)
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
@@ -103,7 +105,7 @@ class AdditionalContactDetail
      *
      * @return ContactType
      */
-    public function getType()
+    public function getType(): ?ContactType
     {
         return $this->type;
     }
@@ -115,7 +117,7 @@ class AdditionalContactDetail
      *
      * @return AdditionalContactDetail
      */
-    public function setType(ContactType $type)
+    public function setType(ContactType $type): self
     {
         $this->type = $type;
 
@@ -125,7 +127,7 @@ class AdditionalContactDetail
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->value;
     }
@@ -135,7 +137,7 @@ class AdditionalContactDetail
      *
      * @return Contact
      */
-    public function getContact()
+    public function getContact(): ?Contact
     {
         return $this->contact;
     }
@@ -147,7 +149,7 @@ class AdditionalContactDetail
      *
      * @return AdditionalContactDetail
      */
-    public function setContact(Contact $contact)
+    public function setContact(Contact $contact): self
     {
         $this->contact = $contact;
 

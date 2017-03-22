@@ -81,7 +81,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigDir()
+    public function getConfigDir(): string
     {
         return $this->getRootDir().'/config';
     }
@@ -105,7 +105,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getContainerCacheClass()
+    public function getContainerCacheClass(): string
     {
         return $this->getContainerClass();
     }

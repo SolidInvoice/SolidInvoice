@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -38,7 +40,7 @@ class StatsWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): array
     {
         /** @var ClientRepository $clientRepository */
         $clientRepository = $this->manager->getRepository('CSBillClientBundle:Client');
@@ -67,7 +69,7 @@ class StatsWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return 'CSBillDashboardBundle:Widget:stats.html.twig';
     }

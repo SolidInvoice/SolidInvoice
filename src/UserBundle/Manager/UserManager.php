@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -98,7 +99,7 @@ class UserManager extends BaseUserManager
      * @param UserInterface $user
      * @param bool          $flush Whether to flush the changes (default true)
      */
-    public function updateUser(UserInterface $user, $flush = true)
+    public function updateUser(UserInterface $user, bool $flush = true)
     {
         $this->updateCanonicalFields($user);
         $this->updatePassword($user);

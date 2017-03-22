@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -22,7 +23,7 @@ class TaxEntityType extends AbstractType
     /**
      * @return string
      */
-    public function getParent()
+    public function getParent(): string
     {
         return EntityType::class;
     }

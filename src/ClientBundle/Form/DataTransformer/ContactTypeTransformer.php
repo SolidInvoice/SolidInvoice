@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -33,13 +35,15 @@ class ContactTypeTransformer implements DataTransformerInterface
     /**
      * @param ContactType $type
      *
-     * @return string
+     * @return int
      */
-    public function transform($type)
+    public function transform($type): ?int
     {
         if ($type) {
             return $type->getId();
         }
+
+        return null;
     }
 
     /**
@@ -49,10 +53,10 @@ class ContactTypeTransformer implements DataTransformerInterface
      *
      * @throws TransformationFailedException
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?ContactType
     {
         if (!$value) {
-            return;
+            return null;
         }
 
         foreach ($this->types as $type) {

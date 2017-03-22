@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -20,7 +22,7 @@ interface ChainedNotificationInterface extends NotificationInterface
      *
      * @return NotificationInterface[]
      */
-    public function getNotifications();
+    public function getNotifications(): array;
 
     /**
      * Add a notification to the chain.

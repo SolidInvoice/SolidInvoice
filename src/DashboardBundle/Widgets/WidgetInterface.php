@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -16,10 +18,10 @@ interface WidgetInterface
     /**
      * @return array
      */
-    public function getData();
+    public function getData(): array;
 
     /**
      * @return string
      */
-    public function getTemplate();
+    public function getTemplate(): string;
 }

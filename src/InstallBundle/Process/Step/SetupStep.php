@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -18,6 +20,7 @@ use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Repository\UserRepository;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
@@ -42,9 +45,9 @@ class SetupStep extends AbstractControllerStep
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
-    private function getForm(Request $request)
+    private function getForm(Request $request): FormInterface
     {
         $options = [
             'action' => $this->generateUrl(

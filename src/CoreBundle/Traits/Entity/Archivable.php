@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -25,7 +27,7 @@ trait Archivable
     /**
      * @return bool
      */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return true === $this->archived;
     }
@@ -35,7 +37,7 @@ trait Archivable
      *
      * @return $this
      */
-    public function setArchived($archived)
+    public function setArchived(?bool $archived)
     {
         $this->archived = $archived;
 
@@ -45,9 +47,9 @@ trait Archivable
     /**
      * Archives a record.
      *
-     * @return Archivable
+     * @return $this|Archivable
      */
-    public function archive()
+    public function archive(): self
     {
         return $this->setArchived(true);
     }

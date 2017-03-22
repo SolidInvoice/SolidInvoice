@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -12,6 +14,7 @@
 namespace CSBill\CoreBundle\Controller;
 
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Response;
 
 class ViewController extends BaseController
 {
@@ -35,9 +38,9 @@ class ViewController extends BaseController
      *
      * @param string $uuid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function viewquoteAction($uuid)
+    public function viewquoteAction(string $uuid): Response
     {
         $this->repository = 'CSBillQuoteBundle:Quote';
         $this->route = '_quotes_view';
@@ -51,9 +54,9 @@ class ViewController extends BaseController
      *
      * @param $uuid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function viewinvoiceAction($uuid)
+    public function viewinvoiceAction($uuid): Response
     {
         $this->repository = 'CSBillInvoiceBundle:Invoice';
         $this->route = '_invoices_view';
@@ -66,11 +69,11 @@ class ViewController extends BaseController
      * @param $uuid
      * @param string $object
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function createResponse($uuid, $object)
+    private function createResponse($uuid, string $object): Response
     {
         $repository = $this->getRepository($this->repository);
 

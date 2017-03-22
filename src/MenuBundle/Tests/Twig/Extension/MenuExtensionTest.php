@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -61,9 +62,9 @@ class MenuExtensionTest extends \PHPUnit\Framework\TestCase
         $renderer->shouldReceive('build')
             ->once()
             ->with($menu, ['a' => 'b'])
-            ->andReturn(123);
+            ->andReturn('123');
 
-        $this->assertSame(123, $this->extension->renderMenu($location, ['a' => 'b']));
+        $this->assertSame('123', $this->extension->renderMenu($location, ['a' => 'b']));
 
         $provider->shouldHaveReceived('get')
             ->once()

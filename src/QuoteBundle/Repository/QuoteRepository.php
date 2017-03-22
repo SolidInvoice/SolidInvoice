@@ -1,22 +1,6 @@
 <?php
 
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+declare(strict_types=1);
 
 /*
  * This file is part of CSBill project.
@@ -31,6 +15,7 @@ namespace CSBill\QuoteBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class QuoteRepository extends EntityRepository
 {
@@ -41,7 +26,7 @@ class QuoteRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalQuotes($status = null)
+    public function getTotalQuotes(string $status = null): int
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -64,7 +49,7 @@ class QuoteRepository extends EntityRepository
      *
      * @return array
      */
-    public function getRecentQuotes($limit = 5)
+    public function getRecentQuotes($limit = 5): array
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -81,9 +66,9 @@ class QuoteRepository extends EntityRepository
     /**
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getGridQuery(array $parameters = [])
+    public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -99,9 +84,9 @@ class QuoteRepository extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getArchivedGridQuery()
+    public function getArchivedGridQuery(): QueryBuilder
     {
         $this->getEntityManager()->getFilters()->disable('archivable');
 

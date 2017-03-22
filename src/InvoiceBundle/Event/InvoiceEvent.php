@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -40,7 +42,7 @@ class InvoiceEvent extends Event
     /**
      * @return Invoice
      */
-    public function getInvoice()
+    public function getInvoice(): Invoice
     {
         return $this->invoice;
     }

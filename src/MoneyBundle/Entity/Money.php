@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -50,7 +52,7 @@ class Money
     /**
      * @return string
      */
-    public static function getBaseCurrency()
+    public static function getBaseCurrency(): ?string
     {
         return self::$baseCurrency;
     }
@@ -58,7 +60,7 @@ class Money
     /**
      * @param BaseMoney $money
      */
-    public function __construct(BaseMoney $money = null)
+    public function __construct(?BaseMoney $money = null)
     {
         if ($money) {
             $this->value = $money->getAmount();
@@ -67,10 +69,10 @@ class Money
     }
 
     /**
-     * @return \Money\Money
+     * @return BaseMoney
      */
-    public function getMoney()
+    public function getMoney(): BaseMoney
     {
-        return new \Money\Money($this->value, new Currency($this->currency ?: self::$baseCurrency));
+        return new BaseMoney((int) $this->value, new Currency($this->currency ?: self::$baseCurrency));
     }
 }

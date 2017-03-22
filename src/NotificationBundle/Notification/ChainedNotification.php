@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -26,7 +28,7 @@ class ChainedNotification extends Notification implements ChainedNotificationInt
      * @param string                  $message
      * @param array                   $parameters
      */
-    public function __construct(array $notifications = [], $message = null, array $parameters = [])
+    public function __construct(array $notifications = [], string $message = null, array $parameters = [])
     {
         parent::__construct($message, $parameters);
 
@@ -38,7 +40,7 @@ class ChainedNotification extends Notification implements ChainedNotificationInt
     /**
      * {@inheritdoc}
      */
-    public function getNotifications()
+    public function getNotifications(): array
     {
         return $this->notifications;
     }

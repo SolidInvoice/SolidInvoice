@@ -23,4 +23,5 @@ services:
 
     twilio.client:
         class: Twilio\Rest\Client
-        arguments: ['@=service(''settings'').get(''sms.twilio.sid'')', '@=service(''settings'').get(''sms.twilio.token'')']
+        #arguments: ['@=service(''settings'').get(''sms.twilio.sid'')', '@=service(''settings'').get(''sms.twilio.token'')']
+        arguments: ['a', 'b']

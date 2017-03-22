@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -23,7 +24,7 @@ class ApiTokenHistoryRepository extends EntityRepository
      *
      * @return mixed|null
      */
-    public function addHistory(ApiTokenHistory $history, $token)
+    public function addHistory(ApiTokenHistory $history, string $token)
     {
         $entityManager = $this->getEntityManager();
 

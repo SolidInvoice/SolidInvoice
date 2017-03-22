@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -41,7 +42,7 @@ class TaxExtension extends \Twig_Extension
     /**
      * @return true
      */
-    public function taxRatesConfigured()
+    public function taxRatesConfigured(): bool
     {
         static $taxConfigured;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -12,10 +14,12 @@
 namespace CSBill\QuoteBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\QuoteBundle\Traits\QuoteStatusTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -148,7 +152,7 @@ class Quote
     private $due;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|ItemInterface[]
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -159,10 +163,10 @@ class Quote
     private $items;
 
     /**
+     * @var Collection|string[]
+     *
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
-     *
-     * @var ArrayCollection
      */
     private $users;
 
@@ -185,7 +189,7 @@ class Quote
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -193,7 +197,7 @@ class Quote
     /**
      * @return Uuid
      */
-    public function getUuid()
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }
@@ -203,7 +207,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setUuid(UuidInterface $uuid)
+    public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
 
@@ -213,19 +217,19 @@ class Quote
     /**
      * Return users array.
      *
-     * @return ArrayCollection
+     * @return Collection|string[]
      */
-    public function getUsers()
+    public function getUsers(): Collection
     {
         return $this->users;
     }
 
     /**
-     * @param array $users
+     * @param int[] $users
      *
      * @return Quote
      */
-    public function setUsers(array $users = [])
+    public function setUsers(array $users = []): self
     {
         $this->users = new ArrayCollection($users);
 
@@ -237,7 +241,7 @@ class Quote
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -249,7 +253,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setStatus($status)
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -261,7 +265,7 @@ class Quote
      *
      * @return Client
      */
-    public function getClient()
+    public function getClient(): ?Client
     {
         return $this->client;
     }
@@ -273,7 +277,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setClient(Client $client = null)
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 
@@ -283,7 +287,7 @@ class Quote
     /**
      * @return Money
      */
-    public function getTotal()
+    public function getTotal(): Money
     {
         return $this->total->getMoney();
     }
@@ -293,7 +297,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTotal(Money $total)
+    public function setTotal(Money $total): self
     {
         $this->total = new MoneyEntity($total);
 
@@ -303,7 +307,7 @@ class Quote
     /**
      * @return Money
      */
-    public function getBaseTotal()
+    public function getBaseTotal(): Money
     {
         return $this->baseTotal->getMoney();
     }
@@ -313,7 +317,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setBaseTotal(Money $baseTotal)
+    public function setBaseTotal(Money $baseTotal): self
     {
         $this->baseTotal = new MoneyEntity($baseTotal);
 
@@ -323,7 +327,7 @@ class Quote
     /**
      * @return float
      */
-    public function getDiscount()
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
@@ -333,7 +337,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setDiscount($discount)
+    public function setDiscount(float $discount): self
     {
         $this->discount = $discount;
 
@@ -343,7 +347,7 @@ class Quote
     /**
      * @return \DateTime
      */
-    public function getDue()
+    public function getDue(): ?\DateTime
     {
         return $this->due;
     }
@@ -353,7 +357,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setDue(\DateTime $due)
+    public function setDue(\DateTime $due): self
     {
         $this->due = $due;
 
@@ -365,7 +369,7 @@ class Quote
      *
      * @return Quote
      */
-    public function addItem(Item $item)
+    public function addItem(Item $item): self
     {
         $this->items[] = $item;
         $item->setQuote($this);
@@ -378,7 +382,7 @@ class Quote
      *
      * @return Quote
      */
-    public function removeItem(Item $item)
+    public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
         $item->setQuote(null);
@@ -387,9 +391,9 @@ class Quote
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ItemInterface[]
      */
-    public function getItems()
+    public function getItems(): Collection
     {
         return $this->items;
     }
@@ -397,7 +401,7 @@ class Quote
     /**
      * @return string
      */
-    public function getTerms()
+    public function getTerms(): ?string
     {
         return $this->terms;
     }
@@ -407,7 +411,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTerms($terms)
+    public function setTerms(string $terms): self
     {
         $this->terms = $terms;
 
@@ -417,7 +421,7 @@ class Quote
     /**
      * @return string
      */
-    public function getNotes()
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
@@ -427,7 +431,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setNotes($notes)
+    public function setNotes(string $notes): self
     {
         $this->notes = $notes;
 
@@ -437,7 +441,7 @@ class Quote
     /**
      * @return Money
      */
-    public function getTax()
+    public function getTax(): Money
     {
         return $this->tax->getMoney();
     }
@@ -447,7 +451,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTax(Money $tax)
+    public function setTax(Money $tax): self
     {
         $this->tax = new MoneyEntity($tax);
 

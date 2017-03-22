@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -38,7 +40,7 @@ class ORMSource implements SourceInterface
      * @param string          $repository
      * @param string          $method
      */
-    public function __construct(ManagerRegistry $registry, $repository, $method)
+    public function __construct(ManagerRegistry $registry, string $repository, string $method)
     {
         $this->registry = $registry;
         $this->repository = $repository;
@@ -48,7 +50,7 @@ class ORMSource implements SourceInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(array $parameters = [])
+    public function fetch(array $parameters = []): QueryBuilder
     {
         $repository = $this->registry->getRepository($this->repository);
 

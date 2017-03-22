@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -93,7 +95,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -101,7 +103,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return Invoice
      */
-    public function getInvoice()
+    public function getInvoice(): ?Invoice
     {
         return $this->invoice;
     }
@@ -111,7 +113,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return Payment
      */
-    public function setInvoice(Invoice $invoice)
+    public function setInvoice(Invoice $invoice): self
     {
         $this->invoice = $invoice;
 
@@ -121,7 +123,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return PaymentMethod
      */
-    public function getMethod()
+    public function getMethod(): ?PaymentMethod
     {
         return $this->method;
     }
@@ -131,7 +133,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return Payment
      */
-    public function setMethod(PaymentMethod $method)
+    public function setMethod(PaymentMethod $method): self
     {
         $this->method = $method;
 
@@ -143,7 +145,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -155,7 +157,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return Payment
      */
-    public function setStatus($status)
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -171,14 +173,14 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @throws UnexpectedTypeException
      */
-    public function setDetails($details)
+    public function setDetails($details): self
     {
         if ($details instanceof \Traversable) {
             $details = iterator_to_array($details);
         }
 
         if (!is_array($details)) {
-            throw new UnexpectedTypeException($details, 'array');
+            throw new UnexpectedTypeException((string) $details, 'array or \Traversable');
         }
 
         $this->details = $details;
@@ -189,7 +191,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): ?string
     {
         return $this->message;
     }
@@ -199,7 +201,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return Payment
      */
-    public function setMessage($message)
+    public function setMessage(string $message): self
     {
         $this->message = $message;
 
@@ -209,7 +211,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return \DateTime
      */
-    public function getCompleted()
+    public function getCompleted(): ?\DateTime
     {
         return $this->completed;
     }
@@ -219,7 +221,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return Payment
      */
-    public function setCompleted(\DateTime $completed)
+    public function setCompleted(\DateTime $completed): self
     {
         $this->completed = $completed;
 
@@ -227,17 +229,19 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getClientId()
+    public function getClientId(): ?int
     {
-        return $this->getClient()->getId();
+        $client = $this->getClient();
+
+        return $client ? $client->getId() : null;
     }
 
     /**
      * @return Client
      */
-    public function getClient()
+    public function getClient(): ?Client
     {
         return $this->client;
     }
@@ -247,7 +251,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return Payment
      */
-    public function setClient(Client $client)
+    public function setClient(Client $client): self
     {
         $this->client = $client;
 

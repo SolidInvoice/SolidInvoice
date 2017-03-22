@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -48,7 +50,7 @@ class InvoiceController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getInvoicesAction(ParamFetcherInterface $fetcher)
+    public function getInvoicesAction(ParamFetcherInterface $fetcher): Response
     {
         /* @var InvoiceRepository $repository */
         $repository = $this->get('doctrine')
@@ -83,7 +85,7 @@ class InvoiceController extends Controller
      *
      * @throws \Exception
      */
-    public function getInvoiceAction(Entity\Invoice $invoice)
+    public function getInvoiceAction(Entity\Invoice $invoice): Response
     {
         return $this->handleView($this->view($invoice));
     }
@@ -108,7 +110,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function createInvoiceAction(Request $request)
+    public function createInvoiceAction(Request $request): Response
     {
         $invoice = new Entity\Invoice();
 
@@ -150,7 +152,7 @@ class InvoiceController extends Controller
      *
      * @ParamConverter("invoice", class="CSBillInvoiceBundle:Invoice", options={"id" : "invoiceId"})
      */
-    public function updateInvoiceAction(Request $request, Entity\Invoice $invoice)
+    public function updateInvoiceAction(Request $request, Entity\Invoice $invoice): Response
     {
         $originalStatus = $invoice->getStatus();
         $form = $this->get('form.factory')->create(InvoiceType::class, $invoice);
@@ -212,7 +214,7 @@ class InvoiceController extends Controller
 
         $transitions = $this->get('finite.factory')->get($invoice, Graph::GRAPH)->getTransitions();
 
-        if (!in_array($status, $transitions)) {
+        if (!in_array($status, $transitions, true)) {
             throw new \Exception(sprintf('The value "%s" is not valid', $status), Response::HTTP_BAD_REQUEST);
         }
 

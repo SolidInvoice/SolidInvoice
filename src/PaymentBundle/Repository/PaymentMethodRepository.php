@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -21,7 +22,7 @@ class PaymentMethodRepository extends EntityRepository
      *
      * @return array
      */
-    public function getSettingsForMethodArray($gatewayName)
+    public function getSettingsForMethodArray(string $gatewayName): array
     {
         $queryBuilder = $this->createQueryBuilder('pm');
 
@@ -45,7 +46,7 @@ class PaymentMethodRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalMethodsConfigured($includeInternal = true)
+    public function getTotalMethodsConfigured(bool $includeInternal = true): int
     {
         $queryBuilder = $this->createQueryBuilder('pm');
 

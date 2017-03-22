@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -32,7 +34,7 @@ class AjaxController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function infoAction(Client $client, $type = 'quote')
+    public function infoAction(Client $client, string $type = 'quote'): Response
     {
         $content = $this->renderView(
             'CSBillClientBundle:Ajax:info.html.twig',
@@ -63,11 +65,11 @@ class AjaxController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addcontactAction(Request $request, Client $client)
+    public function addcontactAction(Request $request, Client $client): Response
     {
-        if (!$request->isXmlHttpRequest()) {
+        /*if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
-        }
+        }*/
 
         $contact = new Contact();
         $contact->setClient($client);
@@ -78,17 +80,19 @@ class AjaxController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $this->save($contact);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->save($contact);
 
-            $response = [
-                'status' => 'success',
-                'contact' => $contact,
-            ];
+                $response = [
+                    'status' => 'success',
+                    'contact' => $contact,
+                ];
 
-            return $this->serializeResponse($response);
-        } else {
-            $response['status'] = 'failure';
+                return $this->serializeResponse($response);
+            } else {
+                $response['status'] = 'failure';
+            }
         }
 
         $content = $this->renderView(
@@ -98,6 +102,7 @@ class AjaxController extends BaseController
                 'client' => $client,
             ]
         );
+
         $response['content'] = $content;
 
         return $this->json($response);

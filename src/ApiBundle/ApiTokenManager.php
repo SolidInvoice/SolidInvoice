@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -40,7 +42,7 @@ class ApiTokenManager
      *
      * @return ApiToken
      */
-    public function getOrCreate(User $user, $name)
+    public function getOrCreate(User $user, string $name): ApiToken
     {
         $tokens = $user->getApiTokens();
 
@@ -60,7 +62,7 @@ class ApiTokenManager
      *
      * @return ApiToken
      */
-    public function create(User $user, $name)
+    public function create(User $user, string $name): ApiToken
     {
         $apiToken = new ApiToken();
 
@@ -79,7 +81,7 @@ class ApiTokenManager
     /**
      * @return string
      */
-    public function generateToken()
+    public function generateToken(): string
     {
         return bin2hex(random_bytes(self::TOKEN_LENGTH));
     }

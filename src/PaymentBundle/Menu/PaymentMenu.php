@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -16,7 +17,7 @@ class PaymentMenu
     /**
      * @return array
      */
-    public static function main()
+    public static function main(): array
     {
         return [
             'payment.menu.main',
@@ -32,7 +33,7 @@ class PaymentMenu
     /**
      * @return array
      */
-    public static function methods()
+    public static function methods(): array
     {
         return [
             'payment.menu.methods',

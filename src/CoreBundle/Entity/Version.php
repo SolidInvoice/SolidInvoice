@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -32,7 +34,7 @@ class Version
     /**
      * @param string $version
      */
-    public function __construct($version = null)
+    public function __construct(string $version = null)
     {
         $this->setVersion($version);
     }
@@ -42,9 +44,9 @@ class Version
      *
      * @param string $version
      *
-     * @return $this
+     * @return Version
      */
-    public function setVersion($version)
+    public function setVersion(?string $version): self
     {
         $this->version = $version;
 
@@ -56,7 +58,7 @@ class Version
      *
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): ?string
     {
         return $this->version;
     }
@@ -66,7 +68,7 @@ class Version
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->version;
     }

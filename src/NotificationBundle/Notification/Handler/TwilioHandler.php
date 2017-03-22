@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -32,7 +34,7 @@ class TwilioHandler implements HandlerInterface
      * @param Client $twilio
      * @param string $twilioNumber
      */
-    public function __construct(Client $twilio, $twilioNumber)
+    public function __construct(Client $twilio, ?string $twilioNumber)
     {
         $this->twilio = $twilio;
         $this->twilioNumber = $twilioNumber;
@@ -52,7 +54,6 @@ class TwilioHandler implements HandlerInterface
     public function handle(NotificationInterface $notification)
     {
         /* @var TwilioNotification $notification */
-
         $this->twilio
             ->messages
             ->create(

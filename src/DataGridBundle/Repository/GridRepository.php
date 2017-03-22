@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -25,7 +27,7 @@ class GridRepository
      * @param string        $name
      * @param GridInterface $grid
      */
-    public function addGrid($name, GridInterface $grid)
+    public function addGrid(string $name, GridInterface $grid)
     {
         $this->grids[$name] = $grid;
     }
@@ -37,7 +39,7 @@ class GridRepository
      *
      * @throws InvalidGridException
      */
-    public function find($name)
+    public function find(string $name): GridInterface
     {
         if (!array_key_exists($name, $this->grids)) {
             throw new InvalidGridException($name);

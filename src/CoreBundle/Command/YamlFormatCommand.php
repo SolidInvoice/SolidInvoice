@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -46,7 +48,7 @@ class YamlFormatCommand extends ContainerAwareCommand
     /**
      * @return \Iterator
      */
-    private function findFiles()
+    private function findFiles(): \Iterator
     {
         $container = $this->getContainer();
         $finder = Finder::create()

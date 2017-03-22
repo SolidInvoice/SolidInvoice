@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -52,7 +54,7 @@ class ClientController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getClientsAction(ParamFetcherInterface $fetcher)
+    public function getClientsAction(ParamFetcherInterface $fetcher): Response
     {
         /* @var ClientRepository $clientRepository */
         $clientRepository = $this->get('doctrine')
@@ -87,7 +89,7 @@ class ClientController extends Controller
      *
      * @throws \Exception
      */
-    public function getClientAction(Entity\Client $client)
+    public function getClientAction(Entity\Client $client): Response
     {
         return $this->handleView($this->view($client));
     }
@@ -114,7 +116,7 @@ class ClientController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getClientContactsAction(ParamFetcherInterface $fetcher, $clientId)
+    public function getClientContactsAction(ParamFetcherInterface $fetcher, int $clientId): Response
     {
         /* @var ContactRepository $contactRepository */
         $contactRepository = $this->get('doctrine')
@@ -153,7 +155,7 @@ class ClientController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getClientInvoicesAction(ParamFetcherInterface $fetcher, $clientId)
+    public function getClientInvoicesAction(ParamFetcherInterface $fetcher, int $clientId): Response
     {
         /* @var InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->get('doctrine')
@@ -192,7 +194,7 @@ class ClientController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getClientQuotesAction(ParamFetcherInterface $fetcher, $clientId)
+    public function getClientQuotesAction(ParamFetcherInterface $fetcher, int $clientId): Response
     {
         /* @var QuoteRepository $quoteRepository */
         $quoteRepository = $this->get('doctrine')
@@ -231,7 +233,7 @@ class ClientController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getClientPaymentsAction(ParamFetcherInterface $fetcher, $clientId)
+    public function getClientPaymentsAction(ParamFetcherInterface $fetcher, int $clientId): Response
     {
         /* @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->get('doctrine')
@@ -274,7 +276,7 @@ class ClientController extends Controller
      *
      * @Rest\Get(path="/client/{clientId}/contact/{contactId}")
      */
-    public function getClientContactAction(Entity\Client $client, Entity\Contact $contact)
+    public function getClientContactAction(Entity\Client $client, Entity\Contact $contact): Response
     {
         if (!$client->getContacts()->contains($contact)) {
             throw $this->createNotFoundException();
@@ -306,7 +308,7 @@ class ClientController extends Controller
      *
      * @return Response
      */
-    public function createClientAction(Request $request)
+    public function createClientAction(Request $request): Response
     {
         $entity = new Entity\Client();
         $entity->setStatus(Status::STATUS_ACTIVE);

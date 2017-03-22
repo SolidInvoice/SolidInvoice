@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -33,7 +35,7 @@ final class MenuBuilder implements ContainerAwareInterface
      * @param BuilderInterface $class
      * @param string           $method
      */
-    public function __construct(BuilderInterface $class, $method)
+    public function __construct(BuilderInterface $class, string $method)
     {
         $this->class = $class;
         $this->method = $method;

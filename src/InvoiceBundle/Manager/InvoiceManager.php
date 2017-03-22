@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -80,7 +82,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @return Invoice
      */
-    public function createFromQuote(Quote $quote)
+    public function createFromQuote(Quote $quote): Invoice
     {
         $invoice = new Invoice();
 
@@ -129,7 +131,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws InvalidTransitionException
      */
-    public function create(Invoice $invoice)
+    public function create(Invoice $invoice): Invoice
     {
         if ($invoice->isRecurring()) {
             $invoice->setStatus(Graph::STATUS_RECURRING);
@@ -169,7 +171,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws InvalidTransitionException
      */
-    private function applyTransition(Invoice $invoice, $transition)
+    private function applyTransition(Invoice $invoice, string $transition): bool
     {
         $stateMachine = $this->stateMachine->get($invoice, Graph::GRAPH);
 
@@ -209,7 +211,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws InvalidTransitionException
      */
-    public function accept($invoice)
+    public function accept(\CSBill\InvoiceBundle\Entity\Invoice $invoice): Invoice
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_ACCEPT, new InvoiceEvent($invoice));
 
@@ -230,7 +232,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws InvalidTransitionException
      */
-    public function pay(Invoice $invoice)
+    public function pay(Invoice $invoice): Invoice
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoicePaidEvent($invoice));
 
@@ -253,7 +255,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws InvalidTransitionException
      */
-    public function cancel(Invoice $invoice)
+    public function cancel(Invoice $invoice): Invoice
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CANCEL, new InvoiceEvent($invoice));
 
@@ -274,7 +276,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws InvalidTransitionException
      */
-    public function reopen(Invoice $invoice)
+    public function reopen(Invoice $invoice): Invoice
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_REOPEN, new InvoiceEvent($invoice));
 
@@ -295,7 +297,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws InvalidTransitionException
      */
-    public function archive(Invoice $invoice)
+    public function archive(Invoice $invoice): Invoice
     {
         $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_ARCHIVE, new InvoiceEvent($invoice));
 
@@ -317,7 +319,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @return bool
      */
-    public function isFullyPaid(Invoice $invoice)
+    public function isFullyPaid(Invoice $invoice): bool
     {
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
@@ -335,7 +337,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @throws \Exception
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         throw new InvalidTransitionException($method);
     }
@@ -345,7 +347,7 @@ class InvoiceManager implements ContainerAwareInterface
      *
      * @return Invoice
      */
-    public function duplicate(Invoice $invoice)
+    public function duplicate(Invoice $invoice): Invoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
         // We rather set it manually

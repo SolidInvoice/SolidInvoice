@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -24,7 +26,7 @@ class InvoiceMenu
      *
      * @return array
      */
-    public static function create(Request $request = null)
+    public static function create(Request $request = null): array
     {
         return [
             'client.menu.create.invoice',
@@ -41,7 +43,7 @@ class InvoiceMenu
     /**
      * @return array
      */
-    public static function main()
+    public static function main(): array
     {
         return [
             'invoice.menu.main',
@@ -57,7 +59,7 @@ class InvoiceMenu
     /**
      * @return array
      */
-    public static function listMenu()
+    public static function listMenu(): array
     {
         return [
             'invoice.menu.list',
@@ -75,7 +77,7 @@ class InvoiceMenu
      *
      * @return array
      */
-    public static function view(Invoice $invoice)
+    public static function view(Invoice $invoice): array
     {
         return [
             'invoice.menu.view',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -38,7 +40,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      *
      * @return string
      */
-    public function getUsernameForToken($token)
+    public function getUsernameForToken(string $token): string
     {
         return $this->registry->getRepository('CSBillUserBundle:ApiToken')->getUsernameForToken($token);
     }

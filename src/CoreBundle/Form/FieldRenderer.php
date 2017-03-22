@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -35,7 +37,7 @@ class FieldRenderer
      *
      * @return array
      */
-    public function render(FormView $form, $path = null)
+    public function render(FormView $form, string $path = null): array
     {
         $items = [];
 

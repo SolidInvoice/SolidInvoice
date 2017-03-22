@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -47,7 +49,7 @@ class WidgetExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function renderDashboardWidget(\Twig_Environment $environment, $location)
+    public function renderDashboardWidget(\Twig_Environment $environment, string $location): string
     {
         /** @var WidgetInterface[] $widgets */
         $widgets = $this->widgetFactory->get($location);

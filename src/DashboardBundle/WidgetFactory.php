@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -38,7 +40,7 @@ class WidgetFactory
      *
      * @throws \Exception
      */
-    public function add(WidgetInterface $widget, $location = null, $priority = null)
+    public function add(WidgetInterface $widget, string $location = null, $priority = null)
     {
         $location = $location ?: self::DEFAULT_LOCATION;
 
@@ -54,7 +56,7 @@ class WidgetFactory
      *
      * @return \SplPriorityQueue
      */
-    public function get($location)
+    public function get($location): \SplPriorityQueue
     {
         if (!isset($this->queues[$location])) {
             return new \SplPriorityQueue();

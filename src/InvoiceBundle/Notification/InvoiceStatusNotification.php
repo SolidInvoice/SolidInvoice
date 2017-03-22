@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -24,7 +26,7 @@ class InvoiceStatusNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getHtmlContent(EngineInterface $templating)
+    public function getHtmlContent(EngineInterface $templating): string
     {
         return $templating->render(self::HTML_TEMPLATE, $this->getParameters());
     }
@@ -32,7 +34,7 @@ class InvoiceStatusNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getTextContent(EngineInterface $templating)
+    public function getTextContent(EngineInterface $templating): string
     {
         return $templating->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
@@ -42,7 +44,7 @@ class InvoiceStatusNotification extends NotificationMessage
      *
      * @return string
      */
-    public function getSubject(TranslatorInterface $translator)
+    public function getSubject(TranslatorInterface $translator): string
     {
         return $translator->trans('invoice.status.subject', [], 'email');
     }

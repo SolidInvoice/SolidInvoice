@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -20,7 +22,7 @@ interface MenuStorageInterface
      *
      * @return bool
      */
-    public function has($name);
+    public function has(string $name): bool;
 
     /**
      * Returns the builder for the specified menu from the storage.
@@ -29,5 +31,5 @@ interface MenuStorageInterface
      *
      * @return \SplPriorityQueue
      */
-    public function get($name);
+    public function get(string $name): \SplPriorityQueue;
 }

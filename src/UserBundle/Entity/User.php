@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -13,6 +15,7 @@ namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -44,34 +47,41 @@ class User extends BaseUser
     protected $mobile;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|ApiToken[]
      *
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      */
     private $apiTokens;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->apiTokens = new ArrayCollection();
+    }
+
     /**
      * Don't return the salt, and rely on password_hash to generate a salt.
      */
-    public function getSalt()
+    public function getSalt(): void
     {
         return;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|ApiToken[]
      */
-    public function getApiTokens()
+    public function getApiTokens(): Collection
     {
         return $this->apiTokens;
     }
 
     /**
-     * @param ArrayCollection $apiTokens
+     * @param Collection|ApiToken[] $apiTokens
      *
      * @return User
      */
-    public function setApiTokens($apiTokens)
+    public function setApiTokens(Collection $apiTokens): self
     {
         $this->apiTokens = $apiTokens;
 
@@ -81,7 +91,7 @@ class User extends BaseUser
     /**
      * @return string
      */
-    public function getMobile()
+    public function getMobile(): ?string
     {
         return $this->mobile;
     }
@@ -91,7 +101,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setMobile($mobile)
+    public function setMobile(string $mobile): self
     {
         $this->mobile = $mobile;
 

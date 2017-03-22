@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -36,30 +38,30 @@ class Notification
     private $event;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="email", type="string")
+     * @ORM\Column(name="email", type="boolean")
      */
     private $email;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="hipchat", type="string")
+     * @ORM\Column(name="hipchat", type="boolean")
      */
     private $hipchat;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="sms", type="string")
+     * @ORM\Column(name="sms", type="boolean")
      */
     private $sms;
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -67,7 +69,7 @@ class Notification
     /**
      * @return string
      */
-    public function getEvent()
+    public function getEvent(): ?string
     {
         return $this->event;
     }
@@ -77,7 +79,7 @@ class Notification
      *
      * @return Notification
      */
-    public function setEvent($event)
+    public function setEvent(string $event): self
     {
         $this->event = $event;
 
@@ -85,19 +87,19 @@ class Notification
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getEmail()
+    public function getEmail(): bool
     {
-        return (bool) $this->email;
+        return $this->email;
     }
 
     /**
-     * @param string $email
+     * @param bool $email
      *
      * @return Notification
      */
-    public function setEmail($email)
+    public function setEmail(bool $email): self
     {
         $this->email = $email;
 
@@ -105,19 +107,19 @@ class Notification
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getHipchat()
+    public function getHipchat(): bool
     {
-        return (bool) $this->hipchat;
+        return $this->hipchat;
     }
 
     /**
-     * @param string $hipchat
+     * @param bool $hipchat
      *
      * @return Notification
      */
-    public function setHipchat($hipchat)
+    public function setHipchat(bool $hipchat): self
     {
         $this->hipchat = $hipchat;
 
@@ -125,19 +127,19 @@ class Notification
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getSms()
+    public function getSms(): bool
     {
-        return (bool) $this->sms;
+        return $this->sms;
     }
 
     /**
-     * @param string $sms
+     * @param bool $sms
      *
      * @return Notification
      */
-    public function setSms($sms)
+    public function setSms(bool $sms): self
     {
         $this->sms = $sms;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -25,7 +27,7 @@ class ArrayUtil
      *
      * @return array
      */
-    public static function column($array, $column)
+    public static function column($array, string $column): array
     {
         if (!is_array($array) && !$array instanceof \Traversable) {
             throw new \Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
@@ -33,8 +35,7 @@ class ArrayUtil
 
         reset($array);
 
-        // Forward-compatible with PHP 5.5
-        if (function_exists('array_column') && is_array($array[key($array)])) {
+        if (is_array($array[key($array)])) {
             return array_column($array, $column);
         }
 
@@ -52,7 +53,7 @@ class ArrayUtil
             $return[] = $accessor->getValue($item, $column);
         }
 
-        return array_filter($return, function ($item) {
+        return array_filter($return, function ($item): bool {
             return $item !== null;
         });
     }

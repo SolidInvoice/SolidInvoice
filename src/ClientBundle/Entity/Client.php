@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -92,7 +94,7 @@ class Client
     private $currency;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Contact[]
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @ORM\OrderBy({"firstName" = "ASC"})
@@ -103,7 +105,7 @@ class Client
     private $contacts;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Quote[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
@@ -112,7 +114,7 @@ class Client
     private $quotes;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Invoice[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
@@ -121,7 +123,7 @@ class Client
     private $invoices;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Payment[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
      * @Serialize\Groups({"none"})
@@ -129,7 +131,7 @@ class Client
     private $payments;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|Address[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
      * @Serialize\Groups({"js"})
@@ -162,7 +164,7 @@ class Client
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -172,7 +174,7 @@ class Client
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -184,7 +186,7 @@ class Client
      *
      * @return Client
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -196,7 +198,7 @@ class Client
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -208,7 +210,7 @@ class Client
      *
      * @return Client
      */
-    public function setStatus($status)
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -220,7 +222,7 @@ class Client
      *
      * @return string
      */
-    public function getWebsite()
+    public function getWebsite(): ?string
     {
         return $this->website;
     }
@@ -232,7 +234,7 @@ class Client
      *
      * @return Client
      */
-    public function setWebsite($website)
+    public function setWebsite(string $website): self
     {
         $this->website = $website;
 
@@ -246,7 +248,7 @@ class Client
      *
      * @return Client
      */
-    public function addContact(Contact $contact)
+    public function addContact(Contact $contact): self
     {
         $this->contacts[] = $contact;
         $contact->setClient($this);
@@ -261,7 +263,7 @@ class Client
      *
      * @return Client
      */
-    public function removeContact(Contact $contact)
+    public function removeContact(Contact $contact): self
     {
         $this->contacts->removeElement($contact);
 
@@ -273,7 +275,7 @@ class Client
      *
      * @return Collection|Contact[]
      */
-    public function getContacts()
+    public function getContacts(): Collection
     {
         return $this->contacts;
     }
@@ -285,7 +287,7 @@ class Client
      *
      * @return Client
      */
-    public function addQuote(Quote $quote)
+    public function addQuote(Quote $quote): self
     {
         $this->quotes[] = $quote;
         $quote->setClient($this);
@@ -300,7 +302,7 @@ class Client
      *
      * @return Client
      */
-    public function removeQuote(Quote $quote)
+    public function removeQuote(Quote $quote): self
     {
         $this->quotes->removeElement($quote);
 
@@ -310,9 +312,9 @@ class Client
     /**
      * Get quotes.
      *
-     * @return ArrayCollection
+     * @return Collection|Quote[]
      */
-    public function getQuotes()
+    public function getQuotes(): Collection
     {
         return $this->quotes;
     }
@@ -324,7 +326,7 @@ class Client
      *
      * @return Client
      */
-    public function addInvoice(Invoice $invoice)
+    public function addInvoice(Invoice $invoice): self
     {
         $this->invoices[] = $invoice;
         $invoice->setClient($this);
@@ -339,7 +341,7 @@ class Client
      *
      * @return Client
      */
-    public function removeInvoice(Invoice $invoice)
+    public function removeInvoice(Invoice $invoice): self
     {
         $this->invoices->removeElement($invoice);
 
@@ -349,9 +351,9 @@ class Client
     /**
      * Get invoices.
      *
-     * @return ArrayCollection
+     * @return Collection|Invoice[]
      */
-    public function getInvoices()
+    public function getInvoices(): Collection
     {
         return $this->invoices;
     }
@@ -363,7 +365,7 @@ class Client
      *
      * @return Client
      */
-    public function addPayment(Payment $payment)
+    public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
         $payment->setClient($this);
@@ -378,7 +380,7 @@ class Client
      *
      * @return Client
      */
-    public function removePayment(Payment $payment)
+    public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
 
@@ -388,9 +390,9 @@ class Client
     /**
      * Get payments.
      *
-     * @return ArrayCollection
+     * @return Collection|Payment[]
      */
-    public function getPayments()
+    public function getPayments(): Collection
     {
         return $this->payments;
     }
@@ -402,7 +404,7 @@ class Client
      *
      * @return Client
      */
-    public function addAddress(Address $address = null)
+    public function addAddress(?Address $address): self
     {
         if (null !== $address) {
             $this->addresses[] = $address;
@@ -419,7 +421,7 @@ class Client
      *
      * @return Client
      */
-    public function removeAddress(Address $address)
+    public function removeAddress(Address $address): self
     {
         $this->addresses->removeElement($address);
 
@@ -429,9 +431,9 @@ class Client
     /**
      * Get addresses.
      *
-     * @return ArrayCollection
+     * @return Collection|Address[]
      */
-    public function getAddresses()
+    public function getAddresses(): Collection
     {
         return $this->addresses;
     }
@@ -439,17 +441,21 @@ class Client
     /**
      * @return Credit
      */
-    public function getCredit()
+    public function getCredit(): ?Credit
     {
         return $this->credit;
     }
 
     /**
      * @param Credit $credit
+     *
+     * @return Client
      */
-    public function setCredit(Credit $credit)
+    public function setCredit(Credit $credit): self
     {
         $this->credit = $credit;
+
+        return $this;
     }
 
     /**
@@ -469,7 +475,7 @@ class Client
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name ?? '';
     }
@@ -477,7 +483,7 @@ class Client
     /**
      * @return Currency|null
      */
-    public function getCurrency()
+    public function getCurrency(): ?Currency
     {
         return $this->currency ? new Currency($this->currency) : null;
     }
@@ -487,7 +493,7 @@ class Client
      *
      * @return Client
      */
-    public function setCurrency($currency)
+    public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
 

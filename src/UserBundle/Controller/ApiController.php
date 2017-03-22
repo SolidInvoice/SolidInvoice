@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -14,16 +16,18 @@ namespace CSBill\UserBundle\Controller;
 use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Repository\ApiTokenRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends BaseController
 {
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
             /** @var ApiTokenRepository $repository */
@@ -40,9 +44,9 @@ class ApiController extends BaseController
     /**
      * @param ApiToken $token
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function tokenHistoryAction(ApiToken $token)
+    public function tokenHistoryAction(ApiToken $token): Response
     {
         $content = $this->renderView(
             'CSBillUserBundle:Api:history.html.twig',
@@ -61,9 +65,9 @@ class ApiController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
-    public function saveTokenAction(Request $request)
+    public function saveTokenAction(Request $request): JsonResponse
     {
         $apiToken = new ApiToken();
         $apiToken->setUser($this->getUser());
@@ -118,9 +122,9 @@ class ApiController extends BaseController
     /**
      * @param ApiToken $token
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
-    public function revokeTokenAction(ApiToken $token)
+    public function revokeTokenAction(ApiToken $token): JsonResponse
     {
         $this->getEm()->remove($token);
         $this->getEm()->flush();

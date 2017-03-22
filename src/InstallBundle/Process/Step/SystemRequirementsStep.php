@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -13,17 +15,18 @@ namespace CSBill\InstallBundle\Process\Step;
 
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Symfony\Component\HttpFoundation\Response;
 
 class SystemRequirementsStep extends AbstractControllerStep
 {
     /**
      * @param ProcessContextInterface $context
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Exception
      */
-    public function displayAction(ProcessContextInterface $context)
+    public function displayAction(ProcessContextInterface $context): Response
     {
         if ($this->container->getParameter('installed')) {
             $flashBag = $this->get('session')->getFlashBag();

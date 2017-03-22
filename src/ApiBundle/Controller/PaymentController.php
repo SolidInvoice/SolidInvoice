@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -16,6 +18,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends Controller
 {
@@ -38,9 +41,9 @@ class PaymentController extends Controller
      *
      * @param ParamFetcherInterface $fetcher
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function getPaymentsAction(ParamFetcherInterface $fetcher)
+    public function getPaymentsAction(ParamFetcherInterface $fetcher): Response
     {
         /* @var PaymentRepository $repository */
         $repository = $this->get('doctrine')

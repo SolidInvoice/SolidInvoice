@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -44,7 +46,7 @@ abstract class NotificationMessage implements NotificationMessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsers()
+    public function getUsers(): array
     {
         return $this->users;
     }
@@ -52,7 +54,7 @@ abstract class NotificationMessage implements NotificationMessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }

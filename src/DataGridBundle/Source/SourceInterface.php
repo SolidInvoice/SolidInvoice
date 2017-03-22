@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -20,5 +22,5 @@ interface SourceInterface
      *
      * @return QueryBuilder
      */
-    public function fetch(array $parameters = []);
+    public function fetch(array $parameters = []): QueryBuilder;
 }

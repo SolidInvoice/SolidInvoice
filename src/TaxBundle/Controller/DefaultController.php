@@ -1,22 +1,6 @@
 <?php
 
-/*
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-/**
- * This file is part of CSBill project.
- *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+declare(strict_types=1);
 
 /*
  * This file is part of CSBill project.
@@ -34,15 +18,16 @@ use CSBill\TaxBundle\Entity\Tax;
 use CSBill\TaxBundle\Form\Type\TaxType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends BaseController
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Exception
      */
-    public function ratesAction()
+    public function ratesAction(): Response
     {
         return $this->render('CSBillTaxBundle:Default:index.html.twig');
     }
@@ -51,9 +36,9 @@ class DefaultController extends BaseController
      * @param Request $request
      * @param Tax     $tax
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function addAction(Request $request, Tax $tax = null)
+    public function addAction(Request $request, Tax $tax = null): Response
     {
         $tax = $tax ?: new Tax();
 
@@ -75,9 +60,9 @@ class DefaultController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         /** @var \CSBill\InvoiceBundle\Repository\ItemRepository $invoiceRepository */
         $invoiceRepository = $this->getRepository('CSBillInvoiceBundle:Item');
@@ -106,9 +91,9 @@ class DefaultController extends BaseController
     /**
      * @param Tax $tax
      *
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
-    public function getAction(Tax $tax)
+    public function getAction(Tax $tax): Response
     {
         $result = [
             'id' => $tax->getId(),

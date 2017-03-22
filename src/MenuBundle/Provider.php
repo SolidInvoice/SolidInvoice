@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -37,9 +39,9 @@ class Provider implements MenuProviderInterface
      * @param string $name
      * @param array  $options
      *
-     * @return \SplObjectStorage
+     * @return \SplPriorityQueue
      */
-    public function get($name, array $options = [])
+    public function get($name, array $options = []): \SplPriorityQueue
     {
         return $this->storage->get($name);
     }
@@ -52,7 +54,7 @@ class Provider implements MenuProviderInterface
      *
      * @return bool
      */
-    public function has($name, array $options = [])
+    public function has($name, array $options = []): bool
     {
         return $this->storage->has($name);
     }
@@ -65,7 +67,7 @@ class Provider implements MenuProviderInterface
      * @param string           $method   The method to call to build the menu
      * @param int              $priority
      */
-    public function addBuilder(BuilderInterface $class, $name, $method, $priority)
+    public function addBuilder(BuilderInterface $class, string $name, string $method, int $priority)
     {
         $builder = new MenuBuilder($class, $method);
 

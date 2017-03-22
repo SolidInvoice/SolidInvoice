@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -15,6 +17,7 @@ use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GridController extends BaseController
 {
@@ -23,9 +26,9 @@ class GridController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function archiveAction(Request $request)
+    public function archiveAction(Request $request): Response
     {
         $data = $request->request->get('data');
 
@@ -49,9 +52,9 @@ class GridController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function restoreAction(Request $request)
+    public function restoreAction(Request $request): Response
     {
         $data = $request->request->get('data');
 
@@ -77,9 +80,9 @@ class GridController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         $data = $request->request->get('data');
 

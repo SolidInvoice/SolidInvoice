@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -58,11 +59,13 @@ class WidgetExtensionTest extends \PHPUnit\Framework\TestCase
 
         $environment = \Mockery::mock('Twig_Environment');
 
+        $q = new \SplPriorityQueue();
+        $q->insert($widget, 0);
         $this->factory
             ->shouldReceive('get')
             ->once()
             ->with('top')
-            ->andReturn([$widget]);
+            ->andReturn($q);
 
         $environment
             ->shouldReceive('render')

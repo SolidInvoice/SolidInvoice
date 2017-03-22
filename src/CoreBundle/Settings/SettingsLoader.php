@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -55,7 +57,7 @@ class SettingsLoader implements SettingsLoaderInterface
      *
      * @return array
      */
-    protected function getEmailSettings(array $settings = [])
+    protected function getEmailSettings(array $settings = []): array
     {
         $transport = new Setting();
         $transport->setKey('transport')
@@ -99,7 +101,7 @@ class SettingsLoader implements SettingsLoaderInterface
     /**
      * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         $settings = $this->getYamlParameters();
 

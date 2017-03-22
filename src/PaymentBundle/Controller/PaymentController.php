@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -26,6 +28,7 @@ use Money\Money;
 use Payum\Core\Model\Token;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends BaseController
 {
@@ -35,11 +38,11 @@ class PaymentController extends BaseController
      * @param Request $request
      * @param Invoice $invoice
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Exception
      */
-    public function preparePaymentAction(Request $request, Invoice $invoice = null)
+    public function preparePaymentAction(Request $request, Invoice $invoice = null): Response
     {
         if (null === $invoice) {
             throw $this->createNotFoundException();
@@ -88,7 +91,7 @@ class PaymentController extends BaseController
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (in_array($paymentName, $paymentFactories)) {
+            if (in_array($paymentName, $paymentFactories, true)) {
                 if ('credit' === $paymentName) {
                     $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
@@ -170,12 +173,12 @@ class PaymentController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Exception
      * @throws \Payum\Core\Reply\ReplyInterface
      */
-    public function captureDoneAction(Request $request)
+    public function captureDoneAction(Request $request): Response
     {
         /** @var Token $token */
         $token = $this->get('payum')->getHttpRequestVerifier()->verify($request);
@@ -186,7 +189,7 @@ class PaymentController extends BaseController
         /** @var \CSBill\PaymentBundle\Entity\Payment $payment */
         $payment = $status->getFirstModel();
 
-        $payment->setStatus($status->getValue());
+        $payment->setStatus((string) $status->getValue());
         $payment->setCompleted(new \DateTime('now'));
 
         $this->save($payment);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -16,7 +18,7 @@ use CSBill\DataGridBundle\Source\SourceInterface;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,14 +113,14 @@ class Grid implements GridInterface
     }
 
     /**
-     * @param Request                $request
-     * @param EntityManagerInterface $entityManager
+     * @param Request       $request
+     * @param ObjectManager $objectManger
      *
      * @return array
      *
      * @throws \Exception
      */
-    public function fetchData(Request $request, EntityManagerInterface $entityManager)
+    public function fetchData(Request $request, ObjectManager $objectManger): array
     {
         $queryBuilder = $this->source->fetch($this->parameters);
 
@@ -128,7 +130,7 @@ class Grid implements GridInterface
 
         $resultSet = $paginator->getQuery()->getArrayResult();
 
-        array_walk_recursive($resultSet, function (&$value, $key) {
+        array_walk_recursive($resultSet, function (&$value, $key): array {
             if (false !== strpos($key, 'currency')) {
                 $value = $this->moneyFormatter->getCurrencySymbol($value);
             }
@@ -143,7 +145,7 @@ class Grid implements GridInterface
     /**
      * @return bool
      */
-    public function requiresStatus()
+    public function requiresStatus(): bool
     {
         $criteria = Criteria::create();
         $criteria->where($criteria->expr()->contains('cell', 'status'));
@@ -154,7 +156,7 @@ class Grid implements GridInterface
     /**
      * @return string
      */
-    public function getIcon()
+    public function getIcon(): string
     {
         return $this->icon;
     }
@@ -162,7 +164,7 @@ class Grid implements GridInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

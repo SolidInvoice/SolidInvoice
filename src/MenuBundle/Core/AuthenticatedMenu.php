@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -23,7 +25,7 @@ class AuthenticatedMenu implements ContainerAwareInterface, BuilderInterface
     /**
      * @return bool
      */
-    public function validate()
+    public function validate(): bool
     {
         try {
             $security = $this->container->get('security.authorization_checker');

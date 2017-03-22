@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -18,6 +20,7 @@ use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -30,7 +33,7 @@ class InvoiceRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalIncome(Client $client = null)
+    public function getTotalIncome(Client $client = null): int
     {
         @trigger_error(
             'This function is deprecated, and the one in PaymentRepository should be used instead',
@@ -52,7 +55,7 @@ class InvoiceRepository extends EntityRepository
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR)
+    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -77,7 +80,7 @@ class InvoiceRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalOutstanding(Client $client = null)
+    public function getTotalOutstanding(Client $client = null): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -103,7 +106,7 @@ class InvoiceRepository extends EntityRepository
      *
      * @return int
      */
-    public function getCountByStatus($status, Client $client = null)
+    public function getCountByStatus($status, Client $client = null): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -134,7 +137,7 @@ class InvoiceRepository extends EntityRepository
      *
      * @return array
      */
-    public function getRecentInvoices($limit = 5)
+    public function getRecentInvoices($limit = 5): array
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -151,7 +154,7 @@ class InvoiceRepository extends EntityRepository
     /**
      * @return Invoice[]
      */
-    public function getRecurringInvoices()
+    public function getRecurringInvoices(): array
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -168,9 +171,9 @@ class InvoiceRepository extends EntityRepository
     /**
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getGridQuery(array $parameters = [])
+    public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -189,9 +192,9 @@ class InvoiceRepository extends EntityRepository
     /**
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getRecurringGridQuery(array $parameters = [])
+    public function getRecurringGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -208,9 +211,9 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getArchivedGridQuery()
+    public function getArchivedGridQuery(): QueryBuilder
     {
         $this->getEntityManager()->getFilters()->disable('archivable');
 

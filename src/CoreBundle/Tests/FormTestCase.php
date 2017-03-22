@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -65,7 +66,7 @@ abstract class FormTestCase extends TypeTestCase
      *
      * @return array
      */
-    protected function getTypedExtensions()
+    protected function getTypedExtensions(): array
     {
         $validator = M::mock(ValidatorInterface::class);
 
@@ -119,7 +120,7 @@ abstract class FormTestCase extends TypeTestCase
             'select2' => new Type\Select2Type(),
             'image_upload' => new Type\ImageUploadType(
                 \Mockery::mock('Symfony\Component\HttpFoundation\Session\SessionInterface'),
-                new Encryption(rand())
+                new Encryption($this->faker->text)
             ),
         ];
     }

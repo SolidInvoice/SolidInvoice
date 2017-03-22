@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -18,7 +20,7 @@ interface CommandInterface
      *
      * @return bool
      */
-    public function isDue();
+    public function isDue(): bool;
 
     /**
      * Process command.

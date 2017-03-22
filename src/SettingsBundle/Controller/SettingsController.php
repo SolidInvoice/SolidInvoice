@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -15,6 +16,7 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\SettingsBundle\Form\Type\SettingSectionType;
 use CSBill\SettingsBundle\Model\Setting;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class SettingsController.
@@ -26,14 +28,14 @@ class SettingsController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         /** @var \CSBill\SettingsBundle\Manager\SettingsManager $manager */
         $manager = $this->get('settings');
 
         $settings = $manager->getSettings();
 
-        array_walk_recursive($settings, function (Setting &$setting) {
+        array_walk_recursive($settings, function (Setting &$setting): Response {
             $setting = $setting->getValue();
         });
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -32,7 +34,7 @@ class RecentInvoicesWidget implements WidgetInterface
     /**
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         /** @var InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->manager->getRepository('CSBillInvoiceBundle:Invoice');
@@ -45,7 +47,7 @@ class RecentInvoicesWidget implements WidgetInterface
     /**
      * @return string
      */
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return 'CSBillDashboardBundle:Widget:recent_invoices.html.twig';
     }

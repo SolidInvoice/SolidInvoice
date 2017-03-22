@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -65,7 +67,7 @@ class Item implements ItemInterface
     private $price;
 
     /**
-     * @var int
+     * @var float
      *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank
@@ -105,7 +107,7 @@ class Item implements ItemInterface
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -115,9 +117,9 @@ class Item implements ItemInterface
      *
      * @param string $description
      *
-     * @return Item
+     * @return ItemInterface
      */
-    public function setDescription($description)
+    public function setDescription(string $description): ItemInterface
     {
         $this->description = $description;
 
@@ -129,7 +131,7 @@ class Item implements ItemInterface
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -139,9 +141,9 @@ class Item implements ItemInterface
      *
      * @param Money $price
      *
-     * @return Item
+     * @return ItemInterface
      */
-    public function setPrice(Money $price)
+    public function setPrice(Money $price): ItemInterface
     {
         $this->price = new MoneyEntity($price);
 
@@ -153,7 +155,7 @@ class Item implements ItemInterface
      *
      * @return Money
      */
-    public function getPrice()
+    public function getPrice(): Money
     {
         return $this->price->getMoney();
     }
@@ -161,11 +163,11 @@ class Item implements ItemInterface
     /**
      * Set the qty.
      *
-     * @param int $qty
+     * @param float $qty
      *
-     * @return Item
+     * @return ItemInterface
      */
-    public function setQty($qty)
+    public function setQty(float $qty): ItemInterface
     {
         $this->qty = $qty;
 
@@ -175,9 +177,9 @@ class Item implements ItemInterface
     /**
      * Get qty.
      *
-     * @return int
+     * @return float
      */
-    public function getQty()
+    public function getQty(): ?float
     {
         return $this->qty;
     }
@@ -187,9 +189,9 @@ class Item implements ItemInterface
      *
      * @param Invoice $invoice
      *
-     * @return Item
+     * @return ItemInterface
      */
-    public function setInvoice(Invoice $invoice = null)
+    public function setInvoice(?Invoice $invoice): ItemInterface
     {
         $this->invoice = $invoice;
 
@@ -201,7 +203,7 @@ class Item implements ItemInterface
      *
      * @return Invoice
      */
-    public function getInvoice()
+    public function getInvoice(): ?Invoice
     {
         return $this->invoice;
     }
@@ -209,9 +211,9 @@ class Item implements ItemInterface
     /**
      * @param Money $total
      *
-     * @return Item
+     * @return ItemInterface
      */
-    public function setTotal(Money $total)
+    public function setTotal(Money $total): ItemInterface
     {
         $this->total = new MoneyEntity($total);
 
@@ -223,7 +225,7 @@ class Item implements ItemInterface
      *
      * @return Money
      */
-    public function getTotal()
+    public function getTotal(): Money
     {
         return $this->total->getMoney();
     }
@@ -231,7 +233,7 @@ class Item implements ItemInterface
     /**
      * @return Tax
      */
-    public function getTax()
+    public function getTax(): ?Tax
     {
         return $this->tax;
     }
@@ -239,9 +241,9 @@ class Item implements ItemInterface
     /**
      * @param Tax $tax
      *
-     * @return Item
+     * @return ItemInterface
      */
-    public function setTax(Tax $tax = null)
+    public function setTax(?Tax $tax): ItemInterface
     {
         $this->tax = $tax;
 
@@ -263,7 +265,7 @@ class Item implements ItemInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->getDescription();
     }

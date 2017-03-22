@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -28,7 +30,7 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         $container = $this->getContainer();
 
@@ -122,11 +124,11 @@ class InstallCommand extends ContainerAwareCommand
         $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
         $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
 
-        if (!array_search($locale = $input->getOption('locale'), $locales)) {
+        if (!array_search($locale = $input->getOption('locale'), $locales, true)) {
             throw new \InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
-        if (!array_search($currency = $input->getOption('currency'), $currencies)) {
+        if (!array_search($currency = $input->getOption('currency'), $currencies, true)) {
             throw new \InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 
@@ -162,7 +164,7 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return int
      */
-    private function checkRequirements()
+    private function checkRequirements(): int
     {
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
         $return = true;
@@ -206,13 +208,13 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @throws \Exception
      */
-    private function initDb(InputInterface $input, OutputInterface $output)
+    private function initDb(InputInterface $input, OutputInterface $output): bool
     {
         $this->createDb($input, $output);
 
         $migration = $this->getContainer()->get('csbill.installer.database.migration');
 
-        $callback = function ($message) use ($output) {
+        $callback = function ($message) use ($output): bool {
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
                 $output->writeln($message);
             }
@@ -234,7 +236,7 @@ class InstallCommand extends ContainerAwareCommand
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
-    private function createDb(InputInterface $input, OutputInterface $output)
+    private function createDb(InputInterface $input, OutputInterface $output): bool
     {
         $dbName = $input->getOption('database-name');
 

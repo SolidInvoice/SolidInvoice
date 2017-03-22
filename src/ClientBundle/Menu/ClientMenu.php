@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -19,7 +21,7 @@ class ClientMenu
     /**
      * @return array
      */
-    public static function main()
+    public static function main(): array
     {
         return [
             'client.menu.main',
@@ -35,7 +37,7 @@ class ClientMenu
     /**
      * @return array
      */
-    public static function listMenu()
+    public static function listMenu(): array
     {
         return [
             'client.menu.list',
@@ -51,7 +53,7 @@ class ClientMenu
     /**
      * @return array
      */
-    public static function add()
+    public static function add(): array
     {
         return [
             'client.menu.add',
@@ -69,7 +71,7 @@ class ClientMenu
      *
      * @return array
      */
-    public static function view(Request $request)
+    public static function view(Request $request): array
     {
         return [
             'client.menu.view',

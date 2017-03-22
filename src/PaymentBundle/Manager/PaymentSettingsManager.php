@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
@@ -38,7 +39,7 @@ class PaymentSettingsManager
      *
      * @return array
      */
-    public function get($paymentMethod)
+    public function get(string $paymentMethod): array
     {
         if (!isset($this->settings[$paymentMethod])) {
             $this->settings[$paymentMethod] = $this->repository->getSettingsForMethodArray($paymentMethod);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -70,7 +72,7 @@ class TraceLogger implements SQLLogger
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS);
 
         foreach ($backtrace as $key => $debug) {
-            if (!$this->isInternalClass($debug['class'])) {
+            if (!$this->isInternalClass($debug['class'] ?? null)) {
                 $trace = array_slice($backtrace, $key - 1, 10);
 
                 return $this->formatTrace($trace);
@@ -109,8 +111,14 @@ class TraceLogger implements SQLLogger
         return $backtrace;
     }
 
-    private function isInternalClass(&$class)
+    private function isInternalClass(?string $class): bool
     {
-        return substr($class, 0, strpos($class, '\\')) === 'Doctrine' || $class === __CLASS__;
+        if (!$class) {
+            return false;
+        }
+
+        $length = false !== $pos = strpos($class, '\\');
+
+        return substr($class, 0, $length ? $pos : strlen($class)) === 'Doctrine' || $class === __CLASS__;
     }
 }

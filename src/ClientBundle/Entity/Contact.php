@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CSBill project.
  *
@@ -79,7 +81,7 @@ class Contact implements \Serializable
     private $email;
 
     /**
-     * @var ArrayCollection
+     * @var Collection|AdditionalContactDetail[]
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist"})
      * @Assert\Valid()
@@ -97,7 +99,7 @@ class Contact implements \Serializable
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -107,7 +109,7 @@ class Contact implements \Serializable
      *
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -119,7 +121,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setFirstName($firstName)
+    public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
 
@@ -131,7 +133,7 @@ class Contact implements \Serializable
      *
      * @return string
      */
-    public function getLastName()
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -143,7 +145,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setLastName($lastName)
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
 
@@ -155,7 +157,7 @@ class Contact implements \Serializable
      *
      * @return Client
      */
-    public function getClient()
+    public function getClient(): ?Client
     {
         return $this->client;
     }
@@ -167,7 +169,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setClient(Client $client)
+    public function setClient(Client $client): self
     {
         $this->client = $client;
 
@@ -181,7 +183,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function addAdditionalDetail(AdditionalContactDetail $detail)
+    public function addAdditionalDetail(AdditionalContactDetail $detail): self
     {
         $this->additionalDetails->add($detail);
         $detail->setContact($this);
@@ -196,7 +198,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function removeAdditionalDetail(AdditionalContactDetail $detail)
+    public function removeAdditionalDetail(AdditionalContactDetail $detail): self
     {
         $this->additionalDetails->removeElement($detail);
 
@@ -208,7 +210,7 @@ class Contact implements \Serializable
      *
      * @return Collection|AdditionalContactDetail[]
      */
-    public function getAdditionalDetails()
+    public function getAdditionalDetails(): Collection
     {
         return $this->additionalDetails;
     }
@@ -218,23 +220,24 @@ class Contact implements \Serializable
      *
      * @return null|AdditionalContactDetail
      */
-    public function getAdditionalDetail($type)
+    public function getAdditionalDetail(string $type): ?AdditionalContactDetail
     {
-        if (count($this->additionalDetails) > 0) {
+        $type = strtolower($type);
+        if (count($this->additionalDetails)) {
             foreach ($this->additionalDetails as $detail) {
-                if (strtolower((string) $detail->getType()) === strtolower($type)) {
+                if (strtolower((string) $detail->getType()) === $type) {
                     return $detail;
                 }
             }
         }
 
-        return;
+        return null;
     }
 
     /**
      * @return string
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize([$this->id, $this->firstName, $this->lastName, $this->created, $this->updated]);
     }
@@ -250,7 +253,7 @@ class Contact implements \Serializable
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->firstName.' '.$this->lastName;
     }
@@ -258,7 +261,7 @@ class Contact implements \Serializable
     /**
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -268,7 +271,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setEmail($email)
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
