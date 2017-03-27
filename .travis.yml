@@ -13,18 +13,27 @@ env:
     - secure: "oWJhFdiagOe1JF30MWJnNQ5J8W2YWAd26iO2BsD0Wl4HcpmyjRH6bTeFqIeNLSMkCQ8OkpteQOVzkkAzpN4TCCVJJJdQxsmikLQztHziqz9gQeHWMPpLQiMWXr+0XxAnJTGEeqaQsBi9DS+DAJsusVl4IbRop4ZSdAuJrPmvnrbe3+HLJ6hG7fQeuNzxvypFCeV4zR4shs9tFB4KY9FJLgpksm2CQ2G4GYSB/S1CJzQlbbKMYugI8wT4d5P5tGyKJB/HIeg8gv/32QY9WuWlFiLfMjLxP3wKm7UMMM4W68MTHYK0bSD5xiu58Tkx0HHPQSsYjqKf79cfAJv0dX533Ed+77kUjFdHaoqWphfwym7YYdZp5um7LYUN1HwWLxw3xJeBWUVQJMqKVtmCHewGKfeg8Pc0NuqmqNUNVPh4YmWKmqT3Qtw8ZDR7sAHhfF6QQrHDse/jScR1itwGTB7LcLfHB5P12tgXedRyEvYLQ9mB4VAj6MtPNq56YcGHtdSiR0eaASJm47d5G9D9erf8cVyibhdMqM14wDHmD2r2kkk5EYS/FxWECAa/qbXqhBAbxYpFqjtDoe3R76mZlhYHQfYWhbYY5SKi7DtpgEklpubXCdEUbWuO0zBK6wuQo02G7PowxOpVvO4zjc8QISkLVnzN3ukRjETUa8pwt8crVms="
 
 cache:
+  yarn: true
   directories:
     - $HOME/.composer/cache
-    - node_modules
 
 before_install:
-  - composer self-update
+  # Repo for newer Node.js versions
+  - curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  - sudo apt-get install nodejs
+  - ls -la /home/travis/.nvm
+  - /usr/bin/nodejs -v
+  # Repo for Yarn
+  - sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
+  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+  - sudo apt-get update
+  - sudo apt-get install -y yarn
 
 install:
   - composer install -n --profile
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
   - php bin/console cache:clear
-  - npm install
+  - /usr/bin/nodejs $(which yarn)
   - php bin/console assets:install -n
   - node_modules/.bin/gulp
 
@@ -32,7 +41,6 @@ before_script:
   - mysql -e 'create database csbill;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
-  - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   - bash travis/travis-ci-apache.sh
   - export DISPLAY=:99.0
