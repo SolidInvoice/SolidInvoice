@@ -91,7 +91,7 @@ class Contact implements \Serializable
 
     public function __construct()
     {
-	$this->additionalContactDetails = new ArrayCollection();
+        $this->additionalContactDetails = new ArrayCollection();
     }
 
     /**
@@ -185,7 +185,7 @@ class Contact implements \Serializable
      */
     public function addAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
-	$this->additionalContactDetails->add($detail);
+        $this->additionalContactDetails->add($detail);
         $detail->setContact($this);
 
         return $this;
@@ -200,7 +200,7 @@ class Contact implements \Serializable
      */
     public function removeAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
-	$this->additionalContactDetails->removeElement($detail);
+        $this->additionalContactDetails->removeElement($detail);
 
         return $this;
     }
@@ -212,7 +212,7 @@ class Contact implements \Serializable
      */
     public function getAdditionalContactDetails(): Collection
     {
-	return $this->additionalContactDetails;
+        return $this->additionalContactDetails;
     }
 
     /**
@@ -223,8 +223,8 @@ class Contact implements \Serializable
     public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
     {
         $type = strtolower($type);
-	if (count($this->additionalContactDetails)) {
-	    foreach ($this->additionalContactDetails as $detail) {
+        if (count($this->additionalContactDetails)) {
+            foreach ($this->additionalContactDetails as $detail) {
                 if (strtolower((string) $detail->getType()) === $type) {
                     return $detail;
                 }

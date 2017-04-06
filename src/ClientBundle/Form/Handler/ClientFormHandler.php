@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -43,7 +43,7 @@ class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInter
      */
     public function __construct(RouterInterface $router)
     {
-	$this->router = $router;
+        $this->router = $router;
     }
 
     /**
@@ -51,7 +51,7 @@ class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInter
      */
     public function getForm(FormFactoryInterface $factory = null, ...$options): FormInterface
     {
-	return $factory->create(ClientType::class, $options[0] ?? new Client());
+        return $factory->create(ClientType::class, $options[0] ?? new Client());
     }
 
     /**
@@ -59,22 +59,22 @@ class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInter
      */
     public function onSuccess($data, FormRequest $form): Response
     {
-	/** @var Client $data */
-	if (!$data->getStatus()) {
-	    $data->setStatus(Status::STATUS_ACTIVE);
-	}
+        /** @var Client $data */
+        if (!$data->getStatus()) {
+            $data->setStatus(Status::STATUS_ACTIVE);
+        }
 
-	$this->save($data);
+        $this->save($data);
 
-	$route = $this->router->generate('_clients_view', ['id' => $data->getId() ?? 5]);
+        $route = $this->router->generate('_clients_view', ['id' => $data->getId() ?? 5]);
 
-	return new class($route) extends RedirectResponse implements FlashResponse
-	{
-	    public function getFlash(): iterable
-	    {
-		yield self::FLASH_SUCCESS => 'client.create.success';
-	    }
-	};
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
+            public function getFlash(): iterable
+            {
+                yield self::FLASH_SUCCESS => 'client.create.success';
+            }
+        };
     }
 
     /**
@@ -82,6 +82,6 @@ class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInter
      */
     public function getResponse(FormRequest $formRequest): Template
     {
-	return new Template('@CSBillClient/Default/add.html.twig', ['form' => $formRequest->getForm()->createView()]);
+        return new Template('@CSBillClient/Default/add.html.twig', ['form' => $formRequest->getForm()->createView()]);
     }
 }

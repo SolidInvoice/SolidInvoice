@@ -75,8 +75,8 @@ class Template
      */
     public function setTemplate(string $template): Template
     {
-	$this->template = $template;
+        $this->template = $template;
 
-	return $this;
+        return $this;
     }
 }

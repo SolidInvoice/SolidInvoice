@@ -130,7 +130,7 @@ class Grid implements GridInterface
 
         $resultSet = $paginator->getQuery()->getArrayResult();
 
-	array_walk_recursive($resultSet, function (&$value, $key): void {
+        array_walk_recursive($resultSet, function (&$value, $key): void {
             if (false !== strpos($key, 'currency')) {
                 $value = $this->moneyFormatter->getCurrencySymbol($value);
             }

@@ -29,6 +29,6 @@ trait DoctrineAwareTrait
      */
     public function setDoctrine(RegistryInterface $doctrine)
     {
-	$this->doctrine = $doctrine;
+        $this->doctrine = $doctrine;
     }
 }

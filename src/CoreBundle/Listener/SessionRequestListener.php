@@ -40,7 +40,7 @@ class SessionRequestListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 200],
-	    KernelEvents::RESPONSE => 'onKernelResponse',
+            KernelEvents::RESPONSE => 'onKernelResponse',
         ];
     }
 
@@ -59,7 +59,7 @@ class SessionRequestListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-	if (!$event->isMasterRequest()) {
+        if (!$event->isMasterRequest()) {
             return;
         }
 
@@ -79,18 +79,18 @@ class SessionRequestListener implements EventSubscriberInterface
      */
     public function onKernelResponse(FilterResponseEvent $event): void
     {
-	if (!$event->isMasterRequest()) {
-	    return;
-	}
+        if (!$event->isMasterRequest()) {
+            return;
+        }
 
-	$response = $event->getResponse();
+        $response = $event->getResponse();
 
-	if ($response instanceof FlashResponse) {
-	    $flashBag = $this->session->getFlashBag();
-	    foreach ($response->getFlash() as $type => $message) {
-		// Default to info for undefined types
-		$flashBag->add(is_int($type) ? FlashResponse::FLASH_INFO : $type, $message);
-	    }
-	}
+        if ($response instanceof FlashResponse) {
+            $flashBag = $this->session->getFlashBag();
+            foreach ($response->getFlash() as $type => $message) {
+                // Default to info for undefined types
+                $flashBag->add(is_int($type) ? FlashResponse::FLASH_INFO : $type, $message);
+            }
+        }
     }
 }

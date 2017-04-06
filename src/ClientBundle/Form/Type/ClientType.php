@@ -47,7 +47,7 @@ class ClientType extends AbstractType
                 'entry_type' => ContactType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-		'delete_empty' => true,
+                'delete_empty' => true,
                 'by_reference' => false,
                 'prototype' => true,
                 'prototype_name' => '__contact_prototype__',
@@ -61,7 +61,7 @@ class ClientType extends AbstractType
                 'entry_type' => AddressType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-		'delete_empty' => true,
+                'delete_empty' => true,
                 'by_reference' => false,
                 'required' => false,
             ]

@@ -113,7 +113,7 @@ class InvoiceRepository extends EntityRepository
         $qb->select('COUNT(i)');
 
         if (is_array($status)) {
-	    /** @noinspection PhpParamsInspection */
+            /** @noinspection PhpParamsInspection */
             $qb->add('where', $qb->expr()->in('i.status', ':status'));
         } else {
             $qb->where('i.status = :status');

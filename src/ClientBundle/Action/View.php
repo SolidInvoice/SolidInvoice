@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2016 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -37,8 +37,8 @@ class View
      */
     public function __construct(PaymentRepository $paymentRepository, InvoiceRepository $invoiceRepository)
     {
-	$this->paymentRepository = $paymentRepository;
-	$this->invoiceRepository = $invoiceRepository;
+        $this->paymentRepository = $paymentRepository;
+        $this->invoiceRepository = $invoiceRepository;
     }
 
     /**
@@ -48,16 +48,16 @@ class View
      */
     public function __invoke(Client $client): Template
     {
-	return new Template(
-	    '@CSBillClient/Default/view.html.twig',
-	    [
-		'client' => $client,
-		'payments' => $this->paymentRepository->getPaymentsForClient($client),
-		'total_invoices_pending' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
-		'total_invoices_paid' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
-		'total_income' => $this->paymentRepository->getTotalIncome($client),
-		'total_outstanding' => $this->invoiceRepository->getTotalOutstanding($client),
-	    ]
-	);
+        return new Template(
+            '@CSBillClient/Default/view.html.twig',
+            [
+                'client' => $client,
+                'payments' => $this->paymentRepository->getPaymentsForClient($client),
+                'total_invoices_pending' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
+                'total_invoices_paid' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
+                'total_income' => $this->paymentRepository->getTotalIncome($client),
+                'total_outstanding' => $this->invoiceRepository->getTotalOutstanding($client),
+            ]
+        );
     }
 }

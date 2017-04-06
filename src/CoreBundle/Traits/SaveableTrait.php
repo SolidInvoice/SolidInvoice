@@ -29,18 +29,18 @@ trait SaveableTrait
      */
     public function save($entity, bool $flush = true)
     {
-	if (!$this->doctrine) {
-	    throw new \Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', get_class($this), RegistryInterface::class, __METHOD__));
-	}
+        if (!$this->doctrine) {
+            throw new \Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', get_class($this), RegistryInterface::class, __METHOD__));
+        }
 
-	if (!is_object($entity)) {
-	    throw new \Exception(sprintf('%s expects $entity yo be an object, %s given', __METHOD__, gettype($entity)));
-	}
+        if (!is_object($entity)) {
+            throw new \Exception(sprintf('%s expects $entity yo be an object, %s given', __METHOD__, gettype($entity)));
+        }
 
-	/** @var \Doctrine\ORM\EntityManager $em */
-	$em = $this->doctrine->getManager();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->doctrine->getManager();
 
-	$em->persist($entity);
-	$flush && $em->flush();
+        $em->persist($entity);
+        $flush && $em->flush();
     }
 }
