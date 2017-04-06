@@ -68,8 +68,7 @@ class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInter
 
         $route = $this->router->generate('_clients_view', ['id' => $data->getId() ?? 5]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse
-        {
+        return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'client.create.success';

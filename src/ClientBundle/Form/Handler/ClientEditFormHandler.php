@@ -16,7 +16,6 @@ namespace CSBill\ClientBundle\Form\Handler;
 use CSBill\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormCollectionHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
-use Symfony\Component\HttpFoundation\Response;
 
 class ClientEditFormHandler extends ClientFormHandler implements FormCollectionHandlerInterface
 {

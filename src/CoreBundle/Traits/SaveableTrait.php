@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the CSBill project.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -20,7 +20,7 @@ trait SaveableTrait
     use DoctrineAwareTrait;
 
     /**
-     * Persists an entity and optionally flushes the entity to the database
+     * Persists an entity and optionally flushes the entity to the database.
      *
      * @param mixed $entity The entity to persist
      * @param bool  $flush  If an automatic flush should occur

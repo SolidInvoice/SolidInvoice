@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the CSBill project.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -24,7 +24,7 @@ interface FlashResponse
     public const FLASH_WARNING = 'warning';
 
     /**
-     * Return a Generator to set flash messages, with the key as the type and the value as the message
+     * Return a Generator to set flash messages, with the key as the type and the value as the message.
      *
      * E.G yield self::FLASH_SUCCESS => 'my.flash.message'
      *
