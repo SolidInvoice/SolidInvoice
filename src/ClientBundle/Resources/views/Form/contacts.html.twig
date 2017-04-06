@@ -27,7 +27,7 @@
         {{ form_row(form.email) }}
     </div>
 
-    {% set additional_details = form_row(form.additionalDetails.vars.prototype) %}
+    {% set additional_details = form_row(form.additionalContactDetails.vars.prototype) %}
 
     <script type="text/template" class="additional-details">
         {{ additional_details|raw }}
@@ -37,9 +37,9 @@
         {{ 'client.contact.details.extra'|trans }}
     </h5>
 
-    {% set total = form.additionalDetails.children|length %}
+    {% set total = form.additionalContactDetails.children|length %}
     <div class="prototype-widget client_contacts" data-counter="{{ total > 0 ? total : 0 }}">
-        {% for widget in form.additionalDetails.children %}
+	{% for widget in form.additionalContactDetails.children %}
             {{ form_row(widget, {'child' : true}) }}
         {% endfor %}
 

@@ -1,26 +1,23 @@
 _clients_index:
     path: /
-    defaults:
-        _controller: 'CSBillClientBundle:Default:index'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Index' }
     options:
         expose: true
 
 _clients_add:
     path: /add
-    defaults:
-        _controller: 'CSBillClientBundle:Default:add'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Add' }
 
 _clients_edit:
     path: '/edit/{id}'
     defaults:
-        _controller: 'CSBillClientBundle:Default:edit'
+	_controller: 'CSBill\ClientBundle\Action\Edit'
     options:
         expose: true
 
 _clients_view:
     path: '/view/{id}'
-    defaults:
-        _controller: 'CSBillClientBundle:Default:view'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\View' }
     options:
         expose: true
 

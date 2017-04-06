@@ -1,12 +1,17 @@
 services:
-    _defaults:
-        public: false
-        tags:
-            - { name: kernel.event_subscriber }
+    _instanceof:
+	Symfony\Component\EventDispatcher\EventSubscriberInterface:
+	    public: false
+	    tags:
+		- { name: kernel.event_subscriber }
+
+    CSBill\CoreBundle\Listener\:
+	resource: '../../../Listener'
 
     CSBill\CoreBundle\Listener\DoctrineExtensionListener:
         calls:
             - [setContainer, ['@service_container']]
 
-    CSBill\CoreBundle\Listener\SessionRequestListener:
-        arguments: ['@session', '@security.encryption']
+    CSBill\CoreBundle\Listener\SessionRequestListener: ['@session', '@security.encryption']
+
+    CSBill\CoreBundle\Listener\TemplateListener: ['@twig']

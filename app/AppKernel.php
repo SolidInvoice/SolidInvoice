@@ -42,6 +42,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new Payum\Bundle\PayumBundle\PayumBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
+	    new SolidWorx\FormHandler\FormHandlerBundle(),
 
             new CSBill\ApiBundle\CSBillApiBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),
@@ -49,6 +50,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new CSBill\CronBundle\CSBillCronBundle(),
             new CSBill\DashboardBundle\CSBillDashboardBundle(),
             new CSBill\DataGridBundle\CSBillDataGridBundle($this),
+	    new CSBill\FormBundle\CSBillFormBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\InvoiceBundle\CSBillInvoiceBundle(),
             new CSBill\ItemBundle\CSBillItemBundle(),

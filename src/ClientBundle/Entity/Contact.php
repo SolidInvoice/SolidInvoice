@@ -87,11 +87,11 @@ class Contact implements \Serializable
      * @Assert\Valid()
      * @Serialize\Groups({"api", "js"})
      */
-    private $additionalDetails;
+    private $additionalContactDetails;
 
     public function __construct()
     {
-        $this->additionalDetails = new ArrayCollection();
+	$this->additionalContactDetails = new ArrayCollection();
     }
 
     /**
@@ -183,9 +183,9 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function addAdditionalDetail(AdditionalContactDetail $detail): self
+    public function addAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
-        $this->additionalDetails->add($detail);
+	$this->additionalContactDetails->add($detail);
         $detail->setContact($this);
 
         return $this;
@@ -198,9 +198,9 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function removeAdditionalDetail(AdditionalContactDetail $detail): self
+    public function removeAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
-        $this->additionalDetails->removeElement($detail);
+	$this->additionalContactDetails->removeElement($detail);
 
         return $this;
     }
@@ -210,9 +210,9 @@ class Contact implements \Serializable
      *
      * @return Collection|AdditionalContactDetail[]
      */
-    public function getAdditionalDetails(): Collection
+    public function getAdditionalContactDetails(): Collection
     {
-        return $this->additionalDetails;
+	return $this->additionalContactDetails;
     }
 
     /**
@@ -220,11 +220,11 @@ class Contact implements \Serializable
      *
      * @return null|AdditionalContactDetail
      */
-    public function getAdditionalDetail(string $type): ?AdditionalContactDetail
+    public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
     {
         $type = strtolower($type);
-        if (count($this->additionalDetails)) {
-            foreach ($this->additionalDetails as $detail) {
+	if (count($this->additionalContactDetails)) {
+	    foreach ($this->additionalContactDetails as $detail) {
                 if (strtolower((string) $detail->getType()) === $type) {
                     return $detail;
                 }

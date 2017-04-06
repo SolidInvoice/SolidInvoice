@@ -47,7 +47,7 @@ class InvoiceRepository extends EntityRepository
      * Get the total amount for a specific invoice status.
      *
      * @param string $status
-     * @param Client $client  filter per client
+     * @param Client $client filter per client
      * @param int    $hydrate
      *
      * @return int
@@ -113,6 +113,7 @@ class InvoiceRepository extends EntityRepository
         $qb->select('COUNT(i)');
 
         if (is_array($status)) {
+	    /** @noinspection PhpParamsInspection */
             $qb->add('where', $qb->expr()->in('i.status', ':status'));
         } else {
             $qb->where('i.status = :status');

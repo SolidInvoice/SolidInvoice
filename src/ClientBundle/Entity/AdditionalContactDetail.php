@@ -60,7 +60,7 @@ class AdditionalContactDetail
     /**
      * @var Contact
      *
-     * @ORM\ManyToOne(targetEntity="Contact", inversedBy="additionalDetails")
+     * @ORM\ManyToOne(targetEntity="Contact", inversedBy="additionalContactDetails")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
      * @Serialize\Groups({"js"})
      */
@@ -93,7 +93,7 @@ class AdditionalContactDetail
      *
      * @return AdditionalContactDetail
      */
-    public function setValue(string $value): self
+    public function setValue(?string $value): self
     {
         $this->value = $value;
 
@@ -117,7 +117,7 @@ class AdditionalContactDetail
      *
      * @return AdditionalContactDetail
      */
-    public function setType(ContactType $type): self
+    public function setType(?ContactType $type): self
     {
         $this->type = $type;
 

@@ -33,7 +33,7 @@ class ContactType extends AbstractType
         $builder->add('email');
 
         $builder->add(
-            'additionalDetails',
+	    'additionalContactDetails',
             ContactDetailCollectionType::class,
             [
                 'entry_type' => ContactDetailType::class,

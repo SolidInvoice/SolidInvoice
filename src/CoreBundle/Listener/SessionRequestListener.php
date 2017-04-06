@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Listener;
 
+use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Security\Encryption;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionRequestListener implements EventSubscriberInterface
 {
     /**
-     * @var SessionInterface
+     * @var Session
      */
     protected $session;
 
@@ -39,22 +40,26 @@ class SessionRequestListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 200],
+	    KernelEvents::RESPONSE => 'onKernelResponse',
         ];
     }
 
     /**
-     * @param SessionInterface $session
-     * @param Encryption       $encryption
+     * @param Session    $session
+     * @param Encryption $encryption
      */
-    public function __construct(SessionInterface $session, Encryption $encryption)
+    public function __construct(Session $session, Encryption $encryption)
     {
         $this->session = $session;
         $this->encryption = $encryption;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+	if (!$event->isMasterRequest()) {
             return;
         }
 
@@ -67,5 +72,25 @@ class SessionRequestListener implements EventSubscriberInterface
 
             $this->session->setId($sessionId);
         }
+    }
+
+    /**
+     * @param FilterResponseEvent $event
+     */
+    public function onKernelResponse(FilterResponseEvent $event): void
+    {
+	if (!$event->isMasterRequest()) {
+	    return;
+	}
+
+	$response = $event->getResponse();
+
+	if ($response instanceof FlashResponse) {
+	    $flashBag = $this->session->getFlashBag();
+	    foreach ($response->getFlash() as $type => $message) {
+		// Default to info for undefined types
+		$flashBag->add(is_int($type) ? FlashResponse::FLASH_INFO : $type, $message);
+	    }
+	}
     }
 }
