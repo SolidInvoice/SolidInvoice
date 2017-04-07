@@ -55,9 +55,6 @@ class ClientListener implements ContainerAwareInterface
 
         $entityChangeSet = $event->getEntityManager()->getUnitOfWork()->getEntityChangeSet($entity);
 
-        $em = $event->getEntityManager();
-        $em->getRepository('CSBillInvoiceBundle:Invoice')->updateCurrency($entity);
-
         // Only update the currencies when the client currency changed
         if (array_key_exists('currency', $entityChangeSet)) {
             $em = $event->getEntityManager();

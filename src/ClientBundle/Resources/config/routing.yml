@@ -11,7 +11,7 @@ _clients_add:
 _clients_edit:
     path: '/edit/{id}'
     defaults:
-	_controller: 'CSBill\ClientBundle\Action\Edit'
+        _controller: 'CSBill\ClientBundle\Action\Edit'
     options:
         expose: true
 
@@ -72,23 +72,6 @@ _clients_address:
     options:
         expose: true
 
-_clients_archive:
-    path: /archive
-    defaults: { _controller: 'CSBillClientBundle:Grid:archive' }
-    methods: [POST]
-    options:
-        expose: true
-
-_clients_restore:
-    path: /restore
-    defaults: { _controller: 'CSBillClientBundle:Grid:restore' }
-    methods: [POST]
-    options:
-        expose: true
-
-_clients_delete:
-    path: /delete
-    defaults: { _controller: 'CSBillClientBundle:Grid:delete' }
-    methods: [POST]
-    options:
-        expose: true
+_clients_grid:
+    resource: '@CSBillClientBundle/Action/Grid'
+    type: grid

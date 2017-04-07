@@ -13,19 +13,20 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Doctrine\Filter;
 
+use CSBill\CoreBundle\Traits\Entity\Archivable;
 use Doctrine\ORM\Mapping\ClassMetaData;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class ArchivableFilter extends SQLFilter
 {
-    const ARCHIVABLEE_CLASS = 'CSBill\CoreBundle\Traits\Entity\Archivable';
+    private const ARCHIVABLE_CLASS = Archivable::class;
 
     /**
      * {@inheritdoc}
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if (!in_array(self::ARCHIVABLEE_CLASS, $targetEntity->reflClass->getTraitNames(), true)) {
+        if (!in_array(self::ARCHIVABLE_CLASS, $targetEntity->reflClass->getTraitNames(), true)) {
             return '';
         }
 

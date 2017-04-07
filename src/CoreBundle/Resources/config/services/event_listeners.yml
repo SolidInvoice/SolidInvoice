@@ -1,12 +1,12 @@
 services:
     _instanceof:
-	Symfony\Component\EventDispatcher\EventSubscriberInterface:
-	    public: false
-	    tags:
-		- { name: kernel.event_subscriber }
+        Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            public: false
+            tags:
+                - { name: kernel.event_subscriber }
 
     CSBill\CoreBundle\Listener\:
-	resource: '../../../Listener'
+        resource: '../../../Listener'
 
     CSBill\CoreBundle\Listener\DoctrineExtensionListener:
         calls:

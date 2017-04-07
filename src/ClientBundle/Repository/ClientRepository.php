@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\ClientBundle\Repository;
 
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Util\ArrayUtil;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -107,10 +109,72 @@ class ClientRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('c');
 
-        $qb->select('c');
-
-        $qb->where('c.archived is not null');
+        $qb->select('c')
+            ->where('c.archived is not null');
 
         return $qb;
+    }
+
+    /**
+     * Archives a list of clients
+     *
+     * @param array $ids
+     */
+    public function archiveClients(array $ids): void
+    {
+        // @TODO: Validate that we have an array of integers and valid client IDs
+
+        /** @var Client[] $clients */
+        $clients = $this->findBy(['id' => $ids]);
+
+        $em = $this->getEntityManager();
+
+        foreach ($clients as $client) {
+            $client->setArchived(true)
+                ->setStatus(Status::STATUS_ARCHIVED);
+
+            $em->persist($client);
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @param array $ids
+     */
+    public function restoreClients(array $ids): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->getFilters()->disable('archivable');
+
+        /** @var Client[] $clients */
+        $clients = $this->findBy(['id' => $ids]);
+
+        foreach ($clients as $client) {
+            $client->setArchived(null)
+                ->setStatus(Status::STATUS_ACTIVE);
+
+            $em->persist($client);
+        }
+
+        $em->flush();
+
+        $em->getFilters()->enable('archivable');
+    }
+
+    /**
+     * @param array $ids
+     */
+    public function deleteClients(array $ids): void
+    {
+        $em = $this->getEntityManager();
+
+        /** @var Client[] $clients */
+        $clients = $this->findBy(['id' => $ids]);
+
+        array_walk($clients, [$em, 'remove']);
+
+        $em->flush();
     }
 }

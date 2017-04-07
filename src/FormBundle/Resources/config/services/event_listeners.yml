@@ -1,9 +1,9 @@
 services:
     _instanceof:
-	Symfony\Component\EventDispatcher\EventSubscriberInterface:
-	    public: false
-	    tags:
-		- { name: kernel.event_subscriber }
+        Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            public: false
+            tags:
+                - { name: kernel.event_subscriber }
 
     CSBill\FormBundle\Listener\:
-	resource: '../../../Listener'
+        resource: '../../../Listener'

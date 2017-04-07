@@ -5,5 +5,5 @@ services:
         calls:
             - ['setContainer', ['@service_container']]
         tags:
-	    - { name: 'doctrine.event_listener', event: postPersist }
-	    - { name: 'doctrine.event_listener', event: postUpdate }
+            - { name: 'doctrine.event_listener', event: postPersist }
+            - { name: 'doctrine.event_listener', event: postUpdate }
