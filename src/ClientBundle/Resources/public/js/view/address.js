@@ -35,7 +35,7 @@ define(
                             {
                                 wait: true,
                                 error: function(model, xhr) {
-                                    Bootbox.alert(xhr.responseJSON);
+                                    Bootbox.alert(xhr.responseJSON.message);
                                 }
                             }
                         );

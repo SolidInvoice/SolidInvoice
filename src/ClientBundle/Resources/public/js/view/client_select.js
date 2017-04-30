@@ -39,7 +39,7 @@ define(
                 this.showLoader();
 
                 $.getJSON(
-                    Routing.generate('_clients_info', {id: event.val, type: this.getOption('type')}),
+                    Routing.generate('_xhr_clients_info', {id: event.val, type: this.getOption('type')}),
                     _.bind(function(data) {
                         this.$('#client-select-container').html(data.content);
                         this._toggleContactInfo(true);

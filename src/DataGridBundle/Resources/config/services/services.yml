@@ -3,10 +3,5 @@ services:
         class: 'CSBill\DataGridBundle\Repository\GridRepository'
 
     CSBill\DataGridBundle\Routing\Loader\GridRouteLoader:
+        parent: 'CSBill\CoreBundle\Routing\Loader\AbstractDirectoryLoader'
         tags: ['routing.loader']
-        public: false
-        lazy: true
-        autowire: true
-        arguments:
-            $locator: '@file_locator'
-            $kernel: '@kernel'

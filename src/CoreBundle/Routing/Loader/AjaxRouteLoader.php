@@ -11,17 +11,15 @@
 
 declare(strict_types=1);
 
-namespace CSBill\DataGridBundle\Routing\Loader;
+namespace CSBill\CoreBundle\Routing\Loader;
 
-use CSBill\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
-
-class GridRouteLoader extends AbstractDirectoryLoader
+class AjaxRouteLoader extends AbstractDirectoryLoader
 {
     /**
      * {@inheritdoc}
      */
     public function supports($resource, $type = null): bool
     {
-        return is_string($resource) && 'grid' === $type && '@' === $resource[0];
+        return is_string($resource) && 'ajax' === $type && '@' === $resource[0];
     }
 }

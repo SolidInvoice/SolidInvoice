@@ -1,10 +1,11 @@
 services:
+    _defaults:
+        tags: ['form.handler']
+
     _instanceof:
         SolidWorx\FormHandler\FormHandlerInterface:
             autowire: true
             public: false
-            tags:
-                - { name: 'form.handler' }
 
     CSBill\ClientBundle\Form\Handler\:
         resource: '../../../Form/Handler'

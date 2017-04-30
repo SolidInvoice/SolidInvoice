@@ -8,10 +8,13 @@ services:
             - { name: 'cs_core.menu', menu: clients_add, method: clientsMenu }
             - { name: 'cs_core.menu', menu: clients_edit, method: clientsMenu }
 
-    csbill_client.client.repository:
-        class: CSBill\ClientBundle\Repository\ClientRepository
+    CSBill\ClientBundle\Repository\ClientRepository:
         factory: ['@doctrine', getRepository]
         arguments: ['CSBillClientBundle:Client']
+
+    CSBill\ClientBundle\Repository\CreditRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillClientBundle:Credit']
 
     csbill_client.contact_type.repository:
         class: CSBill\ClientBundle\Repository\ContactTypeRepository

@@ -1,0 +1,48 @@
+<?php
+
+/*
+ * This file is part of the CSBill project.
+ *
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+declare(strict_types=1);
+
+namespace CSBill\CoreBundle\Listener;
+
+use CSBill\CoreBundle\Response\AjaxResponse;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
+
+class AjaxResponseListener implements EventSubscriberInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::CONTROLLER => 'onController'
+        ];
+    }
+
+    /**
+     * @param FilterControllerEvent $event
+     *
+     * @throws BadRequestHttpException
+     */
+    public function onController(FilterControllerEvent $event): void
+    {
+        $request = $event->getRequest();
+        $controller = $event->getController();
+
+        if ($controller instanceof AjaxResponse && !$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+    }
+}

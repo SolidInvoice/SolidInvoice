@@ -21,7 +21,6 @@ framework:
         enable_annotations: true
         strict_email: true
     default_locale: '%locale%'
-    trusted_proxies: null
     session:
         name: CSBILL_APP
     fragments: null

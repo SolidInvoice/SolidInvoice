@@ -36,7 +36,7 @@ define(
 
                 this.model.on('invalid', function (model, error) {
                     view.hideLoader();
-                    window.ParsleyUI.addError(view.ui.creditAmount.parsley(), "creditError", error);
+                    //window.ParsleyUI.addError(view.ui.creditAmount.parsley(), "creditError", error);
                 });
 
                 this.model.set('credit', Accounting.toFixed(this.ui.creditAmount.val(), 2));

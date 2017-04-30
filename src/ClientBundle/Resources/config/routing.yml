@@ -7,11 +7,12 @@ _clients_index:
 _clients_add:
     path: /add
     defaults: { _controller: 'CSBill\ClientBundle\Action\Add' }
+    options:
+        expose: true
 
 _clients_edit:
     path: '/edit/{id}'
-    defaults:
-        _controller: 'CSBill\ClientBundle\Action\Edit'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Edit' }
     options:
         expose: true
 
@@ -21,57 +22,12 @@ _clients_view:
     options:
         expose: true
 
-_clients_info:
-    path: '/ajax/info/{id}/{type}'
-    defaults:
-        _controller: 'CSBillClientBundle:Ajax:info'
-        type: quote
-    options:
-        expose: true
-
-_clients_credit:
-    path: '/ajax/credit/{client}'
-    defaults:
-        _controller: 'CSBillClientBundle:Credit:credit'
-    methods: [GET, PUT]
-    options:
-        expose: true
-
-_clients_add_contact:
-    path: '/ajax/contacts/add/{id}'
-    defaults:
-        _controller: 'CSBillClientBundle:Ajax:addcontact'
-    options:
-        expose: true
-
-_clients_edit_contact:
-    path: '/ajax/contacts/edit/{id}'
-    defaults:
-        _controller: 'CSBillClientBundle:Ajax:editcontact'
-    options:
-        expose: true
-
-_clients_edit_address:
-    path: '/ajax/address/edit/{id}'
-    defaults:
-        _controller: 'CSBillClientBundle:Ajax:editAddress'
-    options:
-        expose: true
-
-_clients_contact:
-    path: '/ajax/contacts/{id}'
-    defaults: { _controller: 'CSBillClientBundle:Ajax:contact' }
-    methods: [GET, POST, DELETE]
-    options:
-        expose: true
-
-_clients_address:
-    path: '/ajax/address/{id}'
-    defaults: { _controller: 'CSBillClientBundle:Ajax:address' }
-    methods: [DELETE, GET]
-    options:
-        expose: true
-
 _clients_grid:
     resource: '@CSBillClientBundle/Action/Grid'
     type: grid
+
+_clients_xhr:
+    resource: '@CSBillClientBundle/Resources/config/routing/ajax.yml'
+    prefix: /xhr
+    options:
+        expose: true

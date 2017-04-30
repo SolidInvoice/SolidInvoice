@@ -49,7 +49,7 @@
                 <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning">
                     {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
                 </a>
-                <a href="{{ path('_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client">
+                <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client">
                     {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
                 </a>
             </div>

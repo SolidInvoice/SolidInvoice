@@ -24,11 +24,25 @@ define(
                 layoutView.renderContactsRegion(ClientContact.getView(options));
             },
             _renderClientAddresses: function(layoutView, options) {
-                try {
-                    layoutView.getRegion('clientAddress').show(new AddressView({
-                        collection: new AddressCollection(options.addresses)
-                    }));
-                } catch (e) {
+                var addressCollection = new AddressCollection(options.addresses, {'id': options.id});
+
+                var that = this;
+
+                addressCollection.on('remove', function() {
+                    addressCollection.fetch({reset: true, url: Routing.generate('_xhr_clients_address_list', {'id': options.id})}).done(function() {
+                        layoutView.model.set('addresses', addressCollection.toArray());
+                        options.addresses = layoutView.model.get('addresses');
+
+                        layoutView.render();
+                        that._renderContactCollection(layoutView, options);
+                        if (addressCollection.length > 0) {
+                            layoutView.getRegion('clientAddress').show(new AddressView({collection: addressCollection}));
+                        }
+                    });
+                });
+
+                if (addressCollection.length > 0) {
+                    layoutView.getRegion('clientAddress').show(new AddressView({collection: addressCollection}));
                 }
             },
             _renderClientInfo: function(options) {
@@ -44,25 +58,27 @@ define(
                 this._renderCredit(options);
 
                 var infoView = this._renderClientInfo(options);
-
-                this._renderContactCollection(infoView, options);
-                this._renderClientAddresses(infoView, options);
+                this.render(infoView, options);
 
                 $('#delete-client').on('click', this.deleteClient);
             },
-            deleteClient: function (event) {
+            render: function(infoView, options) {
+                this._renderContactCollection(infoView, options);
+                this._renderClientAddresses(infoView, options);
+            },
+            deleteClient: function(event) {
                 event.preventDefault();
 
                 var link = $(this);
 
-                Bootbox.confirm(__('client.confirm_delete'), function (confirm) {
+                Bootbox.confirm(__('client.confirm_delete'), function(confirm) {
                     if (true === confirm) {
                         $('body').modalmanager('loading');
 
                         $.ajax({
-                            "url" : link.attr("href"),
-                            "dataType" : "json",
-                            "method" : "post"
+                            "url": link.attr("href"),
+                            "dataType": "json",
+                            "method": "delete"
                         }).done(function() {
                             window.document.location = Routing.generate("_clients_index");
                         });
