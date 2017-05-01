@@ -116,7 +116,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * Archives a list of clients
+     * Archives a list of clients.
      *
      * @param array $ids
      */

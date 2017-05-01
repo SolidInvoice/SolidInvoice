@@ -17,4 +17,5 @@ return PhpCsFixer\Config::create()
         ]
     )
     ->setFinder($finder)
+    ->setRiskyAllowed(true)
 ;

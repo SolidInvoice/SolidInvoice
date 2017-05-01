@@ -48,7 +48,7 @@ class ContactAddFormHandler implements FormHandlerInterface, FormHandlerResponse
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function getForm(FormFactoryInterface $factory = null, ...$options)
     {
@@ -60,7 +60,7 @@ class ContactAddFormHandler implements FormHandlerInterface, FormHandlerResponse
      */
     public function onSuccess($data, FormRequest $form): ?Response
     {
-        /** @var Contact $data */
+        /* @var Contact $data */
         $this->save($data);
 
         return null;

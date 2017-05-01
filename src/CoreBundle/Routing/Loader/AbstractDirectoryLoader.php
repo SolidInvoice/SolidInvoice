@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the CSBill project.
+ * This file is part of CSBill project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -59,7 +59,7 @@ abstract class AbstractDirectoryLoader extends Loader
             ->files()
             ->in($dir)
             ->depth(0)
-            ->name("*.php")
+            ->name('*.php')
             ->followLinks()
             ->getIterator();
 
