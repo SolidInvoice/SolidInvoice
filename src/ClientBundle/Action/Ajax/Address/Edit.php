@@ -15,12 +15,13 @@ namespace CSBill\ClientBundle\Action\Ajax\Address;
 
 use CSBill\ClientBundle\Entity\Address;
 use CSBill\ClientBundle\Form\Type\AddressType;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Edit
+final class Edit implements AjaxResponse
 {
     use SaveableTrait,
         JsonTrait;

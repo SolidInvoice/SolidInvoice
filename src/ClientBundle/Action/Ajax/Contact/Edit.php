@@ -15,10 +15,11 @@ namespace CSBill\ClientBundle\Action\Ajax\Contact;
 
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Handler\ContactEditFormHandler;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Edit
+final class Edit implements AjaxResponse
 {
     /**
      * @var FormHandler

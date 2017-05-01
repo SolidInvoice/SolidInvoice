@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace CSBill\ClientBundle\Action\Ajax;
 
 use CSBill\ClientBundle\Entity\Contact as Entity;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\SerializeTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Contact
+final class Contact implements AjaxResponse
 {
     use SerializeTrait;
 

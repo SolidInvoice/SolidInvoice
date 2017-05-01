@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace CSBill\ClientBundle\Action\Ajax\Address;
 
 use CSBill\ClientBundle\Entity\Address;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\DoctrineAwareTrait;
 use CSBill\CoreBundle\Traits\JsonTrait;
 
-final class Delete
+final class Delete implements AjaxResponse
 {
     use DoctrineAwareTrait,
         JsonTrait;

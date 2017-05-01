@@ -16,10 +16,11 @@ namespace CSBill\ClientBundle\Action\Ajax\Contact;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Handler\ContactAddFormHandler;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Add
+final class Add implements AjaxResponse
 {
     /**
      * @var FormHandler

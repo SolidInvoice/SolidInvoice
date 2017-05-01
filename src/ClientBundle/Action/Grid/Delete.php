@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace CSBill\ClientBundle\Action\Grid;
 
 use CSBill\ClientBundle\Repository\ClientRepository;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Delete
+final class Delete implements AjaxResponse
 {
     use JsonTrait;
 

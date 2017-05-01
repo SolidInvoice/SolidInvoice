@@ -15,6 +15,7 @@ namespace CSBill\ClientBundle\Action\Ajax;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Repository\CreditRepository;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use Money\Currency;
@@ -22,7 +23,7 @@ use Money\Money;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Credit
+final class Credit implements AjaxResponse
 {
     use JsonTrait;
 

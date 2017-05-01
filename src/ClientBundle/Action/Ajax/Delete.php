@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace CSBill\ClientBundle\Action\Ajax;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Translation\TranslatorInterface;
 
-final class Delete
+final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
