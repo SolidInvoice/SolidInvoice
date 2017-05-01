@@ -29,10 +29,6 @@ csbill_invoice:
     prefix: /invoices
     resource: '@CSBillInvoiceBundle/Resources/config/routing.yml'
 
-csbill_item:
-    resource: '@CSBillItemBundle/Resources/config/routing.yml'
-    prefix: /items
-
 csbill_payment:
     resource: '@CSBillPaymentBundle/Resources/config/routing.yml'
     prefix: /payments

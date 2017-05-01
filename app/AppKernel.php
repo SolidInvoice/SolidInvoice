@@ -53,7 +53,6 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new CSBill\FormBundle\CSBillFormBundle(),
             new CSBill\InstallBundle\CSBillInstallBundle(),
             new CSBill\InvoiceBundle\CSBillInvoiceBundle(),
-            new CSBill\ItemBundle\CSBillItemBundle(),
             new CSBill\MenuBundle\CSBillMenuBundle(),
             new CSBill\MoneyBundle\CSBillMoneyBundle(),
             new CSBill\NotificationBundle\CSBillNotificationBundle(),
