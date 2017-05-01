@@ -20,7 +20,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Data implements AjaxResponse
+final class Data implements AjaxResponse
 {
     use SerializeTrait;
 

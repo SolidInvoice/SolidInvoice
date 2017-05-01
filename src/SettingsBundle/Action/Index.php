@@ -17,7 +17,7 @@ use CSBill\SettingsBundle\Form\Handler\SettingsFormHandler;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 
-class Index
+final class Index
 {
     /**
      * @var FormHandler
