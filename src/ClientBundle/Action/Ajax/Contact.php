@@ -1,35 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pierre
- * Date: 2017/04/30
- * Time: 18:27
+
+declare(strict_types=1);
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace CSBill\ClientBundle\Action\Ajax;
 
 use CSBill\ClientBundle\Entity\Contact as Entity;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
+use CSBill\CoreBundle\Traits\SerializeTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class Contact
+final class Contact
 {
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    public function __construct(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
-    }
+    use SerializeTrait;
 
     public function __invoke(Request $request, Entity $contact)
     {
-        $context = SerializationContext::create()->setGroups(['js']);
-
-        return new Response($this->serializer->serialize($contact, 'json', $context), 200, ['Content-Type' => 'application/json']);
+        return $this->serialize($contact);
     }
 }

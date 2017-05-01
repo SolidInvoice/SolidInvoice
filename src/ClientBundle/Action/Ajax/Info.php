@@ -19,7 +19,7 @@ use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use Money\Currency;
 
-class Info implements AjaxResponse
+final class Info implements AjaxResponse
 {
     use JsonTrait;
 

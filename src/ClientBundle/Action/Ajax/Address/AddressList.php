@@ -1,29 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace CSBill\ClientBundle\Action\Ajax\Address;
 
 use CSBill\ClientBundle\Entity\Client;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
+use CSBill\CoreBundle\Traits\SerializeTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class AddressList
+final class AddressList
 {
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    public function __construct(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
-    }
+    use SerializeTrait;
 
     public function __invoke(Request $request, Client $client)
     {
-        $context = SerializationContext::create()->setGroups(['js']);
-
-        return new Response($this->serializer->serialize([], 'json', $context), 200, ['Content-Type' => 'application/json']);
+        return $this->serialize($client->getAddresses());
     }
 }

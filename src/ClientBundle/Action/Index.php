@@ -16,7 +16,7 @@ namespace CSBill\ClientBundle\Action;
 use CSBill\CoreBundle\Templating\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-class Index
+final class Index
 {
     public function __invoke(Request $request)
     {

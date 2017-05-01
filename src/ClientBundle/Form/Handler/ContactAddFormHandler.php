@@ -17,8 +17,7 @@ use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Type\ContactType;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\CoreBundle\Traits\SaveableTrait;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
+use CSBill\CoreBundle\Traits\SerializeTrait;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -28,17 +27,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContactAddFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface
 {
-    use SaveableTrait;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    public function __construct(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
-    }
+    use SaveableTrait,
+        SerializeTrait;
 
     /**
      * {@inheritdoc}
@@ -46,9 +36,7 @@ class ContactAddFormHandler implements FormHandlerInterface, FormHandlerResponse
     public function getResponse(FormRequest $formRequest)
     {
         if ($formRequest->getForm()->isValid()) {
-            $context = SerializationContext::create()->setGroups(['js']);
-
-            return new Response($this->serializer->serialize($formRequest->getForm()->getData(), 'json', $context), 200, ['Content-Type' => 'application/json']);
+            return $this->serialize($formRequest->getForm()->getData());
         }
 
         return new Template(

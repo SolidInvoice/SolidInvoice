@@ -19,7 +19,7 @@ use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 
-class View
+final class View
 {
     /**
      * @var PaymentRepository

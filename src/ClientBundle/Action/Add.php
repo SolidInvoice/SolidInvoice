@@ -19,7 +19,7 @@ use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
-class Add
+final class Add
 {
     /**
      * @var FormHandler
