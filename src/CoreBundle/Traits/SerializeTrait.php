@@ -47,7 +47,7 @@ trait SerializeTrait
         $context = SerializationContext::create()->setGroups($groups);
 
         if (!$response) {
-            $response = new JsonResponse(null, 200, [], true);
+            $response = new JsonResponse('', 200, [], true);
         }
 
         $json = $this->serializer->serialize($object, 'json', $context);
