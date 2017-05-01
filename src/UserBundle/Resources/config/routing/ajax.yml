@@ -1,0 +1,19 @@
+_xhr_api_keys_list:
+    path: '/list'
+    defaults: { _controller: 'CSBill\UserBundle\Action\Ajax\ApiList' }
+    methods: [GET]
+
+_xhr_api_keys_create:
+    path: '/create'
+    defaults: { _controller: 'CSBill\UserBundle\Action\Ajax\ApiCreate' }
+    methods: [GET, POST]
+
+_xhr_api_keys_revoke:
+    path: '/revoke/{id}'
+    defaults: { _controller: 'CSBill\UserBundle\Action\Ajax\ApiRevoke' }
+    methods: [DELETE]
+
+_xhr_api_keys_history:
+    path: '/history/{id}'
+    defaults: { _controller: 'CSBill\UserBundle\Action\Ajax\ApiTokenHistory' }
+    methods: [GET]

@@ -88,7 +88,7 @@ abstract class BaseController extends Base
     /**
      * {@inheritdoc}
      */
-    protected function json($data, $status = 200, $headers = [], $_ = []): Response
+    protected function json($data, $status = 200, $headers = [], $_ = []): JsonResponse
     {
         $json = $this->container->get('serializer')->serialize($data, 'json');
 

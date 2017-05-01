@@ -56,7 +56,7 @@ class MainMenu
     public static function api(): array
     {
         return [
-            'menu.top.api', ['route' => 'api_keys', 'extras' => ['icon' => 'user-secret']],
+            'menu.top.api', ['route' => '_api_keys_index', 'extras' => ['icon' => 'user-secret']],
         ];
     }
 
