@@ -18,10 +18,8 @@ use Sylius\Bundle\FlowBundle\Process\Scenario\ProcessScenarioInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class InstallScenario implements ContainerAwareInterface, ProcessScenarioInterface
+class InstallScenario implements ProcessScenarioInterface
 {
-    use ContainerAwareTrait;
-
     /**
      * {@inheritdoc}
      */

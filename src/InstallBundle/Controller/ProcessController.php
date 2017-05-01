@@ -14,22 +14,31 @@ declare(strict_types=1);
 namespace CSBill\InstallBundle\Controller;
 
 use Sylius\Bundle\FlowBundle\Controller\ProcessController as BaseController;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProcessController extends BaseController implements ContainerAwareInterface
+class ProcessController extends BaseController
 {
-    use ContainerAwareTrait;
+    /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * @param \Twig_Environment $twig
+     *
+     * @required
+     */
+    public function setTwig(\Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function displayAction(Request $request, $scenarioAlias, $stepName)
     {
-        $twig = $this->container->get('twig');
-
-        $twig->addGlobal('context', $this->processContext);
+        $this->twig->addGlobal('context', $this->processContext);
 
         return parent::displayAction($request, $scenarioAlias, $stepName);
     }
@@ -39,9 +48,7 @@ class ProcessController extends BaseController implements ContainerAwareInterfac
      */
     public function forwardAction(Request $request, $scenarioAlias, $stepName)
     {
-        $twig = $this->container->get('twig');
-
-        $twig->addGlobal('context', $this->processContext);
+        $this->twig->addGlobal('context', $this->processContext);
 
         return parent::forwardAction($request, $scenarioAlias, $stepName);
     }

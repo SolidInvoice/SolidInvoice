@@ -5,12 +5,10 @@ services:
     installer.controller.process:
         parent: sylius.controller.process
         calls:
-            - [setContainer, ['@service_container']]
+            - [setTwig, ['@twig']]
 
     installation.scenario.flow:
         class: CSBill\InstallBundle\Process\InstallScenario
-        calls:
-            - [setContainer, ['@service_container']]
         tags:
              - { name: sylius.process.scenario, alias: install }
 
