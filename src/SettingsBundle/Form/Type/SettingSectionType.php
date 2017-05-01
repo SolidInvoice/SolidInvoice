@@ -53,5 +53,6 @@ class SettingSectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['manager']);
+        $resolver->setAllowedTypes('manager', SettingsManager::class);
     }
 }

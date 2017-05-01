@@ -17,8 +17,8 @@ use CSBill\CoreBundle\Controller\BaseController;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Form\Type\PaymentMethodType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AjaxController extends BaseController
 {
@@ -28,9 +28,9 @@ class AjaxController extends BaseController
      * @param Request       $request
      * @param PaymentMethod $paymentMethod
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function loadSettingsAction(Request $request, PaymentMethod $paymentMethod = null): JsonResponse
+    public function loadSettingsAction(Request $request, PaymentMethod $paymentMethod = null): Response
     {
         $methodName = $request->attributes->get('method');
         $paymentFactories = $this->get('payum.factories');
