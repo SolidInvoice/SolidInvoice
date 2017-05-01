@@ -49,7 +49,7 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function getResponse(FormRequest $formRequest)
     {
