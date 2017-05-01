@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\SettingsBundle\Form\Handler;
 
+use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\SettingsBundle\Form\Type\SettingSectionType;
 use CSBill\SettingsBundle\Manager\SettingsManager;
@@ -22,6 +23,7 @@ use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
@@ -69,7 +71,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
      */
     public function onSuccess($data, FormRequest $form): ?Response
     {
-        $this->settingsManager->set($form->getForm()->getData());
+        $this->settingsManager->set($data);
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 

@@ -38,7 +38,7 @@ datagrid:
             edit:
                 icon: edit
                 label: tax.grid.actions.edit
-                route: _edit_tax_rate
+                route: _tax_rates_edit
                 route_params:
                     id: id
         actions:
@@ -46,5 +46,5 @@ datagrid:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _delete_tax_rate
+                action: tax_grid_delete
                 className: danger

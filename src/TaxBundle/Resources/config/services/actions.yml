@@ -1,0 +1,4 @@
+services:
+    CSBill\TaxBundle\Action\:
+        resource: '../../../Action'
+        autowire: true

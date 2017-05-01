@@ -1,0 +1,4 @@
+services:
+    CSBill\TaxBundle\Repository\TaxRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillTaxBundle:Tax']

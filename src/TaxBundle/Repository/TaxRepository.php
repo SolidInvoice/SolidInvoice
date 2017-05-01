@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\TaxBundle\Repository;
 
+use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -58,7 +59,7 @@ class TaxRepository extends EntityRepository
     public function getTotal(): int
     {
         $queryBuilder = $this->createQueryBuilder('t')
-        ->select('COUNT(t.id)');
+            ->select('COUNT(t.id)');
 
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
@@ -73,5 +74,28 @@ class TaxRepository extends EntityRepository
         $qb->select('t');
 
         return $qb;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function deleteTaxRates(array $data): void
+    {
+        $em = $this->getEntityManager();
+
+        $invoiceRepository = $em->getRepository('CSBillInvoiceBundle:Item');
+        $quoteRepository = $em->getRepository('CSBillQuoteBundle:Item');
+
+        /* @var Tax[] $taxes */
+        $taxes = $this->findBy(['id' => $data]);
+
+        foreach ($taxes as $tax) {
+            $invoiceRepository->removeTax($tax);
+            $quoteRepository->removeTax($tax);
+
+            $em->remove($tax);
+        }
+
+        $em->flush();
     }
 }
