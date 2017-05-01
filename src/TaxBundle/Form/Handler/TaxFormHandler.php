@@ -66,7 +66,7 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function getResponse(FormRequest $formRequest)
     {
