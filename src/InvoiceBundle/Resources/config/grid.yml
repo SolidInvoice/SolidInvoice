@@ -67,13 +67,13 @@ datagrid:
                 label: Archive
                 icon: archive
                 confirm: 'Are you sure you want to archive the selected rows?'
-                action: _invoices_archive
+                action: invoice_grid_archive
                 className: warning
             delete:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _invoices_delete
+                action: invoice_grid_delete
                 className: danger
     recurring_invoice_grid:
         title: Recurring
@@ -151,13 +151,13 @@ datagrid:
                 label: Archive
                 icon: archive
                 confirm: 'Are you sure you want to archive the selected rows?'
-                action: _invoices_archive
+                action: invoice_grid_archive
                 className: warning
             delete:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _invoices_delete
+                action: invoice_grid_delete
                 className: danger
     archive_invoice_grid:
         title: Archived
@@ -212,5 +212,5 @@ datagrid:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _invoices_delete
+                action: invoice_grid_delete
                 className: danger

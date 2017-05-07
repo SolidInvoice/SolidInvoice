@@ -35,20 +35,20 @@ interface MessageEventInterface
     /**
      * @param string $template
      */
-    public function setHtmlTemplate(string $template);
+    public function setHtmlTemplate(?string $template);
 
     /**
      * @return string
      */
-    public function getHtmlTemplate(): string;
+    public function getHtmlTemplate(): ?string;
 
     /**
      * @param string $template
      */
-    public function setTextTemplate(string $template);
+    public function setTextTemplate(?string $template);
 
     /**
      * @return string
      */
-    public function getTextTemplate(): string;
+    public function getTextTemplate(): ?string;
 }

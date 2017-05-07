@@ -11,31 +11,29 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Action\Grid;
+namespace CSBill\InvoiceBundle\Action\Grid;
 
-use CSBill\ClientBundle\Repository\ClientRepository;
-use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Delete implements AjaxResponse
+class Delete
 {
     use JsonTrait;
 
     /**
-     * @var ClientRepository
+     * @var InvoiceRepository
      */
     private $repository;
 
-    public function __construct(ClientRepository $repository)
+    public function __construct(InvoiceRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request)
     {
-        $this->repository->deleteClients($request->request->get('data'));
+        $this->repository->deleteInvoices($request->request->get('data'));
 
         return $this->json([]);
     }

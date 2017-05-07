@@ -8,6 +8,10 @@ services:
             - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
             - { name: cs_core.menu, menu: invoices_edit, method: invoicesEditMenu }
 
+    CSBill\InvoiceBundle\Repository\InvoiceRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillInvoiceBundle:Invoice']
+
     invoice.manager:
         class: CSBill\InvoiceBundle\Manager\InvoiceManager
         arguments: ['@doctrine', '@event_dispatcher', '@finite.factory', '@notification.manager']

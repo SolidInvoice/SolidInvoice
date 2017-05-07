@@ -58,10 +58,10 @@ class ContactAddFormHandler implements FormHandlerInterface, FormHandlerResponse
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess($invoice, FormRequest $form): ?Response
     {
-        /* @var Contact $data */
-        $this->save($data);
+        /* @var Contact $invoice */
+        $this->save($invoice);
 
         return null;
     }

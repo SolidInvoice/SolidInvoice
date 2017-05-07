@@ -121,7 +121,7 @@ class InvoiceType extends AbstractType
                     return 'Default';
                 },
                 'data_class' => Invoice::class,
-                'currency' => $this->currency,
+                'currency' => $this->currency
             ]
         )
             ->setAllowedTypes('currency', [Currency::class]);

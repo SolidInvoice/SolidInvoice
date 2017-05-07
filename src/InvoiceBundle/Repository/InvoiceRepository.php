@@ -47,7 +47,7 @@ class InvoiceRepository extends EntityRepository
      * Get the total amount for a specific invoice status.
      *
      * @param string $status
-     * @param Client $client  filter per client
+     * @param Client $client filter per client
      * @param int    $hydrate
      *
      * @return int
@@ -273,5 +273,25 @@ class InvoiceRepository extends EntityRepository
 
         $filters->enable('archivable');
         $filters->enable('softdeleteable');
+    }
+
+    /**
+     * @param array $ids
+     */
+    public function deleteInvoices(array $ids): void
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        $em = $this->getEntityManager();
+
+        /** @var Invoice[] $invoices */
+        $invoices = $this->findBy(['id' => $ids]);
+
+        array_walk($invoices, [$em, 'remove']);
+
+        $em->flush();
+
+        $filters->enable('archivable');
     }
 }

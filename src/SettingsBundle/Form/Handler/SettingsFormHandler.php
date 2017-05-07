@@ -69,9 +69,9 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess($invoice, FormRequest $form): ?Response
     {
-        $this->settingsManager->set($data);
+        $this->settingsManager->set($invoice);
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 

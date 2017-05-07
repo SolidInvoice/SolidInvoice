@@ -57,16 +57,16 @@ class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInter
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): Response
+    public function onSuccess($invoice, FormRequest $form): Response
     {
-        /** @var Client $data */
-        if (!$data->getStatus()) {
-            $data->setStatus(Status::STATUS_ACTIVE);
+        /** @var Client $invoice */
+        if (!$invoice->getStatus()) {
+            $invoice->setStatus(Status::STATUS_ACTIVE);
         }
 
-        $this->save($data);
+        $this->save($invoice);
 
-        $route = $this->router->generate('_clients_view', ['id' => $data->getId() ?? 5]);
+        $route = $this->router->generate('_clients_view', ['id' => $invoice->getId() ?? 5]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable

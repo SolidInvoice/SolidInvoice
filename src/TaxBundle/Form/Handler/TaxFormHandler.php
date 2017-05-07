@@ -51,9 +51,9 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess($invoice, FormRequest $form): ?Response
     {
-        $this->save($data);
+        $this->save($invoice);
 
         $route = $this->router->generate('_tax_rates');
 
