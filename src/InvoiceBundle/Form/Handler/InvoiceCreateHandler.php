@@ -101,7 +101,7 @@ class InvoiceCreateHandler implements FormHandlerInterface, FormHandlerResponseI
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
-	return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'invoice.create.success';
