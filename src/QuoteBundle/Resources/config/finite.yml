@@ -58,4 +58,5 @@ finite_finite:
                     - cancelled
                     - accepted
                     - declined
+                    - pending
                 to: archived

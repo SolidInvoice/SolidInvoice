@@ -11,13 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Action;
+namespace CSBill\QuoteBundle\Action;
 
 use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\QuoteBundle\Entity\Quote;
+use CSBill\QuoteBundle\Manager\QuoteManager;
 use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +24,9 @@ use Symfony\Component\Routing\RouterInterface;
 class Transition
 {
     /**
-     * @var RouterInterface
+     * @var QuoteManager
      */
-    private $router;
+    private $manager;
 
     /**
      * @var FactoryInterface
@@ -36,26 +34,22 @@ class Transition
     private $factory;
 
     /**
-     * @var InvoiceManager
+     * @var RouterInterface
      */
-    private $manager;
+    private $router;
 
-    public function __construct(RouterInterface $router, InvoiceManager $manager, FactoryInterface $factory)
+    public function __construct(QuoteManager $manager, RouterInterface $router, FactoryInterface $factory)
     {
-        $this->router = $router;
         $this->manager = $manager;
         $this->factory = $factory;
+        $this->router = $router;
     }
 
-    public function __invoke(Request $request, string $action, Invoice $invoice)
+    public function __invoke(Request $request, string $action, Quote $quote)
     {
-        if (!$this->factory->get($invoice, Graph::GRAPH)->can($action)) {
-            throw new InvalidTransitionException($action);
-        }
+        $this->manager->$action($quote);
 
-        $this->manager->$action($invoice);
-
-        $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+        $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
             /**
@@ -71,7 +65,7 @@ class Transition
 
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'invoice.transition.action.'.$this->action;
+                yield self::FLASH_SUCCESS => 'quote.transition.action.'.$this->action;
             }
         };
     }

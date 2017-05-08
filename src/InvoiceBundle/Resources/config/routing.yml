@@ -9,7 +9,7 @@ _invoices_create:
         expose: true
 
 _invoices_get_fields:
-    path: '/fields/get'
+    path: '/fields/get/{currency}'
     defaults: { _controller: 'CSBill\InvoiceBundle\Action\Fields' }
     options:
         expose: true
@@ -38,6 +38,6 @@ _action_invoice:
     path: '/action/{action}/{id}'
     defaults: { _controller: 'CSBill\InvoiceBundle\Action\Transition' }
 
-_invoicess_grid:
+_invoices_grid:
     resource: '@CSBillInvoiceBundle/Action/Grid'
     type: grid

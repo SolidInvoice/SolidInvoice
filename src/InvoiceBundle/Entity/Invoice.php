@@ -207,6 +207,7 @@ class Invoice
      */
     public function __construct(Client $client = null)
     {
+        $this->setClient($client);
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->users = new ArrayCollection();

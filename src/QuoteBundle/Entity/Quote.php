@@ -171,10 +171,11 @@ class Quote
     private $users;
 
     /**
-     * Constructer.
+     * @param Client|null $client
      */
-    public function __construct()
+    public function __construct(Client $client = null)
     {
+        $this->setClient($client);
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
@@ -411,7 +412,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTerms(string $terms): self
+    public function setTerms(?string $terms): self
     {
         $this->terms = $terms;
 
@@ -431,7 +432,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setNotes(string $notes): self
+    public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
 

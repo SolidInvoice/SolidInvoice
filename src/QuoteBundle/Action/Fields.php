@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Action;
+namespace CSBill\QuoteBundle\Action;
 
 use CSBill\CoreBundle\Form\FieldRenderer;
 use CSBill\CoreBundle\Traits\JsonTrait;
-use CSBill\InvoiceBundle\Form\Type\InvoiceType;
+use CSBill\QuoteBundle\Form\Type\QuoteType;
 use Money\Currency;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +42,7 @@ class Fields
 
     public function __invoke(Request $request, string $currency)
     {
-        $form = $this->factory->create(InvoiceType::class, null, ['currency' => new Currency($currency)]);
+        $form = $this->factory->create(QuoteType::class, null, ['currency' => new Currency($currency)]);
 
         return $this->json($this->renderer->render($form->createView(), 'children[items].vars[prototype]'));
     }

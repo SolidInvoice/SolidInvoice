@@ -67,13 +67,13 @@ datagrid:
                 label: Archive
                 icon: archive
                 confirm: 'Are you sure you want to archive the selected rows?'
-                action: _quotes_archive
+                action: quote_grid_archive
                 className: warning
             delete:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _quotes_delete
+                action: quote_grid_delete
                 className: danger
     archive_quote_grid:
         title: Archived
@@ -128,5 +128,5 @@ datagrid:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _quotes_delete
+                action: quote_grid_delete
                 className: danger
