@@ -14,22 +14,15 @@ declare(strict_types=1);
 namespace CSBill\ClientBundle\Form\Handler;
 
 use CSBill\CoreBundle\Templating\Template;
-use SolidWorx\FormHandler\FormCollectionHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 
-class ClientEditFormHandler extends AbstractClientFormHandler implements FormCollectionHandlerInterface
+class ClientCreateFormHandler extends AbstractClientFormHandler
 {
     /**
      * {@inheritdoc}
      */
     public function getResponse(FormRequest $formRequest): Template
     {
-        return new Template(
-            '@CSBillClient/Default/edit.html.twig',
-            [
-                'form' => $formRequest->getForm()->createView(),
-                'client' => $formRequest->getOptions()[0],
-            ]
-        );
+        return new Template('@CSBillClient/Default/add.html.twig', ['form' => $formRequest->getForm()->createView()]);
     }
 }

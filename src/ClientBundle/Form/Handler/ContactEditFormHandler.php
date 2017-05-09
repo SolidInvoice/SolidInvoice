@@ -13,14 +13,9 @@ declare(strict_types=1);
 
 namespace CSBill\ClientBundle\Form\Handler;
 
-use SolidWorx\FormHandler\FormCollectionHandlerInterface;
-use SolidWorx\FormHandler\FormHandlerInterface;
-use SolidWorx\FormHandler\FormHandlerResponseInterface;
-use SolidWorx\FormHandler\FormHandlerSuccessInterface;
-
-class ContactEditFormHandler extends ContactAddFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormCollectionHandlerInterface, FormHandlerSuccessInterface
+class ContactEditFormHandler extends AbstractContactFormHandler
 {
-    protected function getTemplate(): string
+    public function getTemplate(): string
     {
         return '@CSBillClient/Ajax/contact_edit.html.twig';
     }

@@ -19,7 +19,7 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class InvoiceEditHandler extends InvoiceCreateHandler
+class InvoiceEditHandler extends AbstractInvoiceHandler
 {
     /**
      * {@inheritdoc}
@@ -35,6 +35,9 @@ class InvoiceEditHandler extends InvoiceCreateHandler
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onSuccess($invoice, FormRequest $form): ?Response
     {
         /* @var RedirectResponse $response */

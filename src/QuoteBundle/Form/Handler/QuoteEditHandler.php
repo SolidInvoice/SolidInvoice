@@ -15,12 +15,11 @@ namespace CSBill\QuoteBundle\Form\Handler;
 
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
-use CSBill\QuoteBundle\Entity\Quote;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class QuoteEditHandler extends QuoteCreateHandler
+class QuoteEditHandler extends AbstractQuoteHandler
 {
     /**
      * {@inheritdoc}

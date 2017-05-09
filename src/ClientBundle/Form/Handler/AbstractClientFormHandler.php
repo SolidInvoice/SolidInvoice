@@ -17,7 +17,6 @@ use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Form\Type\ClientType;
 use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
@@ -29,7 +28,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
-class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
+abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
 {
     use SaveableTrait;
 
@@ -74,13 +73,5 @@ class ClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInter
                 yield self::FLASH_SUCCESS => 'client.create.success';
             }
         };
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResponse(FormRequest $formRequest): Template
-    {
-        return new Template('@CSBillClient/Default/add.html.twig', ['form' => $formRequest->getForm()->createView()]);
     }
 }
