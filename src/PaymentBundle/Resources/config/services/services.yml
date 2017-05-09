@@ -6,12 +6,12 @@ services:
             - { name: cs_core.menu, menu: top, method: topMenu, priority: -1 }
 
     csbill.payment.payum.paypal_express.action.payment_status_action:
-        class: CSBill\PaymentBundle\Action\PaypalExpress\PaymentDetailsStatusAction
+        class: CSBill\PaymentBundle\PaymentAction\PaypalExpress\PaymentDetailsStatusAction
         tags:
             - { name: payum.action, factory: paypal_express_checkout, prepend: true }
 
     csbill.payment.payum.offline.action.status_action:
-        class: CSBill\PaymentBundle\Action\Offline\StatusAction
+        class: CSBill\PaymentBundle\PaymentAction\Offline\StatusAction
         tags:
             - { name: payum.action, factory: offline }
 

@@ -11,24 +11,23 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action;
+namespace CSBill\PaymentBundle\PaymentAction\Offline;
 
+use CSBill\PaymentBundle\PaymentAction\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Request\Generic;
+use Payum\Offline\Constants;
 
-class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, GatewayAwareInterface
+class StatusAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
     /**
      * {@inheritdoc}
-     *
-     * @param $request Generic
      */
     public function execute($request)
     {
@@ -36,14 +35,21 @@ class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, Gat
 
         /** @var Payment $payment */
         $payment = $request->getModel();
-        $details = ArrayObject::ensureArrayObject($payment->getDetails());
+        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?: []);
+
+        $details[Constants::FIELD_STATUS] = Constants::STATUS_CAPTURED;
+
+        $payment->setDetails($details);
 
         try {
             $request->setModel($details);
             $this->gateway->execute($request);
+
             $payment->setDetails($details);
+            $request->setModel($payment);
         } catch (\Exception $e) {
             $payment->setDetails($details);
+            $request->setModel($payment);
 
             throw $e;
         }
@@ -55,7 +61,7 @@ class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, Gat
     public function supports($request)
     {
         return
-            $request instanceof Generic &&
+            $request instanceof StatusRequest &&
             $request->getModel() instanceof Payment;
     }
 }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action\Request;
+namespace CSBill\PaymentBundle\PaymentAction\Request;
 
 use CSBill\PaymentBundle\Model\Status;
 use Payum\Core\Request\BaseGetStatus;

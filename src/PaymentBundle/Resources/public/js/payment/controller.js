@@ -19,14 +19,12 @@ define(
                     $('li', '#payment-method-tabs').removeClass('active');
                     $('a[data-method="' + fragment + '"]').closest('li').addClass('active');
 
-                    var route = Routing.generate('_payment_method_settings', {'method': fragment});
+                    var route = Routing.generate('_xhr_payments_settings', {'method': fragment});
                     module.app.getRegion('paymentMethodData').show(new LoaderView);
 
                     $.get(route, function(response) {
-                        var view = response.content;
-
                         var ItemView = Mn.ItemView.extend({
-                            template: view,
+                            template: response,
                             ui: {
                                 'save': '#payment_methods_save'
                             },
@@ -47,7 +45,7 @@ define(
                                     data: data,
                                     method: 'POST',
                                     success: function(response) {
-                                        module.app.getRegion('paymentMethodData').show(new ItemView({template: response.content}));
+                                        module.app.getRegion('paymentMethodData').show(new ItemView({template: response}));
                                         model.fetch();
                                     }
                                 });

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action\PaypalExpress;
+namespace CSBill\PaymentBundle\PaymentAction\PaypalExpress;
 
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use CSBill\PaymentBundle\Entity\Payment;

@@ -11,18 +11,19 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action\Offline;
+namespace CSBill\PaymentBundle\PaymentAction;
 
-use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
+use CSBill\PaymentBundle\Model\Status;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
 
-class StatusAction implements ActionInterface, GatewayAwareInterface
+class CaptureAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -35,24 +36,14 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
 
         /** @var Payment $payment */
         $payment = $request->getModel();
-        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?: []);
+        $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $details[Constants::FIELD_STATUS] = Constants::STATUS_CAPTURED;
-
+        $details[Constants::FIELD_STATUS] = Status::STATUS_NEW;
         $payment->setDetails($details);
 
-        try {
-            $request->setModel($details);
-            $this->gateway->execute($request);
+        $request->setModel($details);
 
-            $payment->setDetails($details);
-            $request->setModel($payment);
-        } catch (\Exception $e) {
-            $payment->setDetails($details);
-            $request->setModel($payment);
-
-            throw $e;
-        }
+        $this->gateway->execute($request);
     }
 
     /**
@@ -60,8 +51,12 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
      */
     public function supports($request)
     {
-        return
-            $request instanceof StatusRequest &&
-            $request->getModel() instanceof Payment;
+        if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
+            return false;
+        }
+
+        $details = ArrayObject::ensureArrayObject($request->getModel()->getDetails());
+
+        return null === $details[Constants::FIELD_STATUS];
     }
 }

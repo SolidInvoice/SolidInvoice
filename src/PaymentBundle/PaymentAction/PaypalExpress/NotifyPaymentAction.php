@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action\PaypalExpress;
+namespace CSBill\PaymentBundle\PaymentAction\PaypalExpress;
 
-use CSBill\PaymentBundle\Action\Request\StatusRequest;
+use CSBill\PaymentBundle\PaymentAction\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Persistence\ObjectManager;
 use Payum\Core\Action\ActionInterface;

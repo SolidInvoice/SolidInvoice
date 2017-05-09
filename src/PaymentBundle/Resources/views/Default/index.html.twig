@@ -7,20 +7,22 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
-
-{% block title %}{{ 'payment.methods.title'|trans }}{% endblock title %}
-
-{% set module = "payments/index" %}
+{% extends "CSBillCoreBundle:Layout:single_column.html.twig" %}
 
 {% block sidebar %}
-    <ul class="nav nav-tabs nav-stacked" role="tablist" id="payment-method-tabs">
-    </ul>
+    {{ menu('payments_list') }}
 {% endblock sidebar %}
+
+{% block title %}{{ 'payment.list.title'|trans }}{% endblock title %}
 
 {% block content %}
     <div class="widget">
-        <div class="tab-content">
-        </div>
+	{{ render_grid('payment_grid') }}
     </div>
-{% endblock %}
+
+    <h5>{{ "payment.list.status_legend"|trans }}</h5>
+
+    {% for status in payment_label() %}
+	{{ status|raw }}
+    {% endfor %}
+{% endblock content %}

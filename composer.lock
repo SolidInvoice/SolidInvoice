@@ -5101,12 +5101,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/FormHandlerBundle.git",
-                "reference": "916d13c0da681bc856141621b7f225bd437e20ea"
+                "reference": "1ddbe4064979f1764f8f25ab432b6418effa0991"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/916d13c0da681bc856141621b7f225bd437e20ea",
-                "reference": "916d13c0da681bc856141621b7f225bd437e20ea",
+                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/1ddbe4064979f1764f8f25ab432b6418effa0991",
+                "reference": "1ddbe4064979f1764f8f25ab432b6418effa0991",
                 "shasum": ""
             },
             "require": {
@@ -5148,7 +5148,7 @@
                 "symfony forms",
                 "symfony-bundle"
             ],
-            "time": "2017-04-30 10:58:53"
+            "time": "2017-05-09 15:00:36"
         },
         {
             "name": "solidworx/util",

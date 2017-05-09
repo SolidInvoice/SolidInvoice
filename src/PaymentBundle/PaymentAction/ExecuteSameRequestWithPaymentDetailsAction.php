@@ -11,24 +11,24 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action;
+namespace CSBill\PaymentBundle\PaymentAction;
 
 use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Model\Status;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Request\Capture;
-use Payum\Offline\Constants;
+use Payum\Core\Request\Generic;
 
-class CaptureAction implements ActionInterface, GatewayAwareInterface
+class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
     /**
      * {@inheritdoc}
+     *
+     * @param $request Generic
      */
     public function execute($request)
     {
@@ -38,12 +38,15 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
         $payment = $request->getModel();
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $details[Constants::FIELD_STATUS] = Status::STATUS_NEW;
-        $payment->setDetails($details);
+        try {
+            $request->setModel($details);
+            $this->gateway->execute($request);
+            $payment->setDetails($details);
+        } catch (\Exception $e) {
+            $payment->setDetails($details);
 
-        $request->setModel($details);
-
-        $this->gateway->execute($request);
+            throw $e;
+        }
     }
 
     /**
@@ -51,12 +54,8 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
      */
     public function supports($request)
     {
-        if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
-            return false;
-        }
-
-        $details = ArrayObject::ensureArrayObject($request->getModel()->getDetails());
-
-        return null === $details[Constants::FIELD_STATUS];
+        return
+            $request instanceof Generic &&
+            $request->getModel() instanceof Payment;
     }
 }

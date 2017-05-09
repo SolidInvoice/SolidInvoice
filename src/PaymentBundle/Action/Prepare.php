@@ -11,82 +11,162 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Controller;
+namespace CSBill\PaymentBundle\Action;
 
-use CSBill\CoreBundle\Controller\BaseController;
+use CSBill\CoreBundle\Templating\Template;
+use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\PaymentBundle\Action\Request\StatusRequest;
 use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Entity\PaymentMethod as Entity;
+use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
+use CSBill\PaymentBundle\Factory\PaymentFactories;
 use CSBill\PaymentBundle\Form\Type\PaymentType;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
+use Finite\Factory\FactoryInterface;
+use Money\Currency;
 use Money\Money;
-use Payum\Core\Model\Token;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Payum\Core\Payum;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class PaymentController extends BaseController
+// @TODO: Refactor this class to make it cleaner
+
+class Prepare
 {
+    use SaveableTrait;
+
     /**
-     * @ParamConverter("invoice")
-     *
-     * @param Request $request
-     * @param Invoice $invoice
-     *
-     * @return Response
-     *
-     * @throws \Exception
+     * @var FactoryInterface
      */
-    public function preparePaymentAction(Request $request, Invoice $invoice = null): Response
+    private $finite;
+
+    /**
+     * @var PaymentMethodRepository
+     */
+    private $paymentMethodRepository;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorization;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var Currency
+     */
+    private $currency;
+
+    /**
+     * @var PaymentFactories
+     */
+    private $paymentFactories;
+
+    /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var Payum
+     */
+    private $payum;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct(
+        FactoryInterface $finite,
+        PaymentMethodRepository $paymentMethodRepository,
+        AuthorizationCheckerInterface $authorization,
+        TokenStorageInterface $tokenStorage,
+        FormFactoryInterface $formFactory,
+        Currency $currency,
+        PaymentFactories $paymentFactories,
+        \Twig_Environment $twig,
+        EventDispatcherInterface $eventDispatcher,
+        Payum $payum,
+        RouterInterface $router
+    ) {
+        $this->finite = $finite;
+        $this->paymentMethodRepository = $paymentMethodRepository;
+        $this->authorization = $authorization;
+        $this->tokenStorage = $tokenStorage;
+        $this->formFactory = $formFactory;
+        $this->currency = $currency;
+        $this->paymentFactories = $paymentFactories;
+        $this->twig = $twig;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->payum = $payum;
+        $this->router = $router;
+    }
+
+    public function __invoke(Request $request, ?Invoice $invoice)
     {
         if (null === $invoice) {
-            throw $this->createNotFoundException();
+            throw new NotFoundHttpException();
         }
 
-        $finite = $this->get('finite.factory')->get($invoice, Graph::GRAPH);
+        $finite = $this->finite->get($invoice, Graph::GRAPH);
 
         if (!$finite->can(Graph::TRANSITION_PAY)) {
             throw new \Exception('This invoice cannot be paid');
         }
 
-        /** @var PaymentMethodRepository $paymentRepository */
-        $paymentRepository = $this->getRepository('CSBillPaymentBundle:PaymentMethod');
-
-        if ($paymentRepository->getTotalMethodsConfigured($this->isGranted('ROLE_SUPER_ADMIN')) < 1) {
+        if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('ROLE_SUPER_ADMIN')) < 1) {
             throw new \Exception('No payment methods available');
         }
 
-        $preferredChoices = $paymentRepository
-            ->findBy(['gatewayName' => 'credit']);
+        $preferredChoices = $this->paymentMethodRepository->findBy(['gatewayName' => 'credit']);
 
         $currency = $invoice->getClient()->getCurrency();
-        $form = $this->createForm(
+        $form = $this->formFactory->create(
             PaymentType::class,
             [
                 'amount' => $invoice->getBalance(),
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => $currency ? $currency->getCode() : $this->getParameter('currency'),
+                'currency' => $currency ? $currency->getCode() : $this->currency->getCode(),
                 'preferred_choices' => $preferredChoices,
             ]
         );
 
         $form->handleRequest($request);
 
-        $paymentFactories = array_keys($this->get('payum.factories')->getFactories('offline'));
+        $paymentFactories = array_keys($this->paymentFactories->getFactories('offline'));
 
         if ($form->isValid()) {
             $data = $form->getData();
             /** @var Money $amount */
             $amount = $data['amount'];
 
-            /** @var Entity $paymentMethod */
+            /** @var PaymentMethod $paymentMethod */
             $paymentMethod = $data['payment_method'];
 
             $paymentName = $paymentMethod->getGatewayName();
@@ -103,9 +183,9 @@ class PaymentController extends BaseController
                     }
 
                     if (!empty($invalid)) {
-                        $this->flash($this->trans($invalid), 'error');
+                        $request->getSession()->getFlashbag()->flash($invalid, 'error');
 
-                        return $this->render(
+                        return $this->twig->render(
                             'CSBillPaymentBundle:Payment:create.html.twig',
                             [
                                 'form' => $form->createView(),
@@ -135,7 +215,7 @@ class PaymentController extends BaseController
             $this->save($payment);
 
             if (array_key_exists('capture_online', $data) && true === $data['capture_online']) {
-                $captureToken = $this->get('payum')
+                $captureToken = $this->payum
                     ->getTokenFactory()
                     ->createCaptureToken(
                         $paymentName,
@@ -143,24 +223,24 @@ class PaymentController extends BaseController
                         '_payments_done' // the route to redirect after capture;
                     );
 
-                return $this->redirect($captureToken->getTargetUrl());
+                return new RedirectResponse($captureToken->getTargetUrl());
             } else {
                 $payment->setStatus(Status::STATUS_CAPTURED);
                 $payment->setCompleted(new \DateTime('now'));
                 $this->save($payment);
 
                 $event = new PaymentCompleteEvent($payment);
-                $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
 
                 if ($response = $event->getResponse()) {
                     return $response;
                 }
 
-                return $this->redirectToRoute('_payments_index');
+                return new RedirectResponse($this->router->generate('_payments_index'));
             }
         }
 
-        return $this->render(
+        return new Template(
             'CSBillPaymentBundle:Payment:create.html.twig',
             [
                 'form' => $form->createView(),
@@ -170,37 +250,17 @@ class PaymentController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @throws \Exception
-     * @throws \Payum\Core\Reply\ReplyInterface
-     */
-    public function captureDoneAction(Request $request): Response
+    protected function getUser(): ?UserInterface
     {
-        /** @var Token $token */
-        $token = $this->get('payum')->getHttpRequestVerifier()->verify($request);
 
-        $paymentMethod = $this->get('payum')->getGateway($token->getGatewayName());
-        $paymentMethod->execute($status = new StatusRequest($token));
-
-        /** @var \CSBill\PaymentBundle\Entity\Payment $payment */
-        $payment = $status->getFirstModel();
-
-        $payment->setStatus((string) $status->getValue());
-        $payment->setCompleted(new \DateTime('now'));
-
-        $this->save($payment);
-
-        $event = new PaymentCompleteEvent($payment);
-        $this->get('event_dispatcher')->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
-
-        if ($response = $event->getResponse()) {
-            return $response;
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return null;
         }
 
-        return $this->redirectToRoute('_payments_index');
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
     }
 }

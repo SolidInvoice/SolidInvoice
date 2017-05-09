@@ -1,0 +1,26 @@
+{#
+ # This file is part of CSBill package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+
+{% block title %}{{ 'payment.methods.title'|trans }}{% endblock title %}
+
+{% set module = "payments/index" %}
+
+{% block sidebar %}
+    <ul class="nav nav-tabs nav-stacked" role="tablist" id="payment-method-tabs">
+    </ul>
+{% endblock sidebar %}
+
+{% block content %}
+    <div class="widget">
+        <div class="tab-content">
+        </div>
+    </div>
+{% endblock %}

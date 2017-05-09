@@ -7,4 +7,8 @@ services:
 
     CSBill\PaymentBundle\Repository\PaymentRepository:
         arguments: ['CSBill\PaymentBundle\Entity\Payment']
-        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        factory: ['@doctrine', 'getRepository']
+
+    CSBill\PaymentBundle\Repository\PaymentMethodRepository:
+        arguments: ['CSBill\PaymentBundle\Entity\PaymentMethod']
+        factory: ['@doctrine', 'getRepository']
