@@ -57,7 +57,7 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $options[0];
 
-        $this->originalSettings = $paymentMethod->getConfig();;
+        $this->originalSettings = $paymentMethod->getConfig();
 
         return $factory->create(
             PaymentMethodType::class,

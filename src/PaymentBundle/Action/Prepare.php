@@ -252,7 +252,6 @@ final class Prepare
 
     protected function getUser(): ?UserInterface
     {
-
         if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
