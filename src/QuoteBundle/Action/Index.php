@@ -18,7 +18,7 @@ use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class Index
+final class Index
 {
     /**
      * @var QuoteRepository

@@ -20,7 +20,7 @@ use Money\Currency;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class Fields
+final class Fields
 {
     use JsonTrait;
 

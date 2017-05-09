@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\InvoiceBundle\Action\Grid;
 
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
@@ -22,7 +23,7 @@ use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class Archive
+final class Archive implements AjaxResponse
 {
     use JsonTrait;
 

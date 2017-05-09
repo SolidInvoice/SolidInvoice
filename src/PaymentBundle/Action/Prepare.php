@@ -41,7 +41,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 // @TODO: Refactor this class to make it cleaner
 
-class Prepare
+final class Prepare
 {
     use SaveableTrait;
 

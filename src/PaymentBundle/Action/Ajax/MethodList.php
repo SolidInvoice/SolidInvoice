@@ -20,7 +20,7 @@ use CSBill\PaymentBundle\Factory\PaymentFactories;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class MethodList implements AjaxResponse
+final class MethodList implements AjaxResponse
 {
     use JsonTrait;
 

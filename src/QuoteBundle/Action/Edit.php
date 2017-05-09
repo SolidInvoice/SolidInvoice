@@ -19,7 +19,7 @@ use Money\Currency;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 
-class Edit
+final class Edit
 {
     /**
      * @var FormHandler

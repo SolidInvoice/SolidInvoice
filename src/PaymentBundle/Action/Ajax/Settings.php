@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\PaymentBundle\Action\Ajax;
 
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Factory\PaymentFactories;
 use CSBill\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
@@ -20,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 
-class Settings
+final class Settings implements AjaxResponse
 {
     /**
      * @var PaymentFactories

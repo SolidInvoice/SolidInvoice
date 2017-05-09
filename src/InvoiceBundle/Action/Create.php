@@ -21,7 +21,7 @@ use CSBill\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 
-class Create
+final class Create
 {
     /**
      * @var FormHandler

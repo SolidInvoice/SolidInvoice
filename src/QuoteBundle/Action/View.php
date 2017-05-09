@@ -17,7 +17,7 @@ use CSBill\CoreBundle\Templating\Template;
 use CSBill\QuoteBundle\Entity\Quote;
 use Symfony\Component\HttpFoundation\Request;
 
-class View
+final class View
 {
     public function __invoke(Request $request, Quote $quote)
     {

@@ -18,7 +18,7 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class View
+final class View
 {
     /**
      * @var PaymentRepository

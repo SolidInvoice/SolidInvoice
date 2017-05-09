@@ -19,7 +19,7 @@ use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class Index
+final class Index
 {
     /**
      * @var InvoiceRepository

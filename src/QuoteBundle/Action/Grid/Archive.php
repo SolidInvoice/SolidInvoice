@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Action\Grid;
 
+use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
@@ -22,7 +23,7 @@ use CSBill\QuoteBundle\Repository\QuoteRepository;
 use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class Archive
+final class Archive implements AjaxResponse
 {
     use JsonTrait;
 

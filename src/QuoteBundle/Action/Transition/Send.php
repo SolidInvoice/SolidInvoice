@@ -15,7 +15,7 @@ namespace CSBill\QuoteBundle\Action\Transition;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class Send
+final class Send
 {
     public function __invoke(Request $request)
     {

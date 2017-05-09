@@ -16,7 +16,7 @@ namespace CSBill\PaymentBundle\Action;
 use CSBill\CoreBundle\Templating\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-class Settings
+final class Settings
 {
     public function __invoke(Request $request)
     {
