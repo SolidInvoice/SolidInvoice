@@ -25,11 +25,13 @@ framework:
         name: CSBILL_APP
     fragments: null
     http_method_override: true
+
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:
         - 'CSBillCoreBundle:Form:fields.html.twig'
+
 doctrine:
     dbal:
         driver: '%database_driver%'
@@ -86,6 +88,7 @@ doctrine:
                         type: xml
                         dir: '%kernel.root_dir%/../vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping'
                         prefix: Payum\Core\Model
+
 swiftmailer:
     transport: '%mailer_transport%'
     host: '%mailer_host%'
@@ -93,10 +96,15 @@ swiftmailer:
     password: '%mailer_password%'
     spool:
         type: memory
+
 stof_doctrine_extensions:
     default_locale: '%locale%'
     orm: null
+
 fos_user:
+    from_email:
+        address: 'info@csbill.org'
+        sender_name: 'CSBill'
     db_driver: orm
     firewall_name: main
     user_class: CSBill\UserBundle\Entity\User
@@ -130,11 +138,13 @@ fos_rest:
         json: true
         xml: true
         jsonp: true
+
 nelmio_api_doc:
     sandbox:
         enabled: false
     cache:
         enabled: true
+
 oro_require_js:
     config:
         waitSeconds: 0

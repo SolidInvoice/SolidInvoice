@@ -95,7 +95,7 @@
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid-doctrine": "^1.2",
 	"symfony/security-acl": "^3.0",
-	"solidworx/form-handler-bundle": "1.0.x-dev"
+	"solidworx/form-handler-bundle": "1.0.0-alpha3"
     },
     "require-dev": {
         "behat/behat": "^3.0",
@@ -132,7 +132,6 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
         ]
     },
-    "minimum-stability": "dev",
     "config": {
         "bin-dir": "bin"
     },
