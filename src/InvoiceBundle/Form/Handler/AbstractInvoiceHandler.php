@@ -61,7 +61,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
      */
     public function getForm(FormFactoryInterface $factory = null, ...$options)
     {
-        return $factory->create(InvoiceType::class, $options[0], $options[1] ?? []);
+        return $factory->create(InvoiceType::class, $options[0] ?? null, $options[1] ?? []);
     }
 
     /**

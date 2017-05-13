@@ -85,6 +85,7 @@ class ContactDetailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('validation_groups', function (FormInterface $form) {
+            // @codeCoverageIgnoreStart
             $type = $form->get('type')->getData()->getName();
             $value = $form->get('value')->getData();
 
@@ -97,6 +98,7 @@ class ContactDetailType extends AbstractType
                     return ['Default', 'email'];
                     break;
             }
+            // @codeCoverageIgnoreEnd
         });
     }
 

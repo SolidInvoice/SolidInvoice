@@ -56,16 +56,16 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($invoice, FormRequest $form): Response
+    public function onSuccess($client, FormRequest $form): Response
     {
-        /** @var Client $invoice */
-        if (!$invoice->getStatus()) {
-            $invoice->setStatus(Status::STATUS_ACTIVE);
+        /** @var Client $client */
+        if (!$client->getStatus()) {
+            $client->setStatus(Status::STATUS_ACTIVE);
         }
 
-        $this->save($invoice);
+        $this->save($client);
 
-        $route = $this->router->generate('_clients_view', ['id' => $invoice->getId() ?? 5]);
+        $route = $this->router->generate('_clients_view', ['id' => $client->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable

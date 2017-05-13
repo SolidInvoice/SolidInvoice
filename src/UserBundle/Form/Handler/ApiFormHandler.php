@@ -64,18 +64,18 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($invoice, FormRequest $form): ?Response
+    public function onSuccess($user, FormRequest $form): ?Response
     {
-        /* @var ApiToken $invoice */
-        $invoice->setToken($this->tokenManager->generateToken());
+        /* @var ApiToken $user */
+        $user->setToken($this->tokenManager->generateToken());
 
-        $this->save($invoice);
+        $this->save($user);
 
         return new JsonResponse(
             [
-                'token' => $invoice->getToken(),
-                'name' => $invoice->getName(),
-                'id' => $invoice->getId(),
+                'token' => $user->getToken(),
+                'name' => $user->getName(),
+                'id' => $user->getId(),
             ]
         );
     }

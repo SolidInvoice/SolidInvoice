@@ -41,9 +41,15 @@ trait SerializeTrait
      * @param Response|null $response
      *
      * @return Response
+     *
+     * @throws \Exception
      */
     protected function serialize($object, array $groups = ['js'], Response $response = null): Response
     {
+        if (!$this->serializer) {
+            throw new \Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', get_class($this), SerializerInterface::class, __METHOD__));
+        }
+
         $context = SerializationContext::create()->setGroups($groups);
 
         if (!$response) {

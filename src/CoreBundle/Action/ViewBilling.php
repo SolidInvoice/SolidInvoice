@@ -90,6 +90,7 @@ class ViewBilling
      * @param array $options
      *
      * @return Template|Response
+     *
      * @throws NotFoundHttpException
      */
     private function createResponse(array $options)
@@ -99,7 +100,7 @@ class ViewBilling
         $entity = $repository->findOneBy(['uuid' => Uuid::fromString($options['uuid'])]);
 
         if (null === $entity) {
-            throw NEW NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst($options['entity']), $options['uuid']));
+            throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst($options['entity']), $options['uuid']));
         }
 
         if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {

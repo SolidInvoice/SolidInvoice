@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d37082fb822789e818ce17cc98dc3cc8",
+    "content-hash": "64b2b2ee3ebf1e57868c3912f7173b14",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -5110,7 +5110,7 @@
         },
         {
             "name": "solidworx/form-handler-bundle",
-            "version": "1.0.0-alpha3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/FormHandlerBundle.git",
@@ -5161,7 +5161,7 @@
                 "symfony forms",
                 "symfony-bundle"
             ],
-            "time": "2017-05-10T07:27:20+00:00"
+            "time": "2017-05-10 07:27:20"
         },
         {
             "name": "solidworx/util",
@@ -9950,7 +9950,7 @@
         "symfony/symfony": 20,
         "friendsofsymfony/user-bundle": 10,
         "willdurand/js-translation-bundle": 20,
-        "solidworx/form-handler-bundle": 15
+        "solidworx/form-handler-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -16,10 +16,10 @@ namespace CSBill\CoreBundle\Tests;
 use CSBill\CoreBundle\Form\Extension;
 use CSBill\CoreBundle\Form\Type;
 use CSBill\CoreBundle\Security\Encryption;
+use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
 use CSBill\MoneyBundle\Form\Extension\MoneyExtension;
 use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
 use Doctrine\DBAL\Types\Type as DoctrineType;
-use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\Generator;
 use Mockery as M;
@@ -27,7 +27,6 @@ use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidType;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilder;
@@ -39,17 +38,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class FormTestCase extends TypeTestCase
 {
+    use DoctrineTestTrait;
+
     /**
      * @var Generator
      */
     protected $faker;
 
-    protected $registry;
-
-    protected $em;
-
     protected function setUp()
     {
+        $this->setupDoctrine();
+
         $this->faker = Factory::create();
 
         $this->factory = Forms::createFormFactoryBuilder()
@@ -78,36 +77,6 @@ abstract class FormTestCase extends TypeTestCase
             new MoneyExtension(new Currency('USD')),
             new FormTypeValidatorExtension($validator),
         ];
-    }
-
-    protected function createRegistryMock($name, $em)
-    {
-        $this->registry = M::mock(ManagerRegistry::class);
-        $this->registry->shouldReceive('getManager')
-            ->with($name)
-            ->andReturn($em);
-
-        $this->registry->shouldReceive('getManagers')
-            ->with()
-            ->andReturn(['default' => $em]);
-
-        $this->registry->shouldReceive('getManagerForClass')
-            ->andReturn($em);
-
-        return $this->registry;
-    }
-
-    protected function createSchema($em)
-    {
-        $schemaTool = new SchemaTool($em);
-        $classes = [];
-
-        foreach ($this->getEntities() as $entityClass) {
-            $classes[] = $em->getClassMetadata($entityClass);
-        }
-
-        $schemaTool->dropSchema($classes);
-        $schemaTool->createSchema($classes);
     }
 
     /**

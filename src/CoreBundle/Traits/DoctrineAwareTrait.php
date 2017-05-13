@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Traits;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 trait DoctrineAwareTrait
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $doctrine;
 
     /**
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $doctrine
      *
      * @required
      */
-    public function setDoctrine(RegistryInterface $doctrine)
+    public function setDoctrine(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }

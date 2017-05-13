@@ -36,7 +36,7 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
      */
     public function getResponse(FormRequest $formRequest)
     {
-        if ($formRequest->getForm()->isValid()) {
+        if ($formRequest->getForm()->isSubmitted() && $formRequest->getForm()->isValid()) {
             return $this->serialize($formRequest->getForm()->getData());
         }
 
@@ -59,10 +59,10 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($invoice, FormRequest $form): ?Response
+    public function onSuccess($client, FormRequest $form): ?Response
     {
-        /* @var Contact $invoice */
-        $this->save($invoice);
+        /* @var Contact $client */
+        $this->save($client);
 
         return null;
     }

@@ -1,0 +1,90 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of CSBill project.
+ *
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace CSBill\TaxBundle\Tests\Form\Handler;
+
+use CSBill\CoreBundle\Response\FlashResponse;
+use CSBill\CoreBundle\Templating\Template;
+use CSBill\FormBundle\Test\FormHandlerTestCase;
+use CSBill\TaxBundle\Form\Handler\TaxFormHandler;
+use Mockery as M;
+use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+
+class TaxFormHandlerTest extends FormHandlerTestCase
+{
+    /**
+     * @return string|FormHandlerInterface
+     */
+    public function getHandler()
+    {
+        $router = M::mock(RouterInterface::class);
+        $router->shouldReceive('generate')
+            ->once()
+            ->with('_tax_rates')
+            ->andReturn('/tax/rates');
+
+        $handler = new TaxFormHandler($router);
+        $handler->setDoctrine($this->registry);
+
+        return $handler;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormData()
+    {
+        return [
+            'tax' => [
+                'name' => 'VAT',
+                'rate' => 14,
+                'type' => 'Inclusive',
+            ],
+        ];
+    }
+
+    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    {
+        $this->assertCount(1, $this->em->getRepository('CSBillTaxBundle:Tax')->findAll());
+        $tax = $this->em->getRepository('CSBillTaxBundle:Tax')->find(1);
+        $this->assertSame('VAT', $tax->getName());
+        $this->assertSame(14.0, $tax->getRate());
+        $this->assertSame('Inclusive', $tax->getType());
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertInstanceOf(FlashResponse::class, $response);
+        $this->assertCount(1, $response->getFlash());
+    }
+
+    protected function assertResponse(FormRequest $formRequest)
+    {
+        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
+    }
+
+    protected function getEntities(): array
+    {
+        return [
+            'CSBillTaxBundle:Tax',
+        ];
+    }
+
+    protected function getEntityNamespaces(): array
+    {
+        return [
+            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
+        ];
+    }
+}
