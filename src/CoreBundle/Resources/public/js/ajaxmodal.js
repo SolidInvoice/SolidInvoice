@@ -30,15 +30,20 @@ define(['jquery', 'lodash', 'core/modal', 'bootstrap.modal', 'bootstrap.modalman
             this._loadContent();
         },
 
-        _loadContent: function () {
+        _loadContent: function() {
             var route = this.getOption('route');
 
             var view = this;
 
             $('body').modalmanager('loading');
 
-            $.getJSON(route, function (data) {
-                view.options.template = data.content;
+            $.get(route, function(data) {
+                try {
+                    JSON.parse(data);
+                    view.options.template = data.content;
+                } catch (e) {
+                    view.options.template = data;
+                }
 
                 $('body').modalmanager('loading');
 

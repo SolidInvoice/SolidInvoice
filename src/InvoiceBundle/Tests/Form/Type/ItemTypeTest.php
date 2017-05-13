@@ -16,9 +16,6 @@ namespace CSBill\InvoiceBundle\Tests\Form\Type;
 use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\InvoiceBundle\Entity\Item;
 use CSBill\InvoiceBundle\Form\Type\ItemType;
-use CSBill\TaxBundle\Repository\TaxRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Mockery as M;
 use Money\Currency;
 use Money\Money;
 use Symfony\Component\Form\PreloadedExtension;
@@ -47,23 +44,27 @@ class ItemTypeTest extends FormTestCase
 
     protected function getExtensions()
     {
-        $repository = M::mock(TaxRepository::class);
-        $repository->shouldReceive('taxRatesConfigured')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(false);
-
-        $registry = M::mock(ManagerRegistry::class);
-
-        $registry->shouldReceive('getRepository')
-            ->with('CSBillTaxBundle:Tax')
-            ->andReturn($repository);
-
-        $itemType = new ItemType($registry);
+        $itemType = new ItemType($this->registry);
 
         return [
             // register the type instances with the PreloadedExtension
             new PreloadedExtension([$itemType], []),
+        ];
+    }
+
+    protected function getEntityNamespaces(): array
+    {
+        return [
+            'CSBillInvoiceBundle' => 'CSBill\InvoiceBundle\Entity',
+            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
+        ];
+    }
+
+    protected function getEntities(): array
+    {
+        return [
+            'CSBillInvoiceBundle:Invoice',
+            'CSBillTaxBundle:Tax',
         ];
     }
 }

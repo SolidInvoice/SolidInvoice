@@ -4,3 +4,15 @@ services:
         public: false
         lazy: true
         arguments: ['@fos_user.util.password_updater', '@fos_user.util.canonical_fields_updater', '@fos_user.object_manager', '%fos_user.model.user.class%']
+
+    CSBill\UserBundle\Repository\ApiTokenRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillUserBundle:ApiToken']
+
+    CSBill\UserBundle\Repository\ApiTokenHistoryRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillUserBundle:ApiTokenHistory']
+
+    CSBill\UserBundle\Repository\UserRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillUserBundle:User']

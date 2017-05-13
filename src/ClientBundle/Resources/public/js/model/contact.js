@@ -1,9 +1,13 @@
-define(['backbone', 'routing'], function (Backbone, Routing) {
+define(['backbone', 'routing'], function(Backbone, Routing) {
     "use strict";
 
     return Backbone.Model.extend({
-        url: function () {
-            return Routing.generate('_clients_contact', {'id': this.id})
+        url: function() {
+            return Routing.generate('_xhr_clients_contact', {'id': this.id})
+        },
+        destroy: function(options) {
+            var opts = _.extend({url: Routing.generate('_xhr_clients_delete_contact', {'id': this.id})}, options || {});
+            return Backbone.Model.prototype.destroy.call(this, opts);
         }
     });
 });

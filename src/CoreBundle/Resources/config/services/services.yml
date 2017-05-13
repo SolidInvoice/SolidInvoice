@@ -52,3 +52,18 @@ services:
     csbill_core.field.renderer:
         class: CSBill\CoreBundle\Form\FieldRenderer
         arguments: ['@twig']
+
+    CSBill\CoreBundle\Routing\Loader\AbstractDirectoryLoader:
+        public: false
+        lazy: true
+        autowire: true
+        abstract: true
+        arguments:
+            $locator: '@file_locator'
+            $kernel: '@kernel'
+
+    Symfony\Bridge\Doctrine\RegistryInterface:
+        alias: doctrine
+
+    Symfony\Component\HttpFoundation\Session\Session:
+        alias: session

@@ -33,7 +33,7 @@ define(
                 var modal = ContactModal.extend({
                     initialize: function () {
                         this.listenTo(this, 'ajax:response', function (response) {
-                            collection.add(new Contact(response.contact));
+                            collection.add(new Contact(response));
                         });
                     }
                 });

@@ -65,17 +65,17 @@ class Loader implements SettingsLoaderInterface
         foreach ($values as $notification) {
             $value = $settings['notification'][$notification->getEvent()]->getValue();
 
-            if (isset($value['hipchat'])) {
+            if ($value['hipchat'] ?? false) {
                 $this->checkHipchatConfig();
             }
 
-            if (isset($value['sms'])) {
+            if ($value['sms'] ?? false) {
                 $this->checkSmsConfig();
             }
 
-            $notification->setEmail(isset($value['email']))
-                ->setHipchat(isset($value['hipchat']))
-                ->setSms(isset($value['sms']));
+            $notification->setEmail($value['email'] ?? false)
+                ->setHipchat($value['hipchat'] ?? false)
+                ->setSms($value['sms'] ?? false);
 
             $this->manager->persist($notification);
         }

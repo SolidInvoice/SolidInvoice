@@ -3,7 +3,7 @@ define(['backbone', 'routing'], function (Backbone, Routing) {
 
     return Backbone.Model.extend({
         url: function () {
-            return Routing.generate('_clients_credit', {'client': this.id})
+            return Routing.generate('_xhr_clients_credit_update', {'client': this.id})
         },
         defaults: {
             credit: 0
@@ -12,6 +12,7 @@ define(['backbone', 'routing'], function (Backbone, Routing) {
             var credit = parseFloat(values.credit);
 
             if (credit === 0) {
+                // @TODO: Add translation for this text
                 return 'Credit value cannot be 0'
             }
         }

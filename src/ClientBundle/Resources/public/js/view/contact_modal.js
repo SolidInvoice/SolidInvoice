@@ -23,32 +23,30 @@ define(
                 }
             },
             onBeforeModalSave: Parsley.validate,
-            'saveContact': function() {
-
+            saveContact: function() {
                 this.showLoader();
 
                 var view = this;
 
                 $.ajax({
-                    "url" : this.getOption('route'),
-                    "data" : this.$('form').serialize(),
-                    "type" : "post",
-                    "success": function (response) {
+                    "url": this.getOption('route'),
+                    "data": this.$('form').serialize(),
+                    "type": "post",
+                    "success": function(response) {
                         view.trigger('ajax:response', response);
 
-                        if (response.status !== 'success') {
-                            view.options.template = response.content;
-                            view.hideLoader();
-                            view.render();
-                        } else {
-                            if (_.has(view, 'model')) {
-                                view.model.fetch({"success": function () {
-                                    view.$el.modal('hide');
-                                }});
-                            } else {
-                                view.$el.modal('hide');
-                            }
+                        if (_.has(view, 'model')) {
+                            view.model.set(response);
+                            view.model.trigger('sync');
                         }
+
+                        view.$el.modal('hide');
+                    },
+                    "error": function(response) {
+                        // @TODO: If there are any validation errors, then we should re-render the modal with the content
+                        view.options.template = response;
+                        view.hideLoader();
+                        view.render();
                     }
                 });
             }

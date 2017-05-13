@@ -1,3 +1,7 @@
 services:
     grid.repository:
-        class: CSBill\DataGridBundle\Repository\GridRepository
+        class: 'CSBill\DataGridBundle\Repository\GridRepository'
+
+    CSBill\DataGridBundle\Routing\Loader\GridRouteLoader:
+        parent: 'CSBill\CoreBundle\Routing\Loader\AbstractDirectoryLoader'
+        tags: ['routing.loader']

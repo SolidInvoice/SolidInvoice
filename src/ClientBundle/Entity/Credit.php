@@ -47,8 +47,7 @@ class Credit
      * @var MoneyEntity
      *
      * @Serialize\Groups({"api", "js"})
-     * @Serialize\SerializedName("credit")
-     * @Serialize\AccessType("public_method")
+     * @Serialize\Inline()
      */
     private $value;
 

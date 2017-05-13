@@ -1,24 +1,11 @@
-api_keys:
+_api_keys_index:
     path: /api
-    defaults: { _controller: 'CSBillUserBundle:Api:index' }
+    defaults: { _controller: 'CSBill\UserBundle\Action\ApiIndex' }
     options:
         expose: true
 
-api_key_history:
-    path: '/api/history/{id}'
-    defaults: { _controller: 'CSBillUserBundle:Api:tokenHistory' }
-    options:
-        expose: true
-
-api_key_create:
-    path: /api/create
-    defaults: { _controller: 'CSBillUserBundle:Api:saveToken' }
-    options:
-        expose: true
-
-api_key_revoke:
-    path: '/api/{id}'
-    defaults: { _controller: 'CSBillUserBundle:Api:revokeToken' }
-    methods: [DELETE]
+_api_keys_xhr:
+    resource: '@CSBillUserBundle/Resources/config/routing/ajax.yml'
+    prefix: /api/xhr
     options:
         expose: true

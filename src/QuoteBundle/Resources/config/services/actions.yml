@@ -1,0 +1,4 @@
+services:
+    CSBill\QuoteBundle\Action\:
+        resource: '../../../Action'
+        autowire: true

@@ -113,6 +113,7 @@ class InvoiceRepository extends EntityRepository
         $qb->select('COUNT(i)');
 
         if (is_array($status)) {
+            /* @noinspection PhpParamsInspection */
             $qb->add('where', $qb->expr()->in('i.status', ':status'));
         } else {
             $qb->where('i.status = :status');
@@ -272,5 +273,25 @@ class InvoiceRepository extends EntityRepository
 
         $filters->enable('archivable');
         $filters->enable('softdeleteable');
+    }
+
+    /**
+     * @param array $ids
+     */
+    public function deleteInvoices(array $ids): void
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        $em = $this->getEntityManager();
+
+        /** @var Invoice[] $invoices */
+        $invoices = $this->findBy(['id' => $ids]);
+
+        array_walk($invoices, [$em, 'remove']);
+
+        $em->flush();
+
+        $filters->enable('archivable');
     }
 }

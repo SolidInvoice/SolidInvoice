@@ -1,4 +1,4 @@
-define(['jquery', 'translator', 'core/ajaxmodal'], function ($, __, AjaxModal) {
+define(['jquery', 'translator', 'core/ajaxmodal'], function($, __, AjaxModal) {
     "use strict";
 
     return AjaxModal.extend({
@@ -33,21 +33,16 @@ define(['jquery', 'translator', 'core/ajaxmodal'], function ($, __, AjaxModal) {
                 "success": function(response) {
                     modal.trigger('ajax:response', response);
 
-                    if (response.status !== 'success') {
-                        modal.options.template = response.content;
-                        modal.hideLoader();
-                        modal.render();
-                    } else {
-                        if (_.has(modal, 'model')) {
-                            modal.model.fetch({
-                                "success": function() {
-                                    modal.$el.modal('hide');
-                                }
-                            });
-                        } else {
-                            modal.$el.modal('hide');
-                        }
+                    if (_.has(modal, 'model')) {
+                        modal.model.set(response);
                     }
+
+                    modal.$el.modal('hide');
+                },
+                "error": function(response) {
+                    modal.options.template = response;
+                    modal.hideLoader();
+                    modal.render();
                 }
             });
         }

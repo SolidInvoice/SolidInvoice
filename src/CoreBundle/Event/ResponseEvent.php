@@ -26,7 +26,7 @@ class ResponseEvent extends Event
     /**
      * @return Response
      */
-    public function getResponse(): Response
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
@@ -34,7 +34,7 @@ class ResponseEvent extends Event
     /**
      * @param Response $response
      */
-    public function setResponse(\Symfony\Component\HttpFoundation\Response $response)
+    public function setResponse(Response $response)
     {
         $this->response = $response;
     }

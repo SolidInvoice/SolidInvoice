@@ -1,4 +1,6 @@
 client:
+    create:
+        success: 'Client Successfully Saved!'
     confirm_delete: 'Are you sure you want to delete this client?'
     delete_success: 'The client was deleted successfully'
     archive:
@@ -90,7 +92,6 @@ clients: 'Clients'
 add_client: 'Add Client'
 save: 'Save'
 contact_details: 'Contact Details'
-client_saved: 'Client Successfully Saved!'
 id: 'Id'
 name: 'Name'
 website: 'Website'

@@ -9,10 +9,12 @@
 
 {% macro settings_section(section, settings, form) %}
 
+    {% import _self as _macro %}
+
     {% set form_extras %}
         {% for parent, setting in settings %}
             {% if setting is iterable %}
-                {{ _self.settings_section(parent, setting, form[section]) }}
+                {{ _macro.settings_section(parent, setting, form[section]) }}
             {% endif %}
         {% endfor %}
     {% endset %}

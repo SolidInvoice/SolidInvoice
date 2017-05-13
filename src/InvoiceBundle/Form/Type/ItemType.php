@@ -75,7 +75,7 @@ class ItemType extends AbstractType
             ]
         );
 
-        if ($this->registry->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured()) {
+        if ($this->registry->getManager()->getRepository('CSBillTaxBundle:Tax')->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 TaxEntityType::class,

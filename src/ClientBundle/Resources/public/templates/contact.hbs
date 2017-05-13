@@ -9,10 +9,10 @@
             <dd>{{ email }}</dd>
         </dl>
 
-        {{#if additional_details}}
+        {{#if additional_contact_details}}
             <h5>{{trans 'client.contact.details.extra'}}</h5>
             <dl class="dl-horizontal">
-                {{#each additional_details }}
+                {{#each additional_contact_details }}
                     <dt>{{title this.type }}:</dt>
                     <dd>{{ this.value }}</dd>
                 {{/each}}
@@ -20,7 +20,7 @@
         {{/if}}
 
         <div class="pull-right contact-actions">
-            <a href="{{path '_clients_edit_contact' id=id }}" rel="tooltip" title="{{trans "contact_edit" }}" class="text-info edit-contact">
+            <a href="{{path '_xhr_clients_edit_contact' id=id }}" rel="tooltip" title="{{trans "contact_edit" }}" class="text-info edit-contact">
                 <i class="fa fa-pencil"></i>
             </a>
 

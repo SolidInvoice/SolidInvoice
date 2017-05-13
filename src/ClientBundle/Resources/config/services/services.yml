@@ -2,13 +2,20 @@ services:
     csbill_client.menu:
         class: CSBill\ClientBundle\Menu\Builder
         tags:
-            - { name: cs_core.menu, menu: top, method: topMenu }
-            - { name: cs_core.menu, menu: clients_index, method: clientsMenu }
-            - { name: cs_core.menu, menu: clients_view, method: clientViewMenu }
-            - { name: cs_core.menu, menu: clients_add, method: clientsMenu }
-            - { name: cs_core.menu, menu: clients_edit, method: clientsMenu }
+            - { name: 'cs_core.menu', menu: top, method: topMenu }
+            - { name: 'cs_core.menu', menu: clients_index, method: clientsMenu }
+            - { name: 'cs_core.menu', menu: clients_view, method: clientViewMenu }
+            - { name: 'cs_core.menu', menu: clients_add, method: clientsMenu }
+            - { name: 'cs_core.menu', menu: clients_edit, method: clientsMenu }
 
-    # @TODO: Repository classes should be autowired
+    CSBill\ClientBundle\Repository\ClientRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillClientBundle:Client']
+
+    CSBill\ClientBundle\Repository\CreditRepository:
+        factory: ['@doctrine', getRepository]
+        arguments: ['CSBillClientBundle:Credit']
+
     csbill_client.contact_type.repository:
         class: CSBill\ClientBundle\Repository\ContactTypeRepository
         factory: ['@doctrine', getRepository]

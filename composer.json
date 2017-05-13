@@ -91,10 +91,11 @@
         "payum/klarna-checkout": "^1.3",
         "payum/klarna-invoice": "^1.3",
         "oro/requirejs-bundle": "^1.0",
-        "willdurand/js-translation-bundle": "^2.5",
+        "willdurand/js-translation-bundle": "dev-master",
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid-doctrine": "^1.2",
-        "symfony/security-acl": "^3.0"
+	"symfony/security-acl": "^3.0",
+	"solidworx/form-handler-bundle": "dev-master"
     },
     "require-dev": {
         "behat/behat": "^3.0",

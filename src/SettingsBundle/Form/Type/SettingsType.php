@@ -60,7 +60,7 @@ class SettingsType extends AbstractType
      */
     protected function getFieldType(Setting $setting, array $options)
     {
-        $type = $setting->getType();
+        $type = $setting->getType() ?? 'text';
 
         switch (strtolower($type)) {
             case 'select2':

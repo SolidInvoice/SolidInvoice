@@ -203,10 +203,11 @@ class Invoice
     private $recurring;
 
     /**
-     * Constructer.
+     * @param Client|null $client
      */
-    public function __construct()
+    public function __construct(Client $client = null)
     {
+        $this->setClient($client);
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->users = new ArrayCollection();
@@ -550,7 +551,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setTerms(string $terms): self
+    public function setTerms(?string $terms): self
     {
         $this->terms = $terms;
 
@@ -570,7 +571,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setNotes(string $notes): self
+    public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
 

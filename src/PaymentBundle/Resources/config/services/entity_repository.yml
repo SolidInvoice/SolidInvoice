@@ -1,0 +1,14 @@
+services:
+    _instanceof:
+        Doctrine\ORM\EntityRepository:
+            tags: ['doctrine.repository']
+            lazy: true
+            public: false
+
+    CSBill\PaymentBundle\Repository\PaymentRepository:
+        arguments: ['CSBill\PaymentBundle\Entity\Payment']
+        factory: ['@doctrine', 'getRepository']
+
+    CSBill\PaymentBundle\Repository\PaymentMethodRepository:
+        arguments: ['CSBill\PaymentBundle\Entity\PaymentMethod']
+        factory: ['@doctrine', 'getRepository']

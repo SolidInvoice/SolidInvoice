@@ -1,0 +1,54 @@
+_xhr_clients_info:
+    path: '/info/{id}/{type}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Info', type: quote }
+
+_xhr_clients_credit_get:
+    path: '/credit/{client}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Credit::get' }
+    methods: [GET]
+
+_xhr_clients_credit_update:
+    path: '/credit/{client}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Credit::put' }
+    methods: [PUT]
+
+_xhr_clients_add_contact:
+    path: '/contacts/add/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Contact\Add' }
+
+_xhr_clients_edit_contact:
+    path: '/contacts/edit/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Contact\Edit' }
+    methods: [GET, POST]
+
+_xhr_clients_address_list:
+    path: '/address/list/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Address\AddressList' }
+
+_xhr_clients_edit_address:
+    path: '/address/edit/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Address\Edit' }
+
+_xhr_clients_delete_address:
+    path: '/address/delete/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Address\Delete' }
+
+_xhr_clients_address:
+    path: '/address/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Address' }
+    methods: [DELETE, GET]
+
+_xhr_clients_contact:
+    path: '/contacts/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Contact' }
+    methods: [GET, POST, DELETE]
+
+_xhr_clients_delete_contact:
+    path: '/contacts/delete/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Contact\Delete' }
+    methods: [DELETE]
+
+_xhr_clients_delete:
+    path: '/delete/{id}'
+    defaults: { _controller: 'CSBill\ClientBundle\Action\Ajax\Delete' }
+    methods: [DELETE]

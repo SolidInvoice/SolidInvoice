@@ -1,0 +1,10 @@
+services:
+    _instanceof:
+        Doctrine\ORM\EntityRepository:
+            tags: ['doctrine.repository']
+            lazy: true
+            public: false
+
+    CSBill\QuoteBundle\Repository\QuoteRepository:
+        arguments: ['CSBill\QuoteBundle\Entity\Quote']
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']

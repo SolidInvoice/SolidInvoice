@@ -16,6 +16,7 @@ namespace CSBill\MoneyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money as BaseMoney;
+use JMS\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Embeddable()
@@ -24,6 +25,7 @@ class Money
 {
     /**
      * @ORM\Column(name="amount", type="integer")
+     * @Serialize\Groups({"api", "js"})
      *
      * @var int
      */

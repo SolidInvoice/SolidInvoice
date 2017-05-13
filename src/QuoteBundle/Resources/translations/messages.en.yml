@@ -57,6 +57,12 @@ quote:
         exception:
             accept: 'Quote cannot be accepted'
             archive: 'Quote cannot be archived'
+        action:
+            accept: 'Quote Accepted and invoice created'
+            decline: 'Quote Declined'
+            cancel: 'Quote Cancelled'
+            reopen: 'Quote Re-Opened'
+            send: 'Quote Sent'
     archive:
         success: 'Quote Archived'
     grid:
@@ -76,6 +82,7 @@ quote:
         list: 'List Quotes'
         create: 'Create Quote'
         view: 'View Quote'
+
 status: Status
 client: Client
 search: Search

@@ -10,8 +10,13 @@ define(
             collection: null,
             initialize: function() {
                 var collection = Backbone.Collection.extend({
-                    url: Routing.generate('api_keys'),
-                    model: Backbone.Model
+                    url: Routing.generate('_xhr_api_keys_list'),
+                    model: Backbone.Model.extend({
+                        destroy: function(options) {
+                            var opts = _.extend({url: Routing.generate('_xhr_api_keys_revoke', {'id': this.id})}, options || {});
+                            return Backbone.Model.prototype.destroy.call(this, opts);
+                        }
+                    })
                 });
 
                 this.collection = new collection();
@@ -33,11 +38,11 @@ define(
                 event.preventDefault();
 
                 var modal = new CreateModal({
-                    route: Routing.generate('api_key_create')
+                    route: Routing.generate('_xhr_api_keys_create')
                 });
 
-                this.listenTo(modal, 'ajax:response', _.bind(function (response) {
-                    this.collection.add(response.token);
+                this.listenTo(modal, 'ajax:response', _.bind(function(response) {
+                    this.collection.add(response);
                 }, this));
             }
         });

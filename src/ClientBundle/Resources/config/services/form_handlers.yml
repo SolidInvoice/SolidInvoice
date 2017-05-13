@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        tags: ['form.handler']
+
+    _instanceof:
+        SolidWorx\FormHandler\FormHandlerInterface:
+            autowire: true
+            public: false
+
+    CSBill\ClientBundle\Form\Handler\:
+        resource: '../../../Form/Handler'
+        lazy: true

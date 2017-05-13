@@ -1,26 +1,17 @@
 _tax_rates:
     path: /rates
-    defaults: { _controller: 'CSBillTaxBundle:Default:rates' }
+    defaults: { _controller: 'CSBill\TaxBundle\Action\Index' }
 
-_add_tax_rate:
+_tax_rates_add:
     path: /rates/add
-    defaults: { _controller: 'CSBillTaxBundle:Default:add' }
+    defaults: { _controller: 'CSBill\TaxBundle\Action\Add' }
 
-_edit_tax_rate:
+_tax_rates_edit:
     path: '/rates/edit/{id}'
-    defaults: { _controller: 'CSBillTaxBundle:Default:add' }
+    defaults: { _controller: 'CSBill\TaxBundle\Action\Edit' }
     options:
         expose: true
 
-_delete_tax_rate:
-    path: /rates/delete
-    defaults: { _controller: 'CSBillTaxBundle:Default:delete' }
-    methods: [POST]
-    options:
-        expose: true
-
-_get_tax_rate:
-    path: '/rates/get/{id}'
-    defaults: { _controller: 'CSBillTaxBundle:Default:get' }
-    options:
-        expose: true
+_tax_rates_grid:
+    resource: '@CSBillTaxBundle/Action/Grid'
+    type: grid

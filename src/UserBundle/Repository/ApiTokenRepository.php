@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\UserBundle\Repository;
 
-use CSBill\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,11 +49,11 @@ class ApiTokenRepository extends EntityRepository
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return array
      */
-    public function getApiTokensForUser(User $user): array
+    public function getApiTokensForUser(UserInterface $user): array
     {
         $qb = $this->createQueryBuilder('t');
 

@@ -1,65 +1,39 @@
 _quotes_index:
     path: /
-    defaults: { _controller: 'CSBillQuoteBundle:Default:index' }
+    defaults: { _controller: 'CSBill\QuoteBundle\Action\Index' }
 
 _quotes_create:
     path: '/create/{client}'
-    defaults: { _controller: 'CSBillQuoteBundle:Default:create', client: null }
+    defaults: { _controller: 'CSBill\QuoteBundle\Action\Create', client: null }
     options:
         expose: true
 
 _quotes_get_fields:
-    path: '/fields/get'
-    defaults: { _controller: 'CSBillQuoteBundle:Default:getFields' }
+    path: '/fields/get/{currency}'
+    defaults: { _controller: 'CSBill\QuoteBundle\Action\Fields' }
     options:
         expose: true
 
 _quotes_edit:
     path: '/edit/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Default:edit' }
+    defaults: { _controller: 'CSBill\QuoteBundle\Action\Edit' }
     options:
         expose: true
 
 _quotes_view:
     path: '/view/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Default:view' }
+    defaults: { _controller: 'CSBill\QuoteBundle\Action\View' }
     options:
         expose: true
 
 _quotes_clone:
     path: '/clone/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Default:clone' }
+    defaults: { _controller: 'CSBill\QuoteBundle\Action\CloneQuote' }
 
-_quotes_archive:
-    path: /archive
-    defaults: { _controller: 'CSBillQuoteBundle:Grid:archive' }
-    methods: [POST]
-    options:
-        expose: true
+_transition_quote:
+    path: '/action/{action}/{id}'
+    defaults: { _controller: 'CSBill\QuoteBundle\Action\Transition' }
 
-_quotess_delete:
-    path: /delete
-    defaults: { _controller: 'CSBillQuoteBundle:Grid:delete' }
-    methods: [POST]
-    options:
-        expose: true
-
-_accept_quote:
-    path: '/action/accept/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Actions:accept' }
-
-_decline_quote:
-    path: '/action/decline/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Actions:decline' }
-
-_cancel_quote:
-    path: '/action/cancel/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Actions:cancel' }
-
-_reopen_quote:
-    path: '/action/reopen/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Actions:reopen' }
-
-_send_quote:
-    path: '/action/send/{id}'
-    defaults: { _controller: 'CSBillQuoteBundle:Actions:send' }
+_quotes_grid:
+    resource: '@CSBillQuoteBundle/Action/Grid'
+    type: grid

@@ -54,13 +54,13 @@ datagrid:
                 label: Archive
                 icon: archive
                 confirm: 'Are you sure you want to archive the selected rows?'
-                action: _clients_archive
+                action: client_grid_archive
                 className: warning
             delete:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _clients_delete
+                action: client_grid_delete
                 className: danger
     archive_client_grid:
         title: Archived
@@ -104,11 +104,11 @@ datagrid:
                 label: Restore
                 icon: archive
                 confirm: 'Are you sure you want to restore the selected rows?'
-                action: _clients_restore
+                action: client_grid_restore
                 className: info
             delete:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: _clients_delete
+                action: client_grid_delete
                 className: danger

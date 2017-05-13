@@ -1,0 +1,4 @@
+services:
+    CSBill\UserBundle\Action\:
+        resource: '../../../Action'
+        autowire: true

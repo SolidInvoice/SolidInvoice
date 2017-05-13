@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of CSBill project.
  *
- * (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\QuoteBundle\Repository;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -144,5 +145,27 @@ class QuoteRepository extends EntityRepository
 
         $filters->enable('archivable');
         $filters->enable('softdeleteable');
+    }
+
+    /**
+     * Delete multiple quotes based on IDs.
+     *
+     * @param array $ids
+     */
+    public function deleteQuotes(array $ids): void
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        $em = $this->getEntityManager();
+
+        /** @var Quote[] $quotes */
+        $quotes = $this->findBy(['id' => $ids]);
+
+        array_walk($quotes, [$em, 'remove']);
+
+        $em->flush();
+
+        $filters->enable('archivable');
     }
 }

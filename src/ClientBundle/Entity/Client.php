@@ -143,7 +143,6 @@ class Client
      *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @Serialize\Groups({"api", "js"})
-     * @Serialize\Inline()
      */
     private $credit;
 
