@@ -95,7 +95,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'quote' => [

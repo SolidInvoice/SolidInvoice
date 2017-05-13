@@ -91,7 +91,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
     /**
      * @return array
      */
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'settings' => [

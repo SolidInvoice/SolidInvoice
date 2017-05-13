@@ -62,7 +62,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'quote' => [

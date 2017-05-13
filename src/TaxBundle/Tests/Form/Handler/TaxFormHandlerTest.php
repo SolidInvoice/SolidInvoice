@@ -46,7 +46,7 @@ class TaxFormHandlerTest extends FormHandlerTestCase
     /**
      * @return array
      */
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'tax' => [

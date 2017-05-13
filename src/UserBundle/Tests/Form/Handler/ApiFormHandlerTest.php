@@ -50,7 +50,7 @@ class ApiFormHandlerTest extends FormHandlerTestCase
     /**
      * @return array
      */
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'api_token' => [

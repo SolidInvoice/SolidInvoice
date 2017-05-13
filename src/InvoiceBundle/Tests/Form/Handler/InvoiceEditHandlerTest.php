@@ -119,7 +119,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'invoice' => [

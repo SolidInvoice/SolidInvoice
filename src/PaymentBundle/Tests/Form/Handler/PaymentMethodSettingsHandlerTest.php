@@ -55,7 +55,7 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'payment_methods' => [
