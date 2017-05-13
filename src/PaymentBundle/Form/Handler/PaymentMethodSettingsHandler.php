@@ -90,7 +90,11 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
         $data->setConfig($settings);
         $this->save($data);
 
-        $form->getRequest()->getSession()->getFlashBag()->add(FlashResponse::FLASH_SUCCESS, 'payment.method.updated');
+        $session = $form->getRequest()->getSession();
+
+        if ($session) {
+            $session->getFlashBag()->add(FlashResponse::FLASH_SUCCESS, 'payment.method.updated');
+        }
 
         return null;
     }
