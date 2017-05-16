@@ -15,8 +15,6 @@ namespace CSBill\InvoiceBundle\Model;
 
 final class Graph
 {
-    const GRAPH = 'csbill_invoice';
-
     const TRANSITION_ACCEPT = 'accept';
     const TRANSITION_NEW = 'new';
     const TRANSITION_CANCEL = 'cancel';

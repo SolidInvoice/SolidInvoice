@@ -87,7 +87,9 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
             $invoice = $firstInvoice;
         }
 
-        $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
+        if (!$invoice->getId()) {
+            $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
+        }
 
         $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($invoice);
         $invoice->setBalance($invoice->getTotal()->subtract(new Money($totalPaid, $invoice->getTotal()->getCurrency())));

@@ -4,8 +4,6 @@ imports:
     - { resource: payum.yml }
     - { resource: workflow.yml }
     - { resource: assetVersion.php }
-    - { resource: '@CSBillInvoiceBundle/Resources/config/finite.yml' }
-    - { resource: '@CSBillQuoteBundle/Resources/config/finite.yml' }
 
 framework:
     esi: null

@@ -18,12 +18,9 @@ use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
+use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\MoneyBundle\Entity\Money;
-use CSBill\NotificationBundle\Notification\NotificationManager;
-use Finite\Factory\FactoryInterface;
-use Finite\StateMachine\StateMachineInterface;
 use Mockery as M;
 use Money\Currency;
 use SolidWorx\FormHandler\FormRequest;
@@ -31,6 +28,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\Definition;
+use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Transition;
 
 class InvoiceCreateHandlerTest extends FormHandlerTestCase
 {
@@ -43,21 +44,17 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
 
     public function getHandler()
     {
-        $stateMachine = M::mock(StateMachineInterface::class);
-        $stateMachine->shouldReceive('can')
-            ->once()
-            ->with(Graph::TRANSITION_NEW)
-            ->andReturn(true);
-
-        $stateMachine->shouldReceive('apply')
-            ->with(Graph::TRANSITION_NEW);
-
-        $factory = M::mock(FactoryInterface::class);
-        $factory->shouldReceive('get')
-            ->once()
-            ->andReturn($stateMachine);
-
-        $invoiceManager = new InvoiceManager($this->registry, new EventDispatcher(), $factory, M::mock(NotificationManager::class));
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry));
+        $stateMachine = new StateMachine(
+            new Definition(
+                ['new', 'draft'],
+                [new Transition('new', 'new', 'draft')]
+            ),
+            new SingleStateMarkingStore('status'),
+            $dispatcher,
+            'invoice'
+        );
 
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
@@ -65,7 +62,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
             ->with('_invoices_view', ['id' => 1])
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceCreateHandler($invoiceManager, $this->em->getRepository('CSBillPaymentBundle:Payment'), $router);
+        $handler = new InvoiceCreateHandler($stateMachine, $this->em->getRepository('CSBillPaymentBundle:Payment'), $router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
@@ -75,7 +72,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
     {
         /* @var Invoice $invoice */
 
-        $this->assertSame(Graph::STATUS_NEW, $invoice->getStatus());
+        $this->assertSame(Graph::STATUS_DRAFT, $invoice->getStatus());
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());

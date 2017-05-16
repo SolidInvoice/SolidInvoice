@@ -16,7 +16,6 @@ namespace CSBill\QuoteBundle\Action;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
-use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -28,21 +27,15 @@ final class Transition
      * @var StateMachine
      */
     private $stateMachine;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
+    
     /**
      * @var RouterInterface
      */
     private $router;
 
-    public function __construct(StateMachine $stateMachine, RouterInterface $router, FactoryInterface $factory)
+    public function __construct(StateMachine $stateMachine, RouterInterface $router)
     {
         $this->stateMachine = $stateMachine;
-        $this->factory = $factory;
         $this->router = $router;
     }
 

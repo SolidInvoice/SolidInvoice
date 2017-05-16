@@ -15,8 +15,6 @@ namespace CSBill\QuoteBundle\Model;
 
 final class Graph
 {
-    const GRAPH = 'csbill_quote';
-
     const TRANSITION_NEW = 'new';
     const TRANSITION_SEND = 'send';
     const TRANSITION_CANCEL = 'cancel';

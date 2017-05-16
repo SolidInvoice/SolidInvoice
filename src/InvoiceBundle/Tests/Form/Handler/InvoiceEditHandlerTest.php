@@ -18,12 +18,9 @@ use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Handler\InvoiceEditHandler;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
+use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\MoneyBundle\Entity\Money;
-use CSBill\NotificationBundle\Notification\NotificationManager;
-use Finite\Factory\FactoryInterface;
-use Finite\StateMachine\StateMachineInterface;
 use Mockery as M;
 use Money\Currency;
 use SolidWorx\FormHandler\FormRequest;
@@ -31,6 +28,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\Definition;
+use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Transition;
 
 class InvoiceEditHandlerTest extends FormHandlerTestCase
 {
@@ -75,10 +76,17 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
             ->once()
             ->andReturn($stateMachine);
 
-        $notification = M::mock(NotificationManager::class);
-        $notification->shouldReceive('sendNotification');
-
-        $invoiceManager = new InvoiceManager($this->registry, new EventDispatcher(), $factory, $notification);
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry));
+        $stateMachine = new StateMachine(
+            new Definition(
+                ['draft', 'pending'],
+                [new Transition('accept', 'draft', 'pending')]
+            ),
+            new SingleStateMarkingStore('status'),
+            $dispatcher,
+            'invoice'
+        );
 
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
@@ -86,7 +94,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
             ->with('_invoices_view', ['id' => 1])
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceEditHandler($invoiceManager, $this->em->getRepository('CSBillPaymentBundle:Payment'), $router);
+        $handler = new InvoiceEditHandler($stateMachine, $this->em->getRepository('CSBillPaymentBundle:Payment'), $router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
@@ -96,7 +104,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
     {
         /* @var Invoice $invoice */
 
-        $this->assertSame(Graph::STATUS_NEW, $invoice->getStatus());
+        $this->assertSame(Graph::STATUS_PENDING, $invoice->getStatus());
         $this->assertSame(0.2, $invoice->getDiscount());
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);

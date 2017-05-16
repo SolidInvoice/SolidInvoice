@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "64b2b2ee3ebf1e57868c3912f7173b14",
+    "content-hash": "4f5123e2d3e714e1ed2103b1c6fd107c",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -6726,77 +6726,6 @@
                 "negotiation"
             ],
             "time": "2017-05-04T12:15:48+00:00"
-        },
-        {
-            "name": "yohang/finite",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yohang/Finite.git",
-                "reference": "101e96f8d9595d72c1c4b1552555496a0cb135e4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yohang/Finite/zipball/101e96f8d9595d72c1c4b1552555496a0cb135e4",
-                "reference": "101e96f8d9595d72c1c4b1552555496a0cb135e4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9",
-                "symfony/event-dispatcher": "^2.6|^3.0",
-                "symfony/options-resolver": "^2.6|^3.0",
-                "symfony/property-access": "^2.6|^3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.0",
-                "pimple/pimple": "^1.0",
-                "symfony/dependency-injection": "^2.6|^3.0",
-                "symfony/framework-bundle": "^2.6|^3.0",
-                "symfony/security": "^2.6|^3.0",
-                "twig/twig": "^1.13"
-            },
-            "suggest": {
-                "pimple/pimple": "Needed for use with PimpleFactory",
-                "symfony/security": "Needed for using SecurityAwareStateMachine",
-                "symfony/yaml": "Yaml allows you to define your State graph in YAML"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Finite": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Yohan GIARELLI",
-                    "email": "yohan@giarel.li",
-                    "homepage": "http://yohan.giarel.li"
-                },
-                {
-                    "name": "Finite contributors",
-                    "homepage": "https://github.com/yohang/Finite/graphs/contributors"
-                }
-            ],
-            "description": "A simple PHP5.3+ Finite State Machine",
-            "homepage": "https://github.com/yohang/Finite",
-            "keywords": [
-                "bundle",
-                "state",
-                "statemachine",
-                "symfony",
-                "transition",
-                "workflow"
-            ],
-            "time": "2015-12-02T18:02:03+00:00"
         },
         {
             "name": "zendframework/zend-code",

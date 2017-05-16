@@ -16,12 +16,13 @@ namespace CSBill\QuoteBundle\Tests\Form\Handler;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
+use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber as InvoiceWorkFlowSubscriber;
+use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\MoneyBundle\Entity\Money;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Form\Handler\QuoteEditHandler;
+use CSBill\QuoteBundle\Listener\WorkFlowSubscriber;
 use CSBill\QuoteBundle\Model\Graph;
-use Finite\Factory\FactoryInterface;
-use Finite\StateMachine\StateMachineInterface;
 use Mockery as M;
 use Money\Currency;
 use SolidWorx\FormHandler\FormRequest;
@@ -29,6 +30,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\Definition;
+use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Transition;
 
 class QuoteEditHandlerTest extends FormHandlerTestCase
 {
@@ -50,19 +55,29 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
 
     public function getHandler()
     {
-        $stateMachine = M::mock(StateMachineInterface::class);
-        $stateMachine->shouldReceive('can')
-            ->once()
-            ->with(Graph::TRANSITION_NEW)
-            ->andReturn(true);
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new InvoiceWorkFlowSubscriber($this->registry));
+        $invoiceStateMachine = new StateMachine(
+            new Definition(
+                ['new', 'draft'],
+                [new Transition('new', 'new', 'draft')]
+            ),
+            new SingleStateMarkingStore('status'),
+            $dispatcher,
+            'invoice'
+        );
 
-        $stateMachine->shouldReceive('apply')
-            ->with(Graph::TRANSITION_SEND);
-
-        $factory = M::mock(FactoryInterface::class);
-        $factory->shouldReceive('get')
-            ->once()
-            ->andReturn($stateMachine);
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, M::mock(InvoiceManager::class), $invoiceStateMachine));
+        $stateMachine = new StateMachine(
+            new Definition(
+                ['draft', 'pending'],
+                [new Transition('send', 'draft', 'pending')]
+            ),
+            new SingleStateMarkingStore('status'),
+            $dispatcher,
+            'quote'
+        );
 
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
@@ -70,7 +85,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
             ->with('_quotes_view', ['id' => 1])
             ->andReturn('/quotes/1');
 
-        $handler = new QuoteEditHandler(new EventDispatcher(), $router, $factory);
+        $handler = new QuoteEditHandler($router, $stateMachine);
         $handler->setDoctrine($this->registry);
 
         Money::setBaseCurrency('USD');
@@ -82,7 +97,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
     {
         /* @var Quote $quote */
 
-        $this->assertSame(Graph::STATUS_DRAFT, $quote->getStatus());
+        $this->assertSame(Graph::STATUS_PENDING, $quote->getStatus());
         $this->assertSame(0.2, $quote->getDiscount());
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);

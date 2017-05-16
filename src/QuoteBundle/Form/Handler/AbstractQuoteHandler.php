@@ -16,15 +16,12 @@ namespace CSBill\QuoteBundle\Form\Handler;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Event\QuoteEvent;
-use CSBill\QuoteBundle\Event\QuoteEvents;
 use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Model\Graph;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,11 +33,6 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
     use SaveableTrait;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var StateMachine
      */
     private $stateMachine;
@@ -50,9 +42,8 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
      */
     private $router;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router, StateMachine $stateMachine)
+    public function __construct(RouterInterface $router, StateMachine $stateMachine)
     {
-        $this->eventDispatcher = $eventDispatcher;
         $this->stateMachine = $stateMachine;
         $this->router = $router;
     }
@@ -73,24 +64,6 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         /* @var Quote $quote */
         $action = $form->getRequest()->request->get('save');
 
-        $this->eventDispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
-
-        $this->saveQuote($quote, $action);
-
-        $this->eventDispatcher->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($quote));
-
-        $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
-
-        return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
-            {
-                yield self::FLASH_SUCCESS => 'quote.action.create.success';
-            }
-        };
-    }
-
-    private function saveQuote(Quote $quote, $action = null)
-    {
         if (!$quote->getId()) {
             $this->stateMachine->apply($quote, Graph::TRANSITION_NEW);
         }
@@ -100,5 +73,14 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         }
 
         $this->save($quote);
+
+        $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
+
+        return new class($route) extends RedirectResponse implements FlashResponse {
+            public function getFlash(): iterable
+            {
+                yield self::FLASH_SUCCESS => 'quote.action.create.success';
+            }
+        };
     }
 }
