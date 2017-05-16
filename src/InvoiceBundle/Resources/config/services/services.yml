@@ -14,7 +14,7 @@ services:
 
     invoice.manager:
         class: CSBill\InvoiceBundle\Manager\InvoiceManager
-        arguments: ['@doctrine', '@event_dispatcher', '@finite.factory', '@notification.manager']
+        autowire: true
         calls:
             - [ setContainer, ['@service_container']]
 
@@ -25,6 +25,6 @@ services:
 
     csbill.cron.recurring_invoice.create:
         class: CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate
-        arguments: ['@doctrine', '@invoice.manager']
+        autowire: true
         tags:
             - { name: cron.command }

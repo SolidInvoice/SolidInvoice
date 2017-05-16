@@ -18,20 +18,17 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
 use CSBill\InvoiceBundle\Event\InvoiceEvent;
 use CSBill\InvoiceBundle\Event\InvoiceEvents;
-use CSBill\InvoiceBundle\Event\InvoicePaidEvent;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Notification\InvoiceStatusNotification;
 use CSBill\NotificationBundle\Notification\NotificationManager;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Finite\Factory\FactoryInterface;
-use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 class InvoiceManager implements ContainerAwareInterface
 {
@@ -48,7 +45,7 @@ class InvoiceManager implements ContainerAwareInterface
     protected $dispatcher;
 
     /**
-     * @var FactoryInterface
+     * @var StateMachine
      */
     private $stateMachine;
 
@@ -60,13 +57,13 @@ class InvoiceManager implements ContainerAwareInterface
     /**
      * @param ManagerRegistry          $doctrine
      * @param EventDispatcherInterface $dispatcher
-     * @param FactoryInterface         $stateMachine
+     * @param StateMachine             $stateMachine
      * @param NotificationManager      $notification
      */
     public function __construct(
         ManagerRegistry $doctrine,
         EventDispatcherInterface $dispatcher,
-        FactoryInterface $stateMachine,
+        StateMachine $stateMachine,
         NotificationManager $notification
     ) {
         $this->entityManager = $doctrine->getManager();
@@ -119,7 +116,7 @@ class InvoiceManager implements ContainerAwareInterface
         }
 
         $this->create($invoice);
-        $this->accept($invoice); // ?? Do we really want to accept it immediately after creating it?
+        $this->applyTransition($invoice, Graph::TRANSITION_ACCEPT);
 
         return $invoice;
     }
@@ -173,12 +170,10 @@ class InvoiceManager implements ContainerAwareInterface
      */
     private function applyTransition(Invoice $invoice, string $transition): bool
     {
-        $stateMachine = $this->stateMachine->get($invoice, Graph::GRAPH);
-
-        if ($stateMachine->can($transition)) {
+        if ($this->stateMachine->can($invoice, $transition)) {
             $oldStatus = $invoice->getStatus();
 
-            $stateMachine->apply($transition);
+            $this->stateMachine->apply($invoice, $transition);
 
             $newStatus = $invoice->getStatus();
 
@@ -200,146 +195,6 @@ class InvoiceManager implements ContainerAwareInterface
         }
 
         throw new InvalidTransitionException($transition);
-    }
-
-    /**
-     * Accepts an invoice.
-     *
-     * @param Invoice $invoice
-     *
-     * @return Invoice
-     *
-     * @throws InvalidTransitionException
-     */
-    public function accept(\CSBill\InvoiceBundle\Entity\Invoice $invoice): Invoice
-    {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_ACCEPT, new InvoiceEvent($invoice));
-
-        $this->applyTransition($invoice, Graph::TRANSITION_ACCEPT);
-
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_ACCEPT, new InvoiceEvent($invoice));
-
-        return $invoice;
-    }
-
-    /**
-     * @param Invoice $invoice
-     *
-     * @return Invoice
-     *
-     * @throws InvalidTransitionException
-     */
-    public function pay(Invoice $invoice): Invoice
-    {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_PAID, new InvoicePaidEvent($invoice));
-
-        $this->applyTransition($invoice, Graph::TRANSITION_PAY);
-
-        $invoice->setPaidDate(Carbon::now());
-
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_PAID, new InvoicePaidEvent($invoice));
-
-        return $invoice;
-    }
-
-    /**
-     * @param Invoice $invoice
-     *
-     * @return Invoice
-     *
-     * @throws InvalidTransitionException
-     */
-    public function cancel(Invoice $invoice): Invoice
-    {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_CANCEL, new InvoiceEvent($invoice));
-
-        $this->applyTransition($invoice, Graph::TRANSITION_CANCEL);
-
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_CANCEL, new InvoiceEvent($invoice));
-
-        return $invoice;
-    }
-
-    /**
-     * @param Invoice $invoice
-     *
-     * @return Invoice
-     *
-     * @throws InvalidTransitionException
-     */
-    public function reopen(Invoice $invoice): Invoice
-    {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_REOPEN, new InvoiceEvent($invoice));
-
-        $this->applyTransition($invoice, Graph::TRANSITION_REOPEN);
-
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_REOPEN, new InvoiceEvent($invoice));
-
-        return $invoice;
-    }
-
-    /**
-     * @param Invoice $invoice
-     *
-     * @return Invoice
-     *
-     * @throws InvalidTransitionException
-     */
-    public function archive(Invoice $invoice): Invoice
-    {
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_PRE_ARCHIVE, new InvoiceEvent($invoice));
-
-        $this->applyTransition($invoice, Graph::TRANSITION_ARCHIVE);
-        $invoice->archive();
-
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(InvoiceEvents::INVOICE_POST_ARCHIVE, new InvoiceEvent($invoice));
-
-        return $invoice;
-    }
-
-    /**
-     * Checks if an invoice has been paid in full.
-     *
-     * @param Invoice $invoice
-     *
-     * @return bool
-     */
-    public function isFullyPaid(Invoice $invoice): bool
-    {
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->entityManager->getRepository('CSBillPaymentBundle:Payment');
-
-        $invoiceTotal = $invoice->getTotal();
-
-        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoiceTotal->getCurrency());
-
-        return $totalPaid->equals($invoiceTotal) || $totalPaid->greaterThan($invoiceTotal);
-    }
-
-    /**
-     * @param string $method
-     * @param array  $args
-     *
-     * @throws \Exception
-     */
-    public function __call(string $method, array $args)
-    {
-        throw new InvalidTransitionException($method);
     }
 
     /**

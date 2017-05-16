@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\PaymentBundle\Action;
 
+use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
@@ -81,11 +82,6 @@ final class Prepare
     private $paymentFactories;
 
     /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -108,7 +104,6 @@ final class Prepare
         FormFactoryInterface $formFactory,
         Currency $currency,
         PaymentFactories $paymentFactories,
-        \Twig_Environment $twig,
         EventDispatcherInterface $eventDispatcher,
         Payum $payum,
         RouterInterface $router
@@ -120,7 +115,6 @@ final class Prepare
         $this->formFactory = $formFactory;
         $this->currency = $currency;
         $this->paymentFactories = $paymentFactories;
-        $this->twig = $twig;
         $this->eventDispatcher = $eventDispatcher;
         $this->payum = $payum;
         $this->router = $router;
@@ -183,9 +177,9 @@ final class Prepare
                     }
 
                     if (!empty($invalid)) {
-                        $request->getSession()->getFlashbag()->flash($invalid, 'error');
+                        $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
 
-                        return $this->twig->render(
+                        return new Template(
                             'CSBillPaymentBundle:Payment:create.html.twig',
                             [
                                 'form' => $form->createView(),

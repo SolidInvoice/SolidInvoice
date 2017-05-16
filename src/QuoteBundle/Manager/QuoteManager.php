@@ -128,11 +128,11 @@ class QuoteManager
             $newStatus = $quote->getStatus();
 
             $parameters = [
-        'quote' => $quote,
-        'old_status' => $oldStatus,
-        'new_status' => $newStatus,
-        'transition' => $transition,
-        ];
+                'quote' => $quote,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'transition' => $transition,
+            ];
 
             $notification = new QuoteStatusNotification($parameters);
 

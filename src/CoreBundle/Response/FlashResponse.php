@@ -23,6 +23,8 @@ interface FlashResponse
 
     public const FLASH_WARNING = 'warning';
 
+    public const FLASH_DANGER = 'danger';
+
     /**
      * Return a Generator to set flash messages, with the key as the type and the value as the message.
      *

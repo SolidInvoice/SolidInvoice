@@ -1,0 +1,49 @@
+framework:
+    workflows:
+        invoice:
+            audit_trail:
+                enabled: true
+            type: 'state_machine'
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - status
+            supports:
+                - 'CSBill\InvoiceBundle\Entity\Invoice'
+            places:
+                - new
+                - draft
+                - pending
+                - overdue
+                - cancelled
+                - archived
+                - recurring
+                - paid
+            transitions:
+                new:
+                    from: new
+                    to: draft
+                recurring:
+                    from: new
+                    to: recurring
+                accept:
+                    from: [new, draft, overdue]
+                    to: pending
+                cancel:
+                    from: [draft, pending, overdue]
+                    to: cancelled
+                overdue:
+                    from: pending
+                    to: overdue
+                pay:
+                    from: [pending, overdue]
+                    to: paid
+                reopen:
+                    from: cancelled
+                    to: draft
+                archive:
+                    from: [new, draft, cancelled, paid, recurring]
+                    to: archived
+                edit:
+                    from: [cancelled, draft, pending, overdue]
+                    to: draft

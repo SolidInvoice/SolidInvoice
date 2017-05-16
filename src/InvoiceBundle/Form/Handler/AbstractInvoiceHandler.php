@@ -17,7 +17,6 @@ use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Money\Money;
@@ -29,15 +28,16 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface
 {
     use SaveableTrait;
 
     /**
-     * @var InvoiceManager
+     * @var StateMachine
      */
-    private $manager;
+    private $stateMachine;
 
     /**
      * @var RouterInterface
@@ -49,9 +49,9 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
      */
     private $paymentRepository;
 
-    public function __construct(InvoiceManager $manager, PaymentRepository $paymentRepository, RouterInterface $router)
+    public function __construct(StateMachine $stateMachine, PaymentRepository $paymentRepository, RouterInterface $router)
     {
-        $this->manager = $manager;
+        $this->stateMachine = $stateMachine;
         $this->router = $router;
         $this->paymentRepository = $paymentRepository;
     }
@@ -74,20 +74,34 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
 
         $invoice->setBalance($invoice->getTotal());
 
-        $invoice = $this->manager->create($invoice);
+        // @TODO: Recurring invoices should be handled better
+        if ($invoice->isRecurring()) {
+            $invoice->setStatus(Graph::STATUS_RECURRING);
+
+            $firstInvoice = clone $invoice;
+            $firstInvoice->setRecurring(false);
+            $firstInvoice->setRecurringInfo(null);
+
+            $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
+
+            $invoice = $firstInvoice;
+        }
+
+        $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
 
         $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($invoice);
         $invoice->setBalance($invoice->getTotal()->subtract(new Money($totalPaid, $invoice->getTotal()->getCurrency())));
 
         if ($action === Graph::STATUS_PENDING) {
-            $this->manager->accept($invoice);
+            $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
 
         $this->save($invoice);
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'invoice.create.success';

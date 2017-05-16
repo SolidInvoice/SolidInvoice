@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\PaymentBundle\Listener;
 
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
+use CSBill\CoreBundle\Response\FlashResponse;
+use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
 use CSBill\PaymentBundle\Event\PaymentEvents;
 use CSBill\PaymentBundle\Model\Status;
@@ -22,28 +23,11 @@ use Money\Currency;
 use Money\Money;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 class PaymentCompleteListener implements EventSubscriberInterface
 {
-    /**
-     * @var InvoiceManager
-     */
-    private $invoiceManager;
-
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     /**
      * @var RouterInterface
      */
@@ -60,6 +44,11 @@ class PaymentCompleteListener implements EventSubscriberInterface
     private $currency;
 
     /**
+     * @var StateMachine
+     */
+    private $stateMachine;
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -70,27 +59,21 @@ class PaymentCompleteListener implements EventSubscriberInterface
     }
 
     /**
-     * @param InvoiceManager      $invoiceManager
-     * @param ManagerRegistry     $registry
-     * @param SessionInterface    $session
-     * @param TranslatorInterface $translator
-     * @param RouterInterface     $router
-     * @param Currency            $currency
+     * @param StateMachine    $stateMachine
+     * @param ManagerRegistry $registry
+     * @param RouterInterface $router
+     * @param Currency        $currency
      */
     public function __construct(
-        InvoiceManager $invoiceManager,
+        StateMachine $stateMachine,
         ManagerRegistry $registry,
-        SessionInterface $session,
-        TranslatorInterface $translator,
         RouterInterface $router,
         Currency $currency
     ) {
-        $this->invoiceManager = $invoiceManager;
-        $this->session = $session;
-        $this->translator = $translator;
         $this->router = $router;
         $this->registry = $registry;
         $this->currency = $currency;
+        $this->stateMachine = $stateMachine;
     }
 
     /**
@@ -101,8 +84,6 @@ class PaymentCompleteListener implements EventSubscriberInterface
         $payment = $event->getPayment();
         $status = (string) $payment->getStatus();
 
-        $this->addFlashMessage($status, $payment->getMessage());
-
         if ('credit' === $payment->getMethod()->getGatewayName()) {
             $creditRepository = $this->registry->getRepository('CSBillClientBundle:Credit');
             $creditRepository->deductCredit(
@@ -112,8 +93,10 @@ class PaymentCompleteListener implements EventSubscriberInterface
         }
 
         if (null !== $invoice = $event->getPayment()->getInvoice()) {
-            if ($status === Status::STATUS_CAPTURED && $this->invoiceManager->isFullyPaid($invoice)) {
-                $this->invoiceManager->pay($invoice);
+            $em = $this->registry->getManager();
+
+            if ($status === Status::STATUS_CAPTURED && $em->getRepository('CSBillInvoiceBundle:Invoice')->isFullyPaid($invoice)) {
+                $this->stateMachine->apply($invoice, Graph::TRANSITION_PAY);
             } else {
                 $paymentRepository = $this->registry->getRepository('CSBillPaymentBundle:Payment');
                 $invoiceTotal = $invoice->getTotal();
@@ -125,77 +108,80 @@ class PaymentCompleteListener implements EventSubscriberInterface
                 $em->flush();
             }
 
+            $router = $this->router;
+
             $event->setResponse(
-                new RedirectResponse(
-                    $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()])
-                )
+                new class(
+                    $router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]),
+                    $status
+                ) extends RedirectResponse implements FlashResponse
+                {
+                    private $status;
+
+                    public function __construct(string $route, string $status)
+                    {
+                        parent::__construct($route);
+
+                        $this->status = $status;
+                    }
+
+                    public function getFlash(): iterable
+                    {
+                        yield from PaymentCompleteListener::addFlashMessage($this->status);
+                    }
+                }
             );
         }
     }
 
     /**
      * @param string $status
-     * @param string $errorMessage
+     *
+     * @return iterable
      */
-    private function addFlashMessage(string $status, string $errorMessage = null)
+    public static function addFlashMessage(string $status): iterable
     {
         switch ($status) {
             case Status::STATUS_CAPTURED:
-                $type = 'success';
-                $message = 'payment.flash.status.success';
+                yield FlashResponse::FLASH_SUCCESS => 'payment.flash.status.success';
                 break;
 
             case Status::STATUS_CANCELLED:
-                $type = 'danger';
-                $message = 'payment.flash.status.cancelled';
+                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.cancelled';
                 break;
 
             case Status::STATUS_PENDING:
-                $type = 'warning';
-                $message = 'payment.flash.status.pending';
+                yield FlashResponse::FLASH_WARNING => 'payment.flash.status.pending';
                 break;
 
             case Status::STATUS_EXPIRED:
-                $type = 'danger';
-                $message = 'payment.flash.status.expired';
+                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.expired';
                 break;
 
             case Status::STATUS_FAILED:
-                $type = 'danger';
-                $message = 'payment.flash.status.failed';
+                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.failed';
                 break;
 
             case Status::STATUS_NEW:
-                $type = 'warning';
-                $message = 'payment.flash.status.new';
+                yield FlashResponse::FLASH_WARNING => 'payment.flash.status.new';
                 break;
 
             case Status::STATUS_SUSPENDED:
-                $type = 'danger';
-                $message = 'payment.flash.status.suspended';
+                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.suspended';
                 break;
 
             case Status::STATUS_AUTHORIZED:
-                $type = 'info';
-                $message = 'payment.flash.status.authorized';
+                yield FlashResponse::FLASH_INFO => 'payment.flash.status.authorized';
                 break;
 
             case Status::STATUS_REFUNDED:
-                $type = 'warning';
-                $message = 'payment.flash.status.refunded';
+                yield FlashResponse::FLASH_WARNING => 'payment.flash.status.refunded';
                 break;
 
             case Status::STATUS_UNKNOWN:
             default:
-                $type = 'danger';
-                $message = 'payment.flash.status.unknown';
+                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.unknown';
                 break;
         }
-
-        /** @var FlashBag $flashBag */
-        $flashBag = $this->session->getBag('flashes');
-        $parameters = ['%message%' => $errorMessage];
-
-        $flashBag->add($type, $this->translator->trans($message, $parameters));
     }
 }

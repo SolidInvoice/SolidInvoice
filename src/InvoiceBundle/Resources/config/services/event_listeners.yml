@@ -1,8 +1,17 @@
 services:
+    _instanceof:
+        Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            public: false
+            tags:
+                - { name: kernel.event_subscriber }
+
     _defaults:
         public: false
         tags:
             - { name: kernel.event_subscriber }
+
+    CSBill\InvoiceBundle\Listener\WorkFlowSubscriber:
+        arguments: ['@doctrine']
 
     CSBill\InvoiceBundle\Listener\InvoicePaidListener:
         arguments: ['@doctrine', '@currency']

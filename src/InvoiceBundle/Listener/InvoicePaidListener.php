@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Listener;
 
 use CSBill\ClientBundle\Repository\CreditRepository;
-use CSBill\InvoiceBundle\Event\InvoiceEvent;
-use CSBill\InvoiceBundle\Event\InvoiceEvents;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Workflow\Event\Event;
 
 class InvoicePaidListener implements EventSubscriberInterface
 {
@@ -40,7 +40,7 @@ class InvoicePaidListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InvoiceEvents::INVOICE_POST_PAID => 'onInvoicePaid',
+            'workflow.invoice.entered.paid' => 'onInvoicePaid',
         ];
     }
 
@@ -55,18 +55,19 @@ class InvoicePaidListener implements EventSubscriberInterface
     }
 
     /**
-     * @param InvoiceEvent $event
+     * @param Event $event
      */
-    public function onInvoicePaid(InvoiceEvent $event)
+    public function onInvoicePaid(Event $event)
     {
-        $invoice = $event->getInvoice();
-
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->registry->getRepository('CSBillPaymentBundle:Payment');
+        /** @var Invoice $invoice */
+        $invoice = $event->getSubject();
 
         $em = $this->registry->getManager();
 
-        $currency = $invoice->getClient()->getCurrency() ? $invoice->getClient()->getCurrency() : $this->currency;
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $em->getRepository('CSBillPaymentBundle:Payment');
+
+        $currency = $invoice->getClient()->getCurrency() ?? $this->currency;
 
         $invoice->setBalance(new Money(0, $currency));
         $em->persist($invoice);
@@ -77,7 +78,7 @@ class InvoicePaidListener implements EventSubscriberInterface
             $client = $invoice->getClient();
 
             /** @var CreditRepository $creditRepository */
-            $creditRepository = $this->registry->getRepository('CSBillClientBundle:Credit');
+            $creditRepository = $em->getRepository('CSBillClientBundle:Credit');
             $creditRepository->addCredit($client, $totalPaid->subtract($invoice->getTotal()));
         }
 

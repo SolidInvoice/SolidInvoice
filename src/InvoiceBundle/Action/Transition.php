@@ -17,11 +17,10 @@ use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\InvoiceBundle\Model\Graph;
-use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 final class Transition
 {
@@ -31,33 +30,34 @@ final class Transition
     private $router;
 
     /**
-     * @var FactoryInterface
+     * @var StateMachine
      */
-    private $factory;
+    private $stateMachine;
 
     /**
      * @var InvoiceManager
      */
     private $manager;
 
-    public function __construct(RouterInterface $router, InvoiceManager $manager, FactoryInterface $factory)
+    public function __construct(RouterInterface $router, InvoiceManager $manager, StateMachine $stateMachine)
     {
         $this->router = $router;
         $this->manager = $manager;
-        $this->factory = $factory;
+        $this->stateMachine = $stateMachine;
     }
 
     public function __invoke(Request $request, string $action, Invoice $invoice)
     {
-        if (!$this->factory->get($invoice, Graph::GRAPH)->can($action)) {
+        if (!$this->stateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);
         }
 
-        $this->manager->$action($invoice);
+        $this->stateMachine->apply($invoice, $action);
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
-        return new class($action, $route) extends RedirectResponse implements FlashResponse {
+        return new class($action, $route) extends RedirectResponse implements FlashResponse
+        {
             /**
              * @var string
              */

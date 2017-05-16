@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Money\Money;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -47,7 +48,7 @@ class InvoiceRepository extends EntityRepository
      * Get the total amount for a specific invoice status.
      *
      * @param string $status
-     * @param Client $client  filter per client
+     * @param Client $client filter per client
      * @param int    $hydrate
      *
      * @return int
@@ -293,5 +294,26 @@ class InvoiceRepository extends EntityRepository
         $em->flush();
 
         $filters->enable('archivable');
+    }
+
+    /**
+     * Checks if an invoice is paid in full
+     *
+     * @param Invoice $invoice
+     *
+     * @return bool
+     */
+    public function isFullyPaid(Invoice $invoice): bool
+    {
+        $invoiceTotal = $invoice->getTotal();
+
+        $totalPaid = new Money(
+            $this->getEntityManager()
+                ->getRepository('CSBillPaymentBundle:Payment')
+                ->getTotalPaidForInvoice($invoice),
+            $invoiceTotal->getCurrency()
+        );
+
+        return $totalPaid->equals($invoiceTotal) || $totalPaid->greaterThan($invoiceTotal);
     }
 }

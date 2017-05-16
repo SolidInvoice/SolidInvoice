@@ -5,7 +5,7 @@ services:
             - { name: kernel.event_subscriber }
 
     CSBill\PaymentBundle\Listener\PaymentCompleteListener:
-        arguments: ['@invoice.manager', '@doctrine', '@session', '@translator', '@router', '@currency']
+        autowire: true
 
     CSBill\PaymentBundle\Listener\PaymentReceivedListener:
         arguments: ['@notification.manager']
