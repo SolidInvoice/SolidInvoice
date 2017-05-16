@@ -27,7 +27,7 @@ final class Transition
      * @var StateMachine
      */
     private $stateMachine;
-    
+
     /**
      * @var RouterInterface
      */

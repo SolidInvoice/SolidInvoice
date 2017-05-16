@@ -15,7 +15,6 @@ namespace CSBill\ApiBundle\Controller;
 
 use CSBill\InvoiceBundle\Entity;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
-use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;

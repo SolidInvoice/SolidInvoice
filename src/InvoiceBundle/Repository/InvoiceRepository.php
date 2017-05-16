@@ -48,7 +48,7 @@ class InvoiceRepository extends EntityRepository
      * Get the total amount for a specific invoice status.
      *
      * @param string $status
-     * @param Client $client filter per client
+     * @param Client $client  filter per client
      * @param int    $hydrate
      *
      * @return int
@@ -297,7 +297,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Checks if an invoice is paid in full
+     * Checks if an invoice is paid in full.
      *
      * @param Invoice $invoice
      *

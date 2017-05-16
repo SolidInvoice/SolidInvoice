@@ -49,7 +49,6 @@ class InvoiceManagerTest extends KernelTestCase
         $notification->shouldReceive('sendNotification')
             ->andReturn(null);
 
-
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine));
         $stateMachine = new StateMachine(
