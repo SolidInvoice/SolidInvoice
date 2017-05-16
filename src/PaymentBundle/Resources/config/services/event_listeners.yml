@@ -4,8 +4,10 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    CSBill\PaymentBundle\Listener\PaymentCompleteListener:
+    CSBill\PaymentBundle\Listener\:
+        resource: '../../../Listener'
         autowire: true
 
-    CSBill\PaymentBundle\Listener\PaymentReceivedListener:
-        arguments: ['@notification.manager']
+    CSBill\PaymentBundle\Listener\PaymentCompleteListener:
+        arguments:
+            $stateMachine: '@state_machine.invoice'

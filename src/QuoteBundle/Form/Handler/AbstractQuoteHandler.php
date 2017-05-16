@@ -20,7 +20,6 @@ use CSBill\QuoteBundle\Event\QuoteEvent;
 use CSBill\QuoteBundle\Event\QuoteEvents;
 use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Model\Graph;
-use Finite\Factory\FactoryInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -30,6 +29,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface
 {
@@ -41,19 +41,19 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
     private $eventDispatcher;
 
     /**
-     * @var FactoryInterface
+     * @var StateMachine
      */
-    private $factory;
+    private $stateMachine;
 
     /**
      * @var RouterInterface
      */
     private $router;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router, FactoryInterface $factory)
+    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router, StateMachine $stateMachine)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->factory = $factory;
+        $this->stateMachine = $stateMachine;
         $this->router = $router;
     }
 
@@ -72,6 +72,9 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
     {
         /* @var Quote $quote */
         $action = $form->getRequest()->request->get('save');
+
+        $this->eventDispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
+
         $this->saveQuote($quote, $action);
 
         $this->eventDispatcher->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($quote));
@@ -88,23 +91,14 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
 
     private function saveQuote(Quote $quote, $action = null)
     {
-        $finite = $this->factory->get($quote, Graph::GRAPH);
-
         if (!$quote->getId()) {
-            $this->eventDispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($quote));
+            $this->stateMachine->apply($quote, Graph::TRANSITION_NEW);
         }
 
-        if ($action === Graph::STATUS_PENDING) {
-            $this->eventDispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
-            $finite->apply(Graph::TRANSITION_SEND);
-            $this->save($quote);
-            $this->eventDispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
-        } else {
-            if (!$quote->getId()) {
-                $finite->apply(Graph::TRANSITION_NEW);
-            }
-
-            $this->save($quote);
+        if (Graph::STATUS_PENDING === $action) {
+            $this->stateMachine->apply($quote, Graph::TRANSITION_SEND);
         }
+
+        $this->save($quote);
     }
 }

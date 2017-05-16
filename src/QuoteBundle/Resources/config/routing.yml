@@ -30,6 +30,10 @@ _quotes_clone:
     path: '/clone/{id}'
     defaults: { _controller: 'CSBill\QuoteBundle\Action\CloneQuote' }
 
+_send_quote:
+    path: '/action/send/{id}'
+    defaults:  { _controller: 'CSBill\QuoteBundle\Action\Transition\Send' }
+
 _transition_quote:
     path: '/action/{action}/{id}'
     defaults: { _controller: 'CSBill\QuoteBundle\Action\Transition' }

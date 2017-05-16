@@ -1,8 +1,16 @@
 services:
+    _instanceof:
+        Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            public: false
+            tags: ['kernel.event_subscriber']
+
     _defaults:
         public: false
-        tags:
-            - { name: kernel.event_subscriber }
+        autowire: true
 
-    CSBill\QuoteBundle\Listener\Mailer\QuoteMailerListener:
-        arguments: ['@billing.mailer']
+    CSBill\QuoteBundle\Listener\:
+        resource: '../../../Listener'
+
+    CSBill\QuoteBundle\Listener\WorkFlowSubscriber:
+        arguments:
+            $invoiceStateMachine: '@state_machine.invoice'

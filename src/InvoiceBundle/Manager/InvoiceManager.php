@@ -115,9 +115,6 @@ class InvoiceManager implements ContainerAwareInterface
             $invoice->addItem($invoiceItem);
         }
 
-        $this->create($invoice);
-        $this->applyTransition($invoice, Graph::TRANSITION_ACCEPT);
-
         return $invoice;
     }
 

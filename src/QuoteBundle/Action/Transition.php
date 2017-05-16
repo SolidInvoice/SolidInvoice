@@ -15,18 +15,19 @@ namespace CSBill\QuoteBundle\Action;
 
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Manager\QuoteManager;
+use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 final class Transition
 {
     /**
-     * @var QuoteManager
+     * @var StateMachine
      */
-    private $manager;
+    private $stateMachine;
 
     /**
      * @var FactoryInterface
@@ -38,16 +39,20 @@ final class Transition
      */
     private $router;
 
-    public function __construct(QuoteManager $manager, RouterInterface $router, FactoryInterface $factory)
+    public function __construct(StateMachine $stateMachine, RouterInterface $router, FactoryInterface $factory)
     {
-        $this->manager = $manager;
+        $this->stateMachine = $stateMachine;
         $this->factory = $factory;
         $this->router = $router;
     }
 
     public function __invoke(Request $request, string $action, Quote $quote)
     {
-        $this->manager->$action($quote);
+        if (!$this->stateMachine->can($quote, $action)) {
+            throw new InvalidTransitionException($action);
+        }
+
+        $this->stateMachine->apply($quote, $action);
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 

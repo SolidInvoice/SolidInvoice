@@ -15,8 +15,6 @@ namespace CSBill\QuoteBundle\Manager;
 
 use Carbon\Carbon;
 use CSBill\CoreBundle\Mailer\Mailer;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\NotificationBundle\Notification\NotificationManager;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -26,23 +24,12 @@ use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Notification\QuoteStatusNotification;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Finite\Factory\FactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 class QuoteManager
 {
     /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    private $entityManager;
-
-    /**
-     * @var FactoryInterface
+     * @var StateMachine
      */
     private $stateMachine;
 
@@ -52,57 +39,25 @@ class QuoteManager
     private $notification;
 
     /**
-     * @var InvoiceManager
-     */
-    private $invoiceManager;
-
-    /**
      * @var Mailer
      */
     private $mailer;
 
     /**
      * @param ManagerRegistry          $doctrine
-     * @param EventDispatcherInterface $dispatcher
-     * @param FactoryInterface         $stateMachine
-     * @param InvoiceManager           $invoiceManager
+     * @param StateMachine             $stateMachine
      * @param Mailer                   $mailer
      * @param NotificationManager      $notification
      */
     public function __construct(
         ManagerRegistry $doctrine,
-        EventDispatcherInterface $dispatcher,
-        FactoryInterface $stateMachine,
-        InvoiceManager $invoiceManager,
+        StateMachine $stateMachine,
         Mailer $mailer,
         NotificationManager $notification
     ) {
-        $this->entityManager = $doctrine->getManager();
-        $this->dispatcher = $dispatcher;
         $this->stateMachine = $stateMachine;
         $this->notification = $notification;
-        $this->invoiceManager = $invoiceManager;
         $this->mailer = $mailer;
-    }
-
-    /**
-     * @param Quote $quote
-     *
-     * @return Invoice
-     *
-     * @throws InvalidTransitionException
-     */
-    public function accept(Quote $quote): Invoice
-    {
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_ACCEPT, new QuoteEvent($quote));
-
-        $invoice = $this->invoiceManager->createFromQuote($quote);
-
-        $this->applyTransition($quote, Graph::TRANSITION_ACCEPT);
-
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_ACCEPT, new QuoteEvent($quote));
-
-        return $invoice;
     }
 
     /**
@@ -115,15 +70,10 @@ class QuoteManager
      */
     private function applyTransition(Quote $quote, string $transition): bool
     {
-        $stateMachine = $this->stateMachine->get($quote, Graph::GRAPH);
-
-        if ($stateMachine->can($transition)) {
+        if ($this->stateMachine->can($quote, $transition)) {
             $oldStatus = $quote->getStatus();
 
-            $stateMachine->apply($transition);
-
-            $this->entityManager->persist($quote);
-            $this->entityManager->flush();
+            $this->stateMachine->apply($quote, $transition);
 
             $newStatus = $quote->getStatus();
 
@@ -151,93 +101,13 @@ class QuoteManager
      *
      * @throws InvalidTransitionException
      */
-    public function archive(Quote $quote): Quote
-    {
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_ARCHIVE, new QuoteEvent($quote));
-
-        $this->applyTransition($quote, Graph::TRANSITION_ARCHIVE);
-        $quote->archive();
-
-        $this->entityManager->persist($quote);
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_ARCHIVE, new QuoteEvent($quote));
-
-        return $quote;
-    }
-
-    /**
-     * @param Quote $quote
-     *
-     * @return Quote
-     *
-     * @throws InvalidTransitionException
-     */
-    public function decline(Quote $quote): Quote
-    {
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_DECLINE, new QuoteEvent($quote));
-
-        $this->applyTransition($quote, Graph::TRANSITION_DECLINE);
-
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_DECLINE, new QuoteEvent($quote));
-
-        return $quote;
-    }
-
-    /**
-     * @param Quote $quote
-     *
-     * @return Quote
-     *
-     * @throws InvalidTransitionException
-     */
-    public function cancel(Quote $quote): Quote
-    {
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CANCEL, new QuoteEvent($quote));
-
-        $this->applyTransition($quote, Graph::TRANSITION_CANCEL);
-
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_CANCEL, new QuoteEvent($quote));
-
-        return $quote;
-    }
-
-    /**
-     * @param Quote $quote
-     *
-     * @return Quote
-     *
-     * @throws InvalidTransitionException
-     */
-    public function reopen(Quote $quote): Quote
-    {
-        $this->applyTransition($quote, Graph::TRANSITION_REOPEN);
-
-        return $quote;
-    }
-
-    /**
-     * @param Quote $quote
-     *
-     * @return Quote
-     *
-     * @throws InvalidTransitionException
-     */
     public function send(Quote $quote): Quote
     {
-        $finite = $this->stateMachine->get($quote, Graph::GRAPH);
-
-        if ($quote->getStatus() !== Graph::STATUS_PENDING) {
-            if (!$finite->can(Graph::TRANSITION_SEND)) {
-                throw new InvalidTransitionException(Graph::TRANSITION_SEND);
-            }
-
-            $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_SEND, new QuoteEvent($quote));
+        if (Graph::STATUS_DRAFT === $quote->getStatus()) {
             $this->applyTransition($quote, Graph::TRANSITION_SEND);
-            $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_SEND, new QuoteEvent($quote));
-        } else {
-            $this->mailer->sendQuote($quote);
         }
+
+        $this->mailer->sendQuote($quote);
 
         return $quote;
     }
@@ -249,7 +119,7 @@ class QuoteManager
      */
     public function duplicate(Quote $quote): Quote
     {
-        // We don't use 'clone', since cloning aq quote will clone all the item id's and nested values.
+        // We don't use 'clone', since cloning a quote will clone all the item id's and nested values.
         // We rather set it manually
         $newQuote = new Quote();
 
@@ -283,18 +153,9 @@ class QuoteManager
             $newQuote->addItem($invoiceItem);
         }
 
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_PRE_CREATE, new QuoteEvent($newQuote));
-
-        $stateMachine = $this->stateMachine->get($newQuote, Graph::GRAPH);
-
-        if ($stateMachine->can(Graph::TRANSITION_NEW)) {
-            $stateMachine->apply(Graph::TRANSITION_NEW);
+        if ($this->stateMachine->can($newQuote, Graph::TRANSITION_NEW)) {
+            $this->stateMachine->apply($newQuote, Graph::TRANSITION_NEW);
         }
-
-        $this->entityManager->persist($newQuote);
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(QuoteEvents::QUOTE_POST_CREATE, new QuoteEvent($newQuote));
 
         return $newQuote;
     }

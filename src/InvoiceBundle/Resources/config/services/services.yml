@@ -12,9 +12,10 @@ services:
         factory: ['@doctrine', getRepository]
         arguments: ['CSBillInvoiceBundle:Invoice']
 
-    invoice.manager:
-        class: CSBill\InvoiceBundle\Manager\InvoiceManager
+    CSBill\InvoiceBundle\Manager\InvoiceManager:
         autowire: true
+        arguments:
+            $stateMachine: '@state_machine.invoice'
         calls:
             - [ setContainer, ['@service_container']]
 
@@ -23,8 +24,9 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
 
-    csbill.cron.recurring_invoice.create:
-        class: CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate
+    CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate:
         autowire: true
+        arguments:
+            $stateMachine: '@state_machine.invoice'
         tags:
             - { name: cron.command }

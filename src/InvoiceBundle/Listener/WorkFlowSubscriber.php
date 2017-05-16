@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Listener;
 
 use Carbon\Carbon;
+use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -43,15 +44,20 @@ class WorkFlowSubscriber implements EventSubscriberInterface
 
     public function onWorkflowTransitionApplied(Event $event)
     {
-        $subject = $event->getSubject();
+        /** @var Invoice $invoice */
+        $invoice = $event->getSubject();
 
         if (Graph::TRANSITION_PAY === $event->getTransition()) {
-            $subject->setPaidDate(Carbon::now());
+            $invoice->setPaidDate(Carbon::now());
+        }
+
+        if (Graph::TRANSITION_ARCHIVE === $event->getTransition()) {
+            $invoice->archive();
         }
 
         $em = $this->registry->getManager();
 
-        $em->persist($subject);
+        $em->persist($invoice);
         $em->flush();
     }
 }

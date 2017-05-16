@@ -17,11 +17,10 @@ use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
-use CSBill\QuoteBundle\Manager\QuoteManager;
 use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Repository\QuoteRepository;
-use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Workflow\StateMachine;
 
 final class Archive implements AjaxResponse
 {
@@ -33,20 +32,14 @@ final class Archive implements AjaxResponse
     private $repository;
 
     /**
-     * @var FactoryInterface
+     * @var StateMachine
      */
-    private $factory;
+    private $stateMachine;
 
-    /**
-     * @var QuoteManager
-     */
-    private $manager;
-
-    public function __construct(QuoteRepository $repository, QuoteManager $manager, FactoryInterface $factory)
+    public function __construct(QuoteRepository $repository, StateMachine $stateMachine)
     {
         $this->repository = $repository;
-        $this->factory = $factory;
-        $this->manager = $manager;
+        $this->stateMachine = $stateMachine;
     }
 
     public function __invoke(Request $request)
@@ -57,11 +50,11 @@ final class Archive implements AjaxResponse
         $quotes = $this->repository->findBy(['id' => $data]);
 
         foreach ($quotes as $quote) {
-            if (!$this->factory->get($quote, Graph::GRAPH)->can('archive')) {
-                throw new InvalidTransitionException('archive');
+            if (!$this->stateMachine->can($quote, Graph::TRANSITION_ARCHIVE)) {
+                throw new InvalidTransitionException(Graph::TRANSITION_ARCHIVE);
             }
 
-            $this->manager->archive($quote);
+            $this->stateMachine->apply($quote, Graph::TRANSITION_ARCHIVE);
         }
 
         return $this->json([]);

@@ -212,7 +212,7 @@ class InvoiceController extends Controller
         $status = $request->request->get('status');
         $manager = $this->get('invoice.manager');
 
-        $transitions = $this->get('finite.factory')->get($invoice, Graph::GRAPH)->getTransitions();
+        $transitions = $this->get('state_machine.invoice')->getEnabledTransitions($invoice);
 
         if (!in_array($status, $transitions, true)) {
             throw new \Exception(sprintf('The value "%s" is not valid', $status), Response::HTTP_BAD_REQUEST);

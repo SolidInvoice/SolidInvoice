@@ -26,7 +26,6 @@ use CSBill\PaymentBundle\Factory\PaymentFactories;
 use CSBill\PaymentBundle\Form\Type\PaymentType;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
-use Finite\Factory\FactoryInterface;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
@@ -39,6 +38,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 // @TODO: Refactor this class to make it cleaner
 
@@ -47,9 +47,9 @@ final class Prepare
     use SaveableTrait;
 
     /**
-     * @var FactoryInterface
+     * @var StateMachine
      */
-    private $finite;
+    private $stateMachine;
 
     /**
      * @var PaymentMethodRepository
@@ -97,7 +97,7 @@ final class Prepare
     private $router;
 
     public function __construct(
-        FactoryInterface $finite,
+        StateMachine $stateMachine,
         PaymentMethodRepository $paymentMethodRepository,
         AuthorizationCheckerInterface $authorization,
         TokenStorageInterface $tokenStorage,
@@ -108,7 +108,7 @@ final class Prepare
         Payum $payum,
         RouterInterface $router
     ) {
-        $this->finite = $finite;
+        $this->stateMachine = $stateMachine;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->authorization = $authorization;
         $this->tokenStorage = $tokenStorage;
@@ -126,9 +126,7 @@ final class Prepare
             throw new NotFoundHttpException();
         }
 
-        $finite = $this->finite->get($invoice, Graph::GRAPH);
-
-        if (!$finite->can(Graph::TRANSITION_PAY)) {
+        if (!$this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             throw new \Exception('This invoice cannot be paid');
         }
 

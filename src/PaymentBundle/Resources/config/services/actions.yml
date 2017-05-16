@@ -2,3 +2,8 @@ services:
     CSBill\PaymentBundle\Action\:
         resource: '../../../Action'
         autowire: true
+
+    CSBill\PaymentBundle\Action\Prepare:
+        autowire: true
+        arguments:
+            $stateMachine: '@state_machine.invoice'
