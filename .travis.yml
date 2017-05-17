@@ -19,6 +19,9 @@ cache:
     - $HOME/.composer/cache
     - node_modules
 
+services:
+  - mysql
+
 addons:
   sauce_connect:
     username: csbill
@@ -36,11 +39,11 @@ before_install:
 
 install:
   - composer install -n
-  - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
+  - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
   - php bin/console cache:clear
   - npm install
   - php bin/console assets:install -n
-  #- node_modules/.bin/gulp
+  - node_modules/.bin/gulp
 
 before_script:
   - mysql -e 'create database csbill;'
@@ -48,9 +51,9 @@ before_script:
   - php app/app_check.php
   #- bash travis/travis-ci-apache.sh
   #- node_modules/.bin/gulp
-  - php ./bin/console server:start 9001 -n
+  - php ./bin/console server:start 80 -n
   - sleep 5
-  - curl http://127.0.0.1:9001/
+  - curl http://localhost/
 
 script:
   - composer validate
