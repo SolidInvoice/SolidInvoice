@@ -44,8 +44,9 @@ before_script:
   - mysql -e 'create database csbill;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
-  - bash travis/travis-ci-apache.sh
+  #- bash travis/travis-ci-apache.sh
   - node_modules/.bin/gulp
+  - sudo php ./bin/console server:start 127.0.0.1:80 -n
 
 script:
   - composer validate
