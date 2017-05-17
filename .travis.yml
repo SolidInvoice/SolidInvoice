@@ -32,7 +32,7 @@ addons:
 
 before_install:
   - composer self-update
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 &> /dev/null &g
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 &> /dev/null &
 
 install:
   - composer install -n --profile
