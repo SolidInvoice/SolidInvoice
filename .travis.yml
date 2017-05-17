@@ -28,11 +28,11 @@ addons:
     sources:
       - google-chrome
     packages:
-      - google-chrome-stable
+      - google-chrome-beta
 
 before_install:
   - composer self-update
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 &> /dev/null &
+  - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 &> /dev/null &
 
 install:
   - composer install -n --profile
