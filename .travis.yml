@@ -36,7 +36,7 @@ before_install:
 
 install:
   - composer install -n
-  - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
+  - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:8080/g' app/config/parameters.yml
   - php bin/console cache:clear
   - npm install
   - php bin/console assets:install -n
@@ -48,8 +48,8 @@ before_script:
   - php app/app_check.php
   #- bash travis/travis-ci-apache.sh
   #- node_modules/.bin/gulp
-  - php ./bin/console server:start 127.0.0.1:80 -n
-  - curl http://127.0.0.1/
+  - php ./bin/console server:start 127.0.0.1:8080 -n
+  - curl http://127.0.0.1:8080/
 
 script:
   - composer validate
