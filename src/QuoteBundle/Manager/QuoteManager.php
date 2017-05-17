@@ -21,7 +21,6 @@ use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 use CSBill\QuoteBundle\Model\Graph;
 use CSBill\QuoteBundle\Notification\QuoteStatusNotification;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Workflow\StateMachine;
 
 class QuoteManager
