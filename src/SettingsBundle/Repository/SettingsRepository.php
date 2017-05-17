@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\SettingsBundle\Repository;
 
 use CSBill\CoreBundle\Util\ArrayUtil;
+use CSBill\SettingsBundle\Entity\Section;
 use Doctrine\ORM\EntityRepository;
 
 class SettingsRepository extends EntityRepository

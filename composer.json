@@ -110,7 +110,7 @@
         "sensiolabs/security-checker": "^3.0",
         "satooshi/php-coveralls": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^2.0",
-        "phpstan/phpstan": "^0.6.4"
+        "phpstan/phpstan": "^0.7"
     },
     "scripts": {
         "post-install-cmd": [
