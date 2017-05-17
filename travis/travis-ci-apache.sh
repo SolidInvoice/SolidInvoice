@@ -14,6 +14,6 @@ else
     echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
     sudo cp -f travis/travis-ci-apache.conf /etc/apache2/sites-enabled/default.conf
-    sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-enabled/.conf
+    sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-enabled/default.conf
     sudo service apache2 restart
 fi
