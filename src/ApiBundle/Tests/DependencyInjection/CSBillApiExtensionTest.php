@@ -15,9 +15,12 @@ namespace CSBill\ApiBundle\Tests\DependencyInjection;
 
 use CSBill\ApiBundle\DependencyInjection\CSBillApiExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class CSBillApiExtensionTest extends AbstractExtensionTestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * {@inheritdoc}
      */

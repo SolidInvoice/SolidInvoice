@@ -15,9 +15,13 @@ namespace CSBill\DataGridBundle\Tests\Source;
 
 use CSBill\DataGridBundle\Source\ORMSource;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class ORMSourceTest extends \PHPUnit\Framework\TestCase
+class ORMSourceTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testFetch()
     {
         $qb = M::mock('Doctrine\ORM\QueryBuilder');

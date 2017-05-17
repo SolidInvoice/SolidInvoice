@@ -17,6 +17,7 @@ use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Form\Type\ProfileType;
 use FOS\UserBundle\Form\Type\ProfileFormType;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ProfileTypeTest extends FormTestCase

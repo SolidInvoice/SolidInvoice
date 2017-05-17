@@ -16,11 +16,15 @@ namespace CSBill\MoneyBundle\Tests\Twig\Extension;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use CSBill\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\TestCase;
 
-class MoneyFormatterExtensionTest extends \PHPUnit\Framework\TestCase
+class MoneyFormatterExtensionTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testGetFunctions()
     {
         $moneyFormatter = new MoneyFormatter('en_US');

@@ -16,6 +16,7 @@ namespace CSBill\CoreBundle\Tests\Listener;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\CoreBundle\Listener\TemplateListener;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,8 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class TemplateListenerTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testOnKernelView()
     {
         $twig = M::mock(\Twig_Environment::class);

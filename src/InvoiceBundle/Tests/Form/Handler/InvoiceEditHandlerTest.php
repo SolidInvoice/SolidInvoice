@@ -54,28 +54,6 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
 
     public function getHandler()
     {
-        $stateMachine = M::mock(StateMachineInterface::class);
-        $stateMachine->shouldReceive('can')
-            ->once()
-            ->with(Graph::TRANSITION_NEW)
-            ->andReturn(true);
-
-        $stateMachine->shouldReceive('can')
-            ->once()
-            ->with(Graph::TRANSITION_ACCEPT)
-            ->andReturn(true);
-
-        $stateMachine->shouldReceive('apply')
-            ->with(Graph::TRANSITION_NEW);
-
-        $stateMachine->shouldReceive('apply')
-            ->with(Graph::TRANSITION_ACCEPT);
-
-        $factory = M::mock(FactoryInterface::class);
-        $factory->shouldReceive('get')
-            ->once()
-            ->andReturn($stateMachine);
-
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry));
         $stateMachine = new StateMachine(

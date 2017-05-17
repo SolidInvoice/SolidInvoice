@@ -16,6 +16,7 @@ namespace CSBill\InvoiceBundle\Tests\Listener;
 use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,8 @@ use Symfony\Component\Workflow\Transition;
 
 class WorkFlowSubscriberTest extends TestCase
 {
-    use DoctrineTestTrait;
+    use DoctrineTestTrait,
+        MockeryPHPUnitIntegration;
 
     protected function setUp()
     {

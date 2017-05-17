@@ -15,10 +15,13 @@ namespace CSBill\PaymentBundle\Tests\Factory\DependencyInjection;
 
 use CSBill\PaymentBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends TestCase
 {
-    use ConfigurationTestCaseTrait;
+    use ConfigurationTestCaseTrait,
+	MockeryPHPUnitIntegration;
 
     protected function getConfiguration()
     {

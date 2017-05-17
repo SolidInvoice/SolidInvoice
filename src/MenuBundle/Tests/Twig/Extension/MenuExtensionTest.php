@@ -15,9 +15,13 @@ namespace CSBill\MenuBundle\Tests\Twig\Extension;
 
 use CSBill\MenuBundle\Twig\Extension\MenuExtension;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class MenuExtensionTest extends \PHPUnit\Framework\TestCase
+class MenuExtensionTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var MenuExtension
      */

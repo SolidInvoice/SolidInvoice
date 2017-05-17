@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace CSBill\DashboardBundle\Tests\Twig\Extension;
 
 use CSBill\DashboardBundle\Twig\Extension\WidgetExtension;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class WidgetExtensionTest extends \PHPUnit\Framework\TestCase
+class WidgetExtensionTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var WidgetExtension
      */

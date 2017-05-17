@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Tests;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
 require_once __DIR__.'/../../../app/AppKernel.php';
 
-abstract class KernelAwareTest extends \PHPUnit\Framework\TestCase
+abstract class KernelAwareTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var \AppKernel
      */

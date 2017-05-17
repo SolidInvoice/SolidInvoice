@@ -20,6 +20,7 @@ use CSBill\SettingsBundle\Form\Handler\SettingsFormHandler;
 use CSBill\SettingsBundle\Manager\SettingsManager;
 use CSBill\SettingsBundle\Tests\Fixtures\SettingsLoaderTest;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;

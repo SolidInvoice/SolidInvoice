@@ -17,6 +17,7 @@ use CSBill\ApiBundle\ApiTokenManager;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use CSBill\UserBundle\Form\Handler\ApiFormHandler;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
