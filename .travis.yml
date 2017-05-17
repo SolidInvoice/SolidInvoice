@@ -49,7 +49,6 @@ before_script:
   #- bash travis/travis-ci-apache.sh
   #- node_modules/.bin/gulp
   - php ./bin/console server:start 127.0.0.1:80 -n
-  - curl http://localhost/
   - curl http://127.0.0.1/
 
 script:
