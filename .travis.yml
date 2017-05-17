@@ -35,7 +35,7 @@ before_install:
   - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 &> /dev/null &
 
 install:
-  - composer install -n --profile
+  - composer install -n
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
   - php bin/console cache:clear
   - npm install
