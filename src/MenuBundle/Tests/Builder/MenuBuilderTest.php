@@ -15,9 +15,13 @@ namespace CSBill\MenuBundle\Tests\Builder;
 
 use CSBill\MenuBundle\Builder\MenuBuilder;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class MenuBuilderTest extends \PHPUnit\Framework\TestCase
+class MenuBuilderTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testInvoke()
     {
         $builder = M::mock('CSBill\MenuBundle\Builder\BuilderInterface');
@@ -31,7 +35,6 @@ class MenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->andReturn(true);
 
         $builder->shouldReceive('something')
-            ->once()
             ->withArgs([$item, []]);
 
         $menuBuilder = new MenuBuilder($builder, 'something');
