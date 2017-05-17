@@ -47,11 +47,11 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         /** @var Invoice $invoice */
         $invoice = $event->getSubject();
 
-        if (Graph::TRANSITION_PAY === $event->getTransition()) {
+        if (Graph::TRANSITION_PAY === $event->getTransition()->getName()) {
             $invoice->setPaidDate(Carbon::now());
         }
 
-        if (Graph::TRANSITION_ARCHIVE === $event->getTransition()) {
+        if (Graph::TRANSITION_ARCHIVE === $event->getTransition()->getName()) {
             $invoice->archive();
         }
 

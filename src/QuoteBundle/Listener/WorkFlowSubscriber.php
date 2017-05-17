@@ -70,7 +70,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         /** @var Quote $quote */
         $quote = $event->getSubject();
 
-        if (QuoteGraph::TRANSITION_ARCHIVE === $event->getTransition()) {
+        if (QuoteGraph::TRANSITION_ARCHIVE === $event->getTransition()->getName()) {
             $quote->archive();
         }
 
