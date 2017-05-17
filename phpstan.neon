@@ -1,5 +1,5 @@
 parameters:
     bootstrap: %rootDir%/../../../app/autoload.php
     excludes_analyse:
-	- %rootDir%/../../../src/*/Tests/*
-	- %rootDir%/../../../src/*/Test/*
+        - %rootDir%/../../../src/*/Tests/*
+        - %rootDir%/../../../src/*/Test/*

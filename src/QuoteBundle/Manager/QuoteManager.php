@@ -42,13 +42,11 @@ class QuoteManager
     private $mailer;
 
     /**
-     * @param ManagerRegistry     $doctrine
      * @param StateMachine        $stateMachine
      * @param Mailer              $mailer
      * @param NotificationManager $notification
      */
     public function __construct(
-        ManagerRegistry $doctrine,
         StateMachine $stateMachine,
         Mailer $mailer,
         NotificationManager $notification
