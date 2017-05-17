@@ -16,11 +16,15 @@ namespace CSBill\MoneyBundle\Tests\Doctrine\Types;
 use CSBill\MoneyBundle\Doctrine\Types\MoneyType;
 use Doctrine\DBAL\Types\Type;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\TestCase;
 
-class MoneyTypeTest extends \PHPUnit\Framework\TestCase
+class MoneyTypeTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     protected function setUp()
     {
         if (!Type::hasType('money')) {

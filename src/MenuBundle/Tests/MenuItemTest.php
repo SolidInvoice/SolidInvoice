@@ -16,9 +16,13 @@ namespace CSBill\MenuBundle\Tests;
 use CSBill\MenuBundle\MenuItem;
 use Knp\Menu\Factory\CoreExtension;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class MenuItemTest extends \PHPUnit\Framework\TestCase
+class MenuItemTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testAddDivider()
     {
         $factory = M::mock('Knp\Menu\FactoryInterface');

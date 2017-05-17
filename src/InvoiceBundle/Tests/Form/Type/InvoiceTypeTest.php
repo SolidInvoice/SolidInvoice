@@ -63,7 +63,7 @@ class InvoiceTypeTest extends FormTestCase
     {
         $repository = M::mock(TaxRepository::class);
         $repository->shouldReceive('taxRatesConfigured')
-            ->once()
+            ->zeroOrMoreTimes()
             ->withNoArgs()
             ->andReturn(false);
 

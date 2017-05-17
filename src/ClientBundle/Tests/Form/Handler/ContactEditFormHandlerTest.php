@@ -18,11 +18,14 @@ use CSBill\ClientBundle\Form\Handler\ContactEditFormHandler;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use JMS\Serializer\SerializerBuilder;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
+    use MockeryPHPUnitIntegration;
+
     private $firstName;
 
     private $email;

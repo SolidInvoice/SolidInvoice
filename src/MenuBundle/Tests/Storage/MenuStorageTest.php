@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace CSBill\MenuBundle\Tests\Storage;
 
 use CSBill\MenuBundle\Storage\MenuStorage;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class MenuStorageTest extends \PHPUnit\Framework\TestCase
+class MenuStorageTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @dataProvider storageItems
      *

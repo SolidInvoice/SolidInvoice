@@ -19,6 +19,7 @@ use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\TaxBundle\Entity\Tax;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -30,6 +31,8 @@ use Symfony\Component\Workflow\Transition;
 
 class InvoiceManagerTest extends KernelTestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var InvoiceManager
      */

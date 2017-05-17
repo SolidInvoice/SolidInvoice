@@ -15,9 +15,13 @@ namespace CSBill\CronBundle\Tests;
 
 use CSBill\CronBundle\Runner;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class RunnerTest extends \PHPUnit\Framework\TestCase
+class RunnerTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testRun()
     {
         $cron = new Runner();

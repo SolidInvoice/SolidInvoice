@@ -15,9 +15,13 @@ namespace CSBill\PaymentBundle\Tests\Factory;
 
 use CSBill\PaymentBundle\Exception\InvalidGatewayException;
 use CSBill\PaymentBundle\Factory\PaymentFactories;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class PaymentFactoriesTest extends \PHPUnit\Framework\TestCase
+class PaymentFactoriesTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testSetGatewayFactories()
     {
         $data = [

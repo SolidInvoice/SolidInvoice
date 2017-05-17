@@ -15,9 +15,13 @@ namespace CSBill\MenuBundle\Tests;
 
 use CSBill\MenuBundle\Factory;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class FactoryTest extends \PHPUnit\Framework\TestCase
+class FactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testAddExtension()
     {
         $factory = new Factory(M::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface'));

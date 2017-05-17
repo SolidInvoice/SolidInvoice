@@ -15,11 +15,14 @@ namespace CSBill\DataGridBundle\Tests\DependencyInjection;
 
 use CSBill\DataGridBundle\DependencyInjection\GridConfiguration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
-class GridConfigurationTest extends \PHPUnit\Framework\TestCase
+class GridConfigurationTest extends TestCase
 {
-    use ConfigurationTestCaseTrait;
+    use ConfigurationTestCaseTrait,
+        MockeryPHPUnitIntegration;
 
     const FIXTURES_PATH = __DIR__.'/../fixtures/config/';
 

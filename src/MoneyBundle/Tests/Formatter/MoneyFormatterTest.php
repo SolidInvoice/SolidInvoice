@@ -14,11 +14,15 @@ declare(strict_types=1);
 namespace CSBill\MoneyBundle\Tests\Formatter;
 
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\TestCase;
 
-class MoneyFormatterTest extends \PHPUnit\Framework\TestCase
+class MoneyFormatterTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @param string $locale
      * @param string $currency

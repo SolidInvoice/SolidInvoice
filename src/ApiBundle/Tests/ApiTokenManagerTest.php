@@ -20,9 +20,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class ApiTokenManagerTest extends \PHPUnit\Framework\TestCase
+class ApiTokenManagerTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testGenerateToken()
     {
         $tm = new ApiTokenManager(M::mock(ManagerRegistry::class));

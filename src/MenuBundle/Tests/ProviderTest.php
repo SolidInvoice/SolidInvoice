@@ -15,9 +15,13 @@ namespace CSBill\MenuBundle\Tests;
 
 use CSBill\MenuBundle\Provider;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class ProviderTest extends \PHPUnit\Framework\TestCase
+class ProviderTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testGet()
     {
         $storage = M::mock('CSBill\MenuBundle\Storage\MenuStorageInterface');

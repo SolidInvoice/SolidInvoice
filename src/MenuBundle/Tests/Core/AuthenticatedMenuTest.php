@@ -15,10 +15,14 @@ namespace CSBill\MenuBundle\Tests\Core;
 
 use CSBill\MenuBundle\Core\AuthenticatedMenu;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
-class AuthenticatedMenuTest extends \PHPUnit\Framework\TestCase
+class AuthenticatedMenuTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var \Mockery\MockInterface
      */

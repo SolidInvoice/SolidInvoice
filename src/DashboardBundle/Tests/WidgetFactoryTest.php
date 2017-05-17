@@ -15,9 +15,13 @@ namespace CSBill\DashboardBundle\Tests;
 
 use CSBill\DashboardBundle\WidgetFactory;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class WidgetFactoryTest extends \PHPUnit\Framework\TestCase
+class WidgetFactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testAdd()
     {
         $factory = new WidgetFactory();

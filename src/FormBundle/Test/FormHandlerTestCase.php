@@ -26,6 +26,7 @@ use CSBill\QuoteBundle\Form\Type\QuoteType;
 use Faker\Factory;
 use Faker\Generator;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use SolidWorx\FormHandler\Test\FormHandlerTestCase as BaseTestCase;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
@@ -35,7 +36,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class FormHandlerTestCase extends BaseTestCase
 {
-    use DoctrineTestTrait;
+    use DoctrineTestTrait,
+        MockeryPHPUnitIntegration;
 
     /**
      * @var Generator
