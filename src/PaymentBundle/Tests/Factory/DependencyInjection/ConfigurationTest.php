@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 class ConfigurationTest extends TestCase
 {
     use ConfigurationTestCaseTrait,
-	MockeryPHPUnitIntegration;
+        MockeryPHPUnitIntegration;
 
     protected function getConfiguration()
     {

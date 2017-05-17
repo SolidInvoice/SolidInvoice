@@ -19,7 +19,6 @@ use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\SettingsBundle\Entity\Setting;
 use CSBill\SettingsBundle\Form\Type\SettingsType;
 use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 

@@ -17,7 +17,6 @@ use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\SettingsBundle\Form\Type\SettingSectionType;
 use CSBill\SettingsBundle\Manager\SettingsManager;
 use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class SettingSectionTypeTest extends FormTestCase
 {

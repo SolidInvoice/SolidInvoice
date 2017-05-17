@@ -23,6 +23,7 @@ use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
 use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidType;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
@@ -39,7 +40,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class FormTestCase extends TypeTestCase
 {
     use DoctrineTestTrait,
-	M\Adapter\Phpunit\MockeryPHPUnitIntegration;
+	    MockeryPHPUnitIntegration;
 
     /**
      * @var Generator

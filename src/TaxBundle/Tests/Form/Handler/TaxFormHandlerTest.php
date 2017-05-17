@@ -18,7 +18,6 @@ use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use CSBill\TaxBundle\Form\Handler\TaxFormHandler;
 use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;

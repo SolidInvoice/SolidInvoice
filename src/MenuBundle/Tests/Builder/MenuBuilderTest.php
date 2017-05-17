@@ -35,6 +35,7 @@ class MenuBuilderTest extends TestCase
             ->andReturn(true);
 
         $builder->shouldReceive('something')
+            ->once()
             ->withArgs([$item, []]);
 
         $menuBuilder = new MenuBuilder($builder, 'something');

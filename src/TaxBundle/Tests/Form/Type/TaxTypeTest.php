@@ -16,7 +16,6 @@ namespace CSBill\TaxBundle\Tests\Form\Type;
 use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\TaxBundle\Entity\Tax;
 use CSBill\TaxBundle\Form\Type\TaxType;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class TaxTypeTest extends FormTestCase
 {
