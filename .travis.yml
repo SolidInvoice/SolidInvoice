@@ -18,6 +18,10 @@ cache:
     - node_modules
 
 addons:
+  sauce_connect:
+    username: "pierredup"
+  jwt:
+    secure: "LkwRsRFfnyTe0TBt90uTkwvHAsGOlA4FHzn6o2xFNfkaoW/Tbr66WZOyOduVkmhqDej+appjswx8CPGH2vHcnw2Vw/MdrXPAUjpIb7MZ4bWNR67nffB5FciyAUzUQTWnOWb+34jf1gr2dLKwQ7DCGp4QarVamwkp2UPBwsvyZq0="
   apt:
     sources:
       - google-chrome
@@ -43,7 +47,6 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   - bash travis/travis-ci-apache.sh
-  - if [[ "$SAUCE_USERNAME" ]]; then bash travis/sauce.sh; fi;
   - node_modules/.bin/gulp
 
 script:
