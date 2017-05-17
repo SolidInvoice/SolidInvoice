@@ -32,6 +32,7 @@ default:
                     symfony2: ~
                 saucelabs:
                     sauce_labs:
+                        browser: chrome
                         connect: true
                         capabilities:
                             custom-data: { travis: true }
