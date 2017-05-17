@@ -10,3 +10,5 @@ services:
     CSBill\QuoteBundle\Form\Handler\:
         resource: '../../../Form/Handler'
         lazy: true
+        arguments:
+            $stateMachine: '@state_machine.quote'

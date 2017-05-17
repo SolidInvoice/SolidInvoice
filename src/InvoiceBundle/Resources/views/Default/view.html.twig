@@ -20,9 +20,6 @@
 {% endblock sidebar %}
 
 {% block content %}
-
-    {% set graph = constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH') %}
-
     <div class="pull-right">
         <div class="btn-toolbar">
             <div class="btn-group">
@@ -32,13 +29,13 @@
             </div>
 
             <div class="btn-group">
-                {% if finite_can(invoice, 'pay', graph) %}
+                {% if workflow_can(invoice, 'pay') %}
                     <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
                         {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
                     </a>
                 {% endif %}
 
-                {% if finite_has(invoice, 'sendable', graph) %}
+                {% if invoice.status not in ['cancelled'] %}
                     <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">
                         {{ icon('envelope-o') }} {{ "invoice.view.toolbar.send"|trans }}
                     </a>
@@ -46,12 +43,13 @@
             </div>
 
             <div class="btn-group">
-                {% if finite_can(invoice, 'reopen', graph) %}
+                {% if workflow_can(invoice, 'reopen') %}
+
                     <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-default">
                         {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
                     </a>
                 {% endif %}
-                {% if finite_can(invoice, 'cancel', graph) %}
+                {% if workflow_can(invoice, 'cancel') %}
                     <a href="{{ path('_action_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}"
                        class="btn btn-warning">
                         {{ icon('ban') }} {{ "invoice.view.toolbar.cancel"|trans }}
@@ -59,7 +57,7 @@
                 {% endif %}
             </div>
 
-            {% if finite_has(invoice, 'editable', graph) %}
+            {% if workflow_can(invoice, 'edit') %}
                 <div class="btn-group">
                     <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">
                         {{ icon('edit') }} {{ "invoice.view.toolbar.edit"|trans }}

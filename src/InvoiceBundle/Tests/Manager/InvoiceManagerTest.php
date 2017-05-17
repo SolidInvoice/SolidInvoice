@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Tests\Manager;
 
 use CSBill\ClientBundle\Entity\Client;
-use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -22,6 +22,11 @@ use CSBill\TaxBundle\Entity\Tax;
 use Money\Currency;
 use Money\Money;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Workflow\Definition;
+use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Transition;
 
 class InvoiceManagerTest extends KernelTestCase
 {
@@ -33,43 +38,40 @@ class InvoiceManagerTest extends KernelTestCase
     /**
      * @var \Mockery\Mock
      */
-    private $dispatcher;
-
-    /**
-     * @var \Mockery\Mock
-     */
     private $entityManager;
 
     public function setUp()
     {
-        $this->dispatcher = \Mockery::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->entityManager = \Mockery::mock('Doctrine\ORM\EntityManagerInterface');
-        $stateMachine = \Mockery::mock('Finite\Factory\FactoryInterface', ['can' => true]);
-        $finite = \Mockery::mock('Finite\Factory\FactoryInterface', ['get' => $stateMachine]);
         $doctrine = \Mockery::mock('Doctrine\Common\Persistence\ManagerRegistry', ['getManager' => $this->entityManager]);
         $notification = \Mockery::mock('CSBill\NotificationBundle\Notification\NotificationManager');
 
         $notification->shouldReceive('sendNotification')
             ->andReturn(null);
 
-        $this->manager = new InvoiceManager($doctrine, $this->dispatcher, $finite, $notification);
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine));
+        $stateMachine = new StateMachine(
+            new Definition(
+                ['new', 'draft'],
+                [new Transition('new', 'new', 'draft')]
+            ),
+            new SingleStateMarkingStore('status'),
+            $dispatcher,
+            'invoice'
+        );
+
+        $this->manager = new InvoiceManager($doctrine, new EventDispatcher(), $stateMachine, $notification);
 
         $this
             ->entityManager
             ->shouldReceive('persist', 'flush')
             ->zeroOrMoreTimes();
-
-        $stateMachine->shouldReceive('apply')->zeroOrMoreTimes();
     }
 
     public function testCreateFromQuote()
     {
         $currency = new Currency('USD');
-
-        $this
-            ->dispatcher
-            ->shouldReceive('dispatch')
-            ->withAnyArgs();
 
         $client = new Client();
         $client->setName('Test Client');
@@ -108,7 +110,7 @@ class InvoiceManagerTest extends KernelTestCase
         $this->assertSame($quote->getTerms(), $invoice->getTerms());
         $this->assertEquals($quote->getTax(), $invoice->getTax());
         $this->assertSame($client, $invoice->getClient());
-        $this->assertSame('new', $invoice->getStatus());
+        $this->assertNull($invoice->getStatus());
 
         $this->assertNotSame($quote->getUuid(), $invoice->getUuid());
         $this->assertNull($invoice->getId());
@@ -124,30 +126,5 @@ class InvoiceManagerTest extends KernelTestCase
         $this->assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
         $this->assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         $this->assertSame($item->getQty(), $invoiceItem[0]->getQty());
-    }
-
-    public function testMarkPaid()
-    {
-        $invoice = new Invoice();
-
-        $this
-            ->dispatcher
-            ->shouldReceive('dispatch')
-            ->once()
-            ->withAnyArgs();
-
-        $this
-            ->dispatcher
-            ->shouldReceive('dispatch')
-            ->once()
-            ->withAnyArgs();
-
-        // Ensure paid date is empty when creating invoice
-        $this->assertNull($invoice->getPaidDate());
-
-        $this->manager->pay($invoice);
-
-        $this->assertInstanceOf('DateTime', $invoice->getPaidDate());
-        $this->assertSame(null, $invoice->getStatus());
     }
 }

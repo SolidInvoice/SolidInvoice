@@ -10,3 +10,5 @@ services:
     CSBill\InvoiceBundle\Form\Handler\:
         resource: '../../../Form/Handler'
         lazy: true
+        arguments:
+            $stateMachine: '@state_machine.invoice'

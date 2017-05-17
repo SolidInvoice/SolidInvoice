@@ -16,18 +16,18 @@ namespace CSBill\InvoiceBundle\Action\Transition;
 use CSBill\CoreBundle\Mailer\Mailer;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 final class Send
 {
     /**
-     * @var InvoiceManager
+     * @var StateMachine
      */
-    private $manager;
+    private $stateMachine;
 
     /**
      * @var Mailer
@@ -39,20 +39,20 @@ final class Send
      */
     private $router;
 
-    public function __construct(InvoiceManager $manager, Mailer $mailer, RouterInterface $router)
+    public function __construct(StateMachine $stateMachine, Mailer $mailer, RouterInterface $router)
     {
-        $this->manager = $manager;
+        $this->stateMachine = $stateMachine;
         $this->mailer = $mailer;
         $this->router = $router;
     }
 
     public function __invoke(Request $request, Invoice $invoice)
     {
-        if ($invoice->getStatus() !== Graph::STATUS_PENDING) {
-            $this->manager->accept($invoice);
-        } else {
-            $this->mailer->sendInvoice($invoice);
+        if ($invoice->getStatus() !== Graph::STATUS_PENDING && $this->stateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
+            $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
+
+        $this->mailer->sendInvoice($invoice);
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 

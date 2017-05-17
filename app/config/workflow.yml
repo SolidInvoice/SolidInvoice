@@ -1,0 +1,90 @@
+framework:
+    workflows:
+        invoice:
+            audit_trail:
+                enabled: true
+            type: 'state_machine'
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - status
+            supports:
+                - 'CSBill\InvoiceBundle\Entity\Invoice'
+            places:
+                - new
+                - draft
+                - pending
+                - overdue
+                - cancelled
+                - archived
+                - recurring
+                - paid
+            transitions:
+                new:
+                    from: new
+                    to: draft
+                recurring:
+                    from: new
+                    to: recurring
+                accept:
+                    from: [new, draft, overdue]
+                    to: pending
+                cancel:
+                    from: [draft, pending, overdue]
+                    to: cancelled
+                overdue:
+                    from: pending
+                    to: overdue
+                pay:
+                    from: [pending, overdue]
+                    to: paid
+                reopen:
+                    from: cancelled
+                    to: draft
+                archive:
+                    from: [new, draft, cancelled, paid, recurring]
+                    to: archived
+                edit:
+                    from: [cancelled, draft, pending, overdue]
+                    to: draft
+
+        quote:
+            audit_trail:
+                enabled: true
+            type: 'state_machine'
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - status
+            supports:
+                - 'CSBill\QuoteBundle\Entity\Quote'
+            places:
+                - new
+                - draft
+                - pending
+                - cancelled
+                - archived
+                - accepted
+                - declined
+            transitions:
+                new:
+                    from: [new, cancelled]
+                    to: draft
+                send:
+                    from: [new, draft]
+                    to: pending
+                cancel:
+                    from: [draft, pending]
+                    to: cancelled
+                decline:
+                    from: [new, draft, pending]
+                    to: declined
+                accept:
+                    from: pending
+                    to: accepted
+                reopen:
+                    from: [cancelled, declined]
+                    to: draft
+                archive:
+                    from: [new, draft, cancelled, accepted, declined, pending]
+                    to: archived

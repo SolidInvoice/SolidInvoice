@@ -1,14 +1,12 @@
 services:
+    _instanceof:
+        Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            public: false
+            tags: ['kernel.event_subscriber']
+
     _defaults:
         public: false
-        tags:
-            - { name: kernel.event_subscriber }
+        autowire: true
 
-    CSBill\InvoiceBundle\Listener\InvoicePaidListener:
-        arguments: ['@doctrine', '@currency']
-
-    CSBill\InvoiceBundle\Listener\InvoiceCancelListener:
-        arguments: ['@doctrine', '@currency']
-
-    CSBill\InvoiceBundle\Listener\Mailer\InvoiceMailerListener:
-        arguments: ['@billing.mailer']
+    CSBill\InvoiceBundle\Listener\:
+        resource: '../../../Listener'

@@ -1,7 +1,9 @@
 services:
     quote.manager:
         class: CSBill\QuoteBundle\Manager\QuoteManager
-        arguments: ['@doctrine', '@event_dispatcher', '@finite.factory', '@invoice.manager', '@billing.mailer', '@notification.manager']
+        autowire: true
+        arguments:
+            $stateMachine: '@state_machine.quote'
 
     CSBill\QuoteBundle\Menu\Builder:
         public: false

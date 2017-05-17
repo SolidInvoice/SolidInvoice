@@ -17,11 +17,10 @@ use CSBill\CoreBundle\Response\AjaxResponse;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
-use Finite\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Workflow\StateMachine;
 
 final class Archive implements AjaxResponse
 {
@@ -33,20 +32,14 @@ final class Archive implements AjaxResponse
     private $repository;
 
     /**
-     * @var InvoiceManager
+     * @var StateMachine
      */
-    private $invoiceManager;
+    private $stateMachine;
 
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    public function __construct(FactoryInterface $factory, InvoiceRepository $repository, InvoiceManager $invoiceManager)
+    public function __construct(InvoiceRepository $repository, StateMachine $stateMachine)
     {
         $this->repository = $repository;
-        $this->invoiceManager = $invoiceManager;
-        $this->factory = $factory;
+        $this->stateMachine = $stateMachine;
     }
 
     public function __invoke(Request $request)
@@ -55,11 +48,11 @@ final class Archive implements AjaxResponse
         $invoices = $this->repository->findBy(['id' => $request->request->get('data')]);
 
         foreach ($invoices as $invoice) {
-            if (!$this->factory->get($invoice, Graph::GRAPH)->can('archive')) {
+            if (!$this->stateMachine->can($invoice, Graph::TRANSITION_ARCHIVE)) {
                 throw new InvalidTransitionException('archive');
             }
 
-            $this->invoiceManager->archive($invoice);
+            $this->stateMachine->apply($invoice, Graph::TRANSITION_ARCHIVE);
         }
 
         return $this->json([]);

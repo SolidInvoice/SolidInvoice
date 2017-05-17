@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\PaymentBundle\Action;
 
+use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
@@ -25,7 +26,6 @@ use CSBill\PaymentBundle\Factory\PaymentFactories;
 use CSBill\PaymentBundle\Form\Type\PaymentType;
 use CSBill\PaymentBundle\Model\Status;
 use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
-use Finite\Factory\FactoryInterface;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
@@ -38,6 +38,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Workflow\StateMachine;
 
 // @TODO: Refactor this class to make it cleaner
 
@@ -46,9 +47,9 @@ final class Prepare
     use SaveableTrait;
 
     /**
-     * @var FactoryInterface
+     * @var StateMachine
      */
-    private $finite;
+    private $stateMachine;
 
     /**
      * @var PaymentMethodRepository
@@ -81,11 +82,6 @@ final class Prepare
     private $paymentFactories;
 
     /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -101,26 +97,24 @@ final class Prepare
     private $router;
 
     public function __construct(
-        FactoryInterface $finite,
+        StateMachine $stateMachine,
         PaymentMethodRepository $paymentMethodRepository,
         AuthorizationCheckerInterface $authorization,
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         Currency $currency,
         PaymentFactories $paymentFactories,
-        \Twig_Environment $twig,
         EventDispatcherInterface $eventDispatcher,
         Payum $payum,
         RouterInterface $router
     ) {
-        $this->finite = $finite;
+        $this->stateMachine = $stateMachine;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->authorization = $authorization;
         $this->tokenStorage = $tokenStorage;
         $this->formFactory = $formFactory;
         $this->currency = $currency;
         $this->paymentFactories = $paymentFactories;
-        $this->twig = $twig;
         $this->eventDispatcher = $eventDispatcher;
         $this->payum = $payum;
         $this->router = $router;
@@ -132,9 +126,7 @@ final class Prepare
             throw new NotFoundHttpException();
         }
 
-        $finite = $this->finite->get($invoice, Graph::GRAPH);
-
-        if (!$finite->can(Graph::TRANSITION_PAY)) {
+        if (!$this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             throw new \Exception('This invoice cannot be paid');
         }
 
@@ -183,9 +175,9 @@ final class Prepare
                     }
 
                     if (!empty($invalid)) {
-                        $request->getSession()->getFlashbag()->flash($invalid, 'error');
+                        $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
 
-                        return $this->twig->render(
+                        return new Template(
                             'CSBillPaymentBundle:Payment:create.html.twig',
                             [
                                 'form' => $form->createView(),

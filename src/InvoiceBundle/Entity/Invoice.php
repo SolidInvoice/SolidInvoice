@@ -404,7 +404,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setDiscount(float $discount): self
+    public function setDiscount(?float $discount): self
     {
         $this->discount = $discount;
 

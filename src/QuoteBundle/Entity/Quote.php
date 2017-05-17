@@ -338,7 +338,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setDiscount(float $discount): self
+    public function setDiscount(?float $discount): self
     {
         $this->discount = $discount;
 

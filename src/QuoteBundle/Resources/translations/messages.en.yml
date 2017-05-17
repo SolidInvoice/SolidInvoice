@@ -62,7 +62,7 @@ quote:
             decline: 'Quote Declined'
             cancel: 'Quote Cancelled'
             reopen: 'Quote Re-Opened'
-            send: 'Quote Sent'
+            sent: 'Quote Sent'
     archive:
         success: 'Quote Archived'
     grid:
