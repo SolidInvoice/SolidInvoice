@@ -25,7 +25,7 @@ default:
     extensions:
         Behat\MinkExtension:
             base_url: http://localhost
-            default_session: symfony
+            default_session: saucelabs
             javascript_session: saucelabs
             sessions:
                 symfony:
