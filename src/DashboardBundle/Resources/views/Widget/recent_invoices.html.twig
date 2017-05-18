@@ -34,14 +34,12 @@
                                     {{ icon('eye') }} {{ 'dashboard.invoice.actions.view'|trans }}
                                 </a>
                             </li>
-                            {% if finite_has(invoice, 'editable', constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH')) %}
-                                <li>
-                                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
-                                        {{ icon('edit') }} {{ 'dashboard.invoice.actions.edit'|trans }}
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% if finite_can(invoice, 'pay', constant('CSBill\\InvoiceBundle\\Model\\Graph::GRAPH')) %}
+                            <li>
+                                <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
+                                    {{ icon('edit') }} {{ 'dashboard.invoice.actions.edit'|trans }}
+                                </a>
+                            </li>
+                            {% if workflow_can(invoice, 'pay') %}
                                 <li class="divider"></li>
                                 <li>
                                     <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}">

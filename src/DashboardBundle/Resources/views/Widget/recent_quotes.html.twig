@@ -34,13 +34,11 @@
                                     {{ icon('eye') }} {{ 'dashboard.quote.actions.view'|trans }}
                                 </a>
                             </li>
-                            {% if finite_has(quote, 'editable', constant('CSBill\\QuoteBundle\\Model\\Graph::GRAPH')) %}
-                                <li>
-                                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}">
-                                        {{ icon('edit') }} {{ 'dashboard.quote.actions.edit'|trans }}
-                                    </a>
-                                </li>
-                            {% endif %}
+                            <li>
+                                <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}">
+                                    {{ icon('edit') }} {{ 'dashboard.quote.actions.edit'|trans }}
+                                </a>
+                            </li>
                         </ul>
                     </div>
 
