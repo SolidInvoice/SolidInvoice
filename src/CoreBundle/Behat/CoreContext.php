@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Behat;
 
+use Behat\Mink\Element\NodeElement;
+
 class CoreContext extends DefaultContext
 {
     /**
@@ -32,6 +34,7 @@ class CoreContext extends DefaultContext
 
         $select2->press();
 
+        /* @var NodeElement[] $chosenResults */
         $chosenResults = $page->findAll('css', '.select2-results li');
 
         foreach ($chosenResults as $result) {

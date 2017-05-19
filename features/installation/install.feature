@@ -22,8 +22,8 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "Driver" with "pdo_mysql"
-    And I fill in select2 input "Transport" with "mail"
+    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
+    And I fill in select2 input "config_step_email_settings_transport" with "mail"
     And I fill in the following:
       #| Driver        | pdo_mysql  |
       #| User          | root       |
@@ -44,8 +44,8 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "Driver" with "pdo_mysql"
-    And I fill in select2 input "Transport" with "mail"
+    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
+    And I fill in select2 input "config_step_email_settings_transport" with "mail"
     And I fill in the following:
       | Driver        | pdo_mysql  |
       | User          | root       |
@@ -64,8 +64,8 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
-    And I fill in select2 input "Driver" with "pdo_mysql"
-    And I fill in select2 input "Transport" with "mail"
+    And I fill in select2 input "config_step_database_config_driver" with "pdo_mysql"
+    And I fill in select2 input "config_step_email_settings_transport" with "mail"
     And I fill in the following:
       | Driver        | pdo_mysql  |
       | User          | root       |
