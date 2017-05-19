@@ -25,12 +25,12 @@ define(
                 var collectionView = new Mn.CollectionView({
                     collection: this.collection,
                     childView: TokenView,
-                    emptyView: Mn.ItemView.extend({
+                    emptyView: Mn.View.extend({
                         template: Template.user.empty_tokens
                     })
                 });
 
-                this.app.getRegion('tokenList').show(collectionView);
+                this.app.showChildView('tokenList', collectionView);
 
                 $('#create-api-token').on('click', _.bind(this.createToken, this))
             },

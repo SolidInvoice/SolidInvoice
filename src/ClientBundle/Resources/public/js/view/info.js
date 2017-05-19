@@ -12,7 +12,7 @@ define(
     function(Mn, Contact, ContactModal, Template) {
         "use strict";
 
-        return Mn.LayoutView.extend({
+        return Mn.View.extend({
             template: Template.client.info,
             contactCollection: null,
             regions: {

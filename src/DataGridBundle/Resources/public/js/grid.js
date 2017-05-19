@@ -83,7 +83,7 @@ define([
                 var grid = new Backgrid.Grid(_.extend(_.clone(options), gridOptions));
 
                 if (_.size(options.actions) > 0) {
-                    var ActionContainer = Mn.CompositeView.extend({
+                    var ActionContainer = Mn.View.extend({
                         template: Template.datagrid.grid_container,
                         childView: ActionView.extend({'grid': grid}),
                         childViewContainer: '.actions'

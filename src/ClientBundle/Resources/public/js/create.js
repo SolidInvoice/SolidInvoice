@@ -13,13 +13,15 @@ define(
         'use strict';
 
         return Module.extend({
+            formCollection: null,
+            contactCollection: null,
             initialize: function() {
-                new FormCollection({
+                this.formCollection = new FormCollection({
                     el: '#client-address-collection',
                     addSelector: '.add_form_collection_link'
                 });
 
-                new ContactCollection({
+                this.contactCollection = new ContactCollection({
                     el: '#client-contacts-collection',
                     addSelector: '.add_form_collection_link'
                 });

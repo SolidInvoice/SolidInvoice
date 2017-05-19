@@ -1,7 +1,7 @@
 define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], function($, Mn, Handlebars, Template, _) {
     "use strict";
 
-    return Mn.ItemView.extend({
+    return Mn.View.extend({
         'el': '#modal-container',
         'triggers': {
             'click .btn-save': 'save'
@@ -10,7 +10,7 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
             this.listenTo(this, 'render', this.listeners.render);
             this.listenTo(this, 'save', this.listeners.save);
 
-            Mn.ItemView.call(this, options);
+            Mn.View.call(this, options);
 
             var modal = _.result(this, 'modal');
 
@@ -19,7 +19,7 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
             };
 
             if (modal) {
-                this.templateHelpers = _.extend(_.extend(defaults, modal), this.templateHelpers);
+                this.templateContext = _.extend(_.extend(defaults, modal), this.templateContext);
             }
 
             this._bindModalEvents(modal);

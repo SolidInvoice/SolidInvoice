@@ -6,7 +6,7 @@ define(
         return ItemView.extend({
             template: Template.client.contact,
 
-            templateHelpers: function() {
+            templateContext: function() {
                 return {
                     'canDelete': this.model.collection.length > 1
                 };

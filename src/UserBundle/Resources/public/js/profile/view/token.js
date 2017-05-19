@@ -3,7 +3,7 @@ define(
     function(Mn, Bootbox, AjaxModal, Template, __) {
         "use strict";
 
-        return Mn.ItemView.extend({
+        return Mn.View.extend({
             template: Template.user.api,
             ui: {
                 'revokeBtn': '.revoke-token',

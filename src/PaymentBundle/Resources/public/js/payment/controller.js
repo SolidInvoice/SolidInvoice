@@ -4,7 +4,7 @@ define(
         "use strict";
 
         return function(module, model) {
-            var LoaderView = Mn.ItemView.extend({
+            var LoaderView = Mn.View.extend({
                 template: Template.payment.loader
             });
 
@@ -23,7 +23,7 @@ define(
                     module.app.getRegion('paymentMethodData').show(new LoaderView);
 
                     $.get(route, function(response) {
-                        var ItemView = Mn.ItemView.extend({
+                        var view = Mn.View.extend({
                             template: response,
                             ui: {
                                 'save': '#payment_methods_save'
@@ -45,7 +45,7 @@ define(
                                     data: data,
                                     method: 'POST',
                                     success: function(response) {
-                                        module.app.getRegion('paymentMethodData').show(new ItemView({template: response}));
+                                        module.app.getRegion('paymentMethodData').show(new view({template: response}));
                                         model.fetch();
                                     }
                                 });
@@ -57,7 +57,7 @@ define(
                             }
                         });
 
-                        module.app.getRegion('paymentMethodData').show(new ItemView);
+                        module.app.getRegion('paymentMethodData').show(new view);
                     });
                 }
             };
