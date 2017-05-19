@@ -49,6 +49,7 @@ install:
   - node_modules/.bin/gulp
 
 before_script:
+  - phpenv config-add travis/travis-php.ini
   - mysql -e 'create database csbill;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
@@ -57,7 +58,6 @@ before_script:
   - php ./bin/console server:start 9001 -n
   - sleep 5 # Give php server some time to start
   - curl http://127.0.0.1:9001/
-  - phpenv config-add travis/travis-php.ini
 
 script:
   - composer validate
