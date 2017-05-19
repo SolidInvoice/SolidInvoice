@@ -1,6 +1,6 @@
 language: php
 
-sudo: false
+sudo: required
 
 dist: trusty
 
@@ -49,7 +49,7 @@ install:
   - node_modules/.bin/gulp
 
 before_script:
-  - phpenv config-add travis/travis-php.ini
+  #- phpenv config-add travis/travis-php.ini
   - mysql -e 'create database csbill;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
