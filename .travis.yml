@@ -27,10 +27,13 @@ addons:
     username: csbill
   jwt:
     secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
-  #apt:
+  apt:
   #  sources:
   #    - google-chrome
-  #  packages:
+    packages:
+      - mysql-server-5.6
+      - mysql-client-core-5.6
+      - mysql-client-5.6
   #    - google-chrome-beta
 
 before_install:
@@ -52,8 +55,9 @@ before_script:
   #- bash travis/travis-ci-apache.sh
   #- node_modules/.bin/gulp
   - php ./bin/console server:start 9001 -n
-  - sleep 5
+  - sleep 5 # Give php server some time to start
   - curl http://127.0.0.1:9001/
+  - phpenv config-add travis/travis-php.ini
 
 script:
   - composer validate
