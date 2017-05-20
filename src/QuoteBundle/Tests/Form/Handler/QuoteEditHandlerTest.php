@@ -81,7 +81,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
 
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
-            ->once()
+            ->zeroOrMoreTimes()
             ->with('_quotes_view', ['id' => 1])
             ->andReturn('/quotes/1');
 

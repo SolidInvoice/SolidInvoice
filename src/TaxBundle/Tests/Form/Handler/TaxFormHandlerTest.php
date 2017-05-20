@@ -33,7 +33,7 @@ class TaxFormHandlerTest extends FormHandlerTestCase
     {
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
-            ->once()
+            ->zeroOrMoreTimes()
             ->with('_tax_rates')
             ->andReturn('/tax/rates');
 
