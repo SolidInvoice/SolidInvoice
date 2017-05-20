@@ -46,6 +46,7 @@ install:
   - php bin/console cache:clear
   - npm install
   - php bin/console assets:install -n
+  - php bin/console fos:js-routing:dump
   - node_modules/.bin/gulp
 
 before_script:
