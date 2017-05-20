@@ -28,17 +28,13 @@ addons:
   jwt:
     secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
   apt:
-  #  sources:
-  #    - google-chrome
     packages:
       - mysql-server-5.6
       - mysql-client-core-5.6
       - mysql-client-5.6
-  #    - google-chrome-beta
 
 before_install:
   - composer self-update
-  #- google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 &> /dev/null &
 
 install:
   - composer install -n
@@ -50,12 +46,9 @@ install:
   - node_modules/.bin/gulp
 
 before_script:
-  #- phpenv config-add travis/travis-php.ini
   - mysql -e 'create database csbill;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
-  #- bash travis/travis-ci-apache.sh
-  #- node_modules/.bin/gulp
   - php ./bin/console server:start 9001 -n
   - sleep 5 # Give php server some time to start
   - curl http://127.0.0.1:9001/
@@ -63,7 +56,7 @@ before_script:
 script:
   - composer validate
   #- php bin/console security:check # Security checker SSL is currently broken
-  #- ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
+  - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
   - bash travis/behat.sh
   - bash travis/phpunit.sh
 
@@ -73,8 +66,6 @@ after_script:
   - travis_retry php ./bin/coveralls -v
 
 notifications:
-  #webhooks:
-    #- http://savage.csbill.org/savage/travis
   hipchat:
     rooms:
       secure: Wc5cg/o//7DW9G0mosA5wmmECr9+R7S/FmVFvZU2mBBpfaE5nY873hePRrMK/Dhiu2aD5R/ll6d7b3mT7oiWzO/rMgQ+U/DcMmgqHYiYrtEz4umi+1EuSLURDAxyv3rDiXHhEWwbYcHfE1Tcfs07Aj4JWSZheploBRpg3iqzMbw=
