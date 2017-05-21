@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CSBill\CoreBundle\Doctrine\Filter;
 
 use CSBill\CoreBundle\Traits\Entity\Archivable;
-use Doctrine\ORM\Mapping\ClassMetaData;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class ArchivableFilter extends SQLFilter
