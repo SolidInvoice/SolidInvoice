@@ -6,6 +6,7 @@ dist: trusty
 
 php:
   - 7.1
+  - nightly
 
 matrix:
   fast_finish: true
@@ -51,7 +52,6 @@ before_script:
   - php app/app_check.php
   - php ./bin/console server:start 9001 -n
   - sleep 5 # Give php server some time to start
-  - curl http://127.0.0.1:9001/
 
 script:
   - composer validate
