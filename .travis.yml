@@ -4,14 +4,14 @@ sudo: required
 
 dist: trusty
 
-php:
-  - 7.1
-  - nightly
+#php:
+#  - 7.1
+#  - nightly
 
-matrix:
-  fast_finish: true
-  allow_failures:
-    - php: nightly
+#matrix:
+#  fast_finish: true
+#  allow_failures:
+#]    - php: nightly
 
 env:
   global:
@@ -58,6 +58,14 @@ before_script:
 jobs:
   include:
     - stage: unit
+      php: 7.1
+      script:
+        - composer validate
+        #- php bin/console security:check # Security checker SSL is currently broken
+        - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
+        - bash travis/phpunit.sh
+    - stage: unit
+      php: nightly
       script:
         - composer validate
         #- php bin/console security:check # Security checker SSL is currently broken
