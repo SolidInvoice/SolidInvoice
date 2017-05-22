@@ -1,3 +1,10 @@
+imports:
+  - 'travis/behat/linux.yml'
+  - 'travis/behat/macos_sierra.yml'
+  - 'travis/behat/osx_el_capitan.yml'
+  - 'travis/behat/windows10.yml'
+  - 'travis/behat/windows81.yml'
+
 default:
     formatters:
         pretty:
