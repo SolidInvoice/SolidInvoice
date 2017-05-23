@@ -1,52 +1,219 @@
 language: php
 
-php:
-  - 7.1
+sudo: required
 
-matrix:
-  fast_finish: true
+dist: trusty
+
+#php:
+#  - 7.1
+#  - nightly
+
+#matrix:
+#  fast_finish: true
+#  allow_failures:
+#]    - php: nightly
 
 env:
   global:
     - SYMFONY_ENV=test
-    - secure: "nYVUOMZOXXo3dh3ZS2ftNH4U4phz2AMnhGWpwL9FLSGAGiRNF1duP80w2dBb/pJkyLLZXIWI2AL6MDA1CudDKLR2p4hMSi8d1chpTZaBl8R9+R8u/mXilXLRld9PjwYfMcBJxegUzmsggxtwTPtReW1U8sYRsI4ktnXGq1ZuQjXg647ytvYLXbeGo8vqaW4MDXHdoHkmQqnvKl/YbARnT8m6BEahPD1owAWx0NA6O/6Kyoc2nU72GVdSEj6Anrb7WYKPWQvidmj9rUL1Nu3qwRhwsLhRLc+OsiGyOPJLYXMCWEYsyGco4Nn3yKWOnkNUcToUXmTvhcIL7N7mkrqRV7B7iObnjuqYLrxeBL8YYUiVD3SB9r/pwPWIj8/nmopFBNJQqMIeUVMoe+iK1zqx5tdCseMupCMTBIDLc/TdIt0iR38VSRdsJ7YJcLeBQ0y2+XL5Q4mHkZPSuPQQRsRmzQJw/cyfRGyMG/ZGV3bYVq4MfYuvrzRkBAgfxXRg4nCEGEHu4mpJaHqhHAIcpezF8MkcDStFHqJrJCGPwLfw0tbK8BE7eKAulQprIV6RZmbh92nPAdaCBloTt7c2wDpQS7hvyEi4xCv/aD/Jm+M/ipVpPLgL/kXQGv2fKBusocW5yWCV4OAe5nC0zqwiz6pl84MH+4DGawC8fZTRaax81hE="
-    - secure: "oWJhFdiagOe1JF30MWJnNQ5J8W2YWAd26iO2BsD0Wl4HcpmyjRH6bTeFqIeNLSMkCQ8OkpteQOVzkkAzpN4TCCVJJJdQxsmikLQztHziqz9gQeHWMPpLQiMWXr+0XxAnJTGEeqaQsBi9DS+DAJsusVl4IbRop4ZSdAuJrPmvnrbe3+HLJ6hG7fQeuNzxvypFCeV4zR4shs9tFB4KY9FJLgpksm2CQ2G4GYSB/S1CJzQlbbKMYugI8wT4d5P5tGyKJB/HIeg8gv/32QY9WuWlFiLfMjLxP3wKm7UMMM4W68MTHYK0bSD5xiu58Tkx0HHPQSsYjqKf79cfAJv0dX533Ed+77kUjFdHaoqWphfwym7YYdZp5um7LYUN1HwWLxw3xJeBWUVQJMqKVtmCHewGKfeg8Pc0NuqmqNUNVPh4YmWKmqT3Qtw8ZDR7sAHhfF6QQrHDse/jScR1itwGTB7LcLfHB5P12tgXedRyEvYLQ9mB4VAj6MtPNq56YcGHtdSiR0eaASJm47d5G9D9erf8cVyibhdMqM14wDHmD2r2kkk5EYS/FxWECAa/qbXqhBAbxYpFqjtDoe3R76mZlhYHQfYWhbYY5SKi7DtpgEklpubXCdEUbWuO0zBK6wuQo02G7PowxOpVvO4zjc8QISkLVnzN3ukRjETUa8pwt8crVms="
 
 cache:
   directories:
     - $HOME/.composer/cache
     - node_modules
 
+services:
+  - mysql
+
+addons:
+  sauce_connect:
+    username: csbill
+  jwt:
+    secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
+  apt:
+    packages:
+      - mysql-server-5.6
+      - mysql-client-core-5.6
+      - mysql-client-5.6
+
 before_install:
   - composer self-update
 
 install:
-  - composer install -n --profile
-  - sed -i 's/base_url:\ null/base_url:\ http:\/\/localhost/g' app/config/parameters.yml
+  - composer install -n
+  - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
   - php bin/console cache:clear
   - npm install
   - php bin/console assets:install -n
+  - php bin/console fos:js-routing:dump
   - node_modules/.bin/gulp
 
 before_script:
   - mysql -e 'create database csbill;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - bash travis/travis-ci-apache.sh
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sleep 3 # give xvfb some time to start
-  - if [[ "$SAUCE_USERNAME" ]]; then bash travis/sauce.sh; fi;
-  - node_modules/.bin/gulp
+  - php ./bin/console server:start 9001 -n
+  - sleep 5 # Give php server some time to start
 
-script:
-  - composer validate
-  #- php bin/console security:check # Security checker SSL is currently broken
-  - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
-  - bash travis/behat.sh
-  - bash travis/phpunit.sh
+jobs:
+  fast_finish: true
+  allow_failures:
+    - php: nightly
+  include:
+    - stage: unit
+      php: 7.1
+      script:
+        - composer validate
+        #- php bin/console security:check # Security checker SSL is currently broken
+        - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
+        - bash travis/phpunit.sh
+    - stage: unit
+      php: nightly
+      script:
+        - composer validate
+        #- php bin/console security:check # Security checker SSL is currently broken
+        - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
+        - bash travis/phpunit.sh
+    - stage: functional
+      php: 7.1
+      script: bash travis/behat.sh
+      env: TEST_SUITE=saucelabs_chrome_linux
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_linux
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_opera_linux
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_stable_macos_sierra
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_dev_macos_sierra
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_beta_macos_sierra
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_stable_macos_sierra
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_dev_macos_sierra
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_beta_macos_sierra
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_safari_macos_sierra
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_stable_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_dev_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_beta_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_stable_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_dev_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_beta_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_safari_10_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_safari_9_osx_el_capitan
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_stable_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_dev_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_beta_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_stable_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_dev_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_beta_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_ie_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_edge_14_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_edge_13_windows10
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_stable_windows81
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_dev_windows81
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_chrome_beta_windows81
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_stable_windows81
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_stable_windows81
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_dev_windows81
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_firefox_beta_windows81
+#    - stage: functional
+#      php: 7.1
+#      script: bash travis/behat.sh
+#      env: TEST_SUITE=saucelabs_ie_windows81
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
@@ -54,8 +221,6 @@ after_script:
   - travis_retry php ./bin/coveralls -v
 
 notifications:
-  webhooks:
-    - http://savage.csbill.org/savage/travis
   hipchat:
     rooms:
       secure: Wc5cg/o//7DW9G0mosA5wmmECr9+R7S/FmVFvZU2mBBpfaE5nY873hePRrMK/Dhiu2aD5R/ll6d7b3mT7oiWzO/rMgQ+U/DcMmgqHYiYrtEz4umi+1EuSLURDAxyv3rDiXHhEWwbYcHfE1Tcfs07Aj4JWSZheploBRpg3iqzMbw=

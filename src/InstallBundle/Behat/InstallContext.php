@@ -133,4 +133,12 @@ class InstallContext extends DefaultContext
             }
         }
     }
+
+    /**
+     * @Given /^I wait for "([^"]*)" to become available$/
+     */
+    public function iWaitForToBecomeAvailable($element)
+    {
+        $this->getSession()->wait(60000, '!document.getElementById("'.$element.'").classList.contains("disabled")');
+    }
 }

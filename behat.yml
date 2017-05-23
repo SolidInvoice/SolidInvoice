@@ -1,3 +1,10 @@
+imports:
+  - 'travis/behat/linux.yml'
+  - 'travis/behat/macos_sierra.yml'
+  - 'travis/behat/osx_el_capitan.yml'
+  - 'travis/behat/windows10.yml'
+  - 'travis/behat/windows81.yml'
+
 default:
     formatters:
         pretty:
@@ -24,14 +31,15 @@ default:
 
     extensions:
         Behat\MinkExtension:
-            base_url: http://localhost
-            default_session: symfony
+            base_url: http://127.0.0.1:9001
+            default_session: saucelabs
             javascript_session: saucelabs
             sessions:
                 symfony:
                     symfony2: ~
                 saucelabs:
                     sauce_labs:
+                        browser: chrome
                         connect: true
                         capabilities:
                             custom-data: { travis: true }

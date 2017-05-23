@@ -1,0 +1,135 @@
+default:
+    extensions:
+        Behat\MinkExtension:
+            sessions:
+                saucelabs_chrome_stable_windows10:
+                  sauce_labs:
+                    browser: chrome
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        browser: chrome
+                        name: Chrome Windows 10
+                saucelabs_chrome_dev_windows10:
+                  sauce_labs:
+                    browser: chrome
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        version: dev
+                        browser: chrome
+                        name: Chrome Dev Windows 10
+                saucelabs_chrome_beta_windows10:
+                  sauce_labs:
+                    browser: chrome
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        browser: chrome
+                        name: Chrome Beta Windows 10
+                saucelabs_firefox_stable_windows10:
+                  sauce_labs:
+                    browser: firefox
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        browser: firefox
+                        name: Firefox Windows 10
+                saucelabs_firefox_dev_windows10:
+                  sauce_labs:
+                    browser: firefox
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        version: dev
+                        browser: firefox
+                        name: Firefox Dev Windows 10
+                saucelabs_firefox_beta_windows10:
+                  sauce_labs:
+                    browser: firefox
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        version: beta
+                        browser: firefox
+                        name: Firefox Beta Windows 10
+                saucelabs_ie_windows10:
+                  sauce_labs:
+                    browser: internet explorer
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        browser: internet explorer
+                        name: Internet Explorer Windows 10
+                saucelabs_edge_14_windows10:
+                  sauce_labs:
+                    browser: MicrosoftEdge
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        version: 14.14393
+                        browser: MicrosoftEdge
+                        name: Microsoft Edge 14 Windows 10
+                saucelabs_edge_13_windows10:
+                  sauce_labs:
+                    browser: MicrosoftEdge
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: Windows 10
+                        version: 13.10586
+                        browser: MicrosoftEdge
+                        name: Microsoft Edge 13 Windows 10
+
+saucelabs_chrome_stable_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_chrome_stable_windows10
+
+saucelabs_chrome_dev_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_chrome_dev_windows10
+
+saucelabs_chrome_beta_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_chrome_beta_windows10
+
+saucelabs_firefox_stable_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_firefox_stable_windows10
+
+saucelabs_firefox_dev_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_firefox_dev_windows10
+
+saucelabs_firefox_beta_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_firefox_beta_windows10
+
+saucelabs_ie_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_ie_windows10
+
+saucelabs_edge_14_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_edge_14_windows10
+
+saucelabs_edge_13_windows10:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_edge_13_windows10

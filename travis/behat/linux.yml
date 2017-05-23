@@ -1,0 +1,47 @@
+default:
+    extensions:
+        Behat\MinkExtension:
+            sessions:
+                saucelabs_chrome_linux:
+                  sauce_labs:
+                    browser: chrome
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: linux
+                        browser: chrome
+                        name: Chrome Linux
+                saucelabs_firefox_linux:
+                  sauce_labs:
+                    browser: firefox
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: linux
+                        browser: firefox
+                        name: Firefox Linux
+                saucelabs_opera_linux:
+                  sauce_labs:
+                    browser: opera
+                    connect: true
+                    capabilities:
+                        custom-data: { travis: true }
+                        platform: linux
+                        version: 12.15
+                        browser: opera
+                        name: Opera Linux
+
+saucelabs_chrome_linux:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_chrome_linux
+
+saucelabs_firefox_linux:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_firefox_linux
+
+saucelabs_opera_linux:
+    extensions:
+        Behat\MinkExtension:
+            default_session: saucelabs_opera_linux

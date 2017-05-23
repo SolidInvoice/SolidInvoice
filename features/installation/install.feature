@@ -8,7 +8,7 @@ Feature: Install application
     Given The application is not installed
 
   Scenario: Redirect to installation when application is not installed
-    And I am on the homepage
+    Given I am on the homepage
     Then I should be on "/install/system_check"
 
   Scenario: Installation System Check
@@ -22,11 +22,11 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
+    And I fill in select2 input "Driver" with "mysql"
+    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
-      | User          | root       |
-      | Database Name | csbill     |
-      | Transport     | mail       |
+      | User          | root   |
+      | Database Name | csbill |
     And I press "continue_step"
     Then The config should contain the following values:
       | database_driver   | pdo_mysql |
@@ -42,17 +42,15 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
+    And I fill in select2 input "Driver" with "mysql"
+    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
-      | User          | root       |
-      | Database Name | csbill     |
-      | Transport     | mail       |
+      | User          | root   |
+      | Database Name | csbill |
     And I press "continue_step"
     Then I should be on "/install/process"
-    And I am on "/install/process?action=createdb"
-    And I am on "/install/process?action=migrations"
-    And I am on "/install/process?action=fixtures"
     And I am on "/install/process"
+    And I wait for "continue_step" to become available
     And I follow "continue_step"
     Then I should be on "/install/setup"
 
@@ -60,21 +58,18 @@ Feature: Install application
     Given I am on "/install/system_check"
     When I follow "continue_step"
     And I am on "/install/config"
+    And I fill in select2 input "Driver" with "mysql"
+    And I fill in select2 input "Transport" with "PHP Mail"
     And I fill in the following:
-      | Driver        | pdo_mysql  |
-      | User          | root       |
-      | Database Name | csbill     |
-      | Transport     | mail       |
+      | User          | root   |
+      | Database Name | csbill |
     And I press "continue_step"
-    And I am on "/install/process?action=createdb"
-    And I am on "/install/process?action=migrations"
-    And I am on "/install/process?action=fixtures"
     And I am on "/install/process"
     And I follow "continue_step"
     Then I should be on "/install/setup"
+    And I fill in select2 input "Locale" with "English"
+    And I fill in select2 input "Currency" with "US Dollar"
     And I fill in the following:
-      | Locale          | en_US       |
-      | Currency        | USD         |
       | Username        | admin       |
       | Email address   | foo@bar.com |
       | Password        | foobar      |
@@ -83,8 +78,8 @@ Feature: Install application
     Then I should be on "/install/finish"
     And I should see "You have successfully installed CSBill!"
     And The config should contain the following values:
-      | currency  | USD   |
-      | locale    | en_US |
+      | currency | USD |
+      | locale   | en  |
     And The config value "installed" should not be empty
     And the following user must exist:
       | username | email       | password |
