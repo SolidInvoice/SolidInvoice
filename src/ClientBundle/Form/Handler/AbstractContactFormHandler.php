@@ -71,5 +71,6 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
      * @return string
      */
     abstract public function getTemplate(): string;
+
     // This needs to be public for the lazy proxy service definition to work
 }
