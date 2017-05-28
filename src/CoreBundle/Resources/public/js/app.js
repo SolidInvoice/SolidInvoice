@@ -9,11 +9,9 @@
 
 define(
     /** global: requirejs */
-    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'marionette.compat', 'material', 'bootstrap', 'core/module'],
-    function($, Mn, Backbone, _, Module, Compat) {
+    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'material', 'bootstrap', 'core/module'],
+    function($, Mn, Backbone, _, Module) {
         'use strict';
-
-        //Compat();
 
         if (_.isUndefined(Module)) {
             Module = require('core/module');
