@@ -19,7 +19,7 @@ use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Model\Graph;
 use Symfony\Component\Workflow\StateMachine;
 
-class QuoteCloner
+final class QuoteCloner
 {
     /**
      * @var StateMachine
