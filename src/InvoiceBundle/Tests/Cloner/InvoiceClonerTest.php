@@ -82,13 +82,12 @@ class InvoiceClonerTest extends TestCase
 
         $this->assertCount(1, $newInvoice->getItems());
 
-        /** @var \CSBill\InvoiceBundle\Entity\item[] $invoiceItem */
         $invoiceItem = $newInvoice->getItems();
-        $this->assertInstanceOf('CSBill\InvoiceBundle\Entity\item', $invoiceItem[0]);
+        $this->assertInstanceOf(Item::class, $invoiceItem[0]);
 
         $this->assertSame($item->getTax(), $invoiceItem[0]->getTax());
         $this->assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        $this->assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
+        $this->assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
         $this->assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         $this->assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
