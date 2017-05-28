@@ -19,3 +19,8 @@ services:
         lazy: true
         tags:
             - { name: doctrine.event_listener, event: postLoad }
+
+    CSBill\QuoteBundle\Cloner\QuoteCloner:
+        autowire: true
+        arguments:
+            $stateMachine: '@state_machine.quote'
