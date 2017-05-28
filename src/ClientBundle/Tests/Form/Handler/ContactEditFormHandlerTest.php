@@ -20,6 +20,7 @@ use CSBill\FormBundle\Test\FormHandlerTestCase;
 use JMS\Serializer\SerializerBuilder;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
@@ -72,7 +73,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
-        $this->assertNull($response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);
         $this->assertCount(1, $this->em->getRepository('CSBillClientBundle:Contact')->findAll());
         $this->assertSame($this->firstName, $data->getFirstName());
