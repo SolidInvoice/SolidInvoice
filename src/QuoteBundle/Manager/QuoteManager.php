@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Manager;
 
-use Carbon\Carbon;
 use CSBill\CoreBundle\Mailer\Mailer;
 use CSBill\NotificationBundle\Notification\NotificationManager;
-use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Exception\InvalidTransitionException;
 use CSBill\QuoteBundle\Model\Graph;
