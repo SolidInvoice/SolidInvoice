@@ -16,9 +16,9 @@ namespace CSBill\InvoiceBundle\Cron;
 use Carbon\Carbon;
 use Cron\CronExpression;
 use CSBill\CronBundle\CommandInterface;
+use CSBill\InvoiceBundle\Cloner\InvoiceCloner;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Repository\InvoiceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -41,22 +41,22 @@ class RecurringInvoiceCreate implements CommandInterface
     private $stateMachine;
 
     /**
-     * @var InvoiceManager
+     * @var InvoiceCloner
      */
-    private $manager;
+    private $invoiceCloner;
 
     /**
      * RecurringInvoiceCreate constructor.
      *
      * @param ManagerRegistry $registry
-     * @param InvoiceManager  $manager
+     * @param InvoiceCloner   $invoiceCloner
      * @param StateMachine    $stateMachine
      */
-    public function __construct(ManagerRegistry $registry, InvoiceManager $manager, StateMachine $stateMachine)
+    public function __construct(ManagerRegistry $registry, InvoiceCloner $invoiceCloner, StateMachine $stateMachine)
     {
         $this->entityManager = $registry->getManager();
         $this->stateMachine = $stateMachine;
-        $this->manager = $manager;
+        $this->invoiceCloner = $invoiceCloner;
     }
 
     /**
@@ -87,7 +87,7 @@ class RecurringInvoiceCreate implements CommandInterface
             $cron = CronExpression::factory($recurringInfo->getFrequency());
 
             if (true === $cron->isDue(Carbon::now())) {
-                $newInvoice = $this->manager->duplicate($invoice);
+                $newInvoice = $this->invoiceCloner->clone($invoice);
                 $this->setItemsDescription($newInvoice);
 
                 $this->stateMachine->apply($newInvoice, Graph::TRANSITION_ACCEPT);

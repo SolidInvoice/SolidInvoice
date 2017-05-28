@@ -30,3 +30,6 @@ services:
             $stateMachine: '@state_machine.invoice'
         tags:
             - { name: cron.command }
+
+    CSBill\InvoiceBundle\Cloner\InvoiceCloner:
+        autowire: true
