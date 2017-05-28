@@ -64,13 +64,12 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
         /* @var Contact $client */
         $this->save($client);
 
-        return null;
+        return $this->getResponse($form);
     }
 
     /**
      * @return string
      */
     abstract public function getTemplate(): string;
-
     // This needs to be public for the lazy proxy service definition to work
 }

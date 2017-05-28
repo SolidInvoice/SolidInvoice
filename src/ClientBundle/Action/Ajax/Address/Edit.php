@@ -16,6 +16,7 @@ namespace CSBill\ClientBundle\Action\Ajax\Address;
 use CSBill\ClientBundle\Entity\Address;
 use CSBill\ClientBundle\Form\Type\AddressType;
 use CSBill\CoreBundle\Response\AjaxResponse;
+use CSBill\CoreBundle\Templating\Template;
 use CSBill\CoreBundle\Traits\JsonTrait;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -31,41 +32,26 @@ final class Edit implements AjaxResponse
      */
     private $factory;
 
-    /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
     public function __construct(\Twig_Environment $twig, FormFactoryInterface $factory)
     {
         $this->factory = $factory;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request, Address $address)
     {
-        $status = 'success';
-
         $form = $this->factory->create(AddressType::class, $address, ['canDelete' => false]);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $this->save($address);
-        } elseif ($form->isSubmitted()) {
-            $status = 'failure';
         }
 
-        return $this->json(
+        return new Template(
+            'CSBillClientBundle:Ajax:address_edit.html.twig',
             [
-                'content' => $this->twig->render(
-                    'CSBillClientBundle:Ajax:address_edit.html.twig',
-                    [
-                        'form' => $form->createView(),
-                        'address' => $address,
-                    ]
-                ),
-                'status' => $status,
+                'form' => $form->createView(),
+                'address' => $address,
             ]
         );
     }

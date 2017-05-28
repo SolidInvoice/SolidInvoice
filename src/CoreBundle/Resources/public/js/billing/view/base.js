@@ -2,7 +2,7 @@ define(
     ['marionette', 'lodash', 'core/billing/model/row_model', 'core/billing/view/footer', 'core/billing/view/item_row'],
     function (Mn, _, RowModel, FooterView, RowView)
     {
-        return Mn.View.extend({
+        return Mn.CompositeView.extend({
             childView: RowView,
             selector: null,
             footerView: null,

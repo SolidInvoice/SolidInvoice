@@ -20,7 +20,7 @@ define(
                     $('a[data-method="' + fragment + '"]').closest('li').addClass('active');
 
                     var route = Routing.generate('_xhr_payments_settings', {'method': fragment});
-                    module.app.getRegion('paymentMethodData').show(new LoaderView);
+                    module.app.showChildView('paymentMethodData', new LoaderView);
 
                     $.get(route, function(response) {
                         var view = Mn.View.extend({
@@ -34,7 +34,7 @@ define(
                             saveMethod: function(event) {
                                 event.preventDefault();
 
-                                module.app.getRegion('paymentMethodData').show(new LoaderView);
+                                module.app.showChildView('paymentMethodData', new LoaderView);
 
                                 var form = this.$('form');
                                 var data = form.serialize(),
@@ -45,7 +45,7 @@ define(
                                     data: data,
                                     method: 'POST',
                                     success: function(response) {
-                                        module.app.getRegion('paymentMethodData').show(new view({template: response}));
+                                        module.app.showChildView('paymentMethodData', new view({template: response}));
                                         model.fetch();
                                     }
                                 });
@@ -57,7 +57,7 @@ define(
                             }
                         });
 
-                        module.app.getRegion('paymentMethodData').show(new view);
+                        module.app.showChildView('paymentMethodData', new view);
                     });
                 }
             };

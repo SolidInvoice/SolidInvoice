@@ -50,7 +50,7 @@ define(
                     })
                 });
 
-                this.app.getRegion('paymentMethodList').show(menuView);
+                this.app.showChildView('paymentMethodList', menuView);
             }
         });
     });

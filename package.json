@@ -1,7 +1,7 @@
 {
   "name": "csbill",
   "description": "CSBill Billing Application",
-  "version": "0.9.0",
+  "version": "2.0.0",
   "main": "Gulpfile.js",
   "repository": {
     "type": "git",
@@ -34,3 +34,4 @@
     "testem": "^1.16.1"
   }
 }
+

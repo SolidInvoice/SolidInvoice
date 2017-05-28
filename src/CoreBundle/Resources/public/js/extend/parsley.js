@@ -4,9 +4,8 @@ define(['marionette', 'lodash', 'parsley'], function(Mn, _) {
     var Parsley = Mn.Object.extend({
         validate: function (context) {
             var valid = true;
-
-            _.each(context.view.$(':input'), function (el) {
-                var p = context.view.$(el).parsley();
+            _.each(context.$(':input'), function (el) {
+                var p = context.$(el).parsley();
 
                 p.validate();
 

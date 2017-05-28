@@ -45,21 +45,20 @@ define(
                     "success": function(response) {
                         view.trigger('ajax:response', response);
 
-                        if (response.status !== 'success') {
-                            view.options.template = response.content;
-                            view.hideLoader();
-                            view.render();
+                        if (_.has(view, 'model')) {
+                            view.model.fetch({
+                                "success": function() {
+                                    view.$el.modal('hide');
+                                }
+                            });
                         } else {
-                            if (_.has(view, 'model')) {
-                                view.model.fetch({
-                                    "success": function() {
-                                        view.$el.modal('hide');
-                                    }
-                                });
-                            } else {
-                                view.$el.modal('hide');
-                            }
+                            view.$el.modal('hide');
                         }
+                    },
+                    "error": function(response) {
+                        view.options.template = response;
+                        view.hideLoader();
+                        view.render();
                     }
                 });
             }
