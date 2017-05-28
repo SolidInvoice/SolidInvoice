@@ -32,7 +32,7 @@ final class Edit implements AjaxResponse
      */
     private $factory;
 
-    public function __construct(\Twig_Environment $twig, FormFactoryInterface $factory)
+    public function __construct(FormFactoryInterface $factory)
     {
         $this->factory = $factory;
     }
