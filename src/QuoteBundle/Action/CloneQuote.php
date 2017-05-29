@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace CSBill\QuoteBundle\Action;
 
 use CSBill\CoreBundle\Response\FlashResponse;
+use CSBill\QuoteBundle\Cloner\QuoteCloner;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Manager\QuoteManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -23,24 +23,24 @@ use Symfony\Component\Routing\RouterInterface;
 final class CloneQuote
 {
     /**
-     * @var QuoteManager
+     * @var QuoteCloner
      */
-    private $manager;
+    private $cloner;
 
     /**
      * @var RouterInterface
      */
     private $router;
 
-    public function __construct(QuoteManager $manager, RouterInterface $router)
+    public function __construct(QuoteCloner $quoteClonercloner, RouterInterface $router)
     {
-        $this->manager = $manager;
+        $this->cloner = $quoteClonercloner;
         $this->router = $router;
     }
 
     public function __invoke(Request $request, Quote $quote)
     {
-        $newQuote = $this->manager->duplicate($quote);
+        $newQuote = $this->cloner->clone($quote);
 
         $route = $this->router->generate('_quotes_view', ['id' => $newQuote->getId()]);
 

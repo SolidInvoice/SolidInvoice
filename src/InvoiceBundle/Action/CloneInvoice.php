@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Action;
 
 use CSBill\CoreBundle\Response\FlashResponse;
+use CSBill\InvoiceBundle\Cloner\InvoiceCloner;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -28,19 +28,19 @@ final class CloneInvoice
     private $router;
 
     /**
-     * @var InvoiceManager
+     * @var InvoiceCloner
      */
-    private $invoiceManager;
+    private $cloner;
 
-    public function __construct(RouterInterface $router, InvoiceManager $invoiceManager)
+    public function __construct(RouterInterface $router, InvoiceCloner $cloner)
     {
         $this->router = $router;
-        $this->invoiceManager = $invoiceManager;
+        $this->cloner = $cloner;
     }
 
     public function __invoke(Request $request, Invoice $invoice)
     {
-        $newInvoice = $this->invoiceManager->duplicate($invoice);
+        $newInvoice = $this->cloner->clone($invoice);
 
         $route = $this->router->generate('_invoices_view', ['id' => $newInvoice->getId()]);
 

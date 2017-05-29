@@ -96,7 +96,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         $quote = new Quote();
         $quote->setBaseTotal(new Money(123, $currency));
-        $quote->setDiscount(12);
+        $quote->setDiscount(0.12);
         $quote->setNotes('Notes');
         $quote->setTax(new Money(432, $currency));
         $quote->setTerms('Terms');
