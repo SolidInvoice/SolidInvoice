@@ -22,6 +22,7 @@ use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +56,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options)
+    public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
         $settings = $this->settingsManager->getSettings();
 

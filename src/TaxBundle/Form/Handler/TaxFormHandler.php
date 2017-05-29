@@ -16,17 +16,21 @@ namespace CSBill\TaxBundle\Form\Handler;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\CoreBundle\Traits\SaveableTrait;
+use CSBill\TaxBundle\Entity\Tax;
 use CSBill\TaxBundle\Form\Type\TaxType;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
-class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
+class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
@@ -43,9 +47,9 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options)
+    public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
-        return $factory->create(TaxType::class, $options[0] ?? null);
+        return $factory->create(TaxType::class, $options->get('tax', new Tax()));
     }
 
     /**
@@ -71,5 +75,14 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
     public function getResponse(FormRequest $formRequest)
     {
         return new Template('@CSBillTax/Default/form.html.twig', ['form' => $formRequest->getForm()->createView()]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefined('tax')
+            ->setAllowedTypes('tax', Tax::class);
     }
 }

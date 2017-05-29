@@ -19,16 +19,19 @@ use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Form\Type\QuoteType;
 use CSBill\QuoteBundle\Model\Graph;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\StateMachine;
 
-abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface
+abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
@@ -51,9 +54,9 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options)
+    public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
-        return $factory->create(QuoteType::class, $options[0], $options[1] ?? []);
+        return $factory->create(QuoteType::class, $options->get('quote'), $options->get('form_options'));
     }
 
     /**
@@ -82,5 +85,16 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
                 yield self::FLASH_SUCCESS => 'quote.action.create.success';
             }
         };
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setRequired('quote')
+            ->setAllowedTypes('quote', Quote::class)
+            ->setDefault('form_options', [])
+            ->setAllowedTypes('form_options', 'array');
     }
 }

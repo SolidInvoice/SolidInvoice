@@ -30,7 +30,7 @@ class QuoteEditHandler extends AbstractQuoteHandler
             '@CSBillQuote/Default/edit.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
-                'quote' => $formRequest->getOptions()[0],
+                'quote' => $formRequest->getOptions()->get('quote'),
             ]
         );
     }

@@ -56,7 +56,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
         $this->em->flush();
 
         return [
-            $contact,
+            'contact' => $contact,
         ];
     }
 

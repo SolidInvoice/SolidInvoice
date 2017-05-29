@@ -87,8 +87,8 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         return [
-            new Invoice(),
-            [
+            'invoice' => new Invoice(),
+            'form_options' => [
                 'currency' => new Currency('USD'),
             ],
         ];

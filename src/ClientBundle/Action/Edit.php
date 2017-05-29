@@ -42,6 +42,6 @@ final class Edit
      */
     public function __invoke(Request $request, Client $client): FormRequest
     {
-        return $this->handler->handle(ClientEditFormHandler::class, $client);
+        return $this->handler->handle(ClientEditFormHandler::class, ['client' => $client]);
     }
 }

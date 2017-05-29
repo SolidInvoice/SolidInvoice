@@ -43,6 +43,6 @@ final class ApiCreate implements AjaxResponse
         $apiToken = new ApiToken();
         $apiToken->setUser($this->tokenStorage->getToken()->getUser());
 
-        return $this->handler->handle(ApiFormHandler::class, $apiToken);
+        return $this->handler->handle(ApiFormHandler::class, ['api_token' => $apiToken]);
     }
 }

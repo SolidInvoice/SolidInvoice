@@ -20,13 +20,16 @@ use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\CoreBundle\Traits\SerializeTrait;
 use SolidWorx\FormHandler\FormCollectionHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class AbstractContactFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormCollectionHandlerInterface, FormHandlerSuccessInterface
+abstract class AbstractContactFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormCollectionHandlerInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait,
         SerializeTrait;
@@ -51,9 +54,9 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options)
+    public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
-        return $factory->create(ContactType::class, $options[0] ?? null, ['allow_delete' => false]);
+        return $factory->create(ContactType::class, $options->get('contact'), ['allow_delete' => false]);
     }
 
     /**
@@ -72,5 +75,14 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
      */
     abstract public function getTemplate(): string;
 
-    // This needs to be public for the lazy proxy service definition to work
+ // This needs to be public for the lazy proxy service definition to work
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setRequired('contact')
+            ->setAllowedTypes('contact', Contact::class);
+    }
 }

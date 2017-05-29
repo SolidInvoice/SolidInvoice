@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CSBill\TaxBundle\Action;
 
-use CSBill\TaxBundle\Entity\Tax;
 use CSBill\TaxBundle\Form\Handler\TaxFormHandler;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +31,6 @@ final class Add
 
     public function __invoke(Request $request)
     {
-        return $this->handler->handle(TaxFormHandler::class, new Tax());
+        return $this->handler->handle(TaxFormHandler::class);
     }
 }

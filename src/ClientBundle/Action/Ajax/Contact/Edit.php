@@ -33,6 +33,6 @@ final class Edit implements AjaxResponse
 
     public function __invoke(Request $request, Contact $contact)
     {
-        return $this->handler->handle(ContactEditFormHandler::class, $contact);
+        return $this->handler->handle(ContactEditFormHandler::class, ['contact' => $contact]);
     }
 }

@@ -19,16 +19,19 @@ use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
-abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
+abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
@@ -48,9 +51,9 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options): FormInterface
+    public function getForm(FormFactoryInterface $factory = null, Options $options): FormInterface
     {
-        return $factory->create(ClientType::class, $options[0] ?? new Client());
+        return $factory->create(ClientType::class, $options->get('client', new Client()));
     }
 
     /**
@@ -73,5 +76,14 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
                 yield self::FLASH_SUCCESS => 'client.create.success';
             }
         };
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefined('client')
+            ->setAllowedTypes('client', ['null', Client::class]);
     }
 }

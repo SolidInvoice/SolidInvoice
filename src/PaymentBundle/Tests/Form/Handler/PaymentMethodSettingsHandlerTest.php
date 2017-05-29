@@ -51,7 +51,7 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
             ->setFactoryName('offline');
 
         return [
-            $method,
+            'payment_method' => $method,
         ];
     }
 
