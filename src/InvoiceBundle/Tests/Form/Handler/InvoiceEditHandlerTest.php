@@ -98,8 +98,8 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         return [
-            $this->invoice,
-            [
+            'invoice' => $this->invoice,
+            'form_options' => [
                 'currency' => new Currency('USD'),
             ],
         ];

@@ -32,6 +32,11 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
+    protected function getHandlerOptions(): array
+    {
+        return ['contact' => new Contact()];
+    }
+
     public function getFormData(): array
     {
         return [

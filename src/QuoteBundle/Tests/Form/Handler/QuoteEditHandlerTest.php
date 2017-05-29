@@ -123,8 +123,8 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         return [
-            $this->quote,
-            [
+            'quote' => $this->quote,
+            'form_options' => [
                 'currency' => new Currency('USD'),
             ],
         ];

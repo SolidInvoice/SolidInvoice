@@ -61,7 +61,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
         $this->em->flush();
 
         return [
-            $client,
+            'client' => $client,
         ];
     }
 

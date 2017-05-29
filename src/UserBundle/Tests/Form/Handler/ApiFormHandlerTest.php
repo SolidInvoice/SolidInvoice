@@ -16,6 +16,7 @@ namespace CSBill\UserBundle\Tests\Form\Handler;
 use CSBill\ApiBundle\ApiTokenManager;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
+use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Form\Handler\ApiFormHandler;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
@@ -33,6 +34,11 @@ class ApiFormHandlerTest extends FormHandlerTestCase
         $handler->setDoctrine($this->registry);
 
         return $handler;
+    }
+
+    protected function getHandlerOptions(): array
+    {
+        return ['api_token' => new ApiToken()];
     }
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)

@@ -105,8 +105,8 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         return [
-            new Quote(),
-            [
+            'quote' => new Quote(),
+            'form_options' => [
                 'currency' => new Currency('USD'),
             ],
         ];
