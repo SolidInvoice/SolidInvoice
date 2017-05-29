@@ -47,7 +47,7 @@ final class Create
 
         $options = [
             'quote' => new Quote($client),
-            'form_options' => ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : []
+            'form_options' => ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : [],
         ];
 
         return $this->handler->handle(QuoteCreateHandler::class, $options);

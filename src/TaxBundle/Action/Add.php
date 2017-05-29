@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CSBill\TaxBundle\Action;
 
-use CSBill\TaxBundle\Entity\Tax;
 use CSBill\TaxBundle\Form\Handler\TaxFormHandler;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
