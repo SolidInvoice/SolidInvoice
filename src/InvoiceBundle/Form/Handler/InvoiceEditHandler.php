@@ -30,7 +30,7 @@ class InvoiceEditHandler extends AbstractInvoiceHandler
             '@CSBillInvoice/Default/edit.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
-                'invoice' => $formRequest->getOptions()[0],
+                'invoice' => $formRequest->getOptions()->get('invoice'),
             ]
         );
     }

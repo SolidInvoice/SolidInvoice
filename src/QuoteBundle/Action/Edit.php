@@ -39,8 +39,13 @@ final class Edit
 
     public function __invoke(Request $request, Quote $quote)
     {
-        $currency = $quote->getClient()->getCurrency() ?: $this->currency;
+        $options = [
+            'quote' => $quote,
+            'form_options' => [
+                'currency' => $quote->getClient()->getCurrency() ?: $this->currency,
+            ],
+        ];
 
-        return $this->handler->handle(QuoteEditHandler::class, $quote, ['currency' => $currency]);
+        return $this->handler->handle(QuoteEditHandler::class, $options);
     }
 }

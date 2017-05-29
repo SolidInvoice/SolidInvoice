@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "abb7c36e79f983c5cf8a61254ef7bb56",
+    "content-hash": "e45c26bcec61100c7c7cdef95e0d253d",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -5114,22 +5114,22 @@
         },
         {
             "name": "solidworx/form-handler-bundle",
-            "version": "dev-master",
+            "version": "1.0.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/FormHandlerBundle.git",
-                "reference": "c9d2384c45c6f9397a3027d117331abe17e5b8c1"
+                "reference": "0d7dc287a0564ff2c179df5363eb35c293a2d13b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/c9d2384c45c6f9397a3027d117331abe17e5b8c1",
-                "reference": "c9d2384c45c6f9397a3027d117331abe17e5b8c1",
+                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/0d7dc287a0564ff2c179df5363eb35c293a2d13b",
+                "reference": "0d7dc287a0564ff2c179df5363eb35c293a2d13b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.0",
                 "solidworx/util": "^0.1",
-                "symfony/form": "^2.7 || ^3.0",
+                "symfony/form": "^3.0",
                 "symfony/framework-bundle": "^3.0"
             },
             "require-dev": {
@@ -5165,7 +5165,7 @@
                 "symfony forms",
                 "symfony-bundle"
             ],
-            "time": "2017-05-13 13:44:26"
+            "time": "2017-05-25T12:17:02+00:00"
         },
         {
             "name": "solidworx/util",
@@ -6100,16 +6100,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "dev-master",
+            "version": "v3.3.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "ae9bda1ffc69d9597c9b7f75140774ac7149cd0c"
+                "reference": "a66d56bfde7edd0f3b9e2857131561348234832b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/ae9bda1ffc69d9597c9b7f75140774ac7149cd0c",
-                "reference": "ae9bda1ffc69d9597c9b7f75140774ac7149cd0c",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/a66d56bfde7edd0f3b9e2857131561348234832b",
+                "reference": "a66d56bfde7edd0f3b9e2857131561348234832b",
                 "shasum": ""
             },
             "require": {
@@ -6249,7 +6249,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-05-09 14:36:16"
+            "time": "2017-05-17T18:10:19+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -6579,7 +6579,7 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "dev-master",
+            "version": "2.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
@@ -6637,7 +6637,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2017-05-17 21:16:31"
+            "time": "2017-05-17T21:16:31+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -9824,10 +9824,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "symfony/symfony": 20,
+        "symfony/symfony": 5,
         "friendsofsymfony/user-bundle": 10,
-        "willdurand/js-translation-bundle": 20,
-        "solidworx/form-handler-bundle": 20,
+        "solidworx/form-handler-bundle": 10,
         "mockery/mockery": 15
     },
     "prefer-stable": false,

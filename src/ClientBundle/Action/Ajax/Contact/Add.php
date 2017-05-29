@@ -37,6 +37,6 @@ final class Add implements AjaxResponse
         $contact = new Contact();
         $contact->setClient($client);
 
-        return $this->handler->handle(ContactAddFormHandler::class, $contact);
+        return $this->handler->handle(ContactAddFormHandler::class, ['contact' => $contact]);
     }
 }

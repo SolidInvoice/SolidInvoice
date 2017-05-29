@@ -45,6 +45,11 @@ final class Create
             return new Template('@CSBillQuote/Default/empty_clients.html.twig');
         }
 
-        return $this->handler->handle(QuoteCreateHandler::class, new Quote($client), ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : null);
+        $options = [
+            'quote' => new Quote($client),
+            'form_options' => ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : []
+        ];
+
+        return $this->handler->handle(QuoteCreateHandler::class, $options);
     }
 }

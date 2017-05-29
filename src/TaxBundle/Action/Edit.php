@@ -32,6 +32,6 @@ final class Edit
 
     public function __invoke(Request $request, Tax $tax)
     {
-        return $this->handler->handle(TaxFormHandler::class, $tax);
+        return $this->handler->handle(TaxFormHandler::class, ['tax' => $tax]);
     }
 }

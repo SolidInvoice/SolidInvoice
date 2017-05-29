@@ -19,14 +19,17 @@ use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Form\Type\ApiTokenType;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface
+class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
@@ -43,9 +46,9 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options)
+    public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
-        return $factory->create(ApiTokenType::class, $options[0] ?? new ApiToken());
+        return $factory->create(ApiTokenType::class, $options->get('api_token'));
     }
 
     /**
@@ -78,5 +81,14 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
                 'id' => $user->getId(),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setRequired('api_token')
+            ->setAllowedTypes('api_token', ApiToken::class);
     }
 }

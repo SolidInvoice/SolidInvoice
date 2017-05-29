@@ -60,8 +60,13 @@ final class Edit
             };
         }
 
-        $currency = $invoice->getClient()->getCurrency() ?: $this->currency;
+        $options = [
+            'invoice' => $invoice,
+            'form_options' => [
+                'currency' => $invoice->getClient()->getCurrency() ?: $this->currency,
+            ],
+        ];
 
-        return $this->formHandler->handle(InvoiceEditHandler::class, $invoice, ['currency' => $currency]);
+        return $this->formHandler->handle(InvoiceEditHandler::class, $options);
     }
 }

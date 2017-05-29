@@ -20,14 +20,17 @@ use CSBill\PaymentBundle\Entity\PaymentMethod;
 use CSBill\PaymentBundle\Factory\PaymentFactories;
 use CSBill\PaymentBundle\Form\Type\PaymentMethodType;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
-class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
+class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
@@ -52,10 +55,10 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options)
+    public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
         /** @var PaymentMethod $paymentMethod */
-        $paymentMethod = $options[0];
+        $paymentMethod = $options->get('payment_method');
 
         $this->originalSettings = $paymentMethod->getConfig();
 
@@ -111,5 +114,14 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
                 'method' => $formRequest->getForm()->getData()->getGatewayName(),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setRequired('payment_method')
+            ->setAllowedTypes('payment_method', PaymentMethod::class);
     }
 }

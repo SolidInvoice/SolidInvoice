@@ -45,6 +45,11 @@ final class Create
             return new Template('@CSBillInvoice/Default/empty_clients.html.twig');
         }
 
-        return $this->handler->handle(InvoiceCreateHandler::class, new Invoice($client), ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : null);
+        $options = [
+            'invoice' => new Invoice($client),
+            'form_options' => ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : [],
+        ];
+
+        return $this->handler->handle(InvoiceCreateHandler::class, $options);
     }
 }

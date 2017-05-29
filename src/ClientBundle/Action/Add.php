@@ -41,6 +41,6 @@ final class Add
      */
     public function __invoke(Request $request): FormRequest
     {
-        return $this->handler->handle(ClientCreateFormHandler::class, new Client());
+        return $this->handler->handle(ClientCreateFormHandler::class);
     }
 }

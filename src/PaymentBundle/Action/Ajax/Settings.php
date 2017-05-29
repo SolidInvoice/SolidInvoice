@@ -53,6 +53,6 @@ final class Settings implements AjaxResponse
             $paymentMethod->setName(ucwords(str_replace('_', ' ', $methodName)));
         }
 
-        return $this->handler->handle(PaymentMethodSettingsHandler::class, $paymentMethod);
+        return $this->handler->handle(PaymentMethodSettingsHandler::class, ['payment_method' => $paymentMethod]);
     }
 }

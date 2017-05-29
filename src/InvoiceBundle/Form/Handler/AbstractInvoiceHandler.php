@@ -21,16 +21,19 @@ use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
 use Money\Money;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\StateMachine;
 
-abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface
+abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
@@ -59,9 +62,9 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, ...$options)
+    public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
-        return $factory->create(InvoiceType::class, $options[0] ?? null, $options[1] ?? []);
+        return $factory->create(InvoiceType::class, $options->get('invoice'), $options->get('form_options'));
     }
 
     /**
@@ -108,5 +111,16 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
                 yield self::FLASH_SUCCESS => 'invoice.create.success';
             }
         };
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setRequired('invoice')
+            ->setAllowedTypes('invoice', Invoice::class)
+            ->setDefault('form_options', [])
+            ->setAllowedTypes('form_options', 'array');
     }
 }
