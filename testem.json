@@ -1,0 +1,18 @@
+{
+  "framework": "jasmine2",
+  "parallel": 5,
+  "src_files": [
+    "web/bundles/**/spec/**/*.js"
+  ],
+  "test_page": "tests/test.mustache",
+  "launch_in_dev": [
+    "Chrome Canary"
+  ],
+  "browser_args": {
+    "Chrome Canary": [
+      "--headless",
+      "--disable-gpu",
+      "--remote-debugging-port=9222"
+    ]
+  }
+}

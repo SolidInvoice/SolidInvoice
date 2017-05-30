@@ -67,7 +67,7 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
         /* @var Contact $client */
         $this->save($client);
 
-        return null;
+        return $this->getResponse($form);
     }
 
     /**

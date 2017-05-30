@@ -19,6 +19,7 @@ use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use JMS\Serializer\SerializerBuilder;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContactAddFormHandlerTest extends FormHandlerTestCase
@@ -49,7 +50,7 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
-        $this->assertNull($response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);
         $this->assertCount(1, $this->em->getRepository('CSBillClientBundle:Contact')->findAll());
     }

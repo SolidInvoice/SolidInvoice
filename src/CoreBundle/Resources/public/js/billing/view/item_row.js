@@ -1,5 +1,5 @@
 define(['marionette', 'template', 'lodash', 'accounting'], function(Mn, Template, _, Accounting) {
-    return Mn.ItemView.extend({
+    return Mn.View.extend({
         template: Template.invoice.row,
         tagName: 'tr',
         ui: {

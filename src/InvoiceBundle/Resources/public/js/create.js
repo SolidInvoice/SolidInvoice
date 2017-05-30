@@ -15,26 +15,24 @@ define(
         'routing',
         'accounting'
     ],
-    function(
-        Module,
-        $,
-        Backbone,
-        _,
-        ClientSelectView,
-        FooterRowModel,
-        RowModel,
-        DiscountModel,
-        Collection,
-        FooterView,
-        InvoiceView,
-        Discount,
-        Routing,
-        Accounting
-    ) {
+    function(Module,
+             $,
+             Backbone,
+             _,
+             ClientSelectView,
+             FooterRowModel,
+             RowModel,
+             DiscountModel,
+             Collection,
+             FooterView,
+             InvoiceView,
+             Discount,
+             Routing,
+             Accounting) {
         "use strict";
 
         return Module.extend({
-            collection : null,
+            collection: null,
             footerRowModel: null,
             regions: {
                 'clientInfo': '#client-info',
@@ -47,13 +45,13 @@ define(
                     module = this,
                     clientSelectView = new ClientSelectView(_.merge(options, viewOptions));
 
-                clientSelectView.on('currency:update', function (clientOptions) {
+                clientSelectView.on('currency:update', function(clientOptions) {
                     Accounting.settings.currency.symbol = clientOptions.currency_format;
 
                     $.getJSON(
                         Routing.generate('_invoices_get_fields', {'currency': clientOptions.currency})
-                    ).done(_.bind(function (fieldData) {
-                        module.collection.each(function (model) {
+                    ).done(_.bind(function(fieldData) {
+                        module.collection.each(function(model) {
                             model.set('fields', fieldData);
                         });
 
@@ -61,27 +59,23 @@ define(
 
                         this.hideLoader();
 
-                        module.app
-                            .getRegion('invoiceRows')
-                            .reset()
-                            .show(invoiceView)
-                        ;
+                        module.app.showChildView('invoiceRows', invoiceView);
 
-                        module.app.getRegion('invoiceForm').$el.attr('action', Routing.generate('_invoices_create', {'client' : clientOptions.client}));
+                        this.$el.find(this.regions.invoiceForm).attr('action', Routing.generate('_invoices_create', {'client': clientOptions.client}));
 
-                        module.app.initialize();
+                        module.app.initialize(module.app.options);
                     }, this));
                 });
 
-                this.app.getRegion('clientInfo').show(clientSelectView);
+                this.app.showChildView('clientInfo', clientSelectView);
             },
-            _getInvoiceView: function() {
+            _getInvoiceView: function(fieldData) {
                 return new InvoiceView(
                     {
                         'collection': this.collection,
                         'footerView': new FooterView({model: this.footerRowModel}),
                         'selector': '#invoice-footer',
-                        'fieldData': this.options.fieldData,
+                        'fieldData': fieldData,
                         'hasTax': this.options.tax
                     }
                 );
@@ -96,8 +90,8 @@ define(
 
                 this.footerRowModel.set('hasTax', options.tax);
 
-                recurring.on('change', function () {
-                   recurringInfo.toggleClass('hidden');
+                recurring.on('change', function() {
+                    recurringInfo.toggleClass('hidden');
                 });
 
                 if (recurring.is(':checked')) {
@@ -111,7 +105,7 @@ define(
                 if (!_.isEmpty(options.formData)) {
                     var counter = 0;
 
-                    _.each(options.formData, function (item) {
+                    _.each(options.formData, function(item) {
                         models.push(new RowModel({
                             id: counter++,
                             fields: item
@@ -130,9 +124,7 @@ define(
                 /* DISCOUNT */
                 new Discount({model: discountModel, collection: this.collection});
 
-                this.app
-                    .getRegion('invoiceRows')
-                    .show(this._getInvoiceView());
+                this.app.showChildView('invoiceRows', this._getInvoiceView(options.fieldData));
             }
         });
     }

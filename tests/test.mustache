@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <title>Test'em</title>
+    <script src="/web/bundles/ororequirejs/lib/require.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasmine/2.6.2/jasmine.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasmine/2.6.2/jasmine-html.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasmine/2.6.2/boot.min.js"></script>
+    <script src="/testem.js"></script>
+    <script src="/web/js/require-config.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jasmine/2.6.2/jasmine.css">
+    <script>
+        (function() {
+            var customMatchers = {
+                toBeInstanceOf: function(util, customEqualityTesters) {
+                    return {
+                        compare: function(actual, expected) {
+                            if (expected === undefined) {
+                                expected = '';
+                            }
+                            var result = {};
+
+                            result.pass = actual instanceof expected;
+
+                            result.message = 'Expected ' + actual + ' to be an instance of ' + expected;
+
+                            if (!result.pass) {
+                                result.message += ', ' + (typeof actual) + ' given';
+                            }
+
+                            return result;
+                        }
+                    }
+                }
+            };
+
+            beforeEach(function() {
+                jasmine.addMatchers(customMatchers);
+            });
+        })();
+    </script>
+
+    {{#serve_files}}
+        <script src="/{{{src}}}"></script>
+    {{/serve_files}}
+</head>
+<body>
+<div id="jasmine_content"></div>
+</body>
+</html>

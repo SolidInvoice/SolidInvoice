@@ -16,7 +16,7 @@ define(
 
                 Handlebars.registerPartial('menuItem', Template.payment.menu_item);
 
-                var ItemView = Mn.ItemView.extend({
+                var view = Mn.View.extend({
                     template: Template.payment.menu,
                     el: '#payment-method-tabs',
                     router: null,
@@ -43,14 +43,14 @@ define(
                     }
                 });
 
-                var menuView = new ItemView({
+                var menuView = new view({
                     model: model,
                     router: new Mn.AppRouter({
                         controller: Controller(module, model)
                     })
                 });
 
-                this.app.getRegion('paymentMethodList').show(menuView);
+                this.app.showChildView('paymentMethodList', menuView);
             }
         });
     });

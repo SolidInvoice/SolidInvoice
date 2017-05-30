@@ -18,7 +18,7 @@ define(
                 'clientInfo': '#client-info'
             },
             _renderCredit: function(options) {
-                this.app.getRegion('clientCredit').show(ClientCredit.getView(options));
+                this.app.showChildView('clientCredit', ClientCredit.getView(options));
             },
             _renderContactCollection: function(layoutView, options) {
                 layoutView.renderContactsRegion(ClientContact.getView(options));
@@ -29,16 +29,19 @@ define(
                 var that = this;
 
                 addressCollection.on('remove', function() {
-                    addressCollection.fetch({reset: true, url: Routing.generate('_xhr_clients_address_list', {'id': options.id})}).done(function() {
-                        layoutView.model.set('addresses', addressCollection.toArray());
-                        options.addresses = layoutView.model.get('addresses');
+                    addressCollection
+                        .fetch({reset: true, url: Routing.generate('_xhr_clients_address_list', {'id': options.id})})
+                        .done(function() {
+                            layoutView.model.set('addresses', addressCollection.toArray());
+                            options.addresses = layoutView.model.get('addresses');
 
-                        layoutView.render();
-                        that._renderContactCollection(layoutView, options);
-                        if (addressCollection.length > 0) {
-                            layoutView.getRegion('clientAddress').show(new AddressView({collection: addressCollection}));
+                            layoutView.render();
+                            that._renderContactCollection(layoutView, options);
+                            if (addressCollection.length > 0) {
+                                layoutView.getRegion('clientAddress').show(new AddressView({collection: addressCollection}));
+                            }
                         }
-                    });
+                    );
                 });
 
                 if (addressCollection.length > 0) {
@@ -50,7 +53,7 @@ define(
                     model: new Backbone.Model(options)
                 });
 
-                this.app.getRegion('clientInfo').show(infoView);
+                this.app.showChildView('clientInfo', infoView);
 
                 return infoView;
             },

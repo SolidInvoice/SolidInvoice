@@ -20,8 +20,12 @@ define(
         var ModuleData = requirejs.s.contexts._.config.moduleData,
 
             Application = Mn.Application.extend({
-                module : null,
-                initialize: function() {
+                module: null,
+                regions: {},
+                initialize: function(options) {
+
+                    this.regions = options.regions;
+
                     /**
                      * Tooltip
                      */
@@ -55,14 +59,26 @@ define(
                     }
 
                     /**
-		     * Material
-		     */
-		    $.material.init();
-		}
-	    });
+                     * Material
+                     */
+                    $.material.init();
+                },
+                showChildView: function(region, content) {
+                    var view = new (Mn.View.extend({
+                        'el': this.regions[region],
+                        'template': function() {
+                            return content.render().$el;
+                        }
+                    }));
+
+                    view.render();
+
+                    return view;
+                }
+            });
 
         var App = new Application({
-            regions : Module.prototype.regions
+            regions: Module.prototype.regions
         });
 
         App.on('start', function() {
@@ -72,7 +88,7 @@ define(
         });
 
         if (!_.isUndefined(Module.prototype.appEvents)) {
-            _.each(Module.prototype.appEvents, function (action, event) {
+            _.each(Module.prototype.appEvents, function(action, event) {
                 if (_.isFunction(action)) {
                     App.on(event, action);
                 } else if (-1 !== _.indexOf(_.functions(Module), action)) {

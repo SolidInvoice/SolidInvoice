@@ -1,5 +1,5 @@
 define(['marionette'], function (Mn) {
-    return Mn.ItemView.extend({
+    return Mn.View.extend({
         el: '#discount',
         events: {
             'keyup @ui.discount': 'setDiscount'

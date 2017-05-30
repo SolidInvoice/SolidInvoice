@@ -52,6 +52,10 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
 
+        if (!$request) {
+            return [];
+        }
+
         $params = array_merge($request->query->all(), $request->attributes->all());
 
         foreach (array_keys($params) as $key) {

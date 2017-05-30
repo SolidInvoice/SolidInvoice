@@ -31,21 +31,16 @@ define(['jquery', 'lodash', 'core/modal', 'bootstrap.modal', 'bootstrap.modalman
         },
 
         _loadContent: function() {
-            var route = this.getOption('route');
+            var route = this.getOption('route'),
+                view = this,
+                $body = $('body');
 
-            var view = this;
-
-            $('body').modalmanager('loading');
+            $body.modalmanager('loading');
 
             $.get(route, function(data) {
-                try {
-                    JSON.parse(data);
-                    view.options.template = data.content;
-                } catch (e) {
-                    view.options.template = data;
-                }
+                view.options.template = data;
 
-                $('body').modalmanager('loading');
+                $body.modalmanager('loading');
 
                 view.render();
             });

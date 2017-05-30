@@ -60,19 +60,15 @@ define(
 
                         this.hideLoader();
 
-                        module.app
-                            .getRegion('quoteRows')
-                            .reset()
-                            .show(quoteView)
-                        ;
+                        module.app.showChildView('quoteRows', quoteView);
 
-                        module.app.getRegion('quoteForm').$el.attr('action', Routing.generate('_quotes_create', {'client' : clientOptions.client}));
+                        this.$el.find(this.regions.quoteForm).attr('action', Routing.generate('_quotes_create', {'client': clientOptions.client}));
 
-                        module.app.initialize();
+                        module.app.initialize(module.app.options);
                     }, this));
                 });
 
-                this.app.getRegion('clientInfo').show(clientSelectView);
+                this.app.showChildView('clientInfo', clientSelectView);
             },
             _getQuoteView: function(fieldData) {
                 return new QuoteView(
@@ -80,7 +76,7 @@ define(
                         'collection': this.collection,
                         'footerView': new FooterView({model: this.footerRowModel}),
                         'selector': '#quote-footer',
-                        'fieldData': !_.isUndefined(fieldData) ? fieldData : this.options.fieldData,
+                        'fieldData': fieldData,
                         'hasTax': this.options.tax
                     }
                 );
@@ -117,9 +113,7 @@ define(
                 /* DISCOUNT */
                 new Discount({model: discountModel, collection: this.collection});
 
-                this.app
-                    .getRegion('quoteRows')
-                    .show(this._getQuoteView());
+                this.app.showChildView('quoteRows', this._getQuoteView(options.fieldData));
             }
         });
     }

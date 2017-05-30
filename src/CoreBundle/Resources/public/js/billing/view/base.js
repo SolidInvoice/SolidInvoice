@@ -8,7 +8,7 @@ define(
             footerView: null,
             counter: 0,
             hasTax: null,
-            templateHelpers: function() {
+            templateContext: function() {
                 return { hasTax: this.hasTax };
             },
             initialize: function (options) {

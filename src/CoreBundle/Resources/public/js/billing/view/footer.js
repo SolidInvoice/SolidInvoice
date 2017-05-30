@@ -1,5 +1,5 @@
 define(['marionette', 'template'], function(Mn, Template) {
-    return Mn.ItemView.extend({
+    return Mn.View.extend({
         template: Template.core.billing.footer
     });
 });

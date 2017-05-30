@@ -1,7 +1,7 @@
 define(['marionette', 'jquery', 'core/ajaxmodal', 'material', 'bootstrap.modalmanager'], function(Mn, $) {
     "use strict";
 
-    return Mn.ItemView.extend({
+    return Mn.View.extend({
         constructor: function(options) {
             this.listenTo(this, 'render', function() {
                 setTimeout(function() {
@@ -25,7 +25,7 @@ define(['marionette', 'jquery', 'core/ajaxmodal', 'material', 'bootstrap.modalma
                 }, 0);
             });
 
-            Mn.ItemView.call(this, options);
+            Mn.View.call(this, options);
         },
         showLoader: function() {
             return this.$el.modalmanager('loading');
