@@ -16,7 +16,7 @@ namespace CSBill\SettingsBundle\Manager;
 use CSBill\SettingsBundle\Collection\ConfigCollection;
 use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\Loader\SettingsLoaderInterface;
-use CSBill\SettingsBundle\Model\Setting;
+use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -218,7 +218,7 @@ class SettingsManager implements ManagerInterface
                     $settingsArray[$key] = $this->setData($setting, $value);
                 } else {
                     if ($section === $key) {
-                        /* @var \CSBill\SettingsBundle\Model\Setting $setting */
+                        /* @var \CSBill\SettingsBundle\Entity\Setting $setting */
                         $setting->setValue($value);
                         $settingsArray[$key] = $setting;
                     }

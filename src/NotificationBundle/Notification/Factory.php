@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CSBill\NotificationBundle\Notification;
 
 use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
-use CSBill\SettingsBundle\Manager\SettingsManager;
+use CSBill\SettingsBundle\SystemConfig;
 use Namshi\Notificator\Notification\HipChat\HipChatNotification;
 use Namshi\Notificator\NotificationInterface;
 use Symfony\Component\Templating\EngineInterface;
@@ -33,20 +33,17 @@ class Factory
     private $translator;
 
     /**
-     * @var SettingsManager
+     * @var SystemConfig
      */
     private $settings;
 
     /**
      * @param EngineInterface     $templating
      * @param TranslatorInterface $translator
-     * @param SettingsManager     $settings
+     * @param SystemConfig        $settings
      */
-    public function __construct(
-        EngineInterface $templating,
-        TranslatorInterface $translator,
-        SettingsManager $settings
-    ) {
+    public function __construct(EngineInterface $templating, TranslatorInterface $translator, SystemConfig $settings)
+    {
         $this->templating = $templating;
         $this->translator = $translator;
         $this->settings = $settings;
@@ -56,12 +53,13 @@ class Factory
      * @param NotificationMessageInterface $message
      *
      * @return NotificationInterface
+     * @throws UnexpectedFormatException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {
         $swiftMessage = \Swift_Message::newInstance();
 
-        $from = [$this->settings->get('email.from_address') => $this->settings->get('email.from_name')];
+        $from = [$this->settings->get('email/from_address') => $this->settings->get('email/from_name')];
 
         $swiftMessage->setFrom($from);
         $swiftMessage->setSubject($message->getSubject($this->translator));
@@ -70,7 +68,7 @@ class Factory
             $swiftMessage->addTo($user->getEmail(), $user->getUsername());
         }
 
-        $format = (string) $this->settings->get('email.format');
+        $format = (string) $this->settings->get('email/format');
 
         switch ($format) {
             case 'html':
@@ -104,11 +102,11 @@ class Factory
 
         return new HipChatNotification(
             $content,
-            $this->settings->get('system.general.app_name'),
-            $this->settings->get('hipchat.room_id'),
+            $this->settings->get('system/general.app_name'),
+            $this->settings->get('hipchat/room_id'),
             [
-                'hipchat_color' => $this->settings->get('hipchat.message_color'),
-                'hipchat_notify' => (string) $this->settings->get('hipchat.notify'),
+                'hipchat_color' => $this->settings->get('hipchat/message_color'),
+                'hipchat_notify' => (string) $this->settings->get('hipchat/notify'),
             ]
         );
     }

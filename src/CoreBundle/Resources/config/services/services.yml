@@ -23,12 +23,6 @@ services:
     security.encryption:
         alias: csbill_core.security.encryption
 
-    csbill_core.settings.loader:
-        class: CSBill\CoreBundle\Settings\SettingsLoader
-        arguments: ['@kernel', '@csbill.core.config_writer']
-        tags:
-            - { name: settings.loader }
-
     csbill_core.swiftmailer.plugin.cssinline:
         class: CSBill\CoreBundle\Swiftmailer\Plugin\CssInlinerPlugin
         arguments: ['@csbill_core.cssinline']

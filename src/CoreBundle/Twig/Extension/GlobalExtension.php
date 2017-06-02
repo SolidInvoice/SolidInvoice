@@ -31,20 +31,18 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      */
     public function getGlobals(): array
     {
-        $appName = $this->container->get('settings')->get('system.general.app_name');
+        $appName = $this->container->get('settings')->get('system/general/app_name');
 
         return [
             'query' => $this->getQuery(),
             'app_version' => CSBillCoreBundle::VERSION,
             'app_name' => $appName,
-            'settings' => $this->container->get('settings')->getSettings(),
+            'settings' => $this->container->get('settings')->getAll(),
         ];
     }
 
     /**
      * Get the url query.
-     *
-     * @throws InactiveScopeException
      *
      * @return array
      */

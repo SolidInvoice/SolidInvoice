@@ -1,10 +1,4 @@
 services:
-    csbill.notification.settings.loader:
-        class: CSBill\NotificationBundle\Settings\Loader
-        arguments: ['@doctrine']
-        tags:
-            - { name: settings.loader }
-
     notification.sender:
         class: Namshi\Notificator\Manager
         arguments: [{}, '@logger']

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\NotificationBundle\Notification;
 
-use CSBill\SettingsBundle\Manager\SettingsManager;
+use CSBill\SettingsBundle\SystemConfig;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
@@ -32,7 +32,7 @@ class NotificationManager
     private $notification;
 
     /**
-     * @var SettingsManager
+     * @var SystemConfig
      */
     private $settings;
 
@@ -43,13 +43,13 @@ class NotificationManager
 
     /**
      * @param Factory         $factory
-     * @param SettingsManager $settings
+     * @param SystemConfig    $settings
      * @param Manager         $notification
      * @param ManagerRegistry $doctrine
      */
     public function __construct(
         Factory $factory,
-        SettingsManager $settings,
+        SystemConfig $settings,
         Manager $notification,
         ManagerRegistry $doctrine
     ) {
@@ -72,17 +72,15 @@ class NotificationManager
 
         $notification = new ChainedNotification();
 
-        $settings = $this->settings->get(sprintf('notification.%s', $event));
-
-        if ($settings['email']) {
+        if ($this->settings->get(sprintf('notification/%s/email', $event))) {
             $notification->addNotifications($this->factory->createEmailNotification($message));
         }
 
-        if ($settings['hipchat']) {
+        if ($this->settings->get(sprintf('notification/%s/hipchat', $event))) {
             $notification->addNotifications($this->factory->createHipchatNotification($message));
         }
 
-        if ($settings['sms']) {
+        if ($this->settings->get(sprintf('notification/%s/sms', $event))) {
             foreach ($message->getUsers() as $user) {
                 if (null === $user->getMobile()) {
                     continue;

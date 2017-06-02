@@ -15,9 +15,9 @@ namespace CSBill\SettingsBundle\Form\Handler;
 
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
-use CSBill\SettingsBundle\Form\Type\SettingSectionType;
-use CSBill\SettingsBundle\Manager\SettingsManager;
-use CSBill\SettingsBundle\Model\Setting;
+use CSBill\SettingsBundle\Entity\Setting;
+use CSBill\SettingsBundle\Form\Type\SettingsType;
+use CSBill\SettingsBundle\Repository\SettingsRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -27,14 +27,15 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 
 class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
 {
     /**
-     * @var SettingsManager
+     * @var SettingsRepository
      */
-    private $settingsManager;
+    private $settingsRepository;
 
     /**
      * @var Session
@@ -46,9 +47,9 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
      */
     private $router;
 
-    public function __construct(SettingsManager $settingsManager, Session $session, RouterInterface $router)
+    public function __construct(SettingsRepository $settingsRepository, Session $session, RouterInterface $router)
     {
-        $this->settingsManager = $settingsManager;
+        $this->settingsRepository = $settingsRepository;
         $this->session = $session;
         $this->router = $router;
     }
@@ -58,13 +59,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
      */
     public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
-        $settings = $this->settingsManager->getSettings();
-
-        array_walk_recursive($settings, function (Setting &$setting): void {
-            $setting = $setting->getValue();
-        });
-
-        return $factory->create(SettingSectionType::class, $settings, ['manager' => $this->settingsManager]);
+        return $factory->create(SettingsType::class, $this->getSettings(false), ['settings' => $this->getSettings()]);
     }
 
     /**
@@ -72,16 +67,32 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
      */
     public function onSuccess($data, FormRequest $form): ?Response
     {
-        $this->settingsManager->set($data);
+        $this->settingsRepository->save($this->flatten($data));
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'settings.saved.success';
             }
         };
+    }
+
+    private function flatten(array $array, string $prefix = ''): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, $this->flatten($value, $prefix.$key.'/'));
+            } else {
+                $result[$prefix.$key] = $value;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -98,5 +109,20 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    private function getSettings(bool $keepObject = true): array
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $settings = [];
+
+        /** @var Setting $setting */
+        foreach ($this->settingsRepository->findAll() as $setting) {
+            $path = '['.str_replace('/', '][', $setting->getKey()).']';
+
+            $propertyAccessor->setValue($settings, $path, $keepObject ? $setting : $setting->getValue());
+        }
+
+        return $settings;
     }
 }

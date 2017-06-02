@@ -1,0 +1,11 @@
+services:
+
+    _instanceof:
+        Symfony\Component\Form\AbstractTypeExtension:
+            autowire: true
+            public: false
+            tags: ['form.type_extension']
+
+    CSBill\SettingsBundle\Form\Extension\CheckBoxExtension:
+        tags:
+            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' }

@@ -1,13 +1,17 @@
 services:
+
+    _defaults:
+        autowire: true
+
+    CSBill\SettingsBundle\SystemConfig: ~
+
+    CSBill\SettingsBundle\Repository\SettingsRepository:
+        factory: ['@doctrine', 'getRepository']
+        arguments: ['CSBillSettingsBundle:Setting']
+
     csbill_settings.manager:
         class: CSBill\SettingsBundle\Manager\SettingsManager
         arguments: ['@doctrine']
 
     settings:
-        alias: csbill_settings.manager
-
-    csbill_settings.doctrine.loader:
-        class: CSBill\SettingsBundle\Loader\DoctrineLoader
-        arguments: ['@doctrine']
-        tags:
-            - { name: settings.loader }
+        alias: CSBill\SettingsBundle\SystemConfig

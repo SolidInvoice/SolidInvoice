@@ -16,7 +16,7 @@ namespace CSBill\SettingsBundle\Form\Type;
 use CSBill\CoreBundle\Form\Type\ImageUploadType;
 use CSBill\CoreBundle\Form\Type\Select2Type;
 use CSBill\NotificationBundle\Form\Type\NotificationType;
-use CSBill\SettingsBundle\Model\Setting;
+use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -36,19 +36,21 @@ class SettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($options['section'] as $key => $setting) {
+        foreach ($options['settings'] as $key => $setting) {
             if (is_array($setting)) {
-                $builder->add($key, self::class, ['section' => $setting]);
+                $builder->add($key, self::class, ['settings' => $setting]);
                 continue;
             }
 
             /* @var Setting $setting */
-            $options = [
-                'help' => $setting->getDescription(),
-                'required' => false,
-            ];
-
-            $builder->add(...$this->getFieldType($setting, $options));
+            $builder->add(
+                $key,
+                $setting->getType(),
+                [
+                    'help' => $setting->getDescription(),
+                    'required' => false,
+                ]
+            );
         }
     }
 
@@ -117,8 +119,7 @@ class SettingsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('section');
-        $resolver->setAllowedTypes('section', 'array');
+        $resolver->setRequired('settings');
     }
 
     /**
