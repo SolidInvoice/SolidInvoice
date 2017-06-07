@@ -71,8 +71,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 
-        return new class($route) extends RedirectResponse implements FlashResponse
-        {
+        return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'settings.saved.success';

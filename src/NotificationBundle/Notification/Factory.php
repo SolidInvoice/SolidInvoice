@@ -53,6 +53,7 @@ class Factory
      * @param NotificationMessageInterface $message
      *
      * @return NotificationInterface
+     *
      * @throws UnexpectedFormatException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface

@@ -126,7 +126,6 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                         !empty($settingValue['setting_value']) ? '"'.$settingValue['setting_value'].'"' : 'NULL',
                         !empty($settingValue['description']) ? '"'.$settingValue['description'].'"' : 'NULL',
                         (function ($settingKey, $settingValue) {
-
                             if ('email/format' === $settingKey) {
                                 return addslashes(MailFormatType::class);
                             }

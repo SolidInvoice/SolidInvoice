@@ -18,7 +18,6 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
 class GlobalExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface, ContainerAwareInterface
 {
