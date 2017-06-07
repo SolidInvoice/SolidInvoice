@@ -44,11 +44,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('ALTER TABLE app_config DROP FOREIGN KEY FK_318942FCD823E37A');
         $this->addSql('ALTER TABLE config_sections DROP FOREIGN KEY FK_965EAD46727ACA70');
         $this->addSql('DROP TABLE config_sections');
-        $this->addSql('ALTER TABLE invoice_lines RENAME INDEX idx_dcc4b9f82989f1fd TO IDX_72DBDC232989F1FD');
-        $this->addSql('ALTER TABLE invoice_lines RENAME INDEX idx_dcc4b9f8b2a824d8 TO IDX_72DBDC23B2A824D8');
         $this->addSql('ALTER TABLE notifications CHANGE email email TINYINT(1) NOT NULL, CHANGE hipchat hipchat TINYINT(1) NOT NULL, CHANGE sms sms TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE quote_lines RENAME INDEX idx_ece1642cdb805178 TO IDX_42FE01F7DB805178');
-        $this->addSql('ALTER TABLE quote_lines RENAME INDEX idx_ece1642cb2a824d8 TO IDX_42FE01F7B2A824D8');
         $this->addSql('DROP INDEX IDX_318942FCD823E37A ON app_config');
         $this->addSql('ALTER TABLE app_config DROP section_id, DROP field_options');
         $this->addSql('TRUNCATE TABLE app_config');
@@ -81,11 +77,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('UPDATE tax_rates SET tax_type = "inclusive" WHERE tax_type = "Inclusive"');
         $this->addSql('UPDATE tax_rates SET tax_type = "exlusive" WHERE tax_type = "Exlusive"');
 
-        $this->addSql('ALTER TABLE invoice_lines RENAME INDEX idx_72dbdc232989f1fd TO IDX_DCC4B9F82989F1FD');
-        $this->addSql('ALTER TABLE invoice_lines RENAME INDEX idx_72dbdc23b2a824d8 TO IDX_DCC4B9F8B2A824D8');
         $this->addSql('ALTER TABLE notifications CHANGE email email VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE hipchat hipchat VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE sms sms VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
-        $this->addSql('ALTER TABLE quote_lines RENAME INDEX idx_42fe01f7db805178 TO IDX_ECE1642CDB805178');
-        $this->addSql('ALTER TABLE quote_lines RENAME INDEX idx_42fe01f7b2a824d8 TO IDX_ECE1642CB2A824D8');
     }
 
     private function updateSettings(): void
