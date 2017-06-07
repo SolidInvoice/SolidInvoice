@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\DataGridBundle\DependencyInjection\CompilerPass;
 
 use CSBill\DataGridBundle\DependencyInjection\GridConfiguration;
+use CSBill\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -90,7 +91,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
             $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
             $gridDefinition->addArgument($this->getFilterService($gridConfig));
             $gridDefinition->addArgument($gridConfig);
-            $gridDefinition->addArgument(new Reference('csbill.money.formatter'));
+            $gridDefinition->addArgument(new Reference(MoneyFormatter::class));
 
             $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
         }
