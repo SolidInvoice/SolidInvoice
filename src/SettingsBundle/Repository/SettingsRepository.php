@@ -32,5 +32,8 @@ class SettingsRepository extends EntityRepository
                 ->getQuery()
                 ->execute();
         }
+
+        // Clear the repository, to not keep previous setting values
+        $this->clear();
     }
 }

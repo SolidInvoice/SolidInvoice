@@ -16,9 +16,13 @@ namespace CSBill\SettingsBundle\Tests\Form\Type;
 use CSBill\CoreBundle\Form\Type\ImageUploadType;
 use CSBill\CoreBundle\Security\Encryption;
 use CSBill\CoreBundle\Tests\FormTestCase;
+use CSBill\NotificationBundle\Form\Type\NotificationType;
 use CSBill\SettingsBundle\Entity\Setting;
 use CSBill\SettingsBundle\Form\Type\SettingsType;
 use Mockery as M;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -30,45 +34,32 @@ class SettingsTypeTest extends FormTestCase
         $object = [];
         $settings = [];
 
-        foreach (['select2', 'choice', 'radio', 'email', 'checkbox', 'notification', 'image_upload', 'password', 'text'] as $i => $type) {
+        foreach ([EmailType::class, NotificationType::class, ImageUploadType::class, PasswordType::class, TextType::class] as $i => $type) {
             $setting = new Setting();
             $setting->setKey('setting_'.$i);
             $setting->setType($type);
 
             $value = $this->faker->name;
+            $formValue = $value;
 
-            if (in_array($type, ['select2', 'choice'], true)) {
-                $values = $this->faker->rgbColorAsArray;
-                $setting->setOptions($values);
-
-                $value = $this->faker->randomKey($values);
-            }
-
-            if ('radio' === $type) {
-                $setting->setOptions([$this->faker->name, $this->faker->name]);
-                $value = 0;
-            }
-
-            if ('checkbox' === $type) {
-                $value = $this->faker->boolean;
-            }
-
-            if ('notification' === $type) {
+            if (NotificationType::class === $type) {
                 $value = [
                     'email' => $this->faker->boolean,
                     'hipchat' => $this->faker->boolean,
                     'sms' => $this->faker->boolean,
                 ];
+
+                $formValue = json_encode($value);
             }
 
             $formData['setting_'.$i] = $value;
-            $object['setting_'.$i] = $value;
+            $object['setting_'.$i] = $formValue;
 
-            $settings[] = $setting;
+            $settings['setting_'.$i] = $setting;
         }
 
         $options = [
-            'section' => $settings,
+            'settings' => $settings,
         ];
 
         $this->assertFormData($this->factory->create(SettingsType::class, null, $options), $formData, $object);

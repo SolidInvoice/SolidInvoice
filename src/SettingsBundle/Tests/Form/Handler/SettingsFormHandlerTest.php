@@ -14,14 +14,17 @@ declare(strict_types=1);
 namespace CSBill\SettingsBundle\Tests\Form\Handler;
 
 use CSBill\CoreBundle\Templating\Template;
+use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use CSBill\SettingsBundle\Entity\Setting;
 use CSBill\SettingsBundle\Form\Handler\SettingsFormHandler;
 use CSBill\SettingsBundle\Manager\SettingsManager;
+use CSBill\SettingsBundle\SystemConfig;
 use CSBill\SettingsBundle\Tests\Fixtures\SettingsLoaderTest;
 use Mockery as M;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -30,19 +33,21 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SettingsFormHandlerTest extends FormHandlerTestCase
 {
-    private $settings;
+    use DoctrineTestTrait;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->settings = new SettingsLoaderTest(
-            [
-                'one' => [
-                    'two' => (new Setting())->setKey('two')->setType('password')->setValue('test'),
-                ],
-            ]
-        );
+        $this->setupDoctrine();
+
+        $setting = new Setting();
+        $setting->setKey('one/two');
+        $setting->setValue('three');
+        $setting->setType(TextType::class);
+
+        $this->em->persist($setting);
+        $this->em->flush();
     }
 
     /**
@@ -50,14 +55,12 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
-        $settingsManager = new SettingsManager();
-        $settingsManager->addSettingsLoader($this->settings);
-
+        $repository = $this->em->getRepository('CSBillSettingsBundle:Setting');
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
             ->andReturn('/settings');
 
-        $handler = new SettingsFormHandler($settingsManager, new Session(new MockArraySessionStorage()), $router);
+        $handler = new SettingsFormHandler($repository, new Session(new MockArraySessionStorage()), $router);
 
         return $handler;
     }
@@ -66,14 +69,18 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
     {
         $this->assertSame(['one' => ['two' => 'four']], $data);
 
+        $setting = (new Setting())->setKey('one/two')->setType(TextType::class)->setValue('four');
+        $property = new \ReflectionProperty(Setting::class, 'id');
+        $property->setAccessible(true);
+        $property->setValue($setting, 1);
+
         $this->assertEquals(
             [
-                'one' => [
-                    'two' => (new Setting())->setKey('two')->setType('password')->setValue('four'),
-                ],
+                $setting
             ],
-            $this->settings->getSettings()
+            $this->em->getRepository('CSBillSettingsBundle:Setting')->findAll()
         );
+
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
     }
@@ -81,11 +88,6 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
     protected function assertResponse(FormRequest $formRequest)
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
-    }
-
-    protected function getEntities(): array
-    {
-        return [];
     }
 
     /**
@@ -102,8 +104,17 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    protected function getEntities(): array
+    {
+        return [
+            'CSBillSettingsBundle:Setting'
+        ];
+    }
+
     protected function getEntityNamespaces(): array
     {
-        return [];
+        return [
+            'CSBillSettingsBundle' => 'CSBill\\SettingsBundle\\Entity'
+        ];
     }
 }

@@ -19,6 +19,7 @@ use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\SystemConfig;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class SystemConfigTest extends TestCase
 {
@@ -33,7 +34,8 @@ class SystemConfigTest extends TestCase
 
         $setting = (new Setting())
             ->setKey('one/two/three')
-            ->setValue('four');
+            ->setValue('four')
+            ->setType(TextType::class);
 
         $this->em->persist($setting);
         $this->em->flush();

@@ -26,6 +26,6 @@ class NotificationTypeTest extends FormTestCase
             'sms' => $this->faker->boolean,
         ];
 
-        $this->assertFormData(NotificationType::class, $formData, $formData);
+        $this->assertFormData(NotificationType::class, $formData, json_encode($formData));
     }
 }

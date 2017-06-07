@@ -55,66 +55,6 @@ class SettingsType extends AbstractType
     }
 
     /**
-     * @param Setting $setting
-     * @param array   $options
-     *
-     * @return string
-     */
-    protected function getFieldType(Setting $setting, array $options)
-    {
-        $type = $setting->getType() ?? 'text';
-
-        switch (strtolower($type)) {
-            case 'select2':
-                $type = Select2Type::class;
-                $settingOptions = $setting->getOptions();
-                $options['choices'] = array_flip($settingOptions);
-                break;
-
-            case 'choice':
-                $type = ChoiceType::class;
-                $settingOptions = $setting->getOptions();
-                $options['choices'] = array_flip($settingOptions);
-                break;
-
-            case 'radio':
-                $type = ChoiceType::class;
-                $options['expanded'] = true;
-                $options['multiple'] = false;
-                $settingOptions = $setting->getOptions();
-                $options['choices'] = array_flip($settingOptions);
-                break;
-
-            case 'email':
-                $type = EmailType::class;
-                break;
-
-            case 'checkbox':
-                $type = CheckboxType::class;
-                break;
-
-            case 'notification':
-                $type = NotificationType::class;
-                break;
-
-            case 'image_upload':
-                $type = ImageUploadType::class;
-                break;
-
-            case 'password':
-                $type = PasswordType::class;
-                break;
-
-            case '':
-            case 'text':
-                $type = TextType::class;
-                break;
-        }
-
-        return [$setting->getKey(), $type, $options];
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
