@@ -13,9 +13,10 @@ services:
 
     hipchat.client:
         class: HipChat\HipChat
-        arguments: ['@=service(''settings'').get(''hipchat.auth_token'')', '@=service(''settings'').get(''hipchat.server_url'')']
+        arguments: ['@=service(''settings'').get(''hipchat/auth_token'')', '@=service(''settings'').get(''hipchat/server_url'')']
 
     twilio.client:
         class: Twilio\Rest\Client
-        #arguments: ['@=service(''settings'').get(''sms.twilio.sid'')', '@=service(''settings'').get(''sms.twilio.token'')']
+        # @TODO: Create factory to create twilio client
+        #arguments: ['@=service(''settings'').get(''sms/twilio/sid'')', '@=service(''settings'').get(''sms/twilio/token'')']
         arguments: ['a', 'b']

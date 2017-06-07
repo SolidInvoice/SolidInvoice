@@ -25,7 +25,7 @@ class MoneyFormatter
     private $locale;
 
     /**
-     * @var \Money\Currency
+     * @var Currency
      */
     private $currency;
 
@@ -38,16 +38,11 @@ class MoneyFormatter
      * @param string          $locale
      * @param Currency|string $currency
      */
-    public function __construct(string $locale, $currency = null)
+    public function __construct(string $locale, Currency $currency)
     {
         $this->numberFormatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
         $this->numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
         $this->locale = $locale;
-
-        if (!empty($currency) && !$currency instanceof Currency) {
-            $currency = new Currency($currency);
-        }
-
         $this->currency = $currency;
     }
 

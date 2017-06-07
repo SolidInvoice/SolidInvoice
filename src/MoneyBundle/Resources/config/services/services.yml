@@ -1,14 +1,20 @@
 services:
-    currency:
-        class: Money\Currency
-        arguments: ['%currency%']
+    #currency:
+    #    class: Money\Currency
+    #    arguments: ['%currency%']
 
     csbill.money.formatter:
         class: CSBill\MoneyBundle\Formatter\MoneyFormatter
-        arguments: ['%locale%', '%currency%']
+        arguments:
+            $locale: '%locale%'
+        autowire: true
 
     CSBill\MoneyBundle\Formatter\MoneyFormatter:
         alias: csbill.money.formatter
 
     Money\Currency:
-        alias: currency
+        factory: ['@csbill\moneyBundle\factory\currencyfactory', 'getCurrency']
+
+    CSBill\MoneyBundle\Factory\CurrencyFactory:
+        autowire: true
+        lazy: true

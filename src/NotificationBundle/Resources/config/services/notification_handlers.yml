@@ -8,7 +8,9 @@ services:
         arguments: ['@notification.sender']
 
     CSBill\NotificationBundle\Notification\Handler\TwilioHandler:
-        arguments: ['@twilio.client', '@=service(''settings'').get(''sms.twilio.number'')']
+        autowire: true
+        arguments:
+            $twilio: '@twilio.client'
 
     Namshi\Notificator\Notification\Handler\SwiftMailer:
         arguments: ['@mailer']

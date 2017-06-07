@@ -28,7 +28,7 @@ class CurrencyType extends AbstractType
      */
     private $locale;
 
-    public function __construct($locale)
+    public function __construct(string $locale)
     {
         $this->locale = $locale;
     }

@@ -3,6 +3,6 @@ services:
         public: false
 
     CSBill\MoneyBundle\Form\Extension\MoneyExtension:
-        arguments: ['@currency']
+        autowire: true
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\MoneyType }

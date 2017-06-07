@@ -72,15 +72,18 @@ class NotificationManager
 
         $notification = new ChainedNotification();
 
-        if ($this->settings->get(sprintf('notification/%s/email', $event))) {
+        //@TODO: Settings should automatically be decoded
+        $settings = json_decode($this->settings->get(sprintf('notification/%s', $event)), true);
+
+        if ((bool) $settings['email']) {
             $notification->addNotifications($this->factory->createEmailNotification($message));
         }
 
-        if ($this->settings->get(sprintf('notification/%s/hipchat', $event))) {
+        if ((bool) $settings['hipchat']) {
             $notification->addNotifications($this->factory->createHipchatNotification($message));
         }
 
-        if ($this->settings->get(sprintf('notification/%s/sms', $event))) {
+        if ((bool) $settings['sms']) {
             foreach ($message->getUsers() as $user) {
                 if (null === $user->getMobile()) {
                     continue;

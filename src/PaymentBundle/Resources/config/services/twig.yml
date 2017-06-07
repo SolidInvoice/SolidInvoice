@@ -1,8 +1,8 @@
 services:
     _defaults:
         public: false
+        autowire: true
         tags:
             - { name: twig.extension }
 
-    CSBill\PaymentBundle\Twig\PaymentExtension:
-        arguments: ['@doctrine', '@currency']
+    CSBill\PaymentBundle\Twig\PaymentExtension: ~

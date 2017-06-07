@@ -54,7 +54,7 @@ class Money
     /**
      * @return string
      */
-    public static function getBaseCurrency(): ?string
+    public static function getBaseCurrency(): string
     {
         return self::$baseCurrency;
     }

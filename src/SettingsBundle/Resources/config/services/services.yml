@@ -3,7 +3,8 @@ services:
     _defaults:
         autowire: true
 
-    CSBill\SettingsBundle\SystemConfig: ~
+    CSBill\SettingsBundle\SystemConfig:
+        lazy: true
 
     CSBill\SettingsBundle\Repository\SettingsRepository:
         factory: ['@doctrine', 'getRepository']
