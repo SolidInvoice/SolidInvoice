@@ -13,16 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\SettingsBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\ImageUploadType;
-use CSBill\CoreBundle\Form\Type\Select2Type;
-use CSBill\NotificationBundle\Form\Type\NotificationType;
 use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
