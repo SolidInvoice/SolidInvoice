@@ -1,8 +1,4 @@
 services:
-    #currency:
-    #    class: Money\Currency
-    #    arguments: ['%currency%']
-
     csbill.money.formatter:
         class: CSBill\MoneyBundle\Formatter\MoneyFormatter
         arguments:
