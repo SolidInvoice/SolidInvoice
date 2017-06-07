@@ -20,14 +20,22 @@ class CurrencyFactory
 {
     const CURRENCY_PATH = 'system/general/currency';
 
+    const DEFAULT_CURRENCY = 'USD';
+
     /**
      * @var SystemConfig
      */
     private $config;
 
-    public function __construct(SystemConfig $config)
+    /**
+     * @var string
+     */
+    private $installed;
+
+    public function __construct(?string $installed, SystemConfig $config)
     {
         $this->config = $config;
+        $this->installed = $installed;
     }
 
     /**
@@ -35,6 +43,6 @@ class CurrencyFactory
      */
     public function getCurrency(): Currency
     {
-        return new Currency($this->config->get(self::CURRENCY_PATH));
+        return new Currency($this->installed ? $this->config->get(self::CURRENCY_PATH) : self::DEFAULT_CURRENCY);
     }
 }

@@ -53,11 +53,11 @@ class SystemConfig
     {
         if (!self::$settings) {
             $settings = $this->repository
-                    ->createQueryBuilder('c')
-                    ->select('c.key', 'c.value')
-                    ->orderBy('c.key')
-                    ->getQuery()
-                    ->getArrayResult();
+                ->createQueryBuilder('c')
+                ->select('c.key', 'c.value')
+                ->orderBy('c.key')
+                ->getQuery()
+                ->getArrayResult();
 
             self::$settings = array_combine(ArrayUtil::column($settings, 'key'), ArrayUtil::column($settings, 'value', false));
         }

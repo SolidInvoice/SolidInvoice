@@ -16,8 +16,9 @@ namespace CSBill\MoneyBundle\Formatter;
 use Money\Currency;
 use Money\Money;
 use Symfony\Component\Intl\Intl;
+use Money\MoneyFormatter as MoneyFormatterInterface;
 
-class MoneyFormatter
+class MoneyFormatter implements MoneyFormatterInterface
 {
     /**
      * @var string

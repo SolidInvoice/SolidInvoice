@@ -27,7 +27,7 @@ services:
 
     csbill.serializer.credit.handler:
         class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
-        arguments: ['@csbill.money.formatter']
+        autowire: true
         tags:
             - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: json, method: serializeMoneyJson }
             - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: xml, method: serializeMoneyXml }

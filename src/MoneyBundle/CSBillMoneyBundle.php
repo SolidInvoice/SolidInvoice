@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace CSBill\MoneyBundle;
 
 use CSBill\MoneyBundle\Entity\Money;
-use CSBill\MoneyBundle\Factory\CurrencyFactory;
-use Money\Currency;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CSBillMoneyBundle extends Bundle
@@ -25,8 +23,7 @@ class CSBillMoneyBundle extends Bundle
      */
     public function boot()
     {
-        $currency = $this->container->get('settings')->get(CurrencyFactory::CURRENCY_PATH);
-
-        Money::setBaseCurrency($currency);
+        $currency = $this->container->get('currency');
+        Money::setBaseCurrency($currency->getCode());
     }
 }
