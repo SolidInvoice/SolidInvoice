@@ -89,10 +89,11 @@ doctrine:
                         prefix: Payum\Core\Model
 
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    transport: '%env(mailer_transport)%'
+    host: '%env(mailer_host)%'
+    username: '%env(mailer_user)%'
+    password: '%env(mailer_password)%'
+    encryption: '%env(mailer_encryption)%'
     spool:
         type: memory
 
