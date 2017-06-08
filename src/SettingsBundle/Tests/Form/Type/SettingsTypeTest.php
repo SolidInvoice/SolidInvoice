@@ -16,8 +16,12 @@ namespace CSBill\SettingsBundle\Tests\Form\Type;
 use CSBill\CoreBundle\Form\Type\ImageUploadType;
 use CSBill\CoreBundle\Security\Encryption;
 use CSBill\CoreBundle\Tests\FormTestCase;
+use CSBill\NotificationBundle\Form\Type\HipChatColorType;
 use CSBill\NotificationBundle\Form\Type\NotificationType;
 use CSBill\SettingsBundle\Entity\Setting;
+use CSBill\SettingsBundle\Form\Type\MailEncryptionType;
+use CSBill\SettingsBundle\Form\Type\MailFormatType;
+use CSBill\SettingsBundle\Form\Type\MailTransportType;
 use CSBill\SettingsBundle\Form\Type\SettingsType;
 use Mockery as M;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -34,7 +38,19 @@ class SettingsTypeTest extends FormTestCase
         $object = [];
         $settings = [];
 
-        foreach ([EmailType::class, NotificationType::class, ImageUploadType::class, PasswordType::class, TextType::class] as $i => $type) {
+        foreach (
+            [
+                EmailType::class,
+                NotificationType::class,
+                ImageUploadType::class,
+                PasswordType::class,
+                TextType::class,
+                HipChatColorType::class,
+                MailEncryptionType::class,
+                MailFormatType::class,
+                MailTransportType::class,
+            ] as $i => $type
+        ) {
             $setting = new Setting();
             $setting->setKey('setting_'.$i);
             $setting->setType($type);
@@ -42,14 +58,32 @@ class SettingsTypeTest extends FormTestCase
             $value = $this->faker->name;
             $formValue = $value;
 
-            if (NotificationType::class === $type) {
-                $value = [
-                    'email' => $this->faker->boolean,
-                    'hipchat' => $this->faker->boolean,
-                    'sms' => $this->faker->boolean,
-                ];
+            switch (true) {
+                case NotificationType::class === $type:
+                    $value = [
+                        'email' => $this->faker->boolean,
+                        'hipchat' => $this->faker->boolean,
+                        'sms' => $this->faker->boolean,
+                    ];
 
-                $formValue = json_encode($value);
+                    $formValue = json_encode($value);
+                    break;
+
+                case HipChatColorType::class === $type:
+                    $value = $formValue = 'purple';
+                    break;
+
+                case MailEncryptionType::class === $type:
+                    $value = $formValue = 'ssl';
+                    break;
+
+                case MailFormatType::class === $type:
+                    $value = $formValue = 'html';
+                    break;
+
+                case MailTransportType::class === $type:
+                    $value = $formValue = 'smtp';
+                    break;
             }
 
             $formData['setting_'.$i] = $value;
