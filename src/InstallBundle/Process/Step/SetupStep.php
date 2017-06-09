@@ -18,6 +18,7 @@ use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
 use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Repository\UserRepository;
+use Defuse\Crypto\Key;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 use Symfony\Component\Form\FormInterface;
@@ -171,7 +172,7 @@ class SetupStep extends AbstractControllerStep
             'currency' => $data['currency'],
             'base_url' => $data['base_url'],
             'installed' => $time->format(\DateTime::ISO8601),
-            'secret' => bin2hex(random_bytes(16)),
+            'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
         $this->get('csbill.core.config_writer')->dump($config);
