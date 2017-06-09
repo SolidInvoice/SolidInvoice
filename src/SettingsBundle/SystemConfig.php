@@ -15,7 +15,6 @@ namespace CSBill\SettingsBundle;
 
 use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\Repository\SettingsRepository;
-use SolidWorx\Util\ArrayUtil;
 
 class SystemConfig
 {
