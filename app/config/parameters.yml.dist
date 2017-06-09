@@ -6,7 +6,7 @@ parameters:
     database_user: root
     database_password: ~
 
-    ebv(mailer_transport): smtp
+    env(mailer_transport): smtp
     env(mailer_host): 127.0.0.1
     env(mailer_user): null
     env(mailer_password): null
