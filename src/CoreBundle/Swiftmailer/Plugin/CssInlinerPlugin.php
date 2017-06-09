@@ -45,9 +45,9 @@ class CssInlinerPlugin implements \Swift_Events_SendListener
     }
 
     /**
-     * @param \Swift_Mime_MimeEntity $message
+     * @param \Swift_Mime_SimpleMimeEntity $message
      */
-    private function convert(\Swift_Mime_MimeEntity $message)
+    private function convert(\Swift_Mime_SimpleMimeEntity $message)
     {
         if ($message->getContentType() !== 'text/plain') {
             $message->setBody($this->inliner->convert($message->getBody()));

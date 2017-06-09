@@ -94,6 +94,7 @@ swiftmailer:
     username: '%env(mailer_user)%'
     password: '%env(mailer_password)%'
     encryption: '%env(mailer_encryption)%'
+    port: '%env(mailer_port)%'
     spool:
         type: memory
 

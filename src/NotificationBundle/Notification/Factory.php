@@ -58,7 +58,7 @@ class Factory
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {
-        $swiftMessage = \Swift_Message::newInstance();
+        $swiftMessage = new \Swift_Message();
 
         $from = [$this->settings->get('email/from_address') => $this->settings->get('email/from_name')];
 

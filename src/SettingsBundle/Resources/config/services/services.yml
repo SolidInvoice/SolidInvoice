@@ -10,9 +10,5 @@ services:
         factory: ['@doctrine', 'getRepository']
         arguments: ['CSBillSettingsBundle:Setting']
 
-    csbill_settings.manager:
-        class: CSBill\SettingsBundle\Manager\SettingsManager
-        arguments: ['@doctrine']
-
     settings:
         alias: CSBill\SettingsBundle\SystemConfig
