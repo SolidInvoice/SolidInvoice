@@ -59,7 +59,7 @@ class SystemConfig
                 ->getQuery()
                 ->getArrayResult();
 
-            self::$settings = array_combine(ArrayUtil::column($settings, 'key'), ArrayUtil::column($settings, 'value', false));
+            self::$settings = array_combine(array_column($settings, 'key'), array_column($settings, 'value'));
         }
     }
 }
