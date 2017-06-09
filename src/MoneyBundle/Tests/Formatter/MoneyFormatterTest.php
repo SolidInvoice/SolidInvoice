@@ -32,9 +32,9 @@ class MoneyFormatterTest extends TestCase
      */
     public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format)
     {
-        $formatter = new MoneyFormatter($locale);
-
         $currency = new Currency($currency);
+        $formatter = new MoneyFormatter($locale, $currency);
+
         $money = new Money(1200, $currency);
 
         $this->assertSame($format, $formatter->format($money));
@@ -49,7 +49,7 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetCurrencySymbol(string $locale, string $currency, string $symbol)
     {
-        $formatter = new MoneyFormatter($locale, $currency);
+        $formatter = new MoneyFormatter($locale, new Currency($currency));
 
         $this->assertSame($symbol, $formatter->getCurrencySymbol());
     }
@@ -62,7 +62,7 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetThousandSeparator(string $locale, string $separator)
     {
-        $formatter = new MoneyFormatter($locale);
+        $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
         $this->assertEquals($separator, $formatter->getThousandSeparator());
     }
@@ -75,7 +75,7 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetDecimalSeparator(string $locale, string $separator)
     {
-        $formatter = new MoneyFormatter($locale);
+        $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
         $this->assertEquals($separator, $formatter->getDecimalSeparator());
     }
@@ -88,7 +88,7 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetPattern(string $locale, string $pattern)
     {
-        $formatter = new MoneyFormatter($locale);
+        $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
         $this->assertContains($pattern, $formatter->getPattern());
     }

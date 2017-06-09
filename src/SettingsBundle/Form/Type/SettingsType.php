@@ -13,16 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\SettingsBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\ImageUploadType;
-use CSBill\CoreBundle\Form\Type\Select2Type;
-use CSBill\NotificationBundle\Form\Type\NotificationType;
-use CSBill\SettingsBundle\Model\Setting;
+use CSBill\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -36,80 +28,22 @@ class SettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($options['section'] as $key => $setting) {
+        foreach ($options['settings'] as $key => $setting) {
             if (is_array($setting)) {
-                $builder->add($key, self::class, ['section' => $setting]);
+                $builder->add($key, self::class, ['settings' => $setting]);
                 continue;
             }
 
             /* @var Setting $setting */
-            $options = [
-                'help' => $setting->getDescription(),
-                'required' => false,
-            ];
-
-            $builder->add(...$this->getFieldType($setting, $options));
+            $builder->add(
+                $key,
+                $setting->getType(),
+                [
+                    'help' => $setting->getDescription(),
+                    'required' => false,
+                ]
+            );
         }
-    }
-
-    /**
-     * @param Setting $setting
-     * @param array   $options
-     *
-     * @return string
-     */
-    protected function getFieldType(Setting $setting, array $options)
-    {
-        $type = $setting->getType() ?? 'text';
-
-        switch (strtolower($type)) {
-            case 'select2':
-                $type = Select2Type::class;
-                $settingOptions = $setting->getOptions();
-                $options['choices'] = array_flip($settingOptions);
-                break;
-
-            case 'choice':
-                $type = ChoiceType::class;
-                $settingOptions = $setting->getOptions();
-                $options['choices'] = array_flip($settingOptions);
-                break;
-
-            case 'radio':
-                $type = ChoiceType::class;
-                $options['expanded'] = true;
-                $options['multiple'] = false;
-                $settingOptions = $setting->getOptions();
-                $options['choices'] = array_flip($settingOptions);
-                break;
-
-            case 'email':
-                $type = EmailType::class;
-                break;
-
-            case 'checkbox':
-                $type = CheckboxType::class;
-                break;
-
-            case 'notification':
-                $type = NotificationType::class;
-                break;
-
-            case 'image_upload':
-                $type = ImageUploadType::class;
-                break;
-
-            case 'password':
-                $type = PasswordType::class;
-                break;
-
-            case '':
-            case 'text':
-                $type = TextType::class;
-                break;
-        }
-
-        return [$setting->getKey(), $type, $options];
     }
 
     /**
@@ -117,8 +51,7 @@ class SettingsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('section');
-        $resolver->setAllowedTypes('section', 'array');
+        $resolver->setRequired('settings');
     }
 
     /**

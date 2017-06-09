@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Mailer;
 
-use CSBill\SettingsBundle\Manager\SettingsManager;
+use CSBill\SettingsBundle\SystemConfig;
 use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Templating\EngineInterface;
@@ -21,12 +21,10 @@ use Symfony\Component\Templating\EngineInterface;
 interface MailerInterface
 {
     /**
-     * Constructor.
-     *
-     * @param Swift_Mailer    $mailer
-     * @param SettingsManager $settings
+     * @param Swift_Mailer $mailer
+     * @param SystemConfig $settings
      */
-    public function __construct(Swift_Mailer $mailer, SettingsManager $settings);
+    public function __construct(Swift_Mailer $mailer, SystemConfig $settings);
 
     /**
      * Sets the templating instance.

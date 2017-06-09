@@ -1,11 +1,12 @@
 services:
     _defaults:
         public: false
+        autowire: true
         tags:
             - { name: form.type }
 
-    CSBill\MoneyBundle\Form\Type\HiddenMoneyType:
-        arguments: ['@currency']
+    CSBill\MoneyBundle\Form\Type\HiddenMoneyType: ~
 
     CSBill\MoneyBundle\Form\Type\CurrencyType:
-        arguments: ['%locale%']
+        arguments:
+            $locale: '%locale%'

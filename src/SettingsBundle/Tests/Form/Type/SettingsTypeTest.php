@@ -16,9 +16,17 @@ namespace CSBill\SettingsBundle\Tests\Form\Type;
 use CSBill\CoreBundle\Form\Type\ImageUploadType;
 use CSBill\CoreBundle\Security\Encryption;
 use CSBill\CoreBundle\Tests\FormTestCase;
+use CSBill\NotificationBundle\Form\Type\HipChatColorType;
+use CSBill\NotificationBundle\Form\Type\NotificationType;
 use CSBill\SettingsBundle\Entity\Setting;
+use CSBill\SettingsBundle\Form\Type\MailEncryptionType;
+use CSBill\SettingsBundle\Form\Type\MailFormatType;
+use CSBill\SettingsBundle\Form\Type\MailTransportType;
 use CSBill\SettingsBundle\Form\Type\SettingsType;
 use Mockery as M;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -30,45 +38,62 @@ class SettingsTypeTest extends FormTestCase
         $object = [];
         $settings = [];
 
-        foreach (['select2', 'choice', 'radio', 'email', 'checkbox', 'notification', 'image_upload', 'password', 'text'] as $i => $type) {
+        foreach (
+            [
+                EmailType::class,
+                NotificationType::class,
+                ImageUploadType::class,
+                PasswordType::class,
+                TextType::class,
+                HipChatColorType::class,
+                MailEncryptionType::class,
+                MailFormatType::class,
+                MailTransportType::class,
+            ] as $i => $type
+        ) {
             $setting = new Setting();
             $setting->setKey('setting_'.$i);
             $setting->setType($type);
 
             $value = $this->faker->name;
+            $formValue = $value;
 
-            if (in_array($type, ['select2', 'choice'], true)) {
-                $values = $this->faker->rgbColorAsArray;
-                $setting->setOptions($values);
+            switch (true) {
+                case NotificationType::class === $type:
+                    $value = [
+                        'email' => $this->faker->boolean,
+                        'hipchat' => $this->faker->boolean,
+                        'sms' => $this->faker->boolean,
+                    ];
 
-                $value = $this->faker->randomKey($values);
-            }
+                    $formValue = json_encode($value);
+                    break;
 
-            if ('radio' === $type) {
-                $setting->setOptions([$this->faker->name, $this->faker->name]);
-                $value = 0;
-            }
+                case HipChatColorType::class === $type:
+                    $value = $formValue = 'purple';
+                    break;
 
-            if ('checkbox' === $type) {
-                $value = $this->faker->boolean;
-            }
+                case MailEncryptionType::class === $type:
+                    $value = $formValue = 'ssl';
+                    break;
 
-            if ('notification' === $type) {
-                $value = [
-                    'email' => $this->faker->boolean,
-                    'hipchat' => $this->faker->boolean,
-                    'sms' => $this->faker->boolean,
-                ];
+                case MailFormatType::class === $type:
+                    $value = $formValue = 'html';
+                    break;
+
+                case MailTransportType::class === $type:
+                    $value = $formValue = 'smtp';
+                    break;
             }
 
             $formData['setting_'.$i] = $value;
-            $object['setting_'.$i] = $value;
+            $object['setting_'.$i] = $formValue;
 
-            $settings[] = $setting;
+            $settings['setting_'.$i] = $setting;
         }
 
         $options = [
-            'section' => $settings,
+            'settings' => $settings,
         ];
 
         $this->assertFormData($this->factory->create(SettingsType::class, null, $options), $formData, $object);

@@ -44,9 +44,9 @@ class Money
     private static $baseCurrency;
 
     /**
-     * @param $currency
+     * @param string $currency
      */
-    public static function setBaseCurrency($currency)
+    public static function setBaseCurrency(string $currency)
     {
         self::$baseCurrency = $currency;
     }
@@ -54,7 +54,7 @@ class Money
     /**
      * @return string
      */
-    public static function getBaseCurrency(): ?string
+    public static function getBaseCurrency(): string
     {
         return self::$baseCurrency;
     }

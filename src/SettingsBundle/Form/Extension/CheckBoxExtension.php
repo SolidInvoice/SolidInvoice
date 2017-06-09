@@ -11,41 +11,29 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\NotificationBundle\Form\Type;
+namespace CSBill\SettingsBundle\Form\Extension;
 
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class NotificationType extends AbstractType
+class CheckBoxExtension extends AbstractTypeExtension
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', CheckboxType::class);
-        $builder->add('hipchat', CheckboxType::class);
-        $builder->add('sms', CheckboxType::class);
-
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
             public function transform($value)
             {
-                if (!is_string($value)) {
-                    return null;
-                }
-
-                return json_decode($value, true);
+                return (bool) $value;
             }
 
             public function reverseTransform($value)
             {
-                if (null == $value) {
-                    return $value;
-                }
-
-                return json_encode($value);
+                return (string) $value;
             }
         });
     }
@@ -53,8 +41,8 @@ class NotificationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getExtendedType()
     {
-        return 'notification';
+        return CheckboxType::class;
     }
 }

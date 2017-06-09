@@ -25,8 +25,8 @@
 
         <div role="main" class="container">
             {% block logo %}
-                {% if settings.system.general.logo.value is not empty %}
-                    <img src="{{ asset('/uploads/' ~ settings.system.general.logo, null, true) }}" class="logo" />
+                {% if settings['system/general/logo'] is not empty %}
+                    <img src="{{ asset('/uploads/' ~ settings['system/general/logo'], null, true) }}" class="logo" />
                 {% endif %}
             {% endblock %}
             <div class="row">

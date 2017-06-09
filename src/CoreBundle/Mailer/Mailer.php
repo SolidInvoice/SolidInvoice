@@ -20,7 +20,7 @@ use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
 use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\SettingsBundle\Manager\SettingsManager;
+use CSBill\SettingsBundle\SystemConfig;
 use CSBill\UserBundle\Entity\User;
 use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,7 +45,7 @@ class Mailer implements MailerInterface
     protected $securityToken;
 
     /**
-     * @var SettingsManager
+     * @var SystemConfig
      */
     protected $settings;
 
@@ -55,10 +55,10 @@ class Mailer implements MailerInterface
     protected $dispatcher;
 
     /**
-     * @param \Swift_Mailer   $mailer
-     * @param SettingsManager $settings
+     * @param \Swift_Mailer $mailer
+     * @param SystemConfig  $settings
      */
-    public function __construct(Swift_Mailer $mailer, SettingsManager $settings)
+    public function __construct(Swift_Mailer $mailer, SystemConfig $settings)
     {
         $this->mailer = $mailer;
         $this->settings = $settings;
@@ -104,7 +104,7 @@ class Mailer implements MailerInterface
         $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', ['invoice' => $invoice]);
         $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', ['invoice' => $invoice]);
 
-        $subject = $this->getSubject('invoice.email_subject', $invoice->getId());
+        $subject = $this->getSubject('invoice/email_subject', $invoice->getId());
 
         $users = [];
 
@@ -116,7 +116,7 @@ class Mailer implements MailerInterface
         $event = new InvoiceMailEvent();
         $event->setInvoice($invoice);
 
-        $bcc = (string) $this->settings->get('invoice.bcc_address');
+        $bcc = (string) $this->settings->get('invoice/bcc_address');
 
         $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event, $bcc);
 
@@ -169,10 +169,10 @@ class Mailer implements MailerInterface
     ): int {
         $message = \Swift_Message::newInstance();
 
-        $fromAddress = (string) $this->settings->get('email.from_address');
+        $fromAddress = (string) $this->settings->get('email/from_address');
 
         if (!empty($fromAddress)) {
-            $fromName = (string) $this->settings->get('email.from_name');
+            $fromName = (string) $this->settings->get('email/from_name');
 
             $message->setFrom($fromAddress, $fromName);
         } else {
@@ -203,7 +203,7 @@ class Mailer implements MailerInterface
             $textTemplate = $event->getTextTemplate();
         }
 
-        $format = (string) $this->settings->get('email.format');
+        $format = (string) $this->settings->get('email/format');
 
         switch ($format) {
             case 'html':
@@ -242,7 +242,7 @@ class Mailer implements MailerInterface
         $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', ['quote' => $quote]);
         $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', ['quote' => $quote]);
 
-        $subject = $this->getSubject('quote.email_subject', $quote->getId());
+        $subject = $this->getSubject('quote/email_subject', $quote->getId());
 
         $users = [];
 
@@ -254,7 +254,7 @@ class Mailer implements MailerInterface
         $event = new QuoteEvent();
         $event->setQuote($quote);
 
-        $bcc = (string) $this->settings->get('quote.bcc_address');
+        $bcc = (string) $this->settings->get('quote/bcc_address');
 
         $sent = $this->sendMessage($subject, $users, $htmlTemplate, $textTemplate, $event, $bcc);
 

@@ -27,8 +27,9 @@ class MoneyFormatterExtensionTest extends TestCase
 
     public function testGetFunctions()
     {
-        $moneyFormatter = new MoneyFormatter('en_US');
-        $extension = new MoneyFormatterExtension($moneyFormatter, new Currency('USD'));
+        $currency = new Currency('USD');
+        $moneyFormatter = new MoneyFormatter('en_US', $currency);
+        $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
         $this->assertSame('currency_formatter', $extension->getName());
 
@@ -44,16 +45,17 @@ class MoneyFormatterExtensionTest extends TestCase
 
     public function testGetFilters()
     {
-        $money = new Money(1200, new Currency('USD'));
+        $currency = new Currency('USD');
+        $money = new Money(1200, $currency);
 
-        $moneyFormatter = M::mock('CSBill\MoneyBundle\Formatter\MoneyFormatter', ['en_USD']);
+        $moneyFormatter = M::mock('CSBill\MoneyBundle\Formatter\MoneyFormatter', ['en_USD', $currency]);
         $moneyFormatter
             ->shouldReceive('format')
             ->once()
             ->with($money)
             ->andReturn('$12,00');
 
-        $extension = new MoneyFormatterExtension($moneyFormatter, new Currency('USD'));
+        $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
         /** @var \Twig_SimpleFilter[] $filters */
         $filters = $extension->getFilters();

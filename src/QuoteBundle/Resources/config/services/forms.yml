@@ -1,11 +1,10 @@
 services:
     _defaults:
         public: false
+        autowire: true
         tags:
             - { name: form.type }
 
-    CSBill\QuoteBundle\Form\Type\QuoteType:
-        arguments: ['@currency']
+    CSBill\QuoteBundle\Form\Type\QuoteType: ~
 
-    CSBill\QuoteBundle\Form\Type\ItemType:
-        arguments: ['@doctrine']
+    CSBill\QuoteBundle\Form\Type\ItemType: ~

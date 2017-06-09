@@ -23,7 +23,7 @@ class InvalidSettingException extends \RuntimeException
      */
     public function __construct(string $value)
     {
-        $message = sprintf('Invalid settings option: %s', $value);
+        $message = sprintf('Invalid settings key: %s', $value);
 
         parent::__construct($message);
     }

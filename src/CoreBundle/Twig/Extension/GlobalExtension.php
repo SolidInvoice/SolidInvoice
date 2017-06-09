@@ -18,7 +18,6 @@ use CSBill\CoreBundle\CSBillCoreBundle;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
 class GlobalExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface, ContainerAwareInterface
 {
@@ -31,20 +30,24 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      */
     public function getGlobals(): array
     {
-        $appName = $this->container->get('settings')->get('system.general.app_name');
-
-        return [
+        $globals = [
             'query' => $this->getQuery(),
             'app_version' => CSBillCoreBundle::VERSION,
-            'app_name' => $appName,
-            'settings' => $this->container->get('settings')->getSettings(),
+            'app_name' => '',
+            'settings' => [],
         ];
+
+        if ($this->container->getParameter('installed')) {
+            $config = $this->container->get('settings');
+            $globals['app_name'] = $config->get('system/general/app_name');
+            $globals['settings'] = $config->getAll();
+        }
+
+        return $globals;
     }
 
     /**
      * Get the url query.
-     *
-     * @throws InactiveScopeException
      *
      * @return array
      */
