@@ -23,7 +23,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in select2 input "Driver" with "mysql"
-    And I fill in select2 input "Transport" with "PHP Mail"
+    And I fill in select2 input "Transport" with "Sendmail"
     And I fill in the following:
       | User          | root   |
       | Database Name | csbill |
@@ -35,7 +35,7 @@ Feature: Install application
       | database_name     | csbill    |
       | database_user     | root      |
       | database_password |           |
-      | mailer_transport  | mail      |
+      | mailer_transport  | sendmail  |
       | installed         |           |
 
   Scenario: Installation Process Setup
@@ -43,7 +43,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in select2 input "Driver" with "mysql"
-    And I fill in select2 input "Transport" with "PHP Mail"
+    And I fill in select2 input "Transport" with "Sendmail"
     And I fill in the following:
       | User          | root   |
       | Database Name | csbill |
@@ -59,7 +59,7 @@ Feature: Install application
     When I follow "continue_step"
     And I am on "/install/config"
     And I fill in select2 input "Driver" with "mysql"
-    And I fill in select2 input "Transport" with "PHP Mail"
+    And I fill in select2 input "Transport" with "Sendmail"
     And I fill in the following:
       | User          | root   |
       | Database Name | csbill |
