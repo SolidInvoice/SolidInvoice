@@ -15,7 +15,7 @@ use Symfony\Component\Intl\Intl;
 
 class AppRequirements extends SymfonyRequirements
 {
-    const REQUIRED_PHP_VERSION = '5.6.10';
+    const REQUIRED_PHP_VERSION = '7.1.4';
     const REQUIRED_ICU_VERSION = '3.8';
     const EXCLUDE_REQUIREMENTS_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8)|(logout handler)/';
     const EXCLUDE_RECOMMENDED_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8)|(logout handler|PDO)/';
@@ -37,9 +37,9 @@ class AppRequirements extends SymfonyRequirements
         parent::__construct();
 
         $this->addRequirement(
-            function_exists('mcrypt_encrypt'),
-            'mcrypt_encrypt() should be available',
-            'Install and enable the <strong>Mcrypt</strong> extension.'
+            extension_loaded('openssl'),
+            'openssl must be loaded',
+            'Install and enable the <strong>Openssl</strong> extension.'
         );
 
         $this->addRequirement(

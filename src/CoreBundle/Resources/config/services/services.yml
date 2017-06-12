@@ -16,13 +16,6 @@ services:
             - [setTemplating, ['@templating']]
             - [setSecurity, ['@security.token_storage']]
 
-    csbill_core.security.encryption:
-        class: CSBill\CoreBundle\Security\Encryption
-        arguments: ['%kernel.secret%']
-
-    security.encryption:
-        alias: csbill_core.security.encryption
-
     csbill_core.swiftmailer.plugin.cssinline:
         class: CSBill\CoreBundle\Swiftmailer\Plugin\CssInlinerPlugin
         arguments: ['@csbill_core.cssinline']

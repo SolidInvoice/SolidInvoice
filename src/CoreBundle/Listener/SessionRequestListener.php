@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace CSBill\CoreBundle\Listener;
 
 use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Security\Encryption;
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -29,9 +30,9 @@ class SessionRequestListener implements EventSubscriberInterface
     protected $session;
 
     /**
-     * @var Encryption
+     * @var string
      */
-    protected $encryption;
+    protected $secret;
 
     /**
      * {@inheritdoc}
@@ -45,13 +46,13 @@ class SessionRequestListener implements EventSubscriberInterface
     }
 
     /**
-     * @param Session    $session
-     * @param Encryption $encryption
+     * @param Session $session
+     * @param string  $secret
      */
-    public function __construct(Session $session, Encryption $encryption)
+    public function __construct(Session $session, string $secret)
     {
         $this->session = $session;
-        $this->encryption = $encryption;
+        $this->secret = $secret;
     }
 
     /**
@@ -68,7 +69,7 @@ class SessionRequestListener implements EventSubscriberInterface
         if ($request->request->has('sessionId')) {
             $request->cookies->set($this->session->getName(), 1);
 
-            $sessionId = $this->encryption->decrypt($request->request->get('sessionId'));
+            $sessionId = Crypto::decrypt($request->request->get('sessionId'), Key::loadFromAsciiSafeString($this->secret));
 
             $this->session->setId($sessionId);
         }
