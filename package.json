@@ -43,14 +43,11 @@
     "bootbox": "^4.4.0",
     "bootstrap": "^3.3.7",
     "bootstrap-material-design": "^0.5.10",
-    "bootstrap-modal": "^2.1.4",
     "handlebars-loader": "^1.5.0",
     "handlebars-runtime": "^1.0.12",
     "jquery": "^3.2.1",
     "jquery.placeholder": "^2.0.7",
     "lodash": "^4.17.4",
-    "material": "^0.1.1",
-    "morpheus": "^0.7.2",
     "parsley": "^0.1.0",
     "select2": "^4.0.3"
   }
