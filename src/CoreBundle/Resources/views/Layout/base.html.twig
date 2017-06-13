@@ -22,9 +22,9 @@
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-
+.
     {% block stylesheets %}
-	    <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css" />
+	    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" type="text/css" />
     {% endblock stylesheets %}
 
     <script src="{{ asset('bundles/csbillcore/js/lib/modernizr.min.js') }}"></script>
@@ -46,6 +46,18 @@
     <footer class="align-center">
         {{ block('footer') is defined ? block('footer') }}
     </footer>
+
+    {% if module is defined %}
+        <script id="module" src="{{ asset("assets/js/" ~ module~'.js') }}"
+            {% if moduleData is defined %}
+                {% set context = serialization_context() %}
+
+                {% do context.setGroups(["js"]) %}
+
+                data-module-data="{{ moduleData|serialize("json", context) }}"
+            {% endif %}
+            ></div>
+        {% endif %}
 
     {{ block('scripts') is defined ? block('scripts') }}
 

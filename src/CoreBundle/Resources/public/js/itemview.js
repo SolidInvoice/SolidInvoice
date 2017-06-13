@@ -4,25 +4,23 @@ define(['marionette', 'jquery', 'core/ajaxmodal', 'material', 'bootstrap.modalma
     return Mn.View.extend({
         constructor: function(options) {
             this.listenTo(this, 'render', function() {
-                setTimeout(function() {
-                    $.material.init();
+                $.material.init();
 
-                    var select2 = this.$('select.select2');
-                    if (select2.length) {
-                        require(['jquery.select2'], function() {
-                            select2.select2({
-                                allowClear: true
-                            });
+                var select2 = this.$('select.select2');
+                if (select2.length) {
+                    require(['select2'], function() {
+                        select2.select2({
+                            allowClear: true
                         });
-                    }
+                    });
+                }
 
-                    var tooltip = this.$('*[rel=tooltip]');
-                    if (tooltip.length) {
-                        require(['bootstrap'], function() {
-                            tooltip.tooltip();
-                        });
-                    }
-                }, 0);
+                var tooltip = this.$('*[rel=tooltip]');
+                if (tooltip.length) {
+                    require(['bootstrap'], function() {
+                        tooltip.tooltip();
+                    });
+                }
             });
 
             Mn.View.call(this, options);

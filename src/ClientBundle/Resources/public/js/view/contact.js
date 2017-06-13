@@ -1,10 +1,10 @@
 define(
-    ['core/view', './contact_modal', 'template', 'bootstrap.bootbox', 'translator'],
-    function(ItemView, ContactModal, Template, Bootbox, __) {
+    ['core/itemview', './contact_modal', 'bootstrap.bootbox', 'translator'],
+    function(ItemView, ContactModal, Bootbox, __) {
         'use strict';
 
         return ItemView.extend({
-            template: Template.client.contact,
+            template: require('../../templates/contact.hbs'),
 
             templateContext: function() {
                 return {

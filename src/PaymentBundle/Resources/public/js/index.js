@@ -14,8 +14,6 @@ define(
                 var model = new PaymentModel,
                     controller = new Controller(module, model);
 
-                Handlebars.registerPartial('menuItem', Template.payment.menu_item);
-
                 var view = Mn.View.extend({
                     template: Template.payment.menu,
                     el: '#payment-method-tabs',

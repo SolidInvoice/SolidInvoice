@@ -1,12 +1,12 @@
 define(
-    ['core/modal', 'accounting', 'template', 'translator', 'parsley'],
-    function(Modal, Accounting, Template, __, Parsley) {
+    ['core/modal', 'accounting', 'translator', 'parsley'],
+    function(Modal, Accounting, __, Parsley) {
         "use strict";
 
         return Modal.extend({
-            'template': Template.client.add_credit,
+            'template': require('../../templates/add_credit.hbs'),
             'modal': {
-                'title': __('client.modal.add_credit'),
+                'title': 'client.modal.add_credit', //__('client.modal.add_credit'),
                 'buttons': {
                     'save': {
                         'class': 'success',

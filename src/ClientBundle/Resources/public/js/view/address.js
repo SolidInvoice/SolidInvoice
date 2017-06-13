@@ -1,10 +1,10 @@
 define(
-    ['core/view', './address_modal', 'template', 'bootstrap.bootbox', 'translator'],
-    function(ItemView, AddressModal, Template, Bootbox, __) {
+    ['core/itemview', './address_modal', 'bootstrap.bootbox', 'translator'],
+    function(ItemView, AddressModal, Bootbox, __) {
         'use strict';
 
         return ItemView.extend({
-            template: Template.client.address,
+            template: require('../../templates/address.hbs'),
 
             ui: {
                 'deleteAddress': '.delete-address',

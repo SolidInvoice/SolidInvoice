@@ -7,9 +7,10 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash', 'template'], function(Backgrid, _, Template) {
+define(['backgrid', 'lodash'], function(Backgrid, _) {
+
     Backgrid.Extension.ActionCell = Backgrid.Cell.extend({
-        template: Template.datagrid.line_actions,
+        template: require('../../templates/line_actions.hbs'),
         _setRouteParams: function(action) {
             action.routeParams = {};
 

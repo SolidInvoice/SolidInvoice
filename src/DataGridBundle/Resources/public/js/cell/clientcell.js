@@ -7,9 +7,9 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash', 'template'], function(Backgrid, _, Template) {
+define(['backgrid', 'lodash'], function(Backgrid, _) {
     Backgrid.Extension.ClientCell = Backgrid.Cell.extend({
-        template: Template.datagrid.client_link,
+        template: require('../../templates/client_link.hbs'),
         _setRouteParams: function(action) {
             action.routeParams = {};
 

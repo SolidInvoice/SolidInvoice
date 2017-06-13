@@ -8,12 +8,12 @@
  */
 
 define(
-    ['marionette', 'client/model/contact', 'client/view/contact_modal', 'template'],
-    function(Mn, Contact, ContactModal, Template) {
+    ['marionette', '../model/contact', '../view/contact_modal'],
+    function(Mn, Contact, ContactModal) {
         "use strict";
 
         return Mn.View.extend({
-            template: Template.client.info,
+            template: require('../../templates/info.hbs'),
             contactCollection: null,
             regions: {
                 'clientContact': '#client-contacts-list',

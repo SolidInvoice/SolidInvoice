@@ -8,7 +8,7 @@
  */
 
 define(
-    ['marionette', 'client/view/contact_collection', 'client/model/contact_collection'],
+    ['marionette', './view/contact_collection', './model/contact_collection'],
     function(Mn, ContactCollectionView, ContactCollectionModel) {
         'use strict';
 

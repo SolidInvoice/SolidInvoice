@@ -8,7 +8,7 @@
  */
 
 define(
-    ['marionette', 'lodash', 'client/view/credit', 'client/model/credit'],
+    ['marionette', 'lodash', './view/credit', './model/credit'],
     function(Mn, _, CreditView, CreditModel) {
         'use strict';
 

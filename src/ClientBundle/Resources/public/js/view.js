@@ -8,11 +8,23 @@
  */
 
 define(
-    ['jquery', 'core/module', 'backbone', 'bootstrap.bootbox', 'routing', 'translator', 'client/view/info', './credit', './contacts', 'client/view/address_collection', 'client/model/address_collection'],
+    [
+        'jquery',
+        'core/module',
+        'backbone',
+        'bootstrap.bootbox',
+        'routing',
+        'translator',
+        './view/info',
+        './credit',
+        './contacts',
+        './view/address_collection',
+        './model/address_collection'
+    ],
     function($, Module, Backbone, Bootbox, Routing, __, InfoView, ClientCredit, ClientContact, AddressView, AddressCollection) {
         'use strict';
 
-        return Module.extend({
+        var m = Module.extend({
             regions: {
                 'clientCredit': '#client-credit',
                 'clientInfo': '#client-info'
@@ -89,5 +101,9 @@ define(
                 });
             }
         });
+
+        var App = require('core/app');
+
+        App.start(m);
     }
 );

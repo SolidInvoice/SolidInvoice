@@ -22,7 +22,8 @@ $config = [
         'engines' => ['twig'],
     ],
     'assets' => [
-        'version' => CSBill\CoreBundle\CSBillCoreBundle::VERSION,
+        //'version' => CSBill\CoreBundle\CSBillCoreBundle::VERSION,
+        'json_manifest_path' => '%kernel.project_dir%/web/assets/manifest.json'
     ],
 ];
 

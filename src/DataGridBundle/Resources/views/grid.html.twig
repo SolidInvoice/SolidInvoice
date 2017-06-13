@@ -10,8 +10,9 @@
 
 <div id="{{ id }}"></div>
 
+<script src="{{ asset('assets/js/grid.js') }}"></script>
 <script>
-    require(['grid/grid'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (Grid) {
-	new Grid({{ gridOptions|raw }}, '#{{ id }}');
-    });
+    /*require(['grid/grid'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (Grid) {
+	    new Grid({{ gridOptions|raw }}, '#{{ id }}');
+    });*/
 </script>
