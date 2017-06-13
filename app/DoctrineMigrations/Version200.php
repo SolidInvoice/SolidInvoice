@@ -24,6 +24,7 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -179,12 +180,12 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                 'path' => 'email/sending_options/transport',
                 'type' => addslashes(MailTransportType::class),
             ],
-            'mailer_encryption' => [
-                'path' => 'email/sending_options/encryption',
-                'type' => addslashes(MailEncryptionType::class),
-            ],
             'mailer_host' => [
                 'path' => 'email/sending_options/host',
+                'type' => addslashes(TextType::class),
+            ],
+            'mailer_user' => [
+                'path' => 'email/sending_options/user',
                 'type' => addslashes(TextType::class),
             ],
             'mailer_password' => [
@@ -195,9 +196,9 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                 'path' => 'email/sending_options/port',
                 'type' => addslashes(TextType::class),
             ],
-            'mailer_user' => [
-                'path' => 'email/sending_options/user',
-                'type' => addslashes(TextType::class),
+            'mailer_encryption' => [
+                'path' => 'email/sending_options/encryption',
+                'type' => addslashes(MailEncryptionType::class),
             ],
             'currency' => [
                 'path' => 'system/general/currency',
@@ -206,7 +207,19 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         ];
 
         foreach ($keys as $key => $value) {
-            $parameter = $this->container->getParameter($key);
+            try {
+                $parameter = $this->container->getParameter($key);
+            } catch (InvalidArgumentException $e) {
+                try {
+                    $parameter = $this->container->getParameter(sprintf('env(%s)', $key));
+                } catch (InvalidArgumentException $e) {
+                    continue;
+                }
+            }
+
+            if ('mailer_transport' === $key && 'mail' === $parameter) {
+                $parameter = 'sendmail';
+            }
 
             $this->addSql(
                 sprintf(

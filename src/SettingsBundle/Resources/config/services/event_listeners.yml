@@ -1,0 +1,16 @@
+services:
+    _instanceof:
+        Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            public: false
+            tags: ['kernel.event_subscriber']
+
+    _defaults:
+        public: false
+        autowire: true
+
+    CSBill\SettingsBundle\Listener\:
+        resource: '../../../Listener'
+
+    CSBill\SettingsBundle\Listener\MailerSettingsEnvListener:
+        arguments:
+            $installed: '%installed%'

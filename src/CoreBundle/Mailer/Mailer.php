@@ -167,7 +167,7 @@ class Mailer implements MailerInterface
         MessageEvent $event = null,
         $bccAddress = null
     ): int {
-        $message = \Swift_Message::newInstance();
+        $message = new \Swift_Message();
 
         $fromAddress = (string) $this->settings->get('email/from_address');
 

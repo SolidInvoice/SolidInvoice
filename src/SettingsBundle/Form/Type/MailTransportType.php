@@ -24,7 +24,6 @@ class MailTransportType extends AbstractType
         $resolver->setDefault(
             'choices',
             [
-                'PHP Mail' => 'mail',
                 'Sendmail' => 'sendmail',
                 'SMTP' => 'smtp',
                 'Gmail' => 'gmail',
