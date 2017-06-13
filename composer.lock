@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "70abf6f176a195c6e2413461ed339e71",
+    "content-hash": "512128be22d0d5334bdb4a23045e9160",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -157,7 +157,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/composer/ca-bundle/zipball/b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
                 "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
-              "shasum": ""
+                "shasum": ""
             },
             "require": {
                 "ext-openssl": "*",
@@ -189,7 +189,7 @@
             ],
             "authors": [
                 {
-                  "name": "Jordi Boggiano",
+                    "name": "Jordi Boggiano",
                     "email": "j.boggiano@seld.be",
                     "homepage": "http://seld.be"
                 }
