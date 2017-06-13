@@ -16,6 +16,7 @@ namespace CSBill\InstallBundle\Command;
 use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Exception\ApplicationInstalledException;
+use Defuse\Crypto\Key;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -337,7 +338,7 @@ class InstallCommand extends ContainerAwareCommand
             'mailer_encryption' => $input->getOption('mailer-encryption'),
             'locale' => $input->getOption('locale'),
             'currency' => $input->getOption('currency'),
-            'secret' => bin2hex(random_bytes(16)),
+            'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
         $this->getContainer()->get('csbill.core.config_writer')->dump($config);

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CSBill\SettingsBundle\Tests\Form\Type;
 
 use CSBill\CoreBundle\Form\Type\ImageUploadType;
-use CSBill\CoreBundle\Security\Encryption;
 use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\NotificationBundle\Form\Type\HipChatColorType;
 use CSBill\NotificationBundle\Form\Type\NotificationType;
@@ -23,6 +22,7 @@ use CSBill\SettingsBundle\Form\Type\MailEncryptionType;
 use CSBill\SettingsBundle\Form\Type\MailFormatType;
 use CSBill\SettingsBundle\Form\Type\MailTransportType;
 use CSBill\SettingsBundle\Form\Type\SettingsType;
+use Defuse\Crypto\Key;
 use Mockery as M;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -105,11 +105,7 @@ class SettingsTypeTest extends FormTestCase
         $session->shouldReceive('getId')
             ->andReturn($this->faker->md5);
 
-        $encryption = M::mock(Encryption::class);
-        $encryption->shouldReceive('encrypt')
-            ->andReturn($this->faker->md5);
-
-        $type = new ImageUploadType($session, $encryption);
+        $type = new ImageUploadType($session, Key::createNewRandomKey()->saveToAsciiSafeString());
 
         return [
             new PreloadedExtension([$type], []),

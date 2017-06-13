@@ -33,7 +33,6 @@ class ConfigStep extends AbstractControllerStep
      * @var array
      */
     protected $mailerTransports = [
-        'mail' => 'PHP Mail',
         'sendmail' => 'Sendmail',
         'smtp' => 'SMTP',
         'gmail' => 'Gmail',

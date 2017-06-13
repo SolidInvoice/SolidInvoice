@@ -1,6 +1,7 @@
 services:
     _instanceof:
         Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            autowire: true
             public: false
             tags:
                 - { name: kernel.event_subscriber }
@@ -12,6 +13,8 @@ services:
         calls:
             - [setContainer, ['@service_container']]
 
-    CSBill\CoreBundle\Listener\SessionRequestListener: ['@session', '@security.encryption']
+    CSBill\CoreBundle\Listener\SessionRequestListener:
+        arguments:
+            $secret: '%secret%'
 
-    CSBill\CoreBundle\Listener\TemplateListener: ['@twig']
+    CSBill\CoreBundle\Listener\TemplateListener: ~

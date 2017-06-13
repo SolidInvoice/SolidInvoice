@@ -15,10 +15,10 @@ namespace CSBill\CoreBundle\Tests;
 
 use CSBill\CoreBundle\Form\Extension;
 use CSBill\CoreBundle\Form\Type;
-use CSBill\CoreBundle\Security\Encryption;
 use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
 use CSBill\MoneyBundle\Form\Extension\MoneyExtension;
 use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
+use Defuse\Crypto\Key;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
@@ -92,7 +92,7 @@ abstract class FormTestCase extends TypeTestCase
             'select2' => new Type\Select2Type(),
             'image_upload' => new Type\ImageUploadType(
                 \Mockery::mock('Symfony\Component\HttpFoundation\Session\SessionInterface'),
-                new Encryption($this->faker->text)
+                Key::createNewRandomKey()->saveToAsciiSafeString()
             ),
         ];
     }

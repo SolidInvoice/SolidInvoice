@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Form\Type;
 
-use CSBill\CoreBundle\Security\Encryption;
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
@@ -28,18 +29,18 @@ class ImageUploadType extends AbstractType
     protected $session;
 
     /**
-     * @var \CSBill\CoreBundle\Security\Encryption
+     * @var string
      */
-    protected $encryption;
+    private $secret;
 
     /**
      * @param SessionInterface $session
-     * @param Encryption       $encryption
+     * @param string           $secret
      */
-    public function __construct(SessionInterface $session, Encryption $encryption)
+    public function __construct(SessionInterface $session, string $secret)
     {
         $this->session = $session;
-        $this->encryption = $encryption;
+        $this->secret = $secret;
     }
 
     /**
@@ -51,7 +52,7 @@ class ImageUploadType extends AbstractType
     {
         $sessionId = $this->session->getId();
 
-        $view->vars['sessionId'] = $this->encryption->encrypt($sessionId);
+        $view->vars['sessionId'] = Crypto::encrypt($sessionId, Key::loadFromAsciiSafeString($this->secret));
     }
 
     /**
