@@ -9,22 +9,21 @@
 
 define(
     /** global: requirejs */
-    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'material', 'bootstrap', 'core/module'],
-    function($, Mn, Backbone, _, Module) {
+    ['jquery', 'marionette', 'backbone', 'lodash', 'bootstrap', 'material'],
+    function($, Mn, Backbone, _) {
         'use strict';
 
-        if (_.isUndefined(Module)) {
-            Module = require('core/module');
-        }
-
-        var ModuleData = requirejs.s.contexts._.config.moduleData,
+        var $el = $('#module'),
+            //Module = require($el.data('module') || 'core/module'),
+            Module = module.exports,
+            ModuleData = $el.data('module-data') || {},
 
             Application = Mn.Application.extend({
                 module: null,
                 regions: {},
                 initialize: function(options) {
 
-                    this.regions = options.regions;
+                    //this.regions = options.regions;
 
                     /**
                      * Tooltip
@@ -41,7 +40,7 @@ define(
                      */
                     var select2 = $('select.select2');
                     if (select2.length) {
-                        require(['jquery.select2'], function() {
+                        require(['select2'], function() {
                             select2.select2({
                                 allowClear: true
                             });
@@ -77,17 +76,20 @@ define(
                 }
             });
 
-        var App = new Application({
-            regions: Module.prototype.regions
+        var App = new Application();
+
+        App.on('before:start', function(App, Module) {
+            this.regions = Module.prototype.regions;
         });
 
-        App.on('start', function() {
+        App.on('start', function(App, Module) {
+
             this.module = new Module(ModuleData, this);
 
             Backbone.history.start();
         });
 
-        if (!_.isUndefined(Module.prototype.appEvents)) {
+        /*if (!_.isUndefined(Module.prototype.appEvents)) {
             _.each(Module.prototype.appEvents, function(action, event) {
                 if (_.isFunction(action)) {
                     App.on(event, action);
@@ -97,7 +99,7 @@ define(
                     throw "Callback specified for event " + event + " is not a valid callback"
                 }
             });
-        }
+        }*/
 
         return App;
     }

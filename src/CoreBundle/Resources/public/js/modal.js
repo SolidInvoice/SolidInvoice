@@ -1,4 +1,4 @@
-define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], function($, Mn, Handlebars, Template, _) {
+define(['jquery', 'marionette', 'handlebars.runtime', 'lodash'], function($, Mn, Handlebars, _) {
     "use strict";
 
     return Mn.View.extend({
@@ -32,7 +32,7 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
 
             Handlebars.registerPartial('modalContent', template);
 
-            return Template.core.modal;
+            return require('../templates/modal.hbs');
         },
         listeners: {
             render: function() {

@@ -7,20 +7,30 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set id = 'multiple-grid-' ~ random() %}
+{% set id = 'multiple-grid' %}
 {% set gridId = 'grid-' ~ id %}
 
-<div class="grid" id="{{ id }}"></div>
+<div class="grid" id="{{ id }}" data-grids="{{ grids|json_encode }}"></div>
 
 {% if requiresStatus %}
     {% include 'CSBillCoreBundle:_partials:status_labels.html.twig' %}
 {% endif %}
 
-<script>
+{#{% module 'multiple_grid' with {'grids' : grids, 'id' : gridId} %}
+{% style 'grid' %}#}
+
+{#<script src="{{ asset('assets/js/multiple_grid.js?id='~id) }}"></script>#}
+
+{#<script>
     require(['grid/multiple_grid', 'backbone'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (MultipleGrid, Backbone) {
-	new MultipleGrid({
-	    'model': new Backbone.Model({'grids': {{ grids|json_encode|raw }}, 'gridId': '{{ gridId }}'}),
-	    'el': '#{{ id }}'
-	});
+        new MultipleGrid({
+            'model': new Backbone.Model({'grids': {{ grids|json_encode|raw }}, 'gridId': '{{ gridId }}'}),
+            'el': '#{{ id }}'
+        });
     });
 </script>
+#}
+
+
+
+

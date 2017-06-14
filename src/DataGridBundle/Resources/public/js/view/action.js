@@ -8,11 +8,11 @@
  */
 
 define(
-    ['core/view', 'jquery', 'template', 'lodash', 'routing', 'bootstrap.bootbox'],
-    function(ItemView, $, Template, _, Routing, Bootbox) {
+    ['core/itemview', 'jquery', 'lodash', 'routing', 'bootstrap.bootbox'],
+    function(ItemView, $, _, Routing, Bootbox) {
         return ItemView.extend({
             tagName: 'span',
-            template: Template.datagrid.action,
+            template: require('../../templates/action.hbs'),
             ui: {
                 button: ".btn"
             },

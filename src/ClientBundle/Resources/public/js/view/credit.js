@@ -1,10 +1,10 @@
 define(
-    ['core/view', './credit_modal', 'template'],
-    function(ItemView, CreditModal, Template) {
+    ['core/itemview', './credit_modal'],
+    function(ItemView, CreditModal) {
         'use strict';
 
         return ItemView.extend({
-            template: Template.client.credit,
+            template: require('../../templates/credit.hbs'),
 
             ui: {
                 "addCredit": '#add-credit-button'

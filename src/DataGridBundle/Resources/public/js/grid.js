@@ -13,22 +13,23 @@ define([
         'jquery',
         'lodash',
         'backgrid',
-        'core/view',
-        'template',
-        'grid/model/grid_collection',
-        'grid/extension/paginate',
-        'grid/extension/search',
-        'grid/view/action',
+        'core/itemview',
+
+        './model/grid_collection',
+        './extension/paginate',
+        './extension/search',
+        './view/action',
 
         'bootstrap.modalmanager',
-        'grid/backgrid-select-all',
-        'grid/cell/actioncell',
-        'grid/cell/clientcell',
-        'grid/cell/invoicecell',
-        'grid/cell/moneycell',
-        'grid/formatter/objectformatter',
-        'grid/formatter/discountformatter',
-        'grid/formatter/moneyformatter'
+        'backgrid-select-all',
+        './cell/actioncell',
+        './cell/clientcell',
+        './cell/invoicecell',
+        './cell/moneycell',
+        './cell/statuscell',
+        './formatter/objectformatter',
+        './formatter/discountformatter',
+        './formatter/moneyformatter'
     ],
     function(Mn,
              Backbone,
@@ -36,17 +37,25 @@ define([
              _,
              Backgrid,
              ItemView,
-             Template,
              GridCollection,
              Paginate,
              Search,
              ActionView) {
-        return Mn.Object.extend({
-            initialize: function(options, element) {
-                var collection = new GridCollection(options.name, options.parameters);
-                
-                collection.fetch();
 
+        //window.customElements.define('grid', AppDrawer);
+
+        return Mn.Object.extend({
+            element: null,
+            initialize: function(name, element) {
+                this.element = element;
+
+                var collection = new GridCollection(name, {});
+
+                collection.fetch({'success': _.bind(function (collection, resp) {
+                    this.renderGrid(collection, resp.options);
+                }, this)});
+            },
+            renderGrid: function (collection, options) {
                 var gridOptions = {
                     collection: collection,
                     className: 'backgrid table table-bordered table-striped table-hover'
@@ -83,8 +92,8 @@ define([
                 var grid = new Backgrid.Grid(_.extend(_.clone(options), gridOptions));
 
                 if (_.size(options.actions) > 0) {
-                    var ActionContainer = Mn.CompositeView.extend({
-                        template: Template.datagrid.grid_container,
+                    var ActionContainer = Mn.View.extend({
+                        template: require('../templates/grid_container.hbs'),
                         childView: ActionView.extend({'grid': grid}),
                         childViewContainer: '.actions'
                     });
@@ -94,14 +103,13 @@ define([
                     });
                 } else {
                     container = new ItemView({
-                        template: Template.datagrid.grid_container_no_actions
+                        template: require('../templates/grid_container_no_actions.hbs')
                     });
                 }
 
                 var gridContainer = $(container.render().el);
 
-                $(element).append(container.render().el);
-
+                $(document.getElementById(this.element)).append(container.render().el);
                 $('.grid', gridContainer).html(grid.render().el);
 
                 if (options.properties.paginate) {

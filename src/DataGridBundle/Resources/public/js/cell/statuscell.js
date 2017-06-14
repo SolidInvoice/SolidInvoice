@@ -1,4 +1,4 @@
-define(['backgrid', 'lodash', 'status_labels'], function(Backgrid, _, Labels) {
+define(['backgrid', 'lodash'], function(Backgrid, _, Labels) {
 
     var statusCell = function(name) {
         return Backgrid.Cell.extend({
@@ -11,6 +11,10 @@ define(['backgrid', 'lodash', 'status_labels'], function(Backgrid, _, Labels) {
                 return this;
             }
         });
+    };
+
+    Labels = {
+        'client': {}
     };
 
     _.each(Labels, function(values, name) {

@@ -46,6 +46,6 @@ final class Data implements AjaxResponse
 
         $grid->setParameters($request->get('parameters', []));
 
-        return $this->serialize($grid->fetchData($request, $this->registry->getManager()));
+        return $this->serialize(['options' => $grid, 'data' => $grid->fetchData($request, $this->registry->getManager())], []);
     }
 }

@@ -12,7 +12,7 @@ define(
     function($, Module, Backbone, Bootbox, Routing, __, InfoView, ClientCredit, ClientContact, AddressView, AddressCollection) {
         'use strict';
 
-        return Module.extend({
+        var m = Module.extend({
             regions: {
                 'clientCredit': '#client-credit',
                 'clientInfo': '#client-info'
@@ -89,5 +89,9 @@ define(
                 });
             }
         });
+
+        var App = require('core/app');
+
+        App.start(m);
     }
 );

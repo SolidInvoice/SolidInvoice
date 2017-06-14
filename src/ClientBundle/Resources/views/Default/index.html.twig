@@ -30,6 +30,11 @@
 
 {% block content %}
     <div class="widget">
-	{{ render_multiple_grid('active_client_grid', 'archive_client_grid') }}
+        <div id="client-grid"></div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/client/index.js') }}"></script>
 {% endblock %}

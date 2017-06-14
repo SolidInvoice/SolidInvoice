@@ -22,7 +22,10 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript">
+    <script src="{{ asset('assets/manifest.js') }}"></script>
+    <script src="{{ asset('assets/vendor.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    {#<script type="text/javascript">
         require(['accounting', 'core/app'], function (Accounting, App) {
             App.on('before:start', function () {
                 Accounting.settings = {
@@ -49,7 +52,7 @@
         {% if script is not empty %}
             {{ script|raw }}
         {% endif %}
-    </script>
+    </script>#}
 {% endblock %}
 
 {% block header %}

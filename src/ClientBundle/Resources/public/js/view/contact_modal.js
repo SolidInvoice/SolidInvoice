@@ -5,7 +5,7 @@ define(
 
         return AjaxModal.extend({
             'modal': {
-                'title': __('client.modal.edit_contact'),
+                'title': 'client.modal.edit_contact',//__('client.modal.edit_contact'),
                 'buttons': {
                     'close': {
                         'class': 'warning',

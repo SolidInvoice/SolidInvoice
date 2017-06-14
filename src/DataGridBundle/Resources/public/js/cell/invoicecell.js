@@ -7,9 +7,9 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'backbone', 'lodash', 'template', 'jquery.jqcron'], function(Backgrid, Backbone, _, Template) {
+define(['backgrid', 'backbone', 'lodash'], function(Backgrid, Backbone, _, Template) {
     Backgrid.Extension.InvoiceCell = Backgrid.Cell.extend({
-	template: Template.datagrid.invoice_link,
+	template: require('../../templates/invoice_link.hbs'),
 	_setRouteParams: function(action) {
 	    action.routeParams = {};
 
