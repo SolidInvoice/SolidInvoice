@@ -30,22 +30,29 @@ Encore
 
     .enableSourceMaps(!Encore.isProduction())
 
+    //.addLoader('\/.hbs$/', {'loader' : 'handlebars-loader', 'options': {'helperDirs' : [path.resolve(__dirname, "./web/bundles/csbillcore/js/extend/handlebars/helpers/")]}})
+
     // create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 ;
 
+
+var s = new Set();
+
 // export the final configuration
 var webpackConfig = Encore.getWebpackConfig();
-//console.log(webpackConfig);
+console.log(webpackConfig);
 
 webpackConfig.resolve = {
     alias: {
         core: path.resolve(__dirname, './web/bundles/csbillcore/js/'),
+        client: path.resolve(__dirname, './web/bundles/csbillclient/js/'),
+
         marionette: 'backbone.marionette',
         material: 'bootstrap-material-design',
         'bootstrap.bootbox': 'bootbox',
         'handlebars.runtime': 'handlebars-runtime',
-        'bootstrap.modal': 'bootstrap-modal',
+        'bootstrap.modal': path.resolve(__dirname, './web/bundles/csbillcore/js/lib/bootstrap/modal.js'),
         'bootstrap.modalmanager': path.resolve(__dirname, './web/bundles/csbillcore/js/lib/bootstrap/modalmanager.js'),
         'routing': path.resolve(__dirname, './web/bundles/fosjsrouting/js/router.js'),
         'translator': path.resolve(__dirname, './web/bundles/bazingajstranslation/js/translator.min.js'),

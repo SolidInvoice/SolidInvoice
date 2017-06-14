@@ -8,7 +8,7 @@
  */
 
 define(
-    ['marionette', '../model/contact', '../view/contact_modal'],
+    ['marionette', 'client/model/contact', 'client/view/contact_modal'],
     function(Mn, Contact, ContactModal) {
         "use strict";
 
