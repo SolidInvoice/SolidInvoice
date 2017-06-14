@@ -43,6 +43,7 @@
     "bootbox": "^4.4.0",
     "bootstrap": "^3.3.7",
     "bootstrap-material-design": "^0.5.10",
+    "font-awesome": "^4.7.0",
     "handlebars-loader": "^1.5.0",
     "handlebars-runtime": "^1.0.12",
     "jquery": "^3.2.1",
