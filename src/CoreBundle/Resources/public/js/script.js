@@ -107,8 +107,6 @@ $(function() {
 
         el.bootstrapMaterialDatePicker(options);
 
-        console.log(el.data('depends'));
-
         if (el.data('depends')) {
             var dependecy = $('#' + el.data('depends'));
 

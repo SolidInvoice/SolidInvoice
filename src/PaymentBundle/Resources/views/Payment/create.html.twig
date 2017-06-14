@@ -76,7 +76,6 @@
     var internal = ['{{ internal|join("', '")|raw }}'];
 
     var captureOnline = $('#payment_capture_online').parents('div.form-group');
-    console.log(captureOnline);
     $('#payment_payment_method').on('change', function () {
     var val = $('option:selected', this).data('gateway');
 

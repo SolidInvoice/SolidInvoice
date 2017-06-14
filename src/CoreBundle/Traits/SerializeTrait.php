@@ -50,7 +50,11 @@ trait SerializeTrait
             throw new \Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', get_class($this), SerializerInterface::class, __METHOD__));
         }
 
-        $context = SerializationContext::create()->setGroups($groups);
+        $context = SerializationContext::create();
+
+        if (!empty($groups)) {
+            $context->setGroups($groups);
+        }
 
         if (!$response) {
             $response = new JsonResponse('', 200, [], true);

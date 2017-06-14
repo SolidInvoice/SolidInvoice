@@ -13,6 +13,10 @@ define(['backgrid', 'lodash'], function(Backgrid, _, Labels) {
         });
     };
 
+    Labels = {
+        'client': {}
+    };
+
     _.each(Labels, function(values, name) {
         var cellName = _.startCase(name) + '_statusCell';
         Backgrid[cellName] = statusCell(name);

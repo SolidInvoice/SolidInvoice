@@ -36,10 +36,11 @@ define(
                 this.render();
             },
             onRender: function() {
-                this.activeGrid = new Grid(this.gridOptions, '#' + this.model.get('gridId'));
+                this.activeGrid = new Grid(this.gridOptions, this.model.get('gridId'));
             },
             initialize: function(grids) {
-                console.log(grids);
+                var gridId = Math.random();
+                this.model.set('gridId', gridId);
                 this.gridOptions = _.first(_.values(this.model.get('grids')));
 
                 this.render();

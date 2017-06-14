@@ -79,7 +79,7 @@ webpackConfig.resolve = {
         'handlebars.runtime': 'handlebars-runtime',
         'bootstrap.modal': path.resolve(__dirname, './web/bundles/csbillcore/js/lib/bootstrap/modal.js'),
         'bootstrap.modalmanager': path.resolve(__dirname, './web/bundles/csbillcore/js/lib/bootstrap/modalmanager.js'),
-        'routing': path.resolve(__dirname, './web/bundles/fosjsrouting/js/router.js'),
+        'routing': path.resolve(__dirname, './web/bundles/csbillcore/js/extend/routing.js'),
         'translator': path.resolve(__dirname, './web/bundles/bazingajstranslation/js/translator.min.js'),
     }
 };

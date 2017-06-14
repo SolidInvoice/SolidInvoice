@@ -1,8 +1,6 @@
-define(['lodash', 'fos_router', 'fos_routing_data'], function(_, Router, data) {
+const routing = require('imports-loader?window=>{}!exports-loader?router=window.Routing,setData=fos.Router.setData!!../../../../../../web/bundles/fosjsrouting/js/router.js');
+const routerConfig = require('../../../../../../web/js/fos_js_routes.js');
 
-    if (!_.isUndefined(data)) {
-        Router.setData(data);
-    }
+routing.setData(routerConfig);
 
-    return Routing;
-});
+module.exports = routing.router;

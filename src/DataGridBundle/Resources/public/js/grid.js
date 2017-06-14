@@ -26,6 +26,7 @@ define([
         './cell/clientcell',
         './cell/invoicecell',
         './cell/moneycell',
+        './cell/statuscell',
         './formatter/objectformatter',
         './formatter/discountformatter',
         './formatter/moneyformatter'
@@ -43,12 +44,18 @@ define([
 
         //window.customElements.define('grid', AppDrawer);
 
-        var Grid = Mn.Object.extend({
-            initialize: function(options, element) {
-                var collection = new GridCollection(options.name, options.parameters);
-                
-                collection.fetch();
+        return Mn.Object.extend({
+            element: null,
+            initialize: function(name, element) {
+                this.element = element;
 
+                var collection = new GridCollection(name, {});
+
+                collection.fetch({'success': _.bind(function (collection, resp) {
+                    this.renderGrid(collection, resp.options);
+                }, this)});
+            },
+            renderGrid: function (collection, options) {
                 var gridOptions = {
                     collection: collection,
                     className: 'backgrid table table-bordered table-striped table-hover'
@@ -85,8 +92,8 @@ define([
                 var grid = new Backgrid.Grid(_.extend(_.clone(options), gridOptions));
 
                 if (_.size(options.actions) > 0) {
-                    var ActionContainer = Mn.CompositeView.extend({
-                        template: Template.datagrid.grid_container,
+                    var ActionContainer = Mn.View.extend({
+                        template: require('../templates/grid_container.hbs'),
                         childView: ActionView.extend({'grid': grid}),
                         childViewContainer: '.actions'
                     });
@@ -96,14 +103,13 @@ define([
                     });
                 } else {
                     container = new ItemView({
-                        template: Template.datagrid.grid_container_no_actions
+                        template: require('../templates/grid_container_no_actions.hbs')
                     });
                 }
 
                 var gridContainer = $(container.render().el);
 
-                $(element).append(container.render().el);
-
+                $(document.getElementById(this.element)).append(container.render().el);
                 $('.grid', gridContainer).html(grid.render().el);
 
                 if (options.properties.paginate) {
@@ -121,28 +127,4 @@ define([
                 }
             }
         });
-
-
-        $(function () {
-            var v = Mn.View.extend({
-                template: require('../templates/grid_container.hbs')
-            });
-
-
-            $('grid').each(function () {
-                console.log($(this));
-
-                var app = new (Mn.Application.extend({
-                    region: $(this),
-                    onStart() {
-                        this.showView(new v({el: $(this)}));
-                    }
-                }));
-
-                app.start();
-            });
-        });
-
-
-        return Grid;
     });
