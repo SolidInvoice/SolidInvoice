@@ -13,22 +13,22 @@ define([
         'jquery',
         'lodash',
         'backgrid',
-        'core/view',
-        'template',
-        'grid/model/grid_collection',
-        'grid/extension/paginate',
-        'grid/extension/search',
-        'grid/view/action',
+        'core/itemview',
+
+        './model/grid_collection',
+        './extension/paginate',
+        './extension/search',
+        './view/action',
 
         'bootstrap.modalmanager',
-        'grid/backgrid-select-all',
-        'grid/cell/actioncell',
-        'grid/cell/clientcell',
-        'grid/cell/invoicecell',
-        'grid/cell/moneycell',
-        'grid/formatter/objectformatter',
-        'grid/formatter/discountformatter',
-        'grid/formatter/moneyformatter'
+        'backgrid-select-all',
+        './cell/actioncell',
+        './cell/clientcell',
+        './cell/invoicecell',
+        './cell/moneycell',
+        './formatter/objectformatter',
+        './formatter/discountformatter',
+        './formatter/moneyformatter'
     ],
     function(Mn,
              Backbone,
@@ -36,12 +36,14 @@ define([
              _,
              Backgrid,
              ItemView,
-             Template,
              GridCollection,
              Paginate,
              Search,
              ActionView) {
-        return Mn.Object.extend({
+
+        //window.customElements.define('grid', AppDrawer);
+
+        var Grid = Mn.Object.extend({
             initialize: function(options, element) {
                 var collection = new GridCollection(options.name, options.parameters);
                 
@@ -119,4 +121,28 @@ define([
                 }
             }
         });
+
+
+        $(function () {
+            var v = Mn.View.extend({
+                template: require('../templates/grid_container.hbs')
+            });
+
+
+            $('grid').each(function () {
+                console.log($(this));
+
+                var app = new (Mn.Application.extend({
+                    region: $(this),
+                    onStart() {
+                        this.showView(new v({el: $(this)}));
+                    }
+                }));
+
+                app.start();
+            });
+        });
+
+
+        return Grid;
     });

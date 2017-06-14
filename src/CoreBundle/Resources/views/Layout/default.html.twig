@@ -22,6 +22,8 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="{{ asset('assets/manifest.js') }}"></script>
+    <script src="{{ asset('assets/vendor.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
     {#<script type="text/javascript">
         require(['accounting', 'core/app'], function (Accounting, App) {

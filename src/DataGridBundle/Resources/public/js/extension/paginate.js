@@ -1,4 +1,4 @@
-define(['backgrid', 'grid/backgrid-paginator'], function (Backgrid) {
+define(['backgrid', 'backgrid-paginator'], function (Backgrid) {
     return Backgrid.Extension.Paginator.extend({
 	// If you anticipate a large number of pages, you can adjust
 	// the number of page handles to show. The sliding window

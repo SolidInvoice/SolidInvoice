@@ -8,12 +8,12 @@
  */
 
 define(
-    ['grid/grid', 'jquery', 'backbone', 'marionette', 'core/view', 'template', 'lodash'],
-    function(Grid, $, Backbone, Mn, ItemView, Template, _) {
+    ['jquery', 'backbone', 'marionette', 'core/itemview', 'lodash', 'grid/grid'],
+    function($, Backbone, Mn, ItemView, _, Grid) {
         return ItemView.extend({
             activeGrid: null,
             gridOptions: null,
-            template: Template.datagrid.multiple_grid_selector,
+            template: require('../templates/multiple_grid_selector.hbs'),
             ui: {
                 'gridSelector': '.grid-selection a'
             },
@@ -39,6 +39,7 @@ define(
                 this.activeGrid = new Grid(this.gridOptions, '#' + this.model.get('gridId'));
             },
             initialize: function(grids) {
+                console.log(grids);
                 this.gridOptions = _.first(_.values(this.model.get('grids')));
 
                 this.render();

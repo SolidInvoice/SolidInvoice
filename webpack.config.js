@@ -1,6 +1,21 @@
-var Encore = require('@symfony/webpack-encore'),
-    glob = require("glob")
-    path = require("path");
+let Encore = require('@symfony/webpack-encore'),
+    glob = require("glob"),
+    path = require("path"),
+    _ = require('lodash'),
+    webpack = require('webpack');
+
+let entries = {
+    'js/grid': './web/bundles/csbilldatagrid/js/grid.js',
+    'js/multiple_grid': './web/bundles/csbilldatagrid/js/multiple_grid.js',
+    'js/app': './web/bundles/csbillcore/js/app.js',
+    'js/client/view': './web/bundles/csbillclient/js/view.js',
+    'js/client/index': './web/bundles/csbillclient/js/index.js',
+};
+
+
+_.each(entries, function (src, name) {
+    Encore.addEntry(name, src);
+});
 
 Encore
     // directory where all compiled assets will be stored
@@ -13,9 +28,11 @@ Encore
     .cleanupOutputBeforeBuild()
 
     // will output as web/build/app.js
-    .addEntry('js/grid', glob.sync('./web/bundles/csbilldatagrid/js/cell/*.js'))
+    /*.addEntry('js/grid', './web/bundles/csbilldatagrid/js/grid.js')
+    .addEntry('js/multiple_grid', './web/bundles/csbilldatagrid/js/multiple_grid.js')
     .addEntry('js/app', './web/bundles/csbillcore/js/app.js')
-    .addEntry('js/client/view', './web/bundles/csbillclient/js/view.js')
+    .addEntry('js/client/view', './web/bundles/csbillclient/js/view.js')*/
+    //.addEntry(...entries)
     //.addEntry('hbs-templates', glob.sync('./web/bundles/csbill*/templates/**/*.hbs'))
 
     // add styles
@@ -30,23 +47,31 @@ Encore
 
     .enableSourceMaps(!Encore.isProduction())
 
+    .createSharedEntry('vendor', ['jquery', 'marionette', 'backbone'])
+
+    /*.addRule(
+        Encore.Rule()
+            .setTest(/\.hbs$/)
+            .addLoader('handlebars-loader', {'helperDirs' : [path.resolve(__dirname, "./web/bundles/csbillcore/js/extend/handlebars/helpers/")]})
+    )*/
+
     //.addLoader('\/.hbs$/', {'loader' : 'handlebars-loader', 'options': {'helperDirs' : [path.resolve(__dirname, "./web/bundles/csbillcore/js/extend/handlebars/helpers/")]}})
 
     // create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 ;
 
-
-var s = new Set();
-
 // export the final configuration
-var webpackConfig = Encore.getWebpackConfig();
-console.log(webpackConfig);
+let webpackConfig = Encore.getWebpackConfig();
+//console.log(webpackConfig);
+
+
 
 webpackConfig.resolve = {
     alias: {
         core: path.resolve(__dirname, './web/bundles/csbillcore/js/'),
         client: path.resolve(__dirname, './web/bundles/csbillclient/js/'),
+        grid: path.resolve(__dirname, './web/bundles/csbilldatagrid/js/'),
 
         marionette: 'backbone.marionette',
         material: 'bootstrap-material-design',
@@ -61,6 +86,7 @@ webpackConfig.resolve = {
 
 //webpackConfig.module.loaders = [{ test: /\.hbs/, loader: "handlebars-loader" }];
 webpackConfig.module.rules.push({ test: /\.hbs$/, loader: "handlebars-loader?helperDirs[]=" + path.resolve(__dirname, "./web/bundles/csbillcore/js/extend/handlebars/helpers/") });
+
 
 module.exports = webpackConfig;
 
