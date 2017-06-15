@@ -67,6 +67,7 @@ config:
         util/form/collection: csbillcore/js/util/form/collection.js
         template: ../js/hbs-templates.js
         handlebars.runtime: csbillcore/js/lib/handlebars/handlebars.js
+        fos_routing_data: ../js/fos_js_routes.js
     map:
         '*':
             translator: csbillcore/js/extend/translator

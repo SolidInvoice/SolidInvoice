@@ -5,12 +5,17 @@
         {% set locale = 'en,' ~ locale %}
     {% endif %}
     require({
-        paths: {
-        'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
-        'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
-        }
+            paths: {
+                {% if app.debug %}
+                    'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
+                    'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
+                {% else %}
+                    'translation_data': '{{ asset('js/translations/' ~ locale ~ '.js') }}'
+                {% endif %}
+            }
+
         {% if module is defined %}
-        , module: '{{ module }}'
+            , module: '{{ module }}'
         {% if moduleData is defined %}
             {% set context = serialization_context() %}
 
