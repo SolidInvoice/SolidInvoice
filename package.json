@@ -26,12 +26,21 @@
     "gulp-filter": "^4.0.0",
     "gulp-flatten": "^0.2.0",
     "gulp-handlebars": "^4.0.0",
+    "gulp-if": "^2.0.2",
     "gulp-less": "^3.1.0",
     "gulp-load-plugins": "^1.2.2",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-util": "^3.0.8",
     "gulp-wrap": "^0.13.0",
     "handlebars": "^4.0.5",
     "jasmine": "^2.6.0",
+    "less-plugin-npm-import": "^2.1.0",
     "testem": "^1.16.1"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-material-design": "^0.5.10",
+    "font-awesome": "^4.7.0"
   }
 }
-

@@ -1,123 +1,150 @@
-var gulp = require('gulp'),
+const gulp = require('gulp'),
 
-    $ = require('gulp-load-plugins')({
-        pattern: ['gulp-*', 'main-bower-files', 'del']
-    }),
+    filter = require('gulp-filter'),
+    flatten = require('gulp-flatten'),
+    concat = require('gulp-concat'),
+    less = require('gulp-less'),
+    cssmin = require('gulp-cssmin'),
+    wrap = require('gulp-wrap'),
+    declare = require('gulp-declare'),
+    handlebars = require('gulp-handlebars'),
+    sourcemap = require('gulp-sourcemaps'),
+    gIf = require('gulp-if'),
+    plumber = require('gulp-plumber'),
 
+    util = require('gulp-util'),
+
+    del = require('del'),
     glob = require("glob"),
+
+    lessNpmImportPlugin = require("less-plugin-npm-import"),
 
     options = {
         less: 'web/bundles/csbill*/less',
         css: 'web/bundles/csbill*/css',
         images: 'web/bundles/csbill*/img/*',
         js: 'web/bundles/**/js/**/*.js',
-        templates: 'web/bundles/**/templates/**/*.hbs'
+        templates: 'web/bundles/**/templates/**/*.hbs',
+        prod: !!util.env.prod
     };
 
-gulp.task('fonts', ['clean:fonts'], function() {
-    return gulp.src('web/bundles/**/fonts/*')
-        .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
-        .pipe($.flatten())
+gulp.task('fonts', ['clean:fonts'], () => {
+    return gulp.src(['web/bundles/**/fonts/*', 'node_modules/font-awesome/fonts/*'])
+        .pipe(filter('**/*.{eot,svg,ttf,woff,woff2}'))
+        .pipe(flatten())
         .pipe(gulp.dest('web/fonts/'));
 });
 
-gulp.task('images', ['clean:images'], function() {
+gulp.task('images', ['clean:images'], () => {
     return gulp.src(options.images)
-        .pipe($.filter('**/*.{png,gif,jpg,jpeg}'))
-        .pipe($.flatten())
+        .pipe(filter('**/*.{png,gif,jpg,jpeg}'))
+        .pipe(flatten())
         .pipe(gulp.dest('web/img/'));
 });
 
 gulp.task('clean', ['clean:css', 'clean:js', 'clean:fonts', 'clean:images']);
 
-gulp.task('clean:css', function() {
-    $.del(['web/css/**', '!web/css', '!web/css/.gitkeep']);
+gulp.task('clean:css', () => {
+    del(['web/css/**', '!web/css', '!web/css/.gitkeep']);
 });
 
-gulp.task('clean:js', function() {
-    $.del(['web/js/**', '!web/js', '!web/js/.gitkeep']);
+gulp.task('clean:js', () => {
+    del(['web/js/**', '!web/js', '!web/js/.gitkeep']);
 });
 
-gulp.task('clean:fonts', function() {
-    $.del(['web/fonts/**', '!web/fonts', '!web/fonts/.gitkeep']);
+gulp.task('clean:fonts', () => {
+    del(['web/fonts/**', '!web/fonts', '!web/fonts/.gitkeep']);
 });
 
-gulp.task('clean:images', function() {
-    $.del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
+gulp.task('clean:images', () => {
+    del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
 });
 
-gulp.task('css:app', function() {
-    var lessOptions = {
-        'paths': glob.sync(options.less)
-    };
+gulp.task('css:app', () => {
+    const lessOptions = {
+            'paths': glob.sync(options.less),
+            'plugins': [new lessNpmImportPlugin({prefix: '~'})]
+        },
 
-    var files = [
-        'web/bundles/csbillcore/less/bootstrap/bootstrap.less',
-        'web/bundles/csbillcore/less/material/material.less',
-        'web/bundles/csbillcore/less/font-awesome/font-awesome.less',
-        options.less + '/*.less',
-        options.css + '/*.css',
-        '!' + options.less + '/email.less'
-    ];
+        files = [
+            options.less + '/*.less',
+            options.css + '/*.css',
+            '!' + options.less + '/email.less'
+        ];
 
     return gulp.src(files)
-        .pipe($.filter('**/*.{css,less}'))
-        .pipe($.flatten())
-        .pipe($.less(lessOptions))
-        .pipe($.cssmin())
-        .pipe($.concat('app.css'))
+        .pipe(filter('**/*.{css,less}'))
+        //.pipe(flatten())
+        .pipe(gIf(!options.prod, plumber(function(error) {
+            console.log(error.toString());
+            this.emit('end');
+        })))
+        .pipe(gIf(!options.prod, sourcemap.init()))
+        .pipe(less(lessOptions))
+        .pipe(concat('app.css'))
+        .pipe(gIf(!options.prod, sourcemap.write()))
+        .pipe(gIf(options.prod, cssmin()))
         .pipe(gulp.dest('web/css/'))
         ;
 });
 
-gulp.task('css:email', function() {
-    var lessOptions = {
-        'paths': glob.sync(options.less)
-    };
+gulp.task('css:email', () => {
+    const lessOptions = {
+            'paths': glob.sync(options.less),
+            'plugins': [new lessNpmImportPlugin({prefix: '~'})]
+        },
 
-    var files = [options.less + '/email.less'];
+        files = [options.less + '/email.less'];
 
     return gulp.src(files)
-        .pipe($.filter('**/*.{css,less}'))
-        .pipe($.flatten())
-        .pipe($.less(lessOptions))
-        .pipe($.cssmin())
-        .pipe($.concat('email.css'))
+        .pipe(filter('**/*.{css,less}'))
+        //.pipe(flatten())
+        .pipe(gIf(!options.prod, plumber(function(error) {
+            console.log(error.toString());
+            this.emit('end');
+        })))
+        .pipe(less(lessOptions))
+        .pipe(cssmin())
+        .pipe(concat('email.css'))
         .pipe(gulp.dest('web/css/'))
         ;
 });
 
-gulp.task('css', ['clean:css'], function() {
+gulp.task('css', ['clean:css'], () => {
     gulp.start('css:app');
     gulp.start('css:email');
 });
 
-gulp.task('templates', ['clean:js'], function() {
+gulp.task('templates', ['clean:js'], () => {
     return gulp.src(options.templates)
-        .pipe($.handlebars({
+        .pipe(gIf(!options.prod, plumber(function(error) {
+            console.log(error.toString());
+            this.emit('end');
+        })))
+        .pipe(handlebars({
             handlebars: require('handlebars')
         }))
-        .pipe($.wrap('template(<%= contents %>)'))
-        .pipe($.declare({
+        .pipe(wrap('template(<%= contents %>)'))
+        .pipe(declare({
             root: 'templates',
             noRedeclare: true,
-            processName: function(filePath) {
+            processName: (filePath) => {
                 // Allow nesting based on path using gulp-declare's processNameByPath()
-                return $.declare.processNameByPath(filePath.replace('web/bundles/csbill', '').replace('templates/', ''));
+                return declare.processNameByPath(filePath.replace('web/bundles/csbill', '').replace('templates/', ''));
             }
         }))
-        .pipe($.concat('hbs-templates.js'))
-        .pipe($.wrap('define([\'handlebars.runtime\'], function(Handlebars) {\nHandlebars = Handlebars["default"];  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n<%= contents %> return templates; });'))
+        .pipe(concat('hbs-templates.js'))
+        .pipe(wrap('define([\'handlebars.runtime\'], function(Handlebars) {\nHandlebars = Handlebars["default"]; var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n<%= contents %> return templates; });'))
         .pipe(gulp.dest('web/js'));
 });
 
-gulp.task('watch', ['css', 'templates'], function() {
+gulp.task('watch', ['css', 'templates'], () => {
     gulp.watch([options.less + '/*', options.css + '/*'], ['css']);
     gulp.watch([options.templates], ['templates']);
 });
 
 gulp.task('build', ['css', 'fonts', 'images', 'templates']);
 
-gulp.task('default', ['clean'], function() {
+gulp.task('default', ['clean'], () => {
     gulp.start('build');
 });
