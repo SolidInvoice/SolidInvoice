@@ -14,11 +14,13 @@ const gulp = require('gulp'),
     util = require('gulp-util'),
     babel = require("gulp-babel"),
     uglify = require('gulp-uglify'),
+    rev = require('gulp-rev'),
 
     packageJson = require('./package.json'),
 
     del = require('del'),
     glob = require("glob"),
+    vinylPaths = require('vinyl-paths'),
 
     lessNpmImportPlugin = require("less-plugin-npm-import"),
 
@@ -26,7 +28,7 @@ const gulp = require('gulp'),
         less: 'web/bundles/csbill*/less',
         css: 'web/bundles/csbill*/css',
         images: 'web/bundles/csbill*/img/*',
-        js: 'web/bundles/**/js/**/*.js',
+        js: 'web/bundles/**/{lib,js}/**/*.js',
         templates: 'web/bundles/**/templates/**/*.hbs',
         prod: !!util.env.prod
     };
@@ -46,22 +48,26 @@ gulp.task('images', ['clean:images'], () => {
         .pipe(gulp.dest('web/img/'));
 });
 
-gulp.task('clean', ['clean:css', 'clean:js', 'clean:fonts', 'clean:images']);
+gulp.task('clean', ['clean:css', 'clean:js', 'clean:fonts', 'clean:images', 'clean:js', 'clean:assets']);
 
 gulp.task('clean:css', () => {
-    del(['web/css/**', '!web/css', '!web/css/.gitkeep']);
+    return del(['web/css/**', '!web/css', '!web/css/.gitkeep']);
 });
 
 gulp.task('clean:js', () => {
-    del(['web/js/**', '!web/js', '!web/js/.gitkeep']);
+    return del(['web/js/**', '!web/js', '!web/js/.gitkeep']);
 });
 
 gulp.task('clean:fonts', () => {
-    del(['web/fonts/**', '!web/fonts', '!web/fonts/.gitkeep']);
+    return del(['web/fonts/**', '!web/fonts', '!web/fonts/.gitkeep']);
 });
 
 gulp.task('clean:images', () => {
-    del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
+    return del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
+});
+
+gulp.task('clean:assets', () => {
+    return del('./web/assets');
 });
 
 gulp.task('css:app', () => {
@@ -114,9 +120,8 @@ gulp.task('css:email', () => {
         ;
 });
 
-gulp.task('css', ['clean:css'], () => {
-    gulp.start('css:app');
-    gulp.start('css:email');
+gulp.task('css', ['clean:css'], (done) => {
+    gulp.start(['css:app', 'css:email'], done);
 });
 
 gulp.task('templates', ['clean:js'], () => {
@@ -142,9 +147,7 @@ gulp.task('templates', ['clean:js'], () => {
         .pipe(gulp.dest('web/js'));
 });
 
-gulp.task('js:vendor', () => {
-    del.sync('./web/assets');
-
+gulp.task('js:vendor', ['clean:assets'], () => {
     let libs = [];
 
     Object.keys(packageJson.dependencies).forEach(function (lib) {
@@ -177,10 +180,11 @@ gulp.task('js:vendor', () => {
         .src(libs)
         .pipe(gIf(!options.prod, sourcemap.init()))
         .pipe(gIf(!options.prod, sourcemap.write()))
-        .pipe(gulp.dest('./web/assets'));
+        .pipe(gulp.dest('web/assets'))
+        ;
 });
 
-gulp.task('js:app', () => {
+gulp.task('js:app', ['clean:assets'], () => {
     return gulp
         .src(options.js)
         .pipe(gIf(!options.prod, sourcemap.init()))
@@ -191,7 +195,9 @@ gulp.task('js:app', () => {
 
 });
 
-gulp.task('js', ['js:vendor', 'js:app']);
+gulp.task('js', ['clean:assets'], (done) => {
+    gulp.start(['js:vendor', 'js:app'], done);
+});
 
 gulp.task('watch', ['css', 'templates', 'js'], () => {
     gulp.watch([options.less + '/*', options.css + '/*'], ['css']);
@@ -199,8 +205,18 @@ gulp.task('watch', ['css', 'templates', 'js'], () => {
     gulp.watch([options.js], ['js:app']);
 });
 
-gulp.task('build', ['css', 'fonts', 'images', 'templates']);
+gulp.task('build', ['css', 'fonts', 'images', 'templates', 'js']);
 
-gulp.task('default', ['clean'], () => {
-    gulp.start('build');
+gulp.task('default', ['clean'], (done) => {
+    gulp.start('build', done);
+});
+
+gulp.task('assets', () => {
+    return gulp.src(['web/css/*.css', 'web/js/*.js', 'web/js/translations/**'], { base: 'web' })
+        //.pipe(vinylPaths(del))
+        .pipe(rev())
+        .pipe(gulp.dest('web'))
+        .pipe(rev.manifest('manifest.json'))
+        .pipe(gulp.dest('web'))
+        ;
 });

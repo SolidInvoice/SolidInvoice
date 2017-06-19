@@ -100,4 +100,3 @@ build:
         grid: 'empty:'
         translation_data: 'empty:'
         bootstrap.material.datetimepicker: 'empty:'
-        fos_routing_data: 'empty:'

@@ -10,7 +10,7 @@
                     'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
                     'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
                 {% else %}
-                    'translation_data': '{{ asset('js/translations/' ~ locale ~ '.js') }}'
+                    'translation_data': '{{ asset('js/translations/' ~ locale) }}'
                 {% endif %}
             }
 
