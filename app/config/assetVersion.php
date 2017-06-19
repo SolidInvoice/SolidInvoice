@@ -31,7 +31,6 @@ if (file_exists(dirname(dirname(__DIR__)).'/web/manifest.json')) {
     unset($config['assets']['version']);
 }
 
-
 if (null !== $baseUrl) {
     $config['assets']['base_urls'] = ['%base_url%'];
 }
