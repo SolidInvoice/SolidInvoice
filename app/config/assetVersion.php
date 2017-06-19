@@ -22,7 +22,7 @@ $config = [
         'engines' => ['twig'],
     ],
     'assets' => [
-        'version' => CSBill\CoreBundle\CSBillCoreBundle::VERSION
+        'version' => CSBill\CoreBundle\CSBillCoreBundle::VERSION,
     ],
 ];
 
