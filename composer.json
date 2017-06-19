@@ -89,7 +89,7 @@
         "payum/be2bill": "^1.3",
         "payum/klarna-checkout": "^1.3",
         "payum/klarna-invoice": "^1.3",
-        "oro/requirejs-bundle": "dev-baseUrl",
+        "oro/requirejs-bundle": "^1.3",
         "willdurand/js-translation-bundle": "^2.6",
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid-doctrine": "^1.2",

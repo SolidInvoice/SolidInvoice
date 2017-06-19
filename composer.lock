@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "567f65692ec8eb95e4ee3b4ffe44cfdb",
+    "content-hash": "69b4a76e4e46a94970a594240c59deca",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -3191,17 +3191,17 @@
         },
         {
             "name": "oro/requirejs-bundle",
-            "version": "dev-baseUrl",
+            "version": "1.3.2",
             "target-dir": "Oro/Bundle/RequireJSBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CSBill/RequireJSBundle.git",
-                "reference": "3e589dd558b6f76961a7416b14136a7fdbed6f7b"
+                "reference": "46c5f9431250db3852d77de3438e47711a3f81a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/3e589dd558b6f76961a7416b14136a7fdbed6f7b",
-                "reference": "3e589dd558b6f76961a7416b14136a7fdbed6f7b",
+                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/46c5f9431250db3852d77de3438e47711a3f81a8",
+                "reference": "46c5f9431250db3852d77de3438e47711a3f81a8",
                 "shasum": ""
             },
             "require": {
@@ -3231,10 +3231,10 @@
                 "RequireJS"
             ],
             "support": {
-                "source": "https://github.com/CSBill/RequireJSBundle/tree/baseUrl",
+                "source": "https://github.com/CSBill/RequireJSBundle/tree/1.3.2",
                 "issues": "https://github.com/CSBill/RequireJSBundle/issues"
             },
-            "time": "2017-06-18 14:34:15"
+            "time": "2017-06-19T08:02:18+00:00"
         },
         {
             "name": "oyejorge/less.php",
@@ -10048,7 +10048,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "oro/requirejs-bundle": 20,
         "solidworx/form-handler-bundle": 10,
         "mockery/mockery": 15
     },
