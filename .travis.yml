@@ -48,7 +48,7 @@ install:
   - composer install -n
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
   - php bin/console cache:clear
-  - npm install
+  - yarn
   - php bin/console assets:install -n
   - php bin/console fos:js-routing:dump
   - node_modules/.bin/gulp
