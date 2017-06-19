@@ -15,5 +15,8 @@ config:
             deps:
                 - backgrid
     paths:
-        backgrid: csbilldatagrid/js/backgrid.js
+        backgrid: ../assets/backgrid.js
+        grid/backgrid-filter: ../assets/backgrid-filter.js
+        grid/backgrid-paginator: ../assets/backgrid-paginator.js
+        grid/backgrid-select-all: ../assets/backgrid-select-all.js
         grid: csbilldatagrid/js/

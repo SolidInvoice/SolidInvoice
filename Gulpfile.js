@@ -11,8 +11,11 @@ const gulp = require('gulp'),
     sourcemap = require('gulp-sourcemaps'),
     gIf = require('gulp-if'),
     plumber = require('gulp-plumber'),
-
     util = require('gulp-util'),
+    babel = require("gulp-babel"),
+    uglify = require('gulp-uglify'),
+
+    packageJson = require('./package.json'),
 
     del = require('del'),
     glob = require("glob"),
@@ -37,6 +40,7 @@ gulp.task('fonts', ['clean:fonts'], () => {
 
 gulp.task('images', ['clean:images'], () => {
     return gulp.src(options.images)
+        .pipe(filter('**/*.{png,gif,jpg,jpeg}'))
         .pipe(filter('**/*.{png,gif,jpg,jpeg}'))
         .pipe(flatten())
         .pipe(gulp.dest('web/img/'));
@@ -75,7 +79,7 @@ gulp.task('css:app', () => {
     return gulp.src(files)
         .pipe(filter('**/*.{css,less}'))
         //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function(error) {
+        .pipe(gIf(!options.prod, plumber(function (error) {
             console.log(error.toString());
             this.emit('end');
         })))
@@ -99,7 +103,7 @@ gulp.task('css:email', () => {
     return gulp.src(files)
         .pipe(filter('**/*.{css,less}'))
         //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function(error) {
+        .pipe(gIf(!options.prod, plumber(function (error) {
             console.log(error.toString());
             this.emit('end');
         })))
@@ -117,7 +121,7 @@ gulp.task('css', ['clean:css'], () => {
 
 gulp.task('templates', ['clean:js'], () => {
     return gulp.src(options.templates)
-        .pipe(gIf(!options.prod, plumber(function(error) {
+        .pipe(gIf(!options.prod, plumber(function (error) {
             console.log(error.toString());
             this.emit('end');
         })))
@@ -138,9 +142,61 @@ gulp.task('templates', ['clean:js'], () => {
         .pipe(gulp.dest('web/js'));
 });
 
-gulp.task('watch', ['css', 'templates'], () => {
+gulp.task('js:vendor', () => {
+    del.sync('./web/assets');
+
+    let libs = [];
+
+    Object.keys(packageJson.dependencies).forEach(function (lib) {
+        try {
+            if ('bootstrap-material-design' === lib) {
+                libs.push(require.resolve(lib + '/dist/js/material.js'));
+                libs.push(require.resolve(lib + '/dist/js/ripples.js'));
+                return;
+            }
+
+            if ('bootstrap' === lib) {
+                lib += '/dist/js/bootstrap.js';
+            }
+
+            if ('bootstrap-material-datetimepicker' === lib) {
+                lib += '/js/bootstrap-material-datetimepicker.js';
+            }
+
+            if ('handlebars' === lib) {
+                lib += '/dist/handlebars.runtime.js';
+            }
+
+            libs.push(require.resolve(lib));
+        } catch (e) {
+            // noop
+        }
+    });
+
+    return gulp
+        .src(libs)
+        .pipe(gIf(!options.prod, sourcemap.init()))
+        .pipe(gIf(!options.prod, sourcemap.write()))
+        .pipe(gulp.dest('./web/assets'));
+});
+
+gulp.task('js:app', () => {
+    return gulp
+        .src(options.js)
+        .pipe(gIf(!options.prod, sourcemap.init()))
+        .pipe(babel())
+        .pipe(gIf(options.prod, uglify()))
+        .pipe(gIf(!options.prod, sourcemap.write()))
+        .pipe(gulp.dest('./web/assets'));
+
+});
+
+gulp.task('js', ['js:vendor', 'js:app']);
+
+gulp.task('watch', ['css', 'templates', 'js'], () => {
     gulp.watch([options.less + '/*', options.css + '/*'], ['css']);
     gulp.watch([options.templates], ['templates']);
+    gulp.watch([options.js], ['js:app']);
 });
 
 gulp.task('build', ['css', 'fonts', 'images', 'templates']);

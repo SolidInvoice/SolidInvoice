@@ -152,3 +152,4 @@ oro_require_js:
         enforceDefine: false
         scriptType: text/javascript
     js_engine: node
+    base_url: assets

@@ -89,7 +89,7 @@
         "payum/be2bill": "^1.3",
         "payum/klarna-checkout": "^1.3",
         "payum/klarna-invoice": "^1.3",
-        "oro/requirejs-bundle": "^1.0",
+        "oro/requirejs-bundle": "dev-baseUrl",
         "willdurand/js-translation-bundle": "^2.6",
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid-doctrine": "^1.2",
@@ -132,7 +132,12 @@
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "fxp-asset": {
+            "asset-installer-paths": {
+                "npm-asset-library": "web/bundles/npmassets"
+            }
+        }
     },
     "extra": {
         "symfony-app-dir": "app",
@@ -142,6 +147,10 @@
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "web/bundles/npmassets",
+            "bower-asset-library": "web/bundles/bowerassets"
         },
         "branch-alias": {
             "dev-master": "2.0-dev"

@@ -18,9 +18,9 @@
 
 <script>
     require(['grid/multiple_grid', 'backbone'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (MultipleGrid, Backbone) {
-	new MultipleGrid({
-	    'model': new Backbone.Model({'grids': {{ grids|json_encode|raw }}, 'gridId': '{{ gridId }}'}),
-	    'el': '#{{ id }}'
-	});
+		new MultipleGrid({
+	    	'model': new Backbone.Model({'grids': {{ grids|json_encode|raw }}, 'gridId': '{{ gridId }}'}),
+	    	'el': '#{{ id }}'
+		});
     });
 </script>
