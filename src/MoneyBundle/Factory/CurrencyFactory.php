@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CSBill\MoneyBundle\Factory;
 
-use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\SystemConfig;
 use Money\Currency;
 
