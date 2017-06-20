@@ -49,7 +49,6 @@ before_install:
 install:
   - composer install -n
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
-  - php bin/console cache:clear
   - yarn
   - php bin/console assets:install -n
   - node_modules/.bin/gulp
