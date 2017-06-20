@@ -23,7 +23,7 @@ final class DoctrineEventSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'prePersist'
+            'prePersist',
         ];
     }
 

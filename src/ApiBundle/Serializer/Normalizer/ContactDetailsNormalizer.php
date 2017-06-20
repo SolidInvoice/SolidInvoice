@@ -51,6 +51,6 @@ class ContactDetailsNormalizer implements NormalizerInterface, DenormalizerInter
 
     public function supportsNormalization($data, $format = null)
     {
-        return (is_object($data) && AdditionalContactDetail::class === get_class($data));
+        return is_object($data) && AdditionalContactDetail::class === get_class($data);
     }
 }
