@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Doctrine\ORM\Mapping as ORM;
 
 trait TimeStampable
@@ -24,8 +25,9 @@ trait TimeStampable
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
-     * @Serialize\Expose()
-     * @Serialize\Groups({"js"})
+     * @ Serialize\Expose()
+     * @ Serialize\Groups({"js"})
+     * @ApiProperty(iri="https://schema.org/DateTime")
      */
     protected $created;
 
@@ -34,8 +36,9 @@ trait TimeStampable
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
-     * @Serialize\Expose()
-     * @Serialize\Groups({"js"})
+     * @ Serialize\Expose()
+     * @ Serialize\Groups({"js"})
+     * @ApiProperty(iri="https://schema.org/DateTime")
      */
     protected $updated;
 

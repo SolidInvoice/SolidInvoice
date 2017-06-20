@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
@@ -23,20 +25,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
-use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(attributes={"normalization_context"={"groups"={"quote_api"}}})
  * @ORM\Table(name="quotes")
  * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\QuoteRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
- * @Serialize\ExclusionPolicy("all")
- * @Serialize\XmlRoot("quote")
  * @Hateoas\Relation("self", href=@Hateoas\Route("get_quote", absolute=true, parameters={"quoteId" : "expr(object.getId())"}))
  */
 class Quote
@@ -54,8 +55,7 @@ class Quote
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Expose
-     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\Groups({"quote_api", "js"})
      */
     private $id;
 
@@ -63,6 +63,7 @@ class Quote
      * @var Uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
+     * @Serialize\Groups({"quote_api"})
      */
     private $uuid;
 
@@ -70,8 +71,7 @@ class Quote
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $status;
 
@@ -80,8 +80,8 @@ class Quote
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js"})
+     * @Serialize\Groups({"js", "quote_api"})
+     * @ApiProperty(iri="https://schema.org/Organization")
      */
     private $client;
 
@@ -89,9 +89,7 @@ class Quote
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
-     * @Serialize\AccessType(type="public_method")
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $total;
 
@@ -99,9 +97,7 @@ class Quote
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
-     * @Serialize\AccessType(type="public_method")
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $baseTotal;
 
@@ -109,9 +105,7 @@ class Quote
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
-     * @Serialize\AccessType(type="public_method")
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $tax;
 
@@ -119,8 +113,7 @@ class Quote
      * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $discount;
 
@@ -128,8 +121,7 @@ class Quote
      * @var string
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $terms;
 
@@ -137,8 +129,7 @@ class Quote
      * @var string
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $notes;
 
@@ -147,7 +138,6 @@ class Quote
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
-     * @Serialize\Exclude()
      */
     private $due;
 
@@ -157,8 +147,7 @@ class Quote
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
-     * @Serialize\Expose()
-     * @Serialize\Groups(groups={"js", "api"})
+     * @Serialize\Groups({"js", "quote_api"})
      */
     private $items;
 

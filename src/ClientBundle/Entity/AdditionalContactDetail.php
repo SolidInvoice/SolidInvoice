@@ -15,7 +15,7 @@ namespace CSBill\ClientBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -35,7 +35,7 @@ class AdditionalContactDetail
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"js"})
+     * @Serialize\Groups({"client_api"})
      */
     protected $id;
 
@@ -43,7 +43,7 @@ class AdditionalContactDetail
      * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api", "js"})
      */
     protected $value;
 
@@ -52,8 +52,7 @@ class AdditionalContactDetail
      *
      * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
      * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
-     * @Serialize\Groups({"api", "js"})
-     * @Serialize\Inline()
+     * @Serialize\Groups({"client_api", "js"})
      */
     protected $type;
 

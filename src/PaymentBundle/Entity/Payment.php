@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\PaymentBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Exception\UnexpectedTypeException;
 use CSBill\CoreBundle\Traits\Entity;
@@ -22,8 +23,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
+ * @ApiResource(attributes={"normalization_context"={"groups"={"payment_api"}}})
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
@@ -52,6 +55,7 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
      *
      * @var Invoice
+     * @Serialize\Groups({"none"})
      */
     private $invoice;
 
@@ -60,6 +64,7 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\JoinColumn(name="client", fieldName="client")
      *
      * @var Client
+     * @Serialize\Groups({"none"})
      */
     private $client;
 
@@ -67,6 +72,7 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
      *
      * @var PaymentMethod
+     * @Serialize\Groups({"payment_api"})
      */
     private $method;
 
@@ -74,11 +80,13 @@ class Payment extends BasePayment implements PaymentInterface
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
+     * @Serialize\Groups({"payment_api"})
      */
     private $status;
 
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
+     * @Serialize\Groups({"payment_api"})
      */
     private $message;
 
@@ -87,6 +95,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
+     * @Serialize\Groups({"payment_api"})
      */
     private $completed;
 

@@ -16,7 +16,7 @@ namespace CSBill\ClientBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -42,7 +42,7 @@ class ContactType
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
      * @Serialize\Groups({"api", "js"})
-     * @Serialize\SerializedName("type")
+     * @ Serialize\SerializedName("type")
      */
     private $name;
 

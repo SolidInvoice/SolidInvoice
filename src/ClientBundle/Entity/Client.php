@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\ClientBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\Payment;
@@ -22,19 +24,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Hateoas\Configuration\Annotation as Hateoas;
-use JMS\Serializer\Annotation as Serialize;
 use Money\Currency;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(attributes={"normalization_context"={"groups"={"client_api"}}}, iri="https://schema.org/Corporation")
  * @ORM\Table(name="clients")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Serialize\XmlRoot("client")
  * @Hateoas\Relation("self", href=@Hateoas\Route("get_client", absolute=true, parameters={"clientId" : "expr(object.getId())"}))
  * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
  * @Hateoas\Relation("client.invoices", href=@Hateoas\Route("get_client_invoices", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
@@ -53,7 +55,7 @@ class Client
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api", "js"})
      */
     private $id;
 
@@ -63,7 +65,8 @@ class Client
      * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api", "js"})
+     * @ApiProperty(iri="http://schema.org/name")
      */
     private $name;
 
@@ -73,7 +76,8 @@ class Client
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
      * @Assert\Length(max=125)
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api", "js"})
+     * @ApiProperty(iri="https://schema.org/URL")
      */
     private $website;
 
@@ -81,7 +85,8 @@ class Client
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api", "js"})
+     * @ApiProperty(iri="http://schema.org/Text")
      */
     private $status;
 
@@ -89,7 +94,8 @@ class Client
      * @var string
      *
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api", "js"})
+     * @ApiProperty(iri="http://schema.org/Text")
      */
     private $currency;
 
@@ -108,7 +114,8 @@ class Client
      * @ORM\OrderBy({"firstName" = "ASC"})
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
      * @Assert\Valid()
-     * @Serialize\Groups({"js"})
+     * @Serialize\Groups({"client_api", "js"})
+     * @ApiProperty(iri="http://schema.org/Person")
      */
     private $contacts;
 
@@ -118,6 +125,7 @@ class Client
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Serialize\Groups({"none"})
+     * @ApiProperty(subresource=true)
      */
     private $quotes;
 
@@ -127,6 +135,7 @@ class Client
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @Serialize\Groups({"none"})
+     * @ApiProperty(subresource=true)
      */
     private $invoices;
 
@@ -134,7 +143,7 @@ class Client
      * @var Collection|Payment[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
-     * @Serialize\Groups({"none"})
+     * @ApiProperty(subresource=true)
      */
     private $payments;
 
@@ -142,7 +151,7 @@ class Client
      * @var Collection|Address[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
-     * @Serialize\Groups({"js"})
+     * @Serialize\Groups({"client_api", "js"})
      */
     private $addresses;
 
@@ -150,7 +159,8 @@ class Client
      * @var Credit
      *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api", "js"})
+     * @ApiProperty(iri="http://schema.org/MonetaryAmount")
      */
     private $credit;
 
@@ -467,6 +477,7 @@ class Client
 
     /**
      * @ORM\PrePersist()
+     * @ApiProperty(iri="http://schema.org/MonetaryAmount")
      */
     public function setInitialCredit()
     {

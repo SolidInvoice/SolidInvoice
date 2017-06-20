@@ -1,5 +1,4 @@
 services:
-
     client.notification.listener:
         class: CSBill\ClientBundle\Listener\ClientListener
         calls:
@@ -7,3 +6,4 @@ services:
         tags:
             - { name: 'doctrine.event_listener', event: postPersist }
             - { name: 'doctrine.event_listener', event: postUpdate }
+            - { name: 'doctrine.event_listener', event: prePersist }

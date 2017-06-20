@@ -24,6 +24,7 @@ framework:
         name: CSBILL_APP
     fragments: null
     http_method_override: true
+    serializer: { enable_annotations: true }
 
 twig:
     debug: '%kernel.debug%'
@@ -153,3 +154,11 @@ oro_require_js:
         scriptType: text/javascript
     js_engine: node
     base_url: assets
+
+api_platform:
+    formats:
+        jsonld:   ['application/ld+json']
+        jsonhal:  ['application/hal+json']
+        json:     ['application/json']
+        xml:      ['application/xml', 'text/xml']
+        html:     ['text/html']

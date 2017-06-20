@@ -42,6 +42,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
             new SolidWorx\FormHandler\FormHandlerBundle(),
+            new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
 
             new CSBill\ApiBundle\CSBillApiBundle(),
             new CSBill\ClientBundle\CSBillClientBundle(),

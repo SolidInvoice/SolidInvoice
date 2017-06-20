@@ -15,7 +15,6 @@ namespace CSBill\ClientBundle\Form\Handler;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\ClientBundle\Form\Type\ClientType;
-use CSBill\ClientBundle\Model\Status;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Traits\SaveableTrait;
 use SolidWorx\FormHandler\FormHandlerInterface;
@@ -61,11 +60,6 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
      */
     public function onSuccess($client, FormRequest $form): Response
     {
-        /** @var Client $client */
-        if (!$client->getStatus()) {
-            $client->setStatus(Status::STATUS_ACTIVE);
-        }
-
         $this->save($client);
 
         $route = $this->router->generate('_clients_view', ['id' => $client->getId()]);
