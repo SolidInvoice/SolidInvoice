@@ -29,6 +29,17 @@ default:
             filters:
                 tags: "@login"
 
+        api:
+            contexts:
+                - FeatureContext: { migration: "@csbill.installer.database.migration" }
+                - CSBill\ApiBundle\Behat\ApiContext: { container: "@service_container" }
+                - Behat\MinkExtension\Context\MinkContext
+                - Behatch\Context\RestContext
+                - Behatch\Context\JsonContext
+                - Knp\FriendlyContexts\Context\EntityContext
+            filters:
+                tags: "@api"
+
     extensions:
         Behat\MinkExtension:
             base_url: http://127.0.0.1:9001
@@ -45,4 +56,13 @@ default:
                             custom-data: { travis: true }
             #browser_name: firefox
             #show_auto:    false
-        Behat\Symfony2Extension: ~
+        Behat\Symfony2Extension:
+            kernel:
+                env: "test"
+                debug: "true"
+        Behatch\Extension: ~
+        Knp\FriendlyContexts\Extension:
+            entities:
+                namespaces:
+                    - CSBill\ClientBundle
+                    - CSBill\SettingsBundle

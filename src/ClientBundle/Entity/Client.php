@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(attributes={"normalization_context"={"groups"={"client_api"}}}, iri="https://schema.org/Corporation")
+ * @ApiResource(attributes={"normalization_context"={"groups"={"client_api"}}, "denormalization_context"={"groups"={"client_api"}}}, iri="https://schema.org/Corporation")
  * @ORM\Table(name="clients")
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()

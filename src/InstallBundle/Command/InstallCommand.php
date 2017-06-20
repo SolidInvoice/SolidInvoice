@@ -215,7 +215,7 @@ class InstallCommand extends ContainerAwareCommand
 
         $migration = $this->getContainer()->get('csbill.installer.database.migration');
 
-        $callback = function ($message) use ($output): bool {
+        $callback = function ($message) use ($output): void {
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
                 $output->writeln($message);
             }

@@ -113,7 +113,9 @@
         "sensiolabs/security-checker": "^4.0",
         "satooshi/php-coveralls": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^2.0",
-        "phpstan/phpstan": "^0.7"
+        "phpstan/phpstan": "^0.7",
+        "behatch/contexts": "^2.7",
+        "knplabs/friendly-contexts": "^0.8.2"
     },
     "scripts": {
         "post-install-cmd": [

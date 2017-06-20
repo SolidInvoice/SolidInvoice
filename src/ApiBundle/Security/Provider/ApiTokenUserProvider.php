@@ -40,7 +40,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      *
      * @return string
      */
-    public function getUsernameForToken(string $token): string
+    public function getUsernameForToken(string $token): ?string
     {
         return $this->registry->getRepository('CSBillUserBundle:ApiToken')->getUsernameForToken($token);
     }
