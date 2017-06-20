@@ -59,7 +59,7 @@ install:
   - node_modules/.bin/gulp assets
 
 before_script:
-  - mysql -e 'create database csbill;'
+  - mysql -e 'create database csbill_test;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
   - php ./bin/console server:start 9001 -n
