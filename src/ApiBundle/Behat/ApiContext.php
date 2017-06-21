@@ -16,7 +16,6 @@ namespace CSBill\ApiBundle\Behat;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behatch\Context\RestContext;
-
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;

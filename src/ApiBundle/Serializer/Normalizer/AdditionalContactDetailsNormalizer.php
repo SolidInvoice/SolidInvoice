@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace CSBill\ApiBundle\Serializer\Normalizer;
 
 use CSBill\ClientBundle\Entity\AdditionalContactDetail;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Entity\Contact;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -45,7 +43,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         $data['type'] = [
-            'name' => $data['type']
+            'name' => $data['type'],
         ];
 
         /* @var AdditionalContactDetail $detail */
