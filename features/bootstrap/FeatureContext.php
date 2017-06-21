@@ -12,96 +12,84 @@ declare(strict_types=1);
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use CSBill\ClientBundle\Entity\ContactType;
+use CSBill\CoreBundle\CSBillCoreBundle;
+use CSBill\CoreBundle\Entity\Version;
+use CSBill\SettingsBundle\Entity\Setting;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Gedmo\SoftDeleteable\SoftDeleteableListener;
-use Knp\FriendlyContexts\Context\EntityContext;
+use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FeatureContext implements Context
 {
-    private const FILTER = 'softdeleteable';
+    private const DEFAULT_SETTINGS = [
+        'system/general/app_name' => 'CSBill',
+        'system/general/logo' => null,
+        'quote/email_subject' => 'New Quotation - #{id}',
+        'quote/bcc_address' => null,
+        'invoice/email_subject' => 'New Invoice - #{id}',
+        'invoice/bcc_address' => null,
+        'email/from_name' => 'CSBill',
+        'email/from_address' => 'info@csbill.org',
+        'email/format' => 'both',
+        'hipchat/auth_token' => null,
+        'hipchat/room_id' => null,
+        'hipchat/server_url' => 'https://api.hipchat.com',
+        'hipchat/notify' => null,
+        'hipchat/message_color' => 'yellow',
+        'sms/twilio/number' => null,
+        'sms/twilio/sid' => null,
+        'sms/twilio/token' => null,
+        'notification/client_create' => '{"email":true,"hipchat":false,"sms":false}',
+        'notification/invoice_status_update' => '{"email":true,"hipchat":false,"sms":false}',
+        'notification/quote_status_update' => '{"email":true,"hipchat":false,"sms":false}',
+        'notification/payment_made' => '{"email":true,"hipchat":false,"sms":false}',
+        'email/sending_options/transport' => 'sendmail',
+        'email/sending_options/host' => null,
+        'email/sending_options/user' => null,
+        'email/sending_options/password' => null,
+        'email/sending_options/port' => null,
+        'email/sending_options/encryption' => null,
+        'system/general/currency' => 'USD',
+    ];
 
     /**
      * @var ManagerRegistry
      */
-    private $doctrine;
-
-    /**
-     * @var EntityContext
-     */
-    private $entityContext;
+    private static $doctrine;
 
     public function __construct(ManagerRegistry $doctrine)
     {
-        $this->doctrine = $doctrine;
+        self::$doctrine = $doctrine;
     }
 
     /**
-     * @BeforeScenario
+     * @AfterFeature
      */
-    public function migrateDatabase(BeforeScenarioScope $scope)
+    public static function resetDatabase()
     {
-        $environment = $scope->getEnvironment();
-        $this->entityContext = $environment->getContext(EntityContext::class);
-    }
+        foreach (self::$doctrine->getManagers() as $entityManager) {
+            $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
 
-    /**
-     * @Given /^[T|t]here are no (.+)$/
-     */
-    public function cleanTable($entity)
-    {
-        $method = new ReflectionMethod($this->entityContext, 'resolveEntity');
-        $method->setAccessible(true);
-
-        $entityClass = $method->invoke($this->entityContext, $entity)->getName();
-        $objectManager = $this->doctrine->getManager();
-        $repository = $objectManager->getRepository($entityClass);
-        $filters = $objectManager->getFilters();
-        $originalEventListeners = [];
-        $meta = $objectManager->getClassMetadata($entityClass);
-
-        if ($filters->has(self::FILTER)) {
-            $filters->disable(self::FILTER);
-        }
-
-        foreach ($objectManager->getEventManager()->getListeners() as $eventName => $listeners) {
-            foreach ($listeners as $listener) {
-                if ($listener instanceof SoftDeleteableListener) {
-
-                    $originalEventListeners[$eventName] = $listener;
-                    $objectManager->getEventManager()->removeEventListener($eventName, $listener);
-
-                    continue 2;
-                }
+            if (!empty($metadata)) {
+                $tool = new SchemaTool($entityManager);
+                $tool->dropSchema($metadata);
+                $tool->createSchema($metadata);
             }
         }
 
-        foreach ($repository->findAll() as $item) {
-            $objectManager->remove($item);
+        $em = self::$doctrine->getManagerForClass(Version::class);
+
+        $em->persist((new Version())->setVersion(CSBillCoreBundle::VERSION));
+
+        foreach (self::DEFAULT_SETTINGS as $key => $value) {
+            $em->persist((new Setting())->setKey($key)->setValue($value)->setType(TextType::class));
         }
 
-        $objectManager->flush();
-
-        $resetAutoIncrement = function ($entityClass) use ($objectManager) {
-            $tableName = $objectManager->getClassMetadata($entityClass)->getTableName();
-            $connection = $objectManager->getConnection();
-            $connection->exec("ALTER TABLE {$tableName} AUTO_INCREMENT = 1;");
-        };
-
-        $resetAutoIncrement($entityClass);
-
-        foreach ($meta->getAssociationNames() as $associationName) {
-            $resetAutoIncrement($meta->getAssociationTargetClass($associationName));
+        foreach (['address', 'email', 'phone', 'mobile'] as $type) {
+            $em->persist((new ContactType())->setType($type)->setName($type)->setRequired(false));
         }
 
-        $objectManager->flush();
-
-        foreach ($originalEventListeners as $eventName => $listener) {
-            $objectManager->getEventManager()->addEventListener($eventName, $listener);
-        }
-
-        if ($filters->has(self::FILTER)) {
-            $filters->enable(self::FILTER);
-        }
+        $em->flush();
     }
 }

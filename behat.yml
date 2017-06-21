@@ -37,6 +37,7 @@ default:
                 - Behatch\Context\RestContext
                 - Behatch\Context\JsonContext
                 - Knp\FriendlyContexts\Context\EntityContext
+                - Knp\FriendlyContexts\Context\AliceContext
             filters:
                 tags: "@api"
 
@@ -65,4 +66,6 @@ default:
             entities:
                 namespaces:
                     - CSBill\ClientBundle
-                    - CSBill\SettingsBundle
+            alice:
+                fixtures:
+                    Client: tests/fixtures/client.yml

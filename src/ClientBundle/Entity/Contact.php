@@ -152,7 +152,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setLastName(string $lastName): self
+    public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
 

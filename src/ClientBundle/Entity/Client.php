@@ -511,7 +511,7 @@ class Client
      *
      * @return Client
      */
-    public function setCurrency(string $currency): self
+    public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
 

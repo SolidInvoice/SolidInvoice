@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace CSBill\ApiBundle\Behat;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeStepScope;
 use Behatch\Context\RestContext;
-use Behatch\HttpCall\Request;
+
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +34,7 @@ class ApiContext implements Context, ContainerAwareInterface
     }
 
     /**
-     * @BeforeScenario
+     * @BeforeScenario @api
      */
     public function setApiToken(BeforeScenarioScope $scope)
     {

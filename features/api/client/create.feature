@@ -5,7 +5,6 @@ Feature: Manage Clients
   I need to be able to create clients
 
   Scenario: Create a client with the bare minimum information
-    Given There are no clients
     When I send a "POST" request to "/api/clients" with body:
     """
     {
@@ -50,11 +49,10 @@ Feature: Manage Clients
     And 1 client should have been created
 
   Scenario: Create a client with all the possible values
-    Given There are no clients
     When I send a "POST" request to "/api/clients" with body:
     """
     {
-      "name": "Dummy User",
+      "name": "Second Dummy User",
       "website": "https://google.com",
       "currency": "USD",
       "contacts": [
@@ -79,18 +77,18 @@ Feature: Manage Clients
     """
     {
         "@context": "/api/contexts/Client",
-        "@id": "/api/clients/1",
+        "@id": "/api/clients/2",
         "@type": "https://schema.org/Corporation",
-        "id": 1,
-        "name": "Dummy User",
+        "id": 2,
+        "name": "Second Dummy User",
         "website": "https://google.com",
         "status": "active",
         "currency": "USD",
         "contacts": [
             {
-                "@id": "/api/contacts/1",
+                "@id": "/api/contacts/2",
                 "@type": "https://schema.org/Person",
-                "id": 1,
+                "id": 2,
                 "firstName": "foo",
                 "lastName": "bar",
                 "email": "foo@bar.com",
@@ -106,4 +104,4 @@ Feature: Manage Clients
         "credit": "US$0,00"
     }
     """
-    And 1 client should have been created
+    And 2 clients should have been created
