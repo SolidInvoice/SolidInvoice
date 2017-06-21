@@ -19,11 +19,11 @@
         </testsuite>
     </testsuites>
 
-    <!--
     <php>
-        <server name="KERNEL_DIR" value="/path/to/your/app/" />
+        <server name="KERNEL_DIR" value="app" />
+        <server name="SYMFONY_ENV" value="test" />
+        <server name="SYMFONY_DEBUG" value="true" />
     </php>
-    -->
 
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
@@ -34,7 +34,7 @@
             <directory>src</directory>
             <exclude>
                 <directory>src/*Bundle/Behat</directory>
-                <directory>src/*Bundle/Controller</directory>
+                <directory>src/*Bundle/Action</directory>
                 <directory>src/*Bundle/Resources</directory>
                 <directory>src/*Bundle/Tests</directory>
             </exclude>
