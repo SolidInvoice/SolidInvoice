@@ -14,33 +14,51 @@ declare(strict_types=1);
 namespace CSBill\ApiBundle\Serializer\Normalizer;
 
 use CSBill\ClientBundle\Entity\AdditionalContactDetail;
+use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Contact;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ContactDetailsNormalizer implements NormalizerInterface, DenormalizerInterface
+class AdditionalContactDetailsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @var NormalizerInterface
      */
     private $normalizer;
 
-    public function __construct(NormalizerInterface $normalizer)
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
+
+    public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer)
     {
         if (!$normalizer instanceof DenormalizerInterface) {
             throw new \InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
         }
 
         $this->normalizer = $normalizer;
+        $this->registry = $registry;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        return $this->normalizer->denormalize($data, $class, $format, $context);
+        $data['type'] = [
+            'name' => $data['type']
+        ];
+
+        /* @var AdditionalContactDetail $detail */
+        $detail = $this->normalizer->denormalize($data, $class, $format, $context);
+        $repository = $this->registry->getRepository('CSBillClientBundle:ContactType');
+        $detail->setType($repository->findOneBy(['name' => $detail->getType()->getName()]));
+
+        return $detail;
     }
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $this->normalizer->supportsDenormalization($data, $type, $format);
+        return AdditionalContactDetail::class === $type;
     }
 
     public function normalize($object, $format = null, array $context = [])

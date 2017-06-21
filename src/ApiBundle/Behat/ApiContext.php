@@ -48,18 +48,6 @@ class ApiContext implements Context, ContainerAwareInterface
         $restContext->iAddHeaderEqualTo("X-API-TOKEN", $this->ensureUserExists());
     }
 
-    /**
-     * @param RestContext $context
-     *
-     * @return Request
-     */
-    private function getRequest(RestContext $context): Request
-    {
-        $prop = new \ReflectionProperty($context, 'request');
-        $prop->setAccessible(true);
-        return $prop->getValue($context);
-    }
-
     private function ensureUserExists(): string
     {
         $doctrine = $this->container->get('doctrine');

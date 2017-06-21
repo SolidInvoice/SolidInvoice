@@ -31,7 +31,7 @@ class ContactType
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"none"})
+     * @Serialize\Groups({"client_api"})
      */
     private $id;
 
@@ -41,8 +41,7 @@ class ContactType
      * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
-     * @Serialize\Groups({"api", "js"})
-     * @ Serialize\SerializedName("type")
+     * @Serialize\Groups({"client_api", "js"})
      */
     private $name;
 
@@ -216,6 +215,6 @@ class ContactType
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }

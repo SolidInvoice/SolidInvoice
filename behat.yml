@@ -31,7 +31,7 @@ default:
 
         api:
             contexts:
-                - FeatureContext: { migration: "@csbill.installer.database.migration" }
+                - FeatureContext: { doctrine: '@doctrine' }
                 - CSBill\ApiBundle\Behat\ApiContext: { container: "@service_container" }
                 - Behat\MinkExtension\Context\MinkContext
                 - Behatch\Context\RestContext
@@ -42,8 +42,8 @@ default:
 
     extensions:
         Behat\MinkExtension:
-            base_url: http://127.0.0.1:9001
-            default_session: saucelabs
+            base_url: http://127.0.0.1/
+            default_session: symfony
             javascript_session: saucelabs
             sessions:
                 symfony:
