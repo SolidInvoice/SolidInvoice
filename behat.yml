@@ -18,6 +18,7 @@ default:
                 - Behat\MinkExtension\Context\MinkContext
                 - CSBill\CoreBundle\Behat\CoreContext
                 - CSBill\InstallBundle\Behat\InstallContext
+                - CSBill\UserBundle\Behat\UserContext
             filters:
                 tags: "@installation"
 

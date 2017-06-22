@@ -77,10 +77,10 @@ Feature: Install application
     And I press "continue_step"
     Then I should be on "/install/finish"
     And I should see "You have successfully installed CSBill!"
+    And the following user must exist:
+      | username | email       | password |
+      | admin    | foo@bar.com | foobar   |
     And The config should contain the following values:
       | currency | USD |
       | locale   | en  |
     And The config value "installed" should not be empty
-    And the following user must exist:
-      | username | email       | password |
-      | admin    | foo@bar.com | foobar   |

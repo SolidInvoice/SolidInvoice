@@ -101,40 +101,6 @@ class InstallContext extends DefaultContext
     }
 
     /**
-     * @Then /^the following user must exist:$/
-     *
-     * @param TableNode $table
-     *
-     * @throws \Exception
-     */
-    public function userExists(TableNode $table)
-    {
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $userRepository = $entityManager->getRepository('CSBillUserBundle:User');
-
-        /** @var User[] $users */
-        $users = $userRepository->findAll();
-
-        foreach ($table->getHash() as $row) {
-            $match = false;
-            foreach ($users as $user) {
-                if (
-                    $user->getUsername() === $row['username'] &&
-                    $user->getEmail() === $row['email'] &&
-                    password_verify($row['password'], $user->getPassword())
-                ) {
-                    $match = true;
-                    break;
-                }
-            }
-
-            if (false === $match) {
-                throw new \Exception(sprintf('User with username "%s" does not exist', $row['username']));
-            }
-        }
-    }
-
-    /**
      * @Given /^I wait for "([^"]*)" to become available$/
      */
     public function iWaitForToBecomeAvailable($element)
