@@ -11,17 +11,12 @@ Feature: Install application
     Given I am on the homepage
     Then I should be on "/install/system_check"
 
-  Scenario: Installation System Check
+  Scenario: Installation Process
     Given I am on "/install/system_check"
     Then I should see "CSBill Installation - Requirements Check"
     And I should not see an ".alert-danger" element
     When I follow "continue_step"
     Then I should be on "/install/config"
-
-  Scenario: Database Config
-    Given I am on "/install/system_check"
-    When I follow "continue_step"
-    And I am on "/install/config"
     And I fill in select2 input "Driver" with "mysql"
     And I fill in select2 input "Transport" with "Sendmail"
     And I fill in the following:
@@ -37,34 +32,8 @@ Feature: Install application
       | database_password |           |
       | mailer_transport  | sendmail  |
       | installed         |           |
-
-  Scenario: Installation Process Setup
-    Given I am on "/install/system_check"
-    When I follow "continue_step"
-    And I am on "/install/config"
-    And I fill in select2 input "Driver" with "mysql"
-    And I fill in select2 input "Transport" with "Sendmail"
-    And I fill in the following:
-      | User          | root   |
-      | Database Name | csbill |
-    And I press "continue_step"
-    Then I should be on "/install/process"
-    And I am on "/install/process"
+    And I should be on "/install/process"
     And I wait for "continue_step" to become available
-    And I follow "continue_step"
-    Then I should be on "/install/setup"
-
-  Scenario: System Setup
-    Given I am on "/install/system_check"
-    When I follow "continue_step"
-    And I am on "/install/config"
-    And I fill in select2 input "Driver" with "mysql"
-    And I fill in select2 input "Transport" with "Sendmail"
-    And I fill in the following:
-      | User          | root   |
-      | Database Name | csbill |
-    And I press "continue_step"
-    And I am on "/install/process"
     And I follow "continue_step"
     Then I should be on "/install/setup"
     And I fill in select2 input "Locale" with "English"
