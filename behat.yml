@@ -15,6 +15,7 @@ default:
     suites:
         installation:
             contexts:
+                - FeatureContext: { doctrine: '@doctrine' }
                 - Behat\MinkExtension\Context\MinkContext
                 - CSBill\CoreBundle\Behat\CoreContext
                 - CSBill\InstallBundle\Behat\InstallContext
@@ -24,6 +25,7 @@ default:
 
         login:
             contexts:
+                - FeatureContext: { doctrine: '@doctrine' }
                 - Behat\MinkExtension\Context\MinkContext
                 - CSBill\CoreBundle\Behat\CoreContext
                 - CSBill\UserBundle\Behat\UserContext
@@ -33,7 +35,7 @@ default:
         api:
             contexts:
                 - FeatureContext: { doctrine: '@doctrine' }
-                - CSBill\ApiBundle\Behat\ApiContext: { container: "@service_container" }
+                - CSBill\ApiBundle\Behat\ApiContext
                 - Behat\MinkExtension\Context\MinkContext
                 - Behatch\Context\RestContext
                 - Behatch\Context\JsonContext

@@ -16,22 +16,13 @@ namespace CSBill\ApiBundle\Behat;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behatch\Context\RestContext;
+use CSBill\CoreBundle\Behat\DefaultContext;
 use CSBill\UserBundle\Entity\ApiToken;
 use CSBill\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ApiContext implements Context, ContainerAwareInterface
+class ApiContext extends DefaultContext implements Context
 {
-    use ContainerAwareTrait;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
     /**
      * @BeforeScenario @api
      */
@@ -47,10 +38,10 @@ class ApiContext implements Context, ContainerAwareInterface
 
     private function ensureUserExists(): string
     {
-        $doctrine = $this->container->get('doctrine');
+        $doctrine = $this->getContainer()->get('doctrine');
 
         $userRepository = $doctrine->getRepository('CSBillUserBundle:User');
-        $tokenManager = $this->container->get('api.token.manager');
+        $tokenManager = $this->getContainer()->get('api.token.manager');
 
         $setToken = function ($tokenManager, $user, $doctrine): string {
             $token = $tokenManager->generateToken();
@@ -69,7 +60,7 @@ class ApiContext implements Context, ContainerAwareInterface
                 return $user->getApiTokens()[0]->getToken();
             }
         } else {
-            $fos = $this->container->get('fos_user.user_manager');
+            $fos = $this->getContainer()->get('fos_user.user_manager');
 
             $user = $fos->createUser();
 
