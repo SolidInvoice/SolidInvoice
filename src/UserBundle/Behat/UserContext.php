@@ -16,6 +16,7 @@ namespace CSBill\UserBundle\Behat;
 use Behat\Gherkin\Node\TableNode;
 use CSBill\CoreBundle\Behat\DefaultContext;
 use CSBill\UserBundle\Entity\User;
+use CSBill\UserBundle\Manager\UserManager;
 
 class UserContext extends DefaultContext
 {
@@ -30,22 +31,25 @@ class UserContext extends DefaultContext
     {
         $container = $this->getContainer();
 
-        $encoderFactory = $container->get('security.encoder_factory');
+        /** @var UserManager $fos */
+        $fos = $container->get('fos_user.user_manager');
 
         $entityManager = $container->get('doctrine')->getManager();
 
         foreach ($table as $data) {
-            $user = new User();
-
-            $encoder = $encoderFactory->getEncoder($user);
-
-            $password = $encoder->encodePassword($data['password'], null);
+            $user = $fos->createUser();
 
             $user->setUsername($data['username'])
                 ->setEmail($data['username'].'@local.dev')
-                ->setPassword($password)
+                ->setPlainPassword($data['password'])
                 ->setEnabled(true)
                 ->setRoles(explode(',', $data['roles']));
+
+            $fos->updateUser($user);
+
+            $user->setConfirmationToken(null)
+                ->setEnabled(true)
+                ->setSuperAdmin(true);
 
             $entityManager->persist($user);
         }
