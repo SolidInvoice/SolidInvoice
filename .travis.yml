@@ -39,6 +39,7 @@ addons:
 
 before_install:
   - composer self-update
+  - mysql -e 'create database csbill_test;'
   - composer global require "fxp/composer-asset-plugin"
   - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -59,7 +60,6 @@ install:
   - node_modules/.bin/gulp assets
 
 before_script:
-  - mysql -e 'create database csbill_test;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
   - php ./bin/console server:start 9001 -n
