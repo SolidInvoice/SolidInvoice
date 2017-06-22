@@ -49,6 +49,7 @@ before_install:
 install:
   - composer install -n
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
+  - sed -i 's/database_name:\ csbill/database_name:\ csbill_test/g' app/config/parameters.yml
   - yarn
   - php bin/console assets:install -n
   - node_modules/.bin/gulp
@@ -58,7 +59,7 @@ install:
   - node_modules/.bin/gulp assets
 
 before_script:
-  - mysql -e 'create database csbill;'
+  - mysql -e 'create database csbill_test;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
   - php ./bin/console server:start 9001 -n
