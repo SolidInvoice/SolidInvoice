@@ -43,8 +43,8 @@ default:
 
     extensions:
         Behat\MinkExtension:
-            base_url: http://127.0.0.1/
-            default_session: symfony
+            base_url: http://127.0.0.1:9001/
+            default_session: saucelabs
             javascript_session: saucelabs
             sessions:
                 symfony:
