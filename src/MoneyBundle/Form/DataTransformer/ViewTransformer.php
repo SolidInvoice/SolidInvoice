@@ -63,11 +63,6 @@ class ViewTransformer implements DataTransformerInterface
             $value = 0;
         }
 
-        try {
-            return new Money(((int) $value * 100), $this->currency);
-        } catch (\Exception $e) {
-            var_dump($value);
-            throw $e;
-        }
+        return new Money(((int) $value * 100), $this->currency);
     }
 }
