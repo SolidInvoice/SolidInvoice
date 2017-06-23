@@ -1,5 +1,5 @@
 CSBill\ClientBundle\Entity\Contact:
-    contact1: # Create 50 contacts so that there is minimum of 5 per client. This may mean that there will be a lot of contacts without a client though
+    contact:
         firstName: '<firstName()>'
         lastName: '75%? <lastName()>'
         email: '<email()>'
@@ -7,11 +7,9 @@ CSBill\ClientBundle\Entity\Contact:
         updated: '<dateTimeBetween($created, "now")>'
 
 CSBill\ClientBundle\Entity\Client:
-    client (template):
+    client:
         name (unique): '<name()>'
         created: '<dateTimeBetween("-200 days", "now")>'
         updated: '<dateTimeBetween($created, "now")>'
         currency: '50%? <currencyCode()>'
-    client1 (extends client):
-        #contacts: '<numberBetween(1, 5)>x @contact*'
-        contacts: ['@contact1']
+        contacts: ['@contact'] #'<numberBetween(1, 5)>x @contact*'

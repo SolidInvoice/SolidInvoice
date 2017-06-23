@@ -56,19 +56,16 @@ class FeatureContext implements Context
     /**
      * @var ManagerRegistry
      */
-    private static $doctrine;
+    private $doctrine;
 
     public function __construct(ManagerRegistry $doctrine)
     {
-        self::$doctrine = $doctrine;
+        $this->doctrine = $doctrine;
     }
 
-    /**
-     * @AfterFeature
-     */
-    public static function resetDatabase()
+    public function resetDatabase()
     {
-        foreach (self::$doctrine->getManagers() as $entityManager) {
+        foreach ($this->doctrine->getManagers() as $entityManager) {
             $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
 
             if (!empty($metadata)) {
@@ -78,7 +75,7 @@ class FeatureContext implements Context
             }
         }
 
-        $em = self::$doctrine->getManagerForClass(Version::class);
+        $em = $this->doctrine->getManagerForClass(Version::class);
 
         $em->persist((new Version())->setVersion(CSBillCoreBundle::VERSION));
 
