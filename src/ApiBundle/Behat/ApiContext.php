@@ -69,7 +69,7 @@ class ApiContext extends DefaultContext implements Context
     }
 
     /**
-     * Sends a HTTP request with a body
+     * Sends a HTTP request with a body.
      *
      * @Given I send a JSON :method request to :url with body:
      */
@@ -185,7 +185,7 @@ class ApiContext extends DefaultContext implements Context
 
         $result = (array) (new Json($string->getRaw()))->getContent();
 
-        $validator = new class {
+        $validator = new class() {
             private $propertyAccess;
 
             public function __construct()

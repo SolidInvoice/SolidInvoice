@@ -15,7 +15,6 @@ namespace CSBill\InstallBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
 use CSBill\CoreBundle\Behat\DefaultContext;
-use CSBill\UserBundle\Entity\User;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
