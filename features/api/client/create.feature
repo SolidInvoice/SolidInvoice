@@ -4,8 +4,15 @@ Feature: Manage Clients
   As a user
   I need to be able to create clients
 
+  Background:
+    Given I have the following users:
+    | username | password | roles            |
+    | abc      | abc      | ROLE_SUPER_ADMIN |
+    And I am authorised as "abc"
+
+  @resetSchema
   Scenario: Create a client with the bare minimum information
-    When I send a "POST" request to "/api/clients" with body:
+    When I send a JSON "POST" request to "/api/clients" with body:
     """
     {
       "name": "Dummy User",
@@ -48,8 +55,9 @@ Feature: Manage Clients
     """
     And 1 client should have been created
 
+  @resetSchema
   Scenario: Create a client with all the possible values
-    When I send a "POST" request to "/api/clients" with body:
+    When I send a JSON "POST" request to "/api/clients" with body:
     """
     {
       "name": "Second Dummy User",
@@ -77,18 +85,18 @@ Feature: Manage Clients
     """
     {
         "@context": "/api/contexts/Client",
-        "@id": "/api/clients/2",
+        "@id": "/api/clients/1",
         "@type": "https://schema.org/Corporation",
-        "id": 2,
+        "id": 1,
         "name": "Second Dummy User",
         "website": "https://google.com",
         "status": "active",
         "currency": "USD",
         "contacts": [
             {
-                "@id": "/api/contacts/2",
+                "@id": "/api/contacts/1",
                 "@type": "https://schema.org/Person",
-                "id": 2,
+                "id": 1,
                 "firstName": "foo",
                 "lastName": "bar",
                 "email": "foo@bar.com",
@@ -104,4 +112,4 @@ Feature: Manage Clients
         "credit": "US$0,00"
     }
     """
-    And 2 clients should have been created
+    And 1 client should have been created

@@ -63,6 +63,9 @@ class FeatureContext implements Context
         $this->doctrine = $doctrine;
     }
 
+    /**
+     * @BeforeScenario @resetSchema
+     */
     public function resetDatabase()
     {
         foreach ($this->doctrine->getManagers() as $entityManager) {

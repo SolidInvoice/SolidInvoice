@@ -36,6 +36,7 @@ default:
             contexts:
                 - FeatureContext: { doctrine: '@doctrine' }
                 - CSBill\ApiBundle\Behat\ApiContext
+                - CSBill\UserBundle\Behat\UserContext
                 - Behat\MinkExtension\Context\MinkContext
                 - Behatch\Context\RestContext
                 - Behatch\Context\JsonContext
@@ -69,6 +70,7 @@ default:
             entities:
                 namespaces:
                     - CSBill\ClientBundle
+                    - CSBill\UserBundle
             alice:
                 fixtures:
                     Client: tests/fixtures/client.yml

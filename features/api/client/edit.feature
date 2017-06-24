@@ -4,9 +4,16 @@ Feature: Edit Clients
   As a user
   I need to be able to edit clients
 
+  Background:
+    Given I have the following users:
+      | username | password | roles            |
+      | abc      | abc      | ROLE_SUPER_ADMIN |
+    And I am authorised as "abc"
+
+  @resetSchema
   @alice(Client)
   Scenario: Edit default client details
-    When I send a "PUT" request to "/api/clients/1" with body:
+    When I send a JSON "PUT" request to "/api/clients/1" with body:
     """
     {
       "name": "Second User"
