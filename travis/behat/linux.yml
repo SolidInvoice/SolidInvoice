@@ -34,14 +34,14 @@ default:
 saucelabs_chrome_linux:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_linux
+            javascript_session: saucelabs_chrome_linux
 
 saucelabs_firefox_linux:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_linux
+            javascript_session: saucelabs_firefox_linux
 
 saucelabs_opera_linux:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_opera_linux
+            javascript_session: saucelabs_opera_linux

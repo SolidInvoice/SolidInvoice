@@ -74,34 +74,34 @@ default:
 saucelabs_chrome_stable_windows81:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_stable_windows81
+            javascript_session: saucelabs_chrome_stable_windows81
 
 saucelabs_chrome_dev_windows81:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_dev_windows81
+            javascript_session: saucelabs_chrome_dev_windows81
 
 saucelabs_chrome_beta_windows81:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_beta_windows81
+            javascript_session: saucelabs_chrome_beta_windows81
 
 saucelabs_firefox_stable_windows81:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_stable_windows81
+            javascript_session: saucelabs_firefox_stable_windows81
 
 saucelabs_firefox_dev_windows81:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_dev_windows81
+            javascript_session: saucelabs_firefox_dev_windows81
 
 saucelabs_firefox_beta_windows81:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_beta_windows81
+            javascript_session: saucelabs_firefox_beta_windows81
 
 saucelabs_ie_windows81:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_ie_windows81
+            javascript_session: saucelabs_ie_windows81
