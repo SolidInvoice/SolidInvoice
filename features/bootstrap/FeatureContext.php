@@ -69,11 +69,13 @@ class FeatureContext implements Context
     public function resetDatabase()
     {
         foreach ($this->doctrine->getManagers() as $entityManager) {
+            $entityManager->flush(); // Ensure Entity manager is clean
             $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
 
             if (!empty($metadata)) {
                 $tool = new SchemaTool($entityManager);
                 $tool->dropSchema($metadata);
+                $entityManager->clear();
                 $tool->createSchema($metadata);
             }
         }
