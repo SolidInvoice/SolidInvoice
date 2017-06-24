@@ -20,18 +20,18 @@ Feature: Install application
     And I fill in select2 input "Driver" with "mysql"
     And I fill in select2 input "Transport" with "Sendmail"
     And I fill in the following:
-      | User          | root   |
-      | Database Name | csbill |
+      | User          | root        |
+      | Database Name | csbill_test |
     And I press "continue_step"
     Then The config should contain the following values:
-      | database_driver   | pdo_mysql |
-      | database_host     | localhost |
-      | database_port     | 3306      |
-      | database_name     | csbill    |
-      | database_user     | root      |
-      | database_password |           |
-      | mailer_transport  | sendmail  |
-      | installed         |           |
+      | database_driver   | pdo_mysql   |
+      | database_host     | localhost   |
+      | database_port     | 3306        |
+      | database_name     | csbill_test |
+      | database_user     | root        |
+      | database_password |             |
+      | mailer_transport  | sendmail    |
+      | installed         |             |
     And I should be on "/install/process"
     When I wait for "continue_step" to become available
     And I follow "continue_step"
