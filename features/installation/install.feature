@@ -1,4 +1,4 @@
-@installation
+@installation @javascript
 Feature: Install application
   In order to use the application
   As a user
