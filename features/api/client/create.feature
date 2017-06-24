@@ -50,7 +50,7 @@ Feature: Manage Clients
             }
         ],
         "addresses": [],
-        "credit": "US$0,00"
+        "credit": "$0.00"
     }
     """
     And 1 client should have been created
@@ -109,7 +109,7 @@ Feature: Manage Clients
             }
         ],
         "addresses": [],
-        "credit": "US$0,00"
+        "credit": "$0.00"
     }
     """
     And 1 client should have been created
