@@ -31,7 +31,7 @@ class ContactType
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"client_api"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $id;
 
@@ -41,7 +41,7 @@ class ContactType
      * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $name;
 

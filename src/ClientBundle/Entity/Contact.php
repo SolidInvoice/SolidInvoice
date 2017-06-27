@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(itemOperations={"put"={"method":"PUT"},"delete"={"method":"DELETE"}, "get"={"method":"GET"}}, collectionOperations={}, iri="https://schema.org/Person")
+ * @ApiResource(attributes={"normalization_context"={"groups"={"contact_api"}}, "denormalization_context"={"groups"={"contact_api"}}}, collectionOperations={"post"={"method"="POST"}}, iri="https://schema.org/Person")
  * @ORM\Table(name="contacts", indexes={@ORM\Index(name="email", columns={"email"})})
  * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
@@ -41,7 +41,7 @@ class Contact implements \Serializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $id;
 
@@ -51,7 +51,7 @@ class Contact implements \Serializable
      * @ORM\Column(name="firstName", type="string", length=125, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      * @ApiProperty(iri="https://schema.org/givenName")
      */
     private $firstName;
@@ -61,7 +61,7 @@ class Contact implements \Serializable
      *
      * @ORM\Column(name="lastName", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      * @ApiProperty(iri="https://schema.org/familyName")
      */
     private $lastName;
@@ -71,8 +71,10 @@ class Contact implements \Serializable
      *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts")
      * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
-     * @Serialize\Groups({"js"})
+     * @Serialize\Groups({"contact_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
+     * @Assert\Valid()
+     * @Assert\NotBlank()
      */
     private $client;
 
@@ -82,7 +84,7 @@ class Contact implements \Serializable
      * @ORM\Column(name="email", type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Email(strict=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      * @ApiProperty(iri="https://schema.org/email")
      */
     private $email;
@@ -92,7 +94,7 @@ class Contact implements \Serializable
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"})
      * @Assert\Valid()
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $additionalContactDetails;
 

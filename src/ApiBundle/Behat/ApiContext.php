@@ -199,9 +199,9 @@ class ApiContext extends DefaultContext implements Context
                     if (is_array($value)) {
                         $child = $actual->read($key, $this->propertyAccess);
 
-                        Assert::assertTrue(is_array($child));
-
-                        $this->validate($value, new Json(json_encode($child)));
+                        foreach ($child as $k => $v) {
+                            $this->validate((array) $value[$k], new Json(json_encode($v)));
+                        }
                         continue;
                     }
 

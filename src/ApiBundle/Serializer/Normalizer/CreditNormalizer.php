@@ -40,7 +40,7 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $this->normalizer->supportsDenormalization($data, $type, $format);
+        return Credit::class === $type;
     }
 
     public function normalize($object, $format = null, array $context = [])

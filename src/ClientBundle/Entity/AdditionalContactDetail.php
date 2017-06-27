@@ -35,7 +35,7 @@ class AdditionalContactDetail
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"client_api"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     protected $id;
 
@@ -43,7 +43,7 @@ class AdditionalContactDetail
      * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     protected $value;
 
@@ -52,7 +52,7 @@ class AdditionalContactDetail
      *
      * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
      * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     protected $type;
 

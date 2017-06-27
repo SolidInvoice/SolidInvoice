@@ -70,8 +70,8 @@ Feature: Manage Clients
               "email": "foo@bar.com",
               "additionalContactDetails": [
                   {
-                      "value": "foobar",
-                      "type": "address"
+                      "type": "address",
+                      "value": "foobar"
                   }
               ]
           }
