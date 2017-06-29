@@ -20,11 +20,13 @@ Feature: Get Contact
     And the JSON should be equal to:
     """
     {
+        "@context": "/api/contexts/Contact",
         "@id": "/api/contacts/1",
         "@type": "https://schema.org/Person",
         "id": 1,
         "firstName": "One",
         "lastName": "One",
+        "client": "/api/clients/1",
         "email": "one@one.com",
         "additionalContactDetails": [
           {

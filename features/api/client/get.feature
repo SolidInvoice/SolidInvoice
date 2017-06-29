@@ -58,7 +58,7 @@ Feature: Get Clients
                     }
                 ],
                 "addresses": [],
-                "credit": "US$0,00"
+                "credit": "$0.00"
             }
         ],
         "hydra:totalItems": 1
@@ -109,6 +109,6 @@ Feature: Get Clients
             }
         ],
         "addresses": [],
-        "credit": "US$0,00"
+        "credit": "$0.00"
     }
     """
