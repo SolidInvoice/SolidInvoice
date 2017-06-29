@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "512128be22d0d5334bdb4a23045e9160",
+    "content-hash": "69b4a76e4e46a94970a594240c59deca",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -3031,6 +3031,48 @@
             "time": "2017-01-16T07:55:07+00:00"
         },
         {
+            "name": "npm-asset/requirejs",
+            "version": "2.3.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/requirejs/-/requirejs-2.3.3.tgz",
+                "reference": null,
+                "shasum": "aa59fd3a0287eaf407959a138228044b5dd6a6a3"
+            },
+            "bin": {
+                "r.js": "./bin/r.js",
+                "r_js": "./bin/r.js"
+            },
+            "type": "npm-asset-library",
+            "extra": {
+                "npm-asset-bugs": {
+                    "url": "https://github.com/jrburke/r.js/issues"
+                },
+                "npm-asset-main": "./bin/r.js",
+                "npm-asset-directories": [],
+                "npm-asset-repository": {
+                    "type": "git",
+                    "url": "git+https://github.com/jrburke/r.js.git"
+                },
+                "npm-asset-scripts": [],
+                "npm-asset-engines": {
+                    "node": ">=0.4.0"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Burke",
+                    "email": "jrburke@gmail.com",
+                    "url": "http://github.com/jrburke"
+                }
+            ],
+            "description": "Node adapter for RequireJS, for loading AMD modules. Includes RequireJS optimizer",
+            "homepage": "http://github.com/jrburke/r.js"
+        },
+        {
             "name": "ocramius/package-versions",
             "version": "1.1.2",
             "source": {
@@ -3149,27 +3191,29 @@
         },
         {
             "name": "oro/requirejs-bundle",
-            "version": "1.0.0",
+            "version": "1.3.2",
             "target-dir": "Oro/Bundle/RequireJSBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CSBill/RequireJSBundle.git",
-                "reference": "2f0b4e081691d9045f7a8d7889fbadf07c6c7b51"
+                "reference": "46c5f9431250db3852d77de3438e47711a3f81a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/2f0b4e081691d9045f7a8d7889fbadf07c6c7b51",
-                "reference": "2f0b4e081691d9045f7a8d7889fbadf07c6c7b51",
+                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/46c5f9431250db3852d77de3438e47711a3f81a8",
+                "reference": "46c5f9431250db3852d77de3438e47711a3f81a8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
-                "symfony/symfony": "^2.7|^3.0"
+                "doctrine/doctrine-cache-bundle": "1.3.*",
+                "npm-asset/requirejs": "2.3.*",
+                "php": ">=7.0",
+                "symfony/symfony": "2.8.*, !=2.8.10|^3.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -3181,16 +3225,16 @@
                 "MIT"
             ],
             "description": "BAP RequireJS Bundle",
-            "homepage": "https://github.com/laboro/RequireJSBundle",
+            "homepage": "https://github.com/orocrm/RequireJSBundle",
             "keywords": [
                 "BAP",
                 "RequireJS"
             ],
             "support": {
-                "source": "https://github.com/CSBill/RequireJSBundle/tree/master",
+                "source": "https://github.com/CSBill/RequireJSBundle/tree/1.3.2",
                 "issues": "https://github.com/CSBill/RequireJSBundle/issues"
             },
-            "time": "2016-07-25T13:56:19+00:00"
+            "time": "2017-06-19T08:02:18+00:00"
         },
         {
             "name": "oyejorge/less.php",

@@ -26,6 +26,11 @@ $config = [
     ],
 ];
 
+if (file_exists(dirname(dirname(__DIR__)).'/web/manifest.json')) {
+    $config['assets']['json_manifest_path'] = '%kernel.project_dir%/web/manifest.json';
+    unset($config['assets']['version']);
+}
+
 if (null !== $baseUrl) {
     $config['assets']['base_urls'] = ['%base_url%'];
 }

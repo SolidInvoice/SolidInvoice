@@ -1,7 +1,20 @@
-@import "bootstrap/mixins";
-@import "bootstrap/variables";
-@import "material/_colors";
-@import "material/_variables";
+@import "~bootstrap/less/mixins";
+@import "~bootstrap/less/variables";
+@import "~bootstrap-material-design/less/_colors";
+@import "~bootstrap-material-design/less/_variables";
+@import "~bootstrap-material-design/less/_mixins";
+
+@warning: @deep-orange;
+@primary: @teal;
+@danger: @red;
+@success: @green;
+@info: @light-blue;
+
+@btn-warning: @warning;
+@btn-primary: @primary;
+@btn-danger: @danger;
+@btn-success: @success;
+@btn-info: @info;
 
 html, body {
     height: 100%;
@@ -45,6 +58,9 @@ body {
     &.active {
         background-image: none;
     }
+
+    .background-variations(~".btn", ~"", @mdb-btn-background-color);
+    color: #FFFFFF !important;
 }
 
 /**

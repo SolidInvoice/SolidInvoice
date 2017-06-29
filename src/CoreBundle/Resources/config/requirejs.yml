@@ -38,35 +38,40 @@ config:
         fos_router:
             exports: fos.Router
     paths:
-        backbone: csbillcore/js/lib/backbone/backbone.js
-        backbone.paginator: csbillcore/js/lib/backbone/backbone.paginator.js
-        backbone.radio: csbillcore/js/lib/backbone/backbone.radio.js
-        marionette: csbillcore/js/lib/backbone/marionette.js
-        lodash: csbillcore/js/lib/lodash.min.js
-        jquery: csbillcore/js/lib/jquery/jquery.min.js
-        bootstrap: csbillcore/js/lib/bootstrap.min.js
-        accounting: csbillcore/js/lib/accounting.js
-        moment: csbillcore/js/lib/moment.min.js
-        parsley: csbillcore/js/lib/parsley.min.js
-        routing: csbillcore/js/extend/routing
-        fos_router: fosjsrouting/js/router
-        fos_routing_data: ../js/fos_js_routes
-        Translator: bazingajstranslation/js/translator.min.js
-        material: csbillcore/js/lib/material/material
-        material.ripples: csbillcore/js/lib/material/ripples
-        jquery.select2: csbillcore/js/lib/jquery/select2.min.js
+        # External dependencies loaded through NPM/Yarn
+        backbone: ../assets/backbone.js
+        backbone.paginator: ../assets/backbone.paginator.js
+        backbone.radio: ../assets/backbone.radio.js
+        marionette: ../assets/backbone.marionette.js
+        lodash: ../assets/index.js
+        jquery: ../assets/jquery.js
+        bootstrap: ../assets/bootstrap.js
+        accounting: ../assets/accounting.js
+        parsley: ../assets/parsley.js
+        moment: ../assets/moment.js
+        material: ../assets/material.js
+        material.ripples: ../assets/ripples.js
+        jquery.select2: ../assets/select2.js
+        handlebars.runtime: ../assets/handlebars.runtime.js
+        bootstrap.bootbox: ../assets/bootbox.js
+        jquery.placeholder: ../assets/jquery.placeholder.js
+        bootstrap.material.datetimepicker: ../assets/material-datetimepicker.js
+
+        # External Dependencies that don't have an NPM package
         jquery.jqcron: csbillcore/js/lib/jquery/jqcron.js
-        jquery.placeholder: csbillcore/js/lib/jquery/placeholder.js
         jquery.uploadify: csbillcore/js/lib/jquery/uploadify.min.js
-        bootstrap.bootbox: csbillcore/js/lib/bootstrap/bootbox.min.js
         bootstrap.modal: csbillcore/js/lib/bootstrap/modal.js
         bootstrap.modalmanager: csbillcore/js/lib/bootstrap/modalmanager.js
-        bootstrap.material.datetimepicker: csbillcore/js/lib/bootstrap/material-datetimepicker.js
+
+        routing: csbillcore/js/extend/routing
+        fos_router: fosjsrouting/js/router.js
+        fos_routing_data: ../js/fos_js_routes
+        Translator: bazingajstranslation/js/translator.min.js
         core: csbillcore/js/
         core/view: csbillcore/js/itemview.js
         util/form/collection: csbillcore/js/util/form/collection.js
         template: ../js/hbs-templates.js
-        handlebars.runtime: csbillcore/js/lib/handlebars/handlebars.js
+        fos_routing_data: ../js/fos_js_routes.js
     map:
         '*':
             translator: csbillcore/js/extend/translator
@@ -95,4 +100,3 @@ build:
         grid: 'empty:'
         translation_data: 'empty:'
         bootstrap.material.datetimepicker: 'empty:'
-        fos_routing_data: 'empty:'

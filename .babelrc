@@ -1,0 +1,8 @@
+{
+  "presets": ["env"],
+  "ignore": [
+    "csbillcore/js/lib/**/*.js",
+    "csbillcore/js/app.js",
+    "fosjsrouting/**/**",
+  ]
+}

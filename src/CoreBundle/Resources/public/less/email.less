@@ -1,15 +1,17 @@
-@import "bootstrap/variables";
-@import "bootstrap/mixins";
-@import "bootstrap/normalize.less";
-@import "bootstrap/grid";
-@import "bootstrap/tables";
-@import "bootstrap/scaffolding";
-@import "bootstrap/type";
-@import "bootstrap/utilities";
+@import (reference) "~bootstrap/less/variables";
+@import (reference) "~bootstrap/less/mixins";
+@import "~bootstrap/less/normalize";
+@import "~bootstrap/less/grid";
+@import "~bootstrap/less/tables";
+@import "~bootstrap/less/scaffolding";
+@import "~bootstrap/less/type";
+@import "~bootstrap/less/utilities";
 
-@import "material/_variables.less";
-@import "material/_colors.less";
-@import "material/_mixins.less";
+@import (reference) "~bootstrap-material-design/less/_variables";
+@import (reference) "~bootstrap-material-design/less/_colors";
+@import (reference) "~bootstrap-material-design/less/_mixins";
+
+@darkbg-text: rgba(255,255,255,0.84);
 
 body {
     background-color: @body-bg;
@@ -46,7 +48,7 @@ a, a:hover, a:focus {
 }
 
 // Buttons
-@import "material/_buttons.less";
+@import "~bootstrap-material-design/less/_buttons";
 
 legend {
     border-bottom: 0;
@@ -66,7 +68,7 @@ legend {
             color: @primary;
         }
     }
-    .variations(~" li a:hover", color, @primary);
+    //.variations(~" li a:hover", color, @primary);
 }
 
 // Typography
@@ -86,11 +88,11 @@ legend {
     color: @btn-info;
 }
 
-@import "material/_labels.less";
+//@import "material/_labels";
 
-@import "material/_panels.less";
+@import "~bootstrap-material-design/less/_panels";
 
-@import "material/_dividers.less";
+@import "~bootstrap-material-design/less/_dividers";
 
 // Prevent highlight on mobile
 * {
@@ -103,7 +105,7 @@ legend {
 
 // Material shadows
 // Place them on bottom of stylesheet to increase the importance of it and override other same-specificity selectors
-@import "material/_shadows.less";
+@import "~bootstrap-material-design/less/_shadows";
 
 
 
@@ -111,8 +113,8 @@ legend {
 
 
 
-@import "invoice.less";
-@import "theme.less";
+@import "invoice";
+@import "theme";
 
 .clear {
     clear: both;

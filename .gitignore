@@ -1,8 +1,10 @@
+web/assets/*
 web/bundles/*
 web/css/*
 web/js/*
 web/fonts/*
 web/img/*
+web/manifest.json
 var/bootstrap.php.cache
 var/cache/*
 var/logs/*
