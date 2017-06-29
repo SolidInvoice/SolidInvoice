@@ -52,8 +52,8 @@ install:
   - php bin/console cache:clear
   - yarn
   - php bin/console assets:install -n
-  - php bin/console fos:js-routing:dump --callback=define -n
   - node_modules/.bin/gulp
+  - php bin/console fos:js-routing:dump --callback=define -n
   - php bin/console bazinga:js-translation:dump --merge-domains -n
   - php bin/console oro:requirejs:build -n
   - node_modules/.bin/gulp assets
