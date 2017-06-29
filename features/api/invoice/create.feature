@@ -21,7 +21,6 @@ Feature: Create Invoices
       ],
       "client": "/api/clients/1",
       "discount": 0.1,
-      "due": "2017-06-27T13:45:28.786Z",
       "items" : [
           {
               "price": 10,
@@ -50,7 +49,7 @@ Feature: Create Invoices
       "discount": 0.1,
       "terms": null,
       "notes": null,
-      "due": "2017-06-27T13:45:28+00:00",
+      "due": null,
       "paidDate": null,
       "items": [
         {
