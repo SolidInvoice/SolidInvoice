@@ -39,3 +39,8 @@ $container->loadFromExtension(
     'framework',
     $config
 );
+
+$container->loadFromExtension(
+    'api_platform',
+    ['version' => \CSBill\CoreBundle\CSBillCoreBundle::VERSION]
+);

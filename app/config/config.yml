@@ -156,6 +156,7 @@ oro_require_js:
     base_url: assets
 
 api_platform:
+    title: 'API'
     formats:
         jsonld:   ['application/ld+json']
         jsonhal:  ['application/hal+json']
