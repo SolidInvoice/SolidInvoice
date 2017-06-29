@@ -33,7 +33,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}})
+ * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
  * @ORM\Table(name="invoices")
  * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
@@ -56,7 +56,7 @@ class Invoice
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"invoice_api", "js"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $id;
 
@@ -64,7 +64,7 @@ class Invoice
      * @var Uuid
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
-     * @Serialize\Groups({"invoice_api", "js"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $uuid;
 
@@ -72,7 +72,7 @@ class Invoice
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Groups({"invoice_api", "js"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $status;
 
@@ -81,7 +81,7 @@ class Invoice
      *
      * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
      */
     private $client;
@@ -90,7 +90,7 @@ class Invoice
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $total;
 
@@ -98,7 +98,7 @@ class Invoice
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $baseTotal;
 
@@ -106,7 +106,7 @@ class Invoice
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $balance;
 
@@ -114,7 +114,7 @@ class Invoice
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $tax;
 
@@ -122,7 +122,7 @@ class Invoice
      * @var float
      *
      * @ORM\Column(name="discount", type="float", nullable=true)
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      */
     private $discount;
 
@@ -130,7 +130,7 @@ class Invoice
      * @var string
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      */
     private $terms;
 
@@ -138,7 +138,7 @@ class Invoice
      * @var string
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      */
     private $notes;
 
@@ -147,7 +147,7 @@ class Invoice
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      */
     private $due;
 
@@ -156,7 +156,7 @@ class Invoice
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $paidDate;
 
@@ -166,7 +166,7 @@ class Invoice
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      */
     private $items;
 
@@ -187,6 +187,7 @@ class Invoice
      *
      * @ORM\Column(name="users", type="array", nullable=false)
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
+     * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      */
     private $users;
 
@@ -202,16 +203,12 @@ class Invoice
      * @var bool
      *
      * @ORM\Column(name="is_recurring", type="boolean")
-     * @Serialize\Groups({"js", "invoice_api"})
+     * @Serialize\Groups({"invoice_api"})
      */
     private $recurring;
 
-    /**
-     * @param Client|null $client
-     */
-    public function __construct(Client $client = null)
+    public function __construct()
     {
-        $this->setClient($client);
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->users = new ArrayCollection();

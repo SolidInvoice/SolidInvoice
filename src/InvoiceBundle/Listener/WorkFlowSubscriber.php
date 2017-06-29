@@ -18,29 +18,19 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\InvoiceBundle\Notification\InvoiceStatusNotification;
 use CSBill\NotificationBundle\Notification\NotificationManager;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class WorkFlowSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
     /**
      * @var NotificationManager
      */
     private $notification;
 
     public function __construct(ManagerRegistry $registry, NotificationManager $notification)
-    {
-        $this->registry = $registry;
         $this->notification = $notification;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -62,11 +52,6 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         if (Graph::TRANSITION_ARCHIVE === $event->getTransition()->getName()) {
             $invoice->archive();
         }
-
-        $em = $this->registry->getManager();
-
-        $em->persist($invoice);
-        $em->flush();
 
         $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
     }

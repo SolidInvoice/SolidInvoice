@@ -24,6 +24,12 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
 
+    CSBill\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener:
+        autowire: true
+        arguments:
+            $stateMachine: '@state_machine.invoice'
+        tags: ['doctrine.event_subscriber']
+
     CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate:
         autowire: true
         arguments:

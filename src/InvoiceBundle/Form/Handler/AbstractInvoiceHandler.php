@@ -19,7 +19,6 @@ use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
-use Money\Money;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
@@ -75,8 +74,6 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         /* @var Invoice $invoice */
         $action = $form->getRequest()->request->get('save');
 
-        $invoice->setBalance($invoice->getTotal());
-
         // @TODO: Recurring invoices should be handled better
         if ($invoice->isRecurring()) {
             $invoice->setStatus(Graph::STATUS_RECURRING);
@@ -89,13 +86,6 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
 
             $invoice = $firstInvoice;
         }
-
-        if (!$invoice->getId()) {
-            $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
-        }
-
-        $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($invoice);
-        $invoice->setBalance($invoice->getTotal()->subtract(new Money($totalPaid, $invoice->getTotal()->getCurrency())));
 
         if ($action === Graph::STATUS_PENDING) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);

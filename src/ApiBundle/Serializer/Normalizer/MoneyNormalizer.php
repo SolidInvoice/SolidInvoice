@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace CSBill\ApiBundle\Serializer\Normalizer;
 
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
+use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
+use Money\Currency;
 use Money\Money;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -30,7 +32,12 @@ class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     private $normalizer;
 
-    public function __construct(NormalizerInterface $normalizer, MoneyFormatter $formatter)
+    /**
+     * @var Currency
+     */
+    private $currency;
+
+    public function __construct(NormalizerInterface $normalizer, MoneyFormatter $formatter, Currency $currency)
     {
         if (!$normalizer instanceof DenormalizerInterface) {
             throw new \InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
@@ -38,16 +45,18 @@ class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 
         $this->formatter = $formatter;
         $this->normalizer = $normalizer;
+        $this->currency = $currency;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        return $this->normalizer->denormalize($data, $class, $format, $context);
+        // @TODO: Currency should be determined if there is a client added to the context
+        return new Money($data * 1000, $this->currency);
     }
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return Money::class === $type;
+        return Money::class === $type || MoneyEntity::class === $type;
     }
 
     public function normalize($object, $format = null, array $context = [])

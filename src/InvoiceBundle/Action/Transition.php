@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Action;
 
 use CSBill\CoreBundle\Response\FlashResponse;
+use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -24,6 +24,8 @@ use Symfony\Component\Workflow\StateMachine;
 
 final class Transition
 {
+    use SaveableTrait;
+
     /**
      * @var RouterInterface
      */
@@ -34,15 +36,9 @@ final class Transition
      */
     private $stateMachine;
 
-    /**
-     * @var InvoiceManager
-     */
-    private $manager;
-
-    public function __construct(RouterInterface $router, InvoiceManager $manager, StateMachine $stateMachine)
+    public function __construct(RouterInterface $router, StateMachine $stateMachine)
     {
         $this->router = $router;
-        $this->manager = $manager;
         $this->stateMachine = $stateMachine;
     }
 
@@ -53,6 +49,8 @@ final class Transition
         }
 
         $this->stateMachine->apply($invoice, $action);
+
+        $this->save($invoice);
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
