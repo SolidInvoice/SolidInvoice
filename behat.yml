@@ -70,6 +70,7 @@ default:
             entities:
                 namespaces:
                     - CSBill\ClientBundle
+                    - CSBill\InvoiceBundle
                     - CSBill\UserBundle
             alice:
                 fixtures:
