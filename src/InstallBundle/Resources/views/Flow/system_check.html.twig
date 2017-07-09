@@ -52,29 +52,36 @@
 
     <div class="row">
         <div class="col-md-6">
-            <fieldset>
-                <legend>
-
-                {{ 'installation.requirements.mandatory'|trans }}
-                </legend>
-                <ul class="list-group">
-                    {% for requirement in requirements.requirements %}
-                        {{ requirementCheck(requirement) }}
-                    {% endfor %}
-                </ul>
-            </fieldset>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        {{ 'installation.requirements.mandatory'|trans }}
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <ul class="list-group">
+                        {% for requirement in requirements.requirements %}
+                            {{ requirementCheck(requirement) }}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
-            <fieldset>
-                <legend>
-                    {{ 'installation.requirements.optional'|trans }}
-                </legend>
-            <ul class="list-group">
-            {% for requirement in requirements.recommendations %}
-                {{ requirementCheck(requirement) }}
-            {% endfor %}
-            </ul>
-            </fieldset>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        {{ 'installation.requirements.optional'|trans }}
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <ul class="list-group">
+                        {% for requirement in requirements.recommendations %}
+                            {{ requirementCheck(requirement) }}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">

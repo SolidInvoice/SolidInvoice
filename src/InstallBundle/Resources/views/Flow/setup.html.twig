@@ -16,32 +16,39 @@
 
     <div class="row">
         <div class="col-md-6">
-            <fieldset>
-                <legend>
-                    {{ icon('cog') }} {{ 'installation.setup.title.system_settings'|trans }}
-                </legend>
-                {{ form_row(form.locale) }}
-                {{ form_row(form.currency) }}
-                {{ form_row(form.base_url) }}
-            </fieldset>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        {{ icon('cog') }} {{ 'installation.setup.title.system_settings'|trans }}
+                    </h3>
+                </div>
+                <div class="box-body">
+                    {{ form_row(form.locale) }}
+                    {{ form_row(form.currency) }}
+                    {{ form_row(form.base_url) }}
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
-
             {% if userCount > 0 %}
-                <div class="alert alert-block alert-warning">
-                    <h3>Notice</h3>
-
-                    The database already contains an admin user.
+                <div class="callout callout-warning">
+                    <h4>{{ 'installation.setup.notice'|trans }}</h4>
+                    <p>
+                        {{ 'installation.setup.user_exists'|trans }}
+                    </p>
                 </div>
             {% else %}
-                <fieldset class="{% if userCount > 0 %} hidden{% endif %}">
-                    <legend>
-                        {{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
-                    </legend>
-                    {{ form_row(form) }}
-                </fieldset>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            {{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        {{ form_row(form) }}
+                    </div>
+                </div>
             {% endif %}
-
         </div>
     </div>
 

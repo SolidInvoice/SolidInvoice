@@ -12,25 +12,33 @@
 {% block content %}
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="progress progress-striped">
-                <div class="progress-bar active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title" id="install-title">
+                        {{ 'installation.process.title.busy'|trans }}
+                    </h3>
                 </div>
-            </div>
-            <h3 align="center" id="install-title">
-                {{ 'installation.process.title.busy'|trans }}</h3>
-            <div id="error-message" class="text-danger"></div>
-            <ul class="list-group">
-                <li class="list-group-item" id="step-createdb">
-                    {{ 'installation.process.step.createdb'|trans }}
-                </li>
-                <li class="list-group-item" id="step-migrations">
-                    {{ 'installation.process.step.migrations'|trans }}
-                </li>
-            </ul>
-            <div class="pull-right">
-                <a id="continue_step" href="{{ path('sylius_flow_forward', {'stepName' : 'process'}) }}" class="disabled btn btn-success">
-                    {{ 'installation.action.next'|trans }} {{ icon('arrow-right') }}
-                </a>
+                <div class="box-body">
+                    <div class="progress progress-striped">
+                        <div class="progress-bar active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        </div>
+                    </div>
+
+                    <div id="error-message" class="text-danger"></div>
+                    <ul class="list-group">
+                        <li class="list-group-item" id="step-createdb">
+                            {{ 'installation.process.step.createdb'|trans }}
+                        </li>
+                        <li class="list-group-item" id="step-migrations">
+                            {{ 'installation.process.step.migrations'|trans }}
+                        </li>
+                    </ul>
+                    <div class="pull-right">
+                        <a id="continue_step" href="{{ path('sylius_flow_forward', {'stepName' : 'process'}) }}" class="disabled btn btn-success">
+                            {{ 'installation.action.next'|trans }} {{ icon('arrow-right') }}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

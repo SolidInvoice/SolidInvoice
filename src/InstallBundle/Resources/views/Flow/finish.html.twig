@@ -10,33 +10,34 @@
 {% extends 'CSBillInstallBundle::layout.html.twig' %}
 
 {% block content %}
-    <fieldset>
-        <legend>
-            <h2>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
                 {{ "installation.finish.success"|trans }}
-            </h2>
-        </legend>
+            </h3>
+        </div>
+        <div class="box-body">
+            <h4>
+                {{ "installation.finish.success_message"|trans }}
+            </h4>
 
-        <h4>
-            {{ "installation.finish.success_message"|trans }}
-        </h4>
-
-        <div>
-            <p>
-                As a final step, you must add a scheduled task to run every 5 minutes.
-            </p>
-            <p>
-                Add the following cron job:
-                <br />
+            <div>
+                <p>
+                    As a final step, you must add a scheduled task to run every 5 minutes.
+                </p>
+                <p>
+                    Add the following cron job:
+                    <br />
                 <pre style="color: #c7254e;">
                     0/5 * * * * php {{ rootDir }}/console cron:run -e prod -n
                 </pre>
-            </p>
+                </p>
+            </div>
         </div>
-        <br class="clear" />
-
-        <a id="login" href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
-            {{ icon('user') }} {{ "installation.finish.login"|trans }}
-        </a>
-    </fieldset>
+        <div class="box-footer">
+            <a id="login" href="{{ path('sylius_flow_forward', {'stepName' : 'finish'}) }}" class="btn-lg btn btn-success">
+                {{ icon('user') }} {{ "installation.finish.login"|trans }}
+            </a>
+        </div>
+    </div>
 {% endblock %}
