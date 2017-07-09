@@ -8,53 +8,46 @@
  #}
 
 
-{% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block title %}{{ "invoice.list.title"|trans }}{% endblock %}
 
-{% block sidebar_left %}
+{% block sidebar %}
     {{ menu('invoices_index') }}
-{% endblock sidebar_left %}
+{% endblock sidebar %}
 
 {% block content %}
-    <div class="widget">
-	{{ render_multiple_grid('active_invoice_grid', 'recurring_invoice_grid', 'archive_invoice_grid') }}
-    </div>
-
-    <h5>{{ "invoice.list.status_legend"|trans }}</h5>
-
-    {% for status in invoice_label() %}
-	{{ status|raw }}
-    {% endfor %}
-{% endblock content %}
-
-{% block sidebar_right %}
-    <div class="well well-small right-nav">
-
-        <a class="btn btn-md btn-info action-button" href="{{ path("_invoices_create") }}">
-            {{ icon('file', ['text', 'o']) }} {{ "invoice.action.create"|trans }}
-        </a>
-
-        <div class="row">
-            <div class="text-center text-success">
-                <h3>{{ total_income|formatCurrency }}</h3>
-                {{ "invoice.list.income"|trans }}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="widget">
+            {{ render_multiple_grid('active_invoice_grid', 'recurring_invoice_grid', 'archive_invoice_grid') }}
             </div>
-            <div class="text-center text-danger">
-                <h3>{{ total_outstanding|formatCurrency }}</h3>
-                {{ "invoice.list.outstanding"|trans }}
+
+            <h5>{{ "invoice.list.status_legend"|trans }}</h5>
+
+            {% for status in invoice_label() %}
+                {{ status|raw }}
+            {% endfor %}
+        </div>
+        <div class="col-md-3">
+            <div class="box right-nav">
+                <div class="box-body">
+                    <a class="btn btn-block btn-info action-button" href="{{ path("_invoices_create") }}">
+                        {{ icon('file', ['text', 'o']) }} {{ "invoice.action.create"|trans }}
+                    </a>
+
+                    <ul class="list-group list-group-unbordered">
+                        {% for status, count in status_list_count %}
+                            <li class="list-group-item">
+                                <span class="badge">{{ count }}</span>
+                                {{ ('invoice.stats.count.' ~ status)|transchoice(count) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
             </div>
         </div>
-
-        <br class="clearfix" />
-
-        <ul class="nav nav-list">
-            {% for status, count in status_list_count %}
-                <li>
-                    <span class="badge">{{ count }}</span>
-                    {{ ('invoice.stats.count.' ~ status)|transchoice(count) }}
-                </li>
-            {% endfor %}
-        </ul>
     </div>
-{% endblock sidebar_right %}
+{% endblock content %}
+

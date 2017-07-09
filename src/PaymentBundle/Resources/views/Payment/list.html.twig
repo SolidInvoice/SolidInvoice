@@ -7,11 +7,9 @@
  # with this source code in the file LICENSE.
  #}
 
-<legend>
-    <h3>
-        {{ icon('credit-card') }} {{ "Payments"|trans }}
-    </h3>
-</legend>
+<h3 class="page-header">
+    {{ icon('credit-card') }} {{ "Payments"|trans }}
+</h3>
 
 {% if data is not defined %}
     {% set data = {} %}

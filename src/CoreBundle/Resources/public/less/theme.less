@@ -1,8 +1,9 @@
-@import "~bootstrap/less/mixins";
-@import "~bootstrap/less/variables";
-@import "~bootstrap-material-design/less/_colors";
-@import "~bootstrap-material-design/less/_variables";
-@import "~bootstrap-material-design/less/_mixins";
+
+@import (reference) "~bootstrap/less/mixins";
+@import (reference) "~bootstrap/less/variables";
+@import (reference) "~bootstrap-material-design/less/_colors";
+@import (reference) "~bootstrap-material-design/less/_variables";
+@import (reference) "~bootstrap-material-design/less/_mixins";
 
 @warning: @deep-orange;
 @primary: @teal;
@@ -15,7 +16,7 @@
 @btn-danger: @danger;
 @btn-success: @success;
 @btn-info: @info;
-
+/*
 html, body {
     height: 100%;
 }
@@ -33,9 +34,9 @@ body {
     border-radius: 4px
 }
 
-/**
+!**
  * BUTTONS
- */
+ *!
 .btn {
     margin: 0;
 
@@ -63,17 +64,17 @@ body {
     color: #FFFFFF !important;
 }
 
-/**
+!**
  * THUMBNAIL
- */
+ *!
 .thumbnail,
 .img-thumbnail {
     .box-shadow(0 1px 2px rgba(0, 0, 0, 0.075));
 }
 
-/**
+!**
  * DROPDOWN MENU
- */
+ *!
 .dropdown-menu {
     > li {
         > a {
@@ -101,9 +102,9 @@ body {
     }
 }
 
-/**
+!**
  * NAV
- */
+ *!
 .navbar {
     &.navbar {
         background-color: @white;
@@ -180,17 +181,17 @@ body {
     }
 }
 
-/**
+!**
  * ALERT
- */
+ *!
 .alert {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
     .box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05););
 }
 
-/**
+!**
  * PROGRESS
- */
+ *!
 .progress {
     #gradient > .vertical(#ebebeb, #f5f5f5, 0%, 100%);
 
@@ -215,9 +216,9 @@ body {
     }
 }
 
-/**
+!**
  * LIST GROUP
-  */
+  *!
 .list-group {
     border-radius: 4px;
     .box-shadow(0 1px 2px rgba(0, 0, 0, 0.075));
@@ -234,16 +235,16 @@ body {
     }
 }
 
-/**
+!**
  * PANELS
- */
+ *!
 .panel {
     .box-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
 }
 
-/**
+!**
  * MISC
- */
+ *!
 .well {
     border-color: #dcdcdc;
     .box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1););
@@ -251,9 +252,9 @@ body {
 
 
 
-/**
+!**
  * LAYOUT STYLE
- */
+ *!
 
 .content {
     margin-top:  20px;
@@ -330,9 +331,9 @@ body {
     }
 }
 
-/**
+!**
  * Header
- */
+ *!
 
 .page-heading {
 
@@ -375,4 +376,24 @@ body {
 
 .bg-white {
     background: @white !important;
+}*/
+
+
+.clear {
+  clear: both;
+}
+
+.left-sidebar {
+  .divider {
+    background-color: @grey-200;
+    height: 1px;
+  }
+}
+
+.dashboard-widget {
+  .list-group-item {
+    .badge {
+      float: none;
+    }
+  }
 }

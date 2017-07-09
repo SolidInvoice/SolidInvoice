@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\InvoiceBundle\Menu;
 
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Entity\Invoice;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Menu items for invoices.
@@ -22,11 +22,11 @@ use Symfony\Component\HttpFoundation\Request;
 class InvoiceMenu
 {
     /**
-     * @param Request|null $request
+     * @param Client|null $client
      *
      * @return array
      */
-    public static function create(Request $request = null): array
+    public static function create(Client $client = null): array
     {
         return [
             'client.menu.create.invoice',
@@ -35,7 +35,7 @@ class InvoiceMenu
                     'icon' => 'file-text-o',
                 ],
                 'route' => '_invoices_create',
-                'routeParameters' => null !== $request ? ['client' => $request->get('id')] : [],
+                'routeParameters' => null !== $client ? ['client' => $client->getId()] : [],
             ],
         ];
     }

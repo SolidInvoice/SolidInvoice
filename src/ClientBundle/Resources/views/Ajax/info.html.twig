@@ -18,13 +18,14 @@
             </h4>
         </legend>
 
+        <small>{{ 'client.contacts.info.list'|trans({'%type%': type}) }}</small>
         {% if form is defined %}
             {{ form_errors(form.users) }}
             {{ form_row(form.users) }}
         {% else %}
-            <ul class="unstyled">
+            <ul class="nav nav-list">
                 {% for contact in client.contacts %}
-                    <li>
+                    <li class="item">
                         <div class="checkbox">
                             <label for="client-contact-{{ contact.id }}">
                                 <input type="checkbox" name="{{ type }}[users][]" value="{{ contact.id }}" id="client-contact-{{ contact.id }}" />

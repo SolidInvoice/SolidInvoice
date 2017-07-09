@@ -9,18 +9,52 @@
 
 {% extends "CSBillCoreBundle:Layout:default.html.twig" %}
 
+{% block header %}
+    <a class="logo" href="{{ url('_dashboard') }}">
+        {% if settings['system/general/logo'] is defined and settings['system/general/logo'] is not empty %}
+            {% set logo = 'uploads/' ~ settings['system/general/logo'] %}
+        {% else %}
+            {% set logo = 'img/logo.png' %}
+        {% endif %}
+
+        <span class="logo-mini">
+			{{ app_logo() }}
+		</span>
+
+        <span class="logo-lg">
+			{{ app_logo() }} {{ app_name }}
+		</span>
+    </a>
+
+    {{ parent() }}
+{% endblock header %}
+
 {% block body %}
-	<div class="row">
-		<aside class="col-lg-2 col-md-2 left-sidebar">
-			{{ block('sidebar') is defined ? block('sidebar') }}
-		</aside>
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    {#<img src="http://t2.tagstat.com/im/people/silhouette_m_300.png" class="img-circle" alt="User Image">#}
+                    <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p>{{ app.user.username }}</p>
+                    <a href="{{ path('fos_user_profile_show') }}">{{ icon('envelope') }} {{ app.user.email }}</a>
+                </div>
+            </div>
 
-		<section class="col-lg-10 col-md-10 col-md-offset-2 col-lg-offset-2 content">
-			{{ block('heading') is defined ? block('heading') }}
+            {{ block('sidebar') is defined ? block('sidebar') }}
+        </section>
+    </aside>
 
-            {% include "CSBillCoreBundle::flash.html.twig" %}
+    <section class="content-header">
+        {{ block('heading') is defined ? block('heading') }}
+    </section>
 
-			{{ block('content') is defined ? block('content') }}
-		</section>
-	</div>
+    <section class="content">
+
+        {% include "CSBillCoreBundle::flash.html.twig" %}
+
+        {{ block('content') is defined ? block('content') }}
+    </section>
 {% endblock body %}

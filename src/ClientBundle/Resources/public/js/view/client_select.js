@@ -7,14 +7,16 @@ define(
             clientForm: null,
             ui: {
                 'clientChange': '#client-select-change',
-                'clientSelect': '.client-select'
+                'clientSelect': '#client-select'
             },
             events: {
                 'click @ui.clientChange': 'clientChange',
                 'change @ui.clientSelect': 'clientSelect'
             },
             initialize: function() {
-                this.template = _.bind(function () { return this.getOption('clientForm'); }, this);
+                this.template = _.bind(function() {
+                    return this.getOption('clientForm');
+                }, this);
             },
             onRender: function() {
                 if (!this.model.isEmpty()) {
@@ -27,38 +29,42 @@ define(
                 this._toggleContactInfo();
             },
             clientSelect: function(event) {
-                if (_.isEmpty(event.val)) {
+                let val = $(event.target).val();
+                if (parseInt(val, 10) === parseInt(this.model.id, 10)) {
+                    this._toggleContactInfo();
                     return;
                 }
 
-                if (parseInt(event.val, 10) === parseInt(this.model.id, 10)) {
-                    this._toggleContactInfo();
+                if (_.isEmpty(val)) {
                     return;
                 }
 
                 this.showLoader();
 
                 $.getJSON(
-                    Routing.generate('_xhr_clients_info', {id: event.val, type: this.getOption('type')}),
+                    Routing.generate('_xhr_clients_info', {id: val, type: this.getOption('type')}),
                     _.bind(function(data) {
                         this.$('#client-select-container').html(data.content);
                         this._toggleContactInfo(true);
-
-                        $.material.init();
 
                         if (this.options.hideLoader) {
                             this.hideLoader();
                         }
 
                         if (data.currency) {
-                            data.client = event.val;
+                            data.client = val;
                             this.trigger('currency:update', data);
                         }
                     }, this)
                 );
             },
-            _toggleContactInfo: function (show) {
-                this.$('#client-select').toggle();
+            _toggleContactInfo: function(show) {
+                let clientSelect = this.$('#client-select');
+                clientSelect.toggle();
+
+                if (clientSelect.is(':visible')) {
+                    clientSelect.find('select').select2().select2('val', 0);
+                }
 
                 if (!_.isUndefined(show)) {
                     if (true === show) {

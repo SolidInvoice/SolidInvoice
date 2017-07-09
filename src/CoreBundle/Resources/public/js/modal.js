@@ -21,17 +21,19 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
                 };
 
             if (modal) {
-                this.templateContext = _.extend(_.extend(defaults, modal), this.templateContext);
+                this.templateContext = _.extend(defaults, modal);
             }
 
             this._bindModalEvents(modal);
             this._attachListeners();
         },
+        templateContext: function () {
+            return {
+                "modalContent": this.getOption('template')
+            };
+        },
         getTemplate: function() {
-            var template = this.getOption('template');
-
-            Handlebars.registerPartial('modalContent', template);
-
+            this.templateContext = _.extend(this.templateContext, {"modalContent": this.getOption('template')});
             return Template.core.modal;
         },
         listeners: {

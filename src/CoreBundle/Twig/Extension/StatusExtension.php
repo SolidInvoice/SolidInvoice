@@ -29,51 +29,51 @@ class StatusExtension extends \Twig_Extension
      * @var array
      */
     private $invoiceLabelMap = [
-        InvoiceGraph::STATUS_PENDING => 'warning',
-        InvoiceGraph::STATUS_DRAFT => 'primary',
-        InvoiceGraph::STATUS_PAID => 'success',
-        InvoiceGraph::STATUS_OVERDUE => 'danger',
-        InvoiceGraph::STATUS_CANCELLED => 'default',
-        InvoiceGraph::STATUS_ARCHIVED => 'warning',
-        InvoiceGraph::STATUS_RECURRING => 'warning',
+        InvoiceGraph::STATUS_PENDING => 'yellow',
+        InvoiceGraph::STATUS_DRAFT => 'light-blue',
+        InvoiceGraph::STATUS_PAID => 'green',
+        InvoiceGraph::STATUS_OVERDUE => 'red',
+        InvoiceGraph::STATUS_CANCELLED => 'olive',
+        InvoiceGraph::STATUS_ARCHIVED => 'purple',
+        InvoiceGraph::STATUS_RECURRING => 'fuchsia',
     ];
 
     /**
      * @var array
      */
     private $quoteLabelMap = [
-        QuoteGraph::STATUS_PENDING => 'warning',
-        QuoteGraph::STATUS_DRAFT => 'primary',
-        QuoteGraph::STATUS_ACCEPTED => 'success',
-        QuoteGraph::STATUS_DECLINED => 'danger',
-        QuoteGraph::STATUS_CANCELLED => 'default',
-        QuoteGraph::STATUS_ARCHIVED => 'warning',
+        QuoteGraph::STATUS_PENDING => 'yellow',
+        QuoteGraph::STATUS_DRAFT => 'light-blue',
+        QuoteGraph::STATUS_ACCEPTED => 'green',
+        QuoteGraph::STATUS_DECLINED => 'red',
+        QuoteGraph::STATUS_CANCELLED => 'olive',
+        QuoteGraph::STATUS_ARCHIVED => 'purple',
     ];
 
     /**
      * @var array
      */
     private $paymentLabelMap = [
-        PaymentStatus::STATUS_UNKNOWN => 'default',
-        PaymentStatus::STATUS_FAILED => 'danger',
-        PaymentStatus::STATUS_SUSPENDED => 'warning',
-        PaymentStatus::STATUS_EXPIRED => 'danger',
-        PaymentStatus::STATUS_CAPTURED => 'success',
-        PaymentStatus::STATUS_PENDING => 'warning',
-        PaymentStatus::STATUS_CANCELLED => 'default',
-        PaymentStatus::STATUS_NEW => 'info',
-        PaymentStatus::STATUS_AUTHORIZED => 'primary',
-        PaymentStatus::STATUS_REFUNDED => 'warning',
-        PaymentStatus::STATUS_CREDIT => 'success',
+        PaymentStatus::STATUS_UNKNOWN => 'primary',
+        PaymentStatus::STATUS_FAILED => 'red',
+        PaymentStatus::STATUS_SUSPENDED => 'black',
+        PaymentStatus::STATUS_EXPIRED => 'purple',
+        PaymentStatus::STATUS_CAPTURED => 'green',
+        PaymentStatus::STATUS_PENDING => 'yellow',
+        PaymentStatus::STATUS_CANCELLED => 'navy',
+        PaymentStatus::STATUS_NEW => 'blue',
+        PaymentStatus::STATUS_AUTHORIZED => 'aqua',
+        PaymentStatus::STATUS_REFUNDED => 'maroon',
+        PaymentStatus::STATUS_CREDIT => 'fuchsia',
     ];
 
     /**
      * @var array
      */
     private $clientLabelMap = [
-        ClientStatus::STATUS_ACTIVE => 'success',
-        ClientStatus::STATUS_INACTIVE => 'info',
-        ClientStatus::STATUS_ARCHIVED => 'warning',
+        ClientStatus::STATUS_ACTIVE => 'green',
+        ClientStatus::STATUS_INACTIVE => 'aqua',
+        ClientStatus::STATUS_ARCHIVED => 'purple',
     ];
 
     /**

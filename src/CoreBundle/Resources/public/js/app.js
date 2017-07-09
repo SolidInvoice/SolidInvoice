@@ -9,7 +9,7 @@
 
 define(
     /** global: requirejs */
-    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'material', 'bootstrap', 'core/module'],
+    ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'admin-lte', 'bootstrap', 'core/module'],
     function($, Mn, Backbone, _, Module) {
         'use strict';
 
@@ -57,11 +57,6 @@ define(
                             placeholder.placeholder();
                         });
                     }
-
-                    /**
-                     * Material
-                     */
-                    $.material.init();
                 },
                 showChildView: function(region, content) {
                     var view = new (Mn.View.extend({

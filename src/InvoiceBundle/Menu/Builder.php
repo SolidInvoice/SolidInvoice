@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\InvoiceBundle\Menu;
 
+use CSBill\ClientBundle\Menu\ClientMenu;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\MenuBundle\Core\AuthenticatedMenu;
 use CSBill\MenuBundle\ItemInterface;
@@ -36,12 +37,16 @@ class Builder extends AuthenticatedMenu
      * Renders the invoice index menu.
      *
      * @param ItemInterface $menu
+     * @param array         $options
      */
-    public function invoicesMenu(ItemInterface $menu)
+    public function invoicesMenu(ItemInterface $menu, array $options = [])
     {
         $menu->addChild(InvoiceMenu::listMenu());
-
         $menu->addChild(InvoiceMenu::create());
+
+        if (isset($options['client'])) {
+            $menu->addChild(ClientMenu::view($options['client']));
+        }
     }
 
     /**

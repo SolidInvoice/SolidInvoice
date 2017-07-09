@@ -85,11 +85,6 @@ $(function() {
     };
 
     /**
-     * Material
-     */
-    $.material.init();
-
-    /**
      * Datepicker
      */
 

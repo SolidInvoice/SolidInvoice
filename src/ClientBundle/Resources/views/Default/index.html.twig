@@ -12,16 +12,12 @@
 {% block title %}{{ 'clients'|trans }}{% endblock title %}
 
 {% block heading %}
-    <fieldset class="page-heading">
-        <legend>
-            <div class="pull-right header-button">
-                <a class="btn btn-info" href="{{ path("_clients_add") }}">
-                    {{ icon('user-plus') }} {{ "client_create"|trans }}
-                </a>
-            </div>
-            <h3>{{ block('title') is defined ? block('title') }}</h3>
-        </legend>
-    </fieldset>
+    <div class="pull-right header-button">
+        <a class="btn btn-info" href="{{ path("_clients_add") }}">
+            {{ icon('user-plus') }} {{ "client_create"|trans }}
+        </a>
+    </div>
+    <h1>{{ block('title') is defined ? block('title') }}</h1>
 {% endblock %}
 
 {% block sidebar %}

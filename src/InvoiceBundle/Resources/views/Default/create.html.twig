@@ -38,14 +38,13 @@
 {% endfor %}
 
 {% set moduleData = {
-    'client': form.client.vars.data,
-    'clientForm': block('form_client') is defined ? block('form_client'),
-    'fieldData': billing_fields(form),
-    'formData': formData,
-    'invoice': invoice|default(null),
-    'tax': taxRatesConfigured(),
-    }
-%}
+'client': form.client.vars.data,
+'clientForm': block('form_client') is defined ? block('form_client'),
+'fieldData': billing_fields(form),
+'formData': formData,
+'invoice': invoice|default(null),
+'tax': taxRatesConfigured(),
+} %}
 
 {% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
 
@@ -73,17 +72,18 @@
     {{ form_errors(form) }}
 
     <div class="widget" id="invoice-create">
-        <div class="container">
+        <section class="invoice">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="title">
-                        {% if invoice is defined %}
-                            <h2>{{ 'invoice.title'|trans({'%id%' : invoice.id}) }}</h2>
-                        {% else %}
-                            <h2>{{ 'invoice.action.create'|trans }}</h2>
-                        {% endif %}
+                        <h3 class="page-header">
+                            {% if invoice is defined %}
+                                {{ 'invoice.title'|trans({'%id%' : invoice.id}) }}
+                            {% else %}
+                                {{ 'invoice.action.create'|trans }}
+                            {% endif %}
+                        </h3>
                     </div>
-                    <hr>
                     <div class="row">
                         <div class="col-xs-6" id="client-info">
                         </div>
@@ -94,10 +94,18 @@
                     <div class="row">
                         <div class="col-xs-6">
                             {{ form_row(form.recurring) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="recurring-info hidden">
+            <div class="recurring-info hidden">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xs-6">
                                 {{ 'invoice.recurring.variables.text'|trans }}
-                                <br />
+                                <br/>
                                 <ul>
                                     <li>
                                         <strong>{day}</strong> - {{ 'invoice.recurring.variables.day'|trans }}</li>
@@ -109,17 +117,18 @@
                                         <strong>{year}</strong> - {{ 'invoice.recurring.variables.year'|trans }}</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="col-xs-6 hidden recurring-info">
-                            {{ form_row(form.recurringInfo.frequency) }}
-                            <br />
-                            <br />
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    {{ form_row(form.recurringInfo.date_start) }}
-                                </div>
-                                <div class="col-xs-6">
-                                    {{ form_row(form.recurringInfo.date_end) }}
+
+                            <div class="col-xs-6">
+                                {{ form_row(form.recurringInfo.frequency) }}
+                                <br/>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        {{ form_row(form.recurringInfo.date_start) }}
+                                    </div>
+                                    <div class="col-xs-6">
+                                        {{ form_row(form.recurringInfo.date_end) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +155,7 @@
             <div class="form-actions">
                 {{ block('form_buttons') is defined ? block('form_buttons') }}
             </div>
-        </div>
+        </section>
     </div>
 
     {{ form_end(form) }}

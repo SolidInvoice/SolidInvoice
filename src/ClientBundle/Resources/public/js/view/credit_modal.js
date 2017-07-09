@@ -8,14 +8,14 @@ define(
             'modal': {
                 'title': __('client.modal.add_credit'),
                 'buttons': {
-                    'save': {
-                        'class': 'success',
-                        'save': true
-                    },
                     'close': {
                         'close': true,
                         'class': 'warning',
                         'flat': true
+                    },
+                    'save': {
+                        'class': 'success',
+                        'save': true
                     }
                 },
                 'events': {

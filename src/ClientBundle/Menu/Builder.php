@@ -45,19 +45,16 @@ class Builder extends AuthenticatedMenu
      * Renders the client view menu.
      *
      * @param ItemInterface $menu
+     * @param array         $options
      */
-    public function clientViewMenu(ItemInterface $menu)
+    public function clientViewMenu(ItemInterface $menu, array $options = [])
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-
         $this->clientsMenu($menu);
 
         $menu->addDivider();
 
-        $menu->addChild(ClientMenu::view($request));
-
-        $menu->addChild(InvoiceMenu::create($request));
-
-        $menu->addChild(QuoteMenu::create($request));
+        $menu->addChild(ClientMenu::view($options['client'] ?? null));
+        $menu->addChild(InvoiceMenu::create($options['client'] ?? null));
+        $menu->addChild(QuoteMenu::create($options['client'] ?? null));
     }
 }

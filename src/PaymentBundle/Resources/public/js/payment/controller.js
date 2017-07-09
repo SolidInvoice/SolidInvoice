@@ -49,11 +49,6 @@ define(
                                         model.fetch();
                                     }
                                 });
-                            },
-                            onRender: function() {
-                                setTimeout(function() {
-                                    $.material.init();
-                                }, 0);
                             }
                         });
 

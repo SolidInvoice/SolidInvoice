@@ -7,16 +7,28 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set body_class = body_class|default('') ~ ' layout-top-nav' %}
+{% set header_content %}
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{{ url('_dashboard') }}">
+            {{ app_logo() }} {{ app_name }}
+        </a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-bars"></i>
+        </button>
+    </div>
+{% endset %}
+
 {% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
 
 {% block body %}
-	<div class="row">
-		<section class="col-lg-12 col-md-12 content">
-			{{ block('heading') is defined ? block('heading') }}
+    <section class="content-header">
+        {{ block('heading') is defined ? block('heading') }}
 
-            {% include "CSBillCoreBundle::flash.html.twig" %}
+        {% include "CSBillCoreBundle::flash.html.twig" %}
+    </section>
 
-			{{ block('content') is defined ? block('content') }}
-		</section>
-	</div>
+    <section class="content">
+        {{ block('content') is defined ? block('content') }}
+    </section>
 {% endblock body %}

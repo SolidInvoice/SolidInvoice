@@ -13,16 +13,16 @@
     {{ menu('payments_list') }}
 {% endblock sidebar %}
 
-{% block title %}{{ 'payment.list.title'|trans }}{% endblock title %}
+{% block title %}{{ icon('credit-card') }} {{ 'payment.list.title'|trans }}{% endblock title %}
 
 {% block content %}
-    <div class="widget">
-	{{ render_grid('payment_grid') }}
+    <div class="panel panel-default filterable">
+	    {{ render_grid('payment_grid') }}
     </div>
 
     <h5>{{ "payment.list.status_legend"|trans }}</h5>
 
     {% for status in payment_label() %}
-	{{ status|raw }}
+	    {{ status|raw }}
     {% endfor %}
 {% endblock content %}

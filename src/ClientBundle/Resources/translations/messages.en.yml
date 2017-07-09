@@ -86,6 +86,9 @@ client:
     form:
         currency:
             empty_value: 'System Default'
+    contacts:
+      info:
+        list: 'Select contacts to send %type% to'
 
 email: 'Email'
 clients: 'Clients'

@@ -53,11 +53,10 @@
 {% endblock %}
 
 {% block header %}
-    {% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : app_name} %}
+    {% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : app_name, "header_content" : header_content|default('')} %}
 {% endblock header %}
 
 {% block footer %}
-    <hr />
     <small>{{ "powered_by"|trans }} <a href="http://csbill.org">CSBill</a> - {{ app_version }}</small>
 {% endblock footer %}
 

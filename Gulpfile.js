@@ -201,8 +201,8 @@ gulp.task('js', ['clean:assets'], (done) => {
 
 gulp.task('watch', ['css', 'templates', 'js'], () => {
     gulp.watch([options.less + '/*', options.css + '/*'], ['css']);
-    gulp.watch([options.templates], ['templates']);
-    gulp.watch([options.js], ['js:app']);
+    gulp.watch(options.templates, ['templates']);
+    gulp.watch(options.js, ['js:app']);
 });
 
 gulp.task('build', ['css', 'fonts', 'images', 'templates', 'js']);

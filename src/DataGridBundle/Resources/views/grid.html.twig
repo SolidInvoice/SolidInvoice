@@ -12,6 +12,6 @@
 
 <script>
     require(['grid/grid'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (Grid) {
-	new Grid({{ gridOptions|raw }}, '#{{ id }}');
+	    new Grid({{ gridOptions|raw }}, '#{{ id }}');
     });
 </script>

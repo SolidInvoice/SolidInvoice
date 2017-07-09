@@ -49,7 +49,8 @@ define([
 
                 var gridOptions = {
                     collection: collection,
-                    className: 'backgrid table table-bordered table-striped table-hover'
+                    className: 'backgrid table table-bordered table-hover',
+                    emptyText: "no data"
                 };
 
                 if (_.size(options.line_actions) > 0 && _.isUndefined(_.find(options.columns, {'name': 'Actions'}))) {

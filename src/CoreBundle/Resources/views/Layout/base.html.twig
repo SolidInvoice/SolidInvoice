@@ -18,7 +18,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>{{ block('page_title') is defined  ? block('page_title') : (block('title') is defined ? block('title') : block('title')) }}</title>
+    <title>{{ block('page_title') is defined  ? block('page_title') : (block('title') is defined ? block('title')) }}</title>
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -29,24 +29,26 @@
 
     {% include 'CSBillCoreBundle:_partials:scripts.html.twig' %}
 </head>
-<body>
-    {{ block('body_top') is defined ? block('body_top') }}
-    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+<body class="skin-blue sidebar-mini {{ body_class|default('') }}">
+    <div class="wrapper">
+        {{ block('body_top') is defined ? block('body_top') }}
+        <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
-    <header>
-        {{ block('header') is defined ? block('header') }}
-    </header>
+        <header class="main-header">
+            {{ block('header') is defined ? block('header') }}
+        </header>
 
-    <div role="main" class="container">
-        {{ block('body') is defined ? block('body') }}
+        <div class="content-wrapper">
+            {{ block('body') is defined ? block('body') }}
+        </div>
+
+        <footer class="main-footer">
+            {{ block('footer') is defined ? block('footer') }}
+        </footer>
+
+        {{ block('scripts') is defined ? block('scripts') }}
+
+        {{ block('body_bottom') is defined ? block('body_bottom') }}
     </div>
-
-    <footer class="align-center">
-        {{ block('footer') is defined ? block('footer') }}
-    </footer>
-
-    {{ block('scripts') is defined ? block('scripts') }}
-
-    {{ block('body_bottom') is defined ? block('body_bottom') }}
 </body>
 </html>

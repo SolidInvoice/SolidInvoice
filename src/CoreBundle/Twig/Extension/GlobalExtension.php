@@ -15,6 +15,7 @@ namespace CSBill\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
 use CSBill\CoreBundle\CSBillCoreBundle;
+use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -78,6 +79,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
         return [
             new \Twig_SimpleFilter('percentage', [$this, 'formatPercentage']),
             new \Twig_SimpleFilter('diff', [$this, 'dateDiff']),
+            new \Twig_SimpleFilter('md5', 'md5'),
         ];
     }
 
@@ -88,7 +90,29 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
     {
         return [
             new \Twig_SimpleFunction('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
+    }
+
+    public function displayAppLogo(\Twig_Environment $env): string
+    {
+        $config = $this->container->get('settings');
+        $logo = 'img/logo.png';
+
+        try {
+            $logo = $config->get('system/general/logo');
+
+            if (null !== $logo) {
+                $logo = 'uploads/'.$logo;
+            }
+        } catch (InvalidSettingException $e) {
+        } finally {
+            if (null === $logo) {
+                $logo = 'img/logo.png';
+            }
+        }
+
+        return $env->createTemplate('<img src="{{ asset(logo) }}" width="25" style="display: inline"/>')->render(['logo' => $logo]);
     }
 
     /**
@@ -101,7 +125,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
      */
     public function displayIcon(string $iconName, array $options = []): string
     {
-        $options = implode('-', $options);
+        $options = implode(' ', $options);
         $class = sprintf('fa fa-%s', $iconName);
 
         if (!empty($options)) {
@@ -112,12 +136,12 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
     }
 
     /**
-     * @param int|float $amount
-     * @param int       $percentage
+     * @param int|float|Money $amount
+     * @param int|float       $percentage
      *
      * @return float|int
      */
-    public function formatPercentage($amount, int $percentage = 0)
+    public function formatPercentage($amount, float $percentage = 0)
     {
         if ($percentage > 0) {
             if ($amount instanceof Money) {

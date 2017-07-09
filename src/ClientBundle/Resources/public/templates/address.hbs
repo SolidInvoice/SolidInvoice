@@ -1,25 +1,26 @@
 <div class="col-lg-6 col-md-6">
-    <div class="widget well well-sm">
-        <div>
-            <i class="fa fa-map-marker"></i><br/>
-            {{ street1 }} {{ street2 }} {{ city }} {{ state }} {{ zip }} {{ country }}
-        </div>
-        <div class="pull-right">
-            <i class="fa fa-map-marker"></i>
-            <a href="http://maps.google.com/?q={{ street1 }}+{{ street2 }}+{{ city }}+{{ state }}+{{ zip }}+{{ country }}" target="_blank">
-                {{trans 'client.address.view_map' }}
-            </a>
-        </div>
-        <br class="clear"/>
-        <div class="pull-right address-actions">
-            <a href="{{path '_xhr_clients_edit_address' id=id }}" rel="tooltip" title="{{trans "client.address.edit" }}" class="text-info edit-address">
-                <i class="fa fa-pencil"></i>
-            </a>
+    <div class="box box-info">
+        <div class="box-header">
+            <div class="box-tools">
+                <a href="{{path '_xhr_clients_edit_address' id=id }}" rel="tooltip" title="{{trans "client.address.edit" }}" class="edit-address btn btn-box-tool">
+                    <i class="fa fa-pencil"></i>
+                </a>
 
-            <a href="#" rel="tooltip" title="{{trans "client.address.delete" }}" class="text-danger delete-address">
-                <i class="fa fa-trash-o"></i>
-            </a>
+                <a href="#" rel="tooltip" title="{{trans "client.address.delete" }}" class="delete-address btn btn-box-tool">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </div>
         </div>
-        <br class="clearfix"/>
+        <div class="box-body">
+            <i class="fa fa-map-marker"></i>
+            {{ street1 }} {{ street2 }} {{ city }} {{ state }} {{ zip }} {{ country }}
+
+            <div class="pull-right">
+                <i class="fa fa-map-marker"></i>
+                <a href="http://maps.google.com/?q={{ street1 }}+{{ street2 }}+{{ city }}+{{ state }}+{{ zip }}+{{ country }}" target="_blank">
+                    {{trans 'client.address.view_map' }}
+                </a>
+            </div>
+        </div>
     </div>
 </div>
