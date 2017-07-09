@@ -15,7 +15,6 @@ namespace CSBill\ClientBundle\Menu;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Icon;
-use Symfony\Component\HttpFoundation\Request;
 
 class ClientMenu
 {

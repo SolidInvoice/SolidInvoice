@@ -150,7 +150,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
             return $icon.$translator->trans($item->getLabel());
         }
 
-        return sprintf('%s <span>%s</span>',$icon, $this->escape($translator->trans($item->getLabel())));
+        return sprintf('%s <span>%s</span>', $icon, $this->escape($translator->trans($item->getLabel())));
     }
 
     /**
