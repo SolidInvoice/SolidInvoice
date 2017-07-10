@@ -46,8 +46,8 @@ define(['jquery', 'marionette', 'lodash', 'core/modal'], function($, Mn, _, Moda
                     this.showLoader();
 
                     let close = _.bind(function() {
-                        this.hideLoader();
                         this.$el.modal('hide');
+                        this.hideLoader();
                     }, this);
 
                     if (_.isFunction(callback)) {
