@@ -32,7 +32,7 @@ class SettingsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('setting', [$this, 'getSetting'])
+            new \Twig_Function('setting', [$this, 'getSetting']),
         ];
     }
 
