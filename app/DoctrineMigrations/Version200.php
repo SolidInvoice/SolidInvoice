@@ -157,7 +157,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         }
 
         $additionalSettings = [
-            'design/theme' => [
+            'design/system/theme' => [
                 'setting_value' => 'skin-blue',
                 'field_type' => ThemeType::class,
             ]
