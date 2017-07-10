@@ -15,6 +15,7 @@ namespace CSBill\SettingsBundle\Twig\Extension;
 
 use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\SystemConfig;
+use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 
 class SettingsExtension extends \Twig_Extension
@@ -40,7 +41,7 @@ class SettingsExtension extends \Twig_Extension
     {
         try {
             return $this->config->get($setting);
-        } catch (InvalidSettingException | TableNotFoundException $e) {
+        } catch (InvalidSettingException | TableNotFoundException | ConnectionException $e) {
             return $default;
         }
     }

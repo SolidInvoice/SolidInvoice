@@ -20,6 +20,7 @@ use CSBill\NotificationBundle\Form\Type\NotificationType;
 use CSBill\SettingsBundle\Form\Type\MailEncryptionType;
 use CSBill\SettingsBundle\Form\Type\MailFormatType;
 use CSBill\SettingsBundle\Form\Type\MailTransportType;
+use CSBill\SettingsBundle\Form\Type\ThemeType;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -153,6 +154,35 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                     )
                 );
             }
+        }
+
+        $additionalSettings = [
+            'design/theme' => [
+                'setting_value' => 'skin-blue',
+                'field_type' => ThemeType::class,
+            ]
+        ];
+
+        foreach ($additionalSettings as $key => $settingConfig) {
+            $this->addSql(
+                sprintf(
+                    'INSERT INTO app_config (
+                            setting_key,
+                            setting_value,
+                            description,
+                            field_type
+                        ) VALUES (
+                          "%s",
+                          %s,
+                          %s,
+                          "%s"
+                        )',
+                    $key,
+                    !empty($settingConfig['setting_value']) ? '"'.$settingConfig['setting_value'].'"' : 'NULL',
+                    !empty($settingConfig['description']) ? '"'.$settingConfig['description'].'"' : 'NULL',
+                    addslashes($settingConfig['field_type'])
+                )
+            );
         }
 
         /** @var Notification $notification */
