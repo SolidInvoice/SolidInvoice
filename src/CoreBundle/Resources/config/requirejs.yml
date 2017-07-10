@@ -56,7 +56,6 @@ config:
         material.ripples: ../assets/ripples.js
         jquery.select2: ../assets/select2.js
         handlebars.runtime: ../assets/handlebars.runtime.js
-        bootstrap.bootbox: ../assets/bootbox.js
         jquery.placeholder: ../assets/jquery.placeholder.js
         bootstrap.material.datetimepicker: ../assets/material-datetimepicker.js
         admin-lte: ../assets/app.min.js

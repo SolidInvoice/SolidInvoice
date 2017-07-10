@@ -8,8 +8,8 @@
  */
 
 define(
-    ['core/view', 'jquery', 'template', 'lodash', 'routing', 'bootstrap.bootbox'],
-    function(ItemView, $, Template, _, Routing, Bootbox) {
+    ['core/view', 'jquery', 'template', 'lodash', 'routing', 'core/alert'],
+    function(ItemView, $, Template, _, Routing, Alert) {
         return ItemView.extend({
             tagName: 'span',
             template: Template.datagrid.action,
@@ -21,14 +21,14 @@ define(
             },
             confirm: function() {
                 if (_.isEmpty(this.getOption('grid').getSelectedModels())) {
-                    return Bootbox.alert('You need to select at least one row');
+                    return Alert.alert('You need to select at least one row');
                 }
 
                 if (!_.isEmpty(this.model.get('confirm'))) {
                     var view = this;
-                    Bootbox.confirm(this.model.get('confirm'), function(response) {
+                    Alert.confirm(this.model.get('confirm'), function(response) {
                         if (true === response) {
-                            view._executeAction();
+                            return view._executeAction();
                         }
                     });
                 } else {
@@ -57,6 +57,8 @@ define(
                         }
                     });
                 }, this));
+
+                return promise;
             }
         })
     }

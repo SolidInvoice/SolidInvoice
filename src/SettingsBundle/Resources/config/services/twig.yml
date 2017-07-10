@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: false
+        autowire: true
+        tags:
+            - { name: twig.extension }
+
+    CSBill\SettingsBundle\Twig\Extension\:
+        resource: '../../../Twig/Extension/'

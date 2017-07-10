@@ -25,6 +25,8 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
 {
     use ContainerAwareTrait;
 
+    const DEFAULT_LOGO = 'img/logo.png';
+
     /**
      * Get global twig variables.
      *
@@ -35,14 +37,11 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
         $globals = [
             'query' => $this->getQuery(),
             'app_version' => CSBillCoreBundle::VERSION,
-            'app_name' => '',
-            'settings' => [],
+            'app_name' => CSBillCoreBundle::APP_NAME,
         ];
 
         if ($this->container->getParameter('installed')) {
-            $config = $this->container->get('settings');
-            $globals['app_name'] = $config->get('system/general/app_name');
-            $globals['settings'] = $config->getAll();
+            $globals['app_name'] = $this->container->get('settings')->get('system/general/app_name');
         }
 
         return $globals;
@@ -90,26 +89,28 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_Function('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
+            new \Twig_Function('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
     }
 
     public function displayAppLogo(\Twig_Environment $env): string
     {
         $config = $this->container->get('settings');
-        $logo = 'img/logo.png';
+        $logo = self::DEFAULT_LOGO;
 
-        try {
-            $logo = $config->get('system/general/logo');
+        if ($this->container->getParameter('installed')) {
+            try {
+                $logo = $config->get('system/general/logo');
 
-            if (null !== $logo) {
-                $logo = 'uploads/'.$logo;
-            }
-        } catch (InvalidSettingException | TableNotFoundException $e) {
-        } finally {
-            if (null === $logo) {
-                $logo = 'img/logo.png';
+                if (null !== $logo) {
+                    $logo = 'uploads/'.$logo;
+                }
+            } catch (InvalidSettingException | TableNotFoundException $e) {
+            } finally {
+                if (null === $logo) {
+                    $logo = self::DEFAULT_LOGO;
+                }
             }
         }
 
@@ -167,13 +168,5 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
         $carbon = Carbon::instance($date);
 
         return $carbon->diffForHumans();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'csbill_core.twig.globals';
     }
 }

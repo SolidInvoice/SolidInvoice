@@ -1,6 +1,6 @@
 define(
-    ['core/view', './contact_modal', 'template', 'bootstrap.bootbox', 'translator'],
-    function(ItemView, ContactModal, Template, Bootbox, __) {
+    ['core/view', './contact_modal', 'template', 'core/alert', 'translator'],
+    function(ItemView, ContactModal, Template, Alert, __) {
         'use strict';
 
         return ItemView.extend({
@@ -35,13 +35,13 @@ define(
 
                 var view = this;
 
-                Bootbox.confirm(__('client.contact.delete_confirm'), function(confirm) {
+                Alert.confirm(__('client.contact.delete_confirm'), function(confirm) {
                     if (true === confirm) {
-                        view.model.destroy(
+                        return view.model.destroy(
                             {
                                 wait: true,
                                 error: function(model, xhr) {
-                                    Bootbox.alert(xhr.responseJSON);
+                                    Alert.alert(xhr.responseJSON);
                                 }
                             }
                         );

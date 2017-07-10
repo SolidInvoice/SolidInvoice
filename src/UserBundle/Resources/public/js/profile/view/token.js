@@ -1,6 +1,6 @@
 define(
-    ['marionette', 'bootstrap.bootbox', 'core/ajaxmodal', 'template', 'translator'],
-    function(Mn, Bootbox, AjaxModal, Template, __) {
+    ['marionette', 'core/alert', 'core/ajaxmodal', 'template', 'translator'],
+    function(Mn, Alert, AjaxModal, Template, __) {
         "use strict";
 
         return Mn.View.extend({
@@ -17,9 +17,9 @@ define(
                 event.preventDefault();
 
                 var model = this.model;
-                Bootbox.confirm(__('profile.api.tokens.revoke_message'), function(result) {
+                Alert.confirm(__('profile.api.tokens.revoke_message'), function(result) {
                     if (result) {
-                        model.destroy();
+                        return model.destroy({wait: true});
                     }
                 });
             },
