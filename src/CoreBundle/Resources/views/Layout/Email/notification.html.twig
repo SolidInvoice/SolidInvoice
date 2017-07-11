@@ -9,10 +9,6 @@
 
 {% extends "CSBillCoreBundle:Layout/Email:base.html.twig" %}
 
-{% block logo %}
-    <img src="{{ asset('img/logo.png', null, true) }}" class="logo" />
-{% endblock %}
-
 {% block footer %}
     You can update your notification settings
     <a href="{{ url('_settings') }}">here</a>

@@ -8,35 +8,79 @@
  #}
 {% extends "CSBillCoreBundle:Layout/Email:base.html.twig" %}
 
+{% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
+
 {% block title %}
     {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
 {% endblock %}
 
+{% block logo %}{% endblock %}
+
 {% block header %}
     <div style="text-align: center" align="center">
         <p>
-            <div style="font-size: 80%; color: #999999">
-                {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
-                {{ "invoice.view.online"|trans|replace({"%url%" : '<a href="' ~ invoicePath ~ '">' ~ invoicePath ~ '</a>'})|raw }}
-            </div>
+        <div style="font-size: 80%; color: #999999">
+            {{ "invoice.view.online"|trans|replace({"%url%" : '<a href="' ~ invoicePath ~ '">' ~ invoicePath ~ '</a>'})|raw }}
+        </div>
         </p>
     </div>
 {% endblock %}
 
+{% block head_extra %}
+{#<span itemprop="paymentStatus">PaymentDue</span>#}
+{#<span itemprop="paymentStatus">PaymentComplete</span>#}
+{#<span itemprop="paymentStatus">PaymentAutomaticallyApplied</span>#}
+{#<span itemprop="paymentStatus">PaymentPastDue</span>#}
+{#<span itemprop="paymentStatus">PaymentDeclined</span>#}
+
+<script type='application/ld+json'>
+{
+  "@context": "http://schema.org",
+  "@type": "Invoice",
+  "accountId": "{{ invoice.id }}",
+  "minimumPaymentDue": {
+    "@type": "PriceSpecification",
+    "price": "{{ invoice.total|formatCurrency }}"
+  },
+  "paymentDue": "{{ invoice.due|date }}",
+  "paymentStatus": "PaymentDue",
+  "provider": {
+    "@type": "Organization",
+    "name": "{{ invoice.client.name }}"
+  },
+  "totalPaymentDue": {
+    "@type": "PriceSpecification",
+    "price": "{{ invoice.balance|formatCurrency }}"
+  }
+}
+</script>
+{% endblock head_extra %}
 {% block content %}
     {% set containerClass = '' %}
     {% embed "CSBillInvoiceBundle::invoice_template.html.twig" %}
-        {% block titleBody %}{% endblock %}
+        {% block title %}{% endblock %}
+        {% block content %}
+            {{ parent() }}
+            <div class="clear"></div>
+        {% endblock %}
 
-        {% block footerBody %}
+        {% block footer %}
             {{ parent() }}
 
             {% if payments_configured(false) %}
-                <br />
+                <br/>
                 <a class="btn btn-primary" href="{{ url('_payments_create', {'uuid' : invoice.uuid}) }}">
                     {{ 'invoice.pay_now'|trans([], 'email') }}
                 </a>
             {% endif %}
         {% endblock %}
     {% endembed %}
+
+    <div itemscope itemtype="http://schema.org/EmailMessage">
+        <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
+            <link itemprop="url" href="{{ invoicePath }}">
+            <meta itemprop="name" content="View invoice">
+        </div>
+        <meta itemprop="description" content="View invoice">
+    </div>
 {% endblock %}

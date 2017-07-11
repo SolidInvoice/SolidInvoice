@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    <table>
+    <table class="table table-striped">
         <tr>
             <th>
                 {{ 'quote.status_change.id'|trans({}, 'email') }}
@@ -25,20 +25,20 @@
                 </a>
             </td>
         </tr>
-        <tr>
+        {#<tr>
             <th>
                 {{ 'quote.status_change.old_status'|trans({}, 'email') }}
             </th>
             <td>
                 {{ quote_label(old_status) }}
             </td>
-        </tr>
+        </tr>#}
         <tr>
             <th>
                 {{ 'quote.status_change.new_status'|trans({}, 'email') }}
             </th>
             <td>
-                {{ quote_label(new_status) }}
+                {{ quote_label(quote.status) }}
             </td>
         </tr>
     </table>

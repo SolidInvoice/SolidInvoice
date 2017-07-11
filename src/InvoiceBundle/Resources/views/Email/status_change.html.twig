@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    <table>
+    <table class="table table-striped">
         <tr>
             <th>
                 {{ 'invoice.status_change.id'|trans({}, 'email') }}
@@ -25,20 +25,20 @@
                 </a>
             </td>
         </tr>
-        <tr>
+        {#<tr>
             <th>
                 {{ 'invoice.status_change.old_status'|trans({}, 'email') }}
             </th>
             <td>
                 {{ invoice_label(old_status) }}
             </td>
-        </tr>
+        </tr>#}
         <tr>
             <th>
-                {{ 'invoice.status_change.new_status'|trans({}, 'email') }}
+                {{ 'invoice.status_change.status'|trans({}, 'email') }}
             </th>
             <td>
-                {{ invoice_label(new_status) }}
+                {{ invoice_label(invoice.status) }}
             </td>
         </tr>
     </table>

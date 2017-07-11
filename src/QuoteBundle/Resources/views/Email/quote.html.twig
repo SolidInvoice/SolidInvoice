@@ -8,6 +8,8 @@
  #}
 {% extends "CSBillCoreBundle:Layout/Email:base.html.twig" %}
 
+{% set quotePath = url("_view_quote_external", {"uuid" : quote.uuid}) %}
+
 {% block title %}
     {{ "quote.title"|trans({"%id%" : quote.id}) }}
 {% endblock %}
@@ -16,7 +18,6 @@
     <div style="text-align:center" align="center">
         <p>
             <div style="font-size: 80%; color: #999999">
-                {% set quotePath = url("_view_quote_external", {"uuid" : quote.uuid}) %}
                 {{ "quote.view.online"|trans|replace({"%url%" : '<a href="' ~ quotePath ~ '">' ~ quotePath ~ '</a>'})|raw }}
             </div>
         </p>
@@ -26,7 +27,18 @@
 {% block content %}
     {% set containerClass = '' %}
     {% embed "CSBillQuoteBundle::quote_template.html.twig" %}
-        {% block title %}
+        {% block title %}{% endblock %}
+        {% block content %}
+            {{ parent() }}
+            <div class="clear"></div>
         {% endblock %}
     {% endembed %}
+
+    <div itemscope itemtype="http://schema.org/EmailMessage">
+        <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
+            <link itemprop="url" href="{{ quotePath }}">
+            <meta itemprop="name" content="View quote">
+        </div>
+        <meta itemprop="description" content="View quote">
+    </div>
 {% endblock %}

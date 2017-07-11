@@ -17,30 +17,33 @@
 	<style type="text/css" rel="stylesheet">
 	    {{ file(asset('css/email.css')) }}
 	</style>
+    {{ block('head_extra') is defined ? block('head_extra') }}
     </head>
     <body>
-        <header>
-            {{ block('header') is defined ? block('header') }}
-        </header>
+        <div class="wrapper">
+            {% if block('header') is defined %}
+                <header class="main-header">
+                    {{ block('header') }}
+                </header>
+            {% endif %}
 
-        <div role="main" class="container">
-            {% block logo %}
-                {% if settings['system/general/logo'] is not empty %}
-                    <img src="{{ asset('/uploads/' ~ settings['system/general/logo'], null, true) }}" class="logo" />
-                {% endif %}
-            {% endblock %}
             <div class="row">
-                <div class="col-xs-10 col-xs-offset-1">
-                    <div class="widget">
-                        <h2>
-                            {{ block('title') is defined ? block('title') }}
-                        </h2>
-                        <hr />
-                        {{ block('content') is defined ? block('content') }}
-                        <br class="clear" />
-                    </div>
-                    <div class="footer">
-                        {{ block('footer') is defined ? block('footer') }}
+                <div class="col-xs-8 col-xs-offset-2">
+                    <div role="main" class="box box-default">
+                        <div class="box-header">
+                            {% block logo %}
+                                {{ app_logo() }}
+                            {% endblock %}
+                            <h2 class="box-title">
+                                {{ block('title') is defined ? block('title') }}
+                            </h2>
+                        </div>
+                        <div class="box-body">
+                            {{ block('content') is defined ? block('content') }}
+                        </div>
+                        <div class="box-footer">
+                            {{ block('footer') is defined ? block('footer') }}
+                        </div>
                     </div>
                 </div>
             </div>
