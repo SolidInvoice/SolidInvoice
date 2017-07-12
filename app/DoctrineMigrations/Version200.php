@@ -160,7 +160,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
             'design/system/theme' => [
                 'setting_value' => 'skin-blue',
                 'field_type' => ThemeType::class,
-            ]
+            ],
         ];
 
         foreach ($additionalSettings as $key => $settingConfig) {
