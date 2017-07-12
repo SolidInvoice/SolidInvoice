@@ -16,6 +16,7 @@ namespace CSBill\QuoteBundle\Tests\Listener;
 use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Listener\WorkFlowSubscriber;
 use Mockery as M;
@@ -55,7 +56,7 @@ class WorkFlowSubscriberTest extends TestCase
         $stateMachine->shouldReceive('apply')
             ->with($invoice, 'accept');
 
-        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine);
+        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, M::mock(NotificationManager::class));
 
         $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
     }
@@ -67,7 +68,7 @@ class WorkFlowSubscriberTest extends TestCase
         $invoiceManager = M::mock(InvoiceManager::class);
         $stateMachine = M::mock(StateMachine::class);
 
-        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine);
+        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, M::mock(NotificationManager::class));
 
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
 
