@@ -17,6 +17,7 @@ use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
 use CSBill\NotificationBundle\Notification\NotificationManager;
+use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
@@ -37,7 +38,11 @@ class WorkFlowSubscriberTest extends TestCase
 
     public function testInvoicePaid()
     {
-        $subscriber = new WorkFlowSubscriber($this->registry, M::mock(NotificationManager::class));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->once();
+
+        $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
         $invoice = (new Invoice())
             ->setStatus('pending')
@@ -50,7 +55,11 @@ class WorkFlowSubscriberTest extends TestCase
 
     public function testInvoiceArchive()
     {
-        $subscriber = new WorkFlowSubscriber($this->registry, M::mock(NotificationManager::class));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->once();
+
+        $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
         $invoice = (new Invoice())
             ->setStatus('pending')

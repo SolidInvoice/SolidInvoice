@@ -56,7 +56,11 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
     public function getHandler()
     {
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, M::mock(NotificationManager::class)));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->once();
+
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, $notification));
         $stateMachine = new StateMachine(
             new Definition(
                 ['draft', 'pending'],

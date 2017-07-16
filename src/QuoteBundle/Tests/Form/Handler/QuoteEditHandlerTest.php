@@ -57,7 +57,11 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
     public function getHandler()
     {
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new InvoiceWorkFlowSubscriber($this->registry, M::mock(NotificationManager::class)));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->once();
+
+        $dispatcher->addSubscriber(new InvoiceWorkFlowSubscriber($this->registry, $notification));
         $invoiceStateMachine = new StateMachine(
             new Definition(
                 ['new', 'draft'],
@@ -69,7 +73,11 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         );
 
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, M::mock(InvoiceManager::class), $invoiceStateMachine, M::mock(NotificationManager::class)));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->once();
+
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, M::mock(InvoiceManager::class), $invoiceStateMachine, $notification));
         $stateMachine = new StateMachine(
             new Definition(
                 ['draft', 'pending'],

@@ -56,7 +56,11 @@ class WorkFlowSubscriberTest extends TestCase
         $stateMachine->shouldReceive('apply')
             ->with($invoice, 'accept');
 
-        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, M::mock(NotificationManager::class));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->once();
+
+        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
 
         $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
     }
@@ -68,7 +72,11 @@ class WorkFlowSubscriberTest extends TestCase
         $invoiceManager = M::mock(InvoiceManager::class);
         $stateMachine = M::mock(StateMachine::class);
 
-        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, M::mock(NotificationManager::class));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->once();
+
+        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
 
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
 
