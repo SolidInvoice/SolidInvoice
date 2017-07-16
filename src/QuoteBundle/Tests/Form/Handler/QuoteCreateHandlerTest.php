@@ -19,6 +19,7 @@ use CSBill\FormBundle\Test\FormHandlerTestCase;
 use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber as InvoiceWorkFlowSubscriber;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\MoneyBundle\Entity\Money;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Form\Handler\QuoteCreateHandler;
 use CSBill\QuoteBundle\Listener\WorkFlowSubscriber;
@@ -40,7 +41,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
     public function getHandler()
     {
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new InvoiceWorkFlowSubscriber($this->registry));
+        $dispatcher->addSubscriber(new InvoiceWorkFlowSubscriber($this->registry, M::mock(NotificationManager::class)));
         $invoiceStateMachine = new StateMachine(
             new Definition(
                 ['new', 'draft'],
@@ -52,7 +53,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
         );
 
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, M::mock(InvoiceManager::class), $invoiceStateMachine));
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, M::mock(InvoiceManager::class), $invoiceStateMachine, M::mock(NotificationManager::class)));
         $stateMachine = new StateMachine(
             new Definition(
                 ['new', 'draft'],
