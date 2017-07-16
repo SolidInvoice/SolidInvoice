@@ -1,30 +1,36 @@
-<div class="row">
-    <div class="col-lg-12 col-md-12 client_contact_list">
-        <legend>
-            <h3>
-                <div class="pull-right">
-                    <a href="{{path "_xhr_clients_add_contact" id=id }}" class="btn btn-success btn-sm" data-id="{{ id }}" id="add-contact-button">
-                        <i class="fa fa-user"></i> {{trans "client.view.actions.add_contact" }}
-                    </a>
-                    <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
-                </div>
-                <i class="fa fa-users"></i> {{trans "client.heading.contacts" }}
-            </h3>
-        </legend>
+<div class="box no-border client_contact_list">
+    <div class="box-header">
+            <div class="box-tools">
+                <a href="{{path "_xhr_clients_add_contact" id=id }}" class="btn btn-success btn-sm" data-id="{{ id }}" id="add-contact-button">
+                    <i class="fa fa-user"></i> {{trans "client.view.actions.add_contact" }}
+                </a>
+                <div id="contacts-ajax-modal" class="modal fade" tabindex="-1"></div>
+            </div>
 
-        <div id="client-contacts-list"></div>
-
-        <br class="clear" />
+        <h3 class="box-title">
+            <i class="fa fa-users"></i> {{trans "client.heading.contacts" }}
+        </h3>
     </div>
-    {{# if addresses }}
-        <div class="col-lg-12 col-md-12 client_address_list">
-            <legend>
-                <h3>
-                    <i class="fa fa-building-o"></i> {{trans "client.heading.addresses" }}
-                </h3>
-            </legend>
 
-            <div id="client-address-list"></div>
+    <div class="box-body">
+        <div class="box-group">
+            <div id="client-contacts-list"></div>
         </div>
-    {{/if}}
+    </div>
 </div>
+
+{{# if addresses }}
+    <div class="box no-border client_address_list">
+        <div class="box-header">
+            <h3 class="box-title">
+                <i class="fa fa-building-o"></i> {{trans "client.heading.addresses" }}
+            </h3>
+        </div>
+
+        <div class="box-body">
+            <div class="box-group">
+                <div id="client-address-list"></div>
+            </div>
+        </div>
+    </div>
+{{/if}}

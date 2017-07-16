@@ -1,6 +1,6 @@
 define(
-    ['core/view', './address_modal', 'template', 'bootstrap.bootbox', 'translator'],
-    function(ItemView, AddressModal, Template, Bootbox, __) {
+    ['core/view', './address_modal', 'template', 'core/alert', 'translator'],
+    function(ItemView, AddressModal, Template, Alert, __) {
         'use strict';
 
         return ItemView.extend({
@@ -27,15 +27,15 @@ define(
             deleteAddress: function(event) {
                 event.preventDefault();
 
-                var view = this;
+                let view = this;
 
-                Bootbox.confirm(__('client.address.delete_confirm'), function(confirm) {
+                Alert.confirm(__('client.address.delete_confirm'), function(confirm) {
                     if (true === confirm) {
-                        view.model.destroy(
+                        return view.model.destroy(
                             {
                                 wait: true,
                                 error: function(model, xhr) {
-                                    Bootbox.alert(xhr.responseJSON.message);
+                                    Alert.alert(xhr.responseJSON.message);
                                 }
                             }
                         );

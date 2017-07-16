@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Menu;
 
+use CSBill\ClientBundle\Menu\ClientMenu;
 use CSBill\MenuBundle\Core\AuthenticatedMenu;
 use CSBill\MenuBundle\ItemInterface;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -36,12 +37,15 @@ class Builder extends AuthenticatedMenu
      * Renders the quote index menu.
      *
      * @param ItemInterface $menu
+     * @param array         $options
      */
-    public function quotesMenu(ItemInterface $menu)
+    public function quotesMenu(ItemInterface $menu, array $options = [])
     {
         $menu->addChild(QuoteMenu::listMenu());
-
         $menu->addChild(QuoteMenu::create());
+        if (isset($options['client'])) {
+            $menu->addChild(ClientMenu::view($options['client']));
+        }
     }
 
     /**

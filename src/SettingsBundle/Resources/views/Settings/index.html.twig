@@ -14,11 +14,12 @@
 {% block title %}{{ "Settings"|trans }}{% endblock %}
 
 {% block sidebar %}
-    <ul class="nav nav-tabs nav-stacked">
+    <ul class="sidebar-menu tree" data-widget="tree" >
         {% for section, setting in appSettings %}
             <li{{ loop.first ? ' class="active"' }}>
                 <a href="#{{ section }}" data-toggle="tab">
-                    {{ section|trans|title }}
+                    {{ icon('cog') }}
+                    <span>{{ section|trans|title }}</span>
                 </a>
             </li>
         {% endfor %}
@@ -26,9 +27,9 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <div class="widget">
+    <div class="box">
         {{ form_start(form) }}
-            <div class="tab-content">
+            <div class="box-body tab-content">
                 {% for section, setting in appSettings %}
                     <div class="tab-pane{{ loop.first ? ' active' }}" id="{{ section }}">
                         {{ settings_section(section, setting, form) }}
@@ -36,7 +37,7 @@
                 {% endfor %}
             </div>
 
-            <div class="form-actions">
+            <div class="box-footer form-actions">
                 <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "settings.save"|trans }}</button>
             </div>
         {{ form_end(form) }}

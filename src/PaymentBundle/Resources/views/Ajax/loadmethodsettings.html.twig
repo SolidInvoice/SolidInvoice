@@ -7,14 +7,18 @@
  # with this source code in the file LICENSE.
  #}
 
-<fieldset>
-    <legend>
-        <h3>
-            {{ method|trans|title|humanize }}
-        </h3>
-    </legend>
+<div>
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                {{ method|trans|title|humanize }}
+            </h3>
+        </div>
 
-    {% include "CSBillCoreBundle::flash.html.twig" %}
+        <div class="box-body">
+            {% include "CSBillCoreBundle::flash.html.twig" %}
 
-    {{ form(form) }}
-</fieldset>
+            {{ form(form) }}
+        </div>
+    </div>
+</div>

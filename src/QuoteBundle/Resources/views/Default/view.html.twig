@@ -14,7 +14,7 @@
 {% endblock page_title %}
 
 {% block sidebar %}
-    {{ menu('quotes_view') }}
+    {{ menu('quotes_view', {'client': quote.client}) }}
 {% endblock sidebar %}
 
 {% block content %}
@@ -74,16 +74,17 @@
     <br class="clear"/>
     <br class="clear"/>
 
-    {% include "CSBillQuoteBundle::quote_template.html.twig" with {'link_client' : true} %}
+    {% include "CSBillQuoteBundle::quote_template.html.twig" %}
+{% endblock content %}
+{% block footer %}
+    {{ parent() }}
 
     {% if quote.notes is not empty %}
-
-        <br class="clear"/>
-        <div>
+        <div class="col-xs-6 no-print">
             <strong>{{ 'quote.notes'|trans }}</strong>
-            <p>
+            <p class="text-muted well well-sm no-shadow">
                 {{ quote.notes }}
             </p>
         </div>
     {% endif %}
-{% endblock content %}
+{% endblock footer %}

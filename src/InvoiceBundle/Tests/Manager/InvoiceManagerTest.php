@@ -16,9 +16,11 @@ namespace CSBill\InvoiceBundle\Tests\Manager;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\TaxBundle\Entity\Tax;
+use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
@@ -45,15 +47,15 @@ class InvoiceManagerTest extends KernelTestCase
 
     public function setUp()
     {
-        $this->entityManager = \Mockery::mock('Doctrine\ORM\EntityManagerInterface');
-        $doctrine = \Mockery::mock('Doctrine\Common\Persistence\ManagerRegistry', ['getManager' => $this->entityManager]);
-        $notification = \Mockery::mock('CSBill\NotificationBundle\Notification\NotificationManager');
+        $this->entityManager = M::mock('Doctrine\ORM\EntityManagerInterface');
+        $doctrine = M::mock('Doctrine\Common\Persistence\ManagerRegistry', ['getManager' => $this->entityManager]);
+        $notification = M::mock('CSBill\NotificationBundle\Notification\NotificationManager');
 
         $notification->shouldReceive('sendNotification')
             ->andReturn(null);
 
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine));
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, M::mock(NotificationManager::class)));
         $stateMachine = new StateMachine(
             new Definition(
                 ['new', 'draft'],

@@ -1,5 +1,8 @@
 config:
     shim:
+        admin-lte:
+            deps:
+                - bootstrap
         bootstrap:
             deps:
                 - jquery
@@ -53,9 +56,9 @@ config:
         material.ripples: ../assets/ripples.js
         jquery.select2: ../assets/select2.js
         handlebars.runtime: ../assets/handlebars.runtime.js
-        bootstrap.bootbox: ../assets/bootbox.js
         jquery.placeholder: ../assets/jquery.placeholder.js
         bootstrap.material.datetimepicker: ../assets/material-datetimepicker.js
+        admin-lte: ../assets/app.min.js
 
         # External Dependencies that don't have an NPM package
         jquery.jqcron: csbillcore/js/lib/jquery/jqcron.js

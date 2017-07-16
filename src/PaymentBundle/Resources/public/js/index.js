@@ -1,11 +1,11 @@
 define(
-    ['core/module', 'lodash', 'marionette', 'payments/payment/model', 'template', 'payments/payment/controller', 'handlebars.runtime', 'material'],
+    ['core/module', 'lodash', 'marionette', 'payments/payment/model', 'template', 'payments/payment/controller', 'handlebars.runtime'],
     function(Module, _, Mn, PaymentModel, Template, Controller, Handlebars) {
         "use strict";
 
         return Module.extend({
             regions: {
-                'paymentMethodData': '.tab-content',
+                'paymentMethodData': '#payment-method-settings',
                 'paymentMethodList': '.left-sidebar'
             },
             initialize: function() {
@@ -32,6 +32,10 @@ define(
                             disabled = _.clone(this.model.get('disabled'));
 
                         var initialRoute = _.head(_.values(enabled));
+
+                        if (_.isUndefined(initialRoute)) {
+                            initialRoute = _.head(_.values(disabled));
+                        }
 
                         _.each(_.merge(enabled, disabled), function(item) {
                             router.appRoute(item, 'showMethod');

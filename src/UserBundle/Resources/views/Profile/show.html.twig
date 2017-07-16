@@ -12,65 +12,67 @@
 {% block title %}{{ "profile.show.title"|trans({"%username%" : user.username}) }}{% endblock title %}
 
 {% block content %}
-    <div class="widget">
-        <table class="table table-striped">
-            <tbody>
-                <tr>
-                    <th>
-                        {{ 'profile.show.username'|trans }}
-                    </th>
-                    <td>
-                        {{ user.username }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ 'profile.show.email'|trans }}
-                    </th>
-                    <td>
-                        {{ user.email }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ 'profile.show.mobile'|trans }}
-                    </th>
-                    <td>
-                        {{ user.mobile }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ 'profile.show.last_login'|trans }}
-                    </th>
-                    <td>
-                        {{ user.lastLogin|date }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ 'profile.show.enabled'|trans }}
-                    </th>
-                    <td>
-                        {% if user.enabled %}
-                            <span class="label label-success">{{ 'profile.show.yes'|trans }}</span>
-                        {% else %}
-                            <span class="label label-danger">{{ 'profile.show.no'|trans }}</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ 'profile.show.roles'|trans }}
-                    </th>
-                    <td>
-                        {{ user.roles|join(', ') }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="box box-primary">
+        <div class="box-body">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>
+                            {{ 'profile.show.username'|trans }}
+                        </th>
+                        <td>
+                            {{ user.username }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ 'profile.show.email'|trans }}
+                        </th>
+                        <td>
+                            {{ user.email }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ 'profile.show.mobile'|trans }}
+                        </th>
+                        <td>
+                            {{ user.mobile }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ 'profile.show.last_login'|trans }}
+                        </th>
+                        <td>
+                            {{ user.lastLogin|date }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ 'profile.show.enabled'|trans }}
+                        </th>
+                        <td>
+                            {% if user.enabled %}
+                                <span class="badge bg-green">{{ 'profile.show.yes'|trans }}</span>
+                            {% else %}
+                                <span class="badge bg-red">{{ 'profile.show.no'|trans }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ 'profile.show.roles'|trans }}
+                        </th>
+                        <td>
+                            {{ user.roles|join(', ') }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <div>
+        <div class="box-footer">
             <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary">
                 {{ icon('user') }} {{ 'profile.show.update_profile'|trans }}
             </a>

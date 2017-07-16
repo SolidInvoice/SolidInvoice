@@ -16,6 +16,8 @@ namespace CSBill\InvoiceBundle\Listener;
 use Carbon\Carbon;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
+use CSBill\InvoiceBundle\Notification\InvoiceStatusNotification;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -27,9 +29,15 @@ class WorkFlowSubscriber implements EventSubscriberInterface
      */
     private $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var NotificationManager
+     */
+    private $notification;
+
+    public function __construct(ManagerRegistry $registry, NotificationManager $notification)
     {
         $this->registry = $registry;
+        $this->notification = $notification;
     }
 
     /**
@@ -54,6 +62,8 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         if (Graph::TRANSITION_ARCHIVE === $event->getTransition()->getName()) {
             $invoice->archive();
         }
+
+        $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
 
         $em = $this->registry->getManager();
 

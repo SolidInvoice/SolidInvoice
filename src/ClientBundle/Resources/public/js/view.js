@@ -8,8 +8,8 @@
  */
 
 define(
-    ['jquery', 'core/module', 'backbone', 'bootstrap.bootbox', 'routing', 'translator', 'client/view/info', './credit', './contacts', 'client/view/address_collection', 'client/model/address_collection'],
-    function($, Module, Backbone, Bootbox, Routing, __, InfoView, ClientCredit, ClientContact, AddressView, AddressCollection) {
+    ['jquery', 'core/module', 'backbone', 'core/alert', 'routing', 'translator', 'client/view/info', './credit', './contacts', 'client/view/address_collection', 'client/model/address_collection'],
+    function($, Module, Backbone, Alert, Routing, __, InfoView, ClientCredit, ClientContact, AddressView, AddressCollection) {
         'use strict';
 
         return Module.extend({
@@ -74,11 +74,11 @@ define(
 
                 var link = $(this);
 
-                Bootbox.confirm(__('client.confirm_delete'), function(confirm) {
+                Alert.confirm(__('client.confirm_delete'), function(confirm) {
                     if (true === confirm) {
                         $('body').modalmanager('loading');
 
-                        $.ajax({
+                        return $.ajax({
                             "url": link.attr("href"),
                             "dataType": "json",
                             "method": "delete"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "69b4a76e4e46a94970a594240c59deca",
+    "content-hash": "f7150a791ab94452ab05e730e87db67b",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -1552,16 +1552,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.29",
+            "version": "v2.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "f65c02eae3bff1aa57709ea4c8ca26947df95b9c"
+                "reference": "5e2cc07beb0cd24345cbe02eb7afc3b23f9cd488"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/f65c02eae3bff1aa57709ea4c8ca26947df95b9c",
-                "reference": "f65c02eae3bff1aa57709ea4c8ca26947df95b9c",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/5e2cc07beb0cd24345cbe02eb7afc3b23f9cd488",
+                "reference": "5e2cc07beb0cd24345cbe02eb7afc3b23f9cd488",
                 "shasum": ""
             },
             "require": {
@@ -1626,7 +1626,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-05-29T17:33:48+00:00"
+            "time": "2017-07-02T09:46:37+00:00"
         },
         {
             "name": "goetas-webservices/xsd2php-runtime",
@@ -1686,16 +1686,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.3",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006"
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/8d6c6cc55186db87b7dc5009827429ba4e9dc006",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
                 "shasum": ""
             },
             "require": {
@@ -1705,8 +1705,11 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
+                "phpunit/phpunit": "^4.0 || ^5.0",
                 "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
@@ -1744,7 +1747,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28T22:50:30+00:00"
+            "time": "2017-06-22T18:50:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2669,16 +2672,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.22.1",
+            "version": "1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
                 "shasum": ""
             },
             "require": {
@@ -2699,7 +2702,7 @@
                 "phpunit/phpunit-mock-objects": "2.3.0",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "~5.3"
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -2743,7 +2746,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13T07:08:03+00:00"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "moontoast/math",
@@ -3417,21 +3420,21 @@
         },
         {
             "name": "payum/authorize-net-aim",
-            "version": "1.3.7",
+            "version": "1.4.1",
             "target-dir": "Payum/AuthorizeNet/Aim",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/AuthorizeNetAim.git",
-                "reference": "13d4cb6ffba39bab702f1bb34c84b5f6aebac675"
+                "reference": "888276eee55f59d204e1909b0ffa7d9a7e2907d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/AuthorizeNetAim/zipball/13d4cb6ffba39bab702f1bb34c84b5f6aebac675",
-                "reference": "13d4cb6ffba39bab702f1bb34c84b5f6aebac675",
+                "url": "https://api.github.com/repos/Payum/AuthorizeNetAim/zipball/888276eee55f59d204e1909b0ffa7d9a7e2907d8",
+                "reference": "888276eee55f59d204e1909b0ffa7d9a7e2907d8",
                 "shasum": ""
             },
             "require": {
-                "authorizenet/authorizenet": "~1.8",
+                "authorizenet/authorizenet": "^1.8",
                 "payum/core": "^1.3"
             },
             "require-dev": {
@@ -3442,7 +3445,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3475,21 +3478,21 @@
                 "authorizenet",
                 "payment"
             ],
-            "time": "2016-09-12T19:02:13+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/be2bill",
-            "version": "1.3.7",
+            "version": "1.4.1",
             "target-dir": "Payum/Be2Bill",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Be2Bill.git",
-                "reference": "39f120aa482c737823aba801955c3dc26941b698"
+                "reference": "76b9e3f7b2cbd1072bd4f34efb6da2132efaaa6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Be2Bill/zipball/39f120aa482c737823aba801955c3dc26941b698",
-                "reference": "39f120aa482c737823aba801955c3dc26941b698",
+                "url": "https://api.github.com/repos/Payum/Be2Bill/zipball/76b9e3f7b2cbd1072bd4f34efb6da2132efaaa6d",
+                "reference": "76b9e3f7b2cbd1072bd4f34efb6da2132efaaa6d",
                 "shasum": ""
             },
             "require": {
@@ -3504,7 +3507,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3536,21 +3539,21 @@
                 "be2bill",
                 "payment"
             ],
-            "time": "2016-09-12T19:02:13+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/core",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "target-dir": "Payum/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Core.git",
-                "reference": "d4f63395d448e02c67dee74e7d9a8d740504f637"
+                "reference": "4f3ddd922186b5d6230f3c67f7922d9dbf519f66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Core/zipball/d4f63395d448e02c67dee74e7d9a8d740504f637",
-                "reference": "d4f63395d448e02c67dee74e7d9a8d740504f637",
+                "url": "https://api.github.com/repos/Payum/Core/zipball/4f3ddd922186b5d6230f3c67f7922d9dbf519f66",
+                "reference": "4f3ddd922186b5d6230f3c67f7922d9dbf519f66",
                 "shasum": ""
             },
             "require": {
@@ -3645,7 +3648,7 @@
                 "subscription",
                 "withdrawal"
             ],
-            "time": "2017-03-27T07:34:07+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/iso4217",
@@ -3713,21 +3716,21 @@
         },
         {
             "name": "payum/klarna-checkout",
-            "version": "1.3.11",
+            "version": "1.4.1",
             "target-dir": "Payum/Klarna/Checkout",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaCheckout.git",
-                "reference": "3c9165e4b12e3a1e662c76b148f232e18b8bf2f2"
+                "reference": "dfd6d7c24a1350865bc48aeb577c5334d4b2769e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaCheckout/zipball/3c9165e4b12e3a1e662c76b148f232e18b8bf2f2",
-                "reference": "3c9165e4b12e3a1e662c76b148f232e18b8bf2f2",
+                "url": "https://api.github.com/repos/Payum/KlarnaCheckout/zipball/dfd6d7c24a1350865bc48aeb577c5334d4b2769e",
+                "reference": "dfd6d7c24a1350865bc48aeb577c5334d4b2769e",
                 "shasum": ""
             },
             "require": {
-                "klarna/checkout": "~1|~2.0",
+                "klarna/checkout": "^1|^2",
                 "payum/core": "^1.3"
             },
             "require-dev": {
@@ -3738,7 +3741,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3770,21 +3773,21 @@
                 "klarna",
                 "payment"
             ],
-            "time": "2017-03-22T13:36:03+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/klarna-invoice",
-            "version": "1.3.7",
+            "version": "1.4.1",
             "target-dir": "Payum/Klarna/Invoice",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaInvoice.git",
-                "reference": "fa280f52ab096ab0ffb5ed203283769f310c52eb"
+                "reference": "bb3d133b5c86393398811da0bac70942a11b26fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/fa280f52ab096ab0ffb5ed203283769f310c52eb",
-                "reference": "fa280f52ab096ab0ffb5ed203283769f310c52eb",
+                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/bb3d133b5c86393398811da0bac70942a11b26fc",
+                "reference": "bb3d133b5c86393398811da0bac70942a11b26fc",
                 "shasum": ""
             },
             "require": {
@@ -3799,7 +3802,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3831,21 +3834,21 @@
                 "klarna",
                 "payment"
             ],
-            "time": "2016-09-12T19:02:13+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/offline",
-            "version": "1.3.7",
+            "version": "1.4.1",
             "target-dir": "Payum/Offline",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Offline.git",
-                "reference": "9f987daf61ba809ee14a9a660aa4bc11974e4117"
+                "reference": "30a3d09dd3616c16f1fd92c859a61472faf4a0c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Offline/zipball/9f987daf61ba809ee14a9a660aa4bc11974e4117",
-                "reference": "9f987daf61ba809ee14a9a660aa4bc11974e4117",
+                "url": "https://api.github.com/repos/Payum/Offline/zipball/30a3d09dd3616c16f1fd92c859a61472faf4a0c2",
+                "reference": "30a3d09dd3616c16f1fd92c859a61472faf4a0c2",
                 "shasum": ""
             },
             "require": {
@@ -3859,7 +3862,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3892,21 +3895,21 @@
                 "offlile",
                 "payment"
             ],
-            "time": "2016-09-12T19:02:13+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/payex",
-            "version": "1.3.7",
+            "version": "1.4.1",
             "target-dir": "Payum/Payex",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Payex.git",
-                "reference": "bd908e54796db0f09e109823b484e143b06fd014"
+                "reference": "00671eb6441c4032bf0d1790225d93c89a4303e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Payex/zipball/bd908e54796db0f09e109823b484e143b06fd014",
-                "reference": "bd908e54796db0f09e109823b484e143b06fd014",
+                "url": "https://api.github.com/repos/Payum/Payex/zipball/00671eb6441c4032bf0d1790225d93c89a4303e1",
+                "reference": "00671eb6441c4032bf0d1790225d93c89a4303e1",
                 "shasum": ""
             },
             "require": {
@@ -3924,7 +3927,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3956,21 +3959,21 @@
                 "payex",
                 "payment"
             ],
-            "time": "2016-09-12T19:02:13+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/paypal-express-checkout-nvp",
-            "version": "1.3.9",
+            "version": "1.4.2",
             "target-dir": "Payum/Paypal/ExpressCheckout/Nvp",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PaypalExpressCheckoutNvp.git",
-                "reference": "10e56fce078f7f99b58e668fd8ca27a641673f08"
+                "reference": "5d6a42b4583501a88a907dd8bce3ff94a76b286d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/10e56fce078f7f99b58e668fd8ca27a641673f08",
-                "reference": "10e56fce078f7f99b58e668fd8ca27a641673f08",
+                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/5d6a42b4583501a88a907dd8bce3ff94a76b286d",
+                "reference": "5d6a42b4583501a88a907dd8bce3ff94a76b286d",
                 "shasum": ""
             },
             "require": {
@@ -3985,7 +3988,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -4020,21 +4023,21 @@
                 "paypal",
                 "recurring payment"
             ],
-            "time": "2016-12-29T15:28:19+00:00"
+            "time": "2017-06-16T09:35:16+00:00"
         },
         {
             "name": "payum/paypal-pro-checkout-nvp",
-            "version": "1.3.7",
+            "version": "1.4.1",
             "target-dir": "Payum/Paypal/ProCheckout/Nvp",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PaypalProCheckoutNvp.git",
-                "reference": "f010d130a2fe06406c024e9dad5be6d0f3fac5d0"
+                "reference": "109a524ca66a0378dfb7c08639ad18fd22a98a0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PaypalProCheckoutNvp/zipball/f010d130a2fe06406c024e9dad5be6d0f3fac5d0",
-                "reference": "f010d130a2fe06406c024e9dad5be6d0f3fac5d0",
+                "url": "https://api.github.com/repos/Payum/PaypalProCheckoutNvp/zipball/109a524ca66a0378dfb7c08639ad18fd22a98a0d",
+                "reference": "109a524ca66a0378dfb7c08639ad18fd22a98a0d",
                 "shasum": ""
             },
             "require": {
@@ -4049,7 +4052,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -4086,7 +4089,7 @@
                 "paypal",
                 "pro checkout"
             ],
-            "time": "2016-09-12T19:02:13+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "payum/payum-bundle",
@@ -4192,22 +4195,22 @@
         },
         {
             "name": "payum/stripe",
-            "version": "1.3.7",
+            "version": "1.4.1",
             "target-dir": "Payum/Stripe",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Stripe.git",
-                "reference": "1ed05ecfca22777ebf5c340a7429e68d6e7fdf9f"
+                "reference": "5429e2efb722cf0c391ccc923938a790733a1dc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Stripe/zipball/1ed05ecfca22777ebf5c340a7429e68d6e7fdf9f",
-                "reference": "1ed05ecfca22777ebf5c340a7429e68d6e7fdf9f",
+                "url": "https://api.github.com/repos/Payum/Stripe/zipball/5429e2efb722cf0c391ccc923938a790733a1dc4",
+                "reference": "5429e2efb722cf0c391ccc923938a790733a1dc4",
                 "shasum": ""
             },
             "require": {
                 "payum/core": "^1.3",
-                "stripe/stripe-php": "~2.0|~3.0"
+                "stripe/stripe-php": "^3|^4"
             },
             "require-dev": {
                 "payum/core": "^1.3@dev",
@@ -4217,7 +4220,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -4254,7 +4257,7 @@
                 "stripe.js",
                 "subscription"
             ],
-            "time": "2016-09-15T12:35:09+00:00"
+            "time": "2017-06-09T06:51:55+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -4641,16 +4644,16 @@
         },
         {
             "name": "phpxmlrpc/phpxmlrpc",
-            "version": "4.1.1",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gggeek/phpxmlrpc.git",
-                "reference": "e7b08a72aecd879884bc85988640cf49302ce041"
+                "reference": "3b79b8fac3877418dad98585d9bc73d6b284d241"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/e7b08a72aecd879884bc85988640cf49302ce041",
-                "reference": "e7b08a72aecd879884bc85988640cf49302ce041",
+                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/3b79b8fac3877418dad98585d9bc73d6b284d241",
+                "reference": "3b79b8fac3877418dad98585d9bc73d6b284d241",
                 "shasum": ""
             },
             "require": {
@@ -4663,7 +4666,7 @@
                 "ext-curl": "*",
                 "ext-mbstring": "*",
                 "indeyets/pake": "~1.99",
-                "phpunit/phpunit": ">=4.0.0",
+                "phpunit/phpunit": ">=4.0.0, <6.0.0",
                 "phpunit/phpunit-selenium": "*",
                 "sami/sami": "~3.1"
             },
@@ -4688,7 +4691,7 @@
                 "webservices",
                 "xmlrpc"
             ],
-            "time": "2016-10-01T12:29:37+00:00"
+            "time": "2017-06-30T22:22:59+00:00"
         },
         {
             "name": "psr/cache",
@@ -5451,16 +5454,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v3.23.0",
+            "version": "v4.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "c702a2ed92f4b39603c4a796492d87bcc16c819c"
+                "reference": "834681b9cdfa68d88a27e36ec9e356b598a5f0e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c702a2ed92f4b39603c4a796492d87bcc16c819c",
-                "reference": "c702a2ed92f4b39603c4a796492d87bcc16c819c",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/834681b9cdfa68d88a27e36ec9e356b598a5f0e6",
+                "reference": "834681b9cdfa68d88a27e36ec9e356b598a5f0e6",
                 "shasum": ""
             },
             "require": {
@@ -5502,7 +5505,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2016-09-15T18:16:59+00:00"
+            "time": "2017-06-20T01:39:06+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6640,16 +6643,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "5.10.0",
+            "version": "5.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "a4ea0b27ce2deb2e1685b0f0328850e116b97546"
+                "reference": "6887cc761df5b011bce5460ad643e846ad8a5548"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/a4ea0b27ce2deb2e1685b0f0328850e116b97546",
-                "reference": "a4ea0b27ce2deb2e1685b0f0328850e116b97546",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/6887cc761df5b011bce5460ad643e846ad8a5548",
+                "reference": "6887cc761df5b011bce5460ad643e846ad8a5548",
                 "shasum": ""
             },
             "require": {
@@ -6682,7 +6685,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2017-05-24T18:58:28+00:00"
+            "time": "2017-06-16T20:19:46+00:00"
         },
         {
             "name": "willdurand/hateoas",
@@ -7721,16 +7724,16 @@
         },
         {
             "name": "instaclick/php-webdriver",
-            "version": "1.4.3",
+            "version": "1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/instaclick/php-webdriver.git",
-                "reference": "0c20707dcf30a32728fd6bdeeab996c887fdb2fb"
+                "reference": "6fa959452e774dcaed543faad3a9d1a37d803327"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/0c20707dcf30a32728fd6bdeeab996c887fdb2fb",
-                "reference": "0c20707dcf30a32728fd6bdeeab996c887fdb2fb",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/6fa959452e774dcaed543faad3a9d1a37d803327",
+                "reference": "6fa959452e774dcaed543faad3a9d1a37d803327",
                 "shasum": ""
             },
             "require": {
@@ -7738,7 +7741,8 @@
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "satooshi/php-coveralls": "dev-master"
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "^1.0||^2.0"
             },
             "type": "library",
             "extra": {
@@ -7775,7 +7779,7 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2015-06-15T20:19:33+00:00"
+            "time": "2017-06-30T04:02:48+00:00"
         },
         {
             "name": "matthiasnoback/symfony-config-test",
@@ -8476,16 +8480,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.0.5",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "2b9e2f71b722f7c53918ab0c25f7646c2013f17d"
+                "reference": "0808939f81c1347a3c8a82a5925385a08074b0f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/2b9e2f71b722f7c53918ab0c25f7646c2013f17d",
-                "reference": "2b9e2f71b722f7c53918ab0c25f7646c2013f17d",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/0808939f81c1347a3c8a82a5925385a08074b0f1",
+                "reference": "0808939f81c1347a3c8a82a5925385a08074b0f1",
                 "shasum": ""
             },
             "require": {
@@ -8523,7 +8527,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-03-05T18:23:57+00:00"
+            "time": "2017-06-28T20:53:48+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -9142,16 +9146,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.2.1",
+            "version": "6.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "16999a1e9a8a25d68f0ab8cc8ab818b043ad5374"
+                "reference": "fa5711d0559fc4b64deba0702be52d41434cbcb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/16999a1e9a8a25d68f0ab8cc8ab818b043ad5374",
-                "reference": "16999a1e9a8a25d68f0ab8cc8ab818b043ad5374",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fa5711d0559fc4b64deba0702be52d41434cbcb7",
+                "reference": "fa5711d0559fc4b64deba0702be52d41434cbcb7",
                 "shasum": ""
             },
             "require": {
@@ -9222,20 +9226,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-06-02T12:24:37+00:00"
+            "time": "2017-07-03T15:54:24+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "eabce450df194817a7d7e27e19013569a903a2bf"
+                "reference": "d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/eabce450df194817a7d7e27e19013569a903a2bf",
-                "reference": "eabce450df194817a7d7e27e19013569a903a2bf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4",
+                "reference": "d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4",
                 "shasum": ""
             },
             "require": {
@@ -9281,7 +9285,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-03-03T06:30:20+00:00"
+            "time": "2017-06-30T08:15:21+00:00"
         },
         {
             "name": "satooshi/php-coveralls",
@@ -9504,16 +9508,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "3.0.3",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "02b6b2c7aefe2cdb1185b8dbf8718b0bcedf3ab3"
+                "reference": "cd0871b3975fb7fc44d11314fd1ee20925fce4f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/02b6b2c7aefe2cdb1185b8dbf8718b0bcedf3ab3",
-                "reference": "02b6b2c7aefe2cdb1185b8dbf8718b0bcedf3ab3",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/cd0871b3975fb7fc44d11314fd1ee20925fce4f5",
+                "reference": "cd0871b3975fb7fc44d11314fd1ee20925fce4f5",
                 "shasum": ""
             },
             "require": {
@@ -9525,7 +9529,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.1.x-dev"
                 }
             },
             "autoload": {
@@ -9550,7 +9554,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2017-05-18T10:10:00+00:00"
+            "time": "2017-07-01T08:51:00+00:00"
         },
         {
             "name": "sebastian/exporter",

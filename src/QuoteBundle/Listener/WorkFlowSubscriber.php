@@ -15,8 +15,10 @@ namespace CSBill\QuoteBundle\Listener;
 
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
+use CSBill\QuoteBundle\Notification\QuoteStatusNotification;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -39,11 +41,17 @@ class WorkFlowSubscriber implements EventSubscriberInterface
      */
     private $registry;
 
-    public function __construct(ManagerRegistry $registry, InvoiceManager $invoiceManager, StateMachine $invoiceStateMachine)
+    /**
+     * @var NotificationManager
+     */
+    private $notification;
+
+    public function __construct(ManagerRegistry $registry, InvoiceManager $invoiceManager, StateMachine $invoiceStateMachine, NotificationManager $notification)
     {
         $this->invoiceManager = $invoiceManager;
         $this->invoiceStateMachine = $invoiceStateMachine;
         $this->registry = $registry;
+        $this->notification = $notification;
     }
 
     /**
@@ -73,6 +81,8 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         if (QuoteGraph::TRANSITION_ARCHIVE === $event->getTransition()->getName()) {
             $quote->archive();
         }
+
+        $this->notification->sendNotification('quote_status_update', new QuoteStatusNotification(['quote' => $quote]));
 
         $em = $this->registry->getManager();
 

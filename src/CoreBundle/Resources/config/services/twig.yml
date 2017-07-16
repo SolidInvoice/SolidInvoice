@@ -14,3 +14,5 @@ services:
     CSBill\CoreBundle\Twig\Extension\FileExtension: ~
 
     CSBill\CoreBundle\Twig\Extension\StatusExtension: ~
+    Twig_Extensions_Extension_Text:
+        class: Twig_Extensions_Extension_Text

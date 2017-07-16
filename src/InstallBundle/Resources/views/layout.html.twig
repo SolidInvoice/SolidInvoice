@@ -7,19 +7,15 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
+{% extends 'CSBillCoreBundle:Layout:single_column.html.twig' %}
 
 {% from "@CSBillInstall/Macro/install_progress.html.twig" import progress %}
 
-{% set title = "installation.title"|trans({"%app_name%" : 'CSBill'}) ~ ' - ' ~ ('installation.progress.step.' ~ context.currentStep.name)|trans %}
+{% block title %}
+    {{ "installation.title"|trans({"%app_name%" : 'CSBill'}) ~ ' - ' ~ ('installation.progress.step.' ~ context.currentStep.name)|trans }}
+{% endblock title %}
 
-{% block header %}
-	{% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : "installation.title"|trans({"%app_name%" : 'CSBill'})} %}
-{% endblock header %}
-
-{% block title %}{{ title }}{% endblock title %}
-
-{% block body %}
+{% block content %}
     <div class="row">
         <section class="col-lg-12 col-md-12 content">
             {{ block('heading') is defined ? block('heading') }}
@@ -37,7 +33,7 @@
             </div>
         </section>
     </div>
-{% endblock body %}
+{% endblock content %}
 
 {% block sidebar %}
     <ul class="nav nav-list">

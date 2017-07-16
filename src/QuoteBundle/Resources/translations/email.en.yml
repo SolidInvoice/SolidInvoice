@@ -6,3 +6,4 @@ quote:
         id: ID
         old_status: 'Original Status'
         new_status: 'New Status'
+        status: 'Status'

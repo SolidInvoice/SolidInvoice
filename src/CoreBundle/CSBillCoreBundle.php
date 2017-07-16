@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class CSBillCoreBundle extends Bundle
 {
     const VERSION = '2.0.0-dev';
+    const APP_NAME = 'CSBill';
 
     /**
      * {@inheritdoc}

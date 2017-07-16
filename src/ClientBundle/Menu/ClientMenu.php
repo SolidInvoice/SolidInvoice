@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\ClientBundle\Menu;
 
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\CoreBundle\Icon;
-use Symfony\Component\HttpFoundation\Request;
 
 class ClientMenu
 {
@@ -67,11 +67,11 @@ class ClientMenu
     }
 
     /**
-     * @param Request $request
+     * @param Client $client
      *
      * @return array
      */
-    public static function view(Request $request): array
+    public static function view(Client $client): array
     {
         return [
             'client.menu.view',
@@ -81,7 +81,7 @@ class ClientMenu
                 ],
                 'route' => '_clients_view',
                 'routeParameters' => [
-                    'id' => $request->get('id'),
+                    'id' => $client->getId(),
                 ],
             ],
         ];

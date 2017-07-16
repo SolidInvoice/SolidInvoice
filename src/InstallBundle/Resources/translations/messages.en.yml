@@ -42,6 +42,8 @@ installation:
         title:
             system_settings: 'System Settings'
             admin_user: 'Admin User'
+        notice: 'Notice'
+        user_exists: 'The database already contains an admin user.'
     finish:
         success: Success
         success_message: 'You have successfully installed CSBill!'

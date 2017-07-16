@@ -68,7 +68,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
         } else {
-            $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-stacked']);
+            $menu->setChildrenAttributes(['class' => 'sidebar-menu tree', 'data-widget' => 'tree']);
         }
 
         foreach ($storage as $builder) {
@@ -150,7 +150,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
             return $icon.$translator->trans($item->getLabel());
         }
 
-        return $icon.$this->escape($translator->trans($item->getLabel()));
+        return sprintf('%s <span>%s</span>', $icon, $this->escape($translator->trans($item->getLabel())));
     }
 
     /**

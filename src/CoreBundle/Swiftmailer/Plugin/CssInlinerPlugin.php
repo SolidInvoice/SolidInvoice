@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Swiftmailer\Plugin;
 
+use Symfony\Component\DomCrawler\Crawler;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 class CssInlinerPlugin implements \Swift_Events_SendListener
@@ -50,7 +51,14 @@ class CssInlinerPlugin implements \Swift_Events_SendListener
     private function convert(\Swift_Mime_SimpleMimeEntity $message)
     {
         if ($message->getContentType() !== 'text/plain') {
-            $message->setBody($this->inliner->convert($message->getBody()));
+            $body = $this->inliner->convert($message->getBody());
+            $dom = new Crawler($body);
+            $dom->filter('style')->each(function (Crawler $crawler) {
+                foreach ($crawler as $node) {
+                    $node->parentNode->removeChild($node);
+                }
+            });
+            $message->setBody($dom->html());
         }
     }
 

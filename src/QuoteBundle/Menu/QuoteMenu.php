@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Menu;
 
+use CSBill\ClientBundle\Entity\Client;
 use CSBill\QuoteBundle\Entity\Quote;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Menu items for quotes.
@@ -34,7 +34,7 @@ class QuoteMenu
         ];
     }
 
-    public static function create(Request $request = null)
+    public static function create(Client $client = null)
     {
         return [
             'client.menu.create.quote',
@@ -43,7 +43,7 @@ class QuoteMenu
                     'icon' => 'file-text-o',
                 ],
                 'route' => '_quotes_create',
-                'routeParameters' => null !== $request ? ['client' => $request->get('id')] : [],
+                'routeParameters' => null !== $client ? ['client' => $client->getId()] : [],
             ],
         ];
     }

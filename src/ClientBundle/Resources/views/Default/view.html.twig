@@ -9,156 +9,187 @@
 
 {% set currency = client.currency %}
 
-{% extends "CSBillCoreBundle:Layout:three_column.html.twig" %}
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% set module = 'client/view' %}
 {% set moduleData = client %}
 
-{% block page_title %}
+{#{% block page_title %}
     {{ client.name }}
-{% endblock page_title %}
+{% endblock page_title %}#}
 
-{% block title %}
-    {{ block('page_title') is defined ? block('page_title') }} <small>{{ client_label(client.status) }}</small>
-{% endblock title %}
+{#{% block title %}
+    {{ block('page_title') is defined ? block('page_title') }}
+    <small>{{ client_label(client.status) }}</small>
+{% endblock title %}#}
 
-{% block sidebar_left %}
-	{{ menu('clients_view') }}
-{% endblock sidebar_left %}
+{% block sidebar %}
+    {{ menu('clients_view', {'client': client}) }}
+{% endblock sidebar %}
 
 {% block content %}
     {% set totalAddresses = client.addresses|length %}
 
-    <div id="client-view">
-        <div class="row">
-            <div class="col-md-6 col-lg-6">
-                {% if client.website %}
-                    {{ icon('globe') }} <a href="{{ client.website }}" rel="external">{{ client.website }}</a>
-                    <small>
-                        {{ icon('external-link') }}
-                    </small>
-                {% endif %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    {#<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">#}
 
-                {% if client.currency %}
-                    <br />
-                    <strong>{{ 'client.view.currency'|trans }}</strong> {{ client.currency }}
-                {% endif %}
+                    <h3 class="profile-username text-center">{{ client.name }}</h3>
+
+                    <p class="text-muted text-center">
+                        <small>{{ client_label(client.status) }}</small>
+                    </p>
+
+                    <p>
+                        <span>
+                            <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-xs">
+                                {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
+                            </a>
+                        </span>
+                        <span class="pull-right">
+                            <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-xs" id="delete-client">
+                                {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
+                            </a>
+                        </span>
+                    </p>
+
+                    <ul class="list-group list-group-unbordered">
+
+                        {% if client.website %}
+                            <li class="list-group-item">
+                                <b>{{ icon('globe') }} Website</b> <a href="{{ client.website }}" class="pull-right" rel="external">{{ client.website }}</a>
+                                <small>{{ icon('external-link') }}</small>
+                            </li>
+                        {% endif %}
+
+                        {% if client.currency %}
+                            <li class="list-group-item">
+                                <b>{{ 'client.view.currency'|trans }}</b> <span class="pull-right">{{ client.currency }}</span>
+                            </li>
+                        {% endif %}
+
+                        <li class="list-group-item">
+                            <div id="client-credit"></div>
+                        </li>
+                    </ul>
+
+                    <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-info btn-block">
+                        {{ icon('file-text-o') }} {{ "client.view.actions.create_quote"|trans }}
+                    </a>
+                    <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-info btn-block">
+                        {{ icon('file-text-o') }} {{ "client.view.actions.create_invoice"|trans }}
+                    </a>
+                </div>
             </div>
 
-            <div class="col-md-6 col-lg-6" align="right">
-                <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning">
-                    {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
-                </a>
-                <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger" id="delete-client">
-                    {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
-                </a>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ icon('bar-chart') }}Stats</h3>
+                </div>
+                <div class="box-body">
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3>{{ total_income(client)|formatCurrency }}</h3>
+
+                            <p>{{ "client.stats.income"|trans }}</p>
+                        </div>
+                        <div class="icon">
+                            {{ icon('money') }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>{{ total_outstanding(client)|formatCurrency }}</h3>
+
+                            <p>{{ "client.stats.outstanding"|trans }}</p>
+                        </div>
+                        <div class="icon">
+                            {{ icon('money') }}
+                        </div>
+                    </div>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge bg-aqua">
+                                {{ client.quotes|length }}
+                            </span>
+                            {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
+                        </li>
+                        <li class="list-group-item">
+                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge bg-aqua">
+                                {{ client.invoices|length }}
+                            </span>
+                            {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
+                                {{ total_invoices_pending }}
+                            </span>
+                            {{ "client.stats.outstanding_invoices"|trans }}
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
+                                {{ total_invoices_paid }}
+                            </span>
+                            {{ "client.stats.paid_invoices"|trans }}
+                        </li>
+                    </ul>
+                </div>
             </div>
+
         </div>
-
-        <br class="clear" />
-
-        <div class="widget">
-
-            <div role="tabpanel">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab">
-                            {{ 'client.view.tabs.info'|trans }}
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">
-                            {{ 'client.view.tabs.quotes'|trans }}
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">
-                            {{ 'client.view.tabs.invoices'|trans }}
-                        </a>
-                    </li>
-                    {% if payments|length > 0 %}
-                        <li role="presentation">
-                            <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab">
-                                {{ 'client.view.tabs.payments'|trans }}
+        <div class="col-md-9">
+            <div class="widget">
+                <div role="tabpanel" class="nav-tabs-custom">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab">
+                                {{ 'client.view.tabs.info'|trans }}
                             </a>
                         </li>
-                    {% endif %}
-                </ul>
+                        <li role="presentation">
+                            <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">
+                                {{ 'client.view.tabs.quotes'|trans }}
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">
+                                {{ 'client.view.tabs.invoices'|trans }}
+                            </a>
+                        </li>
+                        {% if payments|length > 0 %}
+                            <li role="presentation">
+                                <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab">
+                                    {{ 'client.view.tabs.payments'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
 
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="client-info">
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="quotes">
-                        {% include "CSBillClientBundle::quote_list.html.twig" %}
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="invoices">
-                        {% include "CSBillClientBundle::invoice_list.html.twig" %}
-                    </div>
-                    {% if payments|length > 0 %}
-                        <div role="tabpanel" class="tab-pane" id="payments">
-                            {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="client-info">
                         </div>
-                    {% endif %}
+                        <div role="tabpanel" class="tab-pane" id="quotes">
+                            {% include "CSBillClientBundle::quote_list.html.twig" %}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="invoices">
+                            {% include "CSBillClientBundle::invoice_list.html.twig" %}
+                        </div>
+                        {% if payments|length > 0 %}
+                            <div role="tabpanel" class="tab-pane" id="payments">
+                                {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock content %}
-
-{% block sidebar_right %}
-    <div class="widget">
-        <div class="text-center client-actions">
-            <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
-                {{ icon('file', ['text', 'o']) }} {{ "client.view.actions.create_quote"|trans }}
-            </a>
-            <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-info btn-lg">
-                {{ icon('file', ['text', 'o']) }} {{ "client.view.actions.create_invoice"|trans }}
-            </a>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="text-center text-success">
-                <h3>{{ total_income(client)|formatCurrency }}</h3>
-                {{ "client.stats.income"|trans }}
-            </div>
-            <div class="text-center text-danger">
-                <h3>{{ total_outstanding(client)|formatCurrency }}</h3>
-                {{ "client.stats.outstanding"|trans }}
-            </div>
-
-            <div id="client-credit"></div>
-
-        </div>
-        <hr />
-        <br class="clearfix" />
-        <ul class="nav nav-list">
-            <li>
-                <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge">
-                    {{ client.quotes|length }}
-                </span>
-                {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
-            </li>
-            <li>
-                <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge">
-                    {{ client.invoices|length }}
-                </span>
-                {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
-            </li>
-            <li class="divider"></li>
-            <li>
-                <span class="badge" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
-                    {{ total_invoices_pending }}
-                </span>
-                {{ "client.stats.outstanding_invoices"|trans }}
-            </li>
-            <li>
-                <span class="badge" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
-                    {{ total_invoices_paid }}
-                </span>
-                {{ "client.stats.paid_invoices"|trans }}
-            </li>
-        </ul>
-    </div>
-{% endblock sidebar_right %}

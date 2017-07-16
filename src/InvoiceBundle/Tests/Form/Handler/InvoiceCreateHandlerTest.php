@@ -21,6 +21,7 @@ use CSBill\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\MoneyBundle\Entity\Money;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use Mockery as M;
 use Money\Currency;
 use SolidWorx\FormHandler\FormRequest;
@@ -45,7 +46,11 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
     public function getHandler()
     {
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry));
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->zeroOrMoreTimes();
+
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, $notification));
         $stateMachine = new StateMachine(
             new Definition(
                 ['new', 'draft'],

@@ -1,158 +1,19 @@
-@import (reference) "~bootstrap/less/variables";
 @import (reference) "~bootstrap/less/mixins";
+@import (reference) "~bootstrap/less/variables";
 @import "~bootstrap/less/normalize";
-@import "~bootstrap/less/grid";
-@import "~bootstrap/less/tables";
 @import "~bootstrap/less/scaffolding";
 @import "~bootstrap/less/type";
-@import "~bootstrap/less/utilities";
+@import "~bootstrap/less/grid";
+@import "~bootstrap/less/tables";
+@import "~bootstrap/less/buttons";
+@import "~bootstrap/less/badges";
 
-@import (reference) "~bootstrap-material-design/less/_variables";
-@import (reference) "~bootstrap-material-design/less/_colors";
-@import (reference) "~bootstrap-material-design/less/_mixins";
+@import (reference) "~admin-lte/build/less/variables";
+@import (reference) "~admin-lte/build/less/mixins";
+@import "~admin-lte/build/less/core";
+@import "~admin-lte/build/less/buttons";
+@import "~admin-lte/build/less/invoice";
+@import "~admin-lte/build/less/miscellaneous";
+@import "~admin-lte/build/less/boxes";
 
-@darkbg-text: rgba(255,255,255,0.84);
-
-body {
-    background-color: @body-bg;
-    &.inverse {
-        background: #333333;
-        &, .form-control {
-            color: @darkbg-text;
-        }
-        .modal,
-        .panel-default,
-        .card {
-            &,
-            .form-control {
-                background-color: initial;
-                color: initial;
-            }
-        }
-
-    }
-}
-
-
-body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
-    font-family: "RobotoDraft", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 300;
-}
-
-h5, h6{
-    font-weight: 400;
-}
-
-a, a:hover, a:focus {
-    color: @primary;
-}
-
-// Buttons
-@import "~bootstrap-material-design/less/_buttons";
-
-legend {
-    border-bottom: 0;
-}
-
-.dropdown-menu {
-    border: 0;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-    .divider {
-        background-color: rgba(229, 229, 229, 0.12);
-    }
-    li {
-        overflow: hidden;
-        position: relative;
-        a:hover {
-            background-color: transparent;
-            color: @primary;
-        }
-    }
-    //.variations(~" li a:hover", color, @primary);
-}
-
-// Typography
-.text-warning {
-    color: @btn-warning;
-}
-.text-primary {
-    color: @btn-primary;
-}
-.text-danger {
-    color: @btn-danger;
-}
-.text-success {
-    color: @btn-success;
-}
-.text-info {
-    color: @btn-info;
-}
-
-//@import "material/_labels";
-
-@import "~bootstrap-material-design/less/_panels";
-
-@import "~bootstrap-material-design/less/_dividers";
-
-// Prevent highlight on mobile
-* {
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-    -webkit-tap-highlight-color: transparent;
-    &:focus {
-        outline: 0;
-    }
-}
-
-// Material shadows
-// Place them on bottom of stylesheet to increase the importance of it and override other same-specificity selectors
-@import "~bootstrap-material-design/less/_shadows";
-
-
-
-
-
-
-
-@import "invoice";
 @import "theme";
-
-.clear {
-    clear: both;
-}
-
-.container {
-    width: 100%;
-}
-
-.logo {
-    width: 125px;
-    text-align: center;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.align-left {
-    text-align: left;
-}
-
-.align-center {
-    text-align: center;
-}
-
-.align-right {
-    text-align: right;
-}
-
-h2 {
-   color: #565656;
-}
-
-td {
-    padding-left: 8px;
-}
-
-.footer {
-    text-align: center;
-    color: #565656;
-}

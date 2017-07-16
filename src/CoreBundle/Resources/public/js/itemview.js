@@ -1,12 +1,10 @@
-define(['marionette', 'jquery', 'core/ajaxmodal', 'material', 'bootstrap.modalmanager'], function(Mn, $) {
+define(['marionette', 'jquery', 'core/ajaxmodal', 'bootstrap.modalmanager'], function(Mn, $) {
     "use strict";
 
     return Mn.View.extend({
         constructor: function(options) {
             this.listenTo(this, 'render', function() {
                 setTimeout(function() {
-                    $.material.init();
-
                     var select2 = this.$('select.select2');
                     if (select2.length) {
                         require(['jquery.select2'], function() {
