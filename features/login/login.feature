@@ -13,7 +13,7 @@ Feature: Log into application
     And I fill in "Username" with "fakeuser"
     And I fill in "Password" with "fakepass"
     And I press "login_button"
-    Then I should see "Bad credentials" in the ".alert-danger" element
+    Then I should see "Bad credentials" in the ".callout-danger" element
 
   Scenario: Login with valid credentials
     Given I have the following users:
