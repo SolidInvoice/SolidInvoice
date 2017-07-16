@@ -102,7 +102,7 @@ invoice:
             day: 'The day of the invoice (E.G ''15'')'
             day_name: 'The name of the day (E.G ''Wednesday'')'
             month: 'The name of the month (E.G ''Subscription for {month}'' will become ''Subscription for %month%'')'
-            year: 'The year (E.G ''Yearly subscription for {year}'' will become ''Yearly subscription for 2017'')'
+            year: 'The year (E.G ''Yearly subscription for {year}'' will become ''Yearly subscription for %year%'')'
     menu:
         main: Invoices
         list: 'List Invoices'
