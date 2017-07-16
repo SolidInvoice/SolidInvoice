@@ -58,7 +58,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $notification = M::mock(NotificationManager::class);
         $notification->shouldReceive('sendNotification')
-            ->once();
+            ->zeroOrMoreTimes();
 
         $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
 
@@ -74,7 +74,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $notification = M::mock(NotificationManager::class);
         $notification->shouldReceive('sendNotification')
-            ->once();
+            ->zeroOrMoreTimes();
 
         $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
 

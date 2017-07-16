@@ -48,7 +48,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         $dispatcher = new EventDispatcher();
         $notification = M::mock(NotificationManager::class);
         $notification->shouldReceive('sendNotification')
-            ->once();
+            ->zoreOrMoreTimes();
 
         $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, $notification));
         $stateMachine = new StateMachine(
