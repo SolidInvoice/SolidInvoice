@@ -16,9 +16,11 @@ namespace CSBill\InstallBundle\Process\Step;
 use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\CoreBundle\Repository\VersionRepository;
 use CSBill\InstallBundle\Form\Step\SystemInformationForm;
+use CSBill\TaxBundle\Entity\Tax;
 use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Repository\UserRepository;
 use Defuse\Crypto\Key;
+use Mpociot\VatCalculator\VatCalculator;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 use Symfony\Component\Form\FormInterface;
@@ -169,12 +171,27 @@ class SetupStep extends AbstractControllerStep
 
         $config = [
             'locale' => $data['locale'],
-            'currency' => $data['currency'],
             'base_url' => $data['base_url'],
             'installed' => $time->format(\DateTime::ISO8601),
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
         $this->get('csbill.core.config_writer')->dump($config);
+
+        $countryCode = explode('_', $data['locale'])[1] ?? $data['locale'];
+
+        $vatCalculator = $this->get(VatCalculator::class);
+        if ($vatCalculator->shouldCollectVAT($countryCode)) {
+            $rate = $vatCalculator->getTaxRateForCountry($countryCode);
+
+            $tax = new Tax();
+            $tax->setRate($rate * 100)
+                ->setType(Tax::TYPE_INCLUSIVE)
+                ->setName('VAT');
+
+            $em = $this->get('doctrine')->getManager();
+            $em->persist($tax);
+            $em->flush();
+        }
     }
 }
