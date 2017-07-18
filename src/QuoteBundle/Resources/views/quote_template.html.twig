@@ -30,6 +30,12 @@
                                 </p>
                             {% endif %}
 
+                            {% if quote.client.vatNumber is not empty %}
+                                <p>
+                                    <strong>{{ 'tax.vat_number'|trans }}</strong> {{ quote.client.vatNumber }}
+                                </p>
+                            {% endif %}
+
                             <address>
                                 {% for address in quote.client.addresses %}
                                     {{ address|replace({"\n": ", "}) }}<br/>
@@ -49,7 +55,7 @@
                         </div>
                         <div class="col-sm-6 invoice-col">
                             <dl class="dl-horizontal">
-                                <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
+                                <dt>{{ "quote.title"|trans({"%id%" : ''}) }}</dt>
                                 <dd>{{ quote.id }}</dd>
                                 <dt>{{ "quote.total"|trans }}</dt>
                                 <dd>{{ quote.total|formatCurrency }}</dd>

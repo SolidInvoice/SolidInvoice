@@ -82,11 +82,11 @@ class WorkFlowSubscriber implements EventSubscriberInterface
             $quote->archive();
         }
 
-        $this->notification->sendNotification('quote_status_update', new QuoteStatusNotification(['quote' => $quote]));
-
         $em = $this->registry->getManager();
 
         $em->persist($quote);
         $em->flush();
+
+        $this->notification->sendNotification('quote_status_update', new QuoteStatusNotification(['quote' => $quote]));
     }
 }

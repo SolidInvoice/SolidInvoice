@@ -30,6 +30,12 @@
                                 </p>
                             {% endif %}
 
+                            {% if invoice.client.vatNumber is not empty %}
+                                <p>
+                                    <strong>{{ 'tax.vat_number'|trans }}</strong> {{ invoice.client.vatNumber }}
+                                </p>
+                            {% endif %}
+
                             <address>
                                 {% for address in invoice.client.addresses %}
                                     {{ address|replace({"\n": ", "}) }}<br/>
@@ -51,7 +57,6 @@
                             <dl class="dl-horizontal">
                                 <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
                                 <dd>{{ invoice.id }}</dd>
-
                                 <dt>{{ "invoice.total"|trans }}</dt>
                                 <dd>{{ invoice.total|formatCurrency }}</dd>
                                 <dt>{{ "invoice.created"|trans }}</dt>

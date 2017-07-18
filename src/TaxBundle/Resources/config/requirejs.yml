@@ -1,0 +1,3 @@
+config:
+    paths:
+        tax: csbilltax/js/

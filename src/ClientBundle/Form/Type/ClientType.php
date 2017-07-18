@@ -15,6 +15,7 @@ namespace CSBill\ClientBundle\Form\Type;
 
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\MoneyBundle\Form\Type\CurrencyType;
+use CSBill\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -39,6 +40,8 @@ class ClientType extends AbstractType
                 'required' => false,
             ]
         );
+
+        $builder->add('vat_number', TaxNumberType::class, ['required' => false]);
 
         $builder->add(
             'contacts',

@@ -61,6 +61,8 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('UPDATE tax_rates SET rate = rate * 100');
         $this->addSql('UPDATE tax_rates SET tax_type = "Inclusive" WHERE tax_type = "inclusive"');
         $this->addSql('UPDATE tax_rates SET tax_type = "Exlusive" WHERE tax_type = "exlusive"');
+
+        $this->addSql('ALTER TABLE clients ADD vat_number VARCHAR(255) DEFAULT NULL');
     }
 
     /**
@@ -80,6 +82,8 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('UPDATE tax_rates SET tax_type = "exlusive" WHERE tax_type = "Exlusive"');
 
         $this->addSql('ALTER TABLE notifications CHANGE email email VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE hipchat hipchat VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE sms sms VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+
+        $this->addSql('ALTER TABLE clients DROP vat_number');
     }
 
     private function updateSettings(): void

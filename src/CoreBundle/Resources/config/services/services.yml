@@ -54,3 +54,5 @@ services:
 
     Symfony\Component\HttpFoundation\Session\Session:
         alias: session
+
+    Mpociot\VatCalculator\VatCalculator: ~
