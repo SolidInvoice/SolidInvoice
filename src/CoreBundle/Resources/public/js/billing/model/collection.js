@@ -20,14 +20,17 @@ define(['backbone', 'lodash'], function (Backbone, _) {
                 subTotal += rowTotal;
 
                 if (!_.isEmpty(rowTax)) {
-                    var taxAmount = rowTotal * parseFloat(rowTax.rate);
-                    tax += taxAmount;
+                    var taxAmount = 0;
 
-                    if ('inclusive' === rowTax.type) {
+                    if ('inclusive' === rowTax.type.toLowerCase()) {
+                        taxAmount = (rowTotal / (parseFloat(rowTax.rate / 100) + 1)- rowTotal) * -1;
                         subTotal -= taxAmount;
                     } else {
+                        taxAmount = rowTotal * parseFloat(rowTax.rate / 100);
                         total += taxAmount;
                     }
+
+                    tax += taxAmount;
                 }
             });
 

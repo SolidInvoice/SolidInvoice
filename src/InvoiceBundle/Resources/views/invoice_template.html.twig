@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set footerSpan = invoice.tax.positive ? 1 : 2 %}
+{% set footerSpan = invoice.tax.positive ? 3 : 2 %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="invoice-create">
     <div class="invoice">

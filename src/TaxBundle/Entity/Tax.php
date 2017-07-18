@@ -35,8 +35,8 @@ class Tax
     use Entity\TimeStampable,
         Entity\SoftDeleteable;
 
-    const TYPE_INCLUSIVE = 'inclusive';
-    const TYPE_EXCLUSIVE = 'exclusive';
+    const TYPE_INCLUSIVE = 'Inclusive';
+    const TYPE_EXCLUSIVE = 'Exclusive';
 
     /**
      * @var int
@@ -226,8 +226,7 @@ class Tax
     public function __toString(): string
     {
         $type = $this->type === self::TYPE_INCLUSIVE ? 'inc' : 'exl';
-        $rate = $this->rate * 100;
 
-        return "{$rate}% {$this->name} ({$type})";
+        return "{$this->rate}% {$this->name} ({$type})";
     }
 }
