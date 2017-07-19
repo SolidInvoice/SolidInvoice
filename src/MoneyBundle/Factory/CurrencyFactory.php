@@ -18,7 +18,7 @@ use Money\Currency;
 
 class CurrencyFactory
 {
-    const CURRENCY_PATH = 'system/general/currency';
+    const CURRENCY_PATH = 'system/company/currency';
 
     const DEFAULT_CURRENCY = 'USD';
 

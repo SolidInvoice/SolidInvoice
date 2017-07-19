@@ -220,6 +220,16 @@
     </div>
 {% endblock address_widget %}
 
+{% block settings_address_widget %}
+    <legend>
+        <h4>
+            {{ 'Address'|trans }}
+        </h4>
+    </legend>
+
+    {{ block('address_widget') }}
+{% endblock settings_address_widget %}
+
 {% block cron_widget %}
     {% set type = 'hidden' %}
     {{ block('form_widget') }}

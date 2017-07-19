@@ -103,7 +103,7 @@ class Factory
 
         return new HipChatNotification(
             $content,
-            $this->settings->get('system/general.app_name'),
+            $this->settings->get('system/company/company_name'),
             $this->settings->get('hipchat/room_id'),
             [
                 'hipchat_color' => $this->settings->get('hipchat/message_color'),

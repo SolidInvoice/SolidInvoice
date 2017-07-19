@@ -17,10 +17,12 @@ use CSBill\MoneyBundle\Form\Type\CurrencyType;
 use CSBill\NotificationBundle\Entity\Notification;
 use CSBill\NotificationBundle\Form\Type\HipChatColorType;
 use CSBill\NotificationBundle\Form\Type\NotificationType;
+use CSBill\SettingsBundle\Form\Type\AddressType;
 use CSBill\SettingsBundle\Form\Type\MailEncryptionType;
 use CSBill\SettingsBundle\Form\Type\MailFormatType;
 use CSBill\SettingsBundle\Form\Type\MailTransportType;
 use CSBill\SettingsBundle\Form\Type\ThemeType;
+use CSBill\TaxBundle\Form\Type\TaxNumberType;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -93,16 +95,29 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         foreach ($sections as $section) {
             $settings = [];
 
+            if ('general' === $section['name']) {
+                $section['name'] = 'company';
+            }
+
             $path = $section['name'];
 
             $settingsBySection = $this->connection->fetchAll('SELECT * FROM app_config WHERE section_id = :section', [':section' => $section['id']]);
 
             while (null !== ($section['parent_id'] ?? null ?: null)) {
                 $section = $this->connection->fetchAssoc('SELECT * FROM config_sections WHERE id = :section', ['section' => $section['parent_id']]);
+
+                if ('general' === $section['name']) {
+                    $section['name'] = 'company';
+                }
+
                 $path = $section['name'].'/'.$path;
             }
 
             foreach ($settingsBySection as $v) {
+                if ('app_name' === $v['setting_key']) {
+                    $v['setting_key'] = 'company_name';
+                }
+
                 $settings[$path.'/'.$v['setting_key']] = $v;
             }
 
@@ -165,6 +180,15 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                 'setting_value' => 'skin-blue',
                 'field_type' => ThemeType::class,
             ],
+            'system/company/vat_number' => [
+                'field_type' => TaxNumberType::class
+            ],
+            'system/company/contact_details/phone_number' => [
+                'field_type' => TextType::class
+            ],
+            'system/company/contact_details/address' => [
+                'field_type' => AddressType::class
+            ]
         ];
 
         foreach ($additionalSettings as $key => $settingConfig) {
@@ -235,7 +259,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                 'type' => addslashes(MailEncryptionType::class),
             ],
             'currency' => [
-                'path' => 'system/general/currency',
+                'path' => 'system/company/currency',
                 'type' => addslashes(CurrencyType::class),
             ],
         ];

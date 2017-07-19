@@ -41,7 +41,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
         ];
 
         if ($this->container->getParameter('installed')) {
-            $globals['app_name'] = $this->container->get('settings')->get('system/general/app_name');
+            $globals['app_name'] = $this->container->get('settings')->get('system/company/company_name');
         }
 
         return $globals;
@@ -101,7 +101,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
 
         if ($this->container->getParameter('installed')) {
             try {
-                $logo = $config->get('system/general/logo');
+                $logo = $config->get('system/company/logo');
 
                 if (null !== $logo) {
                     $logo = 'uploads/'.$logo;
