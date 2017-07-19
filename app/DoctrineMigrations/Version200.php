@@ -181,14 +181,17 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                 'field_type' => ThemeType::class,
             ],
             'system/company/vat_number' => [
-                'field_type' => TaxNumberType::class
+                'field_type' => TaxNumberType::class,
+            ],
+            'system/company/contact_details/email' => [
+                'field_type' => EmailType::class,
             ],
             'system/company/contact_details/phone_number' => [
-                'field_type' => TextType::class
+                'field_type' => TextType::class,
             ],
             'system/company/contact_details/address' => [
-                'field_type' => AddressType::class
-            ]
+                'field_type' => AddressType::class,
+            ],
         ];
 
         foreach ($additionalSettings as $key => $settingConfig) {

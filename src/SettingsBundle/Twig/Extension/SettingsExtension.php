@@ -17,6 +17,7 @@ use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\SystemConfig;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Symfony\Component\Intl\Intl;
 
 class SettingsExtension extends \Twig_Extension
 {
@@ -34,13 +35,43 @@ class SettingsExtension extends \Twig_Extension
     {
         return [
             new \Twig_Function('setting', [$this, 'getSetting']),
+            new \Twig_Function('address', [$this, 'renderAddress']),
         ];
     }
 
-    public function getSetting(string $setting, $default = null)
+    public function renderAddress(array $address)
+    {
+        static $countries;
+
+        if (empty($countries)) {
+            $countries = Intl::getRegionBundle()->getCountryNames();
+        }
+
+        $info = [
+            $address['street1'] ?? null,
+            $address['street2'] ?? null,
+            $address['city'] ?? null,
+            $address['state'] ?? null,
+            $address['zip'] ?? null,
+        ];
+
+        if (!empty($address['country'])) {
+            $info[] = $countries[$address['country']] ?? null;
+        }
+
+        return trim(implode("\n", array_filter($info)), ', \t\n\r\0\x0B');
+    }
+
+    public function getSetting(string $setting, $default = null, $decode = false)
     {
         try {
-            return $this->config->get($setting);
+            $setting = $this->config->get($setting);
+
+            if ($decode) {
+                return json_decode($setting, true);
+            }
+
+            return $setting;
         } catch (InvalidSettingException | TableNotFoundException | ConnectionException $e) {
             return $default;
         }
