@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddressType extends AbstractType
 {
@@ -26,7 +27,7 @@ class AddressType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['canDelete'] = $options['canDelete'] ?? false;
+        $view->vars['canDelete'] = $options['canDelete'];
     }
 
     /**
@@ -50,6 +51,14 @@ class AddressType extends AbstractType
                 'required' => false,
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(['canDelete' => false]);
     }
 
     /**
