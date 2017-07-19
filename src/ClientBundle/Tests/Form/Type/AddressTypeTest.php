@@ -33,8 +33,6 @@ class AddressTypeTest extends FormTestCase
             'country' => $faker->countryCode,
         ];
 
-        $object = Address::fromArray($formData);
-
-        $this->assertFormData(AddressType::class, $formData, $object);
+        $this->assertFormData(AddressType::class, $formData, $formData);
     }
 }
