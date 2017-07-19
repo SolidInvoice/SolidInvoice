@@ -11,8 +11,8 @@
 
 {% block header %}
     <a class="logo" href="{{ url('_dashboard') }}">
-        {% if settings['system/general/logo'] is defined and settings['system/general/logo'] is not empty %}
-            {% set logo = 'uploads/' ~ settings['system/general/logo'] %}
+        {% if settings['system/company/logo'] is defined and settings['system/company/logo'] is not empty %}
+            {% set logo = 'uploads/' ~ settings['system/company/logo'] %}
         {% else %}
             {% set logo = 'img/logo.png' %}
         {% endif %}

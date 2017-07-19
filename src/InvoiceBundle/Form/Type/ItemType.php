@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\InvoiceBundle\Entity\Item;
+use CSBill\TaxBundle\Entity\Tax;
 use CSBill\TaxBundle\Form\Type\TaxEntityType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
@@ -80,7 +81,7 @@ class ItemType extends AbstractType
                 'tax',
                 TaxEntityType::class,
                 [
-                    'class' => 'CSBill\TaxBundle\Entity\Tax',
+                    'class' => Tax::class,
                     'placeholder' => 'Choose Tax Type',
                     'attr' => [
                         'class' => 'select2 input-mini invoice-item-tax',

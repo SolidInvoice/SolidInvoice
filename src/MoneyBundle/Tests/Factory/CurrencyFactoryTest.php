@@ -40,7 +40,7 @@ class CurrencyFactoryTest extends TestCase
         $config = M::mock(SystemConfig::class);
 
         $config->shouldReceive('get')
-            ->with('system/general/currency')
+            ->with('system/company/currency')
             ->andReturn('EUR');
 
         $factory = new CurrencyFactory((string) Carbon::now(), $config);

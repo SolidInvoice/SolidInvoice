@@ -11,6 +11,11 @@ tax:
     grid:
         actions:
             edit: Edit
+    form:
+      input:
+        validate: Validate
+    vat_number: 'Vat Number:'
+
 inclusive: Inclusive
 exclusive: Exclusive
 rate: Rate

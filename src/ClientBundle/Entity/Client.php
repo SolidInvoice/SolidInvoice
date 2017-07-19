@@ -94,6 +94,14 @@ class Client
     private $currency;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="vat_number", type="string", nullable=true)
+     * @Serialize\Groups({"api", "js"})
+     */
+    private $vatNumber;
+
+    /**
      * @var Collection|Contact[]
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
@@ -495,6 +503,26 @@ class Client
     public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVatNumber(): ?string
+    {
+        return $this->vatNumber;
+    }
+
+    /**
+     * @param string $vatNumber
+     *
+     * @return $this
+     */
+    public function setVatNumber(?string $vatNumber): self
+    {
+        $this->vatNumber = $vatNumber;
 
         return $this;
     }

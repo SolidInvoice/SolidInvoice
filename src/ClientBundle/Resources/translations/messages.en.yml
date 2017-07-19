@@ -71,7 +71,7 @@ client:
         edit_address: 'Edit Address'
         credit:
             amount: 'Amount'
-            tip: '<strong>Tip:</strong> To substract an amount, add a ''-'' before the amount, E.G <code>%amount%</code>'
+            tip: '<strong>Tip:</strong> To subtract an amount, add a ''-'' before the amount, E.G <code>%amount%</code>'
         action:
             close: 'Close'
             save: 'Save'

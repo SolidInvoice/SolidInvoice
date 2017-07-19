@@ -70,15 +70,15 @@ class BillingFormSubscriber implements EventSubscriberInterface
             $subTotal = $subTotal->add($rowTotal);
 
             if (null !== $rowTax = $item->getTax()) {
-                $taxAmount = $rowTotal->multiply($rowTax->getRate());
-
-                $tax = $tax->add($taxAmount);
-
                 if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {
+                    $taxAmount = $rowTotal->divide(($rowTax->getRate() / 100) + 1)->subtract($rowTotal)->multiply(-1);
                     $subTotal = $subTotal->subtract($taxAmount);
                 } else {
+                    $taxAmount = $rowTotal->multiply($rowTax->getRate() / 100);
                     $total = $total->add($taxAmount);
                 }
+
+                $tax = $tax->add($taxAmount);
             }
 
             return true;

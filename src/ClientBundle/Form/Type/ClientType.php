@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace CSBill\ClientBundle\Form\Type;
 
+use CSBill\ClientBundle\Entity\Address;
 use CSBill\ClientBundle\Entity\Client;
 use CSBill\MoneyBundle\Form\Type\CurrencyType;
+use CSBill\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -40,6 +42,8 @@ class ClientType extends AbstractType
             ]
         );
 
+        $builder->add('vat_number', TaxNumberType::class, ['required' => false]);
+
         $builder->add(
             'contacts',
             ContactCollectionType::class,
@@ -59,6 +63,10 @@ class ClientType extends AbstractType
             CollectionType::class,
             [
                 'entry_type' => AddressType::class,
+                'entry_options' => [
+                    'data_class' => Address::class,
+                    'canDelete' => true,
+                ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'delete_empty' => true,

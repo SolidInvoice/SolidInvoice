@@ -63,11 +63,11 @@ class WorkFlowSubscriber implements EventSubscriberInterface
             $invoice->archive();
         }
 
-        $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
-
         $em = $this->registry->getManager();
 
         $em->persist($invoice);
         $em->flush();
+
+        $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
     }
 }

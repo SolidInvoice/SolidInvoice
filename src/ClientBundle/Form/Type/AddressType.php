@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CSBill\ClientBundle\Form\Type;
 
-use CSBill\ClientBundle\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -59,7 +58,7 @@ class AddressType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => Address::class, 'canDelete' => true]);
+        $resolver->setDefaults(['canDelete' => false]);
     }
 
     /**

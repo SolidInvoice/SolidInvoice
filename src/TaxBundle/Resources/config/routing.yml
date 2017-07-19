@@ -15,3 +15,11 @@ _tax_rates_edit:
 _tax_rates_grid:
     resource: '@CSBillTaxBundle/Action/Grid'
     type: grid
+
+_tax_number_validate:
+    path: '/number/validate'
+    defaults: { _controller: 'CSBill\TaxBundle\Action\Validate' }
+    methods: ['POST']
+    options:
+        expose: true
+

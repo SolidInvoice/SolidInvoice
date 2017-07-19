@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7150a791ab94452ab05e730e87db67b",
+    "content-hash": "19c65f7863561876a95ab1e67375d9e9",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -2796,6 +2796,62 @@
                 "math"
             ],
             "time": "2017-02-16T16:54:46+00:00"
+        },
+        {
+            "name": "mpociot/vat-calculator",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpociot/vat-calculator.git",
+                "reference": "86776da690401903dedc5697f5192852a2f84f58"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpociot/vat-calculator/zipball/86776da690401903dedc5697f5192852a2f84f58",
+                "reference": "86776da690401903dedc5697f5192852a2f84f58",
+                "shasum": ""
+            },
+            "require": {
+                "ext-soap": "*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "illuminate/support": "~5.0",
+                "illuminate/validation": "~5.0",
+                "mockery/mockery": "dev-master",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "4.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/controllers/Controller.php"
+                ],
+                "psr-0": {
+                    "Mpociot\\VatCalculator": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Pociot",
+                    "email": "m.pociot@gmail.com"
+                }
+            ],
+            "description": "EU VAT calculation, the way it should be.",
+            "keywords": [
+                "EU Moss",
+                "VAT ID",
+                "cashier",
+                "tax",
+                "tax calculation",
+                "vat",
+                "vat calculation"
+            ],
+            "time": "2017-04-11T10:14:32+00:00"
         },
         {
             "name": "mtdowling/cron-expression",

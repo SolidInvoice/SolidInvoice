@@ -149,6 +149,21 @@
 {% endspaceless %}
 {%- endblock %}
 
+{% block tax_number_widget -%}
+    {% set id = random() %}
+    <div class="input-group">
+        {{ form_widget(form) }}
+        <span class="input-group-btn">
+            <a href="#" id="{{ id }}" class="btn btn-default" rel="tooltip" title="EU Countries Only">{{ 'tax.form.input.validate'|trans }}</a>
+        </span>
+    </div>
+    <script>
+        require(['tax/vat_validator'], function (Validator) {
+            Validator.attach('#{{ id }}', '#{{ form.vars.id }}');
+        });
+    </script>
+{%- endblock tax_number_widget %}
+
 {% block tax_choice_widget_options -%}
     {% for group_label, choice in options %}
         {% if choice is iterable %}
@@ -204,6 +219,16 @@
         <br class="clear" />
     </div>
 {% endblock address_widget %}
+
+{% block settings_address_widget %}
+    <legend>
+        <h4>
+            {{ 'Address'|trans }}
+        </h4>
+    </legend>
+
+    {{ block('address_widget') }}
+{% endblock settings_address_widget %}
 
 {% block cron_widget %}
     {% set type = 'hidden' %}

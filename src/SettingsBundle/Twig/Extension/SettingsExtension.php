@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\SettingsBundle\Twig\Extension;
 
+use CSBill\ClientBundle\Entity\Address;
 use CSBill\SettingsBundle\Exception\InvalidSettingException;
 use CSBill\SettingsBundle\SystemConfig;
 use Doctrine\DBAL\Exception\ConnectionException;
@@ -34,13 +35,25 @@ class SettingsExtension extends \Twig_Extension
     {
         return [
             new \Twig_Function('setting', [$this, 'getSetting']),
+            new \Twig_Function('address', [$this, 'renderAddress']),
         ];
     }
 
-    public function getSetting(string $setting, $default = null)
+    public function renderAddress(array $address)
+    {
+        return (string) Address::fromArray($address);
+    }
+
+    public function getSetting(string $setting, $default = null, $decode = false)
     {
         try {
-            return $this->config->get($setting);
+            $setting = $this->config->get($setting);
+
+            if ($decode) {
+                return json_decode($setting, true);
+            }
+
+            return $setting;
         } catch (InvalidSettingException | TableNotFoundException | ConnectionException $e) {
             return $default;
         }

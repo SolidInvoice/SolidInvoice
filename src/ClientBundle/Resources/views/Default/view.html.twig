@@ -41,7 +41,6 @@
                     <p class="text-muted text-center">
                         <small>{{ client_label(client.status) }}</small>
                     </p>
-
                     <p>
                         <span>
                             <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-xs">
@@ -67,6 +66,12 @@
                         {% if client.currency %}
                             <li class="list-group-item">
                                 <b>{{ 'client.view.currency'|trans }}</b> <span class="pull-right">{{ client.currency }}</span>
+                            </li>
+                        {% endif %}
+
+                        {% if client.vatNumber is not empty %}
+                            <li class="list-group-item">
+                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="pull-right">{{ client.vatNumber }}</span>
                             </li>
                         {% endif %}
 

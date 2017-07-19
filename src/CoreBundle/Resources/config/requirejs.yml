@@ -101,5 +101,6 @@ build:
         payments: 'empty:'
         moment: 'empty:'
         grid: 'empty:'
+        tax: 'empty:'
         translation_data: 'empty:'
         bootstrap.material.datetimepicker: 'empty:'

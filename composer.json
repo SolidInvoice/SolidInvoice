@@ -95,7 +95,8 @@
         "ramsey/uuid-doctrine": "^1.2",
         "symfony/security-acl": "^3.0",
         "solidworx/form-handler-bundle": "1.0.0-beta",
-        "defuse/php-encryption": "^2.1"
+        "defuse/php-encryption": "^2.1",
+        "mpociot/vat-calculator": "^2.2"
     },
     "require-dev": {
         "behat/behat": "^3.0",
