@@ -24,13 +24,16 @@ use Symfony\Component\Workflow\Event\Event;
 class WorkFlowSubscriber implements EventSubscriberInterface
 {
     /**
-    /**
      * @var NotificationManager
      */
     private $notification;
 
-    public function __construct(ManagerRegistry $registry, NotificationManager $notification)
+    public function __construct(NotificationManager $notification)
+    {
         $this->notification = $notification;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
