@@ -126,10 +126,10 @@ class Discount
     public function setValue($value)
     {
         switch ($this->getType()) {
-            case Discount::TYPE_PERCENTAGE:
+            case self::TYPE_PERCENTAGE:
                 $this->setValuePercentage((float) $value);
                 break;
-            case Discount::TYPE_MONEY:
+            case self::TYPE_MONEY:
                 $this->setValueMoney(new MoneyEntity(new Money(((int) $value) * 100, new Currency(''))));
                 break;
         }
