@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\QuoteBundle\Tests\Cloner;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\QuoteBundle\Cloner\QuoteCloner;
 use CSBill\QuoteBundle\Entity\Item;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -54,7 +55,10 @@ class QuoteClonerTest extends TestCase
 
         $quote = new Quote();
         $quote->setBaseTotal(new Money(123, $currency));
-        $quote->setDiscount(0.12);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(12);
+        $quote->setDiscount($discount);
         $quote->setNotes('Notes');
         $quote->setTax(new Money(432, $currency));
         $quote->setTerms('Terms');

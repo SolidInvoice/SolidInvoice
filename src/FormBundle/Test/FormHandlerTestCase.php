@@ -15,6 +15,7 @@ namespace CSBill\FormBundle\Test;
 
 use CSBill\ClientBundle\Form\Type\ContactDetailType;
 use CSBill\CoreBundle\Form\Extension\FormHelpExtension;
+use CSBill\CoreBundle\Form\Type\DiscountType;
 use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Form\Type\ItemType as InvoiceItemType;
@@ -70,6 +71,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
                     new QuoteType($currency),
                     new InvoiceItemType($this->registry),
                     new QuoteItemType($this->registry),
+                    new DiscountType($currency),
                 ],
                 []
             ),

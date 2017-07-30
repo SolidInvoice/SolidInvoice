@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\InvoiceBundle\Tests\Form\Handler;
 
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
@@ -44,7 +45,10 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
 
         $this->invoice = new Invoice();
         $this->invoice->setStatus(Graph::STATUS_DRAFT);
-        $this->invoice->setDiscount(0.1);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(10);
+        $this->invoice->setDiscount($discount);
         $this->invoice->setBalance(new \Money\Money(1000, new Currency('USD')));
 
         $this->em->persist($this->invoice);

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Tests\Cloner;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\InvoiceBundle\Cloner\InvoiceCloner;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Entity\Item;
@@ -53,7 +54,10 @@ class InvoiceClonerTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setBaseTotal(new Money(123, $currency));
-        $invoice->setDiscount(0.12);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(12);
+        $invoice->setDiscount($discount);
         $invoice->setNotes('Notes');
         $invoice->setTax(new Money(432, $currency));
         $invoice->setTerms('Terms');
