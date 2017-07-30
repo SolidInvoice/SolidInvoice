@@ -167,7 +167,7 @@
                                 </tr>
                             {% endif %}
 
-                            {% if invoice.discount is not empty %}
+                            {% if invoice.discount is not empty and invoice.discount.value is not empty %}
                                 <tr>
                                     <td class="no-line"></td>
                                     <td colspan="{{ footerSpan }}" class="no-line text-right">
@@ -175,7 +175,7 @@
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="text-danger invoice-discount">
-                                            -{{ (invoice.baseTotal.add(invoice.tax))|percentage(invoice.discount)|formatCurrency }}
+                                            -{{ invoice.discount.type == constant('CSBill\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (invoice.discount.value)|formatCurrency : invoice.baseTotal|percentage(invoice.discount.value)|formatCurrency }}
                                         </span>
                                     </td>
                                 </tr>

@@ -139,21 +139,21 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
 
     /**
      * @param int|float|Money $amount
-     * @param int|float       $percentage
+     * @param float           $percentage
      *
      * @return float|int
      */
     public function formatPercentage($amount, float $percentage = 0)
     {
         if ($percentage > 0) {
-            if ($amount instanceof Money) {
-                return $amount->multiply($percentage)->getAmount();
-            }
-
-            return $amount * $percentage;
+            $percentage /= 100;
         }
 
-        return 0;
+        if ($amount instanceof Money) {
+            return $amount->multiply($percentage)->getAmount();
+        }
+
+        return $amount * $percentage;
     }
 
     /**

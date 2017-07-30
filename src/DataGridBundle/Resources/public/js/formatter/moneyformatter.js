@@ -15,15 +15,7 @@ define(['backgrid', 'lodash', 'accounting'], function(Backgrid, _, Accounting) {
         fromRaw: function(rawData, model) {
             if (!_.isUndefined(rawData)) {
                 if (_.isObject(rawData)) {
-                    var originlCurrency = Accounting.settings.currency.symbol;
-
-                    Accounting.settings.currency.symbol = rawData.currency;
-
-                    var value = Accounting.formatMoney(parseInt(rawData.value, 10) / 100);
-
-                    Accounting.settings.currency.symbol = originlCurrency;
-
-                    return value;
+                    return Accounting.formatMoney(parseInt(rawData.value, 10) / 100, rawData.currency);
                 }
 
                 return Accounting.formatMoney(parseInt(rawData, 10) / 100);

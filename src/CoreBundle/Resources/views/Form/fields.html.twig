@@ -239,3 +239,53 @@
         });
     </script>
 {% endblock cron_widget %}
+
+{% block discount_row %}
+    <label for="{{ form.value.vars.id }}">{{ label }}</label>
+    <div class="form-group multiple-form-group input-group">
+        {{ form_widget(form.value) }}
+        <div class="input-group-btn input-group-select">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="concept" id="{{ form.type.vars.id }}_display">
+                {% if form.type.vars.value == 'money' %}
+                    <span class="currency-view">{{ currency }}</span>
+                {% else %}
+                    %
+                {% endif %}
+            </span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {% for type in form.vars.types %}
+                    <li>
+                        <a href="#" class="{{ form.type.vars.id }}_types{% if type.name == form.type.vars.value %} hidden{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
+                            {% if type.name == constant('CSBill\\CoreBundle\\Entity\\Discount::TYPE_MONEY') %}
+                                <span class="currency-view">{{ currency }}</span>
+                            {% else %}
+                                {{ type.symbol }}
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {{ form_widget(form.type) }}
+        </div>
+    </div>
+    <script>
+        require(['jquery'], function ($) {
+            $(function () {
+                var $type = $('#{{ form.type.vars.id }}'),
+                    $typeDisplay = $('#{{ form.type.vars.id }}_display'),
+                    $types = $('.{{ form.type.vars.id }}_types');
+
+                $types.on('click', function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    $typeDisplay.html($this.html());
+                    $types.filter('.hidden').removeClass('hidden');
+                    $this.addClass('hidden');
+                    $type.val($this.data('name')).trigger('change');
+                });
+            });
+        });
+    </script>
+{% endblock discount_row %}

@@ -65,6 +65,11 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('UPDATE tax_rates SET tax_type = "Exlusive" WHERE tax_type = "exlusive"');
 
         $this->addSql('ALTER TABLE clients ADD vat_number VARCHAR(255) DEFAULT NULL');
+
+        $this->addSql('UPDATE invoices set discount = discount * 100');
+        $this->addSql('UPDATE quotes set discount = discount * 100');
+        $this->addSql('ALTER TABLE invoices CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL');
+        $this->addSql('ALTER TABLE quotes CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL;');
     }
 
     /**

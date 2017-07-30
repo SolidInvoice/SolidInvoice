@@ -7,23 +7,34 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash'], function(Backgrid, _) {
-    var DiscountFormatter = Backgrid.DiscountFormatter = function() {
+define(['backgrid', 'lodash', 'accounting'], function(Backgrid, _, Accounting) {
+    let DiscountFormatter = Backgrid.DiscountFormatter = function() {
     };
     DiscountFormatter.prototype = new Backgrid.CellFormatter();
     _.extend(DiscountFormatter.prototype, {
         fromRaw: function(rawData, model) {
-            if (!_.isUndefined(rawData)) {
-                rawData = parseFloat(rawData);
+            if (!_.isUndefined(model.get('discount.type'))) {
+                let discountType = model.get('discount.type');
 
-                if (rawData < 1) {
-                    rawData *= 100;
+                if ('money' === discountType.toLowerCase()) {
+                    let discountAmount = parseInt(model.get('discount.valueMoney.value'), 10);
+
+                    if (discountAmount > 0) {
+                        return Accounting.formatMoney(discountAmount / 100, model.get('client').currency);
+                    }
+
+                    return '';
                 }
 
-                return rawData + '%';
+                let discountPercentage = model.get('discount.valuePercentage');
+
+                if (parseInt(discountPercentage, 10) > 0) {
+                    return discountPercentage + '%';
+                }
             }
         },
         toRaw: function(formattedData, model) {
+            console.log(formattedData, model);
             return formattedData;
         }
     });

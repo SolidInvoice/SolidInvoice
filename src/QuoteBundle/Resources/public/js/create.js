@@ -11,7 +11,7 @@ define(
         'core/billing/model/collection',
         'core/billing/view/footer',
         'quote/view',
-        'quote/discount',
+        'core/billing/view/discount',
         'routing',
         'accounting'
     ],
@@ -63,6 +63,7 @@ define(
                         module.app.showChildView('quoteRows', quoteView);
 
                         this.$el.find(this.regions.quoteForm).attr('action', Routing.generate('_quotes_create', {'client': clientOptions.client}));
+                        $('.currency-view').html(clientOptions.currency);
 
                         module.app.initialize(module.app.options);
                     }, this));

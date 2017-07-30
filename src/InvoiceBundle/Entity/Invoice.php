@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Entity;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Traits\InvoiceStatusTrait;
@@ -115,9 +116,9 @@ class Invoice
     private $tax;
 
     /**
-     * @var float
+     * @var Discount
      *
-     * @ORM\Column(name="discount", type="float", nullable=true)
+     * @ORM\Embedded(class="CSBill\CoreBundle\Entity\Discount")
      * @Serialize\Expose()
      */
     private $discount;
@@ -390,9 +391,9 @@ class Invoice
     /**
      * Get discount.
      *
-     * @return float
+     * @return Discount
      */
-    public function getDiscount(): ?float
+    public function getDiscount(): ?Discount
     {
         return $this->discount;
     }
@@ -400,11 +401,11 @@ class Invoice
     /**
      * Set discount.
      *
-     * @param float $discount
+     * @param Discount $discount
      *
      * @return Invoice
      */
-    public function setDiscount(?float $discount): self
+    public function setDiscount(?Discount $discount): self
     {
         $this->discount = $discount;
 
