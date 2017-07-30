@@ -34,7 +34,6 @@ define(['backgrid', 'lodash', 'accounting'], function(Backgrid, _, Accounting) {
             }
         },
         toRaw: function(formattedData, model) {
-            console.log(formattedData, model);
             return formattedData;
         }
     });
