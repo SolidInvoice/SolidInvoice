@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Form\Type;
 
 use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
+use CSBill\CoreBundle\Form\Type\DiscountType;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
@@ -21,7 +22,6 @@ use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -59,7 +59,7 @@ class InvoiceType extends AbstractType
             ]
         );
 
-        $builder->add('discount', PercentType::class, ['required' => false]);
+        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']->getCode()]);
         $builder->add('recurring', CheckboxType::class, ['required' => false, 'label' => 'Recurring']);
         $builder->add('recurringInfo', RecurringInvoiceType::class);
 

@@ -24,7 +24,7 @@ use JMS\Serializer\Annotation as Serialize;
 class Money
 {
     /**
-     * @ORM\Column(name="amount", type="integer")
+     * @ORM\Column(name="amount", type="integer", nullable=true)
      * @Serialize\Groups({"api", "js"})
      *
      * @var int

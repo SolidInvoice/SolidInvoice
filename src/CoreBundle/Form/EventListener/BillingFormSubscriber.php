@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Form\EventListener;
 
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -100,9 +101,16 @@ class BillingFormSubscriber implements EventSubscriberInterface
     private function setDiscount($object, Money $total)
     {
         if (null !== $object->getDiscount()) {
-            $discount = $total->multiply($object->getDiscount());
+            $discount = $object->getDiscount();
 
-            $total = $total->subtract($discount);
+            $discountValue = null;
+            if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
+                $discountValue = $total->multiply(((float) $discount->getValuePercentage()) / 100);
+            } else {
+                $discountValue = $discount->getValueMoney()->getMoney();
+            }
+
+            $total = $total->subtract($discountValue);
 
             return $total;
         }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\InvoiceBundle\Tests\Manager;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
 use CSBill\InvoiceBundle\Manager\InvoiceManager;
 use CSBill\NotificationBundle\Notification\NotificationManager;
@@ -98,7 +99,10 @@ class InvoiceManagerTest extends KernelTestCase
 
         $quote = new Quote();
         $quote->setBaseTotal(new Money(123, $currency));
-        $quote->setDiscount(0.12);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(12);
+        $quote->setDiscount($discount);
         $quote->setNotes('Notes');
         $quote->setTax(new Money(432, $currency));
         $quote->setTerms('Terms');

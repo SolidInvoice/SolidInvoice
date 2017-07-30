@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Tests\Form\Type;
 
+use CSBill\CoreBundle\Form\Type\DiscountType;
 use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\MoneyBundle\Entity\Money;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -59,7 +60,7 @@ class QuoteTypeTest extends FormTestCase
             ->andReturn($taxRepository);
 
         return [
-            new PreloadedExtension([$type, $itemType], []),
+            new PreloadedExtension([$type, $itemType, new DiscountType(new Currency('USD'))], []),
         ];
     }
 

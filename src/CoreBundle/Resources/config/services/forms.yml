@@ -7,3 +7,5 @@ services:
     CSBill\CoreBundle\Form\Type\ImageUploadType:
         arguments:
             $secret: '%secret%'
+
+    CSBill\CoreBundle\Form\Type\DiscountType: ~
