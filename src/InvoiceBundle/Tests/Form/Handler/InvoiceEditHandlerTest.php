@@ -92,7 +92,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
         /* @var Invoice $invoice */
 
         $this->assertSame(Graph::STATUS_PENDING, $invoice->getStatus());
-        $this->assertSame(0.2, $invoice->getDiscount());
+        $this->assertSame(20.0, $invoice->getDiscount()->getValue());
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
@@ -118,7 +118,10 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
     {
         return [
             'invoice' => [
-                'discount' => 20,
+                'discount' => [
+                    'value' => 20,
+                    'type' => Discount::TYPE_PERCENTAGE,
+                ],
             ],
             'save' => 'pending',
         ];
