@@ -24,7 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class FeatureContext implements Context
 {
     private const DEFAULT_SETTINGS = [
-        'system/company/app_name' => 'CSBill',
+        'system/company/company_name' => 'CSBill',
         'system/company/logo' => null,
         'system/company/currency' => CurrencyFactory::DEFAULT_CURRENCY,
         'quote/email_subject' => 'New Quotation - #{id}',
