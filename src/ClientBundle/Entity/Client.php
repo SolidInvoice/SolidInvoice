@@ -125,7 +125,6 @@ class Client
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
-     * @Serialize\Groups({"client_api"})
      * @ApiSubresource
      */
     private $quotes;
@@ -135,7 +134,6 @@ class Client
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
-     * @Serialize\Groups({"client_api"})
      * @ApiSubresource
      */
     private $invoices;
@@ -144,7 +142,6 @@ class Client
      * @var Collection|Payment[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
-     * @Serialize\Groups({"client_api"})
      * @ApiSubresource
      */
     private $payments;
