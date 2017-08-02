@@ -15,6 +15,7 @@ use Behat\Behat\Context\Context;
 use CSBill\ClientBundle\Entity\ContactType;
 use CSBill\CoreBundle\CSBillCoreBundle;
 use CSBill\CoreBundle\Entity\Version;
+use CSBill\MoneyBundle\Factory\CurrencyFactory;
 use CSBill\SettingsBundle\Entity\Setting;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -23,8 +24,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class FeatureContext implements Context
 {
     private const DEFAULT_SETTINGS = [
-        'system/general/app_name' => 'CSBill',
-        'system/general/logo' => null,
+        'system/company/app_name' => 'CSBill',
+        'system/company/logo' => null,
+        'system/company/currency' => CurrencyFactory::DEFAULT_CURRENCY,
         'quote/email_subject' => 'New Quotation - #{id}',
         'quote/bcc_address' => null,
         'invoice/email_subject' => 'New Invoice - #{id}',

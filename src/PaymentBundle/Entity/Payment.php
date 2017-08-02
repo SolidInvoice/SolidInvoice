@@ -72,7 +72,7 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
      *
      * @var PaymentMethod
-     * @Serialize\Groups({"payment_api"})
+     * @Serialize\Groups({"payment_api", "client_api"})
      */
     private $method;
 
@@ -80,13 +80,13 @@ class Payment extends BasePayment implements PaymentInterface
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Groups({"payment_api"})
+     * @Serialize\Groups({"payment_api", "client_api"})
      */
     private $status;
 
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
-     * @Serialize\Groups({"payment_api"})
+     * @Serialize\Groups({"payment_api", "client_api"})
      */
     private $message;
 
@@ -95,7 +95,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
-     * @Serialize\Groups({"payment_api"})
+     * @Serialize\Groups({"payment_api", "client_api"})
      */
     private $completed;
 

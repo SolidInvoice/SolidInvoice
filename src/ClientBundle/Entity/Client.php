@@ -15,6 +15,7 @@ namespace CSBill\ClientBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use CSBill\CoreBundle\Traits\Entity;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\PaymentBundle\Entity\Payment;
@@ -124,8 +125,8 @@ class Client
      *
      * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
-     * @Serialize\Groups({"none"})
-     * @ApiProperty(subresource=true)
+     * @Serialize\Groups({"client_api"})
+     * @ApiSubresource
      */
     private $quotes;
 
@@ -134,8 +135,8 @@ class Client
      *
      * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
-     * @Serialize\Groups({"none"})
-     * @ApiProperty(subresource=true)
+     * @Serialize\Groups({"client_api"})
+     * @ApiSubresource
      */
     private $invoices;
 
@@ -143,7 +144,8 @@ class Client
      * @var Collection|Payment[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
-     * @ApiProperty(subresource=true)
+     * @Serialize\Groups({"client_api"})
+     * @ApiSubresource
      */
     private $payments;
 

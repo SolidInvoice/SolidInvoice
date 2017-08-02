@@ -11,6 +11,7 @@
 
 namespace Application\Migrations;
 
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\CoreBundle\Form\Type\ImageUploadType;
 use CSBill\CoreBundle\Form\Type\Select2Type;
 use CSBill\MoneyBundle\Form\Type\CurrencyType;
@@ -68,8 +69,11 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
 
         $this->addSql('UPDATE invoices set discount = discount * 100');
         $this->addSql('UPDATE quotes set discount = discount * 100');
-        $this->addSql('ALTER TABLE invoices CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL');
-        $this->addSql('ALTER TABLE quotes CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL;');
+        $this->addSql('ALTER TABLE invoices CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL, ADD discount_type VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE quotes CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL, ADD discount_type VARCHAR(255) DEFAULT NULL');
+
+        $this->addSql('UPDATE invoices set discount_type = "'.Discount::TYPE_PERCENTAGE.'"');
+        $this->addSql('UPDATE quotes set discount_type = "'.Discount::TYPE_PERCENTAGE.'"');
     }
 
     /**

@@ -97,7 +97,7 @@
         "solidworx/form-handler-bundle": "1.0.0-beta",
         "defuse/php-encryption": "^2.1",
         "mpociot/vat-calculator": "^2.2",
-        "api-platform/core": "2.1.0-beta.1"
+        "api-platform/core": "v2.1.0-beta.2"
     },
     "require-dev": {
         "behat/behat": "^3.0",

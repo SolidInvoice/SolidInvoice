@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "95b5514bd6bb15e74e74a5ae5a514522",
+    "content-hash": "c6c8e6e1e938ac87e2bfe793aad54185",
     "packages": [
         {
             "name": "api-platform/core",
-            "version": "v2.1.0-beta.1",
+            "version": "v2.1.0-beta.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "8fc752c8c44de99f6f6d78ca0bc59bf4982d2df0"
+                "reference": "acec7dd3a0d39a07effddd999e7fe1371e657f1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/8fc752c8c44de99f6f6d78ca0bc59bf4982d2df0",
-                "reference": "8fc752c8c44de99f6f6d78ca0bc59bf4982d2df0",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/acec7dd3a0d39a07effddd999e7fe1371e657f1c",
+                "reference": "acec7dd3a0d39a07effddd999e7fe1371e657f1c",
                 "shasum": ""
             },
             "require": {
@@ -31,6 +31,9 @@
                 "symfony/property-info": "^3.1 || ^4.0",
                 "symfony/serializer": "^3.1 || ^4.0",
                 "willdurand/negotiation": "^2.0.3"
+            },
+            "conflict": {
+                "symfony/dependency-injection": "<3.3"
             },
             "require-dev": {
                 "behat/behat": "^3.1",
@@ -115,7 +118,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2017-06-07T15:28:03+00:00"
+            "time": "2017-07-21T17:48:39+00:00"
         },
         {
             "name": "authorizenet/authorizenet",
