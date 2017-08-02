@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace CSBill\ApiBundle\Serializer\Normalizer;
 
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\MoneyBundle\Formatter\MoneyFormatter;
-use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use Money\Currency;
-use Money\Money;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
+class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @var MoneyFormatter
@@ -50,23 +49,29 @@ class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        // @TODO: Currency should be determined if there is a client added to the context
-        return new Money($data * 100, $this->currency);
+        $discount = new Discount();
+        $discount->setType($data['type'] ?? null);
+        $discount->setValue($data['value'] ?? null);
+
+        return $discount;
     }
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return Money::class === $type || MoneyEntity::class === $type;
+        return Discount::class === $type;
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
-        /* @var Money $object */
-        return $this->formatter->format($object);
+        /* @var Discount $object */
+        return [
+            'type' => $object->getType(),
+            'value' => $object->getValue(),
+        ];
     }
 
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && Money::class === get_class($data);
+        return is_object($data) && Discount::class === get_class($data);
     }
 }

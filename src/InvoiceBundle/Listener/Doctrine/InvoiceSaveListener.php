@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\InvoiceBundle\Listener\Doctrine;
 
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use CSBill\PaymentBundle\Repository\PaymentRepository;
@@ -60,7 +61,6 @@ class InvoiceSaveListener implements EventSubscriber
                 $this->stateMachine->apply($entity, Graph::TRANSITION_NEW);
             }
 
-            // @TODO: Calculate total for the invoice before save
             $this->calculateTotal($entity);
 
             $entity->setBalance($entity->getTotal());
@@ -101,8 +101,17 @@ class InvoiceSaveListener implements EventSubscriber
 
         $invoice->setBaseTotal($subTotal);
 
-        if ($invoice->getDiscount()) {
-            $total = $total->subtract($total->multiply($invoice->getDiscount()));
+        if (null !== $invoice->getDiscount()) {
+            $discount = $invoice->getDiscount();
+
+            $discountValue = null;
+            if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
+                $discountValue = $total->multiply(((float) $discount->getValuePercentage()) / 100);
+            } else {
+                $discountValue = $discount->getValueMoney()->getMoney();
+            }
+
+            $total = $total->subtract($discountValue);
         }
 
         $invoice->setTotal($total);

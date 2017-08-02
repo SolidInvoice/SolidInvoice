@@ -20,7 +20,10 @@ Feature: Create Invoices
           {"id" : 1}
       ],
       "client": "/api/clients/1",
-      "discount": 0.1,
+      "discount": {
+          "type": "percentage",
+          "value": 10
+      },
       "items" : [
           {
               "price": 10,
@@ -46,7 +49,10 @@ Feature: Create Invoices
       "baseTotal": "$100.00",
       "balance": "$90.00",
       "tax": "$0.00",
-      "discount": 0.1,
+      "discount": {
+          "type": "percentage",
+          "value": 10
+      },
       "terms": null,
       "notes": null,
       "due": null,

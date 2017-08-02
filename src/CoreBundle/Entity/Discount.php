@@ -17,6 +17,7 @@ use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
+use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Embeddable()
@@ -31,6 +32,7 @@ class Discount
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
     private $valueMoney;
 
@@ -38,6 +40,7 @@ class Discount
      * @var float
      *
      * @ORM\Column(name="value_percentage", type="float", nullable=true)
+     * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
     private $valuePercentage;
 
@@ -45,6 +48,7 @@ class Discount
      * @var string
      *
      * @ORM\Column(name="type", type="string", nullable=true)
+     * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
     private $type;
 
@@ -67,7 +71,7 @@ class Discount
      *
      * @return $this
      */
-    public function setType(string $type): self
+    public function setType(?string $type): self
     {
         $this->type = $type;
 
