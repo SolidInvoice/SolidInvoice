@@ -65,6 +65,11 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('UPDATE tax_rates SET tax_type = "Exlusive" WHERE tax_type = "exlusive"');
 
         $this->addSql('ALTER TABLE clients ADD vat_number VARCHAR(255) DEFAULT NULL');
+
+        $this->addSql('UPDATE invoices set discount = discount * 100');
+        $this->addSql('UPDATE quotes set discount = discount * 100');
+        $this->addSql('ALTER TABLE invoices CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL');
+        $this->addSql('ALTER TABLE quotes CHANGE discount discount_value_percentage DOUBLE PRECISION DEFAULT NULL, ADD discount_valueMoney_amount INT NOT NULL, ADD discount_valueMoney_currency VARCHAR(3) DEFAULT NULL;');
     }
 
     /**
@@ -86,6 +91,25 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('ALTER TABLE notifications CHANGE email email VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE hipchat hipchat VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE sms sms VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
 
         $this->addSql('ALTER TABLE clients DROP vat_number');
+
+        $this->addSql('ALTER TABLE client_credit CHANGE value_amount value_amount INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE 
+          invoices CHANGE total_amount total_amount INT DEFAULT NULL, 
+          CHANGE baseTotal_amount baseTotal_amount INT DEFAULT NULL, 
+          CHANGE tax_amount tax_amount INT DEFAULT NULL, 
+          CHANGE balance_amount balance_amount INT DEFAULT NULL, 
+          CHANGE discount_valueMoney_amount discount_valueMoney_amount INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE 
+          invoice_lines CHANGE price_amount price_amount INT DEFAULT NULL, 
+          CHANGE total_amount total_amount INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE 
+          quotes CHANGE total_amount total_amount INT DEFAULT NULL, 
+          CHANGE baseTotal_amount baseTotal_amount INT DEFAULT NULL, 
+          CHANGE tax_amount tax_amount INT DEFAULT NULL, 
+          CHANGE discount_valueMoney_amount discount_valueMoney_amount INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE 
+          quote_lines CHANGE price_amount price_amount INT DEFAULT NULL, 
+          CHANGE total_amount total_amount INT DEFAULT NULL');
     }
 
     private function updateSettings(): void

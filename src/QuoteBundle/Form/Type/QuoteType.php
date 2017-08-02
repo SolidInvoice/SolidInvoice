@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace CSBill\QuoteBundle\Form\Type;
 
 use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
+use CSBill\CoreBundle\Form\Type\DiscountType;
 use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
 use CSBill\QuoteBundle\Entity\Quote;
 use CSBill\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -55,7 +55,7 @@ class QuoteType extends AbstractType
             ]
         );
 
-        $builder->add('discount', PercentType::class, ['required' => false]);
+        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']->getCode()]);
 
         $builder->add(
             'items',

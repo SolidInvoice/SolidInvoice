@@ -1,4 +1,4 @@
-define(['marionette', 'jquery', 'core/ajaxmodal', 'bootstrap.modalmanager'], function(Mn, $) {
+define(['marionette', 'core/ajaxmodal', 'bootstrap.modalmanager'], function(Mn) {
     "use strict";
 
     return Mn.View.extend({

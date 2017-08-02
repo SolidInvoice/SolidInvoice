@@ -1,16 +1,22 @@
-define(['marionette'], function (Mn) {
-    return Mn.View.extend({
+define(['core/view'], function(ItemView) {
+    return ItemView.extend({
         el: '#discount',
-        events: {
-            'keyup @ui.discount': 'setDiscount'
+        ui: {
+            'value': '.discount-value',
+            'type': '.discount-type'
         },
-        setDiscount: function (event) {
-            this.model.set('total', $(event.target).val());
+        events: {
+            'keyup @ui.value': 'setDiscount',
+            'change @ui.type': 'setDiscount',
+        },
+        setDiscount: function() {
+            this.model.set('value', parseFloat(this.ui.value.val()));
+            this.model.set('type', this.ui.type.val());
 
             this.getOption('collection').trigger('change');
         },
-        initialize: function () {
-            this.setDiscount({target: this.ui.discount});
+        initialize: function() {
+            this.setDiscount();
         }
     });
 });

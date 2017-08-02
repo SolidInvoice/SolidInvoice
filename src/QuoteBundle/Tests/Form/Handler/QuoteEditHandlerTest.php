@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Tests\Form\Handler;
 
+use CSBill\CoreBundle\Entity\Discount;
 use CSBill\CoreBundle\Response\FlashResponse;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
@@ -46,7 +47,10 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
 
         $this->quote = new Quote();
         $this->quote->setStatus(Graph::STATUS_DRAFT);
-        $this->quote->setDiscount(0.1);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(1);
+        $this->quote->setDiscount($discount);
 
         $this->em->persist($this->quote);
         $this->em->flush();
@@ -107,7 +111,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         /* @var Quote $quote */
 
         $this->assertSame(Graph::STATUS_PENDING, $quote->getStatus());
-        $this->assertSame(0.2, $quote->getDiscount());
+        $this->assertSame(20.0, $quote->getDiscount()->getValue());
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
@@ -123,7 +127,10 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
     {
         return [
             'quote' => [
-                'discount' => 20,
+                'discount' => [
+                    'value' => 20,
+                    'type' => Discount::TYPE_PERCENTAGE,
+                ],
             ],
             'save' => 'pending',
         ];

@@ -11,7 +11,7 @@ define(
         'core/billing/model/collection',
         'core/billing/view/footer',
         'invoice/view',
-        'invoice/discount',
+        'core/billing/view/discount',
         'routing',
         'accounting'
     ],
@@ -62,6 +62,7 @@ define(
                         module.app.showChildView('invoiceRows', invoiceView);
 
                         this.$el.find(this.regions.invoiceForm).attr('action', Routing.generate('_invoices_create', {'client': clientOptions.client}));
+                        $('.currency-view').html(clientOptions.currency);
 
                         module.app.initialize(module.app.options);
                     }, this));

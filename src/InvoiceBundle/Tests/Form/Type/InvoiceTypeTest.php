@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\InvoiceBundle\Tests\Form\Type;
 
+use CSBill\CoreBundle\Entity\Discount;
+use CSBill\CoreBundle\Form\Type\DiscountType;
 use CSBill\CoreBundle\Tests\FormTestCase;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
@@ -29,10 +31,13 @@ class InvoiceTypeTest extends FormTestCase
     {
         $notes = $this->faker->text;
         $terms = $this->faker->text;
-        $discount = $this->faker->numberBetween(0, 100);
+        $discountValue = $this->faker->numberBetween(0, 100);
         $formData = [
             'client' => null,
-            'discount' => $discount,
+            'discount' => [
+                'value' => $discountValue,
+                'type' => Discount::TYPE_PERCENTAGE,
+            ],
             'recurring' => false,
             'recurringInfo' => null,
             'items' => [],
@@ -51,7 +56,10 @@ class InvoiceTypeTest extends FormTestCase
 
         $object->setTerms($terms);
         $object->setNotes($notes);
-        $object->setDiscount((float) $discount / 100);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue($discountValue);
+        $object->setDiscount($discount);
         $object->setTotal(new \Money\Money(0, new Currency('USD')));
         $object->setTax(new \Money\Money(0, new Currency('USD')));
         $object->setBaseTotal(new \Money\Money(0, new Currency('USD')));
@@ -78,7 +86,7 @@ class InvoiceTypeTest extends FormTestCase
 
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$invoiceType, $itemType], []),
+            new PreloadedExtension([$invoiceType, $itemType, new DiscountType($currency)], []),
         ];
     }
 

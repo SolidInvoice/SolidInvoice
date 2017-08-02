@@ -1,7 +1,8 @@
 define(['backbone'], function (Backbone) {
     return Backbone.Model.extend({
         defaults: {
-            total: 0
+            value: 0,
+            type: 0
         }
     });
 });
