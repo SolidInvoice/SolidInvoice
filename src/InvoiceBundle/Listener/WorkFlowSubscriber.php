@@ -63,13 +63,10 @@ class WorkFlowSubscriber implements EventSubscriberInterface
             $invoice->archive();
         }
 
-        // Don't send status updates for new invoices
-        if ($invoice->getId()) {
-            $em = $this->registry->getManager();
-            $em->persist($invoice);
-            $em->flush();
+        $em = $this->registry->getManager();
+        $em->persist($invoice);
+        $em->flush();
 
-            $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
-        }
+        $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
     }
 }

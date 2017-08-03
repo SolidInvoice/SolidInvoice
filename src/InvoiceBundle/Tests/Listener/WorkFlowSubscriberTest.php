@@ -50,7 +50,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid')));
         $this->assertNotNull($invoice->getPaidDate());
-        $this->assertSame($invoice, $this->em->getRepository('CSBillInvoiceBundle:Invoice')->find(1));
+        $this->assertEquals($invoice, $this->em->getRepository('CSBillInvoiceBundle:Invoice')->find(1));
     }
 
     public function testInvoiceArchive()
@@ -82,6 +82,7 @@ class WorkFlowSubscriberTest extends TestCase
     {
         return [
             'CSBillInvoiceBundle:Invoice',
+            'CSBillInvoiceBundle:RecurringInvoice',
         ];
     }
 }
