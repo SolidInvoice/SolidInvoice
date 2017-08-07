@@ -1,4 +1,4 @@
-@login
+@login @javascript
 Feature: Log into application
   In order to use the application
   As a user
