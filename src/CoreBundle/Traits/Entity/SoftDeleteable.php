@@ -20,7 +20,6 @@ trait SoftDeleteable
 {
     /**
      * @ORM\Column(type="datetime", name="deleted", nullable=true)
-     * @ Serialize\Exclude()
      * @ApiProperty(iri="https://schema.org/DateTime")
      */
     protected $deletedAt;
