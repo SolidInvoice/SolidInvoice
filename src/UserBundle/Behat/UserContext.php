@@ -18,6 +18,9 @@ use CSBill\CoreBundle\Behat\DefaultContext;
 use CSBill\UserBundle\Entity\User;
 use CSBill\UserBundle\Manager\UserManager;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UserContext extends DefaultContext
 {
     /**

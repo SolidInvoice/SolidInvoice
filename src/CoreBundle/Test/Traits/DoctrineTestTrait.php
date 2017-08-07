@@ -30,6 +30,9 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait DoctrineTestTrait
 {
     /**

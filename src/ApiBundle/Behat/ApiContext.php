@@ -28,6 +28,9 @@ use Knp\FriendlyContexts\Context\EntityContext;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ApiContext extends DefaultContext implements Context
 {
     /**
