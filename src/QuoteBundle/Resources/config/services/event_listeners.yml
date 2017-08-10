@@ -17,6 +17,4 @@ services:
 
     CSBill\QuoteBundle\Listener\Doctrine\QuoteSaveListener:
         autowire: true
-        arguments:
-            $stateMachine: '@state_machine.quote'
         tags: ['doctrine.event_subscriber']
