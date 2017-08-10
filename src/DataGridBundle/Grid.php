@@ -20,29 +20,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Serializer\ExclusionPolicy("ALL")
- */
 class Grid implements GridInterface
 {
     /**
      * @var string
-     * @Serializer\Expose()
      */
     private $name;
 
     /**
      * @var ArrayCollection
-     * @Serializer\Expose()
      */
     private $columns;
 
     /**
      * @var SourceInterface
-     * @Serializer\Exclude()
      */
     private $source;
 
@@ -53,37 +46,31 @@ class Grid implements GridInterface
 
     /**
      * @var array
-     * @Serializer\Expose()
      */
     private $actions;
 
     /**
      * @var array
-     * @Serializer\Expose()
      */
     private $lineActions;
 
     /**
      * @var array
-     * @Serializer\Expose()
      */
     private $properties;
 
     /**
      * @var string
-     * @Serializer\Expose()
      */
     private $icon;
 
     /**
      * @var string
-     * @Serializer\Expose()
      */
     private $title;
 
     /**
      * @var array
-     * @Serializer\Expose()
      */
     private $parameters = [];
 

@@ -17,11 +17,11 @@ use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Handler\ContactEditFormHandler;
 use CSBill\CoreBundle\Templating\Template;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
-use JMS\Serializer\SerializerBuilder;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Serializer;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
@@ -43,7 +43,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         $handler = new ContactEditFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer(SerializerBuilder::create()->build());
+        $handler->setSerializer(new Serializer());
 
         return $handler;
     }

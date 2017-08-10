@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Traits;
 
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 trait SerializeTrait
 {
@@ -50,13 +49,11 @@ trait SerializeTrait
             throw new \Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', get_class($this), SerializerInterface::class, __METHOD__));
         }
 
-        $context = SerializationContext::create()->setGroups($groups);
-
         if (!$response) {
             $response = new JsonResponse('', 200, [], true);
         }
 
-        $json = $this->serializer->serialize($object, 'json', $context);
+        $json = $this->serializer->serialize($object, 'json', []);
 
         if ($response instanceof JsonResponse) {
             $response->setJson($json);

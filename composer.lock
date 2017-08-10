@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6c8e6e1e938ac87e2bfe793aad54185",
+    "content-hash": "15e7254049e17f529f41f0de43d96621",
     "packages": [
         {
             "name": "api-platform/core",
@@ -383,21 +383,21 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97"
+                "reference": "5beebb01b025c94e93686b7a0ed3edae81fe3e7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/54cacc9b81758b14e3ce750f205a393d52339e97",
-                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/5beebb01b025c94e93686b7a0ed3edae81fe3e7f",
+                "reference": "5beebb01b025c94e93686b7a0ed3edae81fe3e7f",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "1.*",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
@@ -406,7 +406,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -447,7 +447,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-02-24T16:22:25+00:00"
+            "time": "2017-07-22T10:58:02+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -2272,16 +2272,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "1.7.1",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "4fad8bbbe76e05de3b79ffa3db027058ed3813ff"
+                "reference": "ce65798f722c836f16d5d7d2e3ca9d21e0fb4331"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/4fad8bbbe76e05de3b79ffa3db027058ed3813ff",
-                "reference": "4fad8bbbe76e05de3b79ffa3db027058ed3813ff",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/ce65798f722c836f16d5d7d2e3ca9d21e0fb4331",
+                "reference": "ce65798f722c836f16d5d7d2e3ca9d21e0fb4331",
                 "shasum": ""
             },
             "require": {
@@ -2334,6 +2334,10 @@
             ],
             "authors": [
                 {
+                    "name": "Asmir Mustafic",
+                    "email": "goetas@gmail.com"
+                },
+                {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com"
                 }
@@ -2347,85 +2351,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2017-05-15T08:35:42+00:00"
-        },
-        {
-            "name": "jms/serializer-bundle",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "90373f0ed225b204bed66cc3f6837746c5902ac5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/90373f0ed225b204bed66cc3f6837746c5902ac5",
-                "reference": "90373f0ed225b204bed66cc3f6837746c5902ac5",
-                "shasum": ""
-            },
-            "require": {
-                "jms/serializer": "^1.7",
-                "php": ">=5.4.0",
-                "phpoption/phpoption": "^1.1.0",
-                "symfony/framework-bundle": "~2.3|~3.0"
-            },
-            "require-dev": {
-                "doctrine/doctrine-bundle": "*",
-                "doctrine/orm": "*",
-                "phpunit/phpunit": "^4.2|^5.0",
-                "symfony/browser-kit": "*",
-                "symfony/class-loader": "*",
-                "symfony/css-selector": "*",
-                "symfony/expression-language": "~2.6|~3.0",
-                "symfony/finder": "*",
-                "symfony/form": "*",
-                "symfony/process": "*",
-                "symfony/stopwatch": "*",
-                "symfony/twig-bundle": "*",
-                "symfony/validator": "*",
-                "symfony/yaml": "*"
-            },
-            "suggest": {
-                "jms/di-extra-bundle": "Required to get lazy loading (de)serialization visitors, ~1.3"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JMS\\SerializerBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Asmir Mustafic",
-                    "email": "goetas@gmail.com"
-                },
-                {
-                    "name": "Johannes M. Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "Allows you to easily serialize, and deserialize data of any complexity",
-            "homepage": "http://jmsyst.com/bundles/JMSSerializerBundle",
-            "keywords": [
-                "deserialization",
-                "jaxb",
-                "json",
-                "serialization",
-                "xml"
-            ],
-            "time": "2017-05-17T10:26:43+00:00"
+            "time": "2017-07-13T11:23:56+00:00"
         },
         {
             "name": "klarna/checkout",
@@ -6856,123 +6782,6 @@
                 "twilio"
             ],
             "time": "2017-06-16T20:19:46+00:00"
-        },
-        {
-            "name": "willdurand/hateoas",
-            "version": "2.11.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/willdurand/Hateoas.git",
-                "reference": "bc5c1035f7f040f13810fbed9ac87ba540af7758"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/Hateoas/zipball/bc5c1035f7f040f13810fbed9ac87ba540af7758",
-                "reference": "bc5c1035f7f040f13810fbed9ac87ba540af7758",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/annotations": "~1.0",
-                "doctrine/common": "~2.0",
-                "jms/metadata": "~1.1",
-                "jms/serializer": "^1.7",
-                "php": "^5.5|^7.0",
-                "phpoption/phpoption": ">=1.1.0,<2.0-dev",
-                "symfony/expression-language": "~2.4 || ~3.0"
-            },
-            "require-dev": {
-                "pagerfanta/pagerfanta": "~1.0",
-                "phpunit/phpunit": "~4.5",
-                "symfony/dependency-injection": "~2.4 || ~3.0",
-                "symfony/routing": "~2.4 || ~3.0",
-                "symfony/yaml": "~2.4 || ~3.0",
-                "twig/twig": "~1.12"
-            },
-            "suggest": {
-                "symfony/routing": "To use the SymfonyRouteFactory.",
-                "symfony/yaml": "To use yaml based configuration.",
-                "twig/twig": "To use the Twig extensions."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.11-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Hateoas": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Adrien Brault",
-                    "email": "adrien.brault@gmail.com"
-                },
-                {
-                    "name": "William Durand",
-                    "email": "william.durand1@gmail.com"
-                }
-            ],
-            "description": "A PHP library to support implementing representations for HATEOAS REST web services",
-            "time": "2017-05-22T10:27:33+00:00"
-        },
-        {
-            "name": "willdurand/hateoas-bundle",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/willdurand/BazingaHateoasBundle.git",
-                "reference": "bf57a3e45a26937726f370933eec4d8a7062733c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaHateoasBundle/zipball/bf57a3e45a26937726f370933eec4d8a7062733c",
-                "reference": "bf57a3e45a26937726f370933eec4d8a7062733c",
-                "shasum": ""
-            },
-            "require": {
-                "jms/serializer-bundle": "~1.0 || ^2.0",
-                "php": ">5.4",
-                "symfony/framework-bundle": "~2.3 || ~3.0",
-                "willdurand/hateoas": "^2.10.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.5",
-                "symfony/expression-language": "~2.4 || ~3.0",
-                "twig/twig": "~1.12"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Bazinga\\Bundle\\HateoasBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "William Durand",
-                    "email": "william.durand1@gmail.com"
-                }
-            ],
-            "description": "Integration of Hateoas into Symfony2.",
-            "keywords": [
-                "HATEOAS",
-                "rest"
-            ],
-            "time": "2017-06-07T17:54:37+00:00"
         },
         {
             "name": "willdurand/js-translation-bundle",

@@ -15,7 +15,6 @@ namespace CSBill\UserBundle\Entity;
 
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="CSBill\UserBundle\Repository\ApiTokenHistoryRepository")
@@ -29,7 +28,6 @@ class ApiTokenHistory
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serializer\Groups({"js"})
      *
      * @var int
      */
@@ -37,7 +35,6 @@ class ApiTokenHistory
 
     /**
      * @ORM\Column(type="string")
-     * @Serializer\Groups({"js"})
      *
      * @var string
      */
@@ -45,7 +42,6 @@ class ApiTokenHistory
 
     /**
      * @ORM\Column(type="string", length=125)
-     * @Serializer\Groups({"js"})
      *
      * @var string
      */
@@ -53,7 +49,6 @@ class ApiTokenHistory
 
     /**
      * @ORM\Column(type="string", length=25)
-     * @Serializer\Groups({"js"})
      *
      * @var string
      */
@@ -68,7 +63,6 @@ class ApiTokenHistory
 
     /**
      * @ORM\Column(type="string")
-     * @Serializer\Groups({"js"})
      *
      * @var string
      */

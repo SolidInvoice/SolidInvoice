@@ -5,4 +5,4 @@ services:
             - { name: twig.extension }
 
     CSBill\DataGridBundle\Twig\Extension\GridExtension:
-        arguments: ['@grid.repository', '@jms_serializer']
+        arguments: ['@grid.repository', '@serializer']

@@ -77,8 +77,6 @@
         "tijsverkoyen/css-to-inline-styles": "^2.0",
         "moneyphp/money": "^3.0",
         "friendsofsymfony/rest-bundle": "^2.1",
-        "jms/serializer-bundle": "^2.0",
-        "willdurand/hateoas-bundle": "^1.1",
         "nelmio/api-doc-bundle": "^2.7",
         "egulias/email-validator": "^2.1",
         "mtdowling/cron-expression": "^1.0",

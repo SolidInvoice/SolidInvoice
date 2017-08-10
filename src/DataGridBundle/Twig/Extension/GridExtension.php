@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CSBill\DataGridBundle\Twig\Extension;
 
 use CSBill\DataGridBundle\Repository\GridRepository;
-use JMS\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class GridExtension extends \Twig_Extension
 {

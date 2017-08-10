@@ -19,7 +19,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serialize;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,7 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CSBill\TaxBundle\Repository\TaxRepository")
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
- * @Serialize\ExclusionPolicy("all")
  */
 class Tax
 {
@@ -52,7 +50,6 @@ class Tax
      *
      * @ORM\Column(name="name", type="string", length=32)
      * @Assert\NotBlank()
-     * @Serialize\Expose()
      */
     private $name;
 
@@ -62,7 +59,6 @@ class Tax
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Assert\Type("float")
      * @Assert\NotBlank()
-     * @Serialize\Expose()
      */
     private $rate;
 
@@ -71,7 +67,6 @@ class Tax
      *
      * @ORM\Column(name="tax_type", type="string", length=32)
      * @Assert\NotBlank()
-     * @Serialize\Expose()
      */
     private $type;
 

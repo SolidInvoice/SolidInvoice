@@ -28,13 +28,11 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
-            new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
