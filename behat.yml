@@ -75,3 +75,4 @@ default:
             alice:
                 fixtures:
                     Client: tests/fixtures/client.yml
+                    Invoice: tests/fixtures/invoice.yml
