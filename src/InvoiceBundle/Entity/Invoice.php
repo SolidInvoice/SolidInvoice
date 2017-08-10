@@ -26,7 +26,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Hateoas\Configuration\Annotation as Hateoas;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
@@ -40,7 +39,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
- * @Hateoas\Relation("self", href=@Hateoas\Route("get_invoice", absolute=true, parameters={"invoiceId" : "expr(object.getId())"}))
  */
 class Invoice
 {

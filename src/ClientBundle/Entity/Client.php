@@ -24,7 +24,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Hateoas\Configuration\Annotation as Hateoas;
 use Money\Currency;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -38,11 +37,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Hateoas\Relation("self", href=@Hateoas\Route("get_client", absolute=true, parameters={"clientId" : "expr(object.getId())"}))
- * @Hateoas\Relation("client.contacts", href=@Hateoas\Route("get_client_contacts", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
- * @Hateoas\Relation("client.invoices", href=@Hateoas\Route("get_client_invoices", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
- * @Hateoas\Relation("client.quotes",   href=@Hateoas\Route("get_client_quotes",   parameters={"clientId" : "expr(object.getId())"}, absolute=true))
- * @Hateoas\Relation("client.payments", href=@Hateoas\Route("get_client_payments", parameters={"clientId" : "expr(object.getId())"}, absolute=true))
  */
 class Client
 {
