@@ -40,7 +40,7 @@ class QuoteCreateListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => [['setQuoteStatus', EventPriorities::PRE_WRITE]]
+            KernelEvents::VIEW => [['setQuoteStatus', EventPriorities::PRE_WRITE]],
         ];
     }
 

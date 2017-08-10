@@ -40,7 +40,7 @@ class InvoiceCreateListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => [['setInvoiceStatus', EventPriorities::PRE_WRITE]]
+            KernelEvents::VIEW => [['setInvoiceStatus', EventPriorities::PRE_WRITE]],
         ];
     }
 
