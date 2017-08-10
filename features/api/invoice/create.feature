@@ -26,7 +26,7 @@ Feature: Create Invoices
       },
       "items" : [
           {
-              "price": 10,
+              "price": 100,
               "qty": 1,
               "description": "Foo Item"
           }
