@@ -16,13 +16,13 @@ Money\Currency:
 
 Money\Money:
     money:
-        __construct: [10, '@currency']
+        __construct: [10000, '@currency']
 
 CSBill\InvoiceBundle\Entity\Item:
     item:
         price: '@money'
         qty: 1
-        description: '<text()>'
+        description: 'Foo Item'
 
 CSBill\InvoiceBundle\Entity\Invoice:
     invoice:
