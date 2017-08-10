@@ -124,6 +124,10 @@ class PaymentRepository extends EntityRepository
      */
     public function getTotalPaidForInvoice(Invoice $invoice): int
     {
+        if (!$invoice->getId()) {
+            return 0;
+        }
+
         $queryBuilder = $this->createQueryBuilder('p');
 
         $queryBuilder

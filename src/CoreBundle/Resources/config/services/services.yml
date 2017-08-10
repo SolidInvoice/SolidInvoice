@@ -56,3 +56,5 @@ services:
         alias: session
 
     Mpociot\VatCalculator\VatCalculator: ~
+    CSBill\CoreBundle\Billing\TotalCalculator:
+        autowire: true

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CSBill\QuoteBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
 use CSBill\CoreBundle\Form\Type\DiscountType;
 use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
 use CSBill\QuoteBundle\Entity\Quote;
@@ -79,7 +78,6 @@ class QuoteType extends AbstractType
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
-        $builder->addEventSubscriber(new BillingFormSubscriber($options['currency']));
     }
 
     /**

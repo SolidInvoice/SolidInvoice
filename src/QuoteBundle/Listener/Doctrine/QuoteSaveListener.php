@@ -11,15 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Listener\Doctrine;
+namespace CSBill\QuoteBundle\Listener\Doctrine;
 
 use CSBill\CoreBundle\Billing\TotalCalculator;
-use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
-class InvoiceSaveListener implements EventSubscriber
+class QuoteSaveListener implements EventSubscriber
 {
     private $totalCalculator;
 
@@ -40,7 +40,7 @@ class InvoiceSaveListener implements EventSubscriber
     {
         $entity = $event->getEntity();
 
-        if ($entity instanceof Invoice) {
+        if ($entity instanceof Quote) {
             $this->totalCalculator->calculateTotals($entity);
         }
     }
@@ -49,7 +49,7 @@ class InvoiceSaveListener implements EventSubscriber
     {
         $entity = $event->getEntity();
 
-        if ($entity instanceof Invoice) {
+        if ($entity instanceof Quote) {
             $this->totalCalculator->calculateTotals($entity);
         }
     }

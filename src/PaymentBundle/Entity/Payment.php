@@ -52,6 +52,13 @@ class Payment extends BasePayment implements PaymentInterface
     protected $clientId;
 
     /**
+     * @ORM\Column(name="total_amount", type="integer")
+     *
+     * @var int
+     */
+    protected $totalAmount;
+
+    /**
      * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
      *
      * @var Invoice
