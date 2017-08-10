@@ -29,8 +29,9 @@ class MoneyTypeTest extends TestCase
     {
         if (!Type::hasType('money')) {
             Type::addType('money', 'CSBill\MoneyBundle\Doctrine\Types\MoneyType');
-            MoneyType::setCurrency(new Currency('USD'));
         }
+
+        MoneyType::setCurrency(new Currency('USD'));
     }
 
     public function testGetName()
