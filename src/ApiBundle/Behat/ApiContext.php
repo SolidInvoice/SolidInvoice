@@ -200,7 +200,9 @@ class ApiContext extends DefaultContext implements Context
             {
                 foreach ($expected as $key => $value) {
                     if (is_array($value)) {
-                        $child = $actual->read($key, $this->propertyAccess);
+                        $child = (array) $actual->read($key, $this->propertyAccess);
+
+                        sort($child);
 
                         foreach ($child as $k => $v) {
                             $this->validate((array) $value[$k], new Json(json_encode($v)));
@@ -208,7 +210,7 @@ class ApiContext extends DefaultContext implements Context
                         continue;
                     }
 
-                    Assert::assertSame($value, $actual->read($key, $this->propertyAccess));
+                    Assert::assertEquals($value, $actual->read($key, $this->propertyAccess));
                 }
             }
         };

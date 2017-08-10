@@ -16,10 +16,10 @@ namespace CSBill\CoreBundle\Exception;
 class UnexpectedTypeException extends \InvalidArgumentException
 {
     /**
-     * @param string $value
+     * @param mixed $value
      * @param string $expectedType
      */
-    public function __construct(string $value, string $expectedType)
+    public function __construct($value, string $expectedType)
     {
         parent::__construct(
             sprintf(

@@ -17,3 +17,17 @@ services:
     api.token.manager:
         class: CSBill\ApiBundle\ApiTokenManager
         arguments: ['@doctrine']
+
+    CSBill\ApiBundle\Event\Listener\InvoiceCreateListener:
+        autowire: true
+        arguments:
+            $stateMachine: '@state_machine.invoice'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    CSBill\ApiBundle\Event\Listener\QuoteCreateListener:
+        autowire: true
+        arguments:
+            $stateMachine: '@state_machine.quote'
+        tags:
+            - { name: 'kernel.event_subscriber' }
