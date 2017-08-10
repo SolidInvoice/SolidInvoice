@@ -30,7 +30,6 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->setupDoctrine();
 
         $type = new ContactType();
         $type->setName('email');

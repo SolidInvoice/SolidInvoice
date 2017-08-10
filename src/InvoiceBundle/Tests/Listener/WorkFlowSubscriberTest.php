@@ -31,11 +31,6 @@ class WorkFlowSubscriberTest extends TestCase
     use DoctrineTestTrait,
         MockeryPHPUnitIntegration;
 
-    protected function setUp()
-    {
-        $this->setupDoctrine();
-    }
-
     public function testInvoicePaid()
     {
         $notification = M::mock(NotificationManager::class);

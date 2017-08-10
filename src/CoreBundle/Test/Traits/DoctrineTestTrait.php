@@ -45,6 +45,9 @@ trait DoctrineTestTrait
      */
     protected $em;
 
+    /**
+     * @before
+     */
     protected function setupDoctrine()
     {
         $config = DoctrineTestHelper::createTestConfiguration();

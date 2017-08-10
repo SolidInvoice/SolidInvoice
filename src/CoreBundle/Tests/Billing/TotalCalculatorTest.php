@@ -36,7 +36,6 @@ class TotalCalculatorTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->setupDoctrine();
         \CSBill\MoneyBundle\Entity\Money::setBaseCurrency('USD');
     }
 

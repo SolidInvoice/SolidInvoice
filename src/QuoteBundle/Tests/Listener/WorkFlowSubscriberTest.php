@@ -32,11 +32,6 @@ class WorkFlowSubscriberTest extends TestCase
     use DoctrineTestTrait,
         MockeryPHPUnitIntegration;
 
-    protected function setUp()
-    {
-        $this->setupDoctrine();
-    }
-
     public function testOnQuoteAccepted()
     {
         $quote = new Quote();

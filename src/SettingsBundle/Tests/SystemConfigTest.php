@@ -30,8 +30,6 @@ class SystemConfigTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupDoctrine();
-
         $setting = (new Setting())
             ->setKey('one/two/three')
             ->setValue('four')

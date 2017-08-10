@@ -49,8 +49,6 @@ abstract class FormTestCase extends TypeTestCase
 
     protected function setUp()
     {
-        $this->setupDoctrine();
-
         $this->faker = Factory::create();
 
         $this->factory = Forms::createFormFactoryBuilder()
