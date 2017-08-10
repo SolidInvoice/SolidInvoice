@@ -16,16 +16,17 @@ namespace CSBill\ClientBundle\Tests\Form\Handler;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Handler\ContactEditFormHandler;
 use CSBill\CoreBundle\Templating\Template;
+use CSBill\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Serializer;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
-    use MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration,
+        SymfonyKernelTrait;
 
     private $firstName;
 
@@ -43,7 +44,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         $handler = new ContactEditFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer(new Serializer());
+        $handler->setSerializer($this->container->get('serializer'));
 
         return $handler;
     }
