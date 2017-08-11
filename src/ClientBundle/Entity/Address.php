@@ -36,7 +36,7 @@ class Address
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $id;
 
@@ -44,7 +44,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="street1", type="string", nullable=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $street1;
 
@@ -52,7 +52,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="street2", type="string", nullable=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $street2;
 
@@ -60,7 +60,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="city", type="string", nullable=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $city;
 
@@ -68,7 +68,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="state", type="string", nullable=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $state;
 
@@ -76,7 +76,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="zip", type="string", nullable=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $zip;
 
@@ -84,7 +84,7 @@ class Address
      * @var string
      *
      * @ORM\Column(name="country", type="string", nullable=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $country;
 

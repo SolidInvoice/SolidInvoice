@@ -18,7 +18,6 @@ use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
@@ -46,16 +45,10 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
      */
     private $router;
 
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
-
-    public function __construct(StateMachine $stateMachine, PaymentRepository $paymentRepository, RouterInterface $router)
+    public function __construct(StateMachine $stateMachine, RouterInterface $router)
     {
         $this->stateMachine = $stateMachine;
         $this->router = $router;
-        $this->paymentRepository = $paymentRepository;
     }
 
     /**

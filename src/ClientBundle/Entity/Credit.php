@@ -37,7 +37,6 @@ class Credit
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"none"})
      */
     private $id;
 
@@ -45,15 +44,12 @@ class Credit
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      *
      * @var MoneyEntity
-     *
-     * @Serialize\Groups({"api", "js"})
      */
     private $value;
 
     /**
      * @var Client
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
-     * @Serialize\Groups({"js"})
      */
     private $client;
 

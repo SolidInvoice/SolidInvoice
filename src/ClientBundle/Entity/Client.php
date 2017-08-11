@@ -50,7 +50,7 @@ class Client
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $id;
 
@@ -60,7 +60,7 @@ class Client
      * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="http://schema.org/name")
      */
     private $name;
@@ -71,7 +71,7 @@ class Client
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
      * @Assert\Length(max=125)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/URL")
      */
     private $website;
@@ -80,7 +80,7 @@ class Client
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="http://schema.org/Text")
      */
     private $status;
@@ -89,7 +89,7 @@ class Client
      * @var string
      *
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="http://schema.org/Text")
      */
     private $currency;
@@ -98,7 +98,7 @@ class Client
      * @var string
      *
      * @ORM\Column(name="vat_number", type="string", nullable=true)
-     * @Serialize\Groups({"api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $vatNumber;
 
@@ -109,7 +109,7 @@ class Client
      * @ORM\OrderBy({"firstName" = "ASC"})
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
      * @Assert\Valid()
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="http://schema.org/Person")
      */
     private $contacts;
@@ -144,7 +144,7 @@ class Client
      * @var Collection|Address[]
      *
      * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      */
     private $addresses;
 
@@ -152,7 +152,7 @@ class Client
      * @var Credit
      *
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
-     * @Serialize\Groups({"client_api", "js"})
+     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="http://schema.org/MonetaryAmount")
      */
     private $credit;
