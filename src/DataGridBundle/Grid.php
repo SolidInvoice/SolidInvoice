@@ -22,7 +22,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 
-class Grid implements GridInterface
+class Grid implements GridInterface, \JsonSerializable
 {
     /**
      * @var string
@@ -162,5 +162,18 @@ class Grid implements GridInterface
     public function setParameters(array $params)
     {
         $this->parameters = $params;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'name' => $this->name,
+            'columns' => $this->columns->toArray(),
+            'actions' => $this->actions,
+            'line_actions' => $this->lineActions,
+            'properties' => $this->properties,
+            'icon' => $this->icon,
+            'parameters' => $this->parameters,
+        ];
     }
 }

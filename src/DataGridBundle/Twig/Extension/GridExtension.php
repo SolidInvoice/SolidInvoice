@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CSBill\DataGridBundle\Twig\Extension;
 
 use CSBill\DataGridBundle\Repository\GridRepository;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class GridExtension extends \Twig_Extension
 {
@@ -26,20 +25,11 @@ class GridExtension extends \Twig_Extension
     private $repository;
 
     /**
-     * @var SerializerInterface
+     * @param GridRepository $repository
      */
-    private $serializer;
-
-    /**
-     * GridExtension constructor.
-     *
-     * @param GridRepository      $repository
-     * @param SerializerInterface $serializer
-     */
-    public function __construct(GridRepository $repository, SerializerInterface $serializer)
+    public function __construct(GridRepository $repository)
     {
         $this->repository = $repository;
-        $this->serializer = $serializer;
     }
 
     /**
@@ -84,7 +74,7 @@ class GridExtension extends \Twig_Extension
             $grid->setParameters($parameters);
         }
 
-        $gridOptions = $this->serializer->serialize($grid, 'json');
+        $gridOptions = json_encode($grid);
 
         $html = '';
 
@@ -135,7 +125,7 @@ class GridExtension extends \Twig_Extension
             $grid = $this->repository->find($gridName);
             $grid->setParameters($parameters);
 
-            $gridOptions = $this->serializer->serialize($grid, 'json');
+            $gridOptions = json_encode($grid);
 
             $requiresStatus = $requiresStatus || $grid->requiresStatus();
 
