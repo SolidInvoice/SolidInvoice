@@ -16,7 +16,7 @@ namespace CSBill\CoreBundle\Util;
 class ClassUtil
 {
     /**
-     * Taken from https://github.com/FriendsOfSymfony/FOSRestBundle/blob/e7d987b310ec77376a85eabdc84a8df98892dd09/Routing/Loader/ClassUtils.php
+     * Taken from https://github.com/FriendsOfSymfony/FOSRestBundle/blob/e7d987b310ec77376a85eabdc84a8df98892dd09/Routing/Loader/ClassUtils.php.
      */
     public static function findClassInFile(string $file): ?string
     {
