@@ -76,8 +76,6 @@
         "twilio/sdk": "^5.5",
         "tijsverkoyen/css-to-inline-styles": "^2.0",
         "moneyphp/money": "^3.0",
-        "friendsofsymfony/rest-bundle": "^2.1",
-        "nelmio/api-doc-bundle": "^2.7",
         "egulias/email-validator": "^2.1",
         "mtdowling/cron-expression": "^1.0",
         "payum/stripe": "^1.4",
