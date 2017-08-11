@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Routing\Loader;
 
+use CSBill\CoreBundle\Util\ClassUtil;
 use Doctrine\Common\Inflector\Inflector;
-use FOS\RestBundle\Routing\Loader\ClassUtils;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Config\Resource\DirectoryResource;
@@ -74,7 +74,11 @@ abstract class AbstractDirectoryLoader extends Loader
         /* @var SplFileInfo $action */
         foreach ($actions as $action) {
             $actionName = Inflector::tableize($action->getBasename('.php'));
-            $controller = ClassUtils::findClassInFile($action->getRealPath());
+            $controller = ClassUtil::findClassInFile($action->getRealPath());
+
+            if (null === $controller) {
+                continue;
+            }
 
             $route = new Route(sprintf('%s/%s', $type, $actionName));
 
