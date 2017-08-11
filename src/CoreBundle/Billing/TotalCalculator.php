@@ -41,8 +41,6 @@ class TotalCalculator
 
         $this->updateTotal($entity);
 
-        $entity->setBalance($entity->getTotal());
-
         if ($entity instanceof Invoice) {
             $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
             $entity->setBalance($entity->getTotal()->subtract(new Money($totalPaid, $entity->getTotal()->getCurrency())));

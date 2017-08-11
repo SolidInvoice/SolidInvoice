@@ -50,7 +50,7 @@ class Item implements ItemInterface
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
-     * @Serialize\Groups({"quote_api", "client_api"})
+     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
     private $description;
 
@@ -59,7 +59,7 @@ class Item implements ItemInterface
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Assert\NotBlank()
-     * @Serialize\Groups({"quote_api", "client_api"})
+     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
     private $price;
 
@@ -68,7 +68,7 @@ class Item implements ItemInterface
      *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank()
-     * @Serialize\Groups({"quote_api", "client_api"})
+     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
     private $qty;
 
@@ -81,7 +81,7 @@ class Item implements ItemInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="quoteItems")
-     * @Serialize\Groups({"quote_api", "client_api"})
+     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
     private $tax;
 

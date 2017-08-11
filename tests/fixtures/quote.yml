@@ -1,0 +1,32 @@
+CSBill\ClientBundle\Entity\Contact:
+    contact:
+        firstName: '<firstName()>'
+        lastName: '<lastName()>'
+        email: '<email()>'
+
+CSBill\ClientBundle\Entity\Client:
+    client:
+        name: '<name()>'
+        currency: null
+        contacts: ['@contact']
+
+Money\Currency:
+    currency:
+        __construct: ['USD']
+
+Money\Money:
+    money:
+        __construct: [10000, '@currency']
+
+CSBill\QuoteBundle\Entity\Item:
+    item:
+        price: '@money'
+        qty: 1
+        description: 'Foo Item'
+
+CSBill\QuoteBundle\Entity\Quote:
+    quote:
+        client: '@client'
+        status: draft
+        items:
+            - '@item'

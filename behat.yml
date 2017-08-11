@@ -71,8 +71,10 @@ default:
                 namespaces:
                     - CSBill\ClientBundle
                     - CSBill\InvoiceBundle
+                    - CSBill\QuoteBundle
                     - CSBill\UserBundle
             alice:
                 fixtures:
                     Client: tests/fixtures/client.yml
                     Invoice: tests/fixtures/invoice.yml
+                    Quote: tests/fixtures/quote.yml

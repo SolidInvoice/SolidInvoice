@@ -24,8 +24,6 @@ use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * CSBill\InvoiceBundle\Entity\Item.
- *
  * @ORM\Table(name="invoice_lines")
  * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
