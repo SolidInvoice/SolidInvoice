@@ -57,7 +57,6 @@ class PaymentMethod implements GatewayConfigInterface
      * @var string
      *
      * @ORM\Column(name="gateway_name", type="string", length=125, unique=true)
-     * @Serialize\Groups({"payment_api"})
      */
     private $gatewayName;
 
@@ -72,7 +71,6 @@ class PaymentMethod implements GatewayConfigInterface
      * @var array
      *
      * @ORM\Column(name="config", type="array", nullable=true)
-     * @Serialize\Groups({"payment_api"})
      */
     private $config;
 
@@ -85,7 +83,6 @@ class PaymentMethod implements GatewayConfigInterface
 
     /**
      * @ORM\Column(name="enabled", type="boolean",  nullable=true)
-     * @Serialize\Groups({"payment_api"})
      *
      * @var bool
      */

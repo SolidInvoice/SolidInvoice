@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
- * @ApiResource(attributes={"normalization_context"={"groups"={"payment_api"}}})
+ * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
@@ -55,7 +55,6 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
      *
      * @var Invoice
-     * @Serialize\Groups({"none"})
      */
     private $invoice;
 
@@ -64,7 +63,6 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\JoinColumn(name="client", fieldName="client")
      *
      * @var Client
-     * @Serialize\Groups({"none"})
      */
     private $client;
 

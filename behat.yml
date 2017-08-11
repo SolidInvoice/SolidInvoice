@@ -78,3 +78,4 @@ default:
                     Client: tests/fixtures/client.yml
                     Invoice: tests/fixtures/invoice.yml
                     Quote: tests/fixtures/quote.yml
+                    Payment: tests/fixtures/payment.yml

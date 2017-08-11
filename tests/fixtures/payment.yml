@@ -1,0 +1,49 @@
+CSBill\ClientBundle\Entity\Contact:
+    contact:
+        firstName: '<firstName()>'
+        lastName: '<lastName()>'
+        email: '<email()>'
+
+CSBill\ClientBundle\Entity\Client:
+    client:
+        name: '<name()>'
+        currency: null
+        contacts: ['@contact']
+
+Money\Currency:
+    currency:
+        __construct: ['USD']
+
+Money\Money:
+    money:
+        __construct: [10000, '@currency']
+
+CSBill\InvoiceBundle\Entity\Item:
+    item:
+        price: '@money'
+        qty: 1
+        description: '<text()>'
+
+CSBill\InvoiceBundle\Entity\Invoice:
+    invoice:
+        client: '@client'
+        status: draft
+        items:
+            - '@item'
+
+CSBill\PaymentBundle\Entity\PaymentMethod:
+    payment_method:
+        name: 'cash'
+        gatewayName: 'offline'
+        factoryName: 'offline'
+        config: []
+        internal: true
+        enabled: true
+
+CSBill\PaymentBundle\Entity\Payment:
+    payment:
+        invoice: '@invoice'
+        totalAmount: 100
+        method: '@payment_method'
+        status: captured
+        completed: '2017-05-21T19:25:04+02:00'
