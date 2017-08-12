@@ -63,6 +63,8 @@ jobs:
         jwt:
           secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
       before_install:
+        - composer self-update
+        - mysql -e 'create database csbill_test;'
         - composer global require "fxp/composer-asset-plugin"
         - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
         - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -70,6 +72,9 @@ jobs:
         - sudo apt-get install -y -qq yarn=0.24.6-1
         - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 8.0
       install:
+        - composer install -n
+        - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
+        - sed -i 's/database_name:\ csbill/database_name:\ csbill_test/g' app/config/parameters.yml
         - yarn
         - php bin/console assets:install -n
         - node_modules/.bin/gulp
