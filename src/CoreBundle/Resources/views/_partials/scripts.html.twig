@@ -18,7 +18,7 @@
             , module: '{{ module }}'
         {% if moduleData is defined %}
             {% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
-            , moduleData: {{ moduleData|serialize("json", serializationGroups)|raw }}
+            , moduleData: {{ moduleData|serialize('json', serializationGroups)|raw }}
         {% endif %}
         {% endif %}
     });

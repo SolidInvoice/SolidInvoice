@@ -81,7 +81,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
             ->with('_invoices_view', ['id' => 1])
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceEditHandler($stateMachine, $this->em->getRepository('CSBillPaymentBundle:Payment'), $router);
+        $handler = new InvoiceEditHandler($stateMachine, $router);
         $handler->setDoctrine($this->registry);
 
         return $handler;

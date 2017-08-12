@@ -8,11 +8,11 @@
  #}
 
 {% set currency = client.currency %}
-
-{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
-
 {% set module = 'client/view' %}
 {% set moduleData = client %}
+{% set serializationGroups = ['client_api'] %}
+
+{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
 
 {#{% block page_title %}
     {{ client.name }}

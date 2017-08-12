@@ -43,7 +43,7 @@ trait SerializeTrait
      *
      * @throws \Exception
      */
-    protected function serialize($object, array $groups = ['js'], Response $response = null): Response
+    protected function serialize($object, array $groups = [], Response $response = null): Response
     {
         if (!$this->serializer) {
             throw new \Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', get_class($this), SerializerInterface::class, __METHOD__));
@@ -53,7 +53,7 @@ trait SerializeTrait
             $response = new JsonResponse('', 200, [], true);
         }
 
-        $json = $this->serializer->serialize($object, 'json', []);
+        $json = $this->serializer->serialize($object, 'json', ['groups' => $groups]);
 
         if ($response instanceof JsonResponse) {
             $response->setJson($json);

@@ -39,6 +39,7 @@ services:
     csbill_core.field.renderer:
         class: CSBill\CoreBundle\Form\FieldRenderer
         arguments: ['@twig']
+        lazy: true
 
     CSBill\CoreBundle\Routing\Loader\AbstractDirectoryLoader:
         public: false

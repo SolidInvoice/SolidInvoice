@@ -17,7 +17,6 @@ use CSBill\CoreBundle\Traits\Entity;
 use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation as Serialize;
 use Money\Money;
 
 /**

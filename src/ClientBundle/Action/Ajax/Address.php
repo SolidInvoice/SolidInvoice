@@ -24,6 +24,6 @@ final class Address implements AjaxResponse
 
     public function __invoke(Request $request, Entity $address)
     {
-        return $this->serialize($address);
+        return $this->serialize($address, ['client_api']);
     }
 }
