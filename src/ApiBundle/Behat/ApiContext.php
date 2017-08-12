@@ -207,6 +207,7 @@ class ApiContext extends DefaultContext implements Context
                         foreach ($child as $k => $v) {
                             $this->validate((array) $value[$k], new Json(json_encode($v)));
                         }
+
                         continue;
                     }
 

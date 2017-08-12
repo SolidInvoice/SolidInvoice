@@ -178,23 +178,29 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                             switch ($settingValue['field_type']) {
                                 case 'select2':
                                     return addslashes(Select2Type::class);
+
                                     break;
                                 case 'radio':
                                     return addslashes(RadioType::class);
+
                                     break;
                                 case 'checkbox':
                                     return addslashes(CheckboxType::class);
+
                                     break;
                                 case 'email':
                                     return addslashes(EmailType::class);
+
                                     break;
                                 case 'image_upload':
                                     return addslashes(ImageUploadType::class);
+
                                     break;
                                 case 'text':
                                 case null:
                                 default:
                                     return addslashes(TextType::class);
+
                                     break;
                             }
                         })($settingKey, $settingValue)

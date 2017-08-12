@@ -84,6 +84,7 @@ class UserContext extends DefaultContext
                     password_verify($row['password'], $user->getPassword())
                 ) {
                     $match = true;
+
                     break;
                 }
             }
