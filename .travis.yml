@@ -57,7 +57,8 @@ jobs:
     - stage: functional
       php: 7.1
       env: TEST_SUITE=saucelabs_chrome_linux
-      sauce_connect:
+      addons:
+        sauce_connect:
           username: csbill
         jwt:
           secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
