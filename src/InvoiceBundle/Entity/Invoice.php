@@ -255,7 +255,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setUsers(Contact ...$users): self
+    public function setUsers(array $users): self
     {
         $this->users = new ArrayCollection($users);
 

@@ -217,7 +217,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setUsers(Contact ...$users): self
+    public function setUsers(array $users): self
     {
         $this->users = new ArrayCollection($users);
 

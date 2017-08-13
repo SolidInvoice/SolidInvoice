@@ -241,7 +241,6 @@ class TotalCalculatorTest extends TestCase
         $invoice->setBaseTotal(new Money(30000, new Currency('USD')));
         $invoice->setBalance(new Money(30000, new Currency('USD')));
         $invoice->setStatus(Graph::STATUS_PENDING);
-        $invoice->setUsers([1]);
         $item = new Item();
         $item->setQty(2)
             ->setPrice(new Money(15000, new Currency('USD')))
