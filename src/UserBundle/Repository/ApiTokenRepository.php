@@ -26,11 +26,11 @@ class ApiTokenRepository extends EntityRepository
      *
      * @param string $token
      *
-     * @return UserInterface
+     * @return string
      *
      * @throws UsernameNotFoundException
      */
-    public function getUsernameForToken(string $token): ?UserInterface
+    public function getUsernameForToken(string $token): ?string
     {
         $q = $this
             ->createQueryBuilder('t')

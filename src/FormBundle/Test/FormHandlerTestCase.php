@@ -50,7 +50,6 @@ abstract class FormHandlerTestCase extends BaseTestCase
         parent::setUp();
 
         $this->faker = Factory::create();
-        $this->setupDoctrine();
     }
 
     abstract protected function getEntityNamespaces(): array;

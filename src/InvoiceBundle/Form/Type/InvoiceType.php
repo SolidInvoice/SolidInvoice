@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CSBill\InvoiceBundle\Form\Type;
 
-use CSBill\CoreBundle\Form\EventListener\BillingFormSubscriber;
 use CSBill\CoreBundle\Form\Type\DiscountType;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
@@ -85,7 +84,6 @@ class InvoiceType extends AbstractType
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
-        $builder->addEventSubscriber(new BillingFormSubscriber($options['currency']));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 

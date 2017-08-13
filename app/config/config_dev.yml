@@ -7,19 +7,18 @@ framework:
         strict_requirements: true
     profiler:
         only_exceptions: false
+
 web_profiler:
     toolbar: true
     intercept_redirects: false
+
 monolog:
     handlers:
         main:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
+
 swiftmailer:
     delivery_address: test@localhost
-nelmio_api_doc:
-    sandbox:
-        enabled: true
-    cache:
-        enabled: false
+

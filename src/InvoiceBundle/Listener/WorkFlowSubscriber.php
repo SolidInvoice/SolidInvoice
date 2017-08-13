@@ -25,14 +25,14 @@ use Symfony\Component\Workflow\Event\Event;
 class WorkFlowSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
      * @var NotificationManager
      */
     private $notification;
+
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
 
     public function __construct(ManagerRegistry $registry, NotificationManager $notification)
     {
@@ -64,7 +64,6 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         }
 
         $em = $this->registry->getManager();
-
         $em->persist($invoice);
         $em->flush();
 

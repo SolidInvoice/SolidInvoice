@@ -17,11 +17,8 @@
         {% if module is defined %}
             , module: '{{ module }}'
         {% if moduleData is defined %}
-            {% set context = serialization_context() %}
-
-            {% do context.setGroups(["js"]) %}
-
-            , moduleData: {{ moduleData|serialize("json", context)|raw }}
+            {% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
+            , moduleData: {{ moduleData|serialize('json', serializationGroups)|raw }}
         {% endif %}
         {% endif %}
     });

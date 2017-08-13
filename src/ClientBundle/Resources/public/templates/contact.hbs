@@ -13,7 +13,7 @@
                 {{/if}}
             </div>
             <h4 class="box-title">
-                <i class="fa fa-user"></i> {{ first_name }} {{ last_name }}
+                <i class="fa fa-user"></i> {{ firstName }} {{ lastName }}
             </h4>
         </div>
 
@@ -23,10 +23,10 @@
                 <dd>{{ email }}</dd>
             </dl>
 
-            {{#if additional_contact_details}}
+            {{#if additionalContactDetails}}
                 <h5>{{trans 'client.contact.details.extra'}}</h5>
                 <dl class="dl-horizontal">
-                    {{#each additional_contact_details }}
+                    {{#each additionalContactDetails }}
                         <dt>{{title this.type }}:</dt>
                         <dd>{{ this.value }}</dd>
                     {{/each}}

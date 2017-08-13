@@ -42,9 +42,10 @@
     'clientForm': block('form_client') is defined ? block('form_client'),
     'fieldData': billing_fields(form),
     'formData': formData,
-    'invoice': invoice|default(null),
     'tax': taxRatesConfigured(),
 } %}
+
+{% set serializationGroups = ['client_api'] %}
 
 {% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
 

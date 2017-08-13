@@ -79,7 +79,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      *
      * @return string
      */
-    private function getToken(Request $request): string
+    private function getToken(Request $request): ?string
     {
         return $request->headers->get('X-API-TOKEN', $request->query->get('token'));
     }

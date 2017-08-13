@@ -92,44 +92,44 @@ default:
 saucelabs_chrome_stable_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_stable_windows10
+            javascript_session: saucelabs_chrome_stable_windows10
 
 saucelabs_chrome_dev_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_dev_windows10
+            javascript_session: saucelabs_chrome_dev_windows10
 
 saucelabs_chrome_beta_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_beta_windows10
+            javascript_session: saucelabs_chrome_beta_windows10
 
 saucelabs_firefox_stable_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_stable_windows10
+            javascript_session: saucelabs_firefox_stable_windows10
 
 saucelabs_firefox_dev_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_dev_windows10
+            javascript_session: saucelabs_firefox_dev_windows10
 
 saucelabs_firefox_beta_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_beta_windows10
+            javascript_session: saucelabs_firefox_beta_windows10
 
 saucelabs_ie_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_ie_windows10
+            javascript_session: saucelabs_ie_windows10
 
 saucelabs_edge_14_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_edge_14_windows10
+            javascript_session: saucelabs_edge_14_windows10
 
 saucelabs_edge_13_windows10:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_edge_13_windows10
+            javascript_session: saucelabs_edge_13_windows10

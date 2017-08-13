@@ -21,6 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="payment_methods")
@@ -48,6 +49,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @ORM\Column(name="name", type="string", length=125)
      * @Assert\NotBlank
+     * @Serialize\Groups({"payment_api"})
      */
     private $name;
 

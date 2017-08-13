@@ -29,7 +29,6 @@ class SystemConfigTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-
         $this->setupDoctrine();
 
         $setting = (new Setting())

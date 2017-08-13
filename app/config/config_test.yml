@@ -1,14 +1,19 @@
 imports:
     - { resource: config_dev.yml }
 
+parameters:
+    database_name: csbill_test
+
 framework:
     test: null
     session:
         storage_id: session.storage.mock_file
     profiler:
         enabled: false
+
 web_profiler:
     toolbar: false
     intercept_redirects: false
+
 swiftmailer:
     disable_delivery: true

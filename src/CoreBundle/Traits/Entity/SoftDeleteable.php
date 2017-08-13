@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
-use JMS\Serializer\Annotation as Serialize;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 
 trait SoftDeleteable
 {
     /**
      * @ORM\Column(type="datetime", name="deleted", nullable=true)
-     * @Serialize\Exclude()
+     * @ApiProperty(iri="https://schema.org/DateTime")
      */
     protected $deletedAt;
 
@@ -29,7 +29,7 @@ trait SoftDeleteable
      *
      * @return \DateTime
      */
-    public function getDeletedAt(): \DateTime
+    public function getDeletedAt(): ?\DateTime
     {
         return $this->deletedAt;
     }
@@ -49,9 +49,8 @@ trait SoftDeleteable
     }
 
     /**
-     * Is deleted?
-     *
      * @return bool
+     * @ApiProperty(iri="https://schema.org/Boolean")
      */
     public function isDeleted(): bool
     {

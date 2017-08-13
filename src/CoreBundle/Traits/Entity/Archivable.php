@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Traits\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 
 trait Archivable
@@ -21,6 +22,7 @@ trait Archivable
      * @var bool
      *
      * @ORM\Column(type="boolean", name="archived", nullable=true)
+     * @ApiProperty(iri="https://schema.org/Boolean")
      */
     protected $archived;
 

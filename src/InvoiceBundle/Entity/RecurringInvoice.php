@@ -16,7 +16,6 @@ namespace CSBill\InvoiceBundle\Entity;
 use CSBill\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,7 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Serialize\ExclusionPolicy("all")
  */
 class RecurringInvoice
 {
@@ -38,7 +36,6 @@ class RecurringInvoice
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Expose()
      */
     private $id;
 

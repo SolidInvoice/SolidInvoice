@@ -15,7 +15,6 @@ namespace CSBill\InstallBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
 use CSBill\CoreBundle\Behat\DefaultContext;
-use CSBill\UserBundle\Entity\User;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -96,40 +95,6 @@ class InstallContext extends DefaultContext
 
             if ($yaml[$config] != $value) {
                 throw new \Exception(sprintf('Config "%s" does not match expected value. Expected "%s", got "%s"', $config, $value, $yaml[$config]));
-            }
-        }
-    }
-
-    /**
-     * @Then /^the following user must exist:$/
-     *
-     * @param TableNode $table
-     *
-     * @throws \Exception
-     */
-    public function userExists(TableNode $table)
-    {
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $userRepository = $entityManager->getRepository('CSBillUserBundle:User');
-
-        /** @var User[] $users */
-        $users = $userRepository->findAll();
-
-        foreach ($table->getHash() as $row) {
-            $match = false;
-            foreach ($users as $user) {
-                if (
-                    $user->getUsername() === $row['username'] &&
-                    $user->getEmail() === $row['email'] &&
-                    password_verify($row['password'], $user->getPassword())
-                ) {
-                    $match = true;
-                    break;
-                }
-            }
-
-            if (false === $match) {
-                throw new \Exception(sprintf('User with username "%s" does not exist', $row['username']));
             }
         }
     }

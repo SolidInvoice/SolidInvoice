@@ -15,24 +15,40 @@ default:
     suites:
         installation:
             contexts:
+                - FeatureContext: { doctrine: '@doctrine' }
                 - Behat\MinkExtension\Context\MinkContext
                 - CSBill\CoreBundle\Behat\CoreContext
                 - CSBill\InstallBundle\Behat\InstallContext
+                - CSBill\UserBundle\Behat\UserContext
             filters:
                 tags: "@installation"
 
         login:
             contexts:
+                - FeatureContext: { doctrine: '@doctrine' }
                 - Behat\MinkExtension\Context\MinkContext
                 - CSBill\CoreBundle\Behat\CoreContext
                 - CSBill\UserBundle\Behat\UserContext
             filters:
                 tags: "@login"
 
+        api:
+            contexts:
+                - FeatureContext: { doctrine: '@doctrine' }
+                - CSBill\ApiBundle\Behat\ApiContext
+                - CSBill\UserBundle\Behat\UserContext
+                - Behat\MinkExtension\Context\MinkContext
+                - Behatch\Context\RestContext
+                - Behatch\Context\JsonContext
+                - Knp\FriendlyContexts\Context\EntityContext
+                - Knp\FriendlyContexts\Context\AliceContext
+            filters:
+                tags: "@api"
+
     extensions:
         Behat\MinkExtension:
-            base_url: http://127.0.0.1:9001
-            default_session: saucelabs
+            base_url: http://127.0.0.1:9001/
+            default_session: symfony
             javascript_session: saucelabs
             sessions:
                 symfony:
@@ -45,4 +61,21 @@ default:
                             custom-data: { travis: true }
             #browser_name: firefox
             #show_auto:    false
-        Behat\Symfony2Extension: ~
+        Behat\Symfony2Extension:
+            kernel:
+                env: "test"
+                debug: "true"
+        Behatch\Extension: ~
+        Knp\FriendlyContexts\Extension:
+            entities:
+                namespaces:
+                    - CSBill\ClientBundle
+                    - CSBill\InvoiceBundle
+                    - CSBill\QuoteBundle
+                    - CSBill\UserBundle
+            alice:
+                fixtures:
+                    Client: tests/fixtures/client.yml
+                    Invoice: tests/fixtures/invoice.yml
+                    Quote: tests/fixtures/quote.yml
+                    Payment: tests/fixtures/payment.yml

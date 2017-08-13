@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CSBill\ClientBundle\Listener;
 
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Model\Status;
 use CSBill\ClientBundle\Notification\ClientCreateNotification;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -22,6 +23,22 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 class ClientListener implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
+
+    /**
+     * @param LifecycleEventArgs $event
+     */
+    public function prePersist(LifecycleEventArgs $event)
+    {
+        $entity = $event->getEntity();
+
+        if (!$entity instanceof Client) {
+            return;
+        }
+
+        if (!$entity->getId() && !$entity->getStatus()) {
+            $entity->setStatus(Status::STATUS_ACTIVE);
+        }
+    }
 
     /**
      * @param LifecycleEventArgs $event

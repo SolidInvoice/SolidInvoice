@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace CSBill\CoreBundle\Test\Traits;
 
+use CSBill\ClientBundle\Listener\ClientListener;
+use CSBill\NotificationBundle\Notification\NotificationManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -25,7 +28,11 @@ use Mockery as M;
 use Ramsey\Uuid\Doctrine\UuidType;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
+use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait DoctrineTestTrait
 {
     /**
@@ -38,6 +45,9 @@ trait DoctrineTestTrait
      */
     protected $em;
 
+    /**
+     * @before
+     */
     protected function setupDoctrine()
     {
         $config = DoctrineTestHelper::createTestConfiguration();
@@ -89,6 +99,19 @@ trait DoctrineTestTrait
 
         $this->em = DoctrineTestHelper::createTestEntityManager($config);
         $this->em->getConnection()->getEventManager()->addEventSubscriber(new TimestampableListener());
+
+        $clientListener = new ClientListener();
+
+        $container = new Container();
+        $mock = M::mock(NotificationManager::class);
+        $mock->shouldReceive('sendNotification')
+            ->zeroOrMoreTimes();
+        $container->set('notification.manager', $mock);
+        $clientListener->setContainer($container);
+
+        $this->em->getConnection()->getEventManager()->addEventListener(Events::prePersist, $clientListener);
+        $this->em->getConnection()->getEventManager()->addEventListener(Events::postPersist, $clientListener);
+        $this->em->getConnection()->getEventManager()->addEventListener(Events::postUpdate, $clientListener);
 
         if (!DoctrineType::hasType('uuid')) {
             DoctrineType::addType('uuid', UuidType::class);

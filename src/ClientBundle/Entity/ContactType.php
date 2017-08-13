@@ -16,7 +16,7 @@ namespace CSBill\ClientBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,7 +31,7 @@ class ContactType
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"none"})
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $id;
 
@@ -41,8 +41,7 @@ class ContactType
      * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
-     * @Serialize\Groups({"api", "js"})
-     * @Serialize\SerializedName("type")
+     * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $name;
 
@@ -216,6 +215,6 @@ class ContactType
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }

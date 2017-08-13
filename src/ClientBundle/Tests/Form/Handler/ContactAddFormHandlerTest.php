@@ -16,19 +16,21 @@ namespace CSBill\ClientBundle\Tests\Form\Handler;
 use CSBill\ClientBundle\Entity\Contact;
 use CSBill\ClientBundle\Form\Handler\ContactAddFormHandler;
 use CSBill\CoreBundle\Templating\Template;
+use CSBill\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use CSBill\FormBundle\Test\FormHandlerTestCase;
-use JMS\Serializer\SerializerBuilder;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContactAddFormHandlerTest extends FormHandlerTestCase
 {
+    use SymfonyKernelTrait;
+
     public function getHandler()
     {
         $handler = new ContactAddFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer(SerializerBuilder::create()->build());
+        $handler->setSerializer($this->container->get('serializer'));
 
         return $handler;
     }

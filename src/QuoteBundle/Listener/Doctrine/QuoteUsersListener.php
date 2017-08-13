@@ -17,7 +17,7 @@ use CSBill\CoreBundle\Util\ArrayUtil;
 use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
-class QuoteTotalListener
+class QuoteUsersListener
 {
     /**
      * @param LifecycleEventArgs $event

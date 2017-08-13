@@ -18,8 +18,6 @@ use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Form\Type\InvoiceType;
 use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
-use Money\Money;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
@@ -47,22 +45,16 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
      */
     private $router;
 
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
-
-    public function __construct(StateMachine $stateMachine, PaymentRepository $paymentRepository, RouterInterface $router)
+    public function __construct(StateMachine $stateMachine, RouterInterface $router)
     {
         $this->stateMachine = $stateMachine;
         $this->router = $router;
-        $this->paymentRepository = $paymentRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(InvoiceType::class, $options->get('invoice'), $options->get('form_options'));
     }
@@ -74,8 +66,6 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     {
         /* @var Invoice $invoice */
         $action = $form->getRequest()->request->get('save');
-
-        $invoice->setBalance($invoice->getTotal());
 
         // @TODO: Recurring invoices should be handled better
         if ($invoice->isRecurring()) {
@@ -93,9 +83,6 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         if (!$invoice->getId()) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
         }
-
-        $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($invoice);
-        $invoice->setBalance($invoice->getTotal()->subtract(new Money($totalPaid, $invoice->getTotal()->getCurrency())));
 
         if ($action === Graph::STATUS_PENDING) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);

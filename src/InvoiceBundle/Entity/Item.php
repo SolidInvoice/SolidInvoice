@@ -19,19 +19,16 @@ use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use CSBill\TaxBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * CSBill\InvoiceBundle\Entity\Item.
- *
  * @ORM\Table(name="invoice_lines")
  * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
- * @Serialize\ExclusionPolicy("all")
  */
 class Item implements ItemInterface
 {
@@ -44,7 +41,7 @@ class Item implements ItemInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Expose()
+     * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $id;
 
@@ -53,7 +50,7 @@ class Item implements ItemInterface
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
-     * @Serialize\Expose()
+     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
     private $description;
 
@@ -62,7 +59,7 @@ class Item implements ItemInterface
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      * @Assert\NotBlank
-     * @Serialize\Expose()
+     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
     private $price;
 
@@ -71,7 +68,7 @@ class Item implements ItemInterface
      *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank
-     * @Serialize\Expose()
+     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
     private $qty;
 
@@ -84,7 +81,7 @@ class Item implements ItemInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
-     * @Serialize\Expose()
+     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
     private $tax;
 
@@ -92,7 +89,7 @@ class Item implements ItemInterface
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
-     * @Serialize\Expose()
+     * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $total;
 

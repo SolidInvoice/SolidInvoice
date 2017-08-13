@@ -36,10 +36,10 @@ trait Money
      *
      * @return MoneyObject
      */
-    public function getAmount(): Money
+    public function getAmount(): ?MoneyObject
     {
         if (!$this->priceCurrency) {
-            return;
+            return null;
         }
 
         return new MoneyObject($this->priceAmount ?: 0, new Currency($this->priceCurrency));

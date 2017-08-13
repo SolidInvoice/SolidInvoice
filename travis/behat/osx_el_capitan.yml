@@ -84,39 +84,39 @@ default:
 saucelabs_chrome_stable_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_stable_osx_el_capitan
+            javascript_session: saucelabs_chrome_stable_osx_el_capitan
 
 saucelabs_chrome_dev_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_dev_osx_el_capitan
+            javascript_session: saucelabs_chrome_dev_osx_el_capitan
 
 saucelabs_chrome_beta_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_beta_osx_el_capitan
+            javascript_session: saucelabs_chrome_beta_osx_el_capitan
 
 saucelabs_firefox_stable_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_stable_osx_el_capitan
+            javascript_session: saucelabs_firefox_stable_osx_el_capitan
 
 saucelabs_firefox_dev_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_dev_osx_el_capitan
+            javascript_session: saucelabs_firefox_dev_osx_el_capitan
 
 saucelabs_firefox_beta_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_beta_osx_el_capitan
+            javascript_session: saucelabs_firefox_beta_osx_el_capitan
 
 saucelabs_safari_10_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_safari_10_osx_el_capitan
+            javascript_session: saucelabs_safari_10_osx_el_capitan
 
 saucelabs_safari_9_osx_el_capitan:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_safari_9_osx_el_capitan
+            javascript_session: saucelabs_safari_9_osx_el_capitan

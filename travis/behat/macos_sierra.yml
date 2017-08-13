@@ -74,34 +74,34 @@ default:
 saucelabs_chrome_stable_macos_sierra:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_stable_macos_sierra
+            javascript_session: saucelabs_chrome_stable_macos_sierra
 
 saucelabs_chrome_dev_macos_sierra:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_dev_macos_sierra
+            javascript_session: saucelabs_chrome_dev_macos_sierra
 
 saucelabs_chrome_beta_macos_sierra:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_chrome_beta_macos_sierra
+            javascript_session: saucelabs_chrome_beta_macos_sierra
 
 saucelabs_firefox_stable_macos_sierra:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_stable_macos_sierra
+            javascript_session: saucelabs_firefox_stable_macos_sierra
 
 saucelabs_firefox_dev_macos_sierra:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_dev_macos_sierra
+            javascript_session: saucelabs_firefox_dev_macos_sierra
 
 saucelabs_firefox_beta_macos_sierra:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_firefox_beta_macos_sierra
+            javascript_session: saucelabs_firefox_beta_macos_sierra
 
 saucelabs_safari_macos_sierra:
     extensions:
         Behat\MinkExtension:
-            default_session: saucelabs_safari_macos_sierra
+            javascript_session: saucelabs_safari_macos_sierra

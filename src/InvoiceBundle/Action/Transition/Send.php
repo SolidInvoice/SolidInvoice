@@ -15,6 +15,7 @@ namespace CSBill\InvoiceBundle\Action\Transition;
 
 use CSBill\CoreBundle\Mailer\Mailer;
 use CSBill\CoreBundle\Response\FlashResponse;
+use CSBill\CoreBundle\Traits\SaveableTrait;
 use CSBill\InvoiceBundle\Entity\Invoice;
 use CSBill\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +25,8 @@ use Symfony\Component\Workflow\StateMachine;
 
 final class Send
 {
+    use SaveableTrait;
+
     /**
      * @var StateMachine
      */
@@ -51,6 +54,8 @@ final class Send
         if ($invoice->getStatus() !== Graph::STATUS_PENDING && $this->stateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
+
+        $this->save($invoice);
 
         $this->mailer->sendInvoice($invoice);
 

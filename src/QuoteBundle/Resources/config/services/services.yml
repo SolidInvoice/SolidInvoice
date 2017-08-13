@@ -14,7 +14,7 @@ services:
             - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
             - { name: cs_core.menu, menu: quotes_edit, method: quotesEditMenu }
 
-    CSBill\QuoteBundle\Listener\Doctrine\QuoteTotalListener:
+    CSBill\QuoteBundle\Listener\Doctrine\QuoteUsersListener:
         public: false
         lazy: true
         tags:

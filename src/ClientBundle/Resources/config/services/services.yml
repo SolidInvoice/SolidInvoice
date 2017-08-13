@@ -24,11 +24,3 @@ services:
     csbill_client.contact_type.values:
         class: CSBill\ClientBundle\Repository\ContactTypeRepository
         factory: ['@csbill_client.contact_type.repository', findAll]
-
-    csbill.serializer.credit.handler:
-        class: CSBill\ClientBundle\Serializer\Handler\CreditHandler
-        autowire: true
-        tags:
-            - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: json, method: serializeMoneyJson }
-            - { name: jms_serializer.handler, type: 'Money\Money', direction: serialization, format: xml, method: serializeMoneyXml }
-            - { name: jms_serializer.handler, type: 'CSBill\MoneyBundle\Entity\Money', direction: serialization, format: xml, method: serializeMoneyXml }

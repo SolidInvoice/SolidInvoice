@@ -76,10 +76,6 @@
         "twilio/sdk": "^5.5",
         "tijsverkoyen/css-to-inline-styles": "^2.0",
         "moneyphp/money": "^3.0",
-        "friendsofsymfony/rest-bundle": "^2.1",
-        "jms/serializer-bundle": "^2.0",
-        "willdurand/hateoas-bundle": "^1.1",
-        "nelmio/api-doc-bundle": "^2.7",
         "egulias/email-validator": "^2.1",
         "mtdowling/cron-expression": "^1.0",
         "payum/stripe": "^1.4",
@@ -96,7 +92,8 @@
         "symfony/security-acl": "^3.0",
         "solidworx/form-handler-bundle": "1.0.0-beta",
         "defuse/php-encryption": "^2.1",
-        "mpociot/vat-calculator": "^2.2"
+        "mpociot/vat-calculator": "^2.2",
+        "api-platform/core": "v2.1.0-beta.2"
     },
     "require-dev": {
         "behat/behat": "^3.0",
@@ -112,7 +109,9 @@
         "sensiolabs/security-checker": "^4.0",
         "satooshi/php-coveralls": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^2.0",
-        "phpstan/phpstan": "^0.7"
+        "phpstan/phpstan": "^0.7",
+        "behatch/contexts": "^2.7",
+        "knplabs/friendly-contexts": "^0.8.2"
     },
     "scripts": {
         "post-install-cmd": [

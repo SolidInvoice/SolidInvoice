@@ -4,15 +4,6 @@ sudo: required
 
 dist: trusty
 
-#php:
-#  - 7.1
-#  - nightly
-
-#matrix:
-#  fast_finish: true
-#  allow_failures:
-#]    - php: nightly
-
 env:
   global:
     - SYMFONY_ENV=test
@@ -27,10 +18,6 @@ services:
   - mysql
 
 addons:
-  sauce_connect:
-    username: csbill
-  jwt:
-    secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
   apt:
     packages:
       - mysql-server-5.6
@@ -39,31 +26,16 @@ addons:
 
 before_install:
   - composer self-update
-  - composer global require "fxp/composer-asset-plugin"
-  - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
-  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq yarn=0.24.6-1
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 8.0
+  - mysql -e 'create database csbill_test;'
 
 install:
   - composer install -n
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
-  - php bin/console cache:clear
-  - yarn
-  - php bin/console assets:install -n
-  - node_modules/.bin/gulp
-  - php bin/console fos:js-routing:dump --callback=define -n
-  - php bin/console bazinga:js-translation:dump --merge-domains -n
-  - php bin/console oro:requirejs:build -n
-  - node_modules/.bin/gulp assets
+  - sed -i 's/database_name:\ csbill/database_name:\ csbill_test/g' app/config/parameters.yml
 
 before_script:
-  - mysql -e 'create database csbill;'
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - php app/app_check.php
-  - php ./bin/console server:start 9001 -n
-  - sleep 5 # Give php server some time to start
 
 jobs:
   fast_finish: true
@@ -72,20 +44,49 @@ jobs:
       php: 7.1
       script:
         - composer validate
-        #- php bin/console security:check # Security checker SSL is currently broken
+        #- php bin/console security:check
         - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
         - bash travis/phpunit.sh
+      after_script:
+        - travis_retry wget https://scrutinizer-ci.com/ocular.phar
+        - travis_retry php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+        - travis_retry php ./bin/coveralls -v
     - stage: unit
       php: nightly
-      script:
-        - composer validate
-        #- php bin/console security:check # Security checker SSL is currently broken
-        - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
-        - bash travis/phpunit.sh
+      script: bash travis/phpunit.sh
     - stage: functional
       php: 7.1
-      script: bash travis/behat.sh
       env: TEST_SUITE=saucelabs_chrome_linux
+      addons:
+        sauce_connect:
+          username: csbill
+        jwt:
+          secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
+      before_install:
+        - composer self-update
+        - mysql -e 'create database csbill_test;'
+        - composer global require "fxp/composer-asset-plugin"
+        - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+        - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+        - sudo apt-get update -qq
+        - sudo apt-get install -y -qq yarn=0.24.6-1
+        - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 8.0
+      install:
+        - composer install -n
+        - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
+        - sed -i 's/database_name:\ csbill/database_name:\ csbill_test/g' app/config/parameters.yml
+        - yarn
+        - php bin/console assets:install -n
+        - node_modules/.bin/gulp
+        - php bin/console fos:js-routing:dump --callback=define -n
+        - php bin/console bazinga:js-translation:dump --merge-domains -n
+        - php bin/console oro:requirejs:build -n
+        - node_modules/.bin/gulp assets
+      before_script:
+          - php ./bin/console server:start 9001 -n
+          - sleep 3 # Give php server some time to start
+      script: bash travis/behat.sh
+
 #    - stage: functional
 #      php: 7.1
 #      script: bash travis/behat.sh
@@ -222,11 +223,6 @@ jobs:
 #      php: 7.1
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_ie_windows81
-
-after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
-  - travis_retry php ./bin/coveralls -v
 
 notifications:
   hipchat:

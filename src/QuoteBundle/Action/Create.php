@@ -45,8 +45,11 @@ final class Create
             return new Template('@CSBillQuote/Default/empty_clients.html.twig');
         }
 
+        $quote = new Quote();
+        $quote->setClient($client);
+
         $options = [
-            'quote' => new Quote($client),
+            'quote' => $quote,
             'form_options' => ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : [],
         ];
 

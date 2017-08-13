@@ -16,6 +16,10 @@ define(['backgrid', 'lodash', 'accounting'], function(Backgrid, _, Accounting) {
             if (!_.isUndefined(model.get('discount.type'))) {
                 let discountType = model.get('discount.type');
 
+                if (null === discountType) {
+                    return '';
+                }
+
                 if ('money' === discountType.toLowerCase()) {
                     let discountAmount = parseInt(model.get('discount.valueMoney.value'), 10);
 

@@ -36,8 +36,6 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
     {
         parent::setUp();
 
-        $this->setupDoctrine();
-
         $setting = new Setting();
         $setting->setKey('one/two');
         $setting->setValue('three');

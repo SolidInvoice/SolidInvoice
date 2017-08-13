@@ -1,6 +1,7 @@
 services:
     _defaults:
         public: false
+        autowire: true
         tags:
             - { name: twig.extension }
 
@@ -14,5 +15,6 @@ services:
     CSBill\CoreBundle\Twig\Extension\FileExtension: ~
 
     CSBill\CoreBundle\Twig\Extension\StatusExtension: ~
+    CSBill\CoreBundle\Twig\Extension\SerializerExtension: ~
     Twig_Extensions_Extension_Text:
         class: Twig_Extensions_Extension_Text

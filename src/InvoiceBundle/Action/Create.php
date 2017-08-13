@@ -45,8 +45,11 @@ final class Create
             return new Template('@CSBillInvoice/Default/empty_clients.html.twig');
         }
 
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+
         $options = [
-            'invoice' => new Invoice($client),
+            'invoice' => $invoice,
             'form_options' => ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : [],
         ];
 

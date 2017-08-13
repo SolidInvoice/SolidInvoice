@@ -17,7 +17,6 @@ use CSBill\CoreBundle\Traits\Entity;
 use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serialize;
 use Money\Money;
 
 /**
@@ -37,7 +36,6 @@ class Credit
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"noneg"})
      */
     private $id;
 
@@ -45,16 +43,12 @@ class Credit
      * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
      *
      * @var MoneyEntity
-     *
-     * @Serialize\Groups({"api", "js"})
-     * @Serialize\Inline()
      */
     private $value;
 
     /**
      * @var Client
      * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
-     * @Serialize\Groups({"js"})
      */
     private $client;
 

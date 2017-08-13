@@ -14,3 +14,7 @@ services:
     CSBill\QuoteBundle\Listener\WorkFlowSubscriber:
         arguments:
             $invoiceStateMachine: '@state_machine.invoice'
+
+    CSBill\QuoteBundle\Listener\Doctrine\QuoteSaveListener:
+        autowire: true
+        tags: ['doctrine.event_subscriber']

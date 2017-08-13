@@ -1,4 +1,4 @@
-@login
+@login @javascript
 Feature: Log into application
   In order to use the application
   As a user
@@ -15,6 +15,7 @@ Feature: Log into application
     And I press "login_button"
     Then I should see "Bad credentials" in the ".callout-danger" element
 
+  @resetSchema
   Scenario: Login with valid credentials
     Given I have the following users:
       | username      | password   | roles            |
