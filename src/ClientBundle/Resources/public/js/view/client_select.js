@@ -20,7 +20,7 @@ define(
             },
             onRender: function() {
                 if (!this.model.isEmpty()) {
-                    this.$('#client-select').hide();
+                    this.ui.clientSelect.hide();
                 }
             },
             clientChange: function(event) {

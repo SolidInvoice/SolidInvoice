@@ -16,6 +16,8 @@ namespace CSBill\ClientBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use CSBill\CoreBundle\Traits\Entity;
+use CSBill\InvoiceBundle\Entity\Invoice;
+use CSBill\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -98,9 +100,25 @@ class Contact implements \Serializable
      */
     private $additionalContactDetails;
 
+    /**
+     * @var Collection|Invoice[]
+     *
+     * @ORM\ManyToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", cascade={"ALL"}, fetch="EXTRA_LAZY", orphanRemoval=true, mappedBy="users")
+     */
+    private $invoices;
+
+    /**
+     * @var Collection|Quote[]
+     *
+     * @ORM\ManyToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", cascade={"ALL"}, fetch="EXTRA_LAZY", orphanRemoval=true, mappedBy="users")
+     */
+    private $quotes;
+
     public function __construct()
     {
         $this->additionalContactDetails = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
+        $this->quotes = new ArrayCollection();
     }
 
     /**
@@ -285,5 +303,21 @@ class Contact implements \Serializable
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Invoice[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    /**
+     * @return Collection|Quote[]
+     */
+    public function getQuotes(): Collection
+    {
+        return $this->quotes;
     }
 }

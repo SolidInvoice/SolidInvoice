@@ -19,11 +19,6 @@ services:
         calls:
             - [ setContainer, ['@service_container']]
 
-    invoice.user.listener:
-        class: CSBill\InvoiceBundle\Listener\Doctrine\InvoiceUsersListener
-        tags:
-            - { name: doctrine.event_listener, event: postLoad }
-
     CSBill\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener:
         autowire: true
         tags: ['doctrine.event_subscriber']

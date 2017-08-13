@@ -40,7 +40,6 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
     public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
-        $form = $event->getForm();
 
         if (null === $data) {
             return;
@@ -53,6 +52,8 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         }
 
         if (!empty($clientId)) {
+            $form = $event->getForm();
+
             $form->add(
                 'users',
                 EntityType::class,
