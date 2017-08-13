@@ -103,14 +103,14 @@ class Contact implements \Serializable
     /**
      * @var Collection|Invoice[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", cascade={"ALL"}, fetch="EXTRA_LAZY", orphanRemoval=true, mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
 
     /**
      * @var Collection|Quote[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", cascade={"ALL"}, fetch="EXTRA_LAZY", orphanRemoval=true, mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $quotes;
 

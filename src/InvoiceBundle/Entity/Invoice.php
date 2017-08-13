@@ -185,7 +185,7 @@ class Invoice
     /**
      * @var Collection|Contact[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"persist", "remove"}, fetch="EXTRA_LAZY", orphanRemoval=true, inversedBy="invoices")
+     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */

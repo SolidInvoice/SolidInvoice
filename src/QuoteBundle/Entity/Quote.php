@@ -155,7 +155,7 @@ class Quote
     /**
      * @var Collection|Contact[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"ALL"}, fetch="EXTRA_LAZY", orphanRemoval=true, inversedBy="quotes")
+     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
