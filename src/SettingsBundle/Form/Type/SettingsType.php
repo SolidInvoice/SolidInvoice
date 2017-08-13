@@ -31,6 +31,7 @@ class SettingsType extends AbstractType
         foreach ($options['settings'] as $key => $setting) {
             if (is_array($setting)) {
                 $builder->add($key, self::class, ['settings' => $setting]);
+
                 continue;
             }
 
