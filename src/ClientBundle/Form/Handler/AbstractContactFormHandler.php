@@ -40,7 +40,7 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
     public function getResponse(FormRequest $formRequest)
     {
         if ($formRequest->getForm()->isSubmitted() && $formRequest->getForm()->isValid()) {
-            return $this->serialize($formRequest->getForm()->getData());
+            return $this->serialize($formRequest->getForm()->getData(), ['client_api']);
         }
 
         return new Template(
