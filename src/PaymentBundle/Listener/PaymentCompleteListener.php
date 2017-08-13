@@ -140,43 +140,53 @@ class PaymentCompleteListener implements EventSubscriberInterface
         switch ($status) {
             case Status::STATUS_CAPTURED:
                 yield FlashResponse::FLASH_SUCCESS => 'payment.flash.status.success';
+
                 break;
 
             case Status::STATUS_CANCELLED:
                 yield FlashResponse::FLASH_DANGER => 'payment.flash.status.cancelled';
+
                 break;
 
             case Status::STATUS_PENDING:
                 yield FlashResponse::FLASH_WARNING => 'payment.flash.status.pending';
+
                 break;
 
             case Status::STATUS_EXPIRED:
                 yield FlashResponse::FLASH_DANGER => 'payment.flash.status.expired';
+
                 break;
 
             case Status::STATUS_FAILED:
                 yield FlashResponse::FLASH_DANGER => 'payment.flash.status.failed';
+
                 break;
 
             case Status::STATUS_NEW:
                 yield FlashResponse::FLASH_WARNING => 'payment.flash.status.new';
+
                 break;
 
             case Status::STATUS_SUSPENDED:
                 yield FlashResponse::FLASH_DANGER => 'payment.flash.status.suspended';
+
                 break;
 
             case Status::STATUS_AUTHORIZED:
                 yield FlashResponse::FLASH_INFO => 'payment.flash.status.authorized';
+
                 break;
 
             case Status::STATUS_REFUNDED:
                 yield FlashResponse::FLASH_WARNING => 'payment.flash.status.refunded';
+
                 break;
 
             case Status::STATUS_UNKNOWN:
             default:
                 yield FlashResponse::FLASH_DANGER => 'payment.flash.status.unknown';
+
                 break;
         }
     }

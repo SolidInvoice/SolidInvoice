@@ -40,6 +40,7 @@ class CoreContext extends DefaultContext
         foreach ($chosenResults as $result) {
             if ($result->getText() == $value) {
                 $result->click();
+
                 break;
             }
         }
