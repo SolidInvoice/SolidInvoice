@@ -22,18 +22,6 @@ class AppRequirements extends SymfonyRequirements
 
     public function __construct()
     {
-        $phpVersion = phpversion();
-        $icuVersion = Intl::getIcuVersion();
-
-        $this->addRequirement(
-            version_compare($phpVersion, self::REQUIRED_PHP_VERSION, '>='),
-            sprintf('PHP version must be at least %s (%s installed)', self::REQUIRED_PHP_VERSION, $phpVersion),
-            sprintf('You are running PHP version "<strong>%s</strong>", but CSBill needs at least PHP "<strong>%s</strong>" to run.
-                Before using CSBill, upgrade your PHP installation, preferably to the latest version.',
-                $phpVersion, self::REQUIRED_PHP_VERSION),
-            sprintf('Install PHP %s or newer (installed version is %s)', self::REQUIRED_PHP_VERSION, $phpVersion)
-        );
-
         parent::__construct();
 
         $this->addRequirement(
@@ -47,6 +35,8 @@ class AppRequirements extends SymfonyRequirements
             'intl extension should be available',
             'Install and enable the <strong>intl</strong> extension.'
         );
+
+        $icuVersion = Intl::getIcuVersion();
 
         $this->addRequirement(
             null !== $icuVersion && version_compare($icuVersion, self::REQUIRED_ICU_VERSION, '>='),
@@ -119,5 +109,10 @@ class AppRequirements extends SymfonyRequirements
         }
 
         return $recommendations;
+    }
+
+    public function getPhpRequiredVersion()
+    {
+        return self::REQUIRED_PHP_VERSION;
     }
 }
