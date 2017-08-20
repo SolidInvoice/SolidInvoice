@@ -38,6 +38,7 @@ Feature: Manage Clients
         "website": null,
         "status": "active",
         "currency": null,
+        "vatNumber": null,
         "contacts": [
             {
                 "@id": "/api/contacts/1",
@@ -92,6 +93,7 @@ Feature: Manage Clients
         "website": "https://google.com",
         "status": "active",
         "currency": "USD",
+        "vatNumber": null,
         "contacts": [
             {
                 "@id": "/api/contacts/1",
