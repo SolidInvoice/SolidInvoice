@@ -208,15 +208,18 @@ class Mailer implements MailerInterface
         switch ($format) {
             case 'html':
                 $message->setBody($htmlTemplate, 'text/html');
+
                 break;
 
             case 'text':
                 $message->setBody($textTemplate, 'text/plain');
+
                 break;
 
             case 'both':
                 $message->setBody($htmlTemplate, 'text/html');
                 $message->addPart($textTemplate, 'text/plain');
+
                 break;
 
             default:

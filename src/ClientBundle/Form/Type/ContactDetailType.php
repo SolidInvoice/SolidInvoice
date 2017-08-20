@@ -96,6 +96,7 @@ class ContactDetailType extends AbstractType
             switch (strtolower($form->get('type')->getData()->getName())) {
                 case 'email':
                     return ['Default', 'email'];
+
                     break;
             }
             // @codeCoverageIgnoreEnd
