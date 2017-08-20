@@ -47,16 +47,19 @@ class PaymentMethodSettingsType extends AbstractType
         switch ($settings['type']) {
             case 'password':
                 $options['always_empty'] = false;
+
                 break;
 
             case 'choice':
                 $options['choices'] = array_flip($settings['options']);
                 $options['placeholder'] = 'Please Choose';
                 $options['attr'] = ['class' => 'select2'];
+
                 break;
 
             case 'checkbox':
                 $options['required'] = false;
+
                 break;
         }
 
