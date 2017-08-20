@@ -17,7 +17,7 @@ Feature: Create Invoices
     """
     {
       "users" : [
-          {"id" : 1}
+          "/api/contacts/1"
       ],
       "client": "/api/clients/1",
       "discount": {
@@ -68,9 +68,7 @@ Feature: Create Invoices
         }
       ],
       "users": [
-        {
-          "id": 1
-        }
+        "/api/contacts/1"
       ],
       "recurring": false
     }

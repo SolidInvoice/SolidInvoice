@@ -16,6 +16,7 @@ namespace CSBill\InvoiceBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Contact;
 use CSBill\CoreBundle\Entity\Discount;
 use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
@@ -182,9 +183,9 @@ class Invoice
     private $payments;
 
     /**
-     * @var Collection|int[]
+     * @var Collection|Contact[]
      *
-     * @ORM\Column(name="users", type="array", nullable=false)
+     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
@@ -242,7 +243,7 @@ class Invoice
     /**
      * Return users array.
      *
-     * @return Collection|int[]
+     * @return Collection|Contact[]
      */
     public function getUsers(): Collection
     {
@@ -250,11 +251,11 @@ class Invoice
     }
 
     /**
-     * @param int[] $users
+     * @param Contact[] $users
      *
      * @return Invoice
      */
-    public function setUsers(array $users = []): self
+    public function setUsers(array $users): self
     {
         $this->users = new ArrayCollection($users);
 

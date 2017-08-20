@@ -17,7 +17,7 @@ Feature: Create Quotes
     """
     {
       "users" : [
-          {"id" : 1}
+          "/api/contacts/1"
       ],
       "client": "/api/clients/1",
       "discount": {
@@ -66,9 +66,7 @@ Feature: Create Quotes
         }
       ],
       "users": [
-        {
-          "id": 1
-        }
+        "/api/contacts/1"
       ]
     }
     """

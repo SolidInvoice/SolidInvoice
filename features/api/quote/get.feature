@@ -46,9 +46,7 @@ Feature: Get Quotes
               }
             ],
             "users": [
-              {
-                "id": 1
-              }
+              "/api/contacts/1"
             ]
           }
           ],
@@ -93,9 +91,7 @@ Feature: Get Quotes
         }
       ],
       "users": [
-        {
-          "id": 1
-        }
+        "/api/contacts/1"
       ]
     }
     """

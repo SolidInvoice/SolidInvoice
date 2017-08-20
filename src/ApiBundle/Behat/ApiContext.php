@@ -211,7 +211,11 @@ class ApiContext extends DefaultContext implements Context
                         continue;
                     }
 
-                    Assert::assertEquals($value, $actual->read($key, $this->propertyAccess));
+                    if (is_string($actual->getContent())) {
+                        Assert::assertEquals($value, $actual->getContent());
+                    } else {
+                        Assert::assertEquals($value, $actual->read($key, $this->propertyAccess));
+                    }
                 }
             }
         };

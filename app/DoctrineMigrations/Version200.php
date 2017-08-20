@@ -74,6 +74,16 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
 
         $this->addSql('UPDATE invoices set discount_type = "'.Discount::TYPE_PERCENTAGE.'"');
         $this->addSql('UPDATE quotes set discount_type = "'.Discount::TYPE_PERCENTAGE.'"');
+
+        $this->addSql('CREATE TABLE invoice_contact (invoice_id INT NOT NULL, contact_id INT NOT NULL, INDEX IDX_BEBBD0EB2989F1FD (invoice_id), INDEX IDX_BEBBD0EBE7A1254A (contact_id), PRIMARY KEY(invoice_id, contact_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE quote_contact (quote_id INT NOT NULL, contact_id INT NOT NULL, INDEX IDX_A38D4EBCDB805178 (quote_id), INDEX IDX_A38D4EBCE7A1254A (contact_id), PRIMARY KEY(quote_id, contact_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE invoice_contact ADD CONSTRAINT FK_BEBBD0EB2989F1FD FOREIGN KEY (invoice_id) REFERENCES invoices (id)');
+        $this->addSql('ALTER TABLE invoice_contact ADD CONSTRAINT FK_BEBBD0EBE7A1254A FOREIGN KEY (contact_id) REFERENCES contacts (id)');
+        $this->addSql('ALTER TABLE quote_contact ADD CONSTRAINT FK_A38D4EBCDB805178 FOREIGN KEY (quote_id) REFERENCES quotes (id)');
+        $this->addSql('ALTER TABLE quote_contact ADD CONSTRAINT FK_A38D4EBCE7A1254A FOREIGN KEY (contact_id) REFERENCES contacts (id)');
+
+        $this->addSql('ALTER TABLE invoices DROP users');
+        $this->addSql('ALTER TABLE quotes DROP users');
     }
 
     /**
@@ -114,6 +124,11 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('ALTER TABLE 
           quote_lines CHANGE price_amount price_amount INT DEFAULT NULL, 
           CHANGE total_amount total_amount INT DEFAULT NULL');
+
+        $this->addSql('DROP TABLE invoice_contact');
+        $this->addSql('DROP TABLE quote_contact');
+        $this->addSql('ALTER TABLE invoices ADD users LONGTEXT NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:array)\'');
+        $this->addSql('ALTER TABLE quotes ADD users LONGTEXT NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:array)\'');
     }
 
     private function updateSettings(): void

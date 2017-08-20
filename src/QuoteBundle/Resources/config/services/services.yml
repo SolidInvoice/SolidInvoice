@@ -14,12 +14,6 @@ services:
             - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
             - { name: cs_core.menu, menu: quotes_edit, method: quotesEditMenu }
 
-    CSBill\QuoteBundle\Listener\Doctrine\QuoteUsersListener:
-        public: false
-        lazy: true
-        tags:
-            - { name: doctrine.event_listener, event: postLoad }
-
     CSBill\QuoteBundle\Cloner\QuoteCloner:
         autowire: true
         arguments:

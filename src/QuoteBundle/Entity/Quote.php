@@ -16,6 +16,7 @@ namespace CSBill\QuoteBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use CSBill\ClientBundle\Entity\Client;
+use CSBill\ClientBundle\Entity\Contact;
 use CSBill\CoreBundle\Entity\Discount;
 use CSBill\CoreBundle\Entity\ItemInterface;
 use CSBill\CoreBundle\Traits\Entity;
@@ -152,9 +153,9 @@ class Quote
     private $items;
 
     /**
-     * @var Collection|string[]
+     * @var Collection|Contact[]
      *
-     * @ORM\Column(name="users", type="array", nullable=false)
+     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
@@ -204,7 +205,7 @@ class Quote
     /**
      * Return users array.
      *
-     * @return Collection|string[]
+     * @return Collection|Contact[]
      */
     public function getUsers(): Collection
     {
@@ -212,13 +213,25 @@ class Quote
     }
 
     /**
-     * @param int[] $users
+     * @param Contact[] $users
      *
      * @return Quote
      */
-    public function setUsers(array $users = []): self
+    public function setUsers(array $users): self
     {
         $this->users = new ArrayCollection($users);
+
+        return $this;
+    }
+
+    /**
+     * @param Contact $user
+     *
+     * @return Quote
+     */
+    public function addUser(Contact $user): self
+    {
+        $this->users[] = $user;
 
         return $this;
     }
