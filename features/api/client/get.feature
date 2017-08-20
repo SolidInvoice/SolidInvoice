@@ -32,6 +32,7 @@ Feature: Get Clients
                 "website": null,
                 "status": "active",
                 "currency": "USD",
+                "vatNumber": null,
                 "contacts": [
                     {
                         "@id": "/api/contacts/1",
@@ -83,6 +84,7 @@ Feature: Get Clients
         "website": null,
         "status": "active",
         "currency": "USD",
+        "vatNumber": null,
         "contacts": [
             {
                 "@id": "/api/contacts/1",
