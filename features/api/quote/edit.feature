@@ -17,7 +17,7 @@ Feature: Edit Quotes
     """
     {
       "users" : [
-          {"id" : 1}
+          "/api/contacts/1"
       ],
       "discount": {
           "type": "percentage",
@@ -65,9 +65,7 @@ Feature: Edit Quotes
         }
       ],
       "users": [
-        {
-          "id": 1
-        }
+        "/api/contacts/1"
       ]
     }
     """

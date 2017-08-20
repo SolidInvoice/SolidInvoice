@@ -48,9 +48,7 @@ Feature: Get Invoices
               }
             ],
             "users": [
-              {
-                "id": 1
-              }
+              "/api/contacts/1"
             ],
             "recurring": false
           }
@@ -98,9 +96,7 @@ Feature: Get Invoices
         }
       ],
       "users": [
-        {
-          "id": 1
-        }
+        "/api/contacts/1"
       ],
       "recurring": false
     }
