@@ -74,15 +74,18 @@ class Factory
         switch ($format) {
             case 'html':
                 $swiftMessage->setBody($message->getHtmlContent($this->templating), 'text/html');
+
                 break;
 
             case 'text':
                 $swiftMessage->setBody($message->getTextContent($this->templating), 'text/plain');
+
                 break;
 
             case 'both':
                 $swiftMessage->setBody($message->getHtmlContent($this->templating), 'text/html');
                 $swiftMessage->addPart($message->getTextContent($this->templating), 'text/plain');
+
                 break;
 
             default:
