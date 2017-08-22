@@ -17,7 +17,6 @@
   },
   "homepage": "http://solidinvoice.org",
   "devDependencies": {
-    "babel": "^6.23.0",
     "babel-preset-env": "^1.5.2",
     "babel-preset-es2015": "^6.24.1",
     "del": "^2.2.0",
@@ -48,8 +47,9 @@
   "dependencies": {
     "accounting": "^0.4.1",
     "admin-lte": "^2.3.11",
+    "babel-cli": "^6.26.0",
     "backbone": "^1.3.3",
-    "backbone.marionette": "^3.3.1",
+    "backbone.marionette": "^3.4.2",
     "backbone.paginator": "^2.0.6",
     "backbone.radio": "^2.0.0",
     "backgrid": "^0.3.8",
