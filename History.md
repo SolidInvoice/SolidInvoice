@@ -1,3 +1,30 @@
+2.0.0 Alpha 1 / 2017-08-22
+=========================
+
+  * Rename CSBill to SolidInvoice
+  * Save users on invoices and quotes in a linking table (#184)
+  * Use constant when displaying application name (#186)
+  * Set proper required PHP version in AppRequirements (#185)
+  * Replace FOSRestBundle with api-platform (#178)
+  * Add support for monetary discount values (#182)
+  * Update Vat rates (#181)
+  * Revamp UI (#179)
+  * Update JS loading (#177)
+  * Update mailer to use env values (#174)
+  * Replace Encryption class with defuse/encryption library (#175)
+  * Refactor the system settings and config (#173)
+  * Update Marionette to V3 (#170)
+  * Update form handlers to use proper options (#172)
+  * Add invoice and quote cloner (#171)
+  * Replace finite state machine with Symfony workflow (#166)
+  * Replace controllers with actions (#165)
+  * Update all files to PHP 7 strict types (#163)
+  * Update config to a standardized format (#162)
+  * Update Twig to 2.0 (#160)
+  * Move bundles one folder up (#159)
+  * Update dependencies to tha latest versions (#154)
+  * Update FOSUserBundle to 2 (#153)
+  * Upgrade PHPUnit to the latest version (#149)
 
 1.1.0 / 2017-02-15
 ==================
