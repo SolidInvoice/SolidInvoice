@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -60,7 +60,7 @@ class Credit
     /**
      * @return int|null
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -68,7 +68,7 @@ class Credit
     /**
      * @return Client
      */
-    public function getClient(): ?Client
+    public function getClient(): ? Client
     {
         return $this->client;
     }

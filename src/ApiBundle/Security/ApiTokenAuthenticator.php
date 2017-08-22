@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -79,7 +79,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      *
      * @return string
      */
-    private function getToken(Request $request): ?string
+    private function getToken(Request $request): ? string
     {
         return $request->headers->get('X-API-TOKEN', $request->query->get('token'));
     }

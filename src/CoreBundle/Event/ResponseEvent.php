@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -26,7 +26,7 @@ class ResponseEvent extends Event
     /**
      * @return Response
      */
-    public function getResponse(): ?Response
+    public function getResponse(): ? Response
     {
         return $this->response;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -104,7 +104,7 @@ class Item implements ItemInterface
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -128,7 +128,7 @@ class Item implements ItemInterface
      *
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): ? string
     {
         return $this->description;
     }
@@ -176,7 +176,7 @@ class Item implements ItemInterface
      *
      * @return float
      */
-    public function getQty(): ?float
+    public function getQty(): ? float
     {
         return $this->qty;
     }
@@ -188,7 +188,7 @@ class Item implements ItemInterface
      *
      * @return ItemInterface
      */
-    public function setInvoice(?Invoice $invoice): ItemInterface
+    public function setInvoice(? Invoice $invoice) : ItemInterface
     {
         $this->invoice = $invoice;
 
@@ -200,7 +200,7 @@ class Item implements ItemInterface
      *
      * @return Invoice
      */
-    public function getInvoice(): ?Invoice
+    public function getInvoice(): ? Invoice
     {
         return $this->invoice;
     }
@@ -230,7 +230,7 @@ class Item implements ItemInterface
     /**
      * @return Tax
      */
-    public function getTax(): ?Tax
+    public function getTax(): ? Tax
     {
         return $this->tax;
     }
@@ -240,7 +240,7 @@ class Item implements ItemInterface
      *
      * @return ItemInterface
      */
-    public function setTax(?Tax $tax): ItemInterface
+    public function setTax(? Tax $tax) : ItemInterface
     {
         $this->tax = $tax;
 
@@ -262,7 +262,7 @@ class Item implements ItemInterface
      *
      * @return string
      */
-    public function __toString(): ?string
+    public function __toString(): ? string
     {
         return $this->getDescription();
     }

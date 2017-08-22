@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -52,7 +52,8 @@ final class Edit
         if ($invoice->getStatus() === Graph::STATUS_PAID) {
             $route = $this->router->generate('_invoices_index');
 
-            return new class($route) extends RedirectResponse implements FlashResponse {
+            return new class($route) extends RedirectResponse implements FlashResponse
+            {
                 public function getFlash(): iterable
                 {
                     yield FlashResponse::FLASH_WARNING => 'invoice.edit.paid';

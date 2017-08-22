@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -120,7 +120,7 @@ final class Prepare
         $this->router = $router;
     }
 
-    public function __invoke(Request $request, ?Invoice $invoice)
+    public function __invoke(Request $request, ? Invoice $invoice)
     {
         if (null === $invoice) {
             throw new NotFoundHttpException();
@@ -242,7 +242,7 @@ final class Prepare
         );
     }
 
-    protected function getUser(): ?UserInterface
+    protected function getUser(): ? UserInterface
     {
         if (null === $token = $this->tokenStorage->getToken()) {
             return null;

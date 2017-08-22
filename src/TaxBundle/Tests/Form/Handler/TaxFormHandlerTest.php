@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -57,7 +57,7 @@ class TaxFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    protected function assertOnSuccess(? Response $response, $data, FormRequest $form)
     {
         $this->assertCount(1, $this->em->getRepository('SolidInvoiceTaxBundle:Tax')->findAll());
         $tax = $this->em->getRepository('SolidInvoiceTaxBundle:Tax')->find(1);

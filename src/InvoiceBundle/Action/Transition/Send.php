@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -61,7 +61,8 @@ final class Send
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield FlashResponse::FLASH_SUCCESS => 'invoice.transition.action.sent';

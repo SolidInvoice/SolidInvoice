@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -91,7 +91,7 @@ class EmailSettingsType extends AbstractType
             ]
         );
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
             $data = $event->getData();
 
             if ('gmail' === $data['transport']) {
@@ -119,7 +119,7 @@ class EmailSettingsType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'validation_groups' => function (FormInterface $form) {
+                'validation_groups' => function(FormInterface $form) {
                     $data = $form->getData();
 
                     if ('smtp' === $data['transport']) {

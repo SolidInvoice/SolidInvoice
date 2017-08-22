@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -110,7 +110,7 @@ class Tax
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -118,7 +118,7 @@ class Tax
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -138,7 +138,7 @@ class Tax
     /**
      * @return float
      */
-    public function getRate(): ?float
+    public function getRate(): ? float
     {
         return $this->rate;
     }
@@ -158,7 +158,7 @@ class Tax
     /**
      * @return string
      */
-    public function getType(): ?string
+    public function getType(): ? string
     {
         return $this->type;
     }

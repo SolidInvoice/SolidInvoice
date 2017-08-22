@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -60,7 +60,7 @@ class PaymentType extends AbstractType
                 'preferred_choices' => $options['preferred_choices'],
                 'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
-                'choice_attr' => function (PaymentMethod $paymentMethod) {
+                'choice_attr' => function(PaymentMethod $paymentMethod) {
                     return ['data-gateway' => $paymentMethod->getGatewayName()];
                 },
                 'attr' => [
@@ -76,7 +76,7 @@ class PaymentType extends AbstractType
                 'currency' => $options['currency'],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Callback(function (Money $money, ExecutionContextInterface $context) {
+                    new Assert\Callback(function(Money $money, ExecutionContextInterface $context) {
                         if ($money->isZero() || $money->isNegative()) {
                             $context->buildViolation('This value should be greater than {{ compared_value }}.')
                                 ->setParameter('{{ value }}', $money->getAmount())

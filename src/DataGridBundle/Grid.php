@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -117,7 +117,7 @@ class Grid implements GridInterface, \JsonSerializable
 
         $resultSet = $paginator->getQuery()->getArrayResult();
 
-        array_walk_recursive($resultSet, function (&$value, $key): void {
+        array_walk_recursive($resultSet, function(&$value, $key): void {
             if (false !== strpos($key, 'currency')) {
                 $value = $this->moneyFormatter->getCurrencySymbol($value);
             }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -105,7 +105,7 @@ class TotalCalculator
      * @param Money $total
      * @param Money $tax
      */
-    private function setTax(Tax $rowTax, Money $rowTotal, Money &$subTotal, Money &$total, Money &$tax): void
+    private function setTax(Tax $rowTax, Money $rowTotal, Money & $subTotal, Money & $total, Money & $tax): void
     {
         if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {
             $taxAmount = $rowTotal->divide(($rowTax->getRate() / 100) + 1)->subtract($rowTotal)->multiply(-1);

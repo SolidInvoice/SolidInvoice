@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -76,7 +76,7 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess($data, FormRequest $form): ? Response
     {
         /* @var PaymentMethod $data */
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -96,22 +96,22 @@ class EmailSettingsTypeTest extends FormTestCase
         ];
 
         yield [
-           [
-               'transport' => 'gmail',
-               'host' => 'localhost',
-               'port' => 1234,
-               'encryption' => 'ssl',
-               'user' => 'root',
-               'password' => 'password',
-           ],
-           [
-               'transport' => 'gmail',
-               'host' => null,
-               'port' => null,
-               'encryption' => null,
-               'user' => 'root',
-               'password' => 'password',
-           ],
-       ];
+            [
+                'transport' => 'gmail',
+                'host' => 'localhost',
+                'port' => 1234,
+                'encryption' => 'ssl',
+                'user' => 'root',
+                'password' => 'password',
+            ],
+            [
+                'transport' => 'gmail',
+                'host' => null,
+                'port' => null,
+                'encryption' => null,
+                'user' => 'root',
+                'password' => 'password',
+            ],
+        ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -45,7 +45,7 @@ final class MethodList implements AjaxResponse
         $paymentMethods = array_keys($this->factories->getFactories());
 
         $enabledMethods = array_map(
-            function (PaymentMethod $method): string {
+            function(PaymentMethod $method): string {
                 return strtolower($method->getGatewayName());
             }, $this->repository->findBy(['enabled' => 1])
         );

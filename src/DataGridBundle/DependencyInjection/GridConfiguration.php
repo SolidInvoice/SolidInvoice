@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -123,7 +123,7 @@ class GridConfiguration implements ConfigurationInterface
                     ->arrayNode('line_actions')
                         ->arrayPrototype()
                             ->validate()
-                                ->ifTrue(function ($data) {
+                                ->ifTrue(function($data) {
                                     return empty($data['icon']) && empty($data['label']);
                                 })
                                 ->thenInvalid('At least one of "icon" or "label" needs to be set')

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -116,7 +116,7 @@ class ApiContext extends DefaultContext implements Context
         return array_pop($collection)->getEntity();
     }
 
-    private function prepareRequest(string &$url, PyStringNode &$body = null): void
+    private function prepareRequest(string & $url, PyStringNode & $body = null): void
     {
         $this->restContext->iAddHeaderEqualTo("Content-Type", "application/ld+json");
         $this->restContext->iAddHeaderEqualTo("Accept", "application/ld+json");
@@ -128,7 +128,7 @@ class ApiContext extends DefaultContext implements Context
         }
     }
 
-    private function &replaceEntity(string &$string)
+    private function &replaceEntity(string & $string)
     {
         if (preg_match_all('/{([a-zA-Z\.]+)}/', $string, $matches)) {
             $collections = [];
@@ -188,7 +188,8 @@ class ApiContext extends DefaultContext implements Context
 
         $result = (array) (new Json($string->getRaw()))->getContent();
 
-        $validator = new class() {
+        $validator = new class()
+        {
             private $propertyAccess;
 
             public function __construct()

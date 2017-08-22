@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -102,7 +102,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -110,7 +110,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return Invoice
      */
-    public function getInvoice(): ?Invoice
+    public function getInvoice(): ? Invoice
     {
         return $this->invoice;
     }
@@ -130,7 +130,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return PaymentMethod
      */
-    public function getMethod(): ?PaymentMethod
+    public function getMethod(): ? PaymentMethod
     {
         return $this->method;
     }
@@ -152,7 +152,7 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @return string
      */
-    public function getStatus(): ?string
+    public function getStatus(): ? string
     {
         return $this->status;
     }
@@ -198,7 +198,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return string
      */
-    public function getMessage(): ?string
+    public function getMessage(): ? string
     {
         return $this->message;
     }
@@ -218,7 +218,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return \DateTime
      */
-    public function getCompleted(): ?\DateTime
+    public function getCompleted(): ? \DateTime
     {
         return $this->completed;
     }
@@ -238,7 +238,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return int
      */
-    public function getClientId(): ?int
+    public function getClientId(): ? int
     {
         $client = $this->getClient();
 
@@ -248,7 +248,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return Client
      */
-    public function getClient(): ?Client
+    public function getClient(): ? Client
     {
         return $this->client;
     }

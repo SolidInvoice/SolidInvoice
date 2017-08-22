@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -46,7 +46,7 @@ class Version
      *
      * @return Version
      */
-    public function setVersion(?string $version): self
+    public function setVersion(? string $version) : self
     {
         $this->version = $version;
 
@@ -58,7 +58,7 @@ class Version
      *
      * @return string
      */
-    public function getVersion(): ?string
+    public function getVersion(): ? string
     {
         return $this->version;
     }
@@ -68,7 +68,7 @@ class Version
      *
      * @return string
      */
-    public function __toString(): ?string
+    public function __toString(): ? string
     {
         return $this->version;
     }

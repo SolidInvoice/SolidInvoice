@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -92,7 +92,7 @@ class ContactType
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -116,7 +116,7 @@ class ContactType
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -165,7 +165,7 @@ class ContactType
      *
      * @return Collection|AdditionalContactDetail[]
      */
-    public function getDetails(): ?Collection
+    public function getDetails(): ? Collection
     {
         return $this->details;
     }
@@ -173,7 +173,7 @@ class ContactType
     /**
      * @return string
      */
-    public function getType(): ?string
+    public function getType(): ? string
     {
         return $this->type;
     }
@@ -193,7 +193,7 @@ class ContactType
     /**
      * @return array
      */
-    public function getOptions(): ?array
+    public function getOptions(): ? array
     {
         return $this->options;
     }

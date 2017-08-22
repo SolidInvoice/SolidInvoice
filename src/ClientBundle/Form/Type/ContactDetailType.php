@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -84,7 +84,7 @@ class ContactDetailType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('validation_groups', function (FormInterface $form) {
+        $resolver->setDefault('validation_groups', function(FormInterface $form) {
             // @codeCoverageIgnoreStart
             $type = $form->get('type')->getData()->getName();
             $value = $form->get('value')->getData();

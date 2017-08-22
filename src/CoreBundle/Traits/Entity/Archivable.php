@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -39,7 +39,7 @@ trait Archivable
      *
      * @return $this
      */
-    public function setArchived(?bool $archived)
+    public function setArchived(? bool $archived)
     {
         $this->archived = $archived;
 

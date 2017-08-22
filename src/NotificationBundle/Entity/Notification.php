@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -61,7 +61,7 @@ class Notification
     /**
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -69,7 +69,7 @@ class Notification
     /**
      * @return string
      */
-    public function getEvent(): ?string
+    public function getEvent(): ? string
     {
         return $this->event;
     }

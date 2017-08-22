@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -126,7 +126,7 @@ class Contact implements \Serializable
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -136,7 +136,7 @@ class Contact implements \Serializable
      *
      * @return string
      */
-    public function getFirstName(): ?string
+    public function getFirstName(): ? string
     {
         return $this->firstName;
     }
@@ -160,7 +160,7 @@ class Contact implements \Serializable
      *
      * @return string
      */
-    public function getLastName(): ?string
+    public function getLastName(): ? string
     {
         return $this->lastName;
     }
@@ -172,7 +172,7 @@ class Contact implements \Serializable
      *
      * @return Contact
      */
-    public function setLastName(?string $lastName): self
+    public function setLastName(? string $lastName) : self
     {
         $this->lastName = $lastName;
 
@@ -184,7 +184,7 @@ class Contact implements \Serializable
      *
      * @return Client
      */
-    public function getClient(): ?Client
+    public function getClient(): ? Client
     {
         return $this->client;
     }
@@ -247,7 +247,7 @@ class Contact implements \Serializable
      *
      * @return null|AdditionalContactDetail
      */
-    public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
+    public function getAdditionalContactDetail(string $type): ? AdditionalContactDetail
     {
         $type = strtolower($type);
         if (count($this->additionalContactDetails)) {
@@ -288,7 +288,7 @@ class Contact implements \Serializable
     /**
      * @return string
      */
-    public function getEmail(): ?string
+    public function getEmail(): ? string
     {
         return $this->email;
     }

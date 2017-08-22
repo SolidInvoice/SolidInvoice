@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -57,7 +57,7 @@ class UpgradeListener implements EventSubscriberInterface
      * @param ManagerRegistry $registry
      * @param Migration       $migration
      */
-    public function __construct(?string $installed, ManagerRegistry $registry, Migration $migration)
+    public function __construct(? string $installed, ManagerRegistry $registry, Migration $migration)
     {
         $this->installed = $installed;
         $this->registry = $registry;

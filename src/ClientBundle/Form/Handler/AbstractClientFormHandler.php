@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -64,7 +64,8 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
 
         $route = $this->router->generate('_clients_view', ['id' => $client->getId()]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'client.create.success';

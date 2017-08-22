@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -60,7 +60,7 @@ class Money
     /**
      * @param BaseMoney $money
      */
-    public function __construct(?BaseMoney $money = null)
+    public function __construct(? BaseMoney $money = null)
     {
         if ($money) {
             $this->value = $money->getAmount();

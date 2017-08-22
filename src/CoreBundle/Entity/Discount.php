@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -61,7 +61,7 @@ class Discount
     /**
      * @return string
      */
-    public function getType(): ?string
+    public function getType(): ? string
     {
         return $this->type;
     }
@@ -71,7 +71,7 @@ class Discount
      *
      * @return $this
      */
-    public function setType(?string $type): self
+    public function setType(? string $type) : self
     {
         $this->type = $type;
 
@@ -81,7 +81,7 @@ class Discount
     /**
      * @return MoneyEntity
      */
-    public function getValueMoney(): ?MoneyEntity
+    public function getValueMoney(): ? MoneyEntity
     {
         return $this->valueMoney;
     }
@@ -101,7 +101,7 @@ class Discount
     /**
      * @return float
      */
-    public function getValuePercentage(): ?float
+    public function getValuePercentage(): ? float
     {
         return $this->valuePercentage;
     }

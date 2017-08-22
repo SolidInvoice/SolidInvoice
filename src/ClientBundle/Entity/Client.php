@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -174,7 +174,7 @@ class Client
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -184,7 +184,7 @@ class Client
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -208,7 +208,7 @@ class Client
      *
      * @return string
      */
-    public function getStatus(): ?string
+    public function getStatus(): ? string
     {
         return $this->status;
     }
@@ -232,7 +232,7 @@ class Client
      *
      * @return string
      */
-    public function getWebsite(): ?string
+    public function getWebsite(): ? string
     {
         return $this->website;
     }
@@ -414,7 +414,7 @@ class Client
      *
      * @return Client
      */
-    public function addAddress(?Address $address): self
+    public function addAddress(? Address $address) : self
     {
         if (null !== $address) {
             $this->addresses[] = $address;
@@ -451,7 +451,7 @@ class Client
     /**
      * @return Credit
      */
-    public function getCredit(): ?Credit
+    public function getCredit(): ? Credit
     {
         return $this->credit;
     }
@@ -494,7 +494,7 @@ class Client
     /**
      * @return Currency|null
      */
-    public function getCurrency(): ?Currency
+    public function getCurrency(): ? Currency
     {
         return $this->currency ? new Currency($this->currency) : null;
     }
@@ -504,7 +504,7 @@ class Client
      *
      * @return Client
      */
-    public function setCurrency(?string $currency): self
+    public function setCurrency(? string $currency) : self
     {
         $this->currency = $currency;
 
@@ -514,7 +514,7 @@ class Client
     /**
      * @return string
      */
-    public function getVatNumber(): ?string
+    public function getVatNumber(): ? string
     {
         return $this->vatNumber;
     }
@@ -524,7 +524,7 @@ class Client
      *
      * @return $this
      */
-    public function setVatNumber(?string $vatNumber): self
+    public function setVatNumber(? string $vatNumber) : self
     {
         $this->vatNumber = $vatNumber;
 

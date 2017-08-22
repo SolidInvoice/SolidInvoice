@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -70,7 +70,7 @@ class AdditionalContactDetail
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -80,7 +80,7 @@ class AdditionalContactDetail
      *
      * @return string
      */
-    public function getValue(): ?string
+    public function getValue(): ? string
     {
         return $this->value;
     }
@@ -92,7 +92,7 @@ class AdditionalContactDetail
      *
      * @return AdditionalContactDetail
      */
-    public function setValue(?string $value): self
+    public function setValue(? string $value) : self
     {
         $this->value = $value;
 
@@ -104,7 +104,7 @@ class AdditionalContactDetail
      *
      * @return ContactType
      */
-    public function getType(): ?ContactType
+    public function getType(): ? ContactType
     {
         return $this->type;
     }
@@ -116,7 +116,7 @@ class AdditionalContactDetail
      *
      * @return AdditionalContactDetail
      */
-    public function setType(?ContactType $type): self
+    public function setType(? ContactType $type) : self
     {
         $this->type = $type;
 
@@ -126,7 +126,7 @@ class AdditionalContactDetail
     /**
      * @return string
      */
-    public function __toString(): ?string
+    public function __toString(): ? string
     {
         return $this->value;
     }
@@ -136,7 +136,7 @@ class AdditionalContactDetail
      *
      * @return Contact
      */
-    public function getContact(): ?Contact
+    public function getContact(): ? Contact
     {
         return $this->contact;
     }

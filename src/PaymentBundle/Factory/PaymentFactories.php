@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -48,7 +48,7 @@ class PaymentFactories
      *
      * @return array
      */
-    public function getFactories(string $type = null): ?array
+    public function getFactories(string $type = null): ? array
     {
         if (null === $type) {
             return $this->factories;
@@ -56,7 +56,7 @@ class PaymentFactories
 
         return array_filter(
             $this->factories,
-            function ($factory) use ($type): bool {
+            function($factory) use ($type): bool {
                 return $type === $factory;
             }
         );
@@ -67,7 +67,7 @@ class PaymentFactories
      *
      * @return string
      */
-    public function getForm(string $gateway): ?string
+    public function getForm(string $gateway): ? string
     {
         return isset($this->forms[$gateway]) ? $this->forms[$gateway] : null;
     }
@@ -79,7 +79,7 @@ class PaymentFactories
      *
      * @throws \Exception
      */
-    public function getFactory(string $gateway): ?string
+    public function getFactory(string $gateway): ? string
     {
         if (isset($this->factories[$gateway])) {
             return $this->factories[$gateway];

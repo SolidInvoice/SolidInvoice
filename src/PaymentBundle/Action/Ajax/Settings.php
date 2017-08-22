@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -42,7 +42,7 @@ final class Settings implements AjaxResponse
     /**
      * @ParamConverter("paymentMethod", options={"mapping": {"method": "gatewayName"}})
      */
-    public function __invoke(Request $request, ?PaymentMethod $paymentMethod)
+    public function __invoke(Request $request, ? PaymentMethod $paymentMethod)
     {
         $methodName = $request->attributes->get('method');
 

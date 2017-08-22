@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -32,7 +32,7 @@ class MailerSettingsEnvListener implements EventSubscriberInterface
      */
     private $config;
 
-    public function __construct(?string $installed, SystemConfig $config)
+    public function __construct(? string $installed, SystemConfig $config)
     {
         $this->installed = $installed;
         $this->config = $config;

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -29,7 +29,8 @@ class NotificationType extends AbstractType
         $builder->add('hipchat', CheckboxType::class);
         $builder->add('sms', CheckboxType::class);
 
-        $builder->addModelTransformer(new class() implements DataTransformerInterface {
+        $builder->addModelTransformer(new class() implements DataTransformerInterface
+        {
             public function transform($value)
             {
                 if (!is_string($value)) {

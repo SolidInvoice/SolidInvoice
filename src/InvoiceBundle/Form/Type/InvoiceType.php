@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -84,7 +84,7 @@ class InvoiceType extends AbstractType
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
             $data = $event->getData();
 
             if (!array_key_exists('recurring', $data) || (int) $data['recurring'] !== 1) {
@@ -109,7 +109,7 @@ class InvoiceType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'validation_groups' => function (FormInterface $form) {
+                'validation_groups' => function(FormInterface $form) {
                     $recurring = $form->get('recurring')->getData();
 
                     if (true === $recurring) {

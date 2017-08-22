@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -72,7 +72,7 @@ class RecurringInvoice
     /**
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -80,7 +80,7 @@ class RecurringInvoice
     /**
      * @return string
      */
-    public function getFrequency(): ?string
+    public function getFrequency(): ? string
     {
         return $this->frequency;
     }
@@ -100,7 +100,7 @@ class RecurringInvoice
     /**
      * @return \DateTime
      */
-    public function getDateStart(): ?\DateTime
+    public function getDateStart(): ? \DateTime
     {
         return $this->dateStart;
     }
@@ -120,7 +120,7 @@ class RecurringInvoice
     /**
      * @return \DateTime
      */
-    public function getDateEnd(): ?\DateTime
+    public function getDateEnd(): ? \DateTime
     {
         return $this->dateEnd;
     }
@@ -140,7 +140,7 @@ class RecurringInvoice
     /**
      * @return Invoice
      */
-    public function getInvoice(): ?Invoice
+    public function getInvoice(): ? Invoice
     {
         return $this->invoice;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -72,7 +72,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    protected function assertOnSuccess(? Response $response, $data, FormRequest $form)
     {
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);

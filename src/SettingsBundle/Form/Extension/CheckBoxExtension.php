@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -25,7 +25,8 @@ class CheckBoxExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new class() implements DataTransformerInterface {
+        $builder->addModelTransformer(new class() implements DataTransformerInterface
+        {
             public function transform($value)
             {
                 return (bool) $value;

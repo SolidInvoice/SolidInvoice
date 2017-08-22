@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -100,7 +100,7 @@ class Address
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -108,7 +108,7 @@ class Address
     /**
      * @return string
      */
-    public function getStreet1(): ?string
+    public function getStreet1(): ? string
     {
         return $this->street1;
     }
@@ -118,7 +118,7 @@ class Address
      *
      * @return Address
      */
-    public function setStreet1(?string $street1): self
+    public function setStreet1(? string $street1) : self
     {
         $this->street1 = $street1;
 
@@ -128,7 +128,7 @@ class Address
     /**
      * @return string
      */
-    public function getStreet2(): ?string
+    public function getStreet2(): ? string
     {
         return $this->street2;
     }
@@ -138,7 +138,7 @@ class Address
      *
      * @return Address
      */
-    public function setStreet2(?string $street2): self
+    public function setStreet2(? string $street2) : self
     {
         $this->street2 = $street2;
 
@@ -148,7 +148,7 @@ class Address
     /**
      * @return string
      */
-    public function getCity(): ?string
+    public function getCity(): ? string
     {
         return $this->city;
     }
@@ -158,7 +158,7 @@ class Address
      *
      * @return Address
      */
-    public function setCity(?string $city): self
+    public function setCity(? string $city) : self
     {
         $this->city = $city;
 
@@ -168,7 +168,7 @@ class Address
     /**
      * @return string
      */
-    public function getState(): ?string
+    public function getState(): ? string
     {
         return $this->state;
     }
@@ -178,7 +178,7 @@ class Address
      *
      * @return Address
      */
-    public function setState(?string $state): self
+    public function setState(? string $state) : self
     {
         $this->state = $state;
 
@@ -188,7 +188,7 @@ class Address
     /**
      * @return string
      */
-    public function getZip(): ?string
+    public function getZip(): ? string
     {
         return $this->zip;
     }
@@ -198,7 +198,7 @@ class Address
      *
      * @return Address
      */
-    public function setZip(?string $zip): self
+    public function setZip(? string $zip) : self
     {
         $this->zip = $zip;
 
@@ -208,7 +208,7 @@ class Address
     /**
      * @return string
      */
-    public function getCountry(): ?string
+    public function getCountry(): ? string
     {
         return $this->country;
     }
@@ -218,7 +218,7 @@ class Address
      *
      * @return Address
      */
-    public function setCountry(?string $country): self
+    public function setCountry(? string $country) : self
     {
         $this->country = $country;
 
@@ -228,7 +228,7 @@ class Address
     /**
      * @return Client
      */
-    public function getClient(): ?Client
+    public function getClient(): ? Client
     {
         return $this->client;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -40,7 +40,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      *
      * @return string
      */
-    public function getUsernameForToken(string $token): ?string
+    public function getUsernameForToken(string $token): ? string
     {
         return $this->registry->getRepository('SolidInvoiceUserBundle:ApiToken')->getUsernameForToken($token);
     }

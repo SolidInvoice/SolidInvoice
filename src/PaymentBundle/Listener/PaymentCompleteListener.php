@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -111,7 +111,8 @@ class PaymentCompleteListener implements EventSubscriberInterface
             $router = $this->router;
 
             $event->setResponse(
-                new class($router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]), $status) extends RedirectResponse implements FlashResponse {
+                new class($router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]), $status) extends RedirectResponse implements FlashResponse
+                {
                     private $status;
 
                     public function __construct(string $route, string $status)

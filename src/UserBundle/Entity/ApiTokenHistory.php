@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -79,7 +79,7 @@ class ApiTokenHistory
     /**
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -87,7 +87,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getIp(): ?string
+    public function getIp(): ? string
     {
         return $this->ip;
     }
@@ -107,7 +107,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getResource(): ?string
+    public function getResource(): ? string
     {
         return $this->resource;
     }
@@ -127,7 +127,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getMethod(): ?string
+    public function getMethod(): ? string
     {
         return $this->method;
     }
@@ -147,7 +147,7 @@ class ApiTokenHistory
     /**
      * @return array
      */
-    public function getRequestData(): ?array
+    public function getRequestData(): ? array
     {
         return $this->requestData;
     }
@@ -167,7 +167,7 @@ class ApiTokenHistory
     /**
      * @return string
      */
-    public function getUserAgent(): ?string
+    public function getUserAgent(): ? string
     {
         return $this->userAgent;
     }
@@ -187,7 +187,7 @@ class ApiTokenHistory
     /**
      * @return ApiToken
      */
-    public function getToken(): ?ApiToken
+    public function getToken(): ? ApiToken
     {
         return $this->token;
     }

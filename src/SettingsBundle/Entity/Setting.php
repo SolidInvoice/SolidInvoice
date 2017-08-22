@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -65,7 +65,7 @@ class Setting
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -123,7 +123,7 @@ class Setting
      *
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): ? string
     {
         return $this->description;
     }
@@ -135,7 +135,7 @@ class Setting
      *
      * @return Setting
      */
-    public function setDescription(?string $description): Setting
+    public function setDescription(? string $description) : Setting
     {
         $this->description = $description;
 
@@ -147,7 +147,7 @@ class Setting
      *
      * @return string
      */
-    public function getType(): ?string
+    public function getType(): ? string
     {
         return $this->type;
     }
@@ -166,7 +166,7 @@ class Setting
         return $this;
     }
 
-    public function __toString(): ?string
+    public function __toString(): ? string
     {
         return $this->value;
     }

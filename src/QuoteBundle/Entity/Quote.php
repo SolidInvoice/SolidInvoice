@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -177,7 +177,7 @@ class Quote
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -241,7 +241,7 @@ class Quote
      *
      * @return string
      */
-    public function getStatus(): ?string
+    public function getStatus(): ? string
     {
         return $this->status;
     }
@@ -265,7 +265,7 @@ class Quote
      *
      * @return Client
      */
-    public function getClient(): ?Client
+    public function getClient(): ? Client
     {
         return $this->client;
     }
@@ -277,7 +277,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setClient(?Client $client): self
+    public function setClient(? Client $client) : self
     {
         $this->client = $client;
 
@@ -327,7 +327,7 @@ class Quote
     /**
      * @return Discount
      */
-    public function getDiscount(): ?Discount
+    public function getDiscount(): ? Discount
     {
         return $this->discount;
     }
@@ -337,7 +337,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setDiscount(?Discount $discount): self
+    public function setDiscount(? Discount $discount) : self
     {
         $this->discount = $discount;
 
@@ -347,7 +347,7 @@ class Quote
     /**
      * @return \DateTime
      */
-    public function getDue(): ?\DateTime
+    public function getDue(): ? \DateTime
     {
         return $this->due;
     }
@@ -401,7 +401,7 @@ class Quote
     /**
      * @return string
      */
-    public function getTerms(): ?string
+    public function getTerms(): ? string
     {
         return $this->terms;
     }
@@ -411,7 +411,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setTerms(?string $terms): self
+    public function setTerms(? string $terms) : self
     {
         $this->terms = $terms;
 
@@ -421,7 +421,7 @@ class Quote
     /**
      * @return string
      */
-    public function getNotes(): ?string
+    public function getNotes(): ? string
     {
         return $this->notes;
     }
@@ -431,7 +431,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setNotes(?string $notes): self
+    public function setNotes(? string $notes) : self
     {
         $this->notes = $notes;
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -87,7 +87,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    protected function assertOnSuccess(?Response $response, $invoice, FormRequest $form)
+    protected function assertOnSuccess(? Response $response, $invoice, FormRequest $form)
     {
         /* @var Invoice $invoice */
 

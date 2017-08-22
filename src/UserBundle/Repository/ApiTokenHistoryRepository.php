@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -45,11 +45,11 @@ class ApiTokenHistoryRepository extends EntityRepository
         $statement = $this->getEntityManager()
             ->getConnection()
             ->prepare("
-                  DELETE FROM ${tableName}
+                  DELETE FROM ${tablename}
                   WHERE id NOT IN (
                     SELECT id FROM (
                         SELECT id
-                        FROM ${tableName}
+                        FROM ${tablename}
                         WHERE token_id = ?
                         ORDER BY id DESC
                         LIMIT 100
