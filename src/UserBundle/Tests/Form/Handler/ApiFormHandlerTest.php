@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -41,7 +41,7 @@ class ApiFormHandlerTest extends FormHandlerTestCase
         return ['api_token' => new ApiToken()];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    protected function assertOnSuccess(? Response $response, $data, FormRequest $form)
     {
         $this->assertCount(1, $this->em->getRepository('SolidInvoiceUserBundle:ApiToken')->findAll());
         $this->assertInstanceOf(JsonResponse::class, $response);

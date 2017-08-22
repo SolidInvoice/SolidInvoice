@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -54,7 +54,7 @@ class CurrencyType extends AbstractType
         $currencyList = Intl::getCurrencyBundle()->getCurrencyNames($this->locale);
 
         $collection = (new ArrayCollection(iterator_to_array((new ISOCurrencies())->getIterator())))
-            ->filter(function (Currency $currency) use ($currencyList) {
+            ->filter(function(Currency $currency) use ($currencyList) {
                 return array_key_exists($currency->getCode(), $currencyList);
             });
 

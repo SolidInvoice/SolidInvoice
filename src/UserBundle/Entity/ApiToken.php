@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -79,7 +79,7 @@ class ApiToken
     /**
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -87,7 +87,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -107,7 +107,7 @@ class ApiToken
     /**
      * @return string
      */
-    public function getToken(): ?string
+    public function getToken(): ? string
     {
         return $this->token;
     }
@@ -160,7 +160,7 @@ class ApiToken
     /**
      * @return User
      */
-    public function getUser(): ?User
+    public function getUser(): ? User
     {
         return $this->user;
     }

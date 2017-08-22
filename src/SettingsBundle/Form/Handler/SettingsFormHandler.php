@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -65,13 +65,14 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess($data, FormRequest $form): ? Response
     {
         $this->settingsRepository->save($this->flatten($data));
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'settings.saved.success';

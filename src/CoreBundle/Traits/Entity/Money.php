@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -36,7 +36,7 @@ trait Money
      *
      * @return MoneyObject
      */
-    public function getAmount(): ?MoneyObject
+    public function getAmount(): ? MoneyObject
     {
         if (!$this->priceCurrency) {
             return null;

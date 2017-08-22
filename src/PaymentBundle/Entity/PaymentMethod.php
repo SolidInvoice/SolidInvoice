@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -105,7 +105,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -129,7 +129,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -137,7 +137,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @return string
      */
-    public function getGatewayName(): ?string
+    public function getGatewayName(): ? string
     {
         return $this->gatewayName;
     }
@@ -173,7 +173,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return array
      */
-    public function getConfig(): ?array
+    public function getConfig(): ? array
     {
         return $this->config;
     }
@@ -279,7 +279,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getFactoryName(): ?string
+    public function getFactoryName(): ? string
     {
         return $this->factoryName;
     }
@@ -299,7 +299,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return string
      */
-    public function __toString(): ?string
+    public function __toString(): ? string
     {
         return $this->name;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -44,7 +44,7 @@ class SearchFilter implements FilterInterface
             $expr = $queryBuilder->expr();
 
             $fields = array_map(
-                function ($field) use ($alias) {
+                function($field) use ($alias) {
                     if (false !== strpos($field, '.')) {
                         list($alias, $field) = explode('.', $field);
                     }

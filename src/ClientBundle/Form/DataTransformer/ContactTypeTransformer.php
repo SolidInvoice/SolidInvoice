@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -37,7 +37,7 @@ class ContactTypeTransformer implements DataTransformerInterface
      *
      * @return int
      */
-    public function transform($type): ?int
+    public function transform($type): ? int
     {
         if ($type) {
             return $type->getId();
@@ -53,7 +53,7 @@ class ContactTypeTransformer implements DataTransformerInterface
      *
      * @throws TransformationFailedException
      */
-    public function reverseTransform($value): ?ContactType
+    public function reverseTransform($value): ? ContactType
     {
         if (!$value) {
             return null;

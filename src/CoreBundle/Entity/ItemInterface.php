@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -23,7 +23,7 @@ interface ItemInterface
      *
      * @return int
      */
-    public function getId(): ?int;
+    public function getId(): ? int;
 
     /**
      * Set description.
@@ -39,7 +39,7 @@ interface ItemInterface
      *
      * @return string
      */
-    public function getDescription(): ?string;
+    public function getDescription(): ? string;
 
     /**
      * Set the price.
@@ -55,7 +55,7 @@ interface ItemInterface
      *
      * @return Money
      */
-    public function getPrice(): ?Money;
+    public function getPrice(): ? Money;
 
     /**
      * Set the qty.
@@ -71,7 +71,7 @@ interface ItemInterface
      *
      * @return float
      */
-    public function getQty(): ?float;
+    public function getQty(): ? float;
 
     /**
      * @param Money $total
@@ -85,17 +85,17 @@ interface ItemInterface
      *
      * @return Money
      */
-    public function getTotal(): ?Money;
+    public function getTotal(): ? Money;
 
     /**
      * @return Tax
      */
-    public function getTax(): ?Tax;
+    public function getTax(): ? Tax;
 
     /**
      * @param Tax $tax
      *
      * @return ItemInterface
      */
-    public function setTax(?Tax $tax): self;
+    public function setTax(? Tax $tax) : self;
 }

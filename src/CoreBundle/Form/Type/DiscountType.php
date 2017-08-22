@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -67,7 +67,8 @@ class DiscountType extends AbstractType
             ]
         );
 
-        $builder->get('value')->addViewTransformer(new class() implements DataTransformerInterface {
+        $builder->get('value')->addViewTransformer(new class() implements DataTransformerInterface
+        {
             public function transform($discount)
             {
                 if (!$discount instanceof Money) {

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -67,7 +67,7 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($user, FormRequest $form): ?Response
+    public function onSuccess($user, FormRequest $form): ? Response
     {
         /* @var ApiToken $user */
         $user->setToken($this->tokenManager->generateToken());

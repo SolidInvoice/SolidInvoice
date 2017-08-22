@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -69,7 +69,7 @@ class PaymentMethodType extends AbstractType
         $resolver->setDefaults(
             [
                 'internal' => false,
-                'validation_groups' => function (FormInterface $form) {
+                'validation_groups' => function(FormInterface $form) {
                     // If the method is disabled, don't use any constraints
                     if ($form->get('enabled')->getData() === false) {
                         return false;

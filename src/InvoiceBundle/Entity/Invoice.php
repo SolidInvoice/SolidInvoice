@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -267,7 +267,7 @@ class Invoice
      *
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): ? int
     {
         return $this->id;
     }
@@ -277,7 +277,7 @@ class Invoice
      *
      * @return string
      */
-    public function getStatus(): ?string
+    public function getStatus(): ? string
     {
         return $this->status;
     }
@@ -301,7 +301,7 @@ class Invoice
      *
      * @return Client
      */
-    public function getClient(): ?Client
+    public function getClient(): ? Client
     {
         return $this->client;
     }
@@ -313,7 +313,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setClient(?Client $client): self
+    public function setClient(? Client $client) : self
     {
         $this->client = $client;
 
@@ -393,7 +393,7 @@ class Invoice
      *
      * @return Discount
      */
-    public function getDiscount(): ?Discount
+    public function getDiscount(): ? Discount
     {
         return $this->discount;
     }
@@ -405,7 +405,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setDiscount(?Discount $discount): self
+    public function setDiscount(? Discount $discount) : self
     {
         $this->discount = $discount;
 
@@ -417,7 +417,7 @@ class Invoice
      *
      * @return \DateTime
      */
-    public function getDue(): ?\DateTime
+    public function getDue(): ? \DateTime
     {
         return $this->due;
     }
@@ -441,7 +441,7 @@ class Invoice
      *
      * @return \DateTime
      */
-    public function getPaidDate(): ?\DateTime
+    public function getPaidDate(): ? \DateTime
     {
         return $this->paidDate;
     }
@@ -542,7 +542,7 @@ class Invoice
     /**
      * @return string
      */
-    public function getTerms(): ?string
+    public function getTerms(): ? string
     {
         return $this->terms;
     }
@@ -552,7 +552,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setTerms(?string $terms): self
+    public function setTerms(? string $terms) : self
     {
         $this->terms = $terms;
 
@@ -562,7 +562,7 @@ class Invoice
     /**
      * @return string
      */
-    public function getNotes(): ?string
+    public function getNotes(): ? string
     {
         return $this->notes;
     }
@@ -572,7 +572,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setNotes(?string $notes): self
+    public function setNotes(? string $notes) : self
     {
         $this->notes = $notes;
 
@@ -636,7 +636,7 @@ class Invoice
     /**
      * @return RecurringInvoice
      */
-    public function getRecurringInfo(): ?RecurringInvoice
+    public function getRecurringInfo(): ? RecurringInvoice
     {
         return $this->recurringInfo;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -57,7 +57,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @param string $template
      */
-    public function setHtmlTemplate(?string $template)
+    public function setHtmlTemplate(? string $template)
     {
         $this->htmlTemplate = $template;
     }
@@ -65,7 +65,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @return string
      */
-    public function getHtmlTemplate(): ?string
+    public function getHtmlTemplate(): ? string
     {
         return $this->htmlTemplate;
     }
@@ -73,7 +73,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @param string $template
      */
-    public function setTextTemplate(?string $template)
+    public function setTextTemplate(? string $template)
     {
         $this->txtTemplate = $template;
     }
@@ -81,7 +81,7 @@ abstract class MessageEvent extends Event implements MessageEventInterface
     /**
      * @return string
      */
-    public function getTextTemplate(): ?string
+    public function getTextTemplate(): ? string
     {
         return $this->txtTemplate;
     }

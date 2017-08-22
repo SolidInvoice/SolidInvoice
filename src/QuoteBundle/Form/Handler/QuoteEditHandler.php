@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -38,12 +38,13 @@ class QuoteEditHandler extends AbstractQuoteHandler
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($quote, FormRequest $form): ?Response
+    public function onSuccess($quote, FormRequest $form): ? Response
     {
         /* @var RedirectResponse $response */
         $response = parent::onSuccess($quote, $form);
 
-        return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
+        return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'quote.action.edit.success';

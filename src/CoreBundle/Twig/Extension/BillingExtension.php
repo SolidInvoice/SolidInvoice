@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -37,7 +37,7 @@ class BillingExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('billing_fields', function (FormView $form) {
+            new \Twig_SimpleFunction('billing_fields', function(FormView $form) {
                 return $this->fieldRenderer->render($form, 'children[items].vars[prototype]');
             }, ['is_safe' => ['html']]),
         ];

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -55,13 +55,14 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess($data, FormRequest $form): ? Response
     {
         $this->save($data);
 
         $route = $this->router->generate('_tax_rates');
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield FlashResponse::FLASH_SUCCESS => 'Tax rate successfully saved';

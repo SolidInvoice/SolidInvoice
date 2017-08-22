@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -111,7 +111,7 @@ class TraceLogger implements SQLLogger
         return $backtrace;
     }
 
-    private function isInternalClass(?string $class): bool
+    private function isInternalClass(? string $class) : bool
     {
         if (!$class) {
             return false;

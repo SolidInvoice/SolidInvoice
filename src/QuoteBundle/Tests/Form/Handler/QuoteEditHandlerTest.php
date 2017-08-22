@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -106,7 +106,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    protected function assertOnSuccess(?Response $response, $quote, FormRequest $form)
+    protected function assertOnSuccess(? Response $response, $quote, FormRequest $form)
     {
         /* @var Quote $quote */
 

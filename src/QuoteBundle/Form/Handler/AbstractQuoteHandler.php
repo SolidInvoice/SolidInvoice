@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -62,7 +62,7 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($quote, FormRequest $form): ?Response
+    public function onSuccess($quote, FormRequest $form): ? Response
     {
         /* @var Quote $quote */
         $action = $form->getRequest()->request->get('save');
@@ -79,7 +79,8 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'quote.action.create.success';

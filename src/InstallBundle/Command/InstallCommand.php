@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -215,7 +215,7 @@ class InstallCommand extends ContainerAwareCommand
 
         $migration = $this->getContainer()->get('solidinvoice.installer.database.migration');
 
-        $callback = function ($message) use ($output): void {
+        $callback = function($message) use ($output): void {
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
                 $output->writeln($message);
             }

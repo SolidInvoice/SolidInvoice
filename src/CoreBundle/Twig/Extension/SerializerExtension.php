@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -33,7 +33,7 @@ class SerializerExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('serialize', function ($data, string $format, array $groups = []) {
+            new \Twig_SimpleFilter('serialize', function($data, string $format, array $groups = []) {
                 return $this->serializer->serialize($data, $format, ['groups' => $groups]);
             }),
         ];

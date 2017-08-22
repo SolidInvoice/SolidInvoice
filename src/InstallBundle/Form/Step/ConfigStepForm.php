@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -37,7 +37,7 @@ class ConfigStepForm extends AbstractType
             [
                 'drivers' => $drivers,
                 'constraints' => new Constraints\Callback(
-                    function ($data, ExecutionContextInterface $executionContext) {
+                    function($data, ExecutionContextInterface $executionContext) {
                         if (null !== $data['driver'] && null !== $data['user']) {
                             try {
                                 DriverManager::getConnection($data)->connect();

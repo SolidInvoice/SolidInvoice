@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -91,7 +91,7 @@ class User extends BaseUser
     /**
      * @return string
      */
-    public function getMobile(): ?string
+    public function getMobile(): ? string
     {
         return $this->mobile;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -62,7 +62,7 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($client, FormRequest $form): ?Response
+    public function onSuccess($client, FormRequest $form): ? Response
     {
         /* @var Contact $client */
         $this->save($client);

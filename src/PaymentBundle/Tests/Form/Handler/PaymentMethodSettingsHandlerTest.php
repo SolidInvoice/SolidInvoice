@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -65,7 +65,7 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    protected function assertOnSuccess(? Response $response, $data, FormRequest $form)
     {
         /* @var PaymentMethod $data */
         $this->assertSame('My Test Payment', $data->getName());

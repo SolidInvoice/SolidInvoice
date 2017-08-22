@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -53,7 +53,7 @@ class CssInlinerPlugin implements \Swift_Events_SendListener
         if ($message->getContentType() !== 'text/plain') {
             $body = $this->inliner->convert($message->getBody());
             $dom = new Crawler($body);
-            $dom->filter('style')->each(function (Crawler $crawler) {
+            $dom->filter('style')->each(function(Crawler $crawler) {
                 foreach ($crawler as $node) {
                     $node->parentNode->removeChild($node);
                 }

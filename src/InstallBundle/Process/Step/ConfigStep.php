@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -54,7 +54,7 @@ class ConfigStep extends AbstractControllerStep
         $availableDrivers = array_intersect($this->implementedDrivers, \PDO::getAvailableDrivers());
         $drivers = array_combine(
             array_map(
-                function ($value): string {
+                function($value): string {
                     return sprintf('pdo_%s', $value);
                 },
                 $availableDrivers

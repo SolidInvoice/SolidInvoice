@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -45,7 +45,7 @@ class MoneyFormatterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('currencyFormatter', function () {
+            new \Twig_SimpleFunction('currencyFormatter', function() {
                 return $this->formatter;
             }),
         ];
@@ -57,7 +57,7 @@ class MoneyFormatterExtension extends \Twig_Extension
     public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('formatCurrency', function ($money, $currency = null): string {
+            new \Twig_SimpleFilter('formatCurrency', function($money, $currency = null): string {
                 if (!$money instanceof Money && is_numeric($money)) {
                     $money = new Money((int) $money, $currency ? new Currency($currency) : $this->currency);
                 }

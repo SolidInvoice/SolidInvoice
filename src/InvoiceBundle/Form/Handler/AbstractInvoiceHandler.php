@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -62,7 +62,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($invoice, FormRequest $form): ?Response
+    public function onSuccess($invoice, FormRequest $form): ? Response
     {
         /* @var Invoice $invoice */
         $action = $form->getRequest()->request->get('save');
@@ -92,7 +92,8 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'invoice.create.success';

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of SolidInvoice project.
@@ -46,7 +46,7 @@ abstract class AbstractDirectoryLoader extends Loader
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $type = null): ?RouteCollection
+    public function load($resource, $type = null): ? RouteCollection
     {
         $dir = $this->locator->locate($resource);
 
