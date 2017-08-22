@@ -28,7 +28,7 @@ class PaymentRepository extends EntityRepository
      * Gets the total income that was received.
      *
      * @param \SolidInvoice\ClientBundle\Entity\Client $client
-     * @param bool                               $groupByCurrency
+     * @param bool                                     $groupByCurrency
      *
      * @return array|int
      */
