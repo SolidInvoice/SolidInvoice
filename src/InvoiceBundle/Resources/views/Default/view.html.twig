@@ -82,6 +82,12 @@
                     </p>
                 </div>
             {% endif %}
+
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'invoice.action.print'|trans }}</a>
+                </div>
+            </div>
         {% endblock footer %}
 
         {% block header %}

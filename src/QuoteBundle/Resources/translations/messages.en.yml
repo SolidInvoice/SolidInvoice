@@ -32,6 +32,7 @@ quote:
             success: 'Quote updated successfully'
         create:
             success: 'Quote created successfully'
+        print: 'Print'
     view:
         toolbar:
             accept: Accept

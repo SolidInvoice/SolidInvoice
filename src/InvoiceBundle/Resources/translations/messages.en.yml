@@ -87,6 +87,7 @@ invoice:
         edit: 'Edit Invoice'
         view: 'View Invoice'
         pay_now: 'Pay Now'
+        print: 'Print'
     balance: 'Outstanding Balance'
     archive:
         success: 'Invoice has been archived'
