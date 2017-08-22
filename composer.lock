@@ -2904,12 +2904,12 @@
         },
         {
             "name": "npm-asset/requirejs",
-            "version": "2.3.5",
+            "version": "2.3.4",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/requirejs/-/requirejs-2.3.5.tgz",
+                "url": "https://registry.npmjs.org/requirejs/-/requirejs-2.3.4.tgz",
                 "reference": null,
-                "shasum": "617b9acbbcb336540ef4914d790323a8d4b861b0"
+                "shasum": "f45c48e66ebf0f163da57f6e0cf40fd57996ef50"
             },
             "bin": {
                 "r.js": "./bin/r.js",
@@ -3102,8 +3102,8 @@
                 "RequireJS"
             ],
             "support": {
-                "source": "https://github.com/CSBill/RequireJSBundle/tree/1.3.2",
-                "issues": "https://github.com/CSBill/RequireJSBundle/issues"
+                "source": "https://github.com/SolidInvoice/RequireJSBundle/tree/1.3.2",
+                "issues": "https://github.com/SolidInvoice/RequireJSBundle/issues"
             },
             "time": "2017-06-19T08:02:18+00:00"
         },

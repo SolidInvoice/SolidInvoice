@@ -68,7 +68,7 @@ var jqCronDefaultSettings = {
     this.jqCronMergeSettings = function(obj) {
         return extend(extend({}, jqCronDefaultSettings), obj || {});
     };
-}).call(this, jQuery);
+}).call(window, jQuery);
 
 /**
  * Shortcut to get the instance of jqCron instance from one jquery object
@@ -77,7 +77,7 @@ var jqCronDefaultSettings = {
     $.fn.jqCronGetInstance = function() {
         return this.data('jqCron');
     };
-}).call(this, jQuery);
+}).call(window, jQuery);
 
 /**
  * Main plugin
@@ -142,7 +142,7 @@ var jqCronDefaultSettings = {
             $(this).data('jqCron', cron);
         });
     };
-}).call(this, jQuery);
+}).call(window, jQuery);
 
 /**
  * jqCron class
@@ -502,7 +502,7 @@ var jqCronDefaultSettings = {
         } catch(e){}
     }
     this.jqCron = jqCron;
-}).call(this, jQuery);
+}).call(window, jQuery);
 
 
 /**
@@ -759,7 +759,7 @@ var jqCronDefaultSettings = {
         _self.clear();
     }
     this.jqCronSelector = jqCronSelector;
-}).call(this, jQuery);
+}).call(window, jQuery);
 
 /**
  * Generate unique id for each element.
@@ -782,7 +782,7 @@ var jqCronDefaultSettings = {
             $(this).attr('id', id);
         });
     };
-}).call(this, jQuery);
+}).call(window, jQuery);
 
 
 /**
@@ -851,7 +851,7 @@ var jqCronDefaultSettings = {
                 };
         }
     });
-}).call(this, jQuery);
+}).call(window, jQuery);
 
 /*
  * This file is part of the Arnapou jqCron package.
