@@ -1,4 +1,4 @@
 services:
-    CSBill\DataGridBundle\Action\:
+    SolidInvoice\DataGridBundle\Action\:
         resource: '../../../Action'
         autowire: true

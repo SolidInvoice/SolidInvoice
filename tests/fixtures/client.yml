@@ -1,4 +1,4 @@
-CSBill\ClientBundle\Entity\Contact:
+SolidInvoice\ClientBundle\Entity\Contact:
     contact1:
         firstName: 'One' #'<firstName()>'
         lastName: 'One' #'75%? <lastName()>'
@@ -13,7 +13,7 @@ CSBill\ClientBundle\Entity\Contact:
         #created: '<dateTimeBetween("-200 days", "now")>'
         #updated: '<dateTimeBetween($created, "now")>'
 
-CSBill\ClientBundle\Entity\Client:
+SolidInvoice\ClientBundle\Entity\Client:
     client:
         name: 'Client One' #'<name()>'
         #created: '<dateTimeBetween("-200 days", "now")>'
@@ -21,11 +21,11 @@ CSBill\ClientBundle\Entity\Client:
         currency: 'USD' #'50%? <currencyCode()>'
         contacts: ['@contact1', '@contact2'] #'<numberBetween(1, 5)>x @contact*'
 
-CSBill\ClientBundle\Entity\ContactType:
+SolidInvoice\ClientBundle\Entity\ContactType:
     contact_type:
         name: 'cellphone'
 
-CSBill\ClientBundle\Entity\AdditionalContactDetail:
+SolidInvoice\ClientBundle\Entity\AdditionalContactDetail:
     additional_details:
         value: 1234567890 #'<text()>'
         type: '@contact_type'

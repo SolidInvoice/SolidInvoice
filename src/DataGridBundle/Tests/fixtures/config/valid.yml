@@ -4,7 +4,7 @@
           title: Active
           icon: check
           source:
-              repository: 'CSBillClientBundle:Client'
+              repository: 'SolidInvoiceClientBundle:Client'
               method: getGridQuery
           columns:
               id:
@@ -68,7 +68,7 @@
 - datagrid:
       active_client_grid:
           source:
-              repository: 'CSBillClientBundle:Client'
+              repository: 'SolidInvoiceClientBundle:Client'
               method: getGridQuery
           columns:
               id:

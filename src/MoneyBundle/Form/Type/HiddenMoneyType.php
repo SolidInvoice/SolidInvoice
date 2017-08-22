@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MoneyBundle\Form\Type;
+namespace SolidInvoice\MoneyBundle\Form\Type;
 
-use CSBill\MoneyBundle\Form\DataTransformer\ModelTransformer;
-use CSBill\MoneyBundle\Form\DataTransformer\ViewTransformer;
+use SolidInvoice\MoneyBundle\Form\DataTransformer\ModelTransformer;
+use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

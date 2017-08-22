@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -9,7 +9,7 @@
 
 {% set currency = invoice.client.currency %}
 
-{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "SolidInvoiceCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block page_title %}
     {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
@@ -70,7 +70,7 @@
     <br class="clear"/>
     <br class="clear"/>
 
-    {% embed "CSBillInvoiceBundle::invoice_template.html.twig" %}
+    {% embed "SolidInvoiceInvoiceBundle::invoice_template.html.twig" %}
         {% block footer %}
             {{ parent() }}
 
@@ -109,7 +109,7 @@
 
     {% if payments|length > 0 %}
         <div class="invoice no-print">
-            {% include "CSBillPaymentBundle:Payment:list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
+            {% include "SolidInvoicePaymentBundle:Payment:list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
         </div>
     {% endif %}
 

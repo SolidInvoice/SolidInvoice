@@ -3057,12 +3057,12 @@
             "target-dir": "Oro/Bundle/RequireJSBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/CSBill/RequireJSBundle.git",
+                "url": "https://github.com/SolidInvoice/RequireJSBundle.git",
                 "reference": "46c5f9431250db3852d77de3438e47711a3f81a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CSBill/RequireJSBundle/zipball/46c5f9431250db3852d77de3438e47711a3f81a8",
+                "url": "https://api.github.com/repos/SolidInvoice/RequireJSBundle/zipball/46c5f9431250db3852d77de3438e47711a3f81a8",
                 "reference": "46c5f9431250db3852d77de3438e47711a3f81a8",
                 "shasum": ""
             },
@@ -3093,8 +3093,8 @@
                 "RequireJS"
             ],
             "support": {
-                "source": "https://github.com/CSBill/RequireJSBundle/tree/1.3.2",
-                "issues": "https://github.com/CSBill/RequireJSBundle/issues"
+                "source": "https://github.com/SolidInvoice/RequireJSBundle/tree/1.3.2",
+                "issues": "https://github.com/SolidInvoice/RequireJSBundle/issues"
             },
             "time": "2017-06-19T08:02:18+00:00"
         },

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DashboardBundle\Tests\Twig\Extension;
+namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
-use CSBill\DashboardBundle\Twig\Extension\WidgetExtension;
+use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +33,7 @@ class WidgetExtensionTest extends TestCase
 
     protected function setUp()
     {
-        $this->factory = \Mockery::mock('CSBill\DashboardBundle\WidgetFactory');
+        $this->factory = \Mockery::mock('SolidInvoice\DashboardBundle\WidgetFactory');
         $this->extension = new WidgetExtension($this->factory);
     }
 
@@ -55,7 +55,7 @@ class WidgetExtensionTest extends TestCase
     public function testRenderDashboardWidget()
     {
         $widget = \Mockery::mock(
-            'CSBill\DashboardBundle\Widgets\WidgetInterface',
+            'SolidInvoice\DashboardBundle\Widgets\WidgetInterface',
             [
                 'getTemplate' => 'test_template.html.twig',
                 'getData' => ['a' => '1', 'b' => '2', 'c' => '3'],

@@ -7,7 +7,7 @@ services:
             autowire: true
             public: false
 
-    CSBill\QuoteBundle\Form\Handler\:
+    SolidInvoice\QuoteBundle\Form\Handler\:
         resource: '../../../Form/Handler'
         lazy: true
         arguments:

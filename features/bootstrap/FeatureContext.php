@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -12,11 +12,11 @@ declare(strict_types=1);
  */
 
 use Behat\Behat\Context\Context;
-use CSBill\ClientBundle\Entity\ContactType;
-use CSBill\CoreBundle\CSBillCoreBundle;
-use CSBill\CoreBundle\Entity\Version;
-use CSBill\MoneyBundle\Factory\CurrencyFactory;
-use CSBill\SettingsBundle\Entity\Setting;
+use SolidInvoice\ClientBundle\Entity\ContactType;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Entity\Version;
+use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
+use SolidInvoice\SettingsBundle\Entity\Setting;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,15 +24,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class FeatureContext implements Context
 {
     private const DEFAULT_SETTINGS = [
-        'system/company/company_name' => 'CSBill',
+        'system/company/company_name' => 'SolidInvoice',
         'system/company/logo' => null,
         'system/company/currency' => CurrencyFactory::DEFAULT_CURRENCY,
         'quote/email_subject' => 'New Quotation - #{id}',
         'quote/bcc_address' => null,
         'invoice/email_subject' => 'New Invoice - #{id}',
         'invoice/bcc_address' => null,
-        'email/from_name' => 'CSBill',
-        'email/from_address' => 'info@csbill.org',
+        'email/from_name' => 'SolidInvoice',
+        'email/from_address' => 'info@solidinvoice.org',
         'email/format' => 'both',
         'hipchat/auth_token' => null,
         'hipchat/room_id' => null,
@@ -84,7 +84,7 @@ class FeatureContext implements Context
 
         $em = $this->doctrine->getManagerForClass(Version::class);
 
-        $em->persist((new Version())->setVersion(CSBillCoreBundle::VERSION));
+        $em->persist((new Version())->setVersion(SolidInvoiceCoreBundle::VERSION));
 
         foreach (self::DEFAULT_SETTINGS as $key => $value) {
             $em->persist((new Setting())->setKey($key)->setValue($value)->setType(TextType::class));

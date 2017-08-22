@@ -1,5 +1,5 @@
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *

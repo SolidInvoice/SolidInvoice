@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action\Ajax;
+namespace SolidInvoice\PaymentBundle\Action\Ajax;
 
-use CSBill\CoreBundle\Response\AjaxResponse;
-use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Factory\PaymentFactories;
-use CSBill\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
+use SolidInvoice\CoreBundle\Response\AjaxResponse;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
+use SolidInvoice\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;

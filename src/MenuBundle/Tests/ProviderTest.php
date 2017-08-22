@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MenuBundle\Tests;
+namespace SolidInvoice\MenuBundle\Tests;
 
-use CSBill\MenuBundle\Provider;
+use SolidInvoice\MenuBundle\Provider;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,7 @@ class ProviderTest extends TestCase
 
     public function testGet()
     {
-        $storage = M::mock('CSBill\MenuBundle\Storage\MenuStorageInterface');
+        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
 
         $provider = new Provider($storage);
 
@@ -42,7 +42,7 @@ class ProviderTest extends TestCase
 
     public function testHas()
     {
-        $storage = M::mock('CSBill\MenuBundle\Storage\MenuStorageInterface');
+        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
 
         $provider = new Provider($storage);
 
@@ -59,11 +59,11 @@ class ProviderTest extends TestCase
     public function testAddBuilder()
     {
         $queue = M::mock('SplPriorityQueue');
-        $storage = M::mock('CSBill\MenuBundle\Storage\MenuStorageInterface');
+        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
 
         $provider = new Provider($storage);
 
-        $class = M::mock('CSBill\MenuBundle\Builder\BuilderInterface');
+        $class = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface');
         $method = 'abc';
 
         $storage->shouldReceive('get')

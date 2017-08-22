@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Listener\Mailer;
+namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
-use CSBill\CoreBundle\Mailer\Mailer;
-use CSBill\InvoiceBundle\Event\InvoiceEvent;
-use CSBill\InvoiceBundle\Event\InvoiceEvents;
+use SolidInvoice\CoreBundle\Mailer\Mailer;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvoiceMailerListener implements EventSubscriberInterface

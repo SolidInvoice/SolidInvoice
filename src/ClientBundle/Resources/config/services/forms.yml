@@ -3,5 +3,5 @@ services:
         tags:
             - { name: 'form.type' }
 
-    CSBill\ClientBundle\Form\Type\ContactDetailType:
-        arguments: ['@csbill_client.contact_type.values']
+    SolidInvoice\ClientBundle\Form\Type\ContactDetailType:
+        arguments: ['@solidinvoice_client.contact_type.values']

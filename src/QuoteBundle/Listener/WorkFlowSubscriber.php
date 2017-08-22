@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Listener;
+namespace SolidInvoice\QuoteBundle\Listener;
 
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
-use CSBill\NotificationBundle\Notification\NotificationManager;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
-use CSBill\QuoteBundle\Notification\QuoteStatusNotification;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
+use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;

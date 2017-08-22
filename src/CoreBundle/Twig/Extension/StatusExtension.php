@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Twig\Extension;
+namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use CSBill\ClientBundle\Model\Status as ClientStatus;
-use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
-use CSBill\PaymentBundle\Model\Status as PaymentStatus;
-use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
+use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
+use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\PaymentBundle\Model\Status as PaymentStatus;
+use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 
 /**
  * This class is a twig extension that gives some shortcut methods to client statuses.
@@ -170,7 +170,7 @@ class StatusExtension extends \Twig_Extension
         }
 
         return $environment->render(
-            'CSBillCoreBundle:Status:label.html.twig',
+            'SolidInvoiceCoreBundle:Status:label.html.twig',
             [
                 'entity' => $object,
                 'tooltip' => $tooltip,
@@ -266,6 +266,6 @@ class StatusExtension extends \Twig_Extension
      */
     public function getName(): string
     {
-        return 'csbill_core.status';
+        return 'solidinvoice_core.status';
     }
 }

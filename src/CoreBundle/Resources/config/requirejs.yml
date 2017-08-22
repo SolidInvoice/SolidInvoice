@@ -61,35 +61,35 @@ config:
         admin-lte: ../assets/app.min.js
 
         # External Dependencies that don't have an NPM package
-        jquery.jqcron: csbillcore/js/lib/jquery/jqcron.js
-        jquery.uploadify: csbillcore/js/lib/jquery/uploadify.min.js
-        bootstrap.modal: csbillcore/js/lib/bootstrap/modal.js
-        bootstrap.modalmanager: csbillcore/js/lib/bootstrap/modalmanager.js
+        jquery.jqcron: solidinvoicecore/js/lib/jquery/jqcron.js
+        jquery.uploadify: solidinvoicecore/js/lib/jquery/uploadify.min.js
+        bootstrap.modal: solidinvoicecore/js/lib/bootstrap/modal.js
+        bootstrap.modalmanager: solidinvoicecore/js/lib/bootstrap/modalmanager.js
 
-        routing: csbillcore/js/extend/routing
+        routing: solidinvoicecore/js/extend/routing
         fos_router: fosjsrouting/js/router.js
         fos_routing_data: ../js/fos_js_routes
         Translator: bazingajstranslation/js/translator.min.js
-        core: csbillcore/js/
-        core/view: csbillcore/js/itemview.js
-        util/form/collection: csbillcore/js/util/form/collection.js
+        core: solidinvoicecore/js/
+        core/view: solidinvoicecore/js/itemview.js
+        util/form/collection: solidinvoicecore/js/util/form/collection.js
         template: ../js/hbs-templates.js
         fos_routing_data: ../js/fos_js_routes.js
     map:
         '*':
-            translator: csbillcore/js/extend/translator
+            translator: solidinvoicecore/js/extend/translator
             underscore: lodash
-            handlebars.runtime: csbillcore/js/extend/handlebars/helpers
-            parsley: csbillcore/js/extend/parsley
-            bootstrap.modal: csbillcore/js/extend/modal
-        csbillcore/js/extend/handlebars/helpers:
+            handlebars.runtime: solidinvoicecore/js/extend/handlebars/helpers
+            parsley: solidinvoicecore/js/extend/parsley
+            bootstrap.modal: solidinvoicecore/js/extend/modal
+        solidinvoicecore/js/extend/handlebars/helpers:
             handlebars.runtime: handlebars.runtime
             routing: routing
-        csbillcore/js/extend/translator:
+        solidinvoicecore/js/extend/translator:
             translation_data: translation_data
-        csbillcore/js/extend/parsley:
+        solidinvoicecore/js/extend/parsley:
             parsley: parsley
-        csbillcore/js/extend/modal:
+        solidinvoicecore/js/extend/modal:
             bootstrap.modal: bootstrap.modal
 build:
     paths:

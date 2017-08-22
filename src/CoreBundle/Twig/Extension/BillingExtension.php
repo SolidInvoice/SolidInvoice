@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Twig\Extension;
+namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use CSBill\CoreBundle\Form\FieldRenderer;
+use SolidInvoice\CoreBundle\Form\FieldRenderer;
 use Symfony\Component\Form\FormView;
 
 class BillingExtension extends \Twig_Extension

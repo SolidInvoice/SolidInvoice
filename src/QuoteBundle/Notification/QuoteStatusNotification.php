@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,17 +11,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Notification;
+namespace SolidInvoice\QuoteBundle\Notification;
 
-use CSBill\NotificationBundle\Notification\NotificationMessage;
+use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class QuoteStatusNotification extends NotificationMessage
 {
-    const HTML_TEMPLATE = 'CSBillQuoteBundle:Email:status_change.html.twig';
+    const HTML_TEMPLATE = 'SolidInvoiceQuoteBundle:Email:status_change.html.twig';
 
-    const TEXT_TEMPLATE = 'CSBillQuoteBundle:Email:status_change.text.twig';
+    const TEXT_TEMPLATE = 'SolidInvoiceQuoteBundle:Email:status_change.text.twig';
 
     /**
      * {@inheritdoc}

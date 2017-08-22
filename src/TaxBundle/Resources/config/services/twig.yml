@@ -4,5 +4,5 @@ services:
         tags:
             - { name: twig.extension }
 
-    CSBill\TaxBundle\Twig\Extension\TaxExtension:
+    SolidInvoice\TaxBundle\Twig\Extension\TaxExtension:
         arguments: ['@doctrine']

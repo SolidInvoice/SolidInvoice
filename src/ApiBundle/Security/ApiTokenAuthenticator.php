@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ApiBundle\Security;
+namespace SolidInvoice\ApiBundle\Security;
 
-use CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider;
-use CSBill\UserBundle\Entity\ApiTokenHistory;
-use CSBill\UserBundle\Repository\ApiTokenHistoryRepository;
+use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
+use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
+use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
@@ -143,7 +143,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
             ->setResource($request->getPathInfo());
 
         /** @var ApiTokenHistoryRepository $repository */
-        $repository = $this->registry->getRepository('CSBillUserBundle:ApiTokenHistory');
+        $repository = $this->registry->getRepository('SolidInvoiceUserBundle:ApiTokenHistory');
 
         $repository->addHistory($history, $apiToken);
     }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,18 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Tests\Billing;
+namespace SolidInvoice\CoreBundle\Tests\Billing;
 
-use CSBill\CoreBundle\Billing\TotalCalculator;
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Exception\UnexpectedTypeException;
-use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Model\Status;
-use CSBill\TaxBundle\Entity\Tax;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
@@ -36,12 +36,12 @@ class TotalCalculatorTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        \CSBill\MoneyBundle\Entity\Money::setBaseCurrency('USD');
+        \SolidInvoice\MoneyBundle\Entity\Money::setBaseCurrency('USD');
     }
 
     public function testOnlyAcceptsQuotesOrInvoices()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "Invoice or Quote", "stdClass" given');
@@ -50,7 +50,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithSingleItem()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -68,7 +68,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithSingleItemAndMultipleQtys()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -86,7 +86,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithPercentageDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -108,7 +108,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithMonetaryDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -130,7 +130,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxIncl()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -155,7 +155,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxExcl()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -180,7 +180,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxInclAndPercentageDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -208,7 +208,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxExclAndMonetaryDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -255,7 +255,7 @@ class TotalCalculatorTest extends TestCase
         $this->em->persist($invoice);
         $this->em->flush();
 
-        $updater = new TotalCalculator($this->em->getRepository('CSBillPaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
 
         $updater->calculateTotals($invoice);
 
@@ -267,17 +267,17 @@ class TotalCalculatorTest extends TestCase
     protected function getEntityNamespaces()
     {
         return [
-            'CSBillInvoiceBundle' => 'CSBill\\InvoiceBundle\\Entity',
-            'CSBillPaymentBundle' => 'CSBill\\PaymentBundle\\Entity',
+            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\\InvoiceBundle\\Entity',
+            'SolidInvoicePaymentBundle' => 'SolidInvoice\\PaymentBundle\\Entity',
         ];
     }
 
     protected function getEntities()
     {
         return [
-            'CSBillInvoiceBundle:Invoice',
-            'CSBillInvoiceBundle:Item',
-            'CSBillPaymentBundle:Payment',
+            'SolidInvoiceInvoiceBundle:Invoice',
+            'SolidInvoiceInvoiceBundle:Item',
+            'SolidInvoicePaymentBundle:Payment',
         ];
     }
 }

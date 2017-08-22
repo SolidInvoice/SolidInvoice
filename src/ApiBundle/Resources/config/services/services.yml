@@ -1,31 +1,31 @@
 services:
     api_token_authenticator:
-        class: CSBill\ApiBundle\Security\ApiTokenAuthenticator
+        class: SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator
         arguments: ['@api_token_user_provider', '@doctrine']
 
     api_token_user_provider:
-        class: CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider
+        class: SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider
         arguments: ['@doctrine']
 
     api.success:
-        class: CSBill\ApiBundle\Event\Listener\AuthenticationSuccessHandler
+        class: SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler
         arguments: ['@api.token.manager']
 
     api.failure:
-        class: CSBill\ApiBundle\Event\Listener\AuthenticationFailHandler
+        class: SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler
 
     api.token.manager:
-        class: CSBill\ApiBundle\ApiTokenManager
+        class: SolidInvoice\ApiBundle\ApiTokenManager
         arguments: ['@doctrine']
 
-    CSBill\ApiBundle\Event\Listener\InvoiceCreateListener:
+    SolidInvoice\ApiBundle\Event\Listener\InvoiceCreateListener:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.invoice'
         tags:
             - { name: 'kernel.event_subscriber' }
 
-    CSBill\ApiBundle\Event\Listener\QuoteCreateListener:
+    SolidInvoice\ApiBundle\Event\Listener\QuoteCreateListener:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.quote'

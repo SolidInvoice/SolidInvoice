@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Listener;
+namespace SolidInvoice\PaymentBundle\Listener;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
-use CSBill\PaymentBundle\Event\PaymentEvents;
-use CSBill\PaymentBundle\Model\Status;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
+use SolidInvoice\PaymentBundle\Event\PaymentEvents;
+use SolidInvoice\PaymentBundle\Model\Status;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
@@ -85,7 +85,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
         $status = (string) $payment->getStatus();
 
         if ('credit' === $payment->getMethod()->getGatewayName()) {
-            $creditRepository = $this->registry->getRepository('CSBillClientBundle:Credit');
+            $creditRepository = $this->registry->getRepository('SolidInvoiceClientBundle:Credit');
             $creditRepository->deductCredit(
                 $payment->getClient(),
                 new Money($payment->getTotalAmount(), $this->currency)
@@ -95,10 +95,10 @@ class PaymentCompleteListener implements EventSubscriberInterface
         if (null !== $invoice = $event->getPayment()->getInvoice()) {
             $em = $this->registry->getManager();
 
-            if ($status === Status::STATUS_CAPTURED && $em->getRepository('CSBillInvoiceBundle:Invoice')->isFullyPaid($invoice)) {
+            if ($status === Status::STATUS_CAPTURED && $em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->isFullyPaid($invoice)) {
                 $this->stateMachine->apply($invoice, Graph::TRANSITION_PAY);
             } else {
-                $paymentRepository = $this->registry->getRepository('CSBillPaymentBundle:Payment');
+                $paymentRepository = $this->registry->getRepository('SolidInvoicePaymentBundle:Payment');
                 $invoiceTotal = $invoice->getTotal();
                 $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoiceTotal->getCurrency());
                 $invoice->setBalance($invoiceTotal->subtract($totalPaid));

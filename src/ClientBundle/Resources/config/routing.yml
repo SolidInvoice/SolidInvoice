@@ -1,33 +1,33 @@
 _clients_index:
     path: /
-    defaults: { _controller: 'CSBill\ClientBundle\Action\Index' }
+    defaults: { _controller: 'SolidInvoice\ClientBundle\Action\Index' }
     options:
         expose: true
 
 _clients_add:
     path: /add
-    defaults: { _controller: 'CSBill\ClientBundle\Action\Add' }
+    defaults: { _controller: 'SolidInvoice\ClientBundle\Action\Add' }
     options:
         expose: true
 
 _clients_edit:
     path: '/edit/{id}'
-    defaults: { _controller: 'CSBill\ClientBundle\Action\Edit' }
+    defaults: { _controller: 'SolidInvoice\ClientBundle\Action\Edit' }
     options:
         expose: true
 
 _clients_view:
     path: '/view/{id}'
-    defaults: { _controller: 'CSBill\ClientBundle\Action\View' }
+    defaults: { _controller: 'SolidInvoice\ClientBundle\Action\View' }
     options:
         expose: true
 
 _clients_grid:
-    resource: '@CSBillClientBundle/Action/Grid'
+    resource: '@SolidInvoiceClientBundle/Action/Grid'
     type: grid
 
 _clients_xhr:
-    resource: '@CSBillClientBundle/Resources/config/routing/ajax.yml'
+    resource: '@SolidInvoiceClientBundle/Resources/config/routing/ajax.yml'
     prefix: /xhr
     options:
         expose: true

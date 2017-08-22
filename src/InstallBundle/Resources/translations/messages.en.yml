@@ -46,5 +46,5 @@ installation:
         user_exists: 'The database already contains an admin user.'
     finish:
         success: Success
-        success_message: 'You have successfully installed CSBill!'
+        success_message: 'You have successfully installed SolidInvoice!'
         login: 'Log In Now'

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Repository;
+namespace SolidInvoice\ClientBundle\Repository;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Model\Status;
-use CSBill\CoreBundle\Util\ArrayUtil;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Model\Status;
+use SolidInvoice\CoreBundle\Util\ArrayUtil;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 

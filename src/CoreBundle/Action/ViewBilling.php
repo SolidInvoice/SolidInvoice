@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Action;
+namespace SolidInvoice\CoreBundle\Action;
 
-use CSBill\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Templating\Template;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -56,9 +56,9 @@ class ViewBilling
     public function quoteAction(string $uuid): Response
     {
         $options = [
-            'repository' => 'CSBillQuoteBundle:Quote',
+            'repository' => 'SolidInvoiceQuoteBundle:Quote',
             'route' => '_quotes_view',
-            'template' => 'CSBillQuoteBundle::quote_template.html.twig',
+            'template' => 'SolidInvoiceQuoteBundle::quote_template.html.twig',
             'uuid' => $uuid,
             'entity' => 'quote',
         ];
@@ -76,9 +76,9 @@ class ViewBilling
     public function invoiceAction(string $uuid)
     {
         $options = [
-            'repository' => 'CSBillInvoiceBundle:Invoice',
+            'repository' => 'SolidInvoiceInvoiceBundle:Invoice',
             'route' => '_invoices_view',
-            'template' => 'CSBillInvoiceBundle::invoice_template.html.twig',
+            'template' => 'SolidInvoiceInvoiceBundle::invoice_template.html.twig',
             'uuid' => $uuid,
             'entity' => 'invoice',
         ];
@@ -107,7 +107,7 @@ class ViewBilling
             return new RedirectResponse($this->router->generate($options['route'], ['id' => $entity->getId()]));
         }
 
-        $template = 'CSBillCoreBundle:View:'.$options['entity'].'.html.twig';
+        $template = 'SolidInvoiceCoreBundle:View:'.$options['entity'].'.html.twig';
 
         return new Template(
             $template,

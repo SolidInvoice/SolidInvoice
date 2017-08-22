@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Action;
+namespace SolidInvoice\QuoteBundle\Action;
 
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\QuoteBundle\Model\Graph;
-use CSBill\QuoteBundle\Repository\QuoteRepository;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Index
@@ -33,7 +33,7 @@ final class Index
     public function __invoke(Request $request)
     {
         return new Template(
-            '@CSBillQuote/Default/index.html.twig',
+            '@SolidInvoiceQuote/Default/index.html.twig',
             [
                 'status_list_count' => [
                     Graph::STATUS_PENDING => $this->repository->getTotalQuotes(Graph::STATUS_PENDING),

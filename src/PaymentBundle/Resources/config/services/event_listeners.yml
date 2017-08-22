@@ -4,11 +4,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    CSBill\PaymentBundle\Listener\:
+    SolidInvoice\PaymentBundle\Listener\:
         resource: '../../../Listener'
         autowire: true
 
-    CSBill\PaymentBundle\Listener\PaymentCompleteListener:
+    SolidInvoice\PaymentBundle\Listener\PaymentCompleteListener:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.invoice'

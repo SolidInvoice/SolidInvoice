@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,17 +11,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\SettingsBundle\Tests\Form\Type;
+namespace SolidInvoice\SettingsBundle\Tests\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\ImageUploadType;
-use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\NotificationBundle\Form\Type\HipChatColorType;
-use CSBill\NotificationBundle\Form\Type\NotificationType;
-use CSBill\SettingsBundle\Entity\Setting;
-use CSBill\SettingsBundle\Form\Type\MailEncryptionType;
-use CSBill\SettingsBundle\Form\Type\MailFormatType;
-use CSBill\SettingsBundle\Form\Type\MailTransportType;
-use CSBill\SettingsBundle\Form\Type\SettingsType;
+use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\NotificationBundle\Form\Type\HipChatColorType;
+use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
+use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
+use SolidInvoice\SettingsBundle\Form\Type\MailFormatType;
+use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
+use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
 use Defuse\Crypto\Key;
 use Mockery as M;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Listener\Mailer;
+namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
-use CSBill\CoreBundle\Mailer\Mailer;
-use CSBill\QuoteBundle\Event\QuoteEvent;
-use CSBill\QuoteBundle\Event\QuoteEvents;
+use SolidInvoice\CoreBundle\Mailer\Mailer;
+use SolidInvoice\QuoteBundle\Event\QuoteEvent;
+use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class QuoteMailerListener implements EventSubscriberInterface

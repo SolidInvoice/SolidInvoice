@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Behat;
+namespace SolidInvoice\InstallBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
-use CSBill\CoreBundle\Behat\DefaultContext;
+use SolidInvoice\CoreBundle\Behat\DefaultContext;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;

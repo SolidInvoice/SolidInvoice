@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Process\Step;
+namespace SolidInvoice\InstallBundle\Process\Step;
 
-use CSBill\InstallBundle\Form\Step\ConfigStepForm;
+use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 use Symfony\Component\Form\Form;
@@ -43,7 +43,7 @@ class ConfigStep extends AbstractControllerStep
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        return $this->render('CSBillInstallBundle:Flow:config.html.twig', ['form' => $this->getForm()->createView()]);
+        return $this->render('SolidInvoiceInstallBundle:Flow:config.html.twig', ['form' => $this->getForm()->createView()]);
     }
 
     /**
@@ -62,7 +62,7 @@ class ConfigStep extends AbstractControllerStep
             $availableDrivers
         );
 
-        $config = $this->get('csbill.core.config_writer')->getConfigValues();
+        $config = $this->get('solidinvoice.core.config_writer')->getConfigValues();
 
         $data = [
             'database_config' => [
@@ -113,11 +113,11 @@ class ConfigStep extends AbstractControllerStep
                 $config[$key] = $param;
             }
 
-            $this->get('csbill.core.config_writer')->dump($config);
+            $this->get('solidinvoice.core.config_writer')->dump($config);
 
             return $this->complete();
         }
 
-        return $this->render('CSBillInstallBundle:Flow:config.html.twig', ['form' => $form->createView()]);
+        return $this->render('SolidInvoiceInstallBundle:Flow:config.html.twig', ['form' => $form->createView()]);
     }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MenuBundle\Tests\Builder;
+namespace SolidInvoice\MenuBundle\Tests\Builder;
 
-use CSBill\MenuBundle\Builder\MenuBuilder;
+use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -24,8 +24,8 @@ class MenuBuilderTest extends TestCase
 
     public function testInvoke()
     {
-        $builder = M::mock('CSBill\MenuBundle\Builder\BuilderInterface');
-        $item = M::mock('CSBill\MenuBundle\ItemInterface');
+        $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface');
+        $item = M::mock('SolidInvoice\MenuBundle\ItemInterface');
 
         $builder->shouldNotReceive('setContainer');
 
@@ -47,8 +47,8 @@ class MenuBuilderTest extends TestCase
 
     public function testInvokeFail()
     {
-        $builder = M::mock('CSBill\MenuBundle\Builder\BuilderInterface', ['validate' => false]);
-        $item = M::mock('CSBill\MenuBundle\ItemInterface');
+        $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface', ['validate' => false]);
+        $item = M::mock('SolidInvoice\MenuBundle\ItemInterface');
 
         $builder->shouldNotReceive('setContainer');
 
@@ -69,8 +69,8 @@ class MenuBuilderTest extends TestCase
 
     public function testContainer()
     {
-        $builder = M::mock('CSBill\MenuBundle\Builder\BuilderInterface, Symfony\Component\DependencyInjection\ContainerAwareInterface', ['validate' => false]);
-        $item = M::mock('CSBill\MenuBundle\ItemInterface');
+        $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface, Symfony\Component\DependencyInjection\ContainerAwareInterface', ['validate' => false]);
+        $item = M::mock('SolidInvoice\MenuBundle\ItemInterface');
 
         $builder->shouldReceive('setContainer')
             ->once()

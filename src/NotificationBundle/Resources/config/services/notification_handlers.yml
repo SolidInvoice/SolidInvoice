@@ -4,10 +4,10 @@ services:
         tags:
             - { name: notification.handler }
 
-    CSBill\NotificationBundle\Notification\Handler\ChainedHandler:
+    SolidInvoice\NotificationBundle\Notification\Handler\ChainedHandler:
         arguments: ['@notification.sender']
 
-    CSBill\NotificationBundle\Notification\Handler\TwilioHandler:
+    SolidInvoice\NotificationBundle\Notification\Handler\TwilioHandler:
         autowire: true
         arguments:
             $twilio: '@twilio.client'

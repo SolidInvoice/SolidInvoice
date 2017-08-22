@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,21 +11,21 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action;
+namespace SolidInvoice\PaymentBundle\Action;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Traits\SaveableTrait;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
-use CSBill\PaymentBundle\Event\PaymentEvents;
-use CSBill\PaymentBundle\Factory\PaymentFactories;
-use CSBill\PaymentBundle\Form\Type\PaymentType;
-use CSBill\PaymentBundle\Model\Status;
-use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
+use SolidInvoice\PaymentBundle\Event\PaymentEvents;
+use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
+use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
+use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
@@ -178,7 +178,7 @@ final class Prepare
                         $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
 
                         return new Template(
-                            'CSBillPaymentBundle:Payment:create.html.twig',
+                            'SolidInvoicePaymentBundle:Payment:create.html.twig',
                             [
                                 'form' => $form->createView(),
                                 'invoice' => $invoice,
@@ -233,7 +233,7 @@ final class Prepare
         }
 
         return new Template(
-            'CSBillPaymentBundle:Payment:create.html.twig',
+            'SolidInvoicePaymentBundle:Payment:create.html.twig',
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,

@@ -14,7 +14,7 @@
     bootstrap                   = "tests/bootstrap.php" >
 
     <testsuites>
-        <testsuite name="CSBill Test Suite">
+        <testsuite name="SolidInvoice Test Suite">
             <directory>src/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>

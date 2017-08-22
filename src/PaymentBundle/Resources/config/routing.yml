@@ -1,25 +1,25 @@
 _payments_index:
     path: '/'
-    defaults: { _controller: 'CSBill\PaymentBundle\Action\Index' }
+    defaults: { _controller: 'SolidInvoice\PaymentBundle\Action\Index' }
 
 _payment_settings_index:
     path: '/methods'
-    defaults: { _controller: 'CSBill\PaymentBundle\Action\Settings' }
+    defaults: { _controller: 'SolidInvoice\PaymentBundle\Action\Settings' }
     options:
         expose: true
 
 _payments_xhr:
-    resource: '@CSBillPaymentBundle/Resources/config/routing/ajax.yml'
+    resource: '@SolidInvoicePaymentBundle/Resources/config/routing/ajax.yml'
     prefix: '/xhr'
     options:
         expose: true
 
 _payments_create:
     path: '/create/{uuid}'
-    defaults: { _controller: 'CSBill\PaymentBundle\Action\Prepare' }
+    defaults: { _controller: 'SolidInvoice\PaymentBundle\Action\Prepare' }
     requirements:
         uuid: '[a-zA-Z0-9-]{36}'
 
 _payments_done:
     path: '/done'
-    defaults: { _controller: 'CSBill\PaymentBundle\Action\Done' }
+    defaults: { _controller: 'SolidInvoice\PaymentBundle\Action\Done' }

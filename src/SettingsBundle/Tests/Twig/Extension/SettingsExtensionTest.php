@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\SettingsBundle\Tests\Twig\Extension;
+namespace SolidInvoice\SettingsBundle\Tests\Twig\Extension;
 
-use CSBill\SettingsBundle\Exception\InvalidSettingException;
-use CSBill\SettingsBundle\SystemConfig;
-use CSBill\SettingsBundle\Twig\Extension\SettingsExtension;
+use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\SettingsBundle\Twig\Extension\SettingsExtension;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Mockery as M;

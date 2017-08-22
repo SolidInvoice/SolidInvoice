@@ -1,7 +1,7 @@
 datagrid:
     payment_grid:
         source:
-            repository: 'CSBillPaymentBundle:Payment'
+            repository: 'SolidInvoicePaymentBundle:Payment'
             method: getGridQuery
         columns:
             id:
@@ -66,7 +66,7 @@ datagrid:
                 - c.name
     invoice_payment_grid:
         source:
-            repository: 'CSBillPaymentBundle:Payment'
+            repository: 'SolidInvoicePaymentBundle:Payment'
             method: getGridQuery
         columns:
             status:
@@ -105,7 +105,7 @@ datagrid:
                 - message
     client_payment_grid:
         source:
-            repository: 'CSBillPaymentBundle:Payment'
+            repository: 'SolidInvoicePaymentBundle:Payment'
             method: getGridQuery
         columns:
             invoice:

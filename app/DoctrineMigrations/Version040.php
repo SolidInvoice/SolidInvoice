@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@
 
 namespace Application\Migrations;
 
-use CSBill\ClientBundle\Model\Status as ClientStatus;
-use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
-use CSBill\PaymentBundle\Model\Status as PaymentStatus;
-use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
+use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
+use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\PaymentBundle\Model\Status as PaymentStatus;
+use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

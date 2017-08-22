@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\TaxBundle\Tests\Form\Handler;
+namespace SolidInvoice\TaxBundle\Tests\Form\Handler;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
-use CSBill\TaxBundle\Form\Handler\TaxFormHandler;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\TaxBundle\Form\Handler\TaxFormHandler;
 use Mockery as M;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
@@ -59,8 +59,8 @@ class TaxFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
-        $this->assertCount(1, $this->em->getRepository('CSBillTaxBundle:Tax')->findAll());
-        $tax = $this->em->getRepository('CSBillTaxBundle:Tax')->find(1);
+        $this->assertCount(1, $this->em->getRepository('SolidInvoiceTaxBundle:Tax')->findAll());
+        $tax = $this->em->getRepository('SolidInvoiceTaxBundle:Tax')->find(1);
         $this->assertSame('VAT', $tax->getName());
         $this->assertSame(14.0, $tax->getRate());
         $this->assertSame('Inclusive', $tax->getType());
@@ -77,14 +77,14 @@ class TaxFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'CSBillTaxBundle:Tax',
+            'SolidInvoiceTaxBundle:Tax',
         ];
     }
 
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
+            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
         ];
     }
 }

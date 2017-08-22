@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Cloner;
+namespace SolidInvoice\QuoteBundle\Cloner;
 
 use Carbon\Carbon;
-use CSBill\QuoteBundle\Entity\Item;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\Workflow\StateMachine;
 
 final class QuoteCloner

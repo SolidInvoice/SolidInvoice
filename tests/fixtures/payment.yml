@@ -1,10 +1,10 @@
-CSBill\ClientBundle\Entity\Contact:
+SolidInvoice\ClientBundle\Entity\Contact:
     contact:
         firstName: '<firstName()>'
         lastName: '<lastName()>'
         email: '<email()>'
 
-CSBill\ClientBundle\Entity\Client:
+SolidInvoice\ClientBundle\Entity\Client:
     client:
         name: '<name()>'
         currency: null
@@ -18,20 +18,20 @@ Money\Money:
     money:
         __construct: [10000, '@currency']
 
-CSBill\InvoiceBundle\Entity\Item:
+SolidInvoice\InvoiceBundle\Entity\Item:
     item:
         price: '@money'
         qty: 1
         description: '<text()>'
 
-CSBill\InvoiceBundle\Entity\Invoice:
+SolidInvoice\InvoiceBundle\Entity\Invoice:
     invoice:
         client: '@client'
         status: draft
         items:
             - '@item'
 
-CSBill\PaymentBundle\Entity\PaymentMethod:
+SolidInvoice\PaymentBundle\Entity\PaymentMethod:
     payment_method:
         name: 'cash'
         gatewayName: 'offline'
@@ -40,7 +40,7 @@ CSBill\PaymentBundle\Entity\PaymentMethod:
         internal: true
         enabled: true
 
-CSBill\PaymentBundle\Entity\Payment:
+SolidInvoice\PaymentBundle\Entity\Payment:
     payment:
         invoice: '@invoice'
         totalAmount: 100

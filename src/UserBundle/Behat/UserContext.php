@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\UserBundle\Behat;
+namespace SolidInvoice\UserBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
-use CSBill\CoreBundle\Behat\DefaultContext;
-use CSBill\UserBundle\Entity\User;
-use CSBill\UserBundle\Manager\UserManager;
+use SolidInvoice\CoreBundle\Behat\DefaultContext;
+use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Manager\UserManager;
 
 /**
  * @codeCoverageIgnore
@@ -70,7 +70,7 @@ class UserContext extends DefaultContext
     public function userExists(TableNode $table)
     {
         $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $userRepository = $entityManager->getRepository('CSBillUserBundle:User');
+        $userRepository = $entityManager->getRepository('SolidInvoiceUserBundle:User');
 
         /** @var User[] $users */
         $users = $userRepository->findAll();

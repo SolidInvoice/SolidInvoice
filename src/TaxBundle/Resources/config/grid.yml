@@ -1,7 +1,7 @@
 datagrid:
     tax_grid:
         source:
-            repository: 'CSBillTaxBundle:Tax'
+            repository: 'SolidInvoiceTaxBundle:Tax'
             method: getGridQuery
         columns:
             id:

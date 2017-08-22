@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Process\Step;
+namespace SolidInvoice\InstallBundle\Process\Step;
 
-use CSBill\CoreBundle\CSBillCoreBundle;
-use CSBill\CoreBundle\Repository\VersionRepository;
-use CSBill\InstallBundle\Form\Step\SystemInformationForm;
-use CSBill\TaxBundle\Entity\Tax;
-use CSBill\UserBundle\Entity\User;
-use CSBill\UserBundle\Repository\UserRepository;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use Defuse\Crypto\Key;
 use Mpociot\VatCalculator\VatCalculator;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
@@ -37,7 +37,7 @@ class SetupStep extends AbstractControllerStep
         $form = $this->getForm($context->getRequest());
 
         return $this->render(
-            'CSBillInstallBundle:Flow:setup.html.twig',
+            'SolidInvoiceInstallBundle:Flow:setup.html.twig',
             [
                 'form' => $form->createView(),
                 'userCount' => $this->getUserCount(),
@@ -81,7 +81,7 @@ class SetupStep extends AbstractControllerStep
             $entityManager = $this->container->get('doctrine');
 
             /** @var UserRepository $repository */
-            $repository = $entityManager->getRepository('CSBillUserBundle:User');
+            $repository = $entityManager->getRepository('SolidInvoiceUserBundle:User');
 
             $userCount = $repository->getUserCount();
         }
@@ -113,7 +113,7 @@ class SetupStep extends AbstractControllerStep
         }
 
         return $this->render(
-            'CSBillInstallBundle:Flow:setup.html.twig',
+            'SolidInvoiceInstallBundle:Flow:setup.html.twig',
             [
                 'form' => $form->createView(),
                 'userCount' => $this->getUserCount(),
@@ -150,12 +150,12 @@ class SetupStep extends AbstractControllerStep
      */
     private function saveCurrentVersion()
     {
-        $version = CSBillCoreBundle::VERSION;
+        $version = SolidInvoiceCoreBundle::VERSION;
 
         $entityManager = $this->container->get('doctrine')->getManager();
 
         /** @var VersionRepository $repository */
-        $repository = $entityManager->getRepository('CSBillCoreBundle:Version');
+        $repository = $entityManager->getRepository('SolidInvoiceCoreBundle:Version');
 
         $repository->updateVersion($version);
     }
@@ -176,7 +176,7 @@ class SetupStep extends AbstractControllerStep
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
-        $this->get('csbill.core.config_writer')->dump($config);
+        $this->get('solidinvoice.core.config_writer')->dump($config);
 
         $countryCode = explode('_', $data['locale'])[1] ?? $data['locale'];
 

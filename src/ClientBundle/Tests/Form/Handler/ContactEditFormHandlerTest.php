@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Tests\Form\Handler;
+namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
-use CSBill\ClientBundle\Entity\Contact;
-use CSBill\ClientBundle\Form\Handler\ContactEditFormHandler;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Test\Traits\SymfonyKernelTrait;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\ClientBundle\Form\Handler\ContactEditFormHandler;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -76,7 +76,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);
-        $this->assertCount(1, $this->em->getRepository('CSBillClientBundle:Contact')->findAll());
+        $this->assertCount(1, $this->em->getRepository('SolidInvoiceClientBundle:Contact')->findAll());
         $this->assertSame($this->firstName, $data->getFirstName());
         $this->assertSame($this->email, $data->getEmail());
     }
@@ -90,14 +90,14 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
+            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
         ];
     }
 
     protected function getEntities(): array
     {
         return [
-            'CSBillClientBundle:Contact',
+            'SolidInvoiceClientBundle:Contact',
         ];
     }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Listener;
+namespace SolidInvoice\InvoiceBundle\Listener;
 
-use CSBill\ClientBundle\Repository\CreditRepository;
-use CSBill\InvoiceBundle\Event\InvoiceEvent;
-use CSBill\InvoiceBundle\Event\InvoiceEvents;
-use CSBill\PaymentBundle\Model\Status;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\ClientBundle\Repository\CreditRepository;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
+use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
@@ -63,7 +63,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
         $invoice = $event->getInvoice();
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->registry->getRepository('CSBillPaymentBundle:Payment');
+        $paymentRepository = $this->registry->getRepository('SolidInvoicePaymentBundle:Payment');
 
         $em = $this->registry->getManager();
 
@@ -76,7 +76,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);
 
             /** @var CreditRepository $creditRepository */
-            $creditRepository = $this->registry->getRepository('CSBillClientBundle:Credit');
+            $creditRepository = $this->registry->getRepository('SolidInvoiceClientBundle:Credit');
 
             $creditRepository->addCredit($invoice->getClient(), $totalPaid);
         }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ApiBundle\Behat;
+namespace SolidInvoice\ApiBundle\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
@@ -20,9 +20,9 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behatch\Context\JsonContext;
 use Behatch\Context\RestContext;
 use Behatch\Json\Json;
-use CSBill\CoreBundle\Behat\DefaultContext;
-use CSBill\UserBundle\Entity\ApiToken;
-use CSBill\UserBundle\Entity\User;
+use SolidInvoice\CoreBundle\Behat\DefaultContext;
+use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Knp\FriendlyContexts\Context\EntityContext;
 use PHPUnit\Framework\Assert;

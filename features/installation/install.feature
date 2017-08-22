@@ -13,7 +13,7 @@ Feature: Install application
 
   Scenario: Installation
     Given I am on "/install/system_check"
-    Then I should see "CSBill Installation - Requirements Check"
+    Then I should see "SolidInvoice Installation - Requirements Check"
     And I should not see an ".alert-danger" element
     When I follow "continue_step"
     Then I should be on "/install/config"
@@ -21,13 +21,13 @@ Feature: Install application
     And I fill in select2 input "Transport" with "Sendmail"
     And I fill in the following:
       | User          | root        |
-      | Database Name | csbill_test |
+      | Database Name | solidinvoice_test |
     And I press "continue_step"
     Then The config should contain the following values:
       | database_driver   | pdo_mysql   |
       | database_host     | localhost   |
       | database_port     | 3306        |
-      | database_name     | csbill_test |
+      | database_name     | solidinvoice_test |
       | database_user     | root        |
       | database_password |             |
       | mailer_transport  | sendmail    |
@@ -45,7 +45,7 @@ Feature: Install application
       | Repeat Password | foobar      |
     And I press "continue_step"
     Then I should be on "/install/finish"
-    And I should see "You have successfully installed CSBill!"
+    And I should see "You have successfully installed SolidInvoice!"
     And The config should contain the following values:
       | currency | USD |
       | locale   | en  |

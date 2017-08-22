@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,15 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Tests\Form\Type;
+namespace SolidInvoice\QuoteBundle\Tests\Form\Type;
 
-use CSBill\CoreBundle\Form\Type\DiscountType;
-use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\MoneyBundle\Entity\Money;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Form\Type\ItemType;
-use CSBill\QuoteBundle\Form\Type\QuoteType;
-use CSBill\TaxBundle\Repository\TaxRepository;
+use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\MoneyBundle\Entity\Money;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Form\Type\ItemType;
+use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Mockery as M;
 use Money\Currency;
 use Symfony\Component\Form\PreloadedExtension;
@@ -56,7 +56,7 @@ class QuoteTypeTest extends FormTestCase
             ->andReturn(false);
 
         $this->registry->shouldReceive('getRepository')
-            ->with('CSBillTaxBundle:Tax')
+            ->with('SolidInvoiceTaxBundle:Tax')
             ->andReturn($taxRepository);
 
         return [
@@ -67,18 +67,18 @@ class QuoteTypeTest extends FormTestCase
     protected function getEntityNamespaces()
     {
         return [
-            'CSBillQuoteBundle' => 'CSBill\QuoteBundle\Entity',
-            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
-            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
+            'SolidInvoiceQuoteBundle' => 'SolidInvoice\QuoteBundle\Entity',
+            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
+            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
         ];
     }
 
     protected function getEntities()
     {
         return [
-            'CSBillClientBundle:Client',
-            'CSBillQuoteBundle:Quote',
-            'CSBillTaxBundle:Tax',
+            'SolidInvoiceClientBundle:Client',
+            'SolidInvoiceQuoteBundle:Quote',
+            'SolidInvoiceTaxBundle:Tax',
         ];
     }
 }

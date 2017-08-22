@@ -1,9 +1,9 @@
 services:
-    CSBill\PaymentBundle\Action\:
+    SolidInvoice\PaymentBundle\Action\:
         resource: '../../../Action'
         autowire: true
 
-    CSBill\PaymentBundle\Action\Prepare:
+    SolidInvoice\PaymentBundle\Action\Prepare:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.invoice'

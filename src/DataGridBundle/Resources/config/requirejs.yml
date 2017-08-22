@@ -19,4 +19,4 @@ config:
         grid/backgrid-filter: ../assets/backgrid-filter.js
         grid/backgrid-paginator: ../assets/backgrid-paginator.js
         grid/backgrid-select-all: ../assets/backgrid-select-all.js
-        grid: csbilldatagrid/js/
+        grid: solidinvoicedatagrid/js/

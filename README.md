@@ -1,18 +1,18 @@
-CSBill
+SolidInvoice
 ======
 
-[![Build Status](https://travis-ci.org/CSBill/CSBill.png?branch=master)](https://travis-ci.org/CSBill/CSBill)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/CSBill/CSBill/badges/quality-score.png?s=fdd7a5f5080807e95a317b9c0db07e8d5ce8cb63)](https://scrutinizer-ci.com/g/CSBill/CSBill/)
+[![Build Status](https://travis-ci.org/SolidInvoice/SolidInvoice.png?branch=master)](https://travis-ci.org/SolidInvoice/SolidInvoice)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/badges/quality-score.png?s=fdd7a5f5080807e95a317b9c0db07e8d5ce8cb63)](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/)
 [![Dependency Status](https://www.versioneye.com/user/projects/557ebccc61626613850000cc/badge.svg)](https://www.versioneye.com/user/projects/557ebccc61626613850000cc)
 
 Open-Source General Billing Manager
 
-CSBill is an open-source application that allows you to manage clients and contacts and send invoices and quotes.
+SolidInvoice is an open-source application that allows you to manage clients and contacts and send invoices and quotes.
 
 Requirements
 ------------
 
-CSBill requires minimum PHP 7.1.0.
+SolidInvoice requires minimum PHP 7.1.0.
 
 *Note:* The latest version of PHP is always recommended
 
@@ -20,13 +20,13 @@ CSBill requires minimum PHP 7.1.0.
 
 ### Docker
 
-Docker makes it really easy to get started as quickly as possible in running CSBill.
+Docker makes it really easy to get started as quickly as possible in running SolidInvoice.
 
-The docker image is available at https://hub.docker.com/r/csbill/csbill/ with instructions on how to get started.
+The docker image is available at https://hub.docker.com/r/solidinvoice/solidinvoice/ with instructions on how to get started.
 
 ### Archived Package
 
-Download the latest release from https://github.com/CSBill/CSBill/releases in either `zip` or `tar.gz` format,
+Download the latest release from https://github.com/SolidInvoice/SolidInvoice/releases in either `zip` or `tar.gz` format,
 and extract the contents of the archive under your webserver directory. 
 
 ### For developers
@@ -36,13 +36,13 @@ To install from source, you first need to clone the repository, then you need [c
 To clone the repository, issue the following command. Remember to clone the repository to the path you want, that is accessible from your webserver.
 
 ```bash
-$ git clone https://github.com/CSBill/CSBill.git
+$ git clone https://github.com/SolidInvoice/SolidInvoice.git
 ```
 
 Then go into the repository directory
 
 ```bash
-$ cd CSBill
+$ cd SolidInvoice
 ```
 
 Now you need to get composer
@@ -70,12 +70,12 @@ $ npm install
 $ ./node_modules/.bin/gulp
 ```
 
-Now you should have a fully working copy of CSBill.
+Now you should have a fully working copy of SolidInvoice.
 
 Features
 --------
 
-Some of the basic features included in CSBill is:
+Some of the basic features included in SolidInvoice is:
 
 * Clients and Contacts management
 * Create and manage Quotes
@@ -95,14 +95,14 @@ See [CONTRIBUTING](CONTRIBUTING.md)
 License
 ------------
 
-CSBill is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+SolidInvoice is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
 Please see the [LICENSE](LICENSE) file for the full license.
 
 Demo
 ------------
 
-[http://demo.csbill.org](http://demo.csbill.org)
+[http://demo.solidinvoice.org](http://demo.solidinvoice.org)
 
 
 [1]: http://symfony.com

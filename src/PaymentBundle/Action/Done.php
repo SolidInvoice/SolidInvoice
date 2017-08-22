@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Action;
+namespace SolidInvoice\PaymentBundle\Action;
 
-use CSBill\CoreBundle\Traits\SaveableTrait;
-use CSBill\PaymentBundle\Event\PaymentCompleteEvent;
-use CSBill\PaymentBundle\Event\PaymentEvents;
-use CSBill\PaymentBundle\PaymentAction\Request\StatusRequest;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
+use SolidInvoice\PaymentBundle\Event\PaymentEvents;
+use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -58,7 +58,7 @@ final class Done
         $paymentMethod = $this->payum->getGateway($token->getGatewayName());
         $paymentMethod->execute($status = new StatusRequest($token));
 
-        /** @var \CSBill\PaymentBundle\Entity\Payment $payment */
+        /** @var \SolidInvoice\PaymentBundle\Entity\Payment $payment */
         $payment = $status->getFirstModel();
 
         $payment->setStatus((string) $status->getValue());

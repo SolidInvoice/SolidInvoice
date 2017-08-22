@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,15 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Entity;
+namespace SolidInvoice\ClientBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use CSBill\CoreBundle\Traits\Entity;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\QuoteBundle\Entity\Quote;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"client_api"}}, "denormalization_context"={"groups"={"client_api"}}}, iri="https://schema.org/Corporation")
  * @ORM\Table(name="clients")
- * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ClientRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
@@ -117,7 +117,7 @@ class Client
     /**
      * @var Collection|Quote[]
      *
-     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
@@ -126,7 +126,7 @@ class Client
     /**
      * @var Collection|Invoice[]
      *
-     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
@@ -135,7 +135,7 @@ class Client
     /**
      * @var Collection|Payment[]
      *
-     * @ORM\OneToMany(targetEntity="CSBill\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"})
      * @ApiSubresource
      */
     private $payments;
@@ -143,7 +143,7 @@ class Client
     /**
      * @var Collection|Address[]
      *
-     * @ORM\OneToMany(targetEntity="CSBill\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
      * @Serialize\Groups({"client_api"})
      */
     private $addresses;
@@ -151,7 +151,7 @@ class Client
     /**
      * @var Credit
      *
-     * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="http://schema.org/MonetaryAmount")
      */

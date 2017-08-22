@@ -1,43 +1,43 @@
 _quotes_index:
     path: /
-    defaults: { _controller: 'CSBill\QuoteBundle\Action\Index' }
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\Index' }
 
 _quotes_create:
     path: '/create/{client}'
-    defaults: { _controller: 'CSBill\QuoteBundle\Action\Create', client: null }
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\Create', client: null }
     options:
         expose: true
 
 _quotes_get_fields:
     path: '/fields/get/{currency}'
-    defaults: { _controller: 'CSBill\QuoteBundle\Action\Fields' }
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\Fields' }
     options:
         expose: true
 
 _quotes_edit:
     path: '/edit/{id}'
-    defaults: { _controller: 'CSBill\QuoteBundle\Action\Edit' }
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\Edit' }
     options:
         expose: true
 
 _quotes_view:
     path: '/view/{id}'
-    defaults: { _controller: 'CSBill\QuoteBundle\Action\View' }
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\View' }
     options:
         expose: true
 
 _quotes_clone:
     path: '/clone/{id}'
-    defaults: { _controller: 'CSBill\QuoteBundle\Action\CloneQuote' }
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\CloneQuote' }
 
 _send_quote:
     path: '/action/send/{id}'
-    defaults:  { _controller: 'CSBill\QuoteBundle\Action\Transition\Send' }
+    defaults:  { _controller: 'SolidInvoice\QuoteBundle\Action\Transition\Send' }
 
 _transition_quote:
     path: '/action/{action}/{id}'
-    defaults: { _controller: 'CSBill\QuoteBundle\Action\Transition' }
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\Transition' }
 
 _quotes_grid:
-    resource: '@CSBillQuoteBundle/Action/Grid'
+    resource: '@SolidInvoiceQuoteBundle/Action/Grid'
     type: grid

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -22,7 +22,7 @@ $config = [
         'engines' => ['twig'],
     ],
     'assets' => [
-        'version' => CSBill\CoreBundle\CSBillCoreBundle::VERSION,
+        'version' => SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION,
     ],
 ];
 
@@ -42,5 +42,5 @@ $container->loadFromExtension(
 
 $container->loadFromExtension(
     'api_platform',
-    ['version' => \CSBill\CoreBundle\CSBillCoreBundle::VERSION]
+    ['version' => \SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION]
 );

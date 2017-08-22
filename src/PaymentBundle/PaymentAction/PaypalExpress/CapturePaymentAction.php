@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\PaymentAction\PaypalExpress;
+namespace SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress;
 
-use CSBill\MoneyBundle\Formatter\MoneyFormatter;
-use CSBill\PaymentBundle\Entity\Payment;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -75,7 +75,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
 
         $counter = 0;
         foreach ($invoice->getItems() as $item) {
-            /* @var \CSBill\InvoiceBundle\Entity\Item $item */
+            /* @var \SolidInvoice\InvoiceBundle\Entity\Item $item */
 
             $details['L_PAYMENTREQUEST_0_NAME'.$counter] = $item->getDescription();
             $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($this->formatter->toFloat($item->getPrice()), 2);

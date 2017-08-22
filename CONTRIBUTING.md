@@ -1,7 +1,7 @@
 Contributing
 ------------
 
-If you wish to contribute to CSBill, please fork it, make your changes, and submit a pull request.
+If you wish to contribute to SolidInvoice, please fork it, make your changes, and submit a pull request.
 
 Where possible, pull requests need to have unit tests available, and the unit tests should not fail.
 

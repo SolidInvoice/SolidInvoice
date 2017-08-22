@@ -2,14 +2,14 @@ services:
     _defaults:
         autowire: true
 
-    CSBill\QuoteBundle\Action\:
+    SolidInvoice\QuoteBundle\Action\:
         resource: '../../../Action'
         autowire: true
 
-    CSBill\QuoteBundle\Action\Grid\Archive:
+    SolidInvoice\QuoteBundle\Action\Grid\Archive:
         arguments:
             $stateMachine: '@state_machine.quote'
 
-    CSBill\QuoteBundle\Action\Transition:
+    SolidInvoice\QuoteBundle\Action\Transition:
         arguments:
             $stateMachine: '@state_machine.quote'

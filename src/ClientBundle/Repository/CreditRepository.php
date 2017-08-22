@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Repository;
+namespace SolidInvoice\ClientBundle\Repository;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Entity\Credit;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Credit;
 use Doctrine\ORM\EntityRepository;
 use Money\Money;
 
@@ -39,7 +39,7 @@ class CreditRepository extends EntityRepository
      * @param Client $client
      * @param Money  $amount
      *
-     * @return \CSBill\ClientBundle\Entity\Credit
+     * @return \SolidInvoice\ClientBundle\Entity\Credit
      */
     public function deductCredit(Client $client, Money $amount): Credit
     {

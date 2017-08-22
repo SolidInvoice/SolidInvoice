@@ -3,12 +3,12 @@ services:
     _defaults:
         autowire: true
 
-    CSBill\SettingsBundle\SystemConfig:
+    SolidInvoice\SettingsBundle\SystemConfig:
         lazy: true
 
-    CSBill\SettingsBundle\Repository\SettingsRepository:
+    SolidInvoice\SettingsBundle\Repository\SettingsRepository:
         factory: ['@doctrine', 'getRepository']
-        arguments: ['CSBillSettingsBundle:Setting']
+        arguments: ['SolidInvoiceSettingsBundle:Setting']
 
     settings:
-        alias: CSBill\SettingsBundle\SystemConfig
+        alias: SolidInvoice\SettingsBundle\SystemConfig

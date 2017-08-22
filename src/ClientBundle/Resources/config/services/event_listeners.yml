@@ -1,6 +1,6 @@
 services:
     client.notification.listener:
-        class: CSBill\ClientBundle\Listener\ClientListener
+        class: SolidInvoice\ClientBundle\Listener\ClientListener
         calls:
             - ['setContainer', ['@service_container']]
         tags:

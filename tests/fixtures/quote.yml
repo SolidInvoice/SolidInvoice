@@ -1,10 +1,10 @@
-CSBill\ClientBundle\Entity\Contact:
+SolidInvoice\ClientBundle\Entity\Contact:
     contact:
         firstName: '<firstName()>'
         lastName: '<lastName()>'
         email: '<email()>'
 
-CSBill\ClientBundle\Entity\Client:
+SolidInvoice\ClientBundle\Entity\Client:
     client:
         name: '<name()>'
         currency: null
@@ -18,13 +18,13 @@ Money\Money:
     money:
         __construct: [10000, '@currency']
 
-CSBill\QuoteBundle\Entity\Item:
+SolidInvoice\QuoteBundle\Entity\Item:
     item:
         price: '@money'
         qty: 1
         description: 'Foo Item'
 
-CSBill\QuoteBundle\Entity\Quote:
+SolidInvoice\QuoteBundle\Entity\Quote:
     quote:
         client: '@client'
         status: draft

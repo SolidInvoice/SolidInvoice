@@ -1,24 +1,24 @@
 _tax_rates:
     path: /rates
-    defaults: { _controller: 'CSBill\TaxBundle\Action\Index' }
+    defaults: { _controller: 'SolidInvoice\TaxBundle\Action\Index' }
 
 _tax_rates_add:
     path: /rates/add
-    defaults: { _controller: 'CSBill\TaxBundle\Action\Add' }
+    defaults: { _controller: 'SolidInvoice\TaxBundle\Action\Add' }
 
 _tax_rates_edit:
     path: '/rates/edit/{id}'
-    defaults: { _controller: 'CSBill\TaxBundle\Action\Edit' }
+    defaults: { _controller: 'SolidInvoice\TaxBundle\Action\Edit' }
     options:
         expose: true
 
 _tax_rates_grid:
-    resource: '@CSBillTaxBundle/Action/Grid'
+    resource: '@SolidInvoiceTaxBundle/Action/Grid'
     type: grid
 
 _tax_number_validate:
     path: '/number/validate'
-    defaults: { _controller: 'CSBill\TaxBundle\Action\Validate' }
+    defaults: { _controller: 'SolidInvoice\TaxBundle\Action\Validate' }
     methods: ['POST']
     options:
         expose: true

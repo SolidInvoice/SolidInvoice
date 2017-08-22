@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\UserBundle\Form\Handler;
+namespace SolidInvoice\UserBundle\Form\Handler;
 
-use CSBill\ApiBundle\ApiTokenManager;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Traits\SaveableTrait;
-use CSBill\UserBundle\Entity\ApiToken;
-use CSBill\UserBundle\Form\Type\ApiTokenType;
+use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Form\Type\ApiTokenType;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
@@ -57,7 +57,7 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            'CSBillUserBundle:Api:create.html.twig',
+            'SolidInvoiceUserBundle:Api:create.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
             ]

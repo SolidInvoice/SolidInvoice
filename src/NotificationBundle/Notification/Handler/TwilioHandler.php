@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\NotificationBundle\Notification\Handler;
+namespace SolidInvoice\NotificationBundle\Notification\Handler;
 
-use CSBill\NotificationBundle\Notification\TwilioNotification;
-use CSBill\SettingsBundle\SystemConfig;
+use SolidInvoice\NotificationBundle\Notification\TwilioNotification;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Namshi\Notificator\Notification\Handler\HandlerInterface;
 use Namshi\Notificator\NotificationInterface;
 use Twilio\Rest\Client;

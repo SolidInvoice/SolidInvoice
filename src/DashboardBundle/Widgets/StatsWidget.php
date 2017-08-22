@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,15 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DashboardBundle\Widgets;
+namespace SolidInvoice\DashboardBundle\Widgets;
 
-use CSBill\ClientBundle\Model\Status as ClientStatus;
-use CSBill\ClientBundle\Repository\ClientRepository;
-use CSBill\InvoiceBundle\Model\Graph as InvoiceGraph;
-use CSBill\InvoiceBundle\Repository\InvoiceRepository;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
-use CSBill\QuoteBundle\Model\Graph as QuoteGraph;
-use CSBill\QuoteBundle\Repository\QuoteRepository;
+use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
+use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class StatsWidget implements WidgetInterface
@@ -43,13 +43,13 @@ class StatsWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var ClientRepository $clientRepository */
-        $clientRepository = $this->manager->getRepository('CSBillClientBundle:Client');
+        $clientRepository = $this->manager->getRepository('SolidInvoiceClientBundle:Client');
         /** @var QuoteRepository $quoteRepository */
-        $quoteRepository = $this->manager->getRepository('CSBillQuoteBundle:Quote');
+        $quoteRepository = $this->manager->getRepository('SolidInvoiceQuoteBundle:Quote');
         /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->manager->getRepository('CSBillInvoiceBundle:Invoice');
+        $invoiceRepository = $this->manager->getRepository('SolidInvoiceInvoiceBundle:Invoice');
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
+        $paymentRepository = $this->manager->getRepository('SolidInvoicePaymentBundle:Payment');
 
         $totalInvoices = $invoiceRepository->getCountByStatus(
             [
@@ -71,6 +71,6 @@ class StatsWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'CSBillDashboardBundle:Widget:stats.html.twig';
+        return 'SolidInvoiceDashboardBundle:Widget:stats.html.twig';
     }
 }

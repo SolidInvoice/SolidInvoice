@@ -1,4 +1,4 @@
 services:
-    CSBill\ClientBundle\Action\:
+    SolidInvoice\ClientBundle\Action\:
         resource: '../../../Action'
         autowire: true

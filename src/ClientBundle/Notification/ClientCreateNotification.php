@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,17 +11,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Notification;
+namespace SolidInvoice\ClientBundle\Notification;
 
-use CSBill\NotificationBundle\Notification\NotificationMessage;
+use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ClientCreateNotification extends NotificationMessage
 {
-    const HTML_TEMPLATE = 'CSBillClientBundle:Email:client_create.html.twig';
+    const HTML_TEMPLATE = 'SolidInvoiceClientBundle:Email:client_create.html.twig';
 
-    const TEXT_TEMPLATE = 'CSBillClientBundle:Email:client_create.text.twig';
+    const TEXT_TEMPLATE = 'SolidInvoiceClientBundle:Email:client_create.text.twig';
 
     /**
      * {@inheritdoc}

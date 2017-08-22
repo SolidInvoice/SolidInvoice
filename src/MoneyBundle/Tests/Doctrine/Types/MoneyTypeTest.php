@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MoneyBundle\Tests\Doctrine\Types;
+namespace SolidInvoice\MoneyBundle\Tests\Doctrine\Types;
 
-use CSBill\MoneyBundle\Doctrine\Types\MoneyType;
+use SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType;
 use Doctrine\DBAL\Types\Type;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -28,7 +28,7 @@ class MoneyTypeTest extends TestCase
     protected function setUp()
     {
         if (!Type::hasType('money')) {
-            Type::addType('money', 'CSBill\MoneyBundle\Doctrine\Types\MoneyType');
+            Type::addType('money', 'SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType');
         }
 
         MoneyType::setCurrency(new Currency('USD'));

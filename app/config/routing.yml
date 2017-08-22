@@ -1,48 +1,48 @@
-csbill_api:
-    resource: '@CSBillApiBundle/Resources/config/routing.yml'
+solidinvoice_api:
+    resource: '@SolidInvoiceApiBundle/Resources/config/routing.yml'
     prefix: /api
 
-csbill_dashboard:
-    resource: '@CSBillDashboardBundle/Resources/config/routing.yml'
+solidinvoice_dashboard:
+    resource: '@SolidInvoiceDashboardBundle/Resources/config/routing.yml'
 
-csbill_settings:
-    resource: '@CSBillSettingsBundle/Resources/config/routing.yml'
+solidinvoice_settings:
+    resource: '@SolidInvoiceSettingsBundle/Resources/config/routing.yml'
     prefix: /
 
-csbill_core:
-    resource: '@CSBillCoreBundle/Resources/config/routing.yml'
+solidinvoice_core:
+    resource: '@SolidInvoiceCoreBundle/Resources/config/routing.yml'
     prefix: /
 
-csbill_install:
-    resource: '@CSBillInstallBundle/Resources/config/routing.yml'
+solidinvoice_install:
+    resource: '@SolidInvoiceInstallBundle/Resources/config/routing.yml'
     prefix: /
 
-csbill_client:
+solidinvoice_client:
     prefix: /clients
-    resource: '@CSBillClientBundle/Resources/config/routing.yml'
+    resource: '@SolidInvoiceClientBundle/Resources/config/routing.yml'
 
-csbill_quote:
+solidinvoice_quote:
     prefix: /quotes
-    resource: '@CSBillQuoteBundle/Resources/config/routing.yml'
+    resource: '@SolidInvoiceQuoteBundle/Resources/config/routing.yml'
 
-csbill_invoice:
+solidinvoice_invoice:
     prefix: /invoices
-    resource: '@CSBillInvoiceBundle/Resources/config/routing.yml'
+    resource: '@SolidInvoiceInvoiceBundle/Resources/config/routing.yml'
 
-csbill_payment:
-    resource: '@CSBillPaymentBundle/Resources/config/routing.yml'
+solidinvoice_payment:
+    resource: '@SolidInvoicePaymentBundle/Resources/config/routing.yml'
     prefix: /payments
 
-csbill_tax:
-    resource: '@CSBillTaxBundle/Resources/config/routing.yml'
+solidinvoice_tax:
+    resource: '@SolidInvoiceTaxBundle/Resources/config/routing.yml'
     prefix: /tax
 
-csbill_user:
-    resource: '@CSBillUserBundle/Resources/config/routing.yml'
+solidinvoice_user:
+    resource: '@SolidInvoiceUserBundle/Resources/config/routing.yml'
     prefix: /profile
 
-csbill_datagrid:
-    resource: '@CSBillDataGridBundle/Resources/config/routing.yml'
+solidinvoice_datagrid:
+    resource: '@SolidInvoiceDataGridBundle/Resources/config/routing.yml'
     prefix: /grid
 
 fos_js_routing:

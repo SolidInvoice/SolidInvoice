@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Form\EventListener;
+namespace SolidInvoice\QuoteBundle\Form\EventListener;
 
-use CSBill\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -61,7 +61,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                     'constraints' => new NotBlank(),
                     'multiple' => true,
                     'expanded' => true,
-                    'class' => 'CSBillClientBundle:Contact',
+                    'class' => 'SolidInvoiceClientBundle:Contact',
                     'query_builder' => function (EntityRepository $repo) use ($clientId) {
                         return $repo->createQueryBuilder('c')
                             ->where('c.client = :client')

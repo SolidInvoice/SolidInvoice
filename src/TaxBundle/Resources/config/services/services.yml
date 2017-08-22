@@ -1,4 +1,4 @@
 services:
-    CSBill\TaxBundle\Repository\TaxRepository:
+    SolidInvoice\TaxBundle\Repository\TaxRepository:
         factory: ['@doctrine', getRepository]
-        arguments: ['CSBillTaxBundle:Tax']
+        arguments: ['SolidInvoiceTaxBundle:Tax']

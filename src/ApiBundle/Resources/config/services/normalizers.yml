@@ -1,5 +1,5 @@
 services:
-    CSBill\ApiBundle\Serializer\Normalizer\:
+    SolidInvoice\ApiBundle\Serializer\Normalizer\:
         resource: '../../../Serializer/Normalizer/'
         autowire: true
         public: false

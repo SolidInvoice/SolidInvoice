@@ -6,15 +6,15 @@ services:
             tags:
                 - { name: kernel.event_subscriber }
 
-    CSBill\CoreBundle\Listener\:
+    SolidInvoice\CoreBundle\Listener\:
         resource: '../../../Listener'
 
-    CSBill\CoreBundle\Listener\DoctrineExtensionListener:
+    SolidInvoice\CoreBundle\Listener\DoctrineExtensionListener:
         calls:
             - [setContainer, ['@service_container']]
 
-    CSBill\CoreBundle\Listener\SessionRequestListener:
+    SolidInvoice\CoreBundle\Listener\SessionRequestListener:
         arguments:
             $secret: '%secret%'
 
-    CSBill\CoreBundle\Listener\TemplateListener: ~
+    SolidInvoice\CoreBundle\Listener\TemplateListener: ~

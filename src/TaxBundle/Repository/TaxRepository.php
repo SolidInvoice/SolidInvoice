@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\TaxBundle\Repository;
+namespace SolidInvoice\TaxBundle\Repository;
 
-use CSBill\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -83,8 +83,8 @@ class TaxRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
 
-        $invoiceRepository = $em->getRepository('CSBillInvoiceBundle:Item');
-        $quoteRepository = $em->getRepository('CSBillQuoteBundle:Item');
+        $invoiceRepository = $em->getRepository('SolidInvoiceInvoiceBundle:Item');
+        $quoteRepository = $em->getRepository('SolidInvoiceQuoteBundle:Item');
 
         /* @var Tax[] $taxes */
         $taxes = $this->findBy(['id' => $data]);

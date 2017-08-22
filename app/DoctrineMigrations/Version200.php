@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,19 +11,19 @@
 
 namespace Application\Migrations;
 
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Form\Type\ImageUploadType;
-use CSBill\CoreBundle\Form\Type\Select2Type;
-use CSBill\MoneyBundle\Form\Type\CurrencyType;
-use CSBill\NotificationBundle\Entity\Notification;
-use CSBill\NotificationBundle\Form\Type\HipChatColorType;
-use CSBill\NotificationBundle\Form\Type\NotificationType;
-use CSBill\SettingsBundle\Form\Type\AddressType;
-use CSBill\SettingsBundle\Form\Type\MailEncryptionType;
-use CSBill\SettingsBundle\Form\Type\MailFormatType;
-use CSBill\SettingsBundle\Form\Type\MailTransportType;
-use CSBill\SettingsBundle\Form\Type\ThemeType;
-use CSBill\TaxBundle\Form\Type\TaxNumberType;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
+use SolidInvoice\CoreBundle\Form\Type\Select2Type;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\NotificationBundle\Entity\Notification;
+use SolidInvoice\NotificationBundle\Form\Type\HipChatColorType;
+use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
+use SolidInvoice\SettingsBundle\Form\Type\AddressType;
+use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
+use SolidInvoice\SettingsBundle\Form\Type\MailFormatType;
+use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
+use SolidInvoice\SettingsBundle\Form\Type\ThemeType;
+use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\TaxBundle\Form\Handler;
+namespace SolidInvoice\TaxBundle\Form\Handler;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Traits\SaveableTrait;
-use CSBill\TaxBundle\Entity\Tax;
-use CSBill\TaxBundle\Form\Type\TaxType;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Form\Type\TaxType;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
@@ -74,7 +74,7 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
      */
     public function getResponse(FormRequest $formRequest)
     {
-        return new Template('@CSBillTax/Default/form.html.twig', ['form' => $formRequest->getForm()->createView()]);
+        return new Template('@SolidInvoiceTax/Default/form.html.twig', ['form' => $formRequest->getForm()->createView()]);
     }
 
     /**

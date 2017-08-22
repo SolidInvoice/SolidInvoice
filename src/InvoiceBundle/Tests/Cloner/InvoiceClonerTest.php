@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,15 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Tests\Cloner;
+namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\InvoiceBundle\Cloner\InvoiceCloner;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\TaxBundle\Entity\Tax;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Form\Handler;
+namespace SolidInvoice\QuoteBundle\Form\Handler;
 
-use CSBill\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
 
 class QuoteCreateHandler extends AbstractQuoteHandler
@@ -24,7 +24,7 @@ class QuoteCreateHandler extends AbstractQuoteHandler
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            '@CSBillQuote/Default/create.html.twig',
+            '@SolidInvoiceQuote/Default/create.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
             ]

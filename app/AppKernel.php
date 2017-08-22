@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use CSBill\CoreBundle\Kernel\ContainerClassKernelInterface;
+use SolidInvoice\CoreBundle\Kernel\ContainerClassKernelInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -40,23 +40,23 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new SolidWorx\FormHandler\FormHandlerBundle(),
             new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
 
-            new CSBill\ApiBundle\CSBillApiBundle(),
-            new CSBill\ClientBundle\CSBillClientBundle(),
-            new CSBill\CoreBundle\CSBillCoreBundle(),
-            new CSBill\CronBundle\CSBillCronBundle(),
-            new CSBill\DashboardBundle\CSBillDashboardBundle(),
-            new CSBill\DataGridBundle\CSBillDataGridBundle($this),
-            new CSBill\FormBundle\CSBillFormBundle(),
-            new CSBill\InstallBundle\CSBillInstallBundle(),
-            new CSBill\InvoiceBundle\CSBillInvoiceBundle(),
-            new CSBill\MenuBundle\CSBillMenuBundle(),
-            new CSBill\MoneyBundle\CSBillMoneyBundle(),
-            new CSBill\NotificationBundle\CSBillNotificationBundle(),
-            new CSBill\PaymentBundle\CSBillPaymentBundle(),
-            new CSBill\QuoteBundle\CSBillQuoteBundle(),
-            new CSBill\SettingsBundle\CSBillSettingsBundle(),
-            new CSBill\TaxBundle\CSBillTaxBundle(),
-            new CSBill\UserBundle\CSBillUserBundle(),
+            new SolidInvoice\ApiBundle\SolidInvoiceApiBundle(),
+            new SolidInvoice\ClientBundle\SolidInvoiceClientBundle(),
+            new SolidInvoice\CoreBundle\SolidInvoiceCoreBundle(),
+            new SolidInvoice\CronBundle\SolidInvoiceCronBundle(),
+            new SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle(),
+            new SolidInvoice\DataGridBundle\SolidInvoiceDataGridBundle($this),
+            new SolidInvoice\FormBundle\SolidInvoiceFormBundle(),
+            new SolidInvoice\InstallBundle\SolidInvoiceInstallBundle(),
+            new SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle(),
+            new SolidInvoice\MenuBundle\SolidInvoiceMenuBundle(),
+            new SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle(),
+            new SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle(),
+            new SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle(),
+            new SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle(),
+            new SolidInvoice\SettingsBundle\SolidInvoiceSettingsBundle(),
+            new SolidInvoice\TaxBundle\SolidInvoiceTaxBundle(),
+            new SolidInvoice\UserBundle\SolidInvoiceUserBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'])) {

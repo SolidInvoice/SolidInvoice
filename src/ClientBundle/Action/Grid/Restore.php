@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Action\Grid;
+namespace SolidInvoice\ClientBundle\Action\Grid;
 
-use CSBill\ClientBundle\Repository\ClientRepository;
-use CSBill\CoreBundle\Response\AjaxResponse;
-use CSBill\CoreBundle\Traits\JsonTrait;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Response\AjaxResponse;
+use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

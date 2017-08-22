@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Form\Handler;
+namespace SolidInvoice\QuoteBundle\Form\Handler;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Traits\SaveableTrait;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Form\Type\QuoteType;
-use CSBill\QuoteBundle\Model\Graph;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;

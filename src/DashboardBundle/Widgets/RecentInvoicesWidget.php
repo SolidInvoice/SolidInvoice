@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DashboardBundle\Widgets;
+namespace SolidInvoice\DashboardBundle\Widgets;
 
-use CSBill\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class RecentInvoicesWidget implements WidgetInterface
@@ -37,7 +37,7 @@ class RecentInvoicesWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->manager->getRepository('CSBillInvoiceBundle:Invoice');
+        $invoiceRepository = $this->manager->getRepository('SolidInvoiceInvoiceBundle:Invoice');
 
         $invoices = $invoiceRepository->getRecentInvoices();
 
@@ -49,6 +49,6 @@ class RecentInvoicesWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'CSBillDashboardBundle:Widget:recent_invoices.html.twig';
+        return 'SolidInvoiceDashboardBundle:Widget:recent_invoices.html.twig';
     }
 }

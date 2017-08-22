@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,17 +11,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Mailer;
+namespace SolidInvoice\CoreBundle\Mailer;
 
-use CSBill\CoreBundle\Mailer\Events\InvoiceMailEvent;
-use CSBill\CoreBundle\Mailer\Events\MailerEvent;
-use CSBill\CoreBundle\Mailer\Events\MessageEvent;
-use CSBill\CoreBundle\Mailer\Events\QuoteEvent;
-use CSBill\CoreBundle\Mailer\Exception\UnexpectedFormatException;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\SettingsBundle\SystemConfig;
-use CSBill\UserBundle\Entity\User;
+use SolidInvoice\CoreBundle\Mailer\Events\InvoiceMailEvent;
+use SolidInvoice\CoreBundle\Mailer\Events\MailerEvent;
+use SolidInvoice\CoreBundle\Mailer\Events\MessageEvent;
+use SolidInvoice\CoreBundle\Mailer\Events\QuoteEvent;
+use SolidInvoice\CoreBundle\Mailer\Exception\UnexpectedFormatException;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\UserBundle\Entity\User;
 use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -101,15 +101,15 @@ class Mailer implements MailerInterface
      */
     public function sendInvoice(Invoice $invoice): int
     {
-        $htmlTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.html.twig', ['invoice' => $invoice]);
-        $textTemplate = $this->getTemplate('CSBillInvoiceBundle:Email:invoice.txt.twig', ['invoice' => $invoice]);
+        $htmlTemplate = $this->getTemplate('SolidInvoiceInvoiceBundle:Email:invoice.html.twig', ['invoice' => $invoice]);
+        $textTemplate = $this->getTemplate('SolidInvoiceInvoiceBundle:Email:invoice.txt.twig', ['invoice' => $invoice]);
 
         $subject = $this->getSubject('invoice/email_subject', $invoice->getId());
 
         $users = [];
 
         foreach ($invoice->getUsers() as $user) {
-            /* @var \CSBill\ClientBundle\Entity\Contact $user */
+            /* @var \SolidInvoice\ClientBundle\Entity\Contact $user */
             $users[(string) $user->getEmail()] = $user->getFirstName().' '.$user->getLastName();
         }
 
@@ -242,15 +242,15 @@ class Mailer implements MailerInterface
      */
     public function sendQuote(Quote $quote): int
     {
-        $htmlTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.html.twig', ['quote' => $quote]);
-        $textTemplate = $this->getTemplate('CSBillQuoteBundle:Email:quote.txt.twig', ['quote' => $quote]);
+        $htmlTemplate = $this->getTemplate('SolidInvoiceQuoteBundle:Email:quote.html.twig', ['quote' => $quote]);
+        $textTemplate = $this->getTemplate('SolidInvoiceQuoteBundle:Email:quote.txt.twig', ['quote' => $quote]);
 
         $subject = $this->getSubject('quote/email_subject', $quote->getId());
 
         $users = [];
 
         foreach ($quote->getUsers() as $user) {
-            /* @var \CSBill\ClientBundle\Entity\Contact $user */
+            /* @var \SolidInvoice\ClientBundle\Entity\Contact $user */
             $users[(string) $user->getEmail()] = $user->getFirstName().' '.$user->getLastName();
         }
 

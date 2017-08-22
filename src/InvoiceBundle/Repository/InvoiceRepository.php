@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Repository;
+namespace SolidInvoice\InvoiceBundle\Repository;
 
 use Carbon\Carbon;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Model\Graph;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
@@ -254,7 +254,7 @@ class InvoiceRepository extends EntityRepository
             $qbi = $this->getEntityManager()->createQueryBuilder();
 
             $qbi->update()
-                ->from('CSBillInvoiceBundle:Item', 'it')
+                ->from('SolidInvoiceInvoiceBundle:Item', 'it')
                 ->set('it.price.currency', ':currency')
                 ->set('it.total.currency', ':currency')
                 ->where(
@@ -309,7 +309,7 @@ class InvoiceRepository extends EntityRepository
 
         $totalPaid = new Money(
             $this->getEntityManager()
-                ->getRepository('CSBillPaymentBundle:Payment')
+                ->getRepository('SolidInvoicePaymentBundle:Payment')
                 ->getTotalPaidForInvoice($invoice),
             $invoiceTotal->getCurrency()
         );

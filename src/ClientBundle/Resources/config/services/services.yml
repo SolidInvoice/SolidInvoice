@@ -1,6 +1,6 @@
 services:
-    csbill_client.menu:
-        class: CSBill\ClientBundle\Menu\Builder
+    solidinvoice_client.menu:
+        class: SolidInvoice\ClientBundle\Menu\Builder
         tags:
             - { name: 'cs_core.menu', menu: top, method: topMenu }
             - { name: 'cs_core.menu', menu: clients_index, method: clientsMenu }
@@ -8,19 +8,19 @@ services:
             - { name: 'cs_core.menu', menu: clients_add, method: clientsMenu }
             - { name: 'cs_core.menu', menu: clients_edit, method: clientsMenu }
 
-    CSBill\ClientBundle\Repository\ClientRepository:
+    SolidInvoice\ClientBundle\Repository\ClientRepository:
         factory: ['@doctrine', getRepository]
-        arguments: ['CSBillClientBundle:Client']
+        arguments: ['SolidInvoiceClientBundle:Client']
 
-    CSBill\ClientBundle\Repository\CreditRepository:
+    SolidInvoice\ClientBundle\Repository\CreditRepository:
         factory: ['@doctrine', getRepository]
-        arguments: ['CSBillClientBundle:Credit']
+        arguments: ['SolidInvoiceClientBundle:Credit']
 
-    csbill_client.contact_type.repository:
-        class: CSBill\ClientBundle\Repository\ContactTypeRepository
+    solidinvoice_client.contact_type.repository:
+        class: SolidInvoice\ClientBundle\Repository\ContactTypeRepository
         factory: ['@doctrine', getRepository]
-        arguments: ['CSBillClientBundle:ContactType']
+        arguments: ['SolidInvoiceClientBundle:ContactType']
 
-    csbill_client.contact_type.values:
-        class: CSBill\ClientBundle\Repository\ContactTypeRepository
-        factory: ['@csbill_client.contact_type.repository', findAll]
+    solidinvoice_client.contact_type.values:
+        class: SolidInvoice\ClientBundle\Repository\ContactTypeRepository
+        factory: ['@solidinvoice_client.contact_type.repository', findAll]

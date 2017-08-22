@@ -5,6 +5,6 @@ services:
         tags:
             - { name: form.type }
 
-    CSBill\InvoiceBundle\Form\Type\InvoiceType: ~
+    SolidInvoice\InvoiceBundle\Form\Type\InvoiceType: ~
 
-    CSBill\InvoiceBundle\Form\Type\ItemType: ~
+    SolidInvoice\InvoiceBundle\Form\Type\ItemType: ~

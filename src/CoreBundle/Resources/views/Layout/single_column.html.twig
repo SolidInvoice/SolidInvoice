@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -19,13 +19,13 @@
     </div>
 {% endset %}
 
-{% extends 'CSBillCoreBundle:Layout:default.html.twig' %}
+{% extends 'SolidInvoiceCoreBundle:Layout:default.html.twig' %}
 
 {% block body %}
     <section class="content-header">
         {{ block('heading') is defined ? block('heading') }}
 
-        {% include "CSBillCoreBundle::flash.html.twig" %}
+        {% include "SolidInvoiceCoreBundle::flash.html.twig" %}
     </section>
 
     <section class="content">

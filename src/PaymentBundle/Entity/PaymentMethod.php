@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Entity;
+namespace SolidInvoice\PaymentBundle\Entity;
 
-use CSBill\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
  * @ORM\Table(name="payment_methods")
- * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentMethodRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository")
  * @UniqueEntity("gatewayName")
  * @Gedmo\SoftDeleteable()
  * @Gedmo\Loggable()

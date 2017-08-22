@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Form\Handler;
+namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ class InvoiceEditHandler extends AbstractInvoiceHandler
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            '@CSBillInvoice/Default/edit.html.twig',
+            '@SolidInvoiceInvoice/Default/edit.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
                 'invoice' => $formRequest->getOptions()->get('invoice'),

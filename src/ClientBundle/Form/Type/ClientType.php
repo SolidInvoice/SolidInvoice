@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Form\Type;
+namespace SolidInvoice\ClientBundle\Form\Type;
 
-use CSBill\ClientBundle\Entity\Address;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\MoneyBundle\Form\Type\CurrencyType;
-use CSBill\TaxBundle\Form\Type\TaxNumberType;
+use SolidInvoice\ClientBundle\Entity\Address;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;

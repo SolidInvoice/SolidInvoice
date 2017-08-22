@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Tests\Listener;
+namespace SolidInvoice\QuoteBundle\Tests\Listener;
 
-use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\NotificationBundle\Notification\NotificationManager;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Listener\WorkFlowSubscriber;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -76,20 +76,20 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
 
         $this->assertTrue($quote->isArchived());
-        $this->assertSame($quote, $this->em->getRepository('CSBillQuoteBundle:Quote')->find(1));
+        $this->assertSame($quote, $this->em->getRepository('SolidInvoiceQuoteBundle:Quote')->find(1));
     }
 
     public function getEntityNamespaces()
     {
         return [
-            'CSBillQuoteBundle' => 'CSBill\\QuoteBundle\\Entity',
+            'SolidInvoiceQuoteBundle' => 'SolidInvoice\\QuoteBundle\\Entity',
         ];
     }
 
     public function getEntities()
     {
         return [
-            'CSBillQuoteBundle:Quote',
+            'SolidInvoiceQuoteBundle:Quote',
         ];
     }
 }

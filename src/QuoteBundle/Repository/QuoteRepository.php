@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Repository;
+namespace SolidInvoice\QuoteBundle\Repository;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\QuoteBundle\Entity\Quote;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -125,7 +125,7 @@ class QuoteRepository extends EntityRepository
             $qbi = $this->getEntityManager()->createQueryBuilder();
 
             $qbi->update()
-                ->from('CSBillQuoteBundle:Item', 'qt')
+                ->from('SolidInvoiceQuoteBundle:Item', 'qt')
                 ->set('qt.price.currency', ':currency')
                 ->set('qt.total.currency', ':currency')
                 ->where(

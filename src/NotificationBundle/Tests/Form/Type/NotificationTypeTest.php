@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\NotificationBundle\Tests\Form\Type;
+namespace SolidInvoice\NotificationBundle\Tests\Form\Type;
 
-use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\NotificationBundle\Form\Type\NotificationType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 
 class NotificationTypeTest extends FormTestCase
 {

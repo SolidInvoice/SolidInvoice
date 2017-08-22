@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ApiBundle\Serializer\Normalizer;
+namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use CSBill\ClientBundle\Entity\AdditionalContactDetail;
+use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -48,7 +48,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 
         /* @var AdditionalContactDetail $detail */
         $detail = $this->normalizer->denormalize($data, $class, $format, $context);
-        $repository = $this->registry->getRepository('CSBillClientBundle:ContactType');
+        $repository = $this->registry->getRepository('SolidInvoiceClientBundle:ContactType');
         $detail->setType($repository->findOneBy(['name' => $detail->getType()->getName()]));
 
         return $detail;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Action;
+namespace SolidInvoice\InvoiceBundle\Action;
 
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\InvoiceBundle\Repository\InvoiceRepository;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Index
@@ -40,7 +40,7 @@ final class Index
     public function __invoke(Request $request)
     {
         return new Template(
-            '@CSBillInvoice/Default/index.html.twig',
+            '@SolidInvoiceInvoice/Default/index.html.twig',
             [
                 'status_list_count' => [
                     Graph::STATUS_PENDING => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),

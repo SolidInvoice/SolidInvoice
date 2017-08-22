@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MenuBundle\Tests;
+namespace SolidInvoice\MenuBundle\Tests;
 
-use CSBill\MenuBundle\Factory;
+use SolidInvoice\MenuBundle\Factory;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -46,7 +46,7 @@ class FactoryTest extends TestCase
 
         $item = $factory->createItem('abc', ['label' => 'def', 'route' => 'test_route']);
 
-        $this->assertInstanceOf('CSBill\MenuBundle\MenuItem', $item);
+        $this->assertInstanceOf('SolidInvoice\MenuBundle\MenuItem', $item);
 
         $this->assertSame('/test/route', $item->getUri());
         $this->assertSame('def', $item->getLabel());

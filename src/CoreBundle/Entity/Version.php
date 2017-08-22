@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Entity;
+namespace SolidInvoice\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Version.
  *
- * @ORM\Entity(repositoryClass="CSBill\CoreBundle\Repository\VersionRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\CoreBundle\Repository\VersionRepository")
  * @ORM\Table(name="version")
  */
 class Version

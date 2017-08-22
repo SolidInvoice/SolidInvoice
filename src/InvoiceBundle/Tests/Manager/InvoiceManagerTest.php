@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,16 +11,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Tests\Manager;
+namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\NotificationBundle\Notification\NotificationManager;
-use CSBill\QuoteBundle\Entity\Item;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\TaxBundle\Entity\Tax;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\QuoteBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
@@ -50,7 +50,7 @@ class InvoiceManagerTest extends KernelTestCase
     {
         $this->entityManager = M::mock('Doctrine\ORM\EntityManagerInterface');
         $doctrine = M::mock('Doctrine\Common\Persistence\ManagerRegistry', ['getManager' => $this->entityManager]);
-        $notification = M::mock('CSBill\NotificationBundle\Notification\NotificationManager');
+        $notification = M::mock('SolidInvoice\NotificationBundle\Notification\NotificationManager');
 
         $notification->shouldReceive('sendNotification')
             ->andReturn(null);
@@ -126,9 +126,9 @@ class InvoiceManagerTest extends KernelTestCase
 
         $this->assertCount(1, $invoice->getItems());
 
-        /** @var \CSBill\InvoiceBundle\Entity\item[] $invoiceItem */
+        /** @var \SolidInvoice\InvoiceBundle\Entity\item[] $invoiceItem */
         $invoiceItem = $invoice->getItems();
-        $this->assertInstanceOf('CSBill\InvoiceBundle\Entity\item', $invoiceItem[0]);
+        $this->assertInstanceOf('SolidInvoice\InvoiceBundle\Entity\item', $invoiceItem[0]);
 
         $this->assertSame($item->getTax(), $invoiceItem[0]->getTax());
         $this->assertSame($item->getDescription(), $invoiceItem[0]->getDescription());

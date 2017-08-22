@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Entity;
+namespace SolidInvoice\CoreBundle\Entity;
 
-use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
@@ -31,7 +31,7 @@ class Discount
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
     private $valueMoney;

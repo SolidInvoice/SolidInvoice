@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Tests\Form\Handler;
+namespace SolidInvoice\PaymentBundle\Tests\Form\Handler;
 
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
-use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Factory\PaymentFactories;
-use CSBill\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
+use SolidInvoice\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
 use Mockery as M;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
@@ -70,7 +70,7 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
         /* @var PaymentMethod $data */
         $this->assertSame('My Test Payment', $data->getName());
         $this->assertTrue($data->isEnabled());
-        $this->assertCount(1, $this->em->getRepository('CSBillPaymentBundle:PaymentMethod')->findAll());
+        $this->assertCount(1, $this->em->getRepository('SolidInvoicePaymentBundle:PaymentMethod')->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -81,14 +81,14 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillPaymentBundle' => 'CSBill\PaymentBundle\Entity',
+            'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
         ];
     }
 
     protected function getEntities(): array
     {
         return [
-            'CSBillPaymentBundle:PaymentMethod',
+            'SolidInvoicePaymentBundle:PaymentMethod',
         ];
     }
 }

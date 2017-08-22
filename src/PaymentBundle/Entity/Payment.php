@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Entity;
+namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\CoreBundle\Exception\UnexpectedTypeException;
-use CSBill\CoreBundle\Traits\Entity;
-use CSBill\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\Payment as BasePayment;
@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 /**
  * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
  * @ORM\Table(name="payments")
- * @ORM\Entity(repositoryClass="CSBill\PaymentBundle\Repository\PaymentRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  */
@@ -52,14 +52,14 @@ class Payment extends BasePayment implements PaymentInterface
     protected $clientId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", inversedBy="payments")
      *
      * @var Invoice
      */
     private $invoice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="payments")
      * @ORM\JoinColumn(name="client", fieldName="client")
      *
      * @var Client
@@ -67,7 +67,7 @@ class Payment extends BasePayment implements PaymentInterface
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CSBill\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
      *
      * @var PaymentMethod
      * @Serialize\Groups({"payment_api", "client_api"})

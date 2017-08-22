@@ -2,18 +2,18 @@ services:
     _defaults:
         autowire: true
 
-    CSBill\InvoiceBundle\Action\:
+    SolidInvoice\InvoiceBundle\Action\:
         resource: '../../../Action'
         autowire: true
 
-    CSBill\InvoiceBundle\Action\Grid\Archive:
+    SolidInvoice\InvoiceBundle\Action\Grid\Archive:
         arguments:
             $stateMachine: '@state_machine.invoice'
 
-    CSBill\InvoiceBundle\Action\Transition:
+    SolidInvoice\InvoiceBundle\Action\Transition:
         arguments:
             $stateMachine: '@state_machine.invoice'
 
-    CSBill\InvoiceBundle\Action\Transition\Send:
+    SolidInvoice\InvoiceBundle\Action\Transition\Send:
         arguments:
             $stateMachine: '@state_machine.invoice'

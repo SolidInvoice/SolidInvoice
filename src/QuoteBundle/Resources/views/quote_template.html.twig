@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -174,7 +174,7 @@
                                         </td>
                                         <td class="no-line text-right">
                                             <span class="text-danger quote-discount">
-                                                -{{ quote.discount.type == constant('CSBill\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (quote.discount.value)|formatCurrency : quote.baseTotal|percentage(quote.discount.value)|formatCurrency }}
+                                                -{{ quote.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (quote.discount.value)|formatCurrency : quote.baseTotal|percentage(quote.discount.value)|formatCurrency }}
                                             </span>
                                         </td>
                                     </tr>

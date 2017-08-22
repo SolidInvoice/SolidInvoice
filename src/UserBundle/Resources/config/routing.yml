@@ -1,11 +1,11 @@
 _api_keys_index:
     path: /api
-    defaults: { _controller: 'CSBill\UserBundle\Action\ApiIndex' }
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\ApiIndex' }
     options:
         expose: true
 
 _api_keys_xhr:
-    resource: '@CSBillUserBundle/Resources/config/routing/ajax.yml'
+    resource: '@SolidInvoiceUserBundle/Resources/config/routing/ajax.yml'
     prefix: /api/xhr
     options:
         expose: true

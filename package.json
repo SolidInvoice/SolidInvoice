@@ -1,11 +1,11 @@
 {
-  "name": "csbill",
-  "description": "CSBill Billing Application",
+  "name": "solidinvoice",
+  "description": "SolidInvoice Billing Application",
   "version": "2.0.0",
   "main": "Gulpfile.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CSBill/CSBill.git"
+    "url": "git+https://github.com/SolidInvoice/SolidInvoice.git"
   },
   "keywords": [
     "billing"
@@ -13,9 +13,9 @@
   "author": "Pierre du Plessis",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CSBill/CSBill/issues"
+    "url": "https://github.com/SolidInvoice/SolidInvoice/issues"
   },
-  "homepage": "http://csbill.org",
+  "homepage": "http://solidinvoice.org",
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-preset-env": "^1.5.2",

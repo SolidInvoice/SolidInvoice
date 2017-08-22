@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Form\Handler;
+namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
-use CSBill\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
 
 class InvoiceCreateHandler extends AbstractInvoiceHandler
@@ -24,7 +24,7 @@ class InvoiceCreateHandler extends AbstractInvoiceHandler
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            '@CSBillInvoice/Default/create.html.twig',
+            '@SolidInvoiceInvoice/Default/create.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
             ]

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\SettingsBundle\Tests;
+namespace SolidInvoice\SettingsBundle\Tests;
 
-use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
-use CSBill\SettingsBundle\Entity\Setting;
-use CSBill\SettingsBundle\Exception\InvalidSettingException;
-use CSBill\SettingsBundle\SystemConfig;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -42,21 +42,21 @@ class SystemConfigTest extends TestCase
 
     public function testGet()
     {
-        $config = new SystemConfig($this->em->getRepository('CSBillSettingsBundle:Setting'));
+        $config = new SystemConfig($this->em->getRepository('SolidInvoiceSettingsBundle:Setting'));
 
         $this->assertSame('four', $config->get('one/two/three'));
     }
 
     public function testGetAll()
     {
-        $config = new SystemConfig($this->em->getRepository('CSBillSettingsBundle:Setting'));
+        $config = new SystemConfig($this->em->getRepository('SolidInvoiceSettingsBundle:Setting'));
 
         $this->assertSame(['one/two/three' => 'four'], $config->getAll());
     }
 
     public function testInvalidGet()
     {
-        $config = new SystemConfig($this->em->getRepository('CSBillSettingsBundle:Setting'));
+        $config = new SystemConfig($this->em->getRepository('SolidInvoiceSettingsBundle:Setting'));
 
         $this->expectException(InvalidSettingException::class);
         $this->expectExceptionMessage('Invalid settings key: some/invalid/key');
@@ -67,14 +67,14 @@ class SystemConfigTest extends TestCase
     public function getEntityNamespaces(): array
     {
         return [
-            'CSBillSettingsBundle' => 'CSBill\SettingsBundle\Entity',
+            'SolidInvoiceSettingsBundle' => 'SolidInvoice\SettingsBundle\Entity',
         ];
     }
 
     public function getEntities(): array
     {
         return [
-            'CSBillSettingsBundle:Setting',
+            'SolidInvoiceSettingsBundle:Setting',
         ];
     }
 }

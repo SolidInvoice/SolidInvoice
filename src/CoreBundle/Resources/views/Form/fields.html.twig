@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -115,11 +115,11 @@
 {%- endblock image_upload_widget %}
 
 {% block contact_detail_widget %}
-    {% include "CSBillClientBundle:Form:contact_details.html.twig" %}
+    {% include "SolidInvoiceClientBundle:Form:contact_details.html.twig" %}
 {% endblock contact_detail_widget %}
 
 {% block contact_widget %}
-    {% include "CSBillClientBundle:Form:contacts.html.twig" %}
+    {% include "SolidInvoiceClientBundle:Form:contacts.html.twig" %}
 {% endblock contact_widget %}
 
 {% block tax_field_widget -%}
@@ -258,7 +258,7 @@
                 {% for type in form.vars.types %}
                     <li>
                         <a href="#" class="{{ form.type.vars.id }}_types{% if type.name == form.type.vars.value %} hidden{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
-                            {% if type.name == constant('CSBill\\CoreBundle\\Entity\\Discount::TYPE_MONEY') %}
+                            {% if type.name == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') %}
                                 <span class="currency-view">{{ currency }}</span>
                             {% else %}
                                 {{ type.symbol }}

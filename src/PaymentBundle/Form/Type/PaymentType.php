@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Form\Type;
+namespace SolidInvoice\PaymentBundle\Form\Type;
 
-use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Money\Money;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -36,7 +36,7 @@ class PaymentType extends AbstractType
             'payment_method',
             EntityType::class,
             [
-                'class' => 'CSBillPaymentBundle:PaymentMethod',
+                'class' => 'SolidInvoicePaymentBundle:PaymentMethod',
                 'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
                     $expression = $queryBuilder->expr();

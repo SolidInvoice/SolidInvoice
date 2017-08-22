@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Process\Step;
+namespace SolidInvoice\InstallBundle\Process\Step;
 
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
@@ -37,7 +37,7 @@ class SystemRequirementsStep extends AbstractControllerStep
         }
 
         return $this->render(
-            'CSBillInstallBundle:Flow:system_check.html.twig',
+            'SolidInvoiceInstallBundle:Flow:system_check.html.twig',
             [
                 'requirements' => new \AppRequirements(),
             ]

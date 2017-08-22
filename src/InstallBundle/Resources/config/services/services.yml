@@ -1,5 +1,5 @@
 parameters:
-    sylius.controller.process.class: CSBill\InstallBundle\Controller\ProcessController
+    sylius.controller.process.class: SolidInvoice\InstallBundle\Controller\ProcessController
 
 services:
     installer.controller.process:
@@ -8,12 +8,12 @@ services:
             - [setTwig, ['@twig']]
 
     installation.scenario.flow:
-        class: CSBill\InstallBundle\Process\InstallScenario
+        class: SolidInvoice\InstallBundle\Process\InstallScenario
         tags:
              - { name: sylius.process.scenario, alias: install }
 
-    csbill.installer.database.migration:
-        class: CSBill\InstallBundle\Installer\Database\Migration
+    solidinvoice.installer.database.migration:
+        class: SolidInvoice\InstallBundle\Installer\Database\Migration
         arguments: ['@filesystem']
         calls:
             - [setContainer, ['@service_container']]

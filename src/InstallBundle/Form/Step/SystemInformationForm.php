@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Form\Step;
+namespace SolidInvoice\InstallBundle\Form\Step;
 
-use CSBill\CoreBundle\Form\Type\Select2Type;
-use CSBill\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\CoreBundle\Form\Type\Select2Type;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

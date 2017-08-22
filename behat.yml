@@ -17,9 +17,9 @@ default:
             contexts:
                 - FeatureContext: { doctrine: '@doctrine' }
                 - Behat\MinkExtension\Context\MinkContext
-                - CSBill\CoreBundle\Behat\CoreContext
-                - CSBill\InstallBundle\Behat\InstallContext
-                - CSBill\UserBundle\Behat\UserContext
+                - SolidInvoice\CoreBundle\Behat\CoreContext
+                - SolidInvoice\InstallBundle\Behat\InstallContext
+                - SolidInvoice\UserBundle\Behat\UserContext
             filters:
                 tags: "@installation"
 
@@ -27,16 +27,16 @@ default:
             contexts:
                 - FeatureContext: { doctrine: '@doctrine' }
                 - Behat\MinkExtension\Context\MinkContext
-                - CSBill\CoreBundle\Behat\CoreContext
-                - CSBill\UserBundle\Behat\UserContext
+                - SolidInvoice\CoreBundle\Behat\CoreContext
+                - SolidInvoice\UserBundle\Behat\UserContext
             filters:
                 tags: "@login"
 
         api:
             contexts:
                 - FeatureContext: { doctrine: '@doctrine' }
-                - CSBill\ApiBundle\Behat\ApiContext
-                - CSBill\UserBundle\Behat\UserContext
+                - SolidInvoice\ApiBundle\Behat\ApiContext
+                - SolidInvoice\UserBundle\Behat\UserContext
                 - Behat\MinkExtension\Context\MinkContext
                 - Behatch\Context\RestContext
                 - Behatch\Context\JsonContext
@@ -69,10 +69,10 @@ default:
         Knp\FriendlyContexts\Extension:
             entities:
                 namespaces:
-                    - CSBill\ClientBundle
-                    - CSBill\InvoiceBundle
-                    - CSBill\QuoteBundle
-                    - CSBill\UserBundle
+                    - SolidInvoice\ClientBundle
+                    - SolidInvoice\InvoiceBundle
+                    - SolidInvoice\QuoteBundle
+                    - SolidInvoice\UserBundle
             alice:
                 fixtures:
                     Client: tests/fixtures/client.yml

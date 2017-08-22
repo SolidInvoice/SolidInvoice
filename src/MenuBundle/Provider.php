@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MenuBundle;
+namespace SolidInvoice\MenuBundle;
 
-use CSBill\MenuBundle\Builder\BuilderInterface;
-use CSBill\MenuBundle\Builder\MenuBuilder;
-use CSBill\MenuBundle\Storage\MenuStorageInterface;
+use SolidInvoice\MenuBundle\Builder\BuilderInterface;
+use SolidInvoice\MenuBundle\Builder\MenuBuilder;
+use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 
 class Provider implements MenuProviderInterface

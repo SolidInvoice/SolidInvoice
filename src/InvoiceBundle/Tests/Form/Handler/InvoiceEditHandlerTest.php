@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,18 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Tests\Form\Handler;
+namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Form\Handler\InvoiceEditHandler;
-use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\MoneyBundle\Entity\Money;
-use CSBill\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
+use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\MoneyBundle\Entity\Money;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Mockery as M;
 use Money\Currency;
 use SolidWorx\FormHandler\FormRequest;
@@ -96,7 +96,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
-        $this->assertCount(1, $this->em->getRepository('CSBillInvoiceBundle:Invoice')->findAll());
+        $this->assertCount(1, $this->em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -130,21 +130,21 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
-            'CSBillInvoiceBundle' => 'CSBill\InvoiceBundle\Entity',
-            'CSBillPaymentBundle' => 'CSBill\PaymentBundle\Entity',
-            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
+            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
+            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
+            'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
+            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
         ];
     }
 
     protected function getEntities(): array
     {
         return [
-            'CSBillClientBundle:Client',
-            'CSBillInvoiceBundle:Invoice',
-            'CSBillInvoiceBundle:RecurringInvoice',
-            'CSBillPaymentBundle:Payment',
-            'CSBillTaxBundle:Tax',
+            'SolidInvoiceClientBundle:Client',
+            'SolidInvoiceInvoiceBundle:Invoice',
+            'SolidInvoiceInvoiceBundle:RecurringInvoice',
+            'SolidInvoicePaymentBundle:Payment',
+            'SolidInvoiceTaxBundle:Tax',
         ];
     }
 }

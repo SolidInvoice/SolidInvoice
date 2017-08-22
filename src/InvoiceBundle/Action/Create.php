@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Action;
+namespace SolidInvoice\InvoiceBundle\Action;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Repository\ClientRepository;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,7 +42,7 @@ final class Create
     public function __invoke(Request $request, Client $client = null)
     {
         if (!$this->clientRepository->getTotalClients()) {
-            return new Template('@CSBillInvoice/Default/empty_clients.html.twig');
+            return new Template('@SolidInvoiceInvoice/Default/empty_clients.html.twig');
         }
 
         $invoice = new Invoice();

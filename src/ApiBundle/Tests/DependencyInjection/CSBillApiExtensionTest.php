@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ApiBundle\Tests\DependencyInjection;
+namespace SolidInvoice\ApiBundle\Tests\DependencyInjection;
 
-use CSBill\ApiBundle\DependencyInjection\CSBillApiExtension;
+use SolidInvoice\ApiBundle\DependencyInjection\SolidInvoiceApiExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-class CSBillApiExtensionTest extends AbstractExtensionTestCase
+class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -27,7 +27,7 @@ class CSBillApiExtensionTest extends AbstractExtensionTestCase
     protected function getContainerExtensions()
     {
         return [
-            new CSBillApiExtension(),
+            new SolidInvoiceApiExtension(),
         ];
     }
 
@@ -38,19 +38,19 @@ class CSBillApiExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertContainerBuilderHasService('api_token_authenticator', 'CSBill\ApiBundle\Security\ApiTokenAuthenticator');
+        $this->assertContainerBuilderHasService('api_token_authenticator', 'SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 0, 'api_token_user_provider');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 1, 'doctrine');
 
-        $this->assertContainerBuilderHasService('api_token_user_provider', 'CSBill\ApiBundle\Security\Provider\ApiTokenUserProvider');
+        $this->assertContainerBuilderHasService('api_token_user_provider', 'SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_user_provider', 0, 'doctrine');
 
-        $this->assertContainerBuilderHasService('api.success', 'CSBill\ApiBundle\Event\Listener\AuthenticationSuccessHandler');
+        $this->assertContainerBuilderHasService('api.success', 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.success', 0, 'api.token.manager');
 
-        $this->assertContainerBuilderHasService('api.failure', 'CSBill\ApiBundle\Event\Listener\AuthenticationFailHandler');
+        $this->assertContainerBuilderHasService('api.failure', 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler');
 
-        $this->assertContainerBuilderHasService('api.token.manager', 'CSBill\ApiBundle\ApiTokenManager');
+        $this->assertContainerBuilderHasService('api.token.manager', 'SolidInvoice\ApiBundle\ApiTokenManager');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.token.manager', 0, 'doctrine');
     }
 }

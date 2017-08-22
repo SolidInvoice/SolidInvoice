@@ -8,9 +8,9 @@ services:
         public: false
         autowire: true
 
-    CSBill\SettingsBundle\Listener\:
+    SolidInvoice\SettingsBundle\Listener\:
         resource: '../../../Listener'
 
-    CSBill\SettingsBundle\Listener\MailerSettingsEnvListener:
+    SolidInvoice\SettingsBundle\Listener\MailerSettingsEnvListener:
         arguments:
             $installed: '%installed%'

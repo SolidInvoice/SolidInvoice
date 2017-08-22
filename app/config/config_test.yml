@@ -2,7 +2,7 @@ imports:
     - { resource: config_dev.yml }
 
 parameters:
-    database_name: csbill_test
+    database_name: solidinvoice_test
 
 framework:
     test: null

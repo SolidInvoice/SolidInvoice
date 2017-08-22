@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DataGridBundle\Tests\DependencyInjection;
+namespace SolidInvoice\DataGridBundle\Tests\DependencyInjection;
 
-use CSBill\DataGridBundle\DependencyInjection\GridConfiguration;
+use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -56,7 +56,7 @@ class GridConfigurationTest extends TestCase
                     'title' => 'Active',
                     'icon' => 'check',
                     'source' => [
-                        'repository' => 'CSBillClientBundle:Client',
+                        'repository' => 'SolidInvoiceClientBundle:Client',
                         'method' => 'getGridQuery',
                     ],
                     'columns' => [

@@ -5,16 +5,16 @@ services:
         tags:
             - { name: twig.extension }
 
-    CSBill\CoreBundle\Twig\Extension\GlobalExtension:
+    SolidInvoice\CoreBundle\Twig\Extension\GlobalExtension:
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
-    CSBill\CoreBundle\Twig\Extension\BillingExtension:
-        arguments: ['@csbill_core.field.renderer']
+    SolidInvoice\CoreBundle\Twig\Extension\BillingExtension:
+        arguments: ['@solidinvoice_core.field.renderer']
 
-    CSBill\CoreBundle\Twig\Extension\FileExtension: ~
+    SolidInvoice\CoreBundle\Twig\Extension\FileExtension: ~
 
-    CSBill\CoreBundle\Twig\Extension\StatusExtension: ~
-    CSBill\CoreBundle\Twig\Extension\SerializerExtension: ~
+    SolidInvoice\CoreBundle\Twig\Extension\StatusExtension: ~
+    SolidInvoice\CoreBundle\Twig\Extension\SerializerExtension: ~
     Twig_Extensions_Extension_Text:
         class: Twig_Extensions_Extension_Text

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,15 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Entity;
+namespace SolidInvoice\ClientBundle\Entity;
 
-use CSBill\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * CSBill\ClientBundle\Entity\AdditionalContactDetail.
+ * SolidInvoice\ClientBundle\Entity\AdditionalContactDetail.
  *
  * @ORM\Entity()
  * @ORM\Table(name="contact_details")

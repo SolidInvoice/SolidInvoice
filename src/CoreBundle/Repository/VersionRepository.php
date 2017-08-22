@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Repository;
+namespace SolidInvoice\CoreBundle\Repository;
 
-use CSBill\CoreBundle\Entity\Version;
+use SolidInvoice\CoreBundle\Entity\Version;
 use Doctrine\ORM\EntityRepository;
 
 class VersionRepository extends EntityRepository
@@ -26,7 +26,7 @@ class VersionRepository extends EntityRepository
     public function updateVersion($version)
     {
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('DELETE FROM CSBillCoreBundle:Version');
+        $query = $entityManager->createQuery('DELETE FROM SolidInvoiceCoreBundle:Version');
 
         $query->execute();
 

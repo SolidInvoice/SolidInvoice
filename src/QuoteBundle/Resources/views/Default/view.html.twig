@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "SolidInvoiceCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block page_title %}
     {{ "quote.title"|trans({"%id%" : quote.id}) }}
@@ -74,7 +74,7 @@
     <br class="clear"/>
     <br class="clear"/>
 
-    {% include "CSBillQuoteBundle::quote_template.html.twig" %}
+    {% include "SolidInvoiceQuoteBundle::quote_template.html.twig" %}
 {% endblock content %}
 {% block footer %}
     {{ parent() }}

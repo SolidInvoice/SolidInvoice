@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Listener;
+namespace SolidInvoice\InvoiceBundle\Listener;
 
-use CSBill\ClientBundle\Repository\CreditRepository;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\ClientBundle\Repository\CreditRepository;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
@@ -65,7 +65,7 @@ class InvoicePaidListener implements EventSubscriberInterface
         $em = $this->registry->getManager();
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $em->getRepository('CSBillPaymentBundle:Payment');
+        $paymentRepository = $em->getRepository('SolidInvoicePaymentBundle:Payment');
 
         $currency = $invoice->getClient()->getCurrency() ?? $this->currency;
 
@@ -78,7 +78,7 @@ class InvoicePaidListener implements EventSubscriberInterface
             $client = $invoice->getClient();
 
             /** @var CreditRepository $creditRepository */
-            $creditRepository = $em->getRepository('CSBillClientBundle:Credit');
+            $creditRepository = $em->getRepository('SolidInvoiceClientBundle:Credit');
             $creditRepository->addCredit($client, $totalPaid->subtract($invoice->getTotal()));
         }
 

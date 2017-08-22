@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Action\Ajax\Address;
+namespace SolidInvoice\ClientBundle\Action\Ajax\Address;
 
-use CSBill\ClientBundle\Entity\Address;
-use CSBill\CoreBundle\Response\AjaxResponse;
-use CSBill\CoreBundle\Traits\DoctrineAwareTrait;
-use CSBill\CoreBundle\Traits\JsonTrait;
+use SolidInvoice\ClientBundle\Entity\Address;
+use SolidInvoice\CoreBundle\Response\AjaxResponse;
+use SolidInvoice\CoreBundle\Traits\DoctrineAwareTrait;
+use SolidInvoice\CoreBundle\Traits\JsonTrait;
 
 final class Delete implements AjaxResponse
 {

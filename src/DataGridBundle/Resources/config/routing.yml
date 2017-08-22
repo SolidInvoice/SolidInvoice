@@ -1,5 +1,5 @@
 _grid_data:
     path: '/data/{name}'
-    defaults: { _controller: 'CSBill\DataGridBundle\Action\Data' }
+    defaults: { _controller: 'SolidInvoice\DataGridBundle\Action\Data' }
     options:
         expose: true

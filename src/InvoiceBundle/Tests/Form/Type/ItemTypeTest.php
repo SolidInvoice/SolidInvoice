@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Tests\Form\Type;
+namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
-use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\InvoiceBundle\Form\Type\ItemType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use Money\Currency;
 use Money\Money;
 use Symfony\Component\Form\PreloadedExtension;
@@ -55,16 +55,16 @@ class ItemTypeTest extends FormTestCase
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillInvoiceBundle' => 'CSBill\InvoiceBundle\Entity',
-            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
+            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
+            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
         ];
     }
 
     protected function getEntities(): array
     {
         return [
-            'CSBillInvoiceBundle:Invoice',
-            'CSBillTaxBundle:Tax',
+            'SolidInvoiceInvoiceBundle:Invoice',
+            'SolidInvoiceTaxBundle:Tax',
         ];
     }
 }

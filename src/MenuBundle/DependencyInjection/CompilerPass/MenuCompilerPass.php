@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MenuBundle\DependencyInjection\CompilerPass;
+namespace SolidInvoice\MenuBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,11 +24,11 @@ class MenuCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('csbill_menu.provider')) {
+        if (!$container->hasDefinition('solidinvoice_menu.provider')) {
             return;
         }
 
-        $definition = $container->getDefinition('csbill_menu.provider');
+        $definition = $container->getDefinition('solidinvoice_menu.provider');
 
         $taggedServices = $container->findTaggedServiceIds('cs_core.menu');
 

@@ -4,8 +4,8 @@ services:
         tags:
             - { name: form.type }
 
-    CSBill\CoreBundle\Form\Type\ImageUploadType:
+    SolidInvoice\CoreBundle\Form\Type\ImageUploadType:
         arguments:
             $secret: '%secret%'
 
-    CSBill\CoreBundle\Form\Type\DiscountType: ~
+    SolidInvoice\CoreBundle\Form\Type\DiscountType: ~

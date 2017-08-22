@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MoneyBundle\Tests\Twig\Extension;
+namespace SolidInvoice\MoneyBundle\Tests\Twig\Extension;
 
-use CSBill\MoneyBundle\Formatter\MoneyFormatter;
-use CSBill\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
@@ -48,7 +48,7 @@ class MoneyFormatterExtensionTest extends TestCase
         $currency = new Currency('USD');
         $money = new Money(1200, $currency);
 
-        $moneyFormatter = M::mock('CSBill\MoneyBundle\Formatter\MoneyFormatter', ['en_USD', $currency]);
+        $moneyFormatter = M::mock('SolidInvoice\MoneyBundle\Formatter\MoneyFormatter', ['en_USD', $currency]);
         $moneyFormatter
             ->shouldReceive('format')
             ->once()

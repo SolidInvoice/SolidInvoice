@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Form\Handler;
+namespace SolidInvoice\ClientBundle\Form\Handler;
 
 class ContactEditFormHandler extends AbstractContactFormHandler
 {
     public function getTemplate(): string
     {
-        return '@CSBillClient/Ajax/contact_edit.html.twig';
+        return '@SolidInvoiceClient/Ajax/contact_edit.html.twig';
     }
 }

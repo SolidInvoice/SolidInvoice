@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Form\ViewTransformer;
+namespace SolidInvoice\ClientBundle\Form\ViewTransformer;
 
-use CSBill\ClientBundle\Entity\ContactType;
+use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class ContactTypeTransformer implements DataTransformerInterface
@@ -44,7 +44,7 @@ class ContactTypeTransformer implements DataTransformerInterface
     /**
      * @param string $value
      *
-     * @return \CSBill\ClientBundle\Entity\ContactType
+     * @return \SolidInvoice\ClientBundle\Entity\ContactType
      */
     public function reverseTransform($value): ContactType
     {

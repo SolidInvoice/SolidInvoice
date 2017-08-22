@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ApiBundle\Tests\Serializer\Normalizer;
+namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
-use CSBill\ApiBundle\Serializer\Normalizer\AdditionalContactDetailsNormalizer;
-use CSBill\ClientBundle\Entity\AdditionalContactDetail;
-use CSBill\ClientBundle\Entity\ContactType;
-use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\ApiBundle\Serializer\Normalizer\AdditionalContactDetailsNormalizer;
+use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
+use SolidInvoice\ClientBundle\Entity\ContactType;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -151,10 +151,10 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
             }
         };
 
-        $entityRepository = $this->em->getRepository('CSBillClientBundle:ContactType');
+        $entityRepository = $this->em->getRepository('SolidInvoiceClientBundle:ContactType');
         $this->registry->shouldReceive('getRepository')
             ->once()
-            ->with('CSBillClientBundle:ContactType')
+            ->with('SolidInvoiceClientBundle:ContactType')
             ->andReturn($entityRepository);
 
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
@@ -169,14 +169,14 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
     protected function getEntityNamespaces()
     {
         return [
-            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
+            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
         ];
     }
 
     protected function getEntities()
     {
         return [
-            'CSBill\ClientBundle\Entity\ContactType',
+            'SolidInvoice\ClientBundle\Entity\ContactType',
         ];
     }
 }

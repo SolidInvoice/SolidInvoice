@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MenuBundle\Twig\Extension;
+namespace SolidInvoice\MenuBundle\Twig\Extension;
 
-use CSBill\MenuBundle\RendererInterface;
+use SolidInvoice\MenuBundle\RendererInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Twig_Extension;
 
@@ -80,6 +80,6 @@ class MenuExtension extends Twig_Extension
      */
     public function getName()
     {
-        return 'csbill_menu.twig.extension';
+        return 'solidinvoice_menu.twig.extension';
     }
 }

@@ -1,5 +1,5 @@
 services:
-    CSBill\MoneyBundle\Formatter\MoneyFormatter:
+    SolidInvoice\MoneyBundle\Formatter\MoneyFormatter:
         arguments:
             $locale: '%locale%'
         autowire: true
@@ -13,7 +13,7 @@ services:
         alias: currency
 
     currency_factory:
-        class: CSBill\MoneyBundle\Factory\CurrencyFactory
+        class: SolidInvoice\MoneyBundle\Factory\CurrencyFactory
         arguments:
             $installed: '%installed%'
         autowire: true

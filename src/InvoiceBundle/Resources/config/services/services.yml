@@ -1,6 +1,6 @@
 services:
-    csbill_invoice.menu:
-        class: CSBill\InvoiceBundle\Menu\Builder
+    solidinvoice_invoice.menu:
+        class: SolidInvoice\InvoiceBundle\Menu\Builder
         tags:
             - { name: cs_core.menu, menu: top, method: topMenu }
             - { name: cs_core.menu, menu: invoices_index,  method: invoicesMenu }
@@ -8,27 +8,27 @@ services:
             - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
             - { name: cs_core.menu, menu: invoices_edit, method: invoicesEditMenu }
 
-    CSBill\InvoiceBundle\Repository\InvoiceRepository:
+    SolidInvoice\InvoiceBundle\Repository\InvoiceRepository:
         factory: ['@doctrine', getRepository]
-        arguments: ['CSBillInvoiceBundle:Invoice']
+        arguments: ['SolidInvoiceInvoiceBundle:Invoice']
 
-    CSBill\InvoiceBundle\Manager\InvoiceManager:
+    SolidInvoice\InvoiceBundle\Manager\InvoiceManager:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.invoice'
         calls:
             - [ setContainer, ['@service_container']]
 
-    CSBill\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener:
+    SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener:
         autowire: true
         tags: ['doctrine.event_subscriber']
 
-    CSBill\InvoiceBundle\Cron\RecurringInvoiceCreate:
+    SolidInvoice\InvoiceBundle\Cron\RecurringInvoiceCreate:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.invoice'
         tags:
             - { name: cron.command }
 
-    CSBill\InvoiceBundle\Cloner\InvoiceCloner:
+    SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner:
         autowire: true

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Listener;
+namespace SolidInvoice\ClientBundle\Listener;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Model\Status;
-use CSBill\ClientBundle\Notification\ClientCreateNotification;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Model\Status;
+use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -76,10 +76,10 @@ class ClientListener implements ContainerAwareInterface
         if (array_key_exists('currency', $entityChangeSet)) {
             $em = $event->getEntityManager();
 
-            $em->getRepository('CSBillInvoiceBundle:Invoice')->updateCurrency($entity);
-            $em->getRepository('CSBillQuoteBundle:Quote')->updateCurrency($entity);
-            $em->getRepository('CSBillPaymentBundle:Payment')->updateCurrency($entity);
-            $em->getRepository('CSBillClientBundle:Credit')->updateCurrency($entity);
+            $em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->updateCurrency($entity);
+            $em->getRepository('SolidInvoiceQuoteBundle:Quote')->updateCurrency($entity);
+            $em->getRepository('SolidInvoicePaymentBundle:Payment')->updateCurrency($entity);
+            $em->getRepository('SolidInvoiceClientBundle:Credit')->updateCurrency($entity);
         }
     }
 }

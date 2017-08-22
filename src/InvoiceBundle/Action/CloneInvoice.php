@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Action;
+namespace SolidInvoice\InvoiceBundle\Action;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\InvoiceBundle\Cloner\InvoiceCloner;
-use CSBill\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;

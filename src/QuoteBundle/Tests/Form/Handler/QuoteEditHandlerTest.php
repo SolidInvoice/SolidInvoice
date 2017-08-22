@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,20 +11,20 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Tests\Form\Handler;
+namespace SolidInvoice\QuoteBundle\Tests\Form\Handler;
 
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
-use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber as InvoiceWorkFlowSubscriber;
-use CSBill\InvoiceBundle\Manager\InvoiceManager;
-use CSBill\MoneyBundle\Entity\Money;
-use CSBill\NotificationBundle\Notification\NotificationManager;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Form\Handler\QuoteEditHandler;
-use CSBill\QuoteBundle\Listener\WorkFlowSubscriber;
-use CSBill\QuoteBundle\Model\Graph;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber as InvoiceWorkFlowSubscriber;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\MoneyBundle\Entity\Money;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler;
+use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
+use SolidInvoice\QuoteBundle\Model\Graph;
 use Mockery as M;
 use Money\Currency;
 use SolidWorx\FormHandler\FormRequest;
@@ -115,7 +115,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
-        $this->assertCount(1, $this->em->getRepository('CSBillQuoteBundle:Quote')->findAll());
+        $this->assertCount(1, $this->em->getRepository('SolidInvoiceQuoteBundle:Quote')->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -149,19 +149,19 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
-            'CSBillQuoteBundle' => 'CSBill\QuoteBundle\Entity',
-            'CSBillPaymentBundle' => 'CSBill\PaymentBundle\Entity',
-            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
+            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
+            'SolidInvoiceQuoteBundle' => 'SolidInvoice\QuoteBundle\Entity',
+            'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
+            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
         ];
     }
 
     protected function getEntities(): array
     {
         return [
-            'CSBillClientBundle:Client',
-            'CSBillQuoteBundle:Quote',
-            'CSBillTaxBundle:Tax',
+            'SolidInvoiceClientBundle:Client',
+            'SolidInvoiceQuoteBundle:Quote',
+            'SolidInvoiceTaxBundle:Tax',
         ];
     }
 }

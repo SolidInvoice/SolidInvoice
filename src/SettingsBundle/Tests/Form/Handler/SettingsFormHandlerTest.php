@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\SettingsBundle\Tests\Form\Handler;
+namespace SolidInvoice\SettingsBundle\Tests\Form\Handler;
 
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
-use CSBill\SettingsBundle\Entity\Setting;
-use CSBill\SettingsBundle\Form\Handler\SettingsFormHandler;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\SettingsBundle\Form\Handler\SettingsFormHandler;
 use Mockery as M;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
@@ -50,7 +50,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
-        $repository = $this->em->getRepository('CSBillSettingsBundle:Setting');
+        $repository = $this->em->getRepository('SolidInvoiceSettingsBundle:Setting');
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
             ->andReturn('/settings');
@@ -73,7 +73,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
             [
                 $setting
             ],
-            $this->em->getRepository('CSBillSettingsBundle:Setting')->findAll()
+            $this->em->getRepository('SolidInvoiceSettingsBundle:Setting')->findAll()
         );
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -102,14 +102,14 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'CSBillSettingsBundle:Setting'
+            'SolidInvoiceSettingsBundle:Setting'
         ];
     }
 
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillSettingsBundle' => 'CSBill\\SettingsBundle\\Entity'
+            'SolidInvoiceSettingsBundle' => 'SolidInvoice\\SettingsBundle\\Entity'
         ];
     }
 }

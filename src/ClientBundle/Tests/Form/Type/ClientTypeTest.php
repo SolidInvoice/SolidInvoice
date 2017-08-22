@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Tests\Form\Type;
+namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Form\Type\ClientType;
-use CSBill\ClientBundle\Form\Type\ContactDetailType;
-use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Form\Type\ClientType;
+use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ClientTypeTest extends FormTestCase

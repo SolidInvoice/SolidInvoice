@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Entity;
+namespace SolidInvoice\ClientBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use CSBill\CoreBundle\Traits\Entity;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\QuoteBundle\Entity\Quote;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"contact_api"}}, "denormalization_context"={"groups"={"contact_api"}}}, collectionOperations={"post"={"method"="POST"}}, iri="https://schema.org/Person")
  * @ORM\Table(name="contacts", indexes={@ORM\Index(name="email", columns={"email"})})
- * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\ContactRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  */
@@ -103,14 +103,14 @@ class Contact implements \Serializable
     /**
      * @var Collection|Invoice[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
 
     /**
      * @var Collection|Quote[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $quotes;
 

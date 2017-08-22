@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Command;
+namespace SolidInvoice\InstallBundle\Command;
 
-use CSBill\CoreBundle\CSBillCoreBundle;
-use CSBill\CoreBundle\Repository\VersionRepository;
-use CSBill\InstallBundle\Exception\ApplicationInstalledException;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use Defuse\Crypto\Key;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -48,7 +48,7 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use (Only pdo_mysql supported)', 'pdo_mysql')
             ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
             ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)
-            ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'csbill')
+            ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
             ->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'mail')
@@ -182,12 +182,12 @@ class InstallCommand extends ContainerAwareCommand
         if ($this->initDb($input, $output)) {
             $this->createAdminUser($input, $output);
 
-            $version = CSBillCoreBundle::VERSION;
+            $version = SolidInvoiceCoreBundle::VERSION;
 
             $entityManager = $this->getContainer()->get('doctrine')->getManager();
 
             /** @var VersionRepository $repository */
-            $repository = $entityManager->getRepository('CSBillCoreBundle:Version');
+            $repository = $entityManager->getRepository('SolidInvoiceCoreBundle:Version');
 
             $repository->updateVersion($version);
 
@@ -197,7 +197,7 @@ class InstallCommand extends ContainerAwareCommand
                 'installed' => $time->format(\DateTime::ISO8601),
             ];
 
-            $this->getContainer()->get('csbill.core.config_writer')->dump($config);
+            $this->getContainer()->get('solidinvoice.core.config_writer')->dump($config);
         }
     }
 
@@ -213,7 +213,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $this->createDb($input, $output);
 
-        $migration = $this->getContainer()->get('csbill.installer.database.migration');
+        $migration = $this->getContainer()->get('solidinvoice.installer.database.migration');
 
         $callback = function ($message) use ($output): void {
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
@@ -341,7 +341,7 @@ class InstallCommand extends ContainerAwareCommand
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
-        $this->getContainer()->get('csbill.core.config_writer')->dump($config);
+        $this->getContainer()->get('solidinvoice.core.config_writer')->dump($config);
 
         return $this;
     }

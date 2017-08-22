@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Entity;
+namespace SolidInvoice\InvoiceBundle\Entity;
 
-use CSBill\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -65,7 +65,7 @@ class RecurringInvoice
     /**
      * @var Invoice
      *
-     * @ORM\OneToOne(targetEntity="CSBill\InvoiceBundle\Entity\Invoice", inversedBy="recurringInfo")
+     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", inversedBy="recurringInfo")
      */
     private $invoice;
 

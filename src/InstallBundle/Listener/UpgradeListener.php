@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Listener;
+namespace SolidInvoice\InstallBundle\Listener;
 
-use CSBill\CoreBundle\CSBillCoreBundle;
-use CSBill\CoreBundle\Repository\VersionRepository;
-use CSBill\InstallBundle\Installer\Database\Migration;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -78,9 +78,9 @@ class UpgradeListener implements EventSubscriberInterface
         }
 
         /** @var VersionRepository $versionRepository */
-        $versionRepository = $this->registry->getRepository('CSBillCoreBundle:Version');
+        $versionRepository = $this->registry->getRepository('SolidInvoiceCoreBundle:Version');
 
-        if (version_compare($versionRepository->getCurrentVersion(), CSBillCoreBundle::VERSION, '<')) {
+        if (version_compare($versionRepository->getCurrentVersion(), SolidInvoiceCoreBundle::VERSION, '<')) {
             $this->migration->migrate();
         }
     }

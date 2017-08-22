@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Entity;
+namespace SolidInvoice\InvoiceBundle\Entity;
 
-use CSBill\CoreBundle\Entity\ItemInterface;
-use CSBill\CoreBundle\Traits\Entity;
-use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
-use CSBill\TaxBundle\Entity\Tax;
+use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="invoice_lines")
- * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\ItemRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
@@ -57,7 +57,7 @@ class Item implements ItemInterface
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
@@ -80,7 +80,7 @@ class Item implements ItemInterface
     private $invoice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CSBill\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
     private $tax;
@@ -88,7 +88,7 @@ class Item implements ItemInterface
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $total;

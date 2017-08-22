@@ -5,4 +5,4 @@ services:
         tags:
             - { name: twig.extension }
 
-    CSBill\PaymentBundle\Twig\PaymentExtension: ~
+    SolidInvoice\PaymentBundle\Twig\PaymentExtension: ~

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InstallBundle\Process\Step;
+namespace SolidInvoice\InstallBundle\Process\Step;
 
 use Doctrine\DBAL\DriverManager;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
@@ -54,7 +54,7 @@ class InstallStep extends AbstractControllerStep
 
                     break;
                 case 'migrations':
-                    $migration = $this->get('csbill.installer.database.migration');
+                    $migration = $this->get('solidinvoice.installer.database.migration');
 
                     try {
                         $migration->migrate();
@@ -71,6 +71,6 @@ class InstallStep extends AbstractControllerStep
             return new JsonResponse($result);
         }
 
-        return $this->render('CSBillInstallBundle:Flow:install.html.twig');
+        return $this->render('SolidInvoiceInstallBundle:Flow:install.html.twig');
     }
 }

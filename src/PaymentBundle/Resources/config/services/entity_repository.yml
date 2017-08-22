@@ -5,10 +5,10 @@ services:
             lazy: true
             public: false
 
-    CSBill\PaymentBundle\Repository\PaymentRepository:
-        arguments: ['CSBill\PaymentBundle\Entity\Payment']
+    SolidInvoice\PaymentBundle\Repository\PaymentRepository:
+        arguments: ['SolidInvoice\PaymentBundle\Entity\Payment']
         factory: ['@doctrine', 'getRepository']
 
-    CSBill\PaymentBundle\Repository\PaymentMethodRepository:
-        arguments: ['CSBill\PaymentBundle\Entity\PaymentMethod']
+    SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository:
+        arguments: ['SolidInvoice\PaymentBundle\Entity\PaymentMethod']
         factory: ['@doctrine', 'getRepository']

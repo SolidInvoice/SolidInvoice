@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Action;
+namespace SolidInvoice\InvoiceBundle\Action;
 
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 final class View
@@ -33,7 +33,7 @@ final class View
     public function __invoke(Request $request, Invoice $invoice)
     {
         return new Template(
-            '@CSBillInvoice/Default/view.html.twig',
+            '@SolidInvoiceInvoice/Default/view.html.twig',
             [
                 'invoice' => $invoice,
                 'payments' => $this->paymentRepository->getPaymentsForInvoice($invoice),

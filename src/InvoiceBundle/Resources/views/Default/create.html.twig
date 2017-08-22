@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -48,9 +48,9 @@
 
 {% set serializationGroups = ['client_api'] %}
 
-{% form_theme form with ['CSBillCoreBundle:Form:fields.html.twig', _self] %}
+{% form_theme form with ['SolidInvoiceCoreBundle:Form:fields.html.twig', _self] %}
 
-{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "SolidInvoiceCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% block page_title %}{{ "invoice.action.create"|trans }}{% endblock %}
 
@@ -170,7 +170,7 @@
 
     <div id="client-select-container">
         {% if form.client.vars.data %}
-            {% include "CSBillClientBundle:Ajax:info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
+            {% include "SolidInvoiceClientBundle:Ajax:info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
         {% endif %}
     </div>
 {% endblock form_client %}

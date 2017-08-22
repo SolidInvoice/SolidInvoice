@@ -4,18 +4,18 @@ _home:
 
 _image_upload:
     path: /upload
-    defaults: { _controller: 'CSBill\CoreBundle\Action\Upload' }
+    defaults: { _controller: 'SolidInvoice\CoreBundle\Action\Upload' }
     options:
         expose: true
 
 _view_quote_external:
     path: '/view/quote/{uuid}'
-    defaults: { _controller: 'CSBill\CoreBundle\Action\ViewBilling::quoteAction' }
+    defaults: { _controller: 'SolidInvoice\CoreBundle\Action\ViewBilling::quoteAction' }
     requirements:
         uuid: '[a-zA-Z0-9-]{36}'
 
 _view_invoice_external:
     path: '/view/invoice/{uuid}'
-    defaults: { _controller: 'CSBill\CoreBundle\Action\ViewBilling::invoiceAction' }
+    defaults: { _controller: 'SolidInvoice\CoreBundle\Action\ViewBilling::invoiceAction' }
     requirements:
         uuid: '[a-zA-Z0-9-]{36}'

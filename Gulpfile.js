@@ -25,9 +25,9 @@ const gulp = require('gulp'),
     lessNpmImportPlugin = require("less-plugin-npm-import"),
 
     options = {
-        less: 'web/bundles/csbill*/less',
-        css: 'web/bundles/csbill*/css',
-        images: 'web/bundles/csbill*/img/*',
+        less: 'web/bundles/solidinvoice*/less',
+        css: 'web/bundles/solidinvoice*/css',
+        images: 'web/bundles/solidinvoice*/img/*',
         js: 'web/bundles/**/{lib,js}/**/*.js',
         templates: 'web/bundles/**/templates/**/*.hbs',
         prod: !!util.env.prod
@@ -139,7 +139,7 @@ gulp.task('templates', ['clean:js'], () => {
             noRedeclare: true,
             processName: (filePath) => {
                 // Allow nesting based on path using gulp-declare's processNameByPath()
-                return declare.processNameByPath(filePath.replace('web/bundles/csbill', '').replace('templates/', ''));
+                return declare.processNameByPath(filePath.replace('web/bundles/solidinvoice', '').replace('templates/', ''));
             }
         }))
         .pipe(concat('hbs-templates.js'))

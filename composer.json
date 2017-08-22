@@ -1,5 +1,5 @@
 {
-    "name": "csbill/csbill",
+    "name": "solidinvoice/solidinvoice",
     "description": "General Billing Application",
     "type": "application",
     "keywords": [
@@ -7,18 +7,18 @@
         "general billing",
         "open-source billing"
     ],
-    "homepage": "http://csbill.org",
+    "homepage": "http://solidinvoice.org",
     "license": "MIT",
     "authors": [
         {
             "name": "Pierre du Plessis",
-            "email": "info@csbill.org"
+            "email": "info@solidinvoice.org"
         }
     ],
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/CSBill/RequireJSBundle"
+            "url": "https://github.com/SolidInvoice/RequireJSBundle"
         },
         {
             "type": "vcs",
@@ -27,7 +27,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "CSBill\\": "src/"
+            "SolidInvoice\\": "src/"
         },
         "classmap": [
             "app/AppKernel.php",

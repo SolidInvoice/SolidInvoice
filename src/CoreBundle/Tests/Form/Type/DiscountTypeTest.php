@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Tests\Form\Type;
+namespace SolidInvoice\CoreBundle\Tests\Form\Type;
 
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Form\Type\DiscountType;
-use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\MoneyBundle\Entity\Money;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\MoneyBundle\Entity\Money;
 use Money\Currency;
 use Symfony\Component\Form\PreloadedExtension;
 

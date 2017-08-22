@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'CSBillCoreBundle:Layout:base.html.twig' %}
+{% extends 'SolidInvoiceCoreBundle:Layout:base.html.twig' %}
 
 {% block heading %}
     {% set title = block('title') is defined ? block('title') %}
@@ -53,11 +53,11 @@
 {% endblock %}
 
 {% block header %}
-    {% include "CSBillCoreBundle:Menu:top.html.twig" with {"title" : app_name, "header_content" : header_content|default('')} %}
+    {% include "SolidInvoiceCoreBundle:Menu:top.html.twig" with {"title" : app_name, "header_content" : header_content|default('')} %}
 {% endblock header %}
 
 {% block footer %}
-    <small>{{ "powered_by"|trans }} <a href="http://csbill.org">{{ constant('CSBill\\CoreBundle\\CSBillCoreBundle::APP_NAME') }}</a> - {{ app_version }}</small>
+    <small>{{ "powered_by"|trans }} <a href="http://solidinvoice.org">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a> - {{ app_version }}</small>
 {% endblock footer %}
 
 {% block body_bottom %}

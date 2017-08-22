@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CronBundle\Tests;
+namespace SolidInvoice\CronBundle\Tests;
 
-use CSBill\CronBundle\Runner;
+use SolidInvoice\CronBundle\Runner;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +26,7 @@ class RunnerTest extends TestCase
     {
         $cron = new Runner();
 
-        $command = M::mock('CSBill\CronBundle\CommandInterface');
+        $command = M::mock('SolidInvoice\CronBundle\CommandInterface');
 
         $command->shouldReceive('isDue')
             ->once()
@@ -44,7 +44,7 @@ class RunnerTest extends TestCase
     {
         $cron = new Runner();
 
-        $command = M::mock('CSBill\CronBundle\CommandInterface');
+        $command = M::mock('SolidInvoice\CronBundle\CommandInterface');
 
         $command->shouldReceive('isDue')
             ->once()

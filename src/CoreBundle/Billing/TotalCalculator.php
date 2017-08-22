@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Billing;
+namespace SolidInvoice\CoreBundle\Billing;
 
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Exception\UnexpectedTypeException;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\TaxBundle\Entity\Tax;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Money\Money;
 
 class TotalCalculator

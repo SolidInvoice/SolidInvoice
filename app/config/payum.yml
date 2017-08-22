@@ -1,18 +1,18 @@
 parameters:
-    payum.template.layout: 'CSBillPaymentBundle::layout.html.twig'
+    payum.template.layout: 'SolidInvoicePaymentBundle::layout.html.twig'
 
 payum:
     security:
         token_storage:
-            CSBill\PaymentBundle\Entity\SecurityToken:
+            SolidInvoice\PaymentBundle\Entity\SecurityToken:
                 doctrine: orm
     storages:
-        CSBill\PaymentBundle\Entity\Payment:
+        SolidInvoice\PaymentBundle\Entity\Payment:
             doctrine: orm
     dynamic_gateways:
         sonata_admin: false
         config_storage:
-            CSBill\PaymentBundle\Entity\PaymentMethod:
+            SolidInvoice\PaymentBundle\Entity\PaymentMethod:
                 doctrine: orm
 
 payment:
@@ -25,40 +25,40 @@ payment:
             factory: offline
         paypal_express_checkout:
             factory: paypal_express_checkout
-            form: CSBill\PaymentBundle\Form\Methods\PaypalExpressCheckout
+            form: SolidInvoice\PaymentBundle\Form\Methods\PaypalExpressCheckout
         paypal_pro_checkout:
             factory: paypal_pro_checkout
-            form: CSBill\PaymentBundle\Form\Methods\PaypalProCheckout
+            form: SolidInvoice\PaymentBundle\Form\Methods\PaypalProCheckout
         stripe_checkout:
             factory: stripe_checkout
-            form: CSBill\PaymentBundle\Form\Methods\StripeCheckout
+            form: SolidInvoice\PaymentBundle\Form\Methods\StripeCheckout
         stripe_js:
             factory: stripe_js
-            form: CSBill\PaymentBundle\Form\Methods\StripeJs
+            form: SolidInvoice\PaymentBundle\Form\Methods\StripeJs
         klarna_invoice:
             factory: klarna_invoice
-            form: CSBill\PaymentBundle\Form\Methods\KlarnaInvoice
+            form: SolidInvoice\PaymentBundle\Form\Methods\KlarnaInvoice
         klarna_checkout:
             factory: klarna_checkout
-            form: CSBill\PaymentBundle\Form\Methods\KlarnaCheckout
+            form: SolidInvoice\PaymentBundle\Form\Methods\KlarnaCheckout
         be2bill_offsite:
             factory: be2bill_offsite
-            form: CSBill\PaymentBundle\Form\Methods\Be2billOffsite
+            form: SolidInvoice\PaymentBundle\Form\Methods\Be2billOffsite
         be2bill_direct:
             factory: be2bill_direct
-            form: CSBill\PaymentBundle\Form\Methods\Be2billDirect
+            form: SolidInvoice\PaymentBundle\Form\Methods\Be2billDirect
         authorize_net_aim:
             factory: authorize_net_aim
-            form: CSBill\PaymentBundle\Form\Methods\AuthorizeNetAim
+            form: SolidInvoice\PaymentBundle\Form\Methods\AuthorizeNetAim
         payex:
             factory: payex
-            form: CSBill\PaymentBundle\Form\Methods\Payex
+            form: SolidInvoice\PaymentBundle\Form\Methods\Payex
 
         #authorizenet_sim:
         #    factory: omnipay_direct
         #    type: AuthorizeNet_SIM
         #    options: null
-        #    payum.api: '@csbill.payment.payum.authorize_net_sim_api'
+        #    payum.api: '@solidinvoice.payment.payum.authorize_net_sim_api'
 
 
         #buckaroo_ideal:

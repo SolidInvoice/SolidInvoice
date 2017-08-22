@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,19 +11,19 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Entity;
+namespace SolidInvoice\ClientBundle\Entity;
 
-use CSBill\CoreBundle\Traits\Entity;
-use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 
 /**
- * CSBill\ClientBundle\Entity\Credit.
+ * SolidInvoice\ClientBundle\Entity\Credit.
  *
  * @ORM\Table(name="client_credit")
- * @ORM\Entity(repositoryClass="CSBill\ClientBundle\Repository\CreditRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\CreditRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  */
@@ -40,7 +40,7 @@ class Credit
     private $id;
 
     /**
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      *
      * @var MoneyEntity
      */
@@ -48,7 +48,7 @@ class Credit
 
     /**
      * @var Client
-     * @ORM\OneToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="credit")
+     * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="credit")
      */
     private $client;
 

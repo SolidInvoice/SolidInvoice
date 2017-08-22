@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Repository;
+namespace SolidInvoice\PaymentBundle\Repository;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\PaymentBundle\Entity\Payment;
-use CSBill\PaymentBundle\Model\Status;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Model\Status;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -27,7 +27,7 @@ class PaymentRepository extends EntityRepository
     /**
      * Gets the total income that was received.
      *
-     * @param \CSBill\ClientBundle\Entity\Client $client
+     * @param \SolidInvoice\ClientBundle\Entity\Client $client
      * @param bool                               $groupByCurrency
      *
      * @return array|int

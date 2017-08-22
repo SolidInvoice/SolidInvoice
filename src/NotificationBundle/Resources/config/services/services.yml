@@ -4,11 +4,11 @@ services:
         arguments: [{}, '@logger']
 
     notification.manager:
-        class: CSBill\NotificationBundle\Notification\NotificationManager
+        class: SolidInvoice\NotificationBundle\Notification\NotificationManager
         arguments: ['@notification.factory', '@settings', '@notification.sender', '@doctrine']
 
     notification.factory:
-        class: CSBill\NotificationBundle\Notification\Factory
+        class: SolidInvoice\NotificationBundle\Notification\Factory
         arguments: ['@templating', '@translator', '@settings']
 
     hipchat.client:

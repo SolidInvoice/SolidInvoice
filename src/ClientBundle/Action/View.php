@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Action;
+namespace SolidInvoice\ClientBundle\Action;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\InvoiceBundle\Repository\InvoiceRepository;
-use CSBill\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
 final class View
 {
@@ -49,7 +49,7 @@ final class View
     public function __invoke(Client $client): Template
     {
         return new Template(
-            '@CSBillClient/Default/view.html.twig',
+            '@SolidInvoiceClient/Default/view.html.twig',
             [
                 'client' => $client,
                 'payments' => $this->paymentRepository->getPaymentsForClient($client),

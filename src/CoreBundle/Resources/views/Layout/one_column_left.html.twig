@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "CSBillCoreBundle:Layout:default.html.twig" %}
+{% extends "SolidInvoiceCoreBundle:Layout:default.html.twig" %}
 
 {% block header %}
     <a class="logo" href="{{ url('_dashboard') }}">
@@ -53,7 +53,7 @@
 
     <section class="content">
 
-        {% include "CSBillCoreBundle::flash.html.twig" %}
+        {% include "SolidInvoiceCoreBundle::flash.html.twig" %}
 
         {{ block('content') is defined ? block('content') }}
     </section>

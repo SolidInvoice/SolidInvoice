@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Test\Traits;
+namespace SolidInvoice\CoreBundle\Test\Traits;
 
-use CSBill\ClientBundle\Listener\ClientListener;
-use CSBill\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\ClientBundle\Listener\ClientListener;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Types\Type as DoctrineType;
@@ -81,16 +81,16 @@ trait DoctrineTestTrait
         $driver->addDriver($c, 'Gedmo\\Translator\\Entity');
         $driver->addDriver($c, 'Gedmo\\Loggable\\Entity');
         $driver->addDriver($c, 'Gedmo\\Tree\\Entity');
-        $driver->addDriver($c, 'CSBill\\ClientBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\CoreBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\InvoiceBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\MoneyBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\NotificationBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\PaymentBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\QuoteBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\SettingsBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\TaxBundle\\Entity');
-        $driver->addDriver($c, 'CSBill\\UserBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\ClientBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\CoreBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\InvoiceBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\MoneyBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\NotificationBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\PaymentBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\QuoteBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\SettingsBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\TaxBundle\\Entity');
+        $driver->addDriver($c, 'SolidInvoice\\UserBundle\\Entity');
         $config->setMetadataDriverImpl($driver);
 
         if (method_exists($this, 'getEntityNamespaces')) {

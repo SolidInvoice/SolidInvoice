@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\CoreBundle\Twig\Extension;
+namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
-use CSBill\CoreBundle\CSBillCoreBundle;
-use CSBill\SettingsBundle\Exception\InvalidSettingException;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -36,8 +36,8 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
     {
         $globals = [
             'query' => $this->getQuery(),
-            'app_version' => CSBillCoreBundle::VERSION,
-            'app_name' => CSBillCoreBundle::APP_NAME,
+            'app_version' => SolidInvoiceCoreBundle::VERSION,
+            'app_name' => SolidInvoiceCoreBundle::APP_NAME,
         ];
 
         if ($this->container->getParameter('installed')) {

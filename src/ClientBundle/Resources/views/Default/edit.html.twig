@@ -1,5 +1,5 @@
 {#
- # This file is part of CSBill package.
+ # This file is part of SolidInvoice package.
  #
  # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
  #
@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "CSBillCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "SolidInvoiceCoreBundle:Layout:one_column_left.html.twig" %}
 
 {% set module = 'client/create' %}
 
@@ -18,5 +18,5 @@
 {% endblock sidebar %}
 
 {% block content %}
-    {% include "CSBillClientBundle:Default:contact_form.html.twig" %}
+    {% include "SolidInvoiceClientBundle:Default:contact_form.html.twig" %}
 {% endblock %}

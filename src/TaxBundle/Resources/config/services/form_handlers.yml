@@ -7,6 +7,6 @@ services:
             autowire: true
             public: false
 
-    CSBill\TaxBundle\Form\Handler\:
+    SolidInvoice\TaxBundle\Form\Handler\:
         resource: '../../../Form/Handler'
         lazy: true

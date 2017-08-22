@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ApiBundle\Tests\Serializer\Normalizer;
+namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
-use CSBill\ApiBundle\Serializer\Normalizer\CreditNormalizer;
-use CSBill\ClientBundle\Entity\Credit;
+use SolidInvoice\ApiBundle\Serializer\Normalizer\CreditNormalizer;
+use SolidInvoice\ClientBundle\Entity\Credit;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;

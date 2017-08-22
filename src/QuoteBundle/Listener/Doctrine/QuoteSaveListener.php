@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Listener\Doctrine;
+namespace SolidInvoice\QuoteBundle\Listener\Doctrine;
 
-use CSBill\CoreBundle\Billing\TotalCalculator;
-use CSBill\QuoteBundle\Entity\Quote;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;

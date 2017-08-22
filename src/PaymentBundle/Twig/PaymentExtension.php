@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Twig;
+namespace SolidInvoice\PaymentBundle\Twig;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
@@ -69,7 +69,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function getTotalIncome(Client $client = null): Money
     {
-        $income = $this->registry->getRepository('CSBillPaymentBundle:Payment')->getTotalIncome($client);
+        $income = $this->registry->getRepository('SolidInvoicePaymentBundle:Payment')->getTotalIncome($client);
 
         return new Money($income, $client->getCurrency() ?: $this->currency);
     }
@@ -81,7 +81,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function getTotalOutstanding(Client $client = null): Money
     {
-        $outstanding = $this->registry->getRepository('CSBillInvoiceBundle:Invoice')->getTotalOutstanding($client);
+        $outstanding = $this->registry->getRepository('SolidInvoiceInvoiceBundle:Invoice')->getTotalOutstanding($client);
 
         return new Money($outstanding, $client->getCurrency() ?: $this->currency);
     }
@@ -108,7 +108,7 @@ class PaymentExtension extends Twig_Extension
     public function getRepository(): PaymentMethodRepository
     {
         if (null === $this->repository) {
-            $this->repository = $this->registry->getRepository('CSBillPaymentBundle:PaymentMethod');
+            $this->repository = $this->registry->getRepository('SolidInvoicePaymentBundle:PaymentMethod');
         }
 
         return $this->repository;

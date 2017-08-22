@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Action\Ajax\Address;
+namespace SolidInvoice\ClientBundle\Action\Ajax\Address;
 
-use CSBill\ClientBundle\Entity\Address;
-use CSBill\ClientBundle\Form\Type\AddressType;
-use CSBill\CoreBundle\Response\AjaxResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Traits\JsonTrait;
-use CSBill\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\ClientBundle\Entity\Address;
+use SolidInvoice\ClientBundle\Form\Type\AddressType;
+use SolidInvoice\CoreBundle\Response\AjaxResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Traits\JsonTrait;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -48,7 +48,7 @@ final class Edit implements AjaxResponse
         }
 
         return new Template(
-            'CSBillClientBundle:Ajax:address_edit.html.twig',
+            'SolidInvoiceClientBundle:Ajax:address_edit.html.twig',
             [
                 'form' => $form->createView(),
                 'address' => $address,

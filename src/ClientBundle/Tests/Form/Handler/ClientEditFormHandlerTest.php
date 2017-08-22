@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Tests\Form\Handler;
+namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Form\Handler\ClientEditFormHandler;
-use CSBill\ClientBundle\Model\Status;
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Form\Handler\ClientEditFormHandler;
+use SolidInvoice\ClientBundle\Model\Status;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use Mockery as M;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -92,15 +92,15 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
+            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
         ];
     }
 
     protected function getEntities(): array
     {
         return [
-            'CSBillClientBundle:Client',
-            'CSBillClientBundle:Credit',
+            'SolidInvoiceClientBundle:Client',
+            'SolidInvoiceClientBundle:Credit',
         ];
     }
 }

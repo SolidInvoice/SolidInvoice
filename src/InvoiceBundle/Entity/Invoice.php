@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,18 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Entity;
+namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Entity\Contact;
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Entity\ItemInterface;
-use CSBill\CoreBundle\Traits\Entity;
-use CSBill\InvoiceBundle\Traits\InvoiceStatusTrait;
-use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
-use CSBill\PaymentBundle\Entity\Payment;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
  * @ORM\Table(name="invoices")
- * @ORM\Entity(repositoryClass="CSBill\InvoiceBundle\Repository\InvoiceRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
@@ -79,7 +79,7 @@ class Invoice
     /**
      * @var Client
      *
-     * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="invoices")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "create_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
@@ -89,7 +89,7 @@ class Invoice
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $total;
@@ -97,7 +97,7 @@ class Invoice
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $baseTotal;
@@ -105,7 +105,7 @@ class Invoice
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $balance;
@@ -113,7 +113,7 @@ class Invoice
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $tax;
@@ -121,7 +121,7 @@ class Invoice
     /**
      * @var Discount
      *
-     * @ORM\Embedded(class="CSBill\CoreBundle\Entity\Discount")
+     * @ORM\Embedded(class="SolidInvoice\CoreBundle\Entity\Discount")
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
     private $discount;
@@ -174,7 +174,7 @@ class Invoice
      * @var Collection|Payment[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="CSBill\PaymentBundle\Entity\Payment",
+     *     targetEntity="SolidInvoice\PaymentBundle\Entity\Payment",
      *     mappedBy="invoice",
      *     cascade={"persist"}
      * )
@@ -185,7 +185,7 @@ class Invoice
     /**
      * @var Collection|Contact[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
@@ -194,7 +194,7 @@ class Invoice
     /**
      * @var RecurringInvoice
      *
-     * @ORM\OneToOne(targetEntity="CSBill\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"})
+     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"})
      * @Assert\Valid()
      */
     private $recurringInfo;

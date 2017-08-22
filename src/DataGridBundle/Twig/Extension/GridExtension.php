@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DataGridBundle\Twig\Extension;
+namespace SolidInvoice\DataGridBundle\Twig\Extension;
 
-use CSBill\DataGridBundle\Repository\GridRepository;
+use SolidInvoice\DataGridBundle\Repository\GridRepository;
 
 class GridExtension extends \Twig_Extension
 {
@@ -64,7 +64,7 @@ class GridExtension extends \Twig_Extension
      *
      * @return string
      *
-     * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
+     * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
     public function renderGrid(\Twig_Environment $env, string $gridName, array $parameters = []): string
     {
@@ -79,12 +79,12 @@ class GridExtension extends \Twig_Extension
         $html = '';
 
         if ($grid->requiresStatus() && false === self::$statusRendered) {
-            $html .= $env->render('CSBillCoreBundle:_partials:status_labels.html.twig');
+            $html .= $env->render('SolidInvoiceCoreBundle:_partials:status_labels.html.twig');
             self::$statusRendered = true;
         }
 
         $html .= $env->render(
-            'CSBillDataGridBundle::grid.html.twig',
+            'SolidInvoiceDataGridBundle::grid.html.twig',
             [
                 'gridName' => $gridName,
                 'gridOptions' => $gridOptions,
@@ -100,7 +100,7 @@ class GridExtension extends \Twig_Extension
      *
      * @return string
      *
-     * @throws \CSBill\DataGridBundle\Exception\InvalidGridException
+     * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
     public function renderMultipleGrid(\Twig_Environment $env): string
     {
@@ -133,7 +133,7 @@ class GridExtension extends \Twig_Extension
         }
 
         return $env->render(
-            'CSBillDataGridBundle::multiple_grid.html.twig',
+            'SolidInvoiceDataGridBundle::multiple_grid.html.twig',
             [
                 'grids' => $renderGrids,
                 'requiresStatus' => $requiresStatus,

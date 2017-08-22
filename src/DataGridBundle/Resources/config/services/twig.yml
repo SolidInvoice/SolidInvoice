@@ -4,5 +4,5 @@ services:
         tags:
             - { name: twig.extension }
 
-    CSBill\DataGridBundle\Twig\Extension\GridExtension:
+    SolidInvoice\DataGridBundle\Twig\Extension\GridExtension:
         arguments: ['@grid.repository', '@serializer']

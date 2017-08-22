@@ -9,7 +9,7 @@ framework:
                 arguments:
                     - status
             supports:
-                - 'CSBill\InvoiceBundle\Entity\Invoice'
+                - 'SolidInvoice\InvoiceBundle\Entity\Invoice'
             places:
                 - new
                 - draft
@@ -57,7 +57,7 @@ framework:
                 arguments:
                     - status
             supports:
-                - 'CSBill\QuoteBundle\Entity\Quote'
+                - 'SolidInvoice\QuoteBundle\Entity\Quote'
             places:
                 - new
                 - draft

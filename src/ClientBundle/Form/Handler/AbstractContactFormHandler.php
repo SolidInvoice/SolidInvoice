@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Form\Handler;
+namespace SolidInvoice\ClientBundle\Form\Handler;
 
-use CSBill\ClientBundle\Entity\Contact;
-use CSBill\ClientBundle\Form\Type\ContactType;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Traits\SaveableTrait;
-use CSBill\CoreBundle\Traits\SerializeTrait;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\ClientBundle\Form\Type\ContactType;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\CoreBundle\Traits\SerializeTrait;
 use SolidWorx\FormHandler\FormCollectionHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;

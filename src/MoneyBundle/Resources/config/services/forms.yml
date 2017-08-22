@@ -5,8 +5,8 @@ services:
         tags:
             - { name: form.type }
 
-    CSBill\MoneyBundle\Form\Type\HiddenMoneyType: ~
+    SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType: ~
 
-    CSBill\MoneyBundle\Form\Type\CurrencyType:
+    SolidInvoice\MoneyBundle\Form\Type\CurrencyType:
         arguments:
             $locale: '%locale%'

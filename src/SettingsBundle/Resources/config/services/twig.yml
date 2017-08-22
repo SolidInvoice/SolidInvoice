@@ -5,5 +5,5 @@ services:
         tags:
             - { name: twig.extension }
 
-    CSBill\SettingsBundle\Twig\Extension\:
+    SolidInvoice\SettingsBundle\Twig\Extension\:
         resource: '../../../Twig/Extension/'

@@ -5,6 +5,6 @@ services:
             lazy: true
             public: false
 
-    CSBill\QuoteBundle\Repository\QuoteRepository:
-        arguments: ['CSBill\QuoteBundle\Entity\Quote']
+    SolidInvoice\QuoteBundle\Repository\QuoteRepository:
+        arguments: ['SolidInvoice\QuoteBundle\Entity\Quote']
         factory: ['@doctrine.orm.entity_manager', 'getRepository']

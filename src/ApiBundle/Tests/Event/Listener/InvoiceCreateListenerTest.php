@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ApiBundle\Tests\Event\Listener;
+namespace SolidInvoice\ApiBundle\Tests\Event\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use CSBill\ApiBundle\Event\Listener\InvoiceCreateListener;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\QuoteBundle\Entity\Quote;
+use SolidInvoice\ApiBundle\Event\Listener\InvoiceCreateListener;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;

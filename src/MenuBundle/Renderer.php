@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\MenuBundle;
+namespace SolidInvoice\MenuBundle;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface as Item;
@@ -72,7 +72,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         }
 
         foreach ($storage as $builder) {
-            /* @var \CSBill\MenuBundle\Builder\MenuBuilder $builder */
+            /* @var \SolidInvoice\MenuBundle\Builder\MenuBuilder $builder */
             $builder->setContainer($this->container);
             $builder->invoke($menu, $options);
         }
@@ -102,7 +102,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
         $html = '';
         foreach ($item->getChildren() as $child) {
-            /* @var \CSBill\MenuBundle\MenuItem $child */
+            /* @var \SolidInvoice\MenuBundle\MenuItem $child */
             if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {
@@ -162,6 +162,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      */
     protected function renderIcon(string $icon): string
     {
-        return $this->container->get('templating')->render('CSBillMenuBundle::icon.html.twig', ['icon' => $icon]);
+        return $this->container->get('templating')->render('SolidInvoiceMenuBundle::icon.html.twig', ['icon' => $icon]);
     }
 }

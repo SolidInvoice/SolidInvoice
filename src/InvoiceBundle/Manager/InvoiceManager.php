@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,18 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Manager;
+namespace SolidInvoice\InvoiceBundle\Manager;
 
 use Carbon\Carbon;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\InvoiceBundle\Event\InvoiceEvent;
-use CSBill\InvoiceBundle\Event\InvoiceEvents;
-use CSBill\InvoiceBundle\Exception\InvalidTransitionException;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\InvoiceBundle\Notification\InvoiceStatusNotification;
-use CSBill\NotificationBundle\Notification\NotificationManager;
-use CSBill\QuoteBundle\Entity\Quote;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
+use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -99,7 +99,7 @@ class InvoiceManager implements ContainerAwareInterface
             $invoice->setTax($quote->getTax());
         }
 
-        /** @var \CSBill\QuoteBundle\Entity\Item $item */
+        /** @var \SolidInvoice\QuoteBundle\Entity\Item $item */
         foreach ($quote->getItems() as $item) {
             $invoiceItem = new Item();
             $invoiceItem->setCreated($now);

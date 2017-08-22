@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\UserBundle\Repository;
+namespace SolidInvoice\UserBundle\Repository;
 
-use CSBill\UserBundle\Entity\ApiToken;
-use CSBill\UserBundle\Entity\ApiTokenHistory;
+use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use Doctrine\ORM\EntityRepository;
 
 class ApiTokenHistoryRepository extends EntityRepository
@@ -31,7 +31,7 @@ class ApiTokenHistoryRepository extends EntityRepository
 
         /** @var ApiToken $apiToken */
         $apiToken = $entityManager
-            ->getRepository('CSBillUserBundle:ApiToken')
+            ->getRepository('SolidInvoiceUserBundle:ApiToken')
             ->findOneBy(['token' => $token]);
 
         $apiToken->addHistory($history);

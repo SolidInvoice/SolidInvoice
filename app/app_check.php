@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -16,7 +16,7 @@ $lineSize = 70;
 $appRequirements = new AppRequirements();
 $iniPath = $appRequirements->getPhpIniConfigPath();
 
-echo_title('CSBill Requirements Checker');
+echo_title('SolidInvoice Requirements Checker');
 
 echo '> PHP is using the following php.ini file:'.PHP_EOL;
 if ($iniPath) {
@@ -27,7 +27,7 @@ if ($iniPath) {
 
 echo PHP_EOL.PHP_EOL;
 
-echo '> Checking CSBill requirements:'.PHP_EOL.'  ';
+echo '> Checking SolidInvoice requirements:'.PHP_EOL.'  ';
 
 $messages = [];
 foreach ($appRequirements->getRequirements() as $req) {
@@ -54,9 +54,9 @@ foreach ($appRequirements->getRecommendations() as $req) {
 echo PHP_EOL.PHP_EOL;
 
 if ($checkPassed) {
-    echo_style('success', '[OK] Your system is ready to run CSBill', true);
+    echo_style('success', '[OK] Your system is ready to run SolidInvoice', true);
 } else {
-    echo_style('error', '[ERROR] Your system is not ready to run CSBill', true);
+    echo_style('error', '[ERROR] Your system is not ready to run SolidInvoice', true);
 
     echo PHP_EOL;
 

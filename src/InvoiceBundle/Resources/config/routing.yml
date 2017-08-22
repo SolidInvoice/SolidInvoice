@@ -1,43 +1,43 @@
 _invoices_index:
     path: /
-    defaults: { _controller: 'CSBill\InvoiceBundle\Action\Index' }
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Index' }
 
 _invoices_create:
     path: '/create/{client}'
-    defaults: { _controller: 'CSBill\InvoiceBundle\Action\Create', client: null }
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Create', client: null }
     options:
         expose: true
 
 _invoices_get_fields:
     path: '/fields/get/{currency}'
-    defaults: { _controller: 'CSBill\InvoiceBundle\Action\Fields' }
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Fields' }
     options:
         expose: true
 
 _invoices_edit:
     path: '/edit/{id}'
-    defaults: { _controller: 'CSBill\InvoiceBundle\Action\Edit' }
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Edit' }
     options:
         expose: true
 
 _invoices_view:
     path: '/view/{id}'
-    defaults: { _controller: 'CSBill\InvoiceBundle\Action\View' }
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\View' }
     options:
         expose: true
 
 _invoices_clone:
     path: '/clone/{id}'
-    defaults: { _controller: 'CSBill\InvoiceBundle\Action\CloneInvoice' }
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\CloneInvoice' }
 
 _send_invoice:
     path: '/action/send/{id}'
-    defaults:  { _controller: 'CSBill\InvoiceBundle\Action\Transition\Send' }
+    defaults:  { _controller: 'SolidInvoice\InvoiceBundle\Action\Transition\Send' }
 
 _action_invoice:
     path: '/action/{action}/{id}'
-    defaults: { _controller: 'CSBill\InvoiceBundle\Action\Transition' }
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Transition' }
 
 _invoices_grid:
-    resource: '@CSBillInvoiceBundle/Action/Grid'
+    resource: '@SolidInvoiceInvoiceBundle/Action/Grid'
     type: grid

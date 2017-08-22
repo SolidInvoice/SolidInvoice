@@ -5,6 +5,6 @@ services:
         tags:
             - { name: form.type }
 
-    CSBill\QuoteBundle\Form\Type\QuoteType: ~
+    SolidInvoice\QuoteBundle\Form\Type\QuoteType: ~
 
-    CSBill\QuoteBundle\Form\Type\ItemType: ~
+    SolidInvoice\QuoteBundle\Form\Type\ItemType: ~

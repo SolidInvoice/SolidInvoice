@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\Form\Handler;
+namespace SolidInvoice\PaymentBundle\Form\Handler;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\CoreBundle\Traits\SaveableTrait;
-use CSBill\PaymentBundle\Entity\PaymentMethod;
-use CSBill\PaymentBundle\Factory\PaymentFactories;
-use CSBill\PaymentBundle\Form\Type\PaymentMethodType;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
+use SolidInvoice\PaymentBundle\Form\Type\PaymentMethodType;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
@@ -108,7 +108,7 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            '@CSBillPayment/Ajax/loadmethodsettings.html.twig',
+            '@SolidInvoicePayment/Ajax/loadmethodsettings.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
                 'method' => $formRequest->getForm()->getData()->getGatewayName(),

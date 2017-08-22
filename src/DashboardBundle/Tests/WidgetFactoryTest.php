@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DashboardBundle\Tests;
+namespace SolidInvoice\DashboardBundle\Tests;
 
-use CSBill\DashboardBundle\WidgetFactory;
+use SolidInvoice\DashboardBundle\WidgetFactory;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -26,11 +26,11 @@ class WidgetFactoryTest extends TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget1 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget2 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget3 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget4 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget5 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget1 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget2 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget3 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget4 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget5 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);
@@ -59,7 +59,7 @@ class WidgetFactoryTest extends TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Invalid widget location: bottom');
@@ -71,11 +71,11 @@ class WidgetFactoryTest extends TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget1 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget2 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget3 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget4 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
-        $widget5 = M::mock('CSBill\DashboardBundle\Widgets\WidgetInterface');
+        $widget1 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget2 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget3 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget4 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
+        $widget5 = M::mock('SolidInvoice\DashboardBundle\Widgets\WidgetInterface');
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);

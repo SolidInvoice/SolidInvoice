@@ -21,7 +21,7 @@ framework:
         strict_email: true
     default_locale: '%locale%'
     session:
-        name: CSBILL_APP
+        name: SOLIDINVOICE_APP
     fragments: null
     http_method_override: true
     serializer: { enable_annotations: true }
@@ -30,7 +30,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:
-        - 'CSBillCoreBundle:Form:fields.html.twig'
+        - 'SolidInvoiceCoreBundle:Form:fields.html.twig'
 
 doctrine:
     dbal:
@@ -43,19 +43,19 @@ doctrine:
         charset: UTF8
         types:
             uuid: Ramsey\Uuid\Doctrine\UuidType
-            money: CSBill\MoneyBundle\Doctrine\Types\MoneyType
+            money: SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         entity_managers:
             default:
                 hydrators:
-                    money: CSBill\MoneyBundle\Doctrine\Hydrator\MoneyHydrator
+                    money: SolidInvoice\MoneyBundle\Doctrine\Hydrator\MoneyHydrator
                 filters:
                     softdeleteable:
                         class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                         enabled: true
                     archivable:
-                        class: CSBill\CoreBundle\Doctrine\Filter\ArchivableFilter
+                        class: SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter
                         enabled: true
                 auto_mapping: true
                 mappings:
@@ -105,14 +105,14 @@ stof_doctrine_extensions:
 
 fos_user:
     from_email:
-        address: 'info@csbill.org'
-        sender_name: 'CSBill'
+        address: 'info@solidinvoice.co'
+        sender_name: 'SolidInvoice'
     db_driver: orm
     firewall_name: main
-    user_class: CSBill\UserBundle\Entity\User
+    user_class: SolidInvoice\UserBundle\Entity\User
     profile:
         form:
-            type: CSBill\UserBundle\Form\Type\ProfileType
+            type: SolidInvoice\UserBundle\Form\Type\ProfileType
 
 oro_require_js:
     config:

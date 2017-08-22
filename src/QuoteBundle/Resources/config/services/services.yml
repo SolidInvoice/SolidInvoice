@@ -1,11 +1,11 @@
 services:
     quote.manager:
-        class: CSBill\QuoteBundle\Manager\QuoteManager
+        class: SolidInvoice\QuoteBundle\Manager\QuoteManager
         autowire: true
         arguments:
             $stateMachine: '@state_machine.quote'
 
-    CSBill\QuoteBundle\Menu\Builder:
+    SolidInvoice\QuoteBundle\Menu\Builder:
         public: false
         tags:
             - { name: cs_core.menu, menu: top, method: topMenu }
@@ -14,7 +14,7 @@ services:
             - { name: cs_core.menu, menu: quotes_create, method: quotesMenu }
             - { name: cs_core.menu, menu: quotes_edit, method: quotesEditMenu }
 
-    CSBill\QuoteBundle\Cloner\QuoteCloner:
+    SolidInvoice\QuoteBundle\Cloner\QuoteCloner:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.quote'

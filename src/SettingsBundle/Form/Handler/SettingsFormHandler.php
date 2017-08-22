@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\SettingsBundle\Form\Handler;
+namespace SolidInvoice\SettingsBundle\Form\Handler;
 
-use CSBill\CoreBundle\Response\FlashResponse;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\SettingsBundle\Entity\Setting;
-use CSBill\SettingsBundle\Form\Type\SettingsType;
-use CSBill\SettingsBundle\Repository\SettingsRepository;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
+use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -102,7 +102,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         $form = $formRequest->getForm();
 
         return new Template(
-            'CSBillSettingsBundle:Settings:index.html.twig',
+            'SolidInvoiceSettingsBundle:Settings:index.html.twig',
             [
                 'appSettings' => $form->getData(),
                 'form' => $form->createView(),

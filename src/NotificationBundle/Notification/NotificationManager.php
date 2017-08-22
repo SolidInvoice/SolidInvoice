@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\NotificationBundle\Notification;
+namespace SolidInvoice\NotificationBundle\Notification;
 
-use CSBill\SettingsBundle\SystemConfig;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
@@ -66,7 +66,7 @@ class NotificationManager
     public function sendNotification(string $event, NotificationMessageInterface $message)
     {
         /** @var EntityRepository $repository */
-        $repository = $this->entityManager->getRepository('CSBillUserBundle:User');
+        $repository = $this->entityManager->getRepository('SolidInvoiceUserBundle:User');
 
         $message->setUsers($repository->findAll());
 

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Tests\Listener;
+namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
-use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Listener\WorkFlowSubscriber;
-use CSBill\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
@@ -45,7 +45,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid')));
         $this->assertNotNull($invoice->getPaidDate());
-        $this->assertEquals($invoice, $this->em->getRepository('CSBillInvoiceBundle:Invoice')->find(1));
+        $this->assertEquals($invoice, $this->em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->find(1));
     }
 
     public function testInvoiceArchive()
@@ -63,21 +63,21 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
 
         $this->assertTrue($invoice->isArchived());
-        $this->assertSame($invoice, $this->em->getRepository('CSBillInvoiceBundle:Invoice')->find(1));
+        $this->assertSame($invoice, $this->em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->find(1));
     }
 
     public function getEntityNamespaces()
     {
         return [
-            'CSBillInvoiceBundle' => 'CSBill\\InvoiceBundle\\Entity',
+            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\\InvoiceBundle\\Entity',
         ];
     }
 
     public function getEntities()
     {
         return [
-            'CSBillInvoiceBundle:Invoice',
-            'CSBillInvoiceBundle:RecurringInvoice',
+            'SolidInvoiceInvoiceBundle:Invoice',
+            'SolidInvoiceInvoiceBundle:RecurringInvoice',
         ];
     }
 }

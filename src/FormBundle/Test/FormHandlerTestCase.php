@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,19 +11,19 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\FormBundle\Test;
+namespace SolidInvoice\FormBundle\Test;
 
-use CSBill\ClientBundle\Form\Type\ContactDetailType;
-use CSBill\CoreBundle\Form\Extension\FormHelpExtension;
-use CSBill\CoreBundle\Form\Type\DiscountType;
-use CSBill\CoreBundle\Test\Traits\DoctrineTestTrait;
-use CSBill\InvoiceBundle\Form\Type\InvoiceType;
-use CSBill\InvoiceBundle\Form\Type\ItemType as InvoiceItemType;
-use CSBill\MoneyBundle\Form\Extension\MoneyExtension;
-use CSBill\MoneyBundle\Form\Type\CurrencyType;
-use CSBill\MoneyBundle\Form\Type\HiddenMoneyType;
-use CSBill\QuoteBundle\Form\Type\ItemType as QuoteItemType;
-use CSBill\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
+use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
+use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\InvoiceBundle\Form\Type\ItemType as InvoiceItemType;
+use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\QuoteBundle\Form\Type\ItemType as QuoteItemType;
+use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use Faker\Factory;
 use Faker\Generator;
 use Mockery as M;

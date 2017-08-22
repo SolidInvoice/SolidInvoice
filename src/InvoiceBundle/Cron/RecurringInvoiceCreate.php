@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,16 +11,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Cron;
+namespace SolidInvoice\InvoiceBundle\Cron;
 
 use Carbon\Carbon;
 use Cron\CronExpression;
-use CSBill\CronBundle\CommandInterface;
-use CSBill\InvoiceBundle\Cloner\InvoiceCloner;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Entity\Item;
-use CSBill\InvoiceBundle\Model\Graph;
-use CSBill\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\CronBundle\CommandInterface;
+use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Workflow\StateMachine;
@@ -74,7 +74,7 @@ class RecurringInvoiceCreate implements CommandInterface
     public function process()
     {
         /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->entityManager->getRepository('CSBillInvoiceBundle:Invoice');
+        $invoiceRepository = $this->entityManager->getRepository('SolidInvoiceInvoiceBundle:Invoice');
 
         $invoices = $invoiceRepository->getRecurringInvoices();
 

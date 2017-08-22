@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DashboardBundle\Twig\Extension;
+namespace SolidInvoice\DashboardBundle\Twig\Extension;
 
-use CSBill\DashboardBundle\WidgetFactory;
-use CSBill\DashboardBundle\Widgets\WidgetInterface;
+use SolidInvoice\DashboardBundle\WidgetFactory;
+use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 
 class WidgetExtension extends \Twig_Extension
 {

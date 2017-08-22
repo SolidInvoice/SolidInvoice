@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DashboardBundle\Widgets;
+namespace SolidInvoice\DashboardBundle\Widgets;
 
-use CSBill\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class RecentPaymentsWidget implements WidgetInterface
@@ -37,7 +37,7 @@ class RecentPaymentsWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->manager->getRepository('CSBillPaymentBundle:Payment');
+        $paymentRepository = $this->manager->getRepository('SolidInvoicePaymentBundle:Payment');
 
         $payments = $paymentRepository->getRecentPayments();
 
@@ -49,6 +49,6 @@ class RecentPaymentsWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'CSBillDashboardBundle:Widget:recent_payments.html.twig';
+        return 'SolidInvoiceDashboardBundle:Widget:recent_payments.html.twig';
     }
 }

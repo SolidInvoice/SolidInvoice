@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\DataGridBundle;
+namespace SolidInvoice\DataGridBundle;
 
-use CSBill\DataGridBundle\Filter\FilterInterface;
-use CSBill\DataGridBundle\Source\SourceInterface;
-use CSBill\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\DataGridBundle\Filter\FilterInterface;
+use SolidInvoice\DataGridBundle\Source\SourceInterface;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ObjectManager;

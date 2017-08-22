@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,17 +11,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Entity;
+namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use CSBill\ClientBundle\Entity\Client;
-use CSBill\ClientBundle\Entity\Contact;
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Entity\ItemInterface;
-use CSBill\CoreBundle\Traits\Entity;
-use CSBill\MoneyBundle\Entity\Money as MoneyEntity;
-use CSBill\QuoteBundle\Traits\QuoteStatusTrait;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"quote_api"}}, "denormalization_context"={"groups"={"create_quote_api"}}})
  * @ORM\Table(name="quotes")
- * @ORM\Entity(repositoryClass="CSBill\QuoteBundle\Repository\QuoteRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\QuoteRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
@@ -78,7 +78,7 @@ class Quote
     /**
      * @var Client
      *
-     * @ORM\ManyToOne(targetEntity="CSBill\ClientBundle\Entity\Client", inversedBy="quotes")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
      * @Serialize\Groups({"quote_api", "create_quote_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
@@ -88,7 +88,7 @@ class Quote
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $total;
@@ -96,7 +96,7 @@ class Quote
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $baseTotal;
@@ -104,7 +104,7 @@ class Quote
     /**
      * @var MoneyEntity
      *
-     * @ORM\Embedded(class="CSBill\MoneyBundle\Entity\Money")
+     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $tax;
@@ -112,7 +112,7 @@ class Quote
     /**
      * @var Discount
      *
-     * @ORM\Embedded(class="CSBill\CoreBundle\Entity\Discount")
+     * @ORM\Embedded(class="SolidInvoice\CoreBundle\Entity\Discount")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
     private $discount;
@@ -155,7 +155,7 @@ class Quote
     /**
      * @var Collection|Contact[]
      *
-     * @ORM\ManyToMany(targetEntity="CSBill\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */

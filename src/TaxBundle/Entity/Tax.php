@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\TaxBundle\Entity;
+namespace SolidInvoice\TaxBundle\Entity;
 
-use CSBill\CoreBundle\Entity\ItemInterface;
-use CSBill\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="tax_rates")
- * @ORM\Entity(repositoryClass="CSBill\TaxBundle\Repository\TaxRepository")
+ * @ORM\Entity(repositoryClass="SolidInvoice\TaxBundle\Repository\TaxRepository")
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
  */
@@ -73,14 +73,14 @@ class Tax
     /**
      * @var Collection|ItemInterface[]
      *
-     * @ORM\OneToMany(targetEntity="CSBill\InvoiceBundle\Entity\Item", mappedBy="tax")
+     * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
      * @var Collection|ItemInterface[]
      *
-     * @ORM\OneToMany(targetEntity="CSBill\QuoteBundle\Entity\Item", mappedBy="tax")
+     * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */
     private $quoteItems;
 

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\SettingsBundle\Tests\Listener;
+namespace SolidInvoice\SettingsBundle\Tests\Listener;
 
 use Carbon\Carbon;
-use CSBill\SettingsBundle\Listener\MailerSettingsEnvListener;
-use CSBill\SettingsBundle\SystemConfig;
+use SolidInvoice\SettingsBundle\Listener\MailerSettingsEnvListener;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 

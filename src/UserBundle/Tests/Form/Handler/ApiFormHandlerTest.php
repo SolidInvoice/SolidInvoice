@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\UserBundle\Tests\Form\Handler;
+namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
-use CSBill\ApiBundle\ApiTokenManager;
-use CSBill\CoreBundle\Templating\Template;
-use CSBill\FormBundle\Test\FormHandlerTestCase;
-use CSBill\UserBundle\Entity\ApiToken;
-use CSBill\UserBundle\Form\Handler\ApiFormHandler;
+use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Form\Handler\ApiFormHandler;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,7 +43,7 @@ class ApiFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
-        $this->assertCount(1, $this->em->getRepository('CSBillUserBundle:ApiToken')->findAll());
+        $this->assertCount(1, $this->em->getRepository('SolidInvoiceUserBundle:ApiToken')->findAll());
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('test_token', $data->getName());
     }
@@ -68,15 +68,15 @@ class ApiFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'CSBillUserBundle:ApiToken',
-            'CSBillUserBundle:User',
+            'SolidInvoiceUserBundle:ApiToken',
+            'SolidInvoiceUserBundle:User',
         ];
     }
 
     protected function getEntityNamespaces(): array
     {
         return [
-            'CSBillUserBundle' => 'CSBill\UserBundle\Entity',
+            'SolidInvoiceUserBundle' => 'SolidInvoice\UserBundle\Entity',
         ];
     }
 }

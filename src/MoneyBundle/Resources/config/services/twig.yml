@@ -5,4 +5,4 @@ services:
         tags:
             - { name: twig.extension }
 
-    CSBill\MoneyBundle\Twig\Extension\MoneyFormatterExtension: ~
+    SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension: ~

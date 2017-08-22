@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,16 +11,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\InvoiceBundle\Tests\Form\Type;
+namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
-use CSBill\CoreBundle\Entity\Discount;
-use CSBill\CoreBundle\Form\Type\DiscountType;
-use CSBill\CoreBundle\Tests\FormTestCase;
-use CSBill\InvoiceBundle\Entity\Invoice;
-use CSBill\InvoiceBundle\Form\Type\InvoiceType;
-use CSBill\InvoiceBundle\Form\Type\ItemType;
-use CSBill\MoneyBundle\Entity\Money;
-use CSBill\TaxBundle\Repository\TaxRepository;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
+use SolidInvoice\MoneyBundle\Entity\Money;
+use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Mockery as M;
 use Money\Currency;
 use Symfony\Component\Form\PreloadedExtension;
@@ -76,7 +76,7 @@ class InvoiceTypeTest extends FormTestCase
             ->andReturn(false);
 
         $this->registry->shouldReceive('getRepository')
-            ->with('CSBillTaxBundle:Tax')
+            ->with('SolidInvoiceTaxBundle:Tax')
             ->andReturn($repository);
 
         $currency = new Currency('USD');
@@ -93,18 +93,18 @@ class InvoiceTypeTest extends FormTestCase
     protected function getEntityNamespaces()
     {
         return [
-            'CSBillTaxBundle' => 'CSBill\TaxBundle\Entity',
-            'CSBillInvoiceBundle' => 'CSBill\InvoiceBundle\Entity',
-            'CSBillClientBundle' => 'CSBill\ClientBundle\Entity',
+            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
+            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
+            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
         ];
     }
 
     protected function getEntities()
     {
         return [
-            'CSBillClientBundle:Client',
-            'CSBillInvoiceBundle:Invoice',
-            'CSBillTaxBundle:Tax',
+            'SolidInvoiceClientBundle:Client',
+            'SolidInvoiceInvoiceBundle:Invoice',
+            'SolidInvoiceTaxBundle:Tax',
         ];
     }
 }

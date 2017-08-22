@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\PaymentBundle\PaymentAction\Request;
+namespace SolidInvoice\PaymentBundle\PaymentAction\Request;
 
-use CSBill\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Model\Status;
 use Payum\Core\Request\BaseGetStatus;
 
 class StatusRequest extends BaseGetStatus

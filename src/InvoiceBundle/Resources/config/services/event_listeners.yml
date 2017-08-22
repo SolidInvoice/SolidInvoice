@@ -8,5 +8,5 @@ services:
         public: false
         autowire: true
 
-    CSBill\InvoiceBundle\Listener\:
+    SolidInvoice\InvoiceBundle\Listener\:
         resource: '../../../Listener'

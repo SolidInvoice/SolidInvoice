@@ -4,5 +4,5 @@ services:
         tags:
             - { name: twig.extension }
 
-    CSBill\DashboardBundle\Twig\Extension\WidgetExtension:
+    SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension:
         arguments: ['@dashboard.widget.factory']

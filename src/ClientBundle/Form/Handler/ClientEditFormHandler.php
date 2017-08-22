@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\ClientBundle\Form\Handler;
+namespace SolidInvoice\ClientBundle\Form\Handler;
 
-use CSBill\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormCollectionHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 
@@ -25,7 +25,7 @@ class ClientEditFormHandler extends AbstractClientFormHandler implements FormCol
     public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(
-            '@CSBillClient/Default/edit.html.twig',
+            '@SolidInvoiceClient/Default/edit.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
                 'client' => $formRequest->getOptions()[0],

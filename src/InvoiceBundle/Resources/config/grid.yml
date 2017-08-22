@@ -3,7 +3,7 @@ datagrid:
         title: Active
         icon: check
         source:
-            repository: 'CSBillInvoiceBundle:Invoice'
+            repository: 'SolidInvoiceInvoiceBundle:Invoice'
             method: getGridQuery
         columns:
             id:
@@ -79,7 +79,7 @@ datagrid:
         title: Recurring
         icon: refresh
         source:
-            repository: 'CSBillInvoiceBundle:Invoice'
+            repository: 'SolidInvoiceInvoiceBundle:Invoice'
             method: getRecurringGridQuery
         columns:
             id:
@@ -163,7 +163,7 @@ datagrid:
         title: Archived
         icon: archive
         source:
-            repository: 'CSBillInvoiceBundle:Invoice'
+            repository: 'SolidInvoiceInvoiceBundle:Invoice'
             method: getArchivedGridQuery
         columns:
             id:

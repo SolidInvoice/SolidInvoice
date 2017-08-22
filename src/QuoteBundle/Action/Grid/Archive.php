@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace CSBill\QuoteBundle\Action\Grid;
+namespace SolidInvoice\QuoteBundle\Action\Grid;
 
-use CSBill\CoreBundle\Response\AjaxResponse;
-use CSBill\CoreBundle\Traits\JsonTrait;
-use CSBill\QuoteBundle\Entity\Quote;
-use CSBill\QuoteBundle\Exception\InvalidTransitionException;
-use CSBill\QuoteBundle\Model\Graph;
-use CSBill\QuoteBundle\Repository\QuoteRepository;
+use SolidInvoice\CoreBundle\Response\AjaxResponse;
+use SolidInvoice\CoreBundle\Traits\JsonTrait;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
+use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Workflow\StateMachine;
 

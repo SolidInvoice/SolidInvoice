@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of CSBill project.
+ * This file is part of SolidInvoice project.
  *
  * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
  *
@@ -100,7 +100,7 @@ class Version010 extends AbstractMigration
         $this->addSql("INSERT INTO `config_sections` VALUES (NULL, LAST_INSERT_ID(), 'general')");
 
         $this->addSql("INSERT INTO `app_config` VALUES
-          (NULL, 'app_name', 'CSBill', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'app_name', 'SolidInvoice', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
           (NULL, 'logo', NULL, NULL, LAST_INSERT_ID(), 'image_upload', 'a:0:{}')
         ");
 
@@ -116,8 +116,8 @@ class Version010 extends AbstractMigration
 
         $this->addSql("INSERT INTO `config_sections` VALUES (NULL, NULL, 'email')");
         $this->addSql("INSERT INTO `app_config` VALUES
-          (NULL, 'from_name', 'CSBill', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
-          (NULL, 'from_address', 'info@csbill.org', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'from_name', 'SolidInvoice', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
+          (NULL, 'from_address', 'info@solidinvoice.co', NULL, LAST_INSERT_ID(), NULL, 'a:0:{}'),
           (NULL, 'format', 'both', 'In what format should emails be sent.', LAST_INSERT_ID(), 'radio', 'a:3:{s:4:\"html\";s:4:\"html\";s:4:\"text\";s:4:\"text\";s:4:\"both\";s:4:\"both\";}')
         ");
 
