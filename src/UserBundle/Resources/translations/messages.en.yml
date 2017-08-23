@@ -55,6 +55,7 @@ users:
   add: 'Add User'
   title: 'Users'
   create:
+    generate_password: 'Generate Random Password'
     success: 'User created successfully!'
   update:
     success: 'User updated successfully!'

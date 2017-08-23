@@ -7,6 +7,8 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set module = 'user/create' %}
+
 {% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
 
 {% block title %}{{ 'users.add'|trans }}{% endblock %}
@@ -16,7 +18,10 @@
         <div class="box-body">
             {{ form_start(form) }}
             {{ form_row(form) }}
-            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'users.save'|trans }}</button>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'users.save'|trans }}</button>
+                <span id="generate-password"></span>
+            </div>
             {{ form_end(form) }}
         </div>
     </div>
