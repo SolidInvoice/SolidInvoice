@@ -9,3 +9,23 @@ _api_keys_xhr:
     prefix: /api/xhr
     options:
         expose: true
+
+_users_list:
+    path: /users
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\Users' }
+
+_user_add:
+    path: /users/add
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\AddUser' }
+
+_user_edit:
+    path: /users/edit/{id}
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\EditUser' }
+    options:
+        expose: true
+    requirements:
+        id: \d+
+
+_users_grid:
+    resource: '@SolidInvoiceUserBundle/Action/Grid'
+    type: grid

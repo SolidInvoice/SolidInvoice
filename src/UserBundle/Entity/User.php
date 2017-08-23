@@ -19,11 +19,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\UserRepository")
  * @Gedmo\Loggable()
+ * @UniqueEntity(fields={"username"})
+ * @UniqueEntity(fields={"email"})
  */
 class User extends BaseUser
 {
@@ -52,6 +56,21 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
      */
     private $apiTokens;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     */
+    protected $username;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    protected $email;
 
     public function __construct()
     {

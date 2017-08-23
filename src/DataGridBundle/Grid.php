@@ -118,7 +118,7 @@ class Grid implements GridInterface, \JsonSerializable
         $resultSet = $paginator->getQuery()->getArrayResult();
 
         array_walk_recursive($resultSet, function (&$value, $key): void {
-            if (false !== strpos($key, 'currency')) {
+            if (is_string($key) && false !== strpos($key, 'currency')) {
                 $value = $this->moneyFormatter->getCurrencySymbol($value);
             }
         });

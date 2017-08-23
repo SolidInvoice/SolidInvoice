@@ -1,0 +1,23 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
+
+{% block title %}{{ 'users.add'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="box box-primary">
+        <div class="box-body">
+            {{ form_start(form) }}
+            {{ form_row(form) }}
+            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'users.save'|trans }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock content %}

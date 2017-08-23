@@ -119,4 +119,18 @@ class MainMenu
             ],
         ];
     }
+
+    /**
+     * @return array
+     */
+    public static function users(): array
+    {
+        return [
+            'menu.top.users',
+            [
+                'route' => '_users_list',
+                'extras' => ['icon' => 'users'],
+            ],
+        ];
+    }
 }
