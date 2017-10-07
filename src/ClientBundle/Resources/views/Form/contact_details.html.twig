@@ -11,7 +11,7 @@
     <div class="input-group-btn input-group-select">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             <span class="concept">
-		{% for type in contactTypes if type.id == form.type.vars.value %}
+    		{% for type in contactTypes if type.id == form.type.vars.value %}
                     {{ type.name|title }}
                 {% else %}
                     {{ 'client.contact.details.choose'|trans }}
@@ -34,7 +34,6 @@
         {% if child is defined and child %}
             <button type="button" class="btn btn-danger btn-delete">-</button>
         {% else %}
-            <button type="button" class="btn btn-success btn-add">+</button>
         {% endif %}
     </span>
 </div>

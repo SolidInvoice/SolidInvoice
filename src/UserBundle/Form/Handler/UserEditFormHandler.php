@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Handler;
 
+use FOS\UserBundle\Form\Factory\FactoryInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Form\Type\UserType;
 use SolidInvoice\UserBundle\Manager\UserManager;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
@@ -45,10 +45,16 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
      */
     private $router;
 
-    public function __construct(UserManager $userManager, RouterInterface $router)
+    /**
+     * @var FactoryInterface
+     */
+    private $factory;
+
+    public function __construct(UserManager $userManager, FactoryInterface $factory, RouterInterface $router)
     {
         $this->userManager = $userManager;
         $this->router = $router;
+        $this->factory = $factory;
     }
 
     /**
@@ -56,7 +62,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
      */
     public function getForm(FormFactoryInterface $factory = null, Options $options)
     {
-        return $factory->create(UserType::class, $options->get('user'));
+        return $this->factory->createForm(['data' => $options->get('user')]);
     }
 
     /**
