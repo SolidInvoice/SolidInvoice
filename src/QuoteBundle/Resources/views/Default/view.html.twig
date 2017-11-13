@@ -19,7 +19,7 @@
 
 {% block content %}
 
-    <div class="pull-right">
+    <div class="pull-right no-print">
         <div class="btn-toolbar">
             <div class="btn-group">
                 <a href="{{ path('_quotes_clone', {'id' : quote.id}) }}" class="btn btn-default">
@@ -74,7 +74,17 @@
     <br class="clear"/>
     <br class="clear"/>
 
-    {% include "SolidInvoiceQuoteBundle::quote_template.html.twig" %}
+    {% embed "SolidInvoiceQuoteBundle::quote_template.html.twig" %}
+        {% block footer %}
+            {{ parent() }}
+
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
+                </div>
+            </div>
+        {% endblock footer %}
+    {% endembed %}
 {% endblock content %}
 {% block footer %}
     {{ parent() }}
