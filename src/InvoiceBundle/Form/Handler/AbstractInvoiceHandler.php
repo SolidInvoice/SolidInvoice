@@ -84,7 +84,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
             $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
         }
 
-        if ($action === Graph::STATUS_PENDING) {
+        if (Graph::STATUS_PENDING === $action) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
 

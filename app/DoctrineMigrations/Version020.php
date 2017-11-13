@@ -18,7 +18,7 @@ class Version020 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql("CREATE TABLE payment_details (id INT AUTO_INCREMENT NOT NULL, array LONGTEXT NOT NULL COMMENT '(DC2Type:json_array)', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("CREATE TABLE security_token (hash VARCHAR(255) NOT NULL, details LONGTEXT DEFAULT NULL COMMENT '(DC2Type:object)', after_url LONGTEXT DEFAULT NULL, target_url LONGTEXT NOT NULL, payment_name VARCHAR(255) NOT NULL, PRIMARY KEY(hash)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
@@ -77,7 +77,7 @@ class Version020 extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql("DROP TABLE payment_details");
         $this->addSql("DROP TABLE security_token");

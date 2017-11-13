@@ -220,7 +220,7 @@ class Tax
      */
     public function __toString(): string
     {
-        $type = $this->type === self::TYPE_INCLUSIVE ? 'inc' : 'exl';
+        $type = self::TYPE_INCLUSIVE === $this->type ? 'inc' : 'exl';
 
         return "{$this->rate}% {$this->name} ({$type})";
     }

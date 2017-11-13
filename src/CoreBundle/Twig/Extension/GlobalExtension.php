@@ -63,7 +63,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
         $params = array_merge($request->query->all(), $request->attributes->all());
 
         foreach (array_keys($params) as $key) {
-            if (substr($key, 0, 1) == '_') {
+            if ('_' == substr($key, 0, 1)) {
                 unset($params[$key]);
             }
         }

@@ -22,7 +22,7 @@ class Version040 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql('ALTER TABLE payment_details CHANGE array details LONGTEXT NOT NULL COMMENT \'(DC2Type:json_array)\'');
 
@@ -235,7 +235,7 @@ class Version040 extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql('ALTER TABLE payment_details CHANGE details array LONGTEXT NOT NULL COMMENT \'(DC2Type:json_array)\'');
 

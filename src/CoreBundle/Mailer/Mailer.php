@@ -75,7 +75,7 @@ class Mailer implements MailerInterface
     /**
      * {@inheritdoc}
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): Mailer
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): self
     {
         $this->dispatcher = $eventDispatcher;
 

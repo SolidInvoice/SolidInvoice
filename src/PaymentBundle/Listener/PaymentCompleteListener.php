@@ -95,7 +95,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
         if (null !== $invoice = $event->getPayment()->getInvoice()) {
             $em = $this->registry->getManager();
 
-            if ($status === Status::STATUS_CAPTURED && $em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->isFullyPaid($invoice)) {
+            if (Status::STATUS_CAPTURED === $status && $em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->isFullyPaid($invoice)) {
                 $this->stateMachine->apply($invoice, Graph::TRANSITION_PAY);
             } else {
                 $paymentRepository = $this->registry->getRepository('SolidInvoicePaymentBundle:Payment');

@@ -73,7 +73,7 @@ class UpgradeListener implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getRequestType() !== HttpKernel::MASTER_REQUEST) {
+        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
 

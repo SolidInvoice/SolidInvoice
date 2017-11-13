@@ -73,7 +73,7 @@ class Template
      *
      * @return Template
      */
-    public function setTemplate(string $template): Template
+    public function setTemplate(string $template): self
     {
         $this->template = $template;
 

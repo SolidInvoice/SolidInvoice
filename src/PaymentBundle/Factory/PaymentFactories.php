@@ -95,6 +95,6 @@ class PaymentFactories
      */
     public function isOffline(string $gateway): bool
     {
-        return isset($this->factories[$gateway]) && $this->factories[$gateway] === 'offline';
+        return isset($this->factories[$gateway]) && 'offline' === $this->factories[$gateway];
     }
 }

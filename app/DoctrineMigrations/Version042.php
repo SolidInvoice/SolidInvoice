@@ -18,14 +18,14 @@ class Version042 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql('ALTER TABLE security_token CHANGE payment_name gateway_name VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql('ALTER TABLE security_token CHANGE gateway_name payment_name VARCHAR(255) NOT NULL');
     }

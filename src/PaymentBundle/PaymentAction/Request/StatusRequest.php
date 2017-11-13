@@ -31,7 +31,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isNew()
     {
-        return $this->status === Status::STATUS_NEW;
+        return Status::STATUS_NEW === $this->status;
     }
 
     /**
@@ -47,7 +47,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isSuspended()
     {
-        return $this->status === Status::STATUS_SUSPENDED;
+        return Status::STATUS_SUSPENDED === $this->status;
     }
 
     /**
@@ -63,7 +63,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isExpired()
     {
-        return $this->status === Status::STATUS_EXPIRED;
+        return Status::STATUS_EXPIRED === $this->status;
     }
 
     /**
@@ -79,7 +79,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isCanceled()
     {
-        return $this->status === Status::STATUS_CANCELLED;
+        return Status::STATUS_CANCELLED === $this->status;
     }
 
     /**
@@ -95,7 +95,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isPending()
     {
-        return $this->status === Status::STATUS_PENDING;
+        return Status::STATUS_PENDING === $this->status;
     }
 
     /**
@@ -111,7 +111,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isFailed()
     {
-        return $this->status === Status::STATUS_FAILED;
+        return Status::STATUS_FAILED === $this->status;
     }
 
     /**
@@ -127,7 +127,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isUnknown()
     {
-        return $this->status === Status::STATUS_UNKNOWN;
+        return Status::STATUS_UNKNOWN === $this->status;
     }
 
     /**
@@ -143,7 +143,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isCaptured()
     {
-        return $this->status === Status::STATUS_CAPTURED;
+        return Status::STATUS_CAPTURED === $this->status;
     }
 
     /**
@@ -151,7 +151,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isAuthorized()
     {
-        return $this->status === Status::STATUS_AUTHORIZED;
+        return Status::STATUS_AUTHORIZED === $this->status;
     }
 
     /**
@@ -167,7 +167,7 @@ class StatusRequest extends BaseGetStatus
      */
     public function isRefunded()
     {
-        return $this->status === Status::STATUS_REFUNDED;
+        return Status::STATUS_REFUNDED === $this->status;
     }
 
     /**

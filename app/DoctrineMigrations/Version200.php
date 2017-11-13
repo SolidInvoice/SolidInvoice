@@ -44,7 +44,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
      */
     public function up(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE app_config DROP FOREIGN KEY FK_318942FCD823E37A');
         $this->addSql('ALTER TABLE config_sections DROP FOREIGN KEY FK_965EAD46727ACA70');
@@ -91,7 +91,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
      */
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         // TODO: Should we try to restore the settings to it's original state?
 
