@@ -45,7 +45,7 @@ class ArrayUtil
 
         foreach ($array as $item) {
             if (is_array($item) || $item instanceof \ArrayAccess) {
-                if ($column[0] !== '[') {
+                if ('[' !== $column[0]) {
                     $column = '['.$column.']';
                 }
             }
@@ -54,7 +54,7 @@ class ArrayUtil
         }
 
         return array_filter($return, function ($item): bool {
-            return $item !== null;
+            return null !== $item;
         });
     }
 }

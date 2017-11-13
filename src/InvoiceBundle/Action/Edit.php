@@ -49,7 +49,7 @@ final class Edit
 
     public function __invoke(Request $request, Invoice $invoice)
     {
-        if ($invoice->getStatus() === Graph::STATUS_PAID) {
+        if (Graph::STATUS_PAID === $invoice->getStatus()) {
             $route = $this->router->generate('_invoices_index');
 
             return new class($route) extends RedirectResponse implements FlashResponse {

@@ -71,7 +71,7 @@ class PaymentMethodType extends AbstractType
                 'internal' => false,
                 'validation_groups' => function (FormInterface $form) {
                     // If the method is disabled, don't use any constraints
-                    if ($form->get('enabled')->getData() === false) {
+                    if (false === $form->get('enabled')->getData()) {
                         return false;
                     }
 

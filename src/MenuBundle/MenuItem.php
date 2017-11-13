@@ -51,6 +51,6 @@ class MenuItem extends BaseItem implements ItemInterface
      */
     public function isDivider(): bool
     {
-        return $this->getExtra('divider') !== null;
+        return null !== $this->getExtra('divider');
     }
 }

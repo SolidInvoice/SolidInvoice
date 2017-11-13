@@ -87,7 +87,7 @@ class Setting
      *
      * @return Setting
      */
-    public function setKey(string $key): Setting
+    public function setKey(string $key): self
     {
         $this->key = $key;
 
@@ -111,7 +111,7 @@ class Setting
      *
      * @return Setting
      */
-    public function setValue($value): Setting
+    public function setValue($value): self
     {
         $this->value = $value;
 
@@ -135,7 +135,7 @@ class Setting
      *
      * @return Setting
      */
-    public function setDescription(?string $description): Setting
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -159,7 +159,7 @@ class Setting
      *
      * @return Setting
      */
-    public function setType(string $type): Setting
+    public function setType(string $type): self
     {
         $this->type = $type;
 

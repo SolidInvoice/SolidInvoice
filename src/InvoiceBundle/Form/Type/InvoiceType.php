@@ -87,7 +87,7 @@ class InvoiceType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
-            if (!array_key_exists('recurring', $data) || (int) $data['recurring'] !== 1) {
+            if (!array_key_exists('recurring', $data) || 1 !== (int) $data['recurring']) {
                 unset($data['recurringInfo']);
                 $event->setData($data);
             }

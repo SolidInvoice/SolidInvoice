@@ -275,7 +275,7 @@ class Address
      *
      * @return Address
      */
-    public static function fromArray(array $data): Address
+    public static function fromArray(array $data): self
     {
         $address = new static();
         $address->setStreet1($data['street1'] ?? null);

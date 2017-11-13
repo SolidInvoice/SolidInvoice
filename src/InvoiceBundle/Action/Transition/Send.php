@@ -51,7 +51,7 @@ final class Send
 
     public function __invoke(Request $request, Invoice $invoice)
     {
-        if ($invoice->getStatus() !== Graph::STATUS_PENDING && $this->stateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
+        if (Graph::STATUS_PENDING !== $invoice->getStatus() && $this->stateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
 

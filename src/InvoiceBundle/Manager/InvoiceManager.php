@@ -182,7 +182,7 @@ class InvoiceManager implements ContainerAwareInterface
             ];
 
             // Do not send status updates for new invoices
-            if ($transition !== Graph::TRANSITION_NEW) {
+            if (Graph::TRANSITION_NEW !== $transition) {
                 $notification = new InvoiceStatusNotification($parameters);
 
                 $this->notification->sendNotification('invoice_status_update', $notification);

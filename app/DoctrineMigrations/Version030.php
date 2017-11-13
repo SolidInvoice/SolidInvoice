@@ -18,7 +18,7 @@ class Version030 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql("ALTER TABLE quotes ADD terms LONGTEXT DEFAULT NULL, ADD notes LONGTEXT DEFAULT NULL");
         $this->addSql("ALTER TABLE invoices ADD terms LONGTEXT DEFAULT NULL, ADD notes LONGTEXT DEFAULT NULL");
@@ -41,7 +41,7 @@ class Version030 extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->abortIf("mysql" != $this->connection->getDatabasePlatform()->getName());
 
         $this->addSql("ALTER TABLE invoices DROP terms, DROP notes");
         $this->addSql("ALTER TABLE quotes DROP terms, DROP notes");
