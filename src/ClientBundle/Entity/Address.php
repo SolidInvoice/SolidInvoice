@@ -89,6 +89,13 @@ class Address
     private $country;
 
     /**
+     * @var string
+     *
+     * @Serialize\Groups({"client_api"})
+     */
+    private $countryName;
+
+    /**
      * @var Client
      *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="addresses")
@@ -211,6 +218,14 @@ class Address
     public function getCountry(): ?string
     {
         return $this->country;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryName(): ?string
+    {
+        return Intl::getRegionBundle()->getCountryName($this->getCountry());
     }
 
     /**
