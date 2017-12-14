@@ -16,20 +16,34 @@ namespace SolidInvoice\InvoiceBundle\Model;
 final class Graph
 {
     const TRANSITION_ACCEPT = 'accept';
+
     const TRANSITION_NEW = 'new';
+
     const TRANSITION_CANCEL = 'cancel';
+
     const TRANSITION_OVERDUE = 'overdue';
+
     const TRANSITION_PAY = 'pay';
+
     const TRANSITION_REOPEN = 'reopen';
+
     const TRANSITION_ARCHIVE = 'archive';
+
     const TRANSITION_RECURRING = 'recurring';
 
     const STATUS_DRAFT = 'draft';
+
     const STATUS_PENDING = 'pending';
+
     const STATUS_PAID = 'paid';
+
     const STATUS_OVERDUE = 'overdue';
+
     const STATUS_CANCELLED = 'cancelled';
+
     const STATUS_ARCHIVED = 'archived';
+
     const STATUS_NEW = 'new';
+
     const STATUS_RECURRING = 'recurring';
 }

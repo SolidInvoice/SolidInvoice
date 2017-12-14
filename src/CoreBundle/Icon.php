@@ -16,7 +16,10 @@ namespace SolidInvoice\CoreBundle;
 class Icon
 {
     const CLIENT = 'group';
+
     const INVOICE = 'file-text-o';
+
     const QUOTE = 'file-text-o';
+
     const PAYMENT = 'credit-card';
 }
