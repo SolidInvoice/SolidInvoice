@@ -46,7 +46,7 @@ config:
         backbone.paginator: ../assets/backbone.paginator.js
         backbone.radio: ../assets/backbone.radio.js
         marionette: ../assets/backbone.marionette.js
-        lodash: ../assets/index.js
+        lodash: ../assets/lodash.js
         jquery: ../assets/jquery.js
         bootstrap: ../assets/bootstrap.js
         accounting: ../assets/accounting.js
@@ -58,7 +58,7 @@ config:
         handlebars.runtime: ../assets/handlebars.runtime.js
         jquery.placeholder: ../assets/jquery.placeholder.js
         bootstrap.material.datetimepicker: ../assets/material-datetimepicker.js
-        admin-lte: ../assets/app.min.js
+        admin-lte: ../assets/adminlte.min.js
 
         # External Dependencies that don't have an NPM package
         jquery.jqcron: solidinvoicecore/js/lib/jquery/jqcron.js

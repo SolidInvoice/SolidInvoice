@@ -41,7 +41,7 @@ jobs:
   fast_finish: true
   include:
     - stage: unit
-      php: 7.1
+      php: 7.2
       script:
         - composer validate
         #- php bin/console security:check
@@ -55,7 +55,7 @@ jobs:
       php: nightly
       script: bash travis/phpunit.sh
     - stage: functional
-      php: 7.1
+      php: 7.2
       env: TEST_SUITE=saucelabs_chrome_linux
       addons:
         sauce_connect:
@@ -88,139 +88,139 @@ jobs:
       script: bash travis/behat.sh
 
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_linux
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_opera_linux
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_stable_macos_sierra
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_dev_macos_sierra
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_beta_macos_sierra
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_stable_macos_sierra
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_dev_macos_sierra
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_beta_macos_sierra
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_safari_macos_sierra
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_stable_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_dev_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_beta_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_stable_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_dev_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_beta_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_safari_10_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_safari_9_osx_el_capitan
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_stable_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_dev_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_beta_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_stable_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_dev_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_beta_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_ie_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_edge_14_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_edge_13_windows10
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_stable_windows81
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_dev_windows81
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_chrome_beta_windows81
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_stable_windows81
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_stable_windows81
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_dev_windows81
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_firefox_beta_windows81
 #    - stage: functional
-#      php: 7.1
+#      php: 7.2
 #      script: bash travis/behat.sh
 #      env: TEST_SUITE=saucelabs_ie_windows81
 
