@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\DependencyInjection;
 
+use FOS\UserBundle\Form\Factory\FormFactory;
+use SolidInvoice\UserBundle\Form\Type\UserEditType;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -30,5 +34,10 @@ class SolidInvoiceUserExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->import('services/*.yml');
+
+        $container->setDefinition(
+            'solidinvoice.user.profile.form_factory',
+            new Definition(FormFactory::class, [new Reference('form.factory'), 'solidinvoice_user_edit_form', UserEditType::class])
+        );
     }
 }

@@ -65,6 +65,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "parsleyjs": "^2.7.2",
-    "select2": "^4.0.6-rc.0"
+    "select2": "^4.0.6-rc.0",
+    "underscore": "^1.8.3"
   }
 }

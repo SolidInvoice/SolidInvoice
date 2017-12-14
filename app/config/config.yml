@@ -113,6 +113,9 @@ fos_user:
     profile:
         form:
             type: SolidInvoice\UserBundle\Form\Type\ProfileType
+    registration:
+        form:
+            type: SolidInvoice\UserBundle\Form\Type\UserType
 
 oro_require_js:
     config:

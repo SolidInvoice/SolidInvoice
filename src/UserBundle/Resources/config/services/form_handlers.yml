@@ -17,4 +17,4 @@ services:
 
     SolidInvoice\UserBundle\Form\Handler\UserEditFormHandler:
         arguments:
-            $factory: '@fos_user.profile.form.factory'
+            $factory: '@solidinvoice.user.profile.form_factory'

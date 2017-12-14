@@ -13,28 +13,31 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Type;
 
-use FOS\UserBundle\Form\Type\ProfileFormType;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserType extends AbstractType
+class UserEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $constraintsOptions = [
+            'message' => 'fos_user.current_password.invalid',
+        ];
+
         $builder->add('username', null, ['required' => true]);
         $builder->add('email', EmailType::class, ['required' => true]);
         $builder->add('mobile');
+
         $builder->add(
             'plainPassword',
             RepeatedType::class,

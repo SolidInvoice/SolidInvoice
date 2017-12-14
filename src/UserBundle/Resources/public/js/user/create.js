@@ -1,5 +1,4 @@
 define(['core/module', 'core/view', 'core/modal', 'template'], (Module, ItemView, Modal, Template) => {
-    console.log(Template);
     return Module.extend({
         regions: {
             'generatePassword': '#generate-password',
@@ -17,12 +16,12 @@ define(['core/module', 'core/view', 'core/modal', 'template'], (Module, ItemView
                 generate() {
                     let module = this,
                         modal = Modal.extend({
-                            'template': '<pre>' + this.generateRandomString(8) + '</pre>',
+                            'template': '<pre>' + this.generateRandomString(12) + '</pre>',
                             'events': {
                                 'click @ui.save': 'regenerate'
                             },
                             regenerate() {
-                                this.template = '<pre>' + module.generateRandomString(8) + '</pre>';
+                                this.template = '<pre>' + module.generateRandomString(12) + '</pre>';
                                 this.render();
                             },
                             'modal': {
@@ -41,7 +40,14 @@ define(['core/module', 'core/view', 'core/modal', 'template'], (Module, ItemView
                     (new modal).render();
                 },
                 generateRandomString(length) {
-                    return Math.random().toString(36).slice(-length);
+                    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                    let pass = '';
+                    for (let x = 0; x < length; x++) {
+                        let i = Math.floor(Math.random() * 62);
+                        pass += chars.charAt(i);
+                    }
+
+                    return pass;
                 }
             });
 
