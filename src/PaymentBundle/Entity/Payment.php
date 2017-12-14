@@ -45,10 +45,15 @@ class Payment extends BasePayment implements PaymentInterface
      * @var int
      */
     protected $id;
+
     protected $details;
+
     protected $description;
+
     protected $number;
+
     protected $clientEmail;
+
     protected $clientId;
 
     /**

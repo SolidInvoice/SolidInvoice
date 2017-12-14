@@ -16,14 +16,24 @@ namespace SolidInvoice\PaymentBundle\Model;
 class Status
 {
     const STATUS_UNKNOWN = 'unknown';
+
     const STATUS_FAILED = 'failed';
+
     const STATUS_SUSPENDED = 'suspended';
+
     const STATUS_EXPIRED = 'expired';
+
     const STATUS_PENDING = 'pending';
+
     const STATUS_CANCELLED = 'cancelled';
+
     const STATUS_NEW = 'new';
+
     const STATUS_CAPTURED = 'captured';
+
     const STATUS_AUTHORIZED = 'authorized';
+
     const STATUS_REFUNDED = 'refunded';
+
     const STATUS_CREDIT = 'credit';
 }
