@@ -54,6 +54,9 @@ jobs:
     - stage: unit
       php: nightly
       script: bash travis/phpunit.sh
+    - stage: unit
+      php: 7.2
+      script: bash travis/phpunit.sh
     - stage: functional
       php: 7.1
       env: TEST_SUITE=saucelabs_chrome_linux
