@@ -56,9 +56,6 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
             ->andReturn('/users');
     }
 
-    /**
-     * @return string|FormHandlerInterface
-     */
     public function getHandler()
     {
         $handler = new UserEditFormHandler($this->userManager, new FormFactory($this->factory, 'fos_user_registration_form', RegistrationFormType::class), $this->router);
@@ -67,17 +64,8 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    /**
-     * @param null|Response $response
-     * @param mixed         $data
-     * @param FormRequest   $form
-     *
-     * @throws \PHPUnit\Framework\Exception
-     */
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
-        //var_dump($this->em->getRepository('SolidInvoiceUserBundle:User')->findAll());
-
         $this->assertCount(1, $this->em->getRepository('SolidInvoiceUserBundle:User')->findAll());
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('test', $data->getUserName());
@@ -97,9 +85,6 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function getFormData(): array
     {
         $password = $this->faker->password;

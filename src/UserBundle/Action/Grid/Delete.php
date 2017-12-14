@@ -44,7 +44,6 @@ final class Delete implements AjaxResponse
     {
         $users = $request->request->get('data');
 
-
         $token = $this->tokenStorage->getToken();
         $currentUser = $token->getUser();
 
