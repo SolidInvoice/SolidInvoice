@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClassUtilTest extends TestCase
 {
-    public function testfindClassInFile()
+    public function testFindClassInFile()
     {
         $this->assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
     }
