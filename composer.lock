@@ -9784,6 +9784,53 @@
             "time": "2018-01-28T13:22:19+00:00"
         },
         {
+            "name": "phpstan/phpstan-doctrine",
+            "version": "0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-doctrine.git",
+                "reference": "af4cb66359784fce8a126e5d267b45fb6899cb26"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/af4cb66359784fce8a126e5d267b45fb6899cb26",
+                "reference": "af4cb66359784fce8a126e5d267b45fb6899cb26",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "^2.7",
+                "doctrine/orm": "^2.5",
+                "php": "~7.0",
+                "phpstan/phpstan": "^0.9"
+            },
+            "require-dev": {
+                "consistence/coding-standard": "~0.13.0",
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
+                "phing/phing": "^2.16.0",
+                "phpstan/phpstan-phpunit": "^0.9",
+                "phpstan/phpstan-strict-rules": "^0.9",
+                "phpunit/phpunit": "^6.4",
+                "slevomat/coding-standard": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Doctrine extensions for PHPStan",
+            "time": "2017-11-26T20:03:54+00:00"
+        },
+        {
             "name": "phpunit/php-code-coverage",
             "version": "5.3.2",
             "source": {

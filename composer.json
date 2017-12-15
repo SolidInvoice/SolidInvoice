@@ -112,7 +112,8 @@
         "matthiasnoback/symfony-dependency-injection-test": "^2.0",
         "phpstan/phpstan": "^0.9",
         "behatch/contexts": "^3.0",
-        "knplabs/friendly-contexts": "^0.8.2"
+        "knplabs/friendly-contexts": "^0.8.2",
+        "phpstan/phpstan-doctrine": "^0.9.0"
     },
     "scripts": {
         "post-install-cmd": [
