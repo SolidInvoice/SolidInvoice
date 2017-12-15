@@ -76,6 +76,15 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    protected function getHandlerOptions(): array
+    {
+        $user = new User;
+        $user->setUsername('one');
+        return [
+            'user' => $user
+        ];
+    }
+
     protected function getExtensions(): array
     {
         $type = new RegistrationFormType(User::class);
