@@ -18,7 +18,6 @@ use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\UserBundle\Manager\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 final class Delete implements AjaxResponse
 {

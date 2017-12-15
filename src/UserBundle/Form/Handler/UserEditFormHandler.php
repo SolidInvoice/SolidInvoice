@@ -87,8 +87,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
 
         $route = $this->router->generate('_users_list');
 
-        return new class($route) extends RedirectResponse implements FlashResponse
-        {
+        return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'users.create.success';
@@ -97,7 +96,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
     }
 
     /**
-     * Configure defined, required and default options
+     * Configure defined, required and default options.
      *
      * @param OptionsResolver $resolver
      */

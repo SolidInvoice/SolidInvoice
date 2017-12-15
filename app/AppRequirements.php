@@ -16,8 +16,11 @@ use Symfony\Component\Intl\Intl;
 class AppRequirements extends SymfonyRequirements
 {
     const REQUIRED_PHP_VERSION = '7.1.4';
+
     const REQUIRED_ICU_VERSION = '3.8';
+
     const EXCLUDE_REQUIREMENTS_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8)|(logout handler)/';
+
     const EXCLUDE_RECOMMENDED_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8)|(logout handler|PDO)/';
 
     public function __construct()

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\DependencyInjection;
 
-use SolidInvoice\UserBundle\Form\Type\UserEditType;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
