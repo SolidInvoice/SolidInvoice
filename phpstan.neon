@@ -7,3 +7,5 @@ parameters:
         - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\SetupStep\:\:forwardAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
     includes:
     	- vendor/phpstan/phpstan-doctrine/extension.neon
+    	- vendor/phpstan/phpstan-phpunit/extension.neon
+    	- vendor/phpstan/phpstan-phpunit/rules.neon
