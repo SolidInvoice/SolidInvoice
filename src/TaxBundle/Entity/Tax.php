@@ -34,6 +34,7 @@ class Tax
         Entity\SoftDeleteable;
 
     const TYPE_INCLUSIVE = 'Inclusive';
+
     const TYPE_EXCLUSIVE = 'Exclusive';
 
     /**
