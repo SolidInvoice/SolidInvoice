@@ -1,3 +1,4 @@
 config:
     paths:
         profile: solidinvoiceuser/js/profile/
+        user: solidinvoiceuser/js/user/

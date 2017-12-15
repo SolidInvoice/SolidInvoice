@@ -1,0 +1,49 @@
+datagrid:
+    users_list:
+        source:
+            repository: 'SolidInvoiceUserBundle:User'
+            method: getGridQuery
+        columns:
+            id:
+                name: id
+                label: ID
+                editable: false
+                cell: integer
+            name:
+                name: username
+                label: Username
+                editable: false
+                cell: string
+            email:
+                name: email
+                label: email
+                editable: false
+                cell: email
+            enabled:
+                name: enabled
+                label: Enabled
+                editable: false
+                cell: boolean
+            created:
+                name: created
+                label: Created
+                editable: false
+                cell: date
+        search:
+            fields:
+                - username
+                - email
+        line_actions:
+            edit:
+                icon: edit
+                label: 'users.grid.actions.edit'
+                route: _user_edit
+                route_params:
+                    id: id
+        actions:
+            delete:
+                label: 'Delete'
+                icon: ban
+                confirm: 'Are you sure you want to delete the selected rows?'
+                action: user_grid_delete
+                className: danger

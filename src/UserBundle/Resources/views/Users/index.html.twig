@@ -1,0 +1,22 @@
+{% extends '@SolidInvoiceCore/Layout/single_column.html.twig' %}
+
+{% block title %}{{ 'users.title'|trans }}{% endblock title %}
+
+{% block content %}
+    <div class="widget">
+        {{ render_grid('users_list') }}
+    </div>
+{% endblock content %}
+
+{% block heading %}
+    <fieldset class="page-heading">
+        <legend>
+            <div class="pull-right header-button">
+                <a class="btn btn-info" href="{{ path("_user_add") }}">
+                    {{ icon('user') }} {{ "users.add"|trans }}
+                </a>
+            </div>
+            <h3>{{ block('title') is defined ? block('title') }}</h3>
+        </legend>
+    </fieldset>
+{% endblock %}

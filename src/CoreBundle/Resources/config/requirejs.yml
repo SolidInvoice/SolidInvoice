@@ -47,6 +47,7 @@ config:
         backbone.radio: ../assets/backbone.radio.js
         marionette: ../assets/backbone.marionette.js
         lodash: ../assets/lodash.js
+        underscore: ../assets/underscore.js
         jquery: ../assets/jquery.js
         bootstrap: ../assets/bootstrap.js
         accounting: ../assets/accounting.js
@@ -78,7 +79,6 @@ config:
     map:
         '*':
             translator: solidinvoicecore/js/extend/translator
-            underscore: lodash
             handlebars.runtime: solidinvoicecore/js/extend/handlebars/helpers
             parsley: solidinvoicecore/js/extend/parsley
             bootstrap.modal: solidinvoicecore/js/extend/modal

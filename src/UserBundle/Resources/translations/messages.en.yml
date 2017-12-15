@@ -50,3 +50,18 @@ security:
         password: Password
         remember: 'Keep me logged in'
         forgot_password: 'Forgot Password'
+
+users:
+  add: 'Add User'
+  title: 'Users'
+  create:
+    generate_password: 'Generate Random Password'
+    success: 'User created successfully!'
+  update:
+    success: 'User updated successfully!'
+  save: 'Save'
+  grid:
+    actions:
+        edit: 'Edit'
+        delete: 'Delete'
+

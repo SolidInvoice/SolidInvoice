@@ -8,6 +8,7 @@ menu:
         system: 'System <b class="caret"></b>'
         settings: Settings
         tax: 'Tax Rates'
+        users: 'Users'
 exception:
     error:
         text: 'The following error occurred:'

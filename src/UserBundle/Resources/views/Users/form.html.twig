@@ -1,0 +1,42 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set module = 'user/create' %}
+
+{% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
+
+{% block title %}{{ 'users.add'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="box box-primary">
+        <div class="box-body">
+            {{ form_start(form) }}
+            {{ form_row(form) }}
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="pull-left">
+                        <button type="button" class="btn btn-warning" onclick="history.back()">
+                            {{ icon('reply') }} {{ 'client.cancel'|trans }}
+                        </button>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'users.save'|trans }}</button>
+                            <span id="generate-password"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock content %}

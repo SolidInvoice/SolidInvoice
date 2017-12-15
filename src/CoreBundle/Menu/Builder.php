@@ -54,6 +54,7 @@ class Builder extends AuthenticatedMenu
         $system->addChild(MainMenu::settings());
 
         $system->addChild(MainMenu::tax());
+        $system->addChild(MainMenu::users());
         $system->setChildrenAttributes(['class' => 'dropdown-menu']);
     }
 }

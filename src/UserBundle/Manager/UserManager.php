@@ -49,6 +49,19 @@ class UserManager extends BaseUserManager
         $this->objectManager->flush();
     }
 
+    public function deleteUsers(array $users)
+    {
+        $repository = $this->objectManager->getRepository('SolidInvoiceUserBundle:User');
+
+        $qb = $repository->createQueryBuilder('u');
+
+        $qb->delete()
+            ->where($qb->expr()->in('u.id', $users));
+
+        return $qb->getQuery()
+            ->execute();
+    }
+
     /**
      * {@inheritdoc}
      */
