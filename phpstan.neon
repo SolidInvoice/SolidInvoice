@@ -5,7 +5,10 @@ parameters:
     ignoreErrors:
         - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\ConfigStep\:\:forwardAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
         - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\SetupStep\:\:forwardAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
+    symfony:
+        srcDevDebugProjectContainerXml: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml
     includes:
     	- vendor/phpstan/phpstan-doctrine/extension.neon
     	- vendor/phpstan/phpstan-phpunit/extension.neon
     	- vendor/phpstan/phpstan-phpunit/rules.neon
+    	- vendor/lookyman/phpstan-symfony/extension.neon
