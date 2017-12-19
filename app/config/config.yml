@@ -130,3 +130,7 @@ api_platform:
         json:     ['application/json']
         xml:      ['application/xml', 'text/xml']
         html:     ['text/html']
+
+maba_webpack:
+    config:
+        path: '%kernel.project_dir%/app/config/webpack.config.js'

@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autoconfigure: true
+        public: false
+        autowire: true
+
+    SolidInvoice\UIBundle\Listener\:
+        resource: '../../../Listener/*'

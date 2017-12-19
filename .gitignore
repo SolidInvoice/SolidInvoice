@@ -25,3 +25,5 @@ app/config/parameters.yml
 node_modules
 .rules
 .php_cs.cache
+web/compiled
+yarn-error.log

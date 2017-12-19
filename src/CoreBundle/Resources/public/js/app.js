@@ -7,8 +7,31 @@
  * with this source code in the file LICENSE.
  */
 
-define(
-    /** global: requirejs */
+import Vue from 'vue';
+import Vuetify from 'vuetify';
+
+
+console.log(document.querySelector('meta[name=config]'));
+
+Vue.use(Vuetify);
+
+Vue.use(Vuetify, {
+    theme: {
+        primary: '#eb0356',
+        secondary: '#848484',
+        accent: '#FFC107',
+        info: '#B2DFDB'
+    }
+});
+
+let App = new Vue({
+    'el': '#app'
+});
+
+
+
+/*define(
+    /!** global: requirejs *!/
     ['jquery', 'marionette', 'backbone', 'lodash', requirejs.s.contexts._.config.module, 'admin-lte', 'bootstrap', 'core/module'],
     function($, Mn, Backbone, _, Module) {
         'use strict';
@@ -26,9 +49,9 @@ define(
 
                     this.regions = options.regions;
 
-                    /**
+                    /!**
                      * Tooltip
-                     */
+                     *!/
                     var tooltip = $('*[rel=tooltip]');
                     if (tooltip.length) {
                         require(['bootstrap'], function() {
@@ -36,9 +59,9 @@ define(
                         });
                     }
 
-                    /**
+                    /!**
                      * Select2
-                     */
+                     *!/
                     var select2 = $('select.select2');
                     if (select2.length) {
                         require(['jquery.select2'], function() {
@@ -48,9 +71,9 @@ define(
                         });
                     }
 
-                    /**
+                    /!**
                      * PlaceHolder
-                     */
+                     *!/
                     var placeholder = $('input[placeholder]');
                     if (placeholder.length) {
                         require(['jquery.placeholder'], function() {
@@ -97,3 +120,4 @@ define(
         return App;
     }
 );
+*/

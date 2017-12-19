@@ -1,9 +1,10 @@
 {
-  "framework": "jasmine2",
+  "framework": "mocha",
   "parallel": 5,
   "src_files": [
-    "web/bundles/**/spec/**/*.js"
+    "src/*Bundle/Resources/tests/**/*.test.js"
   ],
+  "before_tests": "webpack --config tests/config/webpack.config.js",
   "test_page": "tests/test.mustache",
   "launch_in_dev": [
     "Chrome Canary"

@@ -1,8 +1,14 @@
 {
-  "presets": ["env"],
-  "ignore": [
-    "csbillcore/js/lib/**/*.js",
-    "csbillcore/js/app.js",
-    "fosjsrouting/**/**",
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "ie >= 10"]
+      }
+    }]
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "syntax-dynamic-import"
   ]
 }

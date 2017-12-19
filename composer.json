@@ -93,7 +93,10 @@
         "solidworx/form-handler-bundle": "1.0.0-beta",
         "defuse/php-encryption": "^2.1",
         "mpociot/vat-calculator": "^2.2",
-        "api-platform/core": "v2.1.0-beta.2"
+        "api-platform/core": "v2.1.0-beta.2",
+        "maba/webpack-bundle": "^1.0",
+        "solidworx/lodash-php": "^0.0.2",
+        "sebastian/comparator": "^2.1"
     },
     "require-dev": {
         "behat/behat": "^3.0",
@@ -132,12 +135,7 @@
         ]
     },
     "config": {
-        "bin-dir": "bin",
-        "fxp-asset": {
-            "asset-installer-paths": {
-                "npm-asset-library": "web/bundles/npmassets"
-            }
-        }
+        "bin-dir": "bin"
     },
     "extra": {
         "symfony-app-dir": "app",
@@ -147,10 +145,6 @@
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
-        },
-        "asset-installer-paths": {
-            "npm-asset-library": "web/bundles/npmassets",
-            "bower-asset-library": "web/bundles/bowerassets"
         },
         "branch-alias": {
             "dev-master": "2.0-dev"

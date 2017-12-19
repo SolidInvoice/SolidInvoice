@@ -23,14 +23,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-    {% block stylesheets %}
-	    <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css" />
-    {% endblock stylesheets %}
+    {% block meta %}{% endblock %}
 
-    {% include 'SolidInvoiceCoreBundle:_partials:scripts.html.twig' %}
+    {% webpack css '@SolidInvoiceCoreBundle/Resources/public/less/styles.less' %}
+	    <link rel="stylesheet" href="{{ asset(asset_url) }}" type="text/css" />
+    {% end_webpack %}
+
+    {#{% include 'SolidInvoiceCoreBundle:_partials:scripts.html.twig' %}#}
 </head>
 <body class="{{ setting('design/system/theme', 'skin-blue') }} sidebar-mini {{ body_class|default('') }}">
-    <div class="wrapper">
+    <div class="wrapper" id="app">
         {{ block('body_top') is defined ? block('body_top') }}
         <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
@@ -50,5 +52,9 @@
 
         {{ block('body_bottom') is defined ? block('body_bottom') }}
     </div>
+
+    {% webpack js '@SolidInvoiceCoreBundle/Resources/assets/js/main.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% end_webpack %}
 </body>
 </html>

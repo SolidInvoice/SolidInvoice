@@ -39,6 +39,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
             new SolidWorx\FormHandler\FormHandlerBundle(),
             new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
+            new Maba\Bundle\WebpackBundle\MabaWebpackBundle(),
 
             new SolidInvoice\ApiBundle\SolidInvoiceApiBundle(),
             new SolidInvoice\ClientBundle\SolidInvoiceClientBundle(),
@@ -57,6 +58,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new SolidInvoice\SettingsBundle\SolidInvoiceSettingsBundle(),
             new SolidInvoice\TaxBundle\SolidInvoiceTaxBundle(),
             new SolidInvoice\UserBundle\SolidInvoiceUserBundle(),
+            new SolidInvoice\UIBundle\SolidInvoiceUIBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
