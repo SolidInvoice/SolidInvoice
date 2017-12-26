@@ -176,4 +176,33 @@ class Grid implements GridInterface, \JsonSerializable
             'parameters' => $this->parameters,
         ];
     }
+
+    public function getColumns(): array
+    {
+        return $this->columns->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function getActions(): array
+    {
+        return $this->actions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLineActions(): array
+    {
+        return $this->lineActions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
+    }
 }

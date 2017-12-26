@@ -59,35 +59,33 @@ class GridExtension extends \Twig_Extension
 
     /**
      * @param \Twig_Environment $env
-     * @param string            $gridName
+     * @param string            $name
      * @param array             $parameters
      *
      * @return string
      *
-     * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
+     * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException|\Twig_Error
      */
-    public function renderGrid(\Twig_Environment $env, string $gridName, array $parameters = []): string
+    public function renderGrid(\Twig_Environment $env, string $name, array $parameters = []): string
     {
-        $grid = $this->repository->find($gridName);
+        $grid = $this->repository->find($name);
 
         if (!empty($parameters)) {
             $grid->setParameters($parameters);
         }
 
-        $gridOptions = json_encode($grid);
-
         $html = '';
 
         if ($grid->requiresStatus() && false === self::$statusRendered) {
-            $html .= $env->render('SolidInvoiceCoreBundle:_partials:status_labels.html.twig');
+            $html .= $env->render('@SolidInvoiceCore/_partials/status_labels.html.twig');
             self::$statusRendered = true;
         }
 
         $html .= $env->render(
-            'SolidInvoiceDataGridBundle::grid.html.twig',
+            '@SolidInvoiceDataGrid/grid.html.twig',
             [
-                'gridName' => $gridName,
-                'gridOptions' => $gridOptions,
+                'name' => $name,
+                'grid' => $grid,
                 'requiresStatus' => $grid->requiresStatus(),
             ]
         );

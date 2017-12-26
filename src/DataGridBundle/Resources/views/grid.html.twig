@@ -6,12 +6,5 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% set id = 'grid-' ~ gridName ~ '-' ~ random() %}
 
-<div id="{{ id }}"></div>
-
-<script>
-    require(['grid/grid'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (Grid) {
-	    new Grid({{ gridOptions|raw }}, '#{{ id }}');
-    });
-</script>
+<grid :columns="{{ grid.columns|json_encode }}" name="{{ name }}" :actions="{{ grid.actions|json_encode }}" :line-actions="{{ grid.lineActions|json_encode }}" :properties="{{ grid.properties|json_encode }}"></grid>

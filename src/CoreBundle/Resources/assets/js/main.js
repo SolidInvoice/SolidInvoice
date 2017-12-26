@@ -8,6 +8,8 @@ config.load();
 
 Accounting.settings = config.get('accounting');
 
+Vue.component('grid', () => import('@SolidInvoiceDataGridBundle/Resources/assets/components/DataGrid.vue'));
+
 let App = new Vue({
     'el': '#app'
 });
