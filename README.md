@@ -9,9 +9,7 @@ Open-Source General Billing Manager
 
 SolidInvoice is an open-source application that allows you to manage clients and contacts and send invoices and quotes.
 
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/5F3cPLPMDG3UmR54nFoGnFLo/SolidInvoice/SolidInvoice'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/5F3cPLPMDG3UmR54nFoGnFLo/SolidInvoice/SolidInvoice.svg' />
-</a>
+
 
 Requirements
 ------------
