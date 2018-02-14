@@ -10,11 +10,44 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 
 {% block widget_attributes -%}
-    id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}
+
+    :id="'{{ id }}'" :name="'{{ full_name }}'"
+
+    {% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {%- endblock widget_attributes %}
 
-{% block form_widget_simple -%}{{ parent() }}{% if help is defined and help is not empty %}<span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>{% endif %}{%- endblock form_widget_simple %}
+{% block form_widget_simple -%}{{ parent() }}{% if help is defined and help is not empty %}<span class="help-{{ help_type }}">
+    <small>{{ help|trans|nl2br }}</small></span>{% endif %}{%- endblock form_widget_simple %}
+
+{%- block collection_widget -%}
+
+    <form-collection :allow-delete="{{ allow_delete ? 'true' : 'false' }}" ref="{{ id }}" id="{{ id }}">
+        {% if prototype is defined %}
+            <template slot="prototype" slot-scope="props">
+                {#{%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}#}
+
+                {{- form_row(prototype)|replace({
+                    (prototype.vars.name): "' + props.index + '"
+                })|raw -}}
+
+                {% if allow_add %}
+                    <portal to="{{ label }}">
+                        <a @click="addRow('{{ id }}')">{{ icon('plus') }} Add {{ label|default(name)|humanize|title }}</a>
+                    </portal>
+                {% endif %}
+            </template>
+            {#prototype="{{ form_row(prototype)|e('html_attr') }}"#}
+        {% endif %}
+
+        {#{{- block('form_widget') -}}#}
+
+    </form-collection>
+{%- endblock collection_widget -%}
+
+{% block contact_details_widget %}
+    {{ form_row(prototype) }}
+{% endblock %}
 
 {% block form_rows -%}
     {{ form_errors(form) }}
@@ -41,7 +74,7 @@
 {%- endblock form_row %}
 
 {% block checkbox_widget -%}
-    {{ parent() }}
+    {{- parent() -}}
 
     {% if help is defined and help is not empty %}
         <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
@@ -72,19 +105,18 @@
 {% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
-            <ul class="list-unstyled">
+        <ul class="list-unstyled">
                 {%- for error in errors -%}
                     <li>
                         {{ icon('exclamation-sign') }}
                         {{ error.messagePluralization is null
-                            ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                            : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
-                        }}
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') }}
                     </li>
                 {%- endfor -%}
             </ul>
         {% if form.parent %}</span>{% else %}</div>{% endif %}
-        {%- endif %}
+    {%- endif %}
 {%- endblock form_errors %}
 
 {% block form_label -%}
@@ -108,45 +140,45 @@
     <div id="{{ id }}-uploader"></div>
 
     <script>
-        require(['core/util/form/upload'], function (Upload) {
+        require(['core/util/form/upload'], function(Upload) {
             new Upload('{{ id }}', '{{ sessionId }}', '{{ asset("swf/uploadify.swf") }}', '{{ absolute_url("/uploads") }}/', '{{ value }}');
         });
     </script>
 {%- endblock image_upload_widget %}
 
-{% block contact_detail_widget %}
-    {% include "SolidInvoiceClientBundle:Form:contact_details.html.twig" %}
-{% endblock contact_detail_widget %}
+{% block contact_detail_widget -%}
+    {% include "@SolidInvoiceClient/Form/contact_details.html.twig" %}
+{%- endblock contact_detail_widget %}
 
-{% block contact_widget %}
-    {% include "SolidInvoiceClientBundle:Form:contacts.html.twig" %}
-{% endblock contact_widget %}
+{% block contact_widget -%}
+    {% include "@SolidInvoiceClient/Form/contacts.html.twig" %}
+{%- endblock contact_widget %}
 
 {% block tax_field_widget -%}
-{% spaceless %}
-    {% if expanded %}
-        {{- block('choice_widget_expanded') -}}
-    {% else %}
-        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-        {% if required and placeholder is none and not placeholder_in_choices %}
-            {% set required = false %}
-        {% endif %}
-        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-            {% if placeholder is not none %}
-                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
+    {% spaceless %}
+        {% if expanded %}
+            {{- block('choice_widget_expanded') -}}
+        {% else %}
+            {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+            {% if required and placeholder is none and not placeholder_in_choices %}
+                {% set required = false %}
             {% endif %}
-            {% if preferred_choices|length > 0 %}
-                {% set options = preferred_choices %}
-                {{ block('choice_widget_options') }}
-                {% if choices|length > 0 and separator is not none %}
-                    <option disabled="disabled">{{ separator }}</option>
+            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {% if placeholder is not none %}
+                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
                 {% endif %}
-            {% endif %}
-            {% set options = choices %}
-            {{ block('tax_choice_widget_options') }}
-        </select>
-    {% endif %}
-{% endspaceless %}
+                {% if preferred_choices|length > 0 %}
+                    {% set options = preferred_choices %}
+                    {{ block('choice_widget_options') }}
+                    {% if choices|length > 0 and separator is not none %}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {% endif %}
+                {% endif %}
+                {% set options = choices %}
+                {{ block('tax_choice_widget_options') }}
+            </select>
+        {% endif %}
+    {% endspaceless %}
 {%- endblock %}
 
 {% block tax_number_widget -%}
@@ -210,7 +242,7 @@
                 {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
             </a>
         {% endif %}
-        <br class="clear" />
+        <br class="clear"/>
     </div>
 {% endblock address_widget %}
 
@@ -228,7 +260,7 @@
     {% set type = 'hidden' %}
     {{ block('form_widget') }}
     <script>
-        require(['core/util/form/cron'], function (Cron) {
+        require(['core/util/form/cron'], function(Cron) {
             Cron.jqcron('#{{ id }}');
         });
     </script>
@@ -265,13 +297,13 @@
         </div>
     </div>
     <script>
-        require(['jquery'], function ($) {
-            $(function () {
+        require(['jquery'], function($) {
+            $(function() {
                 var $type = $('#{{ form.type.vars.id }}'),
                     $typeDisplay = $('#{{ form.type.vars.id }}_display'),
                     $types = $('.{{ form.type.vars.id }}_types');
 
-                $types.on('click', function (e) {
+                $types.on('click', function(e) {
                     e.preventDefault();
                     var $this = $(this);
                     $typeDisplay.html($this.html());

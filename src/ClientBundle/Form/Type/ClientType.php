@@ -55,6 +55,7 @@ class ClientType extends AbstractType
                 'by_reference' => false,
                 'prototype' => true,
                 'prototype_name' => '__contact_prototype__',
+                'label' => 'Contacts'
             ]
         );
 
@@ -72,6 +73,7 @@ class ClientType extends AbstractType
                 'delete_empty' => true,
                 'by_reference' => false,
                 'required' => false,
+                'label' => 'Addresses'
             ]
         );
     }

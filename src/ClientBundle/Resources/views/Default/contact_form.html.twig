@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% import "SolidInvoiceCoreBundle:Form:macro.html.twig" as _macro %}
+{% import "@SolidInvoiceCore/Form/macro.html.twig" as _macro %}
 
 {{ form_start(form) }}
 
@@ -28,7 +28,13 @@
                 </div>
             </div>
 
-            <div class="box box-primary">
+            <box title="{{ form.addresses.vars.label }}">
+                <template slot="body">
+                    {{ form_row(form.addresses) }}
+                </template>
+            </box>
+
+            {#<div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ 'client.address.info'|trans }}</h3>
                 </div>
@@ -52,16 +58,33 @@
                         {{ icon('plus', ['circle']) }} {{ "client.address.add"|trans }}
                     </a>
                 </div>
-            </div>
+            </div>#}
         </div>
-        <div class="col-lg-6 col-md-6" id="client-contacts-collection">
+
+        {#<box title="{{ 'client.contact.info'|trans }}">#}
+
+        <div class="col-lg-6 col-md-6">
+            <box title="{{ form.contacts.vars.label }}">
+                <template slot="body">
+                    {{ form_row(form.contacts) }}
+                </template>
+                {#<template slot="footer">
+                    <a href="#" data-target="client_contacts" class="btn-flat btn-add add_form_collection_link">
+                        {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
+                    </a>
+                </template>#}
+            </box>
+        </div>
+
+        {#<div class="col-lg-6 col-md-6" id="client-contacts-collection">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ 'client.contact.info'|trans }}</h3>
                 </div>
 
                 <div class="box-body">
-                    {% set prototypeForm %}
+
+                    #}{#{% set prototypeForm %}
                         {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-flat btn-danger'} }) }}
                     {% endset %}
 
@@ -71,7 +94,7 @@
                         {% else %}
                             {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
                         {% endfor %}
-                    </div>
+                    </div>#}{#
                 </div>
 
                 <div class="box-footer">
@@ -80,7 +103,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div>#}
     </div>
 
     {{ form_rest(form) }}

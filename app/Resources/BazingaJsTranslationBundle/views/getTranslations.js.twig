@@ -1,18 +1,22 @@
-define(['Translator'], function (Translator) {
-    {% if include_config %}
-        Translator.fallback      = '{{ fallback }}';
-        Translator.defaultDomain = '{{ defaultDomain }}';
-    {% endif %}
+window.translations = window.translations || [];
+window.Translator = window.Translator || {};
 
-    {% for locale, domains in translations %}
-        // {{ locale }}
-        {% for domain, messages in domains %}
-            {% for key, message in messages %}
-                Translator.add({{ key|json_encode|raw }}, {{ message|json_encode|raw }}, "{{ domain }}", "{{ locale }}");
-            {% endfor %}
-        {% endfor %}
-    {% endfor %}
+{% if include_config %}
+window.Translator.fallback      = '{{ fallback }}';
+window.Translator.defaultDomain = '{{ defaultDomain }}';
+{% endif %}
 
-    return Translator;
-});
-
+window.translations.push(
+{% for locale, domains in translations %}
+{% for domain, messages in domains %}
+{% for key, message in messages %}
+{
+    'key': {{ key|json_encode|raw }},
+    'message': {{ message|json_encode|raw }},
+    'domain': '{{ domain }}',
+    'locale': '{{ locale }}'
+}{% if not loop.last %},{% endif %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+);

@@ -7,39 +7,83 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="form-group multiple-form-group input-group">
-    <div class="input-group-btn input-group-select">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <span class="concept">
-		{% for type in contactTypes if type.id == form.type.vars.value %}
-                    {{ type.name|title }}
-                {% else %}
-                    {{ 'client.contact.details.choose'|trans }}
-                {% endfor %}
-            </span> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-	    {% for type in contactTypes %}
-                <li>
-                    <a href="#" data-value="{{ type.id }}" data-type="{{ type.name }}">
-                        {{ type.name|title }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-        {{ form_widget(form.type) }}
-    </div>
-    {{ form_widget(form.value) }}
-    <span class="input-group-btn">
-        {% if child is defined and child %}
-            <button type="button" class="btn btn-danger btn-delete">-</button>
-        {% else %}
-            <button type="button" class="btn btn-success btn-add">+</button>
-        {% endif %}
-    </span>
-</div>
+{#
+{% set id = random() %}
+{% set template %}
+    <div class="input-group">
+        <div class="input-group-btn input-group-select">
+            {{ form_widget(form.type) }}
+        </div>
 
-<div class="form-group has-error">
-    {{ form_errors(form.value) }}
-    {{ form_errors(form) }}
-</div>
+        <span class="input-group-btn">
+                {% if child is defined and child %}
+                    <button type="button" class="btn btn-danger btn-delete">-</button>
+                {% else %}
+                    <button type="button" class="btn btn-success btn-add" @click="addRow('{{ id }}')">+</button>
+                {% endif %}
+            </span>
+    </div>
+
+    <div class="form-group has-error">
+
+    </div>
+
+{% endset %}
+#}
+
+{% set type %}
+    <span>
+        <dropdown :items="{{ contactTypes|json_encode }}" label="{{ 'client.contact.details.choose'|trans }}"></dropdown>
+        {{ form_widget(form.type) }}
+    </span>
+{% endset %}
+
+{% set form_errors %}
+    {{- form_errors(form.value) -}}
+    {{- form_errors(form) -}}
+{% endset %}
+
+{% spaceless %}
+    <contact-info
+            type="{{ type|e('html_attr') }}"
+            value="{{ form_widget(form.value)|e('html_attr') }}"
+            form-errors="{{ form_errors|e('html_attr') }}"
+            :props="prop"
+    >
+        {#<template slot="contact-type">
+            #}{#<dropdown button active="{{ form.type.vars.value }}" :items="{{ contactTypes|json_encode|e('html_attr') }}">
+
+                </dropdown>#}{#
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="concept">
+                        {% for type in contactTypes if type.id == form.type.vars.value %}
+                            {{ type.name|title }}
+                        {% else %}
+                            {{ 'client.contact.details.choose'|trans }}
+                        {% endfor %}
+                    </span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {% for type in contactTypes -%}
+                    <li>
+                        <a href="#" data-value="{{ type.id }}" data-type="{{ type.name }}">{{ type.name|title }}</a>
+                    </li>
+                {%- endfor %}
+            </ul>
+            {{ form_widget(form.type) }}
+        </template>#}
+        {#<template slot="form-errors">
+            {{- form_errors(form.value) -}}
+            {{- form_errors(form) -}}
+        </template>#}
+    </contact-info>
+{% endspaceless %}
+{#<form-collection class="form-group multiple-form-group" ref="{{ id }}">
+    <template slot="prototype" slot-scope="items">
+        AAA{% verbatim %}{{ items }}{% endverbatim %}CCC
+        <div class="form-group">
+
+        </div>
+    </template>
+</form-collection>#}
