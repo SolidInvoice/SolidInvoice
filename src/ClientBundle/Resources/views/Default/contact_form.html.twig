@@ -63,18 +63,50 @@
 
         {#<box title="{{ 'client.contact.info'|trans }}">#}
 
-        <div class="col-lg-6 col-md-6">
-            <box title="{{ form.contacts.vars.label }}">
-                <template slot="body">
-                    {{ form_row(form.contacts) }}
-                </template>
-                {#<template slot="footer">
-                    <a href="#" data-target="client_contacts" class="btn-flat btn-add add_form_collection_link">
-                        {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
-                    </a>
-                </template>#}
-            </box>
-        </div>
+
+
+            <div class="col-lg-6 col-md-6">
+                <box title="{{ form.contacts.vars.label }}">
+                    <template slot="body">
+                        {% if form.contacts|length > 0 %}
+                            <form-collection :allow-delete="{{ form.contacts.vars.allow_delete ? 'true' : 'false' }}" ref="{{ form.contacts.vars.id }}" id="{{ form.contacts.vars.id }}">
+                                <template slot="prototype" slot-scope="props">
+
+
+
+                                    {{- form_row(widget)|replace({
+                                        (prototype.vars.name): "' + props.index + '"
+                                    })|raw -}}
+
+                                    {% if form.contacts.vars.allow_add %}
+                                        <portal to="{{ form.contacts.vars.label }}">
+                                            <a @click="addRow('{{ form.contacts.vars.id }}')">{{ icon('plus') }} Add {{ form.contacts.vars.label|default(form.contacts.vars.name)|humanize|title }}</a>
+                                        </portal>
+                                    {% endif %}
+                                </template>
+                            </form-collection>
+                        {% else %}
+                            {{ form_row(form.contacts) }}
+                        {% endif %}
+                    </template>
+                    {#<template slot="footer">
+                        <a href="#" data-target="client_contacts" class="btn-flat btn-add add_form_collection_link">
+                            {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
+                        </a>
+                    </template>#}
+                </box>
+            </div>
+            {#<div class="col-lg-6 col-md-6">
+                <box title="{{ form.contacts.vars.label }}">
+                    <template slot="body">
+                    </template>
+                    #}{#<template slot="footer">
+                        <a href="#" data-target="client_contacts" class="btn-flat btn-add add_form_collection_link">
+                            {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
+                        </a>
+                    </template>#}{#
+                </box>
+            </div>#}
 
         {#<div class="col-lg-6 col-md-6" id="client-contacts-collection">
             <div class="box box-primary">

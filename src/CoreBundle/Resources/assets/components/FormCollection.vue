@@ -17,7 +17,7 @@
                 this.items.push(this.getRow());
             },
             getRow() {
-                return this.$scopedSlots.prototype({index: this.items.length});
+                return this.$scopedSlots.prototype({index: this.items.length, value: 0});
             }
         },
         mounted: function() {

@@ -2,9 +2,9 @@
     <span>
         <div class="form-group input-group" v-for="(item, index) in items" :key="item">
             <div class="input-group-btn input-group-select">
-                <component :is="setPrototype(index, type)" v-bind="componentData"></component>
+                <component :is="setPrototype(index, type)" v-bind="componentData" @input="setValue"></component>
             </div>
-            <component :is="setPrototype(index, value)" v-bind="componentData"></component>
+            <component :is="setPrototype(index, value)" v-bind="componentData" @input="setValue"></component>
 
             <span class="input-group-btn">
                 <button type="button" class="btn btn-danger btn-remove" @click="removeRow(index)" v-if="index + 1 < items.length">-</button>
@@ -31,7 +31,8 @@
                 required: false
             },
             props: {
-                required: false
+                required: false,
+                default: () => ({}),
             }
         },
         methods: {
@@ -40,6 +41,9 @@
             },
             removeRow(index) {
                 this.items.splice(index, 1);
+            },
+            setValue(value) {
+                //this.componentData.props.value = value;
             },
             setPrototype(index, text) {
                 let component = Vue.compile(text.replace(/__contact_details_prototype__/gi, index));
