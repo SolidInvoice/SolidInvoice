@@ -5,7 +5,8 @@
   * Update Dependencies (#202, #199)
   * Add button to print quotes and invoices (#193)
   * Display literal country name (#197)
-  * Fix RequireJS not being inlcluded anymore for some strange reason
+  * Fix RequireJS not being inlcluded anymore
+  * Add server_version to doctrine/dbal configuration
 
 2.0.0 Alpha 1 / 2017-08-22
 =========================
