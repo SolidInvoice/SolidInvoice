@@ -104,7 +104,7 @@ Please see the [LICENSE](LICENSE) file for the full license.
 Demo
 ------------
 
-[http://demo.solidinvoice.org](http://demo.solidinvoice.org)
+[http://demo.solidinvoice.co/](http://demo.solidinvoice.co/)
 
 
 [1]: http://symfony.com
