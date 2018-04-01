@@ -64,7 +64,7 @@
         "moontoast/math": "^1.1",
         "oyejorge/less.php": "^1.7",
         "friendsofsymfony/user-bundle": "^2.0",
-        "twig/twig": "^2.0",
+        "twig/twig": "^2.4",
         "swiftmailer/swiftmailer": "^6.0",
         "payum/payum-bundle": "^2.2",
         "payum/offline": "^1.4",
@@ -96,7 +96,9 @@
         "api-platform/core": "v2.1.0-beta.2",
         "maba/webpack-bundle": "^1.0",
         "solidworx/lodash-php": "^0.0.2",
-        "sebastian/comparator": "^2.1"
+        "sebastian/comparator": "^2.1",
+        "symfony/polyfill-php70": "^1.6",
+        "solidworx/vuetify-bundle": "dev-master"
     },
     "require-dev": {
         "behat/behat": "^3.0",
