@@ -63,7 +63,7 @@ $ php composer.phar install
 After all the dependencies has been installed, the next step is to install all the web assets
 
 ```bash
-$ php app/console assets:install --symlink web
+$ php bin/console assets:install --symlink web
 ```
 
 The final step is to install the Node packages, and compile all the assets
@@ -74,6 +74,15 @@ $ ./node_modules/.bin/gulp
 ```
 
 Now you should have a fully working copy of SolidInvoice.
+
+If you want to run SolidInvoice in production mode, some additional steps is required:
+
+```bash
+$ php bin/console fos:js-routing:dump --callback=define
+$ php bin/console bazinga:js-translation:dump --merge-domains
+```
+
+Otherwise you can run the app using `app_dev.php` to run it in development mode.
 
 Features
 --------
