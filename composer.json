@@ -35,7 +35,7 @@
         ]
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.1",
         "symfony/symfony": "^3.3",
         "symfony/polyfill-iconv": "^1.2",
         "symfony/polyfill-intl-icu": "^1.2",
@@ -93,7 +93,8 @@
         "solidworx/form-handler-bundle": "1.0.0-rc",
         "defuse/php-encryption": "^2.1",
         "mpociot/vat-calculator": "^2.2",
-        "api-platform/core": "^2.1"
+        "api-platform/core": "^2.1",
+        "ocramius/proxy-manager": "<2.2"
     },
     "require-dev": {
         "behat/behat": "^3.0",
