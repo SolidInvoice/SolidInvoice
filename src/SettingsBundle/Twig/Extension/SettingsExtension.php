@@ -49,7 +49,7 @@ class SettingsExtension extends \Twig_Extension
         try {
             $setting = $this->config->get($setting);
 
-            if ($decode) {
+            if ($decode && $setting) {
                 return json_decode($setting, true);
             }
 
