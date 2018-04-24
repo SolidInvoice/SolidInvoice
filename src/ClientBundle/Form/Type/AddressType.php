@@ -15,6 +15,7 @@ namespace SolidInvoice\ClientBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -39,15 +40,14 @@ class AddressType extends AbstractType
         $builder->add('street2');
         $builder->add('city');
         $builder->add('state');
-        $builder->add('zip');
+        $builder->add('zip', NumberType::class);
         $builder->add(
             'country',
             CountryType::class,
             [
                 'attr' => [
-                    'class' => 'select2',
+                    'placeholder' => 'client.address.country.select',
                 ],
-                'placeholder' => 'client.address.country.select',
                 'required' => false,
             ]
         );

@@ -8,10 +8,8 @@
  #}
 
 {% set type %}
-    <span>
-        <dropdown :items="{{ contactTypes|json_encode }}" label="{{ 'client.contact.details.choose'|trans }}" @input="$emit('input', $event)"></dropdown>
-        {{ form_widget(form.type, {'attr': {':value': 'props.value'}}) }}
-    </span>
+    <dropdown :items="{{ contactTypes|json_encode }}" label="{{ 'client.contact.details.choose'|trans }}" :model="'#{{ form.type.vars.id }}'"></dropdown>
+    {{ form_widget(form.type) }}
 {% endset %}
 
 {% set form_errors %}
@@ -20,11 +18,38 @@
 {% endset %}
 
 {% spaceless %}
-    <contact-info
-        type="{{ type|e('html_attr') }}"
-        value="{{ form_widget(form.value)|e('html_attr') }}"
-        form-errors="{{ form_errors|e('html_attr') }}"
-        :props="props"
-    >
-    </contact-info>
+    <form-collection>
+        <template slot="prototype" slot-scope="item">
+            <v-layout>
+                <v-flex xs3 class="mt-2">
+                    {{ type|replace({
+                        "__contact_details_prototype__": "' + item.index + '"
+                    })|raw }}
+                </v-flex>
+                <v-flex xs8 class="mx-0">
+                    {{ form_widget(form.value)|replace({
+                        "__contact_details_prototype__": "' + item.index + '"
+                    })|raw }}
+                </v-flex>
+                <v-flex xs1 class="mt-3">
+                    <a @click="item.$bus.$emit('deleteItem', item.index)" v-if="item.index + 1 < item.length">
+                        <v-tooltip left>
+                            <v-btn flat icon color="error" slot="activator">
+                                <v-icon>remove</v-icon>
+                            </v-btn>
+                            <span>{{ 'client.contact.details.remove'|trans }}</span>
+                        </v-tooltip>
+                    </a>
+                    <a @click="item.$bus.$emit('addItem')" v-if="item.index + 1 === item.length">
+                        <v-tooltip left>
+                            <v-btn flat icon color="green" slot="activator">
+                                <v-icon>add</v-icon>
+                            </v-btn>
+                            <span>{{ 'client.contact.details.add'|trans }}</span>
+                        </v-tooltip>
+                    </a>
+                </v-flex>
+            </v-layout>
+        </template>
+    </form-collection>
 {% endspaceless %}

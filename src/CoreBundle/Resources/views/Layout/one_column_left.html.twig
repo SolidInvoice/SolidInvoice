@@ -30,11 +30,14 @@
 {% endblock header %}
 
 {% block body %}
-    <aside class="main-sidebar">
+
+    {{ block('content') is defined ? block('content') }}
+
+    {#<aside class="main-sidebar">
         <section class="sidebar">
             <div class="user-panel">
                 <div class="pull-left image">
-                    {#<img src="http://t2.tagstat.com/im/people/silhouette_m_300.png" class="img-circle" alt="User Image">#}
+                    #}{#<img src="http://t2.tagstat.com/im/people/silhouette_m_300.png" class="img-circle" alt="User Image">#}{#
                     <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
@@ -56,5 +59,5 @@
         {% include "SolidInvoiceCoreBundle::flash.html.twig" %}
 
         {{ block('content') is defined ? block('content') }}
-    </section>
+    </section>#}
 {% endblock body %}

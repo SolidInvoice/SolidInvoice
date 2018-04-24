@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import jQuery from 'jquery'
+    //import jQuery from 'jquery'
     import {formatter} from '../js/CellFormatter'
     import {keys, map, pick, result, values, zipObject} from 'lodash'
     import Router from '@SolidInvoiceCoreBundle/Resources/assets/js/router'
@@ -97,11 +97,12 @@
                     routeParams.order = this.order;
                 }
 
-                jQuery.ajax({
+                // @TODO: use Axios for Ajax requests
+                /*jQuery.ajax({
                     url: Router.generate('_grid_data', routeParams)
                 }).then((result) => {
                     this.rows = result.items;
-                });
+                });*/
             }
         },
         created() {

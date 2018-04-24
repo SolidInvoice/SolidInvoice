@@ -38,8 +38,7 @@ class FormHelpExtension extends AbstractTypeExtension
         $resolver->setDefaults(
             [
                 'help' => null,
-                'help_type' => 'inline',
-                'placeholder' => null,
+                'help_type' => 'inline'
             ]
         );
     }

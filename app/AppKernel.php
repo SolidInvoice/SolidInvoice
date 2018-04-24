@@ -41,6 +41,8 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
             new Maba\Bundle\WebpackBundle\MabaWebpackBundle(),
 
+            new SolidWorx\VuetifyBundle\SolidWorxVuetifyBundle(),
+
             new SolidInvoice\ApiBundle\SolidInvoiceApiBundle(),
             new SolidInvoice\ClientBundle\SolidInvoiceClientBundle(),
             new SolidInvoice\CoreBundle\SolidInvoiceCoreBundle(),

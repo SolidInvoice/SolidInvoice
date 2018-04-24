@@ -17,72 +17,49 @@ use SolidInvoice\UserBundle\Entity\User;
 
 class MainMenu
 {
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
     public static function user(User $user): array
     {
-        $username = $user->getUsername().' <b class="caret"></b>';
-
         return [
             'user',
             [
-                'uri' => '#',
-                'allow_safe_labels' => true,
-                'label' => $username,
+                'label' => $user->getUsername(),
                 'extras' => [
-                    'safe_label' => true,
-                    'icon' => 'user',
+                    'icon' => 'person',
                 ],
             ],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function profile(): array
     {
         return [
-            'menu.top.profile', ['route' => 'fos_user_profile_show', 'extras' => ['icon' => 'user']],
+            'menu.top.profile', ['route' => 'fos_user_profile_show', 'extras' => ['icon' => 'person']],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function api(): array
     {
         return [
-            'menu.top.api', ['route' => '_api_keys_index', 'extras' => ['icon' => 'user-secret']],
+            'menu.top.api', ['route' => '_api_keys_index', 'extras' => ['icon' => 'security']],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function logout(): array
     {
         return [
             'menu.top.logout',
             [
                 'route' => 'fos_user_security_logout',
-                'extras' => ['icon' => 'power-off'],
+                'extras' => ['icon' => 'power_settings_new'],
             ],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function system(): array
     {
         return [
             'menu.top.system',
             [
-                'uri' => '#',
                 'allow_safe_labels' => true,
                 'extras' => [
                     'safe_label' => true,
@@ -92,30 +69,24 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function settings(): array
     {
         return [
             'menu.top.settings',
             [
                 'route' => '_settings',
-                'extras' => ['icon' => 'cog'],
+                'extras' => ['icon' => 'settings'],
             ],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function tax(): array
     {
         return [
             'menu.top.tax',
             [
                 'route' => '_tax_rates',
-                'extras' => ['icon' => 'money'],
+                'extras' => ['icon' => 'credit_card'],
             ],
         ];
     }

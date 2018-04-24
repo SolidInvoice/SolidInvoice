@@ -1,44 +1,75 @@
 <template>
-    <span>
-        <a @click="validate" class="btn btn-default" rel="tooltip" title="EU Countries Only">
-            <span v-if="!validating">
-                tax.form.input.validate
-            </span>
-            <i class="fa fa-spin fa-refresh" v-if="validating"></i>
-        </a>
-    </span>
+    <v-layout row>
+        <v-flex xs10>
+            <slot :item="{$bus, errors}"></slot>
+        </v-flex>
+        <v-flex xs2 d-flex>
+            <v-tooltip top>
+                <v-btn color="primary" flat outline @click="validate" slot="activator">
+                    <span v-if="!validating">
+                        {{ title }}
+                    </span>
+                    <i class="fa fa-spin fa-refresh" v-if="validating"></i>
+                </v-btn>
+                <span>EU Countries Only</span>
+            </v-tooltip>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>
-    import jQuery from 'jquery';
-    import Router from '@SolidInvoiceCoreBundle/Resources/assets/js/router';
-
     export default {
+        inject: ['http'],
         props: {
-            field: {type: String, required: true}
+            title: {
+                type: String,
+                required: false,
+                default: 'Validate'
+            }
         },
         data() {
             return {
-                validating: false
+                validating: false,
+                value: null,
+                errors: []
             };
+        },
+        computed: {
+            $bus() {
+                return this;
+            }
+        },
+        mounted() {
+            this.$on('input', (value) => {
+                this.value = value;
+            });
         },
         methods: {
             validate() {
                 this.validating = true;
 
-                jQuery.ajax({
-                    'url': Router.generate('_tax_number_validate'),
-                    'data': {'vat_number': jQuery('#' + this.field).val()},
-                    'method': 'POST'
-                }).done((result) => {
-                    jQuery('#' + this.field)
-                        .closest('.form-group')
-                        .removeClass('has-success has-error')
-                        .addClass(result.valid ? 'has-success' : 'has-error');
-                }).always(() => {
-                    this.validating = false;
-                });
+                this.errors = [];
+
+                this.http.post('_tax_number_validate', {}, {'vat_number': this.value})
+                    .then((result) => {
+                        if (false === result.data.valid) {
+                            this.errors.push('Vat number is invalid');
+                        }
+                    })
+                    .catch((error) => {
+                        this.errors.push('Vat number is invalid');
+                    })
+                    .finally(() => {
+                        this.validating = false;
+                    });
             }
         }
     }
 </script>
+
+<style scoped lang="less">
+    .btn {
+        margin: 13px 0 0 -8px !important;
+        padding: 0 !important;
+    }
+</style>

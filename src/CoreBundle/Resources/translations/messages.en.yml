@@ -1,12 +1,12 @@
 menu:
     button:
-        create: Create
+        create: 'Create'
     top:
-        profile: Profile
+        profile: 'Profile'
         api: 'API Tokens'
-        logout: Logout
-        system: 'System <b class="caret"></b>'
-        settings: Settings
+        logout: 'Logout'
+        system: 'System'
+        settings: 'Settings'
         tax: 'Tax Rates'
 exception:
     error:
@@ -14,14 +14,14 @@ exception:
     not_found:
         text: 'Sorry, but the page you were trying to view does not exist.'
 billing:
-    subtotal: SubTotal
-    tax: Tax
-    discount: Discount
-    total: Total
+    subtotal: 'SubTotal'
+    tax: 'Tax'
+    discount: 'Discount'
+    total: 'Total'
 powered_by: 'Powered By'
 invalid_file: 'Invalid File'
 upload_error: 'There was an error uploading the file'
 create_new: 'Create New'
-invoice: Invoice
-quote: Quote
-client: Client
+invoice: 'Invoice'
+quote: 'Quote'
+client: 'Client'

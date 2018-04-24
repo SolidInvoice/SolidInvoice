@@ -37,7 +37,10 @@ class ClientType extends AbstractType
             'currency',
             CurrencyType::class,
             [
-                'placeholder' => 'client.form.currency.empty_value',
+                'attr' => [
+                    'placeholder' => 'client.form.currency.empty_value',
+                    'autocomplete' => true,
+                ],
                 'required' => false,
             ]
         );

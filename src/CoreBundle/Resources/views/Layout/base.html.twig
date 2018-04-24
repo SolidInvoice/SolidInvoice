@@ -25,33 +25,31 @@
 
     {% block meta %}{% endblock %}
 
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+
     {% webpack css '@SolidInvoiceCoreBundle/Resources/public/less/styles.less' %}
 	    <link rel="stylesheet" href="{{ asset(asset_url) }}" type="text/css" />
     {% end_webpack %}
-
-    {#{% include 'SolidInvoiceCoreBundle:_partials:scripts.html.twig' %}#}
 </head>
 <body class="{{ setting('design/system/theme', 'skin-blue') }} sidebar-mini {{ body_class|default('') }}">
-    <div class="wrapper" id="app">
-        {{ block('body_top') is defined ? block('body_top') }}
-        <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
-        <header class="main-header">
-            {{ block('header') is defined ? block('header') }}
-        </header>
-
-        <div class="content-wrapper">
-            {{ block('body') is defined ? block('body') }}
-        </div>
-
-        <footer class="main-footer">
-            {{ block('footer') is defined ? block('footer') }}
-        </footer>
-
-        {{ block('scripts') is defined ? block('scripts') }}
-
+<div id="app">
+    <v-app>
+        <v-navigation-drawer app></v-navigation-drawer>
+        {{ block('header') is defined ? block('header') }}
+        <v-content>
+            <v-container fluid>
+                {{ block('body') is defined ? block('body') }}
+            </v-container>
+        </v-content>
         {{ block('body_bottom') is defined ? block('body_bottom') }}
-    </div>
+        <v-footer app>
+            {{ block('footer') is defined ? block('footer') }}
+        </v-footer>
+    </v-app>
+</div>
+
+    {{ block('scripts') is defined ? block('scripts') }}
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>

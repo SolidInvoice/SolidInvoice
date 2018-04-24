@@ -21,8 +21,8 @@
             "url": "https://github.com/SolidInvoice/RequireJSBundle"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/MiWayInsurance/SyliusFlowBundle"
+            "type": "path",
+            "url": "/Users/pierre/projects/SolidWorx/VuetifyBundle"
         }
     ],
     "autoload": {
@@ -98,7 +98,7 @@
         "solidworx/lodash-php": "^0.0.2",
         "sebastian/comparator": "^2.1",
         "symfony/polyfill-php70": "^1.6",
-        "solidworx/vuetify-bundle": "dev-master"
+        "solidworx/vuetify-bundle": "dev-form-collection-js"
     },
     "require-dev": {
         "behat/behat": "^3.0",

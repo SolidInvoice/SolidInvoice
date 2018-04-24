@@ -27,3 +27,4 @@ node_modules
 .php_cs.cache
 web/compiled
 yarn-error.log
+.env

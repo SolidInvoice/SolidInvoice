@@ -30,7 +30,8 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:
-        - 'SolidInvoiceCoreBundle:Form:fields.html.twig'
+        - '@SolidWorxVuetify/Form/fields.html.twig'
+        - '@SolidInvoiceCore/Form/fields.html.twig'
 
 doctrine:
     dbal:
@@ -134,3 +135,13 @@ api_platform:
 maba_webpack:
     config:
         path: '%kernel.project_dir%/app/config/webpack.config.js'
+
+vuetify:
+    menu:
+        translate: true
+        toolbar:
+            app: true
+            fixed: true
+            color: 'primary'
+            dark: true
+            dense: true

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Form\Type;
 
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use Doctrine\Common\Collections\ArrayCollection;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -43,7 +43,7 @@ class CurrencyType extends AbstractType
      */
     public function getParent()
     {
-        return Select2Type::class;
+        return ChoiceType::class;
     }
 
     /**

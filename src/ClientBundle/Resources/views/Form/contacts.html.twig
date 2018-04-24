@@ -7,51 +7,23 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="widget">
-    <br class="clear" />
+<v-layout row wrap>
+    <v-flex xs6>
+        {{ form_row(form.firstName) }}
+    </v-flex>
+    <v-flex xs6>
+        {{ form_row(form.lastName) }}
+    </v-flex>
+</v-layout>
 
-    <div class="child row">
-        <div class="col-lg-6 col-md-6">
-            {{ form_row(form.firstName) }}
-        </div>
-        <div class="col-lg-6 col-md-6">
-            {{ form_row(form.lastName) }}
-        </div>
-    </div>
-
-    <div class="collection-container">
-        {{ form_row(form.email) }}
-    </div>
-{#
-
-    {% set additional_details = form_row(form.additionalContactDetails.vars.prototype) %}
-#}
-
-    {#<script type="text/template" class="additional-details">
-        {{ additional_details|raw }}
-    </script>#}
-
-    <h5>
-        {{ 'client.contact.details.extra'|trans }}
-    </h5>
-
-    {{ form_row(form.additionalContactDetails) }}
-
-    {#{% set total = form.additionalContactDetails.children|length %}
-    <div class="prototype-widget client_contacts" data-counter="{{ total > 0 ? total : 0 }}">
-	    {% for widget in form.additionalContactDetails.children %}
-            {{ form_row(widget, {'child' : true}) }}
-        {% endfor %}
-
-        {{ additional_details|replace({'__contact_details_prototype__' : total})|raw }}
-    </div>#}
-
-    {{ form_errors(form) }}
-
-    {#{% if allow_delete %}
-        <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove pull-right" data-related="{{ id }}">
-            {{ icon('trash-o') }} {{ 'client.contact.delete'|trans }}
-        </a>
-        <br class="clear" />
-    {% endif %}#}
+<div class="collection-container">
+    {{ form_row(form.email) }}
 </div>
+
+<h4>
+    {{ 'client.contact.details.extra'|trans }}
+</h4>
+
+{{ form_row(form.additionalContactDetails) }}
+
+{{ form_errors(form) }}

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        autowire: true
+
     solidinvoice.core.config_writer:
         class: SolidInvoice\CoreBundle\ConfigWriter
         arguments: ['@kernel', '@filesystem']
@@ -33,8 +36,7 @@ services:
     solidinvoice_menu.top:
         class: SolidInvoice\CoreBundle\Menu\Builder
         tags:
-            - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
-            - { name: cs_core.menu, menu: top_right, method: userMenu, priority: 255 }
+            - { name: knp_menu.menu_builder, method: systemMenu, alias: top }
 
     solidinvoice_core.field.renderer:
         class: SolidInvoice\CoreBundle\Form\FieldRenderer

@@ -7,7 +7,7 @@ client:
         success: 'Client Successfully Archived'
     restore:
         success: 'Client Successfully Restored'
-    info: 'Client Info'
+    info: 'Company Information'
     save: 'Save Client'
     cancel: 'Cancel'
     address:
@@ -26,9 +26,11 @@ client:
         delete: 'Delete Contact'
         delete_confirm: 'Are you sure you want to delete this contact?'
         details:
-            choose: 'Choose'
+            choose: 'Choose Type'
             extra: 'Additional Contact Details'
             email: 'Email'
+            add: 'Add additional details'
+            remove: 'Remove details'
     grid:
         actions:
             view: 'View'

@@ -7,79 +7,51 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'bootstrap_3_layout.html.twig' %}
-
-{% block widget_attributes -%}
-
-    :id="'{{ id }}'" :name="'{{ full_name }}'"
-
-    {% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}
-    {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
-{%- endblock widget_attributes %}
-
-{% block form_widget_simple -%}{{ parent() }}{% if help is defined and help is not empty %}<span class="help-{{ help_type }}">
-    <small>{{ help|trans|nl2br }}</small></span>{% endif %}{%- endblock form_widget_simple %}
-
 {%- block collection_widget -%}
+    <form-collection>
+        {% if form|length > 0 %}
+            {% for item in form %}
+                <template slot="items">
+                    <span>
+                        {{- form_row(item) -}}
+                    </span>
+                </template>
+            {% endfor %}
+        {% endif %}
 
-    <form-collection :allow-delete="{{ allow_delete ? 'true' : 'false' }}" ref="{{ id }}" id="{{ id }}">
         {% if prototype is defined %}
             <template slot="prototype" slot-scope="props">
-                {#{%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}#}
-
                 {{- form_row(prototype)|replace({
                     (prototype.vars.name): "' + props.index + '"
                 })|raw -}}
-
-                {% if allow_add %}
-                    <portal to="{{ label }}">
-                        <a @click="addRow('{{ id }}')">{{ icon('plus') }} Add {{ label|default(name)|humanize|title }}</a>
-                    </portal>
-                {% endif %}
             </template>
-            {#prototype="{{ form_row(prototype)|e('html_attr') }}"#}
+            {% if allow_delete %}
+                <template slot="deleteButton" slot-scope="props">
+                    <v-layout>
+                        <v-flex offset-md10 md2>
+                            <v-btn color="error" outline small>
+                                <span>{{ 'Remove'|trans }}</span>
+                                <v-icon>delete</v-icon>
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
+                    <v-divider class="my-4"></v-divider>
+                </template>
+            {% endif %}
+            {% if allow_add %}
+                <template slot="addButton">
+                    <v-btn absolute fab bottom right>
+                        <v-icon>add</v-icon>
+                    </v-btn>
+                </template>
+            {% endif %}
         {% endif %}
-
-        {#{{- block('form_widget') -}}#}
-
     </form-collection>
 {%- endblock collection_widget -%}
 
 {% block contact_details_widget %}
     {{ form_row(prototype) }}
 {% endblock %}
-
-{% block form_rows -%}
-    {{ form_errors(form) }}
-    {% for child in form %}
-        {% if prototype is defined %}
-            <div class="content">
-        {% endif %}
-        {{ form_row(child) }}
-        {% if prototype is defined %}
-            </div>
-        {% endif %}
-    {% endfor %}
-{%- endblock form_rows %}
-
-{% block form_row -%}
-    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
-        {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-        {#{% if help is defined and help is not empty %}
-            <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
-        {% endif %}#}
-    </div>
-{%- endblock form_row %}
-
-{% block checkbox_widget -%}
-    {{- parent() -}}
-
-    {% if help is defined and help is not empty %}
-        <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
-    {% endif %}
-{%- endblock checkbox_widget %}
 
 {% block notification_widget -%}
     <strong>{{ label|default(name)|humanize|title }}</strong>
@@ -101,38 +73,6 @@
 
     {{ form_errors(form) }}
 {%- endblock notification_widget %}
-
-{% block form_errors -%}
-    {% if errors|length > 0 -%}
-        {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
-        <ul class="list-unstyled">
-                {%- for error in errors -%}
-                    <li>
-                        {{ icon('exclamation-sign') }}
-                        {{ error.messagePluralization is null
-                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') }}
-                    </li>
-                {%- endfor -%}
-            </ul>
-        {% if form.parent %}</span>{% else %}</div>{% endif %}
-    {%- endif %}
-{%- endblock form_errors %}
-
-{% block form_label -%}
-    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label')|trim}) %}
-    {% if label is empty %}
-        {% set label = name|humanize %}
-    {% endif %}
-
-    {% if not compound %}
-        {% if required %}
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-        {% endif %}
-
-        {{- parent() -}}
-    {% endif %}
-{%- endblock form_label %}
 
 {% block image_upload_widget -%}
     {{ block('form_widget_simple') }}
@@ -182,13 +122,18 @@
 {%- endblock %}
 
 {% block tax_number_widget -%}
-    <div class="input-group">
-        {{ form_widget(form) }}
-        <span class="input-group-btn">
-            <tax-validator field="{{ form.vars.id }}"></tax-validator>
-        </span>
-    </div>
+    <tax-validator title="{{ 'tax.form.input.validate'|trans }}">
+        <template slot-scope="props">
+            {{ form_widget(form, {'attr': {'@input': "props.item.$bus.$emit('input', $event)", ':error-messages': 'props.item.errors'}}) }}
+        </template>
+    </tax-validator>
 {%- endblock tax_number_widget %}
+
+{% block widget_attributes -%}
+    :id="'{{ id }}'" :name="'{{ full_name }}'"
+    {{ block('attributes') }}
+    {#@input="$store.dispatch('formInput', {form: '{{ full_name }}', value: $event})"#}
+{%- endblock widget_attributes %}
 
 {% block tax_choice_widget_options -%}
     {% for group_label, choice in options %}
@@ -207,43 +152,28 @@
 {%- endblock tax_choice_widget_options %}
 
 {% block address_widget %}
-    {% set id = random() %}
-    <div class="widget" data-content="{{ id }}">
+    <v-layout row wrap>
+        <v-flex xs6 d-flex>
+            {{ form_row(form.street1) }}
+        </v-flex>
+        <v-flex xs6 d-flex>
+            {{ form_row(form.street2) }}
+        </v-flex>
 
-        <div class="row">
-            <div class="col-md-6">
-                {{ form_row(form.street1) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.street2) }}
-            </div>
-        </div>
+        <v-flex xs6 d-flex>
+            {{ form_row(form.city) }}
+        </v-flex>
+        <v-flex xs6 d-flex>
+            {{ form_row(form.state) }}
+        </v-flex>
 
-        <div class="row">
-            <div class="col-md-6">
-                {{ form_row(form.city) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.state) }}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                {{ form_row(form.zip) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.country) }}
-            </div>
-        </div>
-
-        {% if canDelete %}
-            <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove pull-right" data-related="{{ id }}">
-                {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
-            </a>
-        {% endif %}
-        <br class="clear"/>
-    </div>
+        <v-flex xs6 d-flex>
+            {{ form_row(form.zip) }}
+        </v-flex>
+        <v-flex xs6 d-flex>
+            {{ form_row(form.country) }}
+        </v-flex>
+    </v-layout>
 {% endblock address_widget %}
 
 {% block settings_address_widget %}

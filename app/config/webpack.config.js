@@ -8,6 +8,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 const ExtractFilePlugin = require('extract-file-loader/Plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = function makeWebpackConfig(options) {
     /**
@@ -140,7 +141,8 @@ module.exports = function makeWebpackConfig(options) {
                 options: {
                     presets: [['env', {
                         "modules": false
-                    }]]
+                    }]],
+                    plugins: ['lodash']
                 }
             },
 
@@ -323,6 +325,11 @@ module.exports = function makeWebpackConfig(options) {
              * Reference: https://github.com/webpack/docs/wiki/list-of-plugins#noerrorsplugin
              */
             new webpack.NoEmitOnErrorsPlugin(),
+
+            /**
+             * Tree-shaking for Lodash
+             */
+            new LodashModuleReplacementPlugin,
 
             /**
              * Minify all javascript, switch loaders to minimizing mode

@@ -7,6 +7,10 @@
  # with this source code in the file LICENSE.
  #}
 
+
+{{ knp_menu_render('top', {}, 'vuetify_toolbar') }}
+
+{#
 <nav class="navbar navbar-static-top">
     {% if header_content is not defined or header_content is empty %}
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -23,7 +27,7 @@
         {% endif %}
 
         <div class="collapse navbar-collapse" id="top_menu">
-            {{ menu('top', {'attr' : {'class' : 'nav navbar-nav'}}) }}
+            {{ knp_menu_render('top', {'attr' : {'class' : 'nav navbar-nav'}}, 'vuetify_toolbar') }}
 
             {{ menu('top_right', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
 
@@ -53,4 +57,4 @@
             {% endif %}
         </div>
     </div>
-</nav>
+</nav>#}

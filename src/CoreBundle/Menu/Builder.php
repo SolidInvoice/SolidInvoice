@@ -13,47 +13,61 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Menu;
 
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
-use SolidInvoice\MenuBundle\ItemInterface;
+use SolidWorx\VuetifyBundle\Menu\Divider;
+use SolidWorx\VuetifyBundle\Menu\Spacer;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Builder extends AuthenticatedMenu
 {
     /**
-     * Build the user menu.
-     *
-     * @param ItemInterface $menu
+     * @var FactoryInterface
      */
-    public function userMenu(ItemInterface $menu)
-    {
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
-
-        $userMenu = $menu->addChild(MainMenu::user($user));
-
-        $userMenu->setAttributes(['class' => 'dropdown']);
-        $userMenu->setLinkAttributes(['class' => 'dropdown-toggle', 'data-toggle' => 'dropdown']);
-
-        $userMenu->addChild(MainMenu::profile());
-        $userMenu->addChild(MainMenu::api());
-        $userMenu->addDivider();
-        $userMenu->addChild(MainMenu::logout());
-
-        $userMenu->setChildrenAttributes(['class' => 'dropdown-menu']);
-    }
+    private $factory;
 
     /**
-     * Build the system menu.
-     *
-     * @param ItemInterface $menu
+     * @var TokenStorageInterface
      */
-    public function systemMenu(ItemInterface $menu)
+    private $tokenStorage;
+
+    public function __construct(FactoryInterface $factory, TokenStorageInterface $tokenStorage)
     {
-        $system = $menu->addChild(MainMenu::system());
+        $this->factory = $factory;
+        $this->tokenStorage = $tokenStorage;
+    }
 
-        $system->setAttributes(['class' => 'dropdown']);
-        $system->setLinkAttributes(['class' => 'dropdown-toggle', 'data-toggle' => 'dropdown']);
-        $system->addChild(MainMenu::settings());
+    public function systemMenu(): ItemInterface
+    {
+        $menu = $this->factory->createItem('root');
 
-        $system->addChild(MainMenu::tax());
-        $system->setChildrenAttributes(['class' => 'dropdown-menu']);
+        $menu->addChild(new Spacer());
+
+        $system = $menu->addChild(...MainMenu::system());
+        $system->addChild(...MainMenu::settings());
+        $system->addChild(...MainMenu::tax());
+
+        $token = $this->tokenStorage->getToken();
+
+        if ($token) {
+            $user = $token->getUser();
+
+            if ($user instanceof UserInterface) {
+                $this->userMenu($menu, $user);
+            }
+        }
+
+        return $menu;
+    }
+
+    private function userMenu(ItemInterface $menu, UserInterface $user)
+    {
+        $userMenu = $menu->addChild(...MainMenu::user($user));
+        $userMenu->addChild(...MainMenu::profile());
+        $userMenu->addChild(...MainMenu::api());
+        $userMenu->addChild(new Divider());
+        $userMenu->addChild(...MainMenu::logout());
     }
 }
