@@ -14,7 +14,7 @@ tax:
     form:
       input:
         validate: Validate
-    vat_number: 'Vat Number:'
+    vat_number: 'Vat Number'
 
 inclusive: Inclusive
 exclusive: Exclusive

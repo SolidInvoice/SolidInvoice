@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card-title primary-title class="mb-0 pb-0">
+        <v-card-title v-if="title" primary-title class="mb-0 pb-0">
             <h3 class="headline">{{ title }}</h3>
         </v-card-title>
 
@@ -19,7 +19,7 @@
         props: {
             title: {
                 type: String,
-                required: true,
+                required: false,
             }
         },
     }

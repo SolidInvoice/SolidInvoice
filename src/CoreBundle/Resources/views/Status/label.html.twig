@@ -7,4 +7,11 @@
  # with this source code in the file LICENSE.
  #}
 
-<span class="badge{{ entity.label ? " bg-" ~ entity.label }}"{% if tooltip is defined and tooltip is not empty %}title="{{ tooltip }}" rel="tooltip" {% endif %}>{{ entity.name|title }}</span>
+
+
+<v-chip color="{{ entity.label }}" text-color="white" disabled small>
+    {{ entity.name|title }}
+</v-chip>
+
+{#
+<span class="badge{{ entity.label ? " bg-" ~ entity.label }}"{% if tooltip is defined and tooltip is not empty %}title="{{ tooltip }}" rel="tooltip" {% endif %}>{{ entity.name|title }}</span>#}

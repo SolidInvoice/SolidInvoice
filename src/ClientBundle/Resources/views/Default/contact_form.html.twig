@@ -15,7 +15,7 @@
 
 <v-container grid-list-md fluid>
     <v-layout row wrap>
-        <v-flex xs6>
+        <v-flex xs12 md6>
             <v-layout row wrap>
                 <v-flex xs12>
                     <box title="{{ 'client.info'|trans|e('html_attr') }}">
@@ -38,7 +38,7 @@
             </v-layout>
         </v-flex>
 
-        <v-flex xs6>
+        <v-flex xs12 md6>
             <box title="{{ form.contacts.vars.label|e('html_attr') }}">
                 <template slot="body">
                     {{ form_row(form.contacts) }}

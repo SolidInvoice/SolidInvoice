@@ -8,9 +8,6 @@
  #}
 
 {% set currency = client.currency %}
-{% set module = 'client/view' %}
-{% set moduleData = client %}
-{% set serializationGroups = ['client_api'] %}
 
 {% extends "SolidInvoiceCoreBundle:Layout:one_column_left.html.twig" %}
 
@@ -30,171 +27,226 @@
 {% block content %}
     {% set totalAddresses = client.addresses|length %}
 
-    <div class="row">
-        <div class="col-md-3">
-            <div class="box box-primary">
-                <div class="box-body box-profile">
-                    {#<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">#}
+    <v-layout row :wrap="$vuetify.breakpoint.smAndDown">
+        <v-flex md4 sm12>
+            <box>
+                <v-flex slot="body">
+                    <h3 class="headline mb-0">
+                        {{ client_label(client.status) }}
+                        {{ client.name }}
+                    </h3>
 
-                    <h3 class="profile-username text-center">{{ client.name }}</h3>
+                    <v-layout>
+                        <v-flex xs6 class="mx-3">
+                            <v-btn href="{{ path('_clients_edit', {'id' : client.id}) }}" color="blue" small outline block>
+                                {{ icon('edit') }}&nbsp;{{ "client.view.actions.edit"|trans }}
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs6 class="mx-3">
+                            <v-btn href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" color="error" small outline block>
+                                {{ icon('trash-o') }}&nbsp;{{ "client.view.actions.delete"|trans }}
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
 
-                    <p class="text-muted text-center">
-                        <small>{{ client_label(client.status) }}</small>
-                    </p>
-                    <p>
-                        <span>
-                            <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-xs">
-                                {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
-                            </a>
-                        </span>
-                        <span class="pull-right">
-                            <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-xs" id="delete-client">
-                                {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
-                            </a>
-                        </span>
-                    </p>
-
-                    <ul class="list-group list-group-unbordered">
-
+                    <v-list>
                         {% if client.website %}
-                            <li class="list-group-item">
-                                <b>{{ icon('globe') }} Website</b> <a href="{{ client.website }}" class="pull-right" rel="external">{{ client.website }}</a>
-                                <small>{{ icon('external-link') }}</small>
-                            </li>
+                            <v-list-tile>
+                                <v-list-tile-action>
+                                    <v-icon color="indigo">link</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>
+                                        <a href="{{ client.website }}" rel="external" target="_blank">{{ client.website }}</a>
+                                    </v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
                         {% endif %}
-
                         {% if client.currency %}
-                            <li class="list-group-item">
-                                <b>{{ 'client.view.currency'|trans }}</b> <span class="pull-right">{{ client.currency }}</span>
-                            </li>
+                            <v-list-tile>
+                                <v-list-tile-action>
+                                    <v-icon color="indigo">attach_money</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>{{ client.currency }}</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
                         {% endif %}
-
-                        {% if client.vatNumber is not empty %}
-                            <li class="list-group-item">
-                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="pull-right">{{ client.vatNumber }}</span>
-                            </li>
+                        {% if client.vatNumber %}
+                            <v-list-tile>
+                                <v-list-tile-action></v-list-tile-action>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>{{ client.vatNumber }}</v-list-tile-title>
+                                    <v-list-tile-sub-title>{{ 'tax.vat_number'|trans }}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
                         {% endif %}
+                    </v-list>
 
-                        <li class="list-group-item">
-                            <div id="client-credit"></div>
-                        </li>
-                    </ul>
+                    <v-divider class="mb-2"></v-divider>
 
-                    <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-info btn-block">
-                        {{ icon('file-text-o') }} {{ "client.view.actions.create_quote"|trans }}
-                    </a>
-                    <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-info btn-block">
-                        {{ icon('file-text-o') }} {{ "client.view.actions.create_invoice"|trans }}
-                    </a>
-                </div>
-            </div>
+                    <v-layout row :wrap="$vuetify.breakpoint.xsOnly || $vuetify.breakpoint.mdOnly">
+                        <v-flex sm6 md12 xs12 :class="{'mr-2': $vuetify.breakpoint.smOnly || $vuetify.breakpoint.lgAndUp}">
+                            <v-btn href="{{ path("_quotes_create", {"client" : client.id}) }}" color="primary" block>
+                                <v-icon>note_add</v-icon> {{ "client.view.actions.create_quote"|trans }}
+                            </v-btn>
+                        </v-flex>
+                        <v-flex sm6 md12 xs12 :class="{'ml-2': $vuetify.breakpoint.smOnly || $vuetify.breakpoint.lgAndUp}">
+                            <v-btn href="{{ path("_invoices_create", {"client" : client.id}) }}" color="primary" block>
+                                <v-icon>note_add</v-icon> {{ "client.view.actions.create_invoice"|trans }}
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
 
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">{{ icon('bar-chart') }}Stats</h3>
-                </div>
-                <div class="box-body">
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h3>{{ total_income(client)|formatCurrency }}</h3>
+                    <v-layout row>
+                        <v-layout column>
+                            <v-list two-line>
+                                <v-list-tile>
+                                    <v-list-tile-content>
+                                        <v-list-title>{{ total_income(client)|formatCurrency }}</v-list-title>
+                                        <v-list-tile-sub-title>{{ "client.stats.income"|trans }}</v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </v-list>
+                        </v-layout>
+                        <v-layout column>
+                            <v-list two-line>
+                                <v-list-tile>
+                                    <v-list-tile-content>
+                                        <v-list-title>{{ total_outstanding(client)|formatCurrency }}</v-list-title>
+                                        <v-list-tile-sub-title>{{ "client.stats.outstanding"|trans }}</v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </v-list>
+                        </v-layout>
+                    </v-layout>
 
-                            <p>{{ "client.stats.income"|trans }}</p>
-                        </div>
-                        <div class="icon">
-                            {{ icon('money') }}
-                        </div>
-                    </div>
+                    <v-divider class="mb-2"></v-divider>
 
-                    <hr>
+                    <v-layout row wrap>
+                        <v-flex xs6>
+                            <v-chip color="orange" text-color="white" slot="activator">
+                                <v-avatar class="warning darken-4">{{ client.quotes|length }}</v-avatar>
+                                {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
+                            </v-chip>
+                        </v-flex>
+                        <v-flex xs6>
+                            <v-chip color="teal" text-color="white">
+                                <v-avatar class="teal darken-4">{{ client.invoices|length }}</v-avatar>
+                                {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
+                            </v-chip>
+                        </v-flex>
+                    </v-layout>
 
-                    <div class="small-box bg-red">
-                        <div class="inner">
-                            <h3>{{ total_outstanding(client)|formatCurrency }}</h3>
+                    <v-layout row wrap>
+                        <v-flex xs6>
+                            <v-chip color="error" text-color="white" class="lighten-4 mx2">
+                                <v-avatar class="red darken-4">{{ total_invoices_pending }}</v-avatar>
+                                {{ "client.stats.outstanding_invoices"|trans }}
+                            </v-chip>
+                        </v-flex>
+                        <v-flex xs6>
+                            <v-chip color="green" text-color="white" class="mx-2">
+                                <v-avatar class="green darken-4">{{ total_invoices_paid }}</v-avatar>
+                                {{ "client.stats.paid_invoices"|trans }}
+                            </v-chip>
+                        </v-flex>
+                    </v-layout>
+                </v-flex>
+            </box>
+        </v-flex>
 
-                            <p>{{ "client.stats.outstanding"|trans }}</p>
-                        </div>
-                        <div class="icon">
-                            {{ icon('money') }}
-                        </div>
-                    </div>
+        <v-flex md8 sm12 :class="{'ml-3': $vuetify.breakpoint.mdAndUp}">
 
-                    <ul class="list-group list-group-unbordered">
-                        <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge bg-aqua">
-                                {{ client.quotes|length }}
-                            </span>
-                            {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
-                        </li>
-                        <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge bg-aqua">
-                                {{ client.invoices|length }}
-                            </span>
-                            {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
-                                {{ total_invoices_pending }}
-                            </span>
-                            {{ "client.stats.outstanding_invoices"|trans }}
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
-                                {{ total_invoices_paid }}
-                            </span>
-                            {{ "client.stats.paid_invoices"|trans }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <v-tabs class="elevation-3">
+                <v-tab ripple>
+                    {{ 'client.view.tabs.info'|trans }}
+                </v-tab>
+                <v-tab ripple>
+                    {{ 'client.view.tabs.quotes'|trans }}
+                </v-tab>
+                <v-tab ripple>
+                    {{ 'client.view.tabs.invoices'|trans }}
+                </v-tab>
+                <v-tab ripple>
+                    {{ 'client.view.tabs.payments'|trans }}
+                </v-tab>
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
+                            <v-layout>
+                                {% for contact in client.contacts %}
+                                    <v-flex sm6 xs12>
+                                        <v-card>
+                                            <v-card-title primary-title>
+                                                <div>
+                                                    <h3 class="headline mb-0"><i class="fa fa-user"></i>&nbsp;{{ contact.firstName }} {{ contact.lastName }}</h3>
+                                                    <v-list>
+                                                        <v-list-tile>
+                                                            <v-list-tile-content>
+                                                                <v-list-title-tile>
+                                                                    {{ 'client.contact.details.email'|trans }}
+                                                                </v-list-title-tile>
+                                                                <v-list-tile-sub-title>
+                                                                    {{ contact.email }}
+                                                                </v-list-tile-sub-title>
+                                                            </v-list-tile-content>
+                                                        </v-list-tile>
+                                                        {% if contact.additionalContactDetails|length > 0 %}
+                                                            <v-subheader>{{ 'client.contact.details.extra'|trans }}</v-subheader>
 
-        </div>
-        <div class="col-md-9">
-            <div class="widget">
-                <div role="tabpanel" class="nav-tabs-custom">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab">
-                                {{ 'client.view.tabs.info'|trans }}
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">
-                                {{ 'client.view.tabs.quotes'|trans }}
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">
-                                {{ 'client.view.tabs.invoices'|trans }}
-                            </a>
-                        </li>
-                        {% if payments|length > 0 %}
-                            <li role="presentation">
-                                <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab">
-                                    {{ 'client.view.tabs.payments'|trans }}
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="client-info">
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="quotes">
+                                                            {% for detail in contact.additionalContactDetails %}
+                                                                <v-list-tile>
+                                                                    <v-list-tile-content>
+                                                                        <v-list-title-tile>
+                                                                            {{ detail.type }}
+                                                                        </v-list-title-tile>
+                                                                        <v-list-tile-sub-title>
+                                                                            {{ detail.value }}
+                                                                        </v-list-tile-sub-title>
+                                                                    </v-list-tile-content>
+                                                                </v-list-tile>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </v-list>
+                                                </div>
+                                            </v-card-title>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn flat small>Edit</v-btn>
+                                                {% if client.contacts|length > 1 %}
+                                                    <v-btn flat small>Delete</v-btn>
+                                                {% endif %}
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-flex>
+                                {% endfor %}
+                            </v-layout>
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
                             {% include "SolidInvoiceClientBundle::quote_list.html.twig" %}
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="invoices">
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
                             {% include "SolidInvoiceClientBundle::invoice_list.html.twig" %}
-                        </div>
-                        {% if payments|length > 0 %}
-                            <div role="tabpanel" class="tab-pane" id="payments">
-                                {% include "SolidInvoicePaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
+                            {% include "SolidInvoicePaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+            </v-tabs>
+        </v-flex>
+    </v-layout>
 {% endblock content %}

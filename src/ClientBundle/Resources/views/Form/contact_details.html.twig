@@ -20,13 +20,13 @@
 {% spaceless %}
     <form-collection>
         <template slot="prototype" slot-scope="item">
-            <v-layout>
-                <v-flex xs3 class="mt-2">
+            <v-layout wrap>
+                <v-flex sm3 xs12 class="mt-2">
                     {{ type|replace({
                         "__contact_details_prototype__": "' + item.index + '"
                     })|raw }}
                 </v-flex>
-                <v-flex xs8 class="mx-0">
+                <v-flex sm8 xs11 class="mx-0">
                     {{ form_widget(form.value)|replace({
                         "__contact_details_prototype__": "' + item.index + '"
                     })|raw }}

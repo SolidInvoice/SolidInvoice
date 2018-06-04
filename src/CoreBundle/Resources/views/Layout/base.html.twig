@@ -33,21 +33,20 @@
 </head>
 <body class="{{ setting('design/system/theme', 'skin-blue') }} sidebar-mini {{ body_class|default('') }}">
 
-<div id="app">
-    <v-app>
-        <v-navigation-drawer app></v-navigation-drawer>
-        {{ block('header') is defined ? block('header') }}
-        <v-content>
-            <v-container fluid>
-                {{ block('body') is defined ? block('body') }}
-            </v-container>
-        </v-content>
-        {{ block('body_bottom') is defined ? block('body_bottom') }}
-        <v-footer app>
-            {{ block('footer') is defined ? block('footer') }}
-        </v-footer>
-    </v-app>
-</div>
+    <div id="app">
+        {% set body = block('body') is defined ? block('body') %}
+        {% set containerAttr = containerAttr ?? {} %}
+        {% embed '@SolidWorxVuetify/Layout/base.html.twig' with { containerAttr: containerAttr } %}
+            {% block toolbar %}
+                {% if app.user %}
+                    {% include "@SolidInvoiceCore/Menu/top.html.twig" %}
+                {% endif %}
+            {% endblock %}
+            {% block content %}
+                {{ body|raw }}
+            {% endblock %}
+        {% endembed %}
+    </div>
 
     {{ block('scripts') is defined ? block('scripts') }}
 
