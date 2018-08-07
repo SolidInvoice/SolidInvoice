@@ -10,4 +10,4 @@ parameters:
         - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\ConfigStep\:\:forwardAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
         - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\SetupStep\:\:forwardAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
     symfony:
-        container_xml_path: %rootDir%/../../../var/cache/test/appDevDebugProjectContainer.xml
+        container_xml_path: %rootDir%/../../../var/cache/test/appTestDebugProjectContainer.xml
