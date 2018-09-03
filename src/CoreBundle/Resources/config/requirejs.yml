@@ -38,6 +38,9 @@ config:
         material.ripples:
             deps:
                 - jquery
+
+        fos_router:
+            exports: fos.Router
     paths:
         # External dependencies loaded through NPM/Yarn
         backbone: ../assets/backbone.js
@@ -67,12 +70,12 @@ config:
 
         routing: solidinvoicecore/js/extend/routing
         fos_router: fosjsrouting/js/router.js
-        fos_routing_data: ../js/fos_js_routes
         Translator: bazingajstranslation/js/translator.min.js
         core: solidinvoicecore/js/
         core/view: solidinvoicecore/js/itemview.js
         util/form/collection: solidinvoicecore/js/util/form/collection.js
         template: ../js/hbs-templates.js
+        fos_routing_data: ../js/fos_js_routes.js
     map:
         '*':
             translator: solidinvoicecore/js/extend/translator
