@@ -46,7 +46,7 @@ jobs:
       php: 7.2
       script:
         - composer validate
-        #- php bin/console security:check
+        - php bin/console security:check
         - bash travis/phpunit.sh
         - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
       after_script:
