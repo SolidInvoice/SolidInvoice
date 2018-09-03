@@ -1,5 +1,13 @@
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
 parameters:
     bootstrap: %rootDir%/../../../app/autoload.php
     excludes_analyse:
-        - %rootDir%/../../../src/*/Tests/*
-        - %rootDir%/../../../src/*/Test/*
+        - src/CoreBundle/Tests/Fixtures/file.php
+    ignoreErrors:
+        - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\ConfigStep\:\:forwardAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
+        - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\SetupStep\:\:forwardAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
+    symfony:
+        container_xml_path: %rootDir%/../../../var/cache/test/appTestDebugProjectContainer.xml

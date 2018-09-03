@@ -12,7 +12,6 @@ build/
 vendor
 bin/*
 !bin/console
-!bin/r.js
 composer.phar
 web/uploads/*
 !web/uploads/.gitkeep
