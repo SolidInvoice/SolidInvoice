@@ -18,7 +18,7 @@ set_time_limit(0);
 $loader = require __DIR__.'/../app/autoload.php';
 
 if (!getenv('SOLIDINVOICE_ENV') && file_exists($file = dirname(__DIR__).'/.env')) {
-    (new Dotenv)->load($file);
+    (new Dotenv())->load($file);
 }
 
 if (!getenv('SOLIDINVOICE_ENV')) {
