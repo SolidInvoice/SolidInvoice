@@ -6,7 +6,7 @@ dist: trusty
 
 env:
   global:
-    - SYMFONY_ENV=test
+    - SOLIDINVOICE_ENV=test
 
 cache:
   yarn: true
