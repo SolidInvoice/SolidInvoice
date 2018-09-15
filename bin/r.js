@@ -1,0 +1,1 @@
+../web/bundles/npmassets/requirejs/bin/r.js

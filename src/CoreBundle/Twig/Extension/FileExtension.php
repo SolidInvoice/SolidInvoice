@@ -18,12 +18,24 @@ use Twig_Extension;
 class FileExtension extends Twig_Extension
 {
     /**
+     * @var string
+     */
+    private $projectDir;
+
+    public function __construct(string $projectDir)
+    {
+        $this->projectDir = $projectDir;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('file', 'file_get_contents', ['is_safe' => ['css', 'html']]),
+            new \Twig_SimpleFunction('file', function ($file) {
+                return file_get_contents($this->projectDir.'/web/'.ltrim($file, '\\'));
+            }, ['is_safe' => ['css', 'html']]),
         ];
     }
 
