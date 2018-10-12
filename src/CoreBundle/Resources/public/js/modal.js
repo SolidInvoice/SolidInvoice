@@ -49,7 +49,7 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
             }
         },
         _bindModalEvents: function(modal) {
-            _.each(_.result(modal, 'events'), function(action, event) {
+            _.each(_.result(modal, 'events'), _.bind(function(action, event) {
                 if (_.isFunction(action)) {
                     this.listenTo(this, event, action);
                 } else if (-1 !== _.indexOf(_.functions(this), action)) {
@@ -57,7 +57,7 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
                 } else {
                     throw "Callback specified for event " + event + " is not a valid callback"
                 }
-            }, this);
+            }, this));
         },
         _attachListeners: function() {
             var view = this;
