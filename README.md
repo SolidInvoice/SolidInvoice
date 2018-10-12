@@ -3,14 +3,11 @@ SolidInvoice
 
 [![Build Status](https://travis-ci.org/SolidInvoice/SolidInvoice.png?branch=master)](https://travis-ci.org/SolidInvoice/SolidInvoice)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/badges/quality-score.png?s=fdd7a5f5080807e95a317b9c0db07e8d5ce8cb63)](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/)
-[![Dependency Status](https://www.versioneye.com/user/projects/557ebccc61626613850000cc/badge.svg)](https://www.versioneye.com/user/projects/557ebccc61626613850000cc)
 [![Gitter chat](https://badges.gitter.im/SolidInvoice/SolidInvoice.png)](https://gitter.im/SolidInvoice/SolidInvoice)
 
 Open-Source General Billing Manager
 
 SolidInvoice is an open-source application that allows you to manage clients and contacts and send invoices and quotes.
-
-
 
 Requirements
 ------------
