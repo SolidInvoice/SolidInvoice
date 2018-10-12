@@ -21,6 +21,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -81,6 +83,14 @@ class DiscountType extends AbstractType
             public function reverseTransform($value)
             {
                 return $value;
+            }
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            /** @var Discount $discount */
+            $discount = $event->getForm()->getData();
+            if (!$discount->getValue()) {
+                $discount->setType(null);
             }
         });
     }
