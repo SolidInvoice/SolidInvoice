@@ -22,7 +22,6 @@ class NotificationTypeTest extends FormTestCase
     {
         $formData = [
             'email' => $this->faker->boolean,
-            'hipchat' => $this->faker->boolean,
             'sms' => $this->faker->boolean,
         ];
 

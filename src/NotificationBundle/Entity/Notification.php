@@ -47,13 +47,6 @@ class Notification
     /**
      * @var bool
      *
-     * @ORM\Column(name="hipchat", type="boolean")
-     */
-    private $hipchat;
-
-    /**
-     * @var bool
-     *
      * @ORM\Column(name="sms", type="boolean")
      */
     private $sms;
@@ -102,26 +95,6 @@ class Notification
     public function setEmail(bool $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getHipchat(): bool
-    {
-        return $this->hipchat;
-    }
-
-    /**
-     * @param bool $hipchat
-     *
-     * @return Notification
-     */
-    public function setHipchat(bool $hipchat): self
-    {
-        $this->hipchat = $hipchat;
 
         return $this;
     }

@@ -26,7 +26,6 @@ class NotificationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email', CheckboxType::class);
-        $builder->add('hipchat', CheckboxType::class);
         $builder->add('sms', CheckboxType::class);
 
         $builder->addModelTransformer(new class() implements DataTransformerInterface {

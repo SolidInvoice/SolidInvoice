@@ -79,10 +79,6 @@ class NotificationManager
             $notification->addNotifications($this->factory->createEmailNotification($message));
         }
 
-        if ((bool) $settings['hipchat']) {
-            $notification->addNotifications($this->factory->createHipchatNotification($message));
-        }
-
         if ((bool) $settings['sms']) {
             foreach ($message->getUsers() as $user) {
                 if (null === $user->getMobile()) {

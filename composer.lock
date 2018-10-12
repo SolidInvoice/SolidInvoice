@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be21f22c55b9ad3814989e6cf998254e",
+    "content-hash": "fe3439e742f6e89563dd0e898ae9c6e6",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2197,48 +2197,6 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
-        },
-        {
-            "name": "hipchat/hipchat-php",
-            "version": "v1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hipchat/hipchat-php.git",
-                "reference": "5936c0a48d2d514d94bfc1d774b04c42cd3bc39e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hipchat/hipchat-php/zipball/5936c0a48d2d514d94bfc1d774b04c42cd3bc39e",
-                "reference": "5936c0a48d2d514d94bfc1d774b04c42cd3bc39e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "HipChat": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "HipChat",
-                    "email": "support@hipchat.com",
-                    "homepage": "https://www.hipchat.com",
-                    "role": "Company"
-                }
-            ],
-            "description": "PHP library for HipChat",
-            "homepage": "http://github.com/hipchat/hipchat-php",
-            "keywords": [
-                "hipchat"
-            ],
-            "time": "2015-04-28T22:48:40+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",

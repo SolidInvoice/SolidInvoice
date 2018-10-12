@@ -72,7 +72,6 @@
         "nesbot/carbon": "^1.21",
         "sylius/flow-bundle": "0.19.1",
         "namshi/notificator": "^5.0",
-        "hipchat/hipchat-php": "^1.4",
         "twilio/sdk": "^5.5",
         "tijsverkoyen/css-to-inline-styles": "^2.0",
         "moneyphp/money": "^3.0",
