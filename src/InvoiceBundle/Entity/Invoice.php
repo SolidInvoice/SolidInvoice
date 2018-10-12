@@ -209,6 +209,7 @@ class Invoice
 
     public function __construct()
     {
+        $this->discount = new Discount();
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->users = new ArrayCollection();
@@ -393,7 +394,7 @@ class Invoice
      *
      * @return Discount
      */
-    public function getDiscount(): ?Discount
+    public function getDiscount(): Discount
     {
         return $this->discount;
     }
@@ -405,7 +406,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setDiscount(?Discount $discount): self
+    public function setDiscount(Discount $discount): self
     {
         $this->discount = $discount;
 

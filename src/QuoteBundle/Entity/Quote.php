@@ -163,6 +163,7 @@ class Quote
 
     public function __construct()
     {
+        $this->discount = new Discount();
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->setUuid(Uuid::uuid1());
@@ -327,7 +328,7 @@ class Quote
     /**
      * @return Discount
      */
-    public function getDiscount(): ?Discount
+    public function getDiscount(): Discount
     {
         return $this->discount;
     }
@@ -337,7 +338,7 @@ class Quote
      *
      * @return Quote
      */
-    public function setDiscount(?Discount $discount): self
+    public function setDiscount(Discount $discount): self
     {
         $this->discount = $discount;
 
