@@ -16,6 +16,10 @@ define(['backbone', 'lodash'], function(Backbone, _) {
                 let rowTotal = model.get('total'),
                     rowTax = model.get('tax');
 
+                if (_.isUndefined(rowTotal)) {
+                    return;
+                }
+
                 total += rowTotal;
                 subTotal += rowTotal;
 
