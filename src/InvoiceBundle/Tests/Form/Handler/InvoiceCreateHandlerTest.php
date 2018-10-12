@@ -102,7 +102,12 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
     public function getFormData(): array
     {
         return [
-            'invoice' => [],
+            'invoice' => [
+                'discount' => [
+                    'value' => 20,
+                    'type' => 'percentage'
+                ],
+            ],
         ];
     }
 

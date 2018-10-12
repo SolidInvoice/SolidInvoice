@@ -90,7 +90,10 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
     {
         return [
             'quote' => [
-                'discount' => 20,
+                'discount' => [
+                    'value' => 20,
+                    'type' => 'percentage'
+                ],
             ],
         ];
     }
