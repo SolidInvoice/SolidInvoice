@@ -202,7 +202,6 @@ class NotificationManagerTest extends TestCase
             ->with($phoneNumber, $message)
             ->andReturn(new TwilioNotification($phoneNumber, $messageText));
 
-
         $manager->shouldReceive('trigger')
             ->once()
             ->with(IsInstanceOf::anInstanceOf(ChainedNotification::class));
@@ -265,7 +264,6 @@ class NotificationManagerTest extends TestCase
             ->once()
             ->with($phoneNumber, $message)
             ->andReturn(new TwilioNotification($phoneNumber, $messageText));
-
 
         $manager->shouldReceive('trigger')
             ->once()
