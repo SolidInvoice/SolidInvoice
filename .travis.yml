@@ -76,6 +76,7 @@ jobs:
         - sudo apt-get update -qq
         - sudo apt-get install -y -qq yarn=0.24.6-1
         - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 8.0
+        - composer global require "fxp/composer-asset-plugin"
       install:
         - composer install -n
         - rm bin/r.js
