@@ -77,6 +77,8 @@ jobs:
         - sudo apt-get install -y -qq yarn=0.24.6-1
         - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 8.0
       install:
+        - composer install -n
+        - rm bin/r.js && composer install -n --no-scripts # Hack to get npm-assets working after first composer install
         - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - yarn
