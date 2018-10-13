@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
+use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use Namshi\Notificator\NotificationInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Templating\EngineInterface;
@@ -50,9 +51,10 @@ class Factory
     /**
      * @param NotificationMessageInterface $message
      *
-     * @return NotificationInterface
+     * @return SwiftMailerNotification
      *
      * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
+     * @throws InvalidSettingException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {
@@ -97,7 +99,7 @@ class Factory
      * @param string                       $cellphone
      * @param NotificationMessageInterface $message
      *
-     * @return NotificationInterface
+     * @return TwilioNotification
      */
     public function createSmsNotification(string $cellphone, NotificationMessageInterface $message): NotificationInterface
     {

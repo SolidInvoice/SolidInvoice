@@ -40,7 +40,7 @@ class NotificationType extends AbstractType
 
             public function reverseTransform($value)
             {
-                if (null == $value) {
+                if (null === $value) {
                     return $value;
                 }
 
