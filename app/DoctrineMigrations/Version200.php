@@ -15,8 +15,6 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
-use SolidInvoice\NotificationBundle\Entity\Notification;
-use SolidInvoice\NotificationBundle\Form\Type\HipChatColorType;
 use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 use SolidInvoice\SettingsBundle\Form\Type\AddressType;
 use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
@@ -49,7 +47,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
         $this->addSql('ALTER TABLE app_config DROP FOREIGN KEY FK_318942FCD823E37A');
         $this->addSql('ALTER TABLE config_sections DROP FOREIGN KEY FK_965EAD46727ACA70');
         $this->addSql('DROP TABLE config_sections');
-        $this->addSql('ALTER TABLE notifications CHANGE email email TINYINT(1) NOT NULL, CHANGE hipchat hipchat TINYINT(1) NOT NULL, CHANGE sms sms TINYINT(1) NOT NULL');
+        $this->addSql('DROP TABLE notifications');
         $this->addSql('DROP INDEX IDX_318942FCD823E37A ON app_config');
         $this->addSql('ALTER TABLE app_config DROP section_id, DROP field_options');
         $this->addSql('TRUNCATE TABLE app_config');
@@ -186,10 +184,6 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                                 return addslashes(MailFormatType::class);
                             }
 
-                            if ('hipchat/message_color' === $settingKey) {
-                                return addslashes(HipChatColorType::class);
-                            }
-
                             switch ($settingValue['field_type']) {
                                 case 'select2':
                                     return addslashes(Select2Type::class);
@@ -265,7 +259,6 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
             );
         }
 
-        /** @var Notification $notification */
         foreach ($this->connection->fetchAll('SELECT * FROM notifications') as $notification) {
             $this->addSql(
                 sprintf(
@@ -279,7 +272,7 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
                           "%s"
                         )',
                     'notification/'.$notification['notification_event'],
-                    addslashes(json_encode(['email' => (bool) $notification['email'], 'hipchat' => (bool) $notification['hipchat'], 'sms' => (bool) $notification['sms']])),
+                    addslashes(json_encode(['email' => (bool) $notification['email'], 'sms' => (bool) $notification['sms']])),
                     addslashes(NotificationType::class)
                 )
             );
