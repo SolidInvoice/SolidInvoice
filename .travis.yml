@@ -79,12 +79,12 @@ jobs:
         - composer global require "fxp/composer-asset-plugin"
       install:
         - composer install -n
-        - rm bin/r.js
-        - composer install -n --no-scripts
         - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - yarn
         - php bin/console assets:install -n
+        - rm bin/r.js
+        - composer install -n --no-scripts
         - node_modules/.bin/gulp
         - php bin/console fos:js-routing:dump --callback=define -n
         - php bin/console bazinga:js-translation:dump --merge-domains -n
