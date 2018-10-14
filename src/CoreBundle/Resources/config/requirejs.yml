@@ -31,13 +31,6 @@ config:
             deps:
                 - jquery
                 - moment
-        material:
-            deps:
-                - jquery
-                - material.ripples
-        material.ripples:
-            deps:
-                - jquery
 
         fos_router:
             exports: fos.Router
@@ -54,8 +47,6 @@ config:
         accounting: ../assets/accounting.js
         parsley: ../assets/parsley.js
         moment: ../assets/moment.js
-        material: ../assets/material.js
-        material.ripples: ../assets/ripples.js
         jquery.select2: ../assets/select2.js
         handlebars.runtime: ../assets/handlebars.runtime.js
         jquery.placeholder: ../assets/jquery.placeholder.js
