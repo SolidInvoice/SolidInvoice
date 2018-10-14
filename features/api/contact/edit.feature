@@ -16,8 +16,8 @@ Feature: Edit Contacts
     When I send a JSON "PUT" request to "/api/contacts/1" with body:
     """
     {
-      "firstName": "Second",
-      "additionalContactDetails": [
+        "firstName": "Second",
+        "additionalContactDetails": [
             {
                 "type": "address",
                 "value": "foobarbaz"
@@ -39,12 +39,15 @@ Feature: Edit Contacts
         "lastName": "One",
         "client": "/api/clients/1",
         "email": "one@one.com",
-        "additionalContactDetails": {
-           "1":
+        "additionalContactDetails": [
+            {
+                "type": "cellphone",
+                "value": "1234567890"
+            },
             {
                 "type": "address",
                 "value": "foobarbaz"
             }
-        }
+        ]
     }
     """
