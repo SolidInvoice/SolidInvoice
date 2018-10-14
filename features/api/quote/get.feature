@@ -31,7 +31,10 @@ Feature: Get Quotes
             "total": "$100.00",
             "baseTotal": "$100.00",
             "tax": "$0.00",
-            "discount": null,
+            "discount": {
+                "type": null,
+                "value": null
+            },
             "terms": null,
             "notes": null,
             "due": null,
@@ -75,7 +78,7 @@ Feature: Get Quotes
       "tax": "$0.00",
       "discount": {
           "type": null,
-          "value": "$0.00"
+          "value": null
       },
       "terms": null,
       "notes": null,
