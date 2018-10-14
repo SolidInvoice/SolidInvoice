@@ -33,7 +33,7 @@ config:
                 - moment
 
         fos_router:
-            exports: fos.Router
+            exports: Routing
     paths:
         # External dependencies loaded through NPM/Yarn
         backbone: ../assets/backbone.js
