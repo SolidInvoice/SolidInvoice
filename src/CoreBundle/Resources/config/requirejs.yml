@@ -61,7 +61,7 @@ config:
 
         routing: solidinvoicecore/js/extend/routing
         fos_router: fosjsrouting/js/router.js
-        translator: bazingajstranslation/js/translator.min.js
+        Translator: bazingajstranslation/js/translator.min.js
         core: solidinvoicecore/js/
         core/view: solidinvoicecore/js/itemview.js
         util/form/collection: solidinvoicecore/js/util/form/collection.js
