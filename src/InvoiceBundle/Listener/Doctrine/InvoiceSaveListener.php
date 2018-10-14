@@ -42,6 +42,7 @@ class InvoiceSaveListener implements EventSubscriber
 
         if ($entity instanceof Invoice) {
             $this->totalCalculator->calculateTotals($entity);
+            $this->checkDiscount($entity);
         }
     }
 
@@ -51,6 +52,15 @@ class InvoiceSaveListener implements EventSubscriber
 
         if ($entity instanceof Invoice) {
             $this->totalCalculator->calculateTotals($entity);
+            $this->checkDiscount($entity);
+        }
+    }
+
+    private function checkDiscount(Invoice $entity): void
+    {
+        $discount = $entity->getDiscount();
+        if (!$discount->getValue()) {
+            $discount->setType(null);
         }
     }
 }

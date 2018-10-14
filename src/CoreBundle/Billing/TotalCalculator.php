@@ -70,7 +70,7 @@ class TotalCalculator
 
         $entity->setBaseTotal($subTotal);
 
-        if (null !== $entity->getDiscount()) {
+        if ($entity->getDiscount()->getValue()) {
             $total = $this->setDiscount($entity, $total);
         }
 

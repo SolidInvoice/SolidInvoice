@@ -32,7 +32,10 @@ Feature: Get Invoices
             "baseTotal": "$100.00",
             "balance": "$100.00",
             "tax": "$0.00",
-            "discount": null,
+            "discount": {
+                "type": null,
+                "value": null
+            },
             "terms": null,
             "notes": null,
             "due": null,
@@ -78,8 +81,8 @@ Feature: Get Invoices
       "balance": "$100.00",
       "tax": "$0.00",
       "discount": {
-        "type": null,
-        "value": "$0.00"
+          "type": null,
+          "value": null
       },
       "terms": null,
       "notes": null,

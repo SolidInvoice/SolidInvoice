@@ -14,7 +14,7 @@ find features/* -prune -type d | while read -r d; do
 
     find "$d" -name "*.feature" -prune -type f | while read -r t; do
         echo "Running feature $t with suite \"$SUITE\" and profile \"$TEST_SUITE\""
-        ./bin/behat -s "$SUITE" -n -f progress -p "$TEST_SUITE" "$t" --strict
+        ./bin/behat -s "$SUITE" -n -f progress -p "$TEST_SUITE" "$t" --strict 2>&1
 
         if [ "$?" != 0 ]; then
             exit 1

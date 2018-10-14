@@ -84,7 +84,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
             ++$counter;
         }
 
-        if (null !== $invoice->getDiscount()) {
+        if ($invoice->getDiscount()->getValue()) {
             $discount = $invoice->getBaseTotal()->multiply($invoice->getDiscount());
             $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Discount';
             $details['L_PAYMENTREQUEST_0_AMT'.$counter] = '-'.number_format($this->formatter->toFloat($discount), 2);
