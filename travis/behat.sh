@@ -5,7 +5,7 @@ stty cols 120
 shopt -s dotglob
 shopt -s nullglob
 
-# nanoseconds and tfold functions are copied from Symfony Travis config
+# nanoseconds and tfold functions has been adapted from Symfony Travis config
 nanoseconds () {
   local cmd="date"
   local format="+%s%N"
@@ -39,17 +39,16 @@ tfold () {
 }
 export -f tfold
 
-tfold 'Installation' bin/behat --suite=installation -n -f progress -p ${TEST_SUITE}
+tfold 'Installation' bin/behat -s installation -n -f progress -p ${TEST_SUITE} --strict
 
 find features/* -prune -type d | while read -r d; do
     if [[ "$d" == "features/installation" ]]; then
         continue
     fi
 
-    SUITE=$(echo "$d"| cut -d'/' -f 2)
+    SUITE=$(echo "$d" | cut -d'/' -f 2)
 
     find "$d" -name "*.feature" -prune -type f | while read -r t; do
-        echo "Running feature $t with suite \"$SUITE\" and profile \"$TEST_SUITE\""
-        tfold "$t (SUITE=\"$SUITE\", PROFILE=\"$TEST_SUITE\")" bin/behat -s "$SUITE" -n -f progress -p "$TEST_SUITE" "$t" --strict
+        tfold "$SUITE ($t)" bin/behat -s "$SUITE" -n -f progress -p "$TEST_SUITE" "$t" --strict
     done
 done
