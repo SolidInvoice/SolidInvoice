@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backbone', './address'], function(Backbone, Address) {
+define(['backbone', 'client/model/address'], function(Backbone, Address) {
     "use strict";
 
     return Backbone.Collection.extend({
