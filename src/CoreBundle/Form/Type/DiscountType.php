@@ -85,14 +85,6 @@ class DiscountType extends AbstractType
                 return $value;
             }
         });
-
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            /** @var Discount $discount */
-            $discount = $event->getForm()->getData();
-            if ($discount instanceof Discount && !$discount->getValue()) {
-                $discount->setType(null);
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
@@ -120,11 +120,15 @@ class Discount
 
     public function getValue()
     {
-        if (self::TYPE_PERCENTAGE === $this->type) {
-            return $this->getValuePercentage();
+        switch ($this->getType()) {
+            case self::TYPE_PERCENTAGE:
+                return $this->getValuePercentage();
+
+            case self::TYPE_MONEY:
+                return $this->getValueMoney()->getMoney();
         }
 
-        return $this->getValueMoney()->getMoney();
+        return null;
     }
 
     public function setValue($value)
@@ -132,11 +136,10 @@ class Discount
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:
                 $this->setValuePercentage((float) $value);
-
                 break;
+
             case self::TYPE_MONEY:
                 $this->setValueMoney(new MoneyEntity(new Money(((int) $value) * 100, new Currency(''))));
-
                 break;
         }
     }
