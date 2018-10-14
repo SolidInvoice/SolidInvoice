@@ -20,7 +20,7 @@ nanoseconds () {
 export -f nanoseconds
 
 tfold () {
-  local title="🐘 $1"
+  local title="$1"
   local fold=$(echo $title | sed -r 's/[^-_A-Za-z0-9]+/./g')
   shift
   local id=$(printf %08x $(( RANDOM * RANDOM )))
@@ -50,6 +50,6 @@ find features/* -prune -type d | while read -r d; do
 
     find "$d" -name "*.feature" -prune -type f | while read -r t; do
         echo "Running feature $t with suite \"$SUITE\" and profile \"$TEST_SUITE\""
-        tfold 'bin/behat' -s "$SUITE" -n -f progress -p "$TEST_SUITE" "$t" --strict
+        tfold "$t (SUITE=\"$SUITE\", PROFILE=\"$TEST_SUITE\")" bin/behat -s "$SUITE" -n -f progress -p "$TEST_SUITE" "$t" --strict
     done
 done
