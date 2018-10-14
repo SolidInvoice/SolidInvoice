@@ -61,7 +61,7 @@ config:
 
         routing: solidinvoicecore/js/extend/routing
         fos_router: fosjsrouting/js/router.js
-        Translator: bazingajstranslation/js/translator.min.js
+        translator: bazingajstranslation/js/translator.min.js
         core: solidinvoicecore/js/
         core/view: solidinvoicecore/js/itemview.js
         util/form/collection: solidinvoicecore/js/util/form/collection.js
@@ -89,6 +89,7 @@ build:
         quote: 'empty:'
         invoice: 'empty:'
         profile: 'empty:'
+        user: 'empty:'
         payments: 'empty:'
         moment: 'empty:'
         grid: 'empty:'
