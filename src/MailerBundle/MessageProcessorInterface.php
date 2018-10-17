@@ -13,12 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle;
 
-use SolidInvoice\MailerBundle\Decorator\MessageDecorator;
-use SolidInvoice\MailerBundle\Decorator\VerificationMessageDecorator;
-use SolidInvoice\MailerBundle\Event\MessageEvent;
-use SolidInvoice\MailerBundle\Event\MessageResultEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 interface MessageProcessorInterface
 {
     public function process(\Swift_Message $message, Context $context): MessageSentResponse;

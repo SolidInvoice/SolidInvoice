@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the SwiftMailerHandler project.
+ * This file is part of SolidInvoice project.
  *
- * @author     Pierre du Plessis <open-source@solidworx.co>
- * @copyright  Copyright (c) 2018
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace SolidInvoice\MailerBundle\Event;
