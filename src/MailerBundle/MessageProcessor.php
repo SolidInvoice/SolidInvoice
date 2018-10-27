@@ -19,12 +19,12 @@ use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\MailerBundle\Event\MessageResultEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class MessageProcessor
+class MessageProcessor implements MessageProcessorInterface
 {
     /**
      * @var MessageDecorator[]
      */
-    private $decorators = [];
+    private $decorators;
 
     /**
      * @var EventDispatcherInterface
@@ -36,13 +36,14 @@ class MessageProcessor
      */
     private $mailer;
 
-    public function __construct(\Swift_Mailer $mailer, EventDispatcherInterface $eventDispatcher)
+    public function __construct(\Swift_Mailer $mailer, EventDispatcherInterface $eventDispatcher, iterable $decorators)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
+        $this->decorators = $decorators;
     }
 
-    public function process(\Swift_Message $message, Context $context)
+    public function process(\Swift_Message $message, Context $context): MessageSentResponse
     {
         $event = new MessageEvent($message, $context);
 
@@ -67,10 +68,5 @@ class MessageProcessor
         $this->eventDispatcher->dispatch('message.before_send', new MessageResultEvent($message, $context, $result));
 
         return $result;
-    }
-
-    public function addDecorator(MessageDecorator $decorator): void
-    {
-        $this->decorators[] = $decorator;
     }
 }

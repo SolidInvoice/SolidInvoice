@@ -58,4 +58,9 @@ final class Context implements \ArrayAccess
     {
         unset($this->properties[$offset]);
     }
+
+    public function toArray(): array
+    {
+        return $this->properties;
+    }
 }
