@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Email;
 
 use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
-use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
+use SolidInvoice\MailerBundle\Template\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
-final class QuoteEmail extends \Swift_Message implements HtmlTemplateMessage, TextTemplateMessage
+final class QuoteEmail extends \Swift_Message implements HtmlTemplateMessage
 {
     /**
      * @var Quote
@@ -27,23 +27,16 @@ final class QuoteEmail extends \Swift_Message implements HtmlTemplateMessage, Te
     public function __construct(Quote $quote)
     {
         $this->quote = $quote;
+        parent::__construct();
     }
 
-    /**
-     * @return Quote
-     */
     public function getQuote(): Quote
     {
         return $this->quote;
     }
 
-    public function getHtmlTemplate(): string
+    public function getHtmlTemplate(): Template
     {
-        return '@SolidInvoiceQuote/Email/quote.html.twig';
-    }
-
-    public function getTextTemplate(): string
-    {
-        return '@SolidInvoiceQuote/Email/quote.txt.twig';
+        return new Template('@SolidInvoiceQuote/Email/quote.html.twig', ['quote' => $this->quote]);
     }
 }

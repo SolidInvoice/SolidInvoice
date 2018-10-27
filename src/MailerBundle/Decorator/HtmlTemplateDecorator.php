@@ -48,7 +48,9 @@ class HtmlTemplateDecorator implements MessageDecorator, VerificationMessageDeco
 
         $template = $message->getHtmlTemplate();
 
-        $message->addPart($this->engine->render($template, $event->getContext()->toArray()), 'text/html');
+        $content = $this->engine->render($template->getTemplate(), array_merge($event->getContext()->toArray(), $template->getParameters()));
+        $message->setBody($content);
+        $message->addPart($content, 'text/html');
     }
 
     public function shouldDecorate(MessageEvent $event): bool

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\MailerBundle\Decorator;
 
 use SolidInvoice\MailerBundle\Event\MessageEvent;
-use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Templating\EngineInterface;
@@ -44,12 +43,12 @@ class TextTemplateDecorator implements MessageDecorator, VerificationMessageDeco
      */
     public function decorate(MessageEvent $event): void
     {
-        /** @var HtmlTemplateMessage|\Swift_Message $message */
+        /** @var TextTemplateMessage|\Swift_Message $message */
         $message = $event->getMessage();
 
-        $template = $message->getHtmlTemplate();
+        $template = $message->getTextTemplate();
 
-        $message->addPart($this->engine->render($template, $event->getContext()->toArray()), 'text/plain');
+        $message->addPart($this->engine->render($template->getTemplate(), array_merge($event->getContext()->toArray(), $template->getParameters())), 'text/plain');
     }
 
     public function shouldDecorate(MessageEvent $event): bool

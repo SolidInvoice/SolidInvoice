@@ -15,5 +15,5 @@ namespace SolidInvoice\MailerBundle\Template;
 
 interface HtmlTemplateMessage
 {
-    public function getHtmlTemplate(): string;
+    public function getHtmlTemplate(): Template;
 }
