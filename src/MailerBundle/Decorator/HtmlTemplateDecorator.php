@@ -36,11 +36,6 @@ class HtmlTemplateDecorator implements MessageDecorator, VerificationMessageDeco
         $this->systemConfig = $systemConfig;
     }
 
-    /**
-     * @param MessageEvent $event
-     *
-     * @throws \RuntimeException
-     */
     public function decorate(MessageEvent $event): void
     {
         /** @var HtmlTemplateMessage|\Swift_Message $message */
