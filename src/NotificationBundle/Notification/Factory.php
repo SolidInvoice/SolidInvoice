@@ -52,6 +52,7 @@ class Factory
      * @param NotificationMessageInterface $message
      *
      * @return NotificationInterface
+     *
      * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
@@ -72,16 +73,19 @@ class Factory
         switch ($format) {
             case 'html':
                 $swiftMessage->setBody($message->getHtmlContent($this->templating), 'text/html');
+
                 break;
 
             case 'text':
                 $swiftMessage->setBody($message->getTextContent($this->templating), 'text/plain');
+
                 break;
 
             case 'both':
             default:
                 $swiftMessage->setBody($message->getHtmlContent($this->templating), 'text/html');
                 $swiftMessage->addPart($message->getTextContent($this->templating), 'text/plain');
+
                 break;
         }
 
@@ -92,6 +96,7 @@ class Factory
      * @param NotificationMessageInterface $message
      *
      * @return NotificationInterface
+     *
      * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
      */
     public function createHipchatNotification(NotificationMessageInterface $message): NotificationInterface
