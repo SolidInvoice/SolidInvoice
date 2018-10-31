@@ -65,7 +65,7 @@ class MessageProcessor implements MessageProcessorInterface
 
         $result = new MessageSentResponse($failedRecipients);
 
-        $this->eventDispatcher->dispatch('message.before_send', new MessageResultEvent($message, $context, $result));
+        $this->eventDispatcher->dispatch('message.after_send', new MessageResultEvent($message, $context, $result));
 
         return $result;
     }
