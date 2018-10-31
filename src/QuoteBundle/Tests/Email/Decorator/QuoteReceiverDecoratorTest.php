@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Email\Decorator;
 
+use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\MailerBundle\Context;
@@ -20,12 +22,20 @@ use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\QuoteBundle\Email\Decorator\QuoteReceiverDecorator;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 class QuoteReceiverDecoratorTest extends TestCase
 {
-    public function testDecorate()
+    use MockeryPHPUnitIntegration;
+
+    public function testDecorateWithoutBcc()
     {
-        $decorator = new QuoteReceiverDecorator();
+        $config = M::mock(SystemConfig::class);
+        $config->shouldReceive('get')
+            ->with('quote/bcc_address')
+            ->andReturnNull();
+
+        $decorator = new QuoteReceiverDecorator($config);
         $quote = new Quote();
         $quote->addUser((new Contact())->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
         $quote->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
@@ -33,11 +43,30 @@ class QuoteReceiverDecoratorTest extends TestCase
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
         $this->assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
+        $this->assertNull($message->getBcc());
+    }
+
+    public function testDecorateWithBcc()
+    {
+        $config = M::mock(SystemConfig::class);
+        $config->shouldReceive('get')
+            ->with('quote/bcc_address')
+            ->andReturn('bcc@example.com');
+
+        $decorator = new QuoteReceiverDecorator($config);
+        $quote = new Quote();
+        $quote->addUser((new Contact())->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
+        $quote->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
+        $message = new QuoteEmail($quote);
+        $decorator->decorate(new MessageEvent($message, Context::create()));
+
+        $this->assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
+        $this->assertSame(['bcc@example.com' => null], $message->getBcc());
     }
 
     public function testShouldDecorate()
     {
-        $decorator = new QuoteReceiverDecorator();
+        $decorator = new QuoteReceiverDecorator(M::mock(SystemConfig::class));
 
         $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
         $this->assertFalse($decorator->shouldDecorate(new MessageEvent((new QuoteEmail(new Quote()))->addTo('info@example.com'), Context::create())));

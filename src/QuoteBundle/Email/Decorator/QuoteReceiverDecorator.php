@@ -17,9 +17,20 @@ use SolidInvoice\MailerBundle\Decorator\MessageDecorator;
 use SolidInvoice\MailerBundle\Decorator\VerificationMessageDecorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 final class QuoteReceiverDecorator implements MessageDecorator, VerificationMessageDecorator
 {
+    /**
+     * @var SystemConfig
+     */
+    private $config;
+
+    public function __construct(SystemConfig $config)
+    {
+        $this->config = $config;
+    }
+
     public function decorate(MessageEvent $event): void
     {
         /** @var QuoteEmail $message */
@@ -28,6 +39,10 @@ final class QuoteReceiverDecorator implements MessageDecorator, VerificationMess
 
         foreach ($quote->getUsers() as $user) {
             $message->addTo($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName())));
+        }
+
+        if ($bcc = (string) $this->config->get('quote/bcc_address')) {
+            $message->addBcc($bcc);
         }
     }
 
