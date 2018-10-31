@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action\Transition;
 
-use SolidInvoice\CoreBundle\Mailer\Mailer;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\MailerBundle\Mailer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -57,7 +58,7 @@ final class Send
 
         $this->save($invoice);
 
-        $this->mailer->sendInvoice($invoice);
+        $this->mailer->send(new InvoiceEmail($invoice));
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
