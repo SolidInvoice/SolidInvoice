@@ -107,6 +107,5 @@ class HtmlTemplateDecoratorTest extends TestCase
         $decorator->decorate(new MessageEvent($message, Context::create(['c' => 'd'])));
 
         $this->assertSame('HTML Template', $message->getBody());
-        $this->assertSame('HTML Template', $message->getChildren()[0]->getBody());
     }
 }

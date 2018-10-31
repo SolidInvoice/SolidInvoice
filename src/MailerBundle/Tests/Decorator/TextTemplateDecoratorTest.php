@@ -81,7 +81,35 @@ class TextTemplateDecoratorTest extends TestCase
         }, Context::create())));
     }
 
-    public function testDecorate()
+    public function testDecorateWithText()
+    {
+        $config = M::mock(SystemConfig::class);
+        $config->shouldReceive('get')
+            ->with('email/format')
+            ->andReturn('text');
+
+        $engine = M::mock(EngineInterface::class);
+        $engine->shouldReceive('render')
+            ->once()
+            ->with('@SolidInvoice/email.txt.twig', ['a' => 'b', 'c' => 'd'])
+            ->andReturn('Text Template');
+
+        $decorator = new TextTemplateDecorator($config, $engine);
+
+        $message = new class extends \Swift_Message implements TextTemplateMessage
+        {
+            public function getTextTemplate(): Template
+            {
+                return new Template('@SolidInvoice/email.txt.twig', ['a' => 'b']);
+            }
+        };
+
+        $decorator->decorate(new MessageEvent($message, Context::create(['c' => 'd'])));
+
+        $this->assertSame('Text Template', $message->getBody());
+    }
+
+    public function testDecorateWithBoth()
     {
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')
