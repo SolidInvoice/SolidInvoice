@@ -11,13 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\CoreBundle\Mailer;
+namespace SolidInvoice\MailerBundle;
 
-final class MailerEvents
+interface MessageProcessorInterface
 {
-    const MAILER_SEND_INVOICE = 'billing.mailer.send_invoice';
-
-    const MAILER_SEND_QUOTE = 'billing.mailer.send_quote';
-
-    const MAILER_SEND = 'billing.mailer.send';
+    public function process(\Swift_Message $message, Context $context): MessageSentResponse;
 }

@@ -32,3 +32,8 @@ services:
 
     SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner:
         autowire: true
+
+    SolidInvoice\InvoiceBundle\Email\Decorator\:
+        autowire: true
+        resource: '../../../Email/Decorator/'
+        tags: ['message.decorator']

@@ -59,3 +59,8 @@ services:
     Mpociot\VatCalculator\VatCalculator: ~
     SolidInvoice\CoreBundle\Billing\TotalCalculator:
         autowire: true
+
+    SolidInvoice\CoreBundle\Email\Decorator\:
+        autowire: true
+        resource: '../../../Email/Decorator/'
+        tags: ['message.decorator']

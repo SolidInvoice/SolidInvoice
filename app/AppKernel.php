@@ -49,6 +49,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new SolidInvoice\FormBundle\SolidInvoiceFormBundle(),
             new SolidInvoice\InstallBundle\SolidInvoiceInstallBundle(),
             new SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle(),
+            new SolidInvoice\MailerBundle\SolidInvoiceMailerBundle(),
             new SolidInvoice\MenuBundle\SolidInvoiceMenuBundle(),
             new SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle(),
             new SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle(),

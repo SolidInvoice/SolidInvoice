@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
-use SolidInvoice\CoreBundle\Mailer\Mailer;
+use SolidInvoice\MailerBundle\Mailer;
+use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -48,6 +49,6 @@ class QuoteMailerListener implements EventSubscriberInterface
      */
     public function onQuoteSend(QuoteEvent $event)
     {
-        $this->mailer->sendQuote($event->getQuote());
+        $this->mailer->send(new QuoteEmail($event->getQuote()));
     }
 }

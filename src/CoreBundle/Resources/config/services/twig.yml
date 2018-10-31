@@ -12,7 +12,9 @@ services:
     SolidInvoice\CoreBundle\Twig\Extension\BillingExtension:
         arguments: ['@solidinvoice_core.field.renderer']
 
-    SolidInvoice\CoreBundle\Twig\Extension\FileExtension: ~
+    SolidInvoice\CoreBundle\Twig\Extension\FileExtension:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
 
     SolidInvoice\CoreBundle\Twig\Extension\StatusExtension: ~
     SolidInvoice\CoreBundle\Twig\Extension\SerializerExtension: ~
