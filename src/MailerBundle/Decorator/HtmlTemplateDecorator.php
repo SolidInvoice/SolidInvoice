@@ -49,6 +49,6 @@ class HtmlTemplateDecorator implements MessageDecorator, VerificationMessageDeco
 
     public function shouldDecorate(MessageEvent $event): bool
     {
-        return $event->getMessage() instanceof HtmlTemplateMessage && \in_array($this->systemConfig->get('email/format'), ['html', 'both']);
+        return $event->getMessage() instanceof HtmlTemplateMessage && \in_array($this->systemConfig->get('email/format'), ['html', 'both'], true);
     }
 }

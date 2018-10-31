@@ -34,11 +34,9 @@ class InvoiceSubjectDecoratorTest extends TestCase
             ->with('invoice/email_subject')
             ->andReturn('New Invoice: #{id}');
 
-
         $decorator = new InvoiceSubjectDecorator($config);
         $message = new InvoiceEmail(new Invoice());
         $decorator->decorate(new MessageEvent($message, Context::create()));
-
 
         $this->assertSame('New Invoice: #', $message->getSubject());
     }

@@ -36,6 +36,7 @@ class MailerTest extends TestCase
         $this->assertSame($result, $mailer->send($mail));
         $this->assertTrue($result->isSuccess());
     }
+
     public function testSendWithFailedRecipients()
     {
         /** @var MessageProcessorInterface|MockObject $processor */

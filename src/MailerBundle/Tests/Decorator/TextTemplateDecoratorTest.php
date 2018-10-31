@@ -45,9 +45,10 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, M::mock(EngineInterface::class));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new class extends \Swift_Message implements TextTemplateMessage
-        {
-            public function getTextTemplate(): Template { }
+        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
+            public function getTextTemplate(): Template
+            {
+            }
         }, Context::create())));
     }
 
@@ -60,9 +61,10 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, M::mock(EngineInterface::class));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class extends \Swift_Message implements TextTemplateMessage
-        {
-            public function getTextTemplate(): Template { }
+        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
+            public function getTextTemplate(): Template
+            {
+            }
         }, Context::create())));
     }
 
@@ -75,9 +77,10 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, M::mock(EngineInterface::class));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class extends \Swift_Message implements TextTemplateMessage
-        {
-            public function getTextTemplate(): Template { }
+        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
+            public function getTextTemplate(): Template
+            {
+            }
         }, Context::create())));
     }
 
@@ -96,8 +99,7 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, $engine);
 
-        $message = new class extends \Swift_Message implements TextTemplateMessage
-        {
+        $message = new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
                 return new Template('@SolidInvoice/email.txt.twig', ['a' => 'b']);
@@ -124,8 +126,7 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, $engine);
 
-        $message = new class extends \Swift_Message implements TextTemplateMessage
-        {
+        $message = new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
                 return new Template('@SolidInvoice/email.txt.twig', ['a' => 'b']);

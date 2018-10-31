@@ -34,11 +34,9 @@ class QuoteSubjectDecoratorTest extends TestCase
             ->with('quote/email_subject')
             ->andReturn('New Quote: #{id}');
 
-
         $decorator = new QuoteSubjectDecorator($config);
         $message = new QuoteEmail(new Quote());
         $decorator->decorate(new MessageEvent($message, Context::create()));
-
 
         $this->assertSame('New Quote: #', $message->getSubject());
     }

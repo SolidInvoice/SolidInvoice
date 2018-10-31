@@ -45,9 +45,10 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, M::mock(EngineInterface::class));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new class extends \Swift_Message implements HtmlTemplateMessage
-        {
-            public function getHtmlTemplate(): Template { }
+        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+            public function getHtmlTemplate(): Template
+            {
+            }
         }, Context::create())));
     }
 
@@ -60,9 +61,10 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, M::mock(EngineInterface::class));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class extends \Swift_Message implements HtmlTemplateMessage
-        {
-            public function getHtmlTemplate(): Template { }
+        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+            public function getHtmlTemplate(): Template
+            {
+            }
         }, Context::create())));
     }
 
@@ -75,9 +77,10 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, M::mock(EngineInterface::class));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class extends \Swift_Message implements HtmlTemplateMessage
-        {
-            public function getHtmlTemplate(): Template { }
+        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+            public function getHtmlTemplate(): Template
+            {
+            }
         }, Context::create())));
     }
 
@@ -96,8 +99,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, $engine);
 
-        $message = new class extends \Swift_Message implements HtmlTemplateMessage
-        {
+        $message = new class() extends \Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('@SolidInvoice/email.html.twig', ['a' => 'b']);

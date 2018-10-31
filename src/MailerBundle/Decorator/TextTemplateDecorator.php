@@ -57,6 +57,6 @@ class TextTemplateDecorator implements MessageDecorator, VerificationMessageDeco
 
     public function shouldDecorate(MessageEvent $event): bool
     {
-        return $event->getMessage() instanceof TextTemplateMessage && \in_array($this->systemConfig->get('email/format'), ['text', 'both']);
+        return $event->getMessage() instanceof TextTemplateMessage && \in_array($this->systemConfig->get('email/format'), ['text', 'both'], true);
     }
 }
