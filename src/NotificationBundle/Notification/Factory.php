@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
-use SolidInvoice\CoreBundle\Mailer\Exception\UnexpectedFormatException;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Namshi\Notificator\Notification\HipChat\HipChatNotification;
 use Namshi\Notificator\NotificationInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -53,8 +52,7 @@ class Factory
      * @param NotificationMessageInterface $message
      *
      * @return NotificationInterface
-     *
-     * @throws UnexpectedFormatException
+     * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {
@@ -74,22 +72,17 @@ class Factory
         switch ($format) {
             case 'html':
                 $swiftMessage->setBody($message->getHtmlContent($this->templating), 'text/html');
-
                 break;
 
             case 'text':
                 $swiftMessage->setBody($message->getTextContent($this->templating), 'text/plain');
-
                 break;
 
             case 'both':
+            default:
                 $swiftMessage->setBody($message->getHtmlContent($this->templating), 'text/html');
                 $swiftMessage->addPart($message->getTextContent($this->templating), 'text/plain');
-
                 break;
-
-            default:
-                throw new UnexpectedFormatException($format);
         }
 
         return new SwiftMailerNotification($swiftMessage);
@@ -99,6 +92,7 @@ class Factory
      * @param NotificationMessageInterface $message
      *
      * @return NotificationInterface
+     * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
      */
     public function createHipchatNotification(NotificationMessageInterface $message): NotificationInterface
     {
