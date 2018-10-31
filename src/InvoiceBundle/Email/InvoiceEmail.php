@@ -13,6 +13,30 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Email;
 
-final class InvoiceEmail extends \Swift_Message
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
+use SolidInvoice\MailerBundle\Template\Template;
+
+final class InvoiceEmail extends \Swift_Message implements HtmlTemplateMessage
 {
+    /**
+     * @var Invoice
+     */
+    private $invoice;
+
+    public function __construct(Invoice $invoice)
+    {
+        $this->invoice = $invoice;
+        parent::__construct();
+    }
+
+    public function getInvoice(): Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function getHtmlTemplate(): Template
+    {
+        return new Template('@SolidInvoiceInvoice/Email/invoice.html.twig', ['invoice' => $this->invoice]);
+    }
 }
