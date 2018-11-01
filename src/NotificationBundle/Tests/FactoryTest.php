@@ -232,67 +232,16 @@ class FactoryTest extends TestCase
         /** @var \Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
         $this->assertInstanceOf(\Swift_Message::class, $swiftMessage);
-        $this->assertCount(2, $swiftMessage->getChildren());
+        $this->assertCount(1, $swiftMessage->getChildren());
 
-        $this->assertSame($htmlBody, $swiftMessage->getChildren()[0]->getBody());
-        $this->assertSame('text/html', $swiftMessage->getChildren()[0]->getContentType());
+        $this->assertSame($htmlBody, $swiftMessage->getBody());
 
-        $this->assertSame($textBody, $swiftMessage->getChildren()[1]->getBody());
-        $this->assertSame('text/plain', $swiftMessage->getChildren()[1]->getContentType());
+        $this->assertSame($textBody, $swiftMessage->getChildren()[0]->getBody());
+        $this->assertSame('text/plain', $swiftMessage->getChildren()[0]->getContentType());
 
         $this->assertSame($subject, $swiftMessage->getSubject());
         $this->assertSame('multipart/alternative', $swiftMessage->getContentType());
         $this->assertSame([$fromEmail => $fromName], $swiftMessage->getFrom());
         $this->assertSame([$toEmail => $toName], $swiftMessage->getTo());
-    }
-
-    public function testCreateInvalidFormatEmailNotification()
-    {
-        $this->expectException(UnexpectedFormatException::class);
-        $this->expectExceptionMessage('Invalid email format "xml" given');
-
-        $faker = $this->getFaker();
-        $templating = M::mock(EngineInterface::class);
-        $translator = M::mock(TranslatorInterface::class);
-        $settings = M::mock(SystemConfig::class);
-        $factory = new Factory($templating, $translator, $settings);
-
-        $fromEmail = $faker->email;
-        $settings->shouldReceive('get')
-            ->once()
-            ->with('email/from_address')
-            ->andReturn($fromEmail);
-
-        $fromName = $faker->name;
-        $settings->shouldReceive('get')
-            ->once()
-            ->with('email/from_name')
-            ->andReturn($fromName);
-
-        $settings->shouldReceive('get')
-            ->once()
-            ->with('email/format')
-            ->andReturn('xml');
-
-        $message = M::mock(NotificationMessageInterface::class);
-        $user = new User();
-        $toEmail = $faker->email;
-        $user->setEmail($toEmail);
-        $toName = $faker->userName;
-        $user->setUsername($toName);
-        $message->shouldReceive('getUsers')
-            ->once()
-            ->andReturn([$user]);
-
-        $subject = $faker->text;
-        $message->shouldReceive('getSubject')
-            ->once()
-            ->with($translator)
-            ->andReturn($subject);
-
-        $message->shouldNotReceive('getTextContent');
-        $message->shouldNotReceive('getHtmlContent');
-
-        $factory->createEmailNotification($message);
     }
 }
