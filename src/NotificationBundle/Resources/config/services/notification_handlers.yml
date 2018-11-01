@@ -14,6 +14,3 @@ services:
 
     Namshi\Notificator\Notification\Handler\SwiftMailer:
         arguments: ['@mailer']
-
-    Namshi\Notificator\Notification\Handler\HipChat:
-        arguments: ['@hipchat.client']

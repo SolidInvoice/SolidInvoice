@@ -26,7 +26,6 @@ class NotificationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email', CheckboxType::class);
-        $builder->add('hipchat', CheckboxType::class);
         $builder->add('sms', CheckboxType::class);
 
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
@@ -41,7 +40,7 @@ class NotificationType extends AbstractType
 
             public function reverseTransform($value)
             {
-                if (null == $value) {
+                if (null === $value) {
                     return $value;
                 }
 

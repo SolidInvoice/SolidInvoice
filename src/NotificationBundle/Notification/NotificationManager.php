@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Namshi\Notificator\Manager;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 class NotificationManager
 {
@@ -62,6 +62,9 @@ class NotificationManager
     /**
      * @param string                       $event
      * @param NotificationMessageInterface $message
+     *
+     * @throws \SolidInvoice\CoreBundle\Mailer\Exception\UnexpectedFormatException
+     * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
      */
     public function sendNotification(string $event, NotificationMessageInterface $message)
     {
@@ -76,11 +79,7 @@ class NotificationManager
         $settings = json_decode($this->settings->get(sprintf('notification/%s', $event)), true);
 
         if ((bool) $settings['email']) {
-            $notification->addNotifications($this->factory->createEmailNotification($message));
-        }
-
-        if ((bool) $settings['hipchat']) {
-            $notification->addNotifications($this->factory->createHipchatNotification($message));
+            $notification->addNotification($this->factory->createEmailNotification($message));
         }
 
         if ((bool) $settings['sms']) {
@@ -89,7 +88,7 @@ class NotificationManager
                     continue;
                 }
 
-                $notification->addNotifications(
+                $notification->addNotification(
                     $this->factory->createSmsNotification($user->getMobile(), $message)
                 );
             }
