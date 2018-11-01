@@ -13,6 +13,5 @@ services:
 
     twilio.client:
         class: Twilio\Rest\Client
-        # @TODO: Create factory to create twilio client
         arguments: ['@=service(''settings'').get(''sms/twilio/sid'')', '@=service(''settings'').get(''sms/twilio/token'')']
-        #arguments: ['a', 'b']
+        lazy: true
