@@ -44,7 +44,7 @@ final class Create
         $totalClientsCount = $this->repository->getTotalClients();
         if (!$totalClientsCount) {
             return new Template('@SolidInvoiceQuote/Default/empty_clients.html.twig');
-        } else if($totalClientsCount === 1 && is_null($client)){
+        } elseif (1 === $totalClientsCount && is_null($client)){
             $clients = $this->repository->findAll();
             $client = reset($clients);
         }
