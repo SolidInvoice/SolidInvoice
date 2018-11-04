@@ -41,8 +41,12 @@ final class Create
 
     public function __invoke(Request $request, Client $client = null)
     {
-        if (!$this->clientRepository->getTotalClients()) {
+        $totalClientsCount = $this->clientRepository->getTotalClients();
+        if (!$totalClientsCount) {
             return new Template('@SolidInvoiceInvoice/Default/empty_clients.html.twig');
+        } else if($totalClientsCount === 1 && is_null($client)){
+            $clients = $this->clientRepository->findAll();
+            $client = reset($clients);
         }
 
         $invoice = new Invoice();
