@@ -6,7 +6,7 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% extends "SolidInvoiceCoreBundle:Layout/Email:base.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
 
 {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
 
@@ -57,7 +57,7 @@
 {% endblock head_extra %}
 {% block content %}
     {% set containerClass = '' %}
-    {% embed "SolidInvoiceInvoiceBundle::invoice_template.html.twig" %}
+    {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" %}
         {% block title %}{% endblock %}
         {% block content %}
             {{ parent() }}
