@@ -22,6 +22,7 @@ define(
                 if (!this.model.isEmpty()) {
                     this.ui.clientSelect.hide();
                 }
+                this.selectDefaultClientContact();
             },
             clientChange: function(event) {
                 event.preventDefault();
@@ -59,7 +60,8 @@ define(
                 );
             },
             _toggleContactInfo: function(show) {
-                let clientSelect = this.$('#client-select');
+                const clientSelect = this.$('#client-select');
+                const clientSelectContainer = this.$('#client-select-container');
                 clientSelect.toggle();
 
                 if (clientSelect.is(':visible')) {
@@ -68,12 +70,19 @@ define(
 
                 if (!_.isUndefined(show)) {
                     if (true === show) {
-                        this.$('#client-select-container').show();
+                        clientSelectContainer.show();
                     } else {
-                        this.$('#client-select-container').hide();
+                        clientSelectContainer.hide();
                     }
                 } else {
-                    this.$('#client-select-container').toggle();
+                    clientSelectContainer.toggle();
+                }
+            },
+            selectDefaultClientContact: function () {
+                const clientSelectContainer = this.$('#client-select-container');
+                const clientSelectContainerCheckbox = clientSelectContainer.find('input[type="checkbox"]');
+                if (clientSelectContainerCheckbox.length === 1){
+                    clientSelectContainerCheckbox.prop("checked", true);
                 }
             }
         });
