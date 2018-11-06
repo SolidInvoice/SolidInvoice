@@ -80,8 +80,9 @@ define(
             },
             selectDefaultClientContact: function () {
                 const clientSelectContainer = this.$('#client-select-container');
-                if (clientSelectContainer.find('input[type="checkbox"]').length === 1){
-                    clientSelectContainer.find('input[type="checkbox"]').prop("checked", true);
+                const clientSelectContainerCheckbox = clientSelectContainer.find('input[type="checkbox"]');
+                if (clientSelectContainerCheckbox.length === 1){
+                    clientSelectContainerCheckbox.prop("checked", true);
                 }
             }
         });
