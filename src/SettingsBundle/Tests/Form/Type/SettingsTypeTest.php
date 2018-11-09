@@ -15,7 +15,6 @@ namespace SolidInvoice\SettingsBundle\Tests\Form\Type;
 
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
-use SolidInvoice\NotificationBundle\Form\Type\HipChatColorType;
 use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
@@ -45,7 +44,6 @@ class SettingsTypeTest extends FormTestCase
                 ImageUploadType::class,
                 PasswordType::class,
                 TextType::class,
-                HipChatColorType::class,
                 MailEncryptionType::class,
                 MailFormatType::class,
                 MailTransportType::class,
@@ -62,15 +60,10 @@ class SettingsTypeTest extends FormTestCase
                 case NotificationType::class === $type:
                     $value = [
                         'email' => $this->faker->boolean,
-                        'hipchat' => $this->faker->boolean,
                         'sms' => $this->faker->boolean,
                     ];
 
                     $formValue = json_encode($value);
-                    break;
-
-                case HipChatColorType::class === $type:
-                    $value = $formValue = 'purple';
                     break;
 
                 case MailEncryptionType::class === $type:

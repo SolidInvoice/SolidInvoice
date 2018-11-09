@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
-use SolidInvoice\CoreBundle\Mailer\Exception\UnexpectedFormatException;
-use SolidInvoice\SettingsBundle\SystemConfig;
-use Namshi\Notificator\Notification\HipChat\HipChatNotification;
 use Namshi\Notificator\NotificationInterface;
+use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -52,9 +51,10 @@ class Factory
     /**
      * @param NotificationMessageInterface $message
      *
-     * @return NotificationInterface
+     * @return SwiftMailerNotification
      *
-     * @throws UnexpectedFormatException
+     * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
+     * @throws InvalidSettingException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {
@@ -83,43 +83,21 @@ class Factory
                 break;
 
             case 'both':
+            default:
                 $swiftMessage->setBody($message->getHtmlContent($this->templating), 'text/html');
                 $swiftMessage->addPart($message->getTextContent($this->templating), 'text/plain');
 
                 break;
-
-            default:
-                throw new UnexpectedFormatException($format);
         }
 
         return new SwiftMailerNotification($swiftMessage);
     }
 
     /**
-     * @param NotificationMessageInterface $message
-     *
-     * @return NotificationInterface
-     */
-    public function createHipchatNotification(NotificationMessageInterface $message): NotificationInterface
-    {
-        $content = $message->getTextContent($this->templating);
-
-        return new HipChatNotification(
-            $content,
-            $this->settings->get('system/company/company_name'),
-            $this->settings->get('hipchat/room_id'),
-            [
-                'hipchat_color' => $this->settings->get('hipchat/message_color'),
-                'hipchat_notify' => (string) $this->settings->get('hipchat/notify'),
-            ]
-        );
-    }
-
-    /**
      * @param string                       $cellphone
      * @param NotificationMessageInterface $message
      *
-     * @return NotificationInterface
+     * @return TwilioNotification
      */
     public function createSmsNotification(string $cellphone, NotificationMessageInterface $message): NotificationInterface
     {

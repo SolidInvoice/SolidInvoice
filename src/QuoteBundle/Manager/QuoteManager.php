@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Manager;
 
-use SolidInvoice\CoreBundle\Mailer\Mailer;
+use SolidInvoice\MailerBundle\Mailer;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
 use SolidInvoice\QuoteBundle\Model\Graph;
@@ -100,7 +101,7 @@ class QuoteManager
             $this->applyTransition($quote, Graph::TRANSITION_SEND);
         }
 
-        $this->mailer->sendQuote($quote);
+        $this->mailer->send(new QuoteEmail($quote));
 
         return $quote;
     }

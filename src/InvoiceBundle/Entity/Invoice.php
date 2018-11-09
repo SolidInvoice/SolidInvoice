@@ -264,6 +264,18 @@ class Invoice
     }
 
     /**
+     * @param Contact $user
+     *
+     * @return Invoice
+     */
+    public function addUser(Contact $user): self
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
      * Get id.
      *
      * @return int

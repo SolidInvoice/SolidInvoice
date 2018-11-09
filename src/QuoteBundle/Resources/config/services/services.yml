@@ -2,6 +2,7 @@ services:
     quote.manager:
         class: SolidInvoice\QuoteBundle\Manager\QuoteManager
         autowire: true
+        autoconfigure: true
         arguments:
             $stateMachine: '@state_machine.quote'
 
@@ -18,3 +19,8 @@ services:
         autowire: true
         arguments:
             $stateMachine: '@state_machine.quote'
+
+    SolidInvoice\QuoteBundle\Email\Decorator\:
+        autowire: true
+        resource: '../../../Email/Decorator/'
+        tags: ['message.decorator']

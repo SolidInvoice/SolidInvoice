@@ -4,7 +4,7 @@ services:
 
     SolidInvoice\QuoteBundle\Action\:
         resource: '../../../Action'
-        autowire: true
+        tags: ['controller.service_arguments']
 
     SolidInvoice\QuoteBundle\Action\Grid\Archive:
         arguments:

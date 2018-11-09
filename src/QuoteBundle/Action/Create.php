@@ -41,8 +41,12 @@ final class Create
 
     public function __invoke(Request $request, Client $client = null)
     {
-        if (!$this->repository->getTotalClients()) {
+        $totalClientsCount = $this->repository->getTotalClients();
+        if (!$totalClientsCount) {
             return new Template('@SolidInvoiceQuote/Default/empty_clients.html.twig');
+        }
+        if (1 === $totalClientsCount && null === $client) {
+            $client = $this->repository->findOneBy([]);
         }
 
         $quote = new Quote();

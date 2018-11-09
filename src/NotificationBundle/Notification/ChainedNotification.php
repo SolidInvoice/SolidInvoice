@@ -33,7 +33,7 @@ class ChainedNotification extends Notification implements ChainedNotificationInt
         parent::__construct($message, $parameters);
 
         foreach ($notifications as $notification) {
-            $this->addNotifications($notification);
+            $this->addNotification($notification);
         }
     }
 
@@ -48,7 +48,7 @@ class ChainedNotification extends Notification implements ChainedNotificationInt
     /**
      * {@inheritdoc}
      */
-    public function addNotifications(NotificationInterface $notification)
+    public function addNotification(NotificationInterface $notification)
     {
         $this->notifications[] = $notification;
     }

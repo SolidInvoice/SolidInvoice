@@ -15,7 +15,7 @@
         <title>{{ block('title') is defined ? block('title') }}</title>
 
 	<style type="text/css" rel="stylesheet">
-	    {{ file(asset('css/email.css')) }}
+	    {{ file('css/email.css') }}
 	</style>
     {{ block('head_extra') is defined ? block('head_extra') }}
     </head>
