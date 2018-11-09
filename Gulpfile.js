@@ -79,7 +79,8 @@ gulp.task('css:app', () => {
         files = [
             options.less + '/*.less',
             options.css + '/*.css',
-            '!' + options.less + '/email.less'
+            '!' + options.less + '/email.less',
+            '!' + options.less + '/pdf.less'
         ];
 
     return gulp.src(files)
@@ -120,8 +121,30 @@ gulp.task('css:email', () => {
         ;
 });
 
+gulp.task('css:pdf', () => {
+    const lessOptions = {
+            'paths': glob.sync(options.less),
+            'plugins': [new lessNpmImportPlugin({prefix: '~'})]
+        },
+
+        files = [options.less + '/pdf.less'];
+
+    return gulp.src(files)
+        .pipe(filter('**/*.{css,less}'))
+        //.pipe(flatten())
+        .pipe(gIf(!options.prod, plumber(function (error) {
+            console.log(error.toString());
+            this.emit('end');
+        })))
+        .pipe(less(lessOptions))
+        .pipe(cssmin())
+        .pipe(concat('pdf.css'))
+        .pipe(gulp.dest('web/css/'))
+        ;
+});
+
 gulp.task('css', ['clean:css'], (done) => {
-    gulp.start(['css:app', 'css:email'], done);
+    gulp.start(['css:app', 'css:email', 'css:pdf'], done);
 });
 
 gulp.task('templates', ['clean:js'], () => {

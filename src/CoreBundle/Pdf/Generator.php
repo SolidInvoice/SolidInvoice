@@ -43,7 +43,9 @@ class Generator
     {
         $mpdf = new Mpdf(['tempDir' => $this->cacheDir.'/pdf']);
         $mpdf->simpleTables = true;
+        $mpdf->setAutoTopMargin = 'pad';
         $mpdf->setLogger($this->logger);
+        //$mpdf->SetHTMLHeader('<a href="#">Hello</a>');
         $mpdf->WriteHTML($html);
         $mpdf->Output();
     }
