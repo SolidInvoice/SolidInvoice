@@ -94,9 +94,7 @@
         "defuse/php-encryption": "^2.1",
         "mpociot/vat-calculator": "^2.2",
         "api-platform/core": "^2.1",
-        "ocramius/proxy-manager": "<2.2",
-        "symfony/serializer": "^4.1",
-        "symfony/routing": "^4.1"
+        "ocramius/proxy-manager": "<2.2"
     },
     "require-dev": {
         "behat/behat": "^3.0",
