@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
 
 final class View
@@ -45,13 +45,18 @@ final class View
         $this->engine = $engine;
     }
 
+    /**
+     * @param Request $request
+     * @param Invoice $invoice
+     *
+     * @return Template|PdfResponse
+     * @throws \Mpdf\MpdfException|\RuntimeException|\InvalidArgumentException
+     */
     public function __invoke(Request $request, Invoice $invoice)
     {
-        if ($request->query->get('pdf')) {
-            return new Response($this->pdfGenerator->generate($this->engine->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice])));
+        if ('pdf' === $request->getRequestFormat()) {
+            return new PdfResponse($this->pdfGenerator->generate($this->engine->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice])), "invoice_{$invoice->getId()}.pdf");
         }
-        
-        return new Response($this->engine->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]));
 
         return new Template(
             '@SolidInvoiceInvoice/Default/view.html.twig',

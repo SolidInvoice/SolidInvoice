@@ -1,27 +1,58 @@
 @import (reference) "~bootstrap/less/mixins";
 @import (reference) "~bootstrap/less/variables";
-@import "~bootstrap/less/normalize";
 @import "~bootstrap/less/scaffolding";
 @import "~bootstrap/less/type";
 @import "~bootstrap/less/grid";
 @import "~bootstrap/less/tables";
-@import "~bootstrap/less/buttons";
-@import "~bootstrap/less/badges";
-
 @import (reference) "~admin-lte/build/less/variables";
+
 @body-bg: #FFFFFF;
 @import (reference) "~admin-lte/build/less/mixins";
 @import "~admin-lte/build/less/core";
-//@import "~admin-lte/build/less/buttons";
-@import "~admin-lte/build/less/invoice";
-//@import "~admin-lte/build/less/miscellaneous";
-//@import "~admin-lte/build/less/boxes";
 
-//@import "theme";
+@import "theme";
 
-
-
-.invoice {
+h4 {
   margin: 0;
-  padding: 0;
+}
+
+table.invoice-details {
+  border: 1px solid #999999;
+  border-spacing: 0;
+
+  thead {
+    tr {
+      border: 1px solid #999999;
+      background-color: #efefef;
+      margin: 0;
+
+      th {
+        margin: 0;
+        padding: 8px;
+        border-right: 1px solid #999999;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        border-bottom: 1px solid #999999;
+        padding: 8px;
+        border-right: 1px solid #999999;
+      }
+    }
+  }
+
+  tfoot {
+    tr {
+      td {
+        padding: 8px;
+      }
+    }
+  }
+}
+
+table.invoice-summary {
+  float: right;
 }

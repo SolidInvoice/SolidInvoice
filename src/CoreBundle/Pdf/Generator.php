@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Pdf;
 
 use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
 use Psr\Log\LoggerInterface;
 
 class Generator
@@ -37,16 +38,27 @@ class Generator
     /**
      * @param string $html
      *
+     * @return string
      * @throws \Mpdf\MpdfException
      */
-    public function generate(string $html)
+    public function generate(string $html): string
     {
-        $mpdf = new Mpdf(['tempDir' => $this->cacheDir.'/pdf']);
-        $mpdf->simpleTables = true;
-        $mpdf->setAutoTopMargin = 'pad';
+        $mpdf = new Mpdf([
+            'tempDir' => $this->cacheDir.'/pdf',
+            'margin_left' => 20,
+            'margin_right' => 15,
+            'margin_top' => 48,
+            'margin_bottom' => 25,
+            'margin_header' => 10,
+            'margin_footer' => 10
+        ]);
+
+        $mpdf->showWatermarkText = true;
+        $mpdf->SetDisplayMode('fullpage');
+        $mpdf->SetProtection(array('print'));
         $mpdf->setLogger($this->logger);
-        //$mpdf->SetHTMLHeader('<a href="#">Hello</a>');
         $mpdf->WriteHTML($html);
-        $mpdf->Output();
+
+        return $mpdf->Output(null, Destination::STRING_RETURN);
     }
 }

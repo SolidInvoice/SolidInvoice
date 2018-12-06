@@ -85,7 +85,10 @@
 
             <div class="row no-print">
                 <div class="col-xs-12">
-                    <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'invoice.action.print'|trans }}</a>
+                    <div class="btn-group">
+                        <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'invoice.action.print'|trans }}</a>
+                        <a href="{{ path('_invoices_view', {'id': invoice.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-default">{{ icon('file-pdf-o') }} {{ 'invoice.action.pdf'|trans }}</a>
+                    </div>
                 </div>
             </div>
         {% endblock footer %}
