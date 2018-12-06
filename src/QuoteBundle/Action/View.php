@@ -13,14 +13,44 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
+use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Templating\EngineInterface;
 
 final class View
 {
+    /**
+     * @var Generator
+     */
+    private $pdfGenerator;
+
+    /**
+     * @var EngineInterface
+     */
+    private $engine;
+
+    public function __construct(Generator $pdfGenerator, EngineInterface $engine)
+    {
+        $this->pdfGenerator = $pdfGenerator;
+        $this->engine = $engine;
+    }
+
+    /**
+     * @param Request $request
+     * @param Quote $quote
+     *
+     * @return Template|PdfResponse
+     * @throws \Mpdf\MpdfException|\RuntimeException|\InvalidArgumentException
+     */
     public function __invoke(Request $request, Quote $quote)
     {
+        if ('pdf' === $request->getRequestFormat()) {
+            return new PdfResponse($this->pdfGenerator->generate($this->engine->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote])), "quote_{$quote->getId()}.pdf");
+        }
+
         return new Template('@SolidInvoiceQuote/Default/view.html.twig', ['quote' => $quote]);
     }
 }
