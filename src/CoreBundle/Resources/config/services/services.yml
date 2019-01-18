@@ -64,3 +64,8 @@ services:
         autowire: true
         resource: '../../../Email/Decorator/'
         tags: ['message.decorator']
+
+    SolidInvoice\CoreBundle\Pdf\Generator:
+        autowire: true
+        bind:
+            $cacheDir: '%kernel.cache_dir%'

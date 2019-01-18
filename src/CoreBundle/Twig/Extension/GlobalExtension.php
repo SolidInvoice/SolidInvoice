@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 use Carbon\Carbon;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
-use Doctrine\DBAL\Exception\TableNotFoundException;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -106,7 +105,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
                 if (null !== $logo) {
                     $logo = 'uploads/'.$logo;
                 }
-            } catch (InvalidSettingException | TableNotFoundException $e) {
+            } catch (InvalidSettingException $e) {
             } finally {
                 if (null === $logo) {
                     $logo = self::DEFAULT_LOGO;

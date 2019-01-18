@@ -5,6 +5,7 @@ invoice:
         outstanding: Outstanding
         income: Income
     created: Created
+    status: Status
     summary: 'Invoice Summary'
     total: Total
     subtotal: Sub-Total
@@ -88,6 +89,7 @@ invoice:
         view: 'View Invoice'
         pay_now: 'Pay Now'
         print: 'Print'
+        pdf: 'PDF'
     balance: 'Outstanding Balance'
     archive:
         success: 'Invoice has been archived'

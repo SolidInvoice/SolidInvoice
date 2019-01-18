@@ -80,7 +80,10 @@
 
             <div class="row no-print">
                 <div class="col-xs-12">
-                    <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
+                    <div class="btn-group">
+                        <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
+                        <a href="{{ path('_quotes_view', {'id': quote.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-default">{{ icon('file-pdf-o') }} {{ 'quote.action.pdf'|trans }}</a>
+                    </div>
                 </div>
             </div>
         {% endblock footer %}

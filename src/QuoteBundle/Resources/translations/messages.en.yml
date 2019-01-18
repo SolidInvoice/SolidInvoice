@@ -33,6 +33,7 @@ quote:
         create:
             success: 'Quote created successfully'
         print: 'Print'
+        pdf: 'PDF'
     view:
         toolbar:
             accept: Accept

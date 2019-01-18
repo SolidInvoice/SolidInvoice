@@ -25,3 +25,4 @@ node_modules
 .rules
 .php_cs.cache
 .env
+yarn-error.log

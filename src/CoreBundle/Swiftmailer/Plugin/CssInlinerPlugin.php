@@ -33,6 +33,8 @@ class CssInlinerPlugin implements \Swift_Events_SendListener
 
     /**
      * @param \Swift_Events_SendEvent $evt
+     *
+     * @throws \InvalidArgumentException|\RuntimeException
      */
     public function beforeSendPerformed(\Swift_Events_SendEvent $evt)
     {
@@ -47,10 +49,12 @@ class CssInlinerPlugin implements \Swift_Events_SendListener
 
     /**
      * @param \Swift_Mime_SimpleMimeEntity $message
+     *
+     * @throws \InvalidArgumentException|\RuntimeException
      */
     private function convert(\Swift_Mime_SimpleMimeEntity $message)
     {
-        if ('text/plain' !== $message->getContentType()) {
+        if ('text/html' === $message->getContentType()) {
             $body = $this->inliner->convert($message->getBody());
             $dom = new Crawler($body);
             $dom->filter('style')->each(function (Crawler $crawler) {

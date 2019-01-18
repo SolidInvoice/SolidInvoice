@@ -21,8 +21,10 @@ _quotes_edit:
         expose: true
 
 _quotes_view:
-    path: '/view/{id}'
-    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\View' }
+    path: '/view/{id}.{_format}'
+    defaults: { _controller: 'SolidInvoice\QuoteBundle\Action\View', _format: html }
+    requirements:
+        _format: html|pdf
     options:
         expose: true
 
