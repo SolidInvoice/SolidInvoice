@@ -40,9 +40,10 @@ final class View
 
     /**
      * @param Request $request
-     * @param Quote $quote
+     * @param Quote   $quote
      *
      * @return Template|PdfResponse
+     *
      * @throws \Mpdf\MpdfException|\RuntimeException|\InvalidArgumentException
      */
     public function __invoke(Request $request, Quote $quote)

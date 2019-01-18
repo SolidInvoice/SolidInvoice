@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 use Carbon\Carbon;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
-use Doctrine\DBAL\Exception\TableNotFoundException;
 use Money\Money;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;

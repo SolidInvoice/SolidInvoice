@@ -39,6 +39,7 @@ class Generator
      * @param string $html
      *
      * @return string
+     *
      * @throws \Mpdf\MpdfException
      */
     public function generate(string $html): string
@@ -50,12 +51,12 @@ class Generator
             'margin_top' => 48,
             'margin_bottom' => 25,
             'margin_header' => 10,
-            'margin_footer' => 10
+            'margin_footer' => 10,
         ]);
 
         $mpdf->showWatermarkText = true;
         $mpdf->SetDisplayMode('fullpage');
-        $mpdf->SetProtection(array('print'));
+        $mpdf->SetProtection(['print']);
         $mpdf->setLogger($this->logger);
         $mpdf->WriteHTML($html);
 

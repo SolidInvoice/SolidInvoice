@@ -50,6 +50,7 @@ final class View
      * @param Invoice $invoice
      *
      * @return Template|PdfResponse
+     *
      * @throws \Mpdf\MpdfException|\RuntimeException|\InvalidArgumentException
      */
     public function __invoke(Request $request, Invoice $invoice)
