@@ -110,11 +110,11 @@
         "sensiolabs/security-checker": "^4.0",
         "satooshi/php-coveralls": "^2.0",
         "matthiasnoback/symfony-dependency-injection-test": "^2.0",
-        "phpstan/phpstan": "^0.10",
+        "phpstan/phpstan": "^0.11",
         "behatch/contexts": "^3.0",
         "knplabs/friendly-contexts": "^0.8.2",
-        "phpstan/phpstan-doctrine": "^0.10",
-        "phpstan/phpstan-symfony": "^0.10"
+        "phpstan/phpstan-doctrine": "^0.11",
+        "phpstan/phpstan-symfony": "^0.11"
     },
     "scripts": {
         "post-install-cmd": [
