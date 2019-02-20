@@ -20,6 +20,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -160,6 +161,13 @@ class Quote
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
     private $users;
+
+    /**
+     * @var Invoice|null
+     *
+     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="quote")
+     */
+    private $invoice;
 
     public function __construct()
     {
@@ -471,5 +479,17 @@ class Quote
                 $item->setQuote($this);
             }
         }
+    }
+
+    public function setInvoice(Invoice $invoice): self
+    {
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
     }
 }

@@ -82,6 +82,11 @@ class Version200 extends AbstractMigration implements ContainerAwareInterface
 
         $this->addSql('ALTER TABLE invoices DROP users');
         $this->addSql('ALTER TABLE quotes DROP users');
+
+        $this->addSql('ALTER TABLE invoices ADD quote_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE invoices ADD CONSTRAINT FK_6A2F2F95DB805178 FOREIGN KEY (quote_id) REFERENCES quotes (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_6A2F2F95DB805178 ON invoices (quote_id)');
+        $this->addSql('CREATE INDEX quote ON invoices (quote_id)');
     }
 
     /**
