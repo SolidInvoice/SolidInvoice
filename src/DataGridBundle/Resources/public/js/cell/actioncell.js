@@ -10,6 +10,7 @@
 define(['backgrid', 'lodash', 'template'], function(Backgrid, _, Template) {
     Backgrid.Extension.ActionCell = Backgrid.Cell.extend({
         template: Template.datagrid.line_actions,
+        className: 'action-cell',
         _setRouteParams: function(action) {
             action.routeParams = {};
 

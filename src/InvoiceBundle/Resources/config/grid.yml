@@ -5,6 +5,8 @@ datagrid:
         source:
             repository: 'SolidInvoiceInvoiceBundle:Invoice'
             method: getGridQuery
+        properties:
+            route: '_invoices_view'
         columns:
             id:
                 name: id
@@ -81,6 +83,8 @@ datagrid:
         source:
             repository: 'SolidInvoiceInvoiceBundle:Invoice'
             method: getRecurringGridQuery
+        properties:
+            route: '_invoices_view'
         columns:
             id:
                 name: id
@@ -165,6 +169,8 @@ datagrid:
         source:
             repository: 'SolidInvoiceInvoiceBundle:Invoice'
             method: getArchivedGridQuery
+        properties:
+            route: '_invoices_view'
         columns:
             id:
                 name: id
