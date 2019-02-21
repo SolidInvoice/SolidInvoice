@@ -38,17 +38,16 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     protected $templating;
 
     /**
-     * Constructor.
-     *
      * @param RequestStack     $requestStack
      * @param FactoryInterface $factory
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(RequestStack $requestStack, FactoryInterface $factory)
     {
         $this->factory = $factory;
 
-        $matcher = new Matcher();
-        $matcher->addVoter(new RouteVoter($requestStack->getCurrentRequest()));
+        $matcher = new Matcher([new RouteVoter($requestStack->getCurrentRequest())]);
 
         parent::__construct($matcher, ['allow_safe_labels' => true, 'currentClass' => 'active']);
     }

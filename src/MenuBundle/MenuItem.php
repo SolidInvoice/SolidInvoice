@@ -22,6 +22,8 @@ class MenuItem extends BaseItem implements ItemInterface
      * @param array                                $options
      *
      * @return \Knp\Menu\ItemInterface|string
+     *
+     * @throws \InvalidArgumentException
      */
     public function addChild($child, array $options = [])
     {
@@ -34,6 +36,8 @@ class MenuItem extends BaseItem implements ItemInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function addDivider(string $type = '')
     {
@@ -44,6 +48,16 @@ class MenuItem extends BaseItem implements ItemInterface
         }
 
         return $this->addChild($name, ['extras' => ['divider' => $type]]);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function addHeader(string $header)
+    {
+        return $this->addChild($header, ['attributes' => ['class' => 'header']]);
     }
 
     /**
