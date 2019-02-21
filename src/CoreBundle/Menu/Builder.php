@@ -15,6 +15,9 @@ namespace SolidInvoice\CoreBundle\Menu;
 
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
+use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class Builder extends AuthenticatedMenu
 {
@@ -22,9 +25,14 @@ class Builder extends AuthenticatedMenu
      * Build the user menu.
      *
      * @param ItemInterface $menu
+     *
+     * @throws \InvalidArgumentException
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
      */
     public function userMenu(ItemInterface $menu)
     {
+        /** @var User $user */
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         $userMenu = $menu->addChild(MainMenu::user($user));
@@ -44,6 +52,8 @@ class Builder extends AuthenticatedMenu
      * Build the system menu.
      *
      * @param ItemInterface $menu
+     *
+     * @throws \InvalidArgumentException
      */
     public function systemMenu(ItemInterface $menu)
     {

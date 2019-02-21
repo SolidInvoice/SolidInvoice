@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Menu;
 
 use SolidInvoice\ClientBundle\Menu\ClientMenu;
+use SolidInvoice\InvoiceBundle\Menu\InvoiceMenu;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -27,6 +28,8 @@ class Builder extends AuthenticatedMenu
      * Menu builder for the quotes index.
      *
      * @param ItemInterface $menu
+     *
+     * @throws \InvalidArgumentException
      */
     public function topMenu(ItemInterface $menu)
     {
@@ -38,14 +41,25 @@ class Builder extends AuthenticatedMenu
      *
      * @param ItemInterface $menu
      * @param array         $options
+     *
+     * @throws \InvalidArgumentException
      */
     public function quotesMenu(ItemInterface $menu, array $options = [])
     {
-        $menu->addChild(QuoteMenu::listMenu());
-        $menu->addChild(QuoteMenu::create());
         if (isset($options['client'])) {
+            $menu->addHeader('Client Info');
             $menu->addChild(ClientMenu::view($options['client']));
         }
+
+        // Quotes
+        $menu->addChild('quotes');
+        $menu->addChild(QuoteMenu::listMenu());
+        $menu->addChild(QuoteMenu::create($options['client'] ?? null));
+
+        // Invoices
+        $menu->addHeader('invoices');
+        $menu->addChild(InvoiceMenu::listMenu());
+        $menu->addChild(InvoiceMenu::create($options['client'] ?? null));
     }
 
     /**
@@ -53,6 +67,8 @@ class Builder extends AuthenticatedMenu
      *
      * @param ItemInterface $menu
      * @param array         $options
+     *
+     * @throws \InvalidArgumentException
      */
     public function quotesEditMenu(ItemInterface $menu, array $options = [])
     {

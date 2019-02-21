@@ -20,6 +20,8 @@ interface ItemInterface extends BaseInterface
     /**
      * {@inheritdoc}
      *
+     * @param ItemInterface|string|array $child
+     *
      * @return ItemInterface
      */
     public function addChild($child, array $options = []);
@@ -30,6 +32,13 @@ interface ItemInterface extends BaseInterface
      * @return $this
      */
     public function addDivider(string $type = '');
+
+    /**
+     * @param string $header
+     *
+     * @return $this
+     */
+    public function addHeader(string $header);
 
     /**
      * @return bool
