@@ -70,7 +70,6 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $invoice = $this->invoiceManager->createFromQuote($event->getSubject());
 
         $this->invoiceStateMachine->apply($invoice, InvoiceGraph::TRANSITION_NEW);
-        $this->invoiceStateMachine->apply($invoice, InvoiceGraph::TRANSITION_ACCEPT);
     }
 
     public function onWorkflowTransitionApplied(Event $event)
