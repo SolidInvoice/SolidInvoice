@@ -16,9 +16,11 @@ namespace SolidInvoice\QuoteBundle\Action;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
+use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\StateMachine;
 
 final class Transition
@@ -45,9 +47,14 @@ final class Transition
             throw new InvalidTransitionException($action);
         }
 
-        $this->stateMachine->apply($quote, $action);
+        /** @var Marking $marking */
+        $marking = $this->stateMachine->apply($quote, $action);
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
+
+        if ($marking->has(Graph::STATUS_ACCEPTED)) {
+            $route = $this->router->generate('_invoices_view', ['id' => $quote->getInvoice()->getId()]);
+        }
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
             /**
