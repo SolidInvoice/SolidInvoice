@@ -19,13 +19,13 @@
     </div>
 {% endset %}
 
-{% extends 'SolidInvoiceCoreBundle:Layout:default.html.twig' %}
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
 {% block body %}
     <section class="content-header">
         {{ block('heading') is defined ? block('heading') }}
 
-        {% include "SolidInvoiceCoreBundle::flash.html.twig" %}
+        {% include "@SolidInvoiceCore/flash.html.twig" %}
     </section>
 
     <section class="content">

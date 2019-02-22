@@ -25,6 +25,6 @@ class FinishStep extends AbstractControllerStep
     {
         $rootDir = $this->container->getParameter('kernel.root_dir');
 
-        return $this->render('SolidInvoiceInstallBundle:Flow:finish.html.twig', ['rootDir' => $rootDir]);
+        return $this->render('@SolidInvoiceInstall/Flow/finish.html.twig', ['rootDir' => $rootDir]);
     }
 }

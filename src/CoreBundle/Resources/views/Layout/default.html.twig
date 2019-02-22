@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'SolidInvoiceCoreBundle:Layout:base.html.twig' %}
+{% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
 
 {% block heading %}
     {% set title = block('title') is defined ? block('title') %}
@@ -53,7 +53,7 @@
 {% endblock %}
 
 {% block header %}
-    {% include "SolidInvoiceCoreBundle:Menu:top.html.twig" with {"title" : app_name, "header_content" : header_content|default('')} %}
+    {% include "@SolidInvoiceCore/Menu/top.html.twig" with {"title" : app_name, "header_content" : header_content|default('')} %}
 {% endblock header %}
 
 {% block footer %}

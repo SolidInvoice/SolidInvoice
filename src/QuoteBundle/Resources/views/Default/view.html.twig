@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "SolidInvoiceCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
 
 {% block page_title %}
     {{ "quote.title"|trans({"%id%" : quote.id}) }}
@@ -74,7 +74,7 @@
     <br class="clear"/>
     <br class="clear"/>
 
-    {% embed "SolidInvoiceQuoteBundle::quote_template.html.twig" %}
+    {% embed "@SolidInvoiceQuote/quote_template.html.twig" %}
         {% block footer %}
             {{ parent() }}
 

@@ -7,9 +7,9 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'SolidInvoiceCoreBundle:Layout:one_column_left.html.twig' %}
+{% extends '@SolidInvoiceCore/Layout/one_column_left.html.twig' %}
 
-{% from "SolidInvoiceSettingsBundle::macros.html.twig" import settings_section %}
+{% from "@SolidInvoiceSettings/macros.html.twig" import settings_section %}
 
 {% block title %}{{ "Settings"|trans }}{% endblock %}
 

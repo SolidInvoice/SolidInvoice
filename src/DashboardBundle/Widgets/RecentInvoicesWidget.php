@@ -49,6 +49,6 @@ class RecentInvoicesWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'SolidInvoiceDashboardBundle:Widget:recent_invoices.html.twig';
+        return '@SolidInvoiceDashboard/Widget/recent_invoices.html.twig';
     }
 }

@@ -79,12 +79,12 @@ class GridExtension extends \Twig_Extension
         $html = '';
 
         if ($grid->requiresStatus() && false === self::$statusRendered) {
-            $html .= $env->render('SolidInvoiceCoreBundle:_partials:status_labels.html.twig');
+            $html .= $env->render('@SolidInvoiceCore/_partials/status_labels.html.twig');
             self::$statusRendered = true;
         }
 
         $html .= $env->render(
-            'SolidInvoiceDataGridBundle::grid.html.twig',
+            '@SolidInvoiceDataGrid/grid.html.twig',
             [
                 'gridName' => $gridName,
                 'gridOptions' => $gridOptions,
@@ -133,7 +133,7 @@ class GridExtension extends \Twig_Extension
         }
 
         return $env->render(
-            'SolidInvoiceDataGridBundle::multiple_grid.html.twig',
+            '@SolidInvoiceDataGrid/multiple_grid.html.twig',
             [
                 'grids' => $renderGrids,
                 'requiresStatus' => $requiresStatus,

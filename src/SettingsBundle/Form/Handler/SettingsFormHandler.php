@@ -102,7 +102,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         $form = $formRequest->getForm();
 
         return new Template(
-            'SolidInvoiceSettingsBundle:Settings:index.html.twig',
+            '@SolidInvoiceSettings/Settings/index.html.twig',
             [
                 'appSettings' => $form->getData(),
                 'form' => $form->createView(),

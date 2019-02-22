@@ -19,9 +19,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class ClientCreateNotification extends NotificationMessage
 {
-    const HTML_TEMPLATE = 'SolidInvoiceClientBundle:Email:client_create.html.twig';
+    const HTML_TEMPLATE = '@SolidInvoiceClient/Email/client_create.html.twig';
 
-    const TEXT_TEMPLATE = 'SolidInvoiceClientBundle:Email:client_create.text.twig';
+    const TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
 
     /**
      * {@inheritdoc}

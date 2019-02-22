@@ -43,7 +43,7 @@ class ConfigStep extends AbstractControllerStep
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        return $this->render('SolidInvoiceInstallBundle:Flow:config.html.twig', ['form' => $this->getForm()->createView()]);
+        return $this->render('@SolidInvoiceInstall/Flow/config.html.twig', ['form' => $this->getForm()->createView()]);
     }
 
     /**
@@ -118,6 +118,6 @@ class ConfigStep extends AbstractControllerStep
             return $this->complete();
         }
 
-        return $this->render('SolidInvoiceInstallBundle:Flow:config.html.twig', ['form' => $form->createView()]);
+        return $this->render('@SolidInvoiceInstall/Flow/config.html.twig', ['form' => $form->createView()]);
     }
 }

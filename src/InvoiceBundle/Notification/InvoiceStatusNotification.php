@@ -19,9 +19,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class InvoiceStatusNotification extends NotificationMessage
 {
-    const HTML_TEMPLATE = 'SolidInvoiceInvoiceBundle:Email:status_change.html.twig';
+    const HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/status_change.html.twig';
 
-    const TEXT_TEMPLATE = 'SolidInvoiceInvoiceBundle:Email:status_change.text.twig';
+    const TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/status_change.text.twig';
 
     /**
      * {@inheritdoc}

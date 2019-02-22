@@ -58,7 +58,7 @@ class ViewBilling
         $options = [
             'repository' => 'SolidInvoiceQuoteBundle:Quote',
             'route' => '_quotes_view',
-            'template' => 'SolidInvoiceQuoteBundle::quote_template.html.twig',
+            'template' => '@SolidInvoiceQuote/quote_template.html.twig',
             'uuid' => $uuid,
             'entity' => 'quote',
         ];
@@ -78,7 +78,7 @@ class ViewBilling
         $options = [
             'repository' => 'SolidInvoiceInvoiceBundle:Invoice',
             'route' => '_invoices_view',
-            'template' => 'SolidInvoiceInvoiceBundle::invoice_template.html.twig',
+            'template' => '@SolidInvoiceInvoice/invoice_template.html.twig',
             'uuid' => $uuid,
             'entity' => 'invoice',
         ];
@@ -107,7 +107,7 @@ class ViewBilling
             return new RedirectResponse($this->router->generate($options['route'], ['id' => $entity->getId()]));
         }
 
-        $template = 'SolidInvoiceCoreBundle:View:'.$options['entity'].'.html.twig';
+        $template = '@SolidInvoiceCore/View/'.$options['entity'].'.html.twig';
 
         return new Template(
             $template,

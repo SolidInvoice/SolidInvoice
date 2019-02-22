@@ -37,7 +37,7 @@ class SetupStep extends AbstractControllerStep
         $form = $this->getForm($context->getRequest());
 
         return $this->render(
-            'SolidInvoiceInstallBundle:Flow:setup.html.twig',
+            '@SolidInvoiceInstall/Flow/setup.html.twig',
             [
                 'form' => $form->createView(),
                 'userCount' => $this->getUserCount(),
@@ -113,7 +113,7 @@ class SetupStep extends AbstractControllerStep
         }
 
         return $this->render(
-            'SolidInvoiceInstallBundle:Flow:setup.html.twig',
+            '@SolidInvoiceInstall/Flow/setup.html.twig',
             [
                 'form' => $form->createView(),
                 'userCount' => $this->getUserCount(),

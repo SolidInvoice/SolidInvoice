@@ -170,7 +170,7 @@ class StatusExtension extends \Twig_Extension
         }
 
         return $environment->render(
-            'SolidInvoiceCoreBundle:Status:label.html.twig',
+            '@SolidInvoiceCore/Status/label.html.twig',
             [
                 'entity' => $object,
                 'tooltip' => $tooltip,

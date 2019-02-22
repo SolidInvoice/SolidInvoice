@@ -71,6 +71,6 @@ class StatsWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'SolidInvoiceDashboardBundle:Widget:stats.html.twig';
+        return '@SolidInvoiceDashboard/Widget/stats.html.twig';
     }
 }
