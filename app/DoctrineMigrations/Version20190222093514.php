@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Application\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -14,7 +23,7 @@ final class Version20190222093514 extends AbstractMigration
      * @var Schema
      */
     private $schema;
-    
+
     public function up(Schema $schema): void
     {
         $this->schema = $schema;
@@ -154,9 +163,8 @@ final class Version20190222093514 extends AbstractMigration
         $this->createTable(
             'version',
             [
-                ['version', 'string', ['length' => 125, 'nonull' => true]]
+                ['version', 'string', ['length' => 125, 'nonull' => true]],
             ]
-
         )
             ->setPrimaryKey(['version']);
 
@@ -475,7 +483,7 @@ final class Version20190222093514 extends AbstractMigration
             'tax_rates',
             'api_tokens',
             'api_token_history',
-            'users'
+            'users',
         ];
 
         foreach ($tables as $table) {
