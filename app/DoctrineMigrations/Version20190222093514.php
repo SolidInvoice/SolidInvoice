@@ -14,12 +14,7 @@ final class Version20190222093514 extends AbstractMigration
      * @var Schema
      */
     private $schema;
-
-    public function getDescription(): string
-    {
-        return '';
-    }
-
+    
     public function up(Schema $schema): void
     {
         $this->schema = $schema;
