@@ -35,7 +35,6 @@ class DatabaseConfigType extends AbstractType
             'driver',
             Select2Type::class,
             [
-                'help' => 'Only MySQL is supported at the moment',
                 'choices' => array_flip($drivers),
                 'placeholder' => 'Select Database Driver',
                 'constraints' => new Constraints\NotBlank(),

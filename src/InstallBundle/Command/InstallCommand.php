@@ -46,7 +46,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $this->setName('app:install')
             ->setDescription('Installs the application')
-            ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use (Only pdo_mysql supported)', 'pdo_mysql')
+            ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
             ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
             ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)
             ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
