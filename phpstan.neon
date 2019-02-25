@@ -12,4 +12,4 @@ parameters:
         - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\InstallStep\:\:displayAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
         - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\FinishStep\:\:displayAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
     symfony:
-        container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml
+        container_xml_path: %rootDir%/../../../var/cache/test/appTestDebugProjectContainer.xml
