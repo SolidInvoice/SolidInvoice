@@ -19,9 +19,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class PaymentReceivedNotification extends NotificationMessage
 {
-    const HTML_TEMPLATE = 'SolidInvoicePaymentBundle:Email:payment.html.twig';
+    const HTML_TEMPLATE = '@SolidInvoicePayment/Email/payment.html.twig';
 
-    const TEXT_TEMPLATE = 'SolidInvoicePaymentBundle:Email:payment.txt.twig';
+    const TEXT_TEMPLATE = '@SolidInvoicePayment/Email/payment.txt.twig';
 
     /**
      * {@inheritdoc}

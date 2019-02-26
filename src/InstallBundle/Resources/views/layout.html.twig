@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'SolidInvoiceCoreBundle:Layout:single_column.html.twig' %}
+{% extends '@SolidInvoiceCore/Layout/single_column.html.twig' %}
 
 {% from "@SolidInvoiceInstall/Macro/install_progress.html.twig" import progress %}
 
@@ -24,7 +24,7 @@
 
             {{ progress(steps, context) }}
 
-            {% include "SolidInvoiceCoreBundle::flash.html.twig" %}
+            {% include "@SolidInvoiceCore/flash.html.twig" %}
 
             <br class="clear" />
 

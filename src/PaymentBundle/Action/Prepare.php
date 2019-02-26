@@ -178,7 +178,7 @@ final class Prepare
                         $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
 
                         return new Template(
-                            'SolidInvoicePaymentBundle:Payment:create.html.twig',
+                            '@SolidInvoicePayment/Payment/create.html.twig',
                             [
                                 'form' => $form->createView(),
                                 'invoice' => $invoice,
@@ -233,7 +233,7 @@ final class Prepare
         }
 
         return new Template(
-            'SolidInvoicePaymentBundle:Payment:create.html.twig',
+            '@SolidInvoicePayment/Payment/create.html.twig',
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,

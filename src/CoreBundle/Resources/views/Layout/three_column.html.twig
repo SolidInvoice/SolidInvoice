@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "SolidInvoiceCoreBundle:Layout:default.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block body %}
 	<div class="row">
@@ -20,7 +20,7 @@
 
             <div class="row">
                 <div class="col-lg-9 col-md-9">
-                    {% include "SolidInvoiceCoreBundle::flash.html.twig" %}
+                    {% include "@SolidInvoiceCore/flash.html.twig" %}
                     {{ block('content') is defined ? block('content') }}
                 </div>
                 <aside class="col-lg-3 col-md-3 right-sidebar">

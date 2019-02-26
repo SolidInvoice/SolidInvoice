@@ -49,6 +49,6 @@ class RecentQuotesWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'SolidInvoiceDashboardBundle:Widget:recent_quotes.html.twig';
+        return '@SolidInvoiceDashboard/Widget/recent_quotes.html.twig';
     }
 }

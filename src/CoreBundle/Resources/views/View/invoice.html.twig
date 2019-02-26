@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "SolidInvoiceCoreBundle:View:template.html.twig" %}
+{% extends "@SolidInvoiceCore/View/template.html.twig" %}
 
 {% block heading %}
     {% if not invoice.paid and payments_configured(false) > 0 %}

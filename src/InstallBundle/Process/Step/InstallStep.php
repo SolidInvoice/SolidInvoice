@@ -71,6 +71,6 @@ class InstallStep extends AbstractControllerStep
             return new JsonResponse($result);
         }
 
-        return $this->render('SolidInvoiceInstallBundle:Flow:install.html.twig');
+        return $this->render('@SolidInvoiceInstall/Flow/install.html.twig');
     }
 }

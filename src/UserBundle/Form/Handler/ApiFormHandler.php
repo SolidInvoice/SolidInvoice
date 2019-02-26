@@ -57,7 +57,7 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            'SolidInvoiceUserBundle:Api:create.html.twig',
+            '@SolidInvoiceUser/Api/create.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
             ]

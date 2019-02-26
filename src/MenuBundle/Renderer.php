@@ -161,6 +161,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      */
     protected function renderIcon(string $icon): string
     {
-        return $this->container->get('templating')->render('SolidInvoiceMenuBundle::icon.html.twig', ['icon' => $icon]);
+        return $this->container->get('templating')->render('@SolidInvoiceMenu/icon.html.twig', ['icon' => $icon]);
     }
 }

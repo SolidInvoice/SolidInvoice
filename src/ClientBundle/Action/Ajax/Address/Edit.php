@@ -48,7 +48,7 @@ final class Edit implements AjaxResponse
         }
 
         return new Template(
-            'SolidInvoiceClientBundle:Ajax:address_edit.html.twig',
+            '@SolidInvoiceClient/Ajax/address_edit.html.twig',
             [
                 'form' => $form->createView(),
                 'address' => $address,

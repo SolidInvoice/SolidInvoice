@@ -37,7 +37,7 @@ class SystemRequirementsStep extends AbstractControllerStep
         }
 
         return $this->render(
-            'SolidInvoiceInstallBundle:Flow:system_check.html.twig',
+            '@SolidInvoiceInstall/Flow/system_check.html.twig',
             [
                 'requirements' => new \AppRequirements(),
             ]

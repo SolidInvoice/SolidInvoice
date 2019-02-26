@@ -12,7 +12,7 @@
 {% set moduleData = client %}
 {% set serializationGroups = ['client_api'] %}
 
-{% extends "SolidInvoiceCoreBundle:Layout:one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
 
 {#{% block page_title %}
     {{ client.name }}
@@ -182,14 +182,14 @@
                         <div role="tabpanel" class="tab-pane active" id="client-info">
                         </div>
                         <div role="tabpanel" class="tab-pane" id="quotes">
-                            {% include "SolidInvoiceClientBundle::quote_list.html.twig" %}
+                            {% include "@SolidInvoiceClient/quote_list.html.twig" %}
                         </div>
                         <div role="tabpanel" class="tab-pane" id="invoices">
-                            {% include "SolidInvoiceClientBundle::invoice_list.html.twig" %}
+                            {% include "@SolidInvoiceClient/invoice_list.html.twig" %}
                         </div>
                         {% if payments|length > 0 %}
                             <div role="tabpanel" class="tab-pane" id="payments">
-                                {% include "SolidInvoicePaymentBundle:Payment:list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
+                                {% include "@SolidInvoicePaymentBundle/Payment/list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
                             </div>
                         {% endif %}
                     </div>
