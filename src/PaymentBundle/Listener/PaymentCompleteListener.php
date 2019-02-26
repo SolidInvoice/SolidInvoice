@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Listener;
 
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Model\Status;
@@ -85,7 +88,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
         $status = (string) $payment->getStatus();
 
         if ('credit' === $payment->getMethod()->getGatewayName()) {
-            $creditRepository = $this->registry->getRepository('SolidInvoiceClientBundle:Credit');
+            $creditRepository = $this->registry->getRepository(Credit::class);
             $creditRepository->deductCredit(
                 $payment->getClient(),
                 new Money($payment->getTotalAmount(), $this->currency)
@@ -95,10 +98,10 @@ class PaymentCompleteListener implements EventSubscriberInterface
         if (null !== $invoice = $event->getPayment()->getInvoice()) {
             $em = $this->registry->getManager();
 
-            if (Status::STATUS_CAPTURED === $status && $em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->isFullyPaid($invoice)) {
+            if (Status::STATUS_CAPTURED === $status && $em->getRepository(Invoice::class)->isFullyPaid($invoice)) {
                 $this->stateMachine->apply($invoice, Graph::TRANSITION_PAY);
             } else {
-                $paymentRepository = $this->registry->getRepository('SolidInvoicePaymentBundle:Payment');
+                $paymentRepository = $this->registry->getRepository(Payment::class);
                 $invoiceTotal = $invoice->getTotal();
                 $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoiceTotal->getCurrency());
                 $invoice->setBalance($invoiceTotal->subtract($totalPaid));

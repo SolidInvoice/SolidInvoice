@@ -66,7 +66,7 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
-        $this->assertCount(1, $this->em->getRepository('SolidInvoiceUserBundle:User')->findAll());
+        $this->assertCount(1, $this->em->getRepository(User::class)->findAll());
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('test', $data->getUserName());
     }
@@ -114,7 +114,7 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceUserBundle:User',
+            User::class,
         ];
     }
 

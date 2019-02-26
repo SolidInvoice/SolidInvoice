@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\EventListener;
 
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -61,7 +62,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
                     'constraints' => new NotBlank(),
                     'multiple' => true,
                     'expanded' => true,
-                    'class' => 'SolidInvoiceClientBundle:Contact',
+                    'class' => Contact::class,
                     'query_builder' => function (EntityRepository $repo) use ($clientId) {
                         return $repo->createQueryBuilder('c')
                             ->where('c.client = :client')

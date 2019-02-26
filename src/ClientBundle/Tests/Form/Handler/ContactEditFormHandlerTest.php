@@ -76,7 +76,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);
-        $this->assertCount(1, $this->em->getRepository('SolidInvoiceClientBundle:Contact')->findAll());
+        $this->assertCount(1, $this->em->getRepository(Contact::class)->findAll());
         $this->assertSame($this->firstName, $data->getFirstName());
         $this->assertSame($this->email, $data->getEmail());
     }
@@ -97,7 +97,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceClientBundle:Contact',
+            Contact::class,
         ];
     }
 }

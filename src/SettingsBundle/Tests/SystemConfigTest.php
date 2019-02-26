@@ -42,21 +42,21 @@ class SystemConfigTest extends TestCase
 
     public function testGet()
     {
-        $config = new SystemConfig($this->em->getRepository('SolidInvoiceSettingsBundle:Setting'));
+        $config = new SystemConfig($this->em->getRepository(Setting::class));
 
         $this->assertSame('four', $config->get('one/two/three'));
     }
 
     public function testGetAll()
     {
-        $config = new SystemConfig($this->em->getRepository('SolidInvoiceSettingsBundle:Setting'));
+        $config = new SystemConfig($this->em->getRepository(Setting::class));
 
         $this->assertSame(['one/two/three' => 'four'], $config->getAll());
     }
 
     public function testInvalidGet()
     {
-        $config = new SystemConfig($this->em->getRepository('SolidInvoiceSettingsBundle:Setting'));
+        $config = new SystemConfig($this->em->getRepository(Setting::class));
 
         $this->expectException(InvalidSettingException::class);
         $this->expectExceptionMessage('Invalid settings key: some/invalid/key');
@@ -74,7 +74,7 @@ class SystemConfigTest extends TestCase
     public function getEntities(): array
     {
         return [
-            'SolidInvoiceSettingsBundle:Setting',
+            Setting::class,
         ];
     }
 }

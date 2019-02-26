@@ -26,7 +26,7 @@ class VersionRepository extends EntityRepository
     public function updateVersion($version)
     {
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('DELETE FROM SolidInvoiceCoreBundle:Version');
+        $query = $entityManager->createQuery('DELETE FROM '.Version::class);
 
         $query->execute();
 

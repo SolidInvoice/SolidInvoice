@@ -54,7 +54,7 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
     {
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);
-        $this->assertCount(1, $this->em->getRepository('SolidInvoiceClientBundle:Contact')->findAll());
+        $this->assertCount(1, $this->em->getRepository(Contact::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -73,7 +73,7 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceClientBundle:Contact',
+            Contact::class,
         ];
     }
 }

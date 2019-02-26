@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Security\Provider;
 
+use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -42,7 +43,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function getUsernameForToken(string $token): ?string
     {
-        return $this->registry->getRepository('SolidInvoiceUserBundle:ApiToken')->getUsernameForToken($token);
+        return $this->registry->getRepository(ApiToken::class)->getUsernameForToken($token);
     }
 
     /**
@@ -50,7 +51,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->registry->getRepository('SolidInvoiceUserBundle:User')->findOneBy(['username' => $username]);
+        $user = $this->registry->getRepository(User::class)->findOneBy(['username' => $username]);
 
         if (!$user) {
             throw new UsernameNotFoundException();

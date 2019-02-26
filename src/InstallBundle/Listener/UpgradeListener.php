@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Listener;
 
+use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
@@ -78,7 +79,7 @@ class UpgradeListener implements EventSubscriberInterface
         }
 
         /** @var VersionRepository $versionRepository */
-        $versionRepository = $this->registry->getRepository('SolidInvoiceCoreBundle:Version');
+        $versionRepository = $this->registry->getRepository(Version::class);
 
         if (version_compare($versionRepository->getCurrentVersion(), SolidInvoiceCoreBundle::VERSION, '<')) {
             $this->migration->migrate();

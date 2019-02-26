@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -37,7 +38,7 @@ class RecentPaymentsWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->manager->getRepository('SolidInvoicePaymentBundle:Payment');
+        $paymentRepository = $this->manager->getRepository(Payment::class);
 
         $payments = $paymentRepository->getRecentPayments();
 

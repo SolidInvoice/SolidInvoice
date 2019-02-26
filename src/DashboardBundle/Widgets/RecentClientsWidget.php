@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -37,7 +38,7 @@ class RecentClientsWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var ClientRepository $clientRepository */
-        $clientRepository = $this->manager->getRepository('SolidInvoiceClientBundle:Client');
+        $clientRepository = $this->manager->getRepository(Client::class);
 
         $clients = $clientRepository->getRecentClients();
 

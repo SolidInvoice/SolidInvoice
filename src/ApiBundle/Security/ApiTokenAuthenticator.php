@@ -143,7 +143,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
             ->setResource($request->getPathInfo());
 
         /** @var ApiTokenHistoryRepository $repository */
-        $repository = $this->registry->getRepository('SolidInvoiceUserBundle:ApiTokenHistory');
+        $repository = $this->registry->getRepository(ApiTokenHistory::class);
 
         $repository->addHistory($history, $apiToken);
     }

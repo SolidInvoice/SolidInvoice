@@ -18,6 +18,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Namshi\Notificator\Manager;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\UserBundle\Entity\User;
 
 class NotificationManager
 {
@@ -69,7 +70,7 @@ class NotificationManager
     public function sendNotification(string $event, NotificationMessageInterface $message)
     {
         /** @var EntityRepository $repository */
-        $repository = $this->entityManager->getRepository('SolidInvoiceUserBundle:User');
+        $repository = $this->entityManager->getRepository(User::class);
 
         $message->setUsers($repository->findAll());
 

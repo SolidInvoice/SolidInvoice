@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -37,7 +38,7 @@ class RecentInvoicesWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->manager->getRepository('SolidInvoiceInvoiceBundle:Invoice');
+        $invoiceRepository = $this->manager->getRepository(Invoice::class);
 
         $invoices = $invoiceRepository->getRecentInvoices();
 

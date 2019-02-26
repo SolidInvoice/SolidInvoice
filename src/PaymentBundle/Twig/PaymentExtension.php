@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Twig;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
@@ -69,7 +72,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function getTotalIncome(Client $client = null): Money
     {
-        $income = $this->registry->getRepository('SolidInvoicePaymentBundle:Payment')->getTotalIncome($client);
+        $income = $this->registry->getRepository(Payment::class)->getTotalIncome($client);
 
         return new Money($income, $client->getCurrency() ?: $this->currency);
     }
@@ -81,7 +84,7 @@ class PaymentExtension extends Twig_Extension
      */
     public function getTotalOutstanding(Client $client = null): Money
     {
-        $outstanding = $this->registry->getRepository('SolidInvoiceInvoiceBundle:Invoice')->getTotalOutstanding($client);
+        $outstanding = $this->registry->getRepository(Invoice::class)->getTotalOutstanding($client);
 
         return new Money($outstanding, $client->getCurrency() ?: $this->currency);
     }
@@ -108,7 +111,7 @@ class PaymentExtension extends Twig_Extension
     public function getRepository(): PaymentMethodRepository
     {
         if (null === $this->repository) {
-            $this->repository = $this->registry->getRepository('SolidInvoicePaymentBundle:PaymentMethod');
+            $this->repository = $this->registry->getRepository(PaymentMethod::class);
         }
 
         return $this->repository;

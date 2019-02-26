@@ -16,12 +16,14 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 use Carbon\Carbon;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Money\Money;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 
 class InvoiceRepository extends EntityRepository
 {
@@ -254,7 +256,7 @@ class InvoiceRepository extends EntityRepository
             $qbi = $this->getEntityManager()->createQueryBuilder();
 
             $qbi->update()
-                ->from('SolidInvoiceInvoiceBundle:Item', 'it')
+                ->from(Item::class, 'it')
                 ->set('it.price.currency', ':currency')
                 ->set('it.total.currency', ':currency')
                 ->where(
@@ -309,7 +311,7 @@ class InvoiceRepository extends EntityRepository
 
         $totalPaid = new Money(
             $this->getEntityManager()
-                ->getRepository('SolidInvoicePaymentBundle:Payment')
+                ->getRepository(Payment::class)
                 ->getTotalPaidForInvoice($invoice),
             $invoiceTotal->getCurrency()
         );

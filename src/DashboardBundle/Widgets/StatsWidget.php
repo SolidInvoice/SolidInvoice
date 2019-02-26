@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -43,13 +47,13 @@ class StatsWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var ClientRepository $clientRepository */
-        $clientRepository = $this->manager->getRepository('SolidInvoiceClientBundle:Client');
+        $clientRepository = $this->manager->getRepository(Client::class);
         /** @var QuoteRepository $quoteRepository */
-        $quoteRepository = $this->manager->getRepository('SolidInvoiceQuoteBundle:Quote');
+        $quoteRepository = $this->manager->getRepository(Quote::class);
         /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->manager->getRepository('SolidInvoiceInvoiceBundle:Invoice');
+        $invoiceRepository = $this->manager->getRepository(Invoice::class);
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->manager->getRepository('SolidInvoicePaymentBundle:Payment');
+        $paymentRepository = $this->manager->getRepository(Payment::class);
 
         $totalInvoices = $invoiceRepository->getCountByStatus(
             [

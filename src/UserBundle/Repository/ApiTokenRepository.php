@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Join;
+use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -58,7 +59,7 @@ class ApiTokenRepository extends EntityRepository
         $qb = $this->createQueryBuilder('t');
 
         $hqb = $this->getEntityManager()
-            ->getRepository('SolidInvoiceUserBundle:ApiTokenHistory')
+            ->getRepository(ApiTokenHistory::class)
             ->createQueryBuilder('th');
 
         $hqb->select($qb->expr()->max('th.created'))

@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -48,7 +49,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 
         /* @var AdditionalContactDetail $detail */
         $detail = $this->normalizer->denormalize($data, $class, $format, $context);
-        $repository = $this->registry->getRepository('SolidInvoiceClientBundle:ContactType');
+        $repository = $this->registry->getRepository(ContactType::class);
         $detail->setType($repository->findOneBy(['name' => $detail->getType()->getName()]));
 
         return $detail;

@@ -76,7 +76,7 @@ class ItemType extends AbstractType
             ]
         );
 
-        if ($this->registry->getManager()->getRepository('SolidInvoiceTaxBundle:Tax')->taxRatesConfigured()) {
+        if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
             $builder->add(
                 'tax',
                 TaxEntityType::class,

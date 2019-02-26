@@ -36,7 +36,7 @@ class PaymentType extends AbstractType
             'payment_method',
             EntityType::class,
             [
-                'class' => 'SolidInvoicePaymentBundle:PaymentMethod',
+                'class' => PaymentMethod::class,
                 'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
                     $expression = $queryBuilder->expr();

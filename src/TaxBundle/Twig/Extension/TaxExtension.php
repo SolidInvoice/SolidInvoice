@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use SolidInvoice\TaxBundle\Entity\Tax;
 
 class TaxExtension extends \Twig_Extension
 {
@@ -51,7 +52,7 @@ class TaxExtension extends \Twig_Extension
             return $taxConfigured;
         }
 
-        $taxConfigured = $this->registry->getRepository('SolidInvoiceTaxBundle:Tax')->taxRatesConfigured();
+        $taxConfigured = $this->registry->getRepository(Tax::class)->taxRatesConfigured();
 
         return $taxConfigured;
     }
