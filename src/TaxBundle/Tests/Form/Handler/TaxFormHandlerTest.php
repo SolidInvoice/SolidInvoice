@@ -16,6 +16,7 @@ namespace SolidInvoice\TaxBundle\Tests\Form\Handler;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Handler\TaxFormHandler;
 use Mockery as M;
 use SolidWorx\FormHandler\FormHandlerInterface;
@@ -59,8 +60,8 @@ class TaxFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
-        $this->assertCount(1, $this->em->getRepository('SolidInvoiceTaxBundle:Tax')->findAll());
-        $tax = $this->em->getRepository('SolidInvoiceTaxBundle:Tax')->find(1);
+        $this->assertCount(1, $this->em->getRepository(Tax::class)->findAll());
+        $tax = $this->em->getRepository(Tax::class)->find(1);
         $this->assertSame('VAT', $tax->getName());
         $this->assertSame(14.0, $tax->getRate());
         $this->assertSame('Inclusive', $tax->getType());
@@ -77,7 +78,7 @@ class TaxFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceTaxBundle:Tax',
+            Tax::class,
         ];
     }
 

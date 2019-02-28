@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 
 class PaymentSettingsManager
 {
@@ -32,7 +33,7 @@ class PaymentSettingsManager
      */
     public function __construct(ManagerRegistry $doctrine)
     {
-        $this->repository = $doctrine->getRepository('SolidInvoicePaymentBundle:PaymentMethod');
+        $this->repository = $doctrine->getRepository(PaymentMethod::class);
     }
 
     /**

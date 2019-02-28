@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ItemTypeTest extends FormTestCase
@@ -63,8 +65,8 @@ class ItemTypeTest extends FormTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceInvoiceBundle:Invoice',
-            'SolidInvoiceTaxBundle:Tax',
+            Invoice::class,
+            Tax::class,
         ];
     }
 }

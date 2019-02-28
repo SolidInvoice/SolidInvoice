@@ -31,7 +31,7 @@ class ApiTokenHistoryRepository extends EntityRepository
 
         /** @var ApiToken $apiToken */
         $apiToken = $entityManager
-            ->getRepository('SolidInvoiceUserBundle:ApiToken')
+            ->getRepository(ApiToken::class)
             ->findOneBy(['token' => $token]);
 
         $apiToken->addHistory($history);

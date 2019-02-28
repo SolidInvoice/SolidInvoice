@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Repository;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -125,7 +126,7 @@ class QuoteRepository extends EntityRepository
             $qbi = $this->getEntityManager()->createQueryBuilder();
 
             $qbi->update()
-                ->from('SolidInvoiceQuoteBundle:Item', 'qt')
+                ->from(Item::class, 'qt')
                 ->set('qt.price.currency', ':currency')
                 ->set('qt.total.currency', ':currency')
                 ->where(

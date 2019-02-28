@@ -151,10 +151,10 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
             }
         };
 
-        $entityRepository = $this->em->getRepository('SolidInvoiceClientBundle:ContactType');
+        $entityRepository = $this->em->getRepository(ContactType::class);
         $this->registry->shouldReceive('getRepository')
             ->once()
-            ->with('SolidInvoiceClientBundle:ContactType')
+            ->with(ContactType::class)
             ->andReturn($entityRepository);
 
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
@@ -176,7 +176,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
     protected function getEntities()
     {
         return [
-            'SolidInvoice\ClientBundle\Entity\ContactType',
+            ContactType::class,
         ];
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Form\Handler;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -27,6 +28,7 @@ use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Mockery as M;
 use Money\Currency;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -115,7 +117,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
-        $this->assertCount(1, $this->em->getRepository('SolidInvoiceQuoteBundle:Quote')->findAll());
+        $this->assertCount(1, $this->em->getRepository(Quote::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -159,9 +161,9 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceClientBundle:Client',
-            'SolidInvoiceQuoteBundle:Quote',
-            'SolidInvoiceTaxBundle:Tax',
+            Client::class,
+            Quote::class,
+            Tax::class,
         ];
     }
 }

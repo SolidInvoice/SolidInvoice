@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Command;
 
+use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
@@ -187,7 +188,7 @@ class InstallCommand extends ContainerAwareCommand
             $entityManager = $this->getContainer()->get('doctrine')->getManager();
 
             /** @var VersionRepository $repository */
-            $repository = $entityManager->getRepository('SolidInvoiceCoreBundle:Version');
+            $repository = $entityManager->getRepository(Version::class);
 
             $repository->updateVersion($version);
 

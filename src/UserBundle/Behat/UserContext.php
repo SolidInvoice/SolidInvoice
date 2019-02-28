@@ -70,7 +70,7 @@ class UserContext extends DefaultContext
     public function userExists(TableNode $table)
     {
         $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $userRepository = $entityManager->getRepository('SolidInvoiceUserBundle:User');
+        $userRepository = $entityManager->getRepository(User::class);
 
         /** @var User[] $users */
         $users = $userRepository->findAll();

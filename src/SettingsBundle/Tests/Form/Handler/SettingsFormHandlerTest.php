@@ -50,7 +50,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
-        $repository = $this->em->getRepository('SolidInvoiceSettingsBundle:Setting');
+        $repository = $this->em->getRepository(Setting::class);
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
             ->andReturn('/settings');
@@ -73,7 +73,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
             [
                 $setting
             ],
-            $this->em->getRepository('SolidInvoiceSettingsBundle:Setting')->findAll()
+            $this->em->getRepository(Setting::class)->findAll()
         );
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -102,7 +102,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceSettingsBundle:Setting'
+            Setting::class
         ];
     }
 

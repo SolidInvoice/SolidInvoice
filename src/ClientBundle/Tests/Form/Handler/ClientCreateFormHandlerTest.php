@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Form\Handler\ClientCreateFormHandler;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -63,7 +64,7 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
-        $this->assertCount(1, $this->em->getRepository('SolidInvoiceClientBundle:Client')->findAll());
+        $this->assertCount(1, $this->em->getRepository(Client::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -81,8 +82,8 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceClientBundle:Client',
-            'SolidInvoiceClientBundle:Credit',
+            Client::class,
+            Credit::class,
         ];
     }
 }

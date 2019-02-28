@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Form\Type;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\MoneyBundle\Entity\Money;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\ItemType;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Mockery as M;
 use Money\Currency;
@@ -56,7 +58,7 @@ class QuoteTypeTest extends FormTestCase
             ->andReturn(false);
 
         $this->registry->shouldReceive('getRepository')
-            ->with('SolidInvoiceTaxBundle:Tax')
+            ->with(Tax::class)
             ->andReturn($taxRepository);
 
         return [
@@ -76,9 +78,9 @@ class QuoteTypeTest extends FormTestCase
     protected function getEntities()
     {
         return [
-            'SolidInvoiceClientBundle:Client',
-            'SolidInvoiceQuoteBundle:Quote',
-            'SolidInvoiceTaxBundle:Tax',
+            Client::class,
+            Quote::class,
+            Tax::class,
         ];
     }
 }

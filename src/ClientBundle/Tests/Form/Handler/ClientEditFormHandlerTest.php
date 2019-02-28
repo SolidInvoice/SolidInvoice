@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Form\Handler\ClientEditFormHandler;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -99,8 +100,8 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceClientBundle:Client',
-            'SolidInvoiceClientBundle:Credit',
+            Client::class,
+            Credit::class,
         ];
     }
 }

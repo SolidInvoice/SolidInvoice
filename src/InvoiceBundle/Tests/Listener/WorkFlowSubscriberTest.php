@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Mockery as M;
@@ -45,7 +46,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid')));
         $this->assertNotNull($invoice->getPaidDate());
-        $this->assertEquals($invoice, $this->em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->find(1));
+        $this->assertEquals($invoice, $this->em->getRepository(Invoice::class)->find(1));
     }
 
     public function testInvoiceArchive()
@@ -63,7 +64,7 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
 
         $this->assertTrue($invoice->isArchived());
-        $this->assertSame($invoice, $this->em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->find(1));
+        $this->assertSame($invoice, $this->em->getRepository(Invoice::class)->find(1));
     }
 
     public function getEntityNamespaces()
@@ -76,8 +77,8 @@ class WorkFlowSubscriberTest extends TestCase
     public function getEntities()
     {
         return [
-            'SolidInvoiceInvoiceBundle:Invoice',
-            'SolidInvoiceInvoiceBundle:RecurringInvoice',
+            Invoice::class,
+            RecurringInvoice::class,
         ];
     }
 }

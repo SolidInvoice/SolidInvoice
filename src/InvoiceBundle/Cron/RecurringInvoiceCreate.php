@@ -74,7 +74,7 @@ class RecurringInvoiceCreate implements CommandInterface
     public function process()
     {
         /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->entityManager->getRepository('SolidInvoiceInvoiceBundle:Invoice');
+        $invoiceRepository = $this->entityManager->getRepository(Invoice::class);
 
         $invoices = $invoiceRepository->getRecurringInvoices();
 

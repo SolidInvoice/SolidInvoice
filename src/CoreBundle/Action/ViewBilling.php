@@ -15,6 +15,8 @@ namespace SolidInvoice\CoreBundle\Action;
 
 use SolidInvoice\CoreBundle\Templating\Template;
 use Ramsey\Uuid\Uuid;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +58,7 @@ class ViewBilling
     public function quoteAction(string $uuid): Response
     {
         $options = [
-            'repository' => 'SolidInvoiceQuoteBundle:Quote',
+            'repository' => Quote::class,
             'route' => '_quotes_view',
             'template' => '@SolidInvoiceQuote/quote_template.html.twig',
             'uuid' => $uuid,
@@ -76,7 +78,7 @@ class ViewBilling
     public function invoiceAction(string $uuid)
     {
         $options = [
-            'repository' => 'SolidInvoiceInvoiceBundle:Invoice',
+            'repository' => Invoice::class,
             'route' => '_invoices_view',
             'template' => '@SolidInvoiceInvoice/invoice_template.html.twig',
             'uuid' => $uuid,

@@ -56,7 +56,7 @@ class NotificationManagerTest extends TestCase
 
         $em->shouldReceive('getRepository')
             ->once()
-            ->with('SolidInvoiceUserBundle:User')
+            ->with(User::class)
             ->andReturn($repository);
 
         $repository->shouldReceive('findAll')
@@ -113,7 +113,7 @@ class NotificationManagerTest extends TestCase
 
         $em->shouldReceive('getRepository')
             ->once()
-            ->with('SolidInvoiceUserBundle:User')
+            ->with(User::class)
             ->andReturn($repository);
 
         $repository->shouldReceive('findAll')
@@ -176,7 +176,7 @@ class NotificationManagerTest extends TestCase
 
         $em->shouldReceive('getRepository')
             ->once()
-            ->with('SolidInvoiceUserBundle:User')
+            ->with(User::class)
             ->andReturn($repository);
 
         $repository->shouldReceive('findAll')
@@ -234,7 +234,7 @@ class NotificationManagerTest extends TestCase
 
         $em->shouldReceive('getRepository')
             ->once()
-            ->with('SolidInvoiceUserBundle:User')
+            ->with(User::class)
             ->andReturn($repository);
 
         $repository->shouldReceive('findAll')

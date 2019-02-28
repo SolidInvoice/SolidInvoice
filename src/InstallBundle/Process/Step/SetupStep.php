@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Process\Step;
 
+use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
@@ -81,7 +82,7 @@ class SetupStep extends AbstractControllerStep
             $entityManager = $this->container->get('doctrine');
 
             /** @var UserRepository $repository */
-            $repository = $entityManager->getRepository('SolidInvoiceUserBundle:User');
+            $repository = $entityManager->getRepository(User::class);
 
             $userCount = $repository->getUserCount();
         }
@@ -155,7 +156,7 @@ class SetupStep extends AbstractControllerStep
         $entityManager = $this->container->get('doctrine')->getManager();
 
         /** @var VersionRepository $repository */
-        $repository = $entityManager->getRepository('SolidInvoiceCoreBundle:Version');
+        $repository = $entityManager->getRepository(Version::class);
 
         $repository->updateVersion($version);
     }

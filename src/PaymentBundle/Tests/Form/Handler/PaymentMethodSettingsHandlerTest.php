@@ -70,7 +70,7 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
         /* @var PaymentMethod $data */
         $this->assertSame('My Test Payment', $data->getName());
         $this->assertTrue($data->isEnabled());
-        $this->assertCount(1, $this->em->getRepository('SolidInvoicePaymentBundle:PaymentMethod')->findAll());
+        $this->assertCount(1, $this->em->getRepository(PaymentMethod::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -88,7 +88,7 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoicePaymentBundle:PaymentMethod',
+            PaymentMethod::class,
         ];
     }
 }

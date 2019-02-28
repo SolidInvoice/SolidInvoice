@@ -18,6 +18,7 @@ use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
+use SolidInvoice\UserBundle\Entity\User;
 
 /**
  * Class UserManager.
@@ -51,7 +52,7 @@ class UserManager extends BaseUserManager
 
     public function deleteUsers(array $users)
     {
-        $repository = $this->objectManager->getRepository('SolidInvoiceUserBundle:User');
+        $repository = $this->objectManager->getRepository(User::class);
 
         $qb = $repository->createQueryBuilder('u');
 

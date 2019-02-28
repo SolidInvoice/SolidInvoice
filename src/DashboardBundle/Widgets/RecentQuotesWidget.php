@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -37,7 +38,7 @@ class RecentQuotesWidget implements WidgetInterface
     public function getData(): array
     {
         /** @var QuoteRepository $quoteRepository */
-        $quoteRepository = $this->manager->getRepository('SolidInvoiceQuoteBundle:Quote');
+        $quoteRepository = $this->manager->getRepository(Quote::class);
 
         $quotes = $quoteRepository->getRecentQuotes();
 

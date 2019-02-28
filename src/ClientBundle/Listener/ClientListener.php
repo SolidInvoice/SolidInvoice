@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Listener;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -76,10 +80,10 @@ class ClientListener implements ContainerAwareInterface
         if (array_key_exists('currency', $entityChangeSet)) {
             $em = $event->getEntityManager();
 
-            $em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->updateCurrency($entity);
-            $em->getRepository('SolidInvoiceQuoteBundle:Quote')->updateCurrency($entity);
-            $em->getRepository('SolidInvoicePaymentBundle:Payment')->updateCurrency($entity);
-            $em->getRepository('SolidInvoiceClientBundle:Credit')->updateCurrency($entity);
+            $em->getRepository(Invoice::class)->updateCurrency($entity);
+            $em->getRepository(Quote::class)->updateCurrency($entity);
+            $em->getRepository(Payment::class)->updateCurrency($entity);
+            $em->getRepository(Credit::class)->updateCurrency($entity);
         }
     }
 }

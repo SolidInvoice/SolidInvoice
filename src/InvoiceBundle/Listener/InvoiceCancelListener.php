@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -63,7 +65,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
         $invoice = $event->getInvoice();
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->registry->getRepository('SolidInvoicePaymentBundle:Payment');
+        $paymentRepository = $this->registry->getRepository(Payment::class);
 
         $em = $this->registry->getManager();
 
@@ -76,7 +78,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);
 
             /** @var CreditRepository $creditRepository */
-            $creditRepository = $this->registry->getRepository('SolidInvoiceClientBundle:Credit');
+            $creditRepository = $this->registry->getRepository(Credit::class);
 
             $creditRepository->addCredit($invoice->getClient(), $totalPaid);
         }

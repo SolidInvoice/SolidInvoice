@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
@@ -65,7 +67,7 @@ class InvoicePaidListener implements EventSubscriberInterface
         $em = $this->registry->getManager();
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $em->getRepository('SolidInvoicePaymentBundle:Payment');
+        $paymentRepository = $em->getRepository(Payment::class);
 
         $currency = $invoice->getClient()->getCurrency() ?? $this->currency;
 
@@ -78,7 +80,7 @@ class InvoicePaidListener implements EventSubscriberInterface
             $client = $invoice->getClient();
 
             /** @var CreditRepository $creditRepository */
-            $creditRepository = $em->getRepository('SolidInvoiceClientBundle:Credit');
+            $creditRepository = $em->getRepository(Credit::class);
             $creditRepository->addCredit($client, $totalPaid->subtract($invoice->getTotal()));
         }
 

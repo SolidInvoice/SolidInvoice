@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Repository;
 
+use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
+use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -83,8 +85,8 @@ class TaxRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
 
-        $invoiceRepository = $em->getRepository('SolidInvoiceInvoiceBundle:Item');
-        $quoteRepository = $em->getRepository('SolidInvoiceQuoteBundle:Item');
+        $invoiceRepository = $em->getRepository(InvoiceItem::class);
+        $quoteRepository = $em->getRepository(QuoteItem::class);
 
         /* @var Tax[] $taxes */
         $taxes = $this->findBy(['id' => $data]);

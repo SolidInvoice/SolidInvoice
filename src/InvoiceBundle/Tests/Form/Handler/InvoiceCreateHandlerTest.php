@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -24,6 +26,8 @@ use SolidInvoice\MoneyBundle\Entity\Money;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Mockery as M;
 use Money\Currency;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -81,7 +85,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);
         $this->assertCount(1, $response->getFlash());
-        $this->assertCount(1, $this->em->getRepository('SolidInvoiceInvoiceBundle:Invoice')->findAll());
+        $this->assertCount(1, $this->em->getRepository(Invoice::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -124,11 +128,11 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            'SolidInvoiceClientBundle:Client',
-            'SolidInvoiceInvoiceBundle:Invoice',
-            'SolidInvoiceInvoiceBundle:RecurringInvoice',
-            'SolidInvoicePaymentBundle:Payment',
-            'SolidInvoiceTaxBundle:Tax',
+            Client::class,
+            Invoice::class,
+            RecurringInvoice::class,
+            Payment::class,
+            Tax::class,
         ];
     }
 }

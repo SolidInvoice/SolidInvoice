@@ -41,7 +41,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testOnlyAcceptsQuotesOrInvoices()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "Invoice or Quote", "stdClass" given');
@@ -50,7 +50,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithSingleItem()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -68,7 +68,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithSingleItemAndMultipleQtys()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -86,7 +86,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithPercentageDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -108,7 +108,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithMonetaryDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
         $invoice->setTotal(new Money(0, new Currency('USD')));
@@ -130,7 +130,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxIncl()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -155,7 +155,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxExcl()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -180,7 +180,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxInclAndPercentageDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -208,7 +208,7 @@ class TotalCalculatorTest extends TestCase
 
     public function testUpdateWithTaxExclAndMonetaryDiscount()
     {
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -255,7 +255,7 @@ class TotalCalculatorTest extends TestCase
         $this->em->persist($invoice);
         $this->em->flush();
 
-        $updater = new TotalCalculator($this->em->getRepository('SolidInvoicePaymentBundle:Payment'));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $updater->calculateTotals($invoice);
 
@@ -275,9 +275,9 @@ class TotalCalculatorTest extends TestCase
     protected function getEntities()
     {
         return [
-            'SolidInvoiceInvoiceBundle:Invoice',
-            'SolidInvoiceInvoiceBundle:Item',
-            'SolidInvoicePaymentBundle:Payment',
+            Invoice::class,
+            Item::class,
+            Payment::class,
         ];
     }
 }
