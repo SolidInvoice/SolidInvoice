@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\DependencyInjection;
 
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -57,7 +56,7 @@ class GridConfigurationTest extends TestCase
                     'title' => 'Active',
                     'icon' => 'check',
                     'source' => [
-                        'repository' => Client::class,
+                        'repository' => 'SolidInvoiceClientBundle:Client',
                         'method' => 'getGridQuery',
                     ],
                     'columns' => [
