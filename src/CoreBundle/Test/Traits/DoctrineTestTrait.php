@@ -169,10 +169,10 @@ trait DoctrineTestTrait
             $config = self::createTestConfiguration();
         }
 
-        $params = array(
+        $params = [
             'driver' => 'pdo_sqlite',
             'path' => $dbPath ?? sys_get_temp_dir().'/solidinvoice.db',
-        );
+        ];
 
         return EntityManager::create($params, $config);
     }
@@ -180,7 +180,7 @@ trait DoctrineTestTrait
     private static function createTestConfiguration(): Configuration
     {
         $config = new Configuration();
-        $config->setEntityNamespaces(array('SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures'));
+        $config->setEntityNamespaces(['SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures']);
         $config->setAutoGenerateProxyClasses(true);
         $config->setProxyDir(\sys_get_temp_dir());
         $config->setProxyNamespace('SymfonyTests\Doctrine');
