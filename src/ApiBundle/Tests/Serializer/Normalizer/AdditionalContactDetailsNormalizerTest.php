@@ -161,18 +161,4 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
         $this->assertEquals($additionalContactDetail, $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class));
     }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            ContactType::class,
-        ];
-    }
 }

@@ -91,22 +91,4 @@ class InvoiceTypeTest extends FormTestCase
             new PreloadedExtension([$invoiceType, $itemType, new DiscountType($currency)], []),
         ];
     }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            Client::class,
-            Invoice::class,
-            Tax::class,
-        ];
-    }
 }

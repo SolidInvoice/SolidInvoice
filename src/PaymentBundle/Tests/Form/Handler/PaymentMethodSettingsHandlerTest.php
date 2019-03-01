@@ -77,18 +77,4 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            PaymentMethod::class,
-        ];
-    }
 }

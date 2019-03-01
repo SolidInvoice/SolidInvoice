@@ -122,18 +122,4 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
             ],
         ];
     }
-
-    protected function getEntities(): array
-    {
-        return [
-            User::class,
-        ];
-    }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceUserBundle' => 'SolidInvoice\UserBundle\Entity',
-        ];
-    }
 }

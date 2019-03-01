@@ -63,18 +63,4 @@ class SystemConfigTest extends TestCase
 
         $config->get('some/invalid/key');
     }
-
-    public function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceSettingsBundle' => 'SolidInvoice\SettingsBundle\Entity',
-        ];
-    }
-
-    public function getEntities(): array
-    {
-        return [
-            Setting::class,
-        ];
-    }
 }

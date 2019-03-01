@@ -74,18 +74,4 @@ class TaxFormHandlerTest extends FormHandlerTestCase
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }
-
-    protected function getEntities(): array
-    {
-        return [
-            Tax::class,
-        ];
-    }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-        ];
-    }
 }

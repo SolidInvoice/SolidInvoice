@@ -98,18 +98,4 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
             ],
         ];
     }
-
-    protected function getEntities(): array
-    {
-        return [
-            Setting::class,
-        ];
-    }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceSettingsBundle' => 'SolidInvoice\\SettingsBundle\\Entity',
-        ];
-    }
 }

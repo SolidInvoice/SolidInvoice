@@ -65,22 +65,4 @@ class QuoteTypeTest extends FormTestCase
             new PreloadedExtension([$type, $itemType, new DiscountType(new Currency('USD'))], []),
         ];
     }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceQuoteBundle' => 'SolidInvoice\QuoteBundle\Entity',
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            Client::class,
-            Quote::class,
-            Tax::class,
-        ];
-    }
 }

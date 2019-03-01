@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
-use SolidInvoice\ClientBundle\Listener\ClientListener;
-use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Types\Type as DoctrineType;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -25,9 +25,11 @@ use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Gedmo\Timestampable\TimestampableListener;
 use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Doctrine\UuidType;
+use SolidInvoice\ClientBundle\Listener\ClientListener;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -50,7 +52,7 @@ trait DoctrineTestTrait
      */
     protected function setupDoctrine()
     {
-        $config = DoctrineTestHelper::createTestConfiguration();
+        $config = self::createTestConfiguration();
 
         $payum = new SimplifiedXmlDriver([(getcwd().'/vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping') => 'Payum\\Core\\Model']);
         $payum->setGlobalBasename('mapping');
@@ -66,7 +68,6 @@ trait DoctrineTestTrait
                 getcwd().'/src/CoreBundle/Entity',
                 getcwd().'/src/InvoiceBundle/Entity',
                 getcwd().'/src/MoneyBundle/Entity',
-                getcwd().'/src/NotificationBundle/Entity',
                 getcwd().'/src/PaymentBundle/Entity',
                 getcwd().'/src/QuoteBundle/Entity',
                 getcwd().'/src/SettingsBundle/Entity',
@@ -85,7 +86,6 @@ trait DoctrineTestTrait
         $driver->addDriver($c, 'SolidInvoice\\CoreBundle\\Entity');
         $driver->addDriver($c, 'SolidInvoice\\InvoiceBundle\\Entity');
         $driver->addDriver($c, 'SolidInvoice\\MoneyBundle\\Entity');
-        $driver->addDriver($c, 'SolidInvoice\\NotificationBundle\\Entity');
         $driver->addDriver($c, 'SolidInvoice\\PaymentBundle\\Entity');
         $driver->addDriver($c, 'SolidInvoice\\QuoteBundle\\Entity');
         $driver->addDriver($c, 'SolidInvoice\\SettingsBundle\\Entity');
@@ -93,11 +93,7 @@ trait DoctrineTestTrait
         $driver->addDriver($c, 'SolidInvoice\\UserBundle\\Entity');
         $config->setMetadataDriverImpl($driver);
 
-        if (method_exists($this, 'getEntityNamespaces')) {
-            $config->setEntityNamespaces($this->getEntityNamespaces());
-        }
-
-        $this->em = DoctrineTestHelper::createTestEntityManager($config);
+        $this->em = self::createTestEntityManager($config);
         $this->em->getConnection()->getEventManager()->addEventSubscriber(new TimestampableListener());
 
         $clientListener = new ClientListener();
@@ -118,7 +114,7 @@ trait DoctrineTestTrait
         }
 
         $this->createRegistryMock('default', $this->em);
-        $this->createSchema($this->em);
+        $this->createSchema($config);
     }
 
     protected function createRegistryMock($name, $em)
@@ -144,18 +140,54 @@ trait DoctrineTestTrait
         return $this->registry;
     }
 
-    protected function createSchema(EntityManager $em)
+    protected function createSchema(Configuration $config)
     {
-        $schemaTool = new SchemaTool($em);
-        $classes = [];
+        if (file_exists(sys_get_temp_dir().'/solidinvoice_tmp.db')) {
+            copy(sys_get_temp_dir().'/solidinvoice_tmp.db', sys_get_temp_dir().'/solidinvoice.db');
 
-        if (method_exists($this, 'getEntities')) {
-            foreach ($this->getEntities() as $entityClass) {
-                $classes[] = $em->getClassMetadata($entityClass);
-            }
+            return;
         }
+
+        $em = self::createTestEntityManager($config, sys_get_temp_dir().'/solidinvoice_tmp.db');
+        $schemaTool = new SchemaTool($em);
+
+        $classes = $em->getMetadataFactory()->getAllMetadata();
 
         $schemaTool->dropSchema($classes);
         $schemaTool->createSchema($classes);
+
+        copy(sys_get_temp_dir().'/solidinvoice_tmp.db', sys_get_temp_dir().'/solidinvoice.db');
+    }
+
+    private static function createTestEntityManager(Configuration $config = null, string $dbPath = null): EntityManager
+    {
+        if (!\extension_loaded('pdo_sqlite')) {
+            TestCase::markTestSkipped('Extension pdo_sqlite is required.');
+        }
+
+        if (null === $config) {
+            $config = self::createTestConfiguration();
+        }
+
+        $params = array(
+            'driver' => 'pdo_sqlite',
+            'path' => $dbPath ?? sys_get_temp_dir().'/solidinvoice.db',
+        );
+
+        return EntityManager::create($params, $config);
+    }
+
+    private static function createTestConfiguration(): Configuration
+    {
+        $config = new Configuration();
+        $config->setEntityNamespaces(array('SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures'));
+        $config->setAutoGenerateProxyClasses(true);
+        $config->setProxyDir(\sys_get_temp_dir());
+        $config->setProxyNamespace('SymfonyTests\Doctrine');
+        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setQueryCacheImpl(new ArrayCache());
+        $config->setMetadataCacheImpl(new ArrayCache());
+
+        return $config;
     }
 }

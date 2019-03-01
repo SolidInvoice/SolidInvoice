@@ -71,19 +71,4 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            Client::class,
-            Credit::class,
-        ];
-    }
 }

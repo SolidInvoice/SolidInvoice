@@ -114,25 +114,4 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
             ],
         ];
     }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
-            'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            Client::class,
-            Invoice::class,
-            RecurringInvoice::class,
-            Payment::class,
-            Tax::class,
-        ];
-    }
 }

@@ -66,19 +66,4 @@ class WorkFlowSubscriberTest extends TestCase
         $this->assertTrue($invoice->isArchived());
         $this->assertSame($invoice, $this->em->getRepository(Invoice::class)->find(1));
     }
-
-    public function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\\InvoiceBundle\\Entity',
-        ];
-    }
-
-    public function getEntities()
-    {
-        return [
-            Invoice::class,
-            RecurringInvoice::class,
-        ];
-    }
 }

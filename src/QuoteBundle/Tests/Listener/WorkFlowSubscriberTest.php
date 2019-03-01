@@ -78,18 +78,4 @@ class WorkFlowSubscriberTest extends TestCase
         $this->assertTrue($quote->isArchived());
         $this->assertSame($quote, $this->em->getRepository(Quote::class)->find(1));
     }
-
-    public function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceQuoteBundle' => 'SolidInvoice\\QuoteBundle\\Entity',
-        ];
-    }
-
-    public function getEntities()
-    {
-        return [
-            Quote::class,
-        ];
-    }
 }
