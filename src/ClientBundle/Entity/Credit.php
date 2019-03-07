@@ -25,12 +25,10 @@ use Money\Money;
  * @ORM\Table(name="client_credit")
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\CreditRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  */
 class Credit
 {
-    use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+    use Entity\TimeStampable;
 
     /**
      * @ORM\Column(name="id", type="integer")

@@ -30,12 +30,10 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  */
 class Payment extends BasePayment implements PaymentInterface
 {
-    use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+    use Entity\TimeStampable;
 
     /**
      * @ORM\Column(name="id", type="integer")

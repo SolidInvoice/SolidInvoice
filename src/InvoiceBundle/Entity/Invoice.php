@@ -38,13 +38,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="invoices")
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
  */
 class Invoice
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable,
         Entity\Archivable,
         InvoiceStatusTrait {
             Entity\Archivable::isArchived insteadof InvoiceStatusTrait;

@@ -52,9 +52,6 @@ doctrine:
                 hydrators:
                     money: SolidInvoice\MoneyBundle\Doctrine\Hydrator\MoneyHydrator
                 filters:
-                    softdeleteable:
-                        class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
-                        enabled: true
                     archivable:
                         class: SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter
                         enabled: true

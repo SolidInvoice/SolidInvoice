@@ -30,8 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Tax
 {
-    use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+    use Entity\TimeStampable;
 
     const TYPE_INCLUSIVE = 'Inclusive';
 

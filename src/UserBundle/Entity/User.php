@@ -27,8 +27,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class User extends BaseUser
 {
-    use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+    use Entity\TimeStampable;
 
     /**
      * @var int

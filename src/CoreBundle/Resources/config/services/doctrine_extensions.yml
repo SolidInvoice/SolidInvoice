@@ -33,7 +33,3 @@ services:
         public: true
         calls:
             - [ setAnnotationReader, [ '@annotation_reader' ] ]
-
-    Gedmo\SoftDeleteable\SoftDeleteableListener:
-        calls:
-            - [ setAnnotationReader, [ '@annotation_reader' ] ]

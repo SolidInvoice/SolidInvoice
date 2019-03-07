@@ -28,12 +28,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  */
 class Item implements ItemInterface
 {
-    use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+    use Entity\TimeStampable;
 
     /**
      * @var int

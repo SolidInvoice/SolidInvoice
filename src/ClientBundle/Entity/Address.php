@@ -23,12 +23,10 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  * @ORM\Table(name="addresses")
  * @ORM\Entity()
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  */
 class Address
 {
-    use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+    use Entity\TimeStampable;
 
     /**
      * @var int

@@ -36,12 +36,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  */
 class Client
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable,
         Entity\Archivable;
 
     /**
