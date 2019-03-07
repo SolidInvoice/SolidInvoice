@@ -107,7 +107,6 @@ class QuoteRepository extends EntityRepository
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');
-        $filters->disable('softdeleteable');
 
         $currency = $client->getCurrency();
 
@@ -144,7 +143,6 @@ class QuoteRepository extends EntityRepository
         }
 
         $filters->enable('archivable');
-        $filters->enable('softdeleteable');
     }
 
     /**

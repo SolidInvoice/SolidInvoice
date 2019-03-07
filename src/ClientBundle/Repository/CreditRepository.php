@@ -71,7 +71,6 @@ class CreditRepository extends EntityRepository
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');
-        $filters->disable('softdeleteable');
 
         $qb = $this->createQueryBuilder('c');
 
@@ -84,6 +83,5 @@ class CreditRepository extends EntityRepository
         $qb->getQuery()->execute();
 
         $filters->enable('archivable');
-        $filters->enable('softdeleteable');
     }
 }

@@ -235,7 +235,6 @@ class InvoiceRepository extends EntityRepository
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');
-        $filters->disable('softdeleteable');
 
         $currency = $client->getCurrency();
 
@@ -273,7 +272,6 @@ class InvoiceRepository extends EntityRepository
         }
 
         $filters->enable('archivable');
-        $filters->enable('softdeleteable');
     }
 
     /**
