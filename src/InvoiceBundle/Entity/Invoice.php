@@ -171,11 +171,7 @@ class Invoice
     /**
      * @var Collection|Payment[]
      *
-     * @ORM\OneToMany(
-     *     targetEntity="SolidInvoice\PaymentBundle\Entity\Payment",
-     *     mappedBy="invoice",
-     *     cascade={"persist"}
-     * )
+     * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
      */
     private $payments;
@@ -192,7 +188,7 @@ class Invoice
     /**
      * @var RecurringInvoice
      *
-     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"})
+     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"}, orphanRemoval=true)
      * @Assert\Valid()
      */
     private $recurringInfo;

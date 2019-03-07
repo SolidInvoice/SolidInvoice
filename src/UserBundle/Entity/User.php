@@ -48,7 +48,7 @@ class User extends BaseUser
     /**
      * @var Collection|ApiToken[]
      *
-     * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $apiTokens;
 

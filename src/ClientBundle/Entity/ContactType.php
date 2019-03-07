@@ -74,7 +74,7 @@ class ContactType
     /**
      * @var Collection|AdditionalContactDetail[]
      *
-     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})
      */
     private $details;

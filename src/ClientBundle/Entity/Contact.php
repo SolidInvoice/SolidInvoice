@@ -92,7 +92,7 @@ class Contact implements \Serializable
     /**
      * @var Collection|AdditionalContactDetail[]
      *
-     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
      * @Serialize\Groups({"client_api", "contact_api"})
      */
