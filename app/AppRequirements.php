@@ -73,9 +73,9 @@ class AppRequirements extends SymfonyRequirements
             $drivers = PDO::getAvailableDrivers();
 
             $this->addRequirement(
-                in_array('mysql', $drivers),
-                sprintf('The MySQL driver for PDO should be installed (currently available: %s)', count($drivers) ? implode(', ', $drivers) : 'none'),
-                'Install the <strong>MySQL PDO drivers</strong>.'
+                [] !== $drivers,
+                sprintf('Database drivers for PDO should be installed (currently available: %s)', count($drivers) ? implode(', ', $drivers) : 'none'),
+                'Install at least one <strong>PDO driver</strong>.'
             );
         }
     }

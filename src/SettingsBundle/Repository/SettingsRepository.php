@@ -19,21 +19,27 @@ class SettingsRepository extends EntityRepository
 {
     /**
      * @param array $settings
+     *
+     * @throws \InvalidArgumentException|\Throwable
      */
     public function save(array $settings): void
     {
-        foreach ($settings as $key => $value) {
-            $this->createQueryBuilder('s')
-                ->update()
-                ->set('s.value', ':val')
-                ->where('s.key = :key')
-                ->setParameter('key', $key)
-                ->setParameter('val', !empty($value) ? $value : null)
-                ->getQuery()
-                ->execute();
+        try {
+            $this->_em->transactional(function () use ($settings) {
+                foreach ($settings as $key => $value) {
+                    $this->createQueryBuilder('s')
+                        ->update()
+                        ->set('s.value', ':val')
+                        ->where('s.key = :key')
+                        ->setParameter('key', $key)
+                        ->setParameter('val', !empty($value) ? $value : null)
+                        ->getQuery()
+                        ->execute();
+                }
+            });
+        } finally {
+            // Clear the repository, to not keep previous setting values
+            $this->clear();
         }
-
-        // Clear the repository, to not keep previous setting values
-        $this->clear();
     }
 }
