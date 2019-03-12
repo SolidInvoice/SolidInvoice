@@ -18,7 +18,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20190222093514 extends AbstractMigration
+final class Version20000 extends AbstractMigration
 {
     /**
      * @var Schema
