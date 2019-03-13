@@ -109,7 +109,6 @@ final class Version20000 extends AbstractMigration
         )
             ->addIndex(['client_id'])
             ->addIndex(['email'])
-            //->addUniqueIndex(['email'])
             ->addForeignKeyConstraint('clients', ['client_id'], ['id']);
 
         $this->createTable(
@@ -124,7 +123,6 @@ final class Version20000 extends AbstractMigration
                 ['updated', 'datetime', ['notnull' => true]],
             ]
         )
-            //->addIndex(['client_id'])
             ->addUniqueIndex(['client_id'])
             ->addForeignKeyConstraint('clients', ['client_id'], ['id']);
 
@@ -499,7 +497,7 @@ final class Version20000 extends AbstractMigration
         }
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         parent::postUp($schema);
 
