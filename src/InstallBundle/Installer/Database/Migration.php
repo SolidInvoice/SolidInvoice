@@ -83,6 +83,7 @@ class Migration implements ContainerAwareInterface
      * @param Closure $outputWriter
      *
      * @return Configuration
+     *
      * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
      */
     private function getConfiguration($dir, Closure $outputWriter = null): Configuration
