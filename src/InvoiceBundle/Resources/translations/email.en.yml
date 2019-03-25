@@ -4,7 +4,9 @@ invoice:
         subject: 'Invoice Status Change'
     status_change:
         heading: 'An Invoice status has changed'
-        id: ID
+        id: 'Invoice Id'
         old_status: 'Original Status'
         new_status: 'New Status'
         status: 'Status'
+        view_invoice: 'View Invoice'
+    info: 'You have received an invoice from %company% generated on %created%'

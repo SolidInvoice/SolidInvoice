@@ -10,77 +10,180 @@
 
 {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
 
-{% block title %}
+{%- block title -%}
     {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
-{% endblock %}
+{%- endblock -%}
 
-{% block logo %}{% endblock %}
-
-{% block header %}
-    <div style="text-align: center" align="center">
+{%- block header -%}
+    <div style="text-align: center" class="text-center">
         <p>
         <div style="font-size: 80%; color: #999999">
-            {{ "invoice.view.online"|trans|replace({"%url%" : '<a href="' ~ invoicePath ~ '">' ~ invoicePath ~ '</a>'})|raw }}
+            {% set link %}
+                <a rel="external" target="_blank" href="{{ invoicePath }}">{{ invoicePath }}</a>
+            {% endset %}
+            {% autoescape false %}
+                {{ "invoice.view.online"|trans({"%url%" : link}) }}
+            {% endautoescape %}
         </div>
         </p>
     </div>
-{% endblock %}
+{%- endblock -%}
 
-{% block head_extra %}
-{#<span itemprop="paymentStatus">PaymentDue</span>#}
-{#<span itemprop="paymentStatus">PaymentComplete</span>#}
-{#<span itemprop="paymentStatus">PaymentAutomaticallyApplied</span>#}
-{#<span itemprop="paymentStatus">PaymentPastDue</span>#}
-{#<span itemprop="paymentStatus">PaymentDeclined</span>#}
+{%- block head_extra -%}
+    <script type="application/ld+json">
+        [
+            {
+                "@context": "http://schema.org",
+                "@type": "Invoice",
+                "accountId": "{{ invoice.id }}",
+                "minimumPaymentDue": {
+                    "@type": "PriceSpecification",
+                    "price": "{{ invoice.total|formatCurrency }}"
+                },
+                "paymentDue": "{{ invoice.due|date }}",
+                "paymentStatus": "PaymentDue",
+                "provider": {
+                    "@type": "Organization",
+                    "name": "{{ invoice.client.name }}"
+                },
+                "totalPaymentDue": {
+                    "@type": "PriceSpecification",
+                    "price": "{{ invoice.balance|formatCurrency }}"
+                }
+            },
+            {
+                "@context": "http://schema.org",
+                "@type": "EmailMessage",
+                "description": "View invoice",
+                "potentialAction": {
+                    "@type": "ViewAction",
+                    "name": "View invoice",
+                    "target": "{{ invoicePath }}"
+                }
+            }
+        ]
+    </script>
+{%- endblock head_extra -%}
 
-<script type='application/ld+json'>
-{
-  "@context": "http://schema.org",
-  "@type": "Invoice",
-  "accountId": "{{ invoice.id }}",
-  "minimumPaymentDue": {
-    "@type": "PriceSpecification",
-    "price": "{{ invoice.total|formatCurrency }}"
-  },
-  "paymentDue": "{{ invoice.due|date }}",
-  "paymentStatus": "PaymentDue",
-  "provider": {
-    "@type": "Organization",
-    "name": "{{ invoice.client.name }}"
-  },
-  "totalPaymentDue": {
-    "@type": "PriceSpecification",
-    "price": "{{ invoice.balance|formatCurrency }}"
-  }
-}
-</script>
-{% endblock head_extra %}
-{% block content %}
-    {% set containerClass = '' %}
-    {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" %}
-        {% block title %}{% endblock %}
-        {% block content %}
-            {{ parent() }}
-            <div class="clear"></div>
-        {% endblock %}
 
-        {% block footer %}
-            {{ parent() }}
+{%- block content -%}
+    {% filter inky %}
+        {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
 
-            {% if payments_configured(false) %}
-                <br/>
-                <a class="btn btn-primary" href="{{ url('_payments_create', {'uuid' : invoice.uuid}) }}">
-                    {{ 'invoice.pay_now'|trans([], 'email') }}
-                </a>
+        <table class="spacer">
+            <tbody>
+            <tr>
+                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <row>
+            <columns>
+                <strong>Invoice #</strong>
+            </columns>
+            <columns>
+                {{ invoice.id }}
+            </columns>
+        </row>
+
+        <row>
+            <columns>
+                <strong>{{ 'invoice.subtotal'|trans }}</strong>
+            </columns>
+            <columns class="thick-line text-right">
+                {{ invoice.baseTotal|formatCurrency }}
+            </columns>
+        </row>
+        {% if invoice.tax.positive %}
+            <row>
+
+                <columns>
+                    <strong>{{ 'invoice.tax'|trans }}</strong>
+                </columns>
+                <columns>
+                    {{ invoice.tax|formatCurrency }}
+                </columns>
+            </row>
+        {% endif %}
+
+        {% if invoice.discount.type is not empty %}
+            <row>
+                <columns>
+                    <strong>{{ 'invoice.discount'|trans }}</strong>
+                </columns>
+                <columns>
+                    {{ invoice.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (invoice.discount.value.negative)|formatCurrency : invoice.baseTotal.negative|percentage(invoice.discount.value)|formatCurrency }}
+                </columns>
+            </row>
+        {% endif %}
+        {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+            {% for payment in invoice.payments if payment.status == 'captured' %}
+                <row>
+                    <columns>
+                        <strong>
+                            Payment
+                        </strong>
+                        {{ payment.method.name }}
+                    </columns>
+                    <columns>
+                        {{ (payment.totalAmount * -1)|formatCurrency(payment.currencyCode) }}
+                    </columns>
+                </row>
+            {% endfor %}
+        {% endif %}
+        <row>
+            <columns>
+                <strong>
+                    {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+                        {{ 'invoice.balance'|trans }}
+                    {% else %}
+                        {{ 'invoice.total'|trans }}
+                    {% endif %}
+                </strong>
+            </columns>
+            <columns>
+                {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+                    {{ invoice.balance|formatCurrency }}
+                {% else %}
+                    {{ invoice.total|formatCurrency }}
+                {% endif %}
+            </columns>
+        </row>
+
+        <row>
+            {% if invoice.terms is not empty %}
+                <columns small="12">
+                    <strong>{{ 'invoice.terms'|trans }}</strong>
+                    <p>
+                        {{ invoice.terms|nl2br }}
+                    </p>
+                </columns>
             {% endif %}
-        {% endblock %}
-    {% endembed %}
+        </row>
 
-    <div itemscope itemtype="http://schema.org/EmailMessage">
-        <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
-            <link itemprop="url" href="{{ invoicePath }}">
-            <meta itemprop="name" content="View invoice">
-        </div>
-        <meta itemprop="description" content="View invoice">
-    </div>
-{% endblock %}
+        {% if payments_configured(false) %}
+            <hr/>
+            <table class="spacer">
+                <tbody>
+                <tr>
+                    <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="button success expand large float-center">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="{{ url('_payments_create', {'uuid' : invoice.uuid}) }}" rel="external" target="_blank">{{ 'invoice.pay_now'|trans([], 'email') }}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        {% endif %}
+    {% endfilter %}
+{%- endblock -%}

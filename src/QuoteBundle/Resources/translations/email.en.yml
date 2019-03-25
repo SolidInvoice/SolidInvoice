@@ -3,7 +3,9 @@ quote:
         subject: 'Quote Status Change'
     status_change:
         heading: 'A Quote status has changed'
-        id: ID
+        id: 'Quote Id'
         old_status: 'Original Status'
         new_status: 'New Status'
         status: 'Status'
+        view_quote: 'View Quote'
+    info: 'You have received a quote from %company% generated on %created%'

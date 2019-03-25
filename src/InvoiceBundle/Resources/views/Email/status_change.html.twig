@@ -9,29 +9,35 @@
 
 {% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
 
-{% block title %}
+{%- block title -%}
     {{ 'invoice.status_change.heading'|trans({}, 'email') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block content %}
-    <table class="table table-striped">
-        <tr>
-            <th>
-                {{ 'invoice.status_change.id'|trans({}, 'email') }}
-            </th>
-            <td>
-                <a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">
-                    {{ invoice.id }}
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{ 'invoice.status_change.status'|trans({}, 'email') }}
-            </th>
-            <td>
-                {{ invoice_label(invoice.status) }}
-            </td>
-        </tr>
-    </table>
-{% endblock %}
+{%- block content -%}
+    {% filter inky %}
+        <row>
+            <columns><strong>{{ 'invoice.status_change.id'|trans({}, 'email') }}</strong></columns>
+            <columns><a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">{{ invoice.id }}</a></columns>
+        </row>
+        <row>
+            <columns><strong>{{ 'invoice.status_change.new_status'|trans({}, 'email') }}</strong></columns>
+            <columns>{{ invoice_label(invoice.status) }}</columns>
+        </row>
+
+        <center data-parsed="">
+            <table class="button success float-center">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">{{ 'invoice.status_change.view_invoice'|trans({}, 'email') }}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    {% endfilter %}
+{%- endblock -%}

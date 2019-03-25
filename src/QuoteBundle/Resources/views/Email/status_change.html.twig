@@ -9,29 +9,35 @@
 
 {% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
 
-{% block title %}
+{%- block title -%}
     {{ 'quote.status_change.heading'|trans({}, 'email') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block content %}
-    <table class="table table-striped">
-        <tr>
-            <th>
-                {{ 'quote.status_change.id'|trans({}, 'email') }}
-            </th>
-            <td>
-                <a href="{{ url('_quotes_view', {'id' : quote.id}) }}">
-                    {{ quote.id }}
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{ 'quote.status_change.new_status'|trans({}, 'email') }}
-            </th>
-            <td>
-                {{ quote_label(quote.status) }}
-            </td>
-        </tr>
-    </table>
-{% endblock %}
+{%- block content -%}
+    {% filter inky %}
+        <row>
+            <columns><strong>{{ 'quote.status_change.id'|trans({}, 'email') }}</strong></columns>
+            <columns><a href="{{ url('_quotes_view', {'id' : quote.id}) }}">{{ quote.id }}</a></columns>
+        </row>
+        <row>
+            <columns><strong>{{ 'quote.status_change.new_status'|trans({}, 'email') }}</strong></columns>
+            <columns>{{ quote_label(quote.status) }}</columns>
+        </row>
+
+        <center data-parsed="">
+            <table class="button success float-center">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="{{ url('_quotes_view', {'id' : quote.id}) }}">{{ 'quote.status_change.view_quote'|trans({}, 'email') }}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    {% endfilter %}
+{%- endblock -%}

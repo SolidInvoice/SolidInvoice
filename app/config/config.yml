@@ -117,6 +117,11 @@ fos_user:
     registration:
         form:
             type: SolidInvoice\UserBundle\Form\Type\UserType
+    resetting:
+        email:
+            template: '@SolidInvoiceUser/Email/reset_password.html.twig'
+    service:
+        mailer: fos_user.mailer.twig_swift
 
 oro_require_js:
     config:
