@@ -97,8 +97,7 @@
         "ocramius/proxy-manager": "<2.2",
         "mpdf/mpdf": "^7.1",
         "twig/inky-extension": "^2.0",
-        "twig/cssinliner-extension": "^2.0",
-        "twig/markdown-extension": "^1.0"
+        "twig/cssinliner-extension": "^2.0"
     },
     "require-dev": {
         "behat/behat": "^3.0",
