@@ -16,12 +16,6 @@ services:
             - [setTemplating, ['@templating']]
             - [setSecurity, ['@security.token_storage']]
 
-    solidinvoice_core.swiftmailer.plugin.cssinline:
-        class: SolidInvoice\CoreBundle\Swiftmailer\Plugin\CssInlinerPlugin
-        arguments: ['@solidinvoice_core.cssinline']
-        tags:
-            - { name: swiftmailer.default.plugin }
-
     solidinvoice_core.cssinline:
         class: TijsVerkoyen\CssToInlineStyles\CssToInlineStyles
         public: false
