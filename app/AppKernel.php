@@ -40,6 +40,10 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new SolidWorx\FormHandler\FormHandlerBundle(),
             new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
 
+            new Twig\Inky\Bundle\TwigInkyBundle(),
+            new Twig\CssInliner\Bundle\TwigCssInlinerBundle(),
+            new Twig\Markdown\Bundle\TwigMarkdownBundle(),
+
             new SolidInvoice\ApiBundle\SolidInvoiceApiBundle(),
             new SolidInvoice\ClientBundle\SolidInvoiceClientBundle(),
             new SolidInvoice\CoreBundle\SolidInvoiceCoreBundle(),

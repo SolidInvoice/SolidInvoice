@@ -113,7 +113,7 @@ class GlobalExtension extends \Twig_Extension implements \Twig_Extension_Globals
             }
         }
 
-        return $env->createTemplate('<img src="{{ asset(logo) }}" width="25" style="display: inline"/>')->render(['logo' => $logo]);
+        return $env->createTemplate('<img src="{{ asset(logo) }}" width="50" style="display: inline; width: 50px"/>')->render(['logo' => $logo]);
     }
 
     /**

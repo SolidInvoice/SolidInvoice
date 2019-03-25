@@ -9,73 +9,47 @@
 
 {% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
 
-{% block title %}
+{%- block title -%}
     {{ 'payment.description'|trans({}, 'email') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block content %}
-    <table>
-
+{%- block content -%}
+    {% filter inky %}
         {% if payment.invoice is not empty %}
-            <tr>
-                <th>
-                    {{ 'payment.details.invoice'|trans({}, 'email') }}
-                </th>
-                <td>
-                    <a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">
-                        {{ payment.invoice.id }}
-                    </a>
-                </td>
-            </tr>
+            <row>
+                <columns><strong>{{ 'payment.details.invoice'|trans({}, 'email') }}</strong></columns>
+                <columns>
+                    <a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">{{ payment.invoice.id }}</a>
+                </columns>
+            </row>
         {% endif %}
 
         {% if payment.client is not empty %}
-            <tr>
-                <th>
-                    {{ 'payment.details.client'|trans({}, 'email') }}
-                </th>
-                <td>
-                    <a href="{{ url('_clients_view', {'id' : payment.client.id}) }}">
-                        {{ payment.client }}
-                    </a>
-                </td>
-            </tr>
+            <row>
+                <columns><strong>{{ 'payment.details.client'|trans({}, 'email') }}</strong></columns>
+                <columns><a href="{{ url('_clients_view', {'id' : payment.client.id}) }}">{{ payment.client }}</a></columns>
+            </row>
         {% endif %}
 
-        <tr>
-            <th>
-                {{ 'payment.details.method'|trans({}, 'email') }}
-            </th>
-            <td>
-                {{ payment.method }}
-            </td>
-        </tr>
+        <row>
+            <columns><strong>{{ 'payment.details.method'|trans({}, 'email') }}</strong></columns>
+            <columns>{{ payment.method }}</columns>
+        </row>
 
-        <tr>
-            <th>
-                {{ 'payment.details.currency'|trans({}, 'email') }}
-            </th>
-            <td>
-                {{ payment.currencyCode }}
-            </td>
-        </tr>
+        <row>
+            <columns><strong>{{ 'payment.details.currency'|trans({}, 'email') }}</strong></columns>
+            <columns>{{ payment.currencyCode }}</columns>
+        </row>
 
-        <tr>
-            <th>
-                {{ 'payment.details.amount'|trans({}, 'email') }}
-            </th>
-            <td>
-                {{ payment.totalAmount|formatCurrency }}
-            </td>
-        </tr>
+        <row>
+            <columns><strong>{{ 'payment.details.amount'|trans({}, 'email') }}</strong></columns>
+            <columns>{{ payment.totalAmount|formatCurrency }}</columns>
+        </row>
 
-        <tr>
-            <th>
-                {{ 'payment.details.status'|trans({}, 'email') }}
-            </th>
-            <td>
-                {{ payment_label(payment.status) }}
-            </td>
-        </tr>
-    </table>
-{% endblock %}
+        <row>
+            <columns><strong>{{ 'payment.details.status'|trans({}, 'email') }}</strong></columns>
+            <columns>{{ payment_label(payment.status) }}</columns>
+        </row>
+
+    {% endfilter %}
+{%- endblock -%}

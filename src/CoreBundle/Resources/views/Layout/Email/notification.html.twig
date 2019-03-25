@@ -9,7 +9,7 @@
 
 {% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
 
-{% block footer %}
-    You can update your notification settings
-    <a href="{{ url('_settings') }}">here</a>
-{% endblock %}
+{%- block footer -%}
+    <hr />
+    <small>You can update your notification settings <a href="{{ url('_settings') }}">here</a></small>
+{%- endblock -%}
