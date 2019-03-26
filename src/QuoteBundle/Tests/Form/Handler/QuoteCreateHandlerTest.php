@@ -17,6 +17,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber as InvoiceWorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\MoneyBundle\Entity\Money;
@@ -130,6 +131,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
     {
         return [
             'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
+            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
             'SolidInvoiceQuoteBundle' => 'SolidInvoice\QuoteBundle\Entity',
             'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
             'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
@@ -140,6 +142,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
     {
         return [
             Client::class,
+            Invoice::class,
             Quote::class,
             Tax::class,
         ];
