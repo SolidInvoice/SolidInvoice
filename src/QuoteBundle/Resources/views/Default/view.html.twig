@@ -22,6 +22,11 @@
     <div class="pull-right no-print">
         <div class="btn-toolbar">
             <div class="btn-group">
+                {% if quote.invoice is not null %}
+                    <a href="{{ path('_invoices_view', {'id' : quote.invoice.id}) }}" class="btn btn-default">
+                        {{ icon('file-text-o') }} {{ "quote.view.toolbar.view_invoice"|trans }}
+                    </a>
+                {% endif %}
                 <a href="{{ path('_quotes_clone', {'id' : quote.id}) }}" class="btn btn-default">
                     {{ icon('clone') }} {{ "quote.view.toolbar.clone"|trans }}
                 </a>
