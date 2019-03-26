@@ -43,6 +43,7 @@ quote:
             edit: Edit
             reopen: Re-Open
             clone: Clone
+            view_invoice: View Invoice
         online: 'View this quote online at: %url%'
     clone:
         success: 'Quote cloned successfully'

@@ -94,6 +94,7 @@ class InvoiceManager implements ContainerAwareInterface
         $invoice->setTerms($quote->getTerms());
         $invoice->setUsers($quote->getUsers()->toArray());
         $invoice->setBalance($invoice->getTotal());
+        $invoice->setQuote($quote);
 
         if (null !== $quote->getTax()) {
             $invoice->setTax($quote->getTax());

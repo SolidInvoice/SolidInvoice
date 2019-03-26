@@ -48,6 +48,7 @@ invoice:
             edit: Edit
             reopen: Re-Open
             clone: Clone
+            view_quote: View Quote
         payments: Payments
     clone:
         success: 'Invoice cloned successfully'

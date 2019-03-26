@@ -15,6 +15,13 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -23,19 +30,13 @@ use SolidInvoice\CoreBundle\Traits\Entity;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\Serializer\Annotation as Serialize;
-use Money\Money;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
- * @ORM\Table(name="invoices")
+ * @ORM\Table(name="invoices", indexes={@ORM\Index(name="quote", columns={"quote_id"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable()
@@ -206,6 +207,13 @@ class Invoice
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $recurring;
+
+    /**
+     * @var Quote|null
+     *
+     * @ORM\OneToOne(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", inversedBy="invoice")
+     */
+    private $quote;
 
     public function __construct()
     {
@@ -686,5 +694,18 @@ class Invoice
         $this->setUuid(Uuid::uuid1());
         $this->recurring = false;
         $this->status = null;
+    }
+
+    public function getQuote(): ?Quote
+    {
+        return $this->quote;
+    }
+
+    public function setQuote(Quote $quote): self
+    {
+        $this->quote = $quote;
+        $quote->setInvoice($this);
+
+        return $this;
     }
 }
