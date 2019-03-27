@@ -39,13 +39,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="invoices", indexes={@ORM\Index(name="quote", columns={"quote_id"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
  */
 class Invoice
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable,
         Entity\Archivable,
         InvoiceStatusTrait {
             Entity\Archivable::isArchived insteadof InvoiceStatusTrait;
@@ -174,11 +172,7 @@ class Invoice
     /**
      * @var Collection|Payment[]
      *
-     * @ORM\OneToMany(
-     *     targetEntity="SolidInvoice\PaymentBundle\Entity\Payment",
-     *     mappedBy="invoice",
-     *     cascade={"persist"}
-     * )
+     * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
      */
     private $payments;
@@ -195,7 +189,7 @@ class Invoice
     /**
      * @var RecurringInvoice
      *
-     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"})
+     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="invoice", cascade={"ALL"}, orphanRemoval=true)
      * @Assert\Valid()
      */
     private $recurringInfo;

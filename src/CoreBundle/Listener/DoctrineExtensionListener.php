@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -32,22 +31,8 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => [
-                ['onKernelRequest'],
-                ['onLateKernelRequest', -10],
-            ],
+            KernelEvents::REQUEST => 'onKernelRequest',
         ];
-    }
-
-    /**
-     * Translatable sets locale after router processing.
-     *
-     * @param GetResponseEvent $event
-     */
-    public function onLateKernelRequest(GetResponseEvent $event)
-    {
-        $translatable = $this->container->get('gedmo.listener.translatable');
-        $translatable->setTranslatableLocale($event->getRequest()->getLocale());
     }
 
     /**
@@ -55,7 +40,7 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
      */
     public function onKernelRequest()
     {
-        /* @var TokenStorageInterface  $securityStorage */
+        /* @var TokenStorageInterface $securityStorage */
         $securityStorage = $this->container->get('security.token_storage', ContainerInterface::NULL_ON_INVALID_REFERENCE);
         /* @var AuthorizationCheckerInterface $securityChecker */
         $securityChecker = $this->container->get('security.authorization_checker', ContainerInterface::NULL_ON_INVALID_REFERENCE);

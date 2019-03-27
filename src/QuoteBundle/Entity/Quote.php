@@ -38,13 +38,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="quotes")
  * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\QuoteRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  * @ORM\HasLifecycleCallbacks()
  */
 class Quote
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable,
         Entity\Archivable,
         QuoteStatusTrait {
         Entity\Archivable::isArchived insteadof QuoteStatusTrait;

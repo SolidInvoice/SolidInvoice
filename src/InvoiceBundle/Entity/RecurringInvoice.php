@@ -22,12 +22,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="recurring_invoices")
  * @ORM\Entity()
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  */
 class RecurringInvoice
 {
     use Entity\TimeStampable,
-        Entity\SoftDeleteable,
         Entity\Archivable;
 
     /**

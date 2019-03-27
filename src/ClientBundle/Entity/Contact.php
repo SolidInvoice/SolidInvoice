@@ -30,12 +30,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="contacts", indexes={@ORM\Index(name="email", columns={"email"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
- * @Gedmo\SoftDeleteable()
  */
 class Contact implements \Serializable
 {
-    use Entity\TimeStampable,
-        Entity\SoftDeleteable;
+    use Entity\TimeStampable;
 
     /**
      * @var int
@@ -94,7 +92,7 @@ class Contact implements \Serializable
     /**
      * @var Collection|AdditionalContactDetail[]
      *
-     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
      * @Serialize\Groups({"client_api", "contact_api"})
      */

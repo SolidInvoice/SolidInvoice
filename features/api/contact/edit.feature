@@ -41,10 +41,6 @@ Feature: Edit Contacts
         "email": "one@one.com",
         "additionalContactDetails": [
             {
-                "type": "cellphone",
-                "value": "1234567890"
-            },
-            {
                 "type": "address",
                 "value": "foobarbaz"
             }

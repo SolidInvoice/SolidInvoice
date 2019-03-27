@@ -330,7 +330,6 @@ class PaymentRepository extends EntityRepository
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');
-        $filters->disable('softdeleteable');
 
         $currency = $client->getCurrency();
 
@@ -345,6 +344,5 @@ class PaymentRepository extends EntityRepository
         $qb->getQuery()->execute();
 
         $filters->enable('archivable');
-        $filters->enable('softdeleteable');
     }
 }
