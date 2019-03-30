@@ -25,8 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
-    use MockeryPHPUnitIntegration,
-        SymfonyKernelTrait;
+    use SymfonyKernelTrait;
 
     private $firstName;
 
