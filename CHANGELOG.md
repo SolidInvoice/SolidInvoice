@@ -1,3 +1,35 @@
+2.0.0-alphga3 / 2019-03-30
+==================
+
+  * Add support for multiple databases (#231)
+  * Remove unused doctrine extensions and the softdeletable filter (#236)
+  * Link quotes to invoices when accepting a quote (#228)
+  * Update email templates to a more modern look and feel (#237)
+  * Use FQCN for entities instead of namespaces (#233)
+  * Change all template references to use the Symfony preferred syntax (#232)
+  * Do not automatically accept and send an invoice when creating from a quote (#230)
+  * Redirect to created invoice when accepting a quote (#229)
+  * Add more links for easier navigation (#227)
+  * Update PHPStan to the latest version
+  * Remove local copy of backgrid
+  * Create PDF quotes and invoices (#226)
+  * Remove conflicting packages from composer.json
+  * Select default client and contact when creating a new quote or invoice (#224)
+  * Remove Hipchat from notifications (#221)
+  * Refactor Email processing (#223)
+  * Move discount clearing to invoice and quote save listener instead of form listener
+  * Use full path instead of relative path for modules
+  * Add line break after action buttons on client create/edit page to remove overlapping with footer
+  * Clear discount type when no discount is set (#216)
+  * Don't set quote items by reference (#217)
+  * Bind modal event to the correct scope (#219)
+  * Fix totals not updating if no values are set (#218)
+  * Fix Router script
+  * Add Single entrypoint (#215)
+  * Reduce minimum PHP requirements to 7.1
+  * Dont decode empty settings
+  * Add server_version to doctrine/dbal configuration
+
 2.0.0 Alpha 2 / 2018-03-29
 ==================
 
