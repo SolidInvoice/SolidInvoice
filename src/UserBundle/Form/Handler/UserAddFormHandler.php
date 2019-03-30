@@ -57,7 +57,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $this->factory->createForm();
     }

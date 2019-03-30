@@ -89,7 +89,7 @@
         "willdurand/js-translation-bundle": "^2.6",
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid-doctrine": "^1.2",
-        "solidworx/form-handler-bundle": "1.0.0-rc4",
+        "solidworx/form-handler-bundle": "1.0.0",
         "defuse/php-encryption": "^2.1",
         "mpociot/vat-calculator": "^2.2",
         "api-platform/core": "2.2.*",

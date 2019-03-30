@@ -126,6 +126,4 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
             ],
         ];
     }
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
-            Invoice::class,
 }

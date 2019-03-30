@@ -42,8 +42,14 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
         parent::setUp();
 
         $canonicalFieldsUpdater = M::mock(CanonicalFieldsUpdater::class);
-        $this->userManager = new UserManager(M::mock(new PasswordUpdater(new EncoderFactory([new BCryptPasswordEncoder(10)]))), $canonicalFieldsUpdater, $this->em, User::class);
+        $this->userManager = new UserManager(new PasswordUpdater(new EncoderFactory([new BCryptPasswordEncoder(10)])), $canonicalFieldsUpdater, $this->em, User::class);
         $this->router = M::mock(RouterInterface::class);
+
+        $this->em->shouldReceive('persist')
+            ->zeroOrMoreTimes();
+
+        $this->em->shouldReceive('flush')
+            ->zeroOrMoreTimes();
 
         $canonicalFieldsUpdater->shouldReceive('updateCanonicalFields')
             ->zeroOrMoreTimes();
