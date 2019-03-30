@@ -189,6 +189,7 @@ final class Version20000 extends AbstractMigration
             [
                 ['id', 'integer', ['autoincrement' => true, 'notnull' => true]],
                 ['client_id', 'integer', ['notnull' => false]],
+                ['quote_id', 'integer', ['notnull' => false]],
                 ['uuid', 'uuid', ['notnull' => true]],
                 ['status', 'string', ['length' => 25, 'notnull' => true]],
                 ['terms', 'text', ['notnull' => false]],
@@ -215,7 +216,9 @@ final class Version20000 extends AbstractMigration
             ]
         )
             ->addIndex(['client_id'])
-            ->addForeignKeyConstraint('clients', ['client_id'], ['id']);
+            ->addForeignKeyConstraint('clients', ['client_id'], ['id'])
+            ->addForeignKeyConstraint('quotes', ['quote_id'], ['id'])
+            ->addUniqueIndex(['quote_id']);
 
         $this->createTable(
             'invoice_contact',
