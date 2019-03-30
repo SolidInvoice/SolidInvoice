@@ -21,15 +21,6 @@ use Symfony\Component\Form\Form;
 class ConfigStep extends AbstractControllerStep
 {
     /**
-     * Array of currently implemented database drivers.
-     *
-     * @var array
-     */
-    protected $implementedDrivers = [
-        'mysql',
-    ];
-
-    /**
      * @var array
      */
     protected $mailerTransports = [
@@ -51,7 +42,7 @@ class ConfigStep extends AbstractControllerStep
      */
     private function getForm(): Form
     {
-        $availableDrivers = array_intersect($this->implementedDrivers, \PDO::getAvailableDrivers());
+        $availableDrivers = \PDO::getAvailableDrivers();
         $drivers = array_combine(
             array_map(
                 function ($value): string {

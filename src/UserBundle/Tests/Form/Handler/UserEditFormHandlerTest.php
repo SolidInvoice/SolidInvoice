@@ -33,8 +33,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 class UserEditFormHandlerTest extends FormHandlerTestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     private $userManager;
 
     private $router;

@@ -54,7 +54,7 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(ContactType::class, $options->get('contact'), ['allow_delete' => false]);
     }

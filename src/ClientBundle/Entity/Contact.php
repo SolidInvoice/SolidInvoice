@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"contact_api"}}, "denormalization_context"={"groups"={"contact_api"}}}, collectionOperations={"post"={"method"="POST"}}, iri="https://schema.org/Person")
- * @ORM\Table(name="contacts", indexes={@ORM\Index(name="email", columns={"email"})})
+ * @ORM\Table(name="contacts", indexes={@ORM\Index(columns={"email"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable()
  */

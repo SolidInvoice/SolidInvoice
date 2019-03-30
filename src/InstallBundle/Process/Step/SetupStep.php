@@ -13,17 +13,22 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Process\Step;
 
+use DateTime;
+use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
+use Defuse\Crypto\Key;
+use InvalidArgumentException;
+use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\Entity\Version;
-use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
+use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use Defuse\Crypto\Key;
-use Mpociot\VatCalculator\VatCalculator;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Symfony\Component\DependencyInjection\Exception as DependencyInjectionException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -164,16 +169,16 @@ class SetupStep extends AbstractControllerStep
     /**
      * @param array $data
      *
-     * @throws \RuntimeException
+     * @throws EnvironmentIsBrokenException|InvalidArgumentException|DependencyInjectionException\ServiceCircularReferenceException|DependencyInjectionException\ServiceNotFoundException
      */
     protected function saveConfig(array $data)
     {
-        $time = new \DateTime('NOW');
+        $time = new DateTime('NOW');
 
         $config = [
             'locale' => $data['locale'],
             'base_url' => $data['base_url'],
-            'installed' => $time->format(\DateTime::ISO8601),
+            'installed' => $time->format(DateTime::ISO8601),
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
@@ -194,5 +199,7 @@ class SetupStep extends AbstractControllerStep
             $em->persist($tax);
             $em->flush();
         }
+
+        $this->get('settings')->set(CurrencyFactory::CURRENCY_PATH, $data['currency'] ?? CurrencyFactory::DEFAULT_CURRENCY);
     }
 }

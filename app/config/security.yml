@@ -1,6 +1,4 @@
 security:
-    acl:
-        connection: default
     encoders:
         FOS\UserBundle\Model\UserInterface:
             algorithm: bcrypt

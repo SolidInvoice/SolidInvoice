@@ -13,19 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
-use Doctrine\ORM\EntityRepository;
 
 class ApiTokenHistoryRepository extends EntityRepository
 {
-    /**
-     * @param ApiTokenHistory $history
-     * @param string          $token
-     *
-     * @return mixed|null
-     */
-    public function addHistory(ApiTokenHistory $history, string $token)
+    public function addHistory(ApiTokenHistory $history, string $token): void
     {
         $entityManager = $this->getEntityManager();
 
@@ -41,27 +35,24 @@ class ApiTokenHistoryRepository extends EntityRepository
 
         // delete the history for all but the last 100 records for each api token
         // This is to ensure the database doesn't grow to an unmanageable size
-        $tableName = $this->getClassMetadata()->getTableName();
-        $statement = $this->getEntityManager()
-            ->getConnection()
-            ->prepare("
-                  DELETE FROM ${tableName}
-                  WHERE id NOT IN (
-                    SELECT id FROM (
-                        SELECT id
-                        FROM ${tableName}
-                        WHERE token_id = ?
-                        ORDER BY id DESC
-                        LIMIT 100
-                    ) as history
-                )
-                AND token_id = ?"
-            );
+        // @TODO: This needs to be done in a safer manner
+        // If multiple api requests happen at the same time, this can cause some inconsistencies with the data
+        $queryBuilder = $this->createQueryBuilder('a');
 
-        $id = $apiToken->getId();
-        $statement->bindParam(1, $id);
-        $statement->bindParam(2, $id);
+        $ids = $queryBuilder
+            ->select('a.id')
+            ->where('a.token = :token')
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(10)
+            ->setParameter('token', $apiToken)
+            ->getQuery()
+            ->getArrayResult();
 
-        $statement->execute();
+        $this->createQueryBuilder('a')
+            ->delete()
+            ->where('a.id NOT IN (:ids)')
+            ->setParameter('ids', array_column($ids, 'id'))
+            ->getQuery()
+            ->execute();
     }
 }

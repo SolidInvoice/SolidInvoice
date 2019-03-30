@@ -41,6 +41,12 @@ class SystemConfig
         throw new InvalidSettingException($key);
     }
 
+    public function set(string $path, $value)
+    {
+        $this->repository->save([$path => $value]);
+        self::$settings = null;
+    }
+
     public function getAll()
     {
         $this->load();

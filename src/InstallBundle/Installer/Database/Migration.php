@@ -13,11 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Installer\Database;
 
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration as VersionMigration;
-use Doctrine\DBAL\Migrations\OutputWriter;
+use Closure;
+use Doctrine\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Exception\MigrationException;
+use Doctrine\Migrations\OutputWriter;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -43,13 +48,13 @@ class Migration implements ContainerAwareInterface
     }
 
     /**
-     * @param \Closure $outputWriter
+     * @param Closure $outputWriter
      *
      * @return array
      *
-     * @throws \Doctrine\DBAL\Migrations\MigrationException
+     * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|MigrationException|IOException
      */
-    public function migrate(\Closure $outputWriter = null): array
+    public function migrate(Closure $outputWriter = null): array
     {
         $dir = $this->container->getParameter('doctrine_migrations.dir_name');
 
@@ -68,18 +73,20 @@ class Migration implements ContainerAwareInterface
             }
         }
 
-        $migration = new VersionMigration($configuration);
+        $migration = $configuration->getDependencyFactory()->getMigrator();
 
         return $migration->migrate();
     }
 
     /**
-     * @param string   $dir
-     * @param \Closure $outputWriter
+     * @param string  $dir
+     * @param Closure $outputWriter
      *
      * @return Configuration
+     *
+     * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
      */
-    private function getConfiguration($dir, \Closure $outputWriter = null): Configuration
+    private function getConfiguration($dir, Closure $outputWriter = null): Configuration
     {
         $connection = $this->container->get('database_connection');
 
