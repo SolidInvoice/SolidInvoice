@@ -24,7 +24,7 @@ define(
 
                     $.get(route, function(response) {
                         var view = Mn.View.extend({
-                            template: response,
+                            template: function () { return response },
                             ui: {
                                 'save': '#payment_methods_save'
                             },
@@ -45,7 +45,7 @@ define(
                                     data: data,
                                     method: 'POST',
                                     success: function(response) {
-                                        module.app.showChildView('paymentMethodData', new view({template: response}));
+                                        module.app.showChildView('paymentMethodData', new view({template: function() { return response; }}));
                                         model.fetch();
                                     }
                                 });

@@ -62,11 +62,11 @@ define(
                     var view = new (Mn.View.extend({
                         'el': this.regions[region],
                         'template': function() {
-                            return content.render().$el;
+                            return content.render.apply(content).$el;
                         }
                     }));
 
-                    view.render();
+                    view.render.apply(view);
 
                     return view;
                 }
