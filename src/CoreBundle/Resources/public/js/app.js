@@ -43,7 +43,7 @@ define(
                     if (select2.length) {
                         require(['jquery.select2'], function() {
                             select2.select2({
-                                allowClear: true
+                                theme: 'bootstrap'
                             });
                         });
                     }
