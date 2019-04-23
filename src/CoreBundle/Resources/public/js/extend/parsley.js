@@ -1,7 +1,7 @@
 define(['marionette', 'lodash', 'parsley'], function(Mn, _) {
     "use strict";
 
-    var Parsley = Mn.Object.extend({
+    var Parsley = Mn.MnObject.extend({
         validate: function (context) {
             var valid = true;
             _.each(context.$(':input'), function (el) {

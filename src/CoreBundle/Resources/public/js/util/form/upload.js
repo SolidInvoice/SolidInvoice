@@ -1,5 +1,5 @@
 define(['jquery', 'marionette', 'lodash', 'routing', 'translator', 'template', 'jquery.uploadify'], function($, Mn, _, Routing, __, Template) {
-    return Mn.Object.extend({
+    return Mn.MnObject.extend({
         id: null,
         value: null,
         sessionId: null,

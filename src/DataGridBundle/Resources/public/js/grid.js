@@ -41,7 +41,7 @@ define([
              Paginate,
              Search,
              ActionView) {
-        return Mn.Object.extend({
+        return Mn.MnObject.extend({
             initialize: function(options, element) {
                 var collection = new GridCollection(options.name, options.parameters);
                 
@@ -84,7 +84,7 @@ define([
                 var grid = new Backgrid.Grid(_.extend(_.clone(options), gridOptions));
 
                 if (_.size(options.actions) > 0) {
-                    var ActionContainer = Mn.CompositeView.extend({
+                    var ActionContainer = Mn.CollectionView.extend({
                         template: Template.datagrid.grid_container,
                         childView: ActionView.extend({'grid': grid}),
                         childViewContainer: '.actions'

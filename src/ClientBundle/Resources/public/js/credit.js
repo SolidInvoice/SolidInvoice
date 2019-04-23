@@ -12,7 +12,7 @@ define(
     function(Mn, _, CreditView, CreditModel) {
         'use strict';
 
-        var credit = Mn.Object.extend({
+        var credit = Mn.MnObject.extend({
             getView: function(options) {
                 var value = _.result(options, 'credit', 0).value;
                 var model = new CreditModel({

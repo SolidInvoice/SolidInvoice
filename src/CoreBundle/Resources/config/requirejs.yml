@@ -32,8 +32,8 @@ config:
                 - jquery
                 - moment
 
-        fos_router:
-            exports: Routing
+        #fos_router:
+            #exports: Routing
     paths:
         # External dependencies loaded through NPM/Yarn
         backbone: ../assets/backbone.js
@@ -75,7 +75,6 @@ config:
             bootstrap.modal: solidinvoicecore/js/extend/modal
         solidinvoicecore/js/extend/handlebars/helpers:
             handlebars.runtime: handlebars.runtime
-            routing: routing
         solidinvoicecore/js/extend/translator:
             translation_data: translation_data
         solidinvoicecore/js/extend/parsley:

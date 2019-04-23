@@ -1,8 +1,8 @@
 {
-  "presets": ["env"],
+  "presets": ["@babel/env"],
   "ignore": [
     "csbillcore/js/lib/**/*.js",
     "csbillcore/js/app.js",
-    "fosjsrouting/**/**",
+    "**/router.js",
   ]
 }

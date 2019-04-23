@@ -12,7 +12,7 @@ define(
     function(Mn, ContactCollectionView, ContactCollectionModel) {
         'use strict';
 
-        var contacts = Mn.Object.extend({
+        var contacts = Mn.MnObject.extend({
             getView: function(options) {
                 var collection = new ContactCollectionModel(options.contacts);
 
