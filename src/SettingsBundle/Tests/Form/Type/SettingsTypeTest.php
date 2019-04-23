@@ -74,6 +74,10 @@ class SettingsTypeTest extends FormTestCase
                 case MailTransportType::class === $type:
                     $value = $formValue = 'smtp';
                     break;
+
+                case ImageUploadType::class === $type:
+                    $value = $formValue = null;
+                    break;
             }
 
             $formData['setting_'.$i] = $value;
@@ -87,12 +91,5 @@ class SettingsTypeTest extends FormTestCase
         ];
 
         $this->assertFormData($this->factory->create(SettingsType::class, null, $options), $formData, $object);
-    }
-
-    protected function getExtensions()
-    {
-        return [
-            new PreloadedExtension([new ImageUploadType()], []),
-        ];
     }
 }
