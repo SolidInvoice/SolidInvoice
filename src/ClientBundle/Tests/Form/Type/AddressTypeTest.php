@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
-use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Form\Type\AddressType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use Faker\Factory;

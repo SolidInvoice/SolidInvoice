@@ -41,6 +41,7 @@ class GlobalExtension extends Twig_Extension implements Twig_Extension_GlobalsIn
      * Get global twig variables.
      *
      * @return array
+     *
      * @throws InvalidSettingException|InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
      */
     public function getGlobals(): array
@@ -62,6 +63,7 @@ class GlobalExtension extends Twig_Extension implements Twig_Extension_GlobalsIn
      * Get the url query.
      *
      * @return array
+     *
      * @throws ServiceCircularReferenceException|ServiceNotFoundException
      */
     protected function getQuery(): array
@@ -110,6 +112,7 @@ class GlobalExtension extends Twig_Extension implements Twig_Extension_GlobalsIn
      * @param Twig_Environment $env
      *
      * @return string
+     *
      * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|LoaderError|SyntaxError
      */
     public function displayAppLogo(Twig_Environment $env): string

@@ -109,7 +109,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
             'invoice' => [
                 'discount' => [
                     'value' => 20,
-                    'type' => 'percentage'
+                    'type' => 'percentage',
                 ],
             ],
         ];

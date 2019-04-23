@@ -21,13 +21,10 @@ use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
 use SolidInvoice\SettingsBundle\Form\Type\MailFormatType;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
-use Defuse\Crypto\Key;
-use Mockery as M;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\PreloadedExtension;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SettingsTypeTest extends FormTestCase
 {

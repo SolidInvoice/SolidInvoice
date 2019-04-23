@@ -71,7 +71,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
 
         $this->assertEquals(
             [
-                $setting
+                $setting,
             ],
             $this->em->getRepository(Setting::class)->findAll()
         );
@@ -102,14 +102,14 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
     protected function getEntities(): array
     {
         return [
-            Setting::class
+            Setting::class,
         ];
     }
 
     protected function getEntityNamespaces(): array
     {
         return [
-            'SolidInvoiceSettingsBundle' => 'SolidInvoice\\SettingsBundle\\Entity'
+            'SolidInvoiceSettingsBundle' => 'SolidInvoice\\SettingsBundle\\Entity',
         ];
     }
 }

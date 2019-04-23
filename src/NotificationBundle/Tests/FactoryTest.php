@@ -16,7 +16,6 @@ namespace SolidInvoice\NotificationBundle\Tests;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\CoreBundle\Mailer\Exception\UnexpectedFormatException;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\NotificationBundle\Notification\Factory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessageInterface;
