@@ -99,18 +99,6 @@
     {% endif %}
 {%- endblock form_label %}
 
-{% block image_upload_widget -%}
-    {{ block('form_widget_simple') }}
-
-    <div id="{{ id }}-uploader"></div>
-
-    <script>
-        require(['core/util/form/upload'], function (Upload) {
-            new Upload('{{ id }}', '{{ sessionId }}', '{{ asset("swf/uploadify.swf") }}', '{{ absolute_url("/uploads") }}/', '{{ value }}');
-        });
-    </script>
-{%- endblock image_upload_widget %}
-
 {% block contact_detail_widget %}
     {% include "@SolidInvoiceClient/Form/contact_details.html.twig" %}
 {% endblock contact_detail_widget %}

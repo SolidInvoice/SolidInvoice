@@ -94,14 +94,8 @@ class SettingsTypeTest extends FormTestCase
 
     protected function getExtensions()
     {
-        $session = M::mock(SessionInterface::class);
-        $session->shouldReceive('getId')
-            ->andReturn($this->faker->md5);
-
-        $type = new ImageUploadType($session, Key::createNewRandomKey()->saveToAsciiSafeString());
-
         return [
-            new PreloadedExtension([$type], []),
+            new PreloadedExtension([new ImageUploadType()], []),
         ];
     }
 }
