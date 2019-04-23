@@ -29,13 +29,13 @@ define(
             },
             setGrid: function(event) {
                 event.preventDefault();
-                let target = $(event.target);
+                var target = $(event.target);
 
                 if (target.hasClass('fa')) {
-                    target = target.closest('a')
+                    target = target.closest('a');
                 }
 
-                let grid = target.data('grid');
+                var grid = target.data('grid');
 
                 this.gridOptions = this.model.get('grids')[grid];
 

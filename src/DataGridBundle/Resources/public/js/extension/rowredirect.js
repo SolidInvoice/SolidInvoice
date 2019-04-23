@@ -16,7 +16,7 @@ define(['jquery', 'backgrid', 'routing', 'grid/backgrid-paginator'], function($,
                     'click': 'onClick'
                 },
                 onClick: function(e) {
-                    let target = $(e.target);
+                    var target = $(e.target);
 
                     if (target.is(':input') || target.hasClass('select-row-cell') || target.hasClass('action-cell')) {
                         return;
@@ -24,7 +24,7 @@ define(['jquery', 'backgrid', 'routing', 'grid/backgrid-paginator'], function($,
 
                     window.location = Router.generate(route, {'id': this.model.get('id')});
                 }
-            })
+            });
         },
-    }
+    };
 });
