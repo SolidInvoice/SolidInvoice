@@ -1,6 +1,6 @@
 define(['jquery', 'marionette', 'lodash'], function($, Mn, _) {
 
-    var MailSettings = Mn.Object.extend({
+    var MailSettings = Mn.MnObject.extend({
 	gmailConfig: null,
 	smtpConfig: null,
 	initialize: function(prefix, value) {

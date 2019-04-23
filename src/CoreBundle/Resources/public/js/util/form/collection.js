@@ -8,11 +8,11 @@
  */
 
 define(
-    ['jquery', 'backbone', 'lodash'],
-    function($, Backbone, _) {
+    ['jquery', 'marionette', 'lodash'],
+    function($, Mn, _) {
     'use strict';
 
-    return Backbone.View.extend({
+    return Mn.View.extend({
         addSelector: '.btn-add',
         removeSelector: '.btn-remove',
         addBtn: function(event) {

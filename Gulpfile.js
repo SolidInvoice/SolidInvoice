@@ -223,7 +223,7 @@ function jsApp() {
 
 }
 
-exports.js = gulp.series(cleanAssets, gulp.parallel(jsVendor, jsApp));
+exports.js = gulp.series(cleanAssets, jsVendor, jsApp);
 
 function watch(done) {
     gulp.watch([options.less + '/*', options.css + '/*'], gulp.series(cleanCss, gulp.parallel(cssApp, cssEmail, cssPdf)));
@@ -236,7 +236,7 @@ exports.watch = gulp.series(exports.css, templates, exports.js, watch);
 
 exports.build = gulp.series(exports.css, exports.fonts, exports.images, templates, exports.js);
 
-exports.default = gulp.series(exports.clean, gulp.parallel(cssApp, cssEmail, cssPdf), fonts, images, templates, gulp.parallel(jsVendor, jsApp));
+exports.default = gulp.series(exports.clean, gulp.parallel(cssApp, cssEmail, cssPdf), fonts, images, templates, jsVendor, jsApp);
 
 exports.assets = () => {
     return gulp.src(['web/css/!*.css', 'web/js/!*.js', 'web/js/translations/!**'], {base: 'web'})

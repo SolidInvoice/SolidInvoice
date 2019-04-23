@@ -1,6 +1,6 @@
 define(
-    ['core/module', 'lodash', 'marionette', 'payments/payment/model', 'template', 'payments/payment/controller', 'handlebars.runtime'],
-    function(Module, _, Mn, PaymentModel, Template, Controller, Handlebars) {
+    ['core/module', 'lodash', 'marionette', 'payments/payment/model', 'template', 'payments/payment/controller', 'handlebars.runtime', 'marionette.approuter'],
+    function(Module, _, Mn, PaymentModel, Template, Controller, Handlebars, AppRouter) {
         "use strict";
 
         return Module.extend({
@@ -49,7 +49,7 @@ define(
 
                 var menuView = new view({
                     model: model,
-                    router: new Mn.AppRouter({
+                    router: new AppRouter({
                         controller: Controller(module, model)
                     })
                 });

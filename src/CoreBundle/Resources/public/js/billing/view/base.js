@@ -2,9 +2,9 @@ define(
     ['marionette', 'lodash', 'core/billing/model/row_model', 'core/billing/view/footer', 'core/billing/view/item_row'],
     function (Mn, _, RowModel, FooterView, RowView)
     {
-        return Mn.CompositeView.extend({
+        return Mn.CollectionView.extend({
             childView: RowView,
-            selector: null,
+            el: null,
             footerView: null,
             counter: 0,
             hasTax: null,
@@ -13,7 +13,7 @@ define(
             },
             initialize: function (options) {
                 this.footerView = options.footerView;
-                this.selector = options.selector;
+                this.el = options.selector;
                 this.fieldData = options.fieldData;
                 this.counter = this.collection.size();
                 this.hasTax = options.hasTax;
@@ -28,7 +28,7 @@ define(
                 "update:totals": "renderTotals"
             },
             renderTotals: function() {
-                var footer = this.$(this.selector);
+                var footer = this.$(this.el);
 
                 setTimeout(_.bind(function() {
                     footer.empty();
@@ -36,7 +36,7 @@ define(
                 }, this), 0);
             },
             onRender: function() {
-                this.footerView.render().$el.find('tr').appendTo(this.$(this.selector));
+                this.footerView.render().$el.find('tr').appendTo(this.$(this.el));
             },
             addItem: function(event) {
                 event.preventDefault();
