@@ -86,7 +86,7 @@ define(
             _.each(Module.prototype.appEvents, function(action, event) {
                 if (_.isFunction(action)) {
                     App.on(event, action);
-                } else if (-1 !== _.indexOf(_.functions(Module), action)) {
+                } else if (-1 !== _.indexOf(_.functionsIn(Module), action)) {
                     App.on(event, Module[action])
                 } else {
                     throw "Callback specified for event " + event + " is not a valid callback"

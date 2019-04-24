@@ -52,7 +52,7 @@ define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], fun
             _.each(_.result(modal, 'events'), _.bind(function(action, event) {
                 if (_.isFunction(action)) {
                     this.listenTo(this, event, action);
-                } else if (-1 !== _.indexOf(_.functions(this), action)) {
+                } else if (-1 !== _.indexOf(_.functionsIn(this), action)) {
                     this.listenTo(this, event, this[action])
                 } else {
                     throw "Callback specified for event " + event + " is not a valid callback"
