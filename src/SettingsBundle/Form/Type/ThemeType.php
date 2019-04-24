@@ -24,6 +24,7 @@ class ThemeType extends AbstractType
         $resolver->setDefault(
             'choices',
             [
+                'Default' => 'skin-solidinvoice-default',
                 'Blue' => 'skin-blue',
                 'Blue Light' => 'skin-blue-light',
                 'Yellow' => 'skin-yellow',
