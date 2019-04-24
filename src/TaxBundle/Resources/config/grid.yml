@@ -3,6 +3,8 @@ datagrid:
         source:
             repository: 'SolidInvoiceTaxBundle:Tax'
             method: getGridQuery
+        properties:
+            route: '_tax_rates_edit'
         columns:
             id:
                 name: id

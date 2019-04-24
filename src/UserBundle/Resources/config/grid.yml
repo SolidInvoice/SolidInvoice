@@ -3,6 +3,8 @@ datagrid:
         source:
             repository: 'SolidInvoiceUserBundle:User'
             method: getGridQuery
+        properties:
+            route: '_user_edit'
         columns:
             id:
                 name: id

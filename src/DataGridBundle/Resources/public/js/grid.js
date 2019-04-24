@@ -18,6 +18,7 @@ define([
         'grid/model/grid_collection',
         'grid/extension/paginate',
         'grid/extension/search',
+        'grid/extension/rowredirect',
         'grid/view/action',
 
         'bootstrap.modalmanager',
@@ -40,6 +41,7 @@ define([
              GridCollection,
              Paginate,
              Search,
+             Redirect,
              ActionView) {
         return Mn.Object.extend({
             initialize: function(options, element) {
@@ -52,6 +54,10 @@ define([
                     className: 'backgrid table table-bordered table-hover',
                     emptyText: "no data"
                 };
+
+                if (!_.isUndefined(options.properties.route)) {
+                    gridOptions.row = Redirect.row(options.properties.route);
+                }
 
                 if (_.size(options.line_actions) > 0 && _.isUndefined(_.find(options.columns, {'name': 'Actions'}))) {
                     options.columns.push({

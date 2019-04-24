@@ -5,6 +5,8 @@ datagrid:
         source:
             repository: 'SolidInvoiceQuoteBundle:Quote'
             method: getGridQuery
+        properties:
+            route: '_quotes_view'
         columns:
             id:
                 name: id
@@ -81,6 +83,8 @@ datagrid:
         source:
             repository: 'SolidInvoiceQuoteBundle:Quote'
             method: getArchivedGridQuery
+        properties:
+            route: '_quotes_view'
         columns:
             id:
                 name: id

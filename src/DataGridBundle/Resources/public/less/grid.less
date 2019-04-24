@@ -2,4 +2,10 @@
   th, td {
     overflow: visible;
   }
+
+  tr.redirectable {
+    td:not(.action-cell):not(.select-row-cell) {
+      cursor: pointer;
+    }
+  }
 }
