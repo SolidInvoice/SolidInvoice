@@ -11,12 +11,6 @@
 
 {% block header %}
     <a class="logo" href="{{ url('_dashboard') }}">
-        {% if settings['system/company/logo'] is defined and settings['system/company/logo'] is not empty %}
-            {% set logo = 'uploads/' ~ settings['system/company/logo'] %}
-        {% else %}
-            {% set logo = 'img/logo.png' %}
-        {% endif %}
-
         <span class="logo-mini">
             {{ app_logo() }}
 		</span>

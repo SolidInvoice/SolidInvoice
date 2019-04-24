@@ -21,7 +21,6 @@ billing:
     total: Total
 powered_by: 'Powered By'
 invalid_file: 'Invalid File'
-upload_error: 'There was an error uploading the file'
 create_new: 'Create New'
 invoice: Invoice
 quote: Quote

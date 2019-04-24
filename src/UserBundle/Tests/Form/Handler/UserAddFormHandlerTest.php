@@ -67,7 +67,7 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
 
     protected function getHandlerOptions(): array
     {
-        $user = new User;
+        $user = new User();
         $user->setUsername('one');
 
         return [
@@ -76,7 +76,7 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
     }
 
     /**
-     * @param null|Response $response
+     * @param Response|null $response
      * @param mixed         $data
      * @param FormRequest   $form
      *

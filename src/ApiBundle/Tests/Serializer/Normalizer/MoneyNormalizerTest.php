@@ -25,8 +25,7 @@ class MoneyNormalizerTest extends TestCase
 {
     public function testSupportsNormalization()
     {
-        $parentNormalizer = new class implements NormalizerInterface, DenormalizerInterface
-        {
+        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
             }
@@ -53,8 +52,7 @@ class MoneyNormalizerTest extends TestCase
 
     public function testSupportsDenormalization()
     {
-        $parentNormalizer = new class implements NormalizerInterface, DenormalizerInterface
-        {
+        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
             }
@@ -81,8 +79,7 @@ class MoneyNormalizerTest extends TestCase
 
     public function testNormalization()
     {
-        $parentNormalizer = new class implements NormalizerInterface, DenormalizerInterface
-        {
+        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
             }
@@ -110,8 +107,7 @@ class MoneyNormalizerTest extends TestCase
 
     public function testDenormalization()
     {
-        $parentNormalizer = new class implements NormalizerInterface, DenormalizerInterface
-        {
+        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
             }

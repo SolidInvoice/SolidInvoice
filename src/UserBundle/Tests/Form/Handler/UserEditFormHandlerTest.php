@@ -23,7 +23,6 @@ use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\UserEditFormHandler;
 use SolidInvoice\UserBundle\Manager\UserManager;
-use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,10 +75,11 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
 
     protected function getHandlerOptions(): array
     {
-        $user = new User;
+        $user = new User();
         $user->setUsername('one');
+
         return [
-            'user' => $user
+            'user' => $user,
         ];
     }
 

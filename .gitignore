@@ -13,8 +13,6 @@ vendor
 bin/*
 !bin/console
 composer.phar
-web/uploads/*
-!web/uploads/.gitkeep
 !web/js/.gitkeep
 !web/css/.gitkeep
 !web/fonts/.gitkeep

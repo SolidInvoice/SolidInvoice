@@ -21,13 +21,10 @@ use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
 use SolidInvoice\SettingsBundle\Form\Type\MailFormatType;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
-use Defuse\Crypto\Key;
-use Mockery as M;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\PreloadedExtension;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SettingsTypeTest extends FormTestCase
 {
@@ -77,6 +74,10 @@ class SettingsTypeTest extends FormTestCase
                 case MailTransportType::class === $type:
                     $value = $formValue = 'smtp';
                     break;
+
+                case ImageUploadType::class === $type:
+                    $value = $formValue = null;
+                    break;
             }
 
             $formData['setting_'.$i] = $value;
@@ -90,18 +91,5 @@ class SettingsTypeTest extends FormTestCase
         ];
 
         $this->assertFormData($this->factory->create(SettingsType::class, null, $options), $formData, $object);
-    }
-
-    protected function getExtensions()
-    {
-        $session = M::mock(SessionInterface::class);
-        $session->shouldReceive('getId')
-            ->andReturn($this->faker->md5);
-
-        $type = new ImageUploadType($session, Key::createNewRandomKey()->saveToAsciiSafeString());
-
-        return [
-            new PreloadedExtension([$type], []),
-        ];
     }
 }

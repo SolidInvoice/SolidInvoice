@@ -18,7 +18,6 @@ use SolidInvoice\ClientBundle\Form\Handler\ContactEditFormHandler;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

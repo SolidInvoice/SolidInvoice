@@ -97,7 +97,7 @@ class ApiContext extends DefaultContext implements Context
             throw new \Exception("Invalid User: \"$username\"");
         }
 
-        $this->restContext->iAddHeaderEqualTo("X-API-TOKEN", $this->getUserApiToken($user));
+        $this->restContext->iAddHeaderEqualTo('X-API-TOKEN', $this->getUserApiToken($user));
     }
 
     private function getLastRecord(string $entity)
@@ -118,8 +118,8 @@ class ApiContext extends DefaultContext implements Context
 
     private function prepareRequest(string &$url, PyStringNode &$body = null): void
     {
-        $this->restContext->iAddHeaderEqualTo("Content-Type", "application/ld+json");
-        $this->restContext->iAddHeaderEqualTo("Accept", "application/ld+json");
+        $this->restContext->iAddHeaderEqualTo('Content-Type', 'application/ld+json');
+        $this->restContext->iAddHeaderEqualTo('Accept', 'application/ld+json');
 
         $url = $this->replaceEntity($url);
 

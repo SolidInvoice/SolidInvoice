@@ -2,12 +2,6 @@ _home:
     path: /
     defaults: { _controller: 'FrameworkBundle:Redirect:redirect', route: _dashboard, permanent: true }
 
-_image_upload:
-    path: /upload
-    defaults: { _controller: 'SolidInvoice\CoreBundle\Action\Upload' }
-    options:
-        expose: true
-
 _view_quote_external:
     path: '/view/quote/{uuid}'
     defaults: { _controller: 'SolidInvoice\CoreBundle\Action\ViewBilling::quoteAction' }

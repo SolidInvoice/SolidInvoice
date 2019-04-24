@@ -16,9 +16,6 @@ config:
         jquery.placeholder:
             deps:
                 - jquery
-        jquery.uploadify:
-            deps:
-                - jquery
         bootstrap.modal:
             deps:
                 - jquery
@@ -55,7 +52,6 @@ config:
 
         # External Dependencies that don't have an NPM package
         jquery.jqcron: solidinvoicecore/js/lib/jquery/jqcron.js
-        jquery.uploadify: solidinvoicecore/js/lib/jquery/uploadify.min.js
         bootstrap.modal: solidinvoicecore/js/lib/bootstrap/modal.js
         bootstrap.modalmanager: solidinvoicecore/js/lib/bootstrap/modalmanager.js
 

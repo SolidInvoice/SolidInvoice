@@ -13,12 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests;
 
-use SolidInvoice\CoreBundle\Form\Extension;
-use SolidInvoice\CoreBundle\Form\Type;
-use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
-use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
-use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
-use Defuse\Crypto\Key;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
@@ -26,6 +20,11 @@ use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidType;
+use SolidInvoice\CoreBundle\Form\Extension;
+use SolidInvoice\CoreBundle\Form\Type;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
+use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
@@ -88,10 +87,7 @@ abstract class FormTestCase extends TypeTestCase
     {
         return [
             'select2' => new Type\Select2Type(),
-            'image_upload' => new Type\ImageUploadType(
-                \Mockery::mock('Symfony\Component\HttpFoundation\Session\SessionInterface'),
-                Key::createNewRandomKey()->saveToAsciiSafeString()
-            ),
+            'image_upload' => new Type\ImageUploadType(),
         ];
     }
 

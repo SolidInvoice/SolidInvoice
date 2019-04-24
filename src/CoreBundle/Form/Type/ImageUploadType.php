@@ -13,59 +13,48 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Type;
 
-use Defuse\Crypto\Crypto;
-use Defuse\Crypto\Key;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageUploadType extends AbstractType
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
-     */
-    protected $session;
-
-    /**
-     * @var string
-     */
-    private $secret;
-
-    /**
-     * @param SessionInterface $session
-     * @param string           $secret
-     */
-    public function __construct(SessionInterface $session, string $secret)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->session = $session;
-        $this->secret = $secret;
+        $builder->addModelTransformer(new class() implements DataTransformerInterface {
+            public function transform($value)
+            {
+                if (null === $value) {
+                    return;
+                }
+
+                return new File(null, false);
+            }
+
+            public function reverseTransform($value)
+            {
+                if (!$value instanceof UploadedFile) {
+                    return;
+                }
+
+                if (!$value->isValid()) {
+                    throw new TransformationFailedException();
+                }
+
+                return $value->guessExtension().'|'.base64_encode(file_get_contents($value->getPathname()));
+            }
+        });
     }
 
-    /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $sessionId = $this->session->getId();
-
-        $view->vars['sessionId'] = Crypto::encrypt($sessionId, Key::loadFromAsciiSafeString($this->secret));
-    }
-
-    /**
-     * @return string
-     */
     public function getParent(): string
     {
-        return TextType::class;
+        return FileType::class;
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix()
     {
         return 'image_upload';

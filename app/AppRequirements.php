@@ -49,12 +49,6 @@ class AppRequirements extends SymfonyRequirements
 
         $baseDir = realpath(__DIR__.'/..');
 
-        $this->addRequirement(
-            is_writable($baseDir.'/web/uploads'),
-            'web/uploads/ directory must be writable',
-            'Change the permissions of the "<strong>web/uploads/</strong>" directory so that the web server can write into it.'
-        );
-
         if (is_file($baseDir.'/app/config/parameters.yml')) {
             $this->addRequirement(
                 is_writable($baseDir.'/app/config/parameters.yml'),

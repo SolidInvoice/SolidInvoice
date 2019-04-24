@@ -243,7 +243,7 @@ class Contact implements \Serializable
     /**
      * @param string $type
      *
-     * @return null|AdditionalContactDetail
+     * @return AdditionalContactDetail|null
      */
     public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
     {

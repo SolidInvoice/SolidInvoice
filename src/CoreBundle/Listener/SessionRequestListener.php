@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
-use Defuse\Crypto\Crypto;
-use Defuse\Crypto\Key;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionRequestListener implements EventSubscriberInterface
@@ -40,7 +37,6 @@ class SessionRequestListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', 200],
             KernelEvents::RESPONSE => 'onKernelResponse',
         ];
     }
@@ -53,26 +49,6 @@ class SessionRequestListener implements EventSubscriberInterface
     {
         $this->session = $session;
         $this->secret = $secret;
-    }
-
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-
-        $request = $event->getRequest();
-
-        if ($request->request->has('sessionId')) {
-            $request->cookies->set($this->session->getName(), 1);
-
-            $sessionId = Crypto::decrypt($request->request->get('sessionId'), Key::loadFromAsciiSafeString($this->secret));
-
-            $this->session->setId($sessionId);
-        }
     }
 
     /**
