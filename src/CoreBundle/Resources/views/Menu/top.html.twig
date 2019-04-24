@@ -9,7 +9,7 @@
 
 <nav class="navbar navbar-static-top">
     {% if header_content is not defined or header_content is empty %}
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -29,8 +29,8 @@
 
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <div class="btn-group hidden-xs" id="top-menu-create-button">
-                    <button class="btn btn-default btn-sm dropdown-toggle margin" type="button" data-toggle="dropdown">
-                        {{ 'menu.button.create'|trans }}
+                    <button class="btn btn-info btn-sm dropdown-toggle margin" style="margin-top: 20px;" type="button" data-toggle="dropdown">
+                        {{ icon('plus') }} {{ 'menu.button.create'|trans }} <b class="caret"></b>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li>

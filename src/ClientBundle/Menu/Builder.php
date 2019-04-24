@@ -41,6 +41,7 @@ class Builder extends AuthenticatedMenu
      */
     public function clientsMenu(ItemInterface $menu)
     {
+        $menu->addHeader('Clients Menu');
         $menu->addChild(ClientMenu::listMenu());
         $menu->addChild(ClientMenu::add());
     }
@@ -55,12 +56,13 @@ class Builder extends AuthenticatedMenu
      */
     public function clientViewMenu(ItemInterface $menu, array $options = [])
     {
-        $this->clientsMenu($menu);
-
         $menu->addDivider();
 
         $menu->addChild(ClientMenu::view($options['client'] ?? null));
         $menu->addChild(InvoiceMenu::create($options['client'] ?? null));
         $menu->addChild(QuoteMenu::create($options['client'] ?? null));
+
+        $menu->addDivider();
+        $this->clientsMenu($menu);
     }
 }

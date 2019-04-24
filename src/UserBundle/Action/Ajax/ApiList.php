@@ -19,7 +19,7 @@ use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-final class ApiList implements AjaxResponse
+final class ApiList
 {
     use SerializeTrait;
 
