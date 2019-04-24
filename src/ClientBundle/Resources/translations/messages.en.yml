@@ -67,6 +67,7 @@ client:
         contacts: 'Contacts'
     modal:
         add_credit: 'Add Credit'
+        add_contact: 'Add Contact'
         edit_contact: 'Edit Contact'
         edit_address: 'Edit Address'
         credit:

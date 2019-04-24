@@ -22,6 +22,13 @@ define(
                     'modal:save': 'saveContact'
                 }
             },
+            constructor: function(options) {
+                if (_.has(options, 'title')) {
+                    this.modal.title = options.title;
+                }
+
+                AjaxModal.call(this, options);
+            },
             onBeforeModalSave: Parsley.validate,
             saveContact: function() {
                 this.showLoader();
