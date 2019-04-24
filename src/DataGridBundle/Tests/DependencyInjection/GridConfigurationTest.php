@@ -142,6 +142,7 @@ class GridConfigurationTest extends TestCase
                     'properties' => [
                         'sortable' => true,
                         'paginate' => true,
+                        'route' => null,
                     ],
                     'filters' => [],
                 ],
