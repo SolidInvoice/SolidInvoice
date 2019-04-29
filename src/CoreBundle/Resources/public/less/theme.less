@@ -82,16 +82,12 @@
 
 // PAGES
 //--------------------------------------------------------
-//@import "mailbox";
-//@import "lockscreen";
-//@import "login_and_register";
-//@import "404_500_errors";
+@import "~admin-lte/build/less/login_and_register";
 @import "~admin-lte/build/less/invoice";
 @import "~admin-lte/build/less/profile";
 
 // Plugins
 //--------------------------------------------------------
-//@import "~admin-lte/build/less/plugins";
 @import (inline, css) "~admin-lte/dist/css/alt/AdminLTE-select2.css";
 @import "~admin-lte/build/less/datepicker";
 
@@ -99,6 +95,7 @@
 //--------------------------------------------------------
 @import "~admin-lte/build/less/miscellaneous";
 @import "~admin-lte/build/less/print";
+@import (inline, css) "~admin-lte/dist/css/skins/_all-skins.css";
 
 .loading-spinner {
   width: 200px;
@@ -126,11 +123,11 @@
 
 
 /*
- * Skin: Material
- * ----------
+ * Skin: Default
+ * -------------
  */
 
-.skin-material {
+.skin-solidinvoice-default {
 
   //Navbar
   .main-header {
@@ -253,6 +250,10 @@
 
   .content-header {
     padding: 40px 15px 0 15px !important;
+  }
+
+  #top-menu-create-button > .btn {
+    margin-top: 20px;
   }
 }
 
