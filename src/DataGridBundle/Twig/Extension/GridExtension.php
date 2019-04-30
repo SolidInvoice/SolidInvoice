@@ -15,7 +15,7 @@ namespace SolidInvoice\DataGridBundle\Twig\Extension;
 
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
 
-class GridExtension extends \Twig_Extension
+class GridExtension extends \Twig\Extension\AbstractExtension
 {
     private static $statusRendered = false;
 
@@ -33,12 +33,12 @@ class GridExtension extends \Twig_Extension
     }
 
     /**
-     * @return \Twig_SimpleFunction[]
+     * @return \Twig\TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction(
+            new \Twig\TwigFunction(
                 'render_grid',
                 [$this, 'renderGrid'],
                 [
@@ -46,7 +46,7 @@ class GridExtension extends \Twig_Extension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig_SimpleFunction(
+            new \Twig\TwigFunction(
                 'render_multiple_grid',
                 [$this, 'renderMultipleGrid'],
                 [
@@ -58,7 +58,7 @@ class GridExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $env
+     * @param \Twig\Environment $env
      * @param string            $gridName
      * @param array             $parameters
      *
@@ -66,7 +66,7 @@ class GridExtension extends \Twig_Extension
      *
      * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
-    public function renderGrid(\Twig_Environment $env, string $gridName, array $parameters = []): string
+    public function renderGrid(\Twig\Environment $env, string $gridName, array $parameters = []): string
     {
         $grid = $this->repository->find($gridName);
 
@@ -96,13 +96,13 @@ class GridExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $env
+     * @param \Twig\Environment $env
      *
      * @return string
      *
      * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
-    public function renderMultipleGrid(\Twig_Environment $env): string
+    public function renderMultipleGrid(\Twig\Environment $env): string
     {
         $parameters = [];
 

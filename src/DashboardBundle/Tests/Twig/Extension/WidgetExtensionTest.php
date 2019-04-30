@@ -22,7 +22,7 @@ class WidgetExtensionTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var WidgetExtension
+     * @var \Twig\Extension\ExtensionInterface
      */
     private $extension;
 
@@ -44,7 +44,7 @@ class WidgetExtensionTest extends TestCase
 
     public function testGetFunctions()
     {
-        /** @var \Twig_SimpleFunction[] $functions */
+        /** @var \Twig\TwigFunction[] $functions */
         $functions = $this->extension->getFunctions();
 
         $this->assertCount(1, $functions);

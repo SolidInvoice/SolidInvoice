@@ -16,7 +16,7 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 use SolidInvoice\CoreBundle\Form\FieldRenderer;
 use Symfony\Component\Form\FormView;
 
-class BillingExtension extends \Twig_Extension
+class BillingExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var FieldRenderer
@@ -37,7 +37,7 @@ class BillingExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('billing_fields', function (FormView $form) {
+            new \Twig\TwigFunction('billing_fields', function (FormView $form) {
                 return $this->fieldRenderer->render($form, 'children[items].vars[prototype]');
             }, ['is_safe' => ['html']]),
         ];

@@ -23,7 +23,7 @@ use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
  *
  * @author Pierre du Plessis
  */
-class StatusExtension extends \Twig_Extension
+class StatusExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var array
@@ -79,27 +79,27 @@ class StatusExtension extends \Twig_Extension
     /**
      * Returns an array of all the helper functions for the client status.
      *
-     * @return \Twig_SimpleFunction[]
+     * @return \Twig\TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction(
+            new \Twig\TwigFunction(
                 'invoice_label',
                 [$this, 'renderInvoiceStatusLabel'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig_SimpleFunction(
+            new \Twig\TwigFunction(
                 'quote_label',
                 [$this, 'renderQuoteStatusLabel'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig_SimpleFunction(
+            new \Twig\TwigFunction(
                 'payment_label',
                 [$this, 'renderPaymentStatusLabel'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig_SimpleFunction(
+            new \Twig\TwigFunction(
                 'client_label',
                 [$this, 'renderClientStatusLabel'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
@@ -108,7 +108,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $environment
+     * @param \Twig\Environment $environment
      * @param string            $status
      * @param string            $tooltip
      *
@@ -116,7 +116,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderInvoiceStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null)
+    public function renderInvoiceStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
@@ -135,12 +135,12 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $environment
+     * @param \Twig\Environment $environment
      * @param array             $labelMap
      *
      * @return array
      */
-    private function getAllStatusLabels(\Twig_Environment $environment, array $labelMap): array
+    private function getAllStatusLabels(\Twig\Environment $environment, array $labelMap): array
     {
         $response = [];
 
@@ -154,13 +154,13 @@ class StatusExtension extends \Twig_Extension
     /**
      * Return the status converted into a label string.
      *
-     * @param \Twig_Environment $environment
+     * @param \Twig\Environment $environment
      * @param mixed             $object
      * @param string            $tooltip
      *
      * @return string
      */
-    private function renderStatusLabel(\Twig_Environment $environment, $object, string $tooltip = null): string
+    private function renderStatusLabel(\Twig\Environment $environment, $object, string $tooltip = null): string
     {
         if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
             $object = [
@@ -179,7 +179,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $environment
+     * @param \Twig\Environment $environment
      * @param string            $status
      * @param string            $tooltip
      *
@@ -187,7 +187,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderQuoteStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null)
+    public function renderQuoteStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
@@ -206,7 +206,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $environment
+     * @param \Twig\Environment $environment
      * @param string            $status
      * @param string            $tooltip
      *
@@ -214,7 +214,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderPaymentStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null)
+    public function renderPaymentStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
@@ -233,7 +233,7 @@ class StatusExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $environment
+     * @param \Twig\Environment $environment
      * @param string            $status
      * @param string            $tooltip
      *
@@ -241,7 +241,7 @@ class StatusExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderClientStatusLabel(\Twig_Environment $environment, string $status = null, $tooltip = null)
+    public function renderClientStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->clientLabelMap);

@@ -23,7 +23,7 @@ class MenuExtensionTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var MenuExtension
+     * @var \Twig\Extension\ExtensionInterface
      */
     private $extension;
 

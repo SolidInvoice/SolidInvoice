@@ -33,7 +33,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
         $this->assertSame('currency_formatter', $extension->getName());
 
-        /** @var \Twig_SimpleFunction[] $functions */
+        /** @var \Twig\TwigFunction[] $functions */
         $functions = $extension->getFunctions();
 
         $this->assertCount(1, $functions);
@@ -57,7 +57,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        /** @var \Twig_SimpleFilter[] $filters */
+        /** @var \Twig\TwigFilter[] $filters */
         $filters = $extension->getFilters();
 
         $this->assertCount(1, $filters);

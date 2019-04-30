@@ -24,7 +24,7 @@ final class Info implements AjaxResponse
     use JsonTrait;
 
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     private $twig;
 
@@ -38,7 +38,7 @@ final class Info implements AjaxResponse
      */
     private $formatter;
 
-    public function __construct(\Twig_Environment $twig, MoneyFormatter $formatter, Currency $currency)
+    public function __construct(\Twig\Environment $twig, MoneyFormatter $formatter, Currency $currency)
     {
         $this->twig = $twig;
         $this->currency = $currency;

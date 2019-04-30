@@ -31,7 +31,7 @@ use Twig_Extension_GlobalsInterface;
 use Twig_Function;
 use Twig_SimpleFilter;
 
-class GlobalExtension extends Twig_Extension implements Twig_Extension_GlobalsInterface, ContainerAwareInterface
+class GlobalExtension extends \Twig\Extension\AbstractExtension implements \Twig\Extension\GlobalsInterface, ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -91,9 +91,9 @@ class GlobalExtension extends Twig_Extension implements Twig_Extension_GlobalsIn
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('percentage', [$this, 'formatPercentage']),
-            new Twig_SimpleFilter('diff', [$this, 'dateDiff']),
-            new Twig_SimpleFilter('md5', 'md5'),
+            new \Twig\TwigFilter('percentage', [$this, 'formatPercentage']),
+            new \Twig\TwigFilter('diff', [$this, 'dateDiff']),
+            new \Twig\TwigFilter('md5', 'md5'),
         ];
     }
 
@@ -103,12 +103,12 @@ class GlobalExtension extends Twig_Extension implements Twig_Extension_GlobalsIn
     public function getFunctions()
     {
         return [
-            new Twig_Function('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
-            new Twig_Function('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig\TwigFunction('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
+            new \Twig\TwigFunction('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
     }
 
-    /**
+    public function displayAppLogo(\Twig\Environment $env): string
      * @param Twig_Environment $env
      *
      * @return string

@@ -19,7 +19,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 
-class SettingsExtension extends \Twig_Extension
+class SettingsExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var SystemConfig
@@ -34,8 +34,8 @@ class SettingsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('setting', [$this, 'getSetting']),
-            new \Twig_Function('address', [$this, 'renderAddress']),
+            new \Twig\TwigFunction('setting', [$this, 'getSetting']),
+            new \Twig\TwigFunction('address', [$this, 'renderAddress']),
         ];
     }
 

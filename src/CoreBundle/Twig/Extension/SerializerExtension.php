@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @codeCoverageIgnore
  */
-class SerializerExtension extends \Twig_Extension
+class SerializerExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var SerializerInterface
@@ -33,7 +33,7 @@ class SerializerExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('serialize', function ($data, string $format, array $groups = []) {
+            new \Twig\TwigFilter('serialize', function ($data, string $format, array $groups = []) {
                 return $this->serializer->serialize($data, $format, ['groups' => $groups]);
             }),
         ];

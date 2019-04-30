@@ -19,16 +19,16 @@ use Symfony\Component\HttpFoundation\Request;
 class ProcessController extends BaseController
 {
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     private $twig;
 
     /**
-     * @param \Twig_Environment $twig
+     * @param \Twig\Environment $twig
      *
      * @required
      */
-    public function setTwig(\Twig_Environment $twig)
+    public function setTwig(\Twig\Environment $twig)
     {
         $this->twig = $twig;
     }
