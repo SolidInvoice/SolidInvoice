@@ -30,7 +30,7 @@ class TemplateListenerTest extends TestCase
 
     public function testOnKernelView()
     {
-        $twig = M::mock(\Twig_Environment::class);
+        $twig = M::mock(\Twig\Environment::class);
 
         $twig->shouldReceive('render')
             ->once()
@@ -49,7 +49,7 @@ class TemplateListenerTest extends TestCase
 
     public function testOnKernelViewWithoutResponse()
     {
-        $twig = M::mock(\Twig_Environment::class);
+        $twig = M::mock(\Twig\Environment::class);
 
         $twig->shouldReceive('render')
             ->never();
@@ -65,7 +65,7 @@ class TemplateListenerTest extends TestCase
 
     public function testOnKernelViewWithCustomResponse()
     {
-        $twig = M::mock(\Twig_Environment::class);
+        $twig = M::mock(\Twig\Environment::class);
         $response = new Response();
         $response->headers->add(['one' => 'two']);
 

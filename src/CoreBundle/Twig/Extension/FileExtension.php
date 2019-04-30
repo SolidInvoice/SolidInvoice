@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use Twig_Extension;
-
-class FileExtension extends Twig_Extension
+class FileExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var string
@@ -33,7 +31,7 @@ class FileExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('file', function ($file) {
+            new \Twig\TwigFunction('file', function ($file) {
                 return file_get_contents($this->projectDir.'/web/'.ltrim($file, '\\'));
             }, ['is_safe' => ['css', 'html']]),
         ];

@@ -17,7 +17,7 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Money\Currency;
 use Money\Money;
 
-class MoneyFormatterExtension extends \Twig_Extension
+class MoneyFormatterExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var MoneyFormatter
@@ -45,7 +45,7 @@ class MoneyFormatterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('currencyFormatter', function () {
+            new \Twig\TwigFunction('currencyFormatter', function () {
                 return $this->formatter;
             }),
         ];
@@ -57,7 +57,7 @@ class MoneyFormatterExtension extends \Twig_Extension
     public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('formatCurrency', function ($money, $currency = null): string {
+            new \Twig\TwigFilter('formatCurrency', function ($money, $currency = null): string {
                 if (!$money instanceof Money && is_numeric($money)) {
                     $money = new Money((int) $money, $currency ? new Currency($currency) : $this->currency);
                 }

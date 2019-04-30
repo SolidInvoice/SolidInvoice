@@ -16,7 +16,7 @@ namespace SolidInvoice\TaxBundle\Twig\Extension;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
-class TaxExtension extends \Twig_Extension
+class TaxExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var ManagerRegistry
@@ -37,7 +37,7 @@ class TaxExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('taxRatesConfigured', [$this, 'taxRatesConfigured']),
+            new \Twig\TwigFunction('taxRatesConfigured', [$this, 'taxRatesConfigured']),
         ];
     }
 
