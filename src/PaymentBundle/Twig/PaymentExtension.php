@@ -21,8 +21,6 @@ use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
-use \Twig\Extension\AbstractExtension;
-use \Twig\TwigFunction;
 
 class PaymentExtension extends \Twig\Extension\AbstractExtension
 {

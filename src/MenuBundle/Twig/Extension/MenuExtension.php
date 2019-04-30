@@ -15,7 +15,6 @@ namespace SolidInvoice\MenuBundle\Twig\Extension;
 
 use SolidInvoice\MenuBundle\RendererInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-use \Twig\Extension\AbstractExtension;
 
 class MenuExtension extends \Twig\Extension\AbstractExtension
 {

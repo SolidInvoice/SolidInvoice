@@ -25,11 +25,6 @@ use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceExce
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
-use Twig_Environment;
-use Twig_Extension;
-use Twig_Extension_GlobalsInterface;
-use Twig_Function;
-use Twig_SimpleFilter;
 
 class GlobalExtension extends \Twig\Extension\AbstractExtension implements \Twig\Extension\GlobalsInterface, ContainerAwareInterface
 {
@@ -108,14 +103,14 @@ class GlobalExtension extends \Twig\Extension\AbstractExtension implements \Twig
         ];
     }
 
-    public function displayAppLogo(\Twig\Environment $env): string
-     * @param Twig_Environment $env
+    /**
+     * @param \Twig\Environment $env
      *
      * @return string
      *
      * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|LoaderError|SyntaxError
      */
-    public function displayAppLogo(Twig_Environment $env): string
+    public function displayAppLogo(\Twig\Environment $env): string
     {
         $config = $this->container->get('settings');
 

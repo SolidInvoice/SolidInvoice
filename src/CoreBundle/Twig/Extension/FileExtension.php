@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use \Twig\Extension\AbstractExtension;
-
 class FileExtension extends \Twig\Extension\AbstractExtension
 {
     /**
