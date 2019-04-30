@@ -24,7 +24,7 @@ define(
 
                     $.get(route, function(response) {
                         var view = Mn.View.extend({
-                            template: function () { return response },
+                            template: function () { return response; },
                             ui: {
                                 'save': '#payment_methods_save'
                             },
