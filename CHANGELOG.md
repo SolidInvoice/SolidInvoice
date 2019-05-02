@@ -1,4 +1,13 @@
-2.0.0-alphga3 / 2019-03-30
+2.0.0-beta1 / 2019-05-02
+==================
+
+  * Simplify Doctrine test entity to make tests run faster (#235)
+  * Update UI to custom theme (#240)
+  * Switch Twig classes from underscore to namespaces (#241)
+  * Store logo in DB instead of filesystem (#239)
+  * Allow grid rows to be clicked to direct to the relevant record (#238)
+
+2.0.0-alpha3 / 2019-03-30
 ==================
 
   * Add support for multiple databases (#231)
