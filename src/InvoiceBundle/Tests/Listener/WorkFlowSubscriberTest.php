@@ -46,7 +46,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid')));
         $this->assertNotNull($invoice->getPaidDate());
-        $this->assertEquals($invoice, $this->em->getRepository(Invoice::class)->find(1));
+        $this->assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 
     public function testInvoiceArchive()
@@ -64,6 +64,6 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
 
         $this->assertTrue($invoice->isArchived());
-        $this->assertSame($invoice, $this->em->getRepository(Invoice::class)->find(1));
+        $this->assertSame($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 }

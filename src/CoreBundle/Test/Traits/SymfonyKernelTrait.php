@@ -36,9 +36,11 @@ trait SymfonyKernelTrait
      */
     protected function setUpSymfonyKernel(): void
     {
-        $this->kernel = $this->createKernel();
-        $this->kernel->boot();
-        $this->container = $this->kernel->getContainer();
+        if (null === $this->kernel) {
+            $this->kernel = $this->createKernel();
+            $this->kernel->boot();
+            $this->container = $this->kernel->getContainer();
+        }
     }
 
     protected function createKernel(): KernelInterface

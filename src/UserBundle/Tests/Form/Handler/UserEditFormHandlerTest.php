@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 use FOS\UserBundle\Form\Factory\FormFactory;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
+use FOS\UserBundle\Util\Canonicalizer;
 use FOS\UserBundle\Util\PasswordUpdater;
 use Mockery as M;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -40,12 +41,8 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
     {
         parent::setUp();
 
-        $canonicalFieldsUpdater = M::mock(CanonicalFieldsUpdater::class);
-        $this->userManager = new UserManager(M::mock(new PasswordUpdater(new EncoderFactory([new BCryptPasswordEncoder(10)]))), $canonicalFieldsUpdater, $this->em, User::class);
+        $this->userManager = new UserManager(M::mock(new PasswordUpdater(new EncoderFactory([User::class => new BCryptPasswordEncoder(10)]))), new CanonicalFieldsUpdater(new Canonicalizer(), new Canonicalizer()), $this->em, User::class);
         $this->router = M::mock(RouterInterface::class);
-
-        $canonicalFieldsUpdater->shouldReceive('updateCanonicalFields')
-            ->zeroOrMoreTimes();
 
         $this->router->shouldReceive('generate')
             ->zeroOrMoreTimes()
@@ -77,6 +74,9 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
     {
         $user = new User();
         $user->setUsername('one');
+        $user->setPassword('one');
+        $user->setPlainPassword('one');
+        $user->setEmail('one@two.com');
 
         return [
             'user' => $user,
@@ -99,7 +99,8 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         return [
             'fos_user_registration_form' => [
                 'username' => 'test',
-                'password' => [
+                'email' => $this->faker->email,
+                'plainPassword' => [
                     'first' => $password,
                     'second' => $password,
                 ],

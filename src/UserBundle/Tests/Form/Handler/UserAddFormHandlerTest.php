@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 use FOS\UserBundle\Form\Factory\FormFactory;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
+use FOS\UserBundle\Util\Canonicalizer;
 use FOS\UserBundle\Util\PasswordUpdater;
 use Mockery as M;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -41,18 +42,8 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
     {
         parent::setUp();
 
-        $canonicalFieldsUpdater = M::mock(CanonicalFieldsUpdater::class);
-        $this->userManager = new UserManager(new PasswordUpdater(new EncoderFactory([new BCryptPasswordEncoder(10)])), $canonicalFieldsUpdater, $this->em, User::class);
+        $this->userManager = new UserManager(new PasswordUpdater(new EncoderFactory([User::class => new BCryptPasswordEncoder(10)])), new CanonicalFieldsUpdater(new Canonicalizer(), new Canonicalizer()), $this->em, User::class);
         $this->router = M::mock(RouterInterface::class);
-
-        $this->em->shouldReceive('persist')
-            ->zeroOrMoreTimes();
-
-        $this->em->shouldReceive('flush')
-            ->zeroOrMoreTimes();
-
-        $canonicalFieldsUpdater->shouldReceive('updateCanonicalFields')
-            ->zeroOrMoreTimes();
 
         $this->router->shouldReceive('generate')
             ->zeroOrMoreTimes()
@@ -73,11 +64,8 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
 
     protected function getHandlerOptions(): array
     {
-        $user = new User();
-        $user->setUsername('one');
-
         return [
-            'user' => $user,
+            'user' => new User(),
         ];
     }
 
@@ -119,7 +107,8 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
         return [
             'fos_user_registration_form' => [
                 'username' => 'test',
-                'password' => [
+                'email' => $this->faker->email,
+                'plainPassword' => [
                     'first' => $password,
                     'second' => $password,
                 ],

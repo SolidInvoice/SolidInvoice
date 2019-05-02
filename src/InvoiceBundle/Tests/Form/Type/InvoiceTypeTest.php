@@ -71,16 +71,6 @@ class InvoiceTypeTest extends FormTestCase
 
     protected function getExtensions()
     {
-        $repository = M::mock(TaxRepository::class);
-        $repository->shouldReceive('taxRatesConfigured')
-            ->zeroOrMoreTimes()
-            ->withNoArgs()
-            ->andReturn(false);
-
-        $this->registry->shouldReceive('getRepository')
-            ->with(Tax::class)
-            ->andReturn($repository);
-
         $currency = new Currency('USD');
 
         $invoiceType = new InvoiceType($currency);

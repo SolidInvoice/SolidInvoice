@@ -53,14 +53,6 @@ class QuoteTypeTest extends FormTestCase
         $type = new QuoteType(new Currency('USD'));
         $itemType = new ItemType($this->registry);
 
-        $taxRepository = M::mock(TaxRepository::class);
-        $taxRepository->shouldReceive('taxRatesConfigured')
-            ->andReturn(false);
-
-        $this->registry->shouldReceive('getRepository')
-            ->with(Tax::class)
-            ->andReturn($taxRepository);
-
         return [
             new PreloadedExtension([$type, $itemType, new DiscountType(new Currency('USD'))], []),
         ];

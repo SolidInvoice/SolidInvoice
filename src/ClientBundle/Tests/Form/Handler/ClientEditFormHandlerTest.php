@@ -42,7 +42,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
 
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
-            ->with('_clients_view', ['id' => 1])
+            ->withAnyArgs()
             ->andReturn('/client/1');
 
         $handler = new ClientEditFormHandler($router);

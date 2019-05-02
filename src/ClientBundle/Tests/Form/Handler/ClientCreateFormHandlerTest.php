@@ -34,12 +34,13 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
+        $this->registry->getRepository(Client::class);
         $router = M::mock(RouterInterface::class);
 
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
-            ->with('_clients_view', ['id' => 1])
-            ->andReturn('/client/1');
+            ->withAnyArgs()
+        ->andReturn('/client/1');
 
         $handler = new ClientCreateFormHandler($router);
         $handler->setDoctrine($this->registry);

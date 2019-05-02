@@ -68,7 +68,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
-            ->with('_invoices_view', ['id' => 1])
+            ->withAnyArgs()
             ->andReturn('/invoices/1');
 
         $handler = new InvoiceCreateHandler($stateMachine, $router);

@@ -139,24 +139,15 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
             }
         };
 
-        $entityRepository = M::mock(ContactTypeRepository::class);
-
-        $entityRepository->shouldReceive('findOneBy')
-            ->once()
-            ->with(['name' => 'email'])
-            ->andReturn(new ContactType());
-
-        $this->registry->shouldReceive('getRepository')
-            ->once()
-            ->with(ContactType::class)
-            ->andReturn($entityRepository);
-
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
 
         $additionalContactDetail = new AdditionalContactDetail();
         $additionalContactDetail->setType(new ContactType())
             ->setValue('one@two.com');
 
-        $this->assertEquals($additionalContactDetail, $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class));
+        $detail = $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class);
+        $this->assertInstanceOf(AdditionalContactDetail::class, $detail);
+        $this->assertSame('email', $detail->getType()->getName());
+        $this->assertSame('one@two.com', $detail->getValue());
     }
 }

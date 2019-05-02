@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Mockery as M;
 use Mockery\MockInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
@@ -24,6 +22,8 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
  */
 trait DoctrineTestTrait
 {
+    use SymfonyKernelTrait;
+
     /**
      * @var ManagerRegistry|MockInterface
      */
@@ -34,35 +34,11 @@ trait DoctrineTestTrait
      */
     protected $em;
 
-    /**
-     * @before
-     */
-    protected function setupDoctrine()
+    public function setupDoctrine()
     {
-        $this->em = M::mock(EntityManagerInterface::class);
-        $this->createRegistryMock('default', $this->em);
-    }
+        $this->setUpSymfonyKernel();
 
-    protected function createRegistryMock($name, $em)
-    {
-        $this->registry = M::mock(ManagerRegistry::class);
-        $this->registry->shouldReceive('getManager')
-            ->zeroOrMoreTimes()
-            ->with()
-            ->andReturn($em);
-
-        $this->registry->shouldReceive('getManager')
-            ->zeroOrMoreTimes()
-            ->with($name)
-            ->andReturn($em);
-
-        $this->registry->shouldReceive('getManagers')
-            ->with()
-            ->andReturn(['default' => $em]);
-
-        $this->registry->shouldReceive('getManagerForClass')
-            ->andReturn($em);
-
-        return $this->registry;
+        $this->registry = $this->container->get('doctrine');
+        $this->em = $this->registry->getManager();
     }
 }
