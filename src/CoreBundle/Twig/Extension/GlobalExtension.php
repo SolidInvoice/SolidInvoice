@@ -130,7 +130,7 @@ class GlobalExtension extends \Twig\Extension\AbstractExtension implements \Twig
 
         [$type, $logo] = explode('|', $logo);
 
-        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" width="50" style="display: inline; width: 50px"/>')->render(['type' => $type, 'logo' => $logo]);
+        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="inline" style="max-width: 50px; display: inline"/>')->render(['type' => $type, 'logo' => $logo]);
     }
 
     /**

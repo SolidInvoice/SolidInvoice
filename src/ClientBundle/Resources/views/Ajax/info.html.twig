@@ -32,7 +32,6 @@
                         <div class="checkbox">
                             <label for="client-contact-{{ contact.id }}">
                                 <input type="checkbox" name="{{ type }}[users][]" value="{{ contact.id }}" id="client-contact-{{ contact.id }}" {{ client.contacts|length == 1 ? "checked" : ""}}/>
-                                    {{ client.contacts|length == 1 ? "checked" : ""}}/>
                                 {{ contact }}
                             </label>
                         </div>

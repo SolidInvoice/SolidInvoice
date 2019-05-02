@@ -43,8 +43,7 @@
     'fieldData': billing_fields(form),
     'formData': formData,
     'tax': taxRatesConfigured(),
-    }
-%}
+} %}
 
 {% set serializationGroups = ['client_api'] %}
 
@@ -73,9 +72,10 @@
 
     {{ form_errors(form) }}
 
-    <div id="quote-create">
-        <section class="invoice">
-            <div class="row">
+    <div class="box" id="quote-create">
+        <div class="box-body">
+            <section class="invoice">
+
                 <div class="col-xs-12">
                     <div class="title">
                         <h3 class="page-header">
@@ -95,28 +95,26 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row" id="quote-items">
-            </div>
+                <div id="quote-items">
+                </div>
 
-            <br class="clear"/>
+                <br class="clear"/>
 
-            <div class="row">
                 <div class="col-lg-6">
                     {{ form_row(form.terms) }}
                 </div>
                 <div class="col-lg-6">
                     {{ form_row(form.notes) }}
                 </div>
-            </div>
 
-            {{ form_rest(form) }}
+                {{ form_rest(form) }}
 
-            <div class="form-actions">
-                {{ block('form_buttons') is defined ? block('form_buttons') }}
-            </div>
-        </section>
+                <div class="form-actions">
+                    {{ block('form_buttons') is defined ? block('form_buttons') }}
+                </div>
+            </section>
+        </div>
     </div>
 
     {{ form_end(form) }}
@@ -150,5 +148,5 @@
         </button>
     </div>
 
-    <br class="clear" />
+    <br class="clear"/>
 {% endblock form_buttons %}

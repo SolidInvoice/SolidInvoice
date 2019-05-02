@@ -43,7 +43,7 @@ define(
                     if (select2.length) {
                         require(['jquery.select2'], function() {
                             select2.select2({
-                                allowClear: true
+                                theme: 'bootstrap'
                             });
                         });
                     }
@@ -62,11 +62,11 @@ define(
                     var view = new (Mn.View.extend({
                         'el': this.regions[region],
                         'template': function() {
-                            return content.render().$el;
+                            return content.render.apply(content).$el;
                         }
                     }));
 
-                    view.render();
+                    view.render.apply(view);
 
                     return view;
                 }
@@ -86,7 +86,7 @@ define(
             _.each(Module.prototype.appEvents, function(action, event) {
                 if (_.isFunction(action)) {
                     App.on(event, action);
-                } else if (-1 !== _.indexOf(_.functions(Module), action)) {
+                } else if (-1 !== _.indexOf(_.functionsIn(Module), action)) {
                     App.on(event, Module[action])
                 } else {
                     throw "Callback specified for event " + event + " is not a valid callback"

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Ajax;
 
-use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\SerializeTrait;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-final class ApiList implements AjaxResponse
+final class ApiList
 {
     use SerializeTrait;
 

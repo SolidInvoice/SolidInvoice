@@ -122,8 +122,10 @@
     {% endembed %}
 
     {% if payments|length > 0 %}
-        <div class="invoice no-print">
-            {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
+        <div class="invoice box no-print">
+            <div class="box-body">
+                {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
+            </div>
         </div>
     {% endif %}
 

@@ -8,18 +8,20 @@
  #}
 
 {% set footerSpan = invoice.tax.positive ? 3 : 2 %}
+{% set box = box is defined ? box : true %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="invoice-create">
-    <div class="invoice">
-        {% block header %}
-            <div class="row">
+    <div class="{{ box ? 'box ' }}invoice">
+        <div class="{{ box ? 'box-body ' }}">
+            {% block header %}
+
                 <div class="col-xs-12">
                     {% block title %}
                         <h2 class="page-header">
                             {{ "invoice.title"|trans({"%id%" : invoice.id}) }} {{ invoice_label(invoice.status) }}
                         </h2>
                     {% endblock %}
-                    <div class="row invoice-info">
+                    <div class="invoice-info">
                         <div class="col-sm-4 invoice-col">
                             From:
                             <h4>{{ app_name }}</h4>
@@ -76,18 +78,18 @@
                             {% endfor %}
                             <p>
                                 {% for user in invoice.users %}
-                                    <address class="col-xs-6">
-                                        <strong>{{ user }}</strong><br/>
-                                        {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
-                                        {% for info in user.additionalContactDetails %}
-                                            {{ info.type|title }}: {{ info.value }}<br>
-                                        {% endfor %}
-                                    </address>
+                            <address class="col-xs-6">
+                                <strong>{{ user }}</strong><br/>
+                                {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
+                                {% for info in user.additionalContactDetails %}
+                                    {{ info.type|title }}: {{ info.value }}<br>
                                 {% endfor %}
+                            </address>
+                            {% endfor %}
                             </p>
                         </div>
-                            <div class="col-sm-4 invoice-col">
-                                <dl class="dl-horizontal">
+                        <div class="col-sm-4 invoice-col">
+                            <dl class="dl-horizontal">
                                 <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
                                 <dd>{{ invoice.id }}</dd>
                                 <dt>{{ "invoice.total"|trans }}</dt>
@@ -98,14 +100,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endblock %}
 
-        {% block content %}
-            <div class="row">
+            {% endblock %}
+
+            {% block content %}
                 <div class="col-xs-12">
                     <div class="table-responsive">
-
                         <table id="invoice-rows" class="table table-condensed">
                             <thead>
                             <tr>
@@ -224,9 +224,8 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        {% endblock %}
-        <div class="row">
+            {% endblock %}
+
             {% block footer %}
                 {% if invoice.terms is not empty %}
                     <div class="col-xs-6">
@@ -237,6 +236,7 @@
                     </div>
                 {% endif %}
             {% endblock %}
+
         </div>
     </div>
 </div>

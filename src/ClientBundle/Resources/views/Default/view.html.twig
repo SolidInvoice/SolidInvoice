@@ -14,14 +14,9 @@
 
 {% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
 
-{#{% block page_title %}
+{% block page_title %}
     {{ client.name }}
-{% endblock page_title %}#}
-
-{#{% block title %}
-    {{ block('page_title') is defined ? block('page_title') }}
-    <small>{{ client_label(client.status) }}</small>
-{% endblock title %}#}
+{% endblock page_title %}
 
 {% block sidebar %}
     {{ menu('clients_view', {'client': client}) }}
@@ -65,7 +60,7 @@
 
                         {% if client.currency %}
                             <li class="list-group-item">
-                                <b>{{ 'client.view.currency'|trans }}</b> <span class="pull-right">{{ client.currency }}</span>
+                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="pull-right">{{ client.currency }}</span>
                             </li>
                         {% endif %}
 
@@ -189,7 +184,7 @@
                         </div>
                         {% if payments|length > 0 %}
                             <div role="tabpanel" class="tab-pane" id="payments">
-                                {% include "@SolidInvoicePaymentBundle/Payment/list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
+                                {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'client': client.id}, "grid" : 'client_payment_grid'} only %}
                             </div>
                         {% endif %}
                     </div>

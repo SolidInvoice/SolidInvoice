@@ -8,8 +8,8 @@
  */
 
 define(
-    ['marionette', 'client/model/contact', 'client/view/contact_modal', 'template'],
-    function(Mn, Contact, ContactModal, Template) {
+    ['marionette', 'client/model/contact', 'client/view/contact_modal', 'template', 'translator'],
+    function(Mn, Contact, ContactModal, Template, __) {
         "use strict";
 
         return Mn.View.extend({
@@ -31,14 +31,15 @@ define(
                 var collection = this.contactCollection;
 
                 var modal = ContactModal.extend({
-                    initialize: function () {
-                        this.listenTo(this, 'ajax:response', function (response) {
+                    initialize: function() {
+                        this.listenTo(this, 'ajax:response', function(response) {
                             collection.add(new Contact(response));
                         });
                     }
                 });
 
                 new modal({
+                    title: __('client.modal.add_contact'),
                     route: this.$(event.currentTarget).prop('href')
                 });
             },

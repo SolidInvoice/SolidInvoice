@@ -20,11 +20,17 @@
     {% endset %}
 
     {% if not form[section].rendered %}
-        <legend>
-            {{ section|replace({"_" : " "})|title }}
-        </legend>
+        <div class="box">
+            <div class="box-header">
+                <legend>
+                    {{ section|replace({"_" : " "})|title }}
+                </legend>
+            </div>
+            <div class="box-body">
 
-        {{ form_widget(form[section]) }}
+                {{ form_widget(form[section]) }}
+            </div>
+        </div>
     {% endif %}
 
     {{ form_extras }}

@@ -1,5 +1,4 @@
 const gulp = require('gulp'),
-
     filter = require('gulp-filter'),
     flatten = require('gulp-flatten'),
     concat = require('gulp-concat'),
@@ -15,15 +14,11 @@ const gulp = require('gulp'),
     babel = require("gulp-babel"),
     uglify = require('gulp-uglify'),
     rev = require('gulp-rev'),
-
     packageJson = require('./package.json'),
-
     del = require('del'),
     glob = require("glob"),
     vinylPaths = require('vinyl-paths'),
-
     lessNpmImportPlugin = require("less-plugin-npm-import"),
-
     options = {
         less: 'web/bundles/solidinvoice*/less',
         css: 'web/bundles/solidinvoice*/css',
@@ -33,44 +28,52 @@ const gulp = require('gulp'),
         prod: !!util.env.prod
     };
 
-gulp.task('fonts', ['clean:fonts'], () => {
+// Clean Tasks
+function cleanFonts() {
+    return del(['web/fonts/**', '!web/fonts', '!web/fonts/.gitkeep']);
+}
+
+function cleanImages() {
+    return del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
+}
+
+function cleanCss() {
+    return del(['web/css/**', '!web/css', '!web/css/.gitkeep']);
+}
+
+function cleanJs() {
+    return del(['web/js/**', '!web/js', '!web/js/.gitkeep']);
+}
+
+function cleanAssets() {
+    return del('./web/assets');
+}
+
+exports.clean = gulp.parallel(cleanCss, cleanJs, cleanFonts, cleanImages, cleanAssets);
+
+// Fonts Tasks
+function fonts() {
     return gulp.src(['web/bundles/**/fonts/*', 'node_modules/font-awesome/fonts/*'])
         .pipe(filter('**/*.{eot,svg,ttf,woff,woff2}'))
         .pipe(flatten())
         .pipe(gulp.dest('web/fonts/'));
-});
+}
 
-gulp.task('images', ['clean:images'], () => {
+exports.fonts = gulp.series(cleanFonts, fonts);
+
+// Images
+function images() {
     return gulp.src(options.images)
         .pipe(filter('**/*.{png,gif,jpg,jpeg}'))
         .pipe(filter('**/*.{png,gif,jpg,jpeg}'))
         .pipe(flatten())
         .pipe(gulp.dest('web/img/'));
-});
+}
 
-gulp.task('clean', ['clean:css', 'clean:js', 'clean:fonts', 'clean:images', 'clean:js', 'clean:assets']);
+exports.images = gulp.series(cleanImages, images);
 
-gulp.task('clean:css', () => {
-    return del(['web/css/**', '!web/css', '!web/css/.gitkeep']);
-});
-
-gulp.task('clean:js', () => {
-    return del(['web/js/**', '!web/js', '!web/js/.gitkeep']);
-});
-
-gulp.task('clean:fonts', () => {
-    return del(['web/fonts/**', '!web/fonts', '!web/fonts/.gitkeep']);
-});
-
-gulp.task('clean:images', () => {
-    return del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
-});
-
-gulp.task('clean:assets', () => {
-    return del('./web/assets');
-});
-
-gulp.task('css:app', () => {
+// CSS
+function cssApp() {
     const lessOptions = {
             'paths': glob.sync(options.less),
             'plugins': [new lessNpmImportPlugin({prefix: '~'})]
@@ -86,7 +89,7 @@ gulp.task('css:app', () => {
     return gulp.src(files)
         .pipe(filter('**/*.{css,less}'))
         //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function (error) {
+        .pipe(gIf(!options.prod, plumber(function(error) {
             console.log(error.toString());
             this.emit('end');
         })))
@@ -97,9 +100,9 @@ gulp.task('css:app', () => {
         .pipe(gIf(options.prod, cssmin()))
         .pipe(gulp.dest('web/css/'))
         ;
-});
+}
 
-gulp.task('css:email', () => {
+function cssEmail() {
     const lessOptions = {
             'paths': glob.sync(options.less),
             'plugins': [new lessNpmImportPlugin({prefix: '~'})]
@@ -110,7 +113,7 @@ gulp.task('css:email', () => {
     return gulp.src(files)
         .pipe(filter('**/*.{css,less}'))
         //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function (error) {
+        .pipe(gIf(!options.prod, plumber(function(error) {
             console.log(error.toString());
             this.emit('end');
         })))
@@ -119,9 +122,9 @@ gulp.task('css:email', () => {
         .pipe(concat('email.css'))
         .pipe(gulp.dest('web/css/'))
         ;
-});
+}
 
-gulp.task('css:pdf', () => {
+function cssPdf() {
     const lessOptions = {
             'paths': glob.sync(options.less),
             'plugins': [new lessNpmImportPlugin({prefix: '~'})]
@@ -132,7 +135,7 @@ gulp.task('css:pdf', () => {
     return gulp.src(files)
         .pipe(filter('**/*.{css,less}'))
         //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function (error) {
+        .pipe(gIf(!options.prod, plumber(function(error) {
             console.log(error.toString());
             this.emit('end');
         })))
@@ -141,15 +144,14 @@ gulp.task('css:pdf', () => {
         .pipe(concat('pdf.css'))
         .pipe(gulp.dest('web/css/'))
         ;
-});
+}
 
-gulp.task('css', ['clean:css'], (done) => {
-    gulp.start(['css:app', 'css:email', 'css:pdf'], done);
-});
+exports.css = gulp.series(cleanCss, gulp.parallel(cssApp, cssEmail, cssPdf));
 
-gulp.task('templates', ['clean:js'], () => {
+// Templates
+function templates() {
     return gulp.src(options.templates)
-        .pipe(gIf(!options.prod, plumber(function (error) {
+        .pipe(gIf(!options.prod, plumber(function(error) {
             console.log(error.toString());
             this.emit('end');
         })))
@@ -168,12 +170,15 @@ gulp.task('templates', ['clean:js'], () => {
         .pipe(concat('hbs-templates.js'))
         .pipe(wrap('define([\'handlebars.runtime\'], function(Handlebars) {\nHandlebars = Handlebars["default"]; var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n<%= contents %> return templates; });'))
         .pipe(gulp.dest('web/js'));
-});
+}
 
-gulp.task('js:vendor', ['clean:assets'], () => {
+exports.templates = gulp.series(cleanJs, templates);
+
+// JS
+function jsVendor() {
     let libs = [];
 
-    Object.keys(packageJson.dependencies).forEach(function (lib) {
+    Object.keys(packageJson.dependencies).forEach(function(lib) {
         try {
             if ('bootstrap-material-design' === lib) {
                 libs.push(require.resolve(lib + '/dist/js/material.js'));
@@ -205,9 +210,9 @@ gulp.task('js:vendor', ['clean:assets'], () => {
         .pipe(gIf(!options.prod, sourcemap.write()))
         .pipe(gulp.dest('web/assets'))
         ;
-});
+}
 
-gulp.task('js:app', ['clean:assets'], () => {
+function jsApp() {
     return gulp
         .src(options.js)
         .pipe(gIf(!options.prod, sourcemap.init()))
@@ -216,30 +221,29 @@ gulp.task('js:app', ['clean:assets'], () => {
         .pipe(gIf(!options.prod, sourcemap.write()))
         .pipe(gulp.dest('./web/assets'));
 
-});
+}
 
-gulp.task('js', ['clean:assets'], (done) => {
-    gulp.start(['js:vendor', 'js:app'], done);
-});
+exports.js = gulp.series(cleanAssets, jsVendor, jsApp);
 
-gulp.task('watch', ['css', 'templates', 'js'], () => {
-    gulp.watch([options.less + '/*', options.css + '/*'], ['css']);
-    gulp.watch(options.templates, ['templates']);
-    gulp.watch(options.js, ['js:app']);
-});
+function watch(done) {
+    gulp.watch([options.less + '/*', options.css + '/*'], gulp.series(cleanCss, gulp.parallel(cssApp, cssEmail, cssPdf)));
+    gulp.watch(options.templates, templates);
+    gulp.watch(options.js, exports.js);
+    done();
+}
 
-gulp.task('build', ['css', 'fonts', 'images', 'templates', 'js']);
+exports.watch = gulp.series(exports.css, templates, exports.js, watch);
 
-gulp.task('default', ['clean'], (done) => {
-    gulp.start('build', done);
-});
+exports.build = gulp.series(exports.css, exports.fonts, exports.images, templates, exports.js);
 
-gulp.task('assets', () => {
-    return gulp.src(['web/css/*.css', 'web/js/*.js', 'web/js/translations/**'], { base: 'web' })
-        //.pipe(vinylPaths(del))
+exports.default = gulp.series(exports.clean, gulp.parallel(cssApp, cssEmail, cssPdf), fonts, images, templates, jsVendor, jsApp);
+
+exports.assets = () => {
+    return gulp.src(['web/css/!*.css', 'web/js/!*.js', 'web/js/translations/!**'], {base: 'web'})
+        .pipe(vinylPaths(del))
         .pipe(rev())
         .pipe(gulp.dest('web'))
         .pipe(rev.manifest('manifest.json'))
         .pipe(gulp.dest('web'))
         ;
-});
+};

@@ -10,9 +10,10 @@
 {% set footerSpan = quote.tax.positive ? 3 : 2 %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="quote-create">
-    <div class="invoice">
-        {% block header %}
-            <div class="row">
+    <div class="box invoice">
+        <div class="box-body">
+            {% block header %}
+
                 <div class="col-xs-12">
                     {% block title %}
                         <h2 class="page-header">
@@ -98,11 +99,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endblock %}
 
-        {% block content %}
-            <div class="row">
+            {% endblock %}
+
+            {% block content %}
+
                 <div class="col-xs-12">
                     <div class="table-responsive">
 
@@ -142,63 +143,62 @@
                             {% endfor %}
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td class="no-line"></td>
-                                    <td colspan="{{ footerSpan }}" class="thick-line text-right">
-                                        <strong>{{ 'quote.subtotal'|trans }}</strong>
-                                    </td>
-                                    <td class="thick-line text-right">
-                                        <div class="quote-sub-total">
-                                            {{ quote.baseTotal|formatCurrency }}
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% if quote.tax.positive %}
-                                    <tr>
-                                        <td class="no-line"></td>
-                                        <td colspan="{{ footerSpan }}" class="no-line text-right">
-                                            <strong>{{ 'quote.tax'|trans }}</strong>
-                                        </td>
-                                        <td class="no-line text-right">
-                                            <span class="text-error quote-tax">
-                                                {{ quote.tax|formatCurrency }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                                {% if quote.discount.type is not empty %}
-                                    <tr>
-                                        <td class="no-line"></td>
-                                        <td colspan="{{ footerSpan }}" class="no-line text-right">
-                                            <strong>{{ 'quote.discount'|trans }}</strong>
-                                        </td>
-                                        <td class="no-line text-right">
-                                            <span class="text-danger quote-discount">
-                                                -{{ quote.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (quote.discount.value)|formatCurrency : quote.baseTotal|percentage(quote.discount.value)|formatCurrency }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                {% endif %}
+                            <tr>
+                                <td class="no-line"></td>
+                                <td colspan="{{ footerSpan }}" class="thick-line text-right">
+                                    <strong>{{ 'quote.subtotal'|trans }}</strong>
+                                </td>
+                                <td class="thick-line text-right">
+                                    <div class="quote-sub-total">
+                                        {{ quote.baseTotal|formatCurrency }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% if quote.tax.positive %}
                                 <tr>
                                     <td class="no-line"></td>
                                     <td colspan="{{ footerSpan }}" class="no-line text-right">
-                                        <strong>
-                                            {{ 'quote.total'|trans }}
-                                        </strong>
+                                        <strong>{{ 'quote.tax'|trans }}</strong>
                                     </td>
                                     <td class="no-line text-right">
-                                        <div class="quote-total">
-                                            {{ quote.total|formatCurrency }}
-                                        </div>
+                                            <span class="text-error quote-tax">
+                                                {{ quote.tax|formatCurrency }}
+                                            </span>
                                     </td>
                                 </tr>
+                            {% endif %}
+                            {% if quote.discount.type is not empty %}
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td colspan="{{ footerSpan }}" class="no-line text-right">
+                                        <strong>{{ 'quote.discount'|trans }}</strong>
+                                    </td>
+                                    <td class="no-line text-right">
+                                            <span class="text-danger quote-discount">
+                                                -{{ quote.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (quote.discount.value)|formatCurrency : quote.baseTotal|percentage(quote.discount.value)|formatCurrency }}
+                                            </span>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="no-line"></td>
+                                <td colspan="{{ footerSpan }}" class="no-line text-right">
+                                    <strong>
+                                        {{ 'quote.total'|trans }}
+                                    </strong>
+                                </td>
+                                <td class="no-line text-right">
+                                    <div class="quote-total">
+                                        {{ quote.total|formatCurrency }}
+                                    </div>
+                                </td>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
-            </div>
-        {% endblock %}
-        <div class="row">
+            {% endblock %}
+
             {% block footer %}
                 {% if quote.terms is not empty %}
                     <div class="col-xs-6">
@@ -209,6 +209,7 @@
                     </div>
                 {% endif %}
             {% endblock %}
+
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 define(['marionette'], function (Mn) {
     'use strict';
 
-    return Mn.Object.extend({
+    return Mn.MnObject.extend({
         constructor: function (options, App) {
             if (!(App instanceof Mn.Application)) {
                 throw 'Module constructor needs an instance of Marionette.Application as the second argument';
@@ -9,7 +9,7 @@ define(['marionette'], function (Mn) {
 
             this.setApp(App);
 
-            Mn.Object.call(this, options);
+            Mn.MnObject.call(this, options);
         },
         regions: {},
 
