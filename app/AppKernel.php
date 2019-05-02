@@ -68,7 +68,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
 
-            if ($env === 'test') {
+            if ('test' === $env) {
                 $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
             }
         }
