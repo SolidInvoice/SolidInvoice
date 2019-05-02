@@ -30,7 +30,6 @@ Feature: Install application
       | database_name     | solidinvoice_test |
       | database_user     | root        |
       | database_password |             |
-      | mailer_transport  | sendmail    |
       | installed         |             |
     And I should be on "/install/process"
     When I wait for "continue_step" to become available
