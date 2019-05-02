@@ -37,18 +37,4 @@ class PaymentTypeTest extends FormTestCase
 
         $this->assertFormData($this->factory->create(PaymentType::class, [], ['currency' => 'USD', 'preferred_choices' => [], 'user' => null]), $formData, $object);
     }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            PaymentMethod::class,
-        ];
-    }
 }

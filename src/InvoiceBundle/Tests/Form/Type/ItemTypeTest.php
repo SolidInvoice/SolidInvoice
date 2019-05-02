@@ -53,20 +53,4 @@ class ItemTypeTest extends FormTestCase
             new PreloadedExtension([$itemType], []),
         ];
     }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            Invoice::class,
-            Tax::class,
-        ];
-    }
 }

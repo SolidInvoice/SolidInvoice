@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
+use Mockery as M;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\AdditionalContactDetailsNormalizer;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
+use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -26,16 +28,6 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 {
     use MockeryPHPUnitIntegration,
         DoctrineTestTrait;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $type = new ContactType();
-        $type->setName('email');
-        $this->em->persist($type);
-        $this->em->flush();
-    }
 
     public function testSupportsNormalization()
     {
@@ -147,32 +139,15 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
             }
         };
 
-        $entityRepository = $this->em->getRepository(ContactType::class);
-        $this->registry->shouldReceive('getRepository')
-            ->once()
-            ->with(ContactType::class)
-            ->andReturn($entityRepository);
-
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
 
         $additionalContactDetail = new AdditionalContactDetail();
-        $additionalContactDetail->setType($entityRepository->find(1))
+        $additionalContactDetail->setType(new ContactType())
             ->setValue('one@two.com');
 
-        $this->assertEquals($additionalContactDetail, $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class));
-    }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            ContactType::class,
-        ];
+        $detail = $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class);
+        $this->assertInstanceOf(AdditionalContactDetail::class, $detail);
+        $this->assertSame('email', $detail->getType()->getName());
+        $this->assertSame('one@two.com', $detail->getValue());
     }
 }

@@ -91,16 +91,6 @@ abstract class FormTestCase extends TypeTestCase
         ];
     }
 
-    protected function getEntityNamespaces()
-    {
-        return [];
-    }
-
-    protected function getEntities()
-    {
-        return [];
-    }
-
     protected function assertFormData($form, array $formData, $object)
     {
         $this->assertNotEmpty($formData);
@@ -125,16 +115,9 @@ abstract class FormTestCase extends TypeTestCase
 
     private function getInternalExtension()
     {
-        $this->em = DoctrineTestHelper::createTestEntityManager();
-
-        $this->em->getConfiguration()->setEntityNamespaces($this->getEntityNamespaces());
-
         if (!DoctrineType::hasType('uuid')) {
             DoctrineType::addType('uuid', UuidType::class);
         }
-
-        $this->createRegistryMock('default', $this->em);
-        $this->createSchema($this->em);
 
         $type = new EntityType($this->registry);
         $moneyType = new HiddenMoneyType(new Currency('USD'));

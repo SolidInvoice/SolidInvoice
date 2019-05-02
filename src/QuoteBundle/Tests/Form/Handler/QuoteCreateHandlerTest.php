@@ -78,7 +78,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
-            ->with('_quotes_view', ['id' => 1])
+            ->withAnyArgs()
             ->andReturn('/quotes/1');
 
         $handler = new QuoteCreateHandler($router, $stateMachine);
@@ -124,27 +124,6 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
             'form_options' => [
                 'currency' => new Currency('USD'),
             ],
-        ];
-    }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
-            'SolidInvoiceQuoteBundle' => 'SolidInvoice\QuoteBundle\Entity',
-            'SolidInvoicePaymentBundle' => 'SolidInvoice\PaymentBundle\Entity',
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            Client::class,
-            Invoice::class,
-            Quote::class,
-            Tax::class,
         ];
     }
 }

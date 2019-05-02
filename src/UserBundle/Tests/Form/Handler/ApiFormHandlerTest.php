@@ -65,19 +65,4 @@ class ApiFormHandlerTest extends FormHandlerTestCase
             ],
         ];
     }
-
-    protected function getEntities(): array
-    {
-        return [
-            ApiToken::class,
-            User::class,
-        ];
-    }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceUserBundle' => 'SolidInvoice\UserBundle\Entity',
-        ];
-    }
 }

@@ -34,12 +34,13 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
+        $this->registry->getRepository(Client::class);
         $router = M::mock(RouterInterface::class);
 
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
-            ->with('_clients_view', ['id' => 1])
-            ->andReturn('/client/1');
+            ->withAnyArgs()
+        ->andReturn('/client/1');
 
         $handler = new ClientCreateFormHandler($router);
         $handler->setDoctrine($this->registry);
@@ -70,20 +71,5 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
     protected function assertResponse(FormRequest $formRequest)
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
-    }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            Client::class,
-            Credit::class,
-        ];
     }
 }

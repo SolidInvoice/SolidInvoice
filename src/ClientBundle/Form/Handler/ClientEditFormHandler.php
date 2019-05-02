@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidWorx\FormHandler\FormCollectionHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 
-class ClientEditFormHandler extends AbstractClientFormHandler implements FormCollectionHandlerInterface
+class ClientEditFormHandler extends AbstractClientFormHandler
 {
     /**
      * {@inheritdoc}

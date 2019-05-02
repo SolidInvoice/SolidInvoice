@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Form\Handler\ClientEditFormHandler;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -43,7 +42,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
 
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
-            ->with('_clients_view', ['id' => 1])
+            ->withAnyArgs()
             ->andReturn('/client/1');
 
         $handler = new ClientEditFormHandler($router);
@@ -88,20 +87,5 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     protected function assertResponse(FormRequest $formRequest)
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
-    }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            Client::class,
-            Credit::class,
-        ];
     }
 }

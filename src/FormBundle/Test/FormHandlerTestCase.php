@@ -52,10 +52,6 @@ abstract class FormHandlerTestCase extends BaseTestCase
         $this->faker = Factory::create();
     }
 
-    abstract protected function getEntityNamespaces(): array;
-
-    abstract protected function getEntities(): array;
-
     protected function getExtensions(): array
     {
         $currency = new Currency('USD');

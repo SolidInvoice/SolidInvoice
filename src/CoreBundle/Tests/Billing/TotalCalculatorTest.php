@@ -263,21 +263,4 @@ class TotalCalculatorTest extends TestCase
         $this->assertEquals(new Money(29000, new Currency('USD')), $invoice->getBalance());
         $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\\InvoiceBundle\\Entity',
-            'SolidInvoicePaymentBundle' => 'SolidInvoice\\PaymentBundle\\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            Invoice::class,
-            Item::class,
-            Payment::class,
-        ];
-    }
 }

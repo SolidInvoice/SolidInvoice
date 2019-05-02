@@ -62,18 +62,4 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
         $this->assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
     }
-
-    protected function getEntityNamespaces(): array
-    {
-        return [
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities(): array
-    {
-        return [
-            Contact::class,
-        ];
-    }
 }

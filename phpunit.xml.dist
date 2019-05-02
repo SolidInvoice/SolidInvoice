@@ -2,16 +2,15 @@
 
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit
-    backupGlobals               = "false"
-    backupStaticAttributes      = "false"
-    colors                      = "true"
-    convertErrorsToExceptions   = "true"
-    convertNoticesToExceptions  = "true"
-    convertWarningsToExceptions = "true"
-    processIsolation            = "false"
-    stopOnFailure               = "false"
-    syntaxCheck                 = "false"
-    bootstrap                   = "app/autoload.php" >
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        processIsolation="false"
+        stopOnFailure="false"
+        bootstrap="app/autoload.php">
 
     <testsuites>
         <testsuite name="SolidInvoice Test Suite">
@@ -20,13 +19,16 @@
     </testsuites>
 
     <php>
-        <server name="KERNEL_DIR" value="app" />
-        <server name="SYMFONY_ENV" value="test" />
-        <server name="SYMFONY_DEBUG" value="true" />
+        <server name="KERNEL_CLASS" value="AppKernel"/>
+        <server name="KERNEL_DIR" value="app"/>
+        <server name="SYMFONY_ENV" value="test"/>
+        <server name="SYMFONY_DEBUG" value="true"/>
     </php>
 
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
+        <listener class="SolidInvoice\CoreBundle\Test\Listener\DoctrineSetupListener"/>
+        <listener class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener"/>
     </listeners>
 
     <filter>

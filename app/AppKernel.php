@@ -62,11 +62,15 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new SolidInvoice\UserBundle\SolidInvoiceUserBundle(),
         ];
 
-        if (in_array($this->getEnvironment(), ['dev', 'test'])) {
+        if (in_array($env = $this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+
+            if ('test' === $env) {
+                $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
+            }
         }
 
         return $bundles;

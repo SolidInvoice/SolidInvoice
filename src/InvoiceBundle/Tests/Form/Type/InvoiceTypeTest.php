@@ -71,16 +71,6 @@ class InvoiceTypeTest extends FormTestCase
 
     protected function getExtensions()
     {
-        $repository = M::mock(TaxRepository::class);
-        $repository->shouldReceive('taxRatesConfigured')
-            ->zeroOrMoreTimes()
-            ->withNoArgs()
-            ->andReturn(false);
-
-        $this->registry->shouldReceive('getRepository')
-            ->with(Tax::class)
-            ->andReturn($repository);
-
         $currency = new Currency('USD');
 
         $invoiceType = new InvoiceType($currency);
@@ -89,24 +79,6 @@ class InvoiceTypeTest extends FormTestCase
         return [
             // register the type instances with the PreloadedExtension
             new PreloadedExtension([$invoiceType, $itemType, new DiscountType($currency)], []),
-        ];
-    }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-            'SolidInvoiceInvoiceBundle' => 'SolidInvoice\InvoiceBundle\Entity',
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            Client::class,
-            Invoice::class,
-            Tax::class,
         ];
     }
 }

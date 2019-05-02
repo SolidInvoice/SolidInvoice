@@ -53,34 +53,8 @@ class QuoteTypeTest extends FormTestCase
         $type = new QuoteType(new Currency('USD'));
         $itemType = new ItemType($this->registry);
 
-        $taxRepository = M::mock(TaxRepository::class);
-        $taxRepository->shouldReceive('taxRatesConfigured')
-            ->andReturn(false);
-
-        $this->registry->shouldReceive('getRepository')
-            ->with(Tax::class)
-            ->andReturn($taxRepository);
-
         return [
             new PreloadedExtension([$type, $itemType, new DiscountType(new Currency('USD'))], []),
-        ];
-    }
-
-    protected function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceQuoteBundle' => 'SolidInvoice\QuoteBundle\Entity',
-            'SolidInvoiceTaxBundle' => 'SolidInvoice\TaxBundle\Entity',
-            'SolidInvoiceClientBundle' => 'SolidInvoice\ClientBundle\Entity',
-        ];
-    }
-
-    protected function getEntities()
-    {
-        return [
-            Client::class,
-            Quote::class,
-            Tax::class,
         ];
     }
 }

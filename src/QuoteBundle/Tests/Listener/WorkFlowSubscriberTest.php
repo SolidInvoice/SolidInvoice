@@ -76,20 +76,6 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
 
         $this->assertTrue($quote->isArchived());
-        $this->assertSame($quote, $this->em->getRepository(Quote::class)->find(1));
-    }
-
-    public function getEntityNamespaces()
-    {
-        return [
-            'SolidInvoiceQuoteBundle' => 'SolidInvoice\\QuoteBundle\\Entity',
-        ];
-    }
-
-    public function getEntities()
-    {
-        return [
-            Quote::class,
-        ];
+        $this->assertSame($quote, $this->em->getRepository(Quote::class)->find($quote->getId()));
     }
 }
