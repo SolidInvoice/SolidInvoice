@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
@@ -165,10 +168,14 @@ class ClientRepository extends EntityRepository
 
     /**
      * @param array $ids
+     *
+     * @throws ORMException|OptimisticLockException|InvalidArgumentException
      */
     public function deleteClients(array $ids): void
     {
         $em = $this->getEntityManager();
+
+        $em->getFilters()->disable('archivable');
 
         /** @var Client[] $clients */
         $clients = $this->findBy(['id' => $ids]);
@@ -176,5 +183,12 @@ class ClientRepository extends EntityRepository
         array_walk($clients, [$em, 'remove']);
 
         $em->flush();
+
+        $em->getFilters()->enable('archivable');
+    }
+
+    public function delete(Client $client)
+    {
+        $this->deleteClients([$client->getId()]);
     }
 }
