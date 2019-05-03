@@ -1,6 +1,6 @@
 define(
-    ['core/modal', 'accounting', 'template', 'translator', 'parsley'],
-    function(Modal, Accounting, Template, __, Parsley) {
+    ['core/modal', 'accounting', 'template', 'lodash', 'translator', 'parsley'],
+    function(Modal, Accounting, Template, _, __, Parsley) {
         "use strict";
 
         return Modal.extend({
@@ -22,22 +22,19 @@ define(
                     'modal:save': 'saveCredit'
                 }
             },
-            ui: {
+            ui: _.extend({
                 'creditAmount': '#credit_amount'
-            },
+            }, Modal.prototype.ui),
             onBeforeModalSave: Parsley.validate,
             'saveCredit': function() {
 
-                window.ParsleyUI.removeError(this.ui.creditAmount.parsley(), "creditError");
+                this.ui.creditAmount.parsley().removeError("creditError");
 
                 this.showLoader();
 
                 var view = this;
 
-                this.model.on('invalid', function (model, error) {
-                    view.hideLoader();
-                    //window.ParsleyUI.addError(view.ui.creditAmount.parsley(), "creditError", error);
-                });
+                this.model.on('invalid', _.bind(this.hideLoader, this));
 
                 this.model.set('credit', Accounting.toFixed(this.ui.creditAmount.val(), 2));
 
@@ -45,7 +42,7 @@ define(
                     'success': function() {
                         view.$el.modal('hide');
                     },
-                    'error': function () {
+                    'error': function() {
                         view.hideLoader();
                     }
                 });
