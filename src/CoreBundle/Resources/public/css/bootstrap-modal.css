@@ -73,8 +73,9 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #000;
+    background: #fff;
     border-radius: 6px;
+    z-index: 2;
 }
 
 .modal-backdrop.modal-absolute{

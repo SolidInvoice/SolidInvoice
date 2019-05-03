@@ -14,7 +14,7 @@ define(
 
         var credit = Mn.MnObject.extend({
             getView: function(options) {
-                var value = _.result(options, 'credit', 0).value;
+                var value = _.result(options, 'credit', 0);
                 var model = new CreditModel({
                     credit: value > 0 ? value / 100 : value,
                     id: options.id
