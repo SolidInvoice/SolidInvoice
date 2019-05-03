@@ -8,7 +8,7 @@
  */
 
 define(
-    ['jquery', 'marionette', 'lodash'],
+    ['jquery', 'marionette', 'lodash', 'jquery.select2'],
     function($, Mn, _) {
     'use strict';
 
@@ -36,6 +36,13 @@ define(
                 collectionHolder.data('counter', ++counter);
 
                 var el = collectionHolder.append(form);
+                
+                var select2 = $('select.select2');
+                if (select2.length) {
+                    select2.select2({
+                        theme: 'bootstrap'
+                    });
+                }
 
                 this.$el.trigger('collection:add', el);
 
