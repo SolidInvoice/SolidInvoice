@@ -3,7 +3,6 @@ SolidInvoice
 
 [![Build Status](https://travis-ci.org/SolidInvoice/SolidInvoice.png?branch=master)](https://travis-ci.org/SolidInvoice/SolidInvoice)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/badges/quality-score.png?s=fdd7a5f5080807e95a317b9c0db07e8d5ce8cb63)](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/)
-[![Gitter chat](https://badges.gitter.im/SolidInvoice/SolidInvoice.png)](https://gitter.im/SolidInvoice/SolidInvoice)
 
 Open-Source General Billing Manager
 
