@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Twig\Extension;
 
+use Doctrine\DBAL\Exception\DriverException;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SettingsExtension extends \Twig\Extension\AbstractExtension
+class SettingsExtension extends AbstractExtension
 {
     /**
      * @var SystemConfig
@@ -34,8 +37,8 @@ class SettingsExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig\TwigFunction('setting', [$this, 'getSetting']),
-            new \Twig\TwigFunction('address', [$this, 'renderAddress']),
+            new TwigFunction('setting', [$this, 'getSetting']),
+            new TwigFunction('address', [$this, 'renderAddress']),
         ];
     }
 
@@ -54,7 +57,7 @@ class SettingsExtension extends \Twig\Extension\AbstractExtension
             }
 
             return $setting;
-        } catch (InvalidSettingException | TableNotFoundException | ConnectionException $e) {
+        } catch (InvalidSettingException | TableNotFoundException | ConnectionException | DriverException $e) {
             return $default;
         }
     }
