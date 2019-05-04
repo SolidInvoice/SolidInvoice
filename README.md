@@ -78,8 +78,6 @@ $ php bin/console fos:js-routing:dump --callback=define
 $ php bin/console bazinga:js-translation:dump --merge-domains
 ```
 
-Otherwise you can run the app using `app_dev.php` to run it in development mode.
-
 Features
 --------
 
