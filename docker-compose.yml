@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+  db:
+    image: "mysql:5.7"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: solidinvoice
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+  app:
+    build: "docker"
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - ".:/opt/srv"
+    environment:
+      SOLIDINVOICE_ENV: dev
+      SOLIDINVOICE_DEBUG: 1
+      database_driver: pdo_mysql
+      database_host: db
+      database_port: 3306
+      database_name: solidinvoice
+      database_user: root
+      database_password:
+
+volumes:
+  db_data: {}
