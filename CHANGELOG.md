@@ -1,3 +1,10 @@
+2.0.0-beta2 / 2019-05-04
+==================
+
+  * Ensure all archived items are deleted when deleting a client (#244)
+  * Fix modal events and loader. Fix client credit handling (#243)
+  * Apply select2 to when new items are added in a form collection (#242)
+
 2.0.0-beta1 / 2019-05-02
 ==================
 
