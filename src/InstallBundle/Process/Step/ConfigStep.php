@@ -94,13 +94,13 @@ class ConfigStep extends AbstractControllerStep
 
             // sets the database details
             foreach ($data['database_config'] as $key => $param) {
-                $key = sprintf('database_%s', $key);
+                $key = sprintf('env(database_%s)', $key);
                 $config[$key] = $param;
             }
 
             // sets the database details
             foreach ($data['email_settings'] as $key => $param) {
-                $key = sprintf('mailer_%s', $key);
+                $key = sprintf('env(mailer_%s)', $key);
                 $config[$key] = $param;
             }
 
