@@ -15,6 +15,8 @@ namespace SolidInvoice\MoneyBundle\Formatter;
 
 use Money\Currency;
 use Money\Money;
+use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
+use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
 use Symfony\Component\Intl\Intl;
 use Money\MoneyFormatter as MoneyFormatterInterface;
 
@@ -38,10 +40,18 @@ class MoneyFormatter implements MoneyFormatterInterface
     /**
      * @param string          $locale
      * @param Currency|string $currency
+     *
+     * @throws MethodArgumentNotImplementedException
+     * @throws MethodArgumentValueNotImplementedException
      */
     public function __construct(string $locale, Currency $currency)
     {
-        $this->numberFormatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        try {
+            $this->numberFormatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        } catch (MethodArgumentValueNotImplementedException | MethodArgumentNotImplementedException $e) {
+            $this->numberFormatter = new \NumberFormatter('en', \NumberFormatter::CURRENCY);
+        }
+
         $this->numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
         $this->locale = $locale;
         $this->currency = $currency;
