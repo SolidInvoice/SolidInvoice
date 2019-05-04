@@ -8,6 +8,7 @@ env:
   global:
     - SOLIDINVOICE_ENV=test
     - SOLIDINVOICE_DEBUG=0
+    - database_name=solidinvoice_test
 
 cache:
   yarn: true
@@ -34,7 +35,6 @@ install:
   - composer install -n
   - rm bin/r.js && composer install -n --no-scripts # Hack to get npm-assets working after first composer install
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
-  - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
 
 before_script:
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -78,7 +78,7 @@ jobs:
         jwt:
           secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
       before_install:
-        - mysql -e 'create database solidinvoice_test;'
+        - mysql -e "create database ${database_name};"
         - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
         - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
         - sudo apt-get update -qq
