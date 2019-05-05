@@ -1,10 +1,10 @@
 parameters:
-    database_driver: pdo_mysql
-    database_host: localhost
-    database_port: 3306
-    database_name: solidinvoice
-    database_user: root
-    database_password: ~
+    env(database_driver): pdo_mysql
+    env(database_host): localhost
+    env(database_port): 3306
+    env(database_name): solidinvoice
+    env(database_user): root
+    env(database_password): ~
 
     env(mailer_transport): smtp
     env(mailer_host): 127.0.0.1

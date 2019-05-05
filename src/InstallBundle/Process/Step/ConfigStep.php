@@ -16,7 +16,7 @@ namespace SolidInvoice\InstallBundle\Process\Step;
 use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 
 class ConfigStep extends AbstractControllerStep
 {
@@ -37,10 +37,7 @@ class ConfigStep extends AbstractControllerStep
         return $this->render('@SolidInvoiceInstall/Flow/config.html.twig', ['form' => $this->getForm()->createView()]);
     }
 
-    /**
-     * @return \Symfony\Component\Form\Form
-     */
-    private function getForm(): Form
+    private function getForm(): FormInterface
     {
         $availableDrivers = \PDO::getAvailableDrivers();
         $drivers = array_combine(
@@ -57,9 +54,12 @@ class ConfigStep extends AbstractControllerStep
 
         $data = [
             'database_config' => [
-                'host' => $config['database_host'],
-                'port' => $config['database_port'],
-                'name' => $config['database_name'],
+                'host' => $_ENV['database_host'] ?? $config['env(database_host)'],
+                'port' => $_ENV['database_port'] ?? $config['env(database_port)'],
+                'name' => $_ENV['database_name'] ?? $config['env(database_name)'],
+                'user' => $_ENV['database_user'] ?? $config['env(database_user)'],
+                'password' => $_ENV['database_password'] ?? $config['env(database_password)'],
+                'driver' => $_ENV['database_driver'] ?? null,
             ],
         ];
 
@@ -94,13 +94,13 @@ class ConfigStep extends AbstractControllerStep
 
             // sets the database details
             foreach ($data['database_config'] as $key => $param) {
-                $key = sprintf('database_%s', $key);
+                $key = sprintf('env(database_%s)', $key);
                 $config[$key] = $param;
             }
 
             // sets the database details
             foreach ($data['email_settings'] as $key => $param) {
-                $key = sprintf('mailer_%s', $key);
+                $key = sprintf('env(mailer_%s)', $key);
                 $config[$key] = $param;
             }
 

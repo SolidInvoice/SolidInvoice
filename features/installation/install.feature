@@ -24,13 +24,13 @@ Feature: Install application
       | Database Name | solidinvoice_test |
     And I press "continue_step"
     Then The config should contain the following values:
-      | database_driver   | pdo_mysql   |
-      | database_host     | localhost   |
-      | database_port     | 3306        |
-      | database_name     | solidinvoice_test |
-      | database_user     | root        |
-      | database_password |             |
-      | installed         |             |
+      | env(database_driver)   | pdo_mysql   |
+      | env(database_host)     | localhost   |
+      | env(database_port)     | 3306        |
+      | env(database_name)     | solidinvoice_test |
+      | env(database_user)     | root        |
+      | env(database_password) |             |
+      | installed              |             |
     And I should be on "/install/process"
     When I wait for "continue_step" to become available
     And I follow "continue_step"
