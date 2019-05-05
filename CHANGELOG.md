@@ -1,3 +1,10 @@
+2.0.0-RC / 2019-05-05
+==================
+
+  * Use env values for database config if they exist (#246)
+  * Catch driver and locale exceptions if the proper values don't exist in the environment (#245)
+  * Add support for Docker Compose (#247)
+
 2.0.0-beta2 / 2019-05-04
 ==================
 
