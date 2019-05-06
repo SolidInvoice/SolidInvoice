@@ -18,3 +18,6 @@ services:
             $installed: '%installed%'
         autowire: true
         lazy: true
+
+    SolidInvoice\MoneyBundle\Calculator:
+        public: false

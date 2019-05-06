@@ -210,7 +210,7 @@
                     </td>
                     <td class="text-right">
                         <span class="text-danger quote-discount">
-                            -{{ quote.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (quote.discount.value)|formatCurrency : quote.baseTotal|percentage(quote.discount.value)|formatCurrency }}
+                            -{{ discount(quote)|formatCurrency }}
                         </span>
                     </td>
                 </tr>

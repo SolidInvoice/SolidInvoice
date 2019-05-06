@@ -113,7 +113,7 @@
                     <strong>{{ 'invoice.discount'|trans }}</strong>
                 </columns>
                 <columns>
-                    {{ invoice.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (invoice.discount.value.negative)|formatCurrency : invoice.baseTotal.negative|percentage(invoice.discount.value)|formatCurrency }}
+                    -{{ discount(invoice)|formatCurrency }}
                 </columns>
             </row>
         {% endif %}
