@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Application\Migrations;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
