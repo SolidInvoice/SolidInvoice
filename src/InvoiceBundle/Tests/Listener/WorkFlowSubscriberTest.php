@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Mockery as M;

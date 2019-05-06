@@ -17,7 +17,6 @@ use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\UserBundle\Entity\ApiToken;
-use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\ApiFormHandler;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;

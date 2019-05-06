@@ -63,15 +63,15 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
                         'currency' => null,
                     ],
                 ],
-                'quote' => Array(
+                'quote' => [
                     'email_subject' => null,
                     'bcc_address' => null,
-                ),
-                'invoice' => Array(
+                ],
+                'invoice' => [
                     'email_subject' => null,
                     'bcc_address' => null,
-                ),
-                'email' => Array(
+                ],
+                'email' => [
                     'from_name' => null,
                     'from_address' => null,
                     'format' => null,
@@ -83,7 +83,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
                         'port' => null,
                         'encryption' => null,
                     ],
-                ),
+                ],
                 'sms' => [
                     'twilio' => [
                         'number' => null,

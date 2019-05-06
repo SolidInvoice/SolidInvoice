@@ -27,7 +27,6 @@ use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;

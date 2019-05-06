@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -27,8 +25,6 @@ use SolidInvoice\MoneyBundle\Entity\Money;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Mockery as M;
 use Money\Currency;
-use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;

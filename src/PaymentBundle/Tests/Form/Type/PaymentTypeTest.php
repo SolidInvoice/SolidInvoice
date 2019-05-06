@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Tests\Form\Type;
 
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
-use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use Money\Currency;
 use Money\Money;

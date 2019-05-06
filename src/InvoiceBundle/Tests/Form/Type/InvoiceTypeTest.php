@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -21,9 +20,6 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\MoneyBundle\Entity\Money;
-use SolidInvoice\TaxBundle\Entity\Tax;
-use SolidInvoice\TaxBundle\Repository\TaxRepository;
-use Mockery as M;
 use Money\Currency;
 use Symfony\Component\Form\PreloadedExtension;
 
