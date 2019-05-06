@@ -29,7 +29,7 @@ class SystemConfigTest extends TestCase
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
-        $this->assertSame('skin-solidinoice-default', $config->get('design/system/theme'));
+        $this->assertSame('skin-solidinvoice-default', $config->get('design/system/theme'));
     }
 
     public function testGetAll()
@@ -38,7 +38,7 @@ class SystemConfigTest extends TestCase
 
         $this->assertSame(
             [
-                'design/system/theme' => 'skin-solidinoice-default',
+                'design/system/theme' => 'skin-solidinvoice-default',
                 'email/format' => 'both',
                 'email/from_address' => 'info@solidinvoice.co',
                 'email/from_name' => 'SolidInvoice',
