@@ -48,7 +48,9 @@ class SystemInformationForm extends AbstractType
                 null,
                 [
                     'data' => 'en',
-                    'read_only' => true,
+                    'attr' => [
+                        'readonly' => true,
+                    ],
                     'help' => 'The only currently supported locale is "en". To choose a different locale, please install the \'intl\' extension',
                     'placeholder' => 'Please select a locale',
                 ]
