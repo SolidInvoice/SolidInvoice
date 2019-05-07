@@ -17,7 +17,7 @@ define(
             Module = require('core/module');
         }
 
-        var ModuleData = requirejs.s.contexts._.config.moduleData,
+        var ModuleData = requirejs.s.contexts._.config.moduleData || function() {},
 
             Application = Mn.Application.extend({
                 module: null,
@@ -77,7 +77,7 @@ define(
         });
 
         App.on('start', function() {
-            this.module = new Module(ModuleData, this);
+            this.module = new Module(ModuleData(), this);
 
             Backbone.history.start();
         });
