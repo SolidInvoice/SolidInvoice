@@ -175,7 +175,7 @@
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="text-danger invoice-discount">
-                                            -{{ invoice.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (invoice.discount.value)|formatCurrency : invoice.baseTotal|percentage(invoice.discount.value)|formatCurrency }}
+                                            -{{ discount(invoice)|formatCurrency }}
                                         </span>
                                     </td>
                                 </tr>

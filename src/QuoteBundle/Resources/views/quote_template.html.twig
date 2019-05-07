@@ -174,9 +174,9 @@
                                         <strong>{{ 'quote.discount'|trans }}</strong>
                                     </td>
                                     <td class="no-line text-right">
-                                            <span class="text-danger quote-discount">
-                                                -{{ quote.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (quote.discount.value)|formatCurrency : quote.baseTotal|percentage(quote.discount.value)|formatCurrency }}
-                                            </span>
+                                        <span class="text-danger quote-discount">
+                                            -{{ discount(quote)|formatCurrency }}
+                                        </span>
                                     </td>
                                 </tr>
                             {% endif %}

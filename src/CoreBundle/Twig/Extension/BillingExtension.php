@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use SolidInvoice\CoreBundle\Form\FieldRenderer;
+use SolidInvoice\MoneyBundle\Calculator;
 use Symfony\Component\Form\FormView;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class BillingExtension extends \Twig\Extension\AbstractExtension
+class BillingExtension extends AbstractExtension
 {
     /**
      * @var FieldRenderer
@@ -24,11 +27,14 @@ class BillingExtension extends \Twig\Extension\AbstractExtension
     private $fieldRenderer;
 
     /**
-     * @param FieldRenderer $fieldRenderer
+     * @var Calculator
      */
-    public function __construct(FieldRenderer $fieldRenderer)
+    private $calculator;
+
+    public function __construct(FieldRenderer $fieldRenderer, Calculator $calculator)
     {
         $this->fieldRenderer = $fieldRenderer;
+        $this->calculator = $calculator;
     }
 
     /**
@@ -37,9 +43,10 @@ class BillingExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig\TwigFunction('billing_fields', function (FormView $form) {
+            new TwigFunction('billing_fields', function (FormView $form) {
                 return $this->fieldRenderer->render($form, 'children[items].vars[prototype]');
             }, ['is_safe' => ['html']]),
+            new TwigFunction('discount', [$this->calculator, 'calculateDiscount']),
         ];
     }
 

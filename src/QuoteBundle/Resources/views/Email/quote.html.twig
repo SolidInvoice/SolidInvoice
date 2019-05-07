@@ -94,7 +94,7 @@
                     <strong>{{ 'quote.discount'|trans }}</strong>
                 </columns>
                 <columns>
-                    {{ quote.discount.type == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') ? (quote.discount.value.negative)|formatCurrency : quote.baseTotal.negative|percentage(quote.discount.value)|formatCurrency }}
+                    -{{ discount(quote)|formatCurrency }}
                 </columns>
             </row>
         {% endif %}
