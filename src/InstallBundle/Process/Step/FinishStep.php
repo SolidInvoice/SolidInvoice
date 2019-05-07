@@ -23,8 +23,8 @@ class FinishStep extends AbstractControllerStep
      */
     public function displayAction(ProcessContextInterface $context)
     {
-        $rootDir = $this->container->getParameter('kernel.root_dir');
+        $binDir = dirname($this->container->getParameter('kernel.root_dir')).'/bin';
 
-        return $this->render('@SolidInvoiceInstall/Flow/finish.html.twig', ['rootDir' => $rootDir]);
+        return $this->render('@SolidInvoiceInstall/Flow/finish.html.twig', ['binDir' => $binDir]);
     }
 }

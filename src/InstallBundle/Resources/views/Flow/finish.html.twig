@@ -29,7 +29,7 @@
                     Add the following cron job:
                     <br />
                 <pre style="color: #c7254e;">
-                    0/5 * * * * php {{ rootDir }}/console cron:run -e prod -n
+                    * * * * * php {{ binDir }}/console cron:run -e prod -n
                 </pre>
                 </p>
             </div>
