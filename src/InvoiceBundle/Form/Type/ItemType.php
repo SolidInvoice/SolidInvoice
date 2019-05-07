@@ -82,7 +82,7 @@ class ItemType extends AbstractType
                 TaxEntityType::class,
                 [
                     'class' => Tax::class,
-                    'placeholder' => 'Choose Tax Type',
+                    'placeholder' => 'No Tax',
                     'attr' => [
                         'class' => 'select2 input-mini invoice-item-tax',
                     ],
