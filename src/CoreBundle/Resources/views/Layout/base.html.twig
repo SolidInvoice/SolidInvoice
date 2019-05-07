@@ -9,10 +9,7 @@
 {% set locale = app.request.locale|split('_')[0] %}
 
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ locale }}"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="{{ locale }}"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang="{{ locale }}"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ locale }}"> <!--<![endif]-->
+<html class="no-js" lang="{{ locale }}">
 
 <head>
     <meta charset="utf-8">
@@ -22,6 +19,10 @@
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('/favicon.ico') }}"/>
+    <meta name="theme-color" content="#1E88E7">
 
     {% block stylesheets %}
 	    <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css" />
