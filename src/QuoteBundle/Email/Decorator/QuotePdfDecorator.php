@@ -54,8 +54,6 @@ final class QuotePdfDecorator implements MessageDecorator, VerificationMessageDe
 
     public function shouldDecorate(MessageEvent $event): bool
     {
-        $message = $event->getMessage();
-
-        return $message instanceof QuoteEmail;
+        return $event->getMessage() instanceof QuoteEmail && $this->generator->canPrintPdf();
     }
 }

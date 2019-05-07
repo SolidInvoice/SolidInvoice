@@ -72,6 +72,18 @@ class AppRequirements extends SymfonyRequirements
                 'Install at least one <strong>PDO driver</strong>.'
             );
         }
+
+        $this->addRecommendation(
+            extension_loaded('mbstring'),
+            'mbstring extension is required to generate PDF invoices and quotes',
+            'Install the PHP mbstring extension'
+        );
+
+        $this->addRecommendation(
+            extension_loaded('gd'),
+            'GD extension is required to generate PDF invoices and quotes',
+            'Install the PHP GD extension'
+        );
     }
 
     /**

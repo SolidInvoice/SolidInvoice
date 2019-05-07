@@ -48,7 +48,7 @@ final class View
      */
     public function __invoke(Request $request, Quote $quote)
     {
-        if ('pdf' === $request->getRequestFormat()) {
+        if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
             return new PdfResponse($this->pdfGenerator->generate($this->engine->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote])), "quote_{$quote->getId()}.pdf");
         }
 

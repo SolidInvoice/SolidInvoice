@@ -54,8 +54,6 @@ final class InvoicePdfDecorator implements MessageDecorator, VerificationMessage
 
     public function shouldDecorate(MessageEvent $event): bool
     {
-        $message = $event->getMessage();
-
-        return $message instanceof InvoiceEmail;
+        return $event->getMessage() instanceof InvoiceEmail && $this->generator->canPrintPdf();
     }
 }

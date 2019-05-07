@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Tests\Pdf;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use PHPUnit\Framework\TestCase;
 
@@ -34,5 +35,16 @@ class GeneratorTest extends TestCase
         $generator = new Generator(sys_get_temp_dir(), $logger);
         $output = $generator->generate('<body>Hello World</body>');
         $this->assertStringStartsWith('%PDF-', $output);
+    }
+
+    public function testCanPrintPdf()
+    {
+        $generator = new Generator(sys_get_temp_dir(), new NullLogger());
+
+        if (\extension_loaded('mbstring') && \extension_loaded('gd')) {
+            $this->assertTrue($generator->canPrintPdf());
+        } else {
+            $this->assertFalse($generator->canPrintPdf());
+        }
     }
 }

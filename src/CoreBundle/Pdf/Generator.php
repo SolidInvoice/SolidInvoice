@@ -62,4 +62,9 @@ class Generator
 
         return $mpdf->Output(null, Destination::STRING_RETURN);
     }
+
+    public function canPrintPdf(): bool
+    {
+        return \extension_loaded('mbstring') && \extension_loaded('gd');
+    }
 }
