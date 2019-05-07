@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
 use DateTime;
+use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
@@ -42,9 +43,15 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
      */
     private $calculator;
 
-    public function __construct(Calculator $calculator)
+    /**
+     * @var Generator
+     */
+    private $pdfGenerator;
+
+    public function __construct(Calculator $calculator, Generator $pdfGenerator)
     {
         $this->calculator = $calculator;
+        $this->pdfGenerator = $pdfGenerator;
     }
 
     /**
@@ -115,6 +122,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
         return [
             new TwigFunction('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
             new TwigFunction('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('can_print_pdf', [$this->pdfGenerator, 'canPrintPdf']),
         ];
     }
 
