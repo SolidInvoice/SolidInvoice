@@ -1,16 +1,25 @@
 {% spaceless %}
-
     {% set config_extend %}
-    {% if locale != 'en' %}
-        {% set locale = 'en,' ~ locale %}
-    {% endif %}
     require({
+        {% if not app.debug %}
+            shim: {
+                translation_data: {
+                    "deps": [
+                        '{{ asset('js/translations/en.js') }}'{% if locale != 'en' %},
+                        '{{ asset('js/translations/' ~ locale ~ '.js') }}'{% endif %}
+                    ]
+                }
+            },
+        {% endif %}
             paths: {
                 {% if app.debug %}
+                    {% if locale != 'en' %}
+                        {% set locale = 'en,' ~ locale %}
+                    {% endif %}
                     'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
                     'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
                 {% else %}
-                    'translation_data': '{{ asset('js/translations/' ~ locale ~ '.js') }}'
+                    'translation_data': '{{ asset('js/translations/config.js') }}'
                 {% endif %}
             }
 
