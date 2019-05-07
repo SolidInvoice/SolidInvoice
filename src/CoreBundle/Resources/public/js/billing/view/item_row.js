@@ -25,6 +25,10 @@ define(['marionette', 'template', 'lodash', 'accounting'], function(Mn, Template
                 var $this = $(input),
                     type = $this.closest('td')[0].className.split('-')[1];
 
+                if ('qty' === type && !this.model.get(type)) {
+                    this.model.set(type, 1);
+                }
+
                 if (this.model.get(type)) {
                     if ('tax' === type) {
                         $this.select2('val', this.model.get(type).id);
@@ -51,8 +55,7 @@ define(['marionette', 'template', 'lodash', 'accounting'], function(Mn, Template
                 this.model.set(type, val);
             }, this));
 
-            let qty = this.model.get('qty');
-            let amount = parseFloat(qty || 0) * this.model.get('price');
+            let amount = parseFloat(this.model.get('qty')) * this.model.get('price');
 
             this.model.set('total', amount);
             this.$('.column-total').html(Accounting.formatMoney(this.model.get('total')));

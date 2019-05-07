@@ -23,7 +23,7 @@ define(['backbone', 'lodash'], function(Backbone, _) {
                 total += rowTotal;
                 subTotal += rowTotal;
 
-                if (!_.isEmpty(rowTax)) {
+                if (!_.isEmpty(rowTax) && !_.isUndefined(rowTax.type)) {
                     let taxAmount = 0;
 
                     if ('inclusive' === rowTax.type.toLowerCase()) {
