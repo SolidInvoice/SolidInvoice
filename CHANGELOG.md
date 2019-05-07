@@ -1,3 +1,17 @@
+2.0.1 / 2019-05-07
+==================
+
+  * Fix tax text to indicate when no tax is added (#257)
+  * Fix quote and invoice not always calculating the total (#256)
+  * Fix module data overrides arrays to objects in compiled mode (#255)
+  * Fix translator when using a different locale than the default (#254)
+  * Fix path to console script for cron (#253)
+  * Update base html layout (#252)
+  * Ensure required extensions is loaded when printing PDFs (#251)
+  * Correctly calculate discount when viewing invoices and quotes (#250)
+  * Fix incorrect default theme name when running migrations (#248)
+  * Move read_only option to form attributes (#249)
+
 2.0.0 / 2019-05-05
 ==================
 
