@@ -76,6 +76,6 @@ class ApiTokenRepository extends EntityRepository
             ->where('t.user = :user')
             ->setParameter('user', $user);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getArrayResult();
     }
 }
