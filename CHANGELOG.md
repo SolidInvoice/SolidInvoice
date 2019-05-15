@@ -1,3 +1,10 @@
+2.0.2 / 2019-05-15
+==================
+
+  * Add code of conduct (#258)
+  * Copy .env.dist to .env after composer install (#261)
+  * Return api tokens as array to properly display in list (#259)
+
 2.0.1 / 2019-05-07
 ==================
 
