@@ -1,3 +1,9 @@
+2.0.3 / 2019-05-23
+==================
+
+  * Fix return type on external quote view action (#264)
+  * Remove icon from payments list page title (#262)
+
 2.0.2 / 2019-05-15
 ==================
 
