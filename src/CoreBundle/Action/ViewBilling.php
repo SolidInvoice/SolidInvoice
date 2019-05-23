@@ -59,6 +59,7 @@ class ViewBilling
      * @param string $uuid
      *
      * @return Template|Response
+     *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
     public function quoteAction(string $uuid)
@@ -80,6 +81,7 @@ class ViewBilling
      * @param string $uuid
      *
      * @return Response|Template
+     *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
     public function invoiceAction(string $uuid)
