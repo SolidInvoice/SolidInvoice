@@ -13,14 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use InvalidArgumentException;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -53,9 +58,11 @@ class ViewBilling
      *
      * @param string $uuid
      *
-     * @return Response
+     * @return Template|Response
+     *
+     * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
-    public function quoteAction(string $uuid): Response
+    public function quoteAction(string $uuid)
     {
         $options = [
             'repository' => Quote::class,
@@ -74,6 +81,8 @@ class ViewBilling
      * @param string $uuid
      *
      * @return Response|Template
+     *
+     * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
     public function invoiceAction(string $uuid)
     {
@@ -93,7 +102,7 @@ class ViewBilling
      *
      * @return Template|Response
      *
-     * @throws NotFoundHttpException
+     * @throws NotFoundHttpException|InvalidArgumentException|InvalidUuidStringException|InvalidParameterException|MissingMandatoryParametersException|RouteNotFoundException
      */
     private function createResponse(array $options)
     {
@@ -109,10 +118,8 @@ class ViewBilling
             return new RedirectResponse($this->router->generate($options['route'], ['id' => $entity->getId()]));
         }
 
-        $template = '@SolidInvoiceCore/View/'.$options['entity'].'.html.twig';
-
         return new Template(
-            $template,
+            '@SolidInvoiceCore/View/'.$options['entity'].'.html.twig',
             [
                 $options['entity'] => $entity,
                 'title' => $options['entity'].' #'.$entity->getId(),
