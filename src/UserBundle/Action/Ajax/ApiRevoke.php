@@ -21,7 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ApiRevoke implements AjaxResponse
 {
-    use DoctrineAwareTrait,
+    use DoctrineAwareTrait;
+    use
         JsonTrait;
 
     public function __invoke(Request $request, ApiToken $token)
