@@ -78,6 +78,25 @@ RUN echo "date.timezone=$TIMEZONE" >> /usr/local/etc/php/php.ini && \
     echo "max_execution_time = 60;" >> /usr/local/etc/php/php.ini && \
     echo "memory_limit = 512M;" >> /usr/local/etc/php/php.ini
 
+# Install XSL
+RUN apt-get install -y libxslt-dev && \
+    docker-php-ext-install xsl
+
+# Install GD2
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev && \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-install -j$(nproc) gd && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install SOAP
+RUN apt-get update -y \
+  && apt-get install -y libxml2-dev \
+  && apt-get clean -y \
+  && docker-php-ext-install soap
+
 WORKDIR /opt/srv
 
 EXPOSE 80
