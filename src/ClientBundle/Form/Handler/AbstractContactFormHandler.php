@@ -30,7 +30,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractContactFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
-    use SaveableTrait,
+    use SaveableTrait;
+    use
         SerializeTrait;
 
     /**

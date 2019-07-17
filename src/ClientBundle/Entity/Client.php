@@ -39,7 +39,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Client
 {
-    use Entity\TimeStampable,
+    use Entity\TimeStampable;
+    use
         Entity\Archivable;
 
     /**
