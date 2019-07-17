@@ -24,3 +24,4 @@ node_modules
 .php_cs.cache
 .env
 yarn-error.log
+/vendor-bin/**/vendor
