@@ -37,6 +37,11 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
+        "ext-gd": "*",
+        "ext-xsl": "*",
+        "ext-soap": "*",
+        "ext-openssl": "*",
+        "ext-intl": "*",
         "symfony/symfony": "^3.3",
         "symfony/polyfill-iconv": "^1.2",
         "symfony/polyfill-intl-icu": "^1.2",
