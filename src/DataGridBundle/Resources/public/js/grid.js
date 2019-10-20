@@ -52,7 +52,7 @@ define([
                 var gridOptions = {
                     collection: collection,
                     className: 'backgrid table table-bordered table-hover',
-                    emptyText: "There currently is no data to display."
+                    emptyText: "There currently are no data to display."
                 };
 
                 if (!_.isUndefined(options.properties.route)) {
