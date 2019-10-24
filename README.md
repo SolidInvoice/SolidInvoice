@@ -13,7 +13,7 @@ Requirements
 
 SolidInvoice requires minimum PHP 7.1.0.
 
-*Note:* The latest version of PHP is always recommended
+*Note:* The latest version of PHP is always recommended.
 
 ## Installation
 
