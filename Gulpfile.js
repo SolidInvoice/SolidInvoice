@@ -23,10 +23,6 @@ const gulp = require('gulp'),
     };
 
 // Clean Tasks
-function cleanFonts() {
-    return del(['web/fonts/**', '!web/fonts', '!web/fonts/.gitkeep']);
-}
-
 function cleanImages() {
     return del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
 }
@@ -39,17 +35,7 @@ function cleanAssets() {
     return del('./web/assets');
 }
 
-exports.clean = gulp.parallel(cleanJs, cleanFonts, cleanImages, cleanAssets);
-
-// Fonts Tasks
-function fonts() {
-    return gulp.src(['web/bundles/**/fonts/*', 'node_modules/font-awesome/fonts/*'])
-        .pipe(filter('**/*.{eot,svg,ttf,woff,woff2}'))
-        .pipe(flatten())
-        .pipe(gulp.dest('web/fonts/'));
-}
-
-exports.fonts = gulp.series(cleanFonts, fonts);
+exports.clean = gulp.parallel(cleanJs, cleanImages, cleanAssets);
 
 // Images
 function images() {
@@ -147,9 +133,9 @@ function watch(done) {
 
 exports.watch = gulp.series(templates, exports.js, watch);
 
-exports.build = gulp.series(exports.fonts, exports.images, templates, exports.js);
+exports.build = gulp.series(exports.images, templates, exports.js);
 
-exports.default = gulp.series(exports.clean, fonts, images, templates, jsVendor, jsApp);
+exports.default = gulp.series(exports.clean, images, templates, jsVendor, jsApp);
 
 exports.assets = () => {
     return gulp.src(['web/js/!*.js', 'web/js/translations/!**'], {base: 'web'})
