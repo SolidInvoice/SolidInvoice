@@ -118,3 +118,6 @@ api_platform:
         json:     ['application/json']
         xml:      ['application/xml', 'text/xml']
         html:     ['text/html']
+
+webpack_encore:
+    output_path: '%kernel.project_dir%/web/static'

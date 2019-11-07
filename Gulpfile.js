@@ -2,8 +2,6 @@ const gulp = require('gulp'),
     filter = require('gulp-filter'),
     flatten = require('gulp-flatten'),
     concat = require('gulp-concat'),
-    less = require('gulp-less'),
-    cssmin = require('gulp-cssmin'),
     wrap = require('gulp-wrap'),
     declare = require('gulp-declare'),
     handlebars = require('gulp-handlebars'),
@@ -16,12 +14,8 @@ const gulp = require('gulp'),
     rev = require('gulp-rev'),
     packageJson = require('./package.json'),
     del = require('del'),
-    glob = require("glob"),
     vinylPaths = require('vinyl-paths'),
-    lessNpmImportPlugin = require("less-plugin-npm-import"),
     options = {
-        less: 'web/bundles/solidinvoice*/less',
-        css: 'web/bundles/solidinvoice*/css',
         images: 'web/bundles/solidinvoice*/img/*',
         js: 'web/bundles/**/{lib,js}/**/*.js',
         templates: 'web/bundles/**/templates/**/*.hbs',
@@ -37,10 +31,6 @@ function cleanImages() {
     return del(['web/img/**', '!web/img', '!web/img/.gitkeep']);
 }
 
-function cleanCss() {
-    return del(['web/css/**', '!web/css', '!web/css/.gitkeep']);
-}
-
 function cleanJs() {
     return del(['web/js/**', '!web/js', '!web/js/.gitkeep']);
 }
@@ -49,7 +39,7 @@ function cleanAssets() {
     return del('./web/assets');
 }
 
-exports.clean = gulp.parallel(cleanCss, cleanJs, cleanFonts, cleanImages, cleanAssets);
+exports.clean = gulp.parallel(cleanJs, cleanFonts, cleanImages, cleanAssets);
 
 // Fonts Tasks
 function fonts() {
@@ -71,82 +61,6 @@ function images() {
 }
 
 exports.images = gulp.series(cleanImages, images);
-
-// CSS
-function cssApp() {
-    const lessOptions = {
-            'paths': glob.sync(options.less),
-            'plugins': [new lessNpmImportPlugin({prefix: '~'})]
-        },
-
-        files = [
-            options.less + '/*.less',
-            options.css + '/*.css',
-            '!' + options.less + '/email.less',
-            '!' + options.less + '/pdf.less'
-        ];
-
-    return gulp.src(files)
-        .pipe(filter('**/*.{css,less}'))
-        //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function(error) {
-            console.log(error.toString());
-            this.emit('end');
-        })))
-        .pipe(gIf(!options.prod, sourcemap.init()))
-        .pipe(less(lessOptions))
-        .pipe(concat('app.css'))
-        .pipe(gIf(!options.prod, sourcemap.write()))
-        .pipe(gIf(options.prod, cssmin()))
-        .pipe(gulp.dest('web/css/'))
-        ;
-}
-
-function cssEmail() {
-    const lessOptions = {
-            'paths': glob.sync(options.less),
-            'plugins': [new lessNpmImportPlugin({prefix: '~'})]
-        },
-
-        files = [options.less + '/email.less'];
-
-    return gulp.src(files)
-        .pipe(filter('**/*.{css,less}'))
-        //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function(error) {
-            console.log(error.toString());
-            this.emit('end');
-        })))
-        .pipe(less(lessOptions))
-        .pipe(cssmin())
-        .pipe(concat('email.css'))
-        .pipe(gulp.dest('web/css/'))
-        ;
-}
-
-function cssPdf() {
-    const lessOptions = {
-            'paths': glob.sync(options.less),
-            'plugins': [new lessNpmImportPlugin({prefix: '~'})]
-        },
-
-        files = [options.less + '/pdf.less'];
-
-    return gulp.src(files)
-        .pipe(filter('**/*.{css,less}'))
-        //.pipe(flatten())
-        .pipe(gIf(!options.prod, plumber(function(error) {
-            console.log(error.toString());
-            this.emit('end');
-        })))
-        .pipe(less(lessOptions))
-        .pipe(cssmin())
-        .pipe(concat('pdf.css'))
-        .pipe(gulp.dest('web/css/'))
-        ;
-}
-
-exports.css = gulp.series(cleanCss, gulp.parallel(cssApp, cssEmail, cssPdf));
 
 // Templates
 function templates() {
@@ -226,20 +140,19 @@ function jsApp() {
 exports.js = gulp.series(cleanAssets, jsVendor, jsApp);
 
 function watch(done) {
-    gulp.watch([options.less + '/*', options.css + '/*'], gulp.series(cleanCss, gulp.parallel(cssApp, cssEmail, cssPdf)));
     gulp.watch(options.templates, templates);
     gulp.watch(options.js, exports.js);
     done();
 }
 
-exports.watch = gulp.series(exports.css, templates, exports.js, watch);
+exports.watch = gulp.series(templates, exports.js, watch);
 
-exports.build = gulp.series(exports.css, exports.fonts, exports.images, templates, exports.js);
+exports.build = gulp.series(exports.fonts, exports.images, templates, exports.js);
 
-exports.default = gulp.series(exports.clean, gulp.parallel(cssApp, cssEmail, cssPdf), fonts, images, templates, jsVendor, jsApp);
+exports.default = gulp.series(exports.clean, fonts, images, templates, jsVendor, jsApp);
 
 exports.assets = () => {
-    return gulp.src(['web/css/!*.css', 'web/js/!*.js', 'web/js/translations/!**'], {base: 'web'})
+    return gulp.src(['web/js/!*.js', 'web/js/translations/!**'], {base: 'web'})
         .pipe(vinylPaths(del))
         .pipe(rev())
         .pipe(gulp.dest('web'))

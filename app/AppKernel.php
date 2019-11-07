@@ -27,6 +27,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Symfony\WebpackEncoreBundle\WebpackEncoreBundle(),
 
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
