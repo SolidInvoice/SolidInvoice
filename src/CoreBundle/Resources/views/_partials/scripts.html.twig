@@ -1,3 +1,32 @@
+{#{% if module is defined %}
+    , module: '{{ module }}'
+{% endif %}#}
+
+{% set config = {
+    locale: app.request.locale|split('_')[0],
+    accounting: {
+        currency: {
+            symbol : currencyFormatter().currencySymbol(currency is defined  ? currency : null),
+            format: currencyFormatter().pattern,
+            decimal : currencyFormatter().decimalSeparator,
+            thousand: currencyFormatter().thousandSeparator,
+            precision : 2
+        },
+        number: {
+            precision : 0,
+            thousand: currencyFormatter().thousandSeparator,
+            decimal : currencyFormatter().decimalSeparator
+        }
+    }
+} %}
+
+{% set config = config|merge({moduleData: moduleData ?? {}}) %}
+
+<script type="application/json" data-type="module-data">
+    {{ config|json_encode|raw }}
+</script>
+
+{#
 {% spaceless %}
     {% set config_extend %}
     require({
@@ -36,3 +65,5 @@
     {% include "@OroRequireJS/scripts.html.twig" with {"config_extend": config_extend, "compressed": (not app.debug)} only %}
 
 {% endspaceless %}
+
+#}

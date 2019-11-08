@@ -1,8 +1,6 @@
-define(['lodash', 'fos_router', 'fos_routing_data'], function(_, Router, data) {
+import Routing from 'jos_js/router.min';
+import RoutingData from '~/js_routes.json';
 
-    if (!_.isUndefined(data)) {
-        Router.setRoutingData(data);
-    }
+Routing.setRoutingData(RoutingData);
 
-    return Router;
-});
+export default Routing;
