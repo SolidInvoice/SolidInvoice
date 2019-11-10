@@ -1,14 +1,14 @@
-import Mn from 'backbone.marionette';
+import { Application, MnObject } from 'backbone.marionette';
 
-export default Mn.MnObject.extend({
+export default MnObject.extend({
     constructor: function(options, App) {
-        if (!( App instanceof Mn.Application )) {
+        if (!( App instanceof Application )) {
             throw 'Module constructor needs an instance of Marionette.Application as the second argument';
         }
 
         this.setApp(App);
 
-        Mn.MnObject.call(this, options);
+        MnObject.call(this, options);
     },
     regions: {},
 

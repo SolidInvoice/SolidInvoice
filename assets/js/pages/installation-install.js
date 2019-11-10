@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import Router from 'router';
+import Translator  from 'translator';
 
 const iconBusy = '<i class="fa fa-circle-o-notch fa-spin"></i>',
       iconSuccess = '<i class="fa fa-check text-success"></i>',
@@ -39,7 +40,7 @@ function ajaxStep (action, callback) {
 ajaxStep('createdb', function() {
     ajaxStep('migrations', function() {
         $('.progress').remove();
-        $('#install-title').text('installation.process.title.done');
+        $('#install-title').text(Translator.trans('installation.process.title.done'));
         $('#continue_step').removeClass('disabled');
     });
 });

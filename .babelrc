@@ -3,6 +3,9 @@
   "ignore": [
     "csbillcore/js/lib/**/*.js",
     "csbillcore/js/app.js",
-    "**/router.js",
+    "**/router.js"
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import"
   ]
 }

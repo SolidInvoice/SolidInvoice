@@ -2,7 +2,13 @@
     , module: '{{ module }}'
 {% endif %}#}
 
+{% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
+
 {% set config = {
+    module: {
+        name: module ?? 'SolidInvoiceCore/js/module',
+        data: (moduleData is defined ? moduleData|serialize('json', serializationGroups)|raw : {})
+    },
     locale: app.request.locale|split('_')[0],
     accounting: {
         currency: {
@@ -19,8 +25,6 @@
         }
     }
 } %}
-
-{% set config = config|merge({moduleData: moduleData ?? {}}) %}
 
 <script type="application/json" data-type="module-data">
     {{ config|json_encode|raw }}
