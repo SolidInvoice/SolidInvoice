@@ -4,10 +4,11 @@
 
 {% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
 
+{# data: (moduleData is defined ? moduleData|serialize('json', serializationGroups) : {}) #}
+
 {% set config = {
     module: {
-        name: module ?? 'SolidInvoiceCore/js/module',
-        data: (moduleData is defined ? moduleData|serialize('json', serializationGroups)|raw : {})
+        data: moduleData ?? {}
     },
     locale: app.request.locale|split('_')[0],
     accounting: {

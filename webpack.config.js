@@ -1,14 +1,13 @@
 const Encore = require('@symfony/webpack-encore'),
     path = require('path'),
-    { exec } = require('child_process');
+    { execSync } = require('child_process'),
+    fs = require('fs');
 
 Encore
     .setOutputPath('web/static/')
     .setPublicPath('/static')
 
     .addEntry('core', './assets/js/core.js')
-    .addEntry('installation-config', './assets/js/pages/installation-config.js')
-    .addEntry('installation-install', './assets/js/pages/installation-install.js')
 
     .addStyleEntry('app', './assets/less/app.less')
     .addStyleEntry('email', './assets/less/email.less')
@@ -31,32 +30,39 @@ Encore
         'router': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/routing'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
     })
-
-    .addPlugin(
-        {
-            apply: (compiler) => {
-                compiler.hooks.beforeRun.tap('SetAssets', (compilation) => {
-                    const output = (err, stdout, stderr) => {
-                        if (stdout) {
-                            process.stdout.write(stdout);
-                        }
-
-                        if (stderr) {
-                            process.stderr.write(stderr);
-                        }
-
-                        if (err) {
-                            process.stderr.write(err);
-                        }
-                    };
-
-                    exec(path.resolve(__dirname, 'bin/console assets:install web'), output);
-                    exec(path.resolve(__dirname, 'bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json'), output);
-                    exec(path.resolve(__dirname, 'bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json'), output);
-                });
-            }
-        }
-    )
 ;
+
+const pagesDir = path.resolve(__dirname, 'assets/js/pages');
+
+try {
+    const files = fs.readdirSync(pagesDir);
+
+    files.forEach(function(file, index) {
+        if ('.js' === path.extname(file)) {
+            Encore.addEntry(file.substr(0, file.length - 3), path.join(pagesDir, file));
+        }
+    });
+} catch (err) {
+    console.error("Could not list the directory.", err);
+    process.exit(1);
+}
+
+const output = (err, stdout, stderr) => {
+    if (stdout) {
+        process.stdout.write(stdout);
+    }
+
+    if (stderr) {
+        process.stderr.write(stderr);
+    }
+
+    if (err) {
+        process.stderr.write(err);
+    }
+};
+
+execSync(path.resolve(__dirname, 'bin/console assets:install web'), output);
+execSync(path.resolve(__dirname, 'bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json'), output);
+execSync(path.resolve(__dirname, 'bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json'), output);
 
 module.exports = Encore.getWebpackConfig();
