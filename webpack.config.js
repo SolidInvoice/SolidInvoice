@@ -24,8 +24,10 @@ Encore
 
     .addAliases({
         '~': path.resolve(__dirname, 'assets/js'),
+        'SolidInvoiceClient': path.resolve(__dirname, 'src/ClientBundle/Resources/public'),
         'SolidInvoiceCore': path.resolve(__dirname, 'src/CoreBundle/Resources/public'),
         'SolidInvoiceDataGrid': path.resolve(__dirname, 'src/DataGridBundle/Resources/public'),
+        'SolidInvoiceTax': path.resolve(__dirname, 'src/TaxBundle/Resources/public'),
         'jos_js': path.resolve(__dirname, 'web/bundles/fosjsrouting/js'),
         'router': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/routing'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),

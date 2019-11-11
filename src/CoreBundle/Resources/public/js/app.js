@@ -17,6 +17,7 @@ import 'bootstrap';
 import 'select2';
 import 'jquery-placeholder';
 import 'regenerator-runtime/runtime';
+import VatNumberValidator from 'SolidInvoiceTax/js/vat_validator';
 
 const Application = MnApplication.extend({
     module: null,
@@ -50,6 +51,17 @@ const Application = MnApplication.extend({
         if (placeholder.length) {
             placeholder.placeholder();
         }
+
+        /**
+         * VAT Validator
+         */
+        const vatInput = $('.vat-validator');
+        if (vatInput.length) {
+            vatInput.each((i, el) => {
+                VatNumberValidator(el);
+            });
+        }
+
     },
     showChildView: function(region, content) {
         const view = new ( Mn.View.extend({

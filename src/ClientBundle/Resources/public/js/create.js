@@ -7,25 +7,22 @@
  * with this source code in the file LICENSE.
  */
 
-define(
-    ['core/module', 'util/form/collection', './contacts_collection'],
-    function(Module, FormCollection, ContactCollection) {
-        'use strict';
+import Module from 'SolidInvoiceCore/js/module';
+import FormCollection from 'SolidInvoiceCore/js/util/form/collection';
+import ContactCollection from './contacts_collection';
 
-        return Module.extend({
-            formCollection: null,
-            contactCollection: null,
-            initialize: function() {
-                this.formCollection = new FormCollection({
-                    el: '#client-address-collection',
-                    addSelector: '.add_form_collection_link'
-                });
+export default Module.extend({
+    formCollection: null,
+    contactCollection: null,
+    initialize: function() {
+        this.formCollection = new FormCollection({
+            el: '#client-address-collection',
+            addSelector: '.add_form_collection_link'
+        });
 
-                this.contactCollection = new ContactCollection({
-                    el: '#client-contacts-collection',
-                    addSelector: '.add_form_collection_link'
-                });
-            }
+        this.contactCollection = new ContactCollection({
+            el: '#client-contacts-collection',
+            addSelector: '.add_form_collection_link'
         });
     }
-);
+});

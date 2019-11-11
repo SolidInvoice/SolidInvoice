@@ -1,13 +1,10 @@
-{#{% if module is defined %}
-    , module: '{{ module }}'
-{% endif %}#}
-
 {% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
 
 {# data: (moduleData is defined ? moduleData|serialize('json', serializationGroups) : {}) #}
 
 {% set config = {
     module: {
+        name: module ?? 'core',
         data: moduleData ?? {}
     },
     locale: app.request.locale|split('_')[0],
@@ -30,45 +27,3 @@
 <script type="application/json" data-type="module-data">
     {{ config|json_encode|raw }}
 </script>
-
-{#
-{% spaceless %}
-    {% set config_extend %}
-    require({
-        {% if not app.debug %}
-            shim: {
-                translation_data: {
-                    "deps": [
-                        '{{ asset('js/translations/en.js') }}'{% if locale != 'en' %},
-                        '{{ asset('js/translations/' ~ locale ~ '.js') }}'{% endif %}
-                    ]
-                }
-            },
-        {% endif %}
-            paths: {
-                {% if app.debug %}
-                    {% if locale != 'en' %}
-                        {% set locale = 'en,' ~ locale %}
-                    {% endif %}
-                    'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
-                    'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
-                {% else %}
-                    'translation_data': '{{ asset('js/translations/config.js') }}'
-                {% endif %}
-            }
-
-        {% if module is defined %}
-            , module: '{{ module }}'
-        {% if moduleData is defined %}
-            {% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
-            , moduleData: function() { return {{ moduleData|serialize('json', serializationGroups)|raw }} }
-        {% endif %}
-        {% endif %}
-    });
-    {% endset %}
-
-    {% include "@OroRequireJS/scripts.html.twig" with {"config_extend": config_extend, "compressed": (not app.debug)} only %}
-
-{% endspaceless %}
-
-#}

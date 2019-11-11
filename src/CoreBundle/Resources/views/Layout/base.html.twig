@@ -49,7 +49,12 @@
             {{ block('footer') is defined ? block('footer') }}
         </footer>
 
-        {{ encore_entry_script_tags('core') }}
+        {% if module is defined %}
+            {{ encore_entry_script_tags(module) }}
+        {% else %}
+            {{ encore_entry_script_tags('core') }}
+        {% endif %}
+
         {{ block('scripts') is defined ? block('scripts') }}
 
         {{ block('body_bottom') is defined ? block('body_bottom') }}
