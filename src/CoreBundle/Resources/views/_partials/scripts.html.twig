@@ -1,29 +1,27 @@
 {% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
 
-{# data: (moduleData is defined ? moduleData|serialize('json', serializationGroups) : {}) #}
-
-{% set config = {
-    module: {
-        name: module ?? 'core',
-        data: moduleData ?? {}
-    },
-    locale: app.request.locale|split('_')[0],
-    accounting: {
-        currency: {
-            symbol : currencyFormatter().currencySymbol(currency is defined  ? currency : null),
-            format: currencyFormatter().pattern,
-            decimal : currencyFormatter().decimalSeparator,
-            thousand: currencyFormatter().thousandSeparator,
-            precision : 2
+<script type="application/json" data-type="module-data">
+    {
+        "module" : {
+            "name": "{{ module ?? 'core' }}",
+            "data": {{ (moduleData is defined ? moduleData|serialize('json',serializationGroups) : "{}")|raw }}
         },
-        number: {
-            precision : 0,
-            thousand: currencyFormatter().thousandSeparator,
-            decimal : currencyFormatter().decimalSeparator
+        "locale": "{{ app.request.locale|split('_')[0] }}",
+        "accounting": {
+            "currency": {
+                "symbol": "{{ currencyFormatter().currencySymbol(currency is defined  ? currency : null) }}",
+                "format": "{{ currencyFormatter().pattern }}",
+                "decimal": "{{ currencyFormatter().decimalSeparator }}",
+                "thousand": "{{ currencyFormatter().thousandSeparator }}",
+                "precision": 2
+            },
+            "number": {
+                "precision": 0,
+                "thousand": "{{ currencyFormatter().thousandSeparator }}",
+                "decimal": "{{ currencyFormatter().decimalSeparator }}"
+            }
         }
     }
-} %}
-
-<script type="application/json" data-type="module-data">
-    {{ config|json_encode|raw }}
 </script>
+
+{% include '@SolidInvoiceCore/_partials/status_labels.html.twig' %}

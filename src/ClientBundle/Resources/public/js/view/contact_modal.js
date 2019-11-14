@@ -1,61 +1,64 @@
-define(
-    ['jquery', 'core/ajaxmodal', 'accounting', 'lodash', 'translator', 'parsley'],
-    function($, AjaxModal, Accounting, _, __, Parsley) {
-        "use strict";
+import $ from 'jquery';
+import AjaxModal from 'SolidInvoiceCore/js/ajaxmodal';
+import { has } from 'lodash';
+import Translator from 'translator';
+import ContactsCollection from '../contacts_collection'
 
-        return AjaxModal.extend({
-            'modal': {
-                'title': __('client.modal.edit_contact'),
-                'buttons': {
-                    'close': {
-                        'class': 'warning',
-                        'close': true,
-                        'flat': true
-                    },
-                    'save': {
-                        'class': 'success',
-                        'save': true,
-                        'flat': true
-                    }
-                },
-                'events': {
-                    'modal:save': 'saveContact'
-                }
+export default AjaxModal.extend({
+    'modal': {
+        'title': Translator.trans('client.modal.edit_contact'),
+        'buttons': {
+            'Close': {
+                'class': 'warning',
+                'close': true,
+                'flat': true
             },
-            constructor: function(options) {
-                if (_.has(options, 'title')) {
-                    this.modal.title = options.title;
+            'Save': {
+                'class': 'success',
+                'save': true,
+                'flat': true
+            }
+        },
+        'events': {
+            'modal:save': 'saveContact',
+            'render': 'initFormCollection',
+        }
+    },
+    constructor(options) {
+        if (has(options, 'title')) {
+            this.modal.title = options.title;
+        }
+
+        AjaxModal.call(this, options);
+    },
+    initFormCollection() {
+        new ContactsCollection({
+            'el' : '#client-contact'
+        });
+    },
+    saveContact() {
+        this.showLoader();
+
+        $.ajax({
+            "url": this.getOption('route'),
+            "data": this.$('form').serialize(),
+            "type": "post",
+            success(response) {
+                this.trigger('ajax:response', response);
+
+                if (has(this, 'model')) {
+                    this.model.set(response);
+                    this.model.trigger('sync');
                 }
 
-                AjaxModal.call(this, options);
+                this.$el.modal('hide');
             },
-            onBeforeModalSave: Parsley.validate,
-            saveContact: function() {
-                this.showLoader();
-
-                var view = this;
-
-                $.ajax({
-                    "url": this.getOption('route'),
-                    "data": this.$('form').serialize(),
-                    "type": "post",
-                    "success": function(response) {
-                        view.trigger('ajax:response', response);
-
-                        if (_.has(view, 'model')) {
-                            view.model.set(response);
-                            view.model.trigger('sync');
-                        }
-
-                        view.$el.modal('hide');
-                    },
-                    "error": function(response) {
-                        // @TODO: If there are any validation errors, then we should re-render the modal with the content
-                        view.options.template = response;
-                        view.hideLoader();
-                        view.render();
-                    }
-                });
+            error(response) {
+                // @TODO: If there are any validation errors, then we should re-render the modal with the content
+                this.options.template = response;
+                this.hideLoader();
+                this.render();
             }
         });
-    });
+    }
+});

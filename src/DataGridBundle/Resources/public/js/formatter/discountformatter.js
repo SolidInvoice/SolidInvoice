@@ -7,38 +7,44 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash', 'accounting'], function(Backgrid, _, Accounting) {
-    let DiscountFormatter = Backgrid.DiscountFormatter = function() {
-    };
-    DiscountFormatter.prototype = new Backgrid.CellFormatter();
-    _.extend(DiscountFormatter.prototype, {
-        fromRaw: function(rawData, model) {
-            if (!_.isUndefined(model.get('discount.type'))) {
-                let discountType = model.get('discount.type');
+import { extend, isUndefined } from 'lodash';
+import Accounting from 'accounting';
+import Backgrid from 'backgrid';
 
-                if (null === discountType) {
-                    return '';
-                }
+const DiscountFormatter = Backgrid.DiscountFormatter = () => {
+};
 
-                if ('money' === discountType.toLowerCase()) {
-                    let discountAmount = parseInt(model.get('discount.valueMoney.value'), 10);
+DiscountFormatter.prototype = new Backgrid.CellFormatter();
 
-                    if (discountAmount > 0) {
-                        return Accounting.formatMoney(discountAmount / 100, model.get('client').currency);
-                    }
+extend(DiscountFormatter.prototype, {
+    fromRaw (rawData, model) {
+        if (!isUndefined(model.get('discount.type'))) {
+            let discountType = model.get('discount.type');
 
-                    return '';
-                }
-
-                let discountPercentage = model.get('discount.valuePercentage');
-
-                if (parseInt(discountPercentage, 10) > 0) {
-                    return discountPercentage + '%';
-                }
+            if (null === discountType) {
+                return '';
             }
-        },
-        toRaw: function(formattedData, model) {
-            return formattedData;
+
+            if ('money' === discountType.toLowerCase()) {
+                let discountAmount = parseInt(model.get('discount.valueMoney.value'), 10);
+
+                if (discountAmount > 0) {
+                    return Accounting.formatMoney(discountAmount / 100, model.get('client').currency);
+                }
+
+                return '';
+            }
+
+            let discountPercentage = model.get('discount.valuePercentage');
+
+            if (parseInt(discountPercentage, 10) > 0) {
+                return discountPercentage + '%';
+            }
         }
-    });
+    },
+    toRaw (formattedData, model) {
+        return formattedData;
+    }
 });
+
+export default DiscountFormatter;

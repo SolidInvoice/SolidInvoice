@@ -7,27 +7,31 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash', 'template'], function(Backgrid, _, Template) {
-    Backgrid.Extension.ClientCell = Backgrid.Cell.extend({
-        template: Template.datagrid.client_link,
-        _setRouteParams: function(action) {
-            action.routeParams = {};
+import Backgrid from 'backgrid';
+import { each, isUndefined } from 'lodash';
+import Template from '../../templates/client_link.hbs';
 
-            _.each(action.route_params, _.bind(function(value, key) {
-                action.routeParams[key] = this.model.get(value);
-            }, this));
-        },
-        render: function() {
-            this.$el.empty();
+Backgrid.Extension.ClientCell = Backgrid.Cell.extend({
+    template: Template,
+    _setRouteParams (action) {
+        action.routeParams = {};
 
-            var client = this.model.get('client');
+        each(action.route_params, (value, key) => {
+            action.routeParams[key] = this.model.get(value);
+        });
+    },
+    render () {
+        this.$el.empty();
 
-            if (!_.isUndefined(client)) {
-                this.$el.append(this.template({'client': client}));
-            }
+        const client = this.model.get('client');
 
-            this.delegateEvents();
-            return this;
+        if (!isUndefined(client)) {
+            this.$el.append(this.template({ 'client': client }));
         }
-    });
+
+        this.delegateEvents();
+        return this;
+    }
 });
+
+export default Backgrid.Extension.ClientCell;

@@ -6,31 +6,32 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+/*
 
 $(function() {
 
-    /**
+    /!**
      * Tooltip
-     */
+     *!/
     $('body').tooltip({
         "selector" : '[rel=tooltip]'
     });
 
-    /**
+    /!**
      * Select2
-     */
+     *!/
     $('select.select2').select2({
         allowClear: true
     });
 
-    /**
+    /!**
      * PlaceHolder
-     */
+     *!/
     $('input[placeholder]').placeholder();
 
-    /**
+    /!**
      * Form Collection
-     */
+     *!/
     $(document.body).on('click', '.btn-add', function(event) {
 
         event.preventDefault();
@@ -71,9 +72,9 @@ $(function() {
         return false;
     });
 
-    /**
+    /!**
      * Datepicker
-     */
+     *!/
 
     $(':input.datepicker').each(function () {
         var el = $(this),
@@ -107,3 +108,4 @@ function percentage(amount, percentage)
 
     return (amount * percentage) / 100;
 }
+*/

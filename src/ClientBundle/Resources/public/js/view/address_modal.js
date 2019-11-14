@@ -7,60 +7,56 @@
  * with this source code in the file LICENSE.
  */
 
-define(
-    ['jquery', 'core/ajaxmodal', 'accounting', 'lodash', 'translator', 'parsley'],
-    function($, AjaxModal, Accounting, _, __, Parsley) {
-        "use strict";
+import $ from 'jquery';
+import AjaxModal from 'SolidInvoiceCore/js/ajaxmodal';
+import { has } from 'lodash';
+import Translator from 'translator';
 
-        return AjaxModal.extend({
-            'modal': {
-                'title': __('client.modal.edit_address'),
-                'buttons': {
-                    'close': {
-                        'class': 'warning',
-                        'close': true,
-                        'flat': true
-                    },
-                    'save': {
-                        'class': 'success',
-                        'save': true,
-                        'flat': true
-                    }
-                },
-                'events': {
-                    'modal:save': 'saveAddress'
+export default AjaxModal.extend({
+    'modal': {
+        'title': Translator.trans('client.modal.edit_address'),
+        'buttons': {
+            'close': {
+                'class': 'warning',
+                'close': true,
+                'flat': true
+            },
+            'save': {
+                'class': 'success',
+                'save': true,
+                'flat': true
+            }
+        },
+        'events': {
+            'modal:save': 'saveAddress'
+        }
+    },
+    saveAddress () {
+
+        this.showLoader();
+
+        $.ajax({
+            "url": this.getOption('route'),
+            "data": this.$('form').serialize(),
+            "type": "post",
+            success (response) {
+                this.trigger('ajax:response', response);
+
+                if (has(this, 'model')) {
+                    this.model.fetch({
+                        "success": function() {
+                            this.$el.modal('hide');
+                        }
+                    });
+                } else {
+                    this.$el.modal('hide');
                 }
             },
-            onBeforeModalSave: Parsley.validate,
-            'saveAddress': function() {
-
-                this.showLoader();
-
-                var view = this;
-
-                $.ajax({
-                    "url": this.getOption('route'),
-                    "data": this.$('form').serialize(),
-                    "type": "post",
-                    "success": function(response) {
-                        view.trigger('ajax:response', response);
-
-                        if (_.has(view, 'model')) {
-                            view.model.fetch({
-                                "success": function() {
-                                    view.$el.modal('hide');
-                                }
-                            });
-                        } else {
-                            view.$el.modal('hide');
-                        }
-                    },
-                    "error": function(response) {
-                        view.options.template = response;
-                        view.hideLoader();
-                        view.render();
-                    }
-                });
+            error (response) {
+                this.options.template = response;
+                this.hideLoader();
+                this.render();
             }
         });
-    });
+    }
+});

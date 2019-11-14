@@ -14,7 +14,7 @@ import ContactCollection from './contacts_collection';
 export default Module.extend({
     formCollection: null,
     contactCollection: null,
-    initialize: function() {
+    initialize() {
         this.formCollection = new FormCollection({
             el: '#client-address-collection',
             addSelector: '.add_form_collection_link'

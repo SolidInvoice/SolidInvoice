@@ -1,11 +1,11 @@
 {{#each enabled}}
-    {{> menuItem enabled=true method=this}}
+    {{> menu_item enabled=true method=this}}
 {{/each}}
 
 {{#if disabled}}
     <li class="divider"></li>
 
     {{#each disabled}}
-        {{> menuItem enabled=false method=this}}
+        {{> menu_item enabled=false method=this}}
     {{/each}}
 {{/if}}

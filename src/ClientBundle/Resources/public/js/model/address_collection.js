@@ -7,10 +7,9 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backbone', 'client/model/address'], function(Backbone, Address) {
-    "use strict";
+import Backbone from 'backbone';
+import Address from './address';
 
-    return Backbone.Collection.extend({
-        model: Address
-    });
+export default Backbone.Collection.extend({
+    model: Address
 });

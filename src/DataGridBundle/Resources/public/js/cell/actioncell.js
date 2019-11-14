@@ -7,26 +7,30 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash', 'template'], function(Backgrid, _, Template) {
-    Backgrid.Extension.ActionCell = Backgrid.Cell.extend({
-        template: Template.datagrid.line_actions,
-        className: 'action-cell',
-        _setRouteParams: function(action) {
-            action.routeParams = {};
+import Backgrid from 'backgrid';
+import { each } from 'lodash';
+import Template from '../../templates/line_actions.hbs';
 
-            _.each(action.route_params, _.bind(function(value, key) {
-                action.routeParams[key] = this.model.get(value);
-            }, this));
-        },
-        render: function() {
-            this.$el.empty();
+Backgrid.Extension.ActionCell = Backgrid.Cell.extend({
+    template: Template,
+    className: 'action-cell',
+    _setRouteParams (action) {
+        action.routeParams = {};
 
-            _.each(this.lineActions, _.bind(this._setRouteParams, this));
+        each(action.route_params, (value, key) => {
+            action.routeParams[key] = this.model.get(value);
+        });
+    },
+    render () {
+        this.$el.empty();
 
-            this.$el.append(this.template({'actions': this.lineActions}));
+        each(this.lineActions, (value) => this._setRouteParams(value));
 
-            this.delegateEvents();
-            return this;
-        }
-    });
+        this.$el.append(this.template({ 'actions': this.lineActions }));
+
+        this.delegateEvents();
+        return this;
+    }
 });
+
+export default Backgrid.Extension.ActionCell;

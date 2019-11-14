@@ -1,51 +1,56 @@
-define(
-    ['core/modal', 'accounting', 'template', 'lodash', 'translator', 'parsley'],
-    function(Modal, Accounting, Template, _, __, Parsley) {
-        "use strict";
+import Modal from 'SolidInvoiceCore/js/modal';
+import Accounting from 'accounting';
+import Template from '../../templates/partials/add_credit.hbs';
+import Handlebars from 'handlebars/runtime';
+import { extend } from 'lodash';
+import Translator from 'translator';
 
-        return Modal.extend({
-            'template': Template.client.add_credit,
-            'modal': {
-                'title': __('client.modal.add_credit'),
-                'buttons': {
-                    'close': {
-                        'close': true,
-                        'class': 'warning',
-                        'flat': true
-                    },
-                    'save': {
-                        'class': 'success',
-                        'save': true
-                    }
-                },
-                'events': {
-                    'modal:save': 'saveCredit'
-                }
+// Work around handlebars-loader not supporting dynamic partials
+Handlebars.registerPartial('add_credit', Template);
+
+export default Modal.extend({
+    'template': 'add_credit',
+    'modal': {
+        'title': Translator.trans('client.modal.add_credit'),
+        'buttons': {
+            'Close': {
+                'close': true,
+                'class': 'warning',
+                'flat': true
             },
-            ui: _.extend({
-                'creditAmount': '#credit_amount'
-            }, Modal.prototype.ui),
-            onBeforeModalSave: Parsley.validate,
-            'saveCredit': function() {
+            'Save': {
+                'class': 'success',
+                'save': true
+            }
+        },
+        'events': {
+            'modal:save': 'saveCredit'
+        }
+    },
+    ui: extend({
+        'creditAmount': '#credit_amount',
+        'creditForm': '#credit-form',
+    }, Modal.prototype.ui),
+    constructor (options) {
+        Modal.call(this, options);
+        this.model.on('invalid', (object, validationError) => {
+            this.templateContext.error = validationError;
+            this.hideLoader();
+            this.render();
+        });
+    },
+    saveCredit() {
+        this.showLoader();
 
-                this.ui.creditAmount.parsley().removeError("creditError");
+        this.model.set('credit', Accounting.toFixed(this.ui.creditAmount.val(), 2));
 
-                this.showLoader();
-
-                var view = this;
-
-                this.model.on('invalid', _.bind(this.hideLoader, this));
-
-                this.model.set('credit', Accounting.toFixed(this.ui.creditAmount.val(), 2));
-
-                this.model.save({}, {
-                    'success': function() {
-                        view.$el.modal('hide');
-                    },
-                    'error': function() {
-                        view.hideLoader();
-                    }
-                });
+        this.model.save({}, {
+            success: () => {
+                this.$el.modal('hide');
+            },
+            error: () => {
+                this.hideLoader();
             }
         });
-    });
+    }
+});

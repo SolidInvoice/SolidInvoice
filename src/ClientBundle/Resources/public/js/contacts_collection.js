@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 import $ from 'jquery';
-import _ from 'lodash';
+import { bind } from 'lodash';
 import FormCollection from 'SolidInvoiceCore/js/util/form/collection';
 
 export default FormCollection.extend({
@@ -15,17 +15,17 @@ export default FormCollection.extend({
         'collection:add': 'onCollectionAdd',
         'initialize': 'onInitialize'
     },
-    onCollectionAdd: function(event, form) {
+    onCollectionAdd(event, form) {
         const clientContacts = $('.client_contacts', form);
 
-        clientContacts.on('click', '.btn-add', _.bind(this.addFormGroup, this));
-        clientContacts.on('click', '.btn-delete', _.bind(this.removeFormGroup, this));
-        clientContacts.on('click', '.dropdown-menu a', _.bind(this.selectFormGroup, this));
+        clientContacts.on('click', '.btn-add', bind(this.addFormGroup, this));
+        clientContacts.on('click', '.btn-delete', bind(this.removeFormGroup, this));
+        clientContacts.on('click', '.dropdown-menu a', bind(this.selectFormGroup, this));
     },
-    onInitialize: function(event) {
+    onInitialize(event) {
         this.onCollectionAdd(event, this.$('.prototype-widget'));
     },
-    addFormGroup: function(event) {
+    addFormGroup(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -50,11 +50,11 @@ export default FormCollection.extend({
 
         $formGroupContainer.append($formGroup);
     },
-    removeFormGroup: function(event) {
+    removeFormGroup(event) {
         event.preventDefault();
         $(event.target).closest('.form-group').remove();
     },
-    selectFormGroup: function(event) {
+    selectFormGroup(event) {
         event.preventDefault();
 
         const $this = $(event.target),

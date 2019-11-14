@@ -7,22 +7,27 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash', 'accounting'], function(Backgrid, _, Accounting) {
-    var MoneyFormatter = Backgrid.MoneyFormatter = function() {
-    };
-    MoneyFormatter.prototype = new Backgrid.CellFormatter();
-    _.extend(MoneyFormatter.prototype, {
-        fromRaw: function(rawData, model) {
-            if (!_.isUndefined(rawData)) {
-                if (_.isObject(rawData)) {
-                    return Accounting.formatMoney(parseInt(rawData.value, 10) / 100, rawData.currency);
-                }
+import Backgrid from 'backgrid';
+import { extend, isObject, isUndefined } from 'lodash';
+import Accounting from 'accounting';
 
-                return Accounting.formatMoney(parseInt(rawData, 10) / 100);
+const MoneyFormatter = Backgrid.MoneyFormatter = () => {
+};
+
+MoneyFormatter.prototype = new Backgrid.CellFormatter();
+extend(MoneyFormatter.prototype, {
+    fromRaw (rawData, model) {
+        if (!isUndefined(rawData)) {
+            if (isObject(rawData)) {
+                return Accounting.formatMoney(parseInt(rawData.value, 10) / 100, rawData.currency);
             }
-        },
-        toRaw: function(formattedData, model) {
-            return Accounting.unformat(formattedData);
+
+            return Accounting.formatMoney(parseInt(rawData, 10) / 100);
         }
-    });
+    },
+    toRaw (formattedData, model) {
+        return Accounting.unformat(formattedData);
+    }
 });
+
+export default MoneyFormatter;

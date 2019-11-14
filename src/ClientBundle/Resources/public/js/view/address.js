@@ -1,59 +1,48 @@
-define(
-    ['core/view', './address_modal', 'template', 'core/alert', 'translator'],
-    function(ItemView, AddressModal, Template, Alert, __) {
-        'use strict';
+import ItemView from 'SolidInvoiceCore/js/view';
+import AddressModal from './address_modal';
+import Template from '../../templates/address.hbs';
+import Alert from 'SolidInvoiceCore/js/alert';
 
-        return ItemView.extend({
-            template: Template.client.address,
+export default ItemView.extend({
+    template: Template,
 
-            ui: {
-                'deleteAddress': '.delete-address',
-                'editAddress': '.edit-address'
-            },
+    ui: {
+        'deleteAddress': '.delete-address',
+        'editAddress': '.edit-address'
+    },
 
-            events: {
-                "click @ui.deleteAddress": 'deleteAddress',
-                "click @ui.editAddress": 'editAddress'
-            },
+    events: {
+        "click @ui.deleteAddress": 'deleteAddress',
+        "click @ui.editAddress": 'editAddress'
+    },
 
-            initialize: function() {
-                this.listenTo(this.model, 'sync', this.modelSynced);
-            },
+    deleteAddress(event) {
+        event.preventDefault();
 
-            modelSynced: function() {
-                this.render();
-            },
-
-            deleteAddress: function(event) {
-                event.preventDefault();
-
-                let view = this;
-
-                Alert.confirm(__('client.address.delete_confirm'), function(confirm) {
-                    if (true === confirm) {
-                        return view.model.destroy(
-                            {
-                                wait: true,
-                                error: function(model, xhr) {
-                                    Alert.alert(xhr.responseJSON.message);
-                                }
-                            }
-                        );
+        Alert.confirm(Translator.trans('client.address.delete_confirm'), (confirm) => {
+            if (true === confirm) {
+                return this.model.destroy(
+                    {
+                        wait: true,
+                        error(model, xhr) {
+                            Alert.alert(xhr.responseJSON.message);
+                        }
                     }
-                });
-            },
-
-            editAddress: function(event) {
-                event.preventDefault();
-
-                this.trigger('before:model:edit');
-
-                new AddressModal({
-                    model: this.model,
-                    route: this.$(event.currentTarget).prop('href')
-                });
-
-                this.trigger('model:edit');
+                );
             }
         });
-    });
+    },
+
+    editAddress(event) {
+        event.preventDefault();
+
+        this.trigger('before:model:edit');
+
+        new AddressModal({
+            model: this.model,
+            route: this.$(event.currentTarget).prop('href')
+        });
+
+        this.trigger('model:edit');
+    }
+});

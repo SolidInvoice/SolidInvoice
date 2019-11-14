@@ -1,7 +1,6 @@
-define(['backbone', 'routing'], function (Backbone, Routing) {
-    "use strict";
+import Backbone from 'backbone';
+import Router from 'router';
 
-    return Backbone.Model.extend({
-        "url": Routing.generate('_xhr_payments_method_list')
-    })
+export default Backbone.Model.extend({
+    "url": Router.generate('_xhr_payments_method_list')
 });

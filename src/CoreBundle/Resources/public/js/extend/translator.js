@@ -1,8 +1,7 @@
 import Translator from 'bazinga-translator';
 import Config from '~/config';
+const messages = require('~/translations/' + Config.locale + '.json');
 
-import('~/translations/' + Config.locale + '.json').then(({ default: messages}) => {
-    Translator.fromJSON(messages);
-});
+Translator.fromJSON(messages);
 
 export default Translator;

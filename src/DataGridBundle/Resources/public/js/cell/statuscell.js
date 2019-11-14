@@ -1,20 +1,25 @@
-define(['backgrid', 'lodash', 'status_labels'], function(Backgrid, _, Labels) {
+import $ from 'jquery';
+import Backgrid from 'backgrid';
+import { each, startCase } from 'lodash';
 
-    var statusCell = function(name) {
-        return Backgrid.Cell.extend({
-            render: function() {
-                this.$el.empty();
-                var rawValue = this.model.get(this.column.get('name'));
-                var formattedValue = this.formatter.fromRaw(rawValue, this.model);
-                this.$el.append(Labels[name][formattedValue]);
-                this.delegateEvents();
-                return this;
-            }
-        });
-    };
+const Labels = JSON.parse($('script[data-type="status_labels"]').text());
 
-    _.each(Labels, function(values, name) {
-        var cellName = _.startCase(name) + '_statusCell';
-        Backgrid[cellName] = statusCell(name);
+const statusCell = function(name, labels) {
+    return Backgrid.Cell.extend({
+        render () {
+            this.$el.empty();
+            const rawValue = this.model.get(this.column.get('name'));
+            const formattedValue = this.formatter.fromRaw(rawValue, this.model);
+            this.$el.append(labels[formattedValue]);
+            this.delegateEvents();
+            return this;
+        }
     });
+};
+
+each(Labels, (labels, name) => {
+    const cellName = startCase(name) + '_statusCell';
+    Backgrid[cellName] = statusCell(name, labels);
 });
+
+export default statusCell;

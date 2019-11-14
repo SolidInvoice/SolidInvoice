@@ -27,10 +27,27 @@ Encore
         'SolidInvoiceClient': path.resolve(__dirname, 'src/ClientBundle/Resources/public'),
         'SolidInvoiceCore': path.resolve(__dirname, 'src/CoreBundle/Resources/public'),
         'SolidInvoiceDataGrid': path.resolve(__dirname, 'src/DataGridBundle/Resources/public'),
+        'SolidInvoiceInvoice': path.resolve(__dirname, 'src/InvoiceBundle/Resources/public'),
+        'SolidInvoicePayment': path.resolve(__dirname, 'src/PaymentBundle/Resources/public'),
+        'SolidInvoiceQuote': path.resolve(__dirname, 'src/QuoteBundle/Resources/public'),
         'SolidInvoiceTax': path.resolve(__dirname, 'src/TaxBundle/Resources/public'),
+        'SolidInvoiceUser': path.resolve(__dirname, 'src/UserBundle/Resources/public'),
         'jos_js': path.resolve(__dirname, 'web/bundles/fosjsrouting/js'),
         'router': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/routing'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
+    })
+
+    .addLoader({
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
+        options: {
+            helperDirs: [
+                path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/handlebars/helpers'),
+            ],
+            partialDirs: [
+                path.resolve(__dirname, 'src/ClientBundle/Resources/public/templates/partials'),
+            ]
+        }
     })
 ;
 
@@ -63,8 +80,8 @@ const output = (err, stdout, stderr) => {
     }
 };
 
-execSync(path.resolve(__dirname, 'bin/console assets:install web'), output);
-execSync(path.resolve(__dirname, 'bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json'), output);
-execSync(path.resolve(__dirname, 'bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json'), output);
+//execSync(path.resolve(__dirname, 'bin/console assets:install web'), output);
+//execSync(path.resolve(__dirname, 'bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json'), output);
+//execSync(path.resolve(__dirname, 'bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json'), output);
 
 module.exports = Encore.getWebpackConfig();

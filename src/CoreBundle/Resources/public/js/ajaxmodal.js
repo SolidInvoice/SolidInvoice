@@ -1,49 +1,51 @@
-define(['jquery', 'lodash', 'core/modal', 'bootstrap.modal', 'bootstrap.modalmanager'], function($, _, Modal) {
-    "use strict";
+import $ from 'jquery';
+import { has } from 'lodash';
+import Modal from './modal'
+import Handlebars from 'handlebars/runtime'
 
-    return Modal.extend({
-        /**
-         * @type {Backbone.Model}
-         */
-        model: null,
+export default Modal.extend({
+    /**
+     * @type {Backbone.Model}
+     */
+    model: null,
 
-        template: null,
+    template: null,
 
-        route: null,
+    route: null,
 
-        /**
-         * @param {{model: Backbone.Model}} options
-         */
-        constructor: function(options) {
-            if (_.has(options, 'model')) {
-                this.model = options.model;
-            }
+    /**
+     * @param {{model: Backbone.Model}} options
+     */
+    constructor(options) {
+        if (has(options, 'model')) {
+            this.model = options.model;
+        }
 
-            this.route = options.route;
+        this.route = options.route;
 
-            if (!this.route) {
-                throw 'A "route" must be specified for an Ajax Modal.';
-            }
+        if (!this.route) {
+            throw 'A "route" must be specified for an Ajax Modal.';
+        }
 
-            Modal.call(this, options);
+        Modal.call(this, options);
 
-            this._loadContent();
-        },
+        this._loadContent();
+    },
 
-        _loadContent: function() {
-            var route = this.getOption('route'),
-                view = this,
-                $body = $('body');
+    _loadContent() {
+        const route = this.getOption('route'),
+            $body = $('body');
+
+        $body.modalmanager('loading');
+
+        $.get(route, (data) => {
+            this.options.template = route;
+            Handlebars.registerPartial(route, () => data);
+            this.options.template = route;
 
             $body.modalmanager('loading');
 
-            $.get(route, function(data) {
-                view.options.template = data;
-
-                $body.modalmanager('loading');
-
-                view.render();
-            });
-        }
-    });
+            this.render();
+        });
+    }
 });

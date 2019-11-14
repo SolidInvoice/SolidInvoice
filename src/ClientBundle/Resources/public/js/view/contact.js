@@ -1,65 +1,62 @@
-define(
-    ['core/view', './contact_modal', 'template', 'core/alert', 'translator'],
-    function(ItemView, ContactModal, Template, Alert, __) {
-        'use strict';
+import ItemView from 'SolidInvoiceCore/js/view';
+import ContactModal from './contact_modal';
+import Template from '../../templates/contact.hbs';
+import Alert from 'SolidInvoiceCore/js/alert';
 
-        return ItemView.extend({
-            template: Template.client.contact,
+export default ItemView.extend({
+    template: Template,
 
-            templateContext: function() {
-                return {
-                    'canDelete': this.model.collection.length > 1
-                };
-            },
+    templateContext () {
+        return {
+            'canDelete': this.model.collection.length > 1
+        };
+    },
 
-            ui: {
-                'deleteContact': '.delete-contact',
-                'editContact': '.edit-contact'
-            },
+    ui: {
+        'deleteContact': '.delete-contact',
+        'editContact': '.edit-contact'
+    },
 
-            events: {
-                "click @ui.deleteContact": 'deleteContact',
-                "click @ui.editContact": 'editContact'
-            },
+    events: {
+        "click @ui.deleteContact": 'deleteContact',
+        "click @ui.editContact": 'editContact'
+    },
 
-            initialize: function() {
-                this.listenTo(this.model, 'sync', this.modelSynced);
-            },
+    initialize () {
+        this.listenTo(this.model, 'sync', this.modelSynced);
+    },
 
-            modelSynced: function() {
-                this.render();
-            },
+    modelSynced () {
+        this.render();
+    },
 
-            deleteContact: function(event) {
-                event.preventDefault();
+    deleteContact (event) {
+        event.preventDefault();
 
-                var view = this;
-
-                Alert.confirm(__('client.contact.delete_confirm'), function(confirm) {
-                    if (true === confirm) {
-                        return view.model.destroy(
-                            {
-                                wait: true,
-                                error: function(model, xhr) {
-                                    Alert.alert(xhr.responseJSON);
-                                }
-                            }
-                        );
+        Alert.confirm(Translator.trans('client.contact.delete_confirm'), (confirm) => {
+            if (true === confirm) {
+                return this.model.destroy(
+                    {
+                        wait: true,
+                        error (model, xhr) {
+                            Alert.alert(xhr.responseJSON);
+                        }
                     }
-                });
-            },
-
-            editContact: function(event) {
-                event.preventDefault();
-
-                this.trigger('before:model:edit');
-
-                new ContactModal({
-                    model: this.model,
-                    route: this.$(event.currentTarget).prop('href')
-                });
-
-                this.trigger('model:edit');
+                );
             }
         });
-    });
+    },
+
+    editContact (event) {
+        event.preventDefault();
+
+        this.trigger('before:model:edit');
+
+        new ContactModal({
+            model: this.model,
+            route: this.$(event.currentTarget).prop('href')
+        });
+
+        this.trigger('model:edit');
+    }
+});

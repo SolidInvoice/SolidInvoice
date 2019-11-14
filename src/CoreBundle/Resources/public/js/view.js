@@ -1,35 +1,36 @@
-define(['marionette', 'core/ajaxmodal', 'bootstrap.modalmanager'], function(Mn) {
-    "use strict";
+import { View } from 'backbone.marionette';
+import './lib/bootstrap/modalmanager';
 
-    return Mn.View.extend({
-        constructor: function(options) {
-            this.listenTo(this, 'render', function() {
-                setTimeout(function() {
-                    var select2 = this.$('select.select2');
-                    if (select2.length) {
-                        require(['jquery.select2'], function() {
-                            select2.select2({
-                                allowClear: true
-                            });
+export default View.extend({
+    constructor(options) {
+        this.listenTo(this, 'render', () => {
+            setTimeout(() => {
+                const select2 = this.$('select.select2');
+                if (select2.length) {
+                    import('select2').then(() => {
+                        select2.select2({
+                            allowClear: true
                         });
-                    }
+                    });
+                }
 
-                    var tooltip = this.$('*[rel=tooltip]');
-                    if (tooltip.length) {
-                        require(['bootstrap'], function() {
-                            tooltip.tooltip();
-                        });
-                    }
-                }, 0);
-            });
+                const tooltip = this.$('*[rel=tooltip]');
+                if (tooltip.length) {
+                    import('bootstrap').then(() => {
+                        tooltip.tooltip();
+                    });
+                }
+            }, 0);
+        });
 
-            Mn.View.call(this, options);
-        },
-        showLoader: function() {
-            return this.$el.modalmanager('loading');
-        },
-        hideLoader: function() {
-            return this.$el.modalmanager('loading');
-        }
-    });
+        View.call(this, options);
+
+        this.listenTo(this.model, 'sync', this.render);
+    },
+    showLoader () {
+        this.$el.modal('loading')
+    },
+    hideLoader () {
+        this.$el.modal('removeLoading')
+    }
 });
