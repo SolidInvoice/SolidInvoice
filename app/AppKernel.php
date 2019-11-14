@@ -34,7 +34,6 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
             new Payum\Bundle\PayumBundle\PayumBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),

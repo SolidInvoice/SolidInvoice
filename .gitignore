@@ -1,6 +1,5 @@
-web/assets/*
-web/static/*
-web/bundles/*
+web/static
+web/bundles
 web/css/*
 web/js/*
 web/fonts/*
