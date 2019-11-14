@@ -44,7 +44,7 @@ export default Module.extend({
                 ( new modal({}) ).render();
             },
             generateRandomString (length) {
-                const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
                 let pass = '';
                 for (let x = 0; x < length; x++) {
                     let i = Math.floor(Math.random() * 62);

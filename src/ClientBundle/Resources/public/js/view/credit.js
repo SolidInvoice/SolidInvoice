@@ -6,11 +6,11 @@ export default ItemView.extend({
     template: Template,
 
     ui: {
-        "addCredit": '#add-credit-button'
+        'addCredit': '#add-credit-button'
     },
 
     events: {
-        "click @ui.addCredit": 'addCredit'
+        'click @ui.addCredit': 'addCredit'
     },
 
     modal: null,

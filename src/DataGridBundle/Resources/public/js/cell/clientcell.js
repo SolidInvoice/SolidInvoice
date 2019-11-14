@@ -8,7 +8,7 @@
  */
 
 import Backgrid from 'backgrid';
-import { each, isUndefined } from 'lodash';
+import { forEach, isUndefined } from 'lodash';
 import Template from '../../templates/client_link.hbs';
 
 Backgrid.Extension.ClientCell = Backgrid.Cell.extend({
@@ -16,7 +16,7 @@ Backgrid.Extension.ClientCell = Backgrid.Cell.extend({
     _setRouteParams (action) {
         action.routeParams = {};
 
-        each(action.route_params, (value, key) => {
+        forEach(action.route_params, (value, key) => {
             action.routeParams[key] = this.model.get(value);
         });
     },

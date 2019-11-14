@@ -2,6 +2,7 @@ import ItemView from 'SolidInvoiceCore/js/view';
 import AddressModal from './address_modal';
 import Template from '../../templates/address.hbs';
 import Alert from 'SolidInvoiceCore/js/alert';
+import Translator from 'translator';
 
 export default ItemView.extend({
     template: Template,
@@ -12,8 +13,8 @@ export default ItemView.extend({
     },
 
     events: {
-        "click @ui.deleteAddress": 'deleteAddress',
-        "click @ui.editAddress": 'editAddress'
+        'click @ui.deleteAddress': 'deleteAddress',
+        'click @ui.editAddress': 'editAddress'
     },
 
     deleteAddress(event) {

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Module from 'SolidInvoiceCore/js/module';
 import Backbone from 'backbone';
 import Router from 'router';
@@ -5,6 +6,7 @@ import { CollectionView, View } from 'backbone.marionette';
 import Template from '../../templates/empty_tokens.hbs';
 import TokenView from './view/token';
 import CreateModal from './view/modal/create';
+import { assignIn } from 'lodash'
 
 export default Module.extend({
     regions: {
@@ -15,8 +17,9 @@ export default Module.extend({
         const collection = Backbone.Collection.extend({
             url: Router.generate('_xhr_api_keys_list'),
             model: Backbone.Model.extend({
+                defaults: {},
                 destroy (options) {
-                    const opts = _.extend({ url: Router.generate('_xhr_api_keys_revoke', { 'id': this.id }) }, options || {});
+                    const opts = assignIn({ url: Router.generate('_xhr_api_keys_revoke', { 'id': this.id }) }, options || {});
                     return Backbone.Model.prototype.destroy.call(this, opts);
                 }
             })
@@ -35,7 +38,7 @@ export default Module.extend({
 
         this.app.showChildView('tokenList', collectionView);
 
-        $('#create-api-token').on('click', _.bind(this.createToken, this))
+        $('#create-api-token').on('click', (event) => this.createToken(event))
     },
     createToken (event) {
         event.preventDefault();

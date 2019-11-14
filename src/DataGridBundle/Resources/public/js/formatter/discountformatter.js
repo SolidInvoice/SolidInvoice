@@ -7,16 +7,15 @@
  * with this source code in the file LICENSE.
  */
 
-import { extend, isUndefined } from 'lodash';
+import { assignIn, isUndefined, noop, toLower } from 'lodash';
 import Accounting from 'accounting';
 import Backgrid from 'backgrid';
 
-const DiscountFormatter = Backgrid.DiscountFormatter = () => {
-};
+const DiscountFormatter = Backgrid.DiscountFormatter = noop;
 
 DiscountFormatter.prototype = new Backgrid.CellFormatter();
 
-extend(DiscountFormatter.prototype, {
+assignIn(DiscountFormatter.prototype, {
     fromRaw (rawData, model) {
         if (!isUndefined(model.get('discount.type'))) {
             let discountType = model.get('discount.type');
@@ -25,10 +24,10 @@ extend(DiscountFormatter.prototype, {
                 return '';
             }
 
-            if ('money' === discountType.toLowerCase()) {
+            if ('money' === toLower(discountType)) {
                 let discountAmount = parseInt(model.get('discount.valueMoney.value'), 10);
 
-                if (discountAmount > 0) {
+                if (0 < discountAmount) {
                     return Accounting.formatMoney(discountAmount / 100, model.get('client').currency);
                 }
 
@@ -37,12 +36,12 @@ extend(DiscountFormatter.prototype, {
 
             let discountPercentage = model.get('discount.valuePercentage');
 
-            if (parseInt(discountPercentage, 10) > 0) {
+            if (0 < parseInt(discountPercentage, 10)) {
                 return discountPercentage + '%';
             }
         }
     },
-    toRaw (formattedData, model) {
+    toRaw (formattedData) {
         return formattedData;
     }
 });

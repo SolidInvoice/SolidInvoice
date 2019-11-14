@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import Backgrid from 'backgrid';
-import { each, startCase } from 'lodash';
+import { forEach, startCase } from 'lodash';
 
 const Labels = JSON.parse($('script[data-type="status_labels"]').text());
 
@@ -17,7 +17,7 @@ const statusCell = function(name, labels) {
     });
 };
 
-each(Labels, (labels, name) => {
+forEach(Labels, (labels, name) => {
     const cellName = startCase(name) + '_statusCell';
     Backgrid[cellName] = statusCell(name, labels);
 });

@@ -2,7 +2,7 @@ import Modal from 'SolidInvoiceCore/js/modal';
 import Accounting from 'accounting';
 import Template from '../../templates/partials/add_credit.hbs';
 import Handlebars from 'handlebars/runtime';
-import { extend } from 'lodash';
+import { assignIn } from 'lodash';
 import Translator from 'translator';
 
 // Work around handlebars-loader not supporting dynamic partials
@@ -27,7 +27,7 @@ export default Modal.extend({
             'modal:save': 'saveCredit'
         }
     },
-    ui: extend({
+    ui: assignIn({
         'creditAmount': '#credit_amount',
         'creditForm': '#credit-form',
     }, Modal.prototype.ui),

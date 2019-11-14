@@ -1,4 +1,4 @@
-import { CollectionView } from "backbone.marionette";
+import { CollectionView } from 'backbone.marionette';
 import ContactView from './contact';
 
 export default CollectionView.extend({

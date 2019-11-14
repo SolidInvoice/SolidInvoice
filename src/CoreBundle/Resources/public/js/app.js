@@ -11,7 +11,7 @@ import Accounting from 'accounting';
 import $ from 'jquery';
 import { Application as MnApplication, View } from 'backbone.marionette';
 import Backbone from 'backbone';
-import { each, functionsIn, indexOf, isFunction, isUndefined } from 'lodash';
+import { forEach, functionsIn, includes, isFunction, isUndefined, trim } from 'lodash';
 import 'admin-lte';
 import 'bootstrap';
 import 'select2';
@@ -82,7 +82,7 @@ const Application = MnApplication.extend({
         if (grids.length) {
             import('SolidInvoiceDataGrid/js/grid').then(({ default: Grid }) => {
                 grids.each((i, el) => {
-                    new Grid($(el).data('target'), JSON.parse($(el).text().trim()));
+                    new Grid($(el).data('target'), JSON.parse(trim($(el).text())));
                 });
             });
         }
@@ -95,8 +95,8 @@ const Application = MnApplication.extend({
             import('SolidInvoiceDataGrid/js/multiple_grid').then(({ default: MultipleGrid }) => {
                 multipleGrids.each((i, el) => {
                     new MultipleGrid({
-                        'model': new Backbone.Model({ 'grids': JSON.parse($(el).text().trim()), 'gridId': $(el).data('target') }),
-                        'el': `${$(el).data('target')}`
+                        'model': new Backbone.Model({ 'grids': JSON.parse(trim($(el).text())), 'gridId': $(el).data('target') }),
+                        'el': $(el).data('target')
                     });
                 });
             });
@@ -134,17 +134,17 @@ export default function(module) {
         });
 
         if (!isUndefined(module.prototype.appEvents)) {
-            each(module.prototype.appEvents, (action, event) => {
+            forEach(module.prototype.appEvents, (action, event) => {
                 if (isFunction(action)) {
                     app.on(event, action);
-                } else if (-1 !== indexOf(functionsIn(module), action)) {
+                } else if (includes(functionsIn(module), action)) {
                     app.on(event, module[action])
                 } else {
-                    throw "Callback specified for event " + event + " is not a valid callback"
+                    throw `Callback specified for event ${event} is not a valid callback`
                 }
             });
         }
 
         app.start();
     });
-};
+}

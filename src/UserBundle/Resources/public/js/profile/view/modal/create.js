@@ -29,9 +29,9 @@ export default AjaxModal.extend({
         const modal = this;
 
         $.ajax({
-            "url": this.getOption('route'),
-            "data": this.$('form').serialize(),
-            "type": "post",
+            'url': this.getOption('route'),
+            'data': this.$('form').serialize(),
+            'type': 'post',
             success: (response) => {
                 modal.trigger('ajax:response', response);
 

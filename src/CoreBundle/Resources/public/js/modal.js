@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { triggerMethod } from 'backbone.marionette';
 import Template from '../templates/modal.hbs';
 import View from './view';
-import { each, extend, functionsIn, indexOf, isFunction, result } from 'lodash';
+import { forEach, assignIn, functionsIn, includes, isFunction, result } from 'lodash';
 import './extend/modal'
 
 export default View.extend({
@@ -25,14 +25,14 @@ export default View.extend({
             };
 
         if (modal) {
-            this.templateContext = extend(defaults, modal);
+            this.templateContext = assignIn(defaults, modal);
         }
 
         this._bindModalEvents(modal);
         this._attachListeners();
     },
     getTemplate () {
-        this.templateContext = extend(this.templateContext, { "modalContent": this.getOption('template') });
+        this.templateContext = assignIn(this.templateContext, { 'modalContent': this.getOption('template') });
         return Template;
     },
     listeners: {
@@ -48,13 +48,13 @@ export default View.extend({
         }
     },
     _bindModalEvents (modal) {
-        each(result(modal, 'events'), (action, event) => {
+        forEach(result(modal, 'events'), (action, event) => {
             if (isFunction(action)) {
                 this.listenTo(this, event, action);
-            } else if (-1 !== indexOf(functionsIn(this), action)) {
+            } else if (includes(functionsIn(this), action)) {
                 this.listenTo(this, event, this[action])
             } else {
-                throw "Callback specified for event " + event + " is not a valid callback"
+                throw `Callback specified for event ${event} is not a valid callback`
             }
         });
     },

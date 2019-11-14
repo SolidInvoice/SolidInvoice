@@ -14,11 +14,11 @@ import { result } from 'lodash';
 export default function(options) {
     const value = result(options, 'credit', 0);
     const model = new CreditModel({
-        credit: value > 0 ? value / 100 : value,
+        credit: 0 < value ? value / 100 : value,
         id: options.id
     });
 
     return new CreditView({
         model: model
     });
-};
+}

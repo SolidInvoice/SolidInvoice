@@ -36,15 +36,15 @@ export default AjaxModal.extend({
         this.showLoader();
 
         $.ajax({
-            "url": this.getOption('route'),
-            "data": this.$('form').serialize(),
-            "type": "post",
+            'url': this.getOption('route'),
+            'data': this.$('form').serialize(),
+            'type': 'post',
             success (response) {
                 this.trigger('ajax:response', response);
 
                 if (has(this, 'model')) {
                     this.model.fetch({
-                        "success": function() {
+                        success() {
                             this.$el.modal('hide');
                         }
                     });

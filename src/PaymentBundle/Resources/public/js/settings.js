@@ -3,8 +3,8 @@ import ItemView from 'SolidInvoiceCore/js/view';
 import Module from 'SolidInvoiceCore/js/module';
 import PaymentModel from './payment/model';
 import MenuTemplate from '../templates/menu.hbs';
-import AppRouter from "marionette.approuter";
-import { clone, each, head, isUndefined, merge, values } from 'lodash';
+import AppRouter from 'marionette.approuter';
+import { clone, forEach, head, isUndefined, merge, values } from 'lodash';
 
 export default Module.extend({
     regions: {
@@ -36,7 +36,7 @@ export default Module.extend({
                     initialRoute = head(values(disabled));
                 }
 
-                each(merge(enabled, disabled), function(item) {
+                forEach(merge(enabled, disabled), function(item) {
                     router.appRoute(item, 'showMethod');
                 });
 

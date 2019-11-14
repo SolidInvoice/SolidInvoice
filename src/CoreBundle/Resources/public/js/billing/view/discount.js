@@ -25,6 +25,7 @@ export default ItemView.extend({
             event.preventDefault();
             const $this = $(event.target);
             this.ui.discount_display.html($this.html());
+            // eslint-disable-next-line
             this.ui.discount_types.filter('.hidden').removeClass('hidden');
             $this.addClass('hidden');
             this.ui.type.val($this.data('name')).trigger('change');

@@ -1,20 +1,21 @@
 import Backbone from 'backbone';
-import { each, isEmpty, isUndefined } from 'lodash';
+import { forEach, isEmpty, isUndefined, toLower } from 'lodash';
 
 export default Backbone.Collection.extend({
-    footerModel: null,
-    discountModel: null,
     initialize (models, options) {
         this.footerModel = options.footerModel;
         this.discountModel = options.discountModel;
         this.listenTo(this, 'change reset add remove', this.updateTotals);
     },
+    footerModel: null,
+    discountModel: null,
+    model: null,
     updateTotals () {
         let total = 0,
             tax = 0,
             subTotal = 0;
 
-        each(this.models, (model) => {
+        forEach(this.get('models'), (model) => {
             let rowTotal = model.get('total'),
                 rowTax = model.get('tax');
 
@@ -28,7 +29,7 @@ export default Backbone.Collection.extend({
             if (!isEmpty(rowTax) && !isUndefined(rowTax.type)) {
                 let taxAmount = 0;
 
-                if ('inclusive' === rowTax.type.toLowerCase()) {
+                if ('inclusive' === toLower(rowTax.type)) {
                     taxAmount = ( rowTotal / ( parseFloat(rowTax.rate / 100) + 1 ) - rowTotal ) * -1;
                     subTotal -= taxAmount;
                 } else {
@@ -43,7 +44,7 @@ export default Backbone.Collection.extend({
         let discount = 0,
             footerModel = this.footerModel;
 
-        if (this.discountModel.get('value') > 0) {
+        if (0 < this.discountModel.get('value')) {
             if ('money' === this.discountModel.get('type')) {
                 discount = this.discountModel.get('value');
             } else {

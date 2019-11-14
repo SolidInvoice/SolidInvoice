@@ -1,6 +1,8 @@
+import $ from 'jquery';
 import ItemView from 'SolidInvoiceCore/js/view';
 import Template from 'SolidInvoiceInvoice/templates/row.hbs';
 import Accounting from 'accounting';
+import { split } from 'lodash';
 
 export default ItemView.extend({
     template: Template,
@@ -26,7 +28,7 @@ export default ItemView.extend({
     setModel () {
         this.$(':input').each((index, input) => {
             const $this = $(input),
-                type = $this.closest('td')[0].className.split('-')[1];
+                type = split($this.closest('td')[0].className, '-')[1];
 
             if ('qty' === type && !this.model.get(type)) {
                 this.model.set(type, 1);
@@ -44,7 +46,7 @@ export default ItemView.extend({
     calcPrice () {
         this.$(':input').each((index, input) => {
             const $this = $(input),
-                type = $this.closest('td')[0].className.split('-')[1];
+                type = split($this.closest('td')[0].className, '-')[1];
 
             let val = $this.val();
 
@@ -53,6 +55,7 @@ export default ItemView.extend({
             }
 
             if ('tax' === type) {
+                // eslint-disable-next-line
                 val = $this.find(':selected').data();
             }
 

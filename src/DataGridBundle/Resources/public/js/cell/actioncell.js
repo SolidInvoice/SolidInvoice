@@ -8,7 +8,7 @@
  */
 
 import Backgrid from 'backgrid';
-import { each } from 'lodash';
+import { forEach } from 'lodash';
 import Template from '../../templates/line_actions.hbs';
 
 Backgrid.Extension.ActionCell = Backgrid.Cell.extend({
@@ -17,14 +17,14 @@ Backgrid.Extension.ActionCell = Backgrid.Cell.extend({
     _setRouteParams (action) {
         action.routeParams = {};
 
-        each(action.route_params, (value, key) => {
+        forEach(action.route_params, (value, key) => {
             action.routeParams[key] = this.model.get(value);
         });
     },
     render () {
         this.$el.empty();
 
-        each(this.lineActions, (value) => this._setRouteParams(value));
+        forEach(this.lineActions, (value) => this._setRouteParams(value));
 
         this.$el.append(this.template({ 'actions': this.lineActions }));
 

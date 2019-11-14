@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
  * This file is part of the Arnapou jqCron package.
  *

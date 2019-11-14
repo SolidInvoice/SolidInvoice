@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-import { View } from "backbone.marionette";
+import { View } from 'backbone.marionette';
 import Template from '../../templates/info.hbs';
 import Contact from '../model/contact'
 import ContactModal from './contact_modal'

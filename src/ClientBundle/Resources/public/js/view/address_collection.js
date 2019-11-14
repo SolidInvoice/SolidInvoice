@@ -1,5 +1,5 @@
-import AddressView from "./address";
-import { CollectionView } from "backbone.marionette";
+import AddressView from './address';
+import { CollectionView } from 'backbone.marionette';
 
 export default CollectionView.extend({
     childView: AddressView,

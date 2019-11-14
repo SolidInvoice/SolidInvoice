@@ -7,38 +7,38 @@
  * with this source code in the file LICENSE.
  */
 import $ from 'jquery';
-import { bind } from 'lodash';
 import FormCollection from 'SolidInvoiceCore/js/util/form/collection';
+import { replace } from 'lodash';
 
 export default FormCollection.extend({
     events: {
         'collection:add': 'onCollectionAdd',
         'initialize': 'onInitialize'
     },
-    onCollectionAdd(event, form) {
+    onCollectionAdd (event, form) {
         const clientContacts = $('.client_contacts', form);
 
-        clientContacts.on('click', '.btn-add', bind(this.addFormGroup, this));
-        clientContacts.on('click', '.btn-delete', bind(this.removeFormGroup, this));
-        clientContacts.on('click', '.dropdown-menu a', bind(this.selectFormGroup, this));
+        clientContacts.on('click', '.btn-add', (e) => this.addFormGroup(e));
+        clientContacts.on('click', '.btn-delete', (e) => this.removeFormGroup(e));
+        clientContacts.on('click', '.dropdown-menu a', (e) => this.selectFormGroup(e));
     },
-    onInitialize(event) {
+    onInitialize (event) {
         this.onCollectionAdd(event, this.$('.prototype-widget'));
     },
-    addFormGroup(event) {
+    addFormGroup (event) {
         event.preventDefault();
         event.stopPropagation();
 
         const $this = $(event.target),
-            regex = new RegExp('__contact_details_prototype__', "g"),
+            regex = new RegExp('__contact_details_prototype__', 'g'),
             $formGroupContainer = $this.closest('.prototype-widget'),
             $formGroupContainerCounter = ( parseInt($formGroupContainer.data('counter'), 10) + 1 ),
+            // eslint-disable-next-line
             $formGroup = $(
-                $formGroupContainer
+                replace($formGroupContainer
                     .siblings('.additional-details')
                     .html()
-                    .replace(regex, $formGroupContainerCounter)
-            )
+                ), regex, $formGroupContainerCounter)
                 .find('.multiple-form-group');
 
         $formGroupContainer.data('counter', $formGroupContainerCounter);
@@ -50,11 +50,11 @@ export default FormCollection.extend({
 
         $formGroupContainer.append($formGroup);
     },
-    removeFormGroup(event) {
+    removeFormGroup (event) {
         event.preventDefault();
         $(event.target).closest('.form-group').remove();
     },
-    selectFormGroup(event) {
+    selectFormGroup (event) {
         event.preventDefault();
 
         const $this = $(event.target),
@@ -62,7 +62,9 @@ export default FormCollection.extend({
             param = $this.data('value'),
             concept = $this.text();
 
+        // eslint-disable-next-line
         $selectGroup.find('.concept').text(concept);
+        // eslint-disable-next-line
         $selectGroup.find('.input-group-select-val').val(param);
 
     }

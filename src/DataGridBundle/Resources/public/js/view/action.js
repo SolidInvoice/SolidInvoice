@@ -18,7 +18,7 @@ export default ItemView.extend({
     tagName: 'span',
     template: Template,
     ui: {
-        button: ".btn"
+        button: '.btn'
     },
     events: {
         'click @ui.button': 'confirm'

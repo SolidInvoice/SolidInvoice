@@ -1,7 +1,7 @@
 import Module from 'SolidInvoiceCore/js/module';
 import $ from 'jquery';
 import Backbone from 'backbone';
-import { each, isEmpty, merge } from 'lodash';
+import { isEmpty, merge, map } from 'lodash';
 import ClientSelectView from 'SolidInvoiceClient/js/view/client_select';
 import FooterRowModel from 'SolidInvoiceCore/js/billing/model/footer_row_model';
 import RowModel from 'SolidInvoiceCore/js/billing/model/row_model';
@@ -25,7 +25,6 @@ export default Module.extend({
     _renderClientSelect (options) {
         const model = new Backbone.Model(options.client),
             viewOptions = { type: 'quote', model: model, 'hideLoader': false },
-            module = this,
             clientSelectView = new ClientSelectView(merge(options, viewOptions));
 
         clientSelectView.on('currency:update', (clientOptions) => {
@@ -34,20 +33,21 @@ export default Module.extend({
             $.getJSON(
                 Router.generate('_quotes_get_fields', { 'currency': clientOptions.currency })
             ).done((fieldData) => {
-                module.collection.each((model) => {
-                    model.set('fields', fieldData);
+                this.collection.each((m) => {
+                    m.set('fields', fieldData);
                 });
 
-                const quoteView = module._getQuoteView(fieldData);
+                const quoteView = this._getQuoteView(fieldData);
 
                 this.hideLoader();
 
-                module.app.showChildView('quoteRows', quoteView);
+                this.app.showChildView('quoteRows', quoteView);
 
+                // eslint-disable-next-line
                 this.$el.find(this.regions.quoteForm).attr('action', Router.generate('_quotes_create', { 'client': clientOptions.client }));
                 $('.currency-view').html(clientOptions.currency);
 
-                module.app.initialize(module.app.options);
+                this.app.initialize(this.app.options);
             });
         });
 
@@ -72,17 +72,15 @@ export default Module.extend({
 
         this._renderClientSelect(options);
 
-        const models = [];
+        let models = [];
 
         if (!isEmpty(options.formData)) {
             let counter = 0;
 
-            each(options.formData, (item) => {
-                models.push(new RowModel({
-                    id: counter++,
-                    fields: item
-                }));
-            });
+            models = map(options.formData, (item) => new RowModel({
+                id: counter++,
+                fields: item
+            }));
         } else {
             models.push(new RowModel({
                 id: 0,
@@ -91,7 +89,7 @@ export default Module.extend({
         }
 
         /* COLLECTION */
-        this.collection = new Collection(models, { "discountModel": discountModel, 'footerModel': this.footerRowModel });
+        this.collection = new Collection(models, { 'discountModel': discountModel, 'footerModel': this.footerRowModel });
 
         /* DISCOUNT */
         this.discount = new Discount({ model: discountModel, collection: this.collection });

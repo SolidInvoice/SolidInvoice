@@ -8,19 +8,19 @@
  */
 
 import Backgrid from 'backgrid';
-import { extend, isUndefined } from 'lodash';
+import { assignIn, isUndefined, noop } from 'lodash';
 
-const ObjectFormatter = Backgrid.ObjectFormatter = () => {
-};
+const ObjectFormatter = Backgrid.ObjectFormatter = noop;
 
 ObjectFormatter.prototype = new Backgrid.CellFormatter();
-extend(ObjectFormatter.prototype, {
-    fromRaw (rawData, model) {
+
+assignIn(ObjectFormatter.prototype, {
+    fromRaw (rawData) {
         if (!isUndefined(rawData)) {
             return rawData.name;
         }
     },
-    toRaw (formattedData, model) {
+    toRaw (formattedData) {
         return formattedData;
     }
 });

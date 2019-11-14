@@ -8,15 +8,14 @@
  */
 
 import Backgrid from 'backgrid';
-import { extend, isObject, isUndefined } from 'lodash';
+import { assignIn, isObject, isUndefined, noop } from 'lodash';
 import Accounting from 'accounting';
 
-const MoneyFormatter = Backgrid.MoneyFormatter = () => {
-};
+const MoneyFormatter = Backgrid.MoneyFormatter = noop;
 
 MoneyFormatter.prototype = new Backgrid.CellFormatter();
-extend(MoneyFormatter.prototype, {
-    fromRaw (rawData, model) {
+assignIn(MoneyFormatter.prototype, {
+    fromRaw (rawData) {
         if (!isUndefined(rawData)) {
             if (isObject(rawData)) {
                 return Accounting.formatMoney(parseInt(rawData.value, 10) / 100, rawData.currency);
@@ -25,7 +24,7 @@ extend(MoneyFormatter.prototype, {
             return Accounting.formatMoney(parseInt(rawData, 10) / 100);
         }
     },
-    toRaw (formattedData, model) {
+    toRaw (formattedData) {
         return Accounting.unformat(formattedData);
     }
 });

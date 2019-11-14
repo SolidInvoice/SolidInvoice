@@ -32,21 +32,36 @@ Encore
         'SolidInvoiceQuote': path.resolve(__dirname, 'src/QuoteBundle/Resources/public'),
         'SolidInvoiceTax': path.resolve(__dirname, 'src/TaxBundle/Resources/public'),
         'SolidInvoiceUser': path.resolve(__dirname, 'src/UserBundle/Resources/public'),
-        'jos_js': path.resolve(__dirname, 'web/bundles/fosjsrouting/js'),
+        'fos_js': path.resolve(__dirname, 'web/bundles/fosjsrouting/js'),
         'router': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/routing'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
     })
 
-    .addLoader({
-        test: /\.hbs$/,
-        loader: 'handlebars-loader',
-        options: {
-            helperDirs: [
-                path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/handlebars/helpers'),
-            ],
-            partialDirs: [
-                path.resolve(__dirname, 'src/ClientBundle/Resources/public/templates/partials'),
-            ]
+    .enableHandlebarsLoader((options) => {
+        options.helperDirs = [
+            path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/handlebars/helpers'),
+        ];
+
+        options.partialDirs = [
+            path.resolve(__dirname, 'src/ClientBundle/Resources/public/templates/partials'),
+        ];
+    })
+
+    .enableEslintLoader( {
+        rules: {
+            "lodash/import-scope": [2, "member"],
+            "no-else-return": "error",
+            "no-extra-bind": "error",
+            "no-lone-blocks": "error",
+            "no-loop-func": "error",
+            "no-useless-call": "error",
+            "no-useless-concat": "error",
+            "no-useless-return": "error",
+            "radix": "error",
+            "yoda": ["error", "always"],
+            "no-shadow": "error",
+            "no-use-before-define": "error",
+            "quotes": ["error", "single"]
         }
     })
 ;
@@ -80,8 +95,8 @@ const output = (err, stdout, stderr) => {
     }
 };
 
-//execSync(path.resolve(__dirname, 'bin/console assets:install web'), output);
-//execSync(path.resolve(__dirname, 'bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json'), output);
-//execSync(path.resolve(__dirname, 'bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json'), output);
+/*execSync(path.resolve(__dirname, 'bin/console assets:install web'), output);
+execSync(path.resolve(__dirname, 'bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json'), output);
+execSync(path.resolve(__dirname, 'bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json'), output);*/
 
 module.exports = Encore.getWebpackConfig();

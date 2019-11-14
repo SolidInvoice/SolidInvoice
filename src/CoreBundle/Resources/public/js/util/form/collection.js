@@ -9,7 +9,7 @@
 
 import $ from 'jquery';
 import { View } from 'backbone.marionette';
-import { isEmpty, result, bind } from 'lodash';
+import { isEmpty, result, bind, replace } from 'lodash';
 import 'select2';
 
 export default View.extend({
@@ -18,6 +18,7 @@ export default View.extend({
     addBtn(event) {
         event.preventDefault();
 
+        // eslint-disable-next-line
         const collectionHolder = this.$el.find('div[data-prototype]').first(),
             prototype = collectionHolder.data('prototype');
 
@@ -30,8 +31,8 @@ export default View.extend({
                 prototype_name = '__name__';
             }
 
-            const regex = new RegExp(prototype_name, "g"),
-                form = prototype.replace(regex, counter);
+            const regex = new RegExp(prototype_name, 'g'),
+                form = replace(prototype, regex, counter);
 
             collectionHolder.data('counter', ++counter);
 
@@ -72,9 +73,10 @@ export default View.extend({
         this.$el.trigger('initialize');
     },
     _toggleRemoveBtn() {
+        // eslint-disable-next-line
         const collectionHolder = this.$el.find('div[data-prototype] > .prototype-widget');
 
-        if (collectionHolder.length === 1) {
+        if (1 === collectionHolder.length) {
             this.$(this.removeSelector).hide();
         } else {
             this.$(this.removeSelector).show();

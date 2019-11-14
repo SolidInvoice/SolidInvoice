@@ -25,17 +25,19 @@ export default CollectionView.extend({
         'click @ui.addItem': 'addItem'
     },
     collectionEvents: {
-        "update:totals": "renderTotals"
+        'update:totals': 'renderTotals'
     },
     renderTotals () {
         const footer = this.$(this.el);
 
         setTimeout(() => {
             footer.empty();
+            // eslint-disable-next-line
             this.footerView.render().$el.find('tr').appendTo(footer);
         }, 0);
     },
     onRender () {
+        // eslint-disable-next-line
         this.footerView.render().$el.find('tr').appendTo(this.$(this.el));
     },
     addItem (event) {

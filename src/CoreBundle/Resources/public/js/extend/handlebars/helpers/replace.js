@@ -1,5 +1,7 @@
+import { replace as _replace } from 'lodash';
+
 export default function(string, search, replace) {
     const regexp = new RegExp(search, 'g');
 
-    return string.replace(regexp, replace);
+    return _replace(string, regexp, replace);
 }

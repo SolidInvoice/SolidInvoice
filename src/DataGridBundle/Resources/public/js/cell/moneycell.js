@@ -18,7 +18,7 @@ Backgrid.Extension.MoneyCell = Backgrid.StringCell.extend({
             currency = this.model.get(name + '.currency');
 
         if (currency) {
-            this.$el.text(this.formatter.fromRaw({ "value": value, "currency": currency }, this.model));
+            this.$el.text(this.formatter.fromRaw({ 'value': value, 'currency': currency }, this.model));
         } else {
             // We don't have a currency set, just display the raw value
             this.$el.text(( parseInt(this.model.get(name), 10) / 100 ).toFixed(2));

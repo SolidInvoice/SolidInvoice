@@ -65,6 +65,7 @@ export default ItemView.extend({
         clientSelect.toggle();
 
         if (clientSelect.is(':visible')) {
+            // eslint-disable-next-line
             clientSelect.find('select').select2().select2('val', 0);
         }
 
@@ -80,9 +81,10 @@ export default ItemView.extend({
     },
     selectDefaultClientContact () {
         const clientSelectContainer = this.$('#client-select-container');
+        // eslint-disable-next-line
         const clientSelectContainerCheckbox = clientSelectContainer.find('input[type="checkbox"]');
-        if (clientSelectContainerCheckbox.length === 1) {
-            clientSelectContainerCheckbox.prop("checked", true);
+        if (1 === clientSelectContainerCheckbox.length) {
+            clientSelectContainerCheckbox.prop('checked', true);
         }
     }
 });

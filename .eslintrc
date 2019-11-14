@@ -1,0 +1,37 @@
+{
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "parser": "babel-eslint",
+        "sourceType": "module"
+    },
+    "root": true,
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "plugins": [
+        "backbone",
+        "jquery",
+        "lodash"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:lodash/recommended",
+        "plugin:backbone/recommended"
+    ],
+    "rules": {
+        "no-else-return": "error",
+        "no-extra-bind": "error",
+        "no-lone-blocks": "error",
+        "no-loop-func": "error",
+        "no-useless-call": "error",
+        "no-useless-concat": "error",
+        "no-useless-return": "error",
+        "radix": "error",
+        "yoda": ["error", "always"],
+        "no-shadow": "error",
+        "no-use-before-define": "error",
+        "quotes": ["error", "single"],
+        "lodash/import-scope": [2, "member"]
+    }
+}

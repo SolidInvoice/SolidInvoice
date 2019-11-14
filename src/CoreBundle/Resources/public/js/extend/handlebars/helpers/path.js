@@ -1,4 +1,4 @@
-import { isObject, isUndefined } from "lodash";
+import { isObject, isUndefined } from 'lodash';
 import Router from 'router';
 
 export default function(route, context) {
@@ -13,4 +13,4 @@ export default function(route, context) {
     }
 
     return Router.generate(route, params);
-};
+}

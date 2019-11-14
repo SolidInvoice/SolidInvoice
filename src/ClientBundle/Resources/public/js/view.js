@@ -42,14 +42,14 @@ export default Module.extend({
 
                         layoutView.render();
                         this._renderContactCollection(layoutView, options);
-                        if (addressCollection.length > 0) {
+                        if (0 < addressCollection.length) {
                             layoutView.getRegion('clientAddress').show(new AddressView({ collection: addressCollection }));
                         }
                     }
                 );
         });
 
-        if (addressCollection.length > 0) {
+        if (0 < addressCollection.length) {
             layoutView.getRegion('clientAddress').show(new AddressView({ collection: addressCollection }));
         }
     },
@@ -84,11 +84,11 @@ export default Module.extend({
                 $('body').modalmanager('loading');
 
                 return $.ajax({
-                    "url": link.attr("href"),
-                    "dataType": "json",
-                    "method": "delete"
+                    'url': link.attr('href'),
+                    'dataType': 'json',
+                    'method': 'delete'
                 }).done(() => {
-                    window.document.location = Router.generate("_clients_index");
+                    window.document.location = Router.generate('_clients_index');
                 });
             }
         });

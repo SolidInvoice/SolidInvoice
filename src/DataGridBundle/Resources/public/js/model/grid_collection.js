@@ -15,7 +15,7 @@ export default PageableCollection.extend({
     // Initial pagination states
     state: {
         pageSize: 15,
-        sortKey: "created",
+        sortKey: 'created',
         order: 1
     },
 
@@ -24,16 +24,16 @@ export default PageableCollection.extend({
     queryParams: {
         totalPages: null,
         totalRecords: null,
-        sortKey: "sort"
+        sortKey: 'sort'
     },
 
-    parseState (resp, queryParams, state, options) {
+    parseState (resp) {
         return {
             totalRecords: resp.count
         };
     },
 
-    parseRecords (resp, options) {
+    parseRecords (resp) {
         return resp.items;
     }
 });

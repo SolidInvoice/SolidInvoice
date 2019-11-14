@@ -10,7 +10,7 @@
 import { CollectionView, MnObject } from 'backbone.marionette';
 import Backbone from 'backbone';
 import $ from 'jquery';
-import { clone, extend, find, isUndefined, size, values } from 'lodash';
+import { clone, assignIn, find, isUndefined, size, values } from 'lodash';
 import Backgrid from 'backgrid';
 import ItemView from 'SolidInvoiceCore/js/view';
 import GridContainerTemplate from '../templates/grid_container.hbs';
@@ -41,17 +41,17 @@ export default MnObject.extend({
         const gridOptions = {
             collection: collection,
             className: 'backgrid table table-bordered table-hover',
-            emptyText: "no data"
+            emptyText: 'no data'
         };
 
         if (!isUndefined(options.properties.route)) {
             gridOptions.row = Redirect.row(options.properties.route);
         }
 
-        if (size(options.line_actions) > 0 && isUndefined(find(options.columns, { 'name': 'Actions' }))) {
+        if (0 < size(options.line_actions) && isUndefined(find(options.columns, { 'name': 'Actions' }))) {
             options.columns.push({
                 // name is a required parameter, but you don't really want one on a select all column
-                name: "Actions",
+                name: 'Actions',
                 // Backgrid.Extension.SelectRowCell lets you select individual rows
                 cell: Backgrid.Extension.ActionCell.extend({ 'lineActions': options.line_actions }),
                 editable: false,
@@ -61,24 +61,24 @@ export default MnObject.extend({
 
         let container;
 
-        if (size(options.actions) > 0) {
+        if (0 < size(options.actions)) {
             if (isUndefined(find(options.columns, { 'cell': 'select-row' }))) {
                 options.columns.unshift({
                     // name is a required parameter, but you don't really want one on a select all column
-                    name: "",
+                    name: '',
                     // Backgrid.Extension.SelectRowCell lets you select individual rows
-                    cell: "select-row",
+                    cell: 'select-row',
                     // Backgrid.Extension.SelectAllHeaderCell lets you select all the row on a page
-                    headerCell: "select-all",
+                    headerCell: 'select-all',
                     editable: false,
                     sortable: false
                 });
             }
         }
 
-        const grid = new Backgrid.Grid(extend(clone(options), gridOptions));
+        const grid = new Backgrid.Grid(assignIn(clone(options), gridOptions));
 
-        if (size(options.actions) > 0) {
+        if (0 < size(options.actions)) {
             const ActionContainer = CollectionView.extend({
                 template: GridContainerTemplate,
                 childView: ActionView.extend({ 'grid': grid }),

@@ -19,7 +19,7 @@ export default (module, model) => {
             }
 
             $('li', '#payment-method-tabs').removeClass('active');
-            $('a[data-method="' + fragment + '"]').closest('li').addClass('active');
+            $(`a[data-method="${fragment}"]`).closest('li').addClass('active');
 
             const route = Router.generate('_xhr_payments_settings', { 'method': fragment });
             module.app.showChildView('paymentMethodData', new LoaderView);
@@ -48,11 +48,9 @@ export default (module, model) => {
                             url: url,
                             data: data,
                             method: 'POST',
-                            success (response) {
+                            success (res) {
                                 module.app.showChildView('paymentMethodData', new view({
-                                    template () {
-                                        return response;
-                                    }
+                                    template: () => res
                                 }));
                                 model.fetch();
                             }

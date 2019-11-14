@@ -62,7 +62,7 @@ export default {
                 if (isFunction(callback)) {
                     let response = callback.call(this, true);
 
-                    if (response instanceof Promise || response instanceof $.Deferred || result(response, 'then')) {
+                    if (response instanceof $.Deferred || result(response, 'then')) {
                         response.then(close).catch(() => {
                             this.hideLoader();
                         });

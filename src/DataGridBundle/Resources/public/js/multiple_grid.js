@@ -7,9 +7,10 @@
  * with this source code in the file LICENSE.
  */
 
+import $ from 'jquery';
 import ItemView from 'SolidInvoiceCore/js/view';
 import Template from '../templates/multiple_grid_selector.hbs';
-import { first, forEach, values } from 'lodash';
+import { head, forEach, values } from 'lodash';
 import Grid from './grid';
 
 export default ItemView.extend({
@@ -46,8 +47,8 @@ export default ItemView.extend({
     onRender() {
         this.activeGrid = new Grid(this.model.get('gridId'), this.gridOptions);
     },
-    initialize(grids) {
-        this.gridOptions = first(values(this.model.get('grids')));
+    initialize() {
+        this.gridOptions = head(values(this.model.get('grids')));
 
         this.render();
     }

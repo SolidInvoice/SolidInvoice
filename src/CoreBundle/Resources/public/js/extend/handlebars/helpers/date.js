@@ -1,10 +1,10 @@
-import Moment from "moment";
-import { functions, has, indexOf } from "lodash";
+import Moment from 'moment';
+import { functions, has, includes } from 'lodash';
 
 export default function(dateString, context) {
     const date = Moment(dateString);
 
-    if (has(context.hash, 'type') && indexOf(functions(date), context.hash.type) > -1) {
+    if (has(context.hash, 'type') && includes(functions(date), context.hash.type)) {
         return date[context.hash.type]();
     }
 

@@ -40,9 +40,9 @@ export default AjaxModal.extend({
         this.showLoader();
 
         $.ajax({
-            "url": this.getOption('route'),
-            "data": this.$('form').serialize(),
-            "type": "post",
+            'url': this.getOption('route'),
+            'data': this.$('form').serialize(),
+            'type': 'post',
             success(response) {
                 this.trigger('ajax:response', response);
 

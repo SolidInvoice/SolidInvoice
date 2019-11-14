@@ -16,4 +16,4 @@ export default function(options) {
     return new ContactCollectionView({
         collection: collection
     });
-};
+}

@@ -17,10 +17,8 @@ export default MnObject.extend({
                 'user', 'password'
             ];
 
-        forEach({ "smtpConfig": smtpConfig, 'gmailConfig': gmailConfig }, (values, type) => {
-            this[type] = $(map(values, (value) => {
-                return '#' + this.prefix + '_' + value;
-            }).join(',')).parent('.form-group');
+        forEach({ 'smtpConfig': smtpConfig, 'gmailConfig': gmailConfig }, (values, type) => {
+            this[type] = $(map(values, (val) => `#{this.prefix}_${val}`).join(',')).parent('.form-group');
         });
 
         transport.on('change', (event) => {

@@ -2,13 +2,14 @@ import ItemView from 'SolidInvoiceCore/js/view';
 import ContactModal from './contact_modal';
 import Template from '../../templates/contact.hbs';
 import Alert from 'SolidInvoiceCore/js/alert';
+import Translator from 'translator';
 
 export default ItemView.extend({
     template: Template,
 
     templateContext () {
         return {
-            'canDelete': this.model.collection.length > 1
+            'canDelete': 1 < this.model.collection.length
         };
     },
 
@@ -18,8 +19,8 @@ export default ItemView.extend({
     },
 
     events: {
-        "click @ui.deleteContact": 'deleteContact',
-        "click @ui.editContact": 'editContact'
+        'click @ui.deleteContact': 'deleteContact',
+        'click @ui.editContact': 'editContact'
     },
 
     initialize () {

@@ -9,7 +9,7 @@
 
 import Backgrid from 'backgrid';
 import Backbone from 'backbone';
-import { each, isUndefined } from 'lodash';
+import { forEach, isUndefined } from 'lodash';
 import Template from '../../templates/invoice_link.hbs';
 import Cron from 'SolidInvoiceCore/js/util/form/cron';
 
@@ -18,7 +18,7 @@ Backgrid.Extension.InvoiceCell = Backgrid.Cell.extend({
     _setRouteParams (action) {
         action.routeParams = {};
 
-        each(action.route_params, (value, key) => {
+        forEach(action.route_params, (value, key) => {
             action.routeParams[key] = this.model.get(value);
         });
     },
@@ -65,7 +65,7 @@ Backgrid.Extension.RecurringInvoiceFrequencyCell = Backgrid.StringCell.extend({
         this.model = new Backbone.Model(recurringInfo);
     },
     render () {
-        const value = this.model.get(this.column.get("name"));
+        const value = this.model.get(this.column.get('name'));
 
         Cron(this.$el, {
             enabled_minute: false,
@@ -76,6 +76,7 @@ Backgrid.Extension.RecurringInvoiceFrequencyCell = Backgrid.StringCell.extend({
         });
 
         setTimeout(() => {
+            // eslint-disable-next-line
             this.$el.find('.jqCron-selector-list').remove();
         }, 0);
 

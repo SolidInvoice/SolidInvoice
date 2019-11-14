@@ -20,4 +20,4 @@ export default function(id, options) {
         numeric_zero_pad: true,
         default_value: ( Math.floor(d.getMinutes() / 5) * 5 ) + ' ' + d.getHours() + ' ' + d.getDate() + ' ' + ( d.getMonth() + 1 ) + ' *'
     }, options));
-};
+}
