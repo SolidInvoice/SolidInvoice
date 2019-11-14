@@ -14,7 +14,12 @@
     "bugs": {
         "url": "https://github.com/SolidInvoice/SolidInvoice/issues"
     },
-    "homepage": "http://solidinvoice.org",
+    "homepage": "https://solidinvoice.co",
+    "scripts": {
+        "dev": "encore dev",
+        "dev-server": "encore dev-server",
+        "build": "encore production"
+    },
     "devDependencies": {
         "@babel/cli": "^7.4.3",
         "@babel/core": "^7.4.3",

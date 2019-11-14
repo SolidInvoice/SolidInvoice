@@ -28,12 +28,10 @@ addons:
 
 before_install:
   - composer self-update
-  - composer global require "fxp/composer-asset-plugin"
   - mysql -e 'create database solidinvoice_test;'
 
 install:
   - composer install -n
-  - rm bin/r.js && composer install -n --no-scripts # Hack to get npm-assets working after first composer install
   - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
 
 before_script:
@@ -83,21 +81,13 @@ jobs:
         - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
         - sudo apt-get update -qq
         - sudo apt-get install -y -qq yarn=0.24.6-1
-        - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 8.0
-        - composer global require "fxp/composer-asset-plugin"
+        - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 12.0
       install:
         - composer install -n
         - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - yarn
-        - php bin/console assets:install -n
-        - rm bin/r.js
-        - composer install -n --no-scripts
-        - node_modules/.bin/gulp
-        - php bin/console fos:js-routing:dump --callback=define -n
-        - php bin/console bazinga:js-translation:dump --merge-domains -n
-        - php bin/console oro:requirejs:build -n
-        - node_modules/.bin/gulp assets
+        - yarn run dev
       before_script:
           - php ./bin/console server:start 9001 -n
           - sleep 3 # Give php server some time to start
