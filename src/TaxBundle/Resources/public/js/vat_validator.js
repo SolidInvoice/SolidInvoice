@@ -9,7 +9,7 @@ export default (element) => {
         if ('' === $input.val()) {
             $input
                 .closest('.form-group')
-                .removeClass('has-success has-error')
+                .removeClass('has-success has-error');
         }
     });
 

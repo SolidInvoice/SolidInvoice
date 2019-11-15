@@ -55,6 +55,6 @@ export default Module.extend({
             }
         });
 
-        this.app.showChildView('generatePassword', new view);
+        this.app.showChildView('generatePassword', new view());
     }
 });
