@@ -37,6 +37,7 @@ class PaymentRepository extends ServiceEntityRepository
      * @param bool                                     $groupByCurrency
      *
      * @return array|int
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getTotalIncome(Client $client = null, $groupByCurrency = false)

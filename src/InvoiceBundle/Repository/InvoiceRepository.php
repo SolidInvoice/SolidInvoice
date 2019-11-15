@@ -39,8 +39,8 @@ class InvoiceRepository extends ServiceEntityRepository
      * @param Client $client set this parameter to filter per client
      *
      * @return int
-     * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      *
+     * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      */
     public function getTotalIncome(Client $client = null): int
     {
@@ -56,7 +56,7 @@ class InvoiceRepository extends ServiceEntityRepository
      * Get the total amount for a specific invoice status.
      *
      * @param string $status
-     * @param Client $client filter per client
+     * @param Client $client  filter per client
      * @param int    $hydrate
      *
      * @return int
