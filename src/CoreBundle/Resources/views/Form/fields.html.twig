@@ -69,19 +69,18 @@
 {% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
-            <ul class="list-unstyled">
+        <ul class="list-unstyled">
                 {%- for error in errors -%}
                     <li>
                         {{ icon('exclamation-sign') }}
                         {{ error.messagePluralization is null
-                            ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                            : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
-                        }}
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') }}
                     </li>
                 {%- endfor -%}
             </ul>
         {% if form.parent %}</span>{% else %}</div>{% endif %}
-        {%- endif %}
+    {%- endif %}
 {%- endblock form_errors %}
 
 {% block form_label -%}
@@ -108,45 +107,39 @@
 {% endblock contact_widget %}
 
 {% block tax_field_widget -%}
-{% spaceless %}
-    {% if expanded %}
-        {{- block('choice_widget_expanded') -}}
-    {% else %}
-        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-        {% if required and placeholder is none and not placeholder_in_choices %}
-            {% set required = false %}
-        {% endif %}
-        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-            {% if placeholder is not none %}
-                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
+    {% spaceless %}
+        {% if expanded %}
+            {{- block('choice_widget_expanded') -}}
+        {% else %}
+            {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+            {% if required and placeholder is none and not placeholder_in_choices %}
+                {% set required = false %}
             {% endif %}
-            {% if preferred_choices|length > 0 %}
-                {% set options = preferred_choices %}
-                {{ block('choice_widget_options') }}
-                {% if choices|length > 0 and separator is not none %}
-                    <option disabled="disabled">{{ separator }}</option>
+            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {% if placeholder is not none %}
+                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
                 {% endif %}
-            {% endif %}
-            {% set options = choices %}
-            {{ block('tax_choice_widget_options') }}
-        </select>
-    {% endif %}
-{% endspaceless %}
+                {% if preferred_choices|length > 0 %}
+                    {% set options = preferred_choices %}
+                    {{ block('choice_widget_options') }}
+                    {% if choices|length > 0 and separator is not none %}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {% endif %}
+                {% endif %}
+                {% set options = choices %}
+                {{ block('tax_choice_widget_options') }}
+            </select>
+        {% endif %}
+    {% endspaceless %}
 {%- endblock %}
 
 {% block tax_number_widget -%}
-    {% set id = random() %}
     <div class="input-group">
         {{ form_widget(form) }}
         <span class="input-group-btn">
-            <a href="#" id="{{ id }}" class="btn btn-default" rel="tooltip" title="EU Countries Only">{{ 'tax.form.input.validate'|trans }}</a>
+            <a href="#" class="btn btn-default vat-validator" data-input="#{{ form.vars.id }}" rel="tooltip" title="EU Countries Only">{{ 'tax.form.input.validate'|trans }}</a>
         </span>
     </div>
-    <script>
-        require(['tax/vat_validator'], function (Validator) {
-            Validator.attach('#{{ id }}', '#{{ form.vars.id }}');
-        });
-    </script>
 {%- endblock tax_number_widget %}
 
 {% block tax_choice_widget_options -%}
@@ -201,7 +194,7 @@
                 {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
             </a>
         {% endif %}
-        <br class="clear" />
+        <br class="clear"/>
     </div>
 {% endblock address_widget %}
 
@@ -217,12 +210,13 @@
 
 {% block cron_widget %}
     {% set type = 'hidden' %}
+    {% set attr = attr|merge({"class": "cron-expr"}) %}
     {{ block('form_widget') }}
-    <script>
+    {#<script>
         require(['core/util/form/cron'], function (Cron) {
             Cron.jqcron('#{{ id }}');
         });
-    </script>
+    </script>#}
 {% endblock cron_widget %}
 
 {% block discount_row %}
@@ -231,7 +225,7 @@
         {{ form_widget(form.value) }}
         <div class="input-group-btn input-group-select">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <span class="concept" id="{{ form.type.vars.id }}_display">
+            <span class="concept" id="discount-display">
                 {% if form.type.vars.value == 'money' %}
                     <span class="currency-view">{{ currency }}</span>
                 {% else %}
@@ -242,7 +236,7 @@
             <ul class="dropdown-menu" role="menu">
                 {% for type in form.vars.types %}
                     <li>
-                        <a href="#" class="{{ form.type.vars.id }}_types{% if type.name == form.type.vars.value %} hidden{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
+                        <a href="#" class="discount-types{% if type.name == form.type.vars.value %} hidden{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
                             {% if type.name == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') %}
                                 <span class="currency-view">{{ currency }}</span>
                             {% else %}
@@ -255,22 +249,4 @@
             {{ form_widget(form.type) }}
         </div>
     </div>
-    <script>
-        require(['jquery'], function ($) {
-            $(function () {
-                var $type = $('#{{ form.type.vars.id }}'),
-                    $typeDisplay = $('#{{ form.type.vars.id }}_display'),
-                    $types = $('.{{ form.type.vars.id }}_types');
-
-                $types.on('click', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $typeDisplay.html($this.html());
-                    $types.filter('.hidden').removeClass('hidden');
-                    $this.addClass('hidden');
-                    $type.val($this.data('name')).trigger('change');
-                });
-            });
-        });
-    </script>
 {% endblock discount_row %}

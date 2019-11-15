@@ -1,87 +1,77 @@
-define(['jquery', 'marionette', 'handlebars.runtime', 'template', 'lodash'], function($, Mn, Handlebars, Template, _) {
-    "use strict";
+import $ from 'jquery';
+import { triggerMethod } from 'backbone.marionette';
+import Template from '../templates/modal.hbs';
+import View from './view';
+import { forEach, assignIn, functionsIn, includes, isFunction, result } from 'lodash';
+import './extend/modal'
 
-    return Mn.View.extend({
-        el: $('#modal-container').clone(),
-        ui: {
-            'save': '.btn-save'
-        },
-        triggers: {
-            'click @ui.save': 'save'
-        },
-        constructor: function(options) {
-            this.listenTo(this, 'render', this.listeners.render);
-            this.listenTo(this, 'save', this.listeners.save);
+export default View.extend({
+    ui: {
+        'save': '.btn-save'
+    },
+    triggers: {
+        'click @ui.save': 'save'
+    },
+    constructor (options) {
+        this.listenTo(this, 'render', this.listeners.render);
+        this.listenTo(this, 'save', this.listeners.save);
 
-            Mn.View.call(this, options);
+        options.el = $('#modal-container').clone();
+        View.call(this, options);
 
-            var modal = _.result(this, 'modal'),
-                defaults = {
-                    'titleClose': true
-                };
-
-            if (modal) {
-                this.templateContext = _.extend(defaults, modal);
-            }
-
-            this._bindModalEvents(modal);
-            this._attachListeners();
-        },
-        templateContext: function () {
-            return {
-                "modalContent": this.getOption('template')
+        const modal = result(this, 'modal'),
+            defaults = {
+                'titleClose': true
             };
-        },
-        getTemplate: function() {
-            this.templateContext = _.extend(this.templateContext, {"modalContent": this.getOption('template')});
-            return Template.core.modal;
-        },
-        listeners: {
-            render: function() {
-                this.$el.modal();
-            },
-            save: function(context) {
-                if (false === this.triggerMethod('before:modal:save', context)) {
-                    return;
-                }
 
-                Mn.triggerMethod(this, 'modal:save', context)
-            }
-        },
-        _bindModalEvents: function(modal) {
-            _.each(_.result(modal, 'events'), _.bind(function(action, event) {
-                if (_.isFunction(action)) {
-                    this.listenTo(this, event, action);
-                } else if (-1 !== _.indexOf(_.functionsIn(this), action)) {
-                    this.listenTo(this, event, this[action])
-                } else {
-                    throw "Callback specified for event " + event + " is not a valid callback"
-                }
-            }, this));
-        },
-        _attachListeners: function() {
-            var view = this;
-
-            this.$el.on('show.bs.modal', function() {
-                view.trigger('modal:show');
-            });
-
-            this.$el.on('hide.bs.modal', function() {
-                view.trigger('modal:hide');
-            });
-
-            this.$el.on('hidden.bs.modal', function() {
-                view.destroy();
-            });
-        },
-        _removeElement: function() {
-            this.$el.empty();
-        },
-        showLoader: function() {
-            this.$el.modal('loading');
-        },
-        hideLoader: function() {
-            this.$el.modal('removeLoading');
+        if (modal) {
+            this.templateContext = assignIn(defaults, modal);
         }
-    });
+
+        this._bindModalEvents(modal);
+        this._attachListeners();
+    },
+    getTemplate () {
+        this.templateContext = assignIn(this.templateContext, { 'modalContent': this.getOption('template') });
+        return Template;
+    },
+    listeners: {
+        render () {
+            this.$el.modal({ backdrop: 'static' });
+        },
+        save (context) {
+            if (false === this.triggerMethod('before:modal:save', context)) {
+                return;
+            }
+
+            triggerMethod(this, 'modal:save', context)
+        }
+    },
+    _bindModalEvents (modal) {
+        forEach(result(modal, 'events'), (action, event) => {
+            if (isFunction(action)) {
+                this.listenTo(this, event, action);
+            } else if (includes(functionsIn(this), action)) {
+                this.listenTo(this, event, this[action])
+            } else {
+                throw `Callback specified for event ${event} is not a valid callback`
+            }
+        });
+    },
+    _attachListeners () {
+        this.$el.on('show.bs.modal', () => {
+            this.trigger('modal:show');
+        });
+
+        this.$el.on('hide.bs.modal', () => {
+            this.trigger('modal:hide');
+        });
+
+        this.$el.on('hidden.bs.modal', () => {
+            this.destroy();
+        });
+    },
+    _removeElement () {
+        this.$el.empty();
+    }
 });

@@ -1,5 +1,6 @@
-define(['marionette', 'template'], function(Mn, Template) {
-    return Mn.View.extend({
-        template: Template.core.billing.footer
-    });
+import ItemView from 'SolidInvoiceCore/js/view';
+import Template from 'SolidInvoiceCore/templates/billing/footer.hbs';
+
+export default ItemView.extend({
+    template: Template
 });

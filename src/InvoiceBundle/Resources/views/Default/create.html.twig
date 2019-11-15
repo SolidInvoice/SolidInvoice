@@ -9,7 +9,7 @@
 
 {% set items = form.items.vars.prototype|keys %}
 {% set formData = {} %}
-{% set module = 'invoice/create' %}
+{% set module = 'invoice-create' %}
 {% set currency = form.client.vars.data ? form.client.vars.data.currency : null %}
 
 {% for index, item in form.items %}

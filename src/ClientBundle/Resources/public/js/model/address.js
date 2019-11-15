@@ -1,13 +1,14 @@
-define(['backbone', 'routing'], function(Backbone, Routing) {
-    "use strict";
+import Backbone from 'backbone';
+import Router from 'router';
+import { assignIn } from 'lodash';
 
-    return Backbone.Model.extend({
-        url: function() {
-            return Routing.generate('_xhr_clients_address', {'id': this.id})
-        },
-        destroy: function(options) {
-            var opts = _.extend({url: Routing.generate('_xhr_clients_delete_address', {'id': this.id})}, options || {});
-            return Backbone.Model.prototype.destroy.call(this, opts);
-        }
-    });
+export default Backbone.Model.extend({
+    defaults: {},
+    url () {
+        return Router.generate('_xhr_clients_address', { 'id': this.id })
+    },
+    destroy (options) {
+        const opts = assignIn({ url: Router.generate('_xhr_clients_delete_address', { 'id': this.id }) }, options || {});
+        return Backbone.Model.prototype.destroy.call(this, opts);
+    }
 });

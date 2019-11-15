@@ -7,24 +7,31 @@
  * with this source code in the file LICENSE.
  */
 
-define(['jquery', 'backgrid', 'routing', 'grid/backgrid-paginator'], function($, Backgrid, Router) {
-    return {
-        row: function(route) {
-            return Backgrid.Row.extend({
-                className: 'redirectable',
-                events: {
-                    'click': 'onClick'
-                },
-                onClick: function(e) {
-                    var target = $(e.target);
+import $ from 'jquery';
+import Backgrid from 'backgrid';
+import Router from 'router';
 
-                    if (target.is(':input') || target.hasClass('select-row-cell') || target.hasClass('action-cell')) {
-                        return;
-                    }
-
-                    window.location = Router.generate(route, {'id': this.model.get('id')});
+export default {
+    row(route) {
+        return Backgrid.Row.extend({
+            className: 'redirectable',
+            events: {
+                'click': 'onClick'
+            },
+            onClick(e) {
+                if (null === route) {
+                    return
                 }
-            });
-        },
-    };
-});
+
+                const target = $(e.target);
+
+                if (target.is(':input') || target.hasClass('select-row-cell') || target.hasClass('action-cell')) {
+                    return;
+                }
+
+                window.location = Router.generate(route, { 'id': this.model.get('id') });
+            }
+        });
+    },
+};
+

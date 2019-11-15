@@ -1,20 +1,19 @@
-define(['backbone', 'routing'], function (Backbone, Routing) {
-    "use strict";
+import Backbone from 'backbone';
+import Router from 'router';
 
-    return Backbone.Model.extend({
-        url: function () {
-            return Routing.generate('_xhr_clients_credit_update', {'client': this.id})
-        },
-        defaults: {
-            credit: 0
-        },
-        validate: function (values) {
-            var credit = parseFloat(values.credit);
+export default Backbone.Model.extend({
+    defaults: {
+        credit: 0
+    },
+    url() {
+        return Router.generate('_xhr_clients_credit_update', { 'client': this.id })
+    },
+    validate(values) {
+        const credit = parseFloat(values.credit);
 
-            if (credit === 0) {
-                // @TODO: Add translation for this text
-                return 'Credit value cannot be 0'
-            }
+        if (0 === credit) {
+            // @TODO: Add translation for this text
+            return 'Credit value cannot be 0'
         }
-    });
+    }
 });

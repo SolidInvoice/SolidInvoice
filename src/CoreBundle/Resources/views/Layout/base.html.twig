@@ -6,6 +6,7 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+
 {% set locale = app.request.locale|split('_')[0] %}
 
 <!DOCTYPE html>
@@ -25,7 +26,7 @@
     <meta name="theme-color" content="#1E88E7">
 
     {% block stylesheets %}
-	    <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css" />
+        {{ encore_entry_link_tags('app') }}
     {% endblock stylesheets %}
 
     {% include '@SolidInvoiceCore/_partials/scripts.html.twig' %}
@@ -48,9 +49,16 @@
             {{ block('footer') is defined ? block('footer') }}
         </footer>
 
+        {% if module is defined %}
+            {{ encore_entry_script_tags(module) }}
+        {% else %}
+            {{ encore_entry_script_tags('core') }}
+        {% endif %}
+
         {{ block('scripts') is defined ? block('scripts') }}
 
         {{ block('body_bottom') is defined ? block('body_bottom') }}
     </div>
 </body>
 </html>
+

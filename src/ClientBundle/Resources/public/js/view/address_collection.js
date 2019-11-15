@@ -1,14 +1,11 @@
-define(
-    ['marionette', './address'],
-    function(Mn, AddressView) {
-        'use strict';
+import AddressView from './address';
+import { CollectionView } from 'backbone.marionette';
 
-        return Mn.CollectionView.extend({
-            childView: AddressView,
+export default CollectionView.extend({
+    childView: AddressView,
 
-            initialize : function () {
-                this.listenTo(this.collection, 'remove', this.render);
-                this.listenTo(this.collection, 'add', this.render);
-            }
-        });
-    });
+    initialize () {
+        this.listenTo(this.collection, 'remove', this.render);
+        this.listenTo(this.collection, 'add', this.render);
+    }
+});

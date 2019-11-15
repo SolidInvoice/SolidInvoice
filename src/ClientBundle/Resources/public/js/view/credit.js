@@ -1,35 +1,32 @@
-define(
-    ['core/view', './credit_modal', 'template'],
-    function(ItemView, CreditModal, Template) {
-        'use strict';
+import ItemView from 'SolidInvoiceCore/js/view';
+import CreditModal from './credit_modal';
+import Template from '../../templates/credit.hbs';
 
-        return ItemView.extend({
-            template: Template.client.credit,
+export default ItemView.extend({
+    template: Template,
 
-            ui: {
-                "addCredit": '#add-credit-button'
-            },
+    ui: {
+        'addCredit': '#add-credit-button'
+    },
 
-            events: {
-                "click @ui.addCredit": 'addCredit'
-            },
+    events: {
+        'click @ui.addCredit': 'addCredit'
+    },
 
-            initialize: function() {
-                this.listenTo(this.model, 'sync', this.modelSynced);
-            },
+    modal: null,
 
-            modelSynced: function() {
-                this.render();
-            },
+    initialize () {
+        this.listenTo(this.model, 'sync', this.modelSynced);
+    },
 
-            addCredit: function(event) {
-                event.preventDefault();
+    modelSynced () {
+        this.render();
+    },
 
-                var modal = new CreditModal({
-                    model: this.model
-                });
+    addCredit (event) {
+        event.preventDefault();
 
-                modal.render();
-            }
-        });
-    });
+        ( new CreditModal({ model: this.model }) ).render();
+    }
+});
+

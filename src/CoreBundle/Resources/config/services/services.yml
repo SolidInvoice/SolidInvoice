@@ -20,10 +20,6 @@ services:
         class: TijsVerkoyen\CssToInlineStyles\CssToInlineStyles
         public: false
 
-    oro.cache.abstract:
-        class: Doctrine\Common\Cache\FilesystemCache
-        arguments: ['%kernel.cache_dir%/requirejs']
-
     solidinvoice_menu.top:
         class: SolidInvoice\CoreBundle\Menu\Builder
         tags:

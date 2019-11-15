@@ -7,79 +7,79 @@
  * with this source code in the file LICENSE.
  */
 
-define(
-    ['jquery', 'marionette', 'lodash', 'jquery.select2'],
-    function($, Mn, _) {
-    'use strict';
+import $ from 'jquery';
+import { View } from 'backbone.marionette';
+import { isEmpty, result, bind, replace } from 'lodash';
+import 'select2';
 
-    return Mn.View.extend({
-        addSelector: '.btn-add',
-        removeSelector: '.btn-remove',
-        addBtn: function(event) {
-            event.preventDefault();
+export default View.extend({
+    addSelector: '.btn-add',
+    removeSelector: '.btn-remove',
+    addBtn(event) {
+        event.preventDefault();
 
-            var collectionHolder = this.$el.find('div[data-prototype]').first();
+        // eslint-disable-next-line
+        const collectionHolder = this.$el.find('div[data-prototype]').first(),
+            prototype = collectionHolder.data('prototype');
 
-            var prototype = collectionHolder.data('prototype');
-            var counter = parseInt(collectionHolder.data('counter'), 10) || collectionHolder.children().length;
+        let counter = parseInt(collectionHolder.data('counter'), 10) || collectionHolder.children().length;
 
-            if (!_.isEmpty(prototype)) {
-                var prototype_name = collectionHolder.data('prototype-name');
+        if (!isEmpty(prototype)) {
+            let prototype_name = collectionHolder.data('prototype-name');
 
-                if (_.isEmpty(prototype_name)) {
-                    prototype_name = '__name__';
-                }
-
-                var regex = new RegExp(prototype_name, "g");
-                var form = prototype.replace(regex, counter);
-
-                collectionHolder.data('counter', ++counter);
-
-                var el = collectionHolder.append(form);
-                
-                var select2 = $('select.select2');
-                if (select2.length) {
-                    select2.select2({
-                        theme: 'bootstrap'
-                    });
-                }
-
-                this.$el.trigger('collection:add', el);
-
-                this._toggleRemoveBtn();
+            if (isEmpty(prototype_name)) {
+                prototype_name = '__name__';
             }
-        },
-        removeBtn: function(event) {
-            event.preventDefault();
-            var $this = $(event.target),
-                el = $this.closest('.prototype-widget'),
-                that = this;
 
-            el.fadeOut(function() {
-                $(this).remove();
+            const regex = new RegExp(prototype_name, 'g'),
+                form = replace(prototype, regex, counter);
 
-                that._toggleRemoveBtn();
-            });
-        },
-        initialize: function(options) {
-            this.addSelector = _.result(options, 'addSelector', this.addSelector);
-            this.removeSelector = _.result(options, 'removeSelector', this.removeSelector);
+            collectionHolder.data('counter', ++counter);
 
-            this.delegate('click', this.addSelector, _.bind(this.addBtn, this));
-            this.delegate('click', this.removeSelector, _.bind(this.removeBtn, this));
+            const el = collectionHolder.append(form);
+            const select2 = $('select.select2');
+            if (select2.length) {
+                select2.select2({
+                    theme: 'bootstrap'
+                });
+            }
+
+            this.$el.trigger('collection:add', el);
 
             this._toggleRemoveBtn();
-
-            this.$el.trigger('initialize');
-        },
-        _toggleRemoveBtn: function() {
-            var collectionHolder = this.$el.find('div[data-prototype] > .prototype-widget');
-
-            if (collectionHolder.length === 1) {
-                this.$(this.removeSelector).hide();
-            } else {
-                this.$(this.removeSelector).show();
-            }
         }
-    });
+    },
+    removeBtn(event) {
+        event.preventDefault();
+        const $this = $(event.target),
+            el = $this.closest('.prototype-widget'),
+            that = this;
+
+        el.fadeOut(function() {
+            $(this).remove();
+
+            that._toggleRemoveBtn();
+        });
+    },
+    initialize(options) {
+        this.addSelector = result(options, 'addSelector', this.addSelector);
+        this.removeSelector = result(options, 'removeSelector', this.removeSelector);
+
+        this.delegate('click', this.addSelector, bind(this.addBtn, this));
+        this.delegate('click', this.removeSelector, bind(this.removeBtn, this));
+
+        this._toggleRemoveBtn();
+
+        this.$el.trigger('initialize');
+    },
+    _toggleRemoveBtn() {
+        // eslint-disable-next-line
+        const collectionHolder = this.$el.find('div[data-prototype] > .prototype-widget');
+
+        if (1 === collectionHolder.length) {
+            this.$(this.removeSelector).hide();
+        } else {
+            this.$(this.removeSelector).show();
+        }
+    }
 });

@@ -7,18 +7,22 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'lodash'], function(Backgrid, _) {
-    var ObjectFormatter = Backgrid.ObjectFormatter = function() {
-    };
-    ObjectFormatter.prototype = new Backgrid.CellFormatter();
-    _.extend(ObjectFormatter.prototype, {
-	fromRaw: function(rawData, model) {
-	    if (!_.isUndefined(rawData)) {
-		return rawData.name;
-	    }
-	},
-	toRaw: function(formattedData, model) {
-	    return formattedData;
-	}
-    });
+import Backgrid from 'backgrid';
+import { assignIn, isUndefined, noop } from 'lodash';
+
+const ObjectFormatter = Backgrid.ObjectFormatter = noop;
+
+ObjectFormatter.prototype = new Backgrid.CellFormatter();
+
+assignIn(ObjectFormatter.prototype, {
+    fromRaw (rawData) {
+        if (!isUndefined(rawData)) {
+            return rawData.name;
+        }
+    },
+    toRaw (formattedData) {
+        return formattedData;
+    }
 });
+
+export default ObjectFormatter;

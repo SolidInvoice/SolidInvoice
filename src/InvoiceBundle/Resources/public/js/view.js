@@ -1,6 +1,7 @@
-define(['template', 'core/billing/view/base'], function(Template, BaseView) {
-    return BaseView.extend({
-        template: Template.invoice.table,
-        childViewContainer: "#invoice-rows"
-    });
+import BaseView from 'SolidInvoiceCore/js/billing/view/base';
+import Template from '../templates/table.hbs';
+
+export default BaseView.extend({
+    template: Template,
+    childViewContainer: '#invoice-rows'
 });

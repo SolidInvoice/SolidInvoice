@@ -1,5 +1,6 @@
-define(['template', 'grid/backgrid-filter'], function() {
-    return Backgrid.Extension.ServerSideFilter.extend({
-        name: "q"
-    });
+import Backgrid from 'backgrid';
+import 'backgrid-filter';
+
+export default Backgrid.Extension.ServerSideFilter.extend({
+    name: 'q'
 });

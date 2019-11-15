@@ -1,61 +1,50 @@
-define(['jquery', 'marionette', 'lodash'], function($, Mn, _) {
+import $ from 'jquery';
+import { MnObject } from 'backbone.marionette';
+import { forEach, map } from 'lodash';
 
-    var MailSettings = Mn.MnObject.extend({
-	gmailConfig: null,
-	smtpConfig: null,
-	initialize: function(prefix, value) {
-            this.prefix = prefix;
-            this.value = value;
+export default MnObject.extend({
+    gmailConfig: null,
+    smtpConfig: null,
+    initialize (prefix, value) {
+        this.prefix = prefix;
+        this.value = value;
 
-	    this._init();
-        },
-	_init: function() {
-	    var transport = $('#' + this.prefix + '_transport'),
+        const transport = $('#' + this.prefix + '_transport'),
+            smtpConfig = [
+                'host', 'port', 'encryption', 'user', 'password'
+            ],
+            gmailConfig = [
+                'user', 'password'
+            ];
 
-		smtpConfig = [
-		    'host', 'port', 'encryption', 'user', 'password'
-		],
-		gmailConfig = [
-		    'user', 'password'
-		],
-		that = this;
+        forEach({ 'smtpConfig': smtpConfig, 'gmailConfig': gmailConfig }, (values, type) => {
+            this[type] = $(map(values, (val) => `#{this.prefix}_${val}`).join(',')).parent('.form-group');
+        });
 
-	    _.forEach({"smtpConfig": smtpConfig, 'gmailConfig': gmailConfig}, function(values, type) {
-		that[type] = $(_.map(values, _.bind(function(value) {
-		    return '#' + that.prefix + '_' + value;
-		}, this)).join(',')).parent('.form-group');
-	    });
+        transport.on('change', (event) => {
+            this._setSettings($(event.target).val());
+        });
 
-            transport.on('change', _.bind(function(event) {
-                var value = $(event.target).val();
-                this._setSettings(value);
-            }, this));
-
-            this._setSettings(this.value);
-        },
-	_setSettings: function(value) {
-            if ('smtp' === value) {
-                this._showSmtpSettings();
-            } else if ('gmail' === value) {
-                this._showGmailSettings();
-            } else {
-                this._hideSettings();
-            }
-        },
-        _showSmtpSettings: function() {
-	    this.smtpConfig.show();
-        },
-        _showGmailSettings: function() {
-	    this.smtpConfig.hide();
-            this.gmailConfig.show();
-        },
-        _hideSettings: function() {
-	    this.smtpConfig.hide();
-            this.gmailConfig.hide();
+        this._setSettings(this.value);
+    },
+    _setSettings (value) {
+        if ('smtp' === value) {
+            this._showSmtpSettings();
+        } else if ('gmail' === value) {
+            this._showGmailSettings();
+        } else {
+            this._hideSettings();
         }
-    });
-
-    return function(prefix, value) {
-	return new MailSettings(prefix, value);
-    };
+    },
+    _showSmtpSettings () {
+        this.smtpConfig.show();
+    },
+    _showGmailSettings () {
+        this.smtpConfig.hide();
+        this.gmailConfig.show();
+    },
+    _hideSettings () {
+        this.smtpConfig.hide();
+        this.gmailConfig.hide();
+    }
 });

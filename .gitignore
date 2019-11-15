@@ -1,10 +1,12 @@
-web/assets/*
-web/bundles/*
+web/static
+web/bundles
 web/css/*
 web/js/*
 web/fonts/*
 web/img/*
 web/manifest.json
+assets/js/translations
+assets/js/js_routes.json
 var/bootstrap.php.cache
 var/cache/*
 var/logs/*

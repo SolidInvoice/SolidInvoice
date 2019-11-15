@@ -7,74 +7,81 @@
  * with this source code in the file LICENSE.
  */
 
-define(['backgrid', 'backbone', 'lodash', 'template', 'jquery.jqcron'], function(Backgrid, Backbone, _, Template) {
-    Backgrid.Extension.InvoiceCell = Backgrid.Cell.extend({
-	template: Template.datagrid.invoice_link,
-	_setRouteParams: function(action) {
-	    action.routeParams = {};
+import Backgrid from 'backgrid';
+import Backbone from 'backbone';
+import { forEach, isUndefined } from 'lodash';
+import Template from '../../templates/invoice_link.hbs';
+import Cron from 'SolidInvoiceCore/js/util/form/cron';
 
-	    _.each(action.route_params, _.bind(function(value, key) {
-		action.routeParams[key] = this.model.get(value);
-	    }, this));
-	},
-	render: function() {
-	    this.$el.empty();
+Backgrid.Extension.InvoiceCell = Backgrid.Cell.extend({
+    template: Template,
+    _setRouteParams (action) {
+        action.routeParams = {};
 
-	    var invoice = this.model.get('invoice');
+        forEach(action.route_params, (value, key) => {
+            action.routeParams[key] = this.model.get(value);
+        });
+    },
+    render () {
+        this.$el.empty();
 
-	    if (!_.isUndefined(invoice)) {
-		this.$el.append(this.template({'invoice': invoice}));
-	    }
+        const invoice = this.model.get('invoice');
 
-	    this.delegateEvents();
-	    return this;
-	}
-    });
+        if (!isUndefined(invoice)) {
+            this.$el.append(this.template({ 'invoice': invoice }));
+        }
 
-    Backgrid.Extension.RecurringInvoiceEndCell = Backgrid.DateCell.extend({
-	initialize: function() {
-	    Backgrid.DateCell.__super__.initialize.apply(this, arguments);
-
-	    var recurringInfo = this.model.get('recurringInfo');
-
-	    this.model = new Backbone.Model(recurringInfo);
-	}
-    });
-
-    Backgrid.Extension.RecurringInvoiceStartCell = Backgrid.DateCell.extend({
-	initialize: function() {
-	    Backgrid.DateCell.__super__.initialize.apply(this, arguments);
-
-	    var recurringInfo = this.model.get('recurringInfo');
-
-	    this.model = new Backbone.Model(recurringInfo);
-	}
-    });
-
-    Backgrid.Extension.RecurringInvoiceFrequencyCell = Backgrid.StringCell.extend({
-	initialize: function() {
-	    Backgrid.StringCell.__super__.initialize.apply(this, arguments);
-
-	    var recurringInfo = this.model.get('recurringInfo');
-
-	    this.model = new Backbone.Model(recurringInfo);
-	},
-	render: function() {
-	    var value = this.model.get(this.column.get("name"));
-
-	    this.$el.jqCron({
-		enabled_minute: false,
-		enabled_hour: false,
-		no_reset_button: true,
-		numeric_zero_pad: true,
-		default_value: value
-	    });
-
-	    setTimeout(function() {
-		$('.jqCron-selector-list').remove();
-	    }, 0);
-
-	    return this;
-	}
-    });
+        this.delegateEvents();
+        return this;
+    }
 });
+
+Backgrid.Extension.RecurringInvoiceEndCell = Backgrid.DateCell.extend({
+    initialize () {
+        Backgrid.DateCell.__super__.initialize.apply(this, arguments);
+
+        const recurringInfo = this.model.get('recurringInfo');
+
+        this.model = new Backbone.Model(recurringInfo);
+    }
+});
+
+Backgrid.Extension.RecurringInvoiceStartCell = Backgrid.DateCell.extend({
+    initialize () {
+        Backgrid.DateCell.__super__.initialize.apply(this, arguments);
+
+        const recurringInfo = this.model.get('recurringInfo');
+
+        this.model = new Backbone.Model(recurringInfo);
+    }
+});
+
+Backgrid.Extension.RecurringInvoiceFrequencyCell = Backgrid.StringCell.extend({
+    initialize () {
+        Backgrid.StringCell.__super__.initialize.apply(this, arguments);
+
+        const recurringInfo = this.model.get('recurringInfo');
+
+        this.model = new Backbone.Model(recurringInfo);
+    },
+    render () {
+        const value = this.model.get(this.column.get('name'));
+
+        Cron(this.$el, {
+            enabled_minute: false,
+            enabled_hour: false,
+            no_reset_button: true,
+            numeric_zero_pad: true,
+            default_value: value
+        });
+
+        setTimeout(() => {
+            // eslint-disable-next-line
+            this.$el.find('.jqCron-selector-list').remove();
+        }, 0);
+
+        return this;
+    }
+});
+
+export default Backgrid;

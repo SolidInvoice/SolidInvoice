@@ -7,25 +7,18 @@
  * with this source code in the file LICENSE.
  */
 
-define(
-    ['marionette', 'lodash', 'client/view/credit', 'client/model/credit'],
-    function(Mn, _, CreditView, CreditModel) {
-        'use strict';
+import CreditView from './view/credit';
+import CreditModel from './model/credit';
+import { result } from 'lodash';
 
-        var credit = Mn.MnObject.extend({
-            getView: function(options) {
-                var value = _.result(options, 'credit', 0);
-                var model = new CreditModel({
-                    credit: value > 0 ? value / 100 : value,
-                    id: options.id
-                });
+export default function(options) {
+    const value = result(options, 'credit', 0);
+    const model = new CreditModel({
+        credit: 0 < value ? value / 100 : value,
+        id: options.id
+    });
 
-                return new CreditView({
-                    model: model
-                });
-            }
-        });
-
-        return new credit;
-    }
-);
+    return new CreditView({
+        model: model
+    });
+}

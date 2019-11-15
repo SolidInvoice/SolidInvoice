@@ -7,6 +7,13 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set moduleData = {
+    mail: {
+        settings: {
+            value: form.email_settings.transport.vars.value
+        }
+    }
+} %}
 {% extends '@SolidInvoiceInstall/layout.html.twig' %}
 
 {% block content %}
@@ -49,13 +56,11 @@
             {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
         </button>
     </div>
-    <br class="clear" />
+    <br class="clear"/>
 
     {{ form_end(form) }}
-
-    <script>
-        require(['core/util/form/mail'], function (MailSettings) {
-	        MailSettings('config_step_email_settings', '{{ form.email_settings.transport.vars.value }}');
-        });
-    </script>
 {% endblock %}
+
+{% block scripts %}
+    {{ encore_entry_script_tags('installation-config') }}
+{% endblock scripts %}

@@ -1,132 +1,112 @@
-define(
-    [
-        'core/module',
-        'jquery',
-        'backbone',
-        'lodash',
-        'client/view/client_select',
-        'core/billing/model/footer_row_model',
-        'core/billing/model/row_model',
-        'core/billing/model/discount',
-        'core/billing/model/collection',
-        'core/billing/view/footer',
-        'invoice/view',
-        'core/billing/view/discount',
-        'routing',
-        'accounting'
-    ],
-    function(Module,
-             $,
-             Backbone,
-             _,
-             ClientSelectView,
-             FooterRowModel,
-             RowModel,
-             DiscountModel,
-             Collection,
-             FooterView,
-             InvoiceView,
-             Discount,
-             Routing,
-             Accounting) {
-        "use strict";
+import Module from 'SolidInvoiceCore/js/module';
+import $ from 'jquery';
+import Backbone from 'backbone';
+import { map, isEmpty, merge } from 'lodash';
+import ClientSelectView from 'SolidInvoiceClient/js/view/client_select';
+import FooterRowModel from 'SolidInvoiceCore/js/billing/model/footer_row_model';
+import RowModel from 'SolidInvoiceCore/js/billing/model/row_model';
+import DiscountModel from 'SolidInvoiceCore/js/billing/model/discount';
+import Collection from 'SolidInvoiceCore/js/billing/model/collection';
+import FooterView from 'SolidInvoiceCore/js/billing/view/footer';
+import InvoiceView from './view';
+import Discount from 'SolidInvoiceCore/js/billing/view/discount';
+import Router from 'router';
+import Accounting from 'accounting';
 
-        return Module.extend({
-            collection: null,
-            footerRowModel: null,
-            regions: {
-                'clientInfo': '#client-info',
-                'invoiceRows': '#invoice-items',
-                'invoiceForm': '#invoice-create-form'
-            },
-            _renderClientSelect: function(options) {
-                var model = new Backbone.Model(options.client),
-                    viewOptions = {type: 'invoice', model: model, 'hideLoader': false},
-                    module = this,
-                    clientSelectView = new ClientSelectView(_.merge(options, viewOptions));
+export default Module.extend({
+    collection: null,
+    footerRowModel: null,
+    discount: null,
+    regions: {
+        'clientInfo': '#client-info',
+        'invoiceRows': '#invoice-items',
+        'invoiceForm': '#invoice-create-form'
+    },
+    _renderClientSelect (options) {
+        const model = new Backbone.Model(options.client),
+            viewOptions = { type: 'invoice', model: model, 'hideLoader': false },
+            module = this,
+            clientSelectView = new ClientSelectView(merge(options, viewOptions));
 
-                clientSelectView.on('currency:update', function(clientOptions) {
-                    Accounting.settings.currency.symbol = clientOptions.currency_format;
+        clientSelectView.on('currency:update', (clientOptions) => {
+            Accounting.settings.currency.symbol = clientOptions.currency_format;
 
-                    $.getJSON(
-                        Routing.generate('_invoices_get_fields', {'currency': clientOptions.currency})
-                    ).done(_.bind(function(fieldData) {
-                        module.collection.each(function(model) {
-                            model.set('fields', fieldData);
-                        });
-
-                        var invoiceView = module._getInvoiceView(fieldData);
-
-                        this.hideLoader();
-
-                        module.app.showChildView('invoiceRows', invoiceView);
-
-                        this.$el.find(this.regions.invoiceForm).attr('action', Routing.generate('_invoices_create', {'client': clientOptions.client}));
-                        $('.currency-view').html(clientOptions.currency);
-
-                        module.app.initialize(module.app.options);
-                    }, this));
+            $.getJSON(
+                Router.generate('_invoices_get_fields', { 'currency': clientOptions.currency })
+            ).done((fieldData) => {
+                module.collection.each((m) => {
+                    m.set('fields', fieldData);
                 });
 
-                this.app.showChildView('clientInfo', clientSelectView);
-            },
-            _getInvoiceView: function(fieldData) {
-                return new InvoiceView(
-                    {
-                        'collection': this.collection,
-                        'footerView': new FooterView({model: this.footerRowModel}),
-                        'selector': '#invoice-footer',
-                        'fieldData': fieldData,
-                        'hasTax': this.options.tax
-                    }
-                );
+                const invoiceView = module._getInvoiceView(fieldData);
 
-            },
-            initialize: function(options) {
-                var discountModel = new DiscountModel(),
-                    recurring = $('#invoice_recurring'),
-                    recurringInfo = $('.recurring-info');
+                this.hideLoader();
 
-                this.footerRowModel = new FooterRowModel();
+                module.app.showChildView('invoiceRows', invoiceView);
 
-                this.footerRowModel.set('hasTax', options.tax);
+                // eslint-disable-next-line
+                this.$el.find(this.regions.invoiceForm).attr('action', Router.generate('_invoices_create', { 'client': clientOptions.client }));
+                $('.currency-view').html(clientOptions.currency);
 
-                recurring.on('change', function() {
-                    recurringInfo.toggleClass('hidden');
-                });
-
-                if (recurring.is(':checked')) {
-                    recurringInfo.removeClass('hidden');
-                }
-
-                this._renderClientSelect(options);
-
-                var models = [];
-
-                if (!_.isEmpty(options.formData)) {
-                    var counter = 0;
-
-                    _.each(options.formData, function(item) {
-                        models.push(new RowModel({
-                            id: counter++,
-                            fields: item
-                        }));
-                    });
-                } else {
-                    models.push(new RowModel({
-                        id: 0,
-                        fields: options.fieldData
-                    }));
-                }
-
-                /* COLLECTION */
-                this.collection = new Collection(models, {"discountModel": discountModel, 'footerModel': this.footerRowModel});
-
-                /* DISCOUNT */
-                new Discount({model: discountModel, collection: this.collection});
-
-                this.app.showChildView('invoiceRows', this._getInvoiceView(options.fieldData));
-            }
+                module.app.initialize(module.app.options);
+            });
         });
+
+        this.app.showChildView('clientInfo', clientSelectView);
+    },
+    _getInvoiceView (fieldData) {
+        return new InvoiceView(
+            {
+                'collection': this.collection,
+                'footerView': new FooterView({ model: this.footerRowModel }),
+                'selector': '#invoice-footer',
+                'fieldData': fieldData,
+                'hasTax': this.options.tax
+            }
+        );
+
+    },
+    initialize (options) {
+        const discountModel = new DiscountModel(),
+            recurring = $('#invoice_recurring'),
+            recurringInfo = $('.recurring-info');
+
+        this.footerRowModel = new FooterRowModel();
+
+        this.footerRowModel.set('hasTax', options.tax);
+
+        recurring.on('change', () => {
+            recurringInfo.toggleClass('hidden');
+        });
+
+        if (recurring.is(':checked')) {
+            recurringInfo.removeClass('hidden');
+        }
+
+        this._renderClientSelect(options);
+
+        let models = [];
+
+        if (!isEmpty(options.formData)) {
+            let counter = 0;
+
+            models = map(options.formData, (item) => new RowModel({
+                id: counter++,
+                fields: item
+            }));
+        } else {
+            models.push(new RowModel({
+                id: 0,
+                fields: options.fieldData
+            }));
+        }
+
+        /* COLLECTION */
+        this.collection = new Collection(models, { 'discountModel': discountModel, 'footerModel': this.footerRowModel });
+
+        /* DISCOUNT */
+        this.discount = new Discount({ model: discountModel, collection: this.collection });
+
+        this.app.showChildView('invoiceRows', this._getInvoiceView(options.fieldData));
     }
-);
+});

@@ -10,8 +10,6 @@
 
 <div id="{{ id }}"></div>
 
-<script>
-    require(['grid/grid'{% if requiresStatus %}, 'grid/cell/statuscell'{% endif %}], function (Grid) {
-	    new Grid({{ gridOptions|raw }}, '#{{ id }}');
-    });
+<script type="application/json" data-type="grid" data-target="#{{ id }}">
+    {{ gridOptions|raw }}
 </script>

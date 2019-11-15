@@ -7,46 +7,45 @@
  * with this source code in the file LICENSE.
  */
 
-define(
-    ['marionette', 'client/model/contact', 'client/view/contact_modal', 'template', 'translator'],
-    function(Mn, Contact, ContactModal, Template, __) {
-        "use strict";
+import { View } from 'backbone.marionette';
+import Template from '../../templates/info.hbs';
+import Contact from '../model/contact'
+import ContactModal from './contact_modal'
+import Translator from 'translator'
 
-        return Mn.View.extend({
-            template: Template.client.info,
-            contactCollection: null,
-            regions: {
-                'clientContact': '#client-contacts-list',
-                'clientAddress': '#client-address-list'
-            },
-            ui: {
-                'addContact': '#add-contact-button'
-            },
-            events: {
-                'click @ui.addContact': 'addContact'
-            },
-            addContact: function(event) {
-                event.preventDefault();
+export default View.extend({
+    template: Template,
+    contactCollection: null,
+    regions: {
+        'clientContact': '#client-contacts-list',
+        'clientAddress': '#client-address-list'
+    },
+    ui: {
+        'addContact': '#add-contact-button'
+    },
+    events: {
+        'click @ui.addContact': 'addContact'
+    },
+    addContact(event) {
+        event.preventDefault();
 
-                var collection = this.contactCollection;
+        const collection = this.contactCollection,
+            modal = ContactModal.extend({
+                initialize() {
+                    this.listenTo(this, 'ajax:response', (response) => {
+                        collection.add(new Contact(response));
+                    });
+                }
+            });
 
-                var modal = ContactModal.extend({
-                    initialize: function() {
-                        this.listenTo(this, 'ajax:response', function(response) {
-                            collection.add(new Contact(response));
-                        });
-                    }
-                });
-
-                new modal({
-                    title: __('client.modal.add_contact'),
-                    route: this.$(event.currentTarget).prop('href')
-                });
-            },
-            renderContactsRegion: function(view) {
-                this.contactCollection = view.collection;
-
-                this.getRegion('clientContact').show(view);
-            }
+        new modal({
+            title: Translator.trans('client.modal.add_contact'),
+            route: this.$(event.currentTarget).prop('href')
         });
-    });
+    },
+    renderContactsRegion(view) {
+        this.contactCollection = view.collection;
+
+        this.getRegion('clientContact').show(view);
+    }
+});

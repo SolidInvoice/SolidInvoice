@@ -1,7 +1,7 @@
-define(['translation_data'], function (Translator) {
-    "use strict";
+import Translator from 'bazinga-translator';
+import Config from '~/config';
+const messages = require('~/translations/' + Config.locale + '.json');
 
-    return function (message, parameters, domain, locale) {
-        return Translator.trans(message, parameters, domain, locale);
-    };
-});
+Translator.fromJSON(messages);
+
+export default Translator;

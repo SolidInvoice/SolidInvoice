@@ -102,14 +102,6 @@ fos_user:
     service:
         mailer: fos_user.mailer.twig_swift
 
-oro_require_js:
-    config:
-        waitSeconds: 0
-        enforceDefine: false
-        scriptType: text/javascript
-    js_engine: node
-    base_url: assets
-
 api_platform:
     title: 'API'
     formats:
@@ -118,3 +110,6 @@ api_platform:
         json:     ['application/json']
         xml:      ['application/xml', 'text/xml']
         html:     ['text/html']
+
+webpack_encore:
+    output_path: '%kernel.project_dir%/web/static'

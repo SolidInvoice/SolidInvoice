@@ -1,13 +1,16 @@
-require(['client/create', 'marionette', 'util/form/collection', 'client/contacts_collection'], function (Create, Mn, FormCollection, ContactCollection) {
-    describe('it instantiates contact and form collection', function() {
-        var client = new Create({}, new (Mn.Application.extend({})));
+import Create from 'SolidInvoiceClient/js/create';
+import { Application } from 'backbone.marionette';
+import FormCollection from 'SolidInvoiceCore/js/util/form/collection';
+import ContactCollection from '../js/contacts_collection';
 
-        it('contactCollection is an instance of ContactCollection', function() {
-            expect(client.contactCollection).toBeInstanceOf(ContactCollection);
-        });
+describe('it instantiates contact and form collection', function() {
+    const client = new Create({}, new (Application.extend({})));
 
-        it('formCollection is an instance of FormCollection', function() {
-            expect(client.formCollection).toBeInstanceOf(FormCollection);
-        });
+    it('contactCollection is an instance of ContactCollection', function() {
+        expect(client.contactCollection).toBeInstanceOf(ContactCollection);
+    });
+
+    it('formCollection is an instance of FormCollection', function() {
+        expect(client.formCollection).toBeInstanceOf(FormCollection);
     });
 });

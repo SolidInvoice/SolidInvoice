@@ -22,34 +22,13 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript">
-        require(['accounting', 'core/app'], function (Accounting, App) {
-            App.on('before:start', function () {
-                Accounting.settings = {
-                    currency: {
-                        symbol : "{{ currencyFormatter().currencySymbol(currency is defined  ? currency : null) }}",
-                        format: "{{ currencyFormatter().pattern }}",
-                        decimal : "{{ currencyFormatter().decimalSeparator }}",
-                        thousand: "{{ currencyFormatter().thousandSeparator }}",
-                        precision : 2
-                    },
-                    number: {
-                        precision : 0,
-                        thousand: "{{ currencyFormatter().thousandSeparator }}",
-                        decimal : "{{ currencyFormatter().decimalSeparator }}"
-                    }
-                };
-            });
+    {% set script = block("script") ?? null %}
 
-            App.start();
-        });
-
-        {% set script = block("script") is defined ? block("script") %}
-
-        {% if script is not empty %}
+    {% if script is not empty %}
+        <script>
             {{ script|raw }}
-        {% endif %}
-    </script>
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block header %}

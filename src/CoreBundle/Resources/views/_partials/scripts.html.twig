@@ -1,38 +1,27 @@
-{% spaceless %}
-    {% set config_extend %}
-    require({
-        {% if not app.debug %}
-            shim: {
-                translation_data: {
-                    "deps": [
-                        '{{ asset('js/translations/en.js') }}'{% if locale != 'en' %},
-                        '{{ asset('js/translations/' ~ locale ~ '.js') }}'{% endif %}
-                    ]
-                }
+{% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
+
+<script type="application/json" data-type="module-data">
+    {
+        "module" : {
+            "name": "{{ module ?? 'core' }}",
+            "data": {{ (moduleData is defined ? moduleData|serialize('json',serializationGroups) : "{}")|raw }}
+        },
+        "locale": "{{ app.request.locale|split('_')[0] }}",
+        "accounting": {
+            "currency": {
+                "symbol": "{{ currencyFormatter().currencySymbol(currency is defined  ? currency : null) }}",
+                "format": "{{ currencyFormatter().pattern }}",
+                "decimal": "{{ currencyFormatter().decimalSeparator }}",
+                "thousand": "{{ currencyFormatter().thousandSeparator }}",
+                "precision": 2
             },
-        {% endif %}
-            paths: {
-                {% if app.debug %}
-                    {% if locale != 'en' %}
-                        {% set locale = 'en,' ~ locale %}
-                    {% endif %}
-                    'fos_routing_data': '{{ path('fos_js_routing_js', {'callback': 'define'}) }}',
-                    'translation_data': '{{ path('bazinga_jstranslation_js', {'locales' : locale}) }}'
-                {% else %}
-                    'translation_data': '{{ asset('js/translations/config.js') }}'
-                {% endif %}
+            "number": {
+                "precision": 0,
+                "thousand": "{{ currencyFormatter().thousandSeparator }}",
+                "decimal": "{{ currencyFormatter().decimalSeparator }}"
             }
+        }
+    }
+</script>
 
-        {% if module is defined %}
-            , module: '{{ module }}'
-        {% if moduleData is defined %}
-            {% if serializationGroups is not defined %}{% set serializationGroups = [] %}{% endif %}
-            , moduleData: function() { return {{ moduleData|serialize('json', serializationGroups)|raw }} }
-        {% endif %}
-        {% endif %}
-    });
-    {% endset %}
-
-    {% include "@OroRequireJS/scripts.html.twig" with {"config_extend": config_extend, "compressed": (not app.debug)} only %}
-
-{% endspaceless %}
+{% include '@SolidInvoiceCore/_partials/status_labels.html.twig' %}

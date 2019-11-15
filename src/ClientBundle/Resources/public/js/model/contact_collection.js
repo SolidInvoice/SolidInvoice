@@ -1,7 +1,6 @@
-define(['backbone', 'client/model/contact'], function (Backbone, Contact) {
-    "use strict";
+import Backbone from 'backbone';
+import Contact from './contact';
 
-    return Backbone.Collection.extend({
-        model: Contact
-    });
+export default Backbone.Collection.extend({
+    model: Contact
 });
