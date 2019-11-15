@@ -141,8 +141,7 @@
         "knplabs/friendly-contexts": "^0.8.2",
         "phpstan/phpstan-doctrine": "^0.11",
         "phpstan/phpstan-symfony": "^0.11",
-        "dama/doctrine-test-bundle": "^5.0",
-        "composer/composer": "^1.8"
+        "dama/doctrine-test-bundle": "^5.0"
     },
     "scripts": {
         "post-install-cmd": [
