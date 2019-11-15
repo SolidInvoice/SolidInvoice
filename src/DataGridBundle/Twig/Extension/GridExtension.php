@@ -78,7 +78,7 @@ class GridExtension extends \Twig\Extension\AbstractExtension
             '@SolidInvoiceDataGrid/grid.html.twig',
             [
                 'gridName' => $gridName,
-                'gridOptions' => $gridOptions
+                'gridOptions' => $gridOptions,
             ]
         );
     }
