@@ -6,9 +6,5 @@ services:
     SolidInvoice\SettingsBundle\SystemConfig:
         lazy: true
 
-    SolidInvoice\SettingsBundle\Repository\SettingsRepository:
-        factory: ['@doctrine', 'getRepository']
-        arguments: ['SolidInvoiceSettingsBundle:Setting']
-
     settings:
         alias: SolidInvoice\SettingsBundle\SystemConfig

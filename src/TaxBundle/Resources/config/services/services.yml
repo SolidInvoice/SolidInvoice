@@ -1,4 +1,0 @@
-services:
-    SolidInvoice\TaxBundle\Repository\TaxRepository:
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceTaxBundle:Tax']

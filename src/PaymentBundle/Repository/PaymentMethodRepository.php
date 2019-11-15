@@ -13,11 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NoResultException;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 
-class PaymentMethodRepository extends EntityRepository
+class PaymentMethodRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, PaymentMethod::class);
+    }
+
     /**
      * @param string $gatewayName
      *

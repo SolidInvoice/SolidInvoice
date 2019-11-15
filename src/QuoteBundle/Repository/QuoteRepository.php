@@ -13,14 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 
-class QuoteRepository extends EntityRepository
+class QuoteRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Quote::class);
+    }
+
     /**
      * Gets total number of quotes.
      *

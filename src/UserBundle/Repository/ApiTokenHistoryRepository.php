@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 
-class ApiTokenHistoryRepository extends EntityRepository
+class ApiTokenHistoryRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ApiTokenHistory::class);
+    }
+
     public function addHistory(ApiTokenHistory $history, string $token): void
     {
         $entityManager = $this->getEntityManager();

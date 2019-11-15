@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Form\Type;
 
 use SolidInvoice\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
+use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,16 +28,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class ContactDetailType extends AbstractType
 {
     /**
-     * @var \SolidInvoice\ClientBundle\Entity\ContactType[]
+     * @var ContactTypeRepository
      */
-    protected $types;
+    private $contactTypeRepository;
 
-    /**
-     * @param \SolidInvoice\ClientBundle\Entity\ContactType[] $types
-     */
-    public function __construct(array $types)
+    public function __construct(ContactTypeRepository $contactTypeRepository)
     {
-        $this->types = $types;
+        $this->contactTypeRepository = $contactTypeRepository;
     }
 
     /**
@@ -44,7 +42,7 @@ class ContactDetailType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['contactTypes'] = $this->types;
+        $view->vars['contactTypes'] = $this->contactTypeRepository->findAll();
     }
 
     /**
@@ -59,11 +57,11 @@ class ContactDetailType extends AbstractType
                     HiddenType::class,
                     [
                         'attr' => [
-                        'class' => 'input-group-select-val',
+                            'class' => 'input-group-select-val',
                         ],
                     ]
                 )
-            ->addModelTransformer(new ContactTypeTransformer($this->types))
+                ->addModelTransformer(new ContactTypeTransformer($this->contactTypeRepository->findAll()))
         );
 
         $builder->add(

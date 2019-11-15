@@ -1,7 +1,0 @@
-services:
-    _defaults:
-        tags:
-            - { name: 'form.type' }
-
-    SolidInvoice\ClientBundle\Form\Type\ContactDetailType:
-        arguments: ['@solidinvoice_client.contact_type.values']

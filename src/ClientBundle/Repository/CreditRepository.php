@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
-use Doctrine\ORM\EntityRepository;
-use Money\Money;
 
-class CreditRepository extends EntityRepository
+class CreditRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Credit::class);
+    }
+
     /**
      * @param Client $client
      * @param Money  $amount

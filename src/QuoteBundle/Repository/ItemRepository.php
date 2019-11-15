@@ -13,15 +13,22 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Class ItemRepository.
  */
-class ItemRepository extends EntityRepository
+class ItemRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Item::class);
+    }
+
     /**
      * Removes all tax rates from invoices.
      *

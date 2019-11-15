@@ -27,6 +27,7 @@ security:
             stateless: true
             anonymous: true
             form_login:
+                provider: api_token_user_provider
                 check_path: /api/login
                 require_previous_session: false
                 success_handler: api.success

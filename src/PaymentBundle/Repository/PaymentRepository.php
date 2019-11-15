@@ -13,17 +13,23 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 
-class PaymentRepository extends EntityRepository
+class PaymentRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Payment::class);
+    }
+
     /**
      * Gets the total income that was received.
      *
@@ -31,6 +37,7 @@ class PaymentRepository extends EntityRepository
      * @param bool                                     $groupByCurrency
      *
      * @return array|int
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getTotalIncome(Client $client = null, $groupByCurrency = false)
     {

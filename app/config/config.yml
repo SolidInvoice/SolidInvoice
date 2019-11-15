@@ -3,7 +3,6 @@ imports:
     - { resource: security.yml }
     - { resource: payum.yml }
     - { resource: workflow.yml }
-    - { resource: assetVersion.php }
 
 framework:
     esi: null
@@ -25,6 +24,11 @@ framework:
     fragments: null
     http_method_override: true
     serializer: { enable_annotations: true }
+    templating:
+        engines: [twig]
+    assets:
+        json_manifest_path: '%kernel.project_dir%/web/static/manifest.json'
+        base_urls: '%base_url%'
 
 twig:
     debug: '%kernel.debug%'
@@ -104,6 +108,7 @@ fos_user:
 
 api_platform:
     title: 'API'
+    version: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION
     formats:
         jsonld:   ['application/ld+json']
         jsonhal:  ['application/hal+json']
