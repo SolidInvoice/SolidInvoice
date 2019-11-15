@@ -79,7 +79,8 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'quote.action.create.success';

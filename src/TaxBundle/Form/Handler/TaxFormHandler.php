@@ -61,7 +61,8 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
 
         $route = $this->router->generate('_tax_rates');
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield FlashResponse::FLASH_SUCCESS => 'Tax rate successfully saved';

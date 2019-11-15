@@ -56,7 +56,8 @@ final class Transition
             $route = $this->router->generate('_invoices_view', ['id' => $quote->getInvoice()->getId()]);
         }
 
-        return new class($action, $route) extends RedirectResponse implements FlashResponse {
+        return new class($action, $route) extends RedirectResponse implements FlashResponse
+        {
             /**
              * @var string
              */

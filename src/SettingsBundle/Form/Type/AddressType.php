@@ -22,7 +22,8 @@ class AddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new class() implements DataTransformerInterface {
+        $builder->addModelTransformer(new class() implements DataTransformerInterface
+        {
             public function transform($value)
             {
                 if (!is_string($value)) {

@@ -28,7 +28,8 @@ class NotificationType extends AbstractType
         $builder->add('email', CheckboxType::class);
         $builder->add('sms', CheckboxType::class);
 
-        $builder->addModelTransformer(new class() implements DataTransformerInterface {
+        $builder->addModelTransformer(new class() implements DataTransformerInterface
+        {
             public function transform($value)
             {
                 if (!is_string($value)) {

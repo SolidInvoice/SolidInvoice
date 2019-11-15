@@ -44,7 +44,8 @@ final class CloneQuote
 
         $route = $this->router->generate('_quotes_view', ['id' => $newQuote->getId()]);
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'quote.clone.success';

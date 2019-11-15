@@ -84,7 +84,8 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
 
         $route = $this->router->generate('_users_list');
 
-        return new class($route) extends RedirectResponse implements FlashResponse {
+        return new class($route) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'users.create.success';

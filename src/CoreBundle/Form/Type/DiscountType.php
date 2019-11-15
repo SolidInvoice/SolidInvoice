@@ -67,7 +67,8 @@ class DiscountType extends AbstractType
             ]
         );
 
-        $builder->get('value')->addViewTransformer(new class() implements DataTransformerInterface {
+        $builder->get('value')->addViewTransformer(new class() implements DataTransformerInterface
+        {
             public function transform($discount)
             {
                 if (!$discount instanceof Money) {

@@ -43,7 +43,8 @@ class InvoiceEditHandler extends AbstractInvoiceHandler
         /* @var RedirectResponse $response */
         $response = parent::onSuccess($invoice, $form);
 
-        return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
+        return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'invoice.edit.success';

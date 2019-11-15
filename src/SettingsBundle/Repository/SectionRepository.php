@@ -32,7 +32,7 @@ class SectionRepository extends EntityRepository
     public function getTopLevelSections(bool $cache = false, $cacheKey = 'solidinvoice_settings_top_section_sections', int $lifetime = 604800): array
     {
         $qb = $this->createQueryBuilder('s')
-                   ->where('s.parent IS NULL');
+                    ->where('s.parent IS NULL');
 
         $query = $qb->getQuery();
 

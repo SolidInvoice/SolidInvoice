@@ -43,7 +43,8 @@ class QuoteEditHandler extends AbstractQuoteHandler
         /* @var RedirectResponse $response */
         $response = parent::onSuccess($quote, $form);
 
-        return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
+        return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse
+        {
             public function getFlash(): iterable
             {
                 yield self::FLASH_SUCCESS => 'quote.action.edit.success';
