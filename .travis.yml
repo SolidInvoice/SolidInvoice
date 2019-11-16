@@ -50,6 +50,7 @@ jobs:
         - composer validate
         #- php bin/console security:check
         - bash travis/phpunit.sh
+        - composer require phpunit/phpunit:^7.4 --dev
         - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
       after_script:
         - travis_retry wget https://scrutinizer-ci.com/ocular.phar

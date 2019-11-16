@@ -31,10 +31,20 @@ use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
 use Symfony\Component\DependencyInjection\Exception as DependencyInjectionException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class SetupStep extends AbstractControllerStep
 {
+    /**
+     * @var EncoderFactoryInterface
+     */
+    private $encoderFactory;
+
+    public function __construct(EncoderFactoryInterface $encoderFactory)
+    {
+        $this->encoderFactory = $encoderFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -134,8 +144,7 @@ class SetupStep extends AbstractControllerStep
     {
         $user = new User();
 
-        /** @var PasswordEncoderInterface $encoder */
-        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+        $encoder = $this->encoderFactory->getEncoder($user);
 
         $password = $encoder->encodePassword($data['password'], null);
 

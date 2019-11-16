@@ -8,6 +8,7 @@ services:
             - [setTwig, ['@twig']]
 
     installation.scenario.flow:
+        autowire: true
         class: SolidInvoice\InstallBundle\Process\InstallScenario
         tags:
              - { name: sylius.process.scenario, alias: install }
