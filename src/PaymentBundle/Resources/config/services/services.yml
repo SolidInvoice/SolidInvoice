@@ -30,3 +30,7 @@ services:
     SolidInvoice\PaymentBundle\Repository\PaymentRepository:
         autowire: true
         tags: ['doctrine.repository_service']
+
+    SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository:
+        autowire: true
+        tags: ['doctrine.repository_service']

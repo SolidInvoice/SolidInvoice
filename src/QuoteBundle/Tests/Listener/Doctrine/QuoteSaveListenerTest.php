@@ -24,6 +24,7 @@ use Doctrine\ORM\Events;
 use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class QuoteSaveListenerTest extends TestCase
 {
@@ -31,7 +32,7 @@ class QuoteSaveListenerTest extends TestCase
 
     public function testEvents()
     {
-        $listener = new QuoteSaveListener(M::mock(TotalCalculator::class));
+        $listener = new QuoteSaveListener(new ServiceLocator([]));
         $this->assertSame([Events::prePersist, Events::preUpdate], $listener->getSubscribedEvents());
     }
 
@@ -43,7 +44,7 @@ class QuoteSaveListenerTest extends TestCase
             ->once()
             ->with($entity);
 
-        $listener = new QuoteSaveListener($calculator);
+        $listener = new QuoteSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) { return $calculator; }]));
         $listener->prePersist(new LifecycleEventArgs($entity, M::mock(ObjectManager::class)));
     }
 
@@ -56,7 +57,7 @@ class QuoteSaveListenerTest extends TestCase
             ->once()
             ->with($entity);
 
-        $listener = new QuoteSaveListener($calculator);
+        $listener = new QuoteSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) { return $calculator; }]));
         $listener->prePersist(new LifecycleEventArgs($entity, M::mock(ObjectManager::class)));
     }
 
@@ -68,7 +69,7 @@ class QuoteSaveListenerTest extends TestCase
             ->once()
             ->with($entity);
 
-        $listener = new QuoteSaveListener($calculator);
+        $listener = new QuoteSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) { return $calculator; }]));
         $listener->preUpdate(new LifecycleEventArgs($entity, M::mock(ObjectManager::class)));
     }
 
@@ -79,7 +80,7 @@ class QuoteSaveListenerTest extends TestCase
         $calculator->shouldReceive('calculateTotals')
             ->never();
 
-        $listener = new QuoteSaveListener($calculator);
+        $listener = new QuoteSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) { return $calculator; }]));
         $listener->prePersist(new LifecycleEventArgs($entity, M::mock(ObjectManager::class)));
     }
 
@@ -90,7 +91,7 @@ class QuoteSaveListenerTest extends TestCase
         $calculator->shouldReceive('calculateTotals')
             ->never();
 
-        $listener = new QuoteSaveListener($calculator);
+        $listener = new QuoteSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) { return $calculator; }]));
         $listener->preUpdate(new LifecycleEventArgs($entity, M::mock(ObjectManager::class)));
     }
 }

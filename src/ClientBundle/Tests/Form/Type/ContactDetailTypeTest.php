@@ -27,24 +27,14 @@ class ContactDetailTypeTest extends FormTestCase
 
         $url = $faker->url;
 
-        $contactType = new ContactType();
-        $ref = new \ReflectionProperty($contactType, 'id');
-        $ref->setAccessible(true);
-        $ref->setValue($contactType, 1);
-
         $formData = [
             'value' => $url,
             'type' => 1,
         ];
 
-        $contactType = new ContactType();
-        $ref = new \ReflectionProperty($contactType, 'id');
-        $ref->setAccessible(true);
-        $ref->setValue($contactType, 1);
-
         $object = [
             'value' => $url,
-            'type' => $contactType,
+            'type' => $this->registry->getRepository(ContactType::class)->find(1),
         ];
 
         $this->assertFormData(ContactDetailType::class, $formData, $object);
@@ -52,13 +42,7 @@ class ContactDetailTypeTest extends FormTestCase
 
     protected function getExtensions()
     {
-        // create a type instance with the mocked dependencies
-        $contactType = new ContactType();
-        $ref = new \ReflectionProperty($contactType, 'id');
-        $ref->setAccessible(true);
-        $ref->setValue($contactType, 1);
-
-        $type = new ContactDetailType([$contactType]);
+        $type = new ContactDetailType($this->registry->getRepository(ContactType::class));
 
         return [
             // register the type instances with the PreloadedExtension

@@ -36,14 +36,12 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
-        $repository = $this->em->getRepository(Setting::class);
+        $repository = $this->registry->getRepository(Setting::class);
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
             ->andReturn('/settings');
 
-        $handler = new SettingsFormHandler($repository, new Session(new MockArraySessionStorage()), $router);
-
-        return $handler;
+        return new SettingsFormHandler($repository, new Session(new MockArraySessionStorage()), $router);
     }
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)

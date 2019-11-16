@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\FormBundle\Test;
 
+use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
@@ -61,7 +62,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
                 [
                     new HiddenMoneyType($currency),
                     new CurrencyType('en_US'),
-                    new ContactDetailType([]),
+                    new ContactDetailType($this->registry->getRepository(ContactType::class)),
                     new InvoiceType($currency),
                     new QuoteType($currency),
                     new InvoiceItemType($this->registry),

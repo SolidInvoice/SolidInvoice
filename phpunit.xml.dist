@@ -21,13 +21,12 @@
     <php>
         <server name="KERNEL_CLASS" value="AppKernel"/>
         <server name="KERNEL_DIR" value="app"/>
-        <server name="SYMFONY_ENV" value="test"/>
-        <server name="SYMFONY_DEBUG" value="true"/>
+        <server name="SOLIDINVOICE_ENV" value="test"/>
+        <server name="SOLIDINVOICE_DEBUG" value="true"/>
     </php>
 
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
-        <listener class="SolidInvoice\CoreBundle\Test\Listener\DoctrineSetupListener"/>
         <listener class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener"/>
     </listeners>
 
