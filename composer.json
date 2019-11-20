@@ -141,7 +141,8 @@
         "phpstan/phpstan-doctrine": "^0.11",
         "phpstan/phpstan-symfony": "^0.11",
         "sensiolabs/security-checker": "^4.0",
-        "symfony/phpunit-bridge": "^4.3"
+        "symfony/phpunit-bridge": "^4.3",
+        "symfony/web-server-bundle": "^3.4"
     },
     "scripts": {
         "post-install-cmd": [
