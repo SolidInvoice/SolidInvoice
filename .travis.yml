@@ -88,6 +88,7 @@ jobs:
         - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - composer require phpunit/phpunit:^7.4 --dev --no-scripts
+        - rm -Rf var/cache/test
         - yarn
         - yarn run dev
       before_script:
