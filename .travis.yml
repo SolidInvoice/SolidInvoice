@@ -89,6 +89,7 @@ jobs:
         - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - cat app/config/parameters.yml
+        - rm -Rf ./var/cache/test
         - yarn
         - yarn run dev
       before_script:
