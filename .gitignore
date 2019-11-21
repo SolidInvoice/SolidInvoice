@@ -7,9 +7,7 @@ web/img/*
 web/manifest.json
 assets/js/translations
 assets/js/js_routes.json
-var/bootstrap.php.cache
-var/cache/*
-var/logs/*
+var/
 build/
 vendor
 bin/*
