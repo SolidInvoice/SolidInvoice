@@ -68,7 +68,6 @@
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid": "^3.4",
         "ramsey/uuid-doctrine": "^1.2",
-        "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^5.0",
         "solidworx/form-handler-bundle": "^1.0",
         "stof/doctrine-extensions-bundle": "^1.1",
@@ -133,16 +132,18 @@
         "symfony/web-server-bundle": "^3.4"
     },
     "scripts": {
+        "auto-scripts": [
+            "bin/console cache:clear",
+            "bin/console assets:install"
+        ],
         "post-install-cmd": [
             "cp .env.dist .env",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+            "@auto-scripts"
         ]
     },
     "config": {
@@ -157,7 +158,6 @@
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
-        "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         },
