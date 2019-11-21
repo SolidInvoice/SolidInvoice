@@ -35,7 +35,7 @@ class CurrencyType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('choices', $this->getCurrencyChoices());
+        $resolver->setDefault('choices', iterator_to_array($this->getCurrencyChoices()));
     }
 
     /**

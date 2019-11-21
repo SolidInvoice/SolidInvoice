@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Listener;
 
+use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Listener class to intercept requests
@@ -26,18 +30,20 @@ use Symfony\Component\Routing\Router;
  */
 class RequestListener implements EventSubscriberInterface
 {
-    const INSTALLER_ROUTE = '_install_flow';
+    const INSTALLER_ROUTE = '_install_check_requirements';
 
     /**
      * Core routes.
      *
      * @var array
      */
-    private $allowRoutes = [
+    private $allowRoutes = [];
+
+    private $installRoutes = [
         self::INSTALLER_ROUTE,
-        'sylius_flow_display',
-        'sylius_flow_forward',
-        'fos_js_routing_js',
+        '_install_config',
+        '_install_install',
+        '_install_setup',
     ];
 
     /**
@@ -68,6 +74,16 @@ class RequestListener implements EventSubscriberInterface
     private $debug;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var FlashBagInterface
+     */
+    private $flashBag;
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -77,34 +93,33 @@ class RequestListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param string $installed
-     * @param Router $router
-     * @param bool   $debug
-     */
-    public function __construct(?string $installed, Router $router, bool $debug = false)
+    public function __construct(?string $installed, RouterInterface $router, TranslatorInterface $translator, FlashBagInterface $flashBag, bool $debug = false)
     {
         $this->installed = $installed;
         $this->router = $router;
         $this->debug = $debug;
+        $this->allowRoutes += $this->installRoutes;
 
         if (true === $this->debug) {
             $this->allowRoutes = array_merge($this->allowRoutes, $this->debugRoutes);
         }
+        $this->translator = $translator;
+        $this->flashBag = $flashBag;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($this->installed || HttpKernel::MASTER_REQUEST !== $event->getRequestType()) {
+        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
 
         $route = $event->getRequest()->get('_route');
 
-        if (!in_array($route, $this->allowRoutes, true)) {
+        if ($this->installed) {
+            if (in_array($route, $this->installRoutes, true)) {
+                throw new ApplicationInstalledException();
+            }
+        } else if (!in_array($route, $this->allowRoutes, true)) {
             $response = new RedirectResponse($this->router->generate(self::INSTALLER_ROUTE));
 
             $event->setResponse($response);

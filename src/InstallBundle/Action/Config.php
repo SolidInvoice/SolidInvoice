@@ -11,14 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InstallBundle\Process\Step;
+namespace SolidInvoice\InstallBundle\Action;
 
+use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
-use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
-class ConfigStep extends AbstractControllerStep
+final class Config
 {
     /**
      * @var array
@@ -30,16 +34,48 @@ class ConfigStep extends AbstractControllerStep
     ];
 
     /**
+     * @var ConfigWriter
+     */
+    private $configWriter;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    public function __construct(ConfigWriter $configWriter, RouterInterface $router, FormFactoryInterface $formFactory)
+    {
+        $this->configWriter = $configWriter;
+        $this->router = $router;
+        $this->formFactory = $formFactory;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function displayAction(ProcessContextInterface $context)
+    public function __invoke(Request $request)
     {
-        return $this->render('@SolidInvoiceInstall/Flow/config.html.twig', ['form' => $this->getForm()->createView()]);
+        if ($request->isMethod(Request::METHOD_POST)) {
+            return $this->handleForm($request);
+        }
+
+        return $this->render();
     }
 
     private function getForm(): FormInterface
     {
         $availableDrivers = \PDO::getAvailableDrivers();
+
+        // We can't support sqlite at the moment, since it requires a physical file
+        if (in_array('sqlite', $availableDrivers, true)) {
+            unset($availableDrivers[array_search('sqlite', $availableDrivers)]);
+        }
+
         $drivers = array_combine(
             array_map(
                 function ($value): string {
@@ -50,7 +86,7 @@ class ConfigStep extends AbstractControllerStep
             $availableDrivers
         );
 
-        $config = $this->get('solidinvoice.core.config_writer')->getConfigValues();
+        $config = $this->configWriter->getConfigValues();
 
         $data = [
             'database_config' => [
@@ -66,24 +102,16 @@ class ConfigStep extends AbstractControllerStep
         $options = [
             'drivers' => $drivers,
             'mailer_transports' => $this->mailerTransports,
-            'action' => $this->generateUrl(
-                'sylius_flow_forward',
-                [
-                    'scenarioAlias' => 'install',
-                    'stepName' => 'config',
-                ]
-            ),
         ];
 
-        return $this->createForm(ConfigStepForm::class, $data, $options);
+        return $this->formFactory->create(ConfigStepForm::class, $data, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function forwardAction(ProcessContextInterface $context)
+    public function handleForm(Request $request)
     {
-        $request = $context->getRequest();
         $form = $this->getForm();
 
         $form->handleRequest($request);
@@ -104,11 +132,16 @@ class ConfigStep extends AbstractControllerStep
                 $config[$key] = $param;
             }
 
-            $this->get('solidinvoice.core.config_writer')->dump($config);
+            $this->configWriter->dump($config);
 
-            return $this->complete();
+            return new RedirectResponse($this->router->generate('_install_install'));
         }
 
-        return $this->render('@SolidInvoiceInstall/Flow/config.html.twig', ['form' => $form->createView()]);
+        return $this->render($form);
+    }
+
+    protected function render(?FormInterface $form = null): Template
+    {
+        return new Template('@SolidInvoiceInstall/config.html.twig', ['form' => ($form ?: $this->getForm())->createView()]);
     }
 }

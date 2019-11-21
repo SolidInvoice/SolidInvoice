@@ -15,12 +15,6 @@
             "email": "info@solidinvoice.co"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/MiWayInsurance/SyliusFlowBundle"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "SolidInvoice\\": "src/"
@@ -38,7 +32,7 @@
         "ext-openssl": "*",
         "ext-soap": "*",
         "ext-xsl": "*",
-        "api-platform/core": "2.2.*",
+        "api-platform/core": "^2.2",
         "defuse/php-encryption": "^2.1",
         "doctrine/cache": "^1.6",
         "doctrine/common": "^2.6",
@@ -53,12 +47,12 @@
         "friendsofsymfony/user-bundle": "^2.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-menu-bundle": "^2.0",
-        "moneyphp/money": "3.1.x",
+        "moneyphp/money": "^3.1",
         "moontoast/math": "^1.1",
         "mpdf/mpdf": "^7.1",
         "mpociot/vat-calculator": "^2.2",
         "namshi/notificator": "^5.0",
-        "nesbot/carbon": "^2.0.0",
+        "nesbot/carbon": "^2.0",
         "ocramius/proxy-manager": "<2.2",
         "pagerfanta/pagerfanta": "^2.0",
         "payum/authorize-net-aim": "^1.4",
@@ -79,7 +73,6 @@
         "solidworx/form-handler-bundle": "^1.0",
         "stof/doctrine-extensions-bundle": "^1.1",
         "swiftmailer/swiftmailer": "^6.0",
-        "sylius/flow-bundle": "0.19.1",
         "symfony/config": "^3.3",
         "symfony/console": "^3.3",
         "symfony/dependency-injection": "^3.3",
@@ -104,6 +97,7 @@
         "symfony/polyfill-xml": "^1.2",
         "symfony/property-access": "^3.3",
         "symfony/proxy-manager-bridge": "^3.3",
+        "symfony/requirements-checker": "^1.1",
         "symfony/routing": "^3.3",
         "symfony/security": "^3.3",
         "symfony/serializer": "^3.3",

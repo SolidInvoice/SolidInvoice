@@ -1,18 +1,4 @@
-parameters:
-    sylius.controller.process.class: SolidInvoice\InstallBundle\Controller\ProcessController
-
 services:
-    installer.controller.process:
-        parent: sylius.controller.process
-        calls:
-            - [setTwig, ['@twig']]
-
-    installation.scenario.flow:
-        autowire: true
-        class: SolidInvoice\InstallBundle\Process\InstallScenario
-        tags:
-             - { name: sylius.process.scenario, alias: install }
-
     solidinvoice.installer.database.migration:
         class: SolidInvoice\InstallBundle\Installer\Database\Migration
         arguments: ['@filesystem']
