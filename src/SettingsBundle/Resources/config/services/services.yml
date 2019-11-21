@@ -2,13 +2,12 @@ services:
 
     _defaults:
         autowire: true
+        autoconfigure: true
 
     SolidInvoice\SettingsBundle\SystemConfig:
         lazy: true
 
-    SolidInvoice\SettingsBundle\Repository\SettingsRepository:
-        factory: ['@doctrine', 'getRepository']
-        arguments: ['SolidInvoiceSettingsBundle:Setting']
-
     settings:
         alias: SolidInvoice\SettingsBundle\SystemConfig
+
+    SolidInvoice\SettingsBundle\Repository\SettingsRepository: ~

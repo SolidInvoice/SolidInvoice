@@ -16,5 +16,5 @@ services:
             $invoiceStateMachine: '@state_machine.invoice'
 
     SolidInvoice\QuoteBundle\Listener\Doctrine\QuoteSaveListener:
-        autowire: true
+        arguments: ['@solidinvoice.payment.locator']
         tags: ['doctrine.event_subscriber']

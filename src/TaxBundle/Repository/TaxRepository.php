@@ -13,14 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
 use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 
-class TaxRepository extends EntityRepository
+class TaxRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Tax::class);
+    }
+
     /**
      * Gets an array of all the available tax rates.
      *

@@ -49,7 +49,7 @@ class ContactTypeTest extends FormTestCase
         $ref->setAccessible(true);
         $ref->setValue($contactType, 1);
 
-        $type = new ContactDetailType([$contactType]);
+        $type = new ContactDetailType($this->registry->getRepository(Entity\ContactType::class));
 
         return [
             // register the type instances with the PreloadedExtension

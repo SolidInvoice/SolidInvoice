@@ -20,3 +20,17 @@ services:
         arguments: ['@doctrine']
         tags:
             - { name: payum.extension, all: true }
+
+    solidinvoice.payment.locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        tags: ['container.service_locator']
+        arguments:
+            -   SolidInvoice\CoreBundle\Billing\TotalCalculator: '@SolidInvoice\CoreBundle\Billing\TotalCalculator'
+
+    SolidInvoice\PaymentBundle\Repository\PaymentRepository:
+        autowire: true
+        tags: ['doctrine.repository_service']
+
+    SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository:
+        autowire: true
+        tags: ['doctrine.repository_service']

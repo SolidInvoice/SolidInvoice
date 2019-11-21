@@ -34,6 +34,9 @@ trait DoctrineTestTrait
      */
     protected $em;
 
+    /**
+     * @before
+     */
     public function setupDoctrine()
     {
         $this->setUpSymfonyKernel();

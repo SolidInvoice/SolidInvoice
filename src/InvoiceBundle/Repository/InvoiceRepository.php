@@ -14,27 +14,33 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Repository;
 
 use Carbon\Carbon;
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
-use SolidInvoice\InvoiceBundle\Model\Graph;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Money\Money;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 
-class InvoiceRepository extends EntityRepository
+class InvoiceRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Invoice::class);
+    }
+
     /**
      * Get the total amount for paid invoices.
      *
      * @param Client $client set this parameter to filter per client
      *
-     * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
-     *
      * @return int
+     *
+     * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      */
     public function getTotalIncome(Client $client = null): int
     {

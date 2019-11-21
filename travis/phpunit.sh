@@ -2,4 +2,4 @@
 
 php bin/console doctrine:migrations:migrate -n -q
 
-./bin/phpunit --coverage-clover build/logs/clover.xml
+./bin/simple-phpunit --coverage-clover build/logs/clover.xml

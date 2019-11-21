@@ -85,6 +85,11 @@ class MoneyType extends Type
         throw ConversionException::conversionFailed($value, self::NAME);
     }
 
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */

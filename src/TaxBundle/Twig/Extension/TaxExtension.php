@@ -13,22 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
 class TaxExtension extends \Twig\Extension\AbstractExtension
 {
     /**
-     * @var ManagerRegistry
+     * @var TaxRepository
      */
-    private $registry;
+    private $repository;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(TaxRepository $repository)
     {
-        $this->registry = $registry;
+        $this->repository = $repository;
     }
 
     /**
@@ -52,7 +48,7 @@ class TaxExtension extends \Twig\Extension\AbstractExtension
             return $taxConfigured;
         }
 
-        $taxConfigured = $this->registry->getRepository(Tax::class)->taxRatesConfigured();
+        $taxConfigured = $this->repository->taxRatesConfigured();
 
         return $taxConfigured;
     }

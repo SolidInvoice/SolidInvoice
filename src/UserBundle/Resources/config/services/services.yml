@@ -6,13 +6,13 @@ services:
         arguments: ['@fos_user.util.password_updater', '@fos_user.util.canonical_fields_updater', '@fos_user.object_manager', '%fos_user.model.user.class%']
 
     SolidInvoice\UserBundle\Repository\ApiTokenRepository:
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceUserBundle:ApiToken']
+        autowire: true
+        tags: ['doctrine.repository_service']
 
     SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository:
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceUserBundle:ApiTokenHistory']
+        autowire: true
+        tags: ['doctrine.repository_service']
 
     SolidInvoice\UserBundle\Repository\UserRepository:
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceUserBundle:User']
+        autowire: true
+        tags: ['doctrine.repository_service']

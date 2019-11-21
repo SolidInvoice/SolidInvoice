@@ -1,4 +1,8 @@
 services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+
     solidinvoice_client.menu:
         class: SolidInvoice\ClientBundle\Menu\Builder
         tags:
@@ -8,19 +12,11 @@ services:
             - { name: 'cs_core.menu', menu: clients_add, method: clientsMenu }
             - { name: 'cs_core.menu', menu: clients_edit, method: clientsMenu }
 
-    SolidInvoice\ClientBundle\Repository\ClientRepository:
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceClientBundle:Client']
+    # Repositories
+    SolidInvoice\ClientBundle\Repository\ClientRepository: ~
+    SolidInvoice\ClientBundle\Repository\ContactRepository: ~
+    SolidInvoice\ClientBundle\Repository\ContactTypeRepository: ~
+    SolidInvoice\ClientBundle\Repository\CreditRepository: ~
 
-    SolidInvoice\ClientBundle\Repository\CreditRepository:
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceClientBundle:Credit']
-
-    solidinvoice_client.contact_type.repository:
-        class: SolidInvoice\ClientBundle\Repository\ContactTypeRepository
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceClientBundle:ContactType']
-
-    solidinvoice_client.contact_type.values:
-        class: SolidInvoice\ClientBundle\Repository\ContactTypeRepository
-        factory: ['@solidinvoice_client.contact_type.repository', findAll]
+    # Forms
+    SolidInvoice\ClientBundle\Form\Type\ContactDetailType: ~

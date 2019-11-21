@@ -8,10 +8,6 @@ services:
             - { name: cs_core.menu, menu: invoices_create, method: invoicesMenu }
             - { name: cs_core.menu, menu: invoices_edit, method: invoicesEditMenu }
 
-    SolidInvoice\InvoiceBundle\Repository\InvoiceRepository:
-        factory: ['@doctrine', getRepository]
-        arguments: ['SolidInvoiceInvoiceBundle:Invoice']
-
     SolidInvoice\InvoiceBundle\Manager\InvoiceManager:
         autowire: true
         arguments:
@@ -20,7 +16,7 @@ services:
             - [ setContainer, ['@service_container']]
 
     SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener:
-        autowire: true
+        arguments: ['@solidinvoice.payment.locator']
         tags: ['doctrine.event_subscriber']
 
     SolidInvoice\InvoiceBundle\Cron\RecurringInvoiceCreate:
@@ -37,3 +33,7 @@ services:
         autowire: true
         resource: '../../../Email/Decorator/'
         tags: ['message.decorator']
+
+    SolidInvoice\InvoiceBundle\Repository\InvoiceRepository:
+        autowire: true
+        tags: ['doctrine.repository_service']

@@ -8,6 +8,7 @@ services:
     currency:
         class: Money\Currency
         factory: ['@currency_factory', 'getCurrency']
+        public: true
 
     Money\Currency:
         alias: currency

@@ -13,22 +13,28 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * ClientRepository.
  *
  * Custom Repository class for managing clients
  */
-class ClientRepository extends EntityRepository
+class ClientRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Client::class);
+    }
+
     /**
      * Gets total number of clients.
      *

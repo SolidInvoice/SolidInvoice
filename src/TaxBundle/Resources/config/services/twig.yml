@@ -1,8 +1,8 @@
 services:
     _defaults:
         public: false
-        tags:
-            - { name: twig.extension }
+        autowire: true
+        autoconfigure: true
 
-    SolidInvoice\TaxBundle\Twig\Extension\TaxExtension:
-        arguments: ['@doctrine']
+    SolidInvoice\TaxBundle\Twig\Extension\TaxExtension: ~
+    SolidInvoice\TaxBundle\Repository\TaxRepository: ~

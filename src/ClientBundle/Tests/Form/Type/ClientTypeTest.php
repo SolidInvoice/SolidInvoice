@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -47,7 +48,7 @@ class ClientTypeTest extends FormTestCase
     protected function getExtensions()
     {
         // create a type instance with the mocked dependencies
-        $type = new ContactDetailType([]);
+        $type = new ContactDetailType($this->registry->getRepository(ContactType::class));
 
         return [
             // register the type instances with the PreloadedExtension
