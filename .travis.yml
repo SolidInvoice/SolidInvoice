@@ -8,6 +8,7 @@ env:
   global:
     - SOLIDINVOICE_ENV=test
     - SOLIDINVOICE_DEBUG=0
+    - SYMFONY_PHPUNIT_VERSION=7.5
     - database_name=solidinvoice_test
     - PATH="$HOME/.symfony/bin:$PATH"
 
