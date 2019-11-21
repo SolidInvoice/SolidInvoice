@@ -8,10 +8,5 @@ parameters:
         - vendor/bin/.phpunit/phpunit-7.4/vendor/autoload.php
     excludes_analyse:
         - src/CoreBundle/Tests/Fixtures/file.php
-    ignoreErrors:
-        - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\ConfigStep\:\:(forward|display)Action\(\) has invalid type FOS\\RestBundle\\View\\View.#'
-        - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\SetupStep\:\:(forward|display)Action\(\) has invalid type FOS\\RestBundle\\View\\View.#'
-        - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\InstallStep\:\:displayAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
-        - '#Return typehint of method SolidInvoice\\InstallBundle\\Process\\Step\\FinishStep\:\:displayAction\(\) has invalid type FOS\\RestBundle\\View\\View.#'
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/test/appTestDebugProjectContainer.xml
