@@ -34,11 +34,9 @@ before_install:
 
 install:
   - composer install -n
-  - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:8000/g' app/config/parameters.yml
 
 before_script:
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - php app/app_check.php
 
 jobs:
   fast_finish: true
@@ -82,7 +80,6 @@ jobs:
       install:
         - composer install -n
         - curl -o vendor/symfony/panther/chromedriver-bin/chromedriver_linux64 https://raw.githubusercontent.com/symfony/panther/master/chromedriver-bin/chromedriver_linux64
-        - sed -i 's/base_url:\ null/base_url:\ https:\/\/127.0.0.1:8000/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - rm -Rf var/cache/test
         - yarn
