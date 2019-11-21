@@ -55,9 +55,6 @@ final class Config
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(Request $request)
     {
         if ($request->isMethod(Request::METHOD_POST)) {
@@ -107,9 +104,6 @@ final class Config
         return $this->formFactory->create(ConfigStepForm::class, $data, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleForm(Request $request)
     {
         $form = $this->getForm();

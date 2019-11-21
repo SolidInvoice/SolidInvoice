@@ -23,9 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Install
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(Request $request, RegistryInterface $doctrine, Migration $migration)
     {
         if ($request->request->has('action')) {

@@ -119,7 +119,7 @@ class RequestListener implements EventSubscriberInterface
             if (in_array($route, $this->installRoutes, true)) {
                 throw new ApplicationInstalledException();
             }
-        } else if (!in_array($route, $this->allowRoutes, true)) {
+        } elseif (!in_array($route, $this->allowRoutes, true)) {
             $response = new RedirectResponse($this->router->generate(self::INSTALLER_ROUTE));
 
             $event->setResponse($response);

@@ -29,9 +29,6 @@ final class Finish
         $this->projectDir = $projectDir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(Request $request)
     {
         $session = $request->getSession();

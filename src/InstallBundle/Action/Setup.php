@@ -92,9 +92,6 @@ final class Setup
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(Request $request)
     {
         if ($request->isMethod(Request::METHOD_POST)) {
