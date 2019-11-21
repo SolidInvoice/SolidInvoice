@@ -47,7 +47,7 @@
         "friendsofsymfony/user-bundle": "^2.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-menu-bundle": "^2.0",
-        "moneyphp/money": "^3.1",
+        "moneyphp/money": "3.1.x",
         "moontoast/math": "^1.1",
         "mpdf/mpdf": "^7.1",
         "mpociot/vat-calculator": "^2.2",
