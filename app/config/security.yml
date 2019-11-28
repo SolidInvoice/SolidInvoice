@@ -1,6 +1,6 @@
 security:
     encoders:
-        FOS\UserBundle\Model\UserInterface:
+        SolidInvoice\UserBundle\Model\User:
             algorithm: bcrypt
             cost: 10
     role_hierarchy:
@@ -11,8 +11,9 @@ security:
         ROLE_CLIENT: ROLE_USER
         ROLE_USER: null
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
+        solidinvoice_user:
+            entity:
+                class: SolidInvoice\UserBundle\Model\User
         api_token_user_provider:
             id: api_token_user_provider
     firewalls:
@@ -72,7 +73,7 @@ security:
             pattern: ^/
             context: frontend
             form_login:
-                provider: fos_userbundle
+                provider: solidinvoice_user
                 csrf_token_generator: security.csrf.token_manager
                 check_path: /login_check
                 login_path: /login
