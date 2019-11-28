@@ -50,6 +50,7 @@ abstract class ApiTestCase extends PantherTestCase
 
         $tokenManager = new ApiTokenManager($registry);
         $token = $tokenManager->getOrCreate($users[0], 'Functional Test');
+
         try {
             StaticDriver::commit(); // Save user api token
         } catch (\PDOException $e) {
