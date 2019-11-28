@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e16cf67a6d55ea38b3fb04212f995ba4",
+    "content-hash": "f4b6f5f9683ee1f3ceea47f47a23ba2c",
     "packages": [
         {
             "name": "api-platform/core",
@@ -12553,26 +12553,26 @@
         },
         {
             "name": "symfony/panther",
-            "version": "v0.6.0",
+            "version": "v0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/panther.git",
-                "reference": "0aeafcf21af2727da3536acf2a9c3778e3a5f222"
+                "reference": "6c77f8b3693aff1ea988e10e9a953b9751394540"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/panther/zipball/0aeafcf21af2727da3536acf2a9c3778e3a5f222",
-                "reference": "0aeafcf21af2727da3536acf2a9c3778e3a5f222",
+                "url": "https://api.github.com/repos/symfony/panther/zipball/6c77f8b3693aff1ea988e10e9a953b9751394540",
+                "reference": "6c77f8b3693aff1ea988e10e9a953b9751394540",
                 "shasum": ""
             },
             "require": {
                 "facebook/webdriver": "^1.7.1",
                 "php": ">=7.1",
-                "symfony/browser-kit": "^4.3 || ^5.0",
-                "symfony/dom-crawler": "^4.3 || ^5.0",
-                "symfony/http-client": "^4.3 || ^5.0",
+                "symfony/browser-kit": "^4.3",
+                "symfony/dom-crawler": "^4.3",
+                "symfony/http-client": "^4.3",
                 "symfony/polyfill-php72": "^1.9",
-                "symfony/process": "^3.4 || ^4.0 || ^5.0"
+                "symfony/process": "^3.4 || ^4.0"
             },
             "conflict": {
                 "symfony/framework-bundle": ">=4.3 <4.3.4"
@@ -12580,9 +12580,9 @@
             "require-dev": {
                 "fabpot/goutte": "^3.2.3",
                 "guzzlehttp/guzzle": "^6.3",
-                "symfony/css-selector": "^3.4 || ^4.0 || ^5.0",
-                "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0",
-                "symfony/phpunit-bridge": "^4.3.3 || ^5.0"
+                "symfony/css-selector": "^3.4 || ^4.0",
+                "symfony/framework-bundle": "^3.4 || ^4.0",
+                "symfony/phpunit-bridge": "^4.3.3"
             },
             "type": "library",
             "extra": {
@@ -12620,7 +12620,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-10-28T17:01:40+00:00"
+            "time": "2019-08-27T22:41:08+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
