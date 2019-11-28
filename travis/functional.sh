@@ -42,6 +42,7 @@ export -f tfold
 tfold 'Installation' bin/simple-phpunit --group installation
 
 rm -Rf var/cache/test
+
 find src/*Bundle/Tests/Functional -prune -type d | while read -r d; do
     SUITE=$(echo "$d" | cut -d'/' -f 2)
 
