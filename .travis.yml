@@ -86,7 +86,7 @@ jobs:
         - yarn
         - yarn run dev
       before_script:
-          - sudo symfony server:ca:install
+          - sudo /home/travis/.symfony/bin/symfony server:ca:install
           - symfony local:server:start --daemon
       script: bash travis/functional.sh
 
