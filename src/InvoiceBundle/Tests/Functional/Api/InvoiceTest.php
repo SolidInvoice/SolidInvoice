@@ -43,20 +43,20 @@ class InvoiceTest extends ApiTestCase
     {
         $data = [
             'users' => [
-                '/api/contacts/1000'
+                '/api/contacts/1000',
             ],
             'client' => '/api/clients/1000',
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10
+                'value' => 10,
             ],
             'items' => [
                 [
                     'price' => 100,
                     'qty' => 1,
-                    'description' => 'Foo Item'
-                ]
-            ]
+                    'description' => 'Foo Item',
+                ],
+            ],
         ];
 
         $result = $this->requestPost('/api/invoices', $data);
@@ -74,7 +74,7 @@ class InvoiceTest extends ApiTestCase
                 'tax' => '$0.00',
                 'discount' => [
                     'type' => 'percentage',
-                    'value' => 10
+                    'value' => 10,
                 ],
                 'terms' => null,
                 'notes' => null,
@@ -87,13 +87,13 @@ class InvoiceTest extends ApiTestCase
                         'price' => '$100.00',
                         'qty' => 1,
                         'tax' => null,
-                        'total' => '$100.00'
-                    ]
+                        'total' => '$100.00',
+                    ],
                 ],
                 'users' => [
-                    '/api/contacts/1000'
+                    '/api/contacts/1000',
                 ],
-                'recurring' => false
+                'recurring' => false,
             ],
             $result
         );
@@ -134,13 +134,13 @@ class InvoiceTest extends ApiTestCase
                         'price' => '$100.00',
                         'qty' => 1,
                         'tax' => null,
-                        'total' => '$100.00'
-                    ]
+                        'total' => '$100.00',
+                    ],
                 ],
                 'users' => [
-                    '/api/contacts/1000'
+                    '/api/contacts/1000',
                 ],
-                'recurring' => false
+                'recurring' => false,
             ],
             $data
         );
@@ -151,18 +151,17 @@ class InvoiceTest extends ApiTestCase
         $data = $this->requestPut(
             '/api/invoices/1000',
             [
-
                 'discount' => [
                     'type' => 'percentage',
-                    'value' => 10
+                    'value' => 10,
                 ],
                 'items' => [
                     [
                         'price' => 100,
                         'qty' => 1,
-                        'description' => 'Foo Item'
-                    ]
-                ]
+                        'description' => 'Foo Item',
+                    ],
+                ],
             ]
         );
 
@@ -192,13 +191,13 @@ class InvoiceTest extends ApiTestCase
                         'price' => '$100.00',
                         'qty' => 1,
                         'tax' => null,
-                        'total' => '$100.00'
-                    ]
+                        'total' => '$100.00',
+                    ],
                 ],
                 'users' => [
-                    '/api/contacts/1000'
+                    '/api/contacts/1000',
                 ],
-                'recurring' => false
+                'recurring' => false,
             ],
             $data
         );

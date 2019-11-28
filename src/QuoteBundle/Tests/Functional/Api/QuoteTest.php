@@ -43,20 +43,20 @@ class QuoteTest extends ApiTestCase
     {
         $data = [
             'users' => [
-                '/api/contacts/1000'
+                '/api/contacts/1000',
             ],
             'client' => '/api/clients/1000',
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10
+                'value' => 10,
             ],
             'items' => [
                 [
                     'price' => 100,
                     'qty' => 1,
-                    'description' => 'Foo Item'
-                ]
-            ]
+                    'description' => 'Foo Item',
+                ],
+            ],
         ];
 
         $result = $this->requestPost('/api/quotes', $data);
@@ -73,7 +73,7 @@ class QuoteTest extends ApiTestCase
                 'tax' => '$0.00',
                 'discount' => [
                     'type' => 'percentage',
-                    'value' => 10
+                    'value' => 10,
                 ],
                 'terms' => null,
                 'notes' => null,
@@ -85,11 +85,11 @@ class QuoteTest extends ApiTestCase
                         'price' => '$100.00',
                         'qty' => 1,
                         'tax' => null,
-                        'total' => '$100.00'
-                    ]
+                        'total' => '$100.00',
+                    ],
                 ],
                 'users' => [
-                    '/api/contacts/1000'
+                    '/api/contacts/1000',
                 ],
             ],
             $result
@@ -129,11 +129,11 @@ class QuoteTest extends ApiTestCase
                         'price' => '$100.00',
                         'qty' => 1,
                         'tax' => null,
-                        'total' => '$100.00'
-                    ]
+                        'total' => '$100.00',
+                    ],
                 ],
                 'users' => [
-                    '/api/contacts/1000'
+                    '/api/contacts/1000',
                 ],
             ],
             $data
@@ -145,18 +145,17 @@ class QuoteTest extends ApiTestCase
         $data = $this->requestPut(
             '/api/quotes/1000',
             [
-
                 'discount' => [
                     'type' => 'percentage',
-                    'value' => 10
+                    'value' => 10,
                 ],
                 'items' => [
                     [
                         'price' => 100,
                         'qty' => 1,
-                        'description' => 'Foo Item'
-                    ]
-                ]
+                        'description' => 'Foo Item',
+                    ],
+                ],
             ]
         );
 
@@ -184,11 +183,11 @@ class QuoteTest extends ApiTestCase
                         'price' => '$100.00',
                         'qty' => 1,
                         'tax' => null,
-                        'total' => '$100.00'
-                    ]
+                        'total' => '$100.00',
+                    ],
                 ],
                 'users' => [
-                    '/api/contacts/1000'
+                    '/api/contacts/1000',
                 ],
             ],
             $data

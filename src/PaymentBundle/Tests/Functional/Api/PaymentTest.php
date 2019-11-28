@@ -49,7 +49,7 @@ class PaymentTest extends ApiTestCase
                     'status' => 'captured',
                     'message' => null,
                     'completed' => null,
-                ]
+                ],
             ],
             $data
         );

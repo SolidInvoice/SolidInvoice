@@ -32,7 +32,7 @@ class ContactTest extends ApiTestCase
         StaticDriver::beginTransaction();
 
         $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData'
+            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
         ], true);
     }
 
@@ -41,7 +41,7 @@ class ContactTest extends ApiTestCase
         $data = [
             'client' => '/api/clients/1000',
             'firstName' => 'foo bar',
-            'email' => 'foo@bar.com'
+            'email' => 'foo@bar.com',
         ];
 
         $result = $this->requestPost('/api/contacts', $data);
@@ -53,7 +53,7 @@ class ContactTest extends ApiTestCase
                 'lastName' => null,
                 'client' => '/api/clients/1000',
                 'email' => 'foo@bar.com',
-                'additionalContactDetails' => []
+                'additionalContactDetails' => [],
             ],
             $result
         );
@@ -75,7 +75,7 @@ class ContactTest extends ApiTestCase
                 'lastName' => null,
                 'client' => '/api/clients/1000',
                 'email' => 'test@example.com',
-                'additionalContactDetails' => []
+                'additionalContactDetails' => [],
             ],
             $data
         );
@@ -92,7 +92,7 @@ class ContactTest extends ApiTestCase
                 'lastName' => null,
                 'client' => '/api/clients/1000',
                 'email' => 'test@example.com',
-                'additionalContactDetails' => []
+                'additionalContactDetails' => [],
             ],
             $data
         );

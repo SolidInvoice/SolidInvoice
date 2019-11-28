@@ -32,7 +32,7 @@ class ClientTest extends ApiTestCase
         StaticDriver::beginTransaction();
 
         $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData'
+            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
         ], true);
     }
 
@@ -43,9 +43,9 @@ class ClientTest extends ApiTestCase
             'contacts' => [
                 [
                     'firstName' => 'foo bar',
-                    'email' => 'foo@example.com'
-                ]
-            ]
+                    'email' => 'foo@example.com',
+                ],
+            ],
         ];
 
         $result = $this->requestPost('/api/clients', $data);
@@ -64,11 +64,11 @@ class ClientTest extends ApiTestCase
                         'firstName' => 'foo bar',
                         'lastName' => null,
                         'email' => 'foo@example.com',
-                        'additionalContactDetails' => []
-                    ]
+                        'additionalContactDetails' => [],
+                    ],
                 ],
                 'addresses' => [],
-                'credit' => '$0.00'
+                'credit' => '$0.00',
             ],
             $result
         );
@@ -97,11 +97,11 @@ class ClientTest extends ApiTestCase
                         'firstName' => 'Test',
                         'lastName' => null,
                         'email' => 'test@example.com',
-                        'additionalContactDetails' => []
-                    ]
+                        'additionalContactDetails' => [],
+                    ],
                 ],
                 'addresses' => [],
-                'credit' => '$0.00'
+                'credit' => '$0.00',
             ],
             $data
         );
@@ -125,11 +125,11 @@ class ClientTest extends ApiTestCase
                         'firstName' => 'Test',
                         'lastName' => null,
                         'email' => 'test@example.com',
-                        'additionalContactDetails' => []
-                    ]
+                        'additionalContactDetails' => [],
+                    ],
                 ],
                 'addresses' => [],
-                'credit' => '$0.00'
+                'credit' => '$0.00',
             ],
             $data
         );
