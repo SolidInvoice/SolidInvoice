@@ -70,6 +70,8 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
 
             if ('test' === $env) {
                 $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
+                $bundles[] = new Liip\TestFixturesBundle\LiipTestFixturesBundle();
+                $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             }
         }
 
