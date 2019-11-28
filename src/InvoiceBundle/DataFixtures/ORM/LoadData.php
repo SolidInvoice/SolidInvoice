@@ -21,6 +21,9 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LoadData extends Fixture
 {
     /**

@@ -18,6 +18,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LoadData extends Fixture
 {
     /**

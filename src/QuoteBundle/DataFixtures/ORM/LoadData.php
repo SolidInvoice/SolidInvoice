@@ -21,6 +21,9 @@ use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LoadData extends Fixture
 {
     /**

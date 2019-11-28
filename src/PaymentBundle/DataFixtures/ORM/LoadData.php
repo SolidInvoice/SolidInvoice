@@ -18,6 +18,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LoadData extends Fixture
 {
     /**
