@@ -21,6 +21,7 @@ services:
   - mysql
 
 addons:
+  chrome: stable
   apt:
     packages:
       - mysql-server-5.6
