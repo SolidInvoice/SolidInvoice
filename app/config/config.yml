@@ -87,25 +87,6 @@ stof_doctrine_extensions:
     default_locale: '%locale%'
     orm: null
 
-fos_user:
-    from_email:
-        address: 'info@solidinvoice.co'
-        sender_name: 'SolidInvoice'
-    db_driver: orm
-    firewall_name: main
-    user_class: SolidInvoice\UserBundle\Entity\User
-    profile:
-        form:
-            type: SolidInvoice\UserBundle\Form\Type\ProfileType
-    registration:
-        form:
-            type: SolidInvoice\UserBundle\Form\Type\UserType
-    resetting:
-        email:
-            template: '@SolidInvoiceUser/Email/reset_password.html.twig'
-    service:
-        mailer: fos_user.mailer.twig_swift
-
 api_platform:
     title: 'API'
     version: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION

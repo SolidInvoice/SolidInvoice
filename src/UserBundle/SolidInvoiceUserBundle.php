@@ -17,11 +17,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceUserBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'FOSUserBundle';
-    }
 }
