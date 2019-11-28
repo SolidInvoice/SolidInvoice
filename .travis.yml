@@ -81,13 +81,11 @@ jobs:
       install:
         - composer install -n
         - curl -o vendor/symfony/panther/chromedriver-bin/chromedriver_linux64 https://raw.githubusercontent.com/symfony/panther/master/chromedriver-bin/chromedriver_linux64
-        - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - rm -Rf var/cache/test
         - yarn
-        - yarn run dev
+        - yarn run build
       before_script:
-          - sudo /home/travis/.symfony/bin/symfony server:ca:install
-          - sudo /home/travis/.symfony/bin/symfony local:server:start --daemon
+          - symfony local:server:start --daemon
       script: bash travis/functional.sh
 
 notifications:
