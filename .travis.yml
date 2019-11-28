@@ -51,7 +51,6 @@ jobs:
         - composer validate
         #- php bin/console security:check
         - bash travis/phpunit.sh
-        - composer require phpunit/phpunit:^7.4 --dev --no-scripts
         - ./bin/phpstan analyse ./src -vvv --level=1 -c phpstan.neon
       after_script:
         - travis_retry wget https://scrutinizer-ci.com/ocular.phar
@@ -81,6 +80,7 @@ jobs:
         - curl -sS https://get.symfony.com/cli/installer | bash
       install:
         - composer install -n
+        - curl -o vendor/symfony/panther/chromedriver-bin/chromedriver_linux64 https://raw.githubusercontent.com/symfony/panther/master/chromedriver-bin/chromedriver_linux64
         - sed -i 's/base_url:\ null/base_url:\ https:\/\/127.0.0.1:8000/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - rm -Rf var/cache/test

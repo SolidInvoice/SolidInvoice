@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Test;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Panther\PantherTestCase;
@@ -48,7 +49,12 @@ abstract class ApiTestCase extends PantherTestCase
         }
 
         $tokenManager = new ApiTokenManager($registry);
-        $token = $tokenManager->getOrCreate($users[0], 'Function Test');
+        $token = $tokenManager->getOrCreate($users[0], 'Functional Test');
+        try {
+            StaticDriver::commit(); // Save user api token
+        } catch (\PDOException $e) {
+            // noop
+        }
 
         self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
     }
