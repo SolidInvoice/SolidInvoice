@@ -39,16 +39,10 @@ tfold () {
 }
 export -f tfold
 
-tfold 'Installation' bin/behat -s installation -n -f progress -p ${TEST_SUITE} --strict
+tfold 'Installation' bin/simple-phpunit --group installation
 
-find features/* -prune -type d | while read -r d; do
-    if [[ "$d" == "features/installation" ]]; then
-        continue
-    fi
-
+find src/*Bundle/Tests/Functional -prune -type d | while read -r d; do
     SUITE=$(echo "$d" | cut -d'/' -f 2)
 
-    find "$d" -name "*.feature" -prune -type f | while read -r t; do
-        tfold "$SUITE ($t)" bin/behat -s "$SUITE" -n -f progress -p "$TEST_SUITE" "$t" --strict
-    done
+    tfold "$SUITE" bin/simple-phpunit "$d" --group functional
 done

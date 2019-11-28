@@ -9,6 +9,7 @@ env:
     - SOLIDINVOICE_ENV=test
     - SOLIDINVOICE_DEBUG=0
     - database_name=solidinvoice_test
+    - PATH="$HOME/.symfony/bin:$PATH"
 
 cache:
   yarn: true
@@ -32,7 +33,7 @@ before_install:
 
 install:
   - composer install -n
-  - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
+  - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:8000/g' app/config/parameters.yml
 
 before_script:
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -70,12 +71,6 @@ jobs:
       script: bash travis/phpunit.sh
     - stage: functional
       php: 7.2
-      env: TEST_SUITE=saucelabs_chrome_linux
-      addons:
-        sauce_connect:
-          username: csbill
-        jwt:
-          secure: "bFt4pHewWZzmtSH4cKg3L9CRylqAPuVnBDTYGAFsWemLHx+kXHtB8JMCVEOg4M/Q1cUedB2kYJTr+H2/ZkEREIGWg76d+ODZaqKBz1vsU/s86QVZ92XhkCbr1lchwU6/cs/UxcVfkyfs9Bhh/lzSss42X/5Y50gxeE1eGXXVxoQ="
       before_install:
         - mysql -e "create database ${database_name};"
         - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
@@ -83,155 +78,19 @@ jobs:
         - sudo apt-get update -qq
         - sudo apt-get install -y -qq yarn=0.24.6-1
         - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 12.0
+        - curl -sS https://get.symfony.com/cli/installer | bash
       install:
         - composer install -n
-        - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:9001/g' app/config/parameters.yml
+        - sed -i 's/base_url:\ null/base_url:\ https:\/\/127.0.0.1:8000/g' app/config/parameters.yml
         - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
         - composer require phpunit/phpunit:^7.4 --dev --no-scripts
         - rm -Rf var/cache/test
         - yarn
         - yarn run dev
       before_script:
-          - php ./bin/console server:start 9001 -n
-          - sleep 3 # Give php server some time to start
-      script: bash travis/behat.sh
-
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_linux
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_opera_linux
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_stable_macos_sierra
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_dev_macos_sierra
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_beta_macos_sierra
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_stable_macos_sierra
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_dev_macos_sierra
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_beta_macos_sierra
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_safari_macos_sierra
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_stable_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_dev_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_beta_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_stable_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_dev_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_beta_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_safari_10_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_safari_9_osx_el_capitan
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_stable_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_dev_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_beta_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_stable_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_dev_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_beta_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_ie_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_edge_14_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_edge_13_windows10
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_stable_windows81
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_dev_windows81
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_chrome_beta_windows81
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_stable_windows81
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_stable_windows81
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_dev_windows81
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_firefox_beta_windows81
-#    - stage: functional
-#      php: 7.2
-#      script: bash travis/behat.sh
-#      env: TEST_SUITE=saucelabs_ie_windows81
+          - symfony server:ca:install
+          - symfony local:server:start --daemon
+      script: bash travis/functional.sh
 
 notifications:
     slack:
