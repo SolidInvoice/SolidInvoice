@@ -20,3 +20,8 @@ services:
 
     # Forms
     SolidInvoice\ClientBundle\Form\Type\ContactDetailType: ~
+
+    # Fixtures
+    SolidInvoice\ClientBundle\DataFixtures\ORM\:
+        resource: '%kernel.project_dir%/src/ClientBundle/DataFixtures/ORM/*'
+        tags: ['doctrine.fixture.orm']

@@ -17,3 +17,6 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+liip_test_fixtures:
+    keep_database_and_schema: true
