@@ -26,7 +26,6 @@
         <server name="APP_ENV" value="test"/>
         <server name="APP_DEBUG" value="false"/>
         <server name="SYMFONY_DEPRECATIONS_HELPER" value="165"/>
-        <server name="PANTHER_EXTERNAL_BASE_URI" value="https://127.0.0.1:8000" />
         <server name="PANTHER_NO_HEADLESS" value="0" />
     </php>
 
