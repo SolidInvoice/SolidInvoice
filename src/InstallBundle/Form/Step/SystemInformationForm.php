@@ -66,14 +66,6 @@ class SystemInformationForm extends AbstractType
             ]
         );
 
-        $builder->add(
-            'base_url',
-            null,
-            [
-                'constraints' => new Constraints\NotBlank(['message' => 'Please set the application base url']),
-            ]
-        );
-
         if (0 === $options['userCount']) {
             $builder->add(
                 'username',

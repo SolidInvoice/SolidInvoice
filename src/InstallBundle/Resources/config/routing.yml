@@ -1,11 +1,21 @@
-_install_flow:
+_install_check_requirements:
     path: /install
-    defaults: { _controller: 'installer.controller.process:startAction', scenarioAlias: install }
-sylius_flow_display:
-    path: '/install/{stepName}'
-    defaults: { _controller: 'installer.controller.process:displayAction', scenarioAlias: install }
+    defaults: { _controller: SolidInvoice\InstallBundle\Action\SystemRequirements }
+
+_install_config:
+    path: /install/config
+    defaults: { _controller: SolidInvoice\InstallBundle\Action\Config }
+
+_install_install:
+    path: /install/install
+    defaults: { _controller: SolidInvoice\InstallBundle\Action\Install }
     options:
         expose: true
-sylius_flow_forward:
-    path: '/install/{stepName}/forward'
-    defaults: { _controller: 'installer.controller.process:forwardAction', scenarioAlias: install }
+
+_install_setup:
+    path: /install/setup
+    defaults: { _controller: SolidInvoice\InstallBundle\Action\Setup }
+
+_install_finish:
+    path: /install/finish
+    defaults: { _controller: SolidInvoice\InstallBundle\Action\Finish }

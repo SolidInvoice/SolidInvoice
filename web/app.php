@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
  * @var Composer\Autoload\ClassLoader
  */
 $loader = require __DIR__.'/../app/autoload.php';
-include_once __DIR__.'/../var/bootstrap.php.cache';
 
 if (!getenv('SOLIDINVOICE_ENV') && file_exists($file = dirname(__DIR__).'/.env')) {
     (new Dotenv())->load($file);

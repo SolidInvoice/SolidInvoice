@@ -56,7 +56,6 @@ class InstallationTest extends PantherTestCase
         if (file_exists($parametersFile = $kernel->getProjectDir().'/app/config/parameters.yml')) {
             $parameters = Yaml::parseFile($parametersFile);
             $parameters['parameters']['installed'] = null;
-            $parameters['parameters']['base_url'] = 'http://127.0.0.1:8000';
             file_put_contents($parametersFile, Yaml::dump($parameters));
             self::bootKernel(['debug' => true]); // Reboot the kernel with debug to rebuild the cache
         }
@@ -95,7 +94,7 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        $this->assertContains('/install/process', $crawler->getUri());
+        $this->assertContains('/install/install', $crawler->getUri());
 
         $kernel = self::bootKernel();
         $this->assertSame($kernel->getContainer()->getParameter('env(database_name)'), 'solidinvoice_test');

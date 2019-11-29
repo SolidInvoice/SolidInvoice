@@ -8,8 +8,10 @@ env:
   global:
     - SOLIDINVOICE_ENV=test
     - SOLIDINVOICE_DEBUG=0
-    - database_name=solidinvoice_test
+    - SYMFONY_PHPUNIT_VERSION=7.5
+    - PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:8000
     - PATH="$HOME/.symfony/bin:$PATH"
+    - database_name=solidinvoice_test
 
 cache:
   yarn: true
@@ -34,11 +36,9 @@ before_install:
 
 install:
   - composer install -n
-  - sed -i 's/base_url:\ null/base_url:\ http:\/\/127.0.0.1:8000/g' app/config/parameters.yml
 
 before_script:
   - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - php app/app_check.php
 
 jobs:
   fast_finish: true
@@ -70,26 +70,21 @@ jobs:
       php: 7.4snapshot
       script: bash travis/phpunit.sh
     - stage: functional
-      php: 7.2
+      php: 7.1
       before_install:
-        - mysql -e "create database ${database_name};"
         - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
         - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
         - sudo apt-get update -qq
-        - sudo apt-get install -y -qq yarn=0.24.6-1
+        - sudo apt-get install -y -qq yarn
         - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout $(git describe --abbrev=0 --tags)) && source ~/.nvm/nvm.sh && nvm install 12.0
         - curl -sS https://get.symfony.com/cli/installer | bash
       install:
         - composer install -n
         - curl -o vendor/symfony/panther/chromedriver-bin/chromedriver_linux64 https://raw.githubusercontent.com/symfony/panther/master/chromedriver-bin/chromedriver_linux64
-        - sed -i 's/base_url:\ null/base_url:\ https:\/\/127.0.0.1:8000/g' app/config/parameters.yml
-        - sed -i 's/database_name:\ solidinvoice/database_name:\ solidinvoice_test/g' app/config/parameters.yml
-        - rm -Rf var/cache/test
         - yarn
-        - yarn run dev
+        - yarn run build
       before_script:
-          - symfony server:ca:install
-          - symfony local:server:start --daemon
+          - symfony local:server:start --daemon --no-tls --allow-http
       script: bash travis/functional.sh
 
 notifications:

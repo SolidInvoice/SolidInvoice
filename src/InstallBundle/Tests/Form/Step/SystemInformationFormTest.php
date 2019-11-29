@@ -27,7 +27,6 @@ class SystemInformationFormTest extends FormTestCase
             'locale' => $this->faker->randomKey(Intl::getLocaleBundle()->getLocaleNames()),
             'username' => $this->faker->userName,
             'email_address' => $this->faker->email,
-            'base_url' => $this->faker->url,
             'password' => null,
             'currency' => 'USD',
         ];

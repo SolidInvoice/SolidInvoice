@@ -20,8 +20,6 @@ use Doctrine\Migrations\OutputWriter;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -52,7 +50,7 @@ class Migration implements ContainerAwareInterface
      *
      * @return array
      *
-     * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|MigrationException|IOException
+     * @throws InvalidArgumentException|MigrationException|IOException
      */
     public function migrate(Closure $outputWriter = null): array
     {
@@ -83,8 +81,6 @@ class Migration implements ContainerAwareInterface
      * @param Closure $outputWriter
      *
      * @return Configuration
-     *
-     * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
      */
     private function getConfiguration($dir, Closure $outputWriter = null): Configuration
     {

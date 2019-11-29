@@ -15,12 +15,6 @@
             "email": "info@solidinvoice.co"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/MiWayInsurance/SyliusFlowBundle"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "SolidInvoice\\": "src/"
@@ -38,7 +32,7 @@
         "ext-openssl": "*",
         "ext-soap": "*",
         "ext-xsl": "*",
-        "api-platform/core": "2.2.*",
+        "api-platform/core": "^2.2",
         "defuse/php-encryption": "^2.1",
         "doctrine/cache": "^1.6",
         "doctrine/common": "^2.6",
@@ -58,7 +52,7 @@
         "mpdf/mpdf": "^7.1",
         "mpociot/vat-calculator": "^2.2",
         "namshi/notificator": "^5.0",
-        "nesbot/carbon": "^2.0.0",
+        "nesbot/carbon": "^2.0",
         "ocramius/proxy-manager": "<2.2",
         "pagerfanta/pagerfanta": "^2.0",
         "payum/authorize-net-aim": "^1.4",
@@ -74,12 +68,10 @@
         "php-http/guzzle6-adapter": "^1.1",
         "ramsey/uuid": "^3.4",
         "ramsey/uuid-doctrine": "^1.2",
-        "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^5.0",
         "solidworx/form-handler-bundle": "^1.0",
         "stof/doctrine-extensions-bundle": "^1.1",
         "swiftmailer/swiftmailer": "^6.0",
-        "sylius/flow-bundle": "0.19.1",
         "symfony/config": "^3.3",
         "symfony/console": "^3.3",
         "symfony/dependency-injection": "^3.3",
@@ -104,6 +96,7 @@
         "symfony/polyfill-xml": "^1.2",
         "symfony/property-access": "^3.3",
         "symfony/proxy-manager-bridge": "^3.3",
+        "symfony/requirements-checker": "^1.1",
         "symfony/routing": "^3.3",
         "symfony/security": "^3.3",
         "symfony/serializer": "^3.3",
@@ -125,6 +118,7 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^5.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fzaninotto/faker": "^1.3",
         "liip/test-fixtures-bundle": "^1.5",
         "matthiasnoback/symfony-dependency-injection-test": "^3.1",
@@ -134,27 +128,25 @@
         "phpstan/phpstan-doctrine": "^0.11",
         "phpstan/phpstan-symfony": "^0.11",
         "sensiolabs/security-checker": "^4.0",
+        "symfony/debug-bundle": "^3.4",
         "symfony/panther": "^0.5.2",
         "symfony/phpunit-bridge": "^4.3",
+        "symfony/web-profiler-bundle": "^3.4",
         "symfony/web-server-bundle": "^3.4"
     },
     "scripts": {
+        "auto-scripts": [
+            "bin/console cache:clear",
+            "bin/console assets:install"
+        ],
         "post-install-cmd": [
             "cp .env.dist .env",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+            "@auto-scripts"
         ]
     },
     "config": {
@@ -169,7 +161,6 @@
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
-        "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         },

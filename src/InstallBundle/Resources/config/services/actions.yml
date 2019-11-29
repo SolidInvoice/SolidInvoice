@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+
+    SolidInvoice\InstallBundle\Action\:
+        resource: '../../../Action'
+        tags: ['controller.service_arguments']
+
+    SolidInvoice\InstallBundle\Action\SystemRequirements:
+        tags: ['controller.service_arguments']
+        arguments:
+            $installed: '%installed%'
+
+    SolidInvoice\InstallBundle\Action\Finish:
+        tags: ['controller.service_arguments']
+        arguments:
+            $projectDir: '%kernel.project_dir%'

@@ -11,54 +11,94 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InstallBundle\Process\Step;
+namespace SolidInvoice\InstallBundle\Action;
 
 use DateTime;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use InvalidArgumentException;
 use Mpociot\VatCalculator\VatCalculator;
+use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
 use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Repository\UserRepository;
-use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\Exception as DependencyInjectionException;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class SetupStep extends AbstractControllerStep
+final class Setup
 {
     /**
      * @var EncoderFactoryInterface
      */
     private $encoderFactory;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory)
-    {
-        $this->encoderFactory = $encoderFactory;
-    }
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
 
     /**
-     * {@inheritdoc}
+     * @var RegistryInterface
      */
-    public function displayAction(ProcessContextInterface $context)
-    {
-        $form = $this->getForm($context->getRequest());
+    private $doctrine;
 
-        return $this->render(
-            '@SolidInvoiceInstall/Flow/setup.html.twig',
-            [
-                'form' => $form->createView(),
-                'userCount' => $this->getUserCount(),
-            ]
-        );
+    /**
+     * @var ConfigWriter
+     */
+    private $configWriter;
+
+    /**
+     * @var VatCalculator
+     */
+    private $vatCalculator;
+
+    /**
+     * @var SystemConfig
+     */
+    private $systemConfig;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct(
+        EncoderFactoryInterface $encoderFactory,
+        FormFactoryInterface $formFactory,
+        RegistryInterface $doctrine,
+        ConfigWriter $configWriter,
+        VatCalculator $vatCalculator,
+        SystemConfig $systemConfig,
+        RouterInterface $router
+    ) {
+        $this->encoderFactory = $encoderFactory;
+        $this->formFactory = $formFactory;
+        $this->doctrine = $doctrine;
+        $this->configWriter = $configWriter;
+        $this->vatCalculator = $vatCalculator;
+        $this->systemConfig = $systemConfig;
+        $this->router = $router;
+    }
+
+    public function __invoke(Request $request)
+    {
+        if ($request->isMethod(Request::METHOD_POST)) {
+            return $this->handleForm($request);
+        }
+
+        return $this->render($this->getForm($request));
     }
 
     /**
@@ -68,22 +108,7 @@ class SetupStep extends AbstractControllerStep
      */
     private function getForm(Request $request): FormInterface
     {
-        $options = [
-            'action' => $this->generateUrl(
-                'sylius_flow_forward',
-                [
-                    'scenarioAlias' => 'install',
-                    'stepName' => 'setup',
-                ]
-            ),
-            'userCount' => $this->getUserCount(),
-        ];
-
-        $data = [
-            'base_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl(),
-        ];
-
-        return $this->createForm(SystemInformationForm::class, $data, $options);
+        return $this->formFactory->create(SystemInformationForm::class, [], ['userCount' => $this->getUserCount()]);
     }
 
     /**
@@ -94,24 +119,15 @@ class SetupStep extends AbstractControllerStep
         static $userCount;
 
         if (null === $userCount) {
-            $entityManager = $this->container->get('doctrine');
-
-            /** @var UserRepository $repository */
-            $repository = $entityManager->getRepository(User::class);
-
-            $userCount = $repository->getUserCount();
+            $userCount = $this->doctrine->getRepository(User::class)->getUserCount();
         }
 
         return $userCount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function forwardAction(ProcessContextInterface $context)
+    public function handleForm(Request $request)
     {
-        $request = $context->getRequest();
-        $form = $this->getForm($context->getRequest());
+        $form = $this->getForm($request);
 
         $form->handleRequest($request);
 
@@ -125,16 +141,12 @@ class SetupStep extends AbstractControllerStep
             $this->saveCurrentVersion();
             $this->saveConfig($data);
 
-            return $this->complete();
+            $request->getSession()->set('installation_step', true);
+
+            return new RedirectResponse($this->router->generate('_install_finish'));
         }
 
-        return $this->render(
-            '@SolidInvoiceInstall/Flow/setup.html.twig',
-            [
-                'form' => $form->createView(),
-                'userCount' => $this->getUserCount(),
-            ]
-        );
+        return $this->render($form);
     }
 
     /**
@@ -154,7 +166,7 @@ class SetupStep extends AbstractControllerStep
             ->setEnabled(true)
             ->setSuperAdmin(true);
 
-        $entityManager = $this->container->get('doctrine')->getManager();
+        $entityManager = $this->doctrine->getManager();
 
         $entityManager->persist($user);
         $entityManager->flush();
@@ -167,7 +179,7 @@ class SetupStep extends AbstractControllerStep
     {
         $version = SolidInvoiceCoreBundle::VERSION;
 
-        $entityManager = $this->container->get('doctrine')->getManager();
+        $entityManager = $this->doctrine->getManager();
 
         /** @var VersionRepository $repository */
         $repository = $entityManager->getRepository(Version::class);
@@ -186,29 +198,43 @@ class SetupStep extends AbstractControllerStep
 
         $config = [
             'locale' => $data['locale'],
-            'base_url' => $data['base_url'],
             'installed' => $time->format(DateTime::ISO8601),
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
-        $this->get('solidinvoice.core.config_writer')->dump($config);
+        $this->configWriter->dump($config);
 
         $countryCode = explode('_', $data['locale'])[1] ?? $data['locale'];
 
-        $vatCalculator = $this->get(VatCalculator::class);
-        if ($vatCalculator->shouldCollectVAT($countryCode)) {
-            $rate = $vatCalculator->getTaxRateForCountry($countryCode);
+        if ($this->vatCalculator->shouldCollectVAT($countryCode)) {
+            $rate = $this->vatCalculator->getTaxRateForCountry($countryCode);
 
             $tax = new Tax();
             $tax->setRate($rate * 100)
                 ->setType(Tax::TYPE_INCLUSIVE)
                 ->setName('VAT');
 
-            $em = $this->get('doctrine')->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($tax);
             $em->flush();
         }
 
-        $this->get('settings')->set(CurrencyFactory::CURRENCY_PATH, $data['currency'] ?? CurrencyFactory::DEFAULT_CURRENCY);
+        $this->systemConfig->set(CurrencyFactory::CURRENCY_PATH, $data['currency'] ?? CurrencyFactory::DEFAULT_CURRENCY);
+    }
+
+    /**
+     * @param FormInterface $form
+     *
+     * @return Template
+     */
+    protected function render(FormInterface $form): Template
+    {
+        return new Template(
+            '@SolidInvoiceInstall/setup.html.twig',
+            [
+                'form' => $form->createView(),
+                'userCount' => $this->getUserCount(),
+            ]
+        );
     }
 }

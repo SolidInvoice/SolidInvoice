@@ -9,7 +9,7 @@ export default MnObject.extend({
         this.prefix = prefix;
         this.value = value;
 
-        const transport = $('#' + this.prefix + '_transport'),
+        const transport = $(`#${this.prefix}_transport`),
             smtpConfig = [
                 'host', 'port', 'encryption', 'user', 'password'
             ],
@@ -17,8 +17,8 @@ export default MnObject.extend({
                 'user', 'password'
             ];
 
-        forEach({ 'smtpConfig': smtpConfig, 'gmailConfig': gmailConfig }, (values, type) => {
-            this[type] = $(map(values, (val) => `#{this.prefix}_${val}`).join(',')).parent('.form-group');
+        forEach({ smtpConfig, gmailConfig }, (values, type) => {
+            this[type] = $(map(values, (val) => `#${this.prefix}_${val}`).join(',')).parent('.form-group');
         });
 
         transport.on('change', (event) => {

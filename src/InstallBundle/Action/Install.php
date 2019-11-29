@@ -11,28 +11,26 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InstallBundle\Process\Step;
+namespace SolidInvoice\InstallBundle\Action;
 
 use Doctrine\DBAL\DriverManager;
-use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\AbstractControllerStep;
+use Doctrine\Migrations\Exception\MigrationException;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
-class InstallStep extends AbstractControllerStep
+final class Install
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function displayAction(ProcessContextInterface $context)
+    public function __invoke(Request $request, RegistryInterface $doctrine, Migration $migration)
     {
-        $request = $context->getRequest();
-
-        if ($request->query->has('action')) {
+        if ($request->request->has('action')) {
             $result = [];
 
-            switch ($request->query->get('action')) {
+            switch ($request->request->get('action')) {
                 case 'createdb':
-                    $connection = $this->get('doctrine')->getConnection();
+                    $connection = $doctrine->getConnection();
                     $params = $connection->getParams();
                     $dbName = $params['dbname'];
 
@@ -54,13 +52,11 @@ class InstallStep extends AbstractControllerStep
 
                     break;
                 case 'migrations':
-                    $migration = $this->get('solidinvoice.installer.database.migration');
-
                     try {
                         $migration->migrate();
 
                         $result['success'] = true;
-                    } catch (\Exception $e) {
+                    } catch (MigrationException $e) {
                         $result['success'] = false;
                         $result['message'] = $e->getMessage();
                     }
@@ -71,6 +67,6 @@ class InstallStep extends AbstractControllerStep
             return new JsonResponse($result);
         }
 
-        return $this->render('@SolidInvoiceInstall/Flow/install.html.twig');
+        return new Template('@SolidInvoiceInstall/install.html.twig');
     }
 }

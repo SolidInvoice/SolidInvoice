@@ -17,6 +17,6 @@ class ApplicationInstalledException extends \Exception
 {
     public function __construct()
     {
-        parent::__construct('Application is already installed');
+        parent::__construct('installation.already_installed');
     }
 }
