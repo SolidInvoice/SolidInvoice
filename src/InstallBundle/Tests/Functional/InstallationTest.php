@@ -78,6 +78,8 @@ class InstallationTest extends PantherTestCase
 
         // No error messages on the site
         $this->assertCount(0, $crawler->filter('.alert-danger'));
+        
+        echo $crawler->html();
 
         $this->continue($client, $crawler);
 
