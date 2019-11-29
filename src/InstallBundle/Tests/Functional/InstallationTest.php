@@ -78,8 +78,13 @@ class InstallationTest extends PantherTestCase
 
         // No error messages on the site
         $this->assertCount(0, $crawler->filter('.alert-danger'));
-        
+
         echo $crawler->html();
+        var_dump($crawler);
+        var_dump($client->getCurrentURL());
+        var_dump($crawler->getLocation());
+        $client->takeScreenshot('screen.png');
+
 
         $this->continue($client, $crawler);
 
