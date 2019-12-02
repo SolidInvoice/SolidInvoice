@@ -10,11 +10,3 @@ services:
     SolidInvoice\UserBundle\Form\Handler\:
         resource: '../../../Form/Handler'
         lazy: true
-
-    SolidInvoice\UserBundle\Form\Handler\UserAddFormHandler:
-        arguments:
-            $factory: '@fos_user.registration.form.factory'
-
-    SolidInvoice\UserBundle\Form\Handler\UserEditFormHandler:
-        arguments:
-            $factory: '@fos_user.registration.form.factory'

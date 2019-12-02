@@ -2,3 +2,4 @@ services:
     SolidInvoice\UserBundle\Action\:
         resource: '../../../Action'
         autowire: true
+        tags: ['controller.service_arguments']

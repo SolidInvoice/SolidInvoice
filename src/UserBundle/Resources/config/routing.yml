@@ -1,12 +1,12 @@
 _api_keys_index:
-    path: /api
+    path: /profile/api
     defaults: { _controller: 'SolidInvoice\UserBundle\Action\ApiIndex' }
     options:
         expose: true
 
 _api_keys_xhr:
     resource: '@SolidInvoiceUserBundle/Resources/config/routing/ajax.yml'
-    prefix: /api/xhr
+    prefix: /profile/api/xhr
     options:
         expose: true
 
@@ -29,3 +29,28 @@ _user_edit:
 _users_grid:
     resource: '@SolidInvoiceUserBundle/Action/Grid'
     type: grid
+
+_login:
+    path: /login
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\Security\Login' }
+
+_logout:
+    path: /logout
+
+_login_check:
+    path: /login-check
+
+_user_forgot_password:
+    path: /forgot-password
+
+_profile:
+    path: /profile
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\Profile' }
+
+_edit_profile:
+    path: /profile/edit
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\EditProfile' }
+
+_change_password:
+    path: /profile/change-password
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\Security\ChangePassword' }

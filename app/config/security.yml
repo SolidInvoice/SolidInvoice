@@ -1,6 +1,6 @@
 security:
     encoders:
-        SolidInvoice\UserBundle\Model\User:
+        SolidInvoice\UserBundle\Entity\User:
             algorithm: bcrypt
             cost: 10
     role_hierarchy:
@@ -13,7 +13,7 @@ security:
     providers:
         solidinvoice_user:
             entity:
-                class: SolidInvoice\UserBundle\Model\User
+                class: SolidInvoice\UserBundle\Entity\User
         api_token_user_provider:
             id: api_token_user_provider
     firewalls:
@@ -75,7 +75,7 @@ security:
             form_login:
                 provider: solidinvoice_user
                 csrf_token_generator: security.csrf.token_manager
-                check_path: /login_check
+                check_path: /login-check
                 login_path: /login
             logout:
                 path: /logout
