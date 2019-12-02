@@ -15,11 +15,9 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\CoreBundle\Traits\SaveableTrait;
-use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Form\Type\UserType;;
+use SolidInvoice\UserBundle\Form\Type\ProfileType;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
-use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
@@ -27,28 +25,31 @@ use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
+class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
-    use SaveableTrait;
-
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserRepository
      */
-    private $userPasswordEncoder;
+    private $userRepository;
 
     /**
      * @var RouterInterface
      */
     private $router;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, RouterInterface $router)
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
+        $this->userRepository = $userRepository;
         $this->router = $router;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -56,7 +57,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
      */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(UserType::class, $options->get('user'));
+        return $factory->create(ProfileType::class, $this->tokenStorage->getToken()->getUser());
     }
 
     /**
@@ -65,7 +66,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            '@SolidInvoiceUser/Users/form.html.twig',
+            '@SolidInvoiceUser/Profile/edit.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
             ]
@@ -77,28 +78,15 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
      */
     public function onSuccess($user, FormRequest $form): ?Response
     {
-        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
-        $user->eraseCredentials();
-        $this->save($user);
+        $this->userRepository->save($user);
 
-        $route = $this->router->generate('_users_list');
+        $route = $this->router->generate('_profile');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'users.create.success';
+                yield self::FLASH_SUCCESS => 'profile.edit.success';
             }
         };
-    }
-
-    /**
-     * Configure defined, required and default options.
-     *
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setRequired('user');
-        $resolver->setAllowedTypes('user', User::class);
     }
 }

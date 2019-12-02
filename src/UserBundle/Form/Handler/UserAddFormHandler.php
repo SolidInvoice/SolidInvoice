@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Handler;
 
-use FOS\UserBundle\Form\Factory\FormFactory;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
-use SolidInvoice\UserBundle\Manager\UserManager;
+use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Form\Type\UserType;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -27,15 +27,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
     use SaveableTrait;
-
-    /**
-     * @var UserManager
-     */
-    private $userManager;
 
     /**
      * @var RouterInterface
@@ -43,15 +39,14 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     private $router;
 
     /**
-     * @var FormFactory
+     * @var UserPasswordEncoderInterface
      */
-    private $factory;
+    private $userPasswordEncoder;
 
-    public function __construct(UserManager $userManager, FormFactory $factory, RouterInterface $router)
+    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, RouterInterface $router)
     {
-        $this->userManager = $userManager;
         $this->router = $router;
-        $this->factory = $factory;
+        $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
     /**
@@ -59,7 +54,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
      */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $this->factory->createForm();
+        return $factory->create(UserType::class);
     }
 
     /**
@@ -77,10 +72,16 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
 
     /**
      * {@inheritdoc}
+     *
+     * @param User $user
+     *
+     * @throws \Exception
      */
     public function onSuccess($user, FormRequest $form): ?Response
     {
-        $this->userManager->updateUser($user);
+        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
+        $user->eraseCredentials();
+        $this->save($user);
 
         $route = $this->router->generate('_users_list');
 

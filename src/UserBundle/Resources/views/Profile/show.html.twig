@@ -9,7 +9,7 @@
 
 {% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
 
-{% block title %}{{ "profile.show.title"|trans({"%username%" : user.username}) }}{% endblock title %}
+{% block title %}{{ "profile.show.title"|trans({"%username%" : app.user.username}) }}{% endblock title %}
 
 {% block content %}
     <div class="box box-primary">
@@ -21,7 +21,7 @@
                             {{ 'profile.show.username'|trans }}
                         </th>
                         <td>
-                            {{ user.username }}
+                            {{ app.user.username }}
                         </td>
                     </tr>
                     <tr>
@@ -29,7 +29,7 @@
                             {{ 'profile.show.email'|trans }}
                         </th>
                         <td>
-                            {{ user.email }}
+                            {{ app.user.email }}
                         </td>
                     </tr>
                     <tr>
@@ -37,7 +37,7 @@
                             {{ 'profile.show.mobile'|trans }}
                         </th>
                         <td>
-                            {{ user.mobile }}
+                            {{ app.user.mobile }}
                         </td>
                     </tr>
                     <tr>
@@ -45,7 +45,7 @@
                             {{ 'profile.show.last_login'|trans }}
                         </th>
                         <td>
-                            {{ user.lastLogin|date }}
+                            {{ app.user.lastLogin|date }}
                         </td>
                     </tr>
                     <tr>
@@ -53,7 +53,7 @@
                             {{ 'profile.show.enabled'|trans }}
                         </th>
                         <td>
-                            {% if user.enabled %}
+                            {% if app.user.enabled %}
                                 <span class="badge bg-green">{{ 'profile.show.yes'|trans }}</span>
                             {% else %}
                                 <span class="badge bg-red">{{ 'profile.show.no'|trans }}</span>
@@ -65,7 +65,7 @@
                             {{ 'profile.show.roles'|trans }}
                         </th>
                         <td>
-                            {{ user.roles|join(', ') }}
+                            {{ app.user.roles|join(', ') }}
                         </td>
                     </tr>
                 </tbody>
@@ -73,10 +73,10 @@
         </div>
 
         <div class="box-footer">
-            <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary">
+            <a href="{{ path('_edit_profile') }}" class="btn btn-primary">
                 {{ icon('user') }} {{ 'profile.show.update_profile'|trans }}
             </a>
-            <a href="{{ path('fos_user_change_password') }}" class="btn btn-info">
+            <a href="{{ path('_change_password') }}" class="btn btn-info">
                 {{ icon('key') }} {{ 'profile.show.change_password'|trans }}
             </a>
         </div>

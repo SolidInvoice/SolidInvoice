@@ -26,7 +26,7 @@
                 </div>
             {% endif %}
 
-            <form action="{{ path("fos_user_security_check") }}" method="post" id="login" role="form">
+            <form action="{{ path("_login_check") }}" method="post" id="login" role="form">
                 <div class="form-group">
                     <label for="username">{{ "security.login.username"|trans }}</label>
                     <div class="input-group">
@@ -65,7 +65,7 @@
             </form>
 
             <hr/>
-            <a href="{{ path("fos_user_resetting_request") }}">
+            <a href="{{ path("_user_forgot_password") }}">
                 {{ icon('lock') }} {{ "security.login.forgot_password"|trans }}
             </a>
         </div>

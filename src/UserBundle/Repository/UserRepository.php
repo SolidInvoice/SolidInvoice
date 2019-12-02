@@ -15,23 +15,22 @@ namespace SolidInvoice\UserBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class UserRepository extends ServiceEntityRepository implements UserProviderInterface
+class UserRepository extends ServiceEntityRepository implements UserProviderInterface, UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    /**
-     * @return int
-     */
     public function getUserCount(): int
     {
         $qb = $this->createQueryBuilder('u');
@@ -54,21 +53,19 @@ class UserRepository extends ServiceEntityRepository implements UserProviderInte
     {
         $q = $this
             ->createQueryBuilder('u')
-            ->select('u, r')
-            ->leftJoin('u.roles', 'r')
-            ->where('u.username = :username OR u.email = :email')
+            ->select('u')
+            ->where('(u.username = :username OR u.email = :email)')
+            ->andWhere('u.enabled = 1')
             ->setParameter('username', $username)
             ->setParameter('email', $username)
             ->getQuery();
 
         try {
             // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
-            $user = $q->getSingleResult();
-        } catch (NoResultException $e) {
+            return $q->getSingleResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
             throw new UsernameNotFoundException(sprintf('User "%s" does not exist.', $username), 0, $e);
         }
-
-        return $user;
     }
 
     /**
@@ -100,5 +97,24 @@ class UserRepository extends ServiceEntityRepository implements UserProviderInte
             ->groupBy('u.id');
 
         return $qb;
+    }
+
+    public function save(User $user)
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($user);
+        $em->flush();
+    }
+
+    public function deleteUsers(array $users)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->delete()
+            ->where($qb->expr()->in('u.id', $users));
+
+        return $qb->getQuery()
+            ->execute();
     }
 }

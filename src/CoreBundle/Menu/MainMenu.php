@@ -46,7 +46,7 @@ class MainMenu
     public static function profile(): array
     {
         return [
-            'menu.top.profile', ['route' => 'fos_user_profile_show', 'extras' => ['icon' => 'user']],
+            'menu.top.profile', ['route' => '_profile', 'extras' => ['icon' => 'user']],
         ];
     }
 
@@ -68,7 +68,7 @@ class MainMenu
         return [
             'menu.top.logout',
             [
-                'route' => 'fos_user_security_logout',
+                'route' => '_logout',
                 'extras' => ['icon' => 'power-off'],
             ],
         ];

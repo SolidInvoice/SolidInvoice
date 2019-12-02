@@ -14,7 +14,9 @@ profile:
         change_password: 'Change Password'
         update_profile: 'Update Profile'
     edit:
+        success: 'Your profile has been updated'
         cancel: Cancel
+        submit: Save
     api:
         title: 'API Tokens'
         create: 'Create Token'
@@ -65,3 +67,5 @@ users:
         edit: 'Edit'
         delete: 'Delete'
 
+change_password:
+    submit: 'Save'

@@ -13,9 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Type;
 
-use FOS\UserBundle\Form\Type\ProfileFormType;
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProfileType extends AbstractType
 {
@@ -25,22 +30,28 @@ class ProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('mobile');
+        $builder
+            ->add('username')
+            ->add('email', EmailType::class)
+            ->add('mobile')
+            ->add('current_password', PasswordType::class, [
+                'label' => 'Current Password',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(),
+                    new UserPassword(),
+                ],
+                'attr' => [
+                    'autocomplete' => 'current-password',
+                ],
+            ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return ProfileFormType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'profile_form';
+        $resolver->setDefaults([
+            'data_class' => User::class,
+            'csrf_token_id' => 'profile',
+        ]);
     }
 }
