@@ -31,18 +31,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class UserAddFormHandlerTest extends FormHandlerTestCase
 {
-    private $userManager;
-
     private $router;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->userManager = new UserManager(new PasswordUpdater(new EncoderFactory([User::class => new BCryptPasswordEncoder(10)])), new CanonicalFieldsUpdater(new Canonicalizer(), new Canonicalizer()), $this->em, User::class);
         $this->router = M::mock(RouterInterface::class);
 
         $this->router->shouldReceive('generate')
@@ -56,7 +54,7 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
-        $handler = new UserAddFormHandler($this->userManager, new FormFactory($this->factory, 'fos_user_registration_form', RegistrationFormType::class), $this->router);
+        $handler = new UserAddFormHandler(new UserPasswordEncoder(new EncoderFactory([User::class => new BCryptPasswordEncoder(10)])), $this->router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
