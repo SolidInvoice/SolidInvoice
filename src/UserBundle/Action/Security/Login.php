@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the SolidInvoice project.
+ * This file is part of SolidInvoice project.
  *
- * @author     pierre
- * @copyright  Copyright (c) 2019
+ * (c) 2013-2017 Pierre du Plessis <info@customscripts.co.za>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace SolidInvoice\UserBundle\Action\Security;
@@ -29,7 +31,7 @@ final class Login
 
         if ($request->attributes->has($authErrorKey)) {
             $error = $request->attributes->get($authErrorKey);
-        } else if ($session->has($authErrorKey)) {
+        } elseif ($session->has($authErrorKey)) {
             $error = $session->get($authErrorKey);
             $session->remove($authErrorKey);
         }

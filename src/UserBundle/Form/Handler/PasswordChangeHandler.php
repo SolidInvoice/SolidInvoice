@@ -15,7 +15,6 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\UserBundle\Form\Type\ChangePasswordFormType;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;

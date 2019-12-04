@@ -137,27 +137,19 @@ class InstallCommand extends ContainerAwareCommand
 
         if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-host')) {
-                throw new \Exception(
-                    'The --mailer-host option needs to be specified when using SMTP as email transport'
-                );
+                throw new \Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
             }
 
             if (null === $input->getOption('mailer-port')) {
-                throw new \Exception(
-                    'The --mailer-port option needs to be specified when using SMTP as email transport'
-                );
+                throw new \Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
             }
         } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-user')) {
-                throw new \Exception(
-                    'The --mailer-user option needs to be specified when using Gmail as email transport'
-                );
+                throw new \Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
             }
 
             if (null === $input->getOption('mailer-password')) {
-                throw new \Exception(
-                    'The --mailer-password option needs to be specified when using Gmail as email transport'
-                );
+                throw new \Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
             }
         }
     }
