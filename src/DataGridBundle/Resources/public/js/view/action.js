@@ -53,7 +53,6 @@ export default ItemView.extend({
                 Alert.alert(e.message);
             } else {
                 grid.clearSelectedModels();
-                console.log(grid.collection);
                 await grid.collection.fetch();
             }
         });

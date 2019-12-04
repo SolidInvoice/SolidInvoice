@@ -17,7 +17,7 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Form\Type\UserType;;
+use SolidInvoice\UserBundle\Form\Type\UserType;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;

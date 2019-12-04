@@ -182,7 +182,7 @@ class User implements UserInterface
     public function addRole($role)
     {
         $role = strtoupper($role);
-        if ($role === 'ROLE_USER') {
+        if ('ROLE_USER' === $role) {
             return $this;
         }
 
