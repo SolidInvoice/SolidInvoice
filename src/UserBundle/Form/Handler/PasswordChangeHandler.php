@@ -84,7 +84,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
     /**
      * {@inheritdoc}
      *
-     * @var User $user
+     * @var User
      */
     public function onSuccess($user, FormRequest $form): ?Response
     {
