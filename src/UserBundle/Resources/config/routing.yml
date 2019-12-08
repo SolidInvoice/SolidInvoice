@@ -42,6 +42,19 @@ _login_check:
 
 _user_forgot_password:
     path: /forgot-password
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\ForgotPassword\Request' }
+
+_user_forgot_password_send_emal:
+    path: /forgot-password/send
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\ForgotPassword\Send' }
+
+_user_forgot_password_check_email:
+    path: /forgot-password/check
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\ForgotPassword\Check' }
+
+_user_password_reset:
+    path: /forgot-password/reset/{token}
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\ForgotPassword\Reset' }
 
 _profile:
     path: /profile

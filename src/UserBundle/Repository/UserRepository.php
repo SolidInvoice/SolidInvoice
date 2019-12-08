@@ -99,7 +99,7 @@ class UserRepository extends ServiceEntityRepository implements UserProviderInte
         return $qb;
     }
 
-    public function save(User $user)
+    public function save(UserInterface $user)
     {
         $em = $this->getEntityManager();
 
@@ -116,5 +116,13 @@ class UserRepository extends ServiceEntityRepository implements UserProviderInte
 
         return $qb->getQuery()
             ->execute();
+    }
+
+    public function clearUserConfirmationToken(User $user)
+    {
+        $user->setConfirmationToken(null)
+            ->setPasswordRequestedAt(null);
+
+        $this->save($user);
     }
 }

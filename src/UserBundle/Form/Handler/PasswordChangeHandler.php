@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
@@ -27,6 +28,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
@@ -45,11 +47,17 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
      */
     private $tokenStorage;
 
-    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage, RouterInterface $router)
+    /**
+     * @var UserPasswordEncoder
+     */
+    private $userPasswordEncoder;
+
+    public function __construct(UserRepository $userRepository, UserPasswordEncoder $userPasswordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
+        $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
     /**
@@ -57,7 +65,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
      */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(ChangePasswordType::class, $this->tokenStorage->getToken()->getUser());
+        return $factory->create(ChangePasswordType::class, $options->get('user', $this->tokenStorage->getToken()->getUser()), ['confirm_password' => $options->get('confirm_password', true)]);
     }
 
     /**
@@ -75,17 +83,24 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
 
     /**
      * {@inheritdoc}
+     *
+     * @var User $user
      */
     public function onSuccess($user, FormRequest $form): ?Response
     {
+        $route = $form->getOptions()->get('redirect_route', '_profile');
+
+        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
+        $user->eraseCredentials();
+
         $this->userRepository->save($user);
 
-        $route = $this->router->generate('_profile');
+        $route = $this->router->generate($route);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'profile.edit.success';
+                yield self::FLASH_SUCCESS => 'profile.password_change.success';
             }
         };
     }

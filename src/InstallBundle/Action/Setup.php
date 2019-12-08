@@ -163,8 +163,7 @@ final class Setup
         $user->setUsername($data['username'])
             ->setEmail($data['email_address'])
             ->setPassword($password)
-            ->setEnabled(true)
-            ->setSuperAdmin(true);
+            ->setEnabled(true);
 
         $entityManager = $this->doctrine->getManager();
 

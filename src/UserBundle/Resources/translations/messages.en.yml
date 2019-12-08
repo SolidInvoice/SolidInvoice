@@ -45,6 +45,9 @@ profile:
                 ip: 'IP Address'
                 resource: Resource
                 user_agent: 'User Agent'
+        change_password:
+            success: 'Your password has been updated'
+
 security:
     login:
         login: Login
@@ -69,3 +72,13 @@ users:
 
 change_password:
     submit: 'Save'
+
+forgot_password:
+    request:
+        submit: 'Reset Password'
+        username: 'Username or email address'
+    check_email: |
+        An email has been sent. It contains a link you must click to reset your password.
+        Note: You can only request a new password once within %tokenLifetime% hours.
+
+        If you don't get an email check your spam folder or try again.
