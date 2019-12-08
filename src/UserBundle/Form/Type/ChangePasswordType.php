@@ -27,17 +27,19 @@ class ChangePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('current_password', PasswordType::class, [
-            'label' => 'Current Password',
-            'mapped' => false,
-            'constraints' => [
-                new NotBlank(),
-                new UserPassword(),
-            ],
-            'attr' => [
-                'autocomplete' => 'current-password',
-            ],
-        ]);
+        if (true === $options['confirm_password']) {
+            $builder->add('current_password', PasswordType::class, [
+                'label' => 'Current Password',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(),
+                    new UserPassword(),
+                ],
+                'attr' => [
+                    'autocomplete' => 'current-password',
+                ],
+            ]);
+        }
 
         $builder->add('plainPassword', RepeatedType::class, [
             'type' => PasswordType::class,
@@ -59,7 +61,10 @@ class ChangePasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'confirm_password' => true,
             'csrf_token_id' => 'change_password',
         ]);
+
+        $resolver->setAllowedTypes('confirm_password', 'bool');
     }
 }

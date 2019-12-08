@@ -62,7 +62,7 @@ security:
             pattern: ^/login$
             anonymous: null
         password_reset:
-            pattern: '^/resetting(.*)'
+            pattern: '^/forgot-password(.*)'
             anonymous: null
         main:
             remember_me:

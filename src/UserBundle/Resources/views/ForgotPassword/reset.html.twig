@@ -13,7 +13,7 @@
 
 {% block content %}
     <div class="widget">
-        <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" method="POST" class="fos_user_resetting_reset">
+        <form action="{{ path('_user_password_reset', {'token': token}) }}" method="POST" class="fos_user_resetting_reset">
             {{ form_widget(form) }}
             <div>
                 <input type="submit" class="btn btn-primary" value="{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}" />
