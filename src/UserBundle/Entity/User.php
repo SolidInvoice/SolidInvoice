@@ -207,7 +207,7 @@ class User implements UserInterface
             $this->roles,
             $this->mobile,
             $this->created,
-            $this->updated
+            $this->updated,
         ]);
     }
 
