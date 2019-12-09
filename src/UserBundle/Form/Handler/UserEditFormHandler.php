@@ -86,7 +86,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'users.create.success';
+                yield self::FLASH_SUCCESS => 'users.update.success';
             }
         };
     }
