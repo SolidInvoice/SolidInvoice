@@ -128,6 +128,8 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
+        "phpstan/phpstan-mockery": "^0.12.0",
+        "phpstan/phpstan-phpunit": "^0.12.1",
         "phpstan/phpstan-symfony": "^0.12",
         "phpstan/phpstan-doctrine": "^0.12",
         "phpstan/phpstan-mockery": "^0.12",
