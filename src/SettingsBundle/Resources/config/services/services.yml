@@ -9,5 +9,6 @@ services:
 
     settings:
         alias: SolidInvoice\SettingsBundle\SystemConfig
+        public: true
 
     SolidInvoice\SettingsBundle\Repository\SettingsRepository: ~

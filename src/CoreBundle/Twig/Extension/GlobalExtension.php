@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -48,10 +49,16 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
      */
     private $pdfGenerator;
 
-    public function __construct(Calculator $calculator, Generator $pdfGenerator)
+    /**
+     * @var SystemConfig
+     */
+    private $systemConfig;
+
+    public function __construct(Calculator $calculator, Generator $pdfGenerator, SystemConfig $systemConfig)
     {
         $this->calculator = $calculator;
         $this->pdfGenerator = $pdfGenerator;
+        $this->systemConfig = $systemConfig;
     }
 
     /**
@@ -70,7 +77,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
         ];
 
         if ($this->container->getParameter('installed')) {
-            $globals['app_name'] = $this->container->get('settings')->get('system/company/company_name');
+            $globals['app_name'] = $this->systemConfig->get('system/company/company_name');
         }
 
         return $globals;
@@ -135,13 +142,11 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
      */
     public function displayAppLogo(Environment $env): string
     {
-        $config = $this->container->get('settings');
-
         $logo = self::DEFAULT_LOGO;
 
         if ($this->container->getParameter('installed')) {
             try {
-                $logo = $config->get('system/company/logo');
+                $logo = $this->systemConfig->get('system/company/logo');
 
                 if (null === $logo) {
                     $logo = self::DEFAULT_LOGO;

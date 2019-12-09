@@ -13,20 +13,27 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Listener;
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class ClientListener implements ContainerAwareInterface
+class ClientListener
 {
-    use ContainerAwareTrait;
+    /**
+     * @var NotificationManager
+     */
+    private $notification;
+
+    public function __construct(NotificationManager $notification)
+    {
+        $this->notification = $notification;
+    }
 
     /**
      * @param LifecycleEventArgs $event
@@ -58,9 +65,7 @@ class ClientListener implements ContainerAwareInterface
         // client is created
         $notification = new ClientCreateNotification(['client' => $entity]);
 
-        $this->container
-            ->get('notification.manager')
-            ->sendNotification('client_create', $notification);
+        $this->notification->sendNotification('client_create', $notification);
     }
 
     /**

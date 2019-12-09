@@ -47,7 +47,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     {
         $this->factory = $factory;
 
-        $matcher = new Matcher([new RouteVoter($requestStack->getCurrentRequest())]);
+        $matcher = new Matcher([new RouteVoter($requestStack)]);
 
         parent::__construct($matcher, ['allow_safe_labels' => true, 'currentClass' => 'active']);
     }
