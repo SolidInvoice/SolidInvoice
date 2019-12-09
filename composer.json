@@ -124,6 +124,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "^3.1",
         "mockery/mockery": "^1.0",
         "php-coveralls/php-coveralls": "^2.1",
+        "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-doctrine": "^0.12",
         "phpstan/phpstan-symfony": "^0.12",
