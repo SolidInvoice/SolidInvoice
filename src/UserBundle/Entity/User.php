@@ -204,6 +204,10 @@ class User implements UserInterface
             $this->enabled,
             $this->id,
             $this->email,
+            $this->roles,
+            $this->mobile,
+            $this->created,
+            $this->updated
         ]);
     }
 
@@ -212,25 +216,16 @@ class User implements UserInterface
      */
     public function unserialize($serialized)
     {
-        $data = unserialize($serialized);
-
-        if (13 === count($data)) {
-            // Unserializing a User object from 1.3.x
-            unset($data[4], $data[5], $data[6], $data[9], $data[10]);
-            $data = array_values($data);
-        } elseif (11 === count($data)) {
-            // Unserializing a User from a dev version somewhere between 2.0-alpha3 and 2.0-beta1
-            unset($data[4], $data[7], $data[8]);
-            $data = array_values($data);
-        }
-
         [
             $this->password,
             $this->username,
             $this->enabled,
             $this->id,
             $this->email,
-        ] = $data;
+            $this->roles,
+            $this->created,
+            $this->updated
+        ] = unserialize($serialized);
     }
 
     /**

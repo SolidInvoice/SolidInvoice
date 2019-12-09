@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
@@ -48,11 +48,11 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
     private $tokenStorage;
 
     /**
-     * @var UserPasswordEncoder
+     * @var UserPasswordEncoderInterface
      */
     private $userPasswordEncoder;
 
-    public function __construct(UserRepository $userRepository, UserPasswordEncoder $userPasswordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router)
+    public function __construct(UserRepository $userRepository, UserPasswordEncoderInterface $userPasswordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;
