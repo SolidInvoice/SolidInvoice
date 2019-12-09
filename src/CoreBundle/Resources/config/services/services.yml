@@ -1,20 +1,16 @@
 services:
-    solidinvoice.core.config_writer:
-        class: SolidInvoice\CoreBundle\ConfigWriter
-        arguments: ['@kernel', '@filesystem']
+    _defaults:
+        autowire: true
+
+    SolidInvoice\CoreBundle\ConfigWriter:
+        arguments:
+            $cacheDir: '%kernel.cache_dir%'
+            $projectDir: '%kernel.project_dir%'
 
     solidinvoice_core.form.help.extension:
         class: SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
-
-    billing.mailer:
-        class: SolidInvoice\CoreBundle\Mailer\Mailer
-        arguments: ['@mailer', '@settings']
-        calls:
-            - [setEventDispatcher, ['@event_dispatcher']]
-            - [setTemplating, ['@templating']]
-            - [setSecurity, ['@security.token_storage']]
 
     solidinvoice_core.cssinline:
         class: TijsVerkoyen\CssToInlineStyles\CssToInlineStyles
@@ -26,40 +22,27 @@ services:
             - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
             - { name: cs_core.menu, menu: top_right, method: userMenu, priority: 255 }
 
-    solidinvoice_core.field.renderer:
-        class: SolidInvoice\CoreBundle\Form\FieldRenderer
-        arguments: ['@twig']
+    SolidInvoice\CoreBundle\Form\FieldRenderer:
         lazy: true
 
     SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader:
         public: false
         lazy: true
-        autowire: true
         abstract: true
         arguments:
             $locator: '@file_locator'
             $kernel: '@kernel'
 
-    Symfony\Bridge\Doctrine\RegistryInterface:
-        alias: doctrine
-
-    Symfony\Component\HttpFoundation\Session\Session:
-        alias: session
-
     Mpociot\VatCalculator\VatCalculator: ~
-    SolidInvoice\CoreBundle\Billing\TotalCalculator:
-        autowire: true
+    SolidInvoice\CoreBundle\Billing\TotalCalculator: ~
 
     SolidInvoice\CoreBundle\Email\Decorator\:
-        autowire: true
         resource: '../../../Email/Decorator/'
         tags: ['message.decorator']
 
     SolidInvoice\CoreBundle\Pdf\Generator:
-        autowire: true
         bind:
             $cacheDir: '%kernel.cache_dir%'
 
     SolidInvoice\CoreBundle\Repository\VersionRepository:
-        autowire: true
         tags: ['doctrine.repository_service']

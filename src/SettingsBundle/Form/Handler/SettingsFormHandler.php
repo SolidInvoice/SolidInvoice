@@ -26,7 +26,7 @@ use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -38,7 +38,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
     private $settingsRepository;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     private $session;
 
@@ -47,7 +47,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
      */
     private $router;
 
-    public function __construct(SettingsRepository $settingsRepository, Session $session, RouterInterface $router)
+    public function __construct(SettingsRepository $settingsRepository, SessionInterface $session, RouterInterface $router)
     {
         $this->settingsRepository = $settingsRepository;
         $this->session = $session;

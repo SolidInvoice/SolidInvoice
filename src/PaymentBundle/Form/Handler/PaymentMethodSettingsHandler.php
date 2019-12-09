@@ -55,7 +55,7 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $options->get('payment_method');

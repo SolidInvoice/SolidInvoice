@@ -15,14 +15,14 @@ namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionRequestListener implements EventSubscriberInterface
 {
     /**
-     * @var Session
+     * @var SessionInterface
      */
     protected $session;
 
@@ -42,19 +42,16 @@ class SessionRequestListener implements EventSubscriberInterface
     }
 
     /**
-     * @param Session $session
-     * @param string  $secret
+     * @param SessionInterface $session
+     * @param string           $secret
      */
-    public function __construct(Session $session, string $secret)
+    public function __construct(SessionInterface $session, string $secret)
     {
         $this->session = $session;
         $this->secret = $secret;
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
-    public function onKernelResponse(FilterResponseEvent $event): void
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

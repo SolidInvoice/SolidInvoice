@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\DependencyInjection;
 
+use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\DependencyInjection\SolidInvoiceApiExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 
 class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
@@ -45,12 +47,12 @@ class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('api_token_user_provider', 'SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_user_provider', 0, 'doctrine');
 
-        $this->assertContainerBuilderHasService('api.success', 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.success', 0, 'api.token.manager');
+        $this->assertContainerBuilderHasService(AuthenticationSuccessHandler::class, AuthenticationSuccessHandler::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.success', 0, ApiTokenManager::class);
 
         $this->assertContainerBuilderHasService('api.failure', 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler');
 
-        $this->assertContainerBuilderHasService('api.token.manager', 'SolidInvoice\ApiBundle\ApiTokenManager');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.token.manager', 0, 'doctrine');
+        $this->assertContainerBuilderHasService(ApiTokenManager::class, ApiTokenManager::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(ApiTokenManager::class, 0, 'doctrine');
     }
 }

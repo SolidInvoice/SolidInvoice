@@ -1,16 +1,10 @@
 services:
     _defaults:
         public: false
+        autowire: true
         tags:
             - { name: notification.handler }
 
-    SolidInvoice\NotificationBundle\Notification\Handler\ChainedHandler:
-        arguments: ['@notification.sender']
-
-    SolidInvoice\NotificationBundle\Notification\Handler\TwilioHandler:
-        autowire: true
-        arguments:
-            $twilio: '@twilio.client'
-
-    Namshi\Notificator\Notification\Handler\SwiftMailer:
-        arguments: ['@mailer']
+    SolidInvoice\NotificationBundle\Notification\Handler\ChainedHandler: ~
+    SolidInvoice\NotificationBundle\Notification\Handler\TwilioHandler: ~
+    Namshi\Notificator\Notification\Handler\SwiftMailer: ~

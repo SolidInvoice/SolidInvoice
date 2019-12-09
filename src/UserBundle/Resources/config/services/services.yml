@@ -1,4 +1,6 @@
 services:
+    SolidInvoice\UserBundle\Manager\UserManager: '@fos_user.user_manager.default'
+
     SolidInvoice\UserBundle\Repository\ApiTokenRepository:
         autowire: true
         tags: ['doctrine.repository_service']

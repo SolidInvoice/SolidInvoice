@@ -15,12 +15,20 @@ namespace SolidInvoice\InstallBundle\Command;
 
 use Defuse\Crypto\Key;
 use Doctrine\DBAL\DriverManager;
+use DateTime;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\Migrations\Exception\MigrationException;
+use Exception;
+use InvalidArgumentException;
+use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,16 +36,48 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Intl\Intl;
 
-class InstallCommand extends ContainerAwareCommand
+class InstallCommand extends Command
 {
+    /**
+     * @var ConfigWriter
+     */
+    private $configWriter;
+
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    /**
+     * @var string|null
+     */
+    private $installed;
+
+    /**
+     * @var Migration
+     */
+    private $migration;
+
+    public function __construct(
+        ConfigWriter $configWriter,
+        Migration $migration,
+        string $projectDir,
+        ?string $installed
+    ) {
+        parent::__construct();
+
+        $this->configWriter = $configWriter;
+        $this->projectDir = $projectDir;
+        $this->installed = $installed;
+        $this->migration = $migration;
+    }
+
     /**
      * @return bool
      */
     public function isEnabled(): bool
     {
-        $container = $this->getContainer();
-
-        return null === $container->getParameter('installed');
+        return null === $this->installed;
     }
 
     /**
@@ -68,16 +108,11 @@ class InstallCommand extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getContainer();
-
         $this->validate($input);
-
-        if (1 === ($return = $this->checkRequirements())) {
-            return $return;
-        }
 
         $this->saveConfig($input)
             ->install($input, $output);
@@ -97,14 +132,14 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln(sprintf(
             '<comment>0 0 * * * php %s/console cron:run -e prod -n</comment>',
-            $container->getParameter('kernel.root_dir')
+            $this->projectDir
         ));
     }
 
     /**
      * @param InputInterface $input
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validate(InputInterface $input)
     {
@@ -120,7 +155,7 @@ class InstallCommand extends ContainerAwareCommand
 
         foreach ($values as $option) {
             if (null === $input->getOption($option)) {
-                throw new \Exception(sprintf('The --%s option needs to be specified', $option));
+                throw new Exception(sprintf('The --%s option needs to be specified', $option));
             }
         }
 
@@ -128,11 +163,11 @@ class InstallCommand extends ContainerAwareCommand
         $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
 
         if (!array_search($locale = $input->getOption('locale'), $locales, true)) {
-            throw new \InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
+            throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
         if (!array_search($currency = $input->getOption('currency'), $currencies, true)) {
-            throw new \InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
+            throw new InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 
         if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
@@ -155,21 +190,10 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * Checks if the system matches all the requirements.
-     *
-     * @return int
-     */
-    private function checkRequirements(): int
-    {
-        $rootDir = $this->getContainer()->get('kernel')->getRootDir();
-        $return = true;
-
-        return require_once $rootDir.DIRECTORY_SEPARATOR.'app_check.php';
-    }
-
-    /**
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @throws Exception
      */
     private function install(InputInterface $input, OutputInterface $output)
     {
@@ -185,10 +209,10 @@ class InstallCommand extends ContainerAwareCommand
 
             $repository->updateVersion($version);
 
-            $time = new \DateTime('NOW');
+            $time = new DateTime('NOW');
 
             $config = [
-                'installed' => $time->format(\DateTime::ISO8601),
+                'installed' => $time->format(DateTime::ISO8601),
             ];
 
             $this->getContainer()->get('solidinvoice.core.config_writer')->dump($config);
@@ -201,13 +225,11 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception|MigrationException
      */
     private function initDb(InputInterface $input, OutputInterface $output): bool
     {
         $this->createDb($input, $output);
-
-        $migration = $this->getContainer()->get('solidinvoice.installer.database.migration');
 
         $callback = function ($message) use ($output): void {
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
@@ -217,7 +239,7 @@ class InstallCommand extends ContainerAwareCommand
 
         $output->writeln('<info>Running database migrations</info>');
 
-        $migration->migrate($callback);
+        $this->migration->migrate($callback);
 
         return true;
     }
@@ -228,8 +250,8 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return bool
      *
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Exception
+     * @throws DBALException
+     * @throws Exception
      */
     private function createDb(InputInterface $input, OutputInterface $output): bool
     {
@@ -250,7 +272,7 @@ class InstallCommand extends ContainerAwareCommand
         try {
             $tmpConnection->getSchemaManager()->createDatabase($dbName);
             $output->writeln(sprintf('<info>Created database %s</info>', $dbName));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if (false !== strpos($e->getMessage(), 'database exists')) {
                 if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
                     $output->writeln(sprintf('<info>Database %s already exists</info>', $dbName));

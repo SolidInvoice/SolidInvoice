@@ -1,6 +1,5 @@
 services:
-    solidinvoice.installer.database.migration:
-        class: SolidInvoice\InstallBundle\Installer\Database\Migration
+    SolidInvoice\InstallBundle\Installer\Database\Migration:
         arguments: ['@filesystem']
         calls:
             - [setContainer, ['@service_container']]

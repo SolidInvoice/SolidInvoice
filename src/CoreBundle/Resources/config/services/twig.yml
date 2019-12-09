@@ -9,8 +9,7 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
-    SolidInvoice\CoreBundle\Twig\Extension\BillingExtension:
-        arguments: ['@solidinvoice_core.field.renderer']
+    SolidInvoice\CoreBundle\Twig\Extension\BillingExtension: ~
 
     SolidInvoice\CoreBundle\Twig\Extension\FileExtension:
         arguments:

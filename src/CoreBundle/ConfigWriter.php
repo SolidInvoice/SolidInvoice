@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle;
 
-use SolidInvoice\CoreBundle\Kernel\ContainerClassKernelInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -21,19 +20,9 @@ use Symfony\Component\Yaml\Yaml;
 class ConfigWriter
 {
     /**
-     * @var string
-     */
-    private $configDir;
-
-    /**
      * @var Filesystem
      */
     private $fileSystem;
-
-    /**
-     * @var ContainerClassKernelInterface
-     */
-    private $kernel;
 
     /**
      * @var string
@@ -41,15 +30,21 @@ class ConfigWriter
     private $configFile;
 
     /**
-     * @param ContainerClassKernelInterface $kernel
-     * @param Filesystem                    $fileSystem
+     * @var string
      */
-    public function __construct(ContainerClassKernelInterface $kernel, Filesystem $fileSystem)
+    private $cacheDir;
+
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    public function __construct(string $cacheDir, string $projectDir, Filesystem $fileSystem)
     {
-        $this->configDir = $kernel->getConfigDir();
         $this->fileSystem = $fileSystem;
-        $this->kernel = $kernel;
-        $this->configFile = $this->configDir.'/parameters.yml';
+        $this->configFile = $this->projectDir.'/app/config/parameters.yml';
+        $this->cacheDir = $cacheDir;
+        $this->projectDir = $projectDir;
     }
 
     /**
@@ -67,13 +62,7 @@ class ConfigWriter
 
         $this->fileSystem->dumpFile($this->configFile, $yaml);
 
-        $this->fileSystem->remove(
-            sprintf(
-                '%s/%s.php',
-                $this->kernel->getCacheDir(),
-                $this->kernel->getContainerCacheClass()
-            )
-        );
+        $this->fileSystem->remove($this->cacheDir);
     }
 
     /**
