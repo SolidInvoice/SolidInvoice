@@ -305,7 +305,7 @@ class InstallCommand extends ContainerAwareCommand
 
         $user->setUsername($input->getOption('admin-username'))
             ->setEmail($input->getOption('admin-email'))
-            ->setPassword($this->getContainer()->get('security.user_password_encoder.generic')->encodePassword($user, $input->getOption('admin-password')))
+            ->setPassword($this->getContainer()->get('security.password_encoder')->encodePassword($user, $input->getOption('admin-password')))
             ->setEnabled(true)
             ->setSuperAdmin(true);
 
