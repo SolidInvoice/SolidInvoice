@@ -290,7 +290,7 @@ class Address
      */
     public static function fromArray(array $data): self
     {
-        $address = new static();
+        $address = new self();
         $address->setStreet1($data['street1'] ?? null);
         $address->setStreet2($data['street2'] ?? null);
         $address->setCity($data['city'] ?? null);
