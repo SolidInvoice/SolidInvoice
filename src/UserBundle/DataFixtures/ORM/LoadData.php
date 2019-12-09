@@ -15,8 +15,6 @@ namespace SolidInvoice\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\UserBundle\Entity\User;
 
 /**
