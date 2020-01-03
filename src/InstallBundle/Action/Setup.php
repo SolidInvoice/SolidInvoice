@@ -16,6 +16,7 @@ namespace SolidInvoice\InstallBundle\Action;
 use DateTime;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\ConfigWriter;
@@ -28,7 +29,6 @@ use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\Exception as DependencyInjectionException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -50,7 +50,7 @@ final class Setup
     private $formFactory;
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $doctrine;
 
@@ -77,7 +77,7 @@ final class Setup
     public function __construct(
         EncoderFactoryInterface $encoderFactory,
         FormFactoryInterface $formFactory,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ConfigWriter $configWriter,
         VatCalculator $vatCalculator,
         SystemConfig $systemConfig,
