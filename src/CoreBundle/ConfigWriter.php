@@ -34,17 +34,11 @@ class ConfigWriter
      */
     private $cacheDir;
 
-    /**
-     * @var string
-     */
-    private $projectDir;
-
     public function __construct(string $cacheDir, string $projectDir, Filesystem $fileSystem)
     {
         $this->fileSystem = $fileSystem;
-        $this->configFile = $this->projectDir.'/app/config/parameters.yml';
+        $this->configFile = $projectDir.'/app/config/parameters.yml';
         $this->cacheDir = $cacheDir;
-        $this->projectDir = $projectDir;
     }
 
     /**
