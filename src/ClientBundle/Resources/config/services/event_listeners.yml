@@ -1,9 +1,4 @@
 services:
-    client.notification.listener:
-        class: SolidInvoice\ClientBundle\Listener\ClientListener
-        calls:
-            - ['setContainer', ['@service_container']]
-        tags:
-            - { name: 'doctrine.event_listener', event: postPersist }
-            - { name: 'doctrine.event_listener', event: postUpdate }
-            - { name: 'doctrine.event_listener', event: prePersist }
+    SolidInvoice\ClientBundle\Listener\ClientListener:
+        autowire: true
+        tags: ['doctrine.event_subscriber']

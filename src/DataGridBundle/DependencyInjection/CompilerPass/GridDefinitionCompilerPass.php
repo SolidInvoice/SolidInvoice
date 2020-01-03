@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\DependencyInjection\CompilerPass;
 
 use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
+use SolidInvoice\DataGridBundle\Repository\GridRepository;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Resource\FileResource;
@@ -46,7 +47,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $resourceLocator = new FileLocator($this->kernel);
-        $definition = $container->getDefinition('grid.repository');
+        $definition = $container->getDefinition(GridRepository::class);
 
         $configs = [];
 

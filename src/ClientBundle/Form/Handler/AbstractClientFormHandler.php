@@ -58,11 +58,11 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($client, FormRequest $form): Response
+    public function onSuccess($contact, FormRequest $form): Response
     {
-        $this->save($client);
+        $this->save($contact);
 
-        $route = $this->router->generate('_clients_view', ['id' => $client->getId()]);
+        $route = $this->router->generate('_clients_view', ['id' => $contact->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable

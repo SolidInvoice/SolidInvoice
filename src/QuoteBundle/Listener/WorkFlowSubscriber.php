@@ -21,6 +21,7 @@ use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Workflow\Event\EnteredEvent;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\StateMachine;
 
@@ -72,12 +73,12 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $this->invoiceStateMachine->apply($invoice, InvoiceGraph::TRANSITION_NEW);
     }
 
-    public function onWorkflowTransitionApplied(Event $event)
+    public function onWorkflowTransitionApplied(EnteredEvent $event)
     {
         /** @var Quote $quote */
         $quote = $event->getSubject();
 
-        if (QuoteGraph::TRANSITION_ARCHIVE === $event->getTransition()->getName()) {
+        if (null !== ($transition = $event->getTransition()) && QuoteGraph::TRANSITION_ARCHIVE === $transition->getName()) {
             $quote->archive();
         }
 

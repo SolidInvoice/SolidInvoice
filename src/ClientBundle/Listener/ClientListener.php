@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Listener;
 
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
@@ -23,7 +25,7 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
-class ClientListener
+class ClientListener implements EventSubscriber
 {
     /**
      * @var NotificationManager
@@ -33,6 +35,18 @@ class ClientListener
     public function __construct(NotificationManager $notification)
     {
         $this->notification = $notification;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            Events::prePersist,
+            Events::postPersist,
+            Events::postUpdate,
+        ];
     }
 
     /**

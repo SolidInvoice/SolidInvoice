@@ -94,6 +94,8 @@ export default Module.extend({
         /* DISCOUNT */
         this.discount = new Discount({ model: discountModel, collection: this.collection });
 
+        this.listenTo(this.collection, 'update:total', () => this.footerRowModel.render());
+
         this.app.showChildView('quoteRows', this._getQuoteView(options.fieldData));
     }
 });
