@@ -32,18 +32,22 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
+                return $object;
             }
 
             public function supportsNormalization($data, $format = null)
             {
+                return true;
             }
 
             public function supportsDenormalization($data, $type, $format = null)
             {
+                return true;
             }
 
             public function denormalize($data, $class, $format = null, array $context = [])
             {
+                return $data;
             }
         };
 
@@ -58,18 +62,22 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
+                return $object;
             }
 
             public function supportsNormalization($data, $format = null)
             {
+                return true;
             }
 
             public function supportsDenormalization($data, $type, $format = null)
             {
+                return true;
             }
 
             public function denormalize($data, $class, $format = null, array $context = [])
             {
+                return $data;
             }
         };
 
@@ -84,18 +92,22 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
+                return $object;
             }
 
             public function supportsNormalization($data, $format = null)
             {
+                return true;
             }
 
             public function supportsDenormalization($data, $type, $format = null)
             {
+                return true;
             }
 
             public function denormalize($data, $class, $format = null, array $context = [])
             {
+                return $data;
             }
         };
 
@@ -115,14 +127,17 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
+                return $object;
             }
 
             public function supportsNormalization($data, $format = null)
             {
+                return true;
             }
 
             public function supportsDenormalization($data, $type, $format = null)
             {
+                return true;
             }
 
             public function denormalize($data, $class, $format = null, array $context = [])

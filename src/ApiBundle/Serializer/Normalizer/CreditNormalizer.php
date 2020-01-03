@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
-     * @var NormalizerInterface
+     * @var NormalizerInterface|DenormalizerInterface
      */
     private $normalizer;
 

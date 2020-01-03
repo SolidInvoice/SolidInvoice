@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AdditionalContactDetailsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
-     * @var NormalizerInterface
+     * @var NormalizerInterface|DenormalizerInterface
      */
     private $normalizer;
 
