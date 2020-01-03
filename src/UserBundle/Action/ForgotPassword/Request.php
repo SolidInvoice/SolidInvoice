@@ -11,10 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\UserBundle;
+namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use SolidInvoice\CoreBundle\Templating\Template;
 
-class SolidInvoiceUserBundle extends Bundle
+final class Request
 {
+    public function __invoke()
+    {
+        return new Template('@SolidInvoiceUser/ForgotPassword/request.html.twig');
+    }
 }

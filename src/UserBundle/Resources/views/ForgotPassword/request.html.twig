@@ -1,0 +1,38 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
+
+{% block title %}{{ "Reset Password" }}{% endblock title %}
+
+{% block content %}
+
+    <div class="panel widget col-md-6 col-md-offset-3">
+        <div class="panel-body">
+            <form action="{{ path('_user_forgot_password_send_emal') }}" method="POST">
+                <div class="form-group">
+                    {% if username is defined %}
+                        <div class="alert alert-danger">{{ 'forgot_password.request.invalid_username'|trans({'%username%': username}) }}</div>
+                    {% endif %}
+                    <label for="username">{{ 'forgot_password.request.username'|trans }}</label>
+                        <input type="text" id="username" name="username" required="required" class="form-control">
+
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        {{ icon('lock') }} {{ 'forgot_password.request.submit'|trans }}
+                    </button>
+                    <a href="{{ path('_login') }}" class="btn btn-success">
+                        {{ icon('key') }} {{ 'security.login.login'|trans }}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

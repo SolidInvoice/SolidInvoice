@@ -15,9 +15,9 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Form\Type\UserType;
+use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -27,11 +27,15 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
+class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
-    use SaveableTrait;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * @var RouterInterface
@@ -39,13 +43,20 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     private $router;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * @var UserPasswordEncoderInterface
      */
     private $userPasswordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, RouterInterface $router)
+    public function __construct(UserRepository $userRepository, UserPasswordEncoderInterface $userPasswordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
+        $this->userRepository = $userRepository;
         $this->router = $router;
+        $this->tokenStorage = $tokenStorage;
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
@@ -54,7 +65,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
      */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(UserType::class);
+        return $factory->create(ChangePasswordType::class, $options->get('user', $this->tokenStorage->getToken()->getUser()), ['confirm_password' => $options->get('confirm_password', true)]);
     }
 
     /**
@@ -63,7 +74,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            '@SolidInvoiceUser/Users/form.html.twig',
+            '@SolidInvoiceUser/ChangePassword/change_password.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
             ]
@@ -73,22 +84,23 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     /**
      * {@inheritdoc}
      *
-     * @param User $user
-     *
-     * @throws \Exception
+     * @var User
      */
     public function onSuccess($user, FormRequest $form): ?Response
     {
+        $route = $form->getOptions()->get('redirect_route', '_profile');
+
         $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
         $user->eraseCredentials();
-        $this->save($user);
 
-        $route = $this->router->generate('_users_list');
+        $this->userRepository->save($user);
+
+        $route = $this->router->generate($route);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'users.create.success';
+                yield self::FLASH_SUCCESS => 'profile.password_change.success';
             }
         };
     }

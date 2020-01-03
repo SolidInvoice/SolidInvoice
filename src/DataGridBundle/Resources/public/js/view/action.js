@@ -48,12 +48,12 @@ export default ItemView.extend({
                 method: 'POST'
             });
 
-        promise.done((e) => {
+        promise.done(async (e) => {
             if (!isEmpty(e) && has(e, 'message')) {
                 Alert.alert(e.message);
             } else {
                 grid.clearSelectedModels();
-                grid.collection.fetch();
+                await grid.collection.fetch();
             }
         });
 

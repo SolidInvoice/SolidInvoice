@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Command;
 
-use SolidInvoice\CoreBundle\Entity\Version;
-use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
-use SolidInvoice\CoreBundle\Repository\VersionRepository;
-use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use Defuse\Crypto\Key;
 use Doctrine\DBAL\DriverManager;
+use SolidInvoice\CoreBundle\Entity\Version;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -136,27 +137,19 @@ class InstallCommand extends ContainerAwareCommand
 
         if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-host')) {
-                throw new \Exception(
-                    'The --mailer-host option needs to be specified when using SMTP as email transport'
-                );
+                throw new \Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
             }
 
             if (null === $input->getOption('mailer-port')) {
-                throw new \Exception(
-                    'The --mailer-port option needs to be specified when using SMTP as email transport'
-                );
+                throw new \Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
             }
         } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-user')) {
-                throw new \Exception(
-                    'The --mailer-user option needs to be specified when using Gmail as email transport'
-                );
+                throw new \Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
             }
 
             if (null === $input->getOption('mailer-password')) {
-                throw new \Exception(
-                    'The --mailer-password option needs to be specified when using Gmail as email transport'
-                );
+                throw new \Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
             }
         }
     }
@@ -296,16 +289,16 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Creating Admin User</info>');
 
-        $fos = $this->getContainer()->get('fos_user.user_manager');
+        $userRepository = $this->getContainer()->get('doctrine')->getRepository(User::class);
         $username = $input->getOption('admin-username');
 
-        if (null !== $fos->findUserBy(['username' => $username])) {
+        if (null !== $userRepository->findBy(['username' => $username])) {
             $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
 
             return;
         }
 
-        $user = $fos->createUser();
+        $user = $userRepository->createUser();
 
         $user->setUsername($input->getOption('admin-username'))
             ->setEmail($input->getOption('admin-email'))
@@ -313,7 +306,7 @@ class InstallCommand extends ContainerAwareCommand
             ->setEnabled(true)
             ->setSuperAdmin(true);
 
-        $fos->updateUser($user);
+        $userRepository->updateUser($user);
     }
 
     /**

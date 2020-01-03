@@ -22,6 +22,7 @@ app/config/parameters.yml
 node_modules
 .rules
 .php_cs.cache
+.phpunit.result.cache
 .env
 yarn-error.log
 /vendor-bin/**/vendor
