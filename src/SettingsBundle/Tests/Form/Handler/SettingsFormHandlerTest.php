@@ -23,8 +23,6 @@ use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\RouterInterface;
 
 class SettingsFormHandlerTest extends FormHandlerTestCase
@@ -41,9 +39,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         $router->shouldReceive('generate')
             ->andReturn('/settings');
 
-        $handler = new SettingsFormHandler($repository, new Session(new MockArraySessionStorage()), $router);
-
-        return $handler;
+        return new SettingsFormHandler($repository, $router);
     }
 
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
