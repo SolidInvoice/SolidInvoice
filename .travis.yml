@@ -68,6 +68,13 @@ jobs:
     - stage: unit
       php: 7.4
       dist: xenial
+      addons:
+        chrome: stable
+        apt:
+          packages:
+            - mysql-server-5.7
+            - mysql-client-core-5.7
+            - mysql-client-5.7
       script: bash travis/phpunit.sh
     - stage: functional
       php: 7.1
