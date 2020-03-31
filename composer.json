@@ -92,7 +92,7 @@
         "symfony/polyfill-intl-normalizer": "^1.2",
         "symfony/polyfill-mbstring": "^1.2",
         "symfony/polyfill-util": "^1.2",
-        "symfony/polyfill-xml": "^1.2",
+        "symfony/polyfill-php72": "^1.2",
         "symfony/property-access": "^3.3",
         "symfony/proxy-manager-bridge": "^3.3",
         "symfony/requirements-checker": "^1.1",
