@@ -2,7 +2,7 @@ language: php
 
 sudo: required
 
-dist: trusty
+dist: bionic
 
 env:
   global:
