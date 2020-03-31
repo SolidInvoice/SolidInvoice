@@ -117,6 +117,7 @@
         "willdurand/js-translation-bundle": "^2.6"
     },
     "require-dev": {
+        "ext-zip": "*",
         "dama/doctrine-test-bundle": "^5.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fzaninotto/faker": "^1.3",
