@@ -1,3 +1,12 @@
+2.0.4 / 2020-03-29
+==================
+
+  * Keep logo when updating setting instead of defaulting it back (#298)
+  * Remove unsed parameter in SettingsFormHandler constructor (#297)
+  * Removed fixed class from top menu (#280)
+  * Update dependencies (#275)
+  * Fix SolidInvoice website link in footer (#267)
+
 2.0.3 / 2019-05-23
 ==================
 
