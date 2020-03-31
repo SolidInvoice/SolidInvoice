@@ -99,7 +99,7 @@
         "symfony/routing": "^3.3",
         "symfony/security": "^3.3",
         "symfony/security-bundle": "^4.0",
-        "symfony/serializer": "^3.3",
+        "symfony/serializer": "^4.4",
         "symfony/swiftmailer-bundle": "^3.0",
         "symfony/templating": "^3.3",
         "symfony/translation": "^3.3",
