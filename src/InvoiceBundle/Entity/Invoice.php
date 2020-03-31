@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
- * @ORM\Table(name="invoices", indexes={@ORM\Index(name="quote", columns={"quote_id"})})
+ * @ORM\Table(name="invoices", indexes={@ORM\Index(columns={"quote_id"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
  * @Gedmo\Loggable()
  * @ORM\HasLifecycleCallbacks()

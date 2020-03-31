@@ -16,8 +16,6 @@ namespace SolidInvoice\UserBundle\Tests\Form\Type;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ProfileType;
-use FOS\UserBundle\Form\Type\ProfileFormType;
-use Symfony\Component\Form\PreloadedExtension;
 
 class ProfileTypeTest extends FormTestCase
 {
@@ -33,14 +31,5 @@ class ProfileTypeTest extends FormTestCase
         $object->setMobile($mobile);
 
         $this->assertFormData(ProfileType::class, $formData, $object);
-    }
-
-    protected function getExtensions()
-    {
-        $type = new ProfileFormType(User::class);
-
-        return [
-            new PreloadedExtension([$type], []),
-        ];
     }
 }

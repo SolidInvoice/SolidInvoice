@@ -33,10 +33,10 @@ import 'SolidInvoiceDataGrid/js/formatter/discountformatter';
 import 'SolidInvoiceDataGrid/js/formatter/moneyformatter';
 
 export default MnObject.extend({
-    initialize (element, options) {
+    async initialize (element, options) {
         const collection = new GridCollection(options.name, options.parameters);
 
-        collection.fetch();
+        await collection.fetch();
 
         const gridOptions = {
             collection: collection,

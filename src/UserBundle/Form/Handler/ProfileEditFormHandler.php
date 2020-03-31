@@ -15,9 +15,8 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\CoreBundle\Traits\SaveableTrait;
-use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Form\Type\UserType;
+use SolidInvoice\UserBundle\Form\Type\ProfileType;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -27,11 +26,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
+class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
-    use SaveableTrait;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * @var RouterInterface
@@ -39,14 +41,15 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     private $router;
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var TokenStorageInterface
      */
-    private $userPasswordEncoder;
+    private $tokenStorage;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, RouterInterface $router)
+    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
+        $this->userRepository = $userRepository;
         $this->router = $router;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -54,7 +57,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
      */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(UserType::class);
+        return $factory->create(ProfileType::class, $this->tokenStorage->getToken()->getUser());
     }
 
     /**
@@ -63,7 +66,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
-            '@SolidInvoiceUser/Users/form.html.twig',
+            '@SolidInvoiceUser/Profile/edit.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
             ]
@@ -72,23 +75,17 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
 
     /**
      * {@inheritdoc}
-     *
-     * @param User $user
-     *
-     * @throws \Exception
      */
     public function onSuccess($user, FormRequest $form): ?Response
     {
-        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
-        $user->eraseCredentials();
-        $this->save($user);
+        $this->userRepository->save($user);
 
-        $route = $this->router->generate('_users_list');
+        $route = $this->router->generate('_profile');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'users.create.success';
+                yield self::FLASH_SUCCESS => 'profile.edit.success';
             }
         };
     }

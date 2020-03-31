@@ -39,7 +39,7 @@ solidinvoice_tax:
 
 solidinvoice_user:
     resource: '@SolidInvoiceUserBundle/Resources/config/routing.yml'
-    prefix: /profile
+    prefix: /
 
 solidinvoice_datagrid:
     resource: '@SolidInvoiceDataGridBundle/Resources/config/routing.yml'
@@ -47,21 +47,6 @@ solidinvoice_datagrid:
 
 fos_js_routing:
     resource: '@FOSJsRoutingBundle/Resources/config/routing/routing.xml'
-
-fos_user_security:
-    resource: '@FOSUserBundle/Resources/config/routing/security.xml'
-
-fos_user_profile:
-    resource: '@FOSUserBundle/Resources/config/routing/profile.xml'
-    prefix: /profile
-
-fos_user_resetting:
-    resource: '@FOSUserBundle/Resources/config/routing/resetting.xml'
-    prefix: /resetting
-
-fos_user_change_password:
-    resource: '@FOSUserBundle/Resources/config/routing/change_password.xml'
-    prefix: /profile
 
 payum_capture:
     resource: '@PayumBundle/Resources/config/routing/capture.xml'

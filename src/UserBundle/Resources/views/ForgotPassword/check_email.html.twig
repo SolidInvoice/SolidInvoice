@@ -14,11 +14,11 @@
 {% block content %}
     <div class="widget">
         <div class="alert alert-info">
-        {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime}, 'FOSUserBundle') }}
+            {{ 'forgot_password.check_email'|trans({'%tokenLifetime%': tokenLifetime}) }}
         </div>
 
-        <a class="btn btn-success" href="{{ path('fos_user_security_login') }}">
-            {{ icon('lock') }} {{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}
+        <a class="btn btn-success" href="{{ path('_login') }}">
+            {{ icon('lock') }} {{ 'security.login.login'|trans }}
         </a>
     </div>
 {% endblock %}

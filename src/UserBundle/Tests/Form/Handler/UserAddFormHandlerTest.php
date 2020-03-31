@@ -13,42 +13,37 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
-use FOS\UserBundle\Form\Factory\FormFactory;
-use FOS\UserBundle\Form\Type\RegistrationFormType;
-use FOS\UserBundle\Util\CanonicalFieldsUpdater;
-use FOS\UserBundle\Util\Canonicalizer;
-use FOS\UserBundle\Util\PasswordUpdater;
 use Mockery as M;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\UserAddFormHandler;
-use SolidInvoice\UserBundle\Manager\UserManager;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
-use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserAddFormHandlerTest extends FormHandlerTestCase
 {
-    private $userManager;
-
     private $router;
 
-    protected function setUp()
+    private $userPasswordEncoder;
+
+    private $password;
+
+    private $user;
+
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->userManager = new UserManager(new PasswordUpdater(new EncoderFactory([User::class => new BCryptPasswordEncoder(10)])), new CanonicalFieldsUpdater(new Canonicalizer(), new Canonicalizer()), $this->em, User::class);
+        $this->user = new User();
+        $this->password = $this->faker->password;
         $this->router = M::mock(RouterInterface::class);
-
-        $this->router->shouldReceive('generate')
-            ->zeroOrMoreTimes()
-            ->with('_users_list')
-            ->andReturn('/users');
+        $this->userPasswordEncoder = M::mock(UserPasswordEncoderInterface::class);
     }
 
     /**
@@ -56,7 +51,7 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
-        $handler = new UserAddFormHandler($this->userManager, new FormFactory($this->factory, 'fos_user_registration_form', RegistrationFormType::class), $this->router);
+        $handler = new UserAddFormHandler($this->userPasswordEncoder, $this->router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
@@ -65,22 +60,33 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         return [
-            'user' => new User(),
+            'user' => $this->user,
         ];
     }
 
-    /**
-     * @param Response|null $response
-     * @param mixed         $data
-     * @param FormRequest   $form
-     *
-     * @throws \PHPUnit\Framework\Exception
-     */
+    protected function beforeSuccess($data, FormRequest $form)
+    {
+        $this->userPasswordEncoder->shouldReceive('encodePassword')
+            ->once()
+            ->with($data, $this->password)
+            ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));
+
+        $this->router->shouldReceive('generate')
+            ->once()
+            ->with('_users_list')
+            ->andReturn('/users');
+    }
+
     protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
     {
         $this->assertCount(1, $this->em->getRepository(User::class)->findAll());
-        $this->assertInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertInstanceOf(FlashResponse::class, $response);
+        $this->assertSame('/users', $response->getTargetUrl());
         $this->assertSame('test', $data->getUserName());
+        $this->assertTrue(password_verify($this->password, $data->getPassword()));
+        $this->assertCount(1, $response->getFlash());
+        $this->assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     protected function assertResponse(FormRequest $formRequest)
@@ -88,29 +94,18 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
-    protected function getExtensions(): array
-    {
-        $type = new RegistrationFormType(User::class);
-
-        return [
-            new PreloadedExtension([$type], []),
-        ];
-    }
-
     /**
      * @return array
      */
     public function getFormData(): array
     {
-        $password = $this->faker->password;
-
         return [
-            'fos_user_registration_form' => [
+            'user' => [
                 'username' => 'test',
                 'email' => $this->faker->email,
                 'plainPassword' => [
-                    'first' => $password,
-                    'second' => $password,
+                    'first' => $this->password,
+                    'second' => $this->password,
                 ],
                 'mobile' => $this->faker->phoneNumber,
                 'enabled' => true,
