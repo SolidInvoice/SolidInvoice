@@ -95,12 +95,7 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        try {
-            $this->assertContains('/install/install', $crawler->getUri());
-        } catch (\Throwable $e) {
-            echo $crawler->html();
-            throw $e;
-        }
+        $this->assertContains('/install/install', $crawler->getUri());
 
         $kernel = self::bootKernel(['debug' => true]);  // Reboot the kernel with debug to rebuild the cache
         $this->assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
