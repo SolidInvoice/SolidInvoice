@@ -5,7 +5,7 @@ services:
 
     api_token_user_provider:
         class: SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider
-        arguments: ['@doctrine']
+        autowire: true
 
     api.success:
         class: SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler
