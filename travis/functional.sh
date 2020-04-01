@@ -40,7 +40,7 @@ tfold () {
 export -f tfold
 
 
-tfold 'Requirements' ./vendor/symfony/requirements-checker/bin/requirements-checker
+tfold 'Requirements' php ./app/check.php -v -x
 
 tfold 'Installation' bin/simple-phpunit --group installation
 
