@@ -18,7 +18,6 @@ use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
