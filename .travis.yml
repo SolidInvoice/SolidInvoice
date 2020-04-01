@@ -7,7 +7,7 @@ dist: bionic
 env:
   global:
     - SOLIDINVOICE_ENV=test
-    - SOLIDINVOICE_DEBUG=0
+    - SOLIDINVOICE_DEBUG=1
     - SYMFONY_PHPUNIT_VERSION=7.5
     - PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:8000
     - PATH="$HOME/.symfony/bin:$PATH"
