@@ -39,6 +39,9 @@ tfold () {
 }
 export -f tfold
 
+
+tfold 'Requirements' ./vendor/symfony/requirements-checker/bin/requirements-checker
+
 tfold 'Installation' bin/simple-phpunit --group installation
 
 rm -Rf var/cache/test
