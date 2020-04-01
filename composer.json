@@ -136,7 +136,7 @@
         "phpstan/phpstan-phpunit": "^0.12",
         "sensiolabs/security-checker": "^4.0",
         "symfony/debug-bundle": "^3.4",
-        "symfony/panther": "^0.5.2",
+        "symfony/panther": "^0.7",
         "symfony/phpunit-bridge": "^4.3",
         "symfony/web-profiler-bundle": "^3.4",
         "symfony/web-server-bundle": "^3.4"
