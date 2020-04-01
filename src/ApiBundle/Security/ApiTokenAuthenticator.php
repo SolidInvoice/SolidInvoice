@@ -148,6 +148,6 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
 
         $repository->addHistory($history, $apiToken);
 
-        return new Response();
+        return null;
     }
 }
