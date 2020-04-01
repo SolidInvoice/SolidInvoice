@@ -102,7 +102,7 @@ class InstallationTest extends PantherTestCase
             throw $e;
         }
 
-        $kernel = self::bootKernel();
+        $kernel = self::bootKernel(['debug' => true]);  // Reboot the kernel with debug to rebuild the cache
         $this->assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
         $this->assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
 
