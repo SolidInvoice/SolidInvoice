@@ -7,8 +7,8 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card">
+    <div class="card-header">
         <div class="float-right">
             {% if invoices is not empty %}
                 <a href="{{ path('_invoices_index') }}">
@@ -16,7 +16,7 @@
                 </a>
             {% endif %}
         </div>
-        <h3 class="panel-title">
+        <h3 class="card-title">
             {{ icon('file-text-o') }} {{ 'dashboard.invoice.recent'|trans }}
         </h3>
     </div>
@@ -70,7 +70,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <div class="panel-body">
+        <div class="card-body">
             <div class="float-left">
                 <h4>
                     {{ 'dashboard.invoice.empty'|trans }}

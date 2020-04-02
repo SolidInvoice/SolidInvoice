@@ -13,8 +13,8 @@
 
 {% block content %}
 
-    <div class="panel widget col-md-6 offset-md-3">
-        <div class="panel-body">
+    <div class="card widget col-md-6 offset-md-3">
+        <div class="card-body">
             <form action="{{ path('_user_forgot_password_send_emal') }}" method="POST">
                 <div class="form-group">
                     {% if username is defined %}
