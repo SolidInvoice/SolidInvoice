@@ -9,9 +9,9 @@ Encore
 
     .addEntry('core', './assets/js/core.js')
 
-    .addStyleEntry('app', './assets/less/app.less')
-    .addStyleEntry('email', './assets/less/email.less')
-    .addStyleEntry('pdf', './assets/less/pdf.less')
+    .addStyleEntry('app', './assets/scss/app.scss')
+    .addStyleEntry('email', './assets/scss/email.scss')
+    .addStyleEntry('pdf', './assets/scss/pdf.scss')
 
     .enableSingleRuntimeChunk()
     .splitEntryChunks()
@@ -19,7 +19,7 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
 
-    .enableLessLoader()
+    .enableSassLoader()
     .autoProvidejQuery()
 
     .addAliases({
@@ -47,7 +47,7 @@ Encore
         ];
     })
 
-    .enableEslintLoader( {
+    .enableEslintLoader({
         rules: {
             "lodash/import-scope": [2, "member"],
             "no-else-return": "error",

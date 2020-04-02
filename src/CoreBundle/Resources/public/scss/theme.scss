@@ -1,0 +1,261 @@
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/variables";
+@import "colors";
+
+@import "~admin-lte/build/scss/variables";
+@import "~admin-lte/build/scss/mixins";
+
+// MISC
+//--------------------------------------------------------
+@import "~admin-lte/build/scss/AdminLTE-core";
+@import "~admin-lte/build/scss/variables";
+@import "~admin-lte/build/scss/mixins";
+
+// Overrides
+//--------------------------------------------------------
+
+// Primary
+$light-blue: #1E88E7;
+// Danger
+$red: #BF2600;
+// Success
+$green: #00875A;
+// Info
+$aqua: #00c0ef;
+// Warning
+$yellow: #f39c12;
+$blue: #0073b7;
+$navy: #001F3F;
+$teal: #39CCCC;
+$olive: #3D9970;
+$lime: #01FF70;
+$orange: #FF991F;
+$fuchsia: #F012BE;
+$purple: #5243AA;
+$maroon: #D81B60;
+$black: #111;
+$gray-lte: #d2d6de;
+
+$warning: $deep-orange;
+$primary: $light-blue;
+$danger: $red;
+$success: $green;
+$info: $light-blue;
+
+$btn-warning: $warning;
+$btn-primary: $primary;
+$btn-danger: $danger;
+$btn-success: $success;
+$btn-info: $info;
+
+$theme-header-height: 70px;
+$theme-header-padding: 15px;
+
+// COMPONENTS
+//--------------------------------------------------------
+@import "~admin-lte/build/scss/main-header";
+@import "~admin-lte/build/scss/main-sidebar";
+@import "~admin-lte/build/scss/sidebar-mini";
+@import "~admin-lte/build/scss/control-sidebar";
+@import "~admin-lte/build/scss/dropdown";
+@import "~admin-lte/build/scss/forms";
+@import "~admin-lte/build/scss/progress-bars";
+@import "~admin-lte/build/scss/small-box";
+@import "~admin-lte/build/scss/small-box";
+@import "~admin-lte/build/scss/info-box";
+@import "~admin-lte/build/scss/timeline";
+@import "~admin-lte/build/scss/buttons";
+@import "~admin-lte/build/scss/callout";
+@import "~admin-lte/build/scss/alerts";
+@import "~admin-lte/build/scss/navs";
+@import "~admin-lte/build/scss/mixins/_navbar";
+@import "~admin-lte/build/scss/products";
+@import "~admin-lte/build/scss/table";
+// @import "~admin-lte/build/scss/labels";
+@import "~admin-lte/build/scss/direct-chat";
+@import "~admin-lte/build/scss/users-list";
+@import "~admin-lte/build/scss/carousel";
+@import "~admin-lte/build/scss/modals";
+@import "~admin-lte/build/scss/social-widgets";
+// @import "~admin-lte/build/scss/treeview";
+
+// PAGES
+//--------------------------------------------------------
+@import "~admin-lte/build/scss/pages/login_and_register";
+@import "~admin-lte/build/scss/pages/invoice";
+@import "~admin-lte/build/scss/pages/profile";
+
+// Plugins
+//--------------------------------------------------------
+@import "~admin-lte/build/scss/plugins/mixins";
+@import "~admin-lte/build/scss/plugins/select2";
+// @import "~admin-lte/build/scss/datepicker";
+
+// Miscellaneous
+//--------------------------------------------------------
+@import "~admin-lte/build/scss/miscellaneous";
+@import "~admin-lte/build/scss/print";
+
+// @import "../css/bootstrap-modal-bs3patch.css";
+// @import "../css/bootstrap-modal.css";
+
+.loading-spinner {
+  width: 200px;
+  margin-left: -100px !important;
+}
+
+.clear {
+  clear: both;
+}
+
+.left-sidebar {
+  .divider {
+    background-color: $grey-200;
+    height: 1px;
+  }
+}
+
+.dashboard-widget {
+  .list-group-item {
+    .badge {
+      float: none;
+    }
+  }
+}
+
+
+/*
+ * Skin: Default
+ * -------------
+ */
+
+.skin-solidinvoice-default {
+
+  //Navbar
+  .main-header {
+
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5);
+
+    .navbar {
+      min-height: $theme-header-height;
+      padding: 0 15px 0 0;
+
+      @include navbar-variant($light-blue, #fff);
+      .sidebar-toggle {
+        color: #fff;
+        &:hover {
+          background-color: darken($light-blue, 5%);
+        }
+      }
+
+      a {
+        line-height: 40px;
+        font-size: 1.1em;
+      }
+
+      @media (max-width: $screen-header-collapse) {
+        .dropdown-menu {
+          li {
+            &.divider {
+              background-color: rgba(255, 255, 255, 0.1);
+            }
+            a {
+              color: #fff;
+              &:hover {
+                background: darken($light-blue, 5%);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //Logo
+    .logo {
+      // @include logo-variant($light-blue);
+      height: $theme-header-height;
+
+      .logo-lg {
+        height: 40px;
+        margin: $theme-header-padding 0;
+
+        > img {
+          max-height: 40px;
+        }
+      }
+
+      .logo-mini > img {
+        width: 50px;
+        margin: 15px 0;
+      }
+    }
+
+    li.user-header {
+      background-color: $light-blue;
+    }
+  }
+
+  //Content Header
+  .content-header {
+    background: transparent;
+  }
+
+  //Create the sidebar skin
+  // @include skin-light-sidebar($light-blue);
+  .main-footer {
+    border-top-color: $gray-lte;
+  }
+
+  .main-sidebar {
+    padding-top: $theme-header-height;
+  }
+
+  // Sidebar
+  .sidebar {
+    padding: 10px 0;
+
+    .sidebar-menu {
+
+      a {
+        color: #607d8b;
+      }
+
+      .divider {
+        height: 1px;
+        background: rgba(120, 130, 140, 0.13);
+        display: block;
+        margin: 20px 0;
+      }
+      .header {
+        color: #99abb4;
+        font-size: 12px;
+        margin-bottom: 0;
+        padding: 14px 14px 14px 20px;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .box.box-primary {
+    border-top-color: $light-blue;
+  }
+
+  .nav > li > a {
+    padding: 12px 20px;
+    font-size: 1.1em;
+  }
+
+  .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
+    background-color: #00875A !important;
+  }
+
+  .content-header {
+    padding: 40px 15px 0 15px !important;
+  }
+
+  #top-menu-create-button > .btn {
+    margin-top: 20px;
+  }
+}
+

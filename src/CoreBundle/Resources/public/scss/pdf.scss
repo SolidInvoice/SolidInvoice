@@ -1,14 +1,15 @@
-@import (reference) "~bootstrap/less/mixins";
-@import (reference) "~bootstrap/less/variables";
-@import "~bootstrap/less/scaffolding";
-@import "~bootstrap/less/type";
-@import "~bootstrap/less/grid";
-@import "~bootstrap/less/tables";
-@import (reference) "~admin-lte/build/less/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/bootstrap-reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/tables";
+@import "~admin-lte/build/scss/variables";
 
-@body-bg: #FFFFFF;
-@import (reference) "~admin-lte/build/less/mixins";
-@import "~admin-lte/build/less/core";
+$body-bg: #FFFFFF;
+@import "~admin-lte/build/scss/mixins";
+@import "~admin-lte/build/scss/AdminLTE-core";
 
 @import "theme";
 
