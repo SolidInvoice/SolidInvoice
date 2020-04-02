@@ -17,7 +17,7 @@
 {% endblock sidebar %}
 
 {% block form_buttons %}
-    <div class="pull-left">
+    <div class="float-left">
         <a href="{{ path('_quotes_view', {'id' : quote.id}) }}" class="btn btn-warning">
             {{ icon('reply') }} {{ "quote.save.cancel"|trans }}
         </a>
@@ -25,7 +25,7 @@
             {{ icon('envelope', ['o']) }} {{ "quote.save.send"|trans }}
         </button>
     </div>
-    <div class="pull-right">
+    <div class="float-right">
         <button type="submit" class="btn btn-primary" name="save" value="draft">
             {{ icon('save') }} {{ "quote.save.update"|trans }}
         </button>

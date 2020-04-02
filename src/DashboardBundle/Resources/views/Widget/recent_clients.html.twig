@@ -9,7 +9,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="pull-right">
+        <div class="float-right">
             {% if clients is not empty %}
                 <a href="{{ path('_clients_index') }}">
                     {{ 'dashboard.client.view_all'|trans }}
@@ -25,7 +25,7 @@
             {% for client in clients %}
                 <li class="list-group-item">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             {{ icon('cog') }}
                         </button>
                         <ul class="dropdown-menu" role="menu">
@@ -59,7 +59,7 @@
                         {{ client.name }}
                     </a>
 
-                    <div class="pull-right">
+                    <div class="float-right">
                         <strong>
                             {{ 'dashboard.client.actions.created'|trans }}
                         </strong> {{ client.created|diff }}
@@ -69,12 +69,12 @@
         </ul>
     {% else %}
         <div class="panel-body">
-            <div class="pull-left">
+            <div class="float-left">
                 <h4>
                     {{ 'dashboard.client.empty'|trans }}
                 </h4>
             </div>
-            <div class="pull-right">
+            <div class="float-right">
                 <a href="{{ path('_clients_add') }}" class="btn btn-info">
                     {{ icon('plus') }} {{ 'dashboard.client.create'|trans }}
                 </a>

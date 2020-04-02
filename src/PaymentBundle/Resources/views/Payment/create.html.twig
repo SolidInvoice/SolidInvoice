@@ -22,7 +22,7 @@
                             <small>{{ client_label(invoice.client.status) }}</small>
                         </h3>
                         {% if invoice.client.credit.value is not empty %}
-                            <div class="box-tools pull-right">
+                            <div class="box-tools float-right">
                                 {{ 'payment.create.credit'|trans }}
                                 {{ invoice.client.credit.value|formatCurrency }}
                             </div>

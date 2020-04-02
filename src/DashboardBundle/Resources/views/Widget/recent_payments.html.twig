@@ -9,7 +9,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="pull-right">
+        <div class="float-right">
             {% if payments is not empty %}
                 <a href="{{ path('_payments_index') }}">
                     {{ 'dashboard.payment.view_all'|trans }}
@@ -30,7 +30,7 @@
                         {{ payment.client }}
                     </a>
 
-                    <div class="pull-right">
+                    <div class="float-right">
                         {{ payment.totalAmount|formatCurrency(payment.currencyCode) }}
                         <br />
                         <small>
@@ -55,7 +55,7 @@
         </ul>
     {% else %}
         <div class="panel-body">
-            <div class="pull-left">
+            <div class="float-left">
                 <h4>
                     {{ 'dashboard.payment.no_payments'|trans }}
                 </h4>

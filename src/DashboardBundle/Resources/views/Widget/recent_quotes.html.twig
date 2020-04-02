@@ -9,7 +9,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="pull-right">
+        <div class="float-right">
             {% if quotes is not empty %}
                 <a href="{{ path('_quotes_index') }}">
                     {{ 'dashboard.quote.view_all'|trans }}
@@ -25,7 +25,7 @@
             {% for quote in quotes %}
                 <li class="list-group-item">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             {{ icon('cog') }}
                         </button>
                         <ul class="dropdown-menu" role="menu">
@@ -47,7 +47,7 @@
                     <a href="{{ path('_clients_view', {'id' : quote.client.id}) }}">
                         {{ quote.client }}
                     </a>
-                    <div class="pull-right">
+                    <div class="float-right">
                         {{ quote.total|formatCurrency }}
                         <br />
                         <small>
@@ -63,12 +63,12 @@
         </ul>
     {% else %}
         <div class="panel-body">
-            <div class="pull-left">
+            <div class="float-left">
                 <h4>
                     {{ 'dashboard.quote.empty'|trans }}
                 </h4>
             </div>
-            <div class="pull-right">
+            <div class="float-right">
                 <a href="{{ path('_quotes_create') }}" class="btn btn-info">
                     {{ icon('plus') }} {{ 'dashboard.quote.create'|trans }}
                 </a>

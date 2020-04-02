@@ -20,15 +20,15 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <div class="pull-right no-print">
+    <div class="float-right no-print">
         <div class="btn-toolbar">
             <div class="btn-group">
                 {% if invoice.quote is not null %}
-                    <a href="{{ path('_quotes_view', {'id' : invoice.quote.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_quotes_view', {'id' : invoice.quote.id}) }}" class="btn btn-secondary">
                         {{ icon('file-text-o') }} {{ "invoice.view.toolbar.view_quote"|trans }}
                     </a>
                 {% endif %}
-                <a href="{{ path('_invoices_clone', {'id' : invoice.id}) }}" class="btn btn-default">
+                <a href="{{ path('_invoices_clone', {'id' : invoice.id}) }}" class="btn btn-secondary">
                     {{ icon('clone') }} {{ "invoice.view.toolbar.clone"|trans }}
                 </a>
             </div>
@@ -50,7 +50,7 @@
             <div class="btn-group">
                 {% if workflow_can(invoice, 'reopen') %}
 
-                    <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-secondary">
                         {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
                     </a>
                 {% endif %}
@@ -64,7 +64,7 @@
 
             {% if workflow_can(invoice, 'edit') %}
                 <div class="btn-group">
-                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-secondary">
                         {{ icon('edit') }} {{ "invoice.view.toolbar.edit"|trans }}
                     </a>
                 </div>
@@ -91,9 +91,9 @@
             <div class="row no-print">
                 <div class="col-xs-12">
                     <div class="btn-group">
-                        <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'invoice.action.print'|trans }}</a>
+                        <a href="javascript:window.print()" class="btn btn-secondary">{{ icon('print') }} {{ 'invoice.action.print'|trans }}</a>
                         {% if can_print_pdf() %}
-                            <a href="{{ path('_invoices_view', {'id': invoice.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-default">{{ icon('file-pdf-o') }} {{ 'invoice.action.pdf'|trans }}</a>
+                            <a href="{{ path('_invoices_view', {'id': invoice.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-secondary">{{ icon('file-pdf-o') }} {{ 'invoice.action.pdf'|trans }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                 <p>{{ 'invoice.payment.capture'|trans }}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     {{ 'invoice.save.cancel'|trans }}
                 </button>
                 <a href="{{ path('_action_invoice', {'action' : 'pay', 'id' : invoice.id}) }}" class="btn btn-success">

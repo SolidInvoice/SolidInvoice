@@ -1,6 +1,6 @@
 <li class="list-group-item">
     <div class="list-group-item-heading">
-        <div class="pull-right">
+        <div class="float-right">
             <a href="#" class="btn btn-danger btn-xs revoke-token">
                 <i class="fas fa-ban"></i> {{trans 'profile.api.tokens.revoke' }}
             </a>
@@ -12,7 +12,7 @@
             <input readonly="readonly" value="{{ token }}" class="form-control" />
         </p>
         <p>
-            <div class="pull-right">
+            <div class="float-right">
                 <a href="{{path '_xhr_api_keys_history' id=id}}" class="view-token-history btn btn-primary btn-flat">
                     {{trans 'profile.api.tokens.history' }}
                 </a>

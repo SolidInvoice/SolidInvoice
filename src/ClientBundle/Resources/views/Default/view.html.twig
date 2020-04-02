@@ -42,7 +42,7 @@
                                 {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
                             </a>
                         </span>
-                        <span class="pull-right">
+                        <span class="float-right">
                             <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-xs" id="delete-client">
                                 {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
                             </a>
@@ -53,20 +53,20 @@
 
                         {% if client.website %}
                             <li class="list-group-item">
-                                <b>{{ icon('globe') }} Website</b> <a href="{{ client.website }}" class="pull-right" rel="external">{{ client.website }}</a>
+                                <b>{{ icon('globe') }} Website</b> <a href="{{ client.website }}" class="float-right" rel="external">{{ client.website }}</a>
                                 <small>{{ icon('external-link') }}</small>
                             </li>
                         {% endif %}
 
                         {% if client.currency %}
                             <li class="list-group-item">
-                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="pull-right">{{ client.currency }}</span>
+                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="float-right">{{ client.currency }}</span>
                             </li>
                         {% endif %}
 
                         {% if client.vatNumber is not empty %}
                             <li class="list-group-item">
-                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="pull-right">{{ client.vatNumber }}</span>
+                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="float-right">{{ client.vatNumber }}</span>
                             </li>
                         {% endif %}
 

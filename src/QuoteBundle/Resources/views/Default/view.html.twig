@@ -19,15 +19,15 @@
 
 {% block content %}
 
-    <div class="pull-right no-print">
+    <div class="float-right no-print">
         <div class="btn-toolbar">
             <div class="btn-group">
                 {% if quote.invoice is not null %}
-                    <a href="{{ path('_invoices_view', {'id' : quote.invoice.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_invoices_view', {'id' : quote.invoice.id}) }}" class="btn btn-secondary">
                         {{ icon('file-text-o') }} {{ "quote.view.toolbar.view_invoice"|trans }}
                     </a>
                 {% endif %}
-                <a href="{{ path('_quotes_clone', {'id' : quote.id}) }}" class="btn btn-default">
+                <a href="{{ path('_quotes_clone', {'id' : quote.id}) }}" class="btn btn-secondary">
                     {{ icon('clone') }} {{ "quote.view.toolbar.clone"|trans }}
                 </a>
             </div>
@@ -48,7 +48,7 @@
             <div class="btn-group">
 
                 {% if workflow_can(quote, 'reopen') %}
-                    <a href="{{ path('_transition_quote', {'action': 'reopen', 'id' : quote.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_transition_quote', {'action': 'reopen', 'id' : quote.id}) }}" class="btn btn-secondary">
                         {{ icon('reply') }} {{ "quote.view.toolbar.reopen"|trans }}
                     </a>
                 {% endif %}
@@ -68,7 +68,7 @@
 
             {% if quote.status != 'accepted' %}
                 <div class="btn-group">
-                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-secondary">
                         {{ icon('edit') }} {{ "quote.view.toolbar.edit"|trans }}
                     </a>
                 </div>
@@ -86,9 +86,9 @@
             <div class="row no-print">
                 <div class="col-xs-12">
                     <div class="btn-group">
-                        <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
+                        <a href="javascript:window.print()" class="btn btn-secondary">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
                         {% if can_print_pdf() %}
-                            <a href="{{ path('_quotes_view', {'id': quote.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-default">{{ icon('file-pdf-o') }} {{ 'quote.action.pdf'|trans }}</a>
+                            <a href="{{ path('_quotes_view', {'id': quote.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-secondary">{{ icon('file-pdf-o') }} {{ 'quote.action.pdf'|trans }}</a>
                         {% endif %}
                     </div>
                 </div>
