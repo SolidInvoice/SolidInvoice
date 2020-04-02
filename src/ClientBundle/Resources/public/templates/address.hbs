@@ -3,20 +3,20 @@
         <div class="box-header">
             <div class="box-tools">
                 <a href="{{path '_xhr_clients_edit_address' id=id }}" rel="tooltip" title="{{trans "client.address.edit" }}" class="edit-address btn btn-box-tool">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fas fa-pencil"></i>
                 </a>
 
                 <a href="#" rel="tooltip" title="{{trans "client.address.delete" }}" class="delete-address btn btn-box-tool">
-                    <i class="fa fa-trash-o"></i>
+                    <i class="fas fa-trash-o"></i>
                 </a>
             </div>
         </div>
         <div class="box-body">
-            <i class="fa fa-map-marker"></i>
+            <i class="fas fa-map-marker"></i>
             {{ street1 }} {{ street2 }} {{ city }} {{ state }} {{ zip }} {{ countryName }}
 
             <div class="pull-right">
-                <i class="fa fa-map-marker"></i>
+                <i class="fas fa-map-marker"></i>
                 <a href="http://maps.google.com/?q={{ street1 }}+{{ street2 }}+{{ city }}+{{ state }}+{{ zip }}+{{ country }}" target="_blank">
                     {{trans 'client.address.view_map' }}
                 </a>

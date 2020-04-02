@@ -3,17 +3,17 @@
         <div class="box-header">
             <div class="box-tools">
                 <a href="{{path '_xhr_clients_edit_contact' id=id }}" rel="tooltip" title="{{trans "contact_edit" }}" class="edit-contact btn btn-box-tool">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fas fa-pencil"></i>
                 </a>
 
                 {{#if canDelete}}
                     <a href="#" rel="tooltip" title="{{trans "contact_delete" }}" class="delete-contact btn btn-box-tool">
-                        <i class="fa fa-trash-o"></i>
+                        <i class="fas fa-trash-o"></i>
                     </a>
                 {{/if}}
             </div>
             <h4 class="box-title">
-                <i class="fa fa-user"></i> {{ firstName }} {{ lastName }}
+                <i class="fas fa-user"></i> {{ firstName }} {{ lastName }}
             </h4>
         </div>
 
