@@ -14,7 +14,7 @@
         <div class="card-body">
             {% block header %}
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     {% block title %}
                         <h2 class="page-header">
                             {{ "quote.title"|trans({"%id%" : quote.id}) }} {{ quote_label(quote.status) }}
@@ -77,7 +77,7 @@
                             {% endfor %}
                             <p>
                                 {% for user in quote.users %}
-                            <address class="col-xs-6">
+                            <address class="col-6">
                                 <strong>{{ user }}</strong><br/>
                                 {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
                                 {% for info in user.additionalContactDetails %}
@@ -104,7 +104,7 @@
 
             {% block content %}
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="table-responsive">
 
                         <table id="quote-rows" class="table table-condensed">
@@ -201,7 +201,7 @@
 
             {% block footer %}
                 {% if quote.terms is not empty %}
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <strong>{{ 'quote.terms'|trans }}</strong>
                         <p class="text-muted well well-sm no-shadow">
                             {{ quote.terms|nl2br }}

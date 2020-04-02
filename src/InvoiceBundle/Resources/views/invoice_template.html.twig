@@ -15,7 +15,7 @@
         <div class="{{ box ? 'card-body ' }}">
             {% block header %}
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     {% block title %}
                         <h2 class="page-header">
                             {{ "invoice.title"|trans({"%id%" : invoice.id}) }} {{ invoice_label(invoice.status) }}
@@ -78,7 +78,7 @@
                             {% endfor %}
                             <p>
                                 {% for user in invoice.users %}
-                            <address class="col-xs-6">
+                            <address class="col-6">
                                 <strong>{{ user }}</strong><br/>
                                 {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
                                 {% for info in user.additionalContactDetails %}
@@ -104,7 +104,7 @@
             {% endblock %}
 
             {% block content %}
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="table-responsive">
                         <table id="invoice-rows" class="table table-condensed">
                             <thead>
@@ -228,7 +228,7 @@
 
             {% block footer %}
                 {% if invoice.terms is not empty %}
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <strong>{{ 'invoice.terms'|trans }}</strong>
                         <p class="text-muted well well-sm no-shadow">
                             {{ invoice.terms|nl2br }}

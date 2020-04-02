@@ -80,7 +80,7 @@
             {{ parent() }}
 
             {% if invoice.notes is not empty %}
-                <div class="col-xs-6 no-print">
+                <div class="col-6 no-print">
                     <strong>{{ 'invoice.notes'|trans }}</strong>
                     <p class="text-muted well well-sm no-shadow">
                         {{ invoice.notes }}
@@ -89,7 +89,7 @@
             {% endif %}
 
             <div class="row no-print">
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="btn-group">
                         <a href="javascript:window.print()" class="btn btn-secondary">{{ icon('print') }} {{ 'invoice.action.print'|trans }}</a>
                         {% if can_print_pdf() %}

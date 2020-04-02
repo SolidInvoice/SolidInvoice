@@ -76,7 +76,7 @@
         <div class="card-body">
             <section class="invoice">
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="title">
                         <h3 class="page-header">
                             {% if invoice is defined %}
@@ -87,14 +87,14 @@
                         </h3>
                     </div>
 
-                        <div class="col-xs-6" id="client-info">
+                        <div class="col-6" id="client-info">
                         </div>
 
-                        <div class="col-xs-6 text-right" id="discount">
+                        <div class="col-6 text-right" id="discount">
                             {{ block('form_discount') is defined ? block('form_discount') }}
                         </div>
 
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             {{ form_row(form.recurring) }}
                         </div>
 
@@ -102,7 +102,7 @@
 
                 <div class="recurring-info hidden">
 
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         {{ 'invoice.recurring.variables.text'|trans }}
                         <br/>
                         <ul>
@@ -117,15 +117,15 @@
                         </ul>
                     </div>
 
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         {{ form_row(form.recurringInfo.frequency) }}
                         <br/>
                         <br/>
 
-                            <div class="col-xs-6">
+                            <div class="col-6">
                                 {{ form_row(form.recurringInfo.date_start) }}
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-6">
                                 {{ form_row(form.recurringInfo.date_end) }}
                             </div>
 

@@ -84,7 +84,7 @@
             {{ parent() }}
 
             <div class="row no-print">
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="btn-group">
                         <a href="javascript:window.print()" class="btn btn-secondary">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
                         {% if can_print_pdf() %}
@@ -100,7 +100,7 @@
     {{ parent() }}
 
     {% if quote.notes is not empty %}
-        <div class="col-xs-6 no-print">
+        <div class="col-6 no-print">
             <strong>{{ 'quote.notes'|trans }}</strong>
             <p class="text-muted well well-sm no-shadow">
                 {{ quote.notes }}
