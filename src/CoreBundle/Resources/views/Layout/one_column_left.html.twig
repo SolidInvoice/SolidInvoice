@@ -9,46 +9,46 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block header %}
-    <a class="logo" href="{{ url('_dashboard') }}">
-        <span class="logo-mini">
-            {{ app_logo() }}
-		</span>
-
-        <span class="logo-lg">
-			{{ app_logo() }} {{ app_name }}
-		</span>
-    </a>
-
-    {{ parent() }}
-{% endblock header %}
-
 {% block body %}
-    <aside class="main-sidebar">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a class="brand-link" href="{{ url('_dashboard') }}">
+            {{ app_logo() }}
+
+            <span class="brand-text font-weight-light">
+                {{ app_name }}
+            </span>
+        </a>
+
         <section class="sidebar">
-            <div class="user-panel">
-                <div class="float-left image">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
                     {#<img src="http://t2.tagstat.com/im/people/silhouette_m_300.png" class="img-circle" alt="User Image">#}
                     <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="User Image">
                 </div>
-                <div class="float-left info">
+                <div class="info text-white">
                     <p>{{ app.user.username }}</p>
                     <a href="{{ path('_profile') }}">{{ icon('envelope') }} {{ app.user.email }}</a>
                 </div>
             </div>
 
-            {{ block('sidebar') is defined ? block('sidebar') }}
+            {% if block('sidebar') is defined %}
+                <nav class="mt-2">
+                    {{ block('sidebar') }}
+                </nav>
+            {% endif %}
         </section>
     </aside>
 
-    <section class="content-header">
-        {{ block('heading') is defined ? block('heading') }}
-    </section>
+    <div class="content-wrapper">
+        <section class="content-header">
+            {{ block('heading') is defined ? block('heading') }}
+        </section>
 
-    <section class="content">
+        <section class="content">
 
-        {% include "@SolidInvoiceCore/flash.html.twig" %}
+            {% include "@SolidInvoiceCore/flash.html.twig" %}
 
-        {{ block('content') is defined ? block('content') }}
-    </section>
+            {{ block('content') is defined ? block('content') }}
+        </section>
+    </div>
 {% endblock body %}

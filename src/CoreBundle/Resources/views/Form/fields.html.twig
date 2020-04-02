@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'bootstrap_3_layout.html.twig' %}
+{% extends 'bootstrap_4_layout.html.twig' %}
 
 {% block widget_attributes -%}
     id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}
@@ -33,7 +33,6 @@
     <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
         {{ form_label(form) }}
         {{ form_widget(form) }}
-        {{ form_errors(form) }}
         {#{% if help is defined and help is not empty %}
             <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
         {% endif %}#}
@@ -66,7 +65,7 @@
     {{ form_errors(form) }}
 {%- endblock notification_widget %}
 
-{% block form_errors -%}
+{#{% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
         <ul class="list-unstyled">
@@ -81,7 +80,7 @@
             </ul>
         {% if form.parent %}</span>{% else %}</div>{% endif %}
     {%- endif %}
-{%- endblock form_errors %}
+{%- endblock form_errors %}#}
 
 {% block form_label -%}
     {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label')|trim}) %}

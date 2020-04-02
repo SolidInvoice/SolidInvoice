@@ -67,7 +67,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
         } else {
-            $menu->setChildrenAttributes(['class' => 'sidebar-menu tree', 'data-widget' => 'tree']);
+            $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-sidebar flex-column']);
         }
 
         foreach ($storage as $builder) {

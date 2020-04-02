@@ -31,6 +31,11 @@ class MenuItem extends BaseItem implements ItemInterface
             list($child, $options) = $child;
         }
 
+        $options['attributes'] = $options['attributes'] ?? [];
+        $options['attributes']['class'] = ($options['attributes']['class'] ?? '').' nav-item';
+        $options['linkAttributes'] = $options['linkAttributes'] ?? [];
+        $options['linkAttributes']['class'] = ($options['linkAttributes']['class'] ?? '').' nav-link';
+
         return parent::addChild($child, $options);
     }
 
@@ -57,7 +62,7 @@ class MenuItem extends BaseItem implements ItemInterface
      */
     public function addHeader(string $header)
     {
-        return $this->addChild($header, ['attributes' => ['class' => 'header']]);
+        return $this->addChild($header, ['attributes' => ['class' => 'nav-header']]);
     }
 
     /**

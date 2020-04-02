@@ -41,9 +41,7 @@
             {{ block('header') is defined ? block('header') }}
         </nav>
 
-        <div class="content-wrapper">
-            {{ block('body') is defined ? block('body') }}
-        </div>
+        {{ block('body') is defined ? block('body') }}
 
         <footer class="main-footer">
             {{ block('footer') is defined ? block('footer') }}
