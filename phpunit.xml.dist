@@ -25,7 +25,7 @@
         <server name="SOLIDINVOICE_DEBUG" value="true"/>
         <server name="APP_ENV" value="test"/>
         <server name="APP_DEBUG" value="false"/>
-        <server name="SYMFONY_DEPRECATIONS_HELPER" value="165"/>
+        <server name="SYMFONY_DEPRECATIONS_HELPER" value="220"/>
         <server name="PANTHER_NO_HEADLESS" value="0" />
     </php>
 
