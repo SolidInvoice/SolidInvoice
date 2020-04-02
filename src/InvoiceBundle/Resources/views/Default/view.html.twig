@@ -125,7 +125,7 @@
 
     {% if payments|length > 0 %}
         <div class="invoice box no-print">
-            <div class="box-body">
+            <div class="card-body">
                 {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
             </div>
         </div>

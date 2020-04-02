@@ -15,12 +15,12 @@
 
     <div class="row">
         <div class="col-lg-6 col-md-6" id="client-address-collection">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">{{ 'client.info'|trans }}</h3>
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ 'client.info'|trans }}</h3>
                 </div>
 
-                <div class="box-body">
+                <div class="card-body">
                     {{ form_row(form.name) }}
                     {{ form_row(form.website) }}
                     {{ form_row(form.currency) }}
@@ -28,12 +28,12 @@
                 </div>
             </div>
 
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">{{ 'client.address.info'|trans }}</h3>
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ 'client.address.info'|trans }}</h3>
                 </div>
 
-                <div class="box-body">
+                <div class="card-body">
                     {% set addressesPrototypeForm %}
                         {{ _macro.widget_prototype(form.addresses, 'client.address.delete'|trans, {'trash' : {'class' : 'pull-right btn-flat btn btn-danger'} }) }}
                     {% endset %}
@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <div class="box-footer">
+                <div class="card-footer">
                     <a href="#" data-target="client_addresses" class="btn-flat btn-add add_form_collection_link">
                         {{ icon('plus', ['circle']) }} {{ "client.address.add"|trans }}
                     </a>
@@ -55,12 +55,12 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6" id="client-contacts-collection">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">{{ 'client.contact.info'|trans }}</h3>
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ 'client.contact.info'|trans }}</h3>
                 </div>
 
-                <div class="box-body">
+                <div class="card-body">
                     {% set prototypeForm %}
                         {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'pull-right btn btn-flat btn-danger'} }) }}
                     {% endset %}
@@ -74,7 +74,7 @@
                     </div>
                 </div>
 
-                <div class="box-footer">
+                <div class="card-footer">
                     <a href="#" data-target="client_contacts" class="btn-flat btn-add add_form_collection_link">
                         {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
                     </a>

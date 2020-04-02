@@ -1,6 +1,6 @@
 <div class="col-lg-6 col-md-6">
-    <div class="box box-primary contact-card" data-id="{{ id }}">
-        <div class="box-header">
+    <div class="card card-primary contact-card" data-id="{{ id }}">
+        <div class="card-header">
             <div class="box-tools">
                 <a href="{{path '_xhr_clients_edit_contact' id=id }}" rel="tooltip" title="{{trans "contact_edit" }}" class="edit-contact btn btn-box-tool">
                     <i class="fas fa-pencil"></i>
@@ -12,12 +12,12 @@
                     </a>
                 {{/if}}
             </div>
-            <h4 class="box-title">
+            <h4 class="card-title">
                 <i class="fas fa-user"></i> {{ firstName }} {{ lastName }}
             </h4>
         </div>
 
-        <div class="box-body">
+        <div class="card-body">
             <dl class="dl-horizontal">
                 <dt>{{trans 'client.contact.details.email'}}:</dt>
                 <dd>{{ email }}</dd>

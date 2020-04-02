@@ -14,9 +14,9 @@
 {% block page_title %}{{ "profile.api.title"|trans }}{% endblock page_title %}
 
 {% block content %}
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title">{{ "profile.api.title"|trans }}</h3>
+    <div class="card card-primary">
+        <div class="card-header with-border">
+            <h3 class="card-title">{{ "profile.api.title"|trans }}</h3>
             <div class="box-tools pull-right">
                 <a href="{{ path('_xhr_api_keys_create') }}" class="btn btn-box-tool" id="create-api-token">
                     {{ icon('plus') }} {{ 'profile.api.create'|trans }}
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="box-body">
+        <div class="card-body">
             <ul class="list-group" id="token-list"></ul>
         </div>
     </div>

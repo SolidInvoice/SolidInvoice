@@ -21,12 +21,12 @@
 
     {% if not form[section].rendered %}
         <div class="box">
-            <div class="box-header">
+            <div class="card-header">
                 <legend>
                     {{ section|replace({"_" : " "})|title }}
                 </legend>
             </div>
-            <div class="box-body">
+            <div class="card-body">
 
                 {{ form_widget(form[section]) }}
             </div>

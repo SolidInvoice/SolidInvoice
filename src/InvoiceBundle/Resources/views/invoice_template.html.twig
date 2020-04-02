@@ -11,8 +11,8 @@
 {% set box = box is defined ? box : true %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="invoice-create">
-    <div class="{{ box ? 'box ' }}invoice">
-        <div class="{{ box ? 'box-body ' }}">
+    <div class="{{ box ? 'card ' }}invoice">
+        <div class="{{ box ? 'card-body ' }}">
             {% block header %}
 
                 <div class="col-xs-12">

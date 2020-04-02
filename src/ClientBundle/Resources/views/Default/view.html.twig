@@ -27,8 +27,8 @@
 
     <div class="row">
         <div class="col-md-3">
-            <div class="box box-primary">
-                <div class="box-body box-profile">
+            <div class="card card-primary">
+                <div class="card-body box-profile">
                     {#<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">#}
 
                     <h3 class="profile-username text-center">{{ client.name }}</h3>
@@ -84,11 +84,11 @@
                 </div>
             </div>
 
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">{{ icon('bar-chart') }}Stats</h3>
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ icon('bar-chart') }}Stats</h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h3>{{ total_income(client)|formatCurrency }}</h3>

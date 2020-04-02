@@ -12,12 +12,12 @@
 {% block title %}{{ "Edit Profile" }}{% endblock title %}
 
 {% block content %}
-    <div class="box box-primary">
+    <div class="card card-primary">
             {{ form_start(form) }}
-        <div class="box-body">
+        <div class="card-body">
             {{ form_row(form) }}
         </div>
-        <div class="box-footer">
+        <div class="card-footer">
             <button type="submit" class="btn btn-primary">
                 {{ icon('save') }} {{ 'profile.edit.submit'|trans }}
             </button>

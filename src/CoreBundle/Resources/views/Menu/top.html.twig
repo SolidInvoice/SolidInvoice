@@ -7,14 +7,13 @@
  # with this source code in the file LICENSE.
  #}
 
-<nav class="navbar navbar-static-top">
+<nav>
     {% if header_content is not defined or header_content is empty %}
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
     {% endif %}
 
     <div class="container">
