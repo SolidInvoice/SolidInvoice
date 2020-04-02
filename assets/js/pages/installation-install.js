@@ -2,13 +2,13 @@ import $ from 'jquery';
 import Router from 'router';
 import Translator from 'translator';
 
-const iconBusy = '<i class="fa fa-circle-o-notch fa-spin"></i>',
-    iconSuccess = '<i class="fa fa-check text-success"></i>',
-    iconFail = '<i class="fa-times text-danger"></i>';
+const iconBusy = '<i class="fas fa-circle-notch fa-spin"></i>',
+    iconSuccess = '<i class="fas fa-check text-success"></i>',
+    iconFail = '<i class="fas fa-times text-danger"></i>';
 
 function ajaxStep (action, callback) {
     const step = $('#step-' + action),
-        container = $('<div />', { 'class': 'pull-right icon' }),
+        container = $('<div />', { 'class': 'float-right icon' }),
         clone = container.clone();
 
     step.append(clone.append(iconBusy));
