@@ -17,7 +17,7 @@
     "homepage": "https://solidinvoice.co",
     "scripts": {
         "dev": "encore dev",
-        "dev-server": "encore dev-server",
+        "dev-server": "encore dev-server --https --ignore-host-check",
         "build": "encore production"
     },
     "devDependencies": {
