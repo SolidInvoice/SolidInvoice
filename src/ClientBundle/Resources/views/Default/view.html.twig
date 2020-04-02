@@ -115,25 +115,25 @@
 
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge bg-aqua">
+                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge badge-pill bg-aqua">
                                 {{ client.quotes|length }}
                             </span>
                             {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
                         </li>
                         <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge bg-aqua">
+                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge badge-pill bg-aqua">
                                 {{ client.invoices|length }}
                             </span>
                             {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
                         </li>
                         <li class="list-group-item">
-                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
+                            <span class="badge badge-pill bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
                                 {{ total_invoices_pending }}
                             </span>
                             {{ "client.stats.outstanding_invoices"|trans }}
                         </li>
                         <li class="list-group-item">
-                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
+                            <span class="badge badge-pill bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
                                 {{ total_invoices_paid }}
                             </span>
                             {{ "client.stats.paid_invoices"|trans }}
