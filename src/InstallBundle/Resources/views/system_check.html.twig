@@ -40,7 +40,7 @@
 {% block content %}
     {% if requirements.failedRequirements|length > 0 %}
         <div class="alert alert-danger">
-            <div class="hidden-xs col-sm-1">
+            <div class="d-none col-sm-1">
                 {{ icon('ban', ['fa-4x']) }}
             </div>
             <strong>{{ 'installation.requirements.not_met'|trans }}</strong>

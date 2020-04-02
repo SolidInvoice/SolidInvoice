@@ -26,8 +26,8 @@ export default ItemView.extend({
             const $this = $(event.target);
             this.ui.discount_display.html($this.html());
             // eslint-disable-next-line
-            this.ui.discount_types.filter('.hidden').removeClass('hidden');
-            $this.addClass('hidden');
+            this.ui.discount_types.filter('.d-none').removeClass('d-none');
+            $this.addClass('d-none');
             this.ui.type.val($this.data('name')).trigger('change');
         });
 

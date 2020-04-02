@@ -236,7 +236,7 @@
             <ul class="dropdown-menu" role="menu">
                 {% for type in form.vars.types %}
                     <li>
-                        <a href="#" class="discount-types{% if type.name == form.type.vars.value %} hidden{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
+                        <a href="#" class="discount-types{% if type.name == form.type.vars.value %} d-none{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
                             {% if type.name == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') %}
                                 <span class="currency-view">{{ currency }}</span>
                             {% else %}

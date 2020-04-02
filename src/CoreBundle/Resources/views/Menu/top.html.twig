@@ -27,7 +27,7 @@
             {{ menu('top_right', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
 
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div class="btn-group hidden-xs" id="top-menu-create-button">
+                <div class="btn-group d-none" id="top-menu-create-button">
                     <button class="btn btn-info btn-sm dropdown-toggle margin" type="button" data-toggle="dropdown">
                         {{ icon('plus') }} {{ 'menu.button.create'|trans }} <b class="caret"></b>
                     </button>
