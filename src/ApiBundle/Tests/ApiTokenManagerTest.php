@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests;
 
-use SolidInvoice\ApiBundle\ApiTokenManager;
-use SolidInvoice\UserBundle\Entity\ApiToken;
-use SolidInvoice\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\User;
 
 class ApiTokenManagerTest extends TestCase
 {

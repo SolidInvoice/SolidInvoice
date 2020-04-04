@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Email\Decorator;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\MailerBundle\Context;
-use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\InvoiceBundle\Email\Decorator\InvoiceReceiverDecorator;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\MailerBundle\Context;
+use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
 class InvoiceReceiverDecoratorTest extends TestCase

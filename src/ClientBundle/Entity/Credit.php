@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 
 /**
  * SolidInvoice\ClientBundle\Entity\Credit.
@@ -55,9 +55,6 @@ class Credit
         $this->value = new MoneyEntity();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -72,8 +69,6 @@ class Credit
     }
 
     /**
-     * @param Client $client
-     *
      * @return Credit
      */
     public function setClient(Client $client): self
@@ -83,17 +78,12 @@ class Credit
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getValue(): Money
     {
         return $this->value->getMoney();
     }
 
     /**
-     * @param Money $value
-     *
      * @return $this|Credit
      */
     public function setValue(Money $value): self
@@ -103,9 +93,6 @@ class Credit
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return (string) $this->value->getMoney()->getAmount();

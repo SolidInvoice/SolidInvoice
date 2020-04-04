@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Twig\Extension;
 
-use SolidInvoice\MenuBundle\Twig\Extension\MenuExtension;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\Twig\Extension\MenuExtension;
 
 class MenuExtensionTest extends TestCase
 {

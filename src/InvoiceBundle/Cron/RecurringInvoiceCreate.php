@@ -15,14 +15,14 @@ namespace SolidInvoice\InvoiceBundle\Cron;
 
 use Carbon\Carbon;
 use Cron\CronExpression;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use SolidInvoice\CronBundle\CommandInterface;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Workflow\StateMachine;
 
 /**
@@ -47,10 +47,6 @@ class RecurringInvoiceCreate implements CommandInterface
 
     /**
      * RecurringInvoiceCreate constructor.
-     *
-     * @param ManagerRegistry $registry
-     * @param InvoiceCloner   $invoiceCloner
-     * @param StateMachine    $stateMachine
      */
     public function __construct(ManagerRegistry $registry, InvoiceCloner $invoiceCloner, StateMachine $stateMachine)
     {
@@ -95,9 +91,6 @@ class RecurringInvoiceCreate implements CommandInterface
         }
     }
 
-    /**
-     * @param Invoice $invoice
-     */
     private function setItemsDescription(Invoice $invoice)
     {
         $now = Carbon::now();

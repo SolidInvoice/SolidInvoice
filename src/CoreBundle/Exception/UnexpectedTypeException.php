@@ -16,8 +16,7 @@ namespace SolidInvoice\CoreBundle\Exception;
 class UnexpectedTypeException extends \InvalidArgumentException
 {
     /**
-     * @param mixed  $value
-     * @param string $expectedType
+     * @param mixed $value
      */
     public function __construct($value, string $expectedType)
     {

@@ -16,8 +16,8 @@ namespace SolidInvoice\CoreBundle\Tests;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\CoreBundle\Form\Extension;
@@ -37,7 +37,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class FormTestCase extends TypeTestCase
 {
-    use DoctrineTestTrait,
+    use DoctrineTestTrait;
+    use
         MockeryPHPUnitIntegration;
 
     /**
@@ -61,8 +62,6 @@ abstract class FormTestCase extends TypeTestCase
 
     /**
      * Get registered form extensions.
-     *
-     * @return array
      */
     protected function getTypedExtensions(): array
     {

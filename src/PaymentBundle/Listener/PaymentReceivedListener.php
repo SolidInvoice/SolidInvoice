@@ -36,17 +36,11 @@ class PaymentReceivedListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param NotificationManager $notification
-     */
     public function __construct(NotificationManager $notification)
     {
         $this->notification = $notification;
     }
 
-    /**
-     * @param PaymentCompleteEvent $event
-     */
     public function onPaymentCapture(PaymentCompleteEvent $event)
     {
         $notification = new PaymentReceivedNotification(['payment' => $event->getPayment()]);

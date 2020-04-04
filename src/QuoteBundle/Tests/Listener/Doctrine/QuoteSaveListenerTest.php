@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Listener\Doctrine;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Listener\Doctrine\QuoteSaveListener;
 use SolidInvoice\QuoteBundle\Model\Graph;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Events;
-use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class QuoteSaveListenerTest extends TestCase

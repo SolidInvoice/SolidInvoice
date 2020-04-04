@@ -22,7 +22,8 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 
 class SystemConfigTest extends TestCase
 {
-    use DoctrineTestTrait,
+    use DoctrineTestTrait;
+    use
         MockeryPHPUnitIntegration;
 
     public function testGet()

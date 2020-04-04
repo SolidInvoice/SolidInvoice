@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Money\Currency;
-use Money\Money;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
@@ -46,19 +46,12 @@ class InvoicePaidListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ManagerRegistry $registry
-     * @param Currency        $currency
-     */
     public function __construct(ManagerRegistry $registry, Currency $currency)
     {
         $this->registry = $registry;
         $this->currency = $currency;
     }
 
-    /**
-     * @param Event $event
-     */
     public function onInvoicePaid(Event $event)
     {
         /** @var Invoice $invoice */

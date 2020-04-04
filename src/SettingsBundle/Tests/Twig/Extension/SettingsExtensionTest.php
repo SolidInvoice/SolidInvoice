@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Tests\Twig\Extension;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\SettingsBundle\Twig\Extension\SettingsExtension;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
-use Mockery as M;
 
 class SettingsExtensionTest extends TestCase
 {

@@ -28,9 +28,6 @@ final class Archive implements AjaxResponse
      */
     private $repository;
 
-    /**
-     * @param ClientRepository $repository
-     */
     public function __construct(ClientRepository $repository)
     {
         $this->repository = $repository;

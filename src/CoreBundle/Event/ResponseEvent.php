@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResponseEvent extends \Symfony\Contracts\EventDispatcher\Event
@@ -31,9 +30,6 @@ class ResponseEvent extends \Symfony\Contracts\EventDispatcher\Event
         return $this->response;
     }
 
-    /**
-     * @param Response $response
-     */
     public function setResponse(Response $response)
     {
         $this->response = $response;

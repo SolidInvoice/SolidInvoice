@@ -26,20 +26,11 @@ final class Edit
      */
     private $handler;
 
-    /**
-     * @param FormHandler $handler
-     */
     public function __construct(FormHandler $handler)
     {
         $this->handler = $handler;
     }
 
-    /**
-     * @param Request $request
-     * @param Client  $client
-     *
-     * @return FormRequest
-     */
     public function __invoke(Request $request, Client $client): FormRequest
     {
         return $this->handler->handle(ClientEditFormHandler::class, ['client' => $client]);

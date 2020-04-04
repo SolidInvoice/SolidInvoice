@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Event;
 
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Symfony\Contracts\EventDispatcher\Event;
 
 class QuoteEvent extends \Symfony\Contracts\EventDispatcher\Event
 {
@@ -31,17 +30,11 @@ class QuoteEvent extends \Symfony\Contracts\EventDispatcher\Event
         $this->quote = $quote;
     }
 
-    /**
-     * @param Quote $quote
-     */
     public function setQuote(Quote $quote)
     {
         $this->quote = $quote;
     }
 
-    /**
-     * @return Quote
-     */
     public function getQuote(): Quote
     {
         return $this->quote;

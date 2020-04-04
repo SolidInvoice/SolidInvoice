@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Action;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\SerializeTrait;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -38,7 +38,7 @@ class ClientListener implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
@@ -49,9 +49,6 @@ class ClientListener implements EventSubscriber
         ];
     }
 
-    /**
-     * @param LifecycleEventArgs $event
-     */
     public function prePersist(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();
@@ -65,9 +62,6 @@ class ClientListener implements EventSubscriber
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $event
-     */
     public function postPersist(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();
@@ -82,9 +76,6 @@ class ClientListener implements EventSubscriber
         $this->notification->sendNotification('client_create', $notification);
     }
 
-    /**
-     * @param LifecycleEventArgs $event
-     */
     public function postUpdate(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();

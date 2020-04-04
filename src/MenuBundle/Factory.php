@@ -25,9 +25,6 @@ class Factory extends MenuFactory
      */
     protected $extensions;
 
-    /**
-     * @param UrlGeneratorInterface $generator
-     */
     public function __construct(UrlGeneratorInterface $generator)
     {
         $this->extensions = new \SplPriorityQueue();
@@ -39,7 +36,6 @@ class Factory extends MenuFactory
 
     /**
      * @param string $name
-     * @param array  $options
      *
      * @return MenuItem|\Knp\Menu\MenuItem
      */
@@ -59,8 +55,7 @@ class Factory extends MenuFactory
     /**
      * Adds a factory extension.
      *
-     * @param ExtensionInterface $extension
-     * @param int                $priority
+     * @param int $priority
      */
     public function addExtension(ExtensionInterface $extension, $priority = 0)
     {

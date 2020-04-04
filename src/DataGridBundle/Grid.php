@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
-use SolidInvoice\DataGridBundle\Filter\FilterInterface;
-use SolidInvoice\DataGridBundle\Source\SourceInterface;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use SolidInvoice\DataGridBundle\Filter\FilterInterface;
+use SolidInvoice\DataGridBundle\Source\SourceInterface;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\HttpFoundation\Request;
 
 class Grid implements GridInterface, \JsonSerializable
@@ -79,12 +79,6 @@ class Grid implements GridInterface, \JsonSerializable
      */
     private $moneyFormatter;
 
-    /**
-     * @param SourceInterface $source
-     * @param FilterInterface $filter
-     * @param array           $gridData
-     * @param MoneyFormatter  $moneyFormatter
-     */
     public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData, MoneyFormatter $moneyFormatter)
     {
         $this->title = $gridData['title'];
@@ -100,11 +94,6 @@ class Grid implements GridInterface, \JsonSerializable
     }
 
     /**
-     * @param Request       $request
-     * @param ObjectManager $objectManger
-     *
-     * @return array
-     *
      * @throws \Exception
      */
     public function fetchData(Request $request, ObjectManager $objectManger): array
@@ -129,9 +118,6 @@ class Grid implements GridInterface, \JsonSerializable
         ];
     }
 
-    /**
-     * @return bool
-     */
     public function requiresStatus(): bool
     {
         $criteria = Criteria::create();
@@ -140,25 +126,16 @@ class Grid implements GridInterface, \JsonSerializable
         return count($this->columns->matching($criteria)) > 0;
     }
 
-    /**
-     * @return string
-     */
     public function getIcon(): string
     {
         return $this->icon;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param array $params
-     */
     public function setParameters(array $params)
     {
         $this->parameters = $params;

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Listener;
 
-use SolidInvoice\CoreBundle\Entity\Version;
-use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
-use SolidInvoice\CoreBundle\Repository\VersionRepository;
-use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Entity\Version;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -54,9 +53,7 @@ class UpgradeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param string          $installed
-     * @param ManagerRegistry $registry
-     * @param Migration       $migration
+     * @param string $installed
      */
     public function __construct(?string $installed, ManagerRegistry $registry, Migration $migration)
     {

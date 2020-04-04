@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Listener;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -21,9 +24,6 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Model\Status;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Money\Currency;
-use Money\Money;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
@@ -61,12 +61,6 @@ class PaymentCompleteListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param StateMachine    $stateMachine
-     * @param ManagerRegistry $registry
-     * @param RouterInterface $router
-     * @param Currency        $currency
-     */
     public function __construct(
         StateMachine $stateMachine,
         ManagerRegistry $registry,
@@ -79,9 +73,6 @@ class PaymentCompleteListener implements EventSubscriberInterface
         $this->stateMachine = $stateMachine;
     }
 
-    /**
-     * @param PaymentCompleteEvent $event
-     */
     public function onPaymentComplete(PaymentCompleteEvent $event)
     {
         $payment = $event->getPayment();
@@ -133,11 +124,6 @@ class PaymentCompleteListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param string $status
-     *
-     * @return iterable
-     */
     public static function addFlashMessage(string $status): iterable
     {
         switch ($status) {

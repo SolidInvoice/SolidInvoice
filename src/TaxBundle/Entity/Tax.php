@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
-use SolidInvoice\CoreBundle\Entity\ItemInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -91,8 +91,6 @@ class Tax
     }
 
     /**
-     * @return array
-     *
      * @static
      */
     public static function getTypes(): array
@@ -124,8 +122,6 @@ class Tax
     }
 
     /**
-     * @param string $name
-     *
      * @return Tax
      */
     public function setName(string $name): self
@@ -144,8 +140,6 @@ class Tax
     }
 
     /**
-     * @param float $rate
-     *
      * @return Tax
      */
     public function setRate(float $rate): self
@@ -164,8 +158,6 @@ class Tax
     }
 
     /**
-     * @param string $type
-     *
      * @return Tax
      */
     public function setType(string $type): self
@@ -215,9 +207,6 @@ class Tax
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         $type = self::TYPE_INCLUSIVE === $this->type ? 'inc' : 'exl';

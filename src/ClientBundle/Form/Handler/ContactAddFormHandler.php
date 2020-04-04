@@ -15,9 +15,6 @@ namespace SolidInvoice\ClientBundle\Form\Handler;
 
 class ContactAddFormHandler extends AbstractContactFormHandler
 {
-    /**
-     * @return string
-     */
     public function getTemplate(): string
     {
         return '@SolidInvoiceClient/Ajax/contact_add.html.twig';

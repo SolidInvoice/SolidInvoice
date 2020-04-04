@@ -31,10 +31,6 @@ final class MenuBuilder implements ContainerAwareInterface
      */
     protected $method;
 
-    /**
-     * @param BuilderInterface $class
-     * @param string           $method
-     */
     public function __construct(BuilderInterface $class, string $method)
     {
         $this->class = $class;
@@ -43,9 +39,6 @@ final class MenuBuilder implements ContainerAwareInterface
 
     /**
      * Invokes the builder class to add items to the menu.
-     *
-     * @param ItemInterface $menu
-     * @param array         $options
      *
      * @return mixed
      */

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Command;
 
-use Defuse\Crypto\Key;
 use DateTime;
+use Defuse\Crypto\Key;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\Exception\MigrationException;
@@ -25,8 +25,8 @@ use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
-use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,6 +34,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Intl\Intl;
+
 class InstallCommand extends Command
 {
     /**
@@ -52,6 +53,7 @@ class InstallCommand extends Command
      * @var Migration
      */
     private $migration;
+
     public function __construct(ConfigWriter $configWriter, Migration $migration, string $projectDir, ?string $installed)
     {
         parent::__construct();
@@ -60,13 +62,12 @@ class InstallCommand extends Command
         $this->installed = $installed;
         $this->migration = $migration;
     }
-    /**
-     * @return bool
-     */
+
     public function isEnabled(): bool
     {
         return null === $this->installed;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -74,8 +75,10 @@ class InstallCommand extends Command
     {
         $this->setName('app:install')->setDescription('Installs the application')->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'mail')->addOption('mailer-host', null, InputOption::VALUE_REQUIRED, 'The email host (only applicable for SMTP)', 'localhost')->addOption('mailer-user', null, InputOption::VALUE_REQUIRED, 'The user for email authentication (only applicable for SMTP and Gmail)')->addOption('mailer-password', null, InputOption::VALUE_REQUIRED, 'The password for the email user (only applicable for SMTP and Gmail)')->addOption('mailer-port', null, InputOption::VALUE_REQUIRED, 'The email port to use  (only applicable for SMTP and Gmail)', 25)->addOption('mailer-encryption', null, InputOption::VALUE_REQUIRED, 'The encryption to use for email, if any')->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use');
     }
+
     /**
      * {@inheritdoc}
+     *
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -92,11 +95,11 @@ class InstallCommand extends Command
         $output->writeln('Add the following cron job to run daily at 12AM:');
         $output->writeln('');
         $output->writeln(sprintf('<comment>0 0 * * * php %s/console cron:run -e prod -n</comment>', $this->projectDir));
+
         return 0;
     }
+
     /**
-     * @param InputInterface $input
-     *
      * @throws Exception
      */
     private function validate(InputInterface $input)
@@ -131,10 +134,8 @@ class InstallCommand extends Command
             }
         }
     }
+
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @throws Exception
      */
     private function install(InputInterface $input, OutputInterface $output)
@@ -151,32 +152,25 @@ class InstallCommand extends Command
             $this->getContainer()->get('solidinvoice.core.config_writer')->dump($config);
         }
     }
+
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return bool
-     *
      * @throws Exception|MigrationException
      */
     private function initDb(InputInterface $input, OutputInterface $output): bool
     {
         $this->createDb($input, $output);
-        $callback = function ($message) use ($output) : void {
+        $callback = function ($message) use ($output): void {
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
                 $output->writeln($message);
             }
         };
         $output->writeln('<info>Running database migrations</info>');
         $this->migration->migrate($callback);
+
         return true;
     }
+
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return bool
-     *
      * @throws DBALException
      * @throws Exception
      */
@@ -205,12 +199,10 @@ class InstallCommand extends Command
         }
         $connection->__construct($params, $connection->getDriver(), $connection->getConfiguration(), $connection->getEventManager());
         $connection->connect();
+
         return true;
     }
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
+
     private function createAdminUser(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Creating Admin User</info>');
@@ -218,15 +210,15 @@ class InstallCommand extends Command
         $username = $input->getOption('admin-username');
         if (null !== $userRepository->findBy(['username' => $username])) {
             $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
+
             return;
         }
         $user = $userRepository->createUser();
         $user->setUsername($input->getOption('admin-username'))->setEmail($input->getOption('admin-email'))->setPlainPassword($input->getOption('admin-password'))->setEnabled(true)->setSuperAdmin(true);
         $userRepository->updateUser($user);
     }
+
     /**
-     * @param InputInterface $input
-     *
      * @return $this
      */
     private function saveConfig(InputInterface $input)
@@ -234,8 +226,10 @@ class InstallCommand extends Command
         // Don't update installed here, in case something goes wrong with the rest of the installation process
         $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'mailer_transport' => $input->getOption('mailer-transport'), 'mailer_host' => $input->getOption('mailer-host'), 'mailer_user' => $input->getOption('mailer-user'), 'mailer_password' => $input->getOption('mailer-password'), 'mailer_port' => $input->getOption('mailer-port'), 'mailer_encryption' => $input->getOption('mailer-encryption'), 'locale' => $input->getOption('locale'), 'currency' => $input->getOption('currency'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
         $this->getContainer()->get('solidinvoice.core.config_writer')->dump($config);
+
         return $this;
     }
+
     /**
      * {@inheritdoc}
      */

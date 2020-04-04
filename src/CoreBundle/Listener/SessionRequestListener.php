@@ -41,10 +41,6 @@ class SessionRequestListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param SessionInterface $session
-     * @param string           $secret
-     */
     public function __construct(SessionInterface $session, string $secret)
     {
         $this->session = $session;

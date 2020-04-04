@@ -17,8 +17,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Hamcrest\Core\IsInstanceOf;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use Namshi\Notificator\Manager;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
@@ -33,7 +33,8 @@ use SolidInvoice\UserBundle\Entity\User;
 
 class NotificationManagerTest extends TestCase
 {
-    use FakerTestTrait,
+    use FakerTestTrait;
+    use
         MockeryPHPUnitIntegration;
 
     public function testSendEmailNotification()

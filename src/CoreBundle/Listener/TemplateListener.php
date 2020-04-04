@@ -15,7 +15,6 @@ namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Templating\Template;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class TemplateListener implements EventSubscriberInterface

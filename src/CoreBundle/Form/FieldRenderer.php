@@ -23,19 +23,13 @@ class FieldRenderer
      */
     private $twig;
 
-    /**
-     * @param \Twig\Environment $twig
-     */
     public function __construct(\Twig\Environment $twig)
     {
         $this->twig = $twig;
     }
 
     /**
-     * @param FormView $form
-     * @param string   $path
-     *
-     * @return array
+     * @param string $path
      */
     public function render(FormView $form, string $path = null): array
     {

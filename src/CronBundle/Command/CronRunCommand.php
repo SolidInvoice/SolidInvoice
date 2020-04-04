@@ -40,6 +40,7 @@ class CronRunCommand extends ContainerAwareCommand
         }
 
         $container->get('cron.runner')->run();
+
         return 0;
     }
 }

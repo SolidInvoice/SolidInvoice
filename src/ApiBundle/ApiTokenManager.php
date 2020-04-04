@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 class ApiTokenManager
 {
@@ -28,20 +28,12 @@ class ApiTokenManager
 
     /**
      * ApiTokenManager constructor.
-     *
-     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * @param User   $user
-     * @param string $name
-     *
-     * @return ApiToken
-     */
     public function getOrCreate(User $user, string $name): ApiToken
     {
         $tokens = $user->getApiTokens();
@@ -56,12 +48,6 @@ class ApiTokenManager
         return $this->create($user, $name);
     }
 
-    /**
-     * @param User   $user
-     * @param string $name
-     *
-     * @return ApiToken
-     */
     public function create(User $user, string $name): ApiToken
     {
         $apiToken = new ApiToken();
@@ -78,9 +64,6 @@ class ApiTokenManager
         return $apiToken;
     }
 
-    /**
-     * @return string
-     */
     public function generateToken(): string
     {
         return bin2hex(random_bytes(self::TOKEN_LENGTH));

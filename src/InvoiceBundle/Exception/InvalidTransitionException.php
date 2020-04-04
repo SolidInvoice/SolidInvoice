@@ -15,9 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Exception;
 
 class InvalidTransitionException extends \Exception
 {
-    /**
-     * @param string $transition
-     */
     public function __construct(string $transition)
     {
         $message = 'invoice.transition.exception.'.$transition;

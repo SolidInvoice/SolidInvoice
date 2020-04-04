@@ -17,19 +17,11 @@ interface MenuStorageInterface
 {
     /**
      * Checks if the storage has a builder for the specified menu.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function has(string $name): bool;
 
     /**
      * Returns the builder for the specified menu from the storage.
-     *
-     * @param string $name
-     *
-     * @return \SplPriorityQueue
      */
     public function get(string $name): \SplPriorityQueue;
 }

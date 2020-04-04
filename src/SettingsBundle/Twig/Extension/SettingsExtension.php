@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Twig\Extension;
 
+use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Doctrine\DBAL\Exception\ConnectionException;
-use Doctrine\DBAL\Exception\TableNotFoundException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

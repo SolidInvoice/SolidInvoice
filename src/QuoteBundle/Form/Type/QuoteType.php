@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\Type;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
-use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,9 +30,6 @@ class QuoteType extends AbstractType
      */
     private $currency;
 
-    /**
-     * @param Currency $currency
-     */
     public function __construct(Currency $currency)
     {
         $this->currency = $currency;

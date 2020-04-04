@@ -70,11 +70,8 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Returns an array of all the payments for an invoice.
      *
-     * @param Invoice $invoice
-     * @param string  $orderField
-     * @param string  $sort
-     *
-     * @return array
+     * @param string $orderField
+     * @param string $sort
      */
     public function getPaymentsForInvoice(Invoice $invoice, string $orderField = null, $sort = 'DESC'): array
     {
@@ -92,8 +89,6 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * @param string $orderField
      * @param string $sort
-     *
-     * @return QueryBuilder
      */
     protected function getPaymentQueryBuilder(string $orderField = null, $sort = 'DESC'): QueryBuilder
     {
@@ -125,10 +120,6 @@ class PaymentRepository extends ServiceEntityRepository
 
     /**
      * Returns an array of all the payments for an invoice.
-     *
-     * @param Invoice $invoice
-     *
-     * @return int
      */
     public function getTotalPaidForInvoice(Invoice $invoice): int
     {
@@ -153,11 +144,8 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Returns an array of all the payments for a client.
      *
-     * @param Client $client
      * @param string $orderField
      * @param string $sort
-     *
-     * @return array
      */
     public function getPaymentsForClient(Client $client, string $orderField = null, $sort = 'DESC'): array
     {
@@ -174,10 +162,6 @@ class PaymentRepository extends ServiceEntityRepository
 
     /**
      * Gets the most recent created payments.
-     *
-     * @param int $limit
-     *
-     * @return array
      */
     public function getRecentPayments(int $limit = 5): array
     {
@@ -199,8 +183,6 @@ class PaymentRepository extends ServiceEntityRepository
 
     /**
      * @param \DateTime $timestamp
-     *
-     * @return array
      */
     public function getPaymentsList(\DateTime $timestamp = null): array
     {
@@ -226,12 +208,6 @@ class PaymentRepository extends ServiceEntityRepository
         return $results;
     }
 
-    /**
-     * @param Query  $query
-     * @param string $dateFormat
-     *
-     * @return array
-     */
     private function formatDate(Query $query, string $dateFormat = 'Y-m-d'): array
     {
         $payments = [];
@@ -251,9 +227,6 @@ class PaymentRepository extends ServiceEntityRepository
         return $payments;
     }
 
-    /**
-     * @return array
-     */
     public function getPaymentsByMonth(): array
     {
         $queryBuilder = $this->createQueryBuilder('p');
@@ -279,7 +252,6 @@ class PaymentRepository extends ServiceEntityRepository
 
     /**
      * @param Payment[]|Collection $payments
-     * @param string               $status
      *
      * @return mixed
      */
@@ -304,11 +276,6 @@ class PaymentRepository extends ServiceEntityRepository
         return $qb->getQuery()->execute();
     }
 
-    /**
-     * @param array $parameters
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p');
@@ -331,9 +298,6 @@ class PaymentRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @param Client $client
-     */
     public function updateCurrency(Client $client)
     {
         $filters = $this->getEntityManager()->getFilters();

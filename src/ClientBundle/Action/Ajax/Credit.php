@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use Money\Currency;
-use Money\Money;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,11 +42,6 @@ final class Credit implements AjaxResponse
      */
     private $formatter;
 
-    /**
-     * @param CreditRepository $repository
-     * @param MoneyFormatter   $formatter
-     * @param Currency         $currency
-     */
     public function __construct(CreditRepository $repository, MoneyFormatter $formatter, Currency $currency)
     {
         $this->currency = $currency;
@@ -54,22 +49,11 @@ final class Credit implements AjaxResponse
         $this->formatter = $formatter;
     }
 
-    /**
-     * @param Client $client
-     *
-     * @return JsonResponse
-     */
     public function get(Client $client): JsonResponse
     {
         return $this->toJson($client);
     }
 
-    /**
-     * @param Request $request
-     * @param Client  $client
-     *
-     * @return JsonResponse
-     */
     public function put(Request $request, Client $client): JsonResponse
     {
         $value = new Money((int) ((json_decode($request->getContent() ?? '[]', true)['credit'] ?? 0) * 100), $client->getCurrency() ?? $this->currency);

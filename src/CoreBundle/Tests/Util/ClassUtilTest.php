@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Util;
 
-use SolidInvoice\CoreBundle\Util\ClassUtil;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Util\ClassUtil;
 
 class ClassUtilTest extends TestCase
 {

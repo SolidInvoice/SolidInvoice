@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
+use Faker\Factory;
 use SolidInvoice\ClientBundle\Form\Type\AddressType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
-use Faker\Factory;
 
 class AddressTypeTest extends FormTestCase
 {

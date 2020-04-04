@@ -101,11 +101,6 @@ final class Setup
         return $this->render($this->getForm($request));
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return FormInterface
-     */
     private function getForm(Request $request): FormInterface
     {
         return $this->formFactory->create(SystemInformationForm::class, [], ['userCount' => $this->getUserCount()]);
@@ -149,9 +144,6 @@ final class Setup
         return $this->render($form);
     }
 
-    /**
-     * @param array $data
-     */
     private function createAdminUser(array $data)
     {
         $user = new User();
@@ -187,8 +179,6 @@ final class Setup
     }
 
     /**
-     * @param array $data
-     *
      * @throws EnvironmentIsBrokenException|InvalidArgumentException|DependencyInjectionException\ServiceCircularReferenceException|DependencyInjectionException\ServiceNotFoundException
      */
     protected function saveConfig(array $data)
@@ -221,11 +211,6 @@ final class Setup
         $this->systemConfig->set(CurrencyFactory::CURRENCY_PATH, $data['currency'] ?? CurrencyFactory::DEFAULT_CURRENCY);
     }
 
-    /**
-     * @param FormInterface $form
-     *
-     * @return Template
-     */
     protected function render(FormInterface $form): Template
     {
         return new Template(

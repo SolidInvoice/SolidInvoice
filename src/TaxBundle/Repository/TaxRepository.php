@@ -29,8 +29,6 @@ class TaxRepository extends ServiceEntityRepository
 
     /**
      * Gets an array of all the available tax rates.
-     *
-     * @return array
      */
     public function getTaxList(): array
     {
@@ -51,9 +49,6 @@ class TaxRepository extends ServiceEntityRepository
         return $query->getArrayResult();
     }
 
-    /**
-     * @return bool
-     */
     public function taxRatesConfigured(): bool
     {
         return $this->getTotal() > 0;
@@ -61,8 +56,6 @@ class TaxRepository extends ServiceEntityRepository
 
     /**
      * Gets an array of all the available tax rates.
-     *
-     * @return int
      */
     public function getTotal(): int
     {
@@ -72,9 +65,6 @@ class TaxRepository extends ServiceEntityRepository
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getGridQuery(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('t');
@@ -84,9 +74,6 @@ class TaxRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @param array $data
-     */
     public function deleteTaxRates(array $data): void
     {
         $em = $this->getEntityManager();

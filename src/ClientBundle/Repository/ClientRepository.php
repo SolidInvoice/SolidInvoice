@@ -39,8 +39,6 @@ class ClientRepository extends ServiceEntityRepository
      * Gets total number of clients.
      *
      * @param string $status
-     *
-     * @return int
      */
     public function getTotalClients(string $status = null): int
     {
@@ -62,8 +60,6 @@ class ClientRepository extends ServiceEntityRepository
      * Gets the most recent created clients.
      *
      * @param int $limit
-     *
-     * @return array
      */
     public function getRecentClients($limit = 5): array
     {
@@ -85,9 +81,6 @@ class ClientRepository extends ServiceEntityRepository
         return $query->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getStatusList(): array
     {
         $qb = $this->createQueryBuilder('c');
@@ -97,9 +90,6 @@ class ClientRepository extends ServiceEntityRepository
         return ArrayUtil::column($qb->getQuery()->getResult(), 'status');
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getGridQuery(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
@@ -109,9 +99,6 @@ class ClientRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getArchivedGridQuery(): QueryBuilder
     {
         $this->getEntityManager()->getFilters()->disable('archivable');
@@ -126,8 +113,6 @@ class ClientRepository extends ServiceEntityRepository
 
     /**
      * Archives a list of clients.
-     *
-     * @param array $ids
      */
     public function archiveClients(array $ids): void
     {
@@ -148,9 +133,6 @@ class ClientRepository extends ServiceEntityRepository
         $em->flush();
     }
 
-    /**
-     * @param array $ids
-     */
     public function restoreClients(array $ids): void
     {
         $em = $this->getEntityManager();
@@ -173,8 +155,6 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $ids
-     *
      * @throws ORMException|OptimisticLockException|InvalidArgumentException
      */
     public function deleteClients(array $ids): void

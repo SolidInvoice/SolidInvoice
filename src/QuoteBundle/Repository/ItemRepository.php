@@ -31,8 +31,6 @@ class ItemRepository extends ServiceEntityRepository
 
     /**
      * Removes all tax rates from invoices.
-     *
-     * @param Tax $tax
      */
     public function removeTax(Tax $tax)
     {

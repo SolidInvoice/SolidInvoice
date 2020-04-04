@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
-use SolidInvoice\ApiBundle\Serializer\Normalizer\MoneyNormalizer;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\ApiBundle\Serializer\Normalizer\MoneyNormalizer;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -45,8 +45,6 @@ class UserRepository extends ServiceEntityRepository implements UserProviderInte
      *
      * @param string $username
      *
-     * @return UserInterface
-     *
      * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username): UserInterface

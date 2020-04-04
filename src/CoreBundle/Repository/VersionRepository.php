@@ -42,9 +42,6 @@ class VersionRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
-    /**
-     * @return string
-     */
     public function getCurrentVersion(): string
     {
         $qb = $this->createQueryBuilder('v');

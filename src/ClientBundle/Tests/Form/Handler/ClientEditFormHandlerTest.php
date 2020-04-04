@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
+use Mockery as M;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Handler\ClientEditFormHandler;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
-use Mockery as M;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

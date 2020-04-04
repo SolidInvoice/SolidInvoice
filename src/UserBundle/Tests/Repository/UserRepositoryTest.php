@@ -24,7 +24,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserRepositoryTest extends KernelTestCase
 {
-    use FakerTestTrait, FixturesTrait;
+    use FakerTestTrait;
+    use FixturesTrait;
 
     private $faker;
 
@@ -67,16 +68,26 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testRefreshUserWithInvalidUser()
     {
-        $user = new class implements UserInterface {
-            public function getRoles() { }
+        $user = new class() implements UserInterface {
+            public function getRoles()
+            {
+            }
 
-            public function getPassword() { }
+            public function getPassword()
+            {
+            }
 
-            public function getSalt() { }
+            public function getSalt()
+            {
+            }
 
-            public function getUsername() { }
+            public function getUsername()
+            {
+            }
 
-            public function eraseCredentials() { }
+            public function eraseCredentials()
+            {
+            }
         };
 
         $this->expectException(UnsupportedUserException::class);

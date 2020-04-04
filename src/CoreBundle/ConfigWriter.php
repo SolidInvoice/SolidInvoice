@@ -43,8 +43,6 @@ class ConfigWriter
 
     /**
      * Dumps an array into the parameters.yml file.
-     *
-     * @param array $config
      */
     public function dump(array $config)
     {
@@ -62,8 +60,6 @@ class ConfigWriter
     /**
      * Get all values from the config file.
      *
-     * @return array
-     *
      * @throws \RuntimeException
      */
     public function getConfigValues(): array
@@ -71,14 +67,7 @@ class ConfigWriter
         try {
             $value = Yaml::parse(file_get_contents($this->configFile));
         } catch (ParseException $e) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Unable to parse the YAML string: %s Your installation might be corrupt.',
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
+            throw new \RuntimeException(sprintf('Unable to parse the YAML string: %s Your installation might be corrupt.', $e->getMessage()), $e->getCode(), $e);
         }
 
         return $value['parameters'];

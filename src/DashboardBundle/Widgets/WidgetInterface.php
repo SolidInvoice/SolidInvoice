@@ -15,13 +15,7 @@ namespace SolidInvoice\DashboardBundle\Widgets;
 
 interface WidgetInterface
 {
-    /**
-     * @return array
-     */
     public function getData(): array;
 
-    /**
-     * @return string
-     */
     public function getTemplate(): string;
 }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,7 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RecurringInvoice
 {
-    use Entity\TimeStampable,
+    use Entity\TimeStampable;
+    use
         Entity\Archivable;
 
     /**
@@ -84,8 +85,6 @@ class RecurringInvoice
     }
 
     /**
-     * @param string $frequency
-     *
      * @return RecurringInvoice
      */
     public function setFrequency(string $frequency): self
@@ -144,8 +143,6 @@ class RecurringInvoice
     }
 
     /**
-     * @param Invoice $invoice
-     *
      * @return RecurringInvoice
      */
     public function setInvoice(Invoice $invoice): self

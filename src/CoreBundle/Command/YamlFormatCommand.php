@@ -43,12 +43,10 @@ class YamlFormatCommand extends ContainerAwareCommand
 
             file_put_contents($path, Yaml::dump($yml, PHP_INT_MAX));
         }
+
         return 0;
     }
 
-    /**
-     * @return \Iterator
-     */
     private function findFiles(): \Iterator
     {
         $container = $this->getContainer();

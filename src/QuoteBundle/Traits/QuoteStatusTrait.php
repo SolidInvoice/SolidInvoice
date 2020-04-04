@@ -19,49 +19,31 @@ trait QuoteStatusTrait
 {
     abstract public function getStatus();
 
-    /**
-     * @return bool
-     */
     public function isPending(): bool
     {
         return Graph::STATUS_PENDING === $this->getStatus();
     }
 
-    /**
-     * @return bool
-     */
     public function isDraft(): bool
     {
         return Graph::STATUS_DRAFT === $this->getStatus();
     }
 
-    /**
-     * @return bool
-     */
     public function isCancelled(): bool
     {
         return Graph::STATUS_CANCELLED === $this->getStatus();
     }
 
-    /**
-     * @return bool
-     */
     public function isAccepted(): bool
     {
         return Graph::STATUS_ACCEPTED === $this->getStatus();
     }
 
-    /**
-     * @return bool
-     */
     public function isArchived(): bool
     {
         return Graph::STATUS_ARCHIVED === $this->getStatus();
     }
 
-    /**
-     * @return bool
-     */
     public function isDeclined(): bool
     {
         return Graph::STATUS_DECLINED === $this->getStatus();

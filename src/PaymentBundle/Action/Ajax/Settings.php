@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action\Ajax;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 

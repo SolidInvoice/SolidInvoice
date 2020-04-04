@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Tests\Form\Handler;
 
+use Mockery as M;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Handler\TaxFormHandler;
-use Mockery as M;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,9 +44,6 @@ class TaxFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    /**
-     * @return array
-     */
     public function getFormData(): array
     {
         return [

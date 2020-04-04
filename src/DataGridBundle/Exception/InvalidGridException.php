@@ -15,9 +15,6 @@ namespace SolidInvoice\DataGridBundle\Exception;
 
 class InvalidGridException extends \Exception
 {
-    /**
-     * @param string $grid
-     */
     public function __construct(string $grid)
     {
         $message = sprintf('The grid "%s" does not exist.', $grid);

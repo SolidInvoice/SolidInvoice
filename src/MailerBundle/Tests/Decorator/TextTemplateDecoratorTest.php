@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests\Decorator;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MailerBundle\Context;
 use SolidInvoice\MailerBundle\Decorator\TextTemplateDecorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
-use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
 use SolidInvoice\MailerBundle\Template\Template;
+use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Templating\EngineInterface;
 

@@ -31,21 +31,12 @@ final class View
      */
     private $invoiceRepository;
 
-    /**
-     * @param PaymentRepository $paymentRepository
-     * @param InvoiceRepository $invoiceRepository
-     */
     public function __construct(PaymentRepository $paymentRepository, InvoiceRepository $invoiceRepository)
     {
         $this->paymentRepository = $paymentRepository;
         $this->invoiceRepository = $invoiceRepository;
     }
 
-    /**
-     * @param Client $client
-     *
-     * @return Template
-     */
     public function __invoke(Client $client): Template
     {
         return new Template(

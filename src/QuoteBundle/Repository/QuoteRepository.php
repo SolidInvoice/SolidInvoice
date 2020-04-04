@@ -31,8 +31,6 @@ class QuoteRepository extends ServiceEntityRepository
      * Gets total number of quotes.
      *
      * @param string $status
-     *
-     * @return int
      */
     public function getTotalQuotes(string $status = null): int
     {
@@ -54,8 +52,6 @@ class QuoteRepository extends ServiceEntityRepository
      * Gets the most recent created quotes.
      *
      * @param int $limit
-     *
-     * @return array
      */
     public function getRecentQuotes($limit = 5): array
     {
@@ -71,11 +67,6 @@ class QuoteRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    /**
-     * @param array $parameters
-     *
-     * @return QueryBuilder
-     */
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('q');
@@ -91,9 +82,6 @@ class QuoteRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getArchivedGridQuery(): QueryBuilder
     {
         $this->getEntityManager()->getFilters()->disable('archivable');
@@ -107,9 +95,6 @@ class QuoteRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @param Client $client
-     */
     public function updateCurrency(Client $client)
     {
         $filters = $this->getEntityManager()->getFilters();
@@ -154,8 +139,6 @@ class QuoteRepository extends ServiceEntityRepository
 
     /**
      * Delete multiple quotes based on IDs.
-     *
-     * @param array $ids
      */
     public function deleteQuotes(array $ids): void
     {

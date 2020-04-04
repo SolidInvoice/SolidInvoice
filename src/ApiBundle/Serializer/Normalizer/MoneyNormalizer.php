@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

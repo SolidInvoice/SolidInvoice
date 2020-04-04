@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Form\Extension;
 
+use Money\Currency;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ModelTransformer;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
-use Money\Currency;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,9 +28,6 @@ class MoneyExtension extends AbstractTypeExtension
      */
     protected $currency;
 
-    /**
-     * @param Currency $currency
-     */
     public function __construct(Currency $currency)
     {
         $this->currency = $currency;

@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Listener;
 
-use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\CoreBundle\Listener\TemplateListener;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Listener\TemplateListener;
+use SolidInvoice\CoreBundle\Templating\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
 

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Form\Type;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\MoneyBundle\Entity\Money;
-use Money\Currency;
 use Symfony\Component\Form\PreloadedExtension;
 
 class DiscountTypeTest extends FormTestCase

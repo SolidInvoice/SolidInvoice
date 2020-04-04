@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
@@ -20,9 +23,6 @@ use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Money\Currency;
-use Money\Money;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvoiceCancelListener implements EventSubscriberInterface
@@ -47,19 +47,12 @@ class InvoiceCancelListener implements EventSubscriberInterface
      */
     private $currency;
 
-    /**
-     * @param ManagerRegistry $registry
-     * @param Currency        $currency
-     */
     public function __construct(ManagerRegistry $registry, Currency $currency)
     {
         $this->registry = $registry;
         $this->currency = $currency;
     }
 
-    /**
-     * @param InvoiceEvent $event
-     */
     public function onInvoiceCancelled(InvoiceEvent $event)
     {
         $invoice = $event->getInvoice();
