@@ -222,7 +222,7 @@ final class Prepare
                 $this->save($payment);
 
                 $event = new PaymentCompleteEvent($payment);
-                $this->eventDispatcher->dispatch(PaymentEvents::PAYMENT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
 
                 if ($response = $event->getResponse()) {
                     return $response;

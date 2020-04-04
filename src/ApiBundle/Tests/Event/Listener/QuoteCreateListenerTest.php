@@ -22,7 +22,7 @@ use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -49,7 +49,7 @@ class QuoteCreateListenerTest extends TestCase
 
         $listener = new QuoteCreateListener($stateMachine);
         $request = Request::create('/', 'POST');
-        $listener->setQuoteStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
+        $listener->setQuoteStatus(new \Symfony\Component\HttpKernel\Event\ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
     public function testSkipIfNotMasterRequest()
@@ -60,7 +60,7 @@ class QuoteCreateListenerTest extends TestCase
 
         $listener = new QuoteCreateListener($stateMachine);
         $request = Request::create('/', 'POST');
-        $listener->setQuoteStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::SUB_REQUEST, new Quote()));
+        $listener->setQuoteStatus(new \Symfony\Component\HttpKernel\Event\ViewEvent(M::mock(KernelInterface::class), $request, Kernel::SUB_REQUEST, new Quote()));
     }
 
     public function testSkipIfQuoteAlreadyHasAStatus()
@@ -74,7 +74,7 @@ class QuoteCreateListenerTest extends TestCase
         $entity = new Quote();
         $entity->setStatus(Graph::STATUS_DRAFT);
 
-        $listener->setQuoteStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
+        $listener->setQuoteStatus(new \Symfony\Component\HttpKernel\Event\ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
     public function testSkipIfNoQuoteIsPassed()
@@ -86,7 +86,7 @@ class QuoteCreateListenerTest extends TestCase
         $listener = new QuoteCreateListener($stateMachine);
         $request = Request::create('/', 'POST');
 
-        $listener->setQuoteStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Invoice()));
+        $listener->setQuoteStatus(new \Symfony\Component\HttpKernel\Event\ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Invoice()));
     }
 
     public function testSkipIfNotPostRequest()
@@ -98,6 +98,6 @@ class QuoteCreateListenerTest extends TestCase
         $listener = new QuoteCreateListener($stateMachine);
         $request = Request::create('/', 'GET');
 
-        $listener->setQuoteStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Quote()));
+        $listener->setQuoteStatus(new \Symfony\Component\HttpKernel\Event\ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Quote()));
     }
 }

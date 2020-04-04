@@ -70,7 +70,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
         return new ProfileEditFormHandler($this->userRepository, $this->tokenStorage, $this->router);
     }
 
-    protected function beforeSuccess($data, FormRequest $form)
+    protected function beforeSuccess($data, FormRequest $form): void
     {
         $this->userRepository->shouldReceive('save')
             ->once()
@@ -82,7 +82,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
             ->andReturn('/profile');
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    protected function assertOnSuccess(?Response $response, $data, FormRequest $form): void
     {
         $this->assertSame('9876543210', $data->getMobile());
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -91,7 +91,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
         $this->assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
-    public function getFormData()
+    public function getFormData(): array
     {
         return [
             'profile' => [

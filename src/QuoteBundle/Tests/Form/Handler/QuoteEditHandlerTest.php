@@ -106,7 +106,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    protected function assertOnSuccess(?Response $response, $quote, FormRequest $form)
+    protected function assertOnSuccess(?Response $response, $quote, FormRequest $form): void
     {
         /* @var Quote $quote */
 
@@ -118,7 +118,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         $this->assertCount(1, $this->em->getRepository(Quote::class)->findAll());
     }
 
-    protected function assertResponse(FormRequest $formRequest)
+    protected function assertResponse(FormRequest $formRequest): void
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }

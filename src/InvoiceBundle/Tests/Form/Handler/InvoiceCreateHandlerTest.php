@@ -73,7 +73,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    protected function assertOnSuccess(?Response $response, $invoice, FormRequest $form)
+    protected function assertOnSuccess(?Response $response, $invoice, FormRequest $form): void
     {
         /* @var Invoice $invoice */
 
@@ -84,7 +84,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         $this->assertCount(1, $this->em->getRepository(Invoice::class)->findAll());
     }
 
-    protected function assertResponse(FormRequest $formRequest)
+    protected function assertResponse(FormRequest $formRequest): void
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }

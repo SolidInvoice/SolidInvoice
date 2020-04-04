@@ -31,14 +31,15 @@ class CronRunCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $container = $this->getContainer();
 
         if (!$container->getParameter('installed')) {
-            return;
+            return 0;
         }
 
         $container->get('cron.runner')->run();
+        return 0;
     }
 }

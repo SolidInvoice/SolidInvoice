@@ -33,7 +33,7 @@ class YamlFormatCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var SplFileInfo $file */
         foreach ($this->findFiles() as $file) {
@@ -43,6 +43,7 @@ class YamlFormatCommand extends ContainerAwareCommand
 
             file_put_contents($path, Yaml::dump($yml, PHP_INT_MAX));
         }
+        return 0;
     }
 
     /**

@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="quote_lines")
  * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class Item implements ItemInterface
 {
