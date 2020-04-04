@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\EventListener;
 
+use Doctrine\ORM\EntityRepository;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -24,9 +24,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InvoiceUsersSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -35,9 +32,6 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param FormEvent $event
-     */
     public function preSetData(FormEvent $event)
     {
         $data = $event->getData();

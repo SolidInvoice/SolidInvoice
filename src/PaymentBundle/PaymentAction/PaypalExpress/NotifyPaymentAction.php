@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress;
 
-use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
-use SolidInvoice\PaymentBundle\Entity\Payment;
 use Doctrine\Common\Persistence\ObjectManager;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -22,6 +20,8 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
 
 /**
  * @deprecated This action is not used anymore and will be removed in a future version
@@ -35,9 +35,6 @@ class NotifyPaymentAction implements ActionInterface, GatewayAwareInterface
      */
     protected $objectManager;
 
-    /**
-     * @param ObjectManager $objectManager
-     */
     public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;

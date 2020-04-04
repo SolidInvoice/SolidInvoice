@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction\Request;
 
-use SolidInvoice\PaymentBundle\Model\Status;
 use Payum\Core\Request\BaseGetStatus;
+use SolidInvoice\PaymentBundle\Model\Status;
 
 class StatusRequest extends BaseGetStatus
 {
@@ -183,9 +183,6 @@ class StatusRequest extends BaseGetStatus
         // noop
     }
 
-    /**
-     * @return bool
-     */
     public function isPayedout(): bool
     {
         return false;

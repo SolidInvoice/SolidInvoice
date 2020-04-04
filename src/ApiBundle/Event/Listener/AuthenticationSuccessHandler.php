@@ -29,8 +29,6 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
     /**
      * AuthenticationSuccessHandler constructor.
-     *
-     * @param ApiTokenManager $tokenManager
      */
     public function __construct(ApiTokenManager $tokenManager)
     {

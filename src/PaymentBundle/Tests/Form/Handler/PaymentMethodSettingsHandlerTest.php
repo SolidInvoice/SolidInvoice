@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Form\Handler;
 
+use Mockery as M;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
-use Mockery as M;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Response;

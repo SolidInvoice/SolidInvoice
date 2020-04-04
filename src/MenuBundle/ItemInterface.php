@@ -27,21 +27,14 @@ interface ItemInterface extends BaseInterface
     public function addChild($child, array $options = []);
 
     /**
-     * @param string $type
-     *
      * @return $this
      */
     public function addDivider(string $type = '');
 
     /**
-     * @param string $header
-     *
      * @return $this
      */
     public function addHeader(string $header);
 
-    /**
-     * @return bool
-     */
     public function isDivider(): bool;
 }

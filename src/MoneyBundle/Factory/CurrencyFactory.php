@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Factory;
 
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Money\Currency;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 class CurrencyFactory
 {
@@ -38,9 +38,6 @@ class CurrencyFactory
         $this->installed = $installed;
     }
 
-    /**
-     * @return Currency
-     */
     public function getCurrency(): Currency
     {
         return new Currency($this->installed ? $this->config->get(self::CURRENCY_PATH) : self::DEFAULT_CURRENCY);

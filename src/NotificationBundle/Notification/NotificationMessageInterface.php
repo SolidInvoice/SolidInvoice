@@ -19,30 +19,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 interface NotificationMessageInterface
 {
-    /**
-     * @param EngineInterface $templating
-     *
-     * @return string
-     */
     public function getHtmlContent(EngineInterface $templating): string;
 
-    /**
-     * @param EngineInterface $templating
-     *
-     * @return string
-     */
     public function getTextContent(EngineInterface $templating): string;
 
-    /**
-     * @param TranslatorInterface $translator
-     *
-     * @return string
-     */
     public function getSubject(TranslatorInterface $translator): string;
 
-    /**
-     * @param array $users
-     */
     public function setUsers(array $users);
 
     /**
@@ -50,13 +32,7 @@ interface NotificationMessageInterface
      */
     public function getUsers(): array;
 
-    /**
-     * @return array
-     */
     public function getParameters(): array;
 
-    /**
-     * @param array $parameters
-     */
     public function setParameters(array $parameters);
 }

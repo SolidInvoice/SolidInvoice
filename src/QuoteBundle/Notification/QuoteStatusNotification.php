@@ -39,11 +39,6 @@ class QuoteStatusNotification extends NotificationMessage
         return $templating->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     *
-     * @return string
-     */
     public function getSubject(TranslatorInterface $translator): string
     {
         return $translator->trans('quote.status.subject', [], 'email');

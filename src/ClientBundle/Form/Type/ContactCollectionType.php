@@ -18,9 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ContactCollectionType extends AbstractType
 {
-    /**
-     * @return string
-     */
     public function getParent(): string
     {
         return CollectionType::class;

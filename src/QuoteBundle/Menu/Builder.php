@@ -27,8 +27,6 @@ class Builder extends AuthenticatedMenu
     /**
      * Menu builder for the quotes index.
      *
-     * @param ItemInterface $menu
-     *
      * @throws \InvalidArgumentException
      */
     public function topMenu(ItemInterface $menu)
@@ -38,9 +36,6 @@ class Builder extends AuthenticatedMenu
 
     /**
      * Renders the quote index menu.
-     *
-     * @param ItemInterface $menu
-     * @param array         $options
      *
      * @throws \InvalidArgumentException
      */
@@ -64,9 +59,6 @@ class Builder extends AuthenticatedMenu
 
     /**
      * Renders the quote edit menu.
-     *
-     * @param ItemInterface $menu
-     * @param array         $options
      *
      * @throws \InvalidArgumentException
      */

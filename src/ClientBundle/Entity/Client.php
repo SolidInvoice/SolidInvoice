@@ -16,15 +16,15 @@ namespace SolidInvoice\ClientBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use SolidInvoice\CoreBundle\Traits\Entity;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,8 +39,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Client
 {
-    use Entity\TimeStampable,
-        Entity\Archivable;
+    use Entity\TimeStampable;
+    use Entity\Archivable;
 
     /**
      * @var int
@@ -190,8 +190,6 @@ class Client
     /**
      * Set name.
      *
-     * @param string $name
-     *
      * @return Client
      */
     public function setName(string $name): self
@@ -213,8 +211,6 @@ class Client
 
     /**
      * Set status.
-     *
-     * @param string $status
      *
      * @return Client
      */
@@ -238,8 +234,6 @@ class Client
     /**
      * Set website.
      *
-     * @param string $website
-     *
      * @return Client
      */
     public function setWebsite(string $website): self
@@ -251,8 +245,6 @@ class Client
 
     /**
      * Add contact.
-     *
-     * @param Contact $contact
      *
      * @return Client
      */
@@ -266,8 +258,6 @@ class Client
 
     /**
      * Removes a contact.
-     *
-     * @param Contact $contact
      *
      * @return Client
      */
@@ -291,8 +281,6 @@ class Client
     /**
      * Add quote.
      *
-     * @param Quote $quote
-     *
      * @return Client
      */
     public function addQuote(Quote $quote): self
@@ -305,8 +293,6 @@ class Client
 
     /**
      * Remove quote.
-     *
-     * @param Quote $quote
      *
      * @return Client
      */
@@ -330,8 +316,6 @@ class Client
     /**
      * Add invoice.
      *
-     * @param Invoice $invoice
-     *
      * @return Client
      */
     public function addInvoice(Invoice $invoice): self
@@ -344,8 +328,6 @@ class Client
 
     /**
      * Remove invoice.
-     *
-     * @param Invoice $invoice
      *
      * @return Client
      */
@@ -369,8 +351,6 @@ class Client
     /**
      * Add payment.
      *
-     * @param Payment $payment
-     *
      * @return Client
      */
     public function addPayment(Payment $payment): self
@@ -383,8 +363,6 @@ class Client
 
     /**
      * Removes a payment.
-     *
-     * @param Payment $payment
      *
      * @return Client
      */
@@ -425,8 +403,6 @@ class Client
     /**
      * Removes an address.
      *
-     * @param Address $address
-     *
      * @return Client
      */
     public function removeAddress(Address $address): self
@@ -455,8 +431,6 @@ class Client
     }
 
     /**
-     * @param Credit $credit
-     *
      * @return Client
      */
     public function setCredit(Credit $credit): self
@@ -481,17 +455,12 @@ class Client
 
     /**
      * Return the client name as a string.
-     *
-     * @return string
      */
     public function __toString(): string
     {
         return $this->name ?? '';
     }
 
-    /**
-     * @return Currency|null
-     */
     public function getCurrency(): ?Currency
     {
         return $this->currency ? new Currency($this->currency) : null;

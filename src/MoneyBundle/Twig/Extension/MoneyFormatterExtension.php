@@ -32,10 +32,6 @@ class MoneyFormatterExtension extends AbstractExtension
      */
     private $currency;
 
-    /**
-     * @param MoneyFormatter $formatter
-     * @param Currency       $currency
-     */
     public function __construct(MoneyFormatter $formatter, Currency $currency)
     {
         $this->formatter = $formatter;
@@ -54,9 +50,6 @@ class MoneyFormatterExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return array
-     */
     public function getFilters(): array
     {
         return [

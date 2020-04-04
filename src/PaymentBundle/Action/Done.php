@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use Payum\Core\Model\Token;
+use Payum\Core\Payum;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
-use Payum\Core\Model\Token;
-use Payum\Core\Payum;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

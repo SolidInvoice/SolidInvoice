@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Doctrine;
 
-use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class QuoteSaveListener implements EventSubscriber

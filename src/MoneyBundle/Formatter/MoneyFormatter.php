@@ -15,10 +15,10 @@ namespace SolidInvoice\MoneyBundle\Formatter;
 
 use Money\Currency;
 use Money\Money;
+use Money\MoneyFormatter as MoneyFormatterInterface;
 use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
 use Symfony\Component\Intl\Intl;
-use Money\MoneyFormatter as MoneyFormatterInterface;
 
 class MoneyFormatter implements MoneyFormatterInterface
 {
@@ -38,7 +38,6 @@ class MoneyFormatter implements MoneyFormatterInterface
     private $numberFormatter;
 
     /**
-     * @param string          $locale
      * @param Currency|string $currency
      *
      * @throws MethodArgumentNotImplementedException
@@ -57,11 +56,6 @@ class MoneyFormatter implements MoneyFormatterInterface
         $this->currency = $currency;
     }
 
-    /**
-     * @param \Money\Money $money
-     *
-     * @return string
-     */
     public function format(Money $money): string
     {
         $amount = $this->toFloat($money);
@@ -71,8 +65,6 @@ class MoneyFormatter implements MoneyFormatterInterface
 
     /**
      * @param Currency|string $currency
-     *
-     * @return string
      */
     public function getCurrencySymbol($currency = null): string
     {
@@ -92,17 +84,11 @@ class MoneyFormatter implements MoneyFormatterInterface
         return $this->numberFormatter->getSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
     }
 
-    /**
-     * @return string
-     */
     public function getDecimalSeparator(): string
     {
         return $this->numberFormatter->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
     }
 
-    /**
-     * @return string
-     */
     public function getPattern(): string
     {
         if (extension_loaded('intl')) {
@@ -114,11 +100,6 @@ class MoneyFormatter implements MoneyFormatterInterface
         return '%s%v';
     }
 
-    /**
-     * @param Money $amount
-     *
-     * @return float
-     */
     public static function toFloat(Money $amount): float
     {
         return ((float) $amount->getAmount()) / pow(10, 2);

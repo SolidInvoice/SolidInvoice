@@ -26,12 +26,6 @@ class CreditRepository extends ServiceEntityRepository
         parent::__construct($registry, Credit::class);
     }
 
-    /**
-     * @param Client $client
-     * @param Money  $amount
-     *
-     * @return Credit
-     */
     public function addCredit(Client $client, Money $amount): Credit
     {
         $credit = $client->getCredit();
@@ -41,12 +35,6 @@ class CreditRepository extends ServiceEntityRepository
         return $this->save($credit);
     }
 
-    /**
-     * @param Client $client
-     * @param Money  $amount
-     *
-     * @return \SolidInvoice\ClientBundle\Entity\Credit
-     */
     public function deductCredit(Client $client, Money $amount): Credit
     {
         $credit = $client->getCredit();
@@ -56,11 +44,6 @@ class CreditRepository extends ServiceEntityRepository
         return $this->save($credit);
     }
 
-    /**
-     * @param Credit $credit
-     *
-     * @return Credit
-     */
     private function save(Credit $credit): Credit
     {
         $entityManager = $this->getEntityManager();
@@ -70,9 +53,6 @@ class CreditRepository extends ServiceEntityRepository
         return $credit;
     }
 
-    /**
-     * @param Client $client
-     */
     public function updateCurrency(Client $client)
     {
         $filters = $this->getEntityManager()->getFilters();

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests;
 
-use SolidInvoice\MenuBundle\Factory;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\Factory;
 
 class FactoryTest extends TestCase
 {

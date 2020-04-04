@@ -20,11 +20,6 @@ use Symfony\Component\Form\FormView;
 
 class Select2Type extends AbstractType
 {
-    /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $attr = $view->vars['attr'];
@@ -38,9 +33,6 @@ class Select2Type extends AbstractType
         $view->vars['attr']['class'] = $class;
     }
 
-    /**
-     * @return string
-     */
     public function getParent(): string
     {
         return ChoiceType::class;

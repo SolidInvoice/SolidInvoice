@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\TaxEntityType;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -31,9 +31,6 @@ class ItemType extends AbstractType
      */
     private $registry;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;

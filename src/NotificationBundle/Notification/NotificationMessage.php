@@ -25,9 +25,6 @@ abstract class NotificationMessage implements NotificationMessageInterface
      */
     private $users = [];
 
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;

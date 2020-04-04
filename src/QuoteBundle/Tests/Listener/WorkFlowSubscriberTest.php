@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Listener;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
-use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\StateMachine;
@@ -29,8 +29,8 @@ use Symfony\Component\Workflow\Transition;
 
 class WorkFlowSubscriberTest extends TestCase
 {
-    use DoctrineTestTrait,
-        MockeryPHPUnitIntegration;
+    use DoctrineTestTrait;
+    use MockeryPHPUnitIntegration;
 
     public function testOnQuoteAccepted()
     {

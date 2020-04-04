@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Action;
 
-use SolidInvoice\CoreBundle\Response\AjaxResponse;
-use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use Mpociot\VatCalculator\Exceptions\VATCheckUnavailableException;
 use Mpociot\VatCalculator\VatCalculator;
+use SolidInvoice\CoreBundle\Response\AjaxResponse;
+use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Validate implements AjaxResponse

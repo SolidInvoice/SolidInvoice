@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Form\FieldRenderer;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
-use Money\Currency;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 

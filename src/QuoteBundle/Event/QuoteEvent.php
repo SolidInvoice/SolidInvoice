@@ -31,17 +31,11 @@ class QuoteEvent extends Event
         $this->quote = $quote;
     }
 
-    /**
-     * @param Quote $quote
-     */
     public function setQuote(Quote $quote)
     {
         $this->quote = $quote;
     }
 
-    /**
-     * @return Quote
-     */
     public function getQuote(): Quote
     {
         return $this->quote;

@@ -36,11 +36,6 @@ class Factory
      */
     private $settings;
 
-    /**
-     * @param EngineInterface     $templating
-     * @param TranslatorInterface $translator
-     * @param SystemConfig        $settings
-     */
     public function __construct(EngineInterface $templating, TranslatorInterface $translator, SystemConfig $settings)
     {
         $this->templating = $templating;
@@ -49,8 +44,6 @@ class Factory
     }
 
     /**
-     * @param NotificationMessageInterface $message
-     *
      * @return SwiftMailerNotification
      *
      * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
@@ -94,9 +87,6 @@ class Factory
     }
 
     /**
-     * @param string                       $cellphone
-     * @param NotificationMessageInterface $message
-     *
      * @return TwilioNotification
      */
     public function createSmsNotification(string $cellphone, NotificationMessageInterface $message): NotificationInterface

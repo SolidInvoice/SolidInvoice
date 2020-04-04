@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
-use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -34,9 +34,6 @@ class InvoiceType extends AbstractType
      */
     private $currency;
 
-    /**
-     * @param Currency $currency
-     */
     public function __construct(Currency $currency)
     {
         $this->currency = $currency;

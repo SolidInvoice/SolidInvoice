@@ -13,21 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Formatter;
 
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 
 class MoneyFormatterTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /**
-     * @param string $locale
-     * @param string $currency
-     * @param string $format
-     *
      * @dataProvider localeProvider
      */
     public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format)
@@ -41,10 +37,6 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $currency
-     * @param string $symbol
-     *
      * @dataProvider symbolProvider
      */
     public function testGetCurrencySymbol(string $locale, string $currency, string $symbol)
@@ -55,9 +47,6 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $separator
-     *
      * @dataProvider thousandSeparatorProvider
      */
     public function testGetThousandSeparator(string $locale, string $separator)
@@ -68,9 +57,6 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $separator
-     *
      * @dataProvider decimalSeparatorProvider
      */
     public function testGetDecimalSeparator(string $locale, string $separator)
@@ -81,9 +67,6 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $pattern
-     *
      * @dataProvider patternProvider
      */
     public function testGetPattern(string $locale, string $pattern)
@@ -93,9 +76,6 @@ class MoneyFormatterTest extends TestCase
         $this->assertStringContainsString($pattern, $formatter->getPattern());
     }
 
-    /**
-     * @return array
-     */
     public function localeProvider(): array
     {
         return [
@@ -114,9 +94,6 @@ class MoneyFormatterTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function symbolProvider(): array
     {
         return [

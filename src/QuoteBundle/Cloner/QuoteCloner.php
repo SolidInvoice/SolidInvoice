@@ -31,11 +31,6 @@ final class QuoteCloner
         $this->stateMachine = $stateMachine;
     }
 
-    /**
-     * @param Quote $quote
-     *
-     * @return Quote
-     */
     public function clone(Quote $quote): Quote
     {
         // We don't use 'clone', since cloning a quote will clone all the item id's and nested values.
@@ -64,12 +59,6 @@ final class QuoteCloner
         return $newQuote;
     }
 
-    /**
-     * @param Quote  $quote
-     * @param Carbon $now
-     *
-     * @return \Traversable
-     */
     private function addItems(Quote $quote, Carbon $now): \Traversable
     {
         foreach ($quote->getItems() as $item) {

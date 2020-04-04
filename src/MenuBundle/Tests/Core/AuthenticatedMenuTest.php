@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Core;
 
-use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class AuthenticatedMenuTest extends TestCase

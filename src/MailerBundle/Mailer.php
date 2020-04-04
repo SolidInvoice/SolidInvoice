@@ -26,10 +26,7 @@ final class Mailer implements MailerInterface
     }
 
     /**
-     * @param \Swift_Message $message
-     * @param array          $parameters Add additional context to the message
-     *
-     * @return MessageSentResponse
+     * @param array $parameters Add additional context to the message
      */
     public function send(\Swift_Message $message, array $parameters = []): MessageSentResponse
     {

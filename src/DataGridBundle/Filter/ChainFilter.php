@@ -33,9 +33,6 @@ class ChainFilter implements FilterInterface
         }
     }
 
-    /**
-     * @param FilterInterface $filter
-     */
     public function addFilter(FilterInterface $filter)
     {
         $this->filters[] = $filter;

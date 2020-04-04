@@ -22,9 +22,6 @@ class GridExtension extends \Twig\Extension\AbstractExtension
      */
     private $repository;
 
-    /**
-     * @param GridRepository $repository
-     */
     public function __construct(GridRepository $repository)
     {
         $this->repository = $repository;
@@ -56,12 +53,6 @@ class GridExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @param \Twig\Environment $env
-     * @param string            $gridName
-     * @param array             $parameters
-     *
-     * @return string
-     *
      * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
     public function renderGrid(\Twig\Environment $env, string $gridName, array $parameters = []): string
@@ -84,10 +75,6 @@ class GridExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @param \Twig\Environment $env
-     *
-     * @return string
-     *
      * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
     public function renderMultipleGrid(\Twig\Environment $env): string

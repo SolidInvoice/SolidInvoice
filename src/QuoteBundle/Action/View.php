@@ -39,9 +39,6 @@ final class View
     }
 
     /**
-     * @param Request $request
-     * @param Quote   $quote
-     *
      * @return Template|PdfResponse
      *
      * @throws \Mpdf\MpdfException|\RuntimeException|\InvalidArgumentException

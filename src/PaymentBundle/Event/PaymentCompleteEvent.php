@@ -23,17 +23,11 @@ class PaymentCompleteEvent extends ResponseEvent
      */
     protected $payment;
 
-    /**
-     * @param Payment $payment
-     */
     public function __construct(Payment $payment)
     {
         $this->payment = $payment;
     }
 
-    /**
-     * @return Payment
-     */
     public function getPayment(): Payment
     {
         return $this->payment;

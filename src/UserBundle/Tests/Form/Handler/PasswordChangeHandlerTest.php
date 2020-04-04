@@ -50,7 +50,7 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getHandler()
     {
@@ -77,7 +77,7 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         return [
-            'user' => new User()
+            'user' => new User(),
         ];
     }
 
@@ -87,7 +87,7 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
           'plainPassword' => [
               'first' => $this->password,
               'second' => $this->password,
-          ]
+          ],
         ];
     }
 }

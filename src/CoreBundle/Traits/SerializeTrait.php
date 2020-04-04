@@ -25,8 +25,6 @@ trait SerializeTrait
     private $serializer;
 
     /**
-     * @param SerializerInterface $serializer
-     *
      * @required
      */
     public function setSerializer(SerializerInterface $serializer): void
@@ -35,11 +33,7 @@ trait SerializeTrait
     }
 
     /**
-     * @param mixed         $object
-     * @param array         $groups
-     * @param Response|null $response
-     *
-     * @return Response
+     * @param mixed $object
      *
      * @throws \Exception
      */

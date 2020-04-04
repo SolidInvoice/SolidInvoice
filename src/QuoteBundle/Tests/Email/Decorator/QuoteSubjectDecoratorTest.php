@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Email\Decorator;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\MailerBundle\Context;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\QuoteBundle\Email\Decorator\QuoteSubjectDecorator;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;

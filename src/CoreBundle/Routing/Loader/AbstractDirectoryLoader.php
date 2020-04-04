@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Routing\Loader;
 
-use SolidInvoice\CoreBundle\Util\ClassUtil;
 use Doctrine\Common\Inflector\Inflector;
+use SolidInvoice\CoreBundle\Util\ClassUtil;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Config\Resource\DirectoryResource;

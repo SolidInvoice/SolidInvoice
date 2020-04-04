@@ -25,11 +25,6 @@ class PaymentMethodRepository extends ServiceEntityRepository
         parent::__construct($registry, PaymentMethod::class);
     }
 
-    /**
-     * @param string $gatewayName
-     *
-     * @return array
-     */
     public function getSettingsForMethodArray(string $gatewayName): array
     {
         $queryBuilder = $this->createQueryBuilder('pm');
@@ -49,10 +44,6 @@ class PaymentMethodRepository extends ServiceEntityRepository
 
     /**
      * Get the total number of payment gateways configured.
-     *
-     * @param bool $includeInternal
-     *
-     * @return int
      */
     public function getTotalMethodsConfigured(bool $includeInternal = true): int
     {

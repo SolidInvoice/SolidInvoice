@@ -27,17 +27,11 @@ class PaymentFactories
      */
     private $forms;
 
-    /**
-     * @param array $factories
-     */
     public function setGatewayFactories(array $factories)
     {
         $this->factories = $factories;
     }
 
-    /**
-     * @param array $gateForms
-     */
     public function setGatewayForms(array $gateForms)
     {
         $this->forms = $gateForms;
@@ -63,8 +57,6 @@ class PaymentFactories
     }
 
     /**
-     * @param string $gateway
-     *
      * @return string
      */
     public function getForm(string $gateway): ?string
@@ -73,8 +65,6 @@ class PaymentFactories
     }
 
     /**
-     * @param string $gateway
-     *
      * @return string
      *
      * @throws \Exception
@@ -88,11 +78,6 @@ class PaymentFactories
         throw new InvalidGatewayException($gateway);
     }
 
-    /**
-     * @param string $gateway
-     *
-     * @return bool
-     */
     public function isOffline(string $gateway): bool
     {
         return isset($this->factories[$gateway]) && 'offline' === $this->factories[$gateway];

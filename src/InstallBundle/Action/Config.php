@@ -70,7 +70,7 @@ final class Config
 
         // We can't support sqlite at the moment, since it requires a physical file
         if (in_array('sqlite', $availableDrivers, true)) {
-            unset($availableDrivers[array_search('sqlite', $availableDrivers)]);
+            unset($availableDrivers[array_search('sqlite', $availableDrivers, true)]);
         }
 
         $drivers = array_combine(

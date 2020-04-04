@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 class RecentPaymentsWidget implements WidgetInterface
 {
@@ -24,17 +24,11 @@ class RecentPaymentsWidget implements WidgetInterface
      */
     private $manager;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManager();
     }
 
-    /**
-     * @return array
-     */
     public function getData(): array
     {
         /** @var PaymentRepository $paymentRepository */
@@ -45,9 +39,6 @@ class RecentPaymentsWidget implements WidgetInterface
         return ['payments' => $payments];
     }
 
-    /**
-     * @return string
-     */
     public function getTemplate(): string
     {
         return '@SolidInvoiceDashboard/Widget/recent_payments.html.twig';

@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 interface FilterInterface
 {
     /**
-     * @param Request      $request
-     * @param QueryBuilder $queryBuilder
-     *
      * @return mixed
      */
     public function filter(Request $request, QueryBuilder $queryBuilder);

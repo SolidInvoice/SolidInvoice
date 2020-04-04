@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 class RecentQuotesWidget implements WidgetInterface
 {
@@ -24,17 +24,11 @@ class RecentQuotesWidget implements WidgetInterface
      */
     private $manager;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManager();
     }
 
-    /**
-     * @return array
-     */
     public function getData(): array
     {
         /** @var QuoteRepository $quoteRepository */
@@ -45,9 +39,6 @@ class RecentQuotesWidget implements WidgetInterface
         return ['quotes' => $quotes];
     }
 
-    /**
-     * @return string
-     */
     public function getTemplate(): string
     {
         return '@SolidInvoiceDashboard/Widget/recent_quotes.html.twig';

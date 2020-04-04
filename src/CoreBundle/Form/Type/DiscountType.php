@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Type;
 
-use SolidInvoice\CoreBundle\Entity\Discount;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

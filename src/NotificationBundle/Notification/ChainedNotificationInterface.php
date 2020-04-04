@@ -26,8 +26,6 @@ interface ChainedNotificationInterface extends NotificationInterface
 
     /**
      * Add a notification to the chain.
-     *
-     * @param NotificationInterface $notification
      */
     public function addNotification(NotificationInterface $notification);
 }

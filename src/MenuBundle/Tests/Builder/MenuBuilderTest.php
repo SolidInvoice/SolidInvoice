@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Builder;
 
-use SolidInvoice\MenuBundle\Builder\MenuBuilder;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 
 class MenuBuilderTest extends TestCase
 {

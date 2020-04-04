@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
+use Money\Currency;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler;
-use Money\Currency;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
 

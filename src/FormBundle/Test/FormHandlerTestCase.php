@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\FormBundle\Test;
 
+use Faker\Factory;
+use Faker\Generator;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
@@ -25,11 +30,6 @@ use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\Form\Type\ItemType as QuoteItemType;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
-use Faker\Factory;
-use Faker\Generator;
-use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Money\Currency;
 use SolidWorx\FormHandler\Test\FormHandlerTestCase as BaseTestCase;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
@@ -38,8 +38,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class FormHandlerTestCase extends BaseTestCase
 {
-    use DoctrineTestTrait,
-        MockeryPHPUnitIntegration;
+    use DoctrineTestTrait;
+    use MockeryPHPUnitIntegration;
 
     /**
      * @var Generator

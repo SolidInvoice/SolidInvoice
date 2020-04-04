@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Pdf;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Pdf\Generator;
-use PHPUnit\Framework\TestCase;
 
 class GeneratorTest extends TestCase
 {

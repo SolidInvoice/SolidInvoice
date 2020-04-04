@@ -30,11 +30,6 @@ final class InvoiceCloner
         $this->invoiceManager = $invoiceManager;
     }
 
-    /**
-     * @param Invoice $invoice
-     *
-     * @return Invoice
-     */
     public function clone(Invoice $invoice): Invoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
@@ -64,12 +59,6 @@ final class InvoiceCloner
         return $newInvoice;
     }
 
-    /**
-     * @param Invoice $invoice
-     * @param Carbon  $now
-     *
-     * @return \Traversable
-     */
     private function addItems(Invoice $invoice, Carbon $now): \Traversable
     {
         foreach ($invoice->getItems() as $item) {

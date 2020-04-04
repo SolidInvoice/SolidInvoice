@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Tests\Listener;
 
 use Carbon\Carbon;
-use SolidInvoice\SettingsBundle\Listener\MailerSettingsEnvListener;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\SettingsBundle\Listener\MailerSettingsEnvListener;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 class MailerSettingsEnvListenerTest extends TestCase
 {

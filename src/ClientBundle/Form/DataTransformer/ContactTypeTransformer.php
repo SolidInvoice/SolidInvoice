@@ -24,9 +24,6 @@ class ContactTypeTransformer implements DataTransformerInterface
      */
     private $types;
 
-    /**
-     * @param array $types
-     */
     public function __construct(array $types)
     {
         $this->types = $types;
