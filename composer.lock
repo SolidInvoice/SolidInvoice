@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbaf33e4c075083a7c1fc28bc8c1bf4d",
+    "content-hash": "55636fbc32102c56d4dea955be01e452",
     "packages": [
         {
             "name": "api-platform/core",
@@ -12533,32 +12533,37 @@
         },
         {
             "name": "matthiasnoback/symfony-dependency-injection-test",
-            "version": "v3.1.0",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SymfonyTest/SymfonyDependencyInjectionTest.git",
-                "reference": "7d3bf407fb36bb013b59e8b28b97b3224a3d2b2c"
+                "reference": "3431fc928541fa676a88cf59adb4bc45dbcc6764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SymfonyTest/SymfonyDependencyInjectionTest/zipball/7d3bf407fb36bb013b59e8b28b97b3224a3d2b2c",
-                "reference": "7d3bf407fb36bb013b59e8b28b97b3224a3d2b2c",
+                "url": "https://api.github.com/repos/SymfonyTest/SymfonyDependencyInjectionTest/zipball/3431fc928541fa676a88cf59adb4bc45dbcc6764",
+                "reference": "3431fc928541fa676a88cf59adb4bc45dbcc6764",
                 "shasum": ""
             },
             "require": {
-                "matthiasnoback/symfony-config-test": "^4.0",
-                "php": "^7.1",
-                "symfony/config": "^2.7 || ^3.3 || ^4.0",
-                "symfony/dependency-injection": "^2.7 || ^3.3 || ^4.0",
-                "symfony/yaml": "^2.7 || ^3.3 || ^4.0"
+                "matthiasnoback/symfony-config-test": "^4.0.1",
+                "php": "^7.2",
+                "symfony/config": "^3.4 || ^4.4 || ^5.0",
+                "symfony/dependency-injection": "^3.4 || ^4.4 || ^5.0",
+                "symfony/yaml": "^3.4 || ^4.4 || ^5.0"
             },
             "conflict": {
-                "phpunit/phpunit": "<7.0"
+                "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.0"
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Matthias\\SymfonyDependencyInjectionTest\\": ""
@@ -12582,7 +12587,7 @@
                 "dependency injection",
                 "phpunit"
             ],
-            "time": "2018-12-25T14:38:34+00:00"
+            "time": "2019-12-03T07:33:42+00:00"
         },
         {
             "name": "mockery/mockery",
