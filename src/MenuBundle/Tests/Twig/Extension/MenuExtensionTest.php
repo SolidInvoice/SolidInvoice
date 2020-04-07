@@ -41,11 +41,9 @@ class MenuExtensionTest extends TestCase
     {
         $functions = $this->extension->getFunctions();
 
-        $this->assertTrue(is_array($functions));
+        $this->assertInternalType('array', $functions);
 
-        foreach ($functions as $function) {
-            $this->assertInstanceOf('Twig_SimpleFunction', $function);
-        }
+        $this->assertContainsOnlyInstancesOf('Twig_SimpleFunction', $functions);
     }
 
     public function testRenderMenu()
