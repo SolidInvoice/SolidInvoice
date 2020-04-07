@@ -73,7 +73,7 @@ class MoneyFormatterTest extends TestCase
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        $this->assertContains($pattern, $formatter->getPattern());
+        $this->assertStringContainsString($pattern, $formatter->getPattern());
     }
 
     public function localeProvider(): array

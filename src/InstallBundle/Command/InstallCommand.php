@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -210,16 +211,23 @@ class InstallCommand extends Command
     private function createAdminUser(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Creating Admin User</info>');
-        $userRepository = $this->getContainer()->get('doctrine')->getRepository(User::class);
+        /** @var UserRepository $userRepository */
+        $registry = $this->getContainer()->get('doctrine');
+        $userRepository = $registry->getRepository(User::class);
         $username = $input->getOption('admin-username');
-        if (null !== $userRepository->findBy(['username' => $username])) {
+        if (null !== $userRepository->findOneBy(['username' => $username])) {
             $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
 
             return;
         }
-        $user = $userRepository->createUser();
-        $user->setUsername($input->getOption('admin-username'))->setEmail($input->getOption('admin-email'))->setPlainPassword($input->getOption('admin-password'))->setEnabled(true)->setSuperAdmin(true);
-        $userRepository->updateUser($user);
+        $user = new User();
+        $user->setUsername($input->getOption('admin-username'))
+            ->setEmail($input->getOption('admin-email'))
+            ->setPassword($this->getContainer()->get('security.password_encoder')->encodePassword($user, $input->getOption('admin-password')))
+            ->setEnabled(true);
+        $em = $registry->getManagerForClass(User::class);
+        $em->persist($user);
+        $em->flush();
     }
 
     /**

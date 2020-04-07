@@ -36,7 +36,7 @@ use Symfony\Component\Workflow\Transition;
 
 class InvoiceCreateHandlerTest extends FormHandlerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

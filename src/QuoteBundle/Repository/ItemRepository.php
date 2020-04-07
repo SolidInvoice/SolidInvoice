@@ -15,6 +15,8 @@ namespace SolidInvoice\QuoteBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -31,6 +33,8 @@ class ItemRepository extends ServiceEntityRepository
 
     /**
      * Removes all tax rates from invoices.
+     *
+     * @throws ORMException|OptimisticLockException
      */
     public function removeTax(Tax $tax)
     {
@@ -44,7 +48,7 @@ class ItemRepository extends ServiceEntityRepository
 
             /** @var Quote $quote */
             foreach ($query->execute() as $quote) {
-                $quote->setTotal($quote->getBaseTotal() + $quote->getTax());
+                $quote->setTotal($quote->getBaseTotal()->add($quote->getTax()));
                 $quote->setTax(null);
                 $this->getEntityManager()->persist($quote);
             }

@@ -31,7 +31,7 @@ class WidgetExtensionTest extends TestCase
      */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = \Mockery::mock('SolidInvoice\DashboardBundle\WidgetFactory');
         $this->extension = new WidgetExtension($this->factory);

@@ -34,11 +34,11 @@ class UserRepositoryTest extends KernelTestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $kernel = $this->bootKernel();
+        $kernel = self::bootKernel();
         $this->repository = $kernel->getContainer()->get('doctrine')->getRepository(User::class);
         $this->faker = $this->getFaker();
     }

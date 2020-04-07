@@ -26,7 +26,7 @@ class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getContainerExtensions()
+    protected function getContainerExtensions(): array
     {
         return [
             new SolidInvoiceApiExtension(),
@@ -45,7 +45,6 @@ class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 1, 'doctrine');
 
         $this->assertContainerBuilderHasService('api_token_user_provider', 'SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_user_provider', 0, 'doctrine');
 
         $this->assertContainerBuilderHasService(AuthenticationSuccessHandler::class, AuthenticationSuccessHandler::class);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.success', 0, ApiTokenManager::class);

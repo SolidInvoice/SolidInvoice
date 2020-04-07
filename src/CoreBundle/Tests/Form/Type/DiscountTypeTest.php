@@ -22,7 +22,7 @@ use Symfony\Component\Form\PreloadedExtension;
 
 class DiscountTypeTest extends FormTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

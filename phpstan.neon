@@ -1,12 +1,10 @@
-includes:
-    - vendor/phpstan/phpstan-doctrine/extension.neon
-    - vendor/phpstan/phpstan-symfony/extension.neon
-
 parameters:
     bootstrap: %rootDir%/../../../app/autoload.php
     autoload_files:
-        - vendor/bin/.phpunit/phpunit-7.5-0/vendor/autoload.php
+        - vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php
     excludes_analyse:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/test/appAppKernelTestDebugContainer.xml
+    ignoreErrors:
+        - '#Call to deprecated method setFactoryName\(\) of class SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod:.*#'

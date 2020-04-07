@@ -41,7 +41,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
 {
     private $quote;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

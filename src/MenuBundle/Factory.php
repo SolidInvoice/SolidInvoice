@@ -61,4 +61,12 @@ class Factory extends MenuFactory
     {
         $this->extensions->insert($extension, $priority);
     }
+
+    /**
+     * @return ExtensionInterface[]|\SplPriorityQueue
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
 }

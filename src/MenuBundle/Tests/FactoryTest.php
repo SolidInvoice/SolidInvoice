@@ -30,7 +30,7 @@ class FactoryTest extends TestCase
 
         $factory->addExtension($extension);
 
-        $this->assertCount(3, self::getObjectAttribute($factory, 'extensions'));
+        $this->assertCount(3, $factory->getExtensions());
     }
 
     public function testCreateItem()

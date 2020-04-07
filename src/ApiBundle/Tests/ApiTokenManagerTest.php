@@ -33,7 +33,7 @@ class ApiTokenManagerTest extends TestCase
 
         $token = $tm->generateToken();
 
-        $this->assertTrue(is_string($token));
+        $this->assertIsString($token);
         $this->assertSame(64, strlen($token));
         $this->assertRegExp('/[a-zA-Z0-9]{64}/', $token);
     }

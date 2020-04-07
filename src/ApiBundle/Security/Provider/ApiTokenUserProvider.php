@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Security\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,13 +25,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class ApiTokenUserProvider implements UserProviderInterface
 {
     /**
-     * @var ManagerRegistry
+     * @var ApiTokenRepository
      */
-    private $registry;
+    private $tokenRepository;
 
-    public function __construct(ManagerRegistry $registry)
+    private $userRepository;
+
+    public function __construct(ApiTokenRepository $tokenRepository, UserRepository $userRepository)
     {
-        $this->registry = $registry;
+        $this->tokenRepository = $tokenRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -38,7 +42,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function getUsernameForToken(string $token): ?string
     {
-        return $this->registry->getRepository(ApiToken::class)->getUsernameForToken($token);
+        return $this->tokenRepository->getUsernameForToken($token);
     }
 
     /**
@@ -46,7 +50,7 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->registry->getRepository(User::class)->findOneBy(['username' => $username]);
+        $user = $this->userRepository->findOneBy(['username' => $username]);
 
         if (!$user) {
             throw new UsernameNotFoundException();

@@ -38,21 +38,13 @@ class WidgetFactoryTest extends TestCase
         $factory->add($widget4, null, 400);
         $factory->add($widget5, 'left_column');
 
-        $property = self::readAttribute($factory, 'queues');
+        $this->assertInstanceOf('SplPriorityQueue', $factory->get('top'));
+        $this->assertInstanceOf('SplPriorityQueue', $factory->get('left_column'));
+        $this->assertInstanceOf('SplPriorityQueue', $factory->get('right_column'));
 
-        $this->assertTrue(is_array($property));
-
-        $this->assertArrayHasKey('top', $property);
-        $this->assertArrayHasKey('left_column', $property);
-        $this->assertArrayHasKey('right_column', $property);
-
-        $this->assertInstanceOf('SplPriorityQueue', $property['top']);
-        $this->assertInstanceOf('SplPriorityQueue', $property['left_column']);
-        $this->assertInstanceOf('SplPriorityQueue', $property['right_column']);
-
-        $this->assertCount(2, $property['top']);
-        $this->assertCount(2, $property['left_column']);
-        $this->assertCount(1, $property['right_column']);
+        $this->assertCount(2, $factory->get('top'));
+        $this->assertCount(2, $factory->get('left_column'));
+        $this->assertCount(1, $factory->get('right_column'));
     }
 
     public function testInvalidLocation()

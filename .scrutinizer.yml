@@ -1,7 +1,9 @@
 build:
     environment:
         php:
-            version: 7.1
+            version: 7.3
+            pecl_extensions:
+                - zip
     dependencies:
         before:
             - composer install --no-interaction

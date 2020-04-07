@@ -23,7 +23,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class InstallationTest extends PantherTestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -37,7 +37,8 @@ class InstallationTest extends PantherTestCase
             $params = $params['master'];
         }
 
-        $name = isset($params['path']) ? $params['path'] : (isset($params['dbname']) ? $params['dbname'] : false);
+        $name = $params['path'] ?? $params['dbname'] ?? false;
+
         if (!$name) {
             return;
         }
@@ -67,7 +68,7 @@ class InstallationTest extends PantherTestCase
 
         $crawler = $client->request('GET', '/');
 
-        $this->assertContains('/install', $crawler->getUri());
+        $this->assertStringContainsString('/install', $crawler->getUri());
     }
 
     public function testApplicationInstallation()
@@ -81,7 +82,7 @@ class InstallationTest extends PantherTestCase
 
         $this->continue($client, $crawler);
 
-        $this->assertContains('/install/config', $client->getCurrentURL());
+        $this->assertStringContainsString('/install/config', $client->getCurrentURL());
 
         // Configuration page
         $crawler = $client->submitForm(
@@ -94,11 +95,11 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        $this->assertContains('/install/install', $crawler->getUri());
+        $this->assertStringContainsString('/install/install', $crawler->getUri());
 
-        $kernel = self::bootKernel();
-        $this->assertSame($kernel->getContainer()->getParameter('env(database_name)'), 'solidinvoice_test');
-        $this->assertSame($kernel->getContainer()->getParameter('env(mailer_transport)'), 'sendmail');
+        $kernel = self::bootKernel(['debug' => true]);  // Reboot the kernel with debug to rebuild the cache
+        $this->assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
+        $this->assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
 
         // Wait for installation steps to be completed
         $time = microtime(true);
@@ -108,11 +109,11 @@ class InstallationTest extends PantherTestCase
             $crawler = $client->waitFor('.fa-check.text-success');
         }
 
-        $this->assertNotContains('disabled', $crawler->filter('#continue_step')->first()->attr('class'));
+        $this->assertStringNotContainsString('disabled', $crawler->filter('#continue_step')->first()->attr('class'));
 
         $this->continue($client, $crawler);
 
-        $this->assertContains('/install/setup', $client->getCurrentURL());
+        $this->assertStringContainsString('/install/setup', $client->getCurrentURL());
 
         $crawler = $client->submitForm(
             'Next',
@@ -126,8 +127,8 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        $this->assertContains('/install/finish', $crawler->getUri());
-        $this->assertContains('You have successfully installed SolidInvoice!', $crawler->html());
+        $this->assertStringContainsString('/install/finish', $crawler->getUri());
+        $this->assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
 
         $kernel = self::bootKernel(['debug' => true]);
         $this->assertNotNull($kernel->getContainer()->getParameter('installed'));

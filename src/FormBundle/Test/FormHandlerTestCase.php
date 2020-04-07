@@ -47,7 +47,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
      */
     protected $faker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

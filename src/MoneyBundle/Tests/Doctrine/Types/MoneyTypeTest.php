@@ -25,7 +25,7 @@ class MoneyTypeTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!Type::hasType('money')) {
             Type::addType('money', 'SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType');

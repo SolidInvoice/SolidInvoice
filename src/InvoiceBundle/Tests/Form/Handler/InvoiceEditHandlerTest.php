@@ -39,7 +39,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
 {
     private $invoice;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

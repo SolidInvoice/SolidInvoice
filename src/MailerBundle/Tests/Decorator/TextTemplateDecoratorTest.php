@@ -48,6 +48,7 @@ class TextTemplateDecoratorTest extends TestCase
         $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
+                return new Template('');
             }
         }, Context::create())));
     }
@@ -64,6 +65,7 @@ class TextTemplateDecoratorTest extends TestCase
         $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
+                return new Template('');
             }
         }, Context::create())));
     }
@@ -80,6 +82,7 @@ class TextTemplateDecoratorTest extends TestCase
         $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
+                return new Template('');
             }
         }, Context::create())));
     }

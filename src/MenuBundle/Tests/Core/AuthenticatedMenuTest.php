@@ -33,7 +33,7 @@ class AuthenticatedMenuTest extends TestCase
      */
     private $security;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = M::mock('Symfony\Component\DependencyInjection\ContainerInterface');
         $this->security = M::mock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');

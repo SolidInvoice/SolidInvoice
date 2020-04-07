@@ -34,7 +34,7 @@ class TotalCalculatorTest extends TestCase
     use
         MockeryPHPUnitIntegration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         \SolidInvoice\MoneyBundle\Entity\Money::setBaseCurrency('USD');

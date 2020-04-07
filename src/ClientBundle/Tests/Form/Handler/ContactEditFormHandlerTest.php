@@ -30,7 +30,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 
     private $email;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

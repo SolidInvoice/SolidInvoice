@@ -34,7 +34,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
 
     private $router;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

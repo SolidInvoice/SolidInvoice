@@ -40,9 +40,9 @@ class ContextTest extends TestCase
 
         $context['foo'] = 'bar';
 
-        $this->assertTrue(isset($context['foo']));
+        $this->assertArrayHasKey('foo', $context);
         $this->assertSame('bar', $context['foo']);
         unset($context['foo']);
-        $this->assertFalse(isset($context['foo']));
+        $this->assertArrayNotHasKey('foo', $context);
     }
 }
