@@ -28,7 +28,7 @@ abstract class StatusRepository extends EntityRepository
         $query = $queryBuilder->getQuery();
 
         $query->useQueryCache(true)
-            ->useResultCache(true, (60 * 60 * 24 * 7), 'status_list');
+            ->enableResultCache((60 * 60 * 24 * 7), 'status_list');
 
         return $query->getArrayResult();
     }

@@ -22,10 +22,10 @@
         <server name="KERNEL_CLASS" value="AppKernel"/>
         <server name="KERNEL_DIR" value="app"/>
         <server name="SOLIDINVOICE_ENV" value="test"/>
-        <server name="SOLIDINVOICE_DEBUG" value="true"/>
+        <server name="SOLIDINVOICE_DEBUG" value="0"/>
         <server name="APP_ENV" value="test"/>
-        <server name="APP_DEBUG" value="false"/>
-        <server name="SYMFONY_DEPRECATIONS_HELPER" value="220"/>
+        <server name="APP_DEBUG" value="0"/>
+        <server name="SYMFONY_DEPRECATIONS_HELPER" value="300"/>
         <server name="PANTHER_NO_HEADLESS" value="0" />
     </php>
 

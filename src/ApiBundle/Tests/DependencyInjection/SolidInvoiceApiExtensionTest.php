@@ -43,7 +43,6 @@ class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 1, 'doctrine');
 
         $this->assertContainerBuilderHasService('api_token_user_provider', 'SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_user_provider', 0, 'doctrine');
 
         $this->assertContainerBuilderHasService('api.success', 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.success', 0, 'api.token.manager');

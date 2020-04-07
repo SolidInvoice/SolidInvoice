@@ -37,7 +37,8 @@ class InstallationTest extends PantherTestCase
             $params = $params['master'];
         }
 
-        $name = isset($params['path']) ? $params['path'] : (isset($params['dbname']) ? $params['dbname'] : false);
+        $name = $params['path'] ?? $params['dbname'] ?? false;
+
         if (!$name) {
             return;
         }
@@ -96,9 +97,9 @@ class InstallationTest extends PantherTestCase
 
         $this->assertContains('/install/install', $crawler->getUri());
 
-        $kernel = self::bootKernel();
-        $this->assertSame($kernel->getContainer()->getParameter('env(database_name)'), 'solidinvoice_test');
-        $this->assertSame($kernel->getContainer()->getParameter('env(mailer_transport)'), 'sendmail');
+        $kernel = self::bootKernel(['debug' => true]);  // Reboot the kernel with debug to rebuild the cache
+        $this->assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
+        $this->assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
 
         // Wait for installation steps to be completed
         $time = microtime(true);

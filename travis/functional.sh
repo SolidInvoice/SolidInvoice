@@ -39,6 +39,9 @@ tfold () {
 }
 export -f tfold
 
+
+tfold 'Requirements' php ./app/check.php -v -x
+
 tfold 'Installation' bin/simple-phpunit --group installation
 
 rm -Rf var/cache/test

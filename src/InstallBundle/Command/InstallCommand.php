@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -164,7 +165,7 @@ class InstallCommand extends ContainerAwareCommand
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
         $return = true;
 
-        return require_once $rootDir.DIRECTORY_SEPARATOR.'app_check.php';
+        return require_once $rootDir.DIRECTORY_SEPARATOR.'check.php';
     }
 
     /**
@@ -289,24 +290,27 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Creating Admin User</info>');
 
-        $userRepository = $this->getContainer()->get('doctrine')->getRepository(User::class);
+        /** @var UserRepository $userRepository */
+        $registry = $this->getContainer()->get('doctrine');
+        $userRepository = $registry->getRepository(User::class);
         $username = $input->getOption('admin-username');
 
-        if (null !== $userRepository->findBy(['username' => $username])) {
+        if (null !== $userRepository->findOneBy(['username' => $username])) {
             $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
 
             return;
         }
 
-        $user = $userRepository->createUser();
+        $user = new User();
 
         $user->setUsername($input->getOption('admin-username'))
             ->setEmail($input->getOption('admin-email'))
-            ->setPlainPassword($input->getOption('admin-password'))
-            ->setEnabled(true)
-            ->setSuperAdmin(true);
+            ->setPassword($this->getContainer()->get('security.password_encoder')->encodePassword($user, $input->getOption('admin-password')))
+            ->setEnabled(true);
 
-        $userRepository->updateUser($user);
+        $em = $registry->getManagerForClass(User::class);
+        $em->persist($user);
+        $em->flush();
     }
 
     /**

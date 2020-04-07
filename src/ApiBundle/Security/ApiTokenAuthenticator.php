@@ -95,7 +95,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
      */
     public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey): PreAuthenticatedToken
     {
-        /* @var ApiTokenUserProvider $userProvider */
+        assert($userProvider instanceof ApiTokenUserProvider);
 
         $apiToken = $token->getCredentials();
         $username = $userProvider->getUsernameForToken($apiToken);
@@ -146,5 +146,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $repository = $this->registry->getRepository(ApiTokenHistory::class);
 
         $repository->addHistory($history, $apiToken);
+
+        return null;
     }
 }

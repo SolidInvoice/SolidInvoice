@@ -44,7 +44,7 @@ class SectionRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
 
         if ($cache) {
-            $query->useResultCache(true, $lifetime, $cacheKey);
+            $query->enableResultCache($lifetime, $cacheKey);
         }
 
         return $query->getResult();
