@@ -5,7 +5,7 @@ parameters:
     database_name: solidinvoice_test
 
 framework:
-    test: null
+    test: true
     session:
         storage_id: session.storage.mock_file
     profiler:

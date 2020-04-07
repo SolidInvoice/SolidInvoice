@@ -16,13 +16,11 @@ namespace SolidInvoice\InstallBundle\Listener;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Listener class to intercept requests
@@ -69,21 +67,6 @@ class RequestListener implements EventSubscriberInterface
     private $router;
 
     /**
-     * @var bool
-     */
-    private $debug;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
-
-    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -93,18 +76,15 @@ class RequestListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(?string $installed, RouterInterface $router, TranslatorInterface $translator, FlashBagInterface $flashBag, bool $debug = false)
+    public function __construct(?string $installed, RouterInterface $router, bool $debug = false)
     {
         $this->installed = $installed;
         $this->router = $router;
-        $this->debug = $debug;
         $this->allowRoutes += $this->installRoutes;
 
-        if (true === $this->debug) {
+        if (true === $debug) {
             $this->allowRoutes = array_merge($this->allowRoutes, $this->debugRoutes);
         }
-        $this->translator = $translator;
-        $this->flashBag = $flashBag;
     }
 
     public function onKernelRequest(GetResponseEvent $event)

@@ -46,7 +46,7 @@ class TaxRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
 
         $query->useQueryCache(true)
-            ->useResultCache(true, (60 * 60 * 24), 'tax_list');
+            ->enableResultCache((60 * 60 * 24), 'tax_list');
 
         return $query->getArrayResult();
     }
