@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentRepository")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class Payment extends BasePayment implements PaymentInterface
 {

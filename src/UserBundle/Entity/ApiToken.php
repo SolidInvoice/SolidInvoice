@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenRepository")
  * @ORM\Table("api_tokens")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  * @UniqueEntity({"name", "user"})
  */
 class ApiToken

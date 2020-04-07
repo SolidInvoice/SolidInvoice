@@ -29,7 +29,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
 {
     private $clientName;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

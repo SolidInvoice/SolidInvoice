@@ -37,7 +37,7 @@ abstract class KernelAwareTest extends TestCase
      */
     protected $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->kernel = new \AppKernel('test', true);
         $this->kernel->boot();
@@ -47,7 +47,7 @@ abstract class KernelAwareTest extends TestCase
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->kernel->shutdown();
 

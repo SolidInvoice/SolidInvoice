@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class Client
 {
