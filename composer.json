@@ -137,7 +137,7 @@
     "scripts": {
         "auto-scripts": [
             "bin/console cache:clear",
-            "bin/console assets:install webg"
+            "bin/console assets:install web"
         ],
         "post-install-cmd": [
             "cp .env.dist .env",
