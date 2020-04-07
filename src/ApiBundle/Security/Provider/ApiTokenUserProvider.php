@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Security\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
