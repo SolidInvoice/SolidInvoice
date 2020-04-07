@@ -8,7 +8,7 @@ env:
   global:
     - SOLIDINVOICE_ENV=test
     - SOLIDINVOICE_DEBUG=0
-    - SYMFONY_PHPUNIT_VERSION=7.5
+    - SYMFONY_PHPUNIT_VERSION=8.3
     - PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:8000
     - PATH="$HOME/.symfony/bin:$PATH"
     - database_name=solidinvoice_test
@@ -60,7 +60,7 @@ jobs:
         chrome: stable
       script: bash travis/phpunit.sh
     - stage: functional
-      php: 7.1
+      php: 7.3
       before_install:
         - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
         - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list

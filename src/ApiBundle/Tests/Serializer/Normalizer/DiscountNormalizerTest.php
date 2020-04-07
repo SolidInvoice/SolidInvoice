@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DiscountNormalizerTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

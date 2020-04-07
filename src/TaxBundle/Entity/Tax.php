@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="tax_rates")
  * @ORM\Entity(repositoryClass="SolidInvoice\TaxBundle\Repository\TaxRepository")
  * @UniqueEntity("name")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class Tax
 {

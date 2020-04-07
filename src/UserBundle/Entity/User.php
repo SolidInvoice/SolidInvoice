@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\UserRepository")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class User implements UserInterface
 {

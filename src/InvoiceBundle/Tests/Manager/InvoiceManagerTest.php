@@ -46,7 +46,7 @@ class InvoiceManagerTest extends KernelTestCase
      */
     private $entityManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityManager = M::mock('Doctrine\ORM\EntityManagerInterface');
         $doctrine = M::mock('Doctrine\Common\Persistence\ManagerRegistry', ['getManager' => $this->entityManager]);
