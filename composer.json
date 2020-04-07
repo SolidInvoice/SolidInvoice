@@ -128,10 +128,11 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
-        "phpstan/phpstan-symfony": "^0.12",
         "phpstan/phpstan-doctrine": "^0.12",
         "phpstan/phpstan-mockery": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
+        "phpstan/phpstan-symfony": "^0.12",
+        "symfony/debug-bundle": "^5.0",
         "symfony/web-profiler-bundle": "^4.4",
         "symfony/web-server-bundle": "^4.4"
     },
