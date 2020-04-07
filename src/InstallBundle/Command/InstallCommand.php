@@ -41,14 +41,17 @@ class InstallCommand extends Command
      * @var ConfigWriter
      */
     private $configWriter;
+
     /**
      * @var string
      */
     private $projectDir;
+
     /**
      * @var string|null
      */
     private $installed;
+
     /**
      * @var Migration
      */
@@ -179,6 +182,7 @@ class InstallCommand extends Command
         $dbName = $input->getOption('database-name');
         $params = ['driver' => $input->getOption('database-driver'), 'host' => $input->getOption('database-host'), 'port' => $input->getOption('database-port'), 'user' => $input->getOption('database-user'), 'password' => $input->getOption('database-password'), 'charset' => 'UTF8', 'driverOptions' => []];
         $tmpConnection = DriverManager::getConnection($params);
+
         try {
             $tmpConnection->getSchemaManager()->createDatabase($dbName);
             $output->writeln(sprintf('<info>Created database %s</info>', $dbName));

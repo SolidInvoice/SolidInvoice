@@ -114,7 +114,8 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
 
         if (!empty($gridData['search']['fields'])) {
             $searchFilter = new Definition(
-                'SolidInvoice\DataGridBundle\Filter\SearchFilter', [$gridData['search']['fields']]
+                'SolidInvoice\DataGridBundle\Filter\SearchFilter',
+                [$gridData['search']['fields']]
             );
             $definition->addMethodCall('addFilter', [$searchFilter]);
             $gridData['properties']['search'] = true;
