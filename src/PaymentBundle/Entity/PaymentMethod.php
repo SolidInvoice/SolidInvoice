@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  * @ORM\Table(name="payment_methods")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository")
  * @UniqueEntity("gatewayName")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class PaymentMethod implements GatewayConfigInterface
 {

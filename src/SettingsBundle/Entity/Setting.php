@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Table(name="app_config")
  * @ORM\Entity(repositoryClass="SolidInvoice\SettingsBundle\Repository\SettingsRepository")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  * @UniqueEntity(fields={"key"})
  */
 class Setting

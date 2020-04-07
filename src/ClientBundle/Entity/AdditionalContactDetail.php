@@ -23,7 +23,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Entity()
  * @ORM\Table(name="contact_details")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class AdditionalContactDetail
 {

@@ -33,7 +33,7 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
     private $router;
     private $password;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

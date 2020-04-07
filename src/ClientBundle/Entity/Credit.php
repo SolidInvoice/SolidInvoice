@@ -24,7 +24,7 @@ use Money\Money;
  *
  * @ORM\Table(name="client_credit")
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\CreditRepository")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class Credit
 {
@@ -32,7 +32,7 @@ class Credit
 
     /**
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;

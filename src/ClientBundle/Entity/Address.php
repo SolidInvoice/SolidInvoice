@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 /**
  * @ORM\Table(name="addresses")
  * @ORM\Entity()
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  */
 class Address
 {

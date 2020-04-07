@@ -33,7 +33,7 @@ class UserRepositoryTest extends KernelTestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

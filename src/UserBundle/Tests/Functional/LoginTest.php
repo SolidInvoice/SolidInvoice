@@ -22,6 +22,6 @@ class LoginTest extends PantherTestCase
     {
         $client = self::createPantherClient();
         $client->request('GET', '/');
-        $this->assertContains('/login', $client->getCurrentURL());
+        $this->assertStringContainsString('/login', $client->getCurrentURL());
     }
 }

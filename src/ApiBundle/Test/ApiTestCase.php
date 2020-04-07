@@ -28,7 +28,7 @@ abstract class ApiTestCase extends PantherTestCase
      */
     protected static $client;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 

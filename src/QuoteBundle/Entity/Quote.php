@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(attributes={"normalization_context"={"groups"={"quote_api"}}, "denormalization_context"={"groups"={"create_quote_api"}}})
  * @ORM\Table(name="quotes")
  * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\QuoteRepository")
- * @Gedmo\Loggable()
+ * @Gedmo\Loggable
  * @ORM\HasLifecycleCallbacks()
  */
 class Quote
