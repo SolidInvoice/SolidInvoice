@@ -23,8 +23,9 @@ use SolidInvoice\NotificationBundle\Notification\SwiftMailerNotification;
 use SolidInvoice\NotificationBundle\Notification\TwilioNotification;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use Swift_Message;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FactoryTest extends TestCase
 {
@@ -103,9 +104,9 @@ class FactoryTest extends TestCase
         $notification = $factory->createEmailNotification($message);
 
         $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
-        /** @var \Swift_Message $swiftMessage */
+        /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(\Swift_Message::class, $swiftMessage);
+        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
         $this->assertSame($body, $swiftMessage->getBody());
         $this->assertSame($subject, $swiftMessage->getSubject());
         $this->assertSame('text/html', $swiftMessage->getContentType());
@@ -163,9 +164,9 @@ class FactoryTest extends TestCase
         $notification = $factory->createEmailNotification($message);
 
         $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
-        /** @var \Swift_Message $swiftMessage */
+        /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(\Swift_Message::class, $swiftMessage);
+        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
         $this->assertSame($body, $swiftMessage->getBody());
         $this->assertSame($subject, $swiftMessage->getSubject());
         $this->assertSame('text/plain', $swiftMessage->getContentType());
@@ -229,9 +230,9 @@ class FactoryTest extends TestCase
         $notification = $factory->createEmailNotification($message);
 
         $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
-        /** @var \Swift_Message $swiftMessage */
+        /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(\Swift_Message::class, $swiftMessage);
+        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
         $this->assertCount(1, $swiftMessage->getChildren());
 
         $this->assertSame($htmlBody, $swiftMessage->getBody());

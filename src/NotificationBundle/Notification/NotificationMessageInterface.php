@@ -15,7 +15,7 @@ namespace SolidInvoice\NotificationBundle\Notification;
 
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 interface NotificationMessageInterface
 {

@@ -1,3 +1,9 @@
 services:
-    cron.runner:
-        class: SolidInvoice\CronBundle\Runner
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        bind:
+            $installed: '%installed%'
+
+    SolidInvoice\CronBundle\Runner: ~
+    SolidInvoice\CronBundle\Command\CronRunCommand: ~

@@ -15,7 +15,7 @@ namespace SolidInvoice\ClientBundle\Notification;
 
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ClientCreateNotification extends NotificationMessage
 {

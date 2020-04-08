@@ -15,7 +15,7 @@ namespace SolidInvoice\QuoteBundle\Notification;
 
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class QuoteStatusNotification extends NotificationMessage
 {

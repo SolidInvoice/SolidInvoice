@@ -13,12 +13,31 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use SolidInvoice\CronBundle\Runner;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CronRunCommand extends ContainerAwareCommand
+class CronRunCommand extends Command
 {
+    /**
+     * @var Runner
+     */
+    private $runner;
+
+    /**
+     * @var string|null
+     */
+    private $installed;
+
+    public function __construct(Runner $runner, ?string $installed = null)
+    {
+        $this->runner = $runner;
+        $this->installed = $installed;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,13 +52,11 @@ class CronRunCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->getContainer();
-
-        if (!$container->getParameter('installed')) {
+        if (!$this->installed) {
             return 0;
         }
 
-        $container->get('cron.runner')->run();
+        $this->runner->run();
 
         return 0;
     }

@@ -1,6 +1,7 @@
 services:
     _defaults:
         autowire: true
+        autoconfigure: true
 
     SolidInvoice\CoreBundle\ConfigWriter:
         arguments:
@@ -46,3 +47,7 @@ services:
 
     SolidInvoice\CoreBundle\Repository\VersionRepository:
         tags: ['doctrine.repository_service']
+
+    SolidInvoice\CoreBundle\Command\YamlFormatCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
