@@ -57,7 +57,7 @@ class MoneyExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         yield MoneyType::class;
     }
