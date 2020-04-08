@@ -73,7 +73,7 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    protected function assertOnSuccess(?Response $response, $invoice, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $invoice): void
     {
         /* @var Invoice $invoice */
 

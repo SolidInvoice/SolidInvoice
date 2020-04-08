@@ -41,7 +41,7 @@ class ApiFormHandlerTest extends FormHandlerTestCase
         return ['api_token' => new ApiToken()];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         $this->assertCount(1, $this->em->getRepository(ApiToken::class)->findAll());
         $this->assertInstanceOf(JsonResponse::class, $response);

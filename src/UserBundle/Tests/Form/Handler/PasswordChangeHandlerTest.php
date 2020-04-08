@@ -57,7 +57,7 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
         return new PasswordChangeHandler($this->userRepository, $this->userPasswordEncoder, $this->tokenStorage, $this->router);
     }
 
-    protected function beforeSuccess($data, FormRequest $form): void
+    protected function beforeSuccess(FormRequest $form, $data): void
     {
         $this->userPasswordEncoder->shouldReceive('encodePassword')
             ->once()
@@ -65,7 +65,7 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
             ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertInstanceOf(FlashResponse::class, $response);

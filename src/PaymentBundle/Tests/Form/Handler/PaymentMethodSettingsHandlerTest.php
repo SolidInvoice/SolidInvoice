@@ -65,7 +65,7 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         /* @var PaymentMethod $data */
         $this->assertSame('My Test Payment', $data->getName());

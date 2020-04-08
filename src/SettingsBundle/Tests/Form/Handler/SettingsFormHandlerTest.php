@@ -42,7 +42,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         return new SettingsFormHandler($repository, $router);
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         $this->assertSame(
             [

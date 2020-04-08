@@ -55,7 +55,7 @@ class TaxFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         $this->assertCount(1, $this->em->getRepository(Tax::class)->findAll());
         $tax = $this->em->getRepository(Tax::class)->findAll()[0];

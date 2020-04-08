@@ -74,7 +74,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $client, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $client): void
     {
         /* @var Client $client */
 

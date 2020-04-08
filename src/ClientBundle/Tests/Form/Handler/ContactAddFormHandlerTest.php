@@ -50,7 +50,7 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);

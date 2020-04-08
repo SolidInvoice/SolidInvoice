@@ -106,7 +106,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    protected function assertOnSuccess(?Response $response, $quote, FormRequest $form): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $quote): void
     {
         /* @var Quote $quote */
 
