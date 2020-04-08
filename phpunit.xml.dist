@@ -10,7 +10,7 @@
         convertWarningsToExceptions="true"
         processIsolation="false"
         stopOnFailure="false"
-        bootstrap="app/autoload.php">
+        bootstrap="tests/bootstrap.php">
 
     <testsuites>
         <testsuite name="SolidInvoice Test Suite">

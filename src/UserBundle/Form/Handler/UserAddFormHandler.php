@@ -77,7 +77,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
      *
      * @throws \Exception
      */
-    public function onSuccess($user, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $user): ?Response
     {
         $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
         $user->eraseCredentials();

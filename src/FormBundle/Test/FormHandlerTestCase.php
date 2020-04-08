@@ -39,8 +39,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class FormHandlerTestCase extends BaseTestCase
 {
     use DoctrineTestTrait;
-    use
-        MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration;
 
     /**
      * @var Generator

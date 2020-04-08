@@ -86,7 +86,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
      *
      * @var User
      */
-    public function onSuccess($user, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $user): ?Response
     {
         $route = $form->getOptions()->get('redirect_route', '_profile');
 

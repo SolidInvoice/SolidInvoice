@@ -54,7 +54,7 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(QuoteType::class, $options->get('quote'), $options->get('form_options'));
     }
@@ -62,7 +62,7 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($quote, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $quote): ?Response
     {
         /* @var Quote $quote */
         $action = $form->getRequest()->request->get('save');

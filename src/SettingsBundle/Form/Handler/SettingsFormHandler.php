@@ -50,7 +50,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(SettingsType::class, $this->getSettings(false), ['settings' => $this->getSettings()]);
     }
@@ -58,7 +58,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
         $this->settingsRepository->save($this->flatten($data));
 

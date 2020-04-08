@@ -67,7 +67,7 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($user, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $user): ?Response
     {
         /* @var ApiToken $user */
         $user->setToken($this->tokenManager->generateToken());

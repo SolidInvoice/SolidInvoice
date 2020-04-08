@@ -68,12 +68,14 @@ class WorkFlowSubscriber implements EventSubscriberInterface
 
     public function onQuoteAccepted(Event $event)
     {
-        $invoice = $this->invoiceManager->createFromQuote($event->getSubject());
+        $quote = $event->getSubject();
+        assert($quote instanceof Quote);
+        $invoice = $this->invoiceManager->createFromQuote($quote);
 
         $this->invoiceStateMachine->apply($invoice, InvoiceGraph::TRANSITION_NEW);
     }
 
-    public function onWorkflowTransitionApplied(EnteredEvent $event)
+    public function onWorkflowTransitionApplied(Event $event)
     {
         /** @var Quote $quote */
         $quote = $event->getSubject();

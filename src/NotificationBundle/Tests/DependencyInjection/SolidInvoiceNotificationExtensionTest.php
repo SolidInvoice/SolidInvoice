@@ -34,10 +34,10 @@ class SolidInvoiceNotificationExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertContainerBuilderHasService(Manager::class, Manager::class);
-        $this->assertContainerBuilderHasService(NotificationManager::class, NotificationManager::class);
-        $this->assertContainerBuilderHasService(Factory::class, Factory::class);
-        $this->assertContainerBuilderHasService(Client::class, Client::class);
+        $this->assertContainerBuilderHasService(Manager::class);
+        $this->assertContainerBuilderHasService(NotificationManager::class);
+        $this->assertContainerBuilderHasService(Factory::class);
+        $this->assertContainerBuilderHasService(Client::class);
 
         $this->assertContainerBuilderHasService(ChainedHandler::class);
         $this->assertContainerBuilderHasService(TwilioHandler::class);

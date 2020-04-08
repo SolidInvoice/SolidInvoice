@@ -31,8 +31,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class AbstractContactFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
-    use
-        SerializeTrait;
+    use SerializeTrait;
 
     /**
      * {@inheritdoc}
@@ -58,7 +57,7 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($contact, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $contact): ?Response
     {
         /* @var Contact $contact */
         $this->save($contact);

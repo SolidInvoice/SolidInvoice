@@ -76,7 +76,7 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
         /* @var PaymentMethod $data */
 

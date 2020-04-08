@@ -74,15 +74,15 @@ class MessageProcessorTest extends TestCase
         $eventDispatcher = M::mock(EventDispatcherInterface::class);
         $eventDispatcher->shouldReceive('dispatch')
             ->once()
-            ->with('message.decorate', M::type(MessageEvent::class));
+            ->with(M::type(MessageEvent::class), 'message.decorate');
 
         $eventDispatcher->shouldReceive('dispatch')
             ->once()
-            ->with('message.before_send', M::type(MessageEvent::class));
+            ->with(M::type(MessageEvent::class), 'message.before_send');
 
         $eventDispatcher->shouldReceive('dispatch')
             ->once()
-            ->with('message.after_send', M::type(MessageResultEvent::class));
+            ->with(M::type(MessageResultEvent::class), 'message.after_send');
 
         $processor = new MessageProcessor($mailer, $eventDispatcher, $decorators);
 
@@ -138,15 +138,15 @@ class MessageProcessorTest extends TestCase
         $eventDispatcher = M::mock(EventDispatcherInterface::class);
         $eventDispatcher->shouldReceive('dispatch')
             ->once()
-            ->with('message.decorate', M::type(MessageEvent::class));
+            ->with(M::type(MessageEvent::class), 'message.decorate');
 
         $eventDispatcher->shouldReceive('dispatch')
             ->once()
-            ->with('message.before_send', M::type(MessageEvent::class));
+            ->with(M::type(MessageEvent::class), 'message.before_send');
 
         $eventDispatcher->shouldReceive('dispatch')
             ->once()
-            ->with('message.after_send', M::type(MessageResultEvent::class));
+            ->with(M::type(MessageResultEvent::class), 'message.after_send');
 
         $processor = new MessageProcessor($mailer, $eventDispatcher, $decorators);
 

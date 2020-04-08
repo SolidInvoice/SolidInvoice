@@ -47,7 +47,7 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options): FormInterface
+    public function getForm(FormFactoryInterface $factory, Options $options): FormInterface
     {
         return $factory->create(ClientType::class, $options->get('client', new Client()));
     }
@@ -55,7 +55,7 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($contact, FormRequest $form): Response
+    public function onSuccess(FormRequest $form, $contact): ?Response
     {
         $this->save($contact);
 
