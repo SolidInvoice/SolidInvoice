@@ -66,7 +66,6 @@ class WorkFlowSubscriber implements EventSubscriberInterface
             }
         }
 
-
         $em = $this->registry->getManager();
         $em->persist($invoice);
         $em->flush();

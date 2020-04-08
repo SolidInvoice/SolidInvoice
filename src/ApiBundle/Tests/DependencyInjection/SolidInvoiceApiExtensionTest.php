@@ -17,10 +17,10 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\DependencyInjection\SolidInvoiceApiExtension;
+use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
 use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
-use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
 
 class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
