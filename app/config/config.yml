@@ -27,8 +27,6 @@ framework:
     fragments: null
     http_method_override: true
     serializer: { enable_annotations: true }
-    templating:
-        engines: [twig]
     assets:
         json_manifest_path: '%kernel.project_dir%/web/static/manifest.json'
 

@@ -102,7 +102,6 @@
         "symfony/security-bundle": "^4.4",
         "symfony/serializer": "^4.4",
         "symfony/swiftmailer-bundle": "^3.4",
-        "symfony/templating": "^4.4",
         "symfony/translation": "^4.4",
         "symfony/twig-bundle": "^4.4",
         "symfony/validator": "^4.4",

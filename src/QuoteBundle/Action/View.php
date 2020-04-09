@@ -18,7 +18,7 @@ use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 final class View
 {
@@ -28,14 +28,14 @@ final class View
     private $pdfGenerator;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
     private $engine;
 
-    public function __construct(Generator $pdfGenerator, EngineInterface $engine)
+    public function __construct(Generator $pdfGenerator, Environment $twig)
     {
         $this->pdfGenerator = $pdfGenerator;
-        $this->engine = $engine;
+        $this->engine = $twig;
     }
 
     /**

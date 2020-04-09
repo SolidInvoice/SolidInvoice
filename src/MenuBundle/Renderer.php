@@ -21,7 +21,8 @@ use Knp\Menu\Renderer\ListRenderer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Templating\EngineInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class Renderer extends ListRenderer implements RendererInterface, ContainerAwareInterface
 {
@@ -33,16 +34,23 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     protected $factory;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    protected $templating;
+    protected $twig;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * @throws \InvalidArgumentException
      */
-    public function __construct(RequestStack $requestStack, FactoryInterface $factory)
+    public function __construct(RequestStack $requestStack, FactoryInterface $factory, TranslatorInterface $translator, Environment $twig)
     {
         $this->factory = $factory;
+        $this->twig = $twig;
+        $this->translator = $translator;
 
         $matcher = new Matcher([new RouteVoter($requestStack)]);
 
@@ -121,13 +129,11 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
             $icon = $this->renderIcon($item->getExtra('icon'));
         }
 
-        $translator = $this->container->get('translator');
-
         if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
-            return $icon.$translator->trans($item->getLabel());
+            return $icon.$this->translator->trans($item->getLabel());
         }
 
-        return sprintf('%s <span>%s</span>', $icon, $this->escape($translator->trans($item->getLabel())));
+        return sprintf('%s <span>%s</span>', $icon, $this->escape($this->translator->trans($item->getLabel())));
     }
 
     /**
@@ -135,6 +141,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      */
     protected function renderIcon(string $icon): string
     {
-        return $this->container->get('templating')->render('@SolidInvoiceMenu/icon.html.twig', ['icon' => $icon]);
+        return $this->twig->render('@SolidInvoiceMenu/icon.html.twig', ['icon' => $icon]);
     }
 }

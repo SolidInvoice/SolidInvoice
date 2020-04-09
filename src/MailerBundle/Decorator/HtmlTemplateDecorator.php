@@ -16,23 +16,23 @@ namespace SolidInvoice\MailerBundle\Decorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class HtmlTemplateDecorator implements MessageDecorator, VerificationMessageDecorator
 {
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $engine;
+    private $twig;
 
     /**
      * @var SystemConfig
      */
     private $systemConfig;
 
-    public function __construct(SystemConfig $systemConfig, EngineInterface $engine)
+    public function __construct(SystemConfig $systemConfig, Environment $twig)
     {
-        $this->engine = $engine;
+        $this->twig = $twig;
         $this->systemConfig = $systemConfig;
     }
 
@@ -43,7 +43,7 @@ class HtmlTemplateDecorator implements MessageDecorator, VerificationMessageDeco
 
         $template = $message->getHtmlTemplate();
 
-        $content = $this->engine->render($template->getTemplate(), array_merge($event->getContext()->toArray(), $template->getParameters()));
+        $content = $this->twig->render($template->getTemplate(), array_merge($event->getContext()->toArray(), $template->getParameters()));
         $message->setBody($content, 'text/html');
     }
 

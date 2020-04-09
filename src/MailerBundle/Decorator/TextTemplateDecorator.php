@@ -16,23 +16,23 @@ namespace SolidInvoice\MailerBundle\Decorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class TextTemplateDecorator implements MessageDecorator, VerificationMessageDecorator
 {
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $engine;
+    private $twig;
 
     /**
      * @var SystemConfig
      */
     private $systemConfig;
 
-    public function __construct(SystemConfig $systemConfig, EngineInterface $engine)
+    public function __construct(SystemConfig $systemConfig, Environment $twig)
     {
-        $this->engine = $engine;
+        $this->twig = $twig;
         $this->systemConfig = $systemConfig;
     }
 
@@ -50,7 +50,7 @@ class TextTemplateDecorator implements MessageDecorator, VerificationMessageDeco
 
         $method = 'text' === $format ? 'setBody' : 'addPart';
 
-        $message->$method($this->engine->render($template->getTemplate(), array_merge($event->getContext()->toArray(), $template->getParameters())), 'text/plain');
+        $message->$method($this->twig->render($template->getTemplate(), array_merge($event->getContext()->toArray(), $template->getParameters())), 'text/plain');
     }
 
     public function shouldDecorate(MessageEvent $event): bool
