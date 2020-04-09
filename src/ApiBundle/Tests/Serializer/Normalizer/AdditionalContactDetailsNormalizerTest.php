@@ -25,8 +25,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AdditionalContactDetailsNormalizerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
-    use
-        DoctrineTestTrait;
+    use DoctrineTestTrait;
 
     public function testSupportsNormalization()
     {

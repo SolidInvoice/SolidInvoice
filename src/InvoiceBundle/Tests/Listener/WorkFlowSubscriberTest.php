@@ -30,8 +30,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 class WorkFlowSubscriberTest extends TestCase
 {
     use DoctrineTestTrait;
-    use
-        MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration;
 
     public function testInvoicePaid()
     {

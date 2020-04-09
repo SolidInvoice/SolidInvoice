@@ -22,8 +22,7 @@ use Symfony\Component\Yaml\Yaml;
 class GridConfigurationTest extends TestCase
 {
     use ConfigurationTestCaseTrait;
-    use
-        MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration;
 
     const FIXTURES_PATH = __DIR__.'/../fixtures/config/';
 

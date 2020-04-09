@@ -30,8 +30,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class FactoryTest extends TestCase
 {
     use FakerTestTrait;
-    use
-        MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration;
 
     public function testCreateSmsNotification()
     {

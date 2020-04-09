@@ -260,7 +260,6 @@ class InstallCommand extends Command
     {
         $output->writeln('<info>Creating Admin User</info>');
         /** @var UserRepository $userRepository */
-
         $userRepository = $this->registry->getRepository(User::class);
         $username = $input->getOption('admin-username');
         if (null !== $userRepository->findOneBy(['username' => $username])) {

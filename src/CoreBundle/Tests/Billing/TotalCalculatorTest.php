@@ -31,8 +31,7 @@ use SolidInvoice\TaxBundle\Entity\Tax;
 class TotalCalculatorTest extends TestCase
 {
     use DoctrineTestTrait;
-    use
-        MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration;
 
     protected function setUp(): void
     {

@@ -21,8 +21,7 @@ use SolidInvoice\CoreBundle\Traits\JsonTrait;
 final class Delete implements AjaxResponse
 {
     use DoctrineAwareTrait;
-    use
-        JsonTrait;
+    use JsonTrait;
 
     public function __invoke(Contact $contact)
     {

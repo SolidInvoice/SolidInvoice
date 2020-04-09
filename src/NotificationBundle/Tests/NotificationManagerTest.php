@@ -34,8 +34,7 @@ use SolidInvoice\UserBundle\Entity\User;
 class NotificationManagerTest extends TestCase
 {
     use FakerTestTrait;
-    use
-        MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration;
 
     public function testSendEmailNotification()
     {

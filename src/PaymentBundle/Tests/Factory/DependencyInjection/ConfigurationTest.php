@@ -21,8 +21,7 @@ use SolidInvoice\PaymentBundle\DependencyInjection\Configuration;
 class ConfigurationTest extends TestCase
 {
     use ConfigurationTestCaseTrait;
-    use
-        MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration;
 
     protected function getConfiguration()
     {
