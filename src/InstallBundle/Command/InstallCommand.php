@@ -37,7 +37,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Intl\Currencies;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -303,8 +302,8 @@ class InstallCommand extends Command
             throw new ApplicationInstalledException();
         }
 
-        $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
-        $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
+        $currencies = array_keys(Currencies::getNames());
+        $locales = array_keys(Locales::getNames());
         $localeQuestion = new Question('<question>Please enter a locale:</question> ');
         $localeQuestion->setAutocompleterValues($locales);
         $currencyQuestion = new Question('<question>Please enter a currency:</question> ');

@@ -17,14 +17,14 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\PreloadedExtension;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Locales;
 
 class SystemInformationFormTest extends FormTestCase
 {
     public function testSubmit()
     {
         $formData = [
-            'locale' => $this->faker->randomKey(Intl::getLocaleBundle()->getLocaleNames()),
+            'locale' => $this->faker->randomKey(Locales::getNames()),
             'username' => $this->faker->userName,
             'email_address' => $this->faker->email,
             'password' => null,
