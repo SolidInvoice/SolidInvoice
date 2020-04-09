@@ -5,7 +5,7 @@ framework:
                 enabled: true
             type: 'state_machine'
             marking_store:
-                type: 'single_state'
+                type: 'method'
                 arguments:
                     - status
             supports:
@@ -53,7 +53,7 @@ framework:
                 enabled: true
             type: 'state_machine'
             marking_store:
-                type: 'single_state'
+                type: 'method'
                 arguments:
                     - status
             supports:

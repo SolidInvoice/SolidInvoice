@@ -81,10 +81,6 @@ class InvoiceSaveListenerTest extends TestCase
         $calculator->shouldReceive('calculateTotals')
             ->never();
 
-        $stateMachine = M::mock(StateMachine::class);
-        $stateMachine->shouldReceive('apply')
-            ->never();
-
         $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) { return $calculator; }]));
         $listener->prePersist(new LifecycleEventArgs($entity, M::mock(ObjectManager::class)));
     }

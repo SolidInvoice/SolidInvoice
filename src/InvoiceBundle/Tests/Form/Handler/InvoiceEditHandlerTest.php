@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Definition;
-use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
@@ -70,7 +70,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
                 ['draft', 'pending'],
                 [new Transition('accept', 'draft', 'pending')]
             ),
-            new SingleStateMarkingStore('status'),
+            new MethodMarkingStore(true, 'status'),
             $dispatcher,
             'invoice'
         );
