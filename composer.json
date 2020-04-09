@@ -136,8 +136,7 @@
         "symfony/debug-bundle": "^5.0",
         "symfony/panther": "^0.7.1",
         "symfony/phpunit-bridge": "^5.0",
-        "symfony/web-profiler-bundle": "^4.4",
-        "symfony/web-server-bundle": "^4.4"
+        "symfony/web-profiler-bundle": "^4.4"
     },
     "scripts": {
         "auto-scripts": [
