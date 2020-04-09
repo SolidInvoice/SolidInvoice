@@ -26,6 +26,7 @@ use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class WorkFlowSubscriberTest extends TestCase
 {
@@ -58,7 +59,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
 
-        $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
+        $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
     }
 
     public function testOnWorkflowTransitionApplied()
@@ -74,7 +75,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
 
-        $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
+        $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 
         $this->assertTrue($quote->isArchived());
         $this->assertSame($quote, $this->em->getRepository(Quote::class)->find($quote->getId()));
