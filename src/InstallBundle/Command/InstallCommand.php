@@ -18,6 +18,8 @@ use Defuse\Crypto\Key;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\Exception\MigrationException;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Exception;
 use InvalidArgumentException;
 use SolidInvoice\CoreBundle\ConfigWriter;
@@ -34,7 +36,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Locales;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class InstallCommand extends Command
 {
@@ -58,13 +63,32 @@ class InstallCommand extends Command
      */
     private $migration;
 
-    public function __construct(ConfigWriter $configWriter, Migration $migration, string $projectDir, ?string $installed)
-    {
-        parent::__construct();
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $userPasswordEncoder;
+
+    public function __construct(
+        ConfigWriter $configWriter,
+        Migration $migration,
+        ManagerRegistry $registry,
+        UserPasswordEncoderInterface $userPasswordEncoder,
+        string $projectDir,
+        ?string $installed
+    ) {
         $this->configWriter = $configWriter;
         $this->projectDir = $projectDir;
         $this->installed = $installed;
         $this->migration = $migration;
+        $this->registry = $registry;
+        $this->userPasswordEncoder = $userPasswordEncoder;
+
+        parent::__construct();
     }
 
     public function isEnabled(): bool
@@ -77,7 +101,25 @@ class InstallCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('app:install')->setDescription('Installs the application')->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'mail')->addOption('mailer-host', null, InputOption::VALUE_REQUIRED, 'The email host (only applicable for SMTP)', 'localhost')->addOption('mailer-user', null, InputOption::VALUE_REQUIRED, 'The user for email authentication (only applicable for SMTP and Gmail)')->addOption('mailer-password', null, InputOption::VALUE_REQUIRED, 'The password for the email user (only applicable for SMTP and Gmail)')->addOption('mailer-port', null, InputOption::VALUE_REQUIRED, 'The email port to use  (only applicable for SMTP and Gmail)', 25)->addOption('mailer-encryption', null, InputOption::VALUE_REQUIRED, 'The encryption to use for email, if any')->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use');
+        $this->setName('app:install')
+            ->setDescription('Installs the application')
+            ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
+            ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
+            ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)
+            ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
+            ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
+            ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
+            ->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'mail')
+            ->addOption('mailer-host', null, InputOption::VALUE_REQUIRED, 'The email host (only applicable for SMTP)', 'localhost')
+            ->addOption('mailer-user', null, InputOption::VALUE_REQUIRED, 'The user for email authentication (only applicable for SMTP and Gmail)')
+            ->addOption('mailer-password', null, InputOption::VALUE_REQUIRED, 'The password for the email user (only applicable for SMTP and Gmail)')
+            ->addOption('mailer-port', null, InputOption::VALUE_REQUIRED, 'The email port to use  (only applicable for SMTP and Gmail)', 25)
+            ->addOption('mailer-encryption', null, InputOption::VALUE_REQUIRED, 'The encryption to use for email, if any')
+            ->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')
+            ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')
+            ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
+            ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')
+            ->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use');
     }
 
     /**
@@ -87,8 +129,10 @@ class InstallCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->validate($input);
-        $this->saveConfig($input)->install($input, $output);
+        $this->validate($input)
+            ->saveConfig($input)
+            ->install($input, $output);
+
         $success = $this->getHelper('formatter')->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
         $output->writeln('');
         $output->writeln($success);
@@ -106,7 +150,7 @@ class InstallCommand extends Command
     /**
      * @throws Exception
      */
-    private function validate(InputInterface $input)
+    private function validate(InputInterface $input): self
     {
         $values = ['database-host', 'database-user', 'admin-username', 'admin-password', 'admin-email', 'locale', 'currency'];
         foreach ($values as $option) {
@@ -114,14 +158,16 @@ class InstallCommand extends Command
                 throw new Exception(sprintf('The --%s option needs to be specified', $option));
             }
         }
-        $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
-        $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
-        if (!array_search($locale = $input->getOption('locale'), $locales, true)) {
+        $currencies = array_keys(Currencies::getNames());
+        $locales = array_keys(Locales::getNames());
+        if (!in_array($locale = $input->getOption('locale'), $locales, true)) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
-        if (!array_search($currency = $input->getOption('currency'), $currencies, true)) {
+
+        if (!in_array($currency = $input->getOption('currency'), $currencies, true)) {
             throw new InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
+
         if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-host')) {
                 throw new \Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
@@ -137,6 +183,8 @@ class InstallCommand extends Command
                 throw new \Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
             }
         }
+
+        return $this;
     }
 
     /**
@@ -147,13 +195,14 @@ class InstallCommand extends Command
         if ($this->initDb($input, $output)) {
             $this->createAdminUser($input, $output);
             $version = SolidInvoiceCoreBundle::VERSION;
-            $entityManager = $this->getContainer()->get('doctrine')->getManager();
+            $entityManager = $this->registry->getManager();
+
             /** @var VersionRepository $repository */
             $repository = $entityManager->getRepository(Version::class);
             $repository->updateVersion($version);
             $time = new DateTime('NOW');
-            $config = ['installed' => $time->format(DateTime::ISO8601)];
-            $this->getContainer()->get('solidinvoice.core.config_writer')->dump($config);
+            $config = ['installed' => $time->format(DateTime::ATOM)];
+            $this->configWriter->dump($config);
         }
     }
 
@@ -198,7 +247,7 @@ class InstallCommand extends Command
         }
         $params['dbname'] = $dbName;
         // Set the current connection to the new DB name
-        $connection = $this->getContainer()->get('doctrine')->getConnection();
+        $connection = $this->registry->getConnection();
         if ($connection->isConnected()) {
             $connection->close();
         }
@@ -212,8 +261,8 @@ class InstallCommand extends Command
     {
         $output->writeln('<info>Creating Admin User</info>');
         /** @var UserRepository $userRepository */
-        $registry = $this->getContainer()->get('doctrine');
-        $userRepository = $registry->getRepository(User::class);
+
+        $userRepository = $this->registry->getRepository(User::class);
         $username = $input->getOption('admin-username');
         if (null !== $userRepository->findOneBy(['username' => $username])) {
             $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
@@ -223,21 +272,24 @@ class InstallCommand extends Command
         $user = new User();
         $user->setUsername($input->getOption('admin-username'))
             ->setEmail($input->getOption('admin-email'))
-            ->setPassword($this->getContainer()->get('security.password_encoder')->encodePassword($user, $input->getOption('admin-password')))
+            ->setPassword($this->userPasswordEncoder->encodePassword($user, $input->getOption('admin-password')))
             ->setEnabled(true);
-        $em = $registry->getManagerForClass(User::class);
+
+        $em = $this->registry->getManagerForClass(User::class);
+
+        if (!$em instanceof ObjectManager) {
+            throw new \Exception(sprintf('No object manager found for class "%s".', User::class));
+        }
+
         $em->persist($user);
         $em->flush();
     }
 
-    /**
-     * @return $this
-     */
     private function saveConfig(InputInterface $input)
     {
         // Don't update installed here, in case something goes wrong with the rest of the installation process
         $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'mailer_transport' => $input->getOption('mailer-transport'), 'mailer_host' => $input->getOption('mailer-host'), 'mailer_user' => $input->getOption('mailer-user'), 'mailer_password' => $input->getOption('mailer-password'), 'mailer_port' => $input->getOption('mailer-port'), 'mailer_encryption' => $input->getOption('mailer-encryption'), 'locale' => $input->getOption('locale'), 'currency' => $input->getOption('currency'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
-        $this->getContainer()->get('solidinvoice.core.config_writer')->dump($config);
+        $this->configWriter->dump($config);
 
         return $this;
     }
@@ -247,9 +299,10 @@ class InstallCommand extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        if (null !== $this->getContainer()->getParameter('installed')) {
+        if ($this->installed) {
             throw new ApplicationInstalledException();
         }
+
         $currencies = array_keys(Intl::getCurrencyBundle()->getCurrencyNames());
         $locales = array_keys(Intl::getLocaleBundle()->getLocaleNames());
         $localeQuestion = new Question('<question>Please enter a locale:</question> ');
@@ -261,7 +314,7 @@ class InstallCommand extends Command
         $options = ['database-user' => new Question('<question>Please enter your database user name:</question> '), 'admin-username' => new Question('<question>Please enter a username for the admin account:</question> '), 'admin-password' => $passwordQuestion, 'admin-email' => new Question('<question>Please enter an email address for the admin account:</question> '), 'locale' => $localeQuestion, 'currency' => $currencyQuestion];
         /** @var QuestionHelper $dialog */
         $dialog = $this->getHelper('question');
-        /** @var Question $question */
+
         foreach ($options as $option => $question) {
             if (null === $input->getOption($option)) {
                 $value = null;

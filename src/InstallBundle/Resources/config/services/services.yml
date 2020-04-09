@@ -1,5 +1,14 @@
 services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        bind:
+            $projectDir: '%kernel.project_dir%'
+            $installed: '%installed%'
+
     SolidInvoice\InstallBundle\Installer\Database\Migration:
         arguments: ['@filesystem']
         calls:
             - [setContainer, ['@service_container']]
+
+    SolidInvoice\InstallBundle\Command\InstallCommand: ~
