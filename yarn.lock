@@ -5590,9 +5590,6 @@ jquery-validation@^1.19.1:
   integrity sha512-QNnrZBqSltWUEJx+shOY5WtfrIb0gWmDjFfQP8rZKqMMSfpRSwEkSqhfHPvDfkObD8Hnv5KHSYI8yg73sVFdqA==
 
 jquery@>=1.10, jquery@>=1.12.0, jquery@>=1.7, jquery@>=1.8.0, jquery@>=2.1.0, jquery@^3.0, "jquery@^3.0 || ^2.0 || ^1.0", jquery@^3.1.1, jquery@^3.4.0, jquery@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
-  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
 jqvmap-novulnerability@^1.5.1:
   version "1.5.1"

@@ -55,7 +55,7 @@
         "bootstrap-material-datetimepicker": "^2.7.3",
         "@fortawesome/fontawesome-free": "^5.13.0",
         "handlebars": "^4.5.1",
-        "jquery": "^3.4.0",
+        "jquery": "^3.5.0",
         "jquery-placeholder": "^2.3.1",
         "lodash": "^4.17.13",
         "marionette.approuter": "^1.0.2",
