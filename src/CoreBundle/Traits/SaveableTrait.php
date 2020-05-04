@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Traits;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 trait SaveableTrait
 {
@@ -30,7 +30,7 @@ trait SaveableTrait
     public function save($entity, bool $flush = true)
     {
         if (!$this->doctrine) {
-            throw new \Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', get_class($this), RegistryInterface::class, __METHOD__));
+            throw new \Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', get_class($this), ManagerRegistry::class, __METHOD__));
         }
 
         if (!is_object($entity)) {
@@ -41,6 +41,9 @@ trait SaveableTrait
         $em = $this->doctrine->getManager();
 
         $em->persist($entity);
-        $flush && $em->flush();
+
+        if ($flush) {
+            $em->flush();
+        }
     }
 }

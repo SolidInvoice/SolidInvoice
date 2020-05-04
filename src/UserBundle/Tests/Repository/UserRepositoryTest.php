@@ -69,6 +69,9 @@ class UserRepositoryTest extends KernelTestCase
     public function testRefreshUserWithInvalidUser()
     {
         $user = new class() implements UserInterface {
+            /**
+             * @return string[]
+             */
             public function getRoles()
             {
             }
