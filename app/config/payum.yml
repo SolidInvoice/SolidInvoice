@@ -1,5 +1,5 @@
 parameters:
-    payum.template.layout: 'SolidInvoicePaymentBundle::layout.html.twig'
+    payum.template.layout: '@SolidInvoicePayment/layout.html.twig'
 
 payum:
     security:

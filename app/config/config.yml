@@ -34,7 +34,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:
-        - 'SolidInvoiceCoreBundle:Form:fields.html.twig'
+        - '@SolidInvoiceCore/Form/fields.html.twig'
 
 doctrine:
     dbal:
