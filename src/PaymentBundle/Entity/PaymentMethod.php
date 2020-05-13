@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="payment_methods")
@@ -111,8 +111,6 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Set name.
      *
-     * @param string $name
-     *
      * @return PaymentMethod
      */
     public function setName(string $name): self
@@ -155,8 +153,6 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Set settings.
      *
-     * @param array $config
-     *
      * @return PaymentMethod
      */
     public function setConfig(array $config): self
@@ -176,17 +172,12 @@ class PaymentMethod implements GatewayConfigInterface
         return $this->config;
     }
 
-    /**
-     * @return bool
-     */
     public function isInternal(): bool
     {
         return (bool) $this->internal;
     }
 
     /**
-     * @param bool $internal
-     *
      * @return PaymentMethod
      */
     public function setInternal(bool $internal): self
@@ -196,17 +187,12 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return (bool) $this->enabled;
     }
 
     /**
-     * @param bool $enabled
-     *
      * @return PaymentMethod
      */
     public function setEnabled(bool $enabled): self
@@ -239,8 +225,6 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Add payment.
      *
-     * @param Payment $payment
-     *
      * @return PaymentMethod
      */
     public function addPayment(Payment $payment): self
@@ -252,8 +236,6 @@ class PaymentMethod implements GatewayConfigInterface
 
     /**
      * Removes a payment.
-     *
-     * @param Payment $payment
      *
      * @return PaymentMethod
      */

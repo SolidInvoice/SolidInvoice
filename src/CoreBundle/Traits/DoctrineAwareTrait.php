@@ -23,8 +23,6 @@ trait DoctrineAwareTrait
     protected $doctrine;
 
     /**
-     * @param ManagerRegistry $doctrine
-     *
      * @required
      */
     public function setDoctrine(ManagerRegistry $doctrine)

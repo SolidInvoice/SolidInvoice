@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Twig\Extension;
 
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
 
 class MoneyFormatterExtensionTest extends TestCase
 {

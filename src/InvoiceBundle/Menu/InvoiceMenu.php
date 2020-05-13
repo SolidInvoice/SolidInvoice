@@ -21,11 +21,6 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
  */
 class InvoiceMenu
 {
-    /**
-     * @param Client|null $client
-     *
-     * @return array
-     */
     public static function create(Client $client = null): array
     {
         return [
@@ -40,9 +35,6 @@ class InvoiceMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function main(): array
     {
         return [
@@ -56,9 +48,6 @@ class InvoiceMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function listMenu(): array
     {
         return [
@@ -72,11 +61,6 @@ class InvoiceMenu
         ];
     }
 
-    /**
-     * @param Invoice $invoice
-     *
-     * @return array
-     */
     public static function view(Invoice $invoice): array
     {
         return [

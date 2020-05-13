@@ -157,8 +157,6 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $mobile
-     *
      * @return User
      */
     public function setMobile(string $mobile): self
@@ -416,7 +414,7 @@ class User implements UserInterface
     /**
      * Gets the timestamp that the user requested a password reset.
      *
-     * @return null|\DateTime
+     * @return \DateTime|null
      */
     public function getPasswordRequestedAt()
     {

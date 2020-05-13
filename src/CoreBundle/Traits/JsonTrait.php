@@ -20,11 +20,6 @@ trait JsonTrait
 {
     /**
      * @param mixed $data
-     * @param int   $status
-     * @param array $headers
-     * @param bool  $json
-     *
-     * @return JsonResponse
      */
     public function json($data = null, int $status = Response::HTTP_OK, array $headers = [], bool $json = false): JsonResponse
     {

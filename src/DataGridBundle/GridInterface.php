@@ -18,21 +18,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface GridInterface
 {
-    /**
-     * @return bool
-     */
     public function requiresStatus(): bool;
 
     /**
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
      * @return mixed
      */
     public function fetchData(Request $request, ObjectManager $em): array;
 
-    /**
-     * @param array $params
-     */
     public function setParameters(array $params);
 }

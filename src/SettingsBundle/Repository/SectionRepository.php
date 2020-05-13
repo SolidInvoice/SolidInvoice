@@ -30,11 +30,7 @@ class SectionRepository extends ServiceEntityRepository
     /**
      * Returns an array of all the top-level sections.
      *
-     * @param bool   $cache
      * @param string $cacheKey
-     * @param int    $lifetime
-     *
-     * @return array
      */
     public function getTopLevelSections(bool $cache = false, $cacheKey = 'solidinvoice_settings_top_section_sections', int $lifetime = 604800): array
     {

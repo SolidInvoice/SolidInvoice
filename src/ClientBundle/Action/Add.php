@@ -25,19 +25,11 @@ final class Add
      */
     private $handler;
 
-    /**
-     * @param FormHandler $handler
-     */
     public function __construct(FormHandler $handler)
     {
         $this->handler = $handler;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return FormRequest
-     */
     public function __invoke(Request $request): FormRequest
     {
         return $this->handler->handle(ClientCreateFormHandler::class);

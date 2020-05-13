@@ -38,8 +38,6 @@ class InvoiceRepository extends ServiceEntityRepository
      *
      * @param Client $client set this parameter to filter per client
      *
-     * @return int
-     *
      * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      */
     public function getTotalIncome(Client $client = null): int
@@ -58,8 +56,6 @@ class InvoiceRepository extends ServiceEntityRepository
      * @param string $status
      * @param Client $client  filter per client
      * @param int    $hydrate
-     *
-     * @return int
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -86,8 +82,6 @@ class InvoiceRepository extends ServiceEntityRepository
      * Get the total amount for outstanding invoices.
      *
      * @param Client $client set this parameter to filter per client
-     *
-     * @return int
      */
     public function getTotalOutstanding(Client $client = null): int
     {
@@ -112,8 +106,6 @@ class InvoiceRepository extends ServiceEntityRepository
      *
      * @param string|array $status
      * @param Client       $client set this parameter to filter per client
-     *
-     * @return int
      */
     public function getCountByStatus($status, Client $client = null): int
     {
@@ -144,8 +136,6 @@ class InvoiceRepository extends ServiceEntityRepository
      * Gets the most recent created invoices.
      *
      * @param int $limit
-     *
-     * @return array
      */
     public function getRecentInvoices($limit = 5): array
     {
@@ -178,11 +168,6 @@ class InvoiceRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param array $parameters
-     *
-     * @return QueryBuilder
-     */
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('i');
@@ -199,11 +184,6 @@ class InvoiceRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @param array $parameters
-     *
-     * @return QueryBuilder
-     */
     public function getRecurringGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('i');
@@ -220,9 +200,6 @@ class InvoiceRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getArchivedGridQuery(): QueryBuilder
     {
         $this->getEntityManager()->getFilters()->disable('archivable');
@@ -236,9 +213,6 @@ class InvoiceRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @param Client $client
-     */
     public function updateCurrency(Client $client)
     {
         $filters = $this->getEntityManager()->getFilters();
@@ -282,9 +256,6 @@ class InvoiceRepository extends ServiceEntityRepository
         $filters->enable('archivable');
     }
 
-    /**
-     * @param array $ids
-     */
     public function deleteInvoices(array $ids): void
     {
         $filters = $this->getEntityManager()->getFilters();
@@ -304,10 +275,6 @@ class InvoiceRepository extends ServiceEntityRepository
 
     /**
      * Checks if an invoice is paid in full.
-     *
-     * @param Invoice $invoice
-     *
-     * @return bool
      */
     public function isFullyPaid(Invoice $invoice): bool
     {

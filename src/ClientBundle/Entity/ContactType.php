@@ -100,8 +100,6 @@ class ContactType
     /**
      * Set name.
      *
-     * @param string $name
-     *
      * @return ContactType
      */
     public function setName(string $name): self
@@ -124,8 +122,6 @@ class ContactType
     /**
      * Set the contact type required.
      *
-     * @param bool $required
-     *
      * @return ContactType
      */
     public function setRequired(bool $required): self
@@ -137,8 +133,6 @@ class ContactType
 
     /**
      * returns if the contact type is required.
-     *
-     * @return bool
      */
     public function isRequired(): bool
     {
@@ -147,8 +141,6 @@ class ContactType
 
     /**
      * Add detail.
-     *
-     * @param AdditionalContactDetail $detail
      *
      * @return ContactType
      */
@@ -179,8 +171,6 @@ class ContactType
     }
 
     /**
-     * @param string $type
-     *
      * @return ContactType
      */
     public function setType(string $type): self
@@ -199,8 +189,6 @@ class ContactType
     }
 
     /**
-     * @param array $options
-     *
      * @return ContactType
      */
     public function setOptions(array $options): self

@@ -23,9 +23,6 @@ class ContactTypeTransformer implements DataTransformerInterface
      */
     private $type;
 
-    /**
-     * @param ContactType $type
-     */
     public function __construct(ContactType $type)
     {
         $this->type = $type;
@@ -33,8 +30,6 @@ class ContactTypeTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $value
-     *
-     * @return int
      */
     public function transform($value): int
     {
@@ -43,8 +38,6 @@ class ContactTypeTransformer implements DataTransformerInterface
 
     /**
      * @param string $value
-     *
-     * @return \SolidInvoice\ClientBundle\Entity\ContactType
      */
     public function reverseTransform($value): ContactType
     {

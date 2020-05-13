@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
@@ -24,7 +25,6 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 class StatsWidget implements WidgetInterface
 {
@@ -33,9 +33,6 @@ class StatsWidget implements WidgetInterface
      */
     private $manager;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManager();

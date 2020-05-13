@@ -24,8 +24,6 @@ class Builder extends AuthenticatedMenu
     /**
      * Build the user menu.
      *
-     * @param ItemInterface $menu
-     *
      * @throws \InvalidArgumentException
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
@@ -50,8 +48,6 @@ class Builder extends AuthenticatedMenu
 
     /**
      * Build the system menu.
-     *
-     * @param ItemInterface $menu
      *
      * @throws \InvalidArgumentException
      */

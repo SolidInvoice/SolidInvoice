@@ -32,8 +32,6 @@ class ApiTokenRepository extends ServiceEntityRepository
     /**
      * Searches for a user by username or email.
      *
-     * @param string $token
-     *
      * @return string
      *
      * @throws UsernameNotFoundException
@@ -56,11 +54,6 @@ class ApiTokenRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @param UserInterface $user
-     *
-     * @return array
-     */
     public function getApiTokensForUser(UserInterface $user): array
     {
         $qb = $this->createQueryBuilder('t');

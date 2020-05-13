@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener;
 
 use Carbon\Carbon;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 

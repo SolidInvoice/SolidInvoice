@@ -48,8 +48,6 @@ trait Money
     /**
      * Set price.
      *
-     * @param MoneyObject $price
-     *
      * @return $this
      */
     public function setAmount(MoneyObject $price)

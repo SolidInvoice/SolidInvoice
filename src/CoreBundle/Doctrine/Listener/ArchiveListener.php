@@ -30,8 +30,6 @@ class ArchiveListener extends MappedEventSubscriber
 
     /**
      * Maps additional metadata.
-     *
-     * @param EventArgs $eventArgs
      */
     public function loadClassMetadata(EventArgs $eventArgs)
     {

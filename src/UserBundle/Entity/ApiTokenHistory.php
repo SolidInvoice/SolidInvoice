@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\CoreBundle\Traits\Entity;
 
 /**
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository")
@@ -93,8 +93,6 @@ class ApiTokenHistory
     }
 
     /**
-     * @param string $ip
-     *
      * @return ApiTokenHistory
      */
     public function setIp(string $ip): self
@@ -113,8 +111,6 @@ class ApiTokenHistory
     }
 
     /**
-     * @param string $resource
-     *
      * @return ApiTokenHistory
      */
     public function setResource(string $resource): self
@@ -133,8 +129,6 @@ class ApiTokenHistory
     }
 
     /**
-     * @param string $method
-     *
      * @return ApiTokenHistory
      */
     public function setMethod(string $method): self
@@ -153,8 +147,6 @@ class ApiTokenHistory
     }
 
     /**
-     * @param array $requestData
-     *
      * @return ApiTokenHistory
      */
     public function setRequestData(array $requestData): self
@@ -173,8 +165,6 @@ class ApiTokenHistory
     }
 
     /**
-     * @param string $userAgent
-     *
      * @return ApiTokenHistory
      */
     public function setUserAgent(string $userAgent): self
@@ -193,8 +183,6 @@ class ApiTokenHistory
     }
 
     /**
-     * @param ApiToken $token
-     *
      * @return ApiTokenHistory
      */
     public function setToken(ApiToken $token): self

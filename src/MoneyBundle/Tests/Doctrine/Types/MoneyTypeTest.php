@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Doctrine\Types;
 
-use SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType;
 use Doctrine\DBAL\Types\Type;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType;
 
 class MoneyTypeTest extends TestCase
 {

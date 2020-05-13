@@ -23,9 +23,6 @@ class WidgetExtension extends \Twig\Extension\AbstractExtension
      */
     private $widgetFactory;
 
-    /**
-     * @param WidgetFactory $widgetFactory
-     */
     public function __construct(WidgetFactory $widgetFactory)
     {
         $this->widgetFactory = $widgetFactory;
@@ -43,11 +40,6 @@ class WidgetExtension extends \Twig\Extension\AbstractExtension
 
     /**
      * Renders a dashboard widget at a specific location.
-     *
-     * @param \Twig\Environment $environment
-     * @param string            $location
-     *
-     * @return string
      */
     public function renderDashboardWidget(\Twig\Environment $environment, string $location): string
     {

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
-use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
 
 class WidgetExtensionTest extends TestCase
 {

@@ -26,9 +26,6 @@ class QuoteMailerListener implements EventSubscriberInterface
      */
     private $mailer;
 
-    /**
-     * @param Mailer $mailer
-     */
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
@@ -44,9 +41,6 @@ class QuoteMailerListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param QuoteEvent $event
-     */
     public function onQuoteSend(QuoteEvent $event)
     {
         $this->mailer->send(new QuoteEmail($event->getQuote()));

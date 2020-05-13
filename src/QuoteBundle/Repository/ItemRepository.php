@@ -34,8 +34,6 @@ class ItemRepository extends ServiceEntityRepository
     /**
      * Removes all tax rates from invoices.
      *
-     * @param Tax $tax
-     *
      * @throws ORMException|OptimisticLockException
      */
     public function removeTax(Tax $tax)

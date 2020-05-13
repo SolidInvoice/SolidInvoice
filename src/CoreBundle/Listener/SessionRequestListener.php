@@ -41,19 +41,12 @@ class SessionRequestListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param Session $session
-     * @param string  $secret
-     */
     public function __construct(Session $session, string $secret)
     {
         $this->session = $session;
         $this->secret = $secret;
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
     public function onKernelResponse(FilterResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {

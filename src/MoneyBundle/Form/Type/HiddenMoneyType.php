@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Form\Type;
 
+use Money\Currency;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ModelTransformer;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
-use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,9 +28,6 @@ class HiddenMoneyType extends AbstractType
      */
     private $currency;
 
-    /**
-     * @param \Money\Currency $currency
-     */
     public function __construct(Currency $currency)
     {
         $this->currency = $currency;

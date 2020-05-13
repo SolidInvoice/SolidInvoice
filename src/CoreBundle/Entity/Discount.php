@@ -87,8 +87,6 @@ class Discount
     }
 
     /**
-     * @param MoneyEntity $valueMoney
-     *
      * @return $this
      */
     public function setValueMoney(MoneyEntity $valueMoney): self
@@ -107,8 +105,6 @@ class Discount
     }
 
     /**
-     * @param float $valuePercentage
-     *
      * @return $this
      */
     public function setValuePercentage(float $valuePercentage): self

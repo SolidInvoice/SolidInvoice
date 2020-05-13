@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\Source;
 
-use SolidInvoice\DataGridBundle\Source\ORMSource;
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\DataGridBundle\Source\ORMSource;
 
 class ORMSourceTest extends TestCase
 {

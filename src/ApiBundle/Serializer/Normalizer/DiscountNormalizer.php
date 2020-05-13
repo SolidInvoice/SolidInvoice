@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use Money\Currency;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
+use Money\Money;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
-use Money\Money;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

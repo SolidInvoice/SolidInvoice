@@ -22,9 +22,6 @@ class AuthenticatedMenu implements ContainerAwareInterface, BuilderInterface
 {
     use ContainerAwareTrait;
 
-    /**
-     * @return bool
-     */
     public function validate(): bool
     {
         try {

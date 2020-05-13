@@ -108,9 +108,8 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @param \Twig\Environment $environment
-     * @param string            $status
-     * @param string            $tooltip
+     * @param string $status
+     * @param string $tooltip
      *
      * @return string|array
      *
@@ -134,12 +133,6 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
         return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
     }
 
-    /**
-     * @param \Twig\Environment $environment
-     * @param array             $labelMap
-     *
-     * @return array
-     */
     private function getAllStatusLabels(\Twig\Environment $environment, array $labelMap): array
     {
         $response = [];
@@ -154,11 +147,8 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
     /**
      * Return the status converted into a label string.
      *
-     * @param \Twig\Environment $environment
-     * @param mixed             $object
-     * @param string            $tooltip
-     *
-     * @return string
+     * @param mixed  $object
+     * @param string $tooltip
      */
     private function renderStatusLabel(\Twig\Environment $environment, $object, string $tooltip = null): string
     {
@@ -179,9 +169,8 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @param \Twig\Environment $environment
-     * @param string            $status
-     * @param string            $tooltip
+     * @param string $status
+     * @param string $tooltip
      *
      * @return string|array
      *
@@ -206,9 +195,8 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @param \Twig\Environment $environment
-     * @param string            $status
-     * @param string            $tooltip
+     * @param string $status
+     * @param string $tooltip
      *
      * @return string|array
      *
@@ -233,9 +221,8 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @param \Twig\Environment $environment
-     * @param string            $status
-     * @param string            $tooltip
+     * @param string $status
+     * @param string $tooltip
      *
      * @return string|array
      *
@@ -261,8 +248,6 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
 
     /**
      * Get the name of the twig extension.
-     *
-     * @return string
      */
     public function getName(): string
     {

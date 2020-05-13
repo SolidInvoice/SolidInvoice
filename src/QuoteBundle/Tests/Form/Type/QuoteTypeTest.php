@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Form\Type;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\MoneyBundle\Entity\Money;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\ItemType;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
-use Money\Currency;
 use Symfony\Component\Form\PreloadedExtension;
 
 class QuoteTypeTest extends FormTestCase

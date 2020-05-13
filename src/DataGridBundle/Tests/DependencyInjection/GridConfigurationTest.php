@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\DependencyInjection;
 
-use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
 use Symfony\Component\Yaml\Yaml;
 
 class GridConfigurationTest extends TestCase
 {
-    use ConfigurationTestCaseTrait,
-        MockeryPHPUnitIntegration;
+    use ConfigurationTestCaseTrait;
+    use MockeryPHPUnitIntegration;
 
     const FIXTURES_PATH = __DIR__.'/../fixtures/config/';
 

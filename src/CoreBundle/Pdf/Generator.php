@@ -36,10 +36,6 @@ class Generator
     }
 
     /**
-     * @param string $html
-     *
-     * @return string
-     *
      * @throws \Mpdf\MpdfException
      */
     public function generate(string $html): string

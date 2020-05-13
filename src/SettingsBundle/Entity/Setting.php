@@ -72,8 +72,6 @@ class Setting
 
     /**
      * Get key.
-     *
-     * @return string
      */
     public function getKey(): string
     {
@@ -82,8 +80,6 @@ class Setting
 
     /**
      * Set key.
-     *
-     * @param string $key
      *
      * @return Setting
      */
@@ -154,8 +150,6 @@ class Setting
 
     /**
      * Set type.
-     *
-     * @param string $type
      *
      * @return Setting
      */

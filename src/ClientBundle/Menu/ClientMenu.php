@@ -18,9 +18,6 @@ use SolidInvoice\CoreBundle\Icon;
 
 class ClientMenu
 {
-    /**
-     * @return array
-     */
     public static function main(): array
     {
         return [
@@ -34,9 +31,6 @@ class ClientMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function listMenu(): array
     {
         return [
@@ -50,9 +44,6 @@ class ClientMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function add(): array
     {
         return [
@@ -66,11 +57,6 @@ class ClientMenu
         ];
     }
 
-    /**
-     * @param Client $client
-     *
-     * @return array
-     */
     public static function view(Client $client): array
     {
         return [

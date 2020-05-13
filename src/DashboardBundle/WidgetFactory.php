@@ -34,9 +34,8 @@ class WidgetFactory
     }
 
     /**
-     * @param WidgetInterface $widget
-     * @param string          $location
-     * @param int             $priority
+     * @param string $location
+     * @param int    $priority
      *
      * @throws \Exception
      */
@@ -53,8 +52,6 @@ class WidgetFactory
 
     /**
      * @param string $location
-     *
-     * @return \SplPriorityQueue
      */
     public function get($location): \SplPriorityQueue
     {

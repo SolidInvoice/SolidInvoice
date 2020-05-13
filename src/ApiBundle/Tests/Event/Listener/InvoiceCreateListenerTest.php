@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests\Event\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Event\Listener\InvoiceCreateListener;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Kernel;

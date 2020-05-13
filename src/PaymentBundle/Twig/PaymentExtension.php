@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Twig;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Money\Currency;
-use Money\Money;
 
 class PaymentExtension extends \Twig\Extension\AbstractExtension
 {
@@ -39,10 +39,6 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
      */
     private $currency;
 
-    /**
-     * @param ManagerRegistry $registry
-     * @param Currency        $currency
-     */
     public function __construct(ManagerRegistry $registry, Currency $currency)
     {
         $this->registry = $registry;
@@ -63,11 +59,6 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
         ];
     }
 
-    /**
-     * @param Client|null $client
-     *
-     * @return Money
-     */
     public function getTotalIncome(Client $client = null): Money
     {
         $income = $this->registry->getRepository(Payment::class)->getTotalIncome($client);
@@ -75,11 +66,6 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
         return new Money($income, $client->getCurrency() ?: $this->currency);
     }
 
-    /**
-     * @param Client|null $client
-     *
-     * @return Money
-     */
     public function getTotalOutstanding(Client $client = null): Money
     {
         $outstanding = $this->registry->getRepository(Invoice::class)->getTotalOutstanding($client);
@@ -89,8 +75,6 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
 
     /**
      * @param string $method
-     *
-     * @return bool
      */
     public function paymentEnabled($method): bool
     {
@@ -103,9 +87,6 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
         return $paymentMethod->isEnabled();
     }
 
-    /**
-     * @return PaymentMethodRepository
-     */
     public function getRepository(): PaymentMethodRepository
     {
         if (null === $this->repository) {
@@ -115,19 +96,11 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
         return $this->repository;
     }
 
-    /**
-     * @param bool $includeInternal
-     *
-     * @return int
-     */
     public function paymentConfigured(bool $includeInternal = true): int
     {
         return $this->getRepository()->getTotalMethodsConfigured($includeInternal);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'payment_extension';

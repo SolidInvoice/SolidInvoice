@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
-use Money\Currency;
-use Money\Money;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ItemTypeTest extends FormTestCase

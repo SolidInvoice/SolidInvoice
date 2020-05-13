@@ -56,8 +56,6 @@ class ViewBilling
     /**
      * View a quote if not logged in.
      *
-     * @param string $uuid
-     *
      * @return Template|Response
      *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
@@ -78,8 +76,6 @@ class ViewBilling
     /**
      * View a invoice if not logged in.
      *
-     * @param string $uuid
-     *
      * @return Response|Template
      *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
@@ -98,8 +94,6 @@ class ViewBilling
     }
 
     /**
-     * @param array $options
-     *
      * @return Template|Response
      *
      * @throws NotFoundHttpException|InvalidArgumentException|InvalidUuidStringException|InvalidParameterException|MissingMandatoryParametersException|RouteNotFoundException

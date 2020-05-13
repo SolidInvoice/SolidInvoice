@@ -35,11 +35,6 @@ class PaymentMethodSettingsType extends AbstractType
         }
     }
 
-    /**
-     * @param array $settings
-     *
-     * @return array
-     */
     private function getOptions(array $settings): array
     {
         $options = [];

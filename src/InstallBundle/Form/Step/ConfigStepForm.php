@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Step;
 
+use Doctrine\DBAL\DriverManager;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
 use SolidInvoice\InstallBundle\Form\Type\EmailSettingsType;
-use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

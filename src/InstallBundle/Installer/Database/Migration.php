@@ -37,9 +37,6 @@ class Migration implements ContainerAwareInterface
      */
     private $filesystem;
 
-    /**
-     * @param Filesystem $filesystem
-     */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
@@ -47,8 +44,6 @@ class Migration implements ContainerAwareInterface
 
     /**
      * @param Closure $outputWriter
-     *
-     * @return array
      *
      * @throws InvalidArgumentException|MigrationException|IOException
      */
@@ -79,8 +74,6 @@ class Migration implements ContainerAwareInterface
     /**
      * @param string  $dir
      * @param Closure $outputWriter
-     *
-     * @return Configuration
      */
     private function getConfiguration($dir, Closure $outputWriter = null): Configuration
     {

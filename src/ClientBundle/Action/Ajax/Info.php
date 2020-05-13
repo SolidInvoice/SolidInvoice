@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
+use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use Money\Currency;
 
 final class Info implements AjaxResponse
 {

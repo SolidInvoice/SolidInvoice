@@ -23,8 +23,6 @@ class Builder extends AuthenticatedMenu
     /**
      * Renders the top menu for clients.
      *
-     * @param ItemInterface $menu
-     *
      * @throws \InvalidArgumentException
      */
     public function topMenu(ItemInterface $menu)
@@ -34,8 +32,6 @@ class Builder extends AuthenticatedMenu
 
     /**
      * Renders the client index menu.
-     *
-     * @param ItemInterface $menu
      *
      * @throws \InvalidArgumentException
      */
@@ -48,9 +44,6 @@ class Builder extends AuthenticatedMenu
 
     /**
      * Renders the client view menu.
-     *
-     * @param ItemInterface $menu
-     * @param array         $options
      *
      * @throws \InvalidArgumentException
      */

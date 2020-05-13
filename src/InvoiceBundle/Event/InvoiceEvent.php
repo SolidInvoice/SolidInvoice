@@ -31,17 +31,11 @@ class InvoiceEvent extends Event
         $this->invoice = $invoice;
     }
 
-    /**
-     * @param Invoice $invoice
-     */
     public function setInvoice(Invoice $invoice)
     {
         $this->invoice = $invoice;
     }
 
-    /**
-     * @return Invoice
-     */
     public function getInvoice(): Invoice
     {
         return $this->invoice;

@@ -23,20 +23,12 @@ class GridRepository
      */
     private $grids = [];
 
-    /**
-     * @param string        $name
-     * @param GridInterface $grid
-     */
     public function addGrid(string $name, GridInterface $grid)
     {
         $this->grids[$name] = $grid;
     }
 
     /**
-     * @param string $name
-     *
-     * @return GridInterface
-     *
      * @throws InvalidGridException
      */
     public function find(string $name): GridInterface

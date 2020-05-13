@@ -39,9 +39,6 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
      */
     protected $router;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;

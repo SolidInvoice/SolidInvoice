@@ -26,10 +26,6 @@ use Symfony\Component\Validator\Constraints;
 
 class SystemInformationForm extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (extension_loaded('intl')) {

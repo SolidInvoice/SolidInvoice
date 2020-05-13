@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\StateMachine;

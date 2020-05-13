@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation as Serialize;
-use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -109,10 +109,6 @@ class Item implements ItemInterface
 
     /**
      * Set description.
-     *
-     * @param string $description
-     *
-     * @return ItemInterface
      */
     public function setDescription(string $description): ItemInterface
     {
@@ -131,11 +127,6 @@ class Item implements ItemInterface
         return $this->description;
     }
 
-    /**
-     * @param Money $price
-     *
-     * @return ItemInterface
-     */
     public function setPrice(Money $price): ItemInterface
     {
         $this->price = new MoneyEntity($price);
@@ -143,19 +134,11 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getPrice(): Money
     {
         return $this->price->getMoney();
     }
 
-    /**
-     * @param float $qty
-     *
-     * @return ItemInterface
-     */
     public function setQty(float $qty): ItemInterface
     {
         $this->qty = $qty;
@@ -173,8 +156,6 @@ class Item implements ItemInterface
 
     /**
      * @param Quote $quote
-     *
-     * @return ItemInterface
      */
     public function setQuote(Quote $quote = null): ItemInterface
     {
@@ -191,11 +172,6 @@ class Item implements ItemInterface
         return $this->quote;
     }
 
-    /**
-     * @param Money $total
-     *
-     * @return ItemInterface
-     */
     public function setTotal(Money $total): ItemInterface
     {
         $this->total = new MoneyEntity($total);
@@ -203,9 +179,6 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getTotal(): Money
     {
         return $this->total->getMoney();
@@ -221,8 +194,6 @@ class Item implements ItemInterface
 
     /**
      * @param Tax $tax
-     *
-     * @return ItemInterface
      */
     public function setTax(?Tax $tax): ItemInterface
     {

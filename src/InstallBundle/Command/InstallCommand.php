@@ -31,9 +31,6 @@ use Symfony\Component\Intl\Intl;
 
 class InstallCommand extends ContainerAwareCommand
 {
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         $container = $this->getContainer();
@@ -103,8 +100,6 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @throws \Exception
      */
     private function validate(InputInterface $input)
@@ -157,8 +152,6 @@ class InstallCommand extends ContainerAwareCommand
 
     /**
      * Checks if the system matches all the requirements.
-     *
-     * @return int
      */
     private function checkRequirements(): int
     {
@@ -168,10 +161,6 @@ class InstallCommand extends ContainerAwareCommand
         return require_once $rootDir.DIRECTORY_SEPARATOR.'check.php';
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     private function install(InputInterface $input, OutputInterface $output)
     {
         if ($this->initDb($input, $output)) {
@@ -197,11 +186,6 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return bool
-     *
      * @throws \Exception
      */
     private function initDb(InputInterface $input, OutputInterface $output): bool
@@ -224,11 +208,6 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return bool
-     *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
@@ -282,14 +261,9 @@ class InstallCommand extends ContainerAwareCommand
         return true;
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     private function createAdminUser(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Creating Admin User</info>');
-
         /** @var UserRepository $userRepository */
         $registry = $this->getContainer()->get('doctrine');
         $userRepository = $registry->getRepository(User::class);
@@ -314,8 +288,6 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return $this
      */
     private function saveConfig(InputInterface $input)

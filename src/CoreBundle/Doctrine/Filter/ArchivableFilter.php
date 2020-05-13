@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 
-use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 
 class ArchivableFilter extends SQLFilter
 {

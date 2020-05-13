@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Storage;
 
-use SolidInvoice\MenuBundle\Storage\MenuStorage;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\Storage\MenuStorage;
 
 class MenuStorageTest extends TestCase
 {

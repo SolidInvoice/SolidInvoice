@@ -18,9 +18,6 @@ class ConstraintBuilder
     const CONSTRAINT_NAMESPACE = 'Symfony\\Component\\Validator\\Constraints\\';
 
     /**
-     * @param array $options
-     *
-     * @return array
      * @static
      */
     public static function build(array $options): array
@@ -38,9 +35,6 @@ class ConstraintBuilder
     }
 
     /**
-     * @param string $text
-     *
-     * @return string
      * @static
      */
     private static function humanize(string $text): string

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use Money\Currency;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

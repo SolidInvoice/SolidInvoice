@@ -57,8 +57,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
     /**
      * Get global twig variables.
      *
-     * @return array
-     *
      * @throws InvalidSettingException|InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
      */
     public function getGlobals(): array
@@ -78,8 +76,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
 
     /**
      * Get the url query.
-     *
-     * @return array
      *
      * @throws ServiceCircularReferenceException|ServiceNotFoundException
      */
@@ -127,10 +123,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
     }
 
     /**
-     * @param Environment $env
-     *
-     * @return string
-     *
      * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|LoaderError|SyntaxError
      */
     public function displayAppLogo(Environment $env): string
@@ -158,11 +150,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
 
     /**
      * Displays an icon.
-     *
-     * @param string $iconName
-     * @param array  $options
-     *
-     * @return string
      */
     public function displayIcon(string $iconName, array $options = []): string
     {
@@ -178,10 +165,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface, Con
 
     /**
      * Returns a human-readible diff for dates.
-     *
-     * @param DateTime $date
-     *
-     * @return string
      */
     public function dateDiff(DateTime $date): string
     {
