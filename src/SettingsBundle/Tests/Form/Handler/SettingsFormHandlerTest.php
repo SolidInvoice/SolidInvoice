@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Tests\Form\Handler;
 
 use Mockery as M;
+use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
@@ -39,7 +40,12 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         $router->shouldReceive('generate')
             ->andReturn('/settings');
 
-        return new SettingsFormHandler($repository, $router);
+        $configWriter = M::mock(ConfigWriter::class);
+        $configWriter->shouldReceive('getConfigValues')
+            ->andReturn([]);
+        $configWriter->shouldReceive('dump');
+
+        return new SettingsFormHandler($repository, $router, $configWriter);
     }
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void

@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Event;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class ResponseEvent extends \Symfony\Contracts\EventDispatcher\Event
+class ResponseEvent extends Event
 {
     /**
      * @var Response

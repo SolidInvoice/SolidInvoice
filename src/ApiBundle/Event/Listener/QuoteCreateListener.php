@@ -18,6 +18,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Workflow\StateMachine;
 
@@ -43,12 +44,12 @@ class QuoteCreateListener implements EventSubscriberInterface
         ];
     }
 
-    public function setQuoteStatus(\Symfony\Component\HttpKernel\Event\ViewEvent $event)
+    public function setQuoteStatus(ViewEvent $event)
     {
         $invoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$event->isMasterRequest() || !$invoice instanceof Quote || $invoice->getStatus() || Request::METHOD_POST !== $method) {
+        if (!$invoice instanceof Quote || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $invoice->getStatus()) {
             return;
         }
 

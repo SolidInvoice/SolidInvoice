@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -31,11 +32,9 @@ class AjaxResponseListener implements EventSubscriberInterface
     }
 
     /**
-     * @param FilterControllerEvent $event
-     *
      * @throws BadRequestHttpException
      */
-    public function onController(\Symfony\Component\HttpKernel\Event\ControllerEvent $event): void
+    public function onController(ControllerEvent $event): void
     {
         $request = $event->getRequest();
         $controller = $event->getController();
