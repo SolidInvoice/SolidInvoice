@@ -106,7 +106,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         $params = array_merge($request->query->all(), $request->attributes->all());
 
         foreach (array_keys($params) as $key) {
-            if (strpos($key, '_') === 0) {
+            if (0 === strpos($key, '_')) {
                 unset($params[$key]);
             }
         }

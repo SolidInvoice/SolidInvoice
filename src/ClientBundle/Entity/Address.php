@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Traits\Entity;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**

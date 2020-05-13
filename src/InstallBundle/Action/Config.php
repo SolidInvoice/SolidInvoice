@@ -99,7 +99,7 @@ final class Config
                 'host' => $config['mailer_host'] ?? null,
                 'port' => $config['mailer_port'] ?? null,
                 'encryption' => $config['mailer_encryption'] ?? null,
-                'user' =>  $config['mailer_user'] ?? null,
+                'user' => $config['mailer_user'] ?? null,
                 'password' => null,
             ],
         ];

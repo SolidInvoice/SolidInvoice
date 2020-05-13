@@ -107,7 +107,7 @@ final class Setup
 
         $data = [
             'locale' => $config['locale'] ?? null,
-            'currency' => $this->systemConfig->get(CurrencyFactory::CURRENCY_PATH)
+            'currency' => $this->systemConfig->get(CurrencyFactory::CURRENCY_PATH),
         ];
 
         return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);

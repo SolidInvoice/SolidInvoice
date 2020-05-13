@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
 
 class ConfigWriter
 {

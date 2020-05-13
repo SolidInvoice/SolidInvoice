@@ -25,7 +25,6 @@ use SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\Workflow\StateMachine;
 
 class InvoiceSaveListenerTest extends TestCase
 {
