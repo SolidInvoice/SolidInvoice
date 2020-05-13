@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Handler;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use Namshi\Notificator\Notification;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\NotificationBundle\Notification\Handler\TwilioHandler;

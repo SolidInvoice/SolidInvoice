@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\NotificationBundle\Notification\Factory;
@@ -28,8 +28,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class FactoryTest extends TestCase
 {
-    use FakerTestTrait,
-        MockeryPHPUnitIntegration;
+    use FakerTestTrait;
+    use MockeryPHPUnitIntegration;
 
     public function testCreateSmsNotification()
     {

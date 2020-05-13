@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Listener;
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -28,9 +28,6 @@ class ClientListener implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    /**
-     * @param LifecycleEventArgs $event
-     */
     public function prePersist(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();
@@ -44,9 +41,6 @@ class ClientListener implements ContainerAwareInterface
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $event
-     */
     public function postPersist(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();
@@ -63,9 +57,6 @@ class ClientListener implements ContainerAwareInterface
             ->sendNotification('client_create', $notification);
     }
 
-    /**
-     * @param LifecycleEventArgs $event
-     */
     public function postUpdate(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();

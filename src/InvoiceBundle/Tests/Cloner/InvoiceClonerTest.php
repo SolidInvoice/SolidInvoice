@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use Money\Currency;
+use Money\Money;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
@@ -20,11 +25,6 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Money\Currency;
-use Money\Money;
-use PHPUnit\Framework\TestCase;
 
 class InvoiceClonerTest extends TestCase
 {

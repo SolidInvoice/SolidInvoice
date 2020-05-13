@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\CoreBundle\Traits\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -93,8 +93,6 @@ class ApiToken
     }
 
     /**
-     * @param string $name
-     *
      * @return ApiToken
      */
     public function setName(string $name): self
@@ -113,8 +111,6 @@ class ApiToken
     }
 
     /**
-     * @param string $token
-     *
      * @return ApiToken
      */
     public function setToken(string $token): self
@@ -133,8 +129,6 @@ class ApiToken
     }
 
     /**
-     * @param ApiTokenHistory $history
-     *
      * @return ApiToken
      */
     public function addHistory(ApiTokenHistory $history): self
@@ -146,8 +140,6 @@ class ApiToken
     }
 
     /**
-     * @param ApiTokenHistory $history
-     *
      * @return ApiToken
      */
     public function removeHistory(ApiTokenHistory $history): self
@@ -166,8 +158,6 @@ class ApiToken
     }
 
     /**
-     * @param User $user
-     *
      * @return ApiToken
      */
     public function setUser(User $user): self

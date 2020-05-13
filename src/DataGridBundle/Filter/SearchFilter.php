@@ -25,8 +25,6 @@ class SearchFilter implements FilterInterface
 
     /**
      * SearchFilter constructor.
-     *
-     * @param array $searchFields
      */
     public function __construct(array $searchFields)
     {

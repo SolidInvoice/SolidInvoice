@@ -46,9 +46,6 @@ final class View
     }
 
     /**
-     * @param Request $request
-     * @param Invoice $invoice
-     *
      * @return Template|PdfResponse
      *
      * @throws \Mpdf\MpdfException|\RuntimeException|\InvalidArgumentException

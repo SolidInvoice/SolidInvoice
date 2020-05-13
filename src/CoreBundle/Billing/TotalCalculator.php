@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Billing;
 
+use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Money\Money;
 
 class TotalCalculator
 {
@@ -80,9 +80,6 @@ class TotalCalculator
 
     /**
      * @param Invoice|Quote $entity
-     * @param Money         $total
-     *
-     * @return Money
      */
     private function setDiscount($entity, Money $total): Money
     {
@@ -98,13 +95,6 @@ class TotalCalculator
         return $total->subtract($discountValue);
     }
 
-    /**
-     * @param Tax   $rowTax
-     * @param Money $rowTotal
-     * @param Money $subTotal
-     * @param Money $total
-     * @param Money $tax
-     */
     private function setTax(Tax $rowTax, Money $rowTotal, Money &$subTotal, Money &$total, Money &$tax): void
     {
         if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {

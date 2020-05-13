@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use Namshi\Notificator\NotificationInterface;
-use SolidInvoice\NotificationBundle\Notification\ChainedNotification;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\NotificationBundle\Notification\ChainedNotification;
 
 class ChainedNotificationTest extends TestCase
 {

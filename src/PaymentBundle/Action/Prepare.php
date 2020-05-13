@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use Money\Currency;
+use Money\Money;
+use Payum\Core\Payum;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -26,9 +29,6 @@ use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
-use Money\Currency;
-use Money\Money;
-use Payum\Core\Payum;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

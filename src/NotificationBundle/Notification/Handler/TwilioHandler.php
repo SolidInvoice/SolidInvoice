@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification\Handler;
 
-use SolidInvoice\NotificationBundle\Notification\TwilioNotification;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Namshi\Notificator\Notification\Handler\HandlerInterface;
 use Namshi\Notificator\NotificationInterface;
+use SolidInvoice\NotificationBundle\Notification\TwilioNotification;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Twilio\Rest\Client;
 
 class TwilioHandler implements HandlerInterface
@@ -31,10 +31,6 @@ class TwilioHandler implements HandlerInterface
      */
     private $config;
 
-    /**
-     * @param Client       $twilio
-     * @param SystemConfig $config
-     */
     public function __construct(Client $twilio, SystemConfig $config)
     {
         $this->twilio = $twilio;

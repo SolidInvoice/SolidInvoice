@@ -19,7 +19,6 @@ class MenuItem extends BaseItem implements ItemInterface
 {
     /**
      * @param \Knp\Menu\ItemInterface|string|array $child
-     * @param array                                $options
      *
      * @return \Knp\Menu\ItemInterface|string
      *

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Email\Decorator;
 
+use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\MailerBundle\Decorator\MessageDecorator;
 use SolidInvoice\MailerBundle\Decorator\VerificationMessageDecorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
-use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
 final class InvoiceSubjectDecorator implements MessageDecorator, VerificationMessageDecorator

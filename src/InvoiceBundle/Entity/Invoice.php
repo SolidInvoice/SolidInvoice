@@ -223,17 +223,12 @@ class Invoice
         $this->total = new MoneyEntity();
     }
 
-    /**
-     * @return Uuid
-     */
     public function getUuid(): Uuid
     {
         return $this->uuid;
     }
 
     /**
-     * @param UuidInterface $uuid
-     *
      * @return Invoice
      */
     public function setUuid(UuidInterface $uuid): self
@@ -266,8 +261,6 @@ class Invoice
     }
 
     /**
-     * @param Contact $user
-     *
      * @return Invoice
      */
     public function addUser(Contact $user): self
@@ -299,8 +292,6 @@ class Invoice
 
     /**
      * Set status.
-     *
-     * @param string $status
      *
      * @return Invoice
      */
@@ -337,8 +328,6 @@ class Invoice
 
     /**
      * Get total.
-     *
-     * @return Money
      */
     public function getTotal(): Money
     {
@@ -347,8 +336,6 @@ class Invoice
 
     /**
      * Set total.
-     *
-     * @param Money $total
      *
      * @return Invoice
      */
@@ -361,8 +348,6 @@ class Invoice
 
     /**
      * Get base total.
-     *
-     * @return Money
      */
     public function getBaseTotal(): Money
     {
@@ -371,8 +356,6 @@ class Invoice
 
     /**
      * Set base total.
-     *
-     * @param Money $baseTotal
      *
      * @return Invoice
      */
@@ -383,17 +366,12 @@ class Invoice
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getBalance(): Money
     {
         return $this->balance->getMoney();
     }
 
     /**
-     * @param Money $balance
-     *
      * @return Invoice
      */
     public function setBalance(Money $balance): self
@@ -405,8 +383,6 @@ class Invoice
 
     /**
      * Get discount.
-     *
-     * @return Discount
      */
     public function getDiscount(): Discount
     {
@@ -415,8 +391,6 @@ class Invoice
 
     /**
      * Set discount.
-     *
-     * @param Discount $discount
      *
      * @return Invoice
      */
@@ -440,8 +414,6 @@ class Invoice
     /**
      * Set due.
      *
-     * @param \DateTime $due
-     *
      * @return Invoice
      */
     public function setDue(\DateTime $due): self
@@ -464,8 +436,6 @@ class Invoice
     /**
      * Set paidDate.
      *
-     * @param \DateTime $paidDate
-     *
      * @return Invoice
      */
     public function setPaidDate(\DateTime $paidDate): self
@@ -477,8 +447,6 @@ class Invoice
 
     /**
      * Add item.
-     *
-     * @param Item $item
      *
      * @return Invoice
      */
@@ -492,8 +460,6 @@ class Invoice
 
     /**
      * Removes an item.
-     *
-     * @param Item $item
      *
      * @return Invoice
      */
@@ -518,8 +484,6 @@ class Invoice
     /**
      * Add payment.
      *
-     * @param Payment $payment
-     *
      * @return Invoice
      */
     public function addPayment(Payment $payment): self
@@ -532,8 +496,6 @@ class Invoice
 
     /**
      * Removes a payment.
-     *
-     * @param Payment $payment
      *
      * @return Invoice
      */
@@ -594,17 +556,12 @@ class Invoice
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getTax(): Money
     {
         return $this->tax->getMoney();
     }
 
     /**
-     * @param Money $tax
-     *
      * @return Invoice
      */
     public function setTax(Money $tax): self
@@ -628,17 +585,12 @@ class Invoice
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isRecurring(): bool
     {
         return $this->recurringInfo instanceof RecurringInvoice;
     }
 
     /**
-     * @param bool $recurring
-     *
      * @return Invoice
      */
     public function setRecurring(bool $recurring): self

@@ -38,9 +38,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     protected $templating;
 
     /**
-     * @param RequestStack     $requestStack
-     * @param FactoryInterface $factory
-     *
      * @throws \InvalidArgumentException
      */
     public function __construct(RequestStack $requestStack, FactoryInterface $factory)
@@ -54,11 +51,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
     /**
      * Renders a menu at a specific location.
-     *
-     * @param \SplPriorityQueue $storage
-     * @param array             $options
-     *
-     * @return string
      */
     public function build(\SplPriorityQueue $storage, array $options = []): string
     {
@@ -87,10 +79,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      * has children).
      * This method updates the depth for the children.
      *
-     * @param Item  $item
      * @param array $options The options to render the item
-     *
-     * @return string
      */
     protected function renderChildren(Item $item, array $options): string
     {
@@ -112,12 +101,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         return $html;
     }
 
-    /**
-     * @param Item  $item
-     * @param array $options
-     *
-     * @return string
-     */
     protected function renderDivider(Item $item, array $options = []): string
     {
         return $this->format(
@@ -130,11 +113,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
     /**
      * Renders the menu label.
-     *
-     * @param Item  $item
-     * @param array $options
-     *
-     * @return string
      */
     protected function renderLabel(Item $item, array $options): string
     {
@@ -154,10 +132,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
     /**
      * Renders an icon in the menu.
-     *
-     * @param string $icon
-     *
-     * @return string
      */
     protected function renderIcon(string $icon): string
     {

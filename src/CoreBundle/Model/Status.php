@@ -31,10 +31,6 @@ abstract class Status
 
     /**
      * Converts a status into a label.
-     *
-     * @param string $status
-     *
-     * @return string
      */
     public function getStatusLabel(string $status): string
     {
@@ -47,10 +43,6 @@ abstract class Status
 
     /**
      * Returns the HTML to display the status.
-     *
-     * @param string $status
-     *
-     * @return string
      */
     public function getHtml(string $status): string
     {
@@ -61,8 +53,6 @@ abstract class Status
 
     /**
      * Return an array of all the available statuses.
-     *
-     * @return array
      */
     public function getStatusList(): array
     {

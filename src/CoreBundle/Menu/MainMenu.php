@@ -17,11 +17,6 @@ use SolidInvoice\UserBundle\Entity\User;
 
 class MainMenu
 {
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
     public static function user(User $user): array
     {
         $username = $user->getUsername().' <b class="caret"></b>';
@@ -40,9 +35,6 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function profile(): array
     {
         return [
@@ -50,9 +42,6 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function api(): array
     {
         return [
@@ -60,9 +49,6 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function logout(): array
     {
         return [
@@ -74,9 +60,6 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function system(): array
     {
         return [
@@ -92,9 +75,6 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function settings(): array
     {
         return [
@@ -106,9 +86,6 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function tax(): array
     {
         return [
@@ -120,9 +97,6 @@ class MainMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function users(): array
     {
         return [

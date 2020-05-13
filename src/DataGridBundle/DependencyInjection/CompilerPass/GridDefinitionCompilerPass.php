@@ -32,9 +32,6 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
      */
     private $kernel;
 
-    /**
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -77,10 +74,6 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         return $process->processConfiguration($config, $grid);
     }
 
-    /**
-     * @param Definition $gridService
-     * @param array      $config
-     */
     private function setGridDefinition(Definition $gridService, array $config)
     {
         foreach ($config as $gridName => $gridConfig) {
@@ -97,11 +90,6 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         }
     }
 
-    /**
-     * @param array $arguments
-     *
-     * @return Definition
-     */
     private function getGridSource(array $arguments): Definition
     {
         array_unshift($arguments, new Reference('doctrine'));
@@ -109,11 +97,6 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         return new Definition('SolidInvoice\DataGridBundle\Source\ORMSource', array_values($arguments));
     }
 
-    /**
-     * @param array $gridData
-     *
-     * @return Definition
-     */
     private function getFilterService(array &$gridData): Definition
     {
         $definition = new Definition('SolidInvoice\DataGridBundle\Filter\ChainFilter');
@@ -130,7 +113,8 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
 
         if (!empty($gridData['search']['fields'])) {
             $searchFilter = new Definition(
-                'SolidInvoice\DataGridBundle\Filter\SearchFilter', [$gridData['search']['fields']]
+                'SolidInvoice\DataGridBundle\Filter\SearchFilter',
+                [$gridData['search']['fields']]
             );
             $definition->addMethodCall('addFilter', [$searchFilter]);
             $gridData['properties']['search'] = true;

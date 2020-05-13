@@ -17,10 +17,5 @@ use Doctrine\ORM\QueryBuilder;
 
 interface SourceInterface
 {
-    /**
-     * @param array $parameters
-     *
-     * @return QueryBuilder
-     */
     public function fetch(array $parameters = []): QueryBuilder;
 }

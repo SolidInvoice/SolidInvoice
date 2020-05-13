@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
-use SolidInvoice\TaxBundle\Entity\Tax;
 use Money\Money;
+use SolidInvoice\TaxBundle\Entity\Tax;
 
 interface ItemInterface
 {
@@ -27,8 +27,6 @@ interface ItemInterface
 
     /**
      * Set description.
-     *
-     * @param string $description
      *
      * @return ItemInterface
      */
@@ -44,8 +42,6 @@ interface ItemInterface
     /**
      * Set the price.
      *
-     * @param Money $price
-     *
      * @return ItemInterface
      */
     public function setPrice(Money $price): self;
@@ -60,8 +56,6 @@ interface ItemInterface
     /**
      * Set the qty.
      *
-     * @param float $qty
-     *
      * @return ItemInterface
      */
     public function setQty(float $qty): self;
@@ -74,8 +68,6 @@ interface ItemInterface
     public function getQty(): ?float;
 
     /**
-     * @param Money $total
-     *
      * @return ItemInterface
      */
     public function setTotal(Money $total): self;

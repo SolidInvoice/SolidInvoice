@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Twig\Extension;
 
-use SolidInvoice\MenuBundle\RendererInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
+use SolidInvoice\MenuBundle\RendererInterface;
 
 class MenuExtension extends \Twig\Extension\AbstractExtension
 {
@@ -30,8 +30,6 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
 
     /**
      * Sets the renderer for the menu.
-     *
-     * @param RendererInterface $renderer
      */
     public function setRenderer(RendererInterface $renderer)
     {
@@ -40,8 +38,6 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
 
     /**
      * Sets the provider for the menu.
-     *
-     * @param MenuProviderInterface $provider
      */
     public function setProvider(MenuProviderInterface $provider)
     {
@@ -62,9 +58,6 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
      * Renders a menu in a specific location.
      *
      * @param string $location The location on the page to render the menu
-     * @param array  $options
-     *
-     * @return string
      */
     public function renderMenu(string $location, array $options = []): string
     {

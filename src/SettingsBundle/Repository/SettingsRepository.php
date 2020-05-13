@@ -25,8 +25,6 @@ class SettingsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $settings
-     *
      * @throws \InvalidArgumentException|\Throwable
      */
     public function save(array $settings): void

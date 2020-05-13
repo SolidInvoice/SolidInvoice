@@ -28,9 +28,6 @@ class ApiTokenUserProvider implements UserProviderInterface
      */
     private $tokenRepository;
 
-    /**
-     * @var UserRepository
-     */
     private $userRepository;
 
     public function __construct(ApiTokenRepository $tokenRepository, UserRepository $userRepository)
@@ -40,8 +37,6 @@ class ApiTokenUserProvider implements UserProviderInterface
     }
 
     /**
-     * @param string $token
-     *
      * @return string
      */
     public function getUsernameForToken(string $token): ?string

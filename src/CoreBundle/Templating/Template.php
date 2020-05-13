@@ -33,9 +33,7 @@ class Template
     private $response;
 
     /**
-     * @param string        $template #Template
-     * @param array         $params
-     * @param Response|null $response
+     * @param string $template #Template
      */
     public function __construct(string $template = null, array $params = [], Response $response = null)
     {
@@ -44,25 +42,16 @@ class Template
         $this->response = $response ?: new Response();
     }
 
-    /**
-     * @return string
-     */
     public function getTemplate(): string
     {
         return $this->template;
     }
 
-    /**
-     * @return array
-     */
     public function getParams(): array
     {
         return $this->params;
     }
 
-    /**
-     * @return Response
-     */
     public function getResponse(): Response
     {
         return $this->response;

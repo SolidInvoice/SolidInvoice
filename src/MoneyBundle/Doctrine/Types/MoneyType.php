@@ -28,9 +28,6 @@ class MoneyType extends Type
      */
     private static $currency;
 
-    /**
-     * @param \Money\Currency $currency
-     */
     public static function setCurrency(Currency $currency)
     {
         self::$currency = $currency;

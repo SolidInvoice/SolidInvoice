@@ -24,8 +24,6 @@ class ArrayUtil
      * @param string             $column
      *
      * @throws \Exception
-     *
-     * @return array
      */
     public static function column($array, $column): array
     {

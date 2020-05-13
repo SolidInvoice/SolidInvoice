@@ -93,8 +93,6 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
 
     /**
      * Configure defined, required and default options.
-     *
-     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver): void
     {

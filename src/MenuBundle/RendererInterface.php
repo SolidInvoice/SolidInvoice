@@ -20,9 +20,6 @@ interface RendererInterface extends BaseInterface
     /**
      * Build and render a menu.
      *
-     * @param \SplPriorityQueue $storage
-     * @param array             $options
-     *
      * @return mixed
      */
     public function build(\SplPriorityQueue $storage, array $options = []);

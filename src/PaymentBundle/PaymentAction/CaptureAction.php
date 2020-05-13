@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction;
 
-use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Model\Status;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -22,6 +20,8 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Model\Status;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface
 {

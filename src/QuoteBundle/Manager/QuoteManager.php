@@ -39,11 +39,6 @@ class QuoteManager
      */
     private $mailer;
 
-    /**
-     * @param StateMachine        $stateMachine
-     * @param Mailer              $mailer
-     * @param NotificationManager $notification
-     */
     public function __construct(
         StateMachine $stateMachine,
         Mailer $mailer,
@@ -55,11 +50,6 @@ class QuoteManager
     }
 
     /**
-     * @param Quote  $quote
-     * @param string $transition
-     *
-     * @return bool
-     *
      * @throws InvalidTransitionException
      */
     private function applyTransition(Quote $quote, string $transition): bool
@@ -89,10 +79,6 @@ class QuoteManager
     }
 
     /**
-     * @param Quote $quote
-     *
-     * @return Quote
-     *
      * @throws InvalidTransitionException
      */
     public function send(Quote $quote): Quote

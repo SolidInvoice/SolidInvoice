@@ -35,8 +35,6 @@ class ConfigCollection
 
     /**
      * Start a new section.
-     *
-     * @param string $sectionName
      */
     public function startSection(string $sectionName)
     {
@@ -47,8 +45,6 @@ class ConfigCollection
 
     /**
      * Adds config to the current section.
-     *
-     * @param array $settings
      */
     public function add(array $settings)
     {
@@ -57,8 +53,6 @@ class ConfigCollection
 
     /**
      * Get the settings for the current section.
-     *
-     * @return array
      */
     public function getSettings(): array
     {
@@ -67,8 +61,6 @@ class ConfigCollection
 
     /**
      * Get the list of available sections.
-     *
-     * @return array
      */
     public function getSections(): array
     {

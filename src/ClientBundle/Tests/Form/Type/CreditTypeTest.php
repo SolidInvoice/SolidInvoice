@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
-use SolidInvoice\ClientBundle\Form\Type\CreditType;
-use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\ClientBundle\Form\Type\CreditType;
+use SolidInvoice\CoreBundle\Tests\FormTestCase;
 
 class CreditTypeTest extends FormTestCase
 {

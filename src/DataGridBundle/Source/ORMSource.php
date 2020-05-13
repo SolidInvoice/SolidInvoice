@@ -35,10 +35,6 @@ class ORMSource implements SourceInterface
 
     /**
      * ORMSource constructor.
-     *
-     * @param ManagerRegistry $registry
-     * @param string          $repository
-     * @param string          $method
      */
     public function __construct(ManagerRegistry $registry, string $repository, string $method)
     {

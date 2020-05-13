@@ -28,9 +28,6 @@ final class Delete implements AjaxResponse
      */
     private $repository;
 
-    /**
-     * @param TaxRepository $repository
-     */
     public function __construct(TaxRepository $repository)
     {
         $this->repository = $repository;

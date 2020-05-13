@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Tests\Factory;
 
 use Carbon\Carbon;
-use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 class CurrencyFactoryTest extends TestCase
 {

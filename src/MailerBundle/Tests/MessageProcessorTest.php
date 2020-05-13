@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MailerBundle\Context;
 use SolidInvoice\MailerBundle\Decorator\MessageDecorator;

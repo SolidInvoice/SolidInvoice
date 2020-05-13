@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use Money\Currency;
+use Money\Money;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use Mockery as M;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Money\Currency;
-use Money\Money;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
 
 class WorkFlowSubscriberTest extends TestCase
 {
-    use DoctrineTestTrait,
-        MockeryPHPUnitIntegration;
+    use DoctrineTestTrait;
+    use MockeryPHPUnitIntegration;
 
     public function testInvoicePaid()
     {

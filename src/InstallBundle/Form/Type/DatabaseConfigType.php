@@ -23,10 +23,6 @@ use Symfony\Component\Validator\Constraints;
 
 class DatabaseConfigType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $drivers = $options['drivers'];

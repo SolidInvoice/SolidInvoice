@@ -32,8 +32,6 @@ class AjaxResponseListener implements EventSubscriberInterface
     }
 
     /**
-     * @param FilterControllerEvent $event
-     *
      * @throws BadRequestHttpException
      */
     public function onController(FilterControllerEvent $event): void

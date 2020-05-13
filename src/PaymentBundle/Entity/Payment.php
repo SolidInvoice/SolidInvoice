@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
-use SolidInvoice\CoreBundle\Traits\Entity;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
+use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
@@ -119,8 +119,6 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @param Invoice $invoice
-     *
      * @return Payment
      */
     public function setInvoice(Invoice $invoice): self
@@ -139,8 +137,6 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @param PaymentMethod $method
-     *
      * @return Payment
      */
     public function setMethod(PaymentMethod $method): self
@@ -162,8 +158,6 @@ class Payment extends BasePayment implements PaymentInterface
 
     /**
      * Set status.
-     *
-     * @param string $status
      *
      * @return Payment
      */
@@ -207,8 +201,6 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @param string $message
-     *
      * @return Payment
      */
     public function setMessage(string $message): self
@@ -227,8 +219,6 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @param \DateTime $completed
-     *
      * @return Payment
      */
     public function setCompleted(\DateTime $completed): self
@@ -257,8 +247,6 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @param Client $client
-     *
      * @return Payment
      */
     public function setClient(Client $client): self

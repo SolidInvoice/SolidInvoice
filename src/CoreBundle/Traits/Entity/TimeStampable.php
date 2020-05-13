@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Traits\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 trait TimeStampable
 {
@@ -50,8 +50,6 @@ trait TimeStampable
     /**
      * Sets created.
      *
-     * @param \DateTime $created
-     *
      * @return $this
      */
     public function setCreated(\DateTime $created)
@@ -73,8 +71,6 @@ trait TimeStampable
 
     /**
      * Sets updated.
-     *
-     * @param \DateTime $updated
      *
      * @return $this
      */

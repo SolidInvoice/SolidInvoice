@@ -37,8 +37,6 @@ class TextTemplateDecorator implements MessageDecorator, VerificationMessageDeco
     }
 
     /**
-     * @param MessageEvent $event
-     *
      * @throws \RuntimeException
      */
     public function decorate(MessageEvent $event): void

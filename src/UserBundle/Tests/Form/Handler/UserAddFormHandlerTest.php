@@ -94,9 +94,6 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
-    /**
-     * @return array
-     */
     public function getFormData(): array
     {
         return [

@@ -15,9 +15,6 @@ namespace SolidInvoice\PaymentBundle\Menu;
 
 class PaymentMenu
 {
-    /**
-     * @return array
-     */
     public static function main(): array
     {
         return [
@@ -31,9 +28,6 @@ class PaymentMenu
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function methods(): array
     {
         return [

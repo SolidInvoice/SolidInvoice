@@ -24,9 +24,6 @@ class MoneyHydrator extends AbstractHydrator
      */
     private static $currency;
 
-    /**
-     * @param Currency $currency
-     */
     public static function setCurrency(\Money\Currency $currency)
     {
         self::$currency = $currency;

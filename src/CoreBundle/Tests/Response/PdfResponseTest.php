@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Response;
 
-use SolidInvoice\CoreBundle\Response\PdfResponse;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Response\PdfResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class PdfResponseTest extends TestCase

@@ -41,17 +41,11 @@ class Money
      */
     private static $baseCurrency;
 
-    /**
-     * @param string $currency
-     */
     public static function setBaseCurrency(string $currency)
     {
         self::$baseCurrency = $currency;
     }
 
-    /**
-     * @return string
-     */
     public static function getBaseCurrency(): string
     {
         return self::$baseCurrency;
@@ -68,9 +62,6 @@ class Money
         }
     }
 
-    /**
-     * @return BaseMoney
-     */
     public function getMoney(): BaseMoney
     {
         return new BaseMoney((int) $this->value, new Currency($this->currency ?: self::$baseCurrency));

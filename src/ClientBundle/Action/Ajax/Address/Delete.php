@@ -20,8 +20,8 @@ use SolidInvoice\CoreBundle\Traits\JsonTrait;
 
 final class Delete implements AjaxResponse
 {
-    use DoctrineAwareTrait,
-        JsonTrait;
+    use DoctrineAwareTrait;
+    use JsonTrait;
 
     public function __invoke(Address $address)
     {

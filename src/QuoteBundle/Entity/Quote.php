@@ -15,6 +15,13 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -23,13 +30,6 @@ use SolidInvoice\CoreBundle\Traits\Entity;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Money\Money;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -189,17 +189,12 @@ class Quote
         return $this->id;
     }
 
-    /**
-     * @return Uuid
-     */
     public function getUuid(): Uuid
     {
         return $this->uuid;
     }
 
     /**
-     * @param UuidInterface $uuid
-     *
      * @return Quote
      */
     public function setUuid(UuidInterface $uuid): self
@@ -232,8 +227,6 @@ class Quote
     }
 
     /**
-     * @param Contact $user
-     *
      * @return Quote
      */
     public function addUser(Contact $user): self
@@ -255,8 +248,6 @@ class Quote
 
     /**
      * Set status.
-     *
-     * @param string $status
      *
      * @return Quote
      */
@@ -280,8 +271,6 @@ class Quote
     /**
      * Set client.
      *
-     * @param Client|null $client
-     *
      * @return Quote
      */
     public function setClient(?Client $client): self
@@ -291,17 +280,12 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getTotal(): Money
     {
         return $this->total->getMoney();
     }
 
     /**
-     * @param Money $total
-     *
      * @return Quote
      */
     public function setTotal(Money $total): self
@@ -311,17 +295,12 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getBaseTotal(): Money
     {
         return $this->baseTotal->getMoney();
     }
 
     /**
-     * @param Money $baseTotal
-     *
      * @return Quote
      */
     public function setBaseTotal(Money $baseTotal): self
@@ -331,17 +310,12 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return Discount
-     */
     public function getDiscount(): Discount
     {
         return $this->discount;
     }
 
     /**
-     * @param Discount $discount
-     *
      * @return Quote
      */
     public function setDiscount(Discount $discount): self
@@ -360,8 +334,6 @@ class Quote
     }
 
     /**
-     * @param \DateTime $due
-     *
      * @return Quote
      */
     public function setDue(\DateTime $due): self
@@ -372,8 +344,6 @@ class Quote
     }
 
     /**
-     * @param Item $item
-     *
      * @return Quote
      */
     public function addItem(Item $item): self
@@ -385,8 +355,6 @@ class Quote
     }
 
     /**
-     * @param Item $item
-     *
      * @return Quote
      */
     public function removeItem(Item $item): self
@@ -445,17 +413,12 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return Money
-     */
     public function getTax(): Money
     {
         return $this->tax->getMoney();
     }
 
     /**
-     * @param Money $tax
-     *
      * @return Quote
      */
     public function setTax(Money $tax): self

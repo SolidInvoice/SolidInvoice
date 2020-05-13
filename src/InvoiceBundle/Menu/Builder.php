@@ -27,8 +27,6 @@ class Builder extends AuthenticatedMenu
     /**
      * Menu builder for the invoice index.
      *
-     * @param ItemInterface $menu
-     *
      * @throws \InvalidArgumentException
      */
     public function topMenu(ItemInterface $menu)
@@ -38,9 +36,6 @@ class Builder extends AuthenticatedMenu
 
     /**
      * Renders the invoice index menu.
-     *
-     * @param ItemInterface $menu
-     * @param array         $options
      *
      * @throws \InvalidArgumentException
      */
@@ -65,9 +60,6 @@ class Builder extends AuthenticatedMenu
 
     /**
      * Renders the invoice edit menu.
-     *
-     * @param ItemInterface $menu
-     * @param array         $options
      *
      * @throws \InvalidArgumentException
      */

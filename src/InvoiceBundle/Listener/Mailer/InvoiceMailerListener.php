@@ -26,9 +26,6 @@ class InvoiceMailerListener implements EventSubscriberInterface
      */
     private $mailer;
 
-    /**
-     * @param Mailer $mailer
-     */
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
@@ -44,9 +41,6 @@ class InvoiceMailerListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param InvoiceEvent $event
-     */
     public function onInvoiceAccepted(InvoiceEvent $event)
     {
         $this->mailer->send(new InvoiceEmail($event->getInvoice()));

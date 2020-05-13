@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction\Offline;
 
-use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
-use SolidInvoice\PaymentBundle\Entity\Payment;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Offline\Constants;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
 
 class StatusAction implements ActionInterface, GatewayAwareInterface
 {

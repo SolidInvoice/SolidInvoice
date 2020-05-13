@@ -42,7 +42,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
         $this->tokenStorage = M::mock(TokenStorageInterface::class);
         $this->router = M::mock(RouterInterface::class);
 
-        $executor = (new class extends KernelTestCase {
+        $executor = (new class() extends KernelTestCase {
             use FixturesTrait;
 
             public function __invoke()
@@ -63,7 +63,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getHandler()
     {
@@ -96,7 +96,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
         return [
             'profile' => [
                 'mobile' => '9876543210',
-            ]
+            ],
         ];
     }
 }

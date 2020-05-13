@@ -26,7 +26,6 @@ class ChainedNotification extends Notification implements ChainedNotificationInt
     /**
      * @param NotificationInterface[] $notifications
      * @param string                  $message
-     * @param array                   $parameters
      */
     public function __construct(array $notifications = [], string $message = null, array $parameters = [])
     {

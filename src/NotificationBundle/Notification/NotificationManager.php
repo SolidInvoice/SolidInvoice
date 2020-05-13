@@ -42,12 +42,6 @@ class NotificationManager
      */
     private $entityManager;
 
-    /**
-     * @param Factory         $factory
-     * @param SystemConfig    $settings
-     * @param Manager         $notification
-     * @param ManagerRegistry $doctrine
-     */
     public function __construct(
         Factory $factory,
         SystemConfig $settings,
@@ -61,9 +55,6 @@ class NotificationManager
     }
 
     /**
-     * @param string                       $event
-     * @param NotificationMessageInterface $message
-     *
      * @throws \SolidInvoice\CoreBundle\Mailer\Exception\UnexpectedFormatException
      * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
      */

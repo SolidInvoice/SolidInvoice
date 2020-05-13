@@ -17,8 +17,6 @@ interface CommandInterface
 {
     /**
      * Checks if command is due to run.
-     *
-     * @return bool
      */
     public function isDue(): bool;
 

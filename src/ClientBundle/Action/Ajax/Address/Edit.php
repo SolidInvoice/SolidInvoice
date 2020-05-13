@@ -24,8 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Edit implements AjaxResponse
 {
-    use SaveableTrait,
-        JsonTrait;
+    use SaveableTrait;
+    use JsonTrait;
 
     /**
      * @var FormFactoryInterface

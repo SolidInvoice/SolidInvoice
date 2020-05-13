@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification\Handler;
 
-use SolidInvoice\NotificationBundle\Notification\ChainedNotificationInterface;
 use Namshi\Notificator\ManagerInterface;
 use Namshi\Notificator\Notification\Handler\HandlerInterface;
 use Namshi\Notificator\NotificationInterface;
+use SolidInvoice\NotificationBundle\Notification\ChainedNotificationInterface;
 
 class ChainedHandler implements HandlerInterface
 {
@@ -25,9 +25,6 @@ class ChainedHandler implements HandlerInterface
      */
     private $manager;
 
-    /**
-     * @param ManagerInterface $manager
-     */
     public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;

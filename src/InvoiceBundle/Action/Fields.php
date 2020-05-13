@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
+use Money\Currency;
 use SolidInvoice\CoreBundle\Form\FieldRenderer;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
-use Money\Currency;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
