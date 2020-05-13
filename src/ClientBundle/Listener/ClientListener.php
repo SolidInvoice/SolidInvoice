@@ -37,9 +37,6 @@ class ClientListener implements EventSubscriber
         $this->notification = $notification;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents()
     {
         return [

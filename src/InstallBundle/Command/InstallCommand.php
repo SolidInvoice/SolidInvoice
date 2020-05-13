@@ -186,9 +186,6 @@ class InstallCommand extends Command
         return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     private function install(InputInterface $input, OutputInterface $output)
     {
         if ($this->initDb($input, $output)) {
