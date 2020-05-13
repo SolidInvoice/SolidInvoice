@@ -11,7 +11,7 @@ framework:
     esi: null
     translator:
         fallback: en
-    secret: '%secret%'
+    secret: '%env(secret)%'
     router:
         resource: '%kernel.root_dir%/config/routing.yml'
         strict_requirements: null
@@ -21,7 +21,7 @@ framework:
         enabled: true
         enable_annotations: true
         strict_email: true
-    default_locale: '%locale%'
+    default_locale: '%env(locale)%'
     session:
         name: SOLIDINVOICE_APP
     fragments: null
@@ -84,7 +84,7 @@ swiftmailer:
         type: memory
 
 stof_doctrine_extensions:
-    default_locale: '%locale%'
+    default_locale: '%env(locale)%'
     orm: null
 
 api_platform:

@@ -98,12 +98,19 @@ final class Setup
             return $this->handleForm($request);
         }
 
-        return $this->render($this->getForm($request));
+        return $this->render($this->getForm());
     }
 
-    private function getForm(Request $request): FormInterface
+    private function getForm(): FormInterface
     {
-        return $this->formFactory->create(SystemInformationForm::class, [], ['userCount' => $this->getUserCount()]);
+        $config = $this->configWriter->getConfigValues();
+
+        $data = [
+            'locale' => $config['locale'] ?? null,
+            'currency' => $this->systemConfig->get(CurrencyFactory::CURRENCY_PATH)
+        ];
+
+        return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);
     }
 
     /**
@@ -122,7 +129,7 @@ final class Setup
 
     public function handleForm(Request $request)
     {
-        $form = $this->getForm($request);
+        $form = $this->getForm();
 
         $form->handleRequest($request);
 
@@ -187,7 +194,7 @@ final class Setup
 
         $config = [
             'locale' => $data['locale'],
-            'installed' => $time->format(DateTime::ISO8601),
+            'installed' => $time->format(DateTime::ATOM),
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 

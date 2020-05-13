@@ -32,6 +32,7 @@ final class Finish
     public function __invoke(Request $request)
     {
         $session = $request->getSession();
+
         if (!$session->has('installation_step') || true !== $session->get('installation_step')) {
             throw new ApplicationInstalledException();
         }

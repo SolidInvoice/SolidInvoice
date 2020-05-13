@@ -10,7 +10,3 @@ services:
 
     SolidInvoice\SettingsBundle\Listener\:
         resource: '../../../Listener'
-
-    SolidInvoice\SettingsBundle\Listener\MailerSettingsEnvListener:
-        arguments:
-            $installed: '%installed%'

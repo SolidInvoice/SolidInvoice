@@ -9,4 +9,4 @@ services:
 
     SolidInvoice\MoneyBundle\Form\Type\CurrencyType:
         arguments:
-            $locale: '%locale%'
+            $locale: '%env(locale)%'

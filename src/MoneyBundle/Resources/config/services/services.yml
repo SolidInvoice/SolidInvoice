@@ -1,7 +1,7 @@
 services:
     SolidInvoice\MoneyBundle\Formatter\MoneyFormatter:
         arguments:
-            $locale: '%locale%'
+            $locale: '%env(locale)%'
         autowire: true
         lazy: true
 
@@ -16,7 +16,7 @@ services:
     currency_factory:
         class: SolidInvoice\MoneyBundle\Factory\CurrencyFactory
         arguments:
-            $installed: '%installed%'
+            $installed: '%env(installed)%'
         autowire: true
         lazy: true
 

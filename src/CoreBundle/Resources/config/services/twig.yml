@@ -6,8 +6,8 @@ services:
             - { name: twig.extension }
 
     SolidInvoice\CoreBundle\Twig\Extension\GlobalExtension:
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
+        arguments:
+            $installed: '%env(installed)%'
 
     SolidInvoice\CoreBundle\Twig\Extension\BillingExtension: ~
 

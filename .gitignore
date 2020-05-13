@@ -17,7 +17,7 @@ composer.phar
 !web/css/.gitkeep
 !web/fonts/.gitkeep
 !web/img/.gitkeep
-app/config/parameters.yml
+app/config/env.php
 .idea
 node_modules
 .rules

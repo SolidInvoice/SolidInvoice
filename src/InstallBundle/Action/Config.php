@@ -75,7 +75,7 @@ final class Config
 
         $drivers = array_combine(
             array_map(
-                function ($value): string {
+                static function ($value): string {
                     return sprintf('pdo_%s', $value);
                 },
                 $availableDrivers
@@ -87,12 +87,20 @@ final class Config
 
         $data = [
             'database_config' => [
-                'host' => $_ENV['database_host'] ?? $config['env(database_host)'],
-                'port' => $_ENV['database_port'] ?? $config['env(database_port)'],
-                'name' => $_ENV['database_name'] ?? $config['env(database_name)'],
-                'user' => $_ENV['database_user'] ?? $config['env(database_user)'],
-                'password' => $_ENV['database_password'] ?? $config['env(database_password)'],
-                'driver' => $_ENV['database_driver'] ?? null,
+                'host' => $config['database_host'] ?? null,
+                'port' => $config['database_port'] ?? null,
+                'name' => $config['database_name'] ?? null,
+                'user' => $config['database_user'] ?? null,
+                'password' => null,
+                'driver' => $config['database_driver'] ?? null,
+            ],
+            'email_settings' => [
+                'transport' => $config['mailer_transport'] ?? null,
+                'host' => $config['mailer_host'] ?? null,
+                'port' => $config['mailer_port'] ?? null,
+                'encryption' => $config['mailer_encryption'] ?? null,
+                'user' =>  $config['mailer_user'] ?? null,
+                'password' => null,
             ],
         ];
 
@@ -116,13 +124,13 @@ final class Config
 
             // sets the database details
             foreach ($data['database_config'] as $key => $param) {
-                $key = sprintf('env(database_%s)', $key);
+                $key = sprintf('database_%s', $key);
                 $config[$key] = $param;
             }
 
             // sets the database details
             foreach ($data['email_settings'] as $key => $param) {
-                $key = sprintf('env(mailer_%s)', $key);
+                $key = sprintf('mailer_%s', $key);
                 $config[$key] = $param;
             }
 

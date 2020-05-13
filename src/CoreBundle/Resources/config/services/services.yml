@@ -5,7 +5,6 @@ services:
 
     SolidInvoice\CoreBundle\ConfigWriter:
         arguments:
-            $cacheDir: '%kernel.cache_dir%'
             $projectDir: '%kernel.project_dir%'
 
     solidinvoice_core.form.help.extension:
@@ -51,3 +50,6 @@ services:
     SolidInvoice\CoreBundle\Command\YamlFormatCommand:
         arguments:
             $projectDir: '%kernel.project_dir%'
+
+    SolidInvoice\CoreBundle\Config\Loader\EnvLoader:
+        $projectDir: '%kernel.project_dir%'

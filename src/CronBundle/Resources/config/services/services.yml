@@ -3,7 +3,7 @@ services:
         autoconfigure: true
         autowire: true
         bind:
-            $installed: '%installed%'
+            $installed: '%env(installed)%'
 
     SolidInvoice\CronBundle\Runner: ~
     SolidInvoice\CronBundle\Command\CronRunCommand: ~
