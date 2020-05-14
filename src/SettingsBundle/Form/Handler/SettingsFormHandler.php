@@ -70,6 +70,8 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         $config = [];
 
         foreach ($data['email']['sending_options'] ?? [] as $key => $value) {
+            $data['email']['sending_options'][$key] = null;
+
             if ('password' === $key && null === $value) {
                 continue;
             }
@@ -78,9 +80,6 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         }
 
         $this->configWriter->dump($config);
-
-        unset($data['email']['sending_options']);
-
         $this->settingsRepository->save($this->flatten($data));
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
