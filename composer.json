@@ -132,6 +132,7 @@
         "phpstan/phpstan-phpunit": "^0.12",
         "phpstan/phpstan-symfony": "^0.12",
         "symfony/debug-bundle": "^5.0",
+        "symfony/maker-bundle": "^1.17",
         "symfony/panther": "^0.7.1",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/web-profiler-bundle": "^4.4"

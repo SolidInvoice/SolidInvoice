@@ -62,6 +62,7 @@ class AppKernel extends Kernel
         if (in_array($env = $this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new Symfony\Bundle\MakerBundle\MakerBundle();
 
             if ('test' === $env) {
                 $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
