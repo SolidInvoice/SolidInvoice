@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-php bin/console doctrine:migrations:migrate -n -q
+set -Eeuxo pipefail
+set -o history -o histexpand
+
+SOLIDINVOICE_ENV=test SOLIDINVOICE_DEBUG=0 php bin/console doctrine:migrations:migrate -n -q
 
 ./bin/simple-phpunit --coverage-clover build/logs/clover.xml --exclude-group installation,functional
 
