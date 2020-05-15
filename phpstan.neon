@@ -6,5 +6,3 @@ parameters:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/test/appAppKernelTestDebugContainer.xml
-    ignoreErrors:
-        - '#Call to deprecated method setFactoryName\(\) of class SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod:.*#'
