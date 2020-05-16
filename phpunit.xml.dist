@@ -27,6 +27,8 @@
         <server name="APP_DEBUG" value="0"/>
         <server name="SYMFONY_DEPRECATIONS_HELPER" value="300"/>
         <server name="PANTHER_NO_HEADLESS" value="0" />
+        <server name="PANTHER_WEB_SERVER_DIR" value="./web" />
+        <server name="PANTHER_WEB_SERVER_ROUTER" value="app.php" />
     </php>
 
     <listeners>

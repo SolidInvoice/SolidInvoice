@@ -13,7 +13,9 @@ namespace SolidInvoice\InstallBundle\Tests\Functional;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception\DriverException;
+use SolidInvoice\CoreBundle\ConfigWriter;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
 use Symfony\Component\Yaml\Yaml;
@@ -29,7 +31,8 @@ class InstallationTest extends PantherTestCase
 
         $kernel = self::bootKernel();
 
-        $connection = $kernel->getContainer()->get('doctrine')->getConnection();
+        $container = $kernel->getContainer();
+        $connection = $container->get('doctrine')->getConnection();
 
         $params = $connection->getParams();
 
@@ -54,11 +57,10 @@ class InstallationTest extends PantherTestCase
             // noop
         }
 
-        if (file_exists($parametersFile = $kernel->getProjectDir().'/app/config/parameters.yml')) {
-            $parameters = Yaml::parseFile($parametersFile);
-            $parameters['parameters']['installed'] = null;
-            file_put_contents($parametersFile, Yaml::dump($parameters));
-            self::bootKernel(['debug' => true]); // Reboot the kernel with debug to rebuild the cache
+        if (file_exists($envFile = $kernel->getProjectDir().'/app/config/env.php')) {
+            /** @var ConfigWriter $configWriter */
+            $configWriter = $container->get(ConfigWriter::class);
+            $configWriter->dump(['installed' => null]);
         }
     }
 
