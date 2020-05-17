@@ -1,8 +1,7 @@
 security:
     encoders:
         SolidInvoice\UserBundle\Entity\User:
-            algorithm: bcrypt
-            cost: 10
+            algorithm: auto
     role_hierarchy:
         ROLE_ADMIN: null
         ROLE_SUPER_ADMIN:
