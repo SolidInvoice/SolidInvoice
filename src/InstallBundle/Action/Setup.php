@@ -143,6 +143,8 @@ final class Setup
             $this->saveCurrentVersion();
             $this->saveConfig($data);
 
+            $request->getSession()->set('installation_step', true);
+
             return new RedirectResponse($this->router->generate('_install_finish'));
         }
 

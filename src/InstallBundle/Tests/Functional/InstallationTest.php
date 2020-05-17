@@ -11,60 +11,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Exception\DriverException;
-use Facebook\WebDriver\Exception\TimeoutException;
-use SolidInvoice\CoreBundle\ConfigWriter;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @group installation
  */
 class InstallationTest extends PantherTestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        $kernel = self::bootKernel();
-
-        $container = $kernel->getContainer();
-        $connection = $container->get('doctrine')->getConnection();
-
-        $params = $connection->getParams();
-
-        if (isset($params['master'])) {
-            $params = $params['master'];
-        }
-
-        $name = $params['path'] ?? $params['dbname'] ?? false;
-
-        if (!$name) {
-            return;
-        }
-
-        unset($params['dbname'], $params['url']);
-
-        $connection->close();
-        $connection = DriverManager::getConnection($params);
-
-        try {
-            $connection->getSchemaManager()->dropDatabase($name);
-        } catch (DriverException $e) {
-            // noop
-        }
-
-        if (file_exists($envFile = $kernel->getProjectDir().'/app/config/env.php')) {
-            /** @var ConfigWriter $configWriter */
-            $configWriter = $container->get(ConfigWriter::class);
-            $configWriter->dump(['installed' => null]);
-        }
-    }
-
     public function testItRedirectsToInstallationPage()
     {
         $client = self::createPantherClient();
