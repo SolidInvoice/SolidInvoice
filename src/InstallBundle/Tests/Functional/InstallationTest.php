@@ -24,7 +24,7 @@ class InstallationTest extends PantherTestCase
     {
         $client = self::createPantherClient();
 
-        $crawler = $client->request('GET', '/app.php');
+        $crawler = $client->request('GET', '/');
 
         $this->assertStringContainsString('/install', $crawler->getUri());
     }
@@ -33,7 +33,7 @@ class InstallationTest extends PantherTestCase
     {
         $client = self::createPantherClient();
 
-        $crawler = $client->request('GET', '/app.php/install');
+        $crawler = $client->request('GET', '/install');
 
         // No error messages on the site
         $this->assertCount(0, $crawler->filter('.alert-danger'));
@@ -86,7 +86,12 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        $this->assertStringContainsString('/install/finish', $crawler->getUri());
+        try {
+            $this->assertStringContainsString('/install/finish', $crawler->getUri());
+        } catch (\Throwable $e) {
+            echo $crawler->html();
+            throw $e;
+        }
         $this->assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
     }
 
