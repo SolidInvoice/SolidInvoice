@@ -13,6 +13,7 @@ namespace SolidInvoice\InstallBundle\Tests\Functional;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception\DriverException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
@@ -68,7 +69,7 @@ class InstallationTest extends PantherTestCase
     {
         $client = self::createPantherClient();
 
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/app.php');
 
         $this->assertStringContainsString('/install', $crawler->getUri());
     }
@@ -77,7 +78,7 @@ class InstallationTest extends PantherTestCase
     {
         $client = self::createPantherClient();
 
-        $crawler = $client->request('GET', '/install');
+        $crawler = $client->request('GET', '/app.php/install');
 
         // No error messages on the site
         $this->assertCount(0, $crawler->filter('.alert-danger'));
@@ -91,6 +92,7 @@ class InstallationTest extends PantherTestCase
             'Next',
             [
                 'config_step[database_config][driver]' => 'pdo_mysql',
+                'config_step[database_config][host]' => 'localhost',
                 'config_step[database_config][user]' => 'root',
                 'config_step[database_config][name]' => 'solidinvoice_test',
                 'config_step[email_settings][transport]' => 'sendmail',
@@ -99,7 +101,7 @@ class InstallationTest extends PantherTestCase
 
         $this->assertStringContainsString('/install/install', $crawler->getUri());
 
-        $kernel = self::bootKernel(['debug' => true]);  // Reboot the kernel with debug to rebuild the cache
+        $kernel = self::bootKernel();
         $this->assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
         $this->assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
 
@@ -131,9 +133,6 @@ class InstallationTest extends PantherTestCase
 
         $this->assertStringContainsString('/install/finish', $crawler->getUri());
         $this->assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
-
-        $kernel = self::bootKernel(['debug' => true]);
-        $this->assertNotNull($kernel->getContainer()->getParameter('installed'));
     }
 
     private function continue(Client $client, Crawler $crawler)

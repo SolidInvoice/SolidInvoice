@@ -42,6 +42,7 @@ class RequestListener implements EventSubscriberInterface
         '_install_config',
         '_install_install',
         '_install_setup',
+        '_install_finish',
     ];
 
     /**

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import Router from 'router';
 import Translator from 'translator';
+import { startsWith } from 'lodash';
 
 const iconBusy = '<i class="fa fa-circle-o-notch fa-spin"></i>',
     iconSuccess = '<i class="fa fa-check text-success"></i>',
@@ -13,7 +14,9 @@ function ajaxStep (action, callback) {
 
     step.append(clone.append(iconBusy));
 
-    $.post(Router.generate('_install_install'), { 'action': action }).done((response) => {
+    const route = ( startsWith(window.location.pathname, '/app.php') ? '/app.php' : '' ) + Router.generate('_install_install');
+
+    $.post(route, { 'action': action }).done((response) => {
         if (true === response.success) {
             clone.remove();
             step.append(container.append(iconSuccess));
