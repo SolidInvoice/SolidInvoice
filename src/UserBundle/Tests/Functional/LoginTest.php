@@ -20,8 +20,9 @@ class LoginTest extends PantherTestCase
 {
     public function testRedirectToLoginPage()
     {
-        $client = self::createPantherClient();
-        $client->request('GET', '/');
-        $this->assertStringContainsString('/login', $client->getCurrentURL());
+        $client = self::createClient();
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/');
+        $this->assertStringContainsString('/login', $crawler->getUri());
     }
 }

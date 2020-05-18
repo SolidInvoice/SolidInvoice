@@ -34,11 +34,6 @@ abstract class ApiTestCase extends PantherTestCase
 
         self::$client = static::createClient();
 
-        if (null === self::$kernel->getContainer()->getParameter('installed')) {
-            // @TODO: We need to ensure that the application is installed before running the tests
-            throw new \Exception('Application is not installed');
-        }
-
         $registry = self::$kernel->getContainer()->get('doctrine');
 
         /** @var User[] $users */

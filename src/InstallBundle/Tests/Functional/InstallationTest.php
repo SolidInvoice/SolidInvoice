@@ -86,12 +86,7 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        try {
-            $this->assertStringContainsString('/install/finish', $crawler->getUri());
-        } catch (\Throwable $e) {
-            echo $crawler->html();
-            throw $e;
-        }
+        $this->assertStringContainsString('/install/finish', $crawler->getUri());
         $this->assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
     }
 

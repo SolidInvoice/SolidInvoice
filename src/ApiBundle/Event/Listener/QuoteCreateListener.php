@@ -46,13 +46,13 @@ class QuoteCreateListener implements EventSubscriberInterface
 
     public function setQuoteStatus(ViewEvent $event)
     {
-        $invoice = $event->getControllerResult();
+        $quote = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$invoice instanceof Quote || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $invoice->getStatus()) {
+        if (!$quote instanceof Quote || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $quote->getStatus()) {
             return;
         }
 
-        $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
+        $this->stateMachine->apply($quote, Graph::TRANSITION_NEW);
     }
 }

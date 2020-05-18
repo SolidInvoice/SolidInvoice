@@ -70,6 +70,8 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $em->persist($invoice);
         $em->flush();
 
-        $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
+        if (Graph::STATUS_NEW !== $invoice->getStatus()) {
+            $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
+        }
     }
 }

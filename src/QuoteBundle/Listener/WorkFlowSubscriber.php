@@ -18,6 +18,7 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -88,6 +89,8 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $em->persist($quote);
         $em->flush();
 
-        $this->notification->sendNotification('quote_status_update', new QuoteStatusNotification(['quote' => $quote]));
+        if (QuoteGraph::STATUS_NEW !== $quote->getStatus()) {
+            $this->notification->sendNotification('quote_status_update', new QuoteStatusNotification(['quote' => $quote]));
+        }
     }
 }

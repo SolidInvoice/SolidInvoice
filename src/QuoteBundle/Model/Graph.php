@@ -29,6 +29,8 @@ final class Graph
 
     const TRANSITION_ARCHIVE = 'archive';
 
+    const STATUS_NEW = 'new';
+
     const STATUS_DRAFT = 'draft';
 
     const STATUS_PENDING = 'pending';
