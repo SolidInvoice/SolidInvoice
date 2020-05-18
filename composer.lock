@@ -6627,25 +6627,25 @@
         },
         {
             "name": "solidworx/form-handler-bundle",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/FormHandlerBundle.git",
-                "reference": "9cc7704ba65e529a5437720846443d14bfd09f4c"
+                "reference": "ac7a61ba9470da52d1674c707f916cefb27ae82a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/9cc7704ba65e529a5437720846443d14bfd09f4c",
-                "reference": "9cc7704ba65e529a5437720846443d14bfd09f4c",
+                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/ac7a61ba9470da52d1674c707f916cefb27ae82a",
+                "reference": "ac7a61ba9470da52d1674c707f916cefb27ae82a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.0",
-                "symfony/event-dispatcher": "^4.0 || ^5.0",
+                "symfony/event-dispatcher": "^4.4 || ^5.0",
                 "symfony/form": "^4.0 || ^5.0",
-                "symfony/framework-bundle": "^4.0 || ^5.0",
-                "symfony/http-foundation": "^4.0 || ^5.0",
-                "symfony/options-resolver": "^4.0 || ^5.0"
+                "symfony/framework-bundle": "^4.4 || ^5.0",
+                "symfony/http-foundation": "^4.4 || ^5.0",
+                "symfony/options-resolver": "^4.4 || ^5.0"
             },
             "require-dev": {
                 "doctrine/common": "^2.7",
@@ -6681,7 +6681,7 @@
                 "symfony forms",
                 "symfony-bundle"
             ],
-            "time": "2020-04-08T13:23:28+00:00"
+            "time": "2020-05-18T14:24:47+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
