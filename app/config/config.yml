@@ -20,7 +20,7 @@ framework:
     validation:
         enabled: true
         enable_annotations: true
-        strict_email: true
+        email_validation_mode: html5
     default_locale: '%env(locale)%'
     session:
         name: SOLIDINVOICE_APP
