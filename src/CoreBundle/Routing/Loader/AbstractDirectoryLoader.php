@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Routing\Loader;
 
 use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use SolidInvoice\CoreBundle\Util\ClassUtil;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\Loader;
@@ -66,14 +67,16 @@ abstract class AbstractDirectoryLoader extends Loader
         $collection = new RouteCollection();
         $collection->addResource(new DirectoryResource($dir));
 
+        $inflector = InflectorFactory::create()->build();
+
         /* @var Bundle $bundle */
         $bundle = $this->kernel->getBundle(substr($resource, 1, strpos($resource, '/') - 1));
         $namespace = $bundle->getNamespace();
-        $bundleName = Inflector::tableize(str_replace('Bundle', '', substr($namespace, strrpos($namespace, '\\') + 1)));
+        $bundleName = $inflector->tableize(str_replace('Bundle', '', substr($namespace, strrpos($namespace, '\\') + 1)));
 
         /* @var SplFileInfo $action */
         foreach ($actions as $action) {
-            $actionName = Inflector::tableize($action->getBasename('.php'));
+            $actionName = $inflector->tableize($action->getBasename('.php'));
             $controller = ClassUtil::findClassInFile($action->getRealPath());
 
             if (null === $controller) {

@@ -28,7 +28,7 @@ class MenuItemTest extends TestCase
         $factory = M::mock('Knp\Menu\FactoryInterface');
         $item = new MenuItem('test', $factory);
 
-        $childItem = new MenuItem(null, $factory);
+        $childItem = new MenuItem('test', $factory);
         $childItem->setExtra('divider', '-*');
         $factory->shouldReceive('createItem')
             ->withAnyArgs()
