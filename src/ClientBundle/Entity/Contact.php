@@ -83,7 +83,7 @@ class Contact implements \Serializable
      *
      * @ORM\Column(name="email", type="string", length=255)
      * @Assert\NotBlank()
-     * @Assert\Email(strict=true)
+     * @Assert\Email(mode="strict")
      * @Serialize\Groups({"client_api", "contact_api"})
      * @ApiProperty(iri="https://schema.org/email")
      */
