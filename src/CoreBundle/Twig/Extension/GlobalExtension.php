@@ -159,7 +159,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
 
         [$type, $logo] = explode('|', $logo);
 
-        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="brand-image elevation-3"/>')->render(['type' => $type, 'logo' => $logo]);
+        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="brand-image"/>')->render(['type' => $type, 'logo' => $logo]);
     }
 
     /**
