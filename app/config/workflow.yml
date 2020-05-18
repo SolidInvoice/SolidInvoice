@@ -5,9 +5,8 @@ framework:
                 enabled: true
             type: 'state_machine'
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - status
+                type: 'method'
+                property: 'status'
             supports:
                 - 'SolidInvoice\InvoiceBundle\Entity\Invoice'
             places:
@@ -53,9 +52,8 @@ framework:
                 enabled: true
             type: 'state_machine'
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - status
+                type: 'method'
+                property: 'status'
             supports:
                 - 'SolidInvoice\QuoteBundle\Entity\Quote'
             places:

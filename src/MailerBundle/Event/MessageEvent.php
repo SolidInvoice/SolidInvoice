@@ -15,7 +15,7 @@ namespace SolidInvoice\MailerBundle\Event;
 
 use SolidInvoice\MailerBundle\Context;
 
-class MessageEvent extends \Symfony\Component\EventDispatcher\Event
+class MessageEvent extends \Symfony\Contracts\EventDispatcher\Event
 {
     /**
      * @var \Swift_Message

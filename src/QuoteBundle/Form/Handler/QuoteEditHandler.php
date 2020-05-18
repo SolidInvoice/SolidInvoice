@@ -38,10 +38,10 @@ class QuoteEditHandler extends AbstractQuoteHandler
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($quote, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $quote): ?Response
     {
         /* @var RedirectResponse $response */
-        $response = parent::onSuccess($quote, $form);
+        $response = parent::onSuccess($form, $quote);
 
         return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable

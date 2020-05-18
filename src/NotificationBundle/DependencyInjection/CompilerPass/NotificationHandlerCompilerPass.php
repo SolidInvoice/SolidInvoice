@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\DependencyInjection\CompilerPass;
 
+use Namshi\Notificator\Manager;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -24,11 +25,11 @@ class NotificationHandlerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('notification.sender')) {
+        if (!$container->hasDefinition(Manager::class)) {
             return;
         }
 
-        $definition = $container->getDefinition('notification.sender');
+        $definition = $container->getDefinition(Manager::class);
 
         $services = $container->findTaggedServiceIds('notification.handler');
 

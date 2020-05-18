@@ -5,15 +5,19 @@ services:
     SolidInvoice\InvoiceBundle\Action\:
         resource: '../../../Action'
         autowire: true
+        tags: ['controller.service_arguments']
 
     SolidInvoice\InvoiceBundle\Action\Grid\Archive:
+        tags: ['controller.service_arguments']
         arguments:
             $stateMachine: '@state_machine.invoice'
 
     SolidInvoice\InvoiceBundle\Action\Transition:
+        tags: ['controller.service_arguments']
         arguments:
             $stateMachine: '@state_machine.invoice'
 
     SolidInvoice\InvoiceBundle\Action\Transition\Send:
+        tags: ['controller.service_arguments']
         arguments:
             $stateMachine: '@state_machine.invoice'

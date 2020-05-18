@@ -56,7 +56,7 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $client, FormRequest $form)
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $client): void
     {
         /* @var Client $client */
 
@@ -67,7 +67,7 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
         $this->assertCount(1, $this->em->getRepository(Client::class)->findAll());
     }
 
-    protected function assertResponse(FormRequest $formRequest)
+    protected function assertResponse(FormRequest $formRequest): void
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }

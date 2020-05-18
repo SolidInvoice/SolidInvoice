@@ -43,7 +43,7 @@ export default AjaxModal.extend({
             'url': this.getOption('route'),
             'data': this.$('form').serialize(),
             'type': 'post',
-            success(response) {
+            success: (response) => {
                 this.trigger('ajax:response', response);
 
                 if (has(this, 'model')) {
@@ -53,7 +53,7 @@ export default AjaxModal.extend({
 
                 this.$el.modal('hide');
             },
-            error(response) {
+            error: (response) => {
                 // @TODO: If there are any validation errors, then we should re-render the modal with the content
                 this.options.template = response;
                 this.hideLoader();

@@ -5,7 +5,7 @@ services:
 
     solidinvoice_menu.renderer:
         class: SolidInvoice\MenuBundle\Renderer
-        arguments: ['@request_stack', '@solidinvoice_menu.factory']
+        arguments: ['@request_stack', '@solidinvoice_menu.factory', '@translator', '@twig']
         calls:
             - ['setContainer', ['@service_container']]
 

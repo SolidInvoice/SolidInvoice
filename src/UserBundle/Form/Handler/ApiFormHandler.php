@@ -46,7 +46,7 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(ApiTokenType::class, $options->get('api_token'));
     }
@@ -67,7 +67,7 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($user, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $user): ?Response
     {
         /* @var ApiToken $user */
         $user->setToken($this->tokenManager->generateToken());

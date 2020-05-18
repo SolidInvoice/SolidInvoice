@@ -15,6 +15,6 @@ services:
 
     SolidInvoice\CoreBundle\Listener\SessionRequestListener:
         arguments:
-            $secret: '%secret%'
+            $secret: '%env(secret)%'
 
     SolidInvoice\CoreBundle\Listener\TemplateListener: ~

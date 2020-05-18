@@ -11,57 +11,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @group installation
  */
 class InstallationTest extends PantherTestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        $kernel = self::bootKernel();
-
-        $connection = $kernel->getContainer()->get('doctrine')->getConnection();
-
-        $params = $connection->getParams();
-
-        if (isset($params['master'])) {
-            $params = $params['master'];
-        }
-
-        $name = $params['path'] ?? $params['dbname'] ?? false;
-
-        if (!$name) {
-            return;
-        }
-
-        unset($params['dbname'], $params['url']);
-
-        $connection->close();
-        $connection = DriverManager::getConnection($params);
-
-        try {
-            $connection->getSchemaManager()->dropDatabase($name);
-        } catch (DriverException $e) {
-            // noop
-        }
-
-        if (file_exists($parametersFile = $kernel->getProjectDir().'/app/config/parameters.yml')) {
-            $parameters = Yaml::parseFile($parametersFile);
-            $parameters['parameters']['installed'] = null;
-            file_put_contents($parametersFile, Yaml::dump($parameters));
-            self::bootKernel(['debug' => true]); // Reboot the kernel with debug to rebuild the cache
-        }
-    }
-
     public function testItRedirectsToInstallationPage()
     {
         $client = self::createPantherClient();
@@ -89,6 +47,7 @@ class InstallationTest extends PantherTestCase
             'Next',
             [
                 'config_step[database_config][driver]' => 'pdo_mysql',
+                'config_step[database_config][host]' => 'localhost',
                 'config_step[database_config][user]' => 'root',
                 'config_step[database_config][name]' => 'solidinvoice_test',
                 'config_step[email_settings][transport]' => 'sendmail',
@@ -97,7 +56,7 @@ class InstallationTest extends PantherTestCase
 
         $this->assertStringContainsString('/install/install', $crawler->getUri());
 
-        $kernel = self::bootKernel(['debug' => true]);  // Reboot the kernel with debug to rebuild the cache
+        $kernel = self::bootKernel();
         $this->assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
         $this->assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
 
@@ -129,9 +88,6 @@ class InstallationTest extends PantherTestCase
 
         $this->assertStringContainsString('/install/finish', $crawler->getUri());
         $this->assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
-
-        $kernel = self::bootKernel(['debug' => true]);
-        $this->assertNotNull($kernel->getContainer()->getParameter('installed'));
     }
 
     private function continue(Client $client, Crawler $crawler)

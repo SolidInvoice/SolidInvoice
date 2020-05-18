@@ -1,6 +1,5 @@
 services:
-    quote.manager:
-        class: SolidInvoice\QuoteBundle\Manager\QuoteManager
+    SolidInvoice\QuoteBundle\Manager\QuoteManager:
         autowire: true
         autoconfigure: true
         arguments:

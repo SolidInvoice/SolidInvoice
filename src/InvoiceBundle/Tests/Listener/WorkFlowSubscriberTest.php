@@ -25,6 +25,7 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class WorkFlowSubscriberTest extends TestCase
 {
@@ -43,7 +44,7 @@ class WorkFlowSubscriberTest extends TestCase
             ->setStatus('pending')
             ->setBalance(new Money(1200, new Currency('USD')));
 
-        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid')));
+        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
         $this->assertNotNull($invoice->getPaidDate());
         $this->assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
@@ -60,7 +61,7 @@ class WorkFlowSubscriberTest extends TestCase
             ->setStatus('pending')
             ->setBalance(new Money(1200, new Currency('USD')));
 
-        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived')));
+        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 
         $this->assertTrue($invoice->isArchived());
         $this->assertSame($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));

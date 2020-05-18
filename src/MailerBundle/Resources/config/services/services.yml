@@ -3,9 +3,13 @@ services:
         autowire: true
 
     SolidInvoice\MailerBundle\Mailer: ~
+    SolidInvoice\MailerBundle\MailerInterface: '@SolidInvoice\MailerBundle\Mailer'
+
     SolidInvoice\MailerBundle\MessageProcessor:
         arguments:
             $decorators: !tagged message.decorator
+
+    SolidInvoice\MailerBundle\MessageProcessorInterface: '@SolidInvoice\MailerBundle\MessageProcessor'
 
     SolidInvoice\MailerBundle\Decorator\:
         resource: '../../Decorator/'

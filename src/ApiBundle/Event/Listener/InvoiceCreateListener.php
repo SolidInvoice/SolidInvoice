@@ -18,7 +18,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Workflow\StateMachine;
 
@@ -44,12 +44,12 @@ class InvoiceCreateListener implements EventSubscriberInterface
         ];
     }
 
-    public function setInvoiceStatus(GetResponseForControllerResultEvent $event)
+    public function setInvoiceStatus(ViewEvent $event)
     {
         $invoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$event->isMasterRequest() || !$invoice instanceof Invoice || $invoice->getStatus() || Request::METHOD_POST !== $method) {
+        if (!$invoice instanceof Invoice || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $invoice->getStatus()) {
             return;
         }
 

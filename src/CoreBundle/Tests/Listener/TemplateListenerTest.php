@@ -20,9 +20,11 @@ use SolidInvoice\CoreBundle\Listener\TemplateListener;
 use SolidInvoice\CoreBundle\Templating\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class TemplateListenerTest extends TestCase
 {
@@ -30,16 +32,11 @@ class TemplateListenerTest extends TestCase
 
     public function testOnKernelView()
     {
-        $twig = M::mock(\Twig\Environment::class);
-
-        $twig->shouldReceive('render')
-            ->once()
-            ->with('Foo', ['bar' => 'baz'])
-            ->andReturn('foo bar baz');
+        $twig = new Environment(new ArrayLoader(['Foo' => 'foo bar baz']));
 
         $listener = new TemplateListener($twig);
 
-        $event = new GetResponseForControllerResultEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz']));
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz']));
 
         $listener->onKernelView($event);
 
@@ -49,14 +46,11 @@ class TemplateListenerTest extends TestCase
 
     public function testOnKernelViewWithoutResponse()
     {
-        $twig = M::mock(\Twig\Environment::class);
-
-        $twig->shouldReceive('render')
-            ->never();
+        $twig = new Environment(new ArrayLoader());
 
         $listener = new TemplateListener($twig);
 
-        $event = new GetResponseForControllerResultEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, []);
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, []);
 
         $listener->onKernelView($event);
 
@@ -65,18 +59,13 @@ class TemplateListenerTest extends TestCase
 
     public function testOnKernelViewWithCustomResponse()
     {
-        $twig = M::mock(\Twig\Environment::class);
+        $twig = new Environment(new ArrayLoader(['Foo' => 'foo bar baz']));
         $response = new Response();
         $response->headers->add(['one' => 'two']);
 
-        $twig->shouldReceive('render')
-            ->once()
-            ->with('Foo', ['bar' => 'baz'])
-            ->andReturn('foo bar baz');
-
         $listener = new TemplateListener($twig);
 
-        $event = new GetResponseForControllerResultEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz'], $response));
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz'], $response));
 
         $listener->onKernelView($event);
 

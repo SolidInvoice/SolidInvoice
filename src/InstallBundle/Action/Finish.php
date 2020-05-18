@@ -16,6 +16,7 @@ namespace SolidInvoice\InstallBundle\Action;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class Finish
 {
@@ -32,7 +33,8 @@ final class Finish
     public function __invoke(Request $request)
     {
         $session = $request->getSession();
-        if (!$session->has('installation_step') || true !== $session->get('installation_step')) {
+
+        if ($session instanceof SessionInterface && (!$session->has('installation_step') || true !== filter_var($session->remove('installation_step'), FILTER_VALIDATE_BOOLEAN))) {
             throw new ApplicationInstalledException();
         }
 

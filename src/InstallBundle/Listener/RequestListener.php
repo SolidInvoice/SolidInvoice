@@ -16,7 +16,7 @@ namespace SolidInvoice\InstallBundle\Listener;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
@@ -42,6 +42,7 @@ class RequestListener implements EventSubscriberInterface
         '_install_config',
         '_install_install',
         '_install_setup',
+        '_install_finish',
     ];
 
     /**
@@ -87,7 +88,7 @@ class RequestListener implements EventSubscriberInterface
         }
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (HttpKernel::MASTER_REQUEST !== $event->getRequestType()) {
             return;

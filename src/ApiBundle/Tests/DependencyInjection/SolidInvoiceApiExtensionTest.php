@@ -15,7 +15,12 @@ namespace SolidInvoice\ApiBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\DependencyInjection\SolidInvoiceApiExtension;
+use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
+use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
+use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
+use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 
 class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
@@ -31,25 +36,14 @@ class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    /**
-     * @test
-     */
     public function testLoad()
     {
         $this->load();
 
-        $this->assertContainerBuilderHasService('api_token_authenticator', 'SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 0, 'api_token_user_provider');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api_token_authenticator', 1, 'doctrine');
-
-        $this->assertContainerBuilderHasService('api_token_user_provider', 'SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider');
-
-        $this->assertContainerBuilderHasService('api.success', 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.success', 0, 'api.token.manager');
-
-        $this->assertContainerBuilderHasService('api.failure', 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler');
-
-        $this->assertContainerBuilderHasService('api.token.manager', 'SolidInvoice\ApiBundle\ApiTokenManager');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('api.token.manager', 0, 'doctrine');
+        $this->assertContainerBuilderHasService(ApiTokenAuthenticator::class);
+        $this->assertContainerBuilderHasService(ApiTokenUserProvider::class);
+        $this->assertContainerBuilderHasService(AuthenticationSuccessHandler::class);
+        $this->assertContainerBuilderHasService(AuthenticationFailHandler::class);
+        $this->assertContainerBuilderHasService(ApiTokenManager::class);
     }
 }

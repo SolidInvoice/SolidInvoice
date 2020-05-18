@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Form\Handler;
 
+use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\SettingsBundle\Entity\Setting;
@@ -41,16 +42,22 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
      */
     private $router;
 
-    public function __construct(SettingsRepository $settingsRepository, RouterInterface $router)
+    /**
+     * @var ConfigWriter
+     */
+    private $configWriter;
+
+    public function __construct(SettingsRepository $settingsRepository, RouterInterface $router, ConfigWriter $configWriter)
     {
         $this->settingsRepository = $settingsRepository;
         $this->router = $router;
+        $this->configWriter = $configWriter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getForm(FormFactoryInterface $factory = null, Options $options)
+    public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(SettingsType::class, $this->getSettings(false), ['settings' => $this->getSettings()]);
     }
@@ -58,8 +65,21 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($data, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
+        $config = [];
+
+        foreach ($data['email']['sending_options'] ?? [] as $key => $value) {
+            $data['email']['sending_options'][$key] = null;
+
+            if ('password' === $key && null === $value) {
+                continue;
+            }
+
+            $config['mailer_'.$key] = $value;
+        }
+
+        $this->configWriter->dump($config);
         $this->settingsRepository->save($this->flatten($data));
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
@@ -113,6 +133,14 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
             $path = '['.str_replace('/', '][', $setting->getKey()).']';
 
             $propertyAccessor->setValue($settings, $path, $keepObject ? $setting : $setting->getValue());
+        }
+
+        if (!$keepObject) {
+            foreach ($this->configWriter->getConfigValues() as $key => $value) {
+                if (0 === \strpos($key, 'mailer_')) {
+                    $settings['email']['sending_options'][\substr($key, 7)] = $value;
+                }
+            }
         }
 
         return $settings;

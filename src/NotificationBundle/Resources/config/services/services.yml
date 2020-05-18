@@ -1,17 +1,13 @@
 services:
-    notification.sender:
-        class: Namshi\Notificator\Manager
-        arguments: [{}, '@logger']
+    _defaults:
+        autowire: true
 
-    notification.manager:
-        class: SolidInvoice\NotificationBundle\Notification\NotificationManager
-        arguments: ['@notification.factory', '@settings', '@notification.sender', '@doctrine']
+    Namshi\Notificator\Manager: ~
+    Namshi\Notificator\ManagerInterface: '@Namshi\Notificator\Manager'
 
-    notification.factory:
-        class: SolidInvoice\NotificationBundle\Notification\Factory
-        arguments: ['@templating', '@translator', '@settings']
+    SolidInvoice\NotificationBundle\Notification\NotificationManager:
+    SolidInvoice\NotificationBundle\Notification\Factory: ~
 
-    twilio.client:
-        class: Twilio\Rest\Client
+    Twilio\Rest\Client:
         arguments: ['@=service(''settings'').get(''sms/twilio/sid'')', '@=service(''settings'').get(''sms/twilio/token'')']
         lazy: true

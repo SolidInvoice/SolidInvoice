@@ -16,6 +16,8 @@ namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class WidgetExtensionTest extends TestCase
 {
@@ -62,7 +64,7 @@ class WidgetExtensionTest extends TestCase
             ]
         );
 
-        $environment = \Mockery::mock('Twig_Environment');
+        $environment = new Environment(new ArrayLoader(['test_template.html.twig' => '{{ a }}{{ b }}{{ c }}']));
 
         $q = new \SplPriorityQueue();
         $q->insert($widget, 0);
@@ -71,12 +73,6 @@ class WidgetExtensionTest extends TestCase
             ->once()
             ->with('top')
             ->andReturn($q);
-
-        $environment
-            ->shouldReceive('render')
-            ->once()
-            ->with('test_template.html.twig', ['a' => '1', 'b' => '2', 'c' => '3'])
-            ->andReturn('123');
 
         $content = $this->extension->renderDashboardWidget($environment, 'top');
 

@@ -11,9 +11,9 @@ services:
 
     SolidInvoice\InstallBundle\Listener\RequestListener:
         arguments:
-            $installed: '%installed%'
+            $installed: '%env(installed)%'
             $debug: '%kernel.debug%'
 
     SolidInvoice\InstallBundle\Listener\UpgradeListener:
         arguments:
-            $installed: '%installed%'
+            $installed: '%env(installed)%'

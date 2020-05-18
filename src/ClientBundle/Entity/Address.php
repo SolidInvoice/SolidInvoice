@@ -16,7 +16,7 @@ namespace SolidInvoice\ClientBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Traits\Entity;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
@@ -223,7 +223,7 @@ class Address
      */
     public function getCountryName(): ?string
     {
-        return Intl::getRegionBundle()->getCountryName($this->getCountry());
+        return Countries::getName($this->getCountry());
     }
 
     /**
@@ -261,7 +261,7 @@ class Address
         static $countries;
 
         if (empty($countries)) {
-            $countries = Intl::getRegionBundle()->getCountryNames();
+            $countries = Countries::getNames();
         }
 
         $info = array_filter(

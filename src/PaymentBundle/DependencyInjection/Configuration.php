@@ -26,8 +26,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('payment')
+        $treeBuilder = new TreeBuilder('payment');
+        $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('gateways')
                     ->isRequired()

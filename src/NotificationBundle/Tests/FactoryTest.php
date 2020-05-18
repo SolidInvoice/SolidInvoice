@@ -23,8 +23,10 @@ use SolidInvoice\NotificationBundle\Notification\SwiftMailerNotification;
 use SolidInvoice\NotificationBundle\Notification\TwilioNotification;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Swift_Message;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class FactoryTest extends TestCase
 {
@@ -34,15 +36,15 @@ class FactoryTest extends TestCase
     public function testCreateSmsNotification()
     {
         $faker = $this->getFaker();
-        $templating = M::mock(EngineInterface::class);
+        $twig = new Environment(new ArrayLoader());
         $translator = M::mock(TranslatorInterface::class);
         $settings = M::mock(SystemConfig::class);
-        $factory = new Factory($templating, $translator, $settings);
+        $factory = new Factory($twig, $translator, $settings);
 
         $message = M::mock(NotificationMessageInterface::class);
         $messageText = $faker->text;
         $message->shouldReceive('getTextContent')
-            ->with($templating)
+            ->with($twig)
             ->andReturn($messageText);
 
         $phoneNumber = $faker->phoneNumber;
@@ -55,10 +57,10 @@ class FactoryTest extends TestCase
     public function testCreateHtmlEmailNotification()
     {
         $faker = $this->getFaker();
-        $templating = M::mock(EngineInterface::class);
+        $twig = new Environment(new ArrayLoader());
         $translator = M::mock(TranslatorInterface::class);
         $settings = M::mock(SystemConfig::class);
-        $factory = new Factory($templating, $translator, $settings);
+        $factory = new Factory($twig, $translator, $settings);
 
         $fromEmail = $faker->email;
         $settings->shouldReceive('get')
@@ -96,15 +98,15 @@ class FactoryTest extends TestCase
         $body = $faker->randomHtml();
         $message->shouldReceive('getHtmlContent')
             ->once()
-            ->with($templating)
+            ->with($twig)
             ->andReturn($body);
 
         $notification = $factory->createEmailNotification($message);
 
         $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
-        /** @var \Swift_Message $swiftMessage */
+        /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(\Swift_Message::class, $swiftMessage);
+        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
         $this->assertSame($body, $swiftMessage->getBody());
         $this->assertSame($subject, $swiftMessage->getSubject());
         $this->assertSame('text/html', $swiftMessage->getContentType());
@@ -115,10 +117,10 @@ class FactoryTest extends TestCase
     public function testCreateTextEmailNotification()
     {
         $faker = $this->getFaker();
-        $templating = M::mock(EngineInterface::class);
+        $twig = new Environment(new ArrayLoader());
         $translator = M::mock(TranslatorInterface::class);
         $settings = M::mock(SystemConfig::class);
-        $factory = new Factory($templating, $translator, $settings);
+        $factory = new Factory($twig, $translator, $settings);
 
         $fromEmail = $faker->email;
         $settings->shouldReceive('get')
@@ -143,28 +145,28 @@ class FactoryTest extends TestCase
         $user->setEmail($toEmail);
         $toName = $faker->userName;
         $user->setUsername($toName);
-        $message->shouldReceive('getUsers')
+        $message->shouldReceive(...['getUsers'])
             ->once()
             ->andReturn([$user]);
 
         $subject = $faker->text;
-        $message->shouldReceive('getSubject')
+        $message->shouldReceive(...['getSubject'])
             ->once()
-            ->with($translator)
-            ->andReturn($subject);
+            ->with(...[$translator])
+            ->andReturn(...[$subject]);
 
         $body = $faker->text;
-        $message->shouldReceive('getTextContent')
+        $message->shouldReceive(...['getTextContent'])
             ->once()
-            ->with($templating)
+            ->with($twig)
             ->andReturn($body);
 
         $notification = $factory->createEmailNotification($message);
 
         $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
-        /** @var \Swift_Message $swiftMessage */
+        /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(\Swift_Message::class, $swiftMessage);
+        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
         $this->assertSame($body, $swiftMessage->getBody());
         $this->assertSame($subject, $swiftMessage->getSubject());
         $this->assertSame('text/plain', $swiftMessage->getContentType());
@@ -175,10 +177,10 @@ class FactoryTest extends TestCase
     public function testCreateMultipleFormatEmailNotification()
     {
         $faker = $this->getFaker();
-        $templating = M::mock(EngineInterface::class);
+        $twig = new Environment(new ArrayLoader());
         $translator = M::mock(TranslatorInterface::class);
         $settings = M::mock(SystemConfig::class);
-        $factory = new Factory($templating, $translator, $settings);
+        $factory = new Factory($twig, $translator, $settings);
 
         $fromEmail = $faker->email;
         $settings->shouldReceive('get')
@@ -216,21 +218,21 @@ class FactoryTest extends TestCase
         $htmlBody = $faker->randomHtml();
         $message->shouldReceive('getHtmlContent')
             ->once()
-            ->with($templating)
+            ->with($twig)
             ->andReturn($htmlBody);
 
         $textBody = $faker->text;
         $message->shouldReceive('getTextContent')
             ->once()
-            ->with($templating)
+            ->with($twig)
             ->andReturn($textBody);
 
         $notification = $factory->createEmailNotification($message);
 
         $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
-        /** @var \Swift_Message $swiftMessage */
+        /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(\Swift_Message::class, $swiftMessage);
+        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
         $this->assertCount(1, $swiftMessage->getChildren());
 
         $this->assertSame($htmlBody, $swiftMessage->getBody());

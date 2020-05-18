@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Notification;
 
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class InvoiceStatusNotification extends NotificationMessage
 {
@@ -26,17 +26,17 @@ class InvoiceStatusNotification extends NotificationMessage
     /**
      * {@inheritdoc}
      */
-    public function getHtmlContent(EngineInterface $templating): string
+    public function getHtmlContent(Environment $twig): string
     {
-        return $templating->render(self::HTML_TEMPLATE, $this->getParameters());
+        return $twig->render(self::HTML_TEMPLATE, $this->getParameters());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTextContent(EngineInterface $templating): string
+    public function getTextContent(Environment $twig): string
     {
-        return $templating->render(self::TEXT_TEMPLATE, $this->getParameters());
+        return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
     public function getSubject(TranslatorInterface $translator): string

@@ -19,7 +19,7 @@ use SolidInvoice\MailerBundle\Decorator\VerificationMessageDecorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use Swift_Attachment;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 final class QuotePdfDecorator implements MessageDecorator, VerificationMessageDecorator
 {
@@ -29,14 +29,14 @@ final class QuotePdfDecorator implements MessageDecorator, VerificationMessageDe
     private $generator;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $engine;
+    private $twig;
 
-    public function __construct(Generator $generator, EngineInterface $engine)
+    public function __construct(Generator $generator, Environment $twig)
     {
         $this->generator = $generator;
-        $this->engine = $engine;
+        $this->twig = $twig;
     }
 
     public function decorate(MessageEvent $event): void
@@ -45,7 +45,7 @@ final class QuotePdfDecorator implements MessageDecorator, VerificationMessageDe
         $message = $event->getMessage();
 
         $content = $this->generator->generate(
-            $this->engine->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $message->getQuote()])
+            $this->twig->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $message->getQuote()])
         );
         $attachment = new Swift_Attachment($content, "quote_{$message->getQuote()->getId()}.pdf", 'application/pdf');
 

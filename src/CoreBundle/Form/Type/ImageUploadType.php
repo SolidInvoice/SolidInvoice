@@ -34,7 +34,7 @@ class ImageUploadType extends AbstractType
                     $this->file = $value;
                 }
 
-                return new File(null, false);
+                return new File('', false);
             }
 
             public function reverseTransform($value)
