@@ -162,7 +162,7 @@ final class Version20000 extends AbstractMigration
         $this->createTable(
             'version',
             [
-                ['version', 'string', ['length' => 125, 'nonull' => true]],
+                ['version', 'string', ['length' => 125, 'notnull' => true]],
             ]
         )
             ->setPrimaryKey(['version']);

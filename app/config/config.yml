@@ -40,7 +40,7 @@ doctrine:
     dbal:
         driver: '%env(database_driver)%'
         host: '%env(database_host)%'
-        port: '%env(database_port)%'
+        port: '%env(int:database_port)%'
         dbname: '%env(database_name)%'
         user: '%env(database_user)%'
         password: '%env(database_password)%'
@@ -99,3 +99,7 @@ api_platform:
 
 webpack_encore:
     output_path: '%kernel.project_dir%/web/static'
+
+sensio_framework_extra:
+    router:
+        annotations: false
