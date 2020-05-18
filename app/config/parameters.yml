@@ -1,19 +1,19 @@
 parameters:
-    env(database_driver): pdo_mysql
-    env(database_host): localhost
-    env(database_port): 3306
-    env(database_name): solidinvoice
-    env(database_user): root
+    env(database_driver): 'pdo_mysql'
+    env(database_host): 'localhost'
+    env(database_port): '3306'
+    env(database_name): 'solidinvoice'
+    env(database_user): 'root'
     env(database_password): ~
 
-    env(mailer_transport): sendmail
-    env(mailer_host): 127.0.0.1
-    env(mailer_user): null
-    env(mailer_password): null
-    env(mailer_port): null
-    env(mailer_encryption): null
+    env(mailer_transport): 'sendmail'
+    env(mailer_host): '127.0.0.1'
+    env(mailer_user): ~
+    env(mailer_password): ~
+    env(mailer_port): ~
+    env(mailer_encryption): ~
 
-    env(locale): en_US
-    env(secret): SecretToken
+    env(locale): 'en_US'
+    env(secret): 'SecretToken'
 
     env(installed): ~
