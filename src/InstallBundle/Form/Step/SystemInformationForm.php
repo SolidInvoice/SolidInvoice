@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Locales;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 
@@ -33,7 +33,7 @@ class SystemInformationForm extends AbstractType
                 'locale',
                 Select2Type::class,
                 [
-                    'choices' => array_flip(Intl::getLocaleBundle()->getLocaleNames()),
+                    'choices' => array_flip(Locales::getNames()),
                     'constraints' => new Constraints\NotBlank(['message' => 'Please select a locale']),
                     'placeholder' => 'Please select a locale',
                 ]

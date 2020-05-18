@@ -53,7 +53,7 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
-    protected function beforeSuccess($data, FormRequest $form)
+    protected function beforeSuccess(FormRequest $form, $data): void
     {
         $this->userPasswordEncoder->shouldReceive('encodePassword')
             ->once()
@@ -66,7 +66,7 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
             ->andReturn('/users');
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         $this->assertCount(1, $this->em->getRepository(User::class)->findAll());
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -78,7 +78,7 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         $this->assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
-    protected function assertResponse(FormRequest $formRequest)
+    protected function assertResponse(FormRequest $formRequest): void
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }

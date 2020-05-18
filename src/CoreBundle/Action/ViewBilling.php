@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ViewBilling
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $registry;
 
@@ -46,7 +46,7 @@ class ViewBilling
      */
     private $router;
 
-    public function __construct(RegistryInterface $registry, AuthorizationCheckerInterface $authorizationChecker, RouterInterface $router)
+    public function __construct(ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker, RouterInterface $router)
     {
         $this->registry = $registry;
         $this->authorizationChecker = $authorizationChecker;

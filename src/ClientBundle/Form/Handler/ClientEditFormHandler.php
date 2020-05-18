@@ -27,7 +27,7 @@ class ClientEditFormHandler extends AbstractClientFormHandler
             '@SolidInvoiceClient/Default/edit.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
-                'client' => $formRequest->getOptions()[0],
+                'client' => $formRequest->getOptions()->get('client'),
             ]
         );
     }

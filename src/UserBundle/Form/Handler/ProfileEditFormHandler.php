@@ -76,7 +76,7 @@ class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandle
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($user, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $user): ?Response
     {
         $this->userRepository->save($user);
 

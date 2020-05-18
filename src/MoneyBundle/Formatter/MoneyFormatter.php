@@ -16,9 +16,9 @@ namespace SolidInvoice\MoneyBundle\Formatter;
 use Money\Currency;
 use Money\Money;
 use Money\MoneyFormatter as MoneyFormatterInterface;
+use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
-use Symfony\Component\Intl\Intl;
 
 class MoneyFormatter implements MoneyFormatterInterface
 {
@@ -72,8 +72,7 @@ class MoneyFormatter implements MoneyFormatterInterface
             $currency = $currency->getCode();
         }
 
-        return Intl::getCurrencyBundle()
-            ->getCurrencySymbol($currency ?: $this->currency->getCode(), $this->locale);
+        return Currencies::getSymbol($currency ?: $this->currency->getCode(), $this->locale);
     }
 
     /**

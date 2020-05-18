@@ -13,8 +13,7 @@ parameters:
     env(mailer_port): null
     env(mailer_encryption): null
 
-    locale: en_US
-    currency: USD
-    secret: SecretToken
+    env(locale): en_US
+    env(secret): SecretToken
 
-    installed: ~
+    env(installed): ~

@@ -1,8 +1,8 @@
 services:
     _defaults:
         public: false
+        autowire: true
         tags:
             - { name: twig.extension }
 
-    SolidInvoice\DataGridBundle\Twig\Extension\GridExtension:
-        arguments: ['@grid.repository', '@serializer']
+    SolidInvoice\DataGridBundle\Twig\Extension\GridExtension: ~

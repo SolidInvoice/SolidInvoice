@@ -70,7 +70,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $data, FormRequest $form)
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertInstanceOf(Contact::class, $data);
@@ -79,7 +79,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
         $this->assertSame($this->email, $data->getEmail());
     }
 
-    protected function assertResponse(FormRequest $formRequest)
+    protected function assertResponse(FormRequest $formRequest): void
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
         $this->assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());

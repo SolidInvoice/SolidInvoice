@@ -4,11 +4,14 @@ imports:
     - { resource: payum.yml }
     - { resource: workflow.yml }
 
+parameters:
+    container.dumper.inline_class_loader: true
+
 framework:
     esi: null
     translator:
         fallback: en
-    secret: '%secret%'
+    secret: '%env(secret)%'
     router:
         resource: '%kernel.root_dir%/config/routing.yml'
         strict_requirements: null
@@ -18,14 +21,12 @@ framework:
         enabled: true
         enable_annotations: true
         strict_email: true
-    default_locale: '%locale%'
+    default_locale: '%env(locale)%'
     session:
         name: SOLIDINVOICE_APP
     fragments: null
     http_method_override: true
     serializer: { enable_annotations: true }
-    templating:
-        engines: [twig]
     assets:
         json_manifest_path: '%kernel.project_dir%/web/static/manifest.json'
 
@@ -33,7 +34,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:
-        - 'SolidInvoiceCoreBundle:Form:fields.html.twig'
+        - '@SolidInvoiceCore/Form/fields.html.twig'
 
 doctrine:
     dbal:
@@ -83,7 +84,7 @@ swiftmailer:
         type: memory
 
 stof_doctrine_extensions:
-    default_locale: '%locale%'
+    default_locale: '%env(locale)%'
     orm: null
 
 api_platform:

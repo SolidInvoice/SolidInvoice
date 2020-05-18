@@ -44,7 +44,7 @@ class PaymentExtension extends Extension
         $definition->addMethodCall('setGatewayFactories', [$factories]);
         $definition->addMethodCall('setGatewayForms', [$forms]);
 
-        $container->setDefinition('payum.factories', $definition);
+        $container->setDefinition($definition->getClass(), $definition);
     }
 
     /**

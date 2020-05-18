@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Event;
 
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class InvoiceEvent extends Event
 {

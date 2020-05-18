@@ -15,7 +15,7 @@ namespace SolidInvoice\MailerBundle\Event;
 
 use SolidInvoice\MailerBundle\Context;
 use SolidInvoice\MailerBundle\MessageSentResponse;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MessageResultEvent extends Event
 {

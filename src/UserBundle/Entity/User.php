@@ -107,7 +107,7 @@ class User implements UserInterface
     private $passwordRequestedAt;
 
     /**
-     * @var array
+     * @var string[]
      *
      * @ORM\Column(name="roles", type="array")
      */
@@ -295,7 +295,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = $this->roles;
 

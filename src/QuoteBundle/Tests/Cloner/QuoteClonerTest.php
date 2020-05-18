@@ -25,7 +25,7 @@ use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Definition;
-use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
@@ -72,7 +72,7 @@ class QuoteClonerTest extends TestCase
                 ['new', 'draft'],
                 [new Transition('new', 'new', 'draft')]
             ),
-            new SingleStateMarkingStore('status'),
+            new MethodMarkingStore(true, 'status'),
             $dispatcher,
             'quote'
         );

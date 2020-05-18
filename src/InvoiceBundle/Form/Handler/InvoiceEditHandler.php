@@ -38,10 +38,10 @@ class InvoiceEditHandler extends AbstractInvoiceHandler
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($invoice, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $invoice): ?Response
     {
         /* @var RedirectResponse $response */
-        $response = parent::onSuccess($invoice, $form);
+        $response = parent::onSuccess($form, $invoice);
 
         return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable

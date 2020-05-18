@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\NotificationBundle\Notification;
 
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 interface NotificationMessageInterface
 {
-    public function getHtmlContent(EngineInterface $templating): string;
+    public function getHtmlContent(Environment $twig): string;
 
-    public function getTextContent(EngineInterface $templating): string;
+    public function getTextContent(Environment $twig): string;
 
     public function getSubject(TranslatorInterface $translator): string;
 

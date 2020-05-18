@@ -19,7 +19,7 @@ use SolidInvoice\MailerBundle\Decorator\MessageDecorator;
 use SolidInvoice\MailerBundle\Decorator\VerificationMessageDecorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use Swift_Attachment;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 final class InvoicePdfDecorator implements MessageDecorator, VerificationMessageDecorator
 {
@@ -29,14 +29,14 @@ final class InvoicePdfDecorator implements MessageDecorator, VerificationMessage
     private $generator;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $engine;
+    private $twig;
 
-    public function __construct(Generator $generator, EngineInterface $engine)
+    public function __construct(Generator $generator, Environment $twig)
     {
         $this->generator = $generator;
-        $this->engine = $engine;
+        $this->twig = $twig;
     }
 
     public function decorate(MessageEvent $event): void
@@ -45,7 +45,7 @@ final class InvoicePdfDecorator implements MessageDecorator, VerificationMessage
         $message = $event->getMessage();
 
         $content = $this->generator->generate(
-            $this->engine->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $message->getInvoice()])
+            $this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $message->getInvoice()])
         );
         $attachment = new Swift_Attachment($content, "invoice_{$message->getInvoice()->getId()}.pdf", 'application/pdf');
 

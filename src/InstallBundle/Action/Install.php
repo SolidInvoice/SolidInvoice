@@ -15,15 +15,15 @@ namespace SolidInvoice\InstallBundle\Action;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\Exception\MigrationException;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Install
 {
-    public function __invoke(Request $request, RegistryInterface $doctrine, Migration $migration)
+    public function __invoke(Request $request, ManagerRegistry $doctrine, Migration $migration)
     {
         if ($request->request->has('action')) {
             $result = [];

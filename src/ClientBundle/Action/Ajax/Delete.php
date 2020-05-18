@@ -18,8 +18,8 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class Delete implements AjaxResponse
 {
@@ -31,7 +31,7 @@ final class Delete implements AjaxResponse
     private $clientRepository;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     private $session;
 
@@ -40,7 +40,7 @@ final class Delete implements AjaxResponse
      */
     private $translator;
 
-    public function __construct(ClientRepository $clientRepository, Session $session, TranslatorInterface $translator)
+    public function __construct(ClientRepository $clientRepository, SessionInterface $session, TranslatorInterface $translator)
     {
         $this->clientRepository = $clientRepository;
         $this->session = $session;

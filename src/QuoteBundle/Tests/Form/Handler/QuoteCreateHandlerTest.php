@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Definition;
-use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
@@ -51,7 +51,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
                 ['new', 'draft'],
                 [new Transition('new', 'new', 'draft')]
             ),
-            new SingleStateMarkingStore('status'),
+            new MethodMarkingStore(true, 'status'),
             $dispatcher,
             'invoice'
         );
@@ -67,7 +67,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
                 ['new', 'draft'],
                 [new Transition('new', 'new', 'draft')]
             ),
-            new SingleStateMarkingStore('status'),
+            new MethodMarkingStore(true, 'status'),
             $dispatcher,
             'quote'
         );
@@ -98,7 +98,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
         ];
     }
 
-    protected function assertOnSuccess(?Response $response, $quote, FormRequest $form)
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $quote): void
     {
         /* @var Quote $quote */
 
@@ -109,7 +109,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
         $this->assertCount(1, $this->em->getRepository(Quote::class)->findAll());
     }
 
-    protected function assertResponse(FormRequest $formRequest)
+    protected function assertResponse(FormRequest $formRequest): void
     {
         $this->assertInstanceOf(Template::class, $formRequest->getResponse());
     }

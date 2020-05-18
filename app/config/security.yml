@@ -1,8 +1,7 @@
 security:
     encoders:
         SolidInvoice\UserBundle\Entity\User:
-            algorithm: bcrypt
-            cost: 10
+            algorithm: auto
     role_hierarchy:
         ROLE_ADMIN: null
         ROLE_SUPER_ADMIN:
@@ -15,7 +14,7 @@ security:
             entity:
                 class: SolidInvoice\UserBundle\Entity\User
         api_token_user_provider:
-            id: api_token_user_provider
+            id: 'SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider'
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -31,13 +30,13 @@ security:
                 provider: api_token_user_provider
                 check_path: /api/login
                 require_previous_session: false
-                success_handler: api.success
-                failure_handler: api.failure
+                success_handler: 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler'
+                failure_handler: 'SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler'
         api:
             pattern: ^/api
             stateless: true
             simple_preauth:
-                authenticator: api_token_authenticator
+                authenticator: 'SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator'
             provider: api_token_user_provider
         installer:
             pattern: '^/install(.*)'
@@ -66,7 +65,7 @@ security:
             anonymous: null
         main:
             remember_me:
-                secret: '%secret%'
+                secret: '%env(secret)%'
                 lifetime: 3600
                 path: /
                 domain: null

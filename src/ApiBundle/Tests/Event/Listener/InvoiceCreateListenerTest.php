@@ -22,7 +22,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -49,7 +49,7 @@ class InvoiceCreateListenerTest extends TestCase
 
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', 'POST');
-        $listener->setInvoiceStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
+        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
     public function testSkipIfNotMasterRequest()
@@ -60,7 +60,7 @@ class InvoiceCreateListenerTest extends TestCase
 
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', 'POST');
-        $listener->setInvoiceStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::SUB_REQUEST, new Invoice()));
+        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::SUB_REQUEST, new Invoice()));
     }
 
     public function testSkipIfInvoiceAlreadyHasAStatus()
@@ -74,7 +74,7 @@ class InvoiceCreateListenerTest extends TestCase
         $entity = new Invoice();
         $entity->setStatus(Graph::STATUS_DRAFT);
 
-        $listener->setInvoiceStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
+        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
     public function testSkipIfNoInvoiceIsPassed()
@@ -86,7 +86,7 @@ class InvoiceCreateListenerTest extends TestCase
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', 'POST');
 
-        $listener->setInvoiceStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Quote()));
+        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Quote()));
     }
 
     public function testSkipIfNotPostRequest()
@@ -98,6 +98,6 @@ class InvoiceCreateListenerTest extends TestCase
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', 'GET');
 
-        $listener->setInvoiceStatus(new GetResponseForControllerResultEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Invoice()));
+        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Invoice()));
     }
 }

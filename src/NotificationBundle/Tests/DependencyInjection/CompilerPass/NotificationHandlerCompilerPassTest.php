@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\NotificationBundle\Tests\DependencyInjection\CompilerPass;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use Namshi\Notificator\Manager;
 use SolidInvoice\NotificationBundle\DependencyInjection\CompilerPass\NotificationHandlerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -25,13 +26,13 @@ class NotificationHandlerCompilerPassTest extends AbstractCompilerPassTestCase
     {
         $this->compile();
 
-        $this->assertContainerBuilderNotHasService('notification.sender');
+        $this->assertContainerBuilderNotHasService(Manager::class);
     }
 
     public function testProcessWithHandlers()
     {
         $collectingService = new Definition();
-        $this->setDefinition('notification.sender', $collectingService);
+        $this->setDefinition(Manager::class, $collectingService);
 
         $collectedService = new Definition();
         $collectedService->addTag('notification.handler');
@@ -44,7 +45,7 @@ class NotificationHandlerCompilerPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
-            'notification.sender',
+            Manager::class,
             'addHandler',
             [
                 new Reference('collected_service'),
@@ -52,7 +53,7 @@ class NotificationHandlerCompilerPassTest extends AbstractCompilerPassTestCase
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
-            'notification.sender',
+            Manager::class,
             'addHandler',
             [
                 new Reference('collected_service2'),

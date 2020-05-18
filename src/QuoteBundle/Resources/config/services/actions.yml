@@ -7,9 +7,11 @@ services:
         tags: ['controller.service_arguments']
 
     SolidInvoice\QuoteBundle\Action\Grid\Archive:
+        tags: ['controller.service_arguments']
         arguments:
             $stateMachine: '@state_machine.quote'
 
     SolidInvoice\QuoteBundle\Action\Transition:
+        tags: ['controller.service_arguments']
         arguments:
             $stateMachine: '@state_machine.quote'

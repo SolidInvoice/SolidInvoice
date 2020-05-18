@@ -23,8 +23,8 @@ class GridConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('datagrid');
+        $treeBuilder = new TreeBuilder('datagrid');
+        $node = $treeBuilder->getRootNode();
 
         $node
             ->useAttributeAsKey('name', true)

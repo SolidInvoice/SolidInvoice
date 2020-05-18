@@ -1,15 +1,17 @@
 build:
+    nodes:
+        analysis:
+            dependencies:
+                after:
+                    - composer require --dev "squizlabs/php_codesniffer=^3.4"
     environment:
         php:
             version: 7.3
             pecl_extensions:
                 - zip
-    dependencies:
-        before:
-            - composer install --no-interaction
     project_setup:
         before:
-            - mysql -u root -e "CREATE DATABASE csbill"
+            - mysql -u root -e "CREATE DATABASE solidinvoice_test"
 
 filter:
     excluded_paths: [vendor/*, web/*, app/*, bin/*]

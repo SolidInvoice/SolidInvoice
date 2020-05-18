@@ -13,15 +13,27 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlFormatCommand extends ContainerAwareCommand
+class YamlFormatCommand extends Command
 {
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    public function __construct(string $projectDir)
+    {
+        $this->projectDir = $projectDir;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +45,7 @@ class YamlFormatCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var SplFileInfo $file */
         foreach ($this->findFiles() as $file) {
@@ -43,18 +55,19 @@ class YamlFormatCommand extends ContainerAwareCommand
 
             file_put_contents($path, Yaml::dump($yml, PHP_INT_MAX));
         }
+
+        return 0;
     }
 
-    private function findFiles(): \Iterator
+    private function findFiles(): iterable
     {
-        $container = $this->getContainer();
         $finder = Finder::create()
             ->files()
             ->ignoreDotFiles(true)
             ->ignoreUnreadableDirs(true)
             ->ignoreVCS(true)
-            ->in($container->getParameter('kernel.root_dir').'/**')
-            ->in(dirname($container->getParameter('kernel.root_dir')).'/src/**/*')
+            ->in($this->projectDir.'/app')
+            ->in($this->projectDir.'/src/**/*')
             ->name('*.yml');
 
         return $finder->getIterator();

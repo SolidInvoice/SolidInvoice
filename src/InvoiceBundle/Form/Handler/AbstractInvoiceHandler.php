@@ -62,7 +62,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     /**
      * {@inheritdoc}
      */
-    public function onSuccess($invoice, FormRequest $form): ?Response
+    public function onSuccess(FormRequest $form, $invoice): ?Response
     {
         /* @var Invoice $invoice */
         $action = $form->getRequest()->request->get('save');

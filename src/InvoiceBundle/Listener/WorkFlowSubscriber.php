@@ -21,6 +21,7 @@ use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\Workflow\Transition;
 
 class WorkFlowSubscriber implements EventSubscriberInterface
 {
@@ -55,18 +56,22 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         /** @var Invoice $invoice */
         $invoice = $event->getSubject();
 
-        if (Graph::TRANSITION_PAY === $event->getTransition()->getName()) {
-            $invoice->setPaidDate(Carbon::now());
-        }
+        if (($transition = $event->getTransition()) instanceof Transition) {
+            if (Graph::TRANSITION_PAY === $transition->getName()) {
+                $invoice->setPaidDate(Carbon::now());
+            }
 
-        if (Graph::TRANSITION_ARCHIVE === $event->getTransition()->getName()) {
-            $invoice->archive();
+            if (Graph::TRANSITION_ARCHIVE === $transition->getName()) {
+                $invoice->archive();
+            }
         }
 
         $em = $this->registry->getManager();
         $em->persist($invoice);
         $em->flush();
 
-        $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
+        if (Graph::STATUS_NEW !== $invoice->getStatus()) {
+            $this->notification->sendNotification('invoice_status_update', new InvoiceStatusNotification(['invoice' => $invoice]));
+        }
     }
 }

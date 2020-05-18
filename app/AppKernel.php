@@ -11,11 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\CoreBundle\Kernel\ContainerClassKernelInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-class AppKernel extends Kernel implements ContainerClassKernelInterface
+class AppKernel extends Kernel
 {
     public function registerBundles()
     {
@@ -63,7 +62,7 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
         if (in_array($env = $this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
+            $bundles[] = new Symfony\Bundle\MakerBundle\MakerBundle();
 
             if ('test' === $env) {
                 $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
@@ -86,14 +85,6 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigDir(): string
-    {
-        return $this->getRootDir().'/config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCacheDir()
     {
         return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
@@ -105,14 +96,6 @@ class AppKernel extends Kernel implements ContainerClassKernelInterface
     public function getLogDir()
     {
         return dirname(__DIR__).'/var/logs';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getContainerCacheClass(): string
-    {
-        return $this->getContainerClass();
     }
 
     /**
