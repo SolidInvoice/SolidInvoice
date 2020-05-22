@@ -27,6 +27,10 @@
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
+
+        {% if module is defined %}
+            {{ encore_entry_link_tags(module) }}
+        {% endif %}
     {% endblock stylesheets %}
 
     {% include '@SolidInvoiceCore/_partials/scripts.html.twig' %}
@@ -37,15 +41,19 @@
         {{ block('body_top') is defined ? block('body_top') }}
         <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            {{ block('header') is defined ? block('header') }}
-        </nav>
+        {% if block('header') is defined %}
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                {{ block('header') }}
+            </nav>
+        {% endif %}
 
         {{ block('body') is defined ? block('body') }}
 
-        <footer class="main-footer">
-            {{ block('footer') is defined ? block('footer') }}
-        </footer>
+        {% if block('footer') is defined %}
+            <footer class="main-footer">
+                {{ block('footer') }}
+            </footer>
+        {% endif %}
 
         {% if module is defined %}
             {{ encore_entry_script_tags(module) }}
