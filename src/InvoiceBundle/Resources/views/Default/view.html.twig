@@ -9,7 +9,7 @@
 
 {% set currency = invoice.client.currency %}
 
-{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
     {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
