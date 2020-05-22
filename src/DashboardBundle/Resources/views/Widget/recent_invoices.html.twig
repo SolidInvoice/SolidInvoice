@@ -7,80 +7,80 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="card">
-    <div class="card-header">
-        <div class="float-right">
-            {% if invoices is not empty %}
-                <a href="{{ path('_invoices_index') }}">
+<div class="col-6">
+    <div class="card mt-2">
+        <div class="card-header{% if invoices is not empty%} border-bottom-0{% endif %}">
+            <h5 class="card-title">
+                {{ icon('file-text-o') }} {{ 'dashboard.invoice.recent'|trans }}
+            </h5>
+        </div>
+        {% if invoices is not empty %}
+            <div class="card-body p-0 border-0">
+                <ul class="list-group dashboard-widget">
+                    {% for invoice in invoices %}
+                        <li class="list-group-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{ icon('cog') }}
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ path('_invoices_view', {'id' : invoice.id}) }}">
+                                            {{ icon('eye') }} {{ 'dashboard.invoice.actions.view'|trans }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
+                                            {{ icon('edit') }} {{ 'dashboard.invoice.actions.edit'|trans }}
+                                        </a>
+                                    </li>
+                                    {% if workflow_can(invoice, 'pay') %}
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}">
+                                                {{ icon('credit-card') }} {{ 'dashboard.invoice.actions.pay'|trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+
+                            {{ invoice_label(invoice.status) }}
+
+                            <a href="{{ path('_clients_view', {'id' : invoice.client.id}) }}">
+                                {{ invoice.client }}
+                            </a>
+                            <div class="float-right">
+                                {{ invoice.total|formatCurrency }}
+                                <br />
+                                <small>
+                                    <strong>
+                                        {{ 'dashboard.invoice.actions.created'|trans }}
+                                    </strong>
+                                    {{ invoice.created|diff }}
+                                </small>
+                            </div>
+                            <br class="clear" />
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer text-center border-top-0">
+                <a href="{{ path('_invoices_index') }}" class="uppercase">
                     {{ 'dashboard.invoice.view_all'|trans }}
                 </a>
-            {% endif %}
-        </div>
-        <h3 class="card-title">
-            {{ icon('file-text-o') }} {{ 'dashboard.invoice.recent'|trans }}
-        </h3>
-    </div>
-    {% if invoices is not empty %}
-        <ul class="list-group dashboard-widget">
-            {% for invoice in invoices %}
-                <li class="list-group-item">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            {{ icon('cog') }}
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="{{ path('_invoices_view', {'id' : invoice.id}) }}">
-                                    {{ icon('eye') }} {{ 'dashboard.invoice.actions.view'|trans }}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
-                                    {{ icon('edit') }} {{ 'dashboard.invoice.actions.edit'|trans }}
-                                </a>
-                            </li>
-                            {% if workflow_can(invoice, 'pay') %}
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}">
-                                        {{ icon('credit-card') }} {{ 'dashboard.invoice.actions.pay'|trans }}
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-
-                    {{ invoice_label(invoice.status) }}
-
-                    <a href="{{ path('_clients_view', {'id' : invoice.client.id}) }}">
-                        {{ invoice.client }}
+            </div>
+        {% else %}
+            <div class="card-body">
+                <div class="text-center">
+                    <h6>
+                        {{ 'dashboard.invoice.empty'|trans }}
+                    </h6>
+                    <a href="{{ path('_invoices_create') }}">
+                        {{ icon('plus') }} {{ 'dashboard.invoice.create'|trans }}
                     </a>
-                    <div class="float-right">
-                        {{ invoice.total|formatCurrency }}
-                        <br />
-                        <small>
-                            <strong>
-                                {{ 'dashboard.invoice.actions.created'|trans }}
-                            </strong>
-                            {{ invoice.created|diff }}
-                        </small>
-                    </div>
-                    <br class="clear" />
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <div class="card-body">
-            <div class="float-left">
-                <h4>
-                    {{ 'dashboard.invoice.empty'|trans }}
-                </h4>
+                </div>
             </div>
-            <div class="float-right">
-                <a href="{{ path('_invoices_create') }}" class="btn btn-info">
-                    {{ icon('plus') }} {{ 'dashboard.invoice.create'|trans }}
-                </a>
-            </div>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>

@@ -20,7 +20,7 @@ dashboard:
         recent: 'Recent Clients'
         create: 'Create New Client'
         empty: 'There are no clients available'
-        view_all: 'View All >>'
+        view_all: 'View All Clients'
         actions:
             view: View
             edit: Edit
@@ -32,7 +32,7 @@ dashboard:
         recent: 'Recent Quotes'
         create: 'Create New Quote'
         empty: 'There are no quotes available'
-        view_all: 'View All >>'
+        view_all: 'View All Quotes'
         actions:
             view: View
             edit: Edit
@@ -41,7 +41,7 @@ dashboard:
         recent: 'Recent Invoices'
         create: 'Create New Invoice'
         empty: 'There are no invoices available'
-        view_all: 'View All >>'
+        view_all: 'View All Invoices'
         actions:
             view: View
             pay: 'Pay Now'
@@ -49,7 +49,7 @@ dashboard:
             created: 'Created:'
     payment:
         recent: 'Recent Payments'
-        view_all: 'View All >>'
+        view_all: 'View All Payments'
         actions:
             created: 'Created:'
             invoice: 'Invoice:'

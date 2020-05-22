@@ -7,78 +7,78 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="card">
-    <div class="card-header">
-        <div class="float-right">
-            {% if clients is not empty %}
-                <a href="{{ path('_clients_index') }}">
+<div class="col-6">
+    <div class="card mt-2">
+        <div class="card-header{% if clients is not empty%} border-bottom-0{% endif %}">
+            <h5 class="card-title">
+                {{ icon('group') }} {{ 'dashboard.client.recent'|trans }}
+            </h5>
+        </div>
+        {% if clients is not empty %}
+            <div class="card-body p-0 border-0">
+                <ul class="list-group dashboard-widget">
+                    {% for client in clients %}
+                        <li class="list-group-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{ icon('cog') }}
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="nav-item">
+                                        <a href="{{ path('_clients_view', {'id' : client.id}) }}" class="nav-link">
+                                            {{ icon('eye') }} {{ 'dashboard.client.actions.view'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="nav-link">
+                                            {{ icon('edit') }} {{ 'dashboard.client.actions.edit'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('_quotes_create', {'client' : client.id}) }}" class="nav-link">
+                                            {{ icon('file-text-o') }} {{ 'dashboard.client.actions.create.quote'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('_invoices_create', {'client' : client.id}) }}" class="nav-link">
+                                            {{ icon('file-text-o') }} {{ 'dashboard.client.actions.create.invoice'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            {{ client_label(client.status) }}
+
+                            <a href="{{ path('_clients_view', {'id' : client.id}) }}">
+                                {{ client.name }}
+                            </a>
+
+                            <div class="float-right">
+                                <strong>
+                                    {{ 'dashboard.client.actions.created'|trans }}
+                                </strong> {{ client.created|diff }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer text-center border-top-0">
+                <a href="{{ path('_clients_index') }}" class="uppercase">
                     {{ 'dashboard.client.view_all'|trans }}
                 </a>
-            {% endif %}
-        </div>
-        <h3 class="card-title">
-            {{ icon('group') }} {{ 'dashboard.client.recent'|trans }}
-        </h3>
-    </div>
-    {% if clients is not empty %}
-        <ul class="list-group dashboard-widget">
-            {% for client in clients %}
-                <li class="list-group-item">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            {{ icon('cog') }}
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="{{ path('_clients_view', {'id' : client.id}) }}">
-                                    {{ icon('eye') }} {{ 'dashboard.client.actions.view'|trans }}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_clients_edit', {'id' : client.id}) }}">
-                                    {{ icon('edit') }} {{ 'dashboard.client.actions.edit'|trans }}
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="{{ path('_quotes_create', {'client' : client.id}) }}">
-                                    {{ icon('file-text-o') }} {{ 'dashboard.client.actions.create.quote'|trans }}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_invoices_create', {'client' : client.id}) }}">
-                                    {{ icon('file-text-o') }} {{ 'dashboard.client.actions.create.invoice'|trans }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {{ client_label(client.status) }}
-
-                    <a href="{{ path('_clients_view', {'id' : client.id}) }}">
-                        {{ client.name }}
+            </div>
+        {% else %}
+            <div class="card-body">
+                <div class="text-center">
+                    <h6>
+                        {{ 'dashboard.client.empty'|trans }}
+                    </h6>
+                    <a href="{{ path('_clients_add') }}">
+                        {{ icon('plus') }} {{ 'dashboard.client.create'|trans }}
                     </a>
-
-                    <div class="float-right">
-                        <strong>
-                            {{ 'dashboard.client.actions.created'|trans }}
-                        </strong> {{ client.created|diff }}
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <div class="card-body">
-            <div class="float-left">
-                <h4>
-                    {{ 'dashboard.client.empty'|trans }}
-                </h4>
+                </div>
             </div>
-            <div class="float-right">
-                <a href="{{ path('_clients_add') }}" class="btn btn-info">
-                    {{ icon('plus') }} {{ 'dashboard.client.create'|trans }}
-                </a>
-            </div>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>

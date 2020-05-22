@@ -168,7 +168,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function displayIcon(string $iconName, array $options = []): string
     {
         $options = implode(' ', $options);
-        $class = sprintf('fas fa-%s', $iconName);
+        $class = sprintf('fa fa-%s', $iconName);
 
         if (!empty($options)) {
             $class .= ' '.$options;
