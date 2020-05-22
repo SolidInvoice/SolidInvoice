@@ -6,11 +6,7 @@ services:
     solidinvoice_client.menu:
         class: SolidInvoice\ClientBundle\Menu\Builder
         tags:
-            - { name: 'cs_core.menu', menu: top, method: topMenu }
-            - { name: 'cs_core.menu', menu: clients_index, method: clientsMenu }
-            - { name: 'cs_core.menu', menu: clients_view, method: clientViewMenu }
-            - { name: 'cs_core.menu', menu: clients_add, method: clientsMenu }
-            - { name: 'cs_core.menu', menu: clients_edit, method: clientsMenu }
+            - { name: 'cs_core.menu', menu: sidebar, method: sidebar }
 
     # Repositories
     SolidInvoice\ClientBundle\Repository\ClientRepository: ~

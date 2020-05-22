@@ -29,46 +29,12 @@ class Builder extends AuthenticatedMenu
      *
      * @throws \InvalidArgumentException
      */
-    public function topMenu(ItemInterface $menu)
+    public function sidebar(ItemInterface $menu)
     {
-        $menu->addChild(QuoteMenu::main());
-    }
+        $menu->addHeader('quotes');
+        $menu->addChild(QuoteMenu::list());
+        $menu->addChild(QuoteMenu::create());
 
-    /**
-     * Renders the quote index menu.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function quotesMenu(ItemInterface $menu, array $options = [])
-    {
-        if (isset($options['client'])) {
-            $menu->addHeader('Client Info');
-            $menu->addChild(ClientMenu::view($options['client']));
-        }
-
-        // Quotes
-        $menu->addChild('quotes');
-        $menu->addChild(QuoteMenu::listMenu());
-        $menu->addChild(QuoteMenu::create($options['client'] ?? null));
-
-        // Invoices
-        $menu->addHeader('invoices');
-        $menu->addChild(InvoiceMenu::listMenu());
-        $menu->addChild(InvoiceMenu::create($options['client'] ?? null));
-    }
-
-    /**
-     * Renders the quote edit menu.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function quotesEditMenu(ItemInterface $menu, array $options = [])
-    {
-        $this->quotesMenu($menu);
-
-        if (isset($options['quote']) && $options['quote'] instanceof Quote) {
-            $menu->addDivider();
-            $menu->addChild(QuoteMenu::view($options['quote']));
-        }
+        $menu->addDivider();
     }
 }

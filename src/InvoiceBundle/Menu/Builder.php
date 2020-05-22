@@ -29,47 +29,12 @@ class Builder extends AuthenticatedMenu
      *
      * @throws \InvalidArgumentException
      */
-    public function topMenu(ItemInterface $menu)
+    public function sidebar(ItemInterface $menu)
     {
-        $menu->addChild(InvoiceMenu::main());
-    }
-
-    /**
-     * Renders the invoice index menu.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function invoicesMenu(ItemInterface $menu, array $options = [])
-    {
-        if (isset($options['client'])) {
-            $menu->addHeader('Client Info');
-
-            $menu->addChild(ClientMenu::view($options['client']));
-        }
-
-        // Quotes
-        $menu->addHeader('quotes');
-        $menu->addChild(QuoteMenu::listMenu());
-        $menu->addChild(QuoteMenu::create($options['client'] ?? null));
-
-        // Invoices
         $menu->addHeader('invoices');
-        $menu->addChild(InvoiceMenu::listMenu());
-        $menu->addChild(InvoiceMenu::create($options['client'] ?? null));
-    }
+        $menu->addChild(InvoiceMenu::list());
+        $menu->addChild(InvoiceMenu::create());
 
-    /**
-     * Renders the invoice edit menu.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function invoicesEditMenu(ItemInterface $menu, array $options = [])
-    {
-        $this->invoicesMenu($menu);
-
-        if (isset($options['invoice']) && $options['invoice'] instanceof Invoice) {
-            $menu->addDivider();
-            $menu->addChild(InvoiceMenu::view($options['invoice']));
-        }
+        $menu->addDivider();
     }
 }

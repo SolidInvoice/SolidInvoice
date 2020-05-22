@@ -18,20 +18,7 @@ use SolidInvoice\CoreBundle\Icon;
 
 class ClientMenu
 {
-    public static function main(): array
-    {
-        return [
-            'client.menu.main',
-            [
-                'extras' => [
-                    'icon' => Icon::CLIENT,
-                ],
-                'route' => '_clients_index',
-            ],
-        ];
-    }
-
-    public static function listMenu(): array
+    public static function list(): array
     {
         return [
             'client.menu.list',
@@ -53,22 +40,6 @@ class ClientMenu
                     'icon' => 'user-plus',
                 ],
                 'route' => '_clients_add',
-            ],
-        ];
-    }
-
-    public static function view(Client $client): array
-    {
-        return [
-            'client.menu.view',
-            [
-                'extras' => [
-                    'icon' => 'eye',
-                ],
-                'route' => '_clients_view',
-                'routeParameters' => [
-                    'id' => $client->getId(),
-                ],
             ],
         ];
     }

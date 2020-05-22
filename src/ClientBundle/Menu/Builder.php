@@ -25,37 +25,12 @@ class Builder extends AuthenticatedMenu
      *
      * @throws \InvalidArgumentException
      */
-    public function topMenu(ItemInterface $menu)
+    public function sidebar(ItemInterface $menu)
     {
-        $menu->addChild(ClientMenu::main());
-    }
-
-    /**
-     * Renders the client index menu.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function clientsMenu(ItemInterface $menu)
-    {
-        $menu->addHeader('Clients Menu');
-        $menu->addChild(ClientMenu::listMenu());
+        $menu->addHeader('Clients');
+        $menu->addChild(ClientMenu::list());
         $menu->addChild(ClientMenu::add());
-    }
-
-    /**
-     * Renders the client view menu.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function clientViewMenu(ItemInterface $menu, array $options = [])
-    {
-        $menu->addDivider();
-
-        $menu->addChild(ClientMenu::view($options['client'] ?? null));
-        $menu->addChild(InvoiceMenu::create($options['client'] ?? null));
-        $menu->addChild(QuoteMenu::create($options['client'] ?? null));
 
         $menu->addDivider();
-        $this->clientsMenu($menu);
     }
 }

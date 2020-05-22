@@ -233,8 +233,16 @@ $theme-header-padding: 15px;
         margin: 20px 0;
       }
       .nav-header {
-        padding: 1.7rem 1rem .5rem;
         text-transform: uppercase;
+
+        &:not(:first-of-type) {
+          padding: 0;
+        }
+      }
+
+      > .nav-item > .nav-link.active {
+        background-color: rgba(255,255,255,.9);
+        color: #343a40;
       }
     }
   }
