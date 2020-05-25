@@ -14,7 +14,6 @@ export default ItemView.extend({
         'change @ui.type': 'setDiscount',
     },
     setDiscount () {
-        console.log('FOOBAR@!@');
         this.model.set('value', parseFloat(this.ui.value.val()));
         this.model.set('type', this.ui.type.val());
 

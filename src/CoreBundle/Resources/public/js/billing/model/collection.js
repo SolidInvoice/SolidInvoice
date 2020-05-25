@@ -3,20 +3,20 @@ import { forEach, isEmpty, isUndefined, toLower } from 'lodash';
 import RowModel from 'SolidInvoiceCore/js/billing/model/row_model';
 
 export default Backbone.Collection.extend({
-    initialize (models, options) {
-        this.footerModel = options.footerModel;
-        this.discountModel = options.discountModel;
-        this.listenTo(this, 'change reset add remove', () => this.updateTotals());
-    },
     footerModel: null,
     discountModel: null,
     model: RowModel,
-    updateTotals () {
+    async initialize (models, options) {
+        this.footerModel = options.footerModel;
+        this.discountModel = options.discountModel;
+        this.listenTo(this, 'change reset add remove', await this.updateTotals);
+    },
+    async updateTotals () {
         let total = 0,
             tax = 0,
             subTotal = 0;
 
-        forEach(this.get('models'), (model) => {
+        forEach(this.models, (model) => {
             let rowTotal = model.get('total'),
                 rowTax = model.get('tax');
 
