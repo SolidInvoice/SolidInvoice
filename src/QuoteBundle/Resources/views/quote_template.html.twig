@@ -47,7 +47,7 @@
                             {% endif %}
 
                             {% set address = setting('system/company/contact_details/address', null, true) %}
-                            {% if address is not empty %}
+                            {% if address|filter(v => v) is not empty %}
                                 <address>
                                     {{ icon('map-marker') }} {{ address(address)|replace({"\n": ", "}) }}
                                 </address>
