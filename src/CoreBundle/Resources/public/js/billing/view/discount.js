@@ -22,7 +22,14 @@ export default ItemView.extend({
     initialize () {
         this.ui.discount_types.on('click', (event) => {
             event.preventDefault();
-            const $this = $(event.target);
+            let $this = $(event.target);
+
+            if ($this.hasClass('currency-view')) {
+                $this = $this.closest('a');
+            } else if ($this.hasClass('nav-item')) {
+                $this = $this.find('a');
+            }
+
             this.ui.discount_display.html($this.html());
             // eslint-disable-next-line
             this.ui.discount_types.filter('.d-none').removeClass('d-none');

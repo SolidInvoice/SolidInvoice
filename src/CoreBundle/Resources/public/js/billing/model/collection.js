@@ -46,10 +46,10 @@ export default Backbone.Collection.extend({
             footerModel = this.footerModel;
 
         if (0 < this.discountModel.get('value')) {
-            if ('money' === this.discountModel.get('type')) {
-                discount = this.discountModel.get('value');
-            } else {
+            if ('percentage' === this.discountModel.get('type')) {
                 discount = ( total * this.discountModel.get('value') ) / 100;
+            } else {
+                discount = this.discountModel.get('value');
             }
         }
 
