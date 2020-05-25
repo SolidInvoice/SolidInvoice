@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Menu;
 
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-
 /**
  * Menu items for invoices.
  */

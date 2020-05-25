@@ -157,7 +157,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     {
         $attributes = $item->getLinkAttributes();
 
-        $attributes['class'] .= $item->isCurrent() ? ' '. $options['currentClass'] : '';
+        $attributes['class'] .= $item->isCurrent() ? ' '.$options['currentClass'] : '';
 
         return \sprintf('<a href="%s"%s>%s</a>', $this->escape($item->getUri()), $this->renderHtmlAttributes($attributes), $this->renderLabel($item, $options));
     }

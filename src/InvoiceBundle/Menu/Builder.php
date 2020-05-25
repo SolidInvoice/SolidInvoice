@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Menu;
 
-use SolidInvoice\ClientBundle\Menu\ClientMenu;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
-use SolidInvoice\QuoteBundle\Menu\QuoteMenu;
 
 /**
  * Menu items for invoices.

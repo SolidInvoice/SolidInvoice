@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Menu;
 
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Icon;
 
 class ClientMenu

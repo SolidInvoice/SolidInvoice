@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Menu;
 
-use SolidInvoice\InvoiceBundle\Menu\InvoiceMenu;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
-use SolidInvoice\QuoteBundle\Menu\QuoteMenu;
 
 class Builder extends AuthenticatedMenu
 {

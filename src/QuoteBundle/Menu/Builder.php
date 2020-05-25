@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Menu;
 
-use SolidInvoice\ClientBundle\Menu\ClientMenu;
-use SolidInvoice\InvoiceBundle\Menu\InvoiceMenu;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 
 /**
  * Menu items for quotes.
