@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Step;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
 use SolidInvoice\InstallBundle\Form\Type\EmailSettingsType;
@@ -41,7 +42,7 @@ class ConfigStepForm extends AbstractType
                         if (null !== $data['driver'] && null !== $data['user']) {
                             try {
                                 DriverManager::getConnection($data)->connect();
-                            } catch (\PDOException $e) {
+                            } catch (\PDOException | DBALException $e) {
                                 $executionContext->addViolation($e->getMessage());
                             }
                         }
