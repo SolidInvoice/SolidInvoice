@@ -72,20 +72,19 @@
 
     {{ form_errors(form) }}
 
-    <div class="box" id="quote-create">
+    <div class="card" id="quote-create">
+        <div class="card-header">
+            <h3 class="card-title">
+                {% if quote is defined %}
+                    {{ 'quote.title'|trans({'%id%' : quote.id}) }}
+                {% else %}
+                    {{ 'quote.create'|trans }}
+                {% endif %}
+            </h3>
+        </div>
         <div class="card-body">
             <section class="invoice">
-
                 <div class="col-12">
-                    <div class="title">
-                        <h3 class="page-header">
-                            {% if quote is defined %}
-                                {{ 'quote.title'|trans({'%id%' : quote.id}) }}
-                            {% else %}
-                                {{ 'quote.create'|trans }}
-                            {% endif %}
-                        </h3>
-                    </div>
                     <div class="row">
                         <div class="col-6" id="client-info">
                             {{ block('form_client') is defined ? block('form_client') }}
@@ -101,12 +100,15 @@
 
                 <br class="clear"/>
 
-                <div class="col-lg-6">
-                    {{ form_row(form.terms) }}
+                <div class="row">
+                    <div class="col">
+                        {{ form_row(form.terms) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(form.notes) }}
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    {{ form_row(form.notes) }}
-                </div>
+
 
                 {{ form_rest(form) }}
 
