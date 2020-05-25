@@ -13,7 +13,7 @@
     {% endif %}
 
     {% for message in flashMessage %}
-        <div class="alert alert-{{ type }} fade in">
+        <div class="alert alert-{{ type }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 {{ message|trans }} <br />
         </div>
