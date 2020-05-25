@@ -1,6 +1,6 @@
 datagrid:
     active_client_grid:
-        title: Active
+        title: Active Clients
         icon: check
         source:
             repository: 'SolidInvoiceClientBundle:Client'
@@ -65,7 +65,7 @@ datagrid:
                 action: client_grid_delete
                 className: danger
     archive_client_grid:
-        title: Archived
+        title: Archived Clients
         icon: archive
         source:
             repository: 'SolidInvoiceClientBundle:Client'

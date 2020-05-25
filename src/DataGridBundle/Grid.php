@@ -144,6 +144,7 @@ class Grid implements GridInterface, \JsonSerializable
     public function jsonSerialize()
     {
         return [
+            'title' => $this->title,
             'name' => $this->name,
             'columns' => $this->columns->toArray(),
             'actions' => $this->actions,

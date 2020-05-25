@@ -2,7 +2,7 @@
     <div class="float-right">
 	<div class="btn-group btn-group-sm" role="group">
 	    {{#each grids}}
-		<a href="#" class="btn btn-secondary{{#if this.disabled}} disabled{{/if}}" data-grid="{{@key}}">
+		<a href="#" class="btn btn-dark{{#if this.disabled}} active disabled{{/if}}" data-grid="{{@key}}">
 		    {{#if this.icon}}
 			<i class="fas fa-{{this.icon}}"></i>
 		    {{/if}}
@@ -14,5 +14,7 @@
     </div>
     <br class="clear" />
 </div>
+
+{{grid.title}}
 
 <div id="{{gridId}}"></div>

@@ -1,6 +1,6 @@
 datagrid:
     active_quote_grid:
-        title: Active
+        title: Active Quotes
         icon: check
         source:
             repository: 'SolidInvoiceQuoteBundle:Quote'
@@ -78,7 +78,7 @@ datagrid:
                 action: quote_grid_delete
                 className: danger
     archive_quote_grid:
-        title: Archived
+        title: Archived Quotes
         icon: archive
         source:
             repository: 'SolidInvoiceQuoteBundle:Quote'

@@ -1,6 +1,6 @@
 datagrid:
     active_invoice_grid:
-        title: Active
+        title: Active Invoices
         icon: check
         source:
             repository: 'SolidInvoiceInvoiceBundle:Invoice'
@@ -78,7 +78,7 @@ datagrid:
                 action: invoice_grid_delete
                 className: danger
     recurring_invoice_grid:
-        title: Recurring
+        title: Recurring Invoices
         icon: refresh
         source:
             repository: 'SolidInvoiceInvoiceBundle:Invoice'
@@ -164,7 +164,7 @@ datagrid:
                 action: invoice_grid_delete
                 className: danger
     archive_invoice_grid:
-        title: Archived
+        title: Archived Invoices
         icon: archive
         source:
             repository: 'SolidInvoiceInvoiceBundle:Invoice'
