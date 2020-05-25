@@ -1,37 +1,35 @@
-<div class="col-lg-6 col-md-6">
-    <div class="card card-primary contact-card" data-id="{{ id }}">
-        <div class="card-header">
-            <div class="box-tools">
-                <a href="{{path '_xhr_clients_edit_contact' id=id }}" rel="tooltip" title="{{trans "contact_edit" }}" class="edit-contact btn btn-box-tool">
-                    <i class="fas fa-pencil"></i>
+<div class="card card-primary contact-card" data-id="{{ id }}">
+    <div class="card-header">
+        <div class="float-right">
+            <a href="{{path '_xhr_clients_edit_contact' id=id }}" rel="tooltip" title="{{trans "contact_edit" }}" class="edit-contact btn btn-box-tool">
+                <i class="fa fa-pencil"></i>
+            </a>
+
+            {{#if canDelete}}
+                <a href="#" rel="tooltip" title="{{trans "contact_delete" }}" class="delete-contact btn btn-box-tool">
+                    <i class="fa fa-trash-o"></i>
                 </a>
-
-                {{#if canDelete}}
-                    <a href="#" rel="tooltip" title="{{trans "contact_delete" }}" class="delete-contact btn btn-box-tool">
-                        <i class="fas fa-trash-o"></i>
-                    </a>
-                {{/if}}
-            </div>
-            <h4 class="card-title">
-                <i class="fas fa-user"></i> {{ firstName }} {{ lastName }}
-            </h4>
-        </div>
-
-        <div class="card-body">
-            <dl class="dl-horizontal">
-                <dt>{{trans 'client.contact.details.email'}}:</dt>
-                <dd>{{ email }}</dd>
-            </dl>
-
-            {{#if additionalContactDetails}}
-                <h5>{{trans 'client.contact.details.extra'}}</h5>
-                <dl class="dl-horizontal">
-                    {{#each additionalContactDetails }}
-                        <dt>{{title this.type }}:</dt>
-                        <dd>{{ this.value }}</dd>
-                    {{/each}}
-                </dl>
             {{/if}}
         </div>
+        <h4 class="card-title">
+            <i class="fas fa-user"></i> {{ firstName }} {{ lastName }}
+        </h4>
+    </div>
+
+    <div class="card-body">
+        <dl class="dl-horizontal">
+            <dt>{{trans 'client.contact.details.email'}}:</dt>
+            <dd>{{ email }}</dd>
+        </dl>
+
+        {{#if additionalContactDetails}}
+            <h5>{{trans 'client.contact.details.extra'}}</h5>
+            <dl class="dl-horizontal">
+                {{#each additionalContactDetails }}
+                    <dt>{{title this.type }}:</dt>
+                    <dd>{{ this.value }}</dd>
+                {{/each}}
+            </dl>
+        {{/if}}
     </div>
 </div>

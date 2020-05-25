@@ -6,7 +6,7 @@ import Translator from 'translator';
 
 export default ItemView.extend({
     template: Template,
-
+    className: 'col-6 py-2',
     templateContext () {
         return {
             'canDelete': 1 < this.model.collection.length

@@ -148,24 +148,24 @@
                 <div role="tabpanel" class="nav-tabs-custom">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab">
+                        <li role="presentation" class="nav-item">
+                            <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab" class="nav-link active">
                                 {{ 'client.view.tabs.info'|trans }}
                             </a>
                         </li>
-                        <li role="presentation">
-                            <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">
+                        <li role="presentation" class="nav-item">
+                            <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab" class="nav-link">
                                 {{ 'client.view.tabs.quotes'|trans }}
                             </a>
                         </li>
-                        <li role="presentation">
-                            <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">
+                        <li role="presentation" class="nav-item">
+                            <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab" class="nav-link">
                                 {{ 'client.view.tabs.invoices'|trans }}
                             </a>
                         </li>
                         {% if payments|length > 0 %}
-                            <li role="presentation">
-                                <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab">
+                            <li role="presentation" class="nav-item">
+                                <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab" class="nav-link">
                                     {{ 'client.view.tabs.payments'|trans }}
                                 </a>
                             </li>
