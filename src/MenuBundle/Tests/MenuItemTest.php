@@ -17,7 +17,9 @@ use Knp\Menu\Factory\CoreExtension;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\ItemInterface;
 use SolidInvoice\MenuBundle\MenuItem;
+use Knp\Menu\FactoryInterface;
 
 class MenuItemTest extends TestCase
 {
@@ -25,7 +27,7 @@ class MenuItemTest extends TestCase
 
     public function testAddDivider()
     {
-        $factory = M::mock('Knp\Menu\FactoryInterface');
+        $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
 
         $childItem = new MenuItem('test', $factory);
@@ -36,43 +38,43 @@ class MenuItemTest extends TestCase
 
         $child = $item->addDivider('*');
 
-        $this->assertInstanceOf('SolidInvoice\MenuBundle\MenuItem', $child);
+        $this->assertInstanceOf(ItemInterface::class, $child);
         $this->assertTrue($child->isDivider());
         $this->assertSame('-*', $child->getExtra('divider'));
     }
 
     public function testAddChild()
     {
-        $factory = M::mock('Knp\Menu\FactoryInterface');
+        $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
 
         $factory->shouldReceive('createItem')
-            ->with('abc', [])
+            ->with('abc', ['attributes' => ['class' => ' nav-item'], 'linkAttributes' => ['class' => ' nav-link']])
             ->andReturn(new MenuItem('abc', $factory));
 
         $child = $item->addChild('abc');
 
-        $this->assertInstanceOf('SolidInvoice\MenuBundle\MenuItem', $child);
+        $this->assertInstanceOf(ItemInterface::class, $child);
     }
 
     public function testAddChildArray()
     {
-        $factory = M::mock('Knp\Menu\FactoryInterface');
+        $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
 
         $factory->shouldReceive('createItem')
-            ->with('abc', [])
+            ->with('abc', ['attributes' => ['class' => ' nav-item'], 'linkAttributes' => ['class' => ' nav-link']])
             ->andReturn(new MenuItem('abc', $factory));
 
         $child = $item->addChild(['abc', []]);
 
-        $this->assertInstanceOf('SolidInvoice\MenuBundle\MenuItem', $child);
+        $this->assertInstanceOf(ItemInterface::class, $child);
     }
 
     public function testIsDivider()
     {
         $coreExtension = new CoreExtension();
-        $item = new MenuItem('test', M::mock('Knp\Menu\FactoryInterface'));
+        $item = new MenuItem('test', M::mock(FactoryInterface::class));
 
         $options = ['extras' => ['divider' => true]];
 
@@ -84,7 +86,7 @@ class MenuItemTest extends TestCase
     public function testIsDividerFalse()
     {
         $coreExtension = new CoreExtension();
-        $item = new MenuItem('test', M::mock('Knp\Menu\FactoryInterface'));
+        $item = new MenuItem('test', M::mock(FactoryInterface::class));
 
         $coreExtension->buildItem($item, $coreExtension->buildOptions([]));
 
