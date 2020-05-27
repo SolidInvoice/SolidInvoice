@@ -42,6 +42,7 @@ class Builder extends AuthenticatedMenu
      */
     public function systemMenu(ItemInterface $menu)
     {
+        $menu->addHeader('System');
         $menu->addChild(MainMenu::tax());
         $menu->addChild(MainMenu::users());
         $menu->addChild(MainMenu::settings());
