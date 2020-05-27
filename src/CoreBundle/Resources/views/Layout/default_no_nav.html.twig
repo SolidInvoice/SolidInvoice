@@ -22,13 +22,15 @@
 {% endblock %}
 
 {% block body %}
-    <section class="content-header">
-        {{ block('heading') is defined ? block('heading') }}
+    <section class="container mt-5">
+        <section class="content-header">
+            {{ block('heading') is defined ? block('heading') }}
 
-        {% include "@SolidInvoiceCore/flash.html.twig" %}
-    </section>
+            {% include "@SolidInvoiceCore/flash.html.twig" %}
+        </section>
 
-    <section class="content">
-        {{ block('content') is defined ? block('content') }}
+        <section class="content">
+            {{ block('content') is defined ? block('content') }}
+        </section>
     </section>
 {% endblock body %}

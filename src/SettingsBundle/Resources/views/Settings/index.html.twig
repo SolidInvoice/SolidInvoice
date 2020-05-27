@@ -13,34 +13,40 @@
 
 {% block title %}{{ "Settings"|trans }}{% endblock %}
 
-{% block sidebar %}
-    <ul class="sidebar-menu tree" data-widget="tree" >
-        {% for section, setting in appSettings %}
-            <li{{ loop.first ? ' class="active"' }}>
-                <a href="#{{ section }}" data-toggle="tab">
-                    {{ icon('cog') }}
-                    <span>{{ section|trans|title }}</span>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock sidebar %}
-
 {% block content %}
-
-    {{ form_start(form) }}
-        <div class="tab-content">
-            {% for section, setting in appSettings %}
-                <div class="tab-pane{{ loop.first ? ' active' }}" id="{{ section }}">
-                    {{ settings_section(section, setting, form) }}
+    <section class="row">
+        <aside class="col-3">
+            <div class="card sticky-top">
+                <div class="card-body">
+                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                        {% for section, setting in appSettings %}
+                            <li class="nav-item">
+                                <a href="#{{ section }}" data-toggle="tab" class="nav-link{{ loop.first ? ' active' }}"s>
+                                    {{ icon('cog') }}
+                                    <p>{{ section|trans|title }}</p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        </aside>
+        <section class="col-9">
+            {{ form_start(form) }}
+            <div class="tab-content">
+                {% for section, setting in appSettings %}
+                    <div class="tab-pane{{ loop.first ? ' active' }}" id="{{ section }}">
+                        {{ settings_section(section, setting, form) }}
+                    </div>
+                {% endfor %}
+            </div>
 
-        <div class="card-footer form-actions">
-            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "settings.save"|trans }}</button>
-        </div>
-    {{ form_end(form) }}
+            <div class="card-footer form-actions">
+                <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "settings.save"|trans }}</button>
+            </div>
+            {{ form_end(form) }}
+        </section>
+    </section>
 
     <script>
         require(['core/util/form/mail'], function (MailSettings) {

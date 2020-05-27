@@ -20,11 +20,11 @@
     {% endset %}
 
     {% if not form[section].rendered %}
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-header">
-                <legend>
+                <h3 class="card-title">
                     {{ section|replace({"_" : " "})|title }}
-                </legend>
+                </h3>
             </div>
             <div class="card-body">
 
