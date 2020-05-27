@@ -34,16 +34,16 @@
                     <h3 class="profile-username text-center">{{ client.name }}</h3>
 
                     <p class="text-muted text-center">
-                        <small>{{ client_label(client.status) }}</small>
+                        <h4 class="text-center">{{ client_label(client.status) }}</h4>
                     </p>
                     <p>
                         <span>
-                            <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-xs">
+                            <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-sm">
                                 {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
                             </a>
                         </span>
                         <span class="float-right">
-                            <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-xs" id="delete-client">
+                            <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-sm" id="delete-client">
                                 {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
                             </a>
                         </span>
@@ -86,7 +86,7 @@
 
             <div class="card card-primary">
                 <div class="card-header with-border">
-                    <h3 class="card-title">{{ icon('bar-chart') }}Stats</h3>
+                    <h3 class="card-title">{{ icon('bar-chart') }} Stats</h3>
                 </div>
                 <div class="card-body">
                     <div class="small-box bg-green">
