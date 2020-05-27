@@ -1,9 +1,18 @@
-{{#each enabled}}
-    {{> menu_item enabled=true method=this}}
-{{/each}}
+{{#if disabled}}
+    <li class="nav-header nav-item first">
+        <span> <p>Enabled Methods</p></span>
+    </li>
+
+    {{#each enabled}}
+        {{> menu_item enabled=true method=this}}
+    {{/each}}
+{{/if}}
+
 
 {{#if disabled}}
-    <li class="divider"></li>
+    <li class="nav-header nav-item first">
+        <span> <p>Disabled Methods</p></span>
+    </li>
 
     {{#each disabled}}
         {{> menu_item enabled=false method=this}}

@@ -21,8 +21,8 @@
 
 {% block content %}
     <div class="float-right no-print">
-        <div class="btn-toolbar">
-            <div class="btn-group">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mr-2" role="group">
                 {% if invoice.quote is not null %}
                     <a href="{{ path('_quotes_view', {'id' : invoice.quote.id}) }}" class="btn btn-secondary">
                         {{ icon('file-text-o') }} {{ "invoice.view.toolbar.view_quote"|trans }}
@@ -31,9 +31,7 @@
                 <a href="{{ path('_invoices_clone', {'id' : invoice.id}) }}" class="btn btn-secondary">
                     {{ icon('clone') }} {{ "invoice.view.toolbar.clone"|trans }}
                 </a>
-            </div>
 
-            <div class="btn-group">
                 {% if workflow_can(invoice, 'pay') %}
                     <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
                         {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
@@ -45,9 +43,7 @@
                         {{ icon('envelope-o') }} {{ "invoice.view.toolbar.send"|trans }}
                     </a>
                 {% endif %}
-            </div>
 
-            <div class="btn-group">
                 {% if workflow_can(invoice, 'reopen') %}
 
                     <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-secondary">
@@ -60,15 +56,13 @@
                         {{ icon('ban') }} {{ "invoice.view.toolbar.cancel"|trans }}
                     </a>
                 {% endif %}
-            </div>
 
-            {% if workflow_can(invoice, 'edit') %}
-                <div class="btn-group">
+                {% if workflow_can(invoice, 'edit') %}
                     <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-secondary">
                         {{ icon('edit') }} {{ "invoice.view.toolbar.edit"|trans }}
                     </a>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 

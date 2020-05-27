@@ -16,20 +16,20 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-header with-border">
-                        <h3 class="card-title">
-                            {{ invoice.client.name }}
-                            <small>{{ client_label(invoice.client.status) }}</small>
-                        </h3>
+                    <div class="with-border">
                         {% if invoice.client.credit.value is not empty %}
-                            <div class="box-tools float-right">
+                            <div class="float-right">
                                 {{ 'payment.create.credit'|trans }}
                                 {{ invoice.client.credit.value|formatCurrency }}
                             </div>
                         {% endif %}
-                    </div>
 
-                    {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" with {"box": false} %}
+                        <h3>
+                            {{ invoice.client.name }}
+                            <small>{{ client_label(invoice.client.status) }}</small>
+                        </h3>
+                    </div>
+                    {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" %}
                         {% block header %}{% endblock header %}
                         {% block footer %}{% endblock footer %}
                     {% endembed %}

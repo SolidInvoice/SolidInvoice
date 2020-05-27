@@ -26,7 +26,7 @@ payment:
             refunded: 'Payment has been refunded'
     form:
         help:
-            internal: 'Selecting this option, will make this payment option only available for internal use.'
+            internal: 'Selecting this option, will make this payment option only available for internal use. Clients won''t be able to select the method to complete a payment.'
         label:
             internal: 'Internal use only'
     action:

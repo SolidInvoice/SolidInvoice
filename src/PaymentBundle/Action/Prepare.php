@@ -130,7 +130,7 @@ final class Prepare
             throw new \Exception('This invoice cannot be paid');
         }
 
-        if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('ROLE_SUPER_ADMIN')) < 1) {
+        if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED')) < 1) {
             throw new \Exception('No payment methods available');
         }
 
@@ -153,7 +153,7 @@ final class Prepare
 
         $paymentFactories = array_keys($this->paymentFactories->getFactories('offline'));
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             /** @var Money $amount */
             $amount = $data['amount'];

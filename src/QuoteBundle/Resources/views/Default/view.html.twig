@@ -7,6 +7,8 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set currency = quote.client.currency %}
+
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
@@ -18,7 +20,6 @@
 {% endblock sidebar %}
 
 {% block content %}
-
     <div class="float-right no-print">
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group mr-2" role="group">

@@ -10,7 +10,7 @@
 {% set footerSpan = invoice.tax.positive ? 3 : 2 %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="invoice-create">
-    <div class="card invoice">
+    <div class="s invoice">
         <div class="card-body">
             {% block header %}
 
@@ -77,14 +77,14 @@
                             {% endfor %}
                             <p>
                                 {% for user in invoice.users %}
-                            <address class="col-6">
-                                <strong>{{ user }}</strong><br/>
-                                {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
-                                {% for info in user.additionalContactDetails %}
-                                    {{ info.type|title }}: {{ info.value }}<br>
+                                    <address class="col-6">
+                                        <strong>{{ user }}</strong><br/>
+                                        {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
+                                        {% for info in user.additionalContactDetails %}
+                                            {{ info.type|title }}: {{ info.value }}<br>
+                                        {% endfor %}
+                                    </address>
                                 {% endfor %}
-                            </address>
-                            {% endfor %}
                             </p>
                         </div>
                         <div class="col-sm-4 invoice-col">
