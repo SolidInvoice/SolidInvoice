@@ -1,9 +1,9 @@
 <div class="col-lg-6 col-md-6">
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="box-tools">
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="float-right">
                 <a href="{{path '_xhr_clients_edit_address' id=id }}" rel="tooltip" title="{{trans "client.address.edit" }}" class="edit-address btn btn-box-tool">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fas fa-pencil"></i>
                 </a>
 
                 <a href="#" rel="tooltip" title="{{trans "client.address.delete" }}" class="delete-address btn btn-box-tool">
@@ -11,11 +11,11 @@
                 </a>
             </div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <i class="fa fa-map-marker"></i>
             {{ street1 }} {{ street2 }} {{ city }} {{ state }} {{ zip }} {{ countryName }}
 
-            <div class="pull-right">
+            <div class="float-right">
                 <i class="fa fa-map-marker"></i>
                 <a href="http://maps.google.com/?q={{ street1 }}+{{ street2 }}+{{ city }}+{{ state }}+{{ zip }}+{{ country }}" target="_blank">
                     {{trans 'client.address.view_map' }}

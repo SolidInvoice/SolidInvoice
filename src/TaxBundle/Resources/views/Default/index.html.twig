@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block title %}{{ 'tax.rates.title'|trans }}{% endblock title %}
 
@@ -20,7 +20,7 @@
 {% block heading %}
 <fieldset class="page-heading">
     <legend>
-        <div class="pull-right header-button">
+        <div class="float-right header-button">
             <a class="btn btn-info" href="{{ path("_tax_rates_add") }}">
             {{ icon('money') }} {{ "tax.rates.add"|trans }}
             </a>

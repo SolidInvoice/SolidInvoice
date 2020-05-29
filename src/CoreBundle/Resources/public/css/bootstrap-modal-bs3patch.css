@@ -14,16 +14,17 @@ body.modal-open,
 }
 
 .modal {
-    left: 50%;
-    bottom: auto;
-    right: auto;
+    left: 50% !important;
+    bottom: auto   !important;
+    right: auto !important;
+    top: 50% !important;
     z-index: 1050;
     padding: 0;
-    width: 500px;
+    width: 500px !important;
     margin-left: -250px;
     background-color: #ffffff;
     border: 1px solid #999999;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    height: auto !important;
     border-radius: 6px;
     -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);

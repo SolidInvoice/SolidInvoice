@@ -7,31 +7,31 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends '@SolidInvoiceCore/Layout/single_column.html.twig' %}
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
 {% block page_title %}{{ 'dashboard.title'|trans }}{% endblock %}
 
 {% block title %}
     {{ icon('dashboard') }} {{ block('page_title') is defined ? block('page_title') }}
 
-    <div class="pull-right">
+    <div class="float-right">
         <div class="btn-group">
             <button class="btn btn-info btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
                 {{ icon('plus') }} {{ 'dashboard.create.new'|trans }} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li>
-                    <a href="{{ path('_clients_add') }}">
+                <li class="nav-item">
+                    <a href="{{ path('_clients_add') }}" class="nav-link">
                         {{ icon('user-plus') }} {{ 'dashboard.create.client'|trans }}
                     </a>
                 </li>
-                <li>
-                    <a href="{{ path('_quotes_create') }}">
+                <li class="nav-item">
+                    <a href="{{ path('_quotes_create') }}" class="nav-link">
                         {{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
                     </a>
                 </li>
-                <li>
-                    <a href="{{ path('_invoices_create') }}">
+                <li class="nav-item">
+                    <a href="{{ path('_invoices_create') }}" class="nav-link">
                         {{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
                     </a>
                 </li>
@@ -41,20 +41,13 @@
 {% endblock %}
 
 {% block content %}
-
-    <br class="clear" />
-
-    <div class="widget">
+    <div class="widget my-3">
         <div class="row">
             {{ render_dashboard_widget('top') }}
         </div>
         <div class="row">
-            <div class="col-sm-6">
-                {{ render_dashboard_widget('left_column') }}
-            </div>
-            <div class="col-sm-6">
-                {{ render_dashboard_widget('right_column') }}
-            </div>
+            {{ render_dashboard_widget('left_column') }}
+            {{ render_dashboard_widget('right_column') }}
         </div>
     </div>
 {% endblock content %}

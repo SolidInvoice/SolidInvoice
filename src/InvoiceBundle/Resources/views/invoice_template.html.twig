@@ -8,20 +8,19 @@
  #}
 
 {% set footerSpan = invoice.tax.positive ? 3 : 2 %}
-{% set box = box is defined ? box : true %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="invoice-create">
-    <div class="{{ box ? 'box ' }}invoice">
-        <div class="{{ box ? 'box-body ' }}">
+    <div class="s invoice">
+        <div class="card-body">
             {% block header %}
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     {% block title %}
                         <h2 class="page-header">
                             {{ "invoice.title"|trans({"%id%" : invoice.id}) }} {{ invoice_label(invoice.status) }}
                         </h2>
                     {% endblock %}
-                    <div class="invoice-info">
+                    <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             From:
                             <h4>{{ app_name }}</h4>
@@ -48,7 +47,7 @@
                             {% endif %}
 
                             {% set address = setting('system/company/contact_details/address', null, true) %}
-                            {% if address is not empty %}
+                            {% if address is not null and address|filter(v => v) is not empty %}
                                 <address>
                                     {{ icon('map-marker') }} {{ address(address)|replace({"\n": ", "}) }}
                                 </address>
@@ -78,14 +77,14 @@
                             {% endfor %}
                             <p>
                                 {% for user in invoice.users %}
-                            <address class="col-xs-6">
-                                <strong>{{ user }}</strong><br/>
-                                {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
-                                {% for info in user.additionalContactDetails %}
-                                    {{ info.type|title }}: {{ info.value }}<br>
+                                    <address class="col-6">
+                                        <strong>{{ user }}</strong><br/>
+                                        {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
+                                        {% for info in user.additionalContactDetails %}
+                                            {{ info.type|title }}: {{ info.value }}<br>
+                                        {% endfor %}
+                                    </address>
                                 {% endfor %}
-                            </address>
-                            {% endfor %}
                             </p>
                         </div>
                         <div class="col-sm-4 invoice-col">
@@ -100,11 +99,10 @@
                         </div>
                     </div>
                 </div>
-
             {% endblock %}
 
             {% block content %}
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="table-responsive">
                         <table id="invoice-rows" class="table table-condensed">
                             <thead>
@@ -228,7 +226,7 @@
 
             {% block footer %}
                 {% if invoice.terms is not empty %}
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <strong>{{ 'invoice.terms'|trans }}</strong>
                         <p class="text-muted well well-sm no-shadow">
                             {{ invoice.terms|nl2br }}
@@ -236,7 +234,6 @@
                     </div>
                 {% endif %}
             {% endblock %}
-
         </div>
     </div>
 </div>

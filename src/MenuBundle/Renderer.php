@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MenuBundle;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\ItemInterface as Item;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\RouteVoter;
@@ -52,7 +53,15 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         $this->twig = $twig;
         $this->translator = $translator;
 
-        $matcher = new Matcher([new RouteVoter($requestStack)]);
+        $matcher = new class([new RouteVoter($requestStack)]) extends Matcher {
+            public function isCurrent(ItemInterface $item)
+            {
+                $current = parent::isCurrent($item);
+                $item->setCurrent($current);
+
+                return $current;
+            }
+        };
 
         parent::__construct($matcher, ['allow_safe_labels' => true, 'currentClass' => 'active']);
     }
@@ -67,7 +76,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
         } else {
-            $menu->setChildrenAttributes(['class' => 'sidebar-menu tree', 'data-widget' => 'tree']);
+            $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-sidebar flex-column']);
         }
 
         foreach ($storage as $builder) {
@@ -133,7 +142,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
             return $icon.$this->translator->trans($item->getLabel());
         }
 
-        return sprintf('%s <span>%s</span>', $icon, $this->escape($this->translator->trans($item->getLabel())));
+        return sprintf('%s <p>%s</p>', $icon, $this->escape($this->translator->trans($item->getLabel())));
     }
 
     /**
@@ -142,5 +151,14 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     protected function renderIcon(string $icon): string
     {
         return $this->twig->render('@SolidInvoiceMenu/icon.html.twig', ['icon' => $icon]);
+    }
+
+    protected function renderLinkElement(ItemInterface $item, array $options)
+    {
+        $attributes = $item->getLinkAttributes();
+
+        $attributes['class'] .= $item->isCurrent() ? ' '.$options['currentClass'] : '';
+
+        return \sprintf('<a href="%s"%s>%s</a>', $this->escape($item->getUri()), $this->renderHtmlAttributes($attributes), $this->renderLabel($item, $options));
     }
 }

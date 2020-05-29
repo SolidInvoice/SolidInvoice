@@ -1,4 +1,4 @@
-{% extends '@SolidInvoiceCore/Layout/single_column.html.twig' %}
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
 {% block title %}{{ 'users.title'|trans }}{% endblock title %}
 
@@ -11,7 +11,7 @@
 {% block heading %}
     <fieldset class="page-heading">
         <legend>
-            <div class="pull-right header-button">
+            <div class="float-right header-button">
                 <a class="btn btn-info" href="{{ path("_user_add") }}">
                     {{ icon('user') }} {{ "users.add"|trans }}
                 </a>

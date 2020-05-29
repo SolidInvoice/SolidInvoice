@@ -19,8 +19,8 @@ services:
     solidinvoice_menu.top:
         class: SolidInvoice\CoreBundle\Menu\Builder
         tags:
-            - { name: cs_core.menu, menu: top_right, method: systemMenu, priority: 255 }
-            - { name: cs_core.menu, menu: top_right, method: userMenu, priority: 255 }
+            - { name: cs_core.menu, menu: sidebar, method: systemMenu, priority: -200 }
+            - { name: cs_core.menu, menu: sidebar, method: userMenu, priority: -255 }
 
     SolidInvoice\CoreBundle\Form\FieldRenderer:
         lazy: true

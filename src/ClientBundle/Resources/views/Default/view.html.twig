@@ -12,7 +12,7 @@
 {% set moduleData = client %}
 {% set serializationGroups = ['client_api'] %}
 
-{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
     {{ client.name }}
@@ -27,23 +27,23 @@
 
     <div class="row">
         <div class="col-md-3">
-            <div class="box box-primary">
-                <div class="box-body box-profile">
+            <div class="card card-primary">
+                <div class="card-body box-profile">
                     {#<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">#}
 
                     <h3 class="profile-username text-center">{{ client.name }}</h3>
 
                     <p class="text-muted text-center">
-                        <small>{{ client_label(client.status) }}</small>
+                        <h4 class="text-center">{{ client_label(client.status) }}</h4>
                     </p>
                     <p>
                         <span>
-                            <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-xs">
+                            <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-sm">
                                 {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
                             </a>
                         </span>
-                        <span class="pull-right">
-                            <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-xs" id="delete-client">
+                        <span class="float-right">
+                            <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-sm" id="delete-client">
                                 {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
                             </a>
                         </span>
@@ -53,20 +53,20 @@
 
                         {% if client.website %}
                             <li class="list-group-item">
-                                <b>{{ icon('globe') }} Website</b> <a href="{{ client.website }}" class="pull-right" rel="external">{{ client.website }}</a>
+                                <b>{{ icon('globe') }} Website</b> <a href="{{ client.website }}" class="float-right" rel="external">{{ client.website }}</a>
                                 <small>{{ icon('external-link') }}</small>
                             </li>
                         {% endif %}
 
                         {% if client.currency %}
                             <li class="list-group-item">
-                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="pull-right">{{ client.currency }}</span>
+                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="float-right">{{ client.currency }}</span>
                             </li>
                         {% endif %}
 
                         {% if client.vatNumber is not empty %}
                             <li class="list-group-item">
-                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="pull-right">{{ client.vatNumber }}</span>
+                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="float-right">{{ client.vatNumber }}</span>
                             </li>
                         {% endif %}
 
@@ -84,11 +84,11 @@
                 </div>
             </div>
 
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">{{ icon('bar-chart') }}Stats</h3>
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ icon('bar-chart') }} Stats</h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h3>{{ total_income(client)|formatCurrency }}</h3>
@@ -115,25 +115,25 @@
 
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge bg-aqua">
+                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge badge-pill bg-aqua">
                                 {{ client.quotes|length }}
                             </span>
                             {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
                         </li>
                         <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge bg-aqua">
+                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge badge-pill bg-aqua">
                                 {{ client.invoices|length }}
                             </span>
                             {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
                         </li>
                         <li class="list-group-item">
-                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
+                            <span class="badge badge-pill bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
                                 {{ total_invoices_pending }}
                             </span>
                             {{ "client.stats.outstanding_invoices"|trans }}
                         </li>
                         <li class="list-group-item">
-                            <span class="badge bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
+                            <span class="badge badge-pill bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
                                 {{ total_invoices_paid }}
                             </span>
                             {{ "client.stats.paid_invoices"|trans }}
@@ -148,24 +148,24 @@
                 <div role="tabpanel" class="nav-tabs-custom">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab">
+                        <li role="presentation" class="nav-item">
+                            <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab" class="nav-link active">
                                 {{ 'client.view.tabs.info'|trans }}
                             </a>
                         </li>
-                        <li role="presentation">
-                            <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">
+                        <li role="presentation" class="nav-item">
+                            <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab" class="nav-link">
                                 {{ 'client.view.tabs.quotes'|trans }}
                             </a>
                         </li>
-                        <li role="presentation">
-                            <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">
+                        <li role="presentation" class="nav-item">
+                            <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab" class="nav-link">
                                 {{ 'client.view.tabs.invoices'|trans }}
                             </a>
                         </li>
                         {% if payments|length > 0 %}
-                            <li role="presentation">
-                                <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab">
+                            <li role="presentation" class="nav-item">
+                                <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab" class="nav-link">
                                     {{ 'client.view.tabs.payments'|trans }}
                                 </a>
                             </li>

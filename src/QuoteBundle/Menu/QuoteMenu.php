@@ -13,42 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Menu;
 
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\QuoteBundle\Entity\Quote;
-
 /**
  * Menu items for quotes.
  */
 class QuoteMenu
 {
-    public static function main()
-    {
-        return [
-            'quote.menu.main',
-            [
-                'route' => '_quotes_index',
-                'extras' => [
-                    'icon' => 'file-text-o',
-                ],
-            ],
-        ];
-    }
-
-    public static function create(Client $client = null)
-    {
-        return [
-            'client.menu.create.quote',
-            [
-                'extras' => [
-                    'icon' => 'file-text-o',
-                ],
-                'route' => '_quotes_create',
-                'routeParameters' => null !== $client ? ['client' => $client->getId()] : [],
-            ],
-        ];
-    }
-
-    public static function listMenu()
+    public static function list()
     {
         return [
             'quote.menu.list',
@@ -61,18 +31,15 @@ class QuoteMenu
         ];
     }
 
-    public static function view(Quote $quote)
+    public static function create()
     {
         return [
-            'View Quote',
+            'client.menu.create.quote',
             [
                 'extras' => [
-                    'icon' => 'eye',
+                    'icon' => 'file-text-o',
                 ],
-                'route' => '_quotes_view',
-                'routeParameters' => [
-                    'id' => $quote->getId(),
-                ],
+                'route' => '_quotes_create',
             ],
         ];
     }

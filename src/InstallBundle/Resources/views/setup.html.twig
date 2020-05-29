@@ -16,13 +16,13 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">
                         {{ icon('cog') }} {{ 'installation.setup.title.system_settings'|trans }}
                     </h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     {{ form_row(form.locale) }}
                     {{ form_row(form.currency) }}
                 </div>
@@ -37,13 +37,13 @@
                     </p>
                 </div>
             {% else %}
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">
+                <div class="card card-primary">
+                    <div class="card-header with-border">
+                        <h3 class="card-title">
                             {{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
                         </h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         {{ form_row(form) }}
                     </div>
                 </div>
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="control-group pull-right" id="next_button">
+    <div class="control-group float-right" id="next_button">
         <button type="submit" class="btn btn-success" id="continue_step">
             {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
         </button>

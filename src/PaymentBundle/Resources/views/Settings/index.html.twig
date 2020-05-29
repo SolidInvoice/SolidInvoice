@@ -7,18 +7,25 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block title %}{{ 'payment.methods.title'|trans }}{% endblock title %}
 
 {% set module = "payments-settings" %}
 
-{% block sidebar %}
-    <ul class="sidebar-menu tree" data-widget="tree" role="tablist" id="payment-method-tabs">
-    </ul>
-{% endblock sidebar %}
-
 {% block content %}
-    <div id="payment-method-settings">
-    </div>
+    <section class="row">
+        <aside class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist" id="payment-method-tabs">
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <section class="col-9">
+            <div id="payment-method-settings">
+            </div>
+        </section>
+    </section>
 {% endblock %}

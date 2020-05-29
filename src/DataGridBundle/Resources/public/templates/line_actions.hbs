@@ -1,14 +1,14 @@
 <!-- Single button -->
 <div class="btn-group btn-group-xs dropdown">
-    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	...
     </button>
     <ul class="dropdown-menu">
 	{{#each actions}}
-	    <li>
-		<a href="{{path this.route this.routeParams}}">
+	    <li class="nav-item">
+		<a href="{{path this.route this.routeParams}}" class="nav-link">
 		    {{#if this.icon}}
-			<i class="fa fa-{{this.icon}}"></i>
+			<i class="fas fa-{{this.icon}}"></i>
 		    {{/if}}
 		    {{#if this.label}}
 			{{trans this.label}}

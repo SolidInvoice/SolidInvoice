@@ -10,11 +10,11 @@
 {% set footerSpan = quote.tax.positive ? 3 : 2 %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="quote-create">
-    <div class="box invoice">
-        <div class="box-body">
+    <div class="card invoice">
+        <div class="card-body">
             {% block header %}
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     {% block title %}
                         <h2 class="page-header">
                             {{ "quote.title"|trans({"%id%" : quote.id}) }} {{ quote_label(quote.status) }}
@@ -47,7 +47,7 @@
                             {% endif %}
 
                             {% set address = setting('system/company/contact_details/address', null, true) %}
-                            {% if address is not empty %}
+                            {% if address is not null and address|filter(v => v) is not empty %}
                                 <address>
                                     {{ icon('map-marker') }} {{ address(address)|replace({"\n": ", "}) }}
                                 </address>
@@ -77,14 +77,14 @@
                             {% endfor %}
                             <p>
                                 {% for user in quote.users %}
-                            <address class="col-xs-6">
-                                <strong>{{ user }}</strong><br/>
-                                {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
-                                {% for info in user.additionalContactDetails %}
-                                    {{ info.type|title }}: {{ info.value }}<br>
+                                    <address class="col-6">
+                                        <strong>{{ user }}</strong><br/>
+                                        {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
+                                        {% for info in user.additionalContactDetails %}
+                                            {{ info.type|title }}: {{ info.value }}<br>
+                                        {% endfor %}
+                                    </address>
                                 {% endfor %}
-                            </address>
-                            {% endfor %}
                             </p>
                         </div>
                         <div class="col-sm-4 invoice-col">
@@ -99,14 +99,11 @@
                         </div>
                     </div>
                 </div>
-
             {% endblock %}
 
             {% block content %}
-
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="table-responsive">
-
                         <table id="quote-rows" class="table table-condensed">
                             <thead>
                             <tr>
@@ -161,12 +158,13 @@
                                         <strong>{{ 'quote.tax'|trans }}</strong>
                                     </td>
                                     <td class="no-line text-right">
-                                            <span class="text-error quote-tax">
-                                                {{ quote.tax|formatCurrency }}
-                                            </span>
+                                        <span class="text-error quote-tax">
+                                            {{ quote.tax|formatCurrency }}
+                                        </span>
                                     </td>
                                 </tr>
                             {% endif %}
+
                             {% if quote.discount.type is not empty %}
                                 <tr>
                                     <td class="no-line"></td>
@@ -201,7 +199,7 @@
 
             {% block footer %}
                 {% if quote.terms is not empty %}
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <strong>{{ 'quote.terms'|trans }}</strong>
                         <p class="text-muted well well-sm no-shadow">
                             {{ quote.terms|nl2br }}
@@ -209,8 +207,6 @@
                     </div>
                 {% endif %}
             {% endblock %}
-
         </div>
     </div>
-
 </div>

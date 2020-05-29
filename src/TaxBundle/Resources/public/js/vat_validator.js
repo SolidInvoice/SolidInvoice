@@ -17,7 +17,7 @@ export default (element) => {
         e.preventDefault();
         let original = $el.html();
 
-        $el.html('<i class="fa fa-spin fa-refresh"></i>');
+        $el.html('<i class="fas fa-spin fa-refresh"></i>');
 
         $.ajax({
             'url': Router.generate('_tax_number_validate'),

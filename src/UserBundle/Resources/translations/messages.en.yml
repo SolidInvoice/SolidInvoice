@@ -45,8 +45,8 @@ profile:
                 ip: 'IP Address'
                 resource: Resource
                 user_agent: 'User Agent'
-        change_password:
-            success: 'Your password has been updated'
+    password_change:
+        success: 'Your password has been updated'
 
 security:
     login:

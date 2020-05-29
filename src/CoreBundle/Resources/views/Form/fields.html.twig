@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends 'bootstrap_3_layout.html.twig' %}
+{% extends 'bootstrap_4_layout.html.twig' %}
 
 {% block widget_attributes -%}
     id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif %}{% if required %} data-required="required"{% endif %}
@@ -33,7 +33,6 @@
     <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
         {{ form_label(form) }}
         {{ form_widget(form) }}
-        {{ form_errors(form) }}
         {#{% if help is defined and help is not empty %}
             <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
         {% endif %}#}
@@ -66,7 +65,7 @@
     {{ form_errors(form) }}
 {%- endblock notification_widget %}
 
-{% block form_errors -%}
+{#{% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
         <ul class="list-unstyled">
@@ -81,7 +80,7 @@
             </ul>
         {% if form.parent %}</span>{% else %}</div>{% endif %}
     {%- endif %}
-{%- endblock form_errors %}
+{%- endblock form_errors %}#}
 
 {% block form_label -%}
     {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label')|trim}) %}
@@ -137,7 +136,7 @@
     <div class="input-group">
         {{ form_widget(form) }}
         <span class="input-group-btn">
-            <a href="#" class="btn btn-default vat-validator" data-input="#{{ form.vars.id }}" rel="tooltip" title="EU Countries Only">{{ 'tax.form.input.validate'|trans }}</a>
+            <a href="#" class="btn btn-secondary vat-validator" data-input="#{{ form.vars.id }}" rel="tooltip" title="EU Countries Only">{{ 'tax.form.input.validate'|trans }}</a>
         </span>
     </div>
 {%- endblock tax_number_widget %}
@@ -190,7 +189,7 @@
         </div>
 
         {% if canDelete %}
-            <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove pull-right" data-related="{{ id }}">
+            <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove float-right" data-related="{{ id }}">
                 {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
             </a>
         {% endif %}
@@ -224,7 +223,7 @@
     <div class="form-group multiple-form-group input-group">
         {{ form_widget(form.value) }}
         <div class="input-group-btn input-group-select">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="concept" id="discount-display">
                 {% if form.type.vars.value == 'money' %}
                     <span class="currency-view">{{ currency }}</span>
@@ -235,8 +234,8 @@
             </button>
             <ul class="dropdown-menu" role="menu">
                 {% for type in form.vars.types %}
-                    <li>
-                        <a href="#" class="discount-types{% if type.name == form.type.vars.value %} hidden{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link discount-types{% if type.name == form.type.vars.value %} d-none{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
                             {% if type.name == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') %}
                                 <span class="currency-view">{{ currency }}</span>
                             {% else %}

@@ -1,9 +1,9 @@
 {{#if title }}
     <div class="modal-header">
+        <h4>{{{title}}}</h4>
         {{#if titleClose}}
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         {{/if}}
-        <h4>{{{title}}}</h4>
     </div>
 {{/if}}
 <div class="modal-body">
@@ -25,11 +25,11 @@
                     {{/if}}
             >
                 {{#if this.save}}
-                   <i class="fa fa-save"></i>
+                   <i class="fas fa-save"></i>
                 {{/if}}
 
                 {{#if this.close}}
-                   <i class="fa fa-times"></i>
+                   <i class="fas fa-times"></i>
                 {{/if}}
 
                 {{#if this.title}}

@@ -8,7 +8,7 @@
  #}
 
 
-{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block title %}{{ "invoice.list.title"|trans }}{% endblock %}
 
@@ -30,8 +30,8 @@
             {% endfor %}
         </div>
         <div class="col-md-3">
-            <div class="box right-nav">
-                <div class="box-body">
+            <div class="card right-nav">
+                <div class="card-body">
                     <a class="btn btn-block btn-info action-button" href="{{ path("_invoices_create") }}">
                         {{ icon('file', ['text', 'o']) }} {{ "invoice.action.create"|trans }}
                     </a>
@@ -39,7 +39,7 @@
                     <ul class="list-group list-group-unbordered">
                         {% for status, count in status_list_count %}
                             <li class="list-group-item">
-                                <span class="badge">{{ count }}</span>
+                                <span class="badge badge-pill">{{ count }}</span>
                                 {{ ('invoice.stats.count.' ~ status)|transchoice(count) }}
                             </li>
                         {% endfor %}

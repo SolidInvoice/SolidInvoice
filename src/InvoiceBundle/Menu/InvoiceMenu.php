@@ -13,42 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Menu;
 
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-
 /**
  * Menu items for invoices.
  */
 class InvoiceMenu
 {
-    public static function create(Client $client = null): array
-    {
-        return [
-            'client.menu.create.invoice',
-            [
-                'extras' => [
-                    'icon' => 'file-text-o',
-                ],
-                'route' => '_invoices_create',
-                'routeParameters' => null !== $client ? ['client' => $client->getId()] : [],
-            ],
-        ];
-    }
-
-    public static function main(): array
-    {
-        return [
-            'invoice.menu.main',
-            [
-                'route' => '_invoices_index',
-                'extras' => [
-                    'icon' => 'file-text-o',
-                ],
-            ],
-        ];
-    }
-
-    public static function listMenu(): array
+    public static function list(): array
     {
         return [
             'invoice.menu.list',
@@ -61,18 +31,15 @@ class InvoiceMenu
         ];
     }
 
-    public static function view(Invoice $invoice): array
+    public static function create(): array
     {
         return [
-            'invoice.menu.view',
+            'client.menu.create.invoice',
             [
                 'extras' => [
-                    'icon' => 'eye',
+                    'icon' => 'file-text-o',
                 ],
-                'route' => '_invoices_view',
-                'routeParameters' => [
-                    'id' => $invoice->getId(),
-                ],
+                'route' => '_invoices_create',
             ],
         ];
     }

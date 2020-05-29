@@ -23,14 +23,8 @@ class Builder extends AuthenticatedMenu
      */
     public function topMenu(ItemInterface $menu)
     {
+        $menu->addHeader('Payments');
         $menu->addChild(PaymentMenu::main());
-    }
-
-    /**
-     * Renders the top menu for payments.
-     */
-    public function topRightMenu(ItemInterface $menu)
-    {
-        $menu['menu.top.system']->addChild(PaymentMenu::methods());
+        $menu->addChild(PaymentMenu::methods());
     }
 }

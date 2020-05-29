@@ -49,7 +49,7 @@
 
 {% form_theme form with ['@SolidInvoiceCore/Form/fields.html.twig', _self] %}
 
-{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}{{ "invoice.action.create"|trans }}{% endblock %}
 
@@ -72,11 +72,11 @@
 
     {{ form_errors(form) }}
 
-    <div class="box" id="invoice-create">
-        <div class="box-body">
+    <div class="card" id="invoice-create">
+        <div class="card-body">
             <section class="invoice">
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="title">
                         <h3 class="page-header">
                             {% if invoice is defined %}
@@ -87,22 +87,25 @@
                         </h3>
                     </div>
 
-                        <div class="col-xs-6" id="client-info">
+                    <div class="row">
+                        <div class="col-6" id="client-info">
                         </div>
 
-                        <div class="col-xs-6 text-right" id="discount">
+                        <div class="col-6 text-right" id="discount">
                             {{ block('form_discount') is defined ? block('form_discount') }}
                         </div>
+                    </div>
 
-                        <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-12">
                             {{ form_row(form.recurring) }}
                         </div>
-
+                    </div>
                 </div>
 
-                <div class="recurring-info hidden">
+                <div class="recurring-info d-none row">
 
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         {{ 'invoice.recurring.variables.text'|trans }}
                         <br/>
                         <ul>
@@ -117,17 +120,17 @@
                         </ul>
                     </div>
 
-                    <div class="col-xs-6">
+                    <div class="col-6 text-right">
                         {{ form_row(form.recurringInfo.frequency) }}
                         <br/>
                         <br/>
 
-                            <div class="col-xs-6">
-                                {{ form_row(form.recurringInfo.date_start) }}
-                            </div>
-                            <div class="col-xs-6">
-                                {{ form_row(form.recurringInfo.date_end) }}
-                            </div>
+                        <div class="col-6 offset-6">
+                            {{ form_row(form.recurringInfo.date_start) }}
+                        </div>
+                        <div class="col-6 offset-6">
+                            {{ form_row(form.recurringInfo.date_end) }}
+                        </div>
 
                     </div>
                 </div>
@@ -137,11 +140,13 @@
 
                 <br class="clear"/>
 
-                <div class="col-lg-6">
-                    {{ form_row(form.terms) }}
-                </div>
-                <div class="col-lg-6">
-                    {{ form_row(form.notes) }}
+                <div class="row">
+                    <div class="col-6">
+                        {{ form_row(form.terms) }}
+                    </div>
+                    <div class="col-6">
+                        {{ form_row(form.notes) }}
+                    </div>
                 </div>
 
                 {{ form_rest(form) }}
@@ -173,12 +178,12 @@
 {% endblock form_discount %}
 
 {% block form_buttons %}
-    <div class="pull-left">
+    <div class="float-left">
         <button type="submit" class="btn btn-success" name="save" value="pending">
             {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
         </button>
     </div>
-    <div class="pull-right">
+    <div class="float-right">
         <button type="submit" class="btn btn-primary" name="save" value="save">
             {{ icon('save') }} {{ "invoice.save.draft"|trans }}
         </button>

@@ -21,11 +21,11 @@ export default ItemView.extend({
 
         this.model.collection.remove(this.model);
     },
-    initialize () {
-        setTimeout(() => this.setModel(), 0);
-        setTimeout(() => this.calcPrice(), 0);
+    async initialize () {
+        await this.setModel();
+        await this.calcPrice();
     },
-    setModel () {
+    async setModel () {
         this.$(':input').each((index, input) => {
             const $this = $(input),
                 type = split($this.closest('td')[0].className, '-')[1];
@@ -43,7 +43,7 @@ export default ItemView.extend({
             }
         });
     },
-    calcPrice () {
+    async calcPrice () {
         this.$(':input').each((index, input) => {
             const $this = $(input),
                 type = split($this.closest('td')[0].className, '-')[1];

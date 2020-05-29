@@ -10,13 +10,13 @@
 {% extends '@SolidInvoiceInstall/layout.html.twig' %}
 
 {% block content %}
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title">
+    <div class="card card-primary">
+        <div class="card-header with-border">
+            <h3 class="card-title">
                 {{ "installation.finish.success"|trans }}
             </h3>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <h4>
                 {{ "installation.finish.success_message"|trans }}
             </h4>
@@ -34,7 +34,7 @@
                 </p>
             </div>
         </div>
-        <div class="box-footer">
+        <div class="card-footer">
             <a id="login" href="{{ path('_login') }}" class="btn-lg btn btn-success">
                 {{ icon('user') }} {{ "installation.finish.login"|trans }}
             </a>

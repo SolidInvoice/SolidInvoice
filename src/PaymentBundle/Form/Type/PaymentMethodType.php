@@ -28,13 +28,14 @@ class PaymentMethodType extends AbstractType
     {
         $builder->add('name');
 
-        $builder->add('enabled', null, ['required' => false]);
+        $builder->add('enabled', null, ['required' => false, 'label_attr' => ['class' => 'switch-custom']]);
 
         if (false === $options['internal']) {
             $builder->add(
                 'internal',
                 null,
                 [
+                    'label_attr' => ['class' => 'switch-custom'],
                     'label' => 'payment.form.label.internal',
                     'help' => 'payment.form.help.internal',
                     'help_type' => 'block',

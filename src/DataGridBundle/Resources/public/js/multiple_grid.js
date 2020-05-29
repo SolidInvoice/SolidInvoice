@@ -15,7 +15,7 @@ import Grid from './grid';
 
 export default ItemView.extend({
     activeGrid: null,
-    gridOptions: null,
+    gridOptions: { },
     template: Template,
     ui: {
         'gridSelector': '.grid-selection a'
@@ -28,13 +28,16 @@ export default ItemView.extend({
             object.disabled = false;
         });
 
+        this.model.set('grid', this.gridOptions)
+
         this.gridOptions.disabled = true;
     },
-    setGrid(event) {
+    async setGrid(event) {
         event.preventDefault();
+
         let target = $(event.target);
 
-        if (target.hasClass('fa')) {
+        if (target.hasClass('fas')) {
             target = target.closest('a');
         }
 
@@ -42,14 +45,14 @@ export default ItemView.extend({
 
         this.gridOptions = this.model.get('grids')[grid];
 
-        this.render();
+        await this.render();
     },
-    onRender() {
+    async onRender() {
         this.activeGrid = new Grid(this.model.get('gridId'), this.gridOptions);
     },
-    initialize() {
+    async initialize() {
         this.gridOptions = head(values(this.model.get('grids')));
 
-        this.render();
+        await this.render();
     }
 });

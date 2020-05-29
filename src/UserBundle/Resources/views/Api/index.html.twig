@@ -7,24 +7,24 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% set module = 'profile-api' %}
 
 {% block page_title %}{{ "profile.api.title"|trans }}{% endblock page_title %}
 
 {% block content %}
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title">{{ "profile.api.title"|trans }}</h3>
-            <div class="box-tools pull-right">
+    <div class="card card-primary">
+        <div class="card-header with-border">
+            <div class="float-right">
                 <a href="{{ path('_xhr_api_keys_create') }}" class="btn btn-box-tool" id="create-api-token">
                     {{ icon('plus') }} {{ 'profile.api.create'|trans }}
                 </a>
             </div>
+            <h3 class="card-title">{{ "profile.api.title"|trans }}</h3>
         </div>
 
-        <div class="box-body">
+        <div class="card-body">
             <ul class="list-group" id="token-list"></ul>
         </div>
     </div>

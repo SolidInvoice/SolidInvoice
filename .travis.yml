@@ -23,9 +23,6 @@ cache:
 services:
   - mysql
 
-addons:
-  chrome: stable
-
 before_install:
   - composer self-update
   - mysql -e 'create database solidinvoice_test;'
@@ -57,11 +54,11 @@ jobs:
     - stage: unit
       php: 7.4
       dist: xenial
-      addons:
-        chrome: stable
       script: bash travis/phpunit.sh
     - stage: functional
       php: 7.3
+      addons:
+        chrome: stable
       before_install:
         - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
         - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -71,7 +68,14 @@ jobs:
         - curl -sS https://get.symfony.com/cli/installer | bash
       install:
         - composer install -n
-        - curl -o vendor/symfony/panther/chromedriver-bin/chromedriver_linux64 https://raw.githubusercontent.com/symfony/panther/master/chromedriver-bin/chromedriver_linux64
+        - |
+          latest=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          curl -s https://chromedriver.storage.googleapis.com/${latest}/chromedriver_linux64.zip -O
+          unzip -q -o chromedriver_linux64.zip
+          rm chromedriver_linux64.zip
+          if [[ -f "chromedriver" ]]; then
+            mv chromedriver vendor/symfony/panther/chromedriver-bin/chromedriver_linux64
+          fi
         - yarn
         - yarn run build
       before_script:

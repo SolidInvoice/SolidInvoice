@@ -7,7 +7,9 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
+{% set currency = quote.client.currency %}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
     {{ "quote.title"|trans({"%id%" : quote.id}) }}
@@ -18,21 +20,17 @@
 {% endblock sidebar %}
 
 {% block content %}
-
-    <div class="pull-right no-print">
-        <div class="btn-toolbar">
-            <div class="btn-group">
+    <div class="float-right no-print">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mr-2" role="group">
                 {% if quote.invoice is not null %}
-                    <a href="{{ path('_invoices_view', {'id' : quote.invoice.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_invoices_view', {'id' : quote.invoice.id}) }}" class="btn btn-secondary">
                         {{ icon('file-text-o') }} {{ "quote.view.toolbar.view_invoice"|trans }}
                     </a>
                 {% endif %}
-                <a href="{{ path('_quotes_clone', {'id' : quote.id}) }}" class="btn btn-default">
+                <a href="{{ path('_quotes_clone', {'id' : quote.id}) }}" class="btn btn-secondary">
                     {{ icon('clone') }} {{ "quote.view.toolbar.clone"|trans }}
                 </a>
-            </div>
-
-            <div class="btn-group">
                 {% if workflow_can(quote, 'accept') %}
                     <a href="{{ path('_transition_quote', {'action' : 'accept', 'id' : quote.id}) }}" class="btn btn-success">
                         {{ icon('check') }} {{ "quote.view.toolbar.accept"|trans }}
@@ -44,11 +42,9 @@
                         {{ icon('times') }} {{ "quote.view.toolbar.decline"|trans }}
                     </a>
                 {% endif %}
-            </div>
-            <div class="btn-group">
 
                 {% if workflow_can(quote, 'reopen') %}
-                    <a href="{{ path('_transition_quote', {'action': 'reopen', 'id' : quote.id}) }}" class="btn btn-default">
+                    <a href="{{ path('_transition_quote', {'action': 'reopen', 'id' : quote.id}) }}" class="btn btn-secondary">
                         {{ icon('reply') }} {{ "quote.view.toolbar.reopen"|trans }}
                     </a>
                 {% endif %}
@@ -56,23 +52,19 @@
                 <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">
                     {{ icon('envelope', ['o']) }} {{ "quote.view.toolbar.send"|trans }}
                 </a>
-            </div>
 
-            {% if workflow_can(quote, 'cancel') %}
-                <div class="btn-group">
+                {% if workflow_can(quote, 'cancel') %}
                     <a href="{{ path('_transition_quote', {'action': 'cancel', 'id' : quote.id}) }}" class="btn btn-warning">
                         {{ icon('ban') }} {{ "quote.view.toolbar.cancel"|trans }}
                     </a>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% if quote.status != 'accepted' %}
-                <div class="btn-group">
-                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-default">
+                {% if quote.status != 'accepted' %}
+                    <a href="{{ path('_quotes_edit', {'id' : quote.id}) }}" class="btn btn-secondary">
                         {{ icon('edit') }} {{ "quote.view.toolbar.edit"|trans }}
                     </a>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 
@@ -84,11 +76,11 @@
             {{ parent() }}
 
             <div class="row no-print">
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div class="btn-group">
-                        <a href="javascript:window.print()" class="btn btn-default">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
+                        <a href="javascript:window.print()" class="btn btn-secondary">{{ icon('print') }} {{ 'quote.action.print'|trans }}</a>
                         {% if can_print_pdf() %}
-                            <a href="{{ path('_quotes_view', {'id': quote.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-default">{{ icon('file-pdf-o') }} {{ 'quote.action.pdf'|trans }}</a>
+                            <a href="{{ path('_quotes_view', {'id': quote.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-secondary">{{ icon('file-pdf-o') }} {{ 'quote.action.pdf'|trans }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -100,7 +92,7 @@
     {{ parent() }}
 
     {% if quote.notes is not empty %}
-        <div class="col-xs-6 no-print">
+        <div class="col-6 no-print">
             <strong>{{ 'quote.notes'|trans }}</strong>
             <p class="text-muted well well-sm no-shadow">
                 {{ quote.notes }}

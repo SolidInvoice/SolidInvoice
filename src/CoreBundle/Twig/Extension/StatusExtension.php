@@ -30,7 +30,7 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
      */
     private $invoiceLabelMap = [
         InvoiceGraph::STATUS_PENDING => 'yellow',
-        InvoiceGraph::STATUS_DRAFT => 'light-blue',
+        InvoiceGraph::STATUS_DRAFT => 'secondary',
         InvoiceGraph::STATUS_PAID => 'green',
         InvoiceGraph::STATUS_OVERDUE => 'red',
         InvoiceGraph::STATUS_CANCELLED => 'olive',
@@ -43,7 +43,7 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
      */
     private $quoteLabelMap = [
         QuoteGraph::STATUS_PENDING => 'yellow',
-        QuoteGraph::STATUS_DRAFT => 'light-blue',
+        QuoteGraph::STATUS_DRAFT => 'secondary',
         QuoteGraph::STATUS_ACCEPTED => 'green',
         QuoteGraph::STATUS_DECLINED => 'red',
         QuoteGraph::STATUS_CANCELLED => 'olive',

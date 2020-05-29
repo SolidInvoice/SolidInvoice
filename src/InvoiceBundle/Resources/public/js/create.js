@@ -76,11 +76,11 @@ export default Module.extend({
         this.footerRowModel.set('hasTax', options.tax);
 
         recurring.on('change', () => {
-            recurringInfo.toggleClass('hidden');
+            recurringInfo.toggleClass('d-none');
         });
 
         if (recurring.is(':checked')) {
-            recurringInfo.removeClass('hidden');
+            recurringInfo.removeClass('d-none');
         }
 
         this._renderClientSelect(options);

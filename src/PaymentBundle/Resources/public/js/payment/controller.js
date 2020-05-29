@@ -18,8 +18,8 @@ export default (module, model) => {
                 fragment = routeFragment;
             }
 
-            $('li', '#payment-method-tabs').removeClass('active');
-            $(`a[data-method="${fragment}"]`).closest('li').addClass('active');
+            $('a', '#payment-method-tabs').removeClass('active');
+            $(`a[data-method="${fragment}"]`).closest('a').addClass('active');
 
             const route = Router.generate('_xhr_payments_settings', { 'method': fragment });
             module.app.showChildView('paymentMethodData', new LoaderView);

@@ -49,7 +49,7 @@
 
 {% form_theme form with ['@SolidInvoiceCore/Form/fields.html.twig', _self] %}
 
-{% extends "@SolidInvoiceCore/Layout/one_column_left.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}{{ "quote.create"|trans }}{% endblock %}
 
@@ -72,25 +72,24 @@
 
     {{ form_errors(form) }}
 
-    <div class="box" id="quote-create">
-        <div class="box-body">
+    <div class="card" id="quote-create">
+        <div class="card-header">
+            <h3 class="card-title">
+                {% if quote is defined %}
+                    {{ 'quote.title'|trans({'%id%' : quote.id}) }}
+                {% else %}
+                    {{ 'quote.create'|trans }}
+                {% endif %}
+            </h3>
+        </div>
+        <div class="card-body">
             <section class="invoice">
-
-                <div class="col-xs-12">
-                    <div class="title">
-                        <h3 class="page-header">
-                            {% if quote is defined %}
-                                {{ 'quote.title'|trans({'%id%' : quote.id}) }}
-                            {% else %}
-                                {{ 'quote.create'|trans }}
-                            {% endif %}
-                        </h3>
-                    </div>
+                <div class="col-12">
                     <div class="row">
-                        <div class="col-xs-6" id="client-info">
+                        <div class="col-6" id="client-info">
                             {{ block('form_client') is defined ? block('form_client') }}
                         </div>
-                        <div class="col-xs-6 text-right" id="discount">
+                        <div class="col-6 text-right" id="discount">
                             {{ block('form_discount') is defined ? block('form_discount') }}
                         </div>
                     </div>
@@ -101,12 +100,15 @@
 
                 <br class="clear"/>
 
-                <div class="col-lg-6">
-                    {{ form_row(form.terms) }}
+                <div class="row">
+                    <div class="col">
+                        {{ form_row(form.terms) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(form.notes) }}
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    {{ form_row(form.notes) }}
-                </div>
+
 
                 {{ form_rest(form) }}
 
@@ -137,12 +139,12 @@
 {% endblock form_discount %}
 
 {% block form_buttons %}
-    <div class="pull-left">
+    <div class="float-left">
         <button type="submit" class="btn btn-success" name="save" value="pending">
             {{ icon('envelope', ['o']) }} {{ "quote.save.send"|trans }}
         </button>
     </div>
-    <div class="pull-right">
+    <div class="float-right">
         <button type="submit" class="btn btn-primary" name="save" value="draft">
             {{ icon('save') }} {{ "quote.save.draft"|trans }}
         </button>

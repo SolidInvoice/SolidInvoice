@@ -17,7 +17,7 @@
 {% endblock sidebar %}
 
 {% block form_buttons %}
-        <div class="pull-left">
+        <div class="float-left">
             <a href="{{ path('_invoices_view', {'id' : invoice.id}) }}" class="btn btn-warning">
                 {{ icon('reply') }} {{ "invoice.save.cancel"|trans }}
             </a>
@@ -27,7 +27,7 @@
                 </button>
             {% endif %}
         </div>
-        <div class="pull-right">
+        <div class="float-right">
             <button type="submit" class="btn btn-primary" name="save" value="draft">
                 {{ icon('save') }} {{ "invoice.save.update"|trans }}
             </button>

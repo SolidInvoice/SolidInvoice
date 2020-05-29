@@ -1,0 +1,36 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) 2013-2015 Pierre du Plessis <info@customscripts.co.za>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
+
+{% block heading %}
+    {% set title = block('title') is defined ? block('title') %}
+
+    {% if title is not empty %}
+        <fieldset class="page-heading">
+            <legend>
+                <h3>{{ block('title') }}</h3>
+            </legend>
+        </fieldset>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <section class="container mt-5">
+        <section class="content-header">
+            {{ block('heading') is defined ? block('heading') }}
+
+            {% include "@SolidInvoiceCore/flash.html.twig" %}
+        </section>
+
+        <section class="content">
+            {{ block('content') is defined ? block('content') }}
+        </section>
+    </section>
+{% endblock body %}

@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block sidebar %}
     {{ menu('payments_list') }}
@@ -17,7 +17,7 @@
 {% block page_title %}{{ 'payment.list.title'|trans }}{% endblock page_title %}
 
 {% block content %}
-    <div class="panel panel-default filterable">
+    <div class="card filterable">
 	    {{ render_grid('payment_grid') }}
     </div>
 

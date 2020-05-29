@@ -17,7 +17,7 @@
     "homepage": "https://solidinvoice.co",
     "scripts": {
         "dev": "encore dev",
-        "dev-server": "encore dev-server",
+        "dev-server": "encore dev-server --https --disable-host-check",
         "build": "encore production"
     },
     "devDependencies": {
@@ -35,13 +35,13 @@
         "eslint-plugin-lodash": "^6.0.0",
         "handlebars-loader": "^1.7.1",
         "jasmine": "^3.4.0",
-        "less": "^3.10.3",
-        "less-loader": "^4.1.0",
+        "node-sass": "^4.13.1",
+        "sass-loader": "^7.0.1",
         "testem": "^2.15.1"
     },
     "dependencies": {
         "accounting": "^0.4.1",
-        "admin-lte": "^2.4.10",
+        "admin-lte": "^3.0.4",
         "backbone": "^1.4.0",
         "backbone.marionette": "^4.1.2",
         "backbone.paginator": "^2.0.8",
@@ -51,9 +51,9 @@
         "backgrid-paginator": "^0.3.9",
         "backgrid-select-all": "^0.3.5",
         "bazinga-translator": "^2.6.6",
-        "bootstrap": "^3.4.1",
+        "bootstrap": "^4.4.1",
         "bootstrap-material-datetimepicker": "^2.7.3",
-        "font-awesome": "^4.7.0",
+        "@fortawesome/fontawesome-free": "^5.13.0",
         "handlebars": "^4.5.1",
         "jquery": "^3.5.0",
         "jquery-placeholder": "^2.3.1",

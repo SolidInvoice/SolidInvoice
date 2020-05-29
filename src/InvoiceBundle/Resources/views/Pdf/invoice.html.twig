@@ -46,7 +46,7 @@
 <sethtmlpageheader name="header" value="on" show-this-page="1" margin-bottom="25"/>
 
 <div class="row">
-    <div class="col-xs-12 text-right">
+    <div class="col-12 text-right">
         <h3 style="font-weight: bold">Invoice #{{ invoice.id }}</h3>
     </div>
 </div>
@@ -54,7 +54,7 @@
 <br/>
 
 <div class="row">
-    <div class="col-xs-4">
+    <div class="col-4">
         <b style="font-weight: bold">From:</b>
         <h4>{{ app_name }}</h4>
 
@@ -84,7 +84,7 @@
         {% endif %}
     </div>
 
-    <div class="col-xs-6 sliced-details">
+    <div class="col-6 sliced-details">
         <table class="table">
             <tr>
                 <td>Invoice Date</td>
@@ -108,7 +108,7 @@
 
 <br/>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
         <b style="font-weight: bold">To:</b>
         <h4>{{ invoice.client }}</h4>
         {% if invoice.client.website is not empty %}
@@ -132,7 +132,7 @@
         {% endfor %}
 
         {% for user in invoice.users %}
-            <address class="col-xs-6">
+            <address class="col-6">
                 {{ user }} &lt;{{ user.email }}&gt;
                 {% for info in user.additionalContactDetails %}
                     {{ info.type|title }}: {{ info.value }}<br>
@@ -143,7 +143,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
         <table class="table invoice-details">
             <thead>
             <tr>
@@ -184,8 +184,8 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-5 sliced-details">
-        <table class="table invoice-details invoice-summary pull-right">
+    <div class="col-5 sliced-details">
+        <table class="table invoice-details invoice-summary float-right">
             <tbody>
             <tr>
                 <td class="text-right">
@@ -267,7 +267,7 @@
 
 {% if invoice.terms is not empty %}
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-6">
             <strong>{{ 'invoice.terms'|trans }}</strong>
             <p class="text-muted well well-sm no-shadow">
                 {{ invoice.terms|nl2br }}

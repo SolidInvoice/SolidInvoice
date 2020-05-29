@@ -7,50 +7,39 @@
  # with this source code in the file LICENSE.
  #}
 
-<nav class="navbar navbar-static-top">
-    {% if header_content is not defined or header_content is empty %}
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-    {% endif %}
+<ul class="navbar-nav">
+    <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+    </li>
+</ul>
 
-    <div class="container">
-        {% if header_content is defined %}
-            {{ header_content }}
-        {% endif %}
-
-        <div class="collapse navbar-collapse" id="top_menu">
-            {{ menu('top', {'attr' : {'class' : 'nav navbar-nav'}}) }}
-
-            {{ menu('top_right', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
-
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div class="btn-group hidden-xs" id="top-menu-create-button">
-                    <button class="btn btn-info btn-sm dropdown-toggle margin" type="button" data-toggle="dropdown">
-                        {{ icon('plus') }} {{ 'menu.button.create'|trans }} <b class="caret"></b>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <a href="{{ path('_clients_add') }}">
-                                {{ icon('user-plus') }} {{ 'dashboard.create.client'|trans }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('_quotes_create') }}">
-                                {{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('_invoices_create') }}">
-                                {{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            {% endif %}
-        </div>
+<div class="container">
+    <div class="collapse navbar-collapse" id="top_menu">
+        {{ menu('top', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
     </div>
-</nav>
+</div>
+
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    <div class="btn-group float-right" id="top-menu-create-button">
+        <button class="btn btn-info btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
+            {{ icon('plus') }} {{ 'menu.button.create'|trans }} <b class="caret"></b>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li class="nav-item">
+                <a href="{{ path('_clients_add') }}" class="nav-link">
+                    {{ icon('user-plus') }} {{ 'dashboard.create.client'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('_quotes_create') }}" class="nav-link">
+                    {{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('_invoices_create') }}" class="nav-link">
+                    {{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endif %}

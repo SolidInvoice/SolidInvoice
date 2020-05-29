@@ -1,4 +1,4 @@
-@import "~bootstrap/less/variables";
+@import "~bootstrap/scss/variables";
 
 /* Form Styles
  ***************/
@@ -24,7 +24,7 @@ form {
     .input-prepend {
         .checkbox {
             &.inline {
-                padding: 0px 25px;
+                padding: 0 25px;
             }
         }
     }
@@ -35,6 +35,6 @@ form {
 
     label.required:before {
         content: "* ";
-        color: @brand-danger;
+        color: $form-feedback-invalid-color;
     }
 }

@@ -7,18 +7,25 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/single_column.html.twig" %}
+{% set body_class = 'login-page' %}
+
+{% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
 
 {% block title %}{{ "Reset Password" }}{% endblock title %}
 
 {% block content %}
-    <div class="widget">
-        <div class="alert alert-info">
-            {{ 'forgot_password.check_email'|trans({'%tokenLifetime%': tokenLifetime}) }}
+    <section class="container">
+        <div class="card widget">
+            <div class="card-body">
+                <div class="alert alert-info">
+                    {{ 'forgot_password.check_email'|trans({'%tokenLifetime%': tokenLifetime}) }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-success" href="{{ path('_login') }}">
+                    {{ icon('lock') }} {{ 'security.login.login'|trans }}
+                </a>
+            </div>
         </div>
-
-        <a class="btn btn-success" href="{{ path('_login') }}">
-            {{ icon('lock') }} {{ 'security.login.login'|trans }}
-        </a>
-    </div>
+    </section>
 {% endblock %}
