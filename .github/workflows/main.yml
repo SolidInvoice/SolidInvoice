@@ -1,0 +1,17 @@
+
+name: "Integration"
+
+on: "push"
+
+jobs:
+  composer-normalize:
+    name: "composer-normalize"
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Run composer normalize"
+        uses: "docker://ergebnis/composer-normalize-action:latest"
