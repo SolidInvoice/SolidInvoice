@@ -28,17 +28,17 @@ const Application = MnApplication.extend({
         /**
          * Tooltip
          */
-        const tooltip = $('*[rel=tooltip]');
-        if (tooltip.length) {
-            tooltip.tooltip();
+        const $tooltip = $('*[rel=tooltip]');
+        if ($tooltip.length) {
+            $tooltip.tooltip();
         }
 
         /**
          * Select2
          */
-        const select2 = $('select.select2');
-        if (select2.length) {
-            select2.select2({
+        const $select2 = $('select.select2');
+        if ($select2.length) {
+            $select2.select2({
                 theme: 'bootstrap'
             });
         }
@@ -46,18 +46,18 @@ const Application = MnApplication.extend({
         /**
          * PlaceHolder
          */
-        const placeholder = $('input[placeholder]');
-        if (placeholder.length) {
-            placeholder.placeholder();
+        const $placeholder = $('input[placeholder]');
+        if ($placeholder.length) {
+            $placeholder.placeholder();
         }
 
         /**
          * VAT Validator
          */
-        const vatInput = $('.vat-validator');
-        if (vatInput.length) {
+        const $vatInput = $('.vat-validator');
+        if ($vatInput.length) {
             import('SolidInvoiceTax/js/vat_validator').then(({ default: VatNumberValidator }) => {
-                vatInput.each((i, el) => {
+                $vatInput.each((i, el) => {
                     VatNumberValidator(el);
                 });
             });
@@ -66,10 +66,10 @@ const Application = MnApplication.extend({
         /**
          * CRON
          */
-        const cronInput = $('.cron-expr');
-        if (cronInput.length) {
+        const $cronInput = $('.cron-expr');
+        if ($cronInput.length) {
             import('SolidInvoiceCore/js/util/form/cron').then(({ default: Cron }) => {
-                cronInput.each((i, el) => {
+                $cronInput.each((i, el) => {
                     Cron(`#${el.id}`);
                 });
             });
@@ -78,10 +78,10 @@ const Application = MnApplication.extend({
         /**
          * GRID
          */
-        const grids = $('script[data-type="grid"]');
-        if (grids.length) {
+        const $grids = $('script[data-type="grid"]');
+        if ($grids.length) {
             import('SolidInvoiceDataGrid/js/grid').then(({ default: Grid }) => {
-                grids.each((i, el) => {
+                $grids.each((i, el) => {
                     new Grid($(el).data('target'), JSON.parse(trim($(el).text())));
                 });
             });
@@ -90,10 +90,10 @@ const Application = MnApplication.extend({
         /**
          * Multiple GRID
          */
-        const multipleGrids = $('script[data-type="multiple_grid"]');
-        if (multipleGrids.length) {
+        const $multipleGrids = $('script[data-type="multiple_grid"]');
+        if ($multipleGrids.length) {
             import('SolidInvoiceDataGrid/js/multiple_grid').then(({ default: MultipleGrid }) => {
-                multipleGrids.each((i, el) => {
+                $multipleGrids.each((i, el) => {
                     new MultipleGrid({
                         'model': new Backbone.Model({ 'grids': JSON.parse(trim($(el).text())), 'gridId': $(el).data('target') }),
                         'el': $(el).data('target')

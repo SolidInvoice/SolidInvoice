@@ -35,13 +35,13 @@ export default ItemView.extend({
     async setGrid(event) {
         event.preventDefault();
 
-        let target = $(event.target);
+        let $target = $(event.target);
 
-        if (target.hasClass('fas')) {
-            target = target.closest('a');
+        if ($target.hasClass('fas')) {
+            $target = $target.closest('a');
         }
 
-        const grid = target.data('grid');
+        const grid = $target.data('grid');
 
         this.gridOptions = this.model.get('grids')[grid];
 

@@ -94,16 +94,16 @@ export default MnObject.extend({
             });
         }
 
-        const gridContainer = $(container.render().el);
+        const $gridContainer = $(container.render().el);
 
         $(element).append(container.render().el);
 
-        $('.grid', gridContainer).html(grid.render().el);
+        $('.grid', $gridContainer).html(grid.render().el);
 
         if (options.properties.paginate) {
             const paginator = new Paginate({ collection: collection });
 
-            $('.grid', gridContainer).append(paginator.render().el);
+            $('.grid', $gridContainer).append(paginator.render().el);
         }
 
         if (options.properties.search) {
@@ -111,7 +111,7 @@ export default MnObject.extend({
                 collection: collection
             });
 
-            $('.search', gridContainer).append(serverSideFilter.render().el);
+            $('.search', $gridContainer).append(serverSideFilter.render().el);
         }
     }
 });

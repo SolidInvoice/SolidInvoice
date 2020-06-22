@@ -16,11 +16,11 @@ export default FormCollection.extend({
         'initialize': 'onInitialize'
     },
     onCollectionAdd (event, form) {
-        const clientContacts = $('.client_contacts', form);
+        const $clientContacts = $('.client_contacts', form);
 
-        clientContacts.on('click', '.btn-add', (e) => this.addFormGroup(e));
-        clientContacts.on('click', '.btn-delete', (e) => this.removeFormGroup(e));
-        clientContacts.on('click', '.dropdown-menu a', (e) => this.selectFormGroup(e));
+        $clientContacts.on('click', '.btn-add', (e) => this.addFormGroup(e));
+        $clientContacts.on('click', '.btn-delete', (e) => this.removeFormGroup(e));
+        $clientContacts.on('click', '.dropdown-menu a', (e) => this.selectFormGroup(e));
     },
     onInitialize (event) {
         this.onCollectionAdd(event, this.$('.prototype-widget'));

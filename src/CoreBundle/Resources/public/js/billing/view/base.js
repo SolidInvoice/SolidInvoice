@@ -28,12 +28,12 @@ export default CollectionView.extend({
         'update:totals': 'renderTotals'
     },
     renderTotals () {
-        const footer = this.$(this.el);
+        const $footer = this.$(this.el);
 
         setTimeout(() => {
-            footer.empty();
+            $footer.empty();
             // eslint-disable-next-line
-            this.footerView.render().$el.find('tr').appendTo(footer);
+            this.footerView.render().$el.find('tr').appendTo($footer);
         }, 0);
     },
     onRender () {
