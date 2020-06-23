@@ -37,9 +37,9 @@ export default View.extend({
             collectionHolder.data('counter', ++counter);
 
             const el = collectionHolder.append(form);
-            const select2 = $('select.select2');
-            if (select2.length) {
-                select2.select2({
+            const $select2 = $('select.select2');
+            if ($select2.length) {
+                $select2.select2({
                     theme: 'bootstrap'
                 });
             }
@@ -52,10 +52,10 @@ export default View.extend({
     removeBtn(event) {
         event.preventDefault();
         const $this = $(event.target),
-            el = $this.closest('.prototype-widget'),
+            $el = $this.closest('.prototype-widget'),
             that = this;
 
-        el.fadeOut(function() {
+        $el.fadeOut(function() {
             $(this).remove();
 
             that._toggleRemoveBtn();

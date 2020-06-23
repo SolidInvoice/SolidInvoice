@@ -23,9 +23,9 @@ export default {
                     return
                 }
 
-                const target = $(e.target);
+                const $target = $(e.target);
 
-                if (target.is(':input') || target.hasClass('select-row-cell') || target.hasClass('action-cell')) {
+                if ($target.is(':input') || $target.hasClass('select-row-cell') || $target.hasClass('action-cell')) {
                     return;
                 }
 

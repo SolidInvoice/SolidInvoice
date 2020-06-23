@@ -77,14 +77,14 @@ export default Module.extend({
     deleteClient (event) {
         event.preventDefault();
 
-        const link = $(this);
+        const $link = $(this);
 
         Alert.confirm(Translator.trans('client.confirm_delete'), (confirm) => {
             if (true === confirm) {
                 $('body').modalmanager('loading');
 
                 return $.ajax({
-                    'url': link.attr('href'),
+                    'url': $link.attr('href'),
                     'dataType': 'json',
                     'method': 'delete'
                 }).done(() => {

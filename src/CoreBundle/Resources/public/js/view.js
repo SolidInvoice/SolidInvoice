@@ -5,19 +5,19 @@ export default View.extend({
     constructor(options) {
         this.listenTo(this, 'render', () => {
             setTimeout(() => {
-                const select2 = this.$('select.select2');
-                if (select2.length) {
+                const $select2 = this.$('select.select2');
+                if ($select2.length) {
                     import('select2').then(() => {
-                        select2.select2({
+                        $select2.select2({
                             allowClear: true
                         });
                     });
                 }
 
-                const tooltip = this.$('*[rel=tooltip]');
-                if (tooltip.length) {
+                const $tooltip = this.$('*[rel=tooltip]');
+                if ($tooltip.length) {
                     import('bootstrap').then(() => {
-                        tooltip.tooltip();
+                        $tooltip.tooltip();
                     });
                 }
             }, 0);

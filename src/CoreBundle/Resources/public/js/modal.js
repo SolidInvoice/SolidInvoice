@@ -16,7 +16,7 @@ export default View.extend({
         this.listenTo(this, 'render', this.listeners.render);
         this.listenTo(this, 'save', this.listeners.save);
 
-        options.el = $('#modal-container').clone();
+        options.el = $('#modal-container').clone().get( 0 );
         View.call(this, options);
 
         const modal = result(this, 'modal'),

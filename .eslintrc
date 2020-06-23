@@ -11,13 +11,14 @@
     },
     "plugins": [
         "backbone",
-        "jquery",
+        "no-jquery",
         "lodash"
     ],
     "extends": [
         "eslint:recommended",
         "plugin:lodash/recommended",
-        "plugin:backbone/recommended"
+        "plugin:backbone/recommended",
+        "plugin:no-jquery/deprecated-3.5"
     ],
     "rules": {
         "no-else-return": "error",
@@ -32,6 +33,7 @@
         "no-shadow": "error",
         "no-use-before-define": "error",
         "quotes": ["error", "single"],
-        "lodash/import-scope": [2, "member"]
+        "lodash/import-scope": [2, "member"],
+        "no-jquery/variable-pattern": "error",
     }
 }

@@ -68,19 +68,19 @@ export default Module.extend({
     },
     initialize (options) {
         const discountModel = new DiscountModel(),
-            recurring = $('#invoice_recurring'),
-            recurringInfo = $('.recurring-info');
+            $recurring = $('#invoice_recurring'),
+            $recurringInfo = $('.recurring-info');
 
         this.footerRowModel = new FooterRowModel();
 
         this.footerRowModel.set('hasTax', options.tax);
 
-        recurring.on('change', () => {
-            recurringInfo.toggleClass('d-none');
+        $recurring.on('change', () => {
+            $recurringInfo.toggleClass('d-none');
         });
 
-        if (recurring.is(':checked')) {
-            recurringInfo.removeClass('d-none');
+        if ($recurring.is(':checked')) {
+            $recurringInfo.removeClass('d-none');
         }
 
         this._renderClientSelect(options);

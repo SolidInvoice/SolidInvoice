@@ -3731,17 +3731,17 @@ eslint-plugin-backbone@^2.1.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-backbone/-/eslint-plugin-backbone-2.1.1.tgz#2188a3fb2cefdfd57ec5eb898eb3928bae428f73"
   integrity sha1-IYij+yzv39V+xeuJjrOSi65Cj3M=
 
-eslint-plugin-jquery@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jquery/-/eslint-plugin-jquery-1.5.1.tgz#d6bac643acf9484ce76394e27e2b07baca06662e"
-  integrity sha512-L7v1eaK5t80C0lvUXPFP9MKnBOqPSKhCOYyzy4LZ0+iK+TJwN8S9gAkzzP1AOhypRIwA88HF6phQ9C7jnOpW8w==
-
 eslint-plugin-lodash@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-lodash/-/eslint-plugin-lodash-6.0.0.tgz#70fa487ab632e62627ecf01ad3e85c228e3ab9d3"
   integrity sha512-iuxToisjIYAJdxWtW8OamFyc3yAsGCjU5WokvuBfTc/k5XdWOp9fAmzw+aFjj520/QXspCc8//xJpqkhYUj4qw==
   dependencies:
     lodash "^4.17.15"
+
+eslint-plugin-no-jquery@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-no-jquery/-/eslint-plugin-no-jquery-2.4.1.tgz#0c0df5e584ac826cddadbde3576918f850530393"
+  integrity sha512-pHyBFyDgUj/cQD1QNh9SiLaicFJyqeFGDEGRLUn3HezETvsCSi1oeRqjotkL6xAyvwyTiih5d3dhfon0DUvZJA==
 
 eslint-scope@^4.0.3:
   version "4.0.3"
