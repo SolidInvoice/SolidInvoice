@@ -24,6 +24,7 @@ services:
   - mysql
 
 before_install:
+  - xdebug-disable
   - composer self-update
   - mysql -e 'create database solidinvoice_test;'
 
@@ -31,7 +32,15 @@ install:
   - composer install -n
 
 before_script:
-  - echo "xdebug.max_nesting_level=500" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - |
+     echo > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/xdebug.ini
+     git clone --single-branch --branch=v1.0.6 --depth=1 https://github.com/krakjoe/pcov
+     cd pcov
+     phpize
+     ./configure
+     make clean install
+     echo "extension=pcov.so" > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/pcov.ini
+     cd $TRAVIS_BUILD_DIR
 
 jobs:
   fast_finish: true
