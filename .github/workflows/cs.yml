@@ -1,6 +1,6 @@
 name: CS
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   php-cs-fixer:
@@ -24,3 +24,26 @@ jobs:
 
       - name: Run composer normalize
         uses: docker://ergebnis/composer-normalize-action:latest
+
+
+  lint:
+    name: Lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Super-Linter
+        uses: github/super-linter@v2.1.0
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_YAML: true
+          VALIDATE_JSON: true
+          VALIDATE_XML: true
+          VALIDATE_MD: true
+          VALIDATE_BASH: true
+          VALIDATE_PHP: true
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_CSS: true
+          VALIDATE_JAVASCRIPT_STANDARD: false

@@ -232,8 +232,6 @@ class Item implements ItemInterface
 
     /**
      * Return the item as a string.
-     *
-     * @return string
      */
     public function __toString(): string
     {
