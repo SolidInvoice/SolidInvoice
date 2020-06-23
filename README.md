@@ -33,33 +33,33 @@ To install from source, you first need to clone the repository, then you need [c
 To clone the repository, issue the following command. Remember to clone the repository to the path you want, that is accessible from your webserver.
 
 ```bash
-$ git clone https://github.com/SolidInvoice/SolidInvoice.git
+git clone https://github.com/SolidInvoice/SolidInvoice.git
 ```
 
 Then go into the repository directory
 
 ```bash
-$ cd SolidInvoice
+cd SolidInvoice
 ```
 
 Now you need to get composer
 
 ```bash
-$ curl -s http://getcomposer.org/installer | php
+curl -s http://getcomposer.org/installer | php
 ```
 
 When composer is finished downloading, you can install the required dependencies:
 
 ```bash
-$ php composer.phar install
+php composer.phar install
 ```
 
 
 The final step is to install the Node packages, and compile all the assets
 
 ```bash
-$ npm install
-$ npm run dev
+npm install
+npm run dev
 ```
 
 Now you should have a fully working copy of SolidInvoice.
@@ -67,7 +67,7 @@ Now you should have a fully working copy of SolidInvoice.
 If you want to run SolidInvoice in production mode, some additional steps is required:
 
 ```bash
-$ npm run build
+npm run build
 ```
 
 ## Features
