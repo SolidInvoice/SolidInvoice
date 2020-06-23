@@ -1,5 +1,5 @@
 Contributing
-------------
+============
 
 If you wish to contribute to SolidInvoice, please fork it, make your changes, and submit a pull request.
 

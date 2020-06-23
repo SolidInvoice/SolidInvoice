@@ -1,5 +1,4 @@
-SolidInvoice
-======
+# SolidInvoice
 
 [![Build Status](https://travis-ci.org/SolidInvoice/SolidInvoice.png?branch=master)](https://travis-ci.org/SolidInvoice/SolidInvoice)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/badges/quality-score.png?s=fdd7a5f5080807e95a317b9c0db07e8d5ce8cb63)](https://scrutinizer-ci.com/g/SolidInvoice/SolidInvoice/)
@@ -8,8 +7,7 @@ Open-Source General Billing Manager
 
 SolidInvoice is an open-source application that allows you to manage clients and contacts and send invoices and quotes.
 
-Requirements
-------------
+## Requirements
 
 SolidInvoice requires minimum PHP 7.1.0.
 
@@ -72,8 +70,7 @@ If you want to run SolidInvoice in production mode, some additional steps is req
 $ npm run build
 ```
 
-Features
---------
+## Features
 
 Some of the basic features included in SolidInvoice is:
 
@@ -87,20 +84,17 @@ Some of the basic features included in SolidInvoice is:
 * More to come
 
 
-Contributing
-------------
+## Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md)
 
-License
-------------
+## License
 
 SolidInvoice is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
 Please see the [LICENSE](LICENSE) file for the full license.
 
-Demo
-------------
+# Demo
 
 [http://demo.solidinvoice.co/](http://demo.solidinvoice.co/)
 
@@ -109,7 +103,6 @@ Demo
 [2]: http://getcomposer.org
 [3]: http://lesscss.org
 
-Donate
-------
+## Donate
 
 [![Paypal](https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EQLK2P3VBW2LC)
