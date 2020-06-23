@@ -1,7 +1,7 @@
 {
     "name": "solidinvoice/solidinvoice",
-    "description": "General Billing Application",
     "type": "application",
+    "description": "General Billing Application",
     "keywords": [
         "billing",
         "general billing",
@@ -15,15 +15,6 @@
             "email": "info@solidinvoice.co"
         }
     ],
-    "autoload": {
-        "psr-4": {
-            "SolidInvoice\\": "src/"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
-    },
     "require": {
         "php": ">=7.3",
         "ext-gd": "*",
@@ -136,33 +127,42 @@
         "symfony/phpunit-bridge": "^5.0",
         "symfony/web-profiler-bundle": "^4.4"
     },
+    "config": {
+        "bin-dir": "bin",
+        "platform": {
+            "php": "7.3.5"
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        },
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web"
+    },
+    "autoload": {
+        "psr-4": {
+            "SolidInvoice\\": "src/"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
     "scripts": {
-        "auto-scripts": [
-            "bin/console cache:clear",
-            "bin/console assets:install web"
-        ],
         "post-install-cmd": [
             "cp .env.dist .env",
             "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "auto-scripts": [
+            "bin/console cache:clear",
+            "bin/console assets:install web"
         ]
-    },
-    "config": {
-        "bin-dir": "bin",
-        "sort-packages": true,
-        "platform": {
-            "php": "7.3.5"
-        }
-    },
-    "extra": {
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
-        "branch-alias": {
-            "dev-master": "2.1-dev"
-        }
     }
 }
