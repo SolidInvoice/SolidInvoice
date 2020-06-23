@@ -36,3 +36,5 @@ jobs:
 
       - name: Super-Linter
         uses: github/super-linter@v2.1.0
+        env:
+          VALIDATE_JAVASCRIPT_STANDARD: false
