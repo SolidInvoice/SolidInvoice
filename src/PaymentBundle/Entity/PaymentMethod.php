@@ -276,8 +276,6 @@ class PaymentMethod implements GatewayConfigInterface
 
     /**
      * Return the payment method name as a string.
-     *
-     * @return string
      */
     public function __toString(): string
     {

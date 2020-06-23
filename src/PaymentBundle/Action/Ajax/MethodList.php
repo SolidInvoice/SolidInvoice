@@ -47,7 +47,8 @@ final class MethodList implements AjaxResponse
         $enabledMethods = array_map(
             function (PaymentMethod $method): string {
                 return strtolower($method->getGatewayName());
-            }, $this->repository->findBy(['enabled' => 1])
+            },
+            $this->repository->findBy(['enabled' => 1])
         );
 
         return $this->json(
