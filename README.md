@@ -19,12 +19,12 @@ SolidInvoice requires minimum PHP 7.1.0.
 
 Docker makes it really easy to get started as quickly as possible in running SolidInvoice.
 
-The docker image is available at https://hub.docker.com/r/solidinvoice/solidinvoice/ with instructions on how to get started.
+The docker image is available at [https://hub.docker.com/r/solidinvoice/solidinvoice/](https://hub.docker.com/r/solidinvoice/solidinvoice/) with instructions on how to get started.
 
 ### Archived Package
 
-Download the latest release from https://github.com/SolidInvoice/SolidInvoice/releases in either `zip` or `tar.gz` format,
-and extract the contents of the archive under your webserver directory. 
+Download the latest release from [https://github.com/SolidInvoice/SolidInvoice/releases](https://github.com/SolidInvoice/SolidInvoice/releases) in either `zip` or `tar.gz` format,
+and extract the contents of the archive under your webserver directory.
 
 ### For developers
 
@@ -94,7 +94,7 @@ SolidInvoice is open-sourced software licensed under the [MIT license](http://op
 
 Please see the [LICENSE](LICENSE) file for the full license.
 
-# Demo
+## Demo
 
 [http://demo.solidinvoice.co/](http://demo.solidinvoice.co/)
 
