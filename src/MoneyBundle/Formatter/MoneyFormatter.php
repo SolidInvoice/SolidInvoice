@@ -15,7 +15,6 @@ namespace SolidInvoice\MoneyBundle\Formatter;
 
 use Money\Currency;
 use Money\Money;
-use Money\MoneyFormatter as MoneyFormatterInterface;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
@@ -78,7 +77,7 @@ class MoneyFormatter implements MoneyFormatterInterface
     /**
      * return string.
      */
-    public function getThousandSeparator()
+    public function getThousandSeparator(): string
     {
         return $this->numberFormatter->getSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
     }
