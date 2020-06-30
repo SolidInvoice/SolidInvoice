@@ -24,6 +24,7 @@
         "ext-soap": "*",
         "ext-xsl": "*",
         "api-platform/core": "^2.5",
+        "composer/package-versions-deprecated": "^1.8",
         "defuse/php-encryption": "^2.2",
         "doctrine/cache": "^1.10",
         "doctrine/common": "^2.11",
