@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
-use Twig\Environment;
 use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\PaymentBundle\Model\Status as PaymentStatus;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * This class is a twig extension that gives some shortcut methods to client statuses.

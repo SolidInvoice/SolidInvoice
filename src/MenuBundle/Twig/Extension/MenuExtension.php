@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Twig\Extension;
 
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
 use Knp\Menu\Provider\MenuProviderInterface;
 use SolidInvoice\MenuBundle\RendererInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 class MenuExtension extends AbstractExtension
 {

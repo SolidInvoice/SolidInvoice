@@ -52,7 +52,7 @@ class ContactTypeTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): ?ContactType
     {
-        if ($value === '') {
+        if ('' === $value) {
             return null;
         }
 

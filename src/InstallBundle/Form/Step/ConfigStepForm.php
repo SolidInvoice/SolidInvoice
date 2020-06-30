@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Step;
 
-use Symfony\Component\Validator\Constraints\Callback;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
@@ -21,7 +20,7 @@ use SolidInvoice\InstallBundle\Form\Type\EmailSettingsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ConfigStepForm extends AbstractType

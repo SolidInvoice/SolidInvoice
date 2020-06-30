@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
@@ -23,6 +21,8 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 class PaymentExtension extends AbstractExtension
 {
