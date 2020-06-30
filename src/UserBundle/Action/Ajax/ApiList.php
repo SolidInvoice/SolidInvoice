@@ -41,7 +41,7 @@ final class ApiList
     public function __invoke(Request $request)
     {
         $token = $this->tokenStorage->getToken();
-        $user = $token ? $token->getUser() : null;
+        $user = $token !== null ? $token->getUser() : null;
 
         if ($user) {
             $tokens = $this->repository->getApiTokensForUser($user);

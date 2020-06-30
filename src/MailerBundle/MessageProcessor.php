@@ -47,7 +47,7 @@ class MessageProcessor implements MessageProcessorInterface
     {
         $event = new MessageEvent($message, $context);
 
-        $this->eventDispatcher->dispatch($event, 'message.decorate');
+        $this->eventDispatcher->dispatch($event);
 
         foreach ($this->decorators as $decorator) {
             if ($decorator instanceof VerificationMessageDecorator) {
@@ -59,13 +59,13 @@ class MessageProcessor implements MessageProcessorInterface
             }
         }
 
-        $this->eventDispatcher->dispatch($event, 'message.before_send');
+        $this->eventDispatcher->dispatch($event);
 
         $this->mailer->send($message, $failedRecipients);
 
         $result = new MessageSentResponse($failedRecipients);
 
-        $this->eventDispatcher->dispatch(new MessageResultEvent($message, $context, $result), 'message.after_send');
+        $this->eventDispatcher->dispatch(new MessageResultEvent($message, $context, $result));
 
         return $result;
     }

@@ -40,7 +40,7 @@ class MenuCompilerPass implements CompilerPassInterface
                         new Reference($id),
                         $attributes['menu'],
                         $attributes['method'],
-                        array_key_exists('priority', $attributes) ? $attributes['priority'] : 0, ]
+                        $attributes['priority'] ?? 0, ]
                 );
             }
         }

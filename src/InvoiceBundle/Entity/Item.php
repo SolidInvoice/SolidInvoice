@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
@@ -31,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Item implements ItemInterface
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @var int

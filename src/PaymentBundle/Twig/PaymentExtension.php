@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
@@ -22,7 +24,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 
-class PaymentExtension extends \Twig\Extension\AbstractExtension
+class PaymentExtension extends AbstractExtension
 {
     /**
      * @var ManagerRegistry
@@ -51,11 +53,11 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new \Twig\TwigFunction('payment_enabled', [$this, 'paymentEnabled']),
-            new \Twig\TwigFunction('payments_configured', [$this, 'paymentConfigured']),
+            new TwigFunction('payment_enabled', [$this, 'paymentEnabled']),
+            new TwigFunction('payments_configured', [$this, 'paymentConfigured']),
 
-            new \Twig\TwigFunction('total_income', [$this, 'getTotalIncome']),
-            new \Twig\TwigFunction('total_outstanding', [$this, 'getTotalOutstanding']),
+            new TwigFunction('total_income', [$this, 'getTotalIncome']),
+            new TwigFunction('total_outstanding', [$this, 'getTotalOutstanding']),
         ];
     }
 

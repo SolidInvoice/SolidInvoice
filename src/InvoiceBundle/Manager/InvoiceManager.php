@@ -134,12 +134,12 @@ class InvoiceManager implements ContainerAwareInterface
 
         $this->applyTransition($invoice, Graph::TRANSITION_NEW);
 
-        $this->dispatcher->dispatch(new InvoiceEvent($invoice), InvoiceEvents::INVOICE_PRE_CREATE);
+        $this->dispatcher->dispatch(new InvoiceEvent($invoice));
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new InvoiceEvent($invoice), InvoiceEvents::INVOICE_POST_CREATE);
+        $this->dispatcher->dispatch(new InvoiceEvent($invoice));
 
         return $invoice;
     }

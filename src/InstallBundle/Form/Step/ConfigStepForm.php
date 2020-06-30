@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Step;
 
+use Symfony\Component\Validator\Constraints\Callback;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
@@ -37,7 +38,7 @@ class ConfigStepForm extends AbstractType
             DatabaseConfigType::class,
             [
                 'drivers' => $drivers,
-                'constraints' => new Constraints\Callback(
+                'constraints' => new Callback(
                     static function ($data, ExecutionContextInterface $executionContext) {
                         if (null !== $data['driver'] && null !== $data['user']) {
                             try {

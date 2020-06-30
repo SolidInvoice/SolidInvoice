@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
@@ -28,7 +29,7 @@ use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
  */
 class Credit
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @ORM\Column(name="id", type="integer")

@@ -42,10 +42,8 @@ class ArrayUtil
         $return = [];
 
         foreach ($array as $item) {
-            if (is_array($item) || $item instanceof \ArrayAccess) {
-                if ('[' !== $column[0]) {
-                    $column = '['.$column.']';
-                }
+            if ((is_array($item) || $item instanceof \ArrayAccess) && '[' !== $column[0]) {
+                $column = '['.$column.']';
             }
 
             $return[] = $accessor->getValue($item, $column);

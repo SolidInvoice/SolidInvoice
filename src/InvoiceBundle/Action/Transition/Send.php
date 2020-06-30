@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action\Transition;
 
+use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
@@ -43,7 +44,7 @@ final class Send
      */
     private $router;
 
-    public function __construct(StateMachine $stateMachine, Mailer $mailer, RouterInterface $router)
+    public function __construct(StateMachine $stateMachine, MailerInterface $mailer, RouterInterface $router)
     {
         $this->stateMachine = $stateMachine;
         $this->mailer = $mailer;

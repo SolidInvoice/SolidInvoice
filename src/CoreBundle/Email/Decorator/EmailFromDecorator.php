@@ -43,7 +43,7 @@ final class EmailFromDecorator implements MessageDecorator
 
         $fromAddress = (string) $this->config->get('email/from_address');
 
-        if ($fromAddress) {
+        if ($fromAddress !== '') {
             $fromName = (string) $this->config->get('email/from_name');
 
             $message->setFrom($fromAddress, $fromName);

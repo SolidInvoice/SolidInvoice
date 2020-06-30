@@ -34,7 +34,7 @@ final class Finish
     {
         $session = $request->getSession();
 
-        if ($session instanceof SessionInterface && (!$session->has('installation_step') || true !== filter_var($session->remove('installation_step'), FILTER_VALIDATE_BOOLEAN))) {
+        if ($session instanceof SessionInterface && (!$session->has('installation_step') || !filter_var($session->remove('installation_step'), FILTER_VALIDATE_BOOLEAN))) {
             throw new ApplicationInstalledException();
         }
 

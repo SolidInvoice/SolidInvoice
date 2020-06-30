@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
+use Twig\Environment;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
@@ -38,7 +39,7 @@ final class Info implements AjaxResponse
      */
     private $formatter;
 
-    public function __construct(\Twig\Environment $twig, MoneyFormatter $formatter, Currency $currency)
+    public function __construct(Environment $twig, MoneyFormatter $formatter, Currency $currency)
     {
         $this->twig = $twig;
         $this->currency = $currency;

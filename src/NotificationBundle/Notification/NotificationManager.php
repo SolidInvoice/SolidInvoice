@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
+use Namshi\Notificator\ManagerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
@@ -45,7 +46,7 @@ class NotificationManager
     public function __construct(
         Factory $factory,
         SystemConfig $settings,
-        Manager $notification,
+        ManagerInterface $notification,
         ManagerRegistry $doctrine
     ) {
         $this->factory = $factory;

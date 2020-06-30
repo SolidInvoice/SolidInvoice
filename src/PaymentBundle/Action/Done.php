@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
-use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,7 +43,7 @@ final class Done
      */
     private $eventDispatcher;
 
-    public function __construct(Payum $payum, RouterInterface $router, EventDispatcherInterface $eventDispatcher)
+    public function __construct(RegistryInterface $payum, RouterInterface $router, EventDispatcherInterface $eventDispatcher)
     {
         $this->payum = $payum;
         $this->router = $router;
@@ -67,9 +67,9 @@ final class Done
         $this->save($payment);
 
         $event = new PaymentCompleteEvent($payment);
-        $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
+        $this->eventDispatcher->dispatch($event);
 
-        if ($response = $event->getResponse()) {
+        if (($response = $event->getResponse()) !== null) {
             return $response;
         }
 

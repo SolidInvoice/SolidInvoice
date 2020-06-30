@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Grid;
 
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\UserBundle\Repository\UserRepository;
