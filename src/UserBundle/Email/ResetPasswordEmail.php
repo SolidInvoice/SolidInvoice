@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Email;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\MailerBundle\Template\Template;
 use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
@@ -25,7 +26,7 @@ final class ResetPasswordEmail extends \Swift_Message implements HtmlTemplateMes
      */
     private $user;
 
-    public function __construct(User $user)
+    public function __construct(UserInterface $user)
     {
         parent::__construct();
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Tax
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     const TYPE_INCLUSIVE = 'Inclusive';
 

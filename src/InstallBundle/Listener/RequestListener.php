@@ -83,7 +83,7 @@ class RequestListener implements EventSubscriberInterface
         $this->router = $router;
         $this->allowRoutes += $this->installRoutes;
 
-        if (true === $debug) {
+        if ($debug) {
             $this->allowRoutes = array_merge($this->allowRoutes, $this->debugRoutes);
         }
     }
@@ -96,7 +96,7 @@ class RequestListener implements EventSubscriberInterface
 
         $route = $event->getRequest()->get('_route');
 
-        if ($this->installed) {
+        if ($this->installed !== '') {
             if (in_array($route, $this->installRoutes, true)) {
                 throw new ApplicationInstalledException();
             }

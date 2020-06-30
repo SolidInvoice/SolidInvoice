@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,7 +30,7 @@ class CreditType extends AbstractType
             'amount',
             MoneyType::class,
             [
-                'constraints' => new Assert\NotBlank(),
+                'constraints' => new NotBlank(),
             ]
         );
     }

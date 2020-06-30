@@ -99,7 +99,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (!$request) {
+        if ($request === null) {
             return [];
         }
 
@@ -120,7 +120,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getFilters()
     {
         return [
-            new TwigFilter('percentage', [$this->calculator, 'calculatePercentage']),
+            new TwigFilter('percentage', function ($amount, $percentage) : float {
+                return $this->calculator->calculatePercentage($amount, $percentage);
+            }),
             new TwigFilter('diff', [$this, 'dateDiff']),
             new TwigFilter('md5', 'md5'),
         ];
@@ -134,7 +136,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         return [
             new TwigFunction('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
             new TwigFunction('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('can_print_pdf', [$this->pdfGenerator, 'canPrintPdf']),
+            new TwigFunction('can_print_pdf', function () : bool {
+                return $this->pdfGenerator->canPrintPdf();
+            }),
         ];
     }
 

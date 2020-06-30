@@ -67,6 +67,6 @@ class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && Money::class === get_class($data);
+        return is_object($data) && $data instanceof Money;
     }
 }

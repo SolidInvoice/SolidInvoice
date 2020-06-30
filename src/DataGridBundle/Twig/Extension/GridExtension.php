@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+use Twig\Environment;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
 
-class GridExtension extends \Twig\Extension\AbstractExtension
+class GridExtension extends AbstractExtension
 {
     /**
      * @var GridRepository
@@ -33,7 +36,7 @@ class GridExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new \Twig\TwigFunction(
+            new TwigFunction(
                 'render_grid',
                 [$this, 'renderGrid'],
                 [
@@ -41,7 +44,7 @@ class GridExtension extends \Twig\Extension\AbstractExtension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig\TwigFunction(
+            new TwigFunction(
                 'render_multiple_grid',
                 [$this, 'renderMultipleGrid'],
                 [
@@ -55,7 +58,7 @@ class GridExtension extends \Twig\Extension\AbstractExtension
     /**
      * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
-    public function renderGrid(\Twig\Environment $env, string $gridName, array $parameters = []): string
+    public function renderGrid(Environment $env, string $gridName, array $parameters = []): string
     {
         $grid = $this->repository->find($gridName);
 
@@ -77,7 +80,7 @@ class GridExtension extends \Twig\Extension\AbstractExtension
     /**
      * @throws \SolidInvoice\DataGridBundle\Exception\InvalidGridException
      */
-    public function renderMultipleGrid(\Twig\Environment $env): string
+    public function renderMultipleGrid(Environment $env): string
     {
         $parameters = [];
 

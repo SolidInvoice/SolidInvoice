@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Knp\Menu\Provider\MenuProviderInterface;
 use SolidInvoice\MenuBundle\RendererInterface;
 
-class MenuExtension extends \Twig\Extension\AbstractExtension
+class MenuExtension extends AbstractExtension
 {
     /**
      * @var RendererInterface
@@ -50,7 +52,7 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new \Twig\TwigFunction('menu', [$this, 'renderMenu'], ['is_safe' => ['html']]),
+            new TwigFunction('menu', [$this, 'renderMenu'], ['is_safe' => ['html']]),
         ];
     }
 

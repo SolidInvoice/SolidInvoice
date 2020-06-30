@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Callback;
 use Money\Money;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
@@ -58,7 +60,7 @@ class PaymentType extends AbstractType
                 },
                 'required' => true,
                 'preferred_choices' => $options['preferred_choices'],
-                'constraints' => new Assert\NotBlank(),
+                'constraints' => new NotBlank(),
                 'placeholder' => 'Choose Payment Method',
                 'choice_attr' => function (PaymentMethod $paymentMethod) {
                     return ['data-gateway' => $paymentMethod->getGatewayName()];
@@ -75,8 +77,8 @@ class PaymentType extends AbstractType
             [
                 'currency' => $options['currency'],
                 'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Callback(function (Money $money, ExecutionContextInterface $context) {
+                    new NotBlank(),
+                    new Callback(function (Money $money, ExecutionContextInterface $context) {
                         if ($money->isZero() || $money->isNegative()) {
                             $context->buildViolation('This value should be greater than {{ compared_value }}.')
                                 ->setParameter('{{ value }}', $money->getAmount())

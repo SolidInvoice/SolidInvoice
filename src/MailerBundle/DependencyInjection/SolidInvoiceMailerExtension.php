@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use SolidInvoice\MailerBundle\Decorator\MessageDecorator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,7 +27,7 @@ class SolidInvoiceMailerExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->import('services/*.yml');
 
         $container->registerForAutoconfiguration(MessageDecorator::class)

@@ -157,13 +157,11 @@ class InstallCommand extends Command
                 throw new Exception(sprintf('The --%s option needs to be specified', $option));
             }
         }
-        $currencies = array_keys(Currencies::getNames());
-        $locales = array_keys(Locales::getNames());
-        if (!in_array($locale = $input->getOption('locale'), $locales, true)) {
+        if (!array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
-        if (!in_array($currency = $input->getOption('currency'), $currencies, true)) {
+        if (!array_key_exists($currency = $input->getOption('currency'), Currencies::getNames())) {
             throw new InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 

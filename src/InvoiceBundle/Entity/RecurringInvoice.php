@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Traits\Entity;
@@ -25,8 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RecurringInvoice
 {
-    use Entity\TimeStampable;
-    use Entity\Archivable;
+    use TimeStampable;
+    use Archivable;
 
     /**
      * @var int

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -43,10 +45,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Invoice
 {
-    use Entity\TimeStampable,
-        Entity\Archivable,
+    use TimeStampable,
+        Archivable,
         InvoiceStatusTrait {
-            Entity\Archivable::isArchived insteadof InvoiceStatusTrait;
+            Archivable::isArchived insteadof InvoiceStatusTrait;
         }
 
     /**
@@ -578,7 +580,7 @@ class Invoice
      */
     public function updateItems()
     {
-        if (count($this->items)) {
+        if (count($this->items) > 0) {
             foreach ($this->items as $item) {
                 $item->setInvoice($this);
             }
