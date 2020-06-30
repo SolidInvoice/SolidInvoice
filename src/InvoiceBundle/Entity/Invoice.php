@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +26,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\PaymentBundle\Entity\Payment;

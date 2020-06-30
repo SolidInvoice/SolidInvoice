@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 
 /**
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository")

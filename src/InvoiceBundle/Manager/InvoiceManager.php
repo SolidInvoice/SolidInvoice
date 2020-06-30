@@ -19,7 +19,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
-use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;

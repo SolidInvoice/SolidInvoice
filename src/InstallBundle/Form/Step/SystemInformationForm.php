@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Step;
 
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SystemInformationForm extends AbstractType
 {

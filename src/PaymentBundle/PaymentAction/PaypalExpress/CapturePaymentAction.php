@@ -124,6 +124,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
 
         /** @var Payment $payment */
         $payment = $request->getModel();
+
         return !$payment->getDetails();
     }
 }

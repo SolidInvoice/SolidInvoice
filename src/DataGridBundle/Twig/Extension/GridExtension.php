@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Twig\Extension;
 
+use SolidInvoice\DataGridBundle\Repository\GridRepository;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Twig\Environment;
-use SolidInvoice\DataGridBundle\Repository\GridRepository;
 
 class GridExtension extends AbstractExtension
 {

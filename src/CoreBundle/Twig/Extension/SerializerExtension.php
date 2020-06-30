@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use Symfony\Component\Serializer\SerializerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @codeCoverageIgnore

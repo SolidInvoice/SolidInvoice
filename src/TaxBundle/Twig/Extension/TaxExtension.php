@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
+use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
 class TaxExtension extends AbstractExtension
 {

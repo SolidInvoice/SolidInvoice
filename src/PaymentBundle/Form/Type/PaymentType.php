@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Callback;
 use Money\Money;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
@@ -24,7 +22,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PaymentType extends AbstractType
