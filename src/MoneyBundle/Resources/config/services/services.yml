@@ -4,6 +4,7 @@ services:
             $locale: '%env(locale)%'
         autowire: true
         lazy: true
+    SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface: '@SolidInvoice\MoneyBundle\Formatter\MoneyFormatter'
 
     currency:
         class: Money\Currency
