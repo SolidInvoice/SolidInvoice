@@ -95,6 +95,6 @@ class Credit
 
     public function __toString(): string
     {
-        return (string) $this->value->getMoney()->getAmount();
+        return $this->value->getMoney()->getAmount();
     }
 }

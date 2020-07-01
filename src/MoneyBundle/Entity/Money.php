@@ -64,6 +64,6 @@ class Money
 
     public function getMoney(): BaseMoney
     {
-        return new BaseMoney((int) $this->value, new Currency($this->currency ?: self::$baseCurrency));
+        return new BaseMoney($this->value, new Currency($this->currency ?: self::$baseCurrency));
     }
 }

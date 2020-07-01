@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use Money\Money;
 use SolidInvoice\CoreBundle\Form\FieldRenderer;
 use SolidInvoice\MoneyBundle\Calculator;
 use Symfony\Component\Form\FormView;

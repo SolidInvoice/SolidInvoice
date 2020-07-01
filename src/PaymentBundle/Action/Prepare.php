@@ -180,7 +180,7 @@ final class Prepare
                             [
                                 'form' => $form->createView(),
                                 'invoice' => $invoice,
-                                'internal' => array_keys($paymentFactories),
+                                'internal' => array_keys($this->paymentFactories->getFactories()),
                             ]
                         );
                     }
@@ -235,7 +235,7 @@ final class Prepare
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-                'internal' => $paymentFactories,
+                'internal' => array_keys($this->paymentFactories->getFactories()),
             ]
         );
     }

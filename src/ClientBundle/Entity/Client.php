@@ -459,7 +459,7 @@ class Client
      */
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     public function getCurrency(): ?Currency
