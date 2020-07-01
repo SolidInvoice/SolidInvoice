@@ -42,6 +42,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class InstallCommand extends Command
 {
+    protected static $defaultName = 'app:install';
+
     /**
      * @var ConfigWriter
      */
@@ -100,8 +102,7 @@ class InstallCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('app:install')
-            ->setDescription('Installs the application')
+        $this->setDescription('Installs the application')
             ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
             ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
             ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)

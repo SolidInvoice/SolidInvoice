@@ -22,6 +22,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlFormatCommand extends Command
 {
+    protected static $defaultName = 'yaml:format';
+
     /**
      * @var string
      */
@@ -39,7 +41,6 @@ class YamlFormatCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('yaml:format');
     }
 
     /**

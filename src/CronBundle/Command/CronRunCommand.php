@@ -20,6 +20,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CronRunCommand extends Command
 {
+    protected static $defaultName = 'cron:run';
+
     /**
      * @var Runner
      */
@@ -43,8 +45,7 @@ class CronRunCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('cron:run')
-            ->setDescription('Runs the cron commands');
+        $this->setDescription('Runs the cron commands');
     }
 
     /**
