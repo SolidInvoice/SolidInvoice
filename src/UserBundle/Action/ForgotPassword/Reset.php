@@ -31,7 +31,7 @@ final class Reset
         }
 
         try {
-            $response = $formHandler->handle(PasswordChangeHandler::class, ['confirm_password' => false, 'user' => $user, 'redirect_route' => '_login']);
+            return $formHandler->handle(PasswordChangeHandler::class, ['confirm_password' => false, 'user' => $user, 'redirect_route' => '_login']);
         } finally {
             if ($request->isMethod(Request::METHOD_POST) && $response->getResponse() instanceof FlashResponse) {
                 $userRepository->clearUserConfirmationToken($user);
