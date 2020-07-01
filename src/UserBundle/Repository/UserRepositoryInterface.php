@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 interface UserRepositoryInterface extends UserProviderInterface, UserLoaderInterface, ServiceEntityRepositoryInterface
 {

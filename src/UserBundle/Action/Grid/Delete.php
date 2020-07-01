@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Grid;
 
-use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
