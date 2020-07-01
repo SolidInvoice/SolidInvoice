@@ -10,6 +10,7 @@ services:
     SolidInvoice\UserBundle\Repository\UserRepository:
         autowire: true
         tags: ['doctrine.repository_service']
+    SolidInvoice\UserBundle\Repository\UserRepositoryInterface: '@SolidInvoice\UserBundle\Repository\UserRepository'
 
     # Fixtures
     SolidInvoice\UserBundle\DataFixtures\ORM\:
