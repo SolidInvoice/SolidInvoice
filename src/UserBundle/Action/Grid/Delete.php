@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Grid;
 
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -33,7 +34,7 @@ final class Delete implements AjaxResponse
      */
     private $userRepository;
 
-    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage)
+    public function __construct(UserRepositoryInterface $userRepository, TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
         $this->userRepository = $userRepository;

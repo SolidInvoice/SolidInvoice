@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -79,7 +80,7 @@ class Grid implements GridInterface, \JsonSerializable
      */
     private $moneyFormatter;
 
-    public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData, MoneyFormatter $moneyFormatter)
+    public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData, MoneyFormatterInterface $moneyFormatter)
     {
         $this->title = $gridData['title'];
         $this->name = $gridData['name'];

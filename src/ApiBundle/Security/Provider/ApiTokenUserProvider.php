@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Security\Provider;
 
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -30,7 +31,7 @@ class ApiTokenUserProvider implements UserProviderInterface
 
     private $userRepository;
 
-    public function __construct(ApiTokenRepository $tokenRepository, UserRepository $userRepository)
+    public function __construct(ApiTokenRepository $tokenRepository, UserRepositoryInterface $userRepository)
     {
         $this->tokenRepository = $tokenRepository;
         $this->userRepository = $userRepository;

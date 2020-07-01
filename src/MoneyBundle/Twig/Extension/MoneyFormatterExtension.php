@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Twig\Extension;
 
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
@@ -32,7 +33,7 @@ class MoneyFormatterExtension extends AbstractExtension
      */
     private $currency;
 
-    public function __construct(MoneyFormatter $formatter, Currency $currency)
+    public function __construct(MoneyFormatterInterface $formatter, Currency $currency)
     {
         $this->formatter = $formatter;
         $this->currency = $currency;
