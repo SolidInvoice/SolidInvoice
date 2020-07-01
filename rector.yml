@@ -1,0 +1,12 @@
+parameters:
+    paths:
+        - 'src'
+    exclude_paths:
+        - '*/src/*/Tests/*'
+    autoload_paths:
+        - 'vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php'
+    php_version_features: '7.3'
+    auto_import_names: true
+    import_short_classes: false
+    import_doc_blocks: false
+    symfony_container_xml_path: 'var/cache/dev/appAppKernelDevDebugContainer.xml'
