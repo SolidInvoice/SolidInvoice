@@ -1,0 +1,14 @@
+name: Security Checker
+
+on: [push, pull_request]
+
+jobs:
+  security-checker:
+    name: Symfony Security Checker
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: symfonycorp/security-checker-action@v1
+
