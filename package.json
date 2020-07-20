@@ -40,6 +40,7 @@
         "testem": "^2.15.1"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.13.0",
         "accounting": "^0.4.1",
         "admin-lte": "^3.0.4",
         "backbone": "^1.4.0",
@@ -53,7 +54,6 @@
         "bazinga-translator": "^2.6.6",
         "bootstrap": "^4.4.1",
         "bootstrap-material-datetimepicker": "^2.7.3",
-        "@fortawesome/fontawesome-free": "^5.13.0",
         "handlebars": "^4.5.1",
         "jquery": "^3.5.0",
         "jquery-placeholder": "^2.3.1",
