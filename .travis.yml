@@ -44,7 +44,6 @@ jobs:
   fast_finish: true
   allow_failures:
     - php: nightly
-    - php: 7.4snapshot
   include:
     - stage: unit
       php: 7.1
@@ -67,7 +66,7 @@ jobs:
       php: nightly
       script: bash travis/phpunit.sh
     - stage: unit
-      php: 7.4snapshot
+      php: 7.4
       script: bash travis/phpunit.sh
     - stage: functional
       php: 7.2
