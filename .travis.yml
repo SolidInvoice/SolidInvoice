@@ -68,8 +68,7 @@ jobs:
       addons:
         apt:
           packages:
-            - mysql-server-5.7
-            - mysql-client-core-5.7
+            - mysql-server-core-5.7
             - mysql-client-5.7
       script: bash travis/phpunit.sh
     - stage: unit
@@ -78,8 +77,7 @@ jobs:
       addons:
         apt:
           packages:
-            - mysql-server-5.7
-            - mysql-client-core-5.7
+            - mysql-server-core-5.7
             - mysql-client-5.7
       script: bash travis/phpunit.sh
     - stage: functional
