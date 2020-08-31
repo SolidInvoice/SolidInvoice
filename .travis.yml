@@ -19,13 +19,6 @@ cache:
 services:
   - mysql
 
-addons:
-  apt:
-    packages:
-      - mysql-server-5.6
-      - mysql-client-core-5.6
-      - mysql-client-5.6
-
 before_install:
   - composer self-update
   - composer global require "fxp/composer-asset-plugin"
@@ -65,20 +58,10 @@ jobs:
     - stage: unit
       php: 7.4
       dist: xenial
-      addons:
-        apt:
-          packages:
-            - mysql-server-core-5.7
-            - mysql-client-5.7
       script: bash travis/phpunit.sh
     - stage: unit
       php: nightly
       dist: xenial
-      addons:
-        apt:
-          packages:
-            - mysql-server-core-5.7
-            - mysql-client-5.7
       script: bash travis/phpunit.sh
     - stage: functional
       php: 7.2
