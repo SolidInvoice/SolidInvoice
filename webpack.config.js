@@ -28,6 +28,7 @@ Encore
         'SolidInvoiceCore': path.resolve(__dirname, 'src/CoreBundle/Resources/public'),
         'SolidInvoiceDataGrid': path.resolve(__dirname, 'src/DataGridBundle/Resources/public'),
         'SolidInvoiceInvoice': path.resolve(__dirname, 'src/InvoiceBundle/Resources/public'),
+        'SolidInvoiceMailer': path.resolve(__dirname, 'src/MailerBundle/Resources/public'),
         'SolidInvoicePayment': path.resolve(__dirname, 'src/PaymentBundle/Resources/public'),
         'SolidInvoiceQuote': path.resolve(__dirname, 'src/QuoteBundle/Resources/public'),
         'SolidInvoiceTax': path.resolve(__dirname, 'src/TaxBundle/Resources/public'),

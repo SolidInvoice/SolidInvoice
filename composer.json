@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": ">=7.3",
+        "ext-curl": "*",
         "ext-gd": "*",
         "ext-intl": "*",
         "ext-json": "*",

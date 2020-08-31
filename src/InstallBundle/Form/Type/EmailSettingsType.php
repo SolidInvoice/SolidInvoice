@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Type;
 
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
+use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -32,79 +30,31 @@ class EmailSettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transports = $options['transports'];
-
         $builder->add(
             'transport',
-            Select2Type::class,
+            MailTransportType::class,
             [
-                'choices' => array_flip($transports),
-                'placeholder' => 'Choose Mail Transport',
-                'constraints' => new NotBlank(),
+                'placeholder' => 'Choose Mail Provider',
+                'constraints' => new Constraints\Valid(),
             ]
         );
 
-        $builder->add(
-            'host',
-            null,
-            [
-                'constraints' => new NotBlank(['groups' => 'smtp']),
-            ]
-        );
-
-        $builder->add(
-            'port',
-            IntegerType::class,
-            [
-                'constraints' => new Type(['groups' => ['smtp'], 'type' => 'integer']),
-                'required' => false,
-            ]
-        );
-
-        $builder->add(
-            'encryption',
-            Select2Type::class,
-            [
-                'placeholder' => 'None',
-                'choices' => [
-                    'SSL' => 'ssl',
-                    'TLS' => 'tls',
-                ],
-                'required' => false,
-            ]
-        );
-
-        $builder->add(
-            'user',
-            null,
-            [
-                'constraints' => new NotBlank(['groups' => 'gmail']),
-                'required' => false,
-            ]
-        );
-
-        $builder->add(
-            'password',
-            PasswordType::class,
-            [
-                'constraints' => new NotBlank(['groups' => 'gmail']),
-                'required' => false,
-            ]
-        );
-
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event) {
             $data = $event->getData();
 
-            if ('gmail' === $data['transport']) {
-                $data['host'] = null;
-                $data['port'] = null;
-                $data['encryption'] = null;
-            } elseif ('sendmail' === $data['transport'] || 'mail' === $data['transport']) {
-                $data['host'] = null;
-                $data['port'] = null;
-                $data['encryption'] = null;
-                $data['user'] = null;
-                $data['password'] = null;
+            $index = \strpos($data['transport']['transport'], '+');
+            $type = substr($data['transport']['transport'], 0, false === $index ? \strlen($data['transport']['transport']) : $index).'Config';
+
+            foreach ($data['transport'] as $key => &$value) {
+                if (!str_ends_with($key, 'Config')) {
+                    continue;
+                }
+
+                if ($key !== $type) {
+                    foreach ($value as $k => $v) {
+                        $value[$k] = null;
+                    }
+                }
             }
 
             $event->setData($data);
@@ -114,33 +64,26 @@ class EmailSettingsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired(['transports']);
-
         $resolver->setDefaults(
             [
-                'validation_groups' => function (FormInterface $form) {
+                'validation_groups' => static function (FormInterface $form) {
                     $data = $form->getData();
 
-                    if ('smtp' === $data['transport']) {
-                        return ['Default', 'smtp'];
+                    $index = \strpos($data['transport']['transport'], '+');
+
+                    if (false === $index) {
+                        return ['Default', $data['transport']['transport']];
                     }
 
-                    if ('gmail' === $data['transport']) {
-                        return ['Default', 'gmail'];
-                    }
-
-                    return ['Default'];
+                    return ['Default', substr($data['transport']['transport'], 0, $index)];
                 },
             ]
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'email_settings';
     }
