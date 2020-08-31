@@ -63,10 +63,12 @@ jobs:
       php: 7.3
       script: bash travis/phpunit.sh
     - stage: unit
-      php: nightly
+      php: 7.4
+      dist: xenial
       script: bash travis/phpunit.sh
     - stage: unit
-      php: 7.4
+      php: nightly
+      dist: xenial
       script: bash travis/phpunit.sh
     - stage: functional
       php: 7.2
