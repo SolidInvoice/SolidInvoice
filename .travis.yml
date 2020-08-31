@@ -20,6 +20,7 @@ services:
   - mysql
 
 before_install:
+  - echo "display_errors=off" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer self-update
   - composer global require "fxp/composer-asset-plugin"
   - mysql -e 'create database solidinvoice_test;'
