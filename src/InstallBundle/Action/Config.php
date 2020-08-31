@@ -26,15 +26,6 @@ use Symfony\Component\Routing\RouterInterface;
 final class Config
 {
     /**
-     * @var array
-     */
-    private $mailerTransports = [
-        'sendmail' => 'Sendmail',
-        'smtp' => 'SMTP',
-        'gmail' => 'Gmail',
-    ];
-
-    /**
      * @var ConfigWriter
      */
     private $configWriter;
@@ -105,12 +96,7 @@ final class Config
             ],
         ];
 
-        $options = [
-            'drivers' => $drivers,
-            'mailer_transports' => $this->mailerTransports,
-        ];
-
-        return $this->formFactory->create(ConfigStepForm::class, $data, $options);
+        return $this->formFactory->create(ConfigStepForm::class, $data, ['drivers' => $drivers]);
     }
 
     public function handleForm(Request $request)
@@ -129,11 +115,20 @@ final class Config
                 $config[$key] = $param;
             }
 
+            var_dump($data);
+
             // sets the database details
-            foreach ($data['email_settings'] as $key => $param) {
+            foreach ($data['email_settings']['transport'] as $key => $param) {
+                if ($key === 'transport') {
+                    continue;
+                }
+
                 $key = sprintf('mailer_%s', $key);
                 $config[$key] = $param;
             }
+
+            var_dump($config);
+            exit;
 
             $this->configWriter->dump($config);
 

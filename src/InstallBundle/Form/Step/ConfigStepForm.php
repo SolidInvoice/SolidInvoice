@@ -29,7 +29,7 @@ class ConfigStepForm extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $drivers = $options['drivers'];
 
@@ -52,26 +52,15 @@ class ConfigStepForm extends AbstractType
             ]
         );
 
-        $builder->add(
-            'email_settings',
-            EmailSettingsType::class,
-            [
-                'transports' => $options['mailer_transports'],
-            ]
-        );
+        $builder->add('email_settings', EmailSettingsType::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired(
-            [
-                'drivers',
-                'mailer_transports',
-            ]
-        );
+        $resolver->setRequired(['drivers']);
     }
 
     /**

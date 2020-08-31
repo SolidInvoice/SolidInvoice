@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Email;
 
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
-use SolidInvoice\MailerBundle\Template\Template;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Swift_Message;
 
-final class InvoiceEmail extends Swift_Message implements HtmlTemplateMessage
+final class InvoiceEmail extends TemplatedEmail
 {
     /**
      * @var Invoice
@@ -36,8 +35,13 @@ final class InvoiceEmail extends Swift_Message implements HtmlTemplateMessage
         return $this->invoice;
     }
 
-    public function getHtmlTemplate(): Template
+    public function getHtmlTemplate(): string
     {
-        return new Template('@SolidInvoiceInvoice/Email/invoice.html.twig', ['invoice' => $this->invoice]);
+        return '@SolidInvoiceInvoice/Email/invoice.html.twig';
+    }
+
+    public function getContext(): array
+    {
+        return \array_merge(['invoice' => $this->invoice], parent::getContext());
     }
 }

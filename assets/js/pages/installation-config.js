@@ -1,4 +1,4 @@
-import MailConfig from 'SolidInvoiceCore/js/util/form/mail'
+import MailConfig from 'SolidInvoiceMailer/js/form/mail'
 import Config from '../config'
 
-export default new MailConfig('config_step_email_settings', Config.module.data.mail.settings.value);
+export default new MailConfig('config_step_email_settings_transport', Config.module.data.mail.settings.value);

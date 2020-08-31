@@ -10,7 +10,7 @@
 {% set moduleData = {
     mail: {
         settings: {
-            value: form.email_settings.transport.vars.value
+            value: form.email_settings.transport.transport.vars.value
         }
     }
 } %}
@@ -39,13 +39,6 @@
                 </div>
                 <div class="card-body">
                     {{ form_row(form.email_settings.transport) }}
-                    <div id="smtp_settings">
-                        {{ form_row(form.email_settings.host) }}
-                        {{ form_row(form.email_settings.port) }}
-                        {{ form_row(form.email_settings.encryption) }}
-                        {{ form_row(form.email_settings.user) }}
-                        {{ form_row(form.email_settings.password) }}
-                    </div>
                 </div>
             </div>
         </div>
