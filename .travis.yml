@@ -58,12 +58,10 @@ jobs:
     - stage: unit
       php: 7.4
       dist: xenial
-      before_script: composer update ocramius/proxy-manager
       script: bash travis/phpunit.sh
     - stage: unit
       php: nightly
       dist: xenial
-      before_script: composer update ocramius/proxy-manager
       script: bash travis/phpunit.sh
     - stage: functional
       php: 7.2
