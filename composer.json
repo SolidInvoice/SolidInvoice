@@ -99,7 +99,7 @@
         "mpociot/vat-calculator": "^2.2",
         "api-platform/core": "2.2.*",
         "ocramius/proxy-manager": "<2.2",
-        "mpdf/mpdf": "^7.1",
+        "mpdf/mpdf": "^8.0",
         "twig/inky-extension": "^2.0",
         "twig/cssinliner-extension": "^2.0",
         "bamarni/composer-bin-plugin": "^1.3"
