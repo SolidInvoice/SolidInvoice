@@ -5,9 +5,9 @@
         backupGlobals="false"
         backupStaticAttributes="false"
         colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
+        convertErrorsToExceptions="false"
+        convertNoticesToExceptions="false"
+        convertWarningsToExceptions="false"
         processIsolation="false"
         stopOnFailure="false"
         bootstrap="app/autoload.php">
@@ -21,8 +21,8 @@
     <php>
         <server name="KERNEL_CLASS" value="AppKernel"/>
         <server name="KERNEL_DIR" value="app"/>
-        <server name="SYMFONY_ENV" value="test"/>
-        <server name="SYMFONY_DEBUG" value="true"/>
+        <server name="SOLIDINVOICE_ENV" value="test"/>
+        <server name="SOLIDINVOICE_DEBUG" value="0"/>
     </php>
 
     <listeners>
