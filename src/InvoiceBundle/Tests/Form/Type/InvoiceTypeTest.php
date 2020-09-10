@@ -25,7 +25,7 @@ use Symfony\Component\Form\PreloadedExtension;
 
 class InvoiceTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $notes = $this->faker->text;
         $terms = $this->faker->text;
@@ -36,8 +36,6 @@ class InvoiceTypeTest extends FormTestCase
                 'value' => $discountValue,
                 'type' => Discount::TYPE_PERCENTAGE,
             ],
-            'recurring' => false,
-            'recurringInfo' => null,
             'items' => [],
             'notes' => $notes,
             'terms' => $terms,
