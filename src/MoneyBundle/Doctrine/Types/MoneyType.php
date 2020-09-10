@@ -64,6 +64,7 @@ class MoneyType extends Type
 
     /**
      * {@inheritdoc}
+     * @throws ConversionException
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
