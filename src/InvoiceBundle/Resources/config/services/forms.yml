@@ -6,5 +6,5 @@ services:
             - { name: form.type }
 
     SolidInvoice\InvoiceBundle\Form\Type\InvoiceType: ~
-
+    SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType: ~
     SolidInvoice\InvoiceBundle\Form\Type\ItemType: ~

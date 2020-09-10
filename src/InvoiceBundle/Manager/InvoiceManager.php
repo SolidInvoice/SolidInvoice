@@ -114,19 +114,6 @@ class InvoiceManager implements ContainerAwareInterface
      */
     public function create(Invoice $invoice): Invoice
     {
-        if ($invoice->isRecurring()) {
-            $invoice->setStatus(Graph::STATUS_RECURRING);
-
-            $firstInvoice = clone $invoice;
-            $firstInvoice->setRecurring(false);
-            $firstInvoice->setRecurringInfo(null);
-
-            $this->entityManager->persist($invoice);
-            $this->entityManager->flush();
-
-            $invoice = $firstInvoice;
-        }
-
         // Set the invoice status as new and save, before we transition to the correct status
         $invoice->setStatus(Graph::STATUS_NEW);
         $this->entityManager->persist($invoice);

@@ -16,16 +16,16 @@ namespace SolidInvoice\InvoiceBundle\Menu;
 /**
  * Menu items for invoices.
  */
-class InvoiceMenu
+class RecurringInvoiceMenu
 {
     public static function list(): array
     {
         return [
-            'invoice.menu.list',
+            'invoice.menu.recurring.list',
             [
-                'route' => '_invoices_index',
+                'route' => '_invoices_index_recurring',
                 'extras' => [
-                    'icon' => 'file-text-o',
+                    'icon' => 'sync-alt',
                 ],
             ],
         ];
@@ -34,12 +34,12 @@ class InvoiceMenu
     public static function create(): array
     {
         return [
-            'client.menu.create.invoice',
+            'invoice.menu.recurring.create',
             [
-                'route' => '_invoices_create',
                 'extras' => [
                     'icon' => 'plus',
                 ],
+                'route' => '_invoices_create_recurring',
             ],
         ];
     }

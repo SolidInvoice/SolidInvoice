@@ -16,7 +16,9 @@ namespace SolidInvoice\InvoiceBundle\Form\Handler;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
@@ -56,7 +58,9 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
      */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(InvoiceType::class, $options->get('invoice'), $options->get('form_options'));
+        $formType = $options->get('recurring') ? RecurringInvoiceType::class : InvoiceType::class;
+
+        return $factory->create($formType, $options->get('invoice'), $options->get('form_options'));
     }
 
     /**
@@ -66,19 +70,6 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     {
         /* @var Invoice $invoice */
         $action = $form->getRequest()->request->get('save');
-
-        // @TODO: Recurring invoices should be handled better
-        if ($invoice->isRecurring()) {
-            $invoice->setStatus(Graph::STATUS_RECURRING);
-
-            $firstInvoice = clone $invoice;
-            $firstInvoice->setRecurring(false);
-            $firstInvoice->setRecurringInfo(null);
-
-            $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
-
-            $invoice = $firstInvoice;
-        }
 
         if (!$invoice->getId()) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
@@ -105,9 +96,12 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired('invoice')
-            ->setAllowedTypes('invoice', Invoice::class)
+        $resolver
+            ->setRequired('invoice')
+            ->setAllowedTypes('invoice', [Invoice::class, RecurringInvoice::class])
             ->setDefault('form_options', [])
-            ->setAllowedTypes('form_options', 'array');
+            ->setDefault('recurring', false)
+            ->setAllowedTypes('form_options', 'array')
+            ->setAllowedTypes('recurring', 'boolean');
     }
 }

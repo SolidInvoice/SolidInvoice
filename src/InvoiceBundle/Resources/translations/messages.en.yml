@@ -86,6 +86,7 @@ invoice:
             delete: Delete
     action:
         create: 'Create Invoice'
+        create_recurring: 'Create Recurring Invoice'
         edit: 'Edit Invoice'
         view: 'View Invoice'
         pay_now: 'Pay Now'
@@ -112,3 +113,8 @@ invoice:
         list: 'List Invoices'
         create: 'Create Invoice'
         view: 'View Invoice'
+        recurring:
+            main: 'Recurring Invoices'
+            list: 'List Recurring Invoices'
+            create: 'Create Recurring Invoice'
+            view: 'View Recurring Invoice'

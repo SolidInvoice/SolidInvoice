@@ -153,49 +153,15 @@ class InvoiceRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    /**
-     * @return Invoice[]
-     */
-    public function getRecurringInvoices(): array
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb
-            ->select('i', 'r')
-            ->join('i.recurringInfo', 'r')
-            ->where('i.recurring = 1')
-            ->andWhere('r.dateStart <= :now')
-            ->setParameter('now', Carbon::now());
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('i');
 
         $qb->select(['i', 'c'])
-            ->join('i.client', 'c')
-            ->where('i.recurring = 0');
+            ->join('i.client', 'c');
 
         if (!empty($parameters['client'])) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $parameters['client']);
-        }
-
-        return $qb;
-    }
-
-    public function getRecurringGridQuery(array $parameters = []): QueryBuilder
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb->select(['i', 'c', 'r'])
-            ->join('i.client', 'c')
-            ->join('i.recurringInfo', 'r', Join::WITH, 'i.recurring = 1');
-
-        if (!empty($parameters['client'])) {
-            $qb->where('i.client = :client')
                 ->setParameter('client', $parameters['client']);
         }
 

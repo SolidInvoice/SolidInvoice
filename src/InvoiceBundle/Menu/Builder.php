@@ -34,6 +34,9 @@ class Builder extends AuthenticatedMenu
         $menu->addChild(InvoiceMenu::list());
         $menu->addChild(InvoiceMenu::create());
 
+        $menu->addChild(RecurringInvoiceMenu::list());
+        $menu->addChild(RecurringInvoiceMenu::create());
+
         $menu->addDivider();
     }
 }

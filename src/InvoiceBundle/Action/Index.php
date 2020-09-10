@@ -42,6 +42,7 @@ final class Index
         return new Template(
             '@SolidInvoiceInvoice/Default/index.html.twig',
             [
+                'recurring' => false,
                 'status_list_count' => [
                     Graph::STATUS_PENDING => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING),
                     Graph::STATUS_PAID => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID),

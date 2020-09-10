@@ -14,9 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Carbon\Carbon;
+use Money\Currency;
+use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\CronType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
+use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,10 +29,56 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class RecurringInvoiceType extends AbstractType
 {
     /**
+     * @var Currency
+     */
+    private $currency;
+
+    public function __construct(Currency $currency)
+    {
+        $this->currency = $currency;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder->add(
+            'client',
+            null,
+            [
+                'attr' => [
+                    'class' => 'select2 client-select',
+                ],
+                'placeholder' => 'invoice.client.choose',
+            ]
+        );
+
+        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']->getCode()]);
+
+        $builder->add(
+            'items',
+            CollectionType::class,
+            [
+                'entry_type' => ItemType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+                'entry_options' => [
+                    'currency' => $options['currency']->getCode(),
+                ],
+            ]
+        );
+
+        $builder->add('terms');
+        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
+        $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
+
+        $builder->addEventSubscriber(new InvoiceUsersSubscriber());
+
         $builder->add('frequency', CronType::class);
 
         $now = Carbon::now();
@@ -74,8 +125,14 @@ class RecurringInvoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => RecurringInvoice::class]);
+        $resolver->setDefaults(
+            [
+                'data_class' => RecurringInvoice::class,
+                'currency' => $this->currency,
+            ]
+        )
+            ->setAllowedTypes('currency', [Currency::class]);
     }
 }

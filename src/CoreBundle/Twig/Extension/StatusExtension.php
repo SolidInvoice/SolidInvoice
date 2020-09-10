@@ -39,7 +39,6 @@ class StatusExtension extends AbstractExtension
         InvoiceGraph::STATUS_OVERDUE => 'red',
         InvoiceGraph::STATUS_CANCELLED => 'olive',
         InvoiceGraph::STATUS_ARCHIVED => 'purple',
-        InvoiceGraph::STATUS_RECURRING => 'fuchsia',
     ];
 
     /**

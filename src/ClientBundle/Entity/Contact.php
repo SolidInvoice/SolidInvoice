@@ -102,7 +102,7 @@ class Contact implements Serializable
     /**
      * @var Invoice[]|Collection<int, Invoice>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\BaseInvoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
 

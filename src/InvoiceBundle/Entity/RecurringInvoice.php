@@ -13,19 +13,23 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
+ * @ApiResource(attributes={"normalization_context"={"groups"={"recurring_invoice_api"}}, "denormalization_context"={"groups"={"create_recurring_invoice_api"}}})
+ * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository")
  * @ORM\Table(name="recurring_invoices")
- * @ORM\Entity()
- * @Gedmo\Loggable
+ * @ORM\HasLifecycleCallbacks()
+ * @Gedmo\Loggable()
  */
-class RecurringInvoice
+class RecurringInvoice extends BaseInvoice
 {
     use Archivable;
     use TimeStampable;
@@ -36,6 +40,7 @@ class RecurringInvoice
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serialize\Groups({"recurring_invoice_api", "client_api"})
      */
     private $id;
 
@@ -43,6 +48,7 @@ class RecurringInvoice
      * @var string
      *
      * @ORM\Column(name="frequency", type="string", nullable=true)
+     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
     private $frequency;
 
@@ -52,6 +58,7 @@ class RecurringInvoice
      * @ORM\Column(name="date_start", type="date")
      * @Assert\NotBlank(groups={"Recurring"})
      * @Assert\Date(groups={"Recurring"})
+     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
     private $dateStart;
 
@@ -59,15 +66,9 @@ class RecurringInvoice
      * @var DateTime
      *
      * @ORM\Column(name="date_end", type="date", nullable=true)
+     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
     private $dateEnd;
-
-    /**
-     * @var Invoice
-     *
-     * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", inversedBy="recurringInfo")
-     */
-    private $invoice;
 
     /**
      * @return int
@@ -131,24 +132,6 @@ class RecurringInvoice
     public function setDateEnd(DateTime $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
-
-        return $this;
-    }
-
-    /**
-     * @return Invoice
-     */
-    public function getInvoice(): ?Invoice
-    {
-        return $this->invoice;
-    }
-
-    /**
-     * @return RecurringInvoice
-     */
-    public function setInvoice(Invoice $invoice): self
-    {
-        $this->invoice = $invoice;
 
         return $this;
     }

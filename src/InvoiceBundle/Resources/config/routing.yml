@@ -2,9 +2,19 @@ _invoices_index:
     path: /
     defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Index' }
 
+_invoices_index_recurring:
+    path: '/recurring'
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\RecurringIndex' }
+
 _invoices_create:
     path: '/create/{client}'
     defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Create', client: null }
+    options:
+        expose: true
+
+_invoices_create_recurring:
+    path: '/recurring/create/{client}'
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\CreateRecurring', client: null }
     options:
         expose: true
 
