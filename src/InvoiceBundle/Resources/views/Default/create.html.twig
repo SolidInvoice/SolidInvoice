@@ -51,7 +51,7 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block page_title %}{{ "invoice.action.create"|trans }}{% endblock %}
+{% block page_title %}{{ (recurring ? "invoice.action.create_recurring" : "invoice.action.create")|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_create') }}
@@ -72,92 +72,93 @@
 
     {{ form_errors(form) }}
 
-    <div class="card" id="invoice-create">
-        <div class="card-body">
-            <section class="invoice">
+    <h3 class="page-header">
+        {% if invoice is defined %}
+            {{ 'invoice.title'|trans({'%id%' : invoice.id}) }}
+        {% else %}
+            {{ block('page_title') }}
+        {% endif %}
+    </h3>
+    <div class="row">
+        <div class="col-{{ recurring ? '9' : '12' }}">
+            <div class="card" id="invoice-create">
+                <div class="card-body">
+                    <section class="invoice">
 
-                <div class="col-12">
-                    <div class="title">
-                        <h3 class="page-header">
-                            {% if invoice is defined %}
-                                {{ 'invoice.title'|trans({'%id%' : invoice.id}) }}
-                            {% else %}
-                                {{ 'invoice.action.create'|trans }}
-                            {% endif %}
-                        </h3>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6" id="client-info">
-                        </div>
-
-                        <div class="col-6 text-right" id="discount">
-                            {{ block('form_discount') is defined ? block('form_discount') }}
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-12">
-                            {{ form_row(form.recurring) }}
-                        </div>
-                    </div>
-                </div>
+                            <div class="row">
+                                <div class="col-6" id="client-info">
+                                </div>
 
-                <div class="recurring-info d-none row">
-
-                    <div class="col-6">
-                        {{ 'invoice.recurring.variables.text'|trans }}
-                        <br/>
-                        <ul>
-                            <li>
-                                <strong>{day}</strong> - {{ 'invoice.recurring.variables.day'|trans }}</li>
-                            <li>
-                                <strong>{day_name}</strong> - {{ 'invoice.recurring.variables.day_name'|trans }}</li>
-                            <li>
-                                <strong>{month}</strong> - {{ 'invoice.recurring.variables.month'|trans({"%month%": 'now'|date('F')}) }}</li>
-                            <li>
-                                <strong>{year}</strong> - {{ 'invoice.recurring.variables.year'|trans({"%year%": 'now'|date('Y')}) }}</li>
-                        </ul>
-                    </div>
-
-                    <div class="col-6 text-right">
-                        {{ form_row(form.recurringInfo.frequency) }}
-                        <br/>
-                        <br/>
-
-                        <div class="col-6 offset-6">
-                            {{ form_row(form.recurringInfo.date_start) }}
-                        </div>
-                        <div class="col-6 offset-6">
-                            {{ form_row(form.recurringInfo.date_end) }}
+                                <div class="col-6 text-right" id="discount">
+                                    {{ block('form_discount') is defined ? block('form_discount') }}
+                                </div>
+                            </div>
                         </div>
 
-                    </div>
+                        <div id="invoice-items">
+                        </div>
+
+                        <br class="clear"/>
+
+                        <div class="row">
+                            <div class="col-6">
+                                {{ form_row(form.terms) }}
+                            </div>
+                            <div class="col-6">
+                                {{ form_row(form.notes) }}
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            {{ block('form_buttons') is defined ? block('form_buttons') }}
+                        </div>
+                    </section>
                 </div>
-
-                <div id="invoice-items">
-                </div>
-
-                <br class="clear"/>
-
-                <div class="row">
-                    <div class="col-6">
-                        {{ form_row(form.terms) }}
-                    </div>
-                    <div class="col-6">
-                        {{ form_row(form.notes) }}
-                    </div>
-                </div>
-
-                {{ form_rest(form) }}
-
-                <div class="form-actions">
-                    {{ block('form_buttons') is defined ? block('form_buttons') }}
-                </div>
-            </section>
+            </div>
         </div>
+        {% if recurring %}
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">
+                        Invoice Settings
+                    </div>
+                    <div class="card-body">
+                        <div class="recurring-info row">
+                            <div class="col-12">
+                                {{ form_row(form.frequency) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.date_start) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.date_end) }}
+                            </div>
+                            <hr />
+                            <div class="col-12">
+                                <small>
+                                    {{ 'invoice.recurring.variables.text'|trans }}
+                                    <br/>
+                                    <ul>
+                                        <li>
+                                            <strong>{day}</strong> - {{ 'invoice.recurring.variables.day'|trans }}</li>
+                                        <li>
+                                            <strong>{day_name}</strong> - {{ 'invoice.recurring.variables.day_name'|trans }}</li>
+                                        <li>
+                                            <strong>{month}</strong> - {{ 'invoice.recurring.variables.month'|trans({"%month%": 'now'|date('F')}) }}</li>
+                                        <li>
+                                            <strong>{year}</strong> - {{ 'invoice.recurring.variables.year'|trans({"%year%": 'now'|date('Y')}) }}</li>
+                                    </ul>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
+    {{ form_rest(form) }}
     {{ form_end(form) }}
 {% endblock content %}
 

@@ -81,7 +81,7 @@ datagrid:
         title: Recurring Invoices
         icon: refresh
         source:
-            repository: 'SolidInvoiceInvoiceBundle:Invoice'
+            repository: 'SolidInvoiceInvoiceBundle:RecurringInvoice'
             method: getRecurringGridQuery
         properties:
             route: '_invoices_view'

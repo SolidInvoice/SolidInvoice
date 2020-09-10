@@ -53,9 +53,4 @@ trait InvoiceStatusTrait
     {
         return Graph::STATUS_PENDING === $this->getStatus();
     }
-
-    public function isRecurring(): bool
-    {
-        return Graph::STATUS_RECURRING === $this->getStatus();
-    }
 }

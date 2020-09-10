@@ -16,15 +16,11 @@ framework:
                 - overdue
                 - cancelled
                 - archived
-                - recurring
                 - paid
             transitions:
                 new:
                     from: new
                     to: draft
-                recurring:
-                    from: new
-                    to: recurring
                 accept:
                     from: [new, draft, overdue]
                     to: pending
@@ -41,7 +37,7 @@ framework:
                     from: cancelled
                     to: draft
                 archive:
-                    from: [new, draft, cancelled, paid, recurring]
+                    from: [new, draft, cancelled, paid]
                     to: archived
                 edit:
                     from: [cancelled, draft, pending, overdue]

@@ -24,6 +24,7 @@ use Money\Currency;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -132,7 +133,15 @@ class Client
     private $invoices;
 
     /**
-     * @var Payment[]|Collection<int, Payment>
+     * @var RecurringInvoice[]|Collection<int, RecurringInvoice>
+     *
+     * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"created" = "DESC"})
+     * @ApiSubresource
+     */
+    private $recurringInvoices;
+
+    /**
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
@@ -156,14 +165,12 @@ class Client
      */
     private $credit;
 
-    /**
-     * Constructer.
-     */
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
         $this->quotes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->recurringInvoices = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->addresses = new ArrayCollection();
     }
@@ -347,6 +354,35 @@ class Client
     public function getInvoices(): Collection
     {
         return $this->invoices;
+    }
+
+    /**
+     * @return Client
+     */
+    public function addRecurringInvoice(RecurringInvoice $invoice): self
+    {
+        $this->recurringInvoices[] = $invoice;
+        $invoice->setClient($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Client
+     */
+    public function removeRecurringInvoice(RecurringInvoice $invoice): self
+    {
+        $this->recurringInvoices->removeElement($invoice);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RecurringInvoice[]
+     */
+    public function getRecurringInvoices(): Collection
+    {
+        return $this->recurringInvoices;
     }
 
     /**

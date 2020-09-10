@@ -20,14 +20,19 @@
     <div class="row">
         <div class="col-md-9">
             <div class="widget">
-            {{ render_multiple_grid('active_invoice_grid', 'recurring_invoice_grid', 'archive_invoice_grid') }}
+            {% if recurring %}
+                {{ render_grid('recurring_invoice_grid') }}
+            {% else %}
+                {{ render_multiple_grid('active_invoice_grid', 'archive_invoice_grid') }}
+
+                <h5>{{ "invoice.list.status_legend"|trans }}</h5>
+
+                {% for status in invoice_label() %}
+                    {{ status|raw }}
+                {% endfor %}
+            {% endif %}
             </div>
 
-            <h5>{{ "invoice.list.status_legend"|trans }}</h5>
-
-            {% for status in invoice_label() %}
-                {{ status|raw }}
-            {% endfor %}
         </div>
         <div class="col-md-3">
             <div class="card right-nav">

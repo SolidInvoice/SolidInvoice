@@ -29,8 +29,6 @@ final class Graph
 
     const TRANSITION_ARCHIVE = 'archive';
 
-    const TRANSITION_RECURRING = 'recurring';
-
     const STATUS_DRAFT = 'draft';
 
     const STATUS_PENDING = 'pending';
@@ -44,6 +42,4 @@ final class Graph
     const STATUS_ARCHIVED = 'archived';
 
     const STATUS_NEW = 'new';
-
-    const STATUS_RECURRING = 'recurring';
 }

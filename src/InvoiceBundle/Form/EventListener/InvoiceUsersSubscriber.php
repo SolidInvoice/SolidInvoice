@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Form\EventListener;
 use Doctrine\ORM\EntityRepository;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -40,7 +41,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($data instanceof Invoice) {
+        if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
             $clientId = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
         } else {
             $clientId = $data['client'] ?? null;

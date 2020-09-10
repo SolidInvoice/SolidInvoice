@@ -74,8 +74,17 @@ class Item implements ItemInterface
      * @var Invoice
      *
      * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="items")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $invoice;
+
+    /**
+     * @var Invoice
+     *
+     * @ORM\ManyToOne(targetEntity="RecurringInvoice", inversedBy="items")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $recurringInvoice;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
@@ -170,9 +179,13 @@ class Item implements ItemInterface
      *
      * @param Invoice $invoice
      */
-    public function setInvoice(?Invoice $invoice): ItemInterface
+    public function setInvoice(BaseInvoice $invoice): ItemInterface
     {
-        $this->invoice = $invoice;
+        if ($invoice instanceof RecurringInvoice) {
+            $this->recurringInvoice = $invoice;
+        } else {
+            $this->invoice = $invoice;
+        }
 
         return $this;
     }
@@ -180,11 +193,11 @@ class Item implements ItemInterface
     /**
      * Get invoice.
      *
-     * @return Invoice
+     * @return BaseInvoice
      */
-    public function getInvoice(): ?Invoice
+    public function getInvoice(): BaseInvoice
     {
-        return $this->invoice;
+        return $this->invoice ?? $this->recurringInvoice;
     }
 
     public function setTotal(Money $total): ItemInterface
