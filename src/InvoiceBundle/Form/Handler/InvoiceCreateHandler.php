@@ -27,7 +27,7 @@ class InvoiceCreateHandler extends AbstractInvoiceHandler
             '@SolidInvoiceInvoice/Default/create.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
-                'recurring' => $formRequest->getOptions()->get('recurring')
+                'recurring' => $formRequest->getOptions()->get('recurring'),
             ]
         );
     }

@@ -16,7 +16,6 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use SolidWorx\FormHandler\FormHandler;

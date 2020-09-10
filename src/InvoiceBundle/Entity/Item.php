@@ -192,8 +192,6 @@ class Item implements ItemInterface
 
     /**
      * Get invoice.
-     *
-     * @return BaseInvoice
      */
     public function getInvoice(): BaseInvoice
     {

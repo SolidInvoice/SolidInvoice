@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
-use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RecurringIndex
@@ -27,7 +24,7 @@ final class RecurringIndex
             '@SolidInvoiceInvoice/Default/index.html.twig',
             [
                 'recurring' => true,
-                'status_list_count' => []
+                'status_list_count' => [],
             ]
         );
     }

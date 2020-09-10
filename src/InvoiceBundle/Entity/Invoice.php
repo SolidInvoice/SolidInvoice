@@ -41,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Invoice extends BaseInvoice
 {
     use Archivable;
+
     use InvoiceStatusTrait {
         Archivable::isArchived insteadof InvoiceStatusTrait;
     }
