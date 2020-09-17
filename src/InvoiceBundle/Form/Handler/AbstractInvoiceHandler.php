@@ -81,7 +81,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
 
         $this->save($invoice);
 
-        $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+        $route = $this->router->generate($form->getOptions()->get('recurring') ? '_invoices_view_recurring' : '_invoices_view', ['id' => $invoice->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable

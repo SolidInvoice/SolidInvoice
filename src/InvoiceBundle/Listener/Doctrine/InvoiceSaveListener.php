@@ -17,6 +17,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
@@ -44,7 +45,7 @@ class InvoiceSaveListener implements EventSubscriber
     {
         $entity = $event->getEntity();
 
-        if ($entity instanceof Invoice) {
+        if ($entity instanceof BaseInvoice) {
             $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
             $this->checkDiscount($entity);
         }
@@ -60,7 +61,7 @@ class InvoiceSaveListener implements EventSubscriber
         }
     }
 
-    private function checkDiscount(Invoice $entity): void
+    private function checkDiscount(BaseInvoice $entity): void
     {
         $discount = $entity->getDiscount();
         if (!$discount->getValue()) {

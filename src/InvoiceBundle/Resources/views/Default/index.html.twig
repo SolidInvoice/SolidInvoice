@@ -10,7 +10,7 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ "invoice.list.title"|trans }}{% endblock %}
+{% block title %}{{ (recurring ? "invoice.list.recurring_title" : "invoice.list.title")|trans }}{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_index') }}
@@ -18,7 +18,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-9">
+        <div class="{{ recurring ? 'col-12' : 'col-md-9' }}">
             <div class="widget">
             {% if recurring %}
                 {{ render_grid('recurring_invoice_grid') }}
@@ -34,25 +34,27 @@
             </div>
 
         </div>
-        <div class="col-md-3">
-            <div class="card right-nav">
-                <div class="card-body">
-                    <a class="btn btn-block btn-info action-button" href="{{ path("_invoices_create") }}">
-                        {{ icon('file', ['text', 'o']) }} {{ "invoice.action.create"|trans }}
-                    </a>
+        {% if not recurring %}
+            <div class="col-md-3">
+                <div class="card right-nav">
+                    <div class="card-body">
+                        <a class="btn btn-block btn-info action-button" href="{{ path("_invoices_create") }}">
+                            {{ icon('file', ['text', 'o']) }} {{ "invoice.action.create"|trans }}
+                        </a>
 
-                    <ul class="list-group list-group-unbordered">
-                        {% for status, count in status_list_count %}
-                            <li class="list-group-item">
-                                <span class="badge badge-pill">{{ count }}</span>
-                                {{ ('invoice.stats.count.' ~ status)|transchoice(count) }}
-                            </li>
-                        {% endfor %}
-                    </ul>
+                        <ul class="list-group list-group-unbordered">
+                            {% for status, count in status_list_count %}
+                                <li class="list-group-item">
+                                    <span class="badge badge-pill">{{ count }}</span>
+                                    {{ ('invoice.stats.count.' ~ status)|transchoice(count) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
                 </div>
-
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock content %}
 

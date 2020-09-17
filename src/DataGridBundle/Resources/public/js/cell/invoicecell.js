@@ -39,46 +39,26 @@ Backgrid.Extension.InvoiceCell = Backgrid.Cell.extend({
 Backgrid.Extension.RecurringInvoiceEndCell = Backgrid.DateCell.extend({
     initialize () {
         Backgrid.DateCell.__super__.initialize.apply(this, arguments);
-
-        const recurringInfo = this.model.get('recurringInfo');
-
-        this.model = new Backbone.Model(recurringInfo);
     }
 });
 
 Backgrid.Extension.RecurringInvoiceStartCell = Backgrid.DateCell.extend({
     initialize () {
         Backgrid.DateCell.__super__.initialize.apply(this, arguments);
-
-        const recurringInfo = this.model.get('recurringInfo');
-
-        this.model = new Backbone.Model(recurringInfo);
     }
 });
 
 Backgrid.Extension.RecurringInvoiceFrequencyCell = Backgrid.StringCell.extend({
     initialize () {
         Backgrid.StringCell.__super__.initialize.apply(this, arguments);
-
-        const recurringInfo = this.model.get('recurringInfo');
-
-        this.model = new Backbone.Model(recurringInfo);
     },
     render () {
         const value = this.model.get(this.column.get('name'));
 
         Cron(this.$el, {
-            enabled_minute: false,
-            enabled_hour: false,
             no_reset_button: true,
-            numeric_zero_pad: true,
             default_value: value
-        });
-
-        setTimeout(() => {
-            // eslint-disable-next-line
-            this.$el.find('.jqCron-selector-list').remove();
-        }, 0);
+        }).disable();
 
         return this;
     }
