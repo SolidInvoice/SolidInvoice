@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 /*
  * This file is part of the Arnapou jqCron package.
  *
@@ -51,7 +49,6 @@ var jqCronDefaultSettings = {
     }
 };
 
-// @TODO: Include al translations
 jqCronDefaultSettings.texts.en = {
     empty: 'every',
     empty_minutes: 'every',
@@ -80,12 +77,13 @@ jqCronDefaultSettings.texts.en = {
     months: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
 };
 
-/**
- * Custom extend of json for jqCron settings.
- * We don't use jQuery.extend because simple extend does not fit our needs, and deep extend has a bad
- * feature for us : it replaces keys of "Arrays" instead of replacing the full array.
- */
+
 (function($){
+    /**
+     * Custom extend of json for jqCron settings.
+     * We don't use jQuery.extend because simple extend does not fit our needs, and deep extend has a bad
+     * feature for us : it replaces keys of "Arrays" instead of replacing the full array.
+     */
     var extend = function(dst, src) {
         for(var i in src) {
             if($.isPlainObject(src[i])) {
@@ -103,21 +101,17 @@ jqCronDefaultSettings.texts.en = {
     this.jqCronMergeSettings = function(obj) {
         return extend(extend({}, jqCronDefaultSettings), obj || {});
     };
-}).call(window, jQuery);
 
-/**
- * Shortcut to get the instance of jqCron instance from one jquery object
- */
-(function($){
+    /**
+     * Shortcut to get the instance of jqCron instance from one jquery object
+     */
     $.fn.jqCronGetInstance = function() {
         return this.data('jqCron');
     };
-}).call(window, jQuery);
 
-/**
- * Main plugin
- */
-(function($){
+    /**
+     * Main plugin
+     */
     $.fn.jqCron = function(settings) {
         var saved_settings = settings;
         return this.each(function() {
@@ -177,12 +171,10 @@ jqCronDefaultSettings.texts.en = {
             $(this).data('jqCron', cron);
         });
     };
-}).call(window, jQuery);
 
-/**
- * jqCron class
- */
-(function($){
+    /**
+     * jqCron class
+     */
     var jqCronInstances = [];
 
     function jqCron(settings) {
@@ -552,13 +544,10 @@ jqCronDefaultSettings.texts.en = {
         } catch(e){}
     }
     this.jqCron = jqCron;
-}).call(window, jQuery);
 
-
-/**
- * jqCronSelector class
- */
-(function($){
+    /**
+     * jqCronSelector class
+     */
     function jqCronSelector(_cron, _$block, _multiple, _type){
         var _self      = this;
         var _$list     = $('<ul class="jqCron-selector-list"></ul>');
@@ -618,9 +607,7 @@ jqCronDefaultSettings.texts.en = {
                 case 'time_hours':
                     return 0;
                 case 'day_of_month':
-                    return 1;
                 case 'month':
-                    return 1;
                 case 'day_of_week':
                     return 1;
             }
@@ -895,8 +882,8 @@ jqCronDefaultSettings.texts.en = {
                         _self.multipleOf = null;
                     }
 
-                    clearTimeout(timer);    //prevent single-click action
-                    clicks = 0;             //after action performed, reset counter
+                    clearTimeout(timer);	//prevent single-click action
+                    clicks = 0;			 //after action performed, reset counter
                 }
             }).dblclick(function(e) {
                 e.preventDefault();
@@ -942,13 +929,11 @@ jqCronDefaultSettings.texts.en = {
         _self.clear();
     }
     this.jqCronSelector = jqCronSelector;
-}).call(window, jQuery);
 
-/**
- * Generate unique id for each element.
- * Skip elements which have already an id.
- */
-(function($){
+    /**
+     * Generate unique id for each element.
+     * Skip elements which have already an id.
+     */
     var jqUID = 0;
     var jqGetUID = function(prefix){
         var id;
@@ -965,13 +950,10 @@ jqCronDefaultSettings.texts.en = {
             $(this).attr('id', id);
         });
     };
-}).call(window, jQuery);
 
-
-/**
- * Extends jQuery selectors with new block selector
- */
-(function($){
+    /**
+     * Extends jQuery selectors with new block selector
+     */
     $.extend($.expr[':'], {
         container: function(a) {
             return (a.tagName+'').toLowerCase() in {
@@ -989,4 +971,4 @@ jqCronDefaultSettings.texts.en = {
             };
         }
     });
-}).call(this, jQuery);
+}).call(window, jQuery);

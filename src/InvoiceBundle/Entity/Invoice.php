@@ -23,6 +23,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
@@ -106,11 +107,22 @@ class Invoice extends BaseInvoice
      */
     private $quote;
 
+    /**
+     * @var Collection|ItemInterface[]
+     *
+     * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid()
+     * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
+     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
+     */
+    protected $items;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->payments = new ArrayCollection();
+        $this->items = new ArrayCollection();
         try {
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
@@ -285,5 +297,41 @@ class Invoice extends BaseInvoice
         $quote->setInvoice($this);
 
         return $this;
+    }
+
+    /**
+     * Add item.
+     *
+     * @return Invoice
+     */
+    public function addItem(Item $item): self
+    {
+        $this->items[] = $item;
+        $item->setInvoice($this);
+
+        return $this;
+    }
+
+    /**
+     * Removes an item.
+     *
+     * @return Invoice
+     */
+    public function removeItem(Item $item): self
+    {
+        $this->items->removeElement($item);
+        $item->setInvoice(null);
+
+        return $this;
+    }
+
+    /**
+     * Get items.
+     *
+     * @return Collection|ItemInterface[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
     }
 }

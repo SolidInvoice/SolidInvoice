@@ -18,10 +18,10 @@
 
 {% block form_buttons %}
         <div class="float-left">
-            <a href="{{ path('_invoices_view', {'id' : invoice.id}) }}" class="btn btn-warning">
+            <a href="{{ path(recurring ? '_invoices_view_recurring' : '', {'id' : invoice.id}) }}" class="btn btn-warning">
                 {{ icon('reply') }} {{ "invoice.save.cancel"|trans }}
             </a>
-            {% if not invoice.recurring %}
+            {% if not recurring %}
                 <button type="submit" class="btn btn-success" name="save" value="pending">
                     {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
                 </button>

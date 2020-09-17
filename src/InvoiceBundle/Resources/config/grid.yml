@@ -84,7 +84,7 @@ datagrid:
             repository: 'SolidInvoiceInvoiceBundle:RecurringInvoice'
             method: getRecurringGridQuery
         properties:
-            route: '_invoices_view'
+            route: '_invoices_view_recurring'
         columns:
             id:
                 name: id
@@ -100,12 +100,14 @@ datagrid:
                 name: total
                 label: Total
                 editable: false
-                cell: string
+                cell: money
+                formatter: money
             tax:
                 name: tax
                 label: Tax
                 editable: false
-                cell: string
+                cell: money
+                formatter: money
             discount:
                 name: discount
                 label: Discount
@@ -147,7 +149,7 @@ datagrid:
             edit:
                 icon: edit
                 label: invoice.grid.actions.edit
-                route: _invoices_edit
+                route: _invoices_edit_recurring
                 route_params:
                     id: id
         actions:

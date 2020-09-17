@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Billing;
 use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -35,7 +36,7 @@ class TotalCalculator
 
     public function calculateTotals($entity)
     {
-        if (!$entity instanceof Invoice && !$entity instanceof Quote) {
+        if (!$entity instanceof BaseInvoice && !$entity instanceof Quote) {
             throw new UnexpectedTypeException($entity, 'Invoice or Quote');
         }
 
@@ -49,7 +50,7 @@ class TotalCalculator
 
     private function updateTotal($entity)
     {
-        /* @var Invoice|Quote $entity */
+        /* @var BaseInvoice|Quote $entity */
 
         $total = new Money(0, $entity->getTotal()->getCurrency());
         $subTotal = new Money(0, $entity->getTotal()->getCurrency());
@@ -79,7 +80,7 @@ class TotalCalculator
     }
 
     /**
-     * @param Invoice|Quote $entity
+     * @param BaseInvoice|Quote $entity
      */
     private function setDiscount($entity, Money $total): Money
     {

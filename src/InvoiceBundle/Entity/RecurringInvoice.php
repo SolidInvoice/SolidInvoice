@@ -15,8 +15,11 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+suse SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -69,6 +72,22 @@ class RecurringInvoice extends BaseInvoice
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
     private $dateEnd;
+
+    /**
+     * @var Collection|ItemInterface[]
+     *
+     * @ORM\OneToMany(targetEntity="Item", mappedBy="recurringInvoice", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid()
+     * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
+     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
+     */
+    protected $items;
+
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+        parent::__construct();
+    }
 
     /**
      * @return int
@@ -134,5 +153,41 @@ class RecurringInvoice extends BaseInvoice
         $this->dateEnd = $dateEnd;
 
         return $this;
+    }
+
+    /**
+     * Add item.
+     *
+     * @return RecurringInvoice
+     */
+    public function addItem(Item $item): self
+    {
+        $this->items[] = $item;
+        $item->setInvoice($this);
+
+        return $this;
+    }
+
+    /**
+     * Removes an item.
+     *
+     * @return RecurringInvoice
+     */
+    public function removeItem(Item $item): self
+    {
+        $this->items->removeElement($item);
+        $item->setInvoice(null);
+
+        return $this;
+    }
+
+    /**
+     * Get items.
+     *
+     * @return Collection|ItemInterface[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
     }
 }

@@ -2,6 +2,7 @@ invoice:
     list:
         status_legend: 'Invoice Status Legend'
         title: Invoices
+        recurring_title: Recurring Invoices
         outstanding: Outstanding
         income: Income
     created: Created

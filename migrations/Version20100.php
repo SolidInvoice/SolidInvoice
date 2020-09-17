@@ -87,16 +87,8 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
         $invoiceLinesTable->addIndex(['recurringInvoice_id']);
 
         $recurringInvoices = $schema->getTable('recurring_invoices');
-        try {
-            $recurringInvoices->removeForeignKey('FK_FE93E2842989F1FD');
-        } catch (\Throwable $e) {
-        }
-
-        try {
-            $recurringInvoices->dropIndex('UNIQ_FE93E2842989F1FD');
-        } catch (\Throwable $e) {
-        }
-
+        $recurringInvoices->removeForeignKey('FK_FE93E2842989F1FD');
+        $recurringInvoices->dropIndex('UNIQ_FE93E2842989F1FD');
         $recurringInvoices->addColumn('status', 'string', ['length' => 25]);
         $recurringInvoices->addColumn('terms', 'text', ['notnull' => false]);
         $recurringInvoices->addColumn('notes', 'text', ['notnull' => false]);

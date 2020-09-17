@@ -21,14 +21,12 @@ use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
- * @ORM\HasLifecycleCallbacks()
  */
 abstract class BaseInvoice
 {
@@ -99,16 +97,6 @@ abstract class BaseInvoice
     protected $notes;
 
     /**
-     * @var Collection|ItemInterface[]
-     *
-     * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Assert\Valid
-     * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
-    protected $items;
-
-    /**
      * @var Collection|Contact[]
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
@@ -120,7 +108,6 @@ abstract class BaseInvoice
     public function __construct()
     {
         $this->discount = new Discount();
-        $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->baseTotal = new MoneyEntity();
         $this->tax = new MoneyEntity();
@@ -263,42 +250,6 @@ abstract class BaseInvoice
         $this->discount = $discount;
 
         return $this;
-    }
-
-    /**
-     * Add item.
-     *
-     * @return Invoice
-     */
-    public function addItem(Item $item): self
-    {
-        $this->items[] = $item;
-        $item->setInvoice($this);
-
-        return $this;
-    }
-
-    /**
-     * Removes an item.
-     *
-     * @return Invoice
-     */
-    public function removeItem(Item $item): self
-    {
-        $this->items->removeElement($item);
-        $item->setInvoice(null);
-
-        return $this;
-    }
-
-    /**
-     * Get items.
-     *
-     * @return Collection|ItemInterface[]
-     */
-    public function getItems(): Collection
-    {
-        return $this->items;
     }
 
     /**

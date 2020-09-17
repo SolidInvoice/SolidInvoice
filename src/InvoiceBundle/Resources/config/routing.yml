@@ -30,11 +30,23 @@ _invoices_edit:
     options:
         expose: true
 
+_invoices_edit_recurring:
+    path: '/recurring/edit/{id}'
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\EditRecurring' }
+    options:
+        expose: true
+
 _invoices_view:
     path: '/view/{id}.{_format}'
     defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\View', _format: html }
     requirements:
         _format: html|pdf
+    options:
+        expose: true
+
+_invoices_view_recurring:
+    path: '/recurring/view/{id}'
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\ViewRecurring' }
     options:
         expose: true
 
