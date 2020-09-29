@@ -179,7 +179,7 @@
                                 </tr>
                             {% endif %}
                             {% set paid = 0 %}
-                            {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+                            {% if invoice.payments is defined and invoice.payments|length > 0 and not invoice.balance.zero %}
                                 {% for payment in invoice.payments if payment.status == 'captured' %}
                                     <tr>
                                         <td class="no-line"></td>
@@ -201,7 +201,7 @@
                                 <td class="no-line"></td>
                                 <td colspan="{{ footerSpan }}" class="no-line text-right">
                                     <strong>
-                                        {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+                                        {% if invoice.payments is defined and invoice.payments|length > 0 and not invoice.balance.zero %}
                                             {{ 'invoice.balance'|trans }}
                                         {% else %}
                                             {{ 'invoice.total'|trans }}
@@ -210,7 +210,7 @@
                                 </td>
                                 <td class="no-line text-right">
                                     <div class="invoice-total">
-                                        {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+                                        {% if invoice.payments is defined and invoice.payments|length > 0 and not invoice.balance.zero %}
                                             {{ invoice.balance|formatCurrency }}
                                         {% else %}
                                             {{ invoice.total|formatCurrency }}

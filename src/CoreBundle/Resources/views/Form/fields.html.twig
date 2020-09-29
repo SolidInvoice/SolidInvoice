@@ -211,11 +211,6 @@
     {% set type = 'hidden' %}
     {% set attr = attr|merge({"class": "cron-expr"}) %}
     {{ block('form_widget') }}
-    {#<script>
-        require(['core/util/form/cron'], function (Cron) {
-            Cron.jqcron('#{{ id }}');
-        });
-    </script>#}
 {% endblock cron_widget %}
 
 {% block discount_row %}
