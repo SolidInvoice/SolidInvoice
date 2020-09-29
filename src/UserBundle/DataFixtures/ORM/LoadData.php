@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\UserBundle\Entity\User;
 
 /**
