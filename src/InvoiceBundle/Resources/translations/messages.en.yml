@@ -103,6 +103,7 @@ invoice:
         view:
             starting: starting
             ending: 'ending on'
+            label: 'Recurring'
         variables:
             text: 'You can use the following values in the description that will be replaced with the actual value when the invoice is created:'
             day: 'The day of the invoice (E.G ''15'')'
