@@ -1,6 +1,9 @@
 parameters:
-    bootstrap: %rootDir%/../../../app/autoload.php
-    autoload_files:
+    level: 1
+    paths:
+        - src
+    bootstrapFiles:
+        - app/autoload.php
         - vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php
     excludes_analyse:
         - src/CoreBundle/Tests/Fixtures/file.php
