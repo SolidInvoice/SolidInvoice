@@ -351,16 +351,16 @@
         },
         {
             "name": "nette/application",
-            "version": "v3.0.4",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/application.git",
-                "reference": "da24ae52e65fe52fa6d26f2181a56ec48958ccb0"
+                "reference": "783ad6fc6444f63314175131885c04b3dd0291dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/application/zipball/da24ae52e65fe52fa6d26f2181a56ec48958ccb0",
-                "reference": "da24ae52e65fe52fa6d26f2181a56ec48958ccb0",
+                "url": "https://api.github.com/repos/nette/application/zipball/783ad6fc6444f63314175131885c04b3dd0291dd",
+                "reference": "783ad6fc6444f63314175131885c04b3dd0291dd",
                 "shasum": ""
             },
             "require": {
@@ -377,7 +377,7 @@
                 "tracy/tracy": "<2.5"
             },
             "require-dev": {
-                "latte/latte": "^2.6",
+                "latte/latte": "^2.6.2",
                 "mockery/mockery": "^1.0",
                 "nette/di": "^v3.0",
                 "nette/forms": "^3.0",
@@ -432,32 +432,29 @@
                 "routing",
                 "seo"
             ],
-            "time": "2020-01-22T21:39:02+00:00"
+            "time": "2020-08-25T01:52:08+00:00"
         },
         {
             "name": "nette/component-model",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/component-model.git",
-                "reference": "3153441f3d64bbdac300e75b8e5dde36590f7e01"
+                "reference": "66409cf5507c77edb46ffa88cf6a92ff58395601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/component-model/zipball/3153441f3d64bbdac300e75b8e5dde36590f7e01",
-                "reference": "3153441f3d64bbdac300e75b8e5dde36590f7e01",
+                "url": "https://api.github.com/repos/nette/component-model/zipball/66409cf5507c77edb46ffa88cf6a92ff58395601",
+                "reference": "66409cf5507c77edb46ffa88cf6a92ff58395601",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^2.5 || ^3.0",
                 "php": ">=7.1"
             },
-            "conflict": {
-                "nette/application": "<2.4",
-                "nette/nette": "<2.2"
-            },
             "require-dev": {
                 "nette/tester": "^2.0",
+                "phpstan/phpstan": "^0.12",
                 "tracy/tracy": "^2.3"
             },
             "type": "library",
@@ -474,8 +471,8 @@
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause",
-                "GPL-2.0",
-                "GPL-3.0"
+                "GPL-2.0-only",
+                "GPL-3.0-only"
             ],
             "authors": [
                 {
@@ -493,7 +490,7 @@
                 "components",
                 "nette"
             ],
-            "time": "2019-02-20T07:13:15+00:00"
+            "time": "2020-04-21T13:48:20+00:00"
         },
         {
             "name": "nette/finder",
@@ -754,16 +751,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v3.1.1",
+            "version": "v3.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "2c17d16d8887579ae1c0898ff94a3668997fd3eb"
+                "reference": "c09937fbb24987b2a41c6022ebe84f4f1b8eec0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/2c17d16d8887579ae1c0898ff94a3668997fd3eb",
-                "reference": "2c17d16d8887579ae1c0898ff94a3668997fd3eb",
+                "url": "https://api.github.com/repos/nette/utils/zipball/c09937fbb24987b2a41c6022ebe84f4f1b8eec0f",
+                "reference": "c09937fbb24987b2a41c6022ebe84f4f1b8eec0f",
                 "shasum": ""
             },
             "require": {
@@ -776,7 +773,7 @@
             },
             "suggest": {
                 "ext-gd": "to use Image",
-                "ext-iconv": "to use Strings::webalize() and toAscii()",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
                 "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
                 "ext-json": "to use Nette\\Utils\\Json",
                 "ext-mbstring": "to use Strings::lower() etc...",
@@ -828,7 +825,7 @@
                 "utility",
                 "validation"
             ],
-            "time": "2020-02-09T14:10:55+00:00"
+            "time": "2020-08-07T10:34:21+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -1472,10 +1469,6 @@
                 {
                     "url": "https://github.com/tomasvotruba",
                     "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/rectorphp",
-                    "type": "patreon"
                 }
             ],
             "time": "2020-03-20T18:30:40+00:00"
@@ -3035,12 +3028,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/auto-bind-parameter.git",
-                "reference": "76a02d2ec1252ea58b3ef1d8d974b61529313096"
+                "reference": "f5ec9951f12494b990bac49227a3b7bd1f271366"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/auto-bind-parameter/zipball/76a02d2ec1252ea58b3ef1d8d974b61529313096",
-                "reference": "76a02d2ec1252ea58b3ef1d8d974b61529313096",
+                "url": "https://api.github.com/repos/symplify/auto-bind-parameter/zipball/f5ec9951f12494b990bac49227a3b7bd1f271366",
+                "reference": "f5ec9951f12494b990bac49227a3b7bd1f271366",
                 "shasum": ""
             },
             "require": {
@@ -3079,6 +3072,7 @@
                     "type": "patreon"
                 }
             ],
+            "abandoned": "symplify/package-builder",
             "time": "2020-03-18T23:25:54+00:00"
         },
         {
@@ -3087,12 +3081,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/autowire-array-parameter.git",
-                "reference": "6d4fba4b5c9290077891b4c6d21c14657bf829af"
+                "reference": "aeeda3cd239fd5e0a0673e44b7a724167bb70413"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/6d4fba4b5c9290077891b4c6d21c14657bf829af",
-                "reference": "6d4fba4b5c9290077891b4c6d21c14657bf829af",
+                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/aeeda3cd239fd5e0a0673e44b7a724167bb70413",
+                "reference": "aeeda3cd239fd5e0a0673e44b7a724167bb70413",
                 "shasum": ""
             },
             "require": {
@@ -3139,12 +3133,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/package-builder.git",
-                "reference": "91e019cad6441b8a5e7b300e153cb1c3d3ec7e29"
+                "reference": "4706e9d2e80764abb85bd0bb256d948a304f13c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/package-builder/zipball/91e019cad6441b8a5e7b300e153cb1c3d3ec7e29",
-                "reference": "91e019cad6441b8a5e7b300e153cb1c3d3ec7e29",
+                "url": "https://api.github.com/repos/symplify/package-builder/zipball/4706e9d2e80764abb85bd0bb256d948a304f13c8",
+                "reference": "4706e9d2e80764abb85bd0bb256d948a304f13c8",
                 "shasum": ""
             },
             "require": {
@@ -3195,12 +3189,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/set-config-resolver.git",
-                "reference": "992f7b2f11107835e122a5fa460716803a84cbb1"
+                "reference": "feca3ff3504ebde54df2485ef6994e55faebcc51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/992f7b2f11107835e122a5fa460716803a84cbb1",
-                "reference": "992f7b2f11107835e122a5fa460716803a84cbb1",
+                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/feca3ff3504ebde54df2485ef6994e55faebcc51",
+                "reference": "feca3ff3504ebde54df2485ef6994e55faebcc51",
                 "shasum": ""
             },
             "require": {
@@ -3248,12 +3242,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/smart-file-system.git",
-                "reference": "0ece1df8c6904124750eae94c7b33c781ed3d72d"
+                "reference": "3f11a9f622bda570dc1f983c05abde580f89cdfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/0ece1df8c6904124750eae94c7b33c781ed3d72d",
-                "reference": "0ece1df8c6904124750eae94c7b33c781ed3d72d",
+                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/3f11a9f622bda570dc1f983c05abde580f89cdfb",
+                "reference": "3f11a9f622bda570dc1f983c05abde580f89cdfb",
                 "shasum": ""
             },
             "require": {
