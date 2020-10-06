@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle\DependencyInjection\CompilerPass;
 
+use SolidInvoice\CronBundle\Runner;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * Class CronCommandCompilerPass.
- */
 class CronCommandCompilerPass implements CompilerPassInterface
 {
     /**
@@ -27,11 +25,11 @@ class CronCommandCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('cron.runner')) {
+        if (!$container->hasDefinition(Runner::class)) {
             return;
         }
 
-        $definition = $container->getDefinition('cron.runner');
+        $definition = $container->getDefinition(Runner::class);
 
         $taggedServices = $container->findTaggedServiceIds('cron.command');
 
