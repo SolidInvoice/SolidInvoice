@@ -21,8 +21,9 @@ use SolidInvoice\CronBundle\CommandInterface;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Component\Workflow\StateMachine;
 
 /**
@@ -45,9 +46,6 @@ class RecurringInvoiceCreate implements CommandInterface
      */
     private $invoiceCloner;
 
-    /**
-     * RecurringInvoiceCreate constructor.
-     */
     public function __construct(ManagerRegistry $registry, InvoiceCloner $invoiceCloner, StateMachine $stateMachine)
     {
         $this->entityManager = $registry->getManager();
@@ -69,29 +67,33 @@ class RecurringInvoiceCreate implements CommandInterface
      */
     public function process()
     {
-        /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->entityManager->getRepository(Invoice::class);
+        /** @var RecurringInvoiceRepository $invoiceRepository */
+        $invoiceRepository = $this->entityManager->getRepository(RecurringInvoice::class);
 
-        $invoices = $invoiceRepository->getRecurringInvoices();
+        /** @var RecurringInvoice[] $invoices */
+        $invoices = $invoiceRepository->findBy(['status' => 'active']);
+        $now = Carbon::now();
 
         foreach ($invoices as $invoice) {
-            $recurringInfo = $invoice->getRecurringInfo();
-            if (null !== ($recurringInfo->getDateEnd()) && Carbon::instance($recurringInfo->getDateEnd())->isFuture()) {
+            if (null !== ($invoice->getDateEnd()) && Carbon::instance($invoice->getDateEnd())->isFuture()) {
                 continue;
             }
 
-            $cron = CronExpression::factory($recurringInfo->getFrequency());
+            $cron = CronExpression::factory($invoice->getFrequency());
 
-            if ($cron->isDue(Carbon::now())) {
+s            if (true === $cron->isDue($now)) {
                 $newInvoice = $this->invoiceCloner->clone($invoice);
                 $this->setItemsDescription($newInvoice);
+
+                $this->entityManager->persist($invoice);
+                $this->entityManager->flush();
 
                 $this->stateMachine->apply($newInvoice, Graph::TRANSITION_ACCEPT);
             }
         }
     }
 
-    private function setItemsDescription(Invoice $invoice)
+    private function setItemsDescription(Invoice $invoice): void
     {
         $now = Carbon::now();
 
@@ -117,8 +119,5 @@ class RecurringInvoiceCreate implements CommandInterface
 
             $item->setDescription($description);
         }
-
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Cloner;
 
 use Carbon\Carbon;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
@@ -31,7 +32,7 @@ final class InvoiceCloner
         $this->invoiceManager = $invoiceManager;
     }
 
-    public function clone(Invoice $invoice): Invoice
+    public function clone(BaseInvoice $invoice): Invoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
         // Rather set it manually
@@ -62,7 +63,7 @@ final class InvoiceCloner
         return $newInvoice;
     }
 
-    private function addItems(Invoice $invoice, Carbon $now): Traversable
+    private function addItems(BaseInvoice $invoice, Carbon $now): Traversable
     {
         foreach ($invoice->getItems() as $item) {
             $invoiceItem = new Item();
