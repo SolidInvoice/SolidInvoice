@@ -93,28 +93,6 @@
                 </div>
             </div>
         {% endblock footer %}
-
-        {% block header %}
-            {{ parent() }}
-
-            {% if invoice.recurring %}
-                <div class="row">
-                    <div class="col-md-12">
-                        <div>
-                            {{ icon('refresh') }}
-                            <span id="recurring"></span>
-                            {{ 'invoice.recurring.view.starting'|trans }}
-                            {{ invoice.recurringInfo.dateStart|date('d F Y') }}
-                            {% if invoice.recurringInfo.dateEnd is not empty %}
-                                {{ 'invoice.recurring.view.ending'|trans }}
-                                {{ invoice.recurringInfo.dateEnd|date('d F Y') }}
-                            {% endif %}
-                        </div>
-                        <br class="clearfix" />
-                    </div>
-                </div>
-            {% endif %}
-        {% endblock %}
     {% endembed %}
 
     {% if payments|length > 0 %}
@@ -149,26 +127,3 @@
         </div>
     </div>
 {% endblock content %}
-
-{% block script %}
-    require(['jquery'{% if invoice.recurring %}, 'jquery.jqcron'{% endif %}], function ($) {
-        $(function () {
-            {% if invoice.recurring %}
-	            $('#recurring').jqCron({
-	                enabled_minute: false,
-	                enabled_hour: false,
-	                no_reset_button: true,
-	                numeric_zero_pad: true,
-	                default_value: '{{ invoice.recurringInfo.frequency }}'
-	            });
-
-	            $('.jqCron-selector-list').remove();
-            {% endif %}
-
-            $('#pay-now').on('click', function(event) {
-                event.preventDefault();
-                $('#payment-modal').modal();
-            });
-        });
-    });
-{% endblock script %}
