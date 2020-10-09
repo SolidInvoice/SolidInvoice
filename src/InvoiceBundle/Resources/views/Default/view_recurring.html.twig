@@ -27,6 +27,7 @@
             <h2 class="page-header">
                 {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
                 <span class="badge badge-pill bg-success">{{ 'invoice.recurring.view.label'|trans }}</span>
+                {{ invoice_label(invoice.status) }}
             </h2>
         {% endblock %}
 
