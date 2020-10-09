@@ -36,6 +36,7 @@ invoice:
             tax: Tax
     save:
         send: 'Save and Send'
+        enable: 'Save and Enable'
         draft: 'Save as Draft'
         cancel: Cancel
         update: Update
