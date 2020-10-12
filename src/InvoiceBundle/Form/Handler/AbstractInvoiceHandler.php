@@ -70,18 +70,18 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     {
         /* @var Invoice $invoice */
         $action = $form->getRequest()->request->get('save');
+        $isRecurring = $form->getOptions()->get('recurring');
 
         if (!$invoice->getId()) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
         }
 
         if (Graph::STATUS_PENDING === $action) {
-            $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
+            $this->stateMachine->apply($invoice, $isRecurring ? Graph::TRANSITION_ACTIVATE : Graph::TRANSITION_ACCEPT);
         }
 
         $this->save($invoice);
-
-        $route = $this->router->generate($form->getOptions()->get('recurring') ? '_invoices_view_recurring' : '_invoices_view', ['id' => $invoice->getId()]);
+        $route = $this->router->generate($isRecurring ? '_invoices_view_recurring' : '_invoices_view', ['id' => $invoice->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable

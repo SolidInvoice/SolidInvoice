@@ -36,6 +36,7 @@ class StatusExtension extends AbstractExtension
         InvoiceGraph::STATUS_PENDING => 'yellow',
         InvoiceGraph::STATUS_DRAFT => 'secondary',
         InvoiceGraph::STATUS_PAID => 'green',
+        InvoiceGraph::STATUS_ACTIVE => 'green',
         InvoiceGraph::STATUS_OVERDUE => 'red',
         InvoiceGraph::STATUS_CANCELLED => 'olive',
         InvoiceGraph::STATUS_ARCHIVED => 'purple',

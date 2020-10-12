@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use Traversable;
 
@@ -32,11 +33,12 @@ final class InvoiceCloner
         $this->invoiceManager = $invoiceManager;
     }
 
-    public function clone(BaseInvoice $invoice): Invoice
+    public function clone(BaseInvoice $invoice): BaseInvoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
         // Rather set it manually
-        $newInvoice = new Invoice();
+        $class = \get_class($invoice);
+        $newInvoice = new $class();
 
         $now = Carbon::now();
 
@@ -48,7 +50,14 @@ final class InvoiceCloner
         $newInvoice->setTotal($invoice->getTotal());
         $newInvoice->setTerms($invoice->getTerms());
         $newInvoice->setUsers($invoice->getUsers()->toArray());
-        $newInvoice->setBalance($newInvoice->getTotal());
+
+        if (\method_exists($newInvoice, 'setBalance')) {
+            $newInvoice->setBalance($newInvoice->getTotal());
+        }
+
+        if ($invoice instanceof RecurringInvoice) {
+            $newInvoice->setDateStart($invoice->getDateStart());
+        }
 
         if (null !== $tax = $invoice->getTax()) {
             $newInvoice->setTax($tax);

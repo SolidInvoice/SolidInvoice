@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Manager;
 use Carbon\Carbon;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
@@ -112,7 +113,7 @@ class InvoiceManager implements ContainerAwareInterface
     /**
      * @throws InvalidTransitionException
      */
-    public function create(Invoice $invoice): Invoice
+    public function create(BaseInvoice $invoice): BaseInvoice
     {
         // Set the invoice status as new and save, before we transition to the correct status
         $invoice->setStatus(Graph::STATUS_NEW);
@@ -134,7 +135,7 @@ class InvoiceManager implements ContainerAwareInterface
     /**
      * @throws InvalidTransitionException
      */
-    private function applyTransition(Invoice $invoice, string $transition): bool
+    private function applyTransition(BaseInvoice $invoice, string $transition): bool
     {
         if ($this->stateMachine->can($invoice, $transition)) {
             $oldStatus = $invoice->getStatus();
