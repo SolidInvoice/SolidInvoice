@@ -17,6 +17,8 @@ final class Graph
 {
     const TRANSITION_ACCEPT = 'accept';
 
+    const TRANSITION_ACTIVATE = 'activate';
+
     const TRANSITION_NEW = 'new';
 
     const TRANSITION_CANCEL = 'cancel';
@@ -34,6 +36,8 @@ final class Graph
     const STATUS_PENDING = 'pending';
 
     const STATUS_PAID = 'paid';
+
+    const STATUS_ACTIVE = 'active';
 
     const STATUS_OVERDUE = 'overdue';
 

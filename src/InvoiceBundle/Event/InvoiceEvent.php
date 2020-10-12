@@ -13,30 +13,28 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Event;
 
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class InvoiceEvent extends Event
 {
     /**
-     * @var Invoice
+     * @var BaseInvoice
      */
     protected $invoice;
 
-    /**
-     * @param Invoice $invoice
-     */
-    public function __construct(Invoice $invoice = null)
+    public function __construct(BaseInvoice $invoice = null)
     {
         $this->invoice = $invoice;
     }
 
-    public function setInvoice(Invoice $invoice)
+    public function setInvoice(BaseInvoice $invoice)
     {
         $this->invoice = $invoice;
     }
 
-    public function getInvoice(): Invoice
+    public function getInvoice(): BaseInvoice
     {
         return $this->invoice;
     }

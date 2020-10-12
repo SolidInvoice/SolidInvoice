@@ -43,6 +43,43 @@ framework:
                     from: [cancelled, draft, pending, overdue]
                     to: draft
 
+        recurring_invoice:
+            audit_trail:
+                enabled: true
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - 'SolidInvoice\InvoiceBundle\Entity\RecurringInvoice'
+            places:
+                - new
+                - draft
+                - active
+                - paused
+                - complete
+                - cancelled
+                - archived
+            transitions:
+                new:
+                    from: new
+                    to: draft
+                activate:
+                    from: [new, draft]
+                    to: active
+                cancel:
+                    from: [draft, active]
+                    to: cancelled
+                complete:
+                    from: active
+                    to: complete
+                archive:
+                    from: [new, draft, cancelled, active, paused]
+                    to: archived
+                edit:
+                    from: [cancelled, draft, active]
+                    to: draft
+
         quote:
             audit_trail:
                 enabled: true

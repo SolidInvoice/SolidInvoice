@@ -54,6 +54,10 @@ _invoices_clone:
     path: '/clone/{id}'
     defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\CloneInvoice' }
 
+_invoices_clone_recurring:
+    path: '/clone-recurring/{id}'
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\CloneRecurringInvoice' }
+
 _send_invoice:
     path: '/action/send/{id}'
     defaults:  { _controller: 'SolidInvoice\InvoiceBundle\Action\Transition\Send' }
@@ -61,6 +65,10 @@ _send_invoice:
 _action_invoice:
     path: '/action/{action}/{id}'
     defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\Transition' }
+
+_action_recurring_invoice:
+    path: '/recurring-action/{action}/{id}'
+    defaults: { _controller: 'SolidInvoice\InvoiceBundle\Action\RecurringTransition' }
 
 _invoices_grid:
     resource: '@SolidInvoiceInvoiceBundle/Action/Grid'
