@@ -17,7 +17,7 @@
                 <div class="col-12">
                     {% block title %}
                         <h2 class="page-header">
-                            {{ "quote.title"|trans({"%id%" : quote.id}) }} {{ quote_label(quote.status) }}
+                            {{ "quote.title"|trans({"%id%" : quote.uuid}) }} {{ quote_label(quote.status) }}
                         </h2>
                     {% endblock %}
                     <div class="row invoice-info">
@@ -90,7 +90,7 @@
                         <div class="col-sm-4 invoice-col">
                             <dl class="dl-horizontal">
                                 <dt>{{ "quote.title"|trans({"%id%" : ''}) }}</dt>
-                                <dd>{{ quote.id }}</dd>
+                                <dd>{{ quote.uuid }}</dd>
                                 <dt>{{ "quote.total"|trans }}</dt>
                                 <dd>{{ quote.total|formatCurrency }}</dd>
                                 <dt>{{ "quote.created"|trans }}</dt>

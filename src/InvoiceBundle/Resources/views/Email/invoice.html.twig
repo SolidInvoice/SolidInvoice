@@ -11,7 +11,7 @@
 {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
 
 {%- block title -%}
-    {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
+    {{ "invoice.title"|trans({"%id%" : invoice.uuid}) }}
 {%- endblock -%}
 
 {%- block header -%}
@@ -83,7 +83,7 @@
                 <strong>Invoice #</strong>
             </columns>
             <columns>
-                {{ invoice.id }}
+                {{ invoice.uuid }}
             </columns>
         </row>
 

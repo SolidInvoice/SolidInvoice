@@ -80,7 +80,7 @@
                     <div class="title">
                         <h3 class="page-header">
                             {% if invoice is defined %}
-                                {{ 'invoice.title'|trans({'%id%' : invoice.id}) }}
+                                {{ 'invoice.title'|trans({'%id%' : invoice.uuid}) }}
                             {% else %}
                                 {{ 'invoice.action.create'|trans }}
                             {% endif %}

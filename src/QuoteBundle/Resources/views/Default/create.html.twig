@@ -76,7 +76,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 {% if quote is defined %}
-                    {{ 'quote.title'|trans({'%id%' : quote.id}) }}
+                    {{ 'quote.title'|trans({'%id%' : quote.uuid}) }}
                 {% else %}
                     {{ 'quote.create'|trans }}
                 {% endif %}
