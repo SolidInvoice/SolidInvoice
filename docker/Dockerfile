@@ -1,4 +1,4 @@
-FROM php:7.2
+FROM php:7.4
 
 ENV TIMEZONE Europe/Paris
 ENV TERM xterm
@@ -33,10 +33,11 @@ RUN apt-get update && \
         libct4 \
         libsybdb5 \
         libxml2 \
+        libxslt1-dev \
         curl \
-        libcurl3 \
+        libcurl4 \
         libedit2 \
-        libicu57 \
+        libicu63 \
         git \
         acl \
         curl \
@@ -56,10 +57,7 @@ RUN apt-get update && \
     pecl install apcu && \
     pecl install xdebug && \
     ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib && \
-    docker-php-ext-install -j$(nproc) pdo_mysql && \
-    docker-php-ext-install -j$(nproc) opcache && \
-    docker-php-ext-install -j$(nproc) bcmath && \
-    docker-php-ext-install -j$(nproc) intl && \
+    docker-php-ext-install -j$(nproc) pdo_mysql opcache bcmath intl gd xsl && \
         docker-php-ext-enable apcu && \
         curl -sS https://get.symfony.com/cli/installer | bash && \
         mv ~/.symfony/bin/symfony /usr/bin/symfony && \
@@ -76,7 +74,8 @@ RUN apt-get update && \
 
 RUN echo "date.timezone=$TIMEZONE" >> /usr/local/etc/php/php.ini && \
     echo "max_execution_time = 60;" >> /usr/local/etc/php/php.ini && \
-    echo "memory_limit = 512M;" >> /usr/local/etc/php/php.ini
+    echo "memory_limit = 512M;" >> /usr/local/etc/php/php.ini && \
+    echo "short_open_tag = Off;" >> /usr/local/etc/php/php.ini
 
 WORKDIR /opt/srv
 
