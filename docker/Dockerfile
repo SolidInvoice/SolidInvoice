@@ -8,7 +8,7 @@ ENV COMPOSER_NO_INTERACTION 1
 ENV NVM_DIR /root/.nvm
 ENV NODE_VERSION 8
 
-COPY --from=composer:1.8 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:1.10 /usr/bin/composer /usr/bin/composer
 
 SHELL ["/bin/bash", "-c"]
 
@@ -34,6 +34,7 @@ RUN apt-get update && \
         libsybdb5 \
         libxml2 \
         libxslt1-dev \
+        libzip-dev \
         curl \
         libcurl4 \
         libedit2 \
@@ -57,7 +58,7 @@ RUN apt-get update && \
     pecl install apcu && \
     pecl install xdebug && \
     ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib && \
-    docker-php-ext-install -j$(nproc) pdo_mysql opcache bcmath intl gd xsl && \
+        docker-php-ext-install -j$(nproc) pdo_mysql opcache bcmath intl gd xsl soap zip && \
         docker-php-ext-enable apcu && \
         curl -sS https://get.symfony.com/cli/installer | bash && \
         mv ~/.symfony/bin/symfony /usr/bin/symfony && \
@@ -67,8 +68,6 @@ RUN apt-get update && \
         source "$NVM_DIR/nvm.sh" && \
         nvm install stable && nvm use stable && \
         curl -o- -L https://yarnpkg.com/install.sh | bash -s -- -- && \
-        $HOME/.yarn/bin/yarn global add gulp && \
-        cat /root/.bashrc && \
         echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen && \
         apt-get clean
 
