@@ -10,7 +10,26 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
     $parameters->set(Option::SETS, [
-        SetList::PHPSTAN
+        // General
+        SetList::PHPSTAN,
+
+        // PHPUnit
+        SetList::PHPUNIT_70,
+        SetList::PHPUNIT_75,
+        SetList::PHPUNIT_80,
+        SetList::PHPUNIT_90,
+        SetList::PHPUNIT_91,
+        SetList::PHPUNIT_CODE_QUALITY,
+        SetList::PHPUNIT_EXCEPTION,
+        SetList::PHPUNIT_MOCK,
+        SetList::PHPUNIT_YIELD_DATA_PROVIDER,
+
+        // Doctrine
+        SetList::DOCTRINE_25,
+        SetList::DOCTRINE_COMMON_20,
+        SetList::DOCTRINE_DBAL_30,
+        SetList::DOCTRINE_SERVICES,
+        SetList::DOCTRINE_CODE_QUALITY,
     ]);
 
     $parameters->set(Option::PATHS, __DIR__.'/src');
