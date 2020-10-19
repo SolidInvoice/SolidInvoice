@@ -144,7 +144,7 @@ class Quote
     private $due;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -347,6 +347,7 @@ class Quote
 
     /**
      * @return Quote
+     * @param \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface> $item
      */
     public function addItem(Item $item): self
     {

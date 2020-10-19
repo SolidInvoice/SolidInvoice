@@ -162,7 +162,7 @@ class Invoice
     private $paidDate;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -172,7 +172,7 @@ class Invoice
     private $items;
 
     /**
-     * @var Collection|Payment[]
+     * @var \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
@@ -451,6 +451,7 @@ class Invoice
      * Add item.
      *
      * @return Invoice
+     * @param \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface> $item
      */
     public function addItem(Item $item): self
     {
@@ -487,6 +488,7 @@ class Invoice
      * Add payment.
      *
      * @return Invoice
+     * @param \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment> $payment
      */
     public function addPayment(Payment $payment): self
     {

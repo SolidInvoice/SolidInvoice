@@ -103,7 +103,7 @@ class Client
     private $vatNumber;
 
     /**
-     * @var Collection|Contact[]
+     * @var \SolidInvoice\ClientBundle\Entity\Contact[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Contact>
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"firstName" = "ASC"})
@@ -115,7 +115,7 @@ class Client
     private $contacts;
 
     /**
-     * @var Collection|Quote[]
+     * @var \SolidInvoice\QuoteBundle\Entity\Quote[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\QuoteBundle\Entity\Quote>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -124,7 +124,7 @@ class Client
     private $quotes;
 
     /**
-     * @var Collection|Invoice[]
+     * @var \SolidInvoice\InvoiceBundle\Entity\Invoice[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\InvoiceBundle\Entity\Invoice>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -133,7 +133,7 @@ class Client
     private $invoices;
 
     /**
-     * @var Collection|Payment[]
+     * @var \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
@@ -141,7 +141,7 @@ class Client
     private $payments;
 
     /**
-     * @var Collection|Address[]
+     * @var \SolidInvoice\ClientBundle\Entity\Address[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Address>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
@@ -249,6 +249,7 @@ class Client
      * Add contact.
      *
      * @return Client
+     * @param \SolidInvoice\ClientBundle\Entity\Contact[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Contact> $contact
      */
     public function addContact(Contact $contact): self
     {
@@ -284,6 +285,7 @@ class Client
      * Add quote.
      *
      * @return Client
+     * @param \SolidInvoice\QuoteBundle\Entity\Quote[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\QuoteBundle\Entity\Quote> $quote
      */
     public function addQuote(Quote $quote): self
     {
@@ -319,6 +321,7 @@ class Client
      * Add invoice.
      *
      * @return Client
+     * @param \SolidInvoice\InvoiceBundle\Entity\Invoice[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\InvoiceBundle\Entity\Invoice> $invoice
      */
     public function addInvoice(Invoice $invoice): self
     {
@@ -354,6 +357,7 @@ class Client
      * Add payment.
      *
      * @return Client
+     * @param \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment> $payment
      */
     public function addPayment(Payment $payment): self
     {
@@ -388,7 +392,7 @@ class Client
     /**
      * Add address.
      *
-     * @param Address $address
+     * @param \SolidInvoice\ClientBundle\Entity\Address[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Address> $address
      *
      * @return Client
      */

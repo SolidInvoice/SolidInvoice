@@ -72,7 +72,7 @@ class ContactType
     private $required = false;
 
     /**
-     * @var Collection|AdditionalContactDetail[]
+     * @var \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})
@@ -143,6 +143,7 @@ class ContactType
      * Add detail.
      *
      * @return ContactType
+     * @param \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail> $detail
      */
     public function addDetail(AdditionalContactDetail $detail): self
     {

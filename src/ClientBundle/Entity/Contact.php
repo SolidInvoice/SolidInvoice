@@ -91,7 +91,7 @@ class Contact implements \Serializable
     private $email;
 
     /**
-     * @var Collection|AdditionalContactDetail[]
+     * @var \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()

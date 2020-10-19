@@ -47,7 +47,7 @@ class User implements UserInterface
     private $mobile;
 
     /**
-     * @var Collection|ApiToken[]
+     * @var \SolidInvoice\UserBundle\Entity\ApiToken[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\UserBundle\Entity\ApiToken>
      *
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -138,7 +138,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param Collection|ApiToken[] $apiTokens
+     * @param \SolidInvoice\UserBundle\Entity\ApiToken[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\UserBundle\Entity\ApiToken> $apiTokens
      *
      * @return User
      */

@@ -72,14 +72,14 @@ class Tax
     private $type;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */
@@ -177,7 +177,7 @@ class Tax
     }
 
     /**
-     * @param ItemInterface[] $invoiceItems
+     * @param \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface> $invoiceItems
      *
      * @return Tax
      */
@@ -197,7 +197,7 @@ class Tax
     }
 
     /**
-     * @param ItemInterface[] $quoteItems
+     * @param \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface> $quoteItems
      *
      * @return Tax
      */
