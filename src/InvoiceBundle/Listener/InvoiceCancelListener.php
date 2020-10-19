@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
@@ -38,7 +38,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
     }
 
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

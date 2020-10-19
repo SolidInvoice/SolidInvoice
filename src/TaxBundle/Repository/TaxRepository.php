@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
 use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Security;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
@@ -34,7 +34,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
     protected $userProvider;
 
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

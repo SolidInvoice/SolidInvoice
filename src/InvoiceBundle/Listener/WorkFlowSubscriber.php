@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener;
 
 use Carbon\Carbon;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
@@ -31,7 +31,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
     private $notification;
 
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

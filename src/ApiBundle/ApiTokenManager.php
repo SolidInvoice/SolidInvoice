@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -22,7 +22,7 @@ class ApiTokenManager
     const TOKEN_LENGTH = 32;
 
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

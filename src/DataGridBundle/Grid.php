@@ -15,7 +15,7 @@ namespace SolidInvoice\DataGridBundle;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use SolidInvoice\DataGridBundle\Filter\FilterInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;

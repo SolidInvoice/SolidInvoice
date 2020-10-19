@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Namshi\Notificator\Manager;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -38,7 +38,7 @@ class NotificationManager
     private $settings;
 
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Persistence\ObjectManager
      */
     private $entityManager;
 

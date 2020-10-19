@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Listener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
@@ -37,7 +37,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
     private $router;
 
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Manager;
 
 use Carbon\Carbon;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
@@ -35,7 +35,7 @@ class InvoiceManager implements ContainerAwareInterface
     use ContainerAwareTrait;
 
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Persistence\ObjectManager
      */
     protected $entityManager;
 

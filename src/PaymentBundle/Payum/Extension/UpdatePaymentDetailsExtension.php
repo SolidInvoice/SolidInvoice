@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Payum\Extension;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
@@ -24,7 +24,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 class UpdatePaymentDetailsExtension implements ExtensionInterface
 {
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

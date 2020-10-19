@@ -15,7 +15,7 @@ namespace SolidInvoice\PaymentBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -27,7 +27,7 @@ use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 class PaymentExtension extends AbstractExtension
 {
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Source;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
 class ORMSource implements SourceInterface
 {
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

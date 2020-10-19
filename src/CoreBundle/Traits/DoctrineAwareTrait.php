@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Traits;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 trait DoctrineAwareTrait
 {
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     protected $doctrine;
 

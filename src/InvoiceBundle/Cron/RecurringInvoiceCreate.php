@@ -15,8 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Cron;
 
 use Carbon\Carbon;
 use Cron\CronExpression;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\CronBundle\CommandInterface;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -31,7 +31,7 @@ use Symfony\Component\Workflow\StateMachine;
 class RecurringInvoiceCreate implements CommandInterface
 {
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Persistence\ObjectManager
      */
     private $entityManager;
 

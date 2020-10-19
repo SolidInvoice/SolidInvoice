@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -27,7 +27,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
     private $normalizer;
 
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Persistence\ManagerRegistry
      */
     private $registry;
 

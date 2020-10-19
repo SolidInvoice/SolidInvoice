@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Mockery\MockInterface;
 
@@ -25,7 +25,7 @@ trait DoctrineTestTrait
     use SymfonyKernelTrait;
 
     /**
-     * @var ManagerRegistry|MockInterface
+     * @var \Doctrine\Persistence\ManagerRegistry|MockInterface
      */
     protected $registry;
 
