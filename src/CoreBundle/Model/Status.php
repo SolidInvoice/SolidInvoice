@@ -46,7 +46,7 @@ abstract class Status
      */
     public function getHtml(string $status): string
     {
-        $status = str_replace(['-', '_'], ' ', strtolower((string) $status));
+        $status = str_replace(['-', '_'], ' ', strtolower($status));
 
         return '<label class="badge badge-'.$this->getStatusLabel($status).'">'.ucwords($status).'</label>';
     }

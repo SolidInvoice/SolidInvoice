@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -33,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Payment extends BasePayment implements PaymentInterface
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @ORM\Column(name="id", type="integer")

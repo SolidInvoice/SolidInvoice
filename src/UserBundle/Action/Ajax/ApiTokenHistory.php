@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Ajax;
 
+use Twig\Environment;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ final class ApiTokenHistory implements AjaxResponse
      */
     private $twig;
 
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

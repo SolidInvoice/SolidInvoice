@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
-class TaxExtension extends \Twig\Extension\AbstractExtension
+class TaxExtension extends AbstractExtension
 {
     /**
      * @var TaxRepository
@@ -33,7 +35,7 @@ class TaxExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig\TwigFunction('taxRatesConfigured', [$this, 'taxRatesConfigured']),
+            new TwigFunction('taxRatesConfigured', [$this, 'taxRatesConfigured']),
         ];
     }
 

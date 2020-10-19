@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests;
 
+use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
+use SolidInvoice\CoreBundle\Form\Type\Select2Type;
+use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
@@ -69,7 +72,7 @@ abstract class FormTestCase extends TypeTestCase
         $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn([]);
 
         return [
-            new Extension\FormHelpExtension(),
+            new FormHelpExtension(),
             new MoneyExtension(new Currency('USD')),
             new FormTypeValidatorExtension($validator),
         ];
@@ -83,8 +86,8 @@ abstract class FormTestCase extends TypeTestCase
     protected function getTypes()
     {
         return [
-            'select2' => new Type\Select2Type(),
-            'image_upload' => new Type\ImageUploadType(),
+            'select2' => new Select2Type(),
+            'image_upload' => new ImageUploadType(),
         ];
     }
 

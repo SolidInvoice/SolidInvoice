@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Contact implements \Serializable
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @var int

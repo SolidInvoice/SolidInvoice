@@ -9,7 +9,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set(Option::SETS, []);
+    $parameters->set(Option::SETS, [
+        SetList::PHPSTAN
+    ]);
 
     $parameters->set(Option::PATHS, __DIR__.'/src');
     $parameters->set(Option::OPTION_AUTOLOAD_FILE, __DIR__.'/app/autoload.php');

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -42,10 +44,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Quote
 {
-    use Entity\TimeStampable,
-        Entity\Archivable,
+    use TimeStampable,
+        Archivable,
         QuoteStatusTrait {
-        Entity\Archivable::isArchived insteadof QuoteStatusTrait;
+        Archivable::isArchived insteadof QuoteStatusTrait;
     }
 
     /**

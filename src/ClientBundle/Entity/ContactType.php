@@ -136,7 +136,7 @@ class ContactType
      */
     public function isRequired(): bool
     {
-        return (bool) $this->required;
+        return $this->required;
     }
 
     /**

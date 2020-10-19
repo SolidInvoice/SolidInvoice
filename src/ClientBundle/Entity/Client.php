@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
@@ -39,8 +41,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Client
 {
-    use Entity\TimeStampable;
-    use Entity\Archivable;
+    use TimeStampable;
+    use Archivable;
 
     /**
      * @var int
@@ -458,7 +460,7 @@ class Client
      */
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     public function getCurrency(): ?Currency

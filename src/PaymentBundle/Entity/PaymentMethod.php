@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class PaymentMethod implements GatewayConfigInterface
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @var int
@@ -174,7 +175,7 @@ class PaymentMethod implements GatewayConfigInterface
 
     public function isInternal(): bool
     {
-        return (bool) $this->internal;
+        return $this->internal;
     }
 
     /**
@@ -182,14 +183,14 @@ class PaymentMethod implements GatewayConfigInterface
      */
     public function setInternal(bool $internal): self
     {
-        $this->internal = (bool) $internal;
+        $this->internal = $internal;
 
         return $this;
     }
 
     public function isEnabled(): bool
     {
-        return (bool) $this->enabled;
+        return $this->enabled;
     }
 
     /**
@@ -197,7 +198,7 @@ class PaymentMethod implements GatewayConfigInterface
      */
     public function setEnabled(bool $enabled): self
     {
-        $this->enabled = (bool) $enabled;
+        $this->enabled = $enabled;
 
         return $this;
     }
@@ -279,6 +280,6 @@ class PaymentMethod implements GatewayConfigInterface
      */
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 }
