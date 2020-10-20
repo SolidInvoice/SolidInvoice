@@ -36,7 +36,6 @@ class YamlFormatCommand extends Command
         parent::__construct();
     }
 
-
     /**
      * {@inheritdoc}
      */

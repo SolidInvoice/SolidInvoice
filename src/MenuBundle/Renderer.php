@@ -102,7 +102,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     {
         // render children with a depth - 1
         if (null !== $options['depth']) {
-            $options['depth'] -= 1;
+            --$options['depth'];
         }
 
         $html = '';

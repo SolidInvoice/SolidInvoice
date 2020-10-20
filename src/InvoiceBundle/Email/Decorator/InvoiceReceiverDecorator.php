@@ -41,7 +41,7 @@ final class InvoiceReceiverDecorator implements MessageDecorator, VerificationMe
             $message->addTo($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName())));
         }
 
-        if (($bcc = (string) $this->config->get('invoice/bcc_address')) !== '') {
+        if ('' !== ($bcc = (string) $this->config->get('invoice/bcc_address'))) {
             $message->addBcc($bcc);
         }
     }

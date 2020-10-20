@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -131,6 +130,7 @@ class ApiToken
 
     /**
      * @return ApiToken
+     *
      * @param \SolidInvoice\UserBundle\Entity\ApiTokenHistory[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\UserBundle\Entity\ApiTokenHistory> $history
      */
     public function addHistory(ApiTokenHistory $history): self

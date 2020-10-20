@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Namshi\Notificator\ManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityRepository;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;

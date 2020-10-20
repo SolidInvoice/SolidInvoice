@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\DataGridBundle\Filter\FilterInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class Grid implements GridInterface, \JsonSerializable

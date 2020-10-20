@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
-use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\MailerBundle\Mailer;
+use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;

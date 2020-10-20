@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Manager;
 
 use Carbon\Carbon;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;

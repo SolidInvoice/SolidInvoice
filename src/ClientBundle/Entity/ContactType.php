@@ -143,6 +143,7 @@ class ContactType
      * Add detail.
      *
      * @return ContactType
+     *
      * @param \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail> $detail
      */
     public function addDetail(AdditionalContactDetail $detail): self

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle;
 
 use SolidInvoice\CoreBundle\DependencyInjection\Compiler\DbalLoggerPass;
-use SolidInvoice\CoreBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

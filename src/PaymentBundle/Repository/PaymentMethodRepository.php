@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NoResultException;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 
 class PaymentMethodRepository extends ServiceEntityRepository

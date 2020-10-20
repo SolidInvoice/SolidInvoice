@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,7 +20,7 @@ use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -236,7 +235,7 @@ class Payment extends BasePayment implements PaymentInterface
     {
         $client = $this->getClient();
 
-        return $client !== null ? $client->getId() : null;
+        return null !== $client ? $client->getId() : null;
     }
 
     /**

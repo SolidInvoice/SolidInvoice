@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Twig\Extension;
 
+use SolidInvoice\DataGridBundle\Repository\GridRepository;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Twig\Environment;
-use SolidInvoice\DataGridBundle\Repository\GridRepository;
 
 class GridExtension extends AbstractExtension
 {
@@ -38,7 +38,7 @@ class GridExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'render_grid',
-                function (Environment $env, string $gridName, array $parameters = []) : string {
+                function (Environment $env, string $gridName, array $parameters = []): string {
                     return $this->renderGrid($env, $gridName, $parameters);
                 },
                 [
@@ -48,7 +48,7 @@ class GridExtension extends AbstractExtension
             ),
             new TwigFunction(
                 'render_multiple_grid',
-                function (Environment $env) : string {
+                function (Environment $env): string {
                     return $this->renderMultipleGrid($env);
                 },
                 [

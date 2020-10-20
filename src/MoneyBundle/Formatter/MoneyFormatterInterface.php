@@ -19,8 +19,6 @@ interface MoneyFormatterInterface extends MoneyFormatter
 {
     /**
      * @param Currency|string $currency
-     *
-     * @return string
      */
     public function getCurrencySymbol($currency = null): string;
 

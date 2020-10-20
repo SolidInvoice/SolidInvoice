@@ -16,7 +16,6 @@ namespace SolidInvoice\InvoiceBundle\Cron;
 use Carbon\Carbon;
 use Cron\CronExpression;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\CronBundle\CommandInterface;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
@@ -23,7 +21,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -249,6 +248,7 @@ class Client
      * Add contact.
      *
      * @return Client
+     *
      * @param \SolidInvoice\ClientBundle\Entity\Contact[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Contact> $contact
      */
     public function addContact(Contact $contact): self
@@ -285,6 +285,7 @@ class Client
      * Add quote.
      *
      * @return Client
+     *
      * @param \SolidInvoice\QuoteBundle\Entity\Quote[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\QuoteBundle\Entity\Quote> $quote
      */
     public function addQuote(Quote $quote): self
@@ -321,6 +322,7 @@ class Client
      * Add invoice.
      *
      * @return Client
+     *
      * @param \SolidInvoice\InvoiceBundle\Entity\Invoice[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\InvoiceBundle\Entity\Invoice> $invoice
      */
     public function addInvoice(Invoice $invoice): self
@@ -357,6 +359,7 @@ class Client
      * Add payment.
      *
      * @return Client
+     *
      * @param \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment> $payment
      */
     public function addPayment(Payment $payment): self
@@ -469,7 +472,7 @@ class Client
 
     public function getCurrency(): ?Currency
     {
-        return $this->currency !== '' ? new Currency($this->currency) : null;
+        return '' !== $this->currency ? new Currency($this->currency) : null;
     }
 
     /**

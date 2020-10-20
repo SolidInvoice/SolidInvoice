@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -21,6 +20,7 @@ use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

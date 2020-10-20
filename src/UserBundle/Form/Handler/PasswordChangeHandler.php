@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Handler;
 
-use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;

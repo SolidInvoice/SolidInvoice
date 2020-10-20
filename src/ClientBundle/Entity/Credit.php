@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 
 /**

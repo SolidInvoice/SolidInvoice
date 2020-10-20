@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
-use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\MailerBundle\Mailer;
+use SolidInvoice\MailerBundle\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvoiceMailerListener implements EventSubscriberInterface

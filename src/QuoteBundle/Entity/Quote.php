@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +26,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
@@ -347,6 +346,7 @@ class Quote
 
     /**
      * @return Quote
+     *
      * @param \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface> $item
      */
     public function addItem(Item $item): self

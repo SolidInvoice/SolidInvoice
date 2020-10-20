@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress;
 
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -22,6 +21,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 
 /**
@@ -124,6 +124,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
 
         /** @var Payment $payment */
         $payment = $request->getModel();
+
         return !$payment->getDetails();
     }
 }

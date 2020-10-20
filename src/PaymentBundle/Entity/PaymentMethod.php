@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
-use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -227,6 +226,7 @@ class PaymentMethod implements GatewayConfigInterface
      * Add payment.
      *
      * @return PaymentMethod
+     *
      * @param \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment> $payment
      */
     public function addPayment(Payment $payment): self

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use SolidInvoice\MailerBundle\Context;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MessageEvent extends Event
 {

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests;
 
-use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
-use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
@@ -23,8 +20,9 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidType;
-use SolidInvoice\CoreBundle\Form\Extension;
-use SolidInvoice\CoreBundle\Form\Type;
+use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
+use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
+use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;

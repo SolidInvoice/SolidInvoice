@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
-use Payum\Core\Registry\RegistryInterface;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
+use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -145,7 +145,7 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => $currency !== null ? $currency->getCode() : $this->currency->getCode(),
+                'currency' => null !== $currency ? $currency->getCode() : $this->currency->getCode(),
                 'preferred_choices' => $preferredChoices,
             ]
         );
@@ -223,7 +223,7 @@ final class Prepare
                 $event = new PaymentCompleteEvent($payment);
                 $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
 
-                if (($response = $event->getResponse()) !== null) {
+                if (null !== ($response = $event->getResponse())) {
                     return $response;
                 }
 

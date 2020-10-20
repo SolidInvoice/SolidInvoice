@@ -37,7 +37,7 @@ class WidgetExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('render_dashboard_widget', function (Environment $environment, string $location) : string {
+            new TwigFunction('render_dashboard_widget', function (Environment $environment, string $location): string {
                 return $this->renderDashboardWidget($environment, $location);
             }, ['needs_environment' => true, 'is_safe' => ['html']]),
         ];

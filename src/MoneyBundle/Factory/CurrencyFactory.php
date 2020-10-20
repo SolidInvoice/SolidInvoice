@@ -40,6 +40,6 @@ class CurrencyFactory
 
     public function getCurrency(): Currency
     {
-        return new Currency($this->installed !== '' ? $this->config->get(self::CURRENCY_PATH) ?? self::DEFAULT_CURRENCY : self::DEFAULT_CURRENCY);
+        return new Currency('' !== $this->installed ? $this->config->get(self::CURRENCY_PATH) ?? self::DEFAULT_CURRENCY : self::DEFAULT_CURRENCY);
     }
 }
