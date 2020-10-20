@@ -89,22 +89,30 @@ class StatusExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'invoice_label',
-                [$this, 'renderInvoiceStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderInvoiceStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'quote_label',
-                [$this, 'renderQuoteStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderQuoteStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'payment_label',
-                [$this, 'renderPaymentStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderPaymentStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'client_label',
-                [$this, 'renderClientStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderClientStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];

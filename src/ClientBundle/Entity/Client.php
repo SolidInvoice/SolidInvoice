@@ -469,7 +469,7 @@ class Client
 
     public function getCurrency(): ?Currency
     {
-        return $this->currency ? new Currency($this->currency) : null;
+        return $this->currency !== '' ? new Currency($this->currency) : null;
     }
 
     /**

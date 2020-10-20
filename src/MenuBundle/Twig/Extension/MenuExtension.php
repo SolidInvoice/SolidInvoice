@@ -52,7 +52,9 @@ class MenuExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('menu', [$this, 'renderMenu'], ['is_safe' => ['html']]),
+            new TwigFunction('menu', function (string $location, array $options = []) : string {
+                return $this->renderMenu($location, $options);
+            }, ['is_safe' => ['html']]),
         ];
     }
 

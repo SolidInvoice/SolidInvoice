@@ -12,6 +12,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::SETS, [
         // General
         SetList::PHPSTAN,
+        SetList::CODE_QUALITY,
 
         // PHPUnit
         SetList::PHPUNIT_70,

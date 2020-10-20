@@ -236,7 +236,7 @@ class Contact implements \Serializable
     public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
     {
         $type = strtolower($type);
-        if (count($this->additionalContactDetails)) {
+        if (count($this->additionalContactDetails) > 0) {
             foreach ($this->additionalContactDetails as $detail) {
                 if (strtolower((string) $detail->getType()) === $type) {
                     return $detail;

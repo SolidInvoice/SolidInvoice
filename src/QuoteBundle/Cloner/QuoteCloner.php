@@ -52,7 +52,9 @@ final class QuoteCloner
             $newQuote->setTax($quote->getTax());
         }
 
-        array_map([$newQuote, 'addItem'], iterator_to_array($this->addItems($quote, $now)));
+        array_map(function (Item $item) use ($newQuote) : self {
+            return $newQuote->addItem($item);
+        }, iterator_to_array($this->addItems($quote, $now)));
 
         $this->stateMachine->apply($newQuote, Graph::TRANSITION_NEW);
 

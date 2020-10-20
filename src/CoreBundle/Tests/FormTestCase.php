@@ -122,12 +122,10 @@ abstract class FormTestCase extends TypeTestCase
         $type = new EntityType($this->registry);
         $moneyType = new HiddenMoneyType(new Currency('USD'));
 
-        $extensions = array_merge([
+        return array_merge([
             new PreloadedExtension([$type, $moneyType], []),
             new DoctrineOrmExtension($this->registry),
         ], $this->getExtensions());
-
-        return $extensions;
     }
 
     abstract public function testSubmit();

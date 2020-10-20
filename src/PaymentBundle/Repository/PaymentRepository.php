@@ -245,9 +245,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        $payments = $this->formatDate($query, 'F Y');
-
-        return $payments;
+        return $this->formatDate($query, 'F Y');
     }
 
     /**

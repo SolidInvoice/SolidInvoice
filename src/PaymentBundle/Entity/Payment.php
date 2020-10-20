@@ -236,7 +236,7 @@ class Payment extends BasePayment implements PaymentInterface
     {
         $client = $this->getClient();
 
-        return $client ? $client->getId() : null;
+        return $client !== null ? $client->getId() : null;
     }
 
     /**

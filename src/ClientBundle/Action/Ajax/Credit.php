@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -42,7 +43,7 @@ final class Credit implements AjaxResponse
      */
     private $formatter;
 
-    public function __construct(CreditRepository $repository, MoneyFormatter $formatter, Currency $currency)
+    public function __construct(CreditRepository $repository, MoneyFormatterInterface $formatter, Currency $currency)
     {
         $this->currency = $currency;
         $this->repository = $repository;

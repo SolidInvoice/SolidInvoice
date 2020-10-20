@@ -99,7 +99,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (!$request) {
+        if ($request === null) {
             return [];
         }
 
@@ -120,8 +120,12 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getFilters()
     {
         return [
-            new TwigFilter('percentage', [$this->calculator, 'calculatePercentage']),
-            new TwigFilter('diff', [$this, 'dateDiff']),
+            new TwigFilter('percentage', function ($amount,   $percentage = installed) : float {
+                return $this->calculator->calculatePercentage($amount, $percentage);
+            }),
+            new TwigFilter('diff', function (DateTime $date) : string {
+                return $this->dateDiff($date);
+            }),
             new TwigFilter('md5', 'md5'),
         ];
     }
@@ -132,9 +136,15 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getFunctions()
     {
         return [
-            new TwigFunction('icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
-            new TwigFunction('app_logo', [$this, 'displayAppLogo'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('can_print_pdf', [$this->pdfGenerator, 'canPrintPdf']),
+            new TwigFunction('icon', function (string $iconName, array $options = []) : string {
+                return $this->displayIcon($iconName, $options);
+            }, ['is_safe' => ['html']]),
+            new TwigFunction('app_logo', function (Environment $env, string $width = 'auto') : string {
+                return $this->displayAppLogo($env, $width);
+            }, ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('can_print_pdf', function () : bool {
+                return $this->pdfGenerator->canPrintPdf();
+            }),
         ];
     }
 

@@ -23,13 +23,14 @@ class ClassUtil
         $class = false;
         $namespace = false;
         $tokens = token_get_all(file_get_contents($file));
-        for ($i = 0, $count = count($tokens); $i < $count; ++$i) {
-            $token = $tokens[$i];
+        $count = count($tokens);
+
+        foreach ($tokens as $i => $token) {
             if (!is_array($token)) {
                 continue;
             }
 
-            if (true === $class && T_STRING === $token[0]) {
+            if ($class && T_STRING === $token[0]) {
                 return $namespace.'\\'.$token[1];
             }
 

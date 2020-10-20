@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Handler;
 
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Form\Type\ProfileType;
-use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
@@ -45,7 +45,7 @@ class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandle
      */
     private $tokenStorage;
 
-    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage, RouterInterface $router)
+    public function __construct(UserRepositoryInterface $userRepository, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;

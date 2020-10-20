@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
+use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\MailerBundle\Mailer;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
@@ -26,7 +27,7 @@ class QuoteMailerListener implements EventSubscriberInterface
      */
     private $mailer;
 
-    public function __construct(Mailer $mailer)
+    public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
     }

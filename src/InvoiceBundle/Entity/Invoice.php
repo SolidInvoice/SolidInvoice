@@ -582,7 +582,7 @@ class Invoice
      */
     public function updateItems()
     {
-        if (count($this->items)) {
+        if (count($this->items) > 0) {
             foreach ($this->items as $item) {
                 $item->setInvoice($this);
             }

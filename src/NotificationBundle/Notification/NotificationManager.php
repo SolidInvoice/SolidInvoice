@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Namshi\Notificator\ManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
-use Namshi\Notificator\Manager;
+use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -28,7 +29,7 @@ class NotificationManager
     private $factory;
 
     /**
-     * @var Manager
+     * @var ManagerInterface
      */
     private $notification;
 
@@ -38,14 +39,14 @@ class NotificationManager
     private $settings;
 
     /**
-     * @var \Doctrine\Persistence\ObjectManager
+     * @var ObjectManager
      */
     private $entityManager;
 
     public function __construct(
         Factory $factory,
         SystemConfig $settings,
-        Manager $notification,
+        ManagerInterface $notification,
         ManagerRegistry $doctrine
     ) {
         $this->factory = $factory;
@@ -55,8 +56,7 @@ class NotificationManager
     }
 
     /**
-     * @throws \SolidInvoice\CoreBundle\Mailer\Exception\UnexpectedFormatException
-     * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
+     * @throws InvalidSettingException
      */
     public function sendNotification(string $event, NotificationMessageInterface $message)
     {

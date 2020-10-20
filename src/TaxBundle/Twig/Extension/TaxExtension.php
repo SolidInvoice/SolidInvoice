@@ -35,7 +35,9 @@ class TaxExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('taxRatesConfigured', [$this, 'taxRatesConfigured']),
+            new TwigFunction('taxRatesConfigured', function () : bool {
+                return $this->taxRatesConfigured();
+            }),
         ];
     }
 
@@ -50,9 +52,7 @@ class TaxExtension extends AbstractExtension
             return $taxConfigured;
         }
 
-        $taxConfigured = $this->repository->taxRatesConfigured();
-
-        return $taxConfigured;
+        return $this->repository->taxRatesConfigured();
     }
 
     /**

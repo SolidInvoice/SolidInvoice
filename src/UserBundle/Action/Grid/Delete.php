@@ -15,27 +15,28 @@ namespace SolidInvoice\UserBundle\Action\Grid;
 
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
-use SolidInvoice\UserBundle\Repository\UserRepository;
+use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
 final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
     /**
-     * @var TokenStorageInterface
+     * @var Security
      */
-    private $tokenStorage;
+    private $security;
 
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
-    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage)
+    public function __construct(UserRepositoryInterface $userRepository, Security $security)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
         $this->userRepository = $userRepository;
     }
 
@@ -43,8 +44,9 @@ final class Delete implements AjaxResponse
     {
         $users = $request->request->get('data');
 
-        $token = $this->tokenStorage->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
+
+        assert($currentUser instanceof User);
 
         if (in_array($currentUser->getId(), array_map('intval', $users), true)) {
             return $this->json(['message' => "You can't delete the current logged in user"]);

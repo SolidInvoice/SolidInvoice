@@ -45,8 +45,6 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
         $token = $this->tokenManager->getOrCreate($user, $request->request->get('token_name') ?: 'API Token');
 
-        $response = new JsonResponse(['token' => $token->getToken()]);
-
-        return $response;
+        return new JsonResponse(['token' => $token->getToken()]);
     }
 }

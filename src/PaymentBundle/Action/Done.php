@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -43,7 +44,7 @@ final class Done
      */
     private $eventDispatcher;
 
-    public function __construct(Payum $payum, RouterInterface $router, EventDispatcherInterface $eventDispatcher)
+    public function __construct(RegistryInterface $payum, RouterInterface $router, EventDispatcherInterface $eventDispatcher)
     {
         $this->payum = $payum;
         $this->router = $router;
@@ -69,7 +70,7 @@ final class Done
         $event = new PaymentCompleteEvent($payment);
         $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
 
-        if ($response = $event->getResponse()) {
+        if (($response = $event->getResponse()) !== null) {
             return $response;
         }
 

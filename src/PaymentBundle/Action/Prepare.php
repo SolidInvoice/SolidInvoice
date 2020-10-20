@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use Payum\Core\Registry\RegistryInterface;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
@@ -105,7 +106,7 @@ final class Prepare
         Currency $currency,
         PaymentFactories $paymentFactories,
         EventDispatcherInterface $eventDispatcher,
-        Payum $payum,
+        RegistryInterface $payum,
         RouterInterface $router
     ) {
         $this->stateMachine = $stateMachine;
@@ -144,14 +145,12 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => $currency ? $currency->getCode() : $this->currency->getCode(),
+                'currency' => $currency !== null ? $currency->getCode() : $this->currency->getCode(),
                 'preferred_choices' => $preferredChoices,
             ]
         );
 
         $form->handleRequest($request);
-
-        $paymentFactories = array_keys($this->paymentFactories->getFactories('offline'));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -163,7 +162,7 @@ final class Prepare
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (in_array($paymentName, $paymentFactories, true)) {
+            if (array_key_exists($paymentName, $this->paymentFactories->getFactories('offline'))) {
                 if ('credit' === $paymentName) {
                     $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
@@ -224,7 +223,7 @@ final class Prepare
                 $event = new PaymentCompleteEvent($payment);
                 $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
 
-                if ($response = $event->getResponse()) {
+                if (($response = $event->getResponse()) !== null) {
                     return $response;
                 }
 

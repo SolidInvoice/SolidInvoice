@@ -53,11 +53,19 @@ class PaymentExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('payment_enabled', [$this, 'paymentEnabled']),
-            new TwigFunction('payments_configured', [$this, 'paymentConfigured']),
+            new TwigFunction('payment_enabled', function ($method) : bool {
+                return $this->paymentEnabled($method);
+            }),
+            new TwigFunction('payments_configured', function (bool $includeInternal = true) : int {
+                return $this->paymentConfigured($includeInternal);
+            }),
 
-            new TwigFunction('total_income', [$this, 'getTotalIncome']),
-            new TwigFunction('total_outstanding', [$this, 'getTotalOutstanding']),
+            new TwigFunction('total_income', function (Client $client = null) : Money {
+                return $this->getTotalIncome($client);
+            }),
+            new TwigFunction('total_outstanding', function (Client $client = null) : Money {
+                return $this->getTotalOutstanding($client);
+            }),
         ];
     }
 

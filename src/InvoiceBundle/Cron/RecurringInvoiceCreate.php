@@ -82,7 +82,7 @@ class RecurringInvoiceCreate implements CommandInterface
 
             $cron = CronExpression::factory($recurringInfo->getFrequency());
 
-            if (true === $cron->isDue(Carbon::now())) {
+            if ($cron->isDue(Carbon::now())) {
                 $newInvoice = $this->invoiceCloner->clone($invoice);
                 $this->setItemsDescription($newInvoice);
 
