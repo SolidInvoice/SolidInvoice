@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Form\Type;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Form\Transformer\DiscountTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -67,22 +68,7 @@ class DiscountType extends AbstractType
             ]
         );
 
-        $builder->get('value')->addViewTransformer(new class() implements DataTransformerInterface {
-            public function transform($discount)
-            {
-                if (!$discount instanceof Money) {
-                    return $discount;
-                }
-
-                /* @var Money $discount */
-                return ((int) $discount->getAmount()) / 100;
-            }
-
-            public function reverseTransform($value)
-            {
-                return $value;
-            }
-        });
+        $builder->get('value')->addViewTransformer(new DiscountTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver)
