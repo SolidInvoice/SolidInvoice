@@ -38,3 +38,5 @@ services:
     SolidInvoice\PaymentBundle\DataFixtures\ORM\:
         resource: '%kernel.project_dir%/src/PaymentBundle/DataFixtures/ORM/*'
         tags: ['doctrine.fixture.orm']
+
+    Payum\Core\Registry\RegistryInterface: '@payum'
