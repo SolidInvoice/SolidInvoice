@@ -16,16 +16,16 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class DiscountTransformer implements DataTransformerInterface
 {
-    public function transform($value): int
+    public function transform($value): ?int
     {
         if (!$value instanceof Money) {
-            return $value;
+            return null !== $value ? (int) $value : $value;
         }
 
         return ((int) $value->getAmount()) / 100;
     }
 
-    public function reverseTransform($value): Money
+    public function reverseTransform($value): string
     {
         return $value;
     }

@@ -19,6 +19,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
 
 class MoneyFormatterExtensionTest extends TestCase
@@ -48,7 +49,7 @@ class MoneyFormatterExtensionTest extends TestCase
         $currency = new Currency('USD');
         $money = new Money(1200, $currency);
 
-        $moneyFormatter = M::mock('SolidInvoice\MoneyBundle\Formatter\MoneyFormatter', ['en_USD', $currency]);
+        $moneyFormatter = M::mock(MoneyFormatterInterface::class);
         $moneyFormatter
             ->shouldReceive('format')
             ->once()

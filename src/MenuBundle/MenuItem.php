@@ -26,8 +26,8 @@ class MenuItem extends BaseItem implements ItemInterface
      */
     public function addChild($child, array $options = [])
     {
-        if ([] === $options) {
-            list($child, $options) = $child;
+        if (\is_array($child) && [] === $options) {
+            [$child, $options] = $child;
         }
 
         $options['attributes'] = $options['attributes'] ?? [];

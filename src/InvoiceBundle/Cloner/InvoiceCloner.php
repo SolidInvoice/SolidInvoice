@@ -52,7 +52,7 @@ final class InvoiceCloner
             $newInvoice->setTax($tax);
         }
 
-        array_map(function (Item $item) use ($newInvoice): self {
+        array_map(static function (Item $item) use ($newInvoice): Invoice {
             return $newInvoice->addItem($item);
         }, iterator_to_array($this->addItems($invoice, $now)));
 

@@ -39,7 +39,7 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
             ->withAnyArgs()
-        ->andReturn('/client/1');
+            ->andReturn('/client/1');
 
         $handler = new ClientCreateFormHandler($router);
         $handler->setDoctrine($this->registry);

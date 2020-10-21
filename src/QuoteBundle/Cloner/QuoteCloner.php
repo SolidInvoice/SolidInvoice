@@ -52,7 +52,7 @@ final class QuoteCloner
             $newQuote->setTax($quote->getTax());
         }
 
-        array_map(function (Item $item) use ($newQuote): self {
+        array_map(static function (Item $item) use ($newQuote): Quote {
             return $newQuote->addItem($item);
         }, iterator_to_array($this->addItems($quote, $now)));
 

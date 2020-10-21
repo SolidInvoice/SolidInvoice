@@ -96,6 +96,8 @@ class PaymentMethod implements GatewayConfigInterface
     public function __construct()
     {
         $this->payments = new ArrayCollection();
+        $this->internal = false;
+        $this->disable();
     }
 
     /**
