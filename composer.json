@@ -21,6 +21,7 @@
         "ext-intl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
+        "ext-pdo": "*",
         "ext-soap": "*",
         "ext-xsl": "*",
         "api-platform/core": "^2.5",

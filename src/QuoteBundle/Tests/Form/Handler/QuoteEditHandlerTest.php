@@ -110,17 +110,17 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
     {
         /* @var Quote $quote */
 
-        $this->assertSame(Graph::STATUS_PENDING, $quote->getStatus());
-        $this->assertSame(20.0, $quote->getDiscount()->getValue());
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertInstanceOf(FlashResponse::class, $response);
-        $this->assertCount(1, $response->getFlash());
-        $this->assertCount(1, $this->em->getRepository(Quote::class)->findAll());
+        static::assertSame(Graph::STATUS_PENDING, $quote->getStatus());
+        static::assertSame(20.0, $quote->getDiscount()->getValue());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(FlashResponse::class, $response);
+        static::assertCount(1, $response->getFlash());
+        static::assertCount(1, $this->em->getRepository(Quote::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
+        static::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
     public function getFormData(): array

@@ -23,6 +23,6 @@ class LoginTest extends PantherTestCase
         $client = self::createClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/');
-        $this->assertStringContainsString('/login', $crawler->getUri());
+        static::assertStringContainsString('/login', $crawler->getUri());
     }
 }

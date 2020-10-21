@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
+use AppKernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -49,14 +50,14 @@ trait SymfonyKernelTrait
         $options = $this->getKernelOptions();
 
         return new $class(
-            isset($options['environment']) ? $options['environment'] : 'test',
-            isset($options['debug']) ? $options['debug'] : true
+            $options['environment'] ?? 'test',
+            $options['debug'] ?? true
         );
     }
 
     protected function getKernelClass(): string
     {
-        return \AppKernel::class;
+        return AppKernel::class;
     }
 
     protected function getKernelOptions(): array

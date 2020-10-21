@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Doctrine\Hydrator;
 
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
+use Exception;
 use Money\Currency;
 use Money\Money;
+use PDO;
 
 class MoneyHydrator extends AbstractHydrator
 {
@@ -24,7 +26,7 @@ class MoneyHydrator extends AbstractHydrator
      */
     private static $currency;
 
-    public static function setCurrency(\Money\Currency $currency)
+    public static function setCurrency(Currency $currency)
     {
         self::$currency = $currency;
     }
@@ -35,7 +37,7 @@ class MoneyHydrator extends AbstractHydrator
     protected function hydrateAllData()
     {
         $result = [];
-        foreach ($this->_stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        foreach ($this->_stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $this->hydrateRowData($row, $result);
         }
 
@@ -66,7 +68,7 @@ class MoneyHydrator extends AbstractHydrator
             // Remove ID field and add remaining fields as value array
             $value = array_shift($row);
         } else {
-            throw new \Exception('When hydrating as "money", you cannot return more than 2 values (first one for the id, and second one for the value, or only one for the value)');
+            throw new Exception('When hydrating as "money", you cannot return more than 2 values (first one for the id, and second one for the value, or only one for the value)');
         }
 
         $result[$id] = new Money((int) $value, self::$currency);

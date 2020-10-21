@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Exception;
 
-class ApplicationInstalledException extends \Exception
+use Exception;
+
+class ApplicationInstalledException extends Exception
 {
     public function __construct()
     {

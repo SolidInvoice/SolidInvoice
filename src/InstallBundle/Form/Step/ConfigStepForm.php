@@ -15,12 +15,13 @@ namespace SolidInvoice\InstallBundle\Form\Step;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use PDOException;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
 use SolidInvoice\InstallBundle\Form\Type\EmailSettingsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ConfigStepForm extends AbstractType
@@ -37,12 +38,12 @@ class ConfigStepForm extends AbstractType
             DatabaseConfigType::class,
             [
                 'drivers' => $drivers,
-                'constraints' => new Constraints\Callback(
+                'constraints' => new Callback(
                     static function ($data, ExecutionContextInterface $executionContext) {
                         if (null !== $data['driver'] && null !== $data['user']) {
                             try {
                                 DriverManager::getConnection($data)->connect();
-                            } catch (\PDOException | DBALException $e) {
+                            } catch (PDOException | DBALException $e) {
                                 $executionContext->addViolation($e->getMessage());
                             }
                         }

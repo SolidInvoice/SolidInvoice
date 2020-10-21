@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\DependencyInjection\CompilerPass;
 
+use InvalidArgumentException;
 use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
@@ -51,7 +52,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         foreach ($this->kernel->getBundles() as $bundle) {
             try {
                 $file = $resourceLocator->locate(sprintf('@%s/Resources/config/grid.yml', $bundle->getName()));
-            } catch (\InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 continue;
             }
 

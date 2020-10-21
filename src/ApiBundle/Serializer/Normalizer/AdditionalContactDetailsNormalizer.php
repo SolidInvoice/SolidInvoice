@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -34,7 +35,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
     public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer)
     {
         if (!$normalizer instanceof DenormalizerInterface) {
-            throw new \InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
+            throw new InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
         }
 
         $this->normalizer = $normalizer;
@@ -68,6 +69,6 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && AdditionalContactDetail::class === get_class($data);
+        return is_object($data) && $data instanceof AdditionalContactDetail;
     }
 }

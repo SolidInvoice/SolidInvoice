@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
+use DateTime;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\UserBundle\Email\ResetPasswordEmail;
@@ -55,7 +56,7 @@ final class Send
             }
 
             $mailer->send(new ResetPasswordEmail($user));
-            $user->setPasswordRequestedAt(new \DateTime());
+            $user->setPasswordRequestedAt(new DateTime());
             $userRepository->save($user);
         }
 

@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
+use InvalidArgumentException;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -36,10 +38,10 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     private $currency;
 
-    public function __construct(NormalizerInterface $normalizer, MoneyFormatter $formatter, Currency $currency)
+    public function __construct(NormalizerInterface $normalizer, MoneyFormatterInterface $formatter, Currency $currency)
     {
         if (!$normalizer instanceof DenormalizerInterface) {
-            throw new \InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
+            throw new InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
         }
 
         $this->formatter = $formatter;
@@ -72,6 +74,6 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && Discount::class === get_class($data);
+        return is_object($data) && $data instanceof Discount;
     }
 }

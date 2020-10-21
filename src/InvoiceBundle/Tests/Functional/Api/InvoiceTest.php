@@ -63,40 +63,37 @@ class InvoiceTest extends ApiTestCase
 
         unset($result['uuid']);
 
-        $this->assertSame(
-            [
-                'id' => 1001,
-                'status' => 'draft',
-                'client' => '/api/clients/1000',
-                'total' => '$90.00',
-                'baseTotal' => '$100.00',
-                'balance' => '$90.00',
-                'tax' => '$0.00',
-                'discount' => [
-                    'type' => 'percentage',
-                    'value' => 10,
-                ],
-                'terms' => null,
-                'notes' => null,
-                'due' => null,
-                'paidDate' => null,
-                'items' => [
-                    [
-                        'id' => 1001,
-                        'description' => 'Foo Item',
-                        'price' => '$100.00',
-                        'qty' => 1,
-                        'tax' => null,
-                        'total' => '$100.00',
-                    ],
-                ],
-                'users' => [
-                    '/api/contacts/1000',
-                ],
-                'recurring' => false,
+        static::assertSame([
+            'id' => 1001,
+            'status' => 'draft',
+            'client' => '/api/clients/1000',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'balance' => '$90.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
             ],
-            $result
-        );
+            'terms' => null,
+            'notes' => null,
+            'due' => null,
+            'paidDate' => null,
+            'items' => [
+                [
+                    'id' => 1001,
+                    'description' => 'Foo Item',
+                    'price' => '$100.00',
+                    'qty' => 1,
+                    'tax' => null,
+                    'total' => '$100.00',
+                ],
+            ],
+            'users' => [
+                '/api/contacts/1000',
+            ],
+            'recurring' => false,
+        ], $result);
     }
 
     public function testDelete()
@@ -110,40 +107,37 @@ class InvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'status' => 'draft',
-                'client' => '/api/clients/1000',
-                'total' => '$100.00',
-                'baseTotal' => '$100.00',
-                'balance' => '$100.00',
-                'tax' => '$0.00',
-                'discount' => [
-                    'type' => null,
-                    'value' => null,
-                ],
-                'terms' => null,
-                'notes' => null,
-                'due' => null,
-                'paidDate' => null,
-                'items' => [
-                    [
-                        'id' => 1000,
-                        'description' => 'Test Item',
-                        'price' => '$100.00',
-                        'qty' => 1,
-                        'tax' => null,
-                        'total' => '$100.00',
-                    ],
-                ],
-                'users' => [
-                    '/api/contacts/1000',
-                ],
-                'recurring' => false,
+        static::assertSame([
+            'id' => 1000,
+            'status' => 'draft',
+            'client' => '/api/clients/1000',
+            'total' => '$100.00',
+            'baseTotal' => '$100.00',
+            'balance' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => null,
+                'value' => null,
             ],
-            $data
-        );
+            'terms' => null,
+            'notes' => null,
+            'due' => null,
+            'paidDate' => null,
+            'items' => [
+                [
+                    'id' => 1000,
+                    'description' => 'Test Item',
+                    'price' => '$100.00',
+                    'qty' => 1,
+                    'tax' => null,
+                    'total' => '$100.00',
+                ],
+            ],
+            'users' => [
+                '/api/contacts/1000',
+            ],
+            'recurring' => false,
+        ], $data);
     }
 
     public function testEdit()
@@ -167,39 +161,36 @@ class InvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'status' => 'draft',
-                'client' => '/api/clients/1000',
-                'total' => '$90.00',
-                'baseTotal' => '$100.00',
-                'balance' => '$90.00',
-                'tax' => '$0.00',
-                'discount' => [
-                    'type' => 'percentage',
-                    'value' => 10,
-                ],
-                'terms' => null,
-                'notes' => null,
-                'due' => null,
-                'paidDate' => null,
-                'items' => [
-                    [
-                        'id' => 1001,
-                        'description' => 'Foo Item',
-                        'price' => '$100.00',
-                        'qty' => 1,
-                        'tax' => null,
-                        'total' => '$100.00',
-                    ],
-                ],
-                'users' => [
-                    '/api/contacts/1000',
-                ],
-                'recurring' => false,
+        static::assertSame([
+            'id' => 1000,
+            'status' => 'draft',
+            'client' => '/api/clients/1000',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'balance' => '$90.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
             ],
-            $data
-        );
+            'terms' => null,
+            'notes' => null,
+            'due' => null,
+            'paidDate' => null,
+            'items' => [
+                [
+                    'id' => 1001,
+                    'description' => 'Foo Item',
+                    'price' => '$100.00',
+                    'qty' => 1,
+                    'tax' => null,
+                    'total' => '$100.00',
+                ],
+            ],
+            'users' => [
+                '/api/contacts/1000',
+            ],
+            'recurring' => false,
+        ], $data);
     }
 }

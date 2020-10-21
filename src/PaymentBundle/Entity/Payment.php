@@ -14,16 +14,18 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use Traversable;
 
 /**
  * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
@@ -33,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Payment extends BasePayment implements PaymentInterface
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -92,7 +94,7 @@ class Payment extends BasePayment implements PaymentInterface
     private $message;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -171,7 +173,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * Set details.
      *
-     * @param array|\Traversable $details
+     * @param array|Traversable $details
      *
      * @return Payment
      *
@@ -179,7 +181,7 @@ class Payment extends BasePayment implements PaymentInterface
      */
     public function setDetails($details): self
     {
-        if ($details instanceof \Traversable) {
+        if ($details instanceof Traversable) {
             $details = iterator_to_array($details);
         }
 
@@ -211,9 +213,9 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCompleted(): ?\DateTime
+    public function getCompleted(): ?DateTime
     {
         return $this->completed;
     }
@@ -221,7 +223,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @return Payment
      */
-    public function setCompleted(\DateTime $completed): self
+    public function setCompleted(DateTime $completed): self
     {
         $this->completed = $completed;
 
@@ -235,7 +237,7 @@ class Payment extends BasePayment implements PaymentInterface
     {
         $client = $this->getClient();
 
-        return $client ? $client->getId() : null;
+        return null !== $client ? $client->getId() : null;
     }
 
     /**

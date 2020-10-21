@@ -15,8 +15,11 @@ namespace SolidInvoice\MenuBundle\Twig\Extension;
 
 use Knp\Menu\Provider\MenuProviderInterface;
 use SolidInvoice\MenuBundle\RendererInterface;
+use SplPriorityQueue;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class MenuExtension extends \Twig\Extension\AbstractExtension
+class MenuExtension extends AbstractExtension
 {
     /**
      * @var RendererInterface
@@ -45,12 +48,14 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @return \Twig\TwigFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
-            new \Twig\TwigFunction('menu', [$this, 'renderMenu'], ['is_safe' => ['html']]),
+            new TwigFunction('menu', function (string $location, array $options = []): string {
+                return $this->renderMenu($location, $options);
+            }, ['is_safe' => ['html']]),
         ];
     }
 
@@ -61,7 +66,7 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
      */
     public function renderMenu(string $location, array $options = []): string
     {
-        /** @var \SplPriorityQueue $menu */
+        /** @var SplPriorityQueue $menu */
         $menu = $this->provider->get($location);
 
         return $this->renderer->build($menu, $options);

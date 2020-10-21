@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ApiToken
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @ORM\Column(type="integer")
@@ -56,7 +56,7 @@ class ApiToken
     private $token;
 
     /**
-     * @var Collection|ApiTokenHistory[]
+     * @var ApiTokenHistory[]|Collection<int, ApiTokenHistory>
      *
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -121,7 +121,7 @@ class ApiToken
     }
 
     /**
-     * @return Collection|ApiTokenHistory[]
+     * @return ApiTokenHistory[]|Collection<int, ApiTokenHistory>
      */
     public function getHistory(): Collection
     {

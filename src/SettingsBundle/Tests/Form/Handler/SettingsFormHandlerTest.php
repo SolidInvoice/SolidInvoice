@@ -50,71 +50,68 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        $this->assertSame(
-            [
-                'system' => [
-                    'company' => [
-                        'company_name' => null,
-                        'logo' => null,
-                        'vat_number' => null,
-                        'contact_details' => [
-                            'email' => null,
-                            'phone_number' => null,
-                            'address' => '{"street1":null,"street2":null,"city":null,"state":null,"zip":null,"country":null}',
-                        ],
-                        'currency' => null,
+        static::assertSame([
+            'system' => [
+                'company' => [
+                    'company_name' => null,
+                    'logo' => null,
+                    'vat_number' => null,
+                    'contact_details' => [
+                        'email' => null,
+                        'phone_number' => null,
+                        'address' => '{"street1":null,"street2":null,"city":null,"state":null,"zip":null,"country":null}',
                     ],
-                ],
-                'quote' => [
-                    'email_subject' => null,
-                    'bcc_address' => null,
-                ],
-                'invoice' => [
-                    'email_subject' => null,
-                    'bcc_address' => null,
-                ],
-                'email' => [
-                    'from_name' => null,
-                    'from_address' => null,
-                    'format' => null,
-                    'sending_options' => [
-                        'transport' => null,
-                        'host' => null,
-                        'user' => null,
-                        'password' => null,
-                        'port' => null,
-                        'encryption' => null,
-                    ],
-                ],
-                'sms' => [
-                    'twilio' => [
-                        'number' => null,
-                        'sid' => null,
-                        'token' => null,
-                    ],
-                ],
-                'design' => [
-                    'system' => [
-                        'theme' => null,
-                    ],
-                ],
-                'notification' => [
-                    'client_create' => '{"email":false,"sms":false}',
-                    'invoice_status_update' => '{"email":false,"sms":false}',
-                    'quote_status_update' => '{"email":false,"sms":false}',
-                    'payment_made' => '{"email":false,"sms":false}',
+                    'currency' => null,
                 ],
             ],
-            $data
-        );
+            'quote' => [
+                'email_subject' => null,
+                'bcc_address' => null,
+            ],
+            'invoice' => [
+                'email_subject' => null,
+                'bcc_address' => null,
+            ],
+            'email' => [
+                'from_name' => null,
+                'from_address' => null,
+                'format' => null,
+                'sending_options' => [
+                    'transport' => null,
+                    'host' => null,
+                    'user' => null,
+                    'password' => null,
+                    'port' => null,
+                    'encryption' => null,
+                ],
+            ],
+            'sms' => [
+                'twilio' => [
+                    'number' => null,
+                    'sid' => null,
+                    'token' => null,
+                ],
+            ],
+            'design' => [
+                'system' => [
+                    'theme' => null,
+                ],
+            ],
+            'notification' => [
+                'client_create' => '{"email":false,"sms":false}',
+                'invoice_status_update' => '{"email":false,"sms":false}',
+                'quote_status_update' => '{"email":false,"sms":false}',
+                'payment_made' => '{"email":false,"sms":false}',
+            ],
+        ], $data);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertCount(1, $response->getFlash());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertCount(1, $response->getFlash());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
+        static::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
     public function getFormData(): array

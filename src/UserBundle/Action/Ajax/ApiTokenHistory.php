@@ -17,15 +17,16 @@ use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 final class ApiTokenHistory implements AjaxResponse
 {
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     private $twig;
 
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

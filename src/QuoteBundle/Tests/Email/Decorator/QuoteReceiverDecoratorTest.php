@@ -23,6 +23,7 @@ use SolidInvoice\QuoteBundle\Email\Decorator\QuoteReceiverDecorator;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Swift_Message;
 
 class QuoteReceiverDecoratorTest extends TestCase
 {
@@ -42,8 +43,8 @@ class QuoteReceiverDecoratorTest extends TestCase
         $message = new QuoteEmail($quote);
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
-        $this->assertNull($message->getBcc());
+        static::assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
+        static::assertNull($message->getBcc());
     }
 
     public function testDecorateWithBcc()
@@ -60,16 +61,16 @@ class QuoteReceiverDecoratorTest extends TestCase
         $message = new QuoteEmail($quote);
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
-        $this->assertSame(['bcc@example.com' => null], $message->getBcc());
+        static::assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
+        static::assertSame(['bcc@example.com' => null], $message->getBcc());
     }
 
     public function testShouldDecorate()
     {
         $decorator = new QuoteReceiverDecorator(M::mock(SystemConfig::class));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent((new QuoteEmail(new Quote()))->addTo('info@example.com'), Context::create())));
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new QuoteEmail(new Quote()), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent((new QuoteEmail(new Quote()))->addTo('info@example.com'), Context::create())));
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new QuoteEmail(new Quote()), Context::create())));
     }
 }

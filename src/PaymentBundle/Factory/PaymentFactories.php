@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Factory;
 
+use Exception;
 use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
 
 class PaymentFactories
@@ -61,13 +62,13 @@ class PaymentFactories
      */
     public function getForm(string $gateway): ?string
     {
-        return isset($this->forms[$gateway]) ? $this->forms[$gateway] : null;
+        return $this->forms[$gateway] ?? null;
     }
 
     /**
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFactory(string $gateway): ?string
     {

@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,8 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RecurringInvoice
 {
-    use Entity\TimeStampable;
-    use Entity\Archivable;
+    use Archivable;
+    use TimeStampable;
 
     /**
      * @var int
@@ -45,7 +47,7 @@ class RecurringInvoice
     private $frequency;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="date_start", type="date")
      * @Assert\NotBlank(groups={"Recurring"})
@@ -54,7 +56,7 @@ class RecurringInvoice
     private $dateStart;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="date_end", type="date", nullable=true)
      */
@@ -94,19 +96,19 @@ class RecurringInvoice
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDateStart(): ?\DateTime
+    public function getDateStart(): ?DateTime
     {
         return $this->dateStart;
     }
 
     /**
-     * @param \DateTime $dateStart
+     * @param DateTime $dateStart
      *
      * @return RecurringInvoice
      */
-    public function setDateStart(\DateTime $dateStart = null): self
+    public function setDateStart(DateTime $dateStart = null): self
     {
         $this->dateStart = $dateStart;
 
@@ -114,19 +116,19 @@ class RecurringInvoice
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDateEnd(): ?\DateTime
+    public function getDateEnd(): ?DateTime
     {
         return $this->dateEnd;
     }
 
     /**
-     * @param \DateTime $dateEnd
+     * @param DateTime $dateEnd
      *
      * @return RecurringInvoice
      */
-    public function setDateEnd(\DateTime $dateEnd = null): self
+    public function setDateEnd(DateTime $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
 

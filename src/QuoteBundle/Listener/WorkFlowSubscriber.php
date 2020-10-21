@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;

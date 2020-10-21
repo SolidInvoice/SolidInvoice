@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle;
 
+use Swift_Message;
+
 final class Mailer implements MailerInterface
 {
     /**
@@ -28,7 +30,7 @@ final class Mailer implements MailerInterface
     /**
      * @param array $parameters Add additional context to the message
      */
-    public function send(\Swift_Message $message, array $parameters = []): MessageSentResponse
+    public function send(Swift_Message $message, array $parameters = []): MessageSentResponse
     {
         return $this->processor->process($message, Context::create($parameters));
     }

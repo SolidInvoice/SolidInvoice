@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Cloner;
 
+use DateTime;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class QuoteClonerTest extends TestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new \DateTime('NOW'));
+        $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -48,7 +49,7 @@ class QuoteClonerTest extends TestCase
         $item = new Item();
         $item->setTax($tax);
         $item->setDescription('Item Description');
-        $item->setCreated(new \DateTime('now'));
+        $item->setCreated(new DateTime('now'));
         $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
         $item->setTotal(new Money((12 * 10), $currency));
@@ -81,27 +82,27 @@ class QuoteClonerTest extends TestCase
 
         $newQuote = $quoteCloner->clone($quote);
 
-        $this->assertEquals($quote->getTotal(), $newQuote->getTotal());
-        $this->assertEquals($quote->getBaseTotal(), $newQuote->getBaseTotal());
-        $this->assertSame($quote->getDiscount(), $newQuote->getDiscount());
-        $this->assertSame($quote->getNotes(), $newQuote->getNotes());
-        $this->assertSame($quote->getTerms(), $newQuote->getTerms());
-        $this->assertEquals($quote->getTax(), $newQuote->getTax());
-        $this->assertSame($client, $newQuote->getClient());
-        $this->assertSame(Graph::STATUS_DRAFT, $newQuote->getStatus());
+        static::assertEquals($quote->getTotal(), $newQuote->getTotal());
+        static::assertEquals($quote->getBaseTotal(), $newQuote->getBaseTotal());
+        static::assertSame($quote->getDiscount(), $newQuote->getDiscount());
+        static::assertSame($quote->getNotes(), $newQuote->getNotes());
+        static::assertSame($quote->getTerms(), $newQuote->getTerms());
+        static::assertEquals($quote->getTax(), $newQuote->getTax());
+        static::assertSame($client, $newQuote->getClient());
+        static::assertSame(Graph::STATUS_DRAFT, $newQuote->getStatus());
 
-        $this->assertNotSame($quote->getUuid(), $newQuote->getUuid());
-        $this->assertNull($newQuote->getId());
+        static::assertNotSame($quote->getUuid(), $newQuote->getUuid());
+        static::assertNull($newQuote->getId());
 
-        $this->assertCount(1, $newQuote->getItems());
+        static::assertCount(1, $newQuote->getItems());
 
         $quoteItem = $newQuote->getItems();
-        $this->assertInstanceOf(Item::class, $quoteItem[0]);
+        static::assertInstanceOf(Item::class, $quoteItem[0]);
 
-        $this->assertSame($item->getTax(), $quoteItem[0]->getTax());
-        $this->assertSame($item->getDescription(), $quoteItem[0]->getDescription());
-        $this->assertInstanceOf(\DateTime::class, $quoteItem[0]->getCreated());
-        $this->assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
-        $this->assertSame($item->getQty(), $quoteItem[0]->getQty());
+        static::assertSame($item->getTax(), $quoteItem[0]->getTax());
+        static::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
+        static::assertInstanceOf(DateTime::class, $quoteItem[0]->getCreated());
+        static::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
+        static::assertSame($item->getQty(), $quoteItem[0]->getQty());
     }
 }

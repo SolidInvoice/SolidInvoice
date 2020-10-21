@@ -20,11 +20,11 @@ class ClassUtilTest extends TestCase
 {
     public function testFindClassInFile()
     {
-        $this->assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
+        static::assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
     }
 
     public function testFindClassInFileWithInvalidFile()
     {
-        $this->assertNull(ClassUtil::findClassInFile(dirname(__DIR__).'/Fixtures/file.php'));
+        static::assertNull(ClassUtil::findClassInFile(dirname(__DIR__).'/Fixtures/file.php'));
     }
 }

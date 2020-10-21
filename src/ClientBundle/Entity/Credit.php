@@ -16,7 +16,7 @@ namespace SolidInvoice\ClientBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 
 /**
@@ -28,7 +28,7 @@ use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
  */
 class Credit
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -95,6 +95,6 @@ class Credit
 
     public function __toString(): string
     {
-        return (string) $this->value->getMoney()->getAmount();
+        return $this->value->getMoney()->getAmount();
     }
 }

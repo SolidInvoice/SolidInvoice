@@ -15,7 +15,7 @@ namespace SolidInvoice\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  */
 class AdditionalContactDetail
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @var int
@@ -125,7 +125,7 @@ class AdditionalContactDetail
 
     public function __toString(): string
     {
-        return (string) $this->value;
+        return $this->value;
     }
 
     /**

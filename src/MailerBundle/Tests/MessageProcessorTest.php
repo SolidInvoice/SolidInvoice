@@ -23,6 +23,8 @@ use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\MailerBundle\Event\MessageResultEvent;
 use SolidInvoice\MailerBundle\MessageProcessor;
 use SolidInvoice\MailerBundle\MessageSentResponse;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MessageProcessorTest extends TestCase
@@ -57,9 +59,9 @@ class MessageProcessorTest extends TestCase
             $decorator3,
         ];
 
-        $message = new \Swift_Message();
+        $message = new Swift_Message();
 
-        $mailer = M::mock(\Swift_Mailer::class);
+        $mailer = M::mock(Swift_Mailer::class);
         $mailer->shouldReceive('send')
             ->once()
             ->with(
@@ -88,8 +90,8 @@ class MessageProcessorTest extends TestCase
 
         $result = $processor->process($message, Context::create());
 
-        $this->assertInstanceOf(MessageSentResponse::class, $result);
-        $this->assertTrue($result->isSuccess());
+        static::assertInstanceOf(MessageSentResponse::class, $result);
+        static::assertTrue($result->isSuccess());
     }
 
     public function testProcessWithFail()
@@ -120,15 +122,15 @@ class MessageProcessorTest extends TestCase
             $decorator3,
         ];
 
-        $message = new \Swift_Message();
+        $message = new Swift_Message();
         $message->setTo('foo@bar.com');
 
-        $mailer = M::mock(\Swift_Mailer::class);
+        $mailer = M::mock(Swift_Mailer::class);
         $mailer->shouldReceive('send')
             ->once()
             ->with(
                 $message,
-                \Mockery::on(function (&$failedRecipients) {
+                M::on(function (&$failedRecipients) {
                     $failedRecipients = ['foo@bar.com'];
 
                     return true;
@@ -152,7 +154,7 @@ class MessageProcessorTest extends TestCase
 
         $result = $processor->process($message, Context::create());
 
-        $this->assertInstanceOf(MessageSentResponse::class, $result);
-        $this->assertFalse($result->isSuccess());
+        static::assertInstanceOf(MessageSentResponse::class, $result);
+        static::assertFalse($result->isSuccess());
     }
 }

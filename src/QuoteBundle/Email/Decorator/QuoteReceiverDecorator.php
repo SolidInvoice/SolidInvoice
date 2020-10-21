@@ -41,7 +41,7 @@ final class QuoteReceiverDecorator implements MessageDecorator, VerificationMess
             $message->addTo($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName())));
         }
 
-        if ($bcc = (string) $this->config->get('quote/bcc_address')) {
+        if ('' !== ($bcc = (string) $this->config->get('quote/bcc_address'))) {
             $message->addBcc($bcc);
         }
     }

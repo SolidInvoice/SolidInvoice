@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7755edf1e7d8baa1ecd8bd47aee10274",
+    "content-hash": "88799784d77225b6d2b8b246d864982f",
     "packages": [
         {
             "name": "api-platform/core",
@@ -12028,6 +12028,7 @@
                 "issues": "https://github.com/twigphp/Twig-extensions/issues",
                 "source": "https://github.com/twigphp/Twig-extensions/tree/master"
             },
+            "abandoned": true,
             "time": "2018-12-05T18:34:18+00:00"
         },
         {
@@ -14435,6 +14436,7 @@
         "ext-intl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
+        "ext-pdo": "*",
         "ext-soap": "*",
         "ext-xsl": "*"
     },

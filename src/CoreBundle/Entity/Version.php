@@ -68,6 +68,6 @@ class Version
      */
     public function __toString(): string
     {
-        return (string) $this->version;
+        return $this->version;
     }
 }

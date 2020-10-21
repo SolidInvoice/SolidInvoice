@@ -15,7 +15,7 @@ namespace SolidInvoice\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  */
 class Address
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @var int

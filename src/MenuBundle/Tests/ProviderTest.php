@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Provider;
+use SplPriorityQueue;
 
 class ProviderTest extends TestCase
 {
@@ -28,13 +29,13 @@ class ProviderTest extends TestCase
 
         $provider = new Provider($storage);
 
-        $q = new \SplPriorityQueue();
+        $q = new SplPriorityQueue();
         $q->insert('def', 0);
         $storage->shouldReceive('get')
             ->with('abc')
             ->andReturn($q);
 
-        $this->assertSame($q, $provider->get('abc', []));
+        static::assertSame($q, $provider->get('abc', []));
 
         $storage->shouldHaveReceived('get')
             ->with('abc');
@@ -50,7 +51,7 @@ class ProviderTest extends TestCase
             ->with('abc')
             ->andReturn(true);
 
-        $this->assertTrue($provider->has('abc', []));
+        static::assertTrue($provider->has('abc', []));
 
         $storage->shouldHaveReceived('has')
             ->with('abc');

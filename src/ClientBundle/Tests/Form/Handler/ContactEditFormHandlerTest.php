@@ -72,16 +72,16 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertInstanceOf(Contact::class, $data);
-        $this->assertCount(1, $this->em->getRepository(Contact::class)->findAll());
-        $this->assertSame($this->firstName, $data->getFirstName());
-        $this->assertSame($this->email, $data->getEmail());
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertInstanceOf(Contact::class, $data);
+        static::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
+        static::assertSame($this->firstName, $data->getFirstName());
+        static::assertSame($this->email, $data->getEmail());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
-        $this->assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
+        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        static::assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
     }
 }

@@ -59,7 +59,7 @@ class SettingsTypeTest extends FormTestCase
                         'sms' => $this->faker->boolean,
                     ];
 
-                    $formValue = json_encode($value);
+                    $formValue = json_encode($value, JSON_THROW_ON_ERROR);
                     break;
 
                 case MailEncryptionType::class === $type:

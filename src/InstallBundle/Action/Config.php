@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Action;
 
+use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
@@ -27,7 +28,7 @@ final class Config
     /**
      * @var array
      */
-    protected $mailerTransports = [
+    private $mailerTransports = [
         'sendmail' => 'Sendmail',
         'smtp' => 'SMTP',
         'gmail' => 'Gmail',
@@ -66,7 +67,7 @@ final class Config
 
     private function getForm(): FormInterface
     {
-        $availableDrivers = \PDO::getAvailableDrivers();
+        $availableDrivers = PDO::getAvailableDrivers();
 
         // We can't support sqlite at the moment, since it requires a physical file
         if (in_array('sqlite', $availableDrivers, true)) {
@@ -142,7 +143,7 @@ final class Config
         return $this->render($form);
     }
 
-    protected function render(?FormInterface $form = null): Template
+    private function render(?FormInterface $form = null): Template
     {
         return new Template('@SolidInvoiceInstall/config.html.twig', ['form' => ($form ?: $this->getForm())->createView()]);
     }

@@ -72,7 +72,7 @@ class ContactType
     private $required = false;
 
     /**
-     * @var Collection|AdditionalContactDetail[]
+     * @var AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})
@@ -136,7 +136,7 @@ class ContactType
      */
     public function isRequired(): bool
     {
-        return (bool) $this->required;
+        return $this->required;
     }
 
     /**
@@ -155,7 +155,7 @@ class ContactType
     /**
      * Get details.
      *
-     * @return Collection|AdditionalContactDetail[]
+     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      */
     public function getDetails(): ?Collection
     {

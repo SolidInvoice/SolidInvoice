@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
+use ReflectionProperty;
 use SolidInvoice\ClientBundle\Entity;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\ClientBundle\Form\Type\ContactType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -33,7 +35,7 @@ class ContactTypeTest extends FormTestCase
             'email' => $email,
         ];
 
-        $object = new Entity\Contact();
+        $object = new Contact();
         $object->setFirstName($firstName);
         $object->setLastName($lastName);
         $object->setEmail($email);
@@ -45,7 +47,7 @@ class ContactTypeTest extends FormTestCase
     {
         // create a type instance with the mocked dependencies
         $contactType = new Entity\ContactType();
-        $ref = new \ReflectionProperty($contactType, 'id');
+        $ref = new ReflectionProperty($contactType, 'id');
         $ref->setAccessible(true);
         $ref->setValue($contactType, 1);
 

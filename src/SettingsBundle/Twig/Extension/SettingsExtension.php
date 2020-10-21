@@ -37,8 +37,12 @@ class SettingsExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('setting', [$this, 'getSetting']),
-            new TwigFunction('address', [$this, 'renderAddress']),
+            new TwigFunction('setting', function (string $setting, $default = null, $decode = false) {
+                return $this->getSetting($setting, $default, $decode);
+            }),
+            new TwigFunction('address', function (array $address) {
+                return $this->renderAddress($address);
+            }),
         ];
     }
 
@@ -53,7 +57,7 @@ class SettingsExtension extends AbstractExtension
             $setting = $this->config->get($setting);
 
             if ($decode && $setting) {
-                return json_decode($setting, true);
+                return json_decode($setting, true, 512, JSON_THROW_ON_ERROR);
             }
 
             return $setting;

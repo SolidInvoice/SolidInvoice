@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class PaymentMethod implements GatewayConfigInterface
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @var int
@@ -87,7 +87,7 @@ class PaymentMethod implements GatewayConfigInterface
     private $enabled;
 
     /**
-     * @var Collection|Payment[]
+     * @var Payment[]|Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -96,6 +96,8 @@ class PaymentMethod implements GatewayConfigInterface
     public function __construct()
     {
         $this->payments = new ArrayCollection();
+        $this->internal = false;
+        $this->disable();
     }
 
     /**
@@ -174,7 +176,7 @@ class PaymentMethod implements GatewayConfigInterface
 
     public function isInternal(): bool
     {
-        return (bool) $this->internal;
+        return $this->internal;
     }
 
     /**
@@ -182,14 +184,14 @@ class PaymentMethod implements GatewayConfigInterface
      */
     public function setInternal(bool $internal): self
     {
-        $this->internal = (bool) $internal;
+        $this->internal = $internal;
 
         return $this;
     }
 
     public function isEnabled(): bool
     {
-        return (bool) $this->enabled;
+        return $this->enabled;
     }
 
     /**
@@ -197,7 +199,7 @@ class PaymentMethod implements GatewayConfigInterface
      */
     public function setEnabled(bool $enabled): self
     {
-        $this->enabled = (bool) $enabled;
+        $this->enabled = $enabled;
 
         return $this;
     }
@@ -249,7 +251,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Get payments.
      *
-     * @return Collection|Payment[]
+     * @return Payment[]|Collection<int, Payment>
      */
     public function getPayments(): Collection
     {
@@ -279,6 +281,6 @@ class PaymentMethod implements GatewayConfigInterface
      */
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 }

@@ -16,7 +16,7 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
-use SolidInvoice\UserBundle\Repository\UserRepository;
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
@@ -51,7 +51,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
      */
     private $userPasswordEncoder;
 
-    public function __construct(UserRepository $userRepository, UserPasswordEncoderInterface $userPasswordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router)
+    public function __construct(UserRepositoryInterface $userRepository, UserPasswordEncoderInterface $userPasswordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;

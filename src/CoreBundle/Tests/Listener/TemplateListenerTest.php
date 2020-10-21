@@ -40,8 +40,8 @@ class TemplateListenerTest extends TestCase
 
         $listener->onKernelView($event);
 
-        $this->assertInstanceOf(Response::class, $event->getResponse());
-        $this->assertSame('foo bar baz', $event->getResponse()->getContent());
+        static::assertInstanceOf(Response::class, $event->getResponse());
+        static::assertSame('foo bar baz', $event->getResponse()->getContent());
     }
 
     public function testOnKernelViewWithoutResponse()
@@ -54,7 +54,7 @@ class TemplateListenerTest extends TestCase
 
         $listener->onKernelView($event);
 
-        $this->assertNull($event->getResponse());
+        static::assertNull($event->getResponse());
     }
 
     public function testOnKernelViewWithCustomResponse()
@@ -69,7 +69,7 @@ class TemplateListenerTest extends TestCase
 
         $listener->onKernelView($event);
 
-        $this->assertSame($response, $event->getResponse());
-        $this->assertSame('foo bar baz', $event->getResponse()->getContent());
+        static::assertSame($response, $event->getResponse());
+        static::assertSame('foo bar baz', $event->getResponse()->getContent());
     }
 }

@@ -43,7 +43,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
         if ($data instanceof Invoice) {
             $clientId = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
         } else {
-            $clientId = isset($data['client']) ? $data['client'] : null;
+            $clientId = $data['client'] ?? null;
         }
 
         if (!empty($clientId)) {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Traits;
 
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -35,15 +36,15 @@ trait SerializeTrait
     /**
      * @param mixed $object
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function serialize($object, array $groups = [], Response $response = null): Response
     {
         if (!$this->serializer) {
-            throw new \Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', get_class($this), SerializerInterface::class, __METHOD__));
+            throw new Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', get_class($this), SerializerInterface::class, __METHOD__));
         }
 
-        if (!$response) {
+        if (null === $response) {
             $response = new JsonResponse('', 200, [], true);
         }
 

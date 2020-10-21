@@ -54,9 +54,7 @@ class DiscountTypeTest extends FormTestCase
 
     public function discountProvider()
     {
-        return [
-            [Discount::TYPE_PERCENTAGE, $this->faker->numberBetween(0, 100)],
-            [Discount::TYPE_MONEY, $this->faker->numberBetween(0, 100)],
-        ];
+        yield [Discount::TYPE_PERCENTAGE, $this->faker->numberBetween(0, 100)];
+        yield [Discount::TYPE_MONEY, $this->faker->numberBetween(0, 100)];
     }
 }

@@ -43,14 +43,14 @@ class ApiFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        $this->assertCount(1, $this->em->getRepository(ApiToken::class)->findAll());
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertSame('test_token', $data->getName());
+        static::assertCount(1, $this->em->getRepository(ApiToken::class)->findAll());
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame('test_token', $data->getName());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
+        static::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
     public function getFormData(): array

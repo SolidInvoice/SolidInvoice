@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle;
 
+use Swift_Message;
+
 interface MailerInterface
 {
-    public function send(\Swift_Message $message, array $parameters = []): MessageSentResponse;
+    public function send(Swift_Message $message, array $parameters = []): MessageSentResponse;
 }

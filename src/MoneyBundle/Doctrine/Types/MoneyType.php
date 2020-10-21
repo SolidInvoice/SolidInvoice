@@ -24,7 +24,7 @@ class MoneyType extends Type
     const NAME = 'money';
 
     /**
-     * @var \Money\Currency
+     * @var Currency
      */
     private static $currency;
 
@@ -36,8 +36,8 @@ class MoneyType extends Type
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array                                     $fieldDeclaration the field declaration
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform         the currently used database platform
+     * @param array            $fieldDeclaration the field declaration
+     * @param AbstractPlatform $platform         the currently used database platform
      *
      * @return string
      */
@@ -79,6 +79,7 @@ class MoneyType extends Type
             return (int) $value;
         }
 
+        // @phpstan-ignore
         throw ConversionException::conversionFailed($value, self::NAME);
     }
 

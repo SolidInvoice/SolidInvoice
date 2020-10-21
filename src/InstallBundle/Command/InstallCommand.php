@@ -42,6 +42,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class InstallCommand extends Command
 {
+    protected static $defaultName = 'app:install';
+
     /**
      * @var ConfigWriter
      */
@@ -100,15 +102,14 @@ class InstallCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('app:install')
-            ->setDescription('Installs the application')
+        $this->setDescription('Installs the application')
             ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
             ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
             ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)
             ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
-            ->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'mail')
+            ->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'sendmail')
             ->addOption('mailer-host', null, InputOption::VALUE_REQUIRED, 'The email host (only applicable for SMTP)', 'localhost')
             ->addOption('mailer-user', null, InputOption::VALUE_REQUIRED, 'The user for email authentication (only applicable for SMTP and Gmail)')
             ->addOption('mailer-password', null, InputOption::VALUE_REQUIRED, 'The password for the email user (only applicable for SMTP and Gmail)')
@@ -157,29 +158,27 @@ class InstallCommand extends Command
                 throw new Exception(sprintf('The --%s option needs to be specified', $option));
             }
         }
-        $currencies = array_keys(Currencies::getNames());
-        $locales = array_keys(Locales::getNames());
-        if (!in_array($locale = $input->getOption('locale'), $locales, true)) {
+        if (!array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
-        if (!in_array($currency = $input->getOption('currency'), $currencies, true)) {
+        if (!array_key_exists($currency = $input->getOption('currency'), Currencies::getNames())) {
             throw new InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 
         if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-host')) {
-                throw new \Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
+                throw new Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
             }
             if (null === $input->getOption('mailer-port')) {
-                throw new \Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
+                throw new Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
             }
         } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-user')) {
-                throw new \Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
+                throw new Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
             }
             if (null === $input->getOption('mailer-password')) {
-                throw new \Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
+                throw new Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
             }
         }
 
@@ -273,7 +272,7 @@ class InstallCommand extends Command
         $em = $this->registry->getManagerForClass(User::class);
 
         if (!$em instanceof ObjectManager) {
-            throw new \Exception(sprintf('No object manager found for class "%s".', User::class));
+            throw new Exception(sprintf('No object manager found for class "%s".', User::class));
         }
 
         $em->persist($user);

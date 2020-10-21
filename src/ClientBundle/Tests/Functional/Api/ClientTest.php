@@ -50,28 +50,25 @@ class ClientTest extends ApiTestCase
 
         $result = $this->requestPost('/api/clients', $data);
 
-        $this->assertSame(
-            [
-                'id' => 1001,
-                'name' => 'Dummy User',
-                'website' => null,
-                'status' => 'active',
-                'currency' => null,
-                'vatNumber' => null,
-                'contacts' => [
-                    [
-                        'id' => 1001,
-                        'firstName' => 'foo bar',
-                        'lastName' => null,
-                        'email' => 'foo@example.com',
-                        'additionalContactDetails' => [],
-                    ],
+        static::assertSame([
+            'id' => 1001,
+            'name' => 'Dummy User',
+            'website' => null,
+            'status' => 'active',
+            'currency' => null,
+            'vatNumber' => null,
+            'contacts' => [
+                [
+                    'id' => 1001,
+                    'firstName' => 'foo bar',
+                    'lastName' => null,
+                    'email' => 'foo@example.com',
+                    'additionalContactDetails' => [],
                 ],
-                'addresses' => [],
-                'credit' => '$0.00',
             ],
-            $result
-        );
+            'addresses' => [],
+            'credit' => '$0.00',
+        ], $result);
     }
 
     public function testDelete()
@@ -83,55 +80,49 @@ class ClientTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/clients/1000');
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'name' => 'Test',
-                'website' => null,
-                'status' => 'active',
-                'currency' => null,
-                'vatNumber' => null,
-                'contacts' => [
-                    [
-                        'id' => 1000,
-                        'firstName' => 'Test',
-                        'lastName' => null,
-                        'email' => 'test@example.com',
-                        'additionalContactDetails' => [],
-                    ],
+        static::assertSame([
+            'id' => 1000,
+            'name' => 'Test',
+            'website' => null,
+            'status' => 'active',
+            'currency' => null,
+            'vatNumber' => null,
+            'contacts' => [
+                [
+                    'id' => 1000,
+                    'firstName' => 'Test',
+                    'lastName' => null,
+                    'email' => 'test@example.com',
+                    'additionalContactDetails' => [],
                 ],
-                'addresses' => [],
-                'credit' => '$0.00',
             ],
-            $data
-        );
+            'addresses' => [],
+            'credit' => '$0.00',
+        ], $data);
     }
 
     public function testEdit()
     {
         $data = $this->requestPut('/api/clients/1000', ['name' => 'New Test']);
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'name' => 'New Test',
-                'website' => null,
-                'status' => 'active',
-                'currency' => null,
-                'vatNumber' => null,
-                'contacts' => [
-                    [
-                        'id' => 1000,
-                        'firstName' => 'Test',
-                        'lastName' => null,
-                        'email' => 'test@example.com',
-                        'additionalContactDetails' => [],
-                    ],
+        static::assertSame([
+            'id' => 1000,
+            'name' => 'New Test',
+            'website' => null,
+            'status' => 'active',
+            'currency' => null,
+            'vatNumber' => null,
+            'contacts' => [
+                [
+                    'id' => 1000,
+                    'firstName' => 'Test',
+                    'lastName' => null,
+                    'email' => 'test@example.com',
+                    'additionalContactDetails' => [],
                 ],
-                'addresses' => [],
-                'credit' => '$0.00',
             ],
-            $data
-        );
+            'addresses' => [],
+            'credit' => '$0.00',
+        ], $data);
     }
 }

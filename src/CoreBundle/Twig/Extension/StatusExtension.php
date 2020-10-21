@@ -13,17 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use Exception;
 use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\PaymentBundle\Model\Status as PaymentStatus;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * This class is a twig extension that gives some shortcut methods to client statuses.
  *
  * @author Pierre du Plessis
  */
-class StatusExtension extends \Twig\Extension\AbstractExtension
+class StatusExtension extends AbstractExtension
 {
     /**
      * @var array
@@ -79,29 +83,37 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
     /**
      * Returns an array of all the helper functions for the client status.
      *
-     * @return \Twig\TwigFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
-            new \Twig\TwigFunction(
+            new TwigFunction(
                 'invoice_label',
-                [$this, 'renderInvoiceStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderInvoiceStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig\TwigFunction(
+            new TwigFunction(
                 'quote_label',
-                [$this, 'renderQuoteStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderQuoteStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig\TwigFunction(
+            new TwigFunction(
                 'payment_label',
-                [$this, 'renderPaymentStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderPaymentStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig\TwigFunction(
+            new TwigFunction(
                 'client_label',
-                [$this, 'renderClientStatusLabel'],
+                function (Environment $environment, string $status = null, $tooltip = null) {
+                    return $this->renderClientStatusLabel($environment, $status, $tooltip);
+                },
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];
@@ -113,16 +125,16 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function renderInvoiceStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
+    public function renderInvoiceStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
         }
 
         if (!isset($this->invoiceLabelMap[$status])) {
-            throw new \Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [
@@ -133,7 +145,7 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
         return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
     }
 
-    private function getAllStatusLabels(\Twig\Environment $environment, array $labelMap): array
+    private function getAllStatusLabels(Environment $environment, array $labelMap): array
     {
         $response = [];
 
@@ -150,7 +162,7 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
      * @param mixed  $object
      * @param string $tooltip
      */
-    private function renderStatusLabel(\Twig\Environment $environment, $object, string $tooltip = null): string
+    private function renderStatusLabel(Environment $environment, $object, string $tooltip = null): string
     {
         if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
             $object = [
@@ -174,16 +186,16 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function renderQuoteStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
+    public function renderQuoteStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
         }
 
         if (!isset($this->quoteLabelMap[$status])) {
-            throw new \Exception(sprintf('The quote status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The quote status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [
@@ -200,16 +212,16 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function renderPaymentStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
+    public function renderPaymentStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
         }
 
         if (!isset($this->paymentLabelMap[$status])) {
-            throw new \Exception(sprintf('The payment status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The payment status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [
@@ -226,16 +238,16 @@ class StatusExtension extends \Twig\Extension\AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function renderClientStatusLabel(\Twig\Environment $environment, string $status = null, $tooltip = null)
+    public function renderClientStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->clientLabelMap);
         }
 
         if (!isset($this->clientLabelMap[$status])) {
-            throw new \Exception(sprintf('The client status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The client status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Menu;
 
+use InvalidArgumentException;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
 
@@ -24,7 +25,7 @@ class Builder extends AuthenticatedMenu
     /**
      * Menu builder for the quotes index.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function sidebar(ItemInterface $menu)
     {

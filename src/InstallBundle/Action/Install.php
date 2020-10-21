@@ -16,6 +16,7 @@ namespace SolidInvoice\InstallBundle\Action;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\Exception\MigrationException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +42,7 @@ final class Install
                     try {
                         $tmpConnection->getSchemaManager()->createDatabase($dbName);
                         $result['success'] = true;
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         if (false !== strpos($e->getMessage(), 'database exists')) {
                             $result['success'] = true;
                         } else {

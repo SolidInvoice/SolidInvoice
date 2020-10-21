@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,7 +28,7 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
     public function __construct(NormalizerInterface $normalizer)
     {
         if (!$normalizer instanceof DenormalizerInterface) {
-            throw new \InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
+            throw new InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
         }
 
         $this->normalizer = $normalizer;
@@ -51,6 +52,6 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && Credit::class === get_class($data);
+        return is_object($data) && $data instanceof Credit;
     }
 }

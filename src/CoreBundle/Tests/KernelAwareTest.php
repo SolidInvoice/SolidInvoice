@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests;
 
+use AppKernel;
+use Doctrine\ORM\EntityManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 require_once __DIR__.'/../../../app/AppKernel.php';
 
@@ -23,23 +26,23 @@ abstract class KernelAwareTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var \AppKernel
+     * @var AppKernel
      */
     protected $kernel;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\Container
+     * @var Container
      */
     protected $container;
 
     public function setUp(): void
     {
-        $this->kernel = new \AppKernel('test', true);
+        $this->kernel = new AppKernel('test', true);
         $this->kernel->boot();
 
         $this->container = $this->kernel->getContainer();

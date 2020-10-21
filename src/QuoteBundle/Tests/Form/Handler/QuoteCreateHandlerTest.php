@@ -102,16 +102,16 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
     {
         /* @var Quote $quote */
 
-        $this->assertSame(Graph::STATUS_DRAFT, $quote->getStatus());
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertInstanceOf(FlashResponse::class, $response);
-        $this->assertCount(1, $response->getFlash());
-        $this->assertCount(1, $this->em->getRepository(Quote::class)->findAll());
+        static::assertSame(Graph::STATUS_DRAFT, $quote->getStatus());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(FlashResponse::class, $response);
+        static::assertCount(1, $response->getFlash());
+        static::assertCount(1, $this->em->getRepository(Quote::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
+        static::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
     protected function getHandlerOptions(): array

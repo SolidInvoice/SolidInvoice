@@ -15,9 +15,11 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
@@ -26,7 +28,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -43,11 +46,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Invoice
 {
-    use Entity\TimeStampable,
-        Entity\Archivable,
-        InvoiceStatusTrait {
-            Entity\Archivable::isArchived insteadof InvoiceStatusTrait;
-        }
+    use Archivable;
+    use InvoiceStatusTrait {
+        Archivable::isArchived insteadof InvoiceStatusTrait;
+    }
+    use TimeStampable;
 
     /**
      * @var int
@@ -142,7 +145,7 @@ class Invoice
     private $notes;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -151,7 +154,7 @@ class Invoice
     private $due;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -160,7 +163,7 @@ class Invoice
     private $paidDate;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var ItemInterface[]|Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -170,7 +173,7 @@ class Invoice
     private $items;
 
     /**
-     * @var Collection|Payment[]
+     * @var Payment[]|Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
@@ -178,7 +181,7 @@ class Invoice
     private $payments;
 
     /**
-     * @var Collection|Contact[]
+     * @var Contact[]|Collection<int, Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
@@ -215,7 +218,11 @@ class Invoice
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->users = new ArrayCollection();
-        $this->setUuid(Uuid::uuid1());
+        try {
+            $this->setUuid(Uuid::uuid1());
+        } catch (Exception $e) {
+        }
+
         $this->recurring = false;
 
         $this->baseTotal = new MoneyEntity();
@@ -313,10 +320,6 @@ class Invoice
     }
 
     /**
-     * Set client.
-     *
-     * @param Client $client
-     *
      * @return Invoice
      */
     public function setClient(?Client $client): self
@@ -404,9 +407,9 @@ class Invoice
     /**
      * Get due.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDue(): ?\DateTime
+    public function getDue(): ?DateTime
     {
         return $this->due;
     }
@@ -416,7 +419,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setDue(\DateTime $due): self
+    public function setDue(DateTime $due): self
     {
         $this->due = $due;
 
@@ -426,9 +429,9 @@ class Invoice
     /**
      * Get paidDate.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getPaidDate(): ?\DateTime
+    public function getPaidDate(): ?DateTime
     {
         return $this->paidDate;
     }
@@ -438,7 +441,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setPaidDate(\DateTime $paidDate): self
+    public function setPaidDate(DateTime $paidDate): self
     {
         $this->paidDate = $paidDate;
 
@@ -450,8 +453,9 @@ class Invoice
      *
      * @return Invoice
      */
-    public function addItem(Item $item): self
+    public function addItem(ItemInterface $item): self
     {
+        assert($item instanceof Item);
         $this->items[] = $item;
         $item->setInvoice($this);
 
@@ -474,18 +478,13 @@ class Invoice
     /**
      * Get items.
      *
-     * @return Collection|ItemInterface[]
+     * @return ItemInterface[]|Collection<int, ItemInterface>
      */
     public function getItems(): Collection
     {
         return $this->items;
     }
 
-    /**
-     * Add payment.
-     *
-     * @return Invoice
-     */
     public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
@@ -509,7 +508,7 @@ class Invoice
     /**
      * Get payments.
      *
-     * @return Collection|Payment[]
+     * @return Payment[]|Collection<int, Payment>
      */
     public function getPayments(): Collection
     {
@@ -525,8 +524,6 @@ class Invoice
     }
 
     /**
-     * @param string $terms
-     *
      * @return Invoice
      */
     public function setTerms(?string $terms): self
@@ -545,8 +542,6 @@ class Invoice
     }
 
     /**
-     * @param string $notes
-     *
      * @return Invoice
      */
     public function setNotes(?string $notes): self
@@ -576,9 +571,9 @@ class Invoice
      *
      * @ORM\PrePersist
      */
-    public function updateItems()
+    public function updateItems(): void
     {
-        if (count($this->items)) {
+        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
             foreach ($this->items as $item) {
                 $item->setInvoice($this);
             }
@@ -609,8 +604,6 @@ class Invoice
     }
 
     /**
-     * @param RecurringInvoice $recurringInfo
-     *
      * @return Invoice
      */
     public function setRecurringInfo(RecurringInvoice $recurringInfo = null): self
@@ -637,7 +630,11 @@ class Invoice
             }
         }
 
-        $this->setUuid(Uuid::uuid1());
+        try {
+            $this->setUuid(Uuid::uuid1());
+        } catch (Exception $e) {
+        }
+
         $this->recurring = false;
         $this->status = null;
     }

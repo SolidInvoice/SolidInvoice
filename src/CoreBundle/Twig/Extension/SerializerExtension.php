@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Symfony\Component\Serializer\SerializerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * @codeCoverageIgnore
  */
-class SerializerExtension extends \Twig\Extension\AbstractExtension
+class SerializerExtension extends AbstractExtension
 {
     /**
      * @var SerializerInterface
@@ -33,7 +35,7 @@ class SerializerExtension extends \Twig\Extension\AbstractExtension
     public function getFilters()
     {
         return [
-            new \Twig\TwigFilter('serialize', function ($data, string $format, array $groups = []) {
+            new TwigFilter('serialize', function ($data, string $format, array $groups = []) {
                 return $this->serializer->serialize($data, $format, ['groups' => $groups]);
             }),
         ];

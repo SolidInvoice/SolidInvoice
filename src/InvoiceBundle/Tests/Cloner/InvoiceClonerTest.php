@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
+use DateTime;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
@@ -37,7 +38,7 @@ class InvoiceClonerTest extends TestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new \DateTime('NOW'));
+        $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -47,7 +48,7 @@ class InvoiceClonerTest extends TestCase
         $item = new Item();
         $item->setTax($tax);
         $item->setDescription('Item Description');
-        $item->setCreated(new \DateTime('now'));
+        $item->setCreated(new DateTime('now'));
         $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
         $item->setTotal(new Money((12 * 10), $currency));
@@ -72,27 +73,27 @@ class InvoiceClonerTest extends TestCase
 
         $newInvoice = $invoiceCloner->clone($invoice);
 
-        $this->assertEquals($invoice->getTotal(), $newInvoice->getTotal());
-        $this->assertEquals($invoice->getBaseTotal(), $newInvoice->getBaseTotal());
-        $this->assertSame($invoice->getDiscount(), $newInvoice->getDiscount());
-        $this->assertSame($invoice->getNotes(), $newInvoice->getNotes());
-        $this->assertSame($invoice->getTerms(), $newInvoice->getTerms());
-        $this->assertEquals($invoice->getTax(), $newInvoice->getTax());
-        $this->assertSame($client, $newInvoice->getClient());
-        $this->assertNull($newInvoice->getStatus());
+        static::assertEquals($invoice->getTotal(), $newInvoice->getTotal());
+        static::assertEquals($invoice->getBaseTotal(), $newInvoice->getBaseTotal());
+        static::assertSame($invoice->getDiscount(), $newInvoice->getDiscount());
+        static::assertSame($invoice->getNotes(), $newInvoice->getNotes());
+        static::assertSame($invoice->getTerms(), $newInvoice->getTerms());
+        static::assertEquals($invoice->getTax(), $newInvoice->getTax());
+        static::assertSame($client, $newInvoice->getClient());
+        static::assertNull($newInvoice->getStatus());
 
-        $this->assertNotSame($invoice->getUuid(), $newInvoice->getUuid());
-        $this->assertNull($newInvoice->getId());
+        static::assertNotSame($invoice->getUuid(), $newInvoice->getUuid());
+        static::assertNull($newInvoice->getId());
 
-        $this->assertCount(1, $newInvoice->getItems());
+        static::assertCount(1, $newInvoice->getItems());
 
         $invoiceItem = $newInvoice->getItems();
-        $this->assertInstanceOf(Item::class, $invoiceItem[0]);
+        static::assertInstanceOf(Item::class, $invoiceItem[0]);
 
-        $this->assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        $this->assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        $this->assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
-        $this->assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
-        $this->assertSame($item->getQty(), $invoiceItem[0]->getQty());
+        static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
+        static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        static::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
+        static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
+        static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 }

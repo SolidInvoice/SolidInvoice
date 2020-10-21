@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests;
 
+use ArrayAccess;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MailerBundle\Context;
 
@@ -20,18 +21,18 @@ class ContextTest extends TestCase
 {
     public function testContextExtendsArrayAccess()
     {
-        $this->assertInstanceOf(\ArrayAccess::class, new Context());
+        static::assertInstanceOf(ArrayAccess::class, new Context());
     }
 
     public function testContextCreateReturnAnInstanceOfContext()
     {
-        $this->assertInstanceOf(Context::class, Context::create());
+        static::assertInstanceOf(Context::class, Context::create());
     }
 
     public function testContextCreateAddsTheCorrectProperties()
     {
         $context = Context::create(['foo' => 'bar']);
-        $this->assertSame('bar', $context['foo']);
+        static::assertSame('bar', $context['foo']);
     }
 
     public function testContextKeepsParameters()
@@ -40,9 +41,9 @@ class ContextTest extends TestCase
 
         $context['foo'] = 'bar';
 
-        $this->assertArrayHasKey('foo', $context);
-        $this->assertSame('bar', $context['foo']);
+        static::assertArrayHasKey('foo', $context);
+        static::assertSame('bar', $context['foo']);
         unset($context['foo']);
-        $this->assertArrayNotHasKey('foo', $context);
+        static::assertArrayNotHasKey('foo', $context);
     }
 }

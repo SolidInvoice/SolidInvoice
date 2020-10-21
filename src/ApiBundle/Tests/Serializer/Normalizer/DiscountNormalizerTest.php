@@ -58,8 +58,8 @@ class DiscountNormalizerTest extends TestCase
         $currency = new Currency('USD');
         $normalizer = new DiscountNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
 
-        $this->assertTrue($normalizer->supportsNormalization(new Discount()));
-        $this->assertFalse($normalizer->supportsNormalization(Discount::class));
+        static::assertTrue($normalizer->supportsNormalization(new Discount()));
+        static::assertFalse($normalizer->supportsNormalization(Discount::class));
     }
 
     public function testSupportsDenormalization()
@@ -89,8 +89,8 @@ class DiscountNormalizerTest extends TestCase
         $currency = new Currency('USD');
         $normalizer = new DiscountNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
 
-        $this->assertTrue($normalizer->supportsDenormalization(null, Discount::class));
-        $this->assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        static::assertTrue($normalizer->supportsDenormalization(null, Discount::class));
+        static::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
     public function testNormalization()
@@ -124,7 +124,7 @@ class DiscountNormalizerTest extends TestCase
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(100);
 
-        $this->assertEquals(['type' => 'money', 'value' => new \Money\Money(10000, $currency)], $normalizer->normalize($discount));
+        static::assertEquals(['type' => 'money', 'value' => new \Money\Money(10000, $currency)], $normalizer->normalize($discount));
     }
 
     public function testDenormalization()
@@ -158,6 +158,6 @@ class DiscountNormalizerTest extends TestCase
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(10000);
 
-        $this->assertEquals($discount, $normalizer->denormalize(['type' => 'money', 'value' => 10000], Discount::class));
+        static::assertEquals($discount, $normalizer->denormalize(['type' => 'money', 'value' => 10000], Discount::class));
     }
 }

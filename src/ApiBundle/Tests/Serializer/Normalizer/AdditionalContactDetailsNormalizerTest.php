@@ -53,8 +53,8 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
 
-        $this->assertTrue($normalizer->supportsNormalization(new AdditionalContactDetail()));
-        $this->assertFalse($normalizer->supportsNormalization(AdditionalContactDetail::class));
+        static::assertTrue($normalizer->supportsNormalization(new AdditionalContactDetail()));
+        static::assertFalse($normalizer->supportsNormalization(AdditionalContactDetail::class));
     }
 
     public function testSupportsDenormalization()
@@ -83,8 +83,8 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
 
-        $this->assertTrue($normalizer->supportsDenormalization(null, AdditionalContactDetail::class));
-        $this->assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        static::assertTrue($normalizer->supportsDenormalization(null, AdditionalContactDetail::class));
+        static::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
     public function testNormalization()
@@ -119,7 +119,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         $additionalContactDetail->setType($type)
             ->setValue('one@two.com');
 
-        $this->assertSame(['type' => 'email', 'value' => 'one@two.com'], $normalizer->normalize($additionalContactDetail));
+        static::assertSame(['type' => 'email', 'value' => 'one@two.com'], $normalizer->normalize($additionalContactDetail));
     }
 
     public function testDenormalization()
@@ -159,8 +159,8 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
             ->setValue('one@two.com');
 
         $detail = $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class);
-        $this->assertInstanceOf(AdditionalContactDetail::class, $detail);
-        $this->assertSame('email', $detail->getType()->getName());
-        $this->assertSame('one@two.com', $detail->getValue());
+        static::assertInstanceOf(AdditionalContactDetail::class, $detail);
+        static::assertSame('email', $detail->getType()->getName());
+        static::assertSame('one@two.com', $detail->getValue());
     }
 }

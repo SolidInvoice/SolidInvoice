@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NoResultException;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 
 class PaymentMethodRepository extends ServiceEntityRepository
@@ -52,7 +52,7 @@ class PaymentMethodRepository extends ServiceEntityRepository
         $queryBuilder->select('COUNT(pm.id)')
             ->where('pm.enabled = 1');
 
-        if (true !== $includeInternal) {
+        if (!$includeInternal) {
             $expr = $queryBuilder->expr();
 
             $queryBuilder->andWhere(

@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MailerBundle\Context;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Swift_Message;
 
 class InvoiceSubjectDecoratorTest extends TestCase
 {
@@ -38,15 +39,15 @@ class InvoiceSubjectDecoratorTest extends TestCase
         $message = new InvoiceEmail(new Invoice());
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame('New Invoice: #', $message->getSubject());
+        static::assertSame('New Invoice: #', $message->getSubject());
     }
 
     public function testShouldDecorate()
     {
         $decorator = new InvoiceSubjectDecorator(M::mock(SystemConfig::class));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent((new InvoiceEmail(new Invoice()))->setSubject('Invoice!'), Context::create())));
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new InvoiceEmail(new Invoice()), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent((new InvoiceEmail(new Invoice()))->setSubject('Invoice!'), Context::create())));
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new InvoiceEmail(new Invoice()), Context::create())));
     }
 }

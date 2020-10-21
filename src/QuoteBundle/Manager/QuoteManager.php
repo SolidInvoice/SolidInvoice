@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Manager;
 
 use SolidInvoice\MailerBundle\Mailer;
+use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -41,7 +42,7 @@ class QuoteManager
 
     public function __construct(
         StateMachine $stateMachine,
-        Mailer $mailer,
+        MailerInterface $mailer,
         NotificationManager $notification
     ) {
         $this->stateMachine = $stateMachine;

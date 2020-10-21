@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MenuBundle;
 
 use Knp\Menu\Renderer\RendererInterface as BaseInterface;
+use SplPriorityQueue;
 
 interface RendererInterface extends BaseInterface
 {
@@ -22,5 +23,5 @@ interface RendererInterface extends BaseInterface
      *
      * @return mixed
      */
-    public function build(\SplPriorityQueue $storage, array $options = []);
+    public function build(SplPriorityQueue $storage, array $options = []);
 }

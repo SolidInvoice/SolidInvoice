@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Twig;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -21,8 +21,10 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class PaymentExtension extends \Twig\Extension\AbstractExtension
+class PaymentExtension extends AbstractExtension
 {
     /**
      * @var ManagerRegistry
@@ -46,16 +48,24 @@ class PaymentExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * @return \Twig\TwigFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
-            new \Twig\TwigFunction('payment_enabled', [$this, 'paymentEnabled']),
-            new \Twig\TwigFunction('payments_configured', [$this, 'paymentConfigured']),
+            new TwigFunction('payment_enabled', function ($method): bool {
+                return $this->paymentEnabled($method);
+            }),
+            new TwigFunction('payments_configured', function (bool $includeInternal = true): int {
+                return $this->paymentConfigured($includeInternal);
+            }),
 
-            new \Twig\TwigFunction('total_income', [$this, 'getTotalIncome']),
-            new \Twig\TwigFunction('total_outstanding', [$this, 'getTotalOutstanding']),
+            new TwigFunction('total_income', function (Client $client = null): Money {
+                return $this->getTotalIncome($client);
+            }),
+            new TwigFunction('total_outstanding', function (Client $client = null): Money {
+                return $this->getTotalOutstanding($client);
+            }),
         ];
     }
 

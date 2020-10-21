@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle;
 
+use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigWriter
@@ -48,7 +49,7 @@ class ConfigWriter
     /**
      * Get all values from the config file.
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getConfigValues(): array
     {

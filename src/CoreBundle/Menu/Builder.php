@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Menu;
 
+use InvalidArgumentException;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
 use SolidInvoice\UserBundle\Entity\User;
@@ -24,7 +25,7 @@ class Builder extends AuthenticatedMenu
     /**
      * Build the user menu.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
      */
@@ -37,7 +38,7 @@ class Builder extends AuthenticatedMenu
     /**
      * Build the system menu.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function systemMenu(ItemInterface $menu)
     {

@@ -21,6 +21,7 @@ use SolidInvoice\MailerBundle\Context;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use Swift_Message;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -46,10 +47,10 @@ class EmailFromDecoratorTest extends TestCase
 
         $decorator = new EmailFromDecorator($systemConfig, $tokenStorage);
 
-        $message = new \Swift_Message();
+        $message = new Swift_Message();
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame(['info@example.com' => 'SolidInvoice'], $message->getFrom());
+        static::assertSame(['info@example.com' => 'SolidInvoice'], $message->getFrom());
     }
 
     public function testDecorateWithOutFromAddress()
@@ -79,9 +80,9 @@ class EmailFromDecoratorTest extends TestCase
 
         $decorator = new EmailFromDecorator($systemConfig, $tokenStorage);
 
-        $message = new \Swift_Message();
+        $message = new Swift_Message();
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame(['test@example.com' => null], $message->getFrom());
+        static::assertSame(['test@example.com' => null], $message->getFrom());
     }
 }

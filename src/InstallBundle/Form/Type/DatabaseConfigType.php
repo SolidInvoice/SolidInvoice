@@ -19,7 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class DatabaseConfigType extends AbstractType
 {
@@ -33,7 +34,7 @@ class DatabaseConfigType extends AbstractType
             [
                 'choices' => array_flip($drivers),
                 'placeholder' => 'Select Database Driver',
-                'constraints' => new Constraints\NotBlank(),
+                'constraints' => new NotBlank(),
             ]
         );
 
@@ -41,7 +42,7 @@ class DatabaseConfigType extends AbstractType
             'host',
             null,
             [
-                'constraints' => new Constraints\NotBlank(),
+                'constraints' => new NotBlank(),
             ]
         );
 
@@ -49,7 +50,7 @@ class DatabaseConfigType extends AbstractType
             'port',
             IntegerType::class,
             [
-                'constraints' => new Constraints\Type(['type' => 'integer']),
+                'constraints' => new Type(['type' => 'integer']),
                 'required' => false,
             ]
         );
@@ -58,7 +59,7 @@ class DatabaseConfigType extends AbstractType
             'user',
             null,
             [
-                'constraints' => new Constraints\NotBlank(),
+                'constraints' => new NotBlank(),
             ]
         );
 
@@ -75,7 +76,7 @@ class DatabaseConfigType extends AbstractType
             null,
             [
                 'label' => 'Database Name',
-                'constraints' => new Constraints\NotBlank(),
+                'constraints' => new NotBlank(),
                 'required' => false,
             ]
         );

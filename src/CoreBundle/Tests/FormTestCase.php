@@ -20,8 +20,9 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidType;
-use SolidInvoice\CoreBundle\Form\Extension;
-use SolidInvoice\CoreBundle\Form\Type;
+use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
+use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
+use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
@@ -69,7 +70,7 @@ abstract class FormTestCase extends TypeTestCase
         $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn([]);
 
         return [
-            new Extension\FormHelpExtension(),
+            new FormHelpExtension(),
             new MoneyExtension(new Currency('USD')),
             new FormTypeValidatorExtension($validator),
         ];
@@ -83,14 +84,14 @@ abstract class FormTestCase extends TypeTestCase
     protected function getTypes()
     {
         return [
-            'select2' => new Type\Select2Type(),
-            'image_upload' => new Type\ImageUploadType(),
+            'select2' => new Select2Type(),
+            'image_upload' => new ImageUploadType(),
         ];
     }
 
     protected function assertFormData($form, array $formData, $object)
     {
-        $this->assertNotEmpty($formData);
+        static::assertNotEmpty($formData);
 
         if (!$form instanceof FormInterface) {
             $form = $this->factory->create($form);
@@ -99,14 +100,14 @@ abstract class FormTestCase extends TypeTestCase
         // submit the data to the form directly
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($object, $form->getData());
+        static::assertTrue($form->isSynchronized());
+        static::assertEquals($object, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            static::assertArrayHasKey($key, $children);
         }
     }
 
@@ -119,12 +120,10 @@ abstract class FormTestCase extends TypeTestCase
         $type = new EntityType($this->registry);
         $moneyType = new HiddenMoneyType(new Currency('USD'));
 
-        $extensions = array_merge([
+        return array_merge([
             new PreloadedExtension([$type, $moneyType], []),
             new DoctrineOrmExtension($this->registry),
         ], $this->getExtensions());
-
-        return $extensions;
     }
 
     abstract public function testSubmit();

@@ -15,9 +15,11 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
@@ -26,7 +28,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
@@ -42,11 +45,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Quote
 {
-    use Entity\TimeStampable,
-        Entity\Archivable,
-        QuoteStatusTrait {
-        Entity\Archivable::isArchived insteadof QuoteStatusTrait;
+    use Archivable;
+    use QuoteStatusTrait {
+        Archivable::isArchived insteadof QuoteStatusTrait;
     }
+    use TimeStampable;
 
     /**
      * @var int
@@ -133,7 +136,7 @@ class Quote
     private $notes;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -142,7 +145,7 @@ class Quote
     private $due;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var ItemInterface[]|Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -152,7 +155,7 @@ class Quote
     private $items;
 
     /**
-     * @var Collection|Contact[]
+     * @var Contact[]|Collection<int, Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
@@ -172,7 +175,10 @@ class Quote
         $this->discount = new Discount();
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
-        $this->setUuid(Uuid::uuid1());
+        try {
+            $this->setUuid(Uuid::uuid1());
+        } catch (Exception $e) {
+        }
 
         $this->baseTotal = new MoneyEntity();
         $this->tax = new MoneyEntity();
@@ -207,7 +213,7 @@ class Quote
     /**
      * Return users array.
      *
-     * @return Collection|Contact[]
+     * @return Contact[]|Collection<int, Contact>
      */
     public function getUsers(): Collection
     {
@@ -326,9 +332,9 @@ class Quote
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDue(): ?\DateTime
+    public function getDue(): ?DateTime
     {
         return $this->due;
     }
@@ -336,7 +342,7 @@ class Quote
     /**
      * @return Quote
      */
-    public function setDue(\DateTime $due): self
+    public function setDue(DateTime $due): self
     {
         $this->due = $due;
 
@@ -346,8 +352,9 @@ class Quote
     /**
      * @return Quote
      */
-    public function addItem(Item $item): self
+    public function addItem(ItemInterface $item): self
     {
+        assert($item instanceof Item);
         $this->items[] = $item;
         $item->setQuote($this);
 
@@ -360,13 +367,13 @@ class Quote
     public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
-        $item->setQuote(null);
+        $item->setQuote();
 
         return $this;
     }
 
     /**
-     * @return Collection|ItemInterface[]
+     * @return ItemInterface[]|Collection<int, ItemInterface>
      */
     public function getItems(): Collection
     {
@@ -382,8 +389,6 @@ class Quote
     }
 
     /**
-     * @param string $terms
-     *
      * @return Quote
      */
     public function setTerms(?string $terms): self
@@ -402,8 +407,6 @@ class Quote
     }
 
     /**
-     * @param string $notes
-     *
      * @return Quote
      */
     public function setNotes(?string $notes): self
@@ -433,9 +436,9 @@ class Quote
      *
      * @ORM\PrePersist
      */
-    public function updateItems()
+    public function updateItems(): void
     {
-        if (count($this->items)) {
+        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
             foreach ($this->items as $item) {
                 $item->setQuote($this);
             }

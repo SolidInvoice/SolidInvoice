@@ -39,7 +39,7 @@ class ORMSourceTest extends TestCase
 
         $data = $source->fetch();
 
-        $this->assertSame($qb, $data);
+        static::assertSame($qb, $data);
     }
 
     public function testFetchException()

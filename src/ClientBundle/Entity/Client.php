@@ -21,7 +21,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -39,8 +40,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Client
 {
-    use Entity\TimeStampable;
-    use Entity\Archivable;
+    use Archivable;
+    use TimeStampable;
 
     /**
      * @var int
@@ -101,7 +102,7 @@ class Client
     private $vatNumber;
 
     /**
-     * @var Collection|Contact[]
+     * @var Contact[]|Collection<int, Contact>
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"firstName" = "ASC"})
@@ -113,7 +114,7 @@ class Client
     private $contacts;
 
     /**
-     * @var Collection|Quote[]
+     * @var Quote[]|Collection<int, Quote>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -122,7 +123,7 @@ class Client
     private $quotes;
 
     /**
-     * @var Collection|Invoice[]
+     * @var Invoice[]|Collection<int, Invoice>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -131,7 +132,7 @@ class Client
     private $invoices;
 
     /**
-     * @var Collection|Payment[]
+     * @var Payment[]|Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
@@ -139,7 +140,7 @@ class Client
     private $payments;
 
     /**
-     * @var Collection|Address[]
+     * @var Address[]|Collection<int, Address>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
@@ -306,7 +307,7 @@ class Client
     /**
      * Get quotes.
      *
-     * @return Collection|Quote[]
+     * @return Quote[]|Collection<int, Quote>
      */
     public function getQuotes(): Collection
     {
@@ -341,7 +342,7 @@ class Client
     /**
      * Get invoices.
      *
-     * @return Collection|Invoice[]
+     * @return Invoice[]|Collection<int, Invoice>
      */
     public function getInvoices(): Collection
     {
@@ -376,7 +377,7 @@ class Client
     /**
      * Get payments.
      *
-     * @return Collection|Payment[]
+     * @return Payment[]|Collection<int, Payment>
      */
     public function getPayments(): Collection
     {
@@ -384,10 +385,6 @@ class Client
     }
 
     /**
-     * Add address.
-     *
-     * @param Address $address
-     *
      * @return Client
      */
     public function addAddress(?Address $address): self
@@ -415,7 +412,7 @@ class Client
     /**
      * Get addresses.
      *
-     * @return Collection|Address[]
+     * @return Address[]|Collection<int, Address>
      */
     public function getAddresses(): Collection
     {
@@ -444,7 +441,7 @@ class Client
      * @ORM\PrePersist()
      * @ApiProperty(iri="http://schema.org/MonetaryAmount")
      */
-    public function setInitialCredit()
+    public function setInitialCredit(): void
     {
         if (null === $this->id) {
             $credit = new Credit();
@@ -458,17 +455,15 @@ class Client
      */
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     public function getCurrency(): ?Currency
     {
-        return $this->currency ? new Currency($this->currency) : null;
+        return null !== $this->currency ? new Currency($this->currency) : null;
     }
 
     /**
-     * @param string $currency
-     *
      * @return Client
      */
     public function setCurrency(?string $currency): self
@@ -487,8 +482,6 @@ class Client
     }
 
     /**
-     * @param string $vatNumber
-     *
      * @return $this
      */
     public function setVatNumber(?string $vatNumber): self

@@ -46,17 +46,14 @@ class ContactTest extends ApiTestCase
 
         $result = $this->requestPost('/api/contacts', $data);
 
-        $this->assertSame(
-            [
-                'id' => 1001,
-                'firstName' => 'foo bar',
-                'lastName' => null,
-                'client' => '/api/clients/1000',
-                'email' => 'foo@bar.com',
-                'additionalContactDetails' => [],
-            ],
-            $result
-        );
+        static::assertSame([
+            'id' => 1001,
+            'firstName' => 'foo bar',
+            'lastName' => null,
+            'client' => '/api/clients/1000',
+            'email' => 'foo@bar.com',
+            'additionalContactDetails' => [],
+        ], $result);
     }
 
     public function testDelete()
@@ -68,33 +65,27 @@ class ContactTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/contacts/1000');
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'firstName' => 'Test',
-                'lastName' => null,
-                'client' => '/api/clients/1000',
-                'email' => 'test@example.com',
-                'additionalContactDetails' => [],
-            ],
-            $data
-        );
+        static::assertSame([
+            'id' => 1000,
+            'firstName' => 'Test',
+            'lastName' => null,
+            'client' => '/api/clients/1000',
+            'email' => 'test@example.com',
+            'additionalContactDetails' => [],
+        ], $data);
     }
 
     public function testEdit()
     {
         $data = $this->requestPut('/api/contacts/1000', ['firstName' => 'New Test']);
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'firstName' => 'New Test',
-                'lastName' => null,
-                'client' => '/api/clients/1000',
-                'email' => 'test@example.com',
-                'additionalContactDetails' => [],
-            ],
-            $data
-        );
+        static::assertSame([
+            'id' => 1000,
+            'firstName' => 'New Test',
+            'lastName' => null,
+            'client' => '/api/clients/1000',
+            'email' => 'test@example.com',
+            'additionalContactDetails' => [],
+        ], $data);
     }
 }

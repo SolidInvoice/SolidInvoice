@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Exception;
 
-class InvalidGatewayException extends \Exception
+use Exception;
+
+class InvalidGatewayException extends Exception
 {
     public function __construct($gateway)
     {

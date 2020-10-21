@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Version;
 
 class VersionRepository extends ServiceEntityRepository

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 
 interface GridInterface

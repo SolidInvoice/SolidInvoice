@@ -17,6 +17,7 @@ use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\MailerBundle\Mailer;
+use SolidInvoice\MailerBundle\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvoiceMailerListener implements EventSubscriberInterface
@@ -26,7 +27,7 @@ class InvoiceMailerListener implements EventSubscriberInterface
      */
     private $mailer;
 
-    public function __construct(Mailer $mailer)
+    public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
     }

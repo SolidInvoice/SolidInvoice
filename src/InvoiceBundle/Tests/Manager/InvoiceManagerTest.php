@@ -13,12 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
+use DateTime;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use Mockery\Mock;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -42,15 +47,15 @@ class InvoiceManagerTest extends KernelTestCase
     private $manager;
 
     /**
-     * @var \Mockery\Mock
+     * @var Mock|EntityManagerInterface
      */
     private $entityManager;
 
     public function setUp(): void
     {
-        $this->entityManager = M::mock('Doctrine\ORM\EntityManagerInterface');
-        $doctrine = M::mock('Doctrine\Common\Persistence\ManagerRegistry', ['getManager' => $this->entityManager]);
-        $notification = M::mock('SolidInvoice\NotificationBundle\Notification\NotificationManager');
+        $this->entityManager = M::mock(EntityManagerInterface::class);
+        $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $this->entityManager]);
+        $notification = M::mock(NotificationManager::class);
 
         $notification->shouldReceive('sendNotification')
             ->andReturn(null);
@@ -82,7 +87,7 @@ class InvoiceManagerTest extends KernelTestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new \DateTime('NOW'));
+        $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -92,7 +97,7 @@ class InvoiceManagerTest extends KernelTestCase
         $item = new Item();
         $item->setTax($tax);
         $item->setDescription('Item Description');
-        $item->setCreated(new \DateTime('now'));
+        $item->setCreated(new DateTime('now'));
         $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
         $item->setTotal(new Money((12 * 10), $currency));
@@ -112,28 +117,27 @@ class InvoiceManagerTest extends KernelTestCase
 
         $invoice = $this->manager->createFromQuote($quote);
 
-        $this->assertEquals($quote->getTotal(), $invoice->getTotal());
-        $this->assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
-        $this->assertSame($quote->getDiscount(), $invoice->getDiscount());
-        $this->assertSame($quote->getNotes(), $invoice->getNotes());
-        $this->assertSame($quote->getTerms(), $invoice->getTerms());
-        $this->assertEquals($quote->getTax(), $invoice->getTax());
-        $this->assertSame($client, $invoice->getClient());
-        $this->assertNull($invoice->getStatus());
+        static::assertEquals($quote->getTotal(), $invoice->getTotal());
+        static::assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
+        static::assertSame($quote->getDiscount(), $invoice->getDiscount());
+        static::assertSame($quote->getNotes(), $invoice->getNotes());
+        static::assertSame($quote->getTerms(), $invoice->getTerms());
+        static::assertEquals($quote->getTax(), $invoice->getTax());
+        static::assertSame($client, $invoice->getClient());
+        static::assertNull($invoice->getStatus());
 
-        $this->assertNotSame($quote->getUuid(), $invoice->getUuid());
-        $this->assertNull($invoice->getId());
+        static::assertNotSame($quote->getUuid(), $invoice->getUuid());
+        static::assertNull($invoice->getId());
 
-        $this->assertCount(1, $invoice->getItems());
+        static::assertCount(1, $invoice->getItems());
 
-        /** @var \SolidInvoice\InvoiceBundle\Entity\item[] $invoiceItem */
         $invoiceItem = $invoice->getItems();
-        $this->assertInstanceOf('SolidInvoice\InvoiceBundle\Entity\item', $invoiceItem[0]);
+        static::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
 
-        $this->assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        $this->assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        $this->assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
-        $this->assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
-        $this->assertSame($item->getQty(), $invoiceItem[0]->getQty());
+        static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
+        static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        static::assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
+        static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
+        static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 }

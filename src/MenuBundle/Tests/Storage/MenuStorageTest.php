@@ -32,25 +32,25 @@ class MenuStorageTest extends TestCase
     {
         $storage = new MenuStorage();
 
-        $this->assertFalse($storage->has($name1));
-        $this->assertFalse($storage->has($name2));
-        $this->assertFalse($storage->has($name3));
+        static::assertFalse($storage->has($name1));
+        static::assertFalse($storage->has($name2));
+        static::assertFalse($storage->has($name3));
 
-        $this->assertInstanceOf('SplPriorityQueue', $storage->get($name1));
-        $this->assertInstanceOf('SplPriorityQueue', $storage->get($name2));
-        $this->assertInstanceOf('SplPriorityQueue', $storage->get($name3));
+        static::assertInstanceOf('SplPriorityQueue', $storage->get($name1));
+        static::assertInstanceOf('SplPriorityQueue', $storage->get($name2));
+        static::assertInstanceOf('SplPriorityQueue', $storage->get($name3));
 
-        $this->assertSame($storage->get($name1), $storage->get($name1));
-        $this->assertSame($storage->get($name2), $storage->get($name2));
-        $this->assertSame($storage->get($name3), $storage->get($name3));
+        static::assertSame($storage->get($name1), $storage->get($name1));
+        static::assertSame($storage->get($name2), $storage->get($name2));
+        static::assertSame($storage->get($name3), $storage->get($name3));
 
-        $this->assertNotSame($storage->get($name1), $storage->get($name2));
-        $this->assertNotSame($storage->get($name1), $storage->get($name3));
-        $this->assertNotSame($storage->get($name2), $storage->get($name3));
+        static::assertNotSame($storage->get($name1), $storage->get($name2));
+        static::assertNotSame($storage->get($name1), $storage->get($name3));
+        static::assertNotSame($storage->get($name2), $storage->get($name3));
 
-        $this->assertTrue($storage->has($name1));
-        $this->assertTrue($storage->has($name2));
-        $this->assertTrue($storage->has($name3));
+        static::assertTrue($storage->has($name1));
+        static::assertTrue($storage->has($name2));
+        static::assertTrue($storage->has($name3));
     }
 
     public function storageItems()

@@ -38,13 +38,13 @@ class WidgetFactoryTest extends TestCase
         $factory->add($widget4, null, 400);
         $factory->add($widget5, 'left_column');
 
-        $this->assertInstanceOf('SplPriorityQueue', $factory->get('top'));
-        $this->assertInstanceOf('SplPriorityQueue', $factory->get('left_column'));
-        $this->assertInstanceOf('SplPriorityQueue', $factory->get('right_column'));
+        static::assertInstanceOf('SplPriorityQueue', $factory->get('top'));
+        static::assertInstanceOf('SplPriorityQueue', $factory->get('left_column'));
+        static::assertInstanceOf('SplPriorityQueue', $factory->get('right_column'));
 
-        $this->assertCount(2, $factory->get('top'));
-        $this->assertCount(2, $factory->get('left_column'));
-        $this->assertCount(1, $factory->get('right_column'));
+        static::assertCount(2, $factory->get('top'));
+        static::assertCount(2, $factory->get('left_column'));
+        static::assertCount(1, $factory->get('right_column'));
     }
 
     public function testInvalidLocation()
@@ -76,26 +76,26 @@ class WidgetFactoryTest extends TestCase
         $factory->add($widget5, 'left_column');
 
         $queue1 = $factory->get('top');
-        $this->assertInstanceOf('SplPriorityQueue', $queue1);
-        $this->assertCount(2, $queue1);
-        $this->assertSame($widget4, $queue1->current());
+        static::assertInstanceOf('SplPriorityQueue', $queue1);
+        static::assertCount(2, $queue1);
+        static::assertSame($widget4, $queue1->current());
         $queue1->next();
-        $this->assertSame($widget1, $queue1->current());
+        static::assertSame($widget1, $queue1->current());
 
         $queue2 = $factory->get('left_column');
-        $this->assertInstanceOf('SplPriorityQueue', $queue2);
-        $this->assertCount(2, $queue2);
-        $this->assertSame($widget2, $queue2->current());
+        static::assertInstanceOf('SplPriorityQueue', $queue2);
+        static::assertCount(2, $queue2);
+        static::assertSame($widget2, $queue2->current());
         $queue2->next();
-        $this->assertSame($widget5, $queue2->current());
+        static::assertSame($widget5, $queue2->current());
 
         $queue3 = $factory->get('right_column');
-        $this->assertInstanceOf('SplPriorityQueue', $queue3);
-        $this->assertCount(1, $queue3);
-        $this->assertSame($widget3, $queue3->current());
+        static::assertInstanceOf('SplPriorityQueue', $queue3);
+        static::assertCount(1, $queue3);
+        static::assertSame($widget3, $queue3->current());
 
         $queue4 = $factory->get('bottom');
-        $this->assertInstanceOf('SplPriorityQueue', $queue4);
-        $this->assertCount(0, $queue4);
+        static::assertInstanceOf('SplPriorityQueue', $queue4);
+        static::assertCount(0, $queue4);
     }
 }

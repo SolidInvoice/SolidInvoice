@@ -56,7 +56,7 @@ class Money
      */
     public function __construct(?BaseMoney $money = null)
     {
-        if ($money) {
+        if (null !== $money) {
             $this->value = $money->getAmount();
             $this->currency = $money->getCurrency()->getCode();
         }
@@ -64,6 +64,6 @@ class Money
 
     public function getMoney(): BaseMoney
     {
-        return new BaseMoney((int) $this->value, new Currency($this->currency ?: self::$baseCurrency));
+        return new BaseMoney($this->value, new Currency($this->currency ?: self::$baseCurrency));
     }
 }

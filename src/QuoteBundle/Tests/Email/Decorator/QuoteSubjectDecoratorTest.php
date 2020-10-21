@@ -22,6 +22,7 @@ use SolidInvoice\QuoteBundle\Email\Decorator\QuoteSubjectDecorator;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Swift_Message;
 
 class QuoteSubjectDecoratorTest extends TestCase
 {
@@ -38,15 +39,15 @@ class QuoteSubjectDecoratorTest extends TestCase
         $message = new QuoteEmail(new Quote());
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame('New Quote: #', $message->getSubject());
+        static::assertSame('New Quote: #', $message->getSubject());
     }
 
     public function testShouldDecorate()
     {
         $decorator = new QuoteSubjectDecorator(M::mock(SystemConfig::class));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent((new QuoteEmail(new Quote()))->setSubject('Quote!'), Context::create())));
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new QuoteEmail(new Quote()), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent((new QuoteEmail(new Quote()))->setSubject('Quote!'), Context::create())));
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new QuoteEmail(new Quote()), Context::create())));
     }
 }

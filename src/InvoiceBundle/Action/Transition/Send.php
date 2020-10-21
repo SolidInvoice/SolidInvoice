@@ -19,6 +19,7 @@ use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\MailerBundle\Mailer;
+use SolidInvoice\MailerBundle\MailerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -43,7 +44,7 @@ final class Send
      */
     private $router;
 
-    public function __construct(StateMachine $stateMachine, Mailer $mailer, RouterInterface $router)
+    public function __construct(StateMachine $stateMachine, MailerInterface $mailer, RouterInterface $router)
     {
         $this->stateMachine = $stateMachine;
         $this->mailer = $mailer;

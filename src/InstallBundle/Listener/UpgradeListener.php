@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Listener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -65,7 +65,7 @@ class UpgradeListener implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        if (!$this->installed) {
+        if (null === $this->installed) {
             return;
         }
 

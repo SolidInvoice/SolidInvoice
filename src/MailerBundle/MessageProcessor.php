@@ -17,6 +17,8 @@ use SolidInvoice\MailerBundle\Decorator\MessageDecorator;
 use SolidInvoice\MailerBundle\Decorator\VerificationMessageDecorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\MailerBundle\Event\MessageResultEvent;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MessageProcessor implements MessageProcessorInterface
@@ -32,18 +34,18 @@ class MessageProcessor implements MessageProcessorInterface
     private $eventDispatcher;
 
     /**
-     * @var \Swift_Mailer
+     * @var Swift_Mailer
      */
     private $mailer;
 
-    public function __construct(\Swift_Mailer $mailer, EventDispatcherInterface $eventDispatcher, iterable $decorators)
+    public function __construct(Swift_Mailer $mailer, EventDispatcherInterface $eventDispatcher, iterable $decorators)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
         $this->decorators = $decorators;
     }
 
-    public function process(\Swift_Message $message, Context $context): MessageSentResponse
+    public function process(Swift_Message $message, Context $context): MessageSentResponse
     {
         $event = new MessageEvent($message, $context);
 

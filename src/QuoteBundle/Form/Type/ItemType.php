@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\TaxEntityType;

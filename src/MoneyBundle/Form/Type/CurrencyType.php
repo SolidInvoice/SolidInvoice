@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Generator;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
@@ -47,7 +48,7 @@ class CurrencyType extends AbstractType
     }
 
     /**
-     * @return \Generator
+     * @return Generator
      */
     private function getCurrencyChoices()
     {

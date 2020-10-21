@@ -22,7 +22,8 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class EmailSettingsType extends AbstractType
 {
@@ -39,7 +40,7 @@ class EmailSettingsType extends AbstractType
             [
                 'choices' => array_flip($transports),
                 'placeholder' => 'Choose Mail Transport',
-                'constraints' => new Constraints\NotBlank(),
+                'constraints' => new NotBlank(),
             ]
         );
 
@@ -47,7 +48,7 @@ class EmailSettingsType extends AbstractType
             'host',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'smtp']),
+                'constraints' => new NotBlank(['groups' => 'smtp']),
             ]
         );
 
@@ -55,7 +56,7 @@ class EmailSettingsType extends AbstractType
             'port',
             IntegerType::class,
             [
-                'constraints' => new Constraints\Type(['groups' => ['smtp'], 'type' => 'integer']),
+                'constraints' => new Type(['groups' => ['smtp'], 'type' => 'integer']),
                 'required' => false,
             ]
         );
@@ -77,7 +78,7 @@ class EmailSettingsType extends AbstractType
             'user',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'gmail']),
+                'constraints' => new NotBlank(['groups' => 'gmail']),
                 'required' => false,
             ]
         );
@@ -86,7 +87,7 @@ class EmailSettingsType extends AbstractType
             'password',
             PasswordType::class,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'gmail']),
+                'constraints' => new NotBlank(['groups' => 'gmail']),
                 'required' => false,
             ]
         );

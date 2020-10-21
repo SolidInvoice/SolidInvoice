@@ -15,15 +15,16 @@ namespace SolidInvoice\CoreBundle\Form;
 
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Twig\Environment;
 
 class FieldRenderer
 {
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     private $twig;
 
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

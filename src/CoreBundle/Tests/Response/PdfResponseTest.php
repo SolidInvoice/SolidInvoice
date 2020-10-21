@@ -23,15 +23,15 @@ class PdfResponseTest extends TestCase
     {
         $response = new PdfResponse('PDF Content', 'filename.pdf');
 
-        $this->assertSame('application/pdf', $response->headers->get('Content-Type'));
-        $this->assertSame('inline; filename=filename.pdf', $response->headers->get('Content-Disposition'));
+        static::assertSame('application/pdf', $response->headers->get('Content-Type'));
+        static::assertSame('inline; filename=filename.pdf', $response->headers->get('Content-Disposition'));
     }
 
     public function testResponseDownload()
     {
         $response = new PdfResponse('PDF Content', 'filename.pdf', ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
-        $this->assertSame('application/pdf', $response->headers->get('Content-Type'));
-        $this->assertSame('attachment; filename=filename.pdf', $response->headers->get('Content-Disposition'));
+        static::assertSame('application/pdf', $response->headers->get('Content-Type'));
+        static::assertSame('attachment; filename=filename.pdf', $response->headers->get('Content-Disposition'));
     }
 }

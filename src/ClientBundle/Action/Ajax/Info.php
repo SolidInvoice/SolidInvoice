@@ -18,13 +18,15 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use Twig\Environment;
 
 final class Info implements AjaxResponse
 {
     use JsonTrait;
 
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     private $twig;
 
@@ -38,7 +40,7 @@ final class Info implements AjaxResponse
      */
     private $formatter;
 
-    public function __construct(\Twig\Environment $twig, MoneyFormatter $formatter, Currency $currency)
+    public function __construct(Environment $twig, MoneyFormatterInterface $formatter, Currency $currency)
     {
         $this->twig = $twig;
         $this->currency = $currency;

@@ -15,8 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Cron;
 
 use Carbon\Carbon;
 use Cron\CronExpression;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\CronBundle\CommandInterface;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -82,7 +82,7 @@ class RecurringInvoiceCreate implements CommandInterface
 
             $cron = CronExpression::factory($recurringInfo->getFrequency());
 
-            if (true === $cron->isDue(Carbon::now())) {
+            if ($cron->isDue(Carbon::now())) {
                 $newInvoice = $this->invoiceCloner->clone($invoice);
                 $this->setItemsDescription($newInvoice);
 

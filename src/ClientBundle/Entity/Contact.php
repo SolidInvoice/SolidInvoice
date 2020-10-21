@@ -19,7 +19,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use Serializable;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -31,9 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable
  */
-class Contact implements \Serializable
+class Contact implements Serializable
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
     /**
      * @var int
@@ -90,7 +91,7 @@ class Contact implements \Serializable
     private $email;
 
     /**
-     * @var Collection|AdditionalContactDetail[]
+     * @var AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
@@ -99,14 +100,14 @@ class Contact implements \Serializable
     private $additionalContactDetails;
 
     /**
-     * @var Collection|Invoice[]
+     * @var Invoice[]|Collection<int, Invoice>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
 
     /**
-     * @var Collection|Quote[]
+     * @var Quote[]|Collection<int, Quote>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
@@ -162,10 +163,6 @@ class Contact implements \Serializable
     }
 
     /**
-     * Set lastname.
-     *
-     * @param string $lastName
-     *
      * @return Contact
      */
     public function setLastName(?string $lastName): self
@@ -225,7 +222,7 @@ class Contact implements \Serializable
     /**
      * Get additional details.
      *
-     * @return Collection|AdditionalContactDetail[]
+     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      */
     public function getAdditionalContactDetails(): Collection
     {
@@ -235,7 +232,7 @@ class Contact implements \Serializable
     public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
     {
         $type = strtolower($type);
-        if (count($this->additionalContactDetails)) {
+        if ((is_countable($this->additionalContactDetails) ? count($this->additionalContactDetails) : 0) > 0) {
             foreach ($this->additionalContactDetails as $detail) {
                 if (strtolower((string) $detail->getType()) === $type) {
                     return $detail;
@@ -256,7 +253,7 @@ class Contact implements \Serializable
      */
     public function unserialize($serialized)
     {
-        list($this->id, $this->firstName, $this->lastName, $this->created, $this->updated) = unserialize($serialized);
+        [$this->id, $this->firstName, $this->lastName, $this->created, $this->updated] = unserialize($serialized);
     }
 
     public function __toString(): string

@@ -22,7 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SystemInformationForm extends AbstractType
 {
@@ -34,7 +36,7 @@ class SystemInformationForm extends AbstractType
                 Select2Type::class,
                 [
                     'choices' => array_flip(Locales::getNames()),
-                    'constraints' => new Constraints\NotBlank(['message' => 'Please select a locale']),
+                    'constraints' => new NotBlank(['message' => 'Please select a locale']),
                     'placeholder' => 'Please select a locale',
                 ]
             );
@@ -57,7 +59,7 @@ class SystemInformationForm extends AbstractType
             'currency',
             CurrencyType::class,
             [
-                'constraints' => new Constraints\NotBlank(['message' => 'Please select a currency']),
+                'constraints' => new NotBlank(['message' => 'Please select a currency']),
                 'placeholder' => 'Please select a currency',
             ]
         );
@@ -67,7 +69,7 @@ class SystemInformationForm extends AbstractType
                 'username',
                 null,
                 [
-                    'constraints' => new Constraints\NotBlank(['message' => 'Please enter a username']),
+                    'constraints' => new NotBlank(['message' => 'Please enter a username']),
                 ]
             );
 
@@ -76,8 +78,8 @@ class SystemInformationForm extends AbstractType
                 EmailType::class,
                 [
                     'constraints' => [
-                        new Constraints\NotBlank(['message' => 'Please enter a email']),
-                        new Constraints\Email(),
+                        new NotBlank(['message' => 'Please enter a email']),
+                        new Email(),
                     ],
                 ]
             );
@@ -93,8 +95,8 @@ class SystemInformationForm extends AbstractType
                     'first_options' => ['label' => 'Password'],
                     'second_options' => ['label' => 'Repeat Password'],
                     'constraints' => [
-                        new Constraints\NotBlank(['message' => 'You must enter a secure password']),
-                        new Constraints\Length(['min' => 6]),
+                        new NotBlank(['message' => 'You must enter a secure password']),
+                        new Length(['min' => 6]),
                     ],
                 ]
             );

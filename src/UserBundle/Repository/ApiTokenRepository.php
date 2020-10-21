@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;

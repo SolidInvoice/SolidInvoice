@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use DateTime;
+use Exception;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
+use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -105,7 +108,7 @@ final class Prepare
         Currency $currency,
         PaymentFactories $paymentFactories,
         EventDispatcherInterface $eventDispatcher,
-        Payum $payum,
+        RegistryInterface $payum,
         RouterInterface $router
     ) {
         $this->stateMachine = $stateMachine;
@@ -127,11 +130,11 @@ final class Prepare
         }
 
         if (!$this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
-            throw new \Exception('This invoice cannot be paid');
+            throw new Exception('This invoice cannot be paid');
         }
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED')) < 1) {
-            throw new \Exception('No payment methods available');
+            throw new Exception('No payment methods available');
         }
 
         $preferredChoices = $this->paymentMethodRepository->findBy(['gatewayName' => 'credit']);
@@ -144,14 +147,14 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => $currency ? $currency->getCode() : $this->currency->getCode(),
+                'currency' => null !== $currency ? $currency->getCode() : $this->currency->getCode(),
                 'preferred_choices' => $preferredChoices,
             ]
         );
 
         $form->handleRequest($request);
 
-        $paymentFactories = array_keys($this->paymentFactories->getFactories('offline'));
+        $paymentFactories = $this->paymentFactories->getFactories('offline');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -163,7 +166,7 @@ final class Prepare
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (in_array($paymentName, $paymentFactories, true)) {
+            if (array_key_exists($paymentName, $paymentFactories)) {
                 if ('credit' === $paymentName) {
                     $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
@@ -216,20 +219,20 @@ final class Prepare
                     );
 
                 return new RedirectResponse($captureToken->getTargetUrl());
-            } else {
-                $payment->setStatus(Status::STATUS_CAPTURED);
-                $payment->setCompleted(new \DateTime('now'));
-                $this->save($payment);
-
-                $event = new PaymentCompleteEvent($payment);
-                $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
-
-                if ($response = $event->getResponse()) {
-                    return $response;
-                }
-
-                return new RedirectResponse($this->router->generate('_payments_index'));
             }
+
+            $payment->setStatus(Status::STATUS_CAPTURED);
+            $payment->setCompleted(new DateTime('now'));
+            $this->save($payment);
+
+            $event = new PaymentCompleteEvent($payment);
+            $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
+
+            if (null !== ($response = $event->getResponse())) {
+                return $response;
+            }
+
+            return new RedirectResponse($this->router->generate('_payments_index'));
         }
 
         return new Template(
@@ -237,7 +240,7 @@ final class Prepare
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-                'internal' => $paymentFactories,
+                'internal' => \array_keys($paymentFactories),
             ]
         );
     }

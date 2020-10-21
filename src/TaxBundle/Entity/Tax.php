@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
-use SolidInvoice\CoreBundle\Traits\Entity;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,11 +30,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Tax
 {
-    use Entity\TimeStampable;
+    use TimeStampable;
 
-    const TYPE_INCLUSIVE = 'Inclusive';
+    public const TYPE_INCLUSIVE = 'Inclusive';
 
-    const TYPE_EXCLUSIVE = 'Exclusive';
+    public const TYPE_EXCLUSIVE = 'Exclusive';
 
     /**
      * @var int
@@ -71,14 +71,14 @@ class Tax
     private $type;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var ItemInterface[]|Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var ItemInterface[]|Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */
@@ -168,7 +168,7 @@ class Tax
     }
 
     /**
-     * @return Collection|ItemInterface[]
+     * @return ItemInterface[]|Collection<int, ItemInterface>
      */
     public function getInvoiceItems(): Collection
     {
@@ -182,13 +182,13 @@ class Tax
      */
     public function setInvoiceItems(array $invoiceItems): self
     {
-        $this->invoiceItems = $invoiceItems;
+        $this->invoiceItems = new ArrayCollection($invoiceItems);
 
         return $this;
     }
 
     /**
-     * @return Collection|ItemInterface[]
+     * @return ItemInterface[]|Collection<int, ItemInterface>
      */
     public function getQuoteItems(): Collection
     {
@@ -202,7 +202,7 @@ class Tax
      */
     public function setQuoteItems(array $quoteItems): self
     {
-        $this->quoteItems = $quoteItems;
+        $this->quoteItems = new ArrayCollection($quoteItems);
 
         return $this;
     }

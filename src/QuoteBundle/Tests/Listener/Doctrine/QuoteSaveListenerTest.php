@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Listener\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\ObjectManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +33,7 @@ class QuoteSaveListenerTest extends TestCase
     public function testEvents()
     {
         $listener = new QuoteSaveListener(new ServiceLocator([]));
-        $this->assertSame([Events::prePersist, Events::preUpdate], $listener->getSubscribedEvents());
+        static::assertSame([Events::prePersist, Events::preUpdate], $listener->getSubscribedEvents());
     }
 
     public function testPrePersist()
