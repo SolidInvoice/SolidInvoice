@@ -152,6 +152,8 @@ final class Prepare
 
         $form->handleRequest($request);
 
+        $paymentFactories = $this->paymentFactories->getFactories('offline');
+
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             /** @var Money $amount */
@@ -162,7 +164,7 @@ final class Prepare
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (array_key_exists($paymentName, $this->paymentFactories->getFactories('offline'))) {
+            if (array_key_exists($paymentName, $paymentFactories)) {
                 if ('credit' === $paymentName) {
                     $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
@@ -236,7 +238,7 @@ final class Prepare
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-                'internal' => $paymentFactories,
+                'internal' => \array_keys($paymentFactories),
             ]
         );
     }

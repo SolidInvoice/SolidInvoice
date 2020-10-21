@@ -79,6 +79,7 @@ class MoneyType extends Type
             return (int) $value;
         }
 
+        // @phpstan-ignore
         throw ConversionException::conversionFailed($value, self::NAME);
     }
 
