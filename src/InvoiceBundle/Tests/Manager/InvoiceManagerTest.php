@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
 use DateTime;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Mockery\Mock;
@@ -21,19 +23,18 @@ use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\InvoiceBundle\Entity\item;
+use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
+use Symfony\Contracts\EventDispatcher\EventDispatcher;
 
 class InvoiceManagerTest extends KernelTestCase
 {
@@ -45,15 +46,15 @@ class InvoiceManagerTest extends KernelTestCase
     private $manager;
 
     /**
-     * @var Mock
+     * @var Mock|EntityManagerInterface
      */
     private $entityManager;
 
     public function setUp(): void
     {
-        $this->entityManager = M::mock('Doctrine\ORM\EntityManagerInterface');
-        $doctrine = M::mock('Doctrine\Common\Persistence\ManagerRegistry', ['getManager' => $this->entityManager]);
-        $notification = M::mock('SolidInvoice\NotificationBundle\Notification\NotificationManager');
+        $this->entityManager = M::mock(EntityManagerInterface::class);
+        $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $this->entityManager]);
+        $notification = M::mock(NotificationManager::class);
 
         $notification->shouldReceive('sendNotification')
             ->andReturn(null);
@@ -131,7 +132,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         /** @var item[] $invoiceItem */
         $invoiceItem = $invoice->getItems();
-        static::assertInstanceOf('SolidInvoice\InvoiceBundle\Entity\item', $invoiceItem[0]);
+        static::assertInstanceOf(Item::class, $invoiceItem[0]);
 
         static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
