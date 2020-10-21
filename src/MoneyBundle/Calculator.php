@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle;
 
+use InvalidArgumentException;
 use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -24,7 +25,7 @@ final class Calculator
     public function calculateDiscount($entity): Money
     {
         if (!$entity instanceof Quote && !$entity instanceof Invoice) {
-            throw new \InvalidArgumentException(sprintf('"%s" expects instance of Quote or Invoice, "%s" given.', __METHOD__, \is_object($entity) ? \get_class($entity) : \gettype($entity)));
+            throw new InvalidArgumentException(sprintf('"%s" expects instance of Quote or Invoice, "%s" given.', __METHOD__, \is_object($entity) ? \get_class($entity) : \gettype($entity)));
         }
 
         $discount = $entity->getDiscount();

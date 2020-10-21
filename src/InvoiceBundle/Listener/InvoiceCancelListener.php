@@ -38,7 +38,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
     }
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 

@@ -15,11 +15,12 @@ namespace SolidInvoice\DataGridBundle\Source;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 class ORMSource implements SourceInterface
 {
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 
@@ -54,7 +55,7 @@ class ORMSource implements SourceInterface
         $qb = $repository->{$method}($parameters);
 
         if (!$qb instanceof QueryBuilder) {
-            throw new \Exception('Grid source should return a query builder');
+            throw new Exception('Grid source should return a query builder');
         }
 
         return $qb;

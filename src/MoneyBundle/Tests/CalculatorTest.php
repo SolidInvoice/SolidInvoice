@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests;
 
+use InvalidArgumentException;
 use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -31,7 +32,7 @@ class CalculatorTest extends TestCase
 
     public function testCalculateDiscountWithInvalidEntity()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"SolidInvoice\MoneyBundle\Calculator::calculateDiscount" expects instance of Quote or Invoice, "string" given.');
         $calculator = new Calculator();
         $calculator->calculateDiscount('');

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Traits;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 trait SaveableTrait
 {
@@ -25,19 +27,19 @@ trait SaveableTrait
      * @param mixed $entity The entity to persist
      * @param bool  $flush  If an automatic flush should occur
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function save($entity, bool $flush = true)
     {
         if (!$this->doctrine) {
-            throw new \Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', get_class($this), ManagerRegistry::class, __METHOD__));
+            throw new Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', get_class($this), ManagerRegistry::class, __METHOD__));
         }
 
         if (!is_object($entity)) {
-            throw new \Exception(sprintf('%s expects $entity yo be an object, %s given', __METHOD__, gettype($entity)));
+            throw new Exception(sprintf('%s expects $entity yo be an object, %s given', __METHOD__, gettype($entity)));
         }
 
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
 
         $em->persist($entity);

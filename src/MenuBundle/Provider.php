@@ -17,6 +17,7 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
+use SplPriorityQueue;
 
 class Provider implements MenuProviderInterface
 {
@@ -35,7 +36,7 @@ class Provider implements MenuProviderInterface
      *
      * @param string $name
      */
-    public function get($name, array $options = []): \SplPriorityQueue
+    public function get($name, array $options = []): SplPriorityQueue
     {
         return $this->storage->get($name);
     }

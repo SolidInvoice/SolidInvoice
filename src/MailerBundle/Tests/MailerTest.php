@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\MailerBundle\Mailer;
 use SolidInvoice\MailerBundle\MessageProcessorInterface;
 use SolidInvoice\MailerBundle\MessageSentResponse;
+use Swift_Message;
 
 class MailerTest extends TestCase
 {
@@ -26,7 +27,7 @@ class MailerTest extends TestCase
         /** @var MessageProcessorInterface|MockObject $processor */
         $processor = $this->createMock(MessageProcessorInterface::class);
         $mailer = new Mailer($processor);
-        $mail = new \Swift_Message();
+        $mail = new Swift_Message();
 
         $processor->expects(static::at(0))
             ->method('process')
@@ -42,7 +43,7 @@ class MailerTest extends TestCase
         /** @var MessageProcessorInterface|MockObject $processor */
         $processor = $this->createMock(MessageProcessorInterface::class);
         $mailer = new Mailer($processor);
-        $mail = new \Swift_Message();
+        $mail = new Swift_Message();
 
         $processor->expects(static::at(0))
             ->method('process')

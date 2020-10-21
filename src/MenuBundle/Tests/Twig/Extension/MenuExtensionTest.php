@@ -17,13 +17,15 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Twig\Extension\MenuExtension;
+use SplPriorityQueue;
+use Twig\Extension\ExtensionInterface;
 
 class MenuExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var \Twig\Extension\ExtensionInterface
+     * @var ExtensionInterface
      */
     private $extension;
 
@@ -55,7 +57,7 @@ class MenuExtensionTest extends TestCase
         $this->extension->setRenderer($renderer);
 
         $location = 'abc';
-        $menu = new \SplPriorityQueue();
+        $menu = new SplPriorityQueue();
 
         $provider->shouldReceive('get')
             ->once()

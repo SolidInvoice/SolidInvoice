@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
+use DateTime;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use Mockery\Mock;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\InvoiceBundle\Entity\item;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -42,7 +45,7 @@ class InvoiceManagerTest extends KernelTestCase
     private $manager;
 
     /**
-     * @var \Mockery\Mock
+     * @var Mock
      */
     private $entityManager;
 
@@ -82,7 +85,7 @@ class InvoiceManagerTest extends KernelTestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new \DateTime('NOW'));
+        $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -92,7 +95,7 @@ class InvoiceManagerTest extends KernelTestCase
         $item = new Item();
         $item->setTax($tax);
         $item->setDescription('Item Description');
-        $item->setCreated(new \DateTime('now'));
+        $item->setCreated(new DateTime('now'));
         $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
         $item->setTotal(new Money((12 * 10), $currency));
@@ -126,7 +129,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         static::assertCount(1, $invoice->getItems());
 
-        /** @var \SolidInvoice\InvoiceBundle\Entity\item[] $invoiceItem */
+        /** @var item[] $invoiceItem */
         $invoiceItem = $invoice->getItems();
         static::assertInstanceOf('SolidInvoice\InvoiceBundle\Entity\item', $invoiceItem[0]);
 

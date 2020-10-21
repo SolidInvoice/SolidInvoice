@@ -15,7 +15,9 @@ namespace SolidInvoice\SettingsBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use SolidInvoice\SettingsBundle\Entity\Setting;
+use Throwable;
 
 class SettingsRepository extends ServiceEntityRepository
 {
@@ -25,7 +27,7 @@ class SettingsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws \InvalidArgumentException|\Throwable
+     * @throws InvalidArgumentException|Throwable
      */
     public function save(array $settings): void
     {

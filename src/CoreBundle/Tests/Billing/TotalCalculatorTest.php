@@ -27,6 +27,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use stdClass;
 
 class TotalCalculatorTest extends TestCase
 {
@@ -45,7 +46,7 @@ class TotalCalculatorTest extends TestCase
 
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "Invoice or Quote", "stdClass" given');
-        $updater->calculateTotals(new \stdClass());
+        $updater->calculateTotals(new stdClass());
     }
 
     public function testUpdateWithSingleItem()

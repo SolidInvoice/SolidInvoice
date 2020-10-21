@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\MailerBundle\Event;
 
 use SolidInvoice\MailerBundle\Context;
+use Swift_Message;
+use Swift_Mime_SimpleMessage;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class MessageEvent extends Event
 {
     /**
-     * @var \Swift_Message
+     * @var Swift_Message
      */
     private $message;
 
@@ -28,18 +30,18 @@ class MessageEvent extends Event
      */
     private $context;
 
-    public function __construct(\Swift_Message $message, Context $context)
+    public function __construct(Swift_Message $message, Context $context)
     {
         $this->message = $message;
         $this->context = $context;
     }
 
-    public function getMessage(): \Swift_Message
+    public function getMessage(): Swift_Message
     {
         return $this->message;
     }
 
-    public function setMessage(\Swift_Mime_SimpleMessage $message): self
+    public function setMessage(Swift_Mime_SimpleMessage $message): self
     {
         $this->message = $message;
 

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Storage;
 
+use SplPriorityQueue;
+
 class MenuStorage implements MenuStorageInterface
 {
     /**
@@ -31,10 +33,10 @@ class MenuStorage implements MenuStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $name): \SplPriorityQueue
+    public function get(string $name): SplPriorityQueue
     {
         if (!$this->has($name)) {
-            $this->list[$name] = new \SplPriorityQueue();
+            $this->list[$name] = new SplPriorityQueue();
         }
 
         return $this->list[$name];

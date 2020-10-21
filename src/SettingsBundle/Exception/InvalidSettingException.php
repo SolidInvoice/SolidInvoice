@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Exception;
 
+use RuntimeException;
+
 /**
  * Class InvalidSettingException.
  */
-class InvalidSettingException extends \RuntimeException
+class InvalidSettingException extends RuntimeException
 {
     /**
      * @param string $value The name of the invalid setting

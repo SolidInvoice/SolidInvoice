@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Traits\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
+use DateTIme;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 trait TimeStampable
 {
     /**
-     * @var \DateTIme
+     * @var DateTIme
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
@@ -29,7 +31,7 @@ trait TimeStampable
     protected $created;
 
     /**
-     * @var \DateTIme
+     * @var DateTIme
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
@@ -40,9 +42,9 @@ trait TimeStampable
     /**
      * Returns created.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreated(): ?\DateTime
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }
@@ -52,7 +54,7 @@ trait TimeStampable
      *
      * @return $this
      */
-    public function setCreated(\DateTime $created)
+    public function setCreated(DateTime $created)
     {
         $this->created = $created;
 
@@ -62,9 +64,9 @@ trait TimeStampable
     /**
      * Returns updated.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdated(): ?\DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
@@ -74,7 +76,7 @@ trait TimeStampable
      *
      * @return $this
      */
-    public function setUpdated(\DateTime $updated)
+    public function setUpdated(DateTime $updated)
     {
         $this->updated = $updated;
 

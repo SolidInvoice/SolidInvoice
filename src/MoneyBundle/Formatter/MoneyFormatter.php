@@ -15,6 +15,7 @@ namespace SolidInvoice\MoneyBundle\Formatter;
 
 use Money\Currency;
 use Money\Money;
+use NumberFormatter;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
@@ -32,7 +33,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
     private $currency;
 
     /**
-     * @var \NumberFormatter
+     * @var NumberFormatter
      */
     private $numberFormatter;
 
@@ -44,12 +45,12 @@ final class MoneyFormatter implements MoneyFormatterInterface
     public function __construct(string $locale, Currency $currency)
     {
         try {
-            $this->numberFormatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+            $this->numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
         } catch (MethodArgumentValueNotImplementedException | MethodArgumentNotImplementedException $e) {
-            $this->numberFormatter = new \NumberFormatter('en', \NumberFormatter::CURRENCY);
+            $this->numberFormatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
         }
 
-        $this->numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
+        $this->numberFormatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 2);
         $this->locale = $locale;
         $this->currency = $currency;
     }
@@ -72,12 +73,12 @@ final class MoneyFormatter implements MoneyFormatterInterface
 
     public function getThousandSeparator(): string
     {
-        return $this->numberFormatter->getSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
+        return $this->numberFormatter->getSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
     }
 
     public function getDecimalSeparator(): string
     {
-        return $this->numberFormatter->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
+        return $this->numberFormatter->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
     }
 
     public function getPattern(): string

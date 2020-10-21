@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Repository;
 
+use DateTimeInterface;
 use Doctrine\ORM\QueryBuilder;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
@@ -152,7 +153,7 @@ class UserRepositoryTest extends KernelTestCase
 
         static::assertNotNull($user1->getConfirmationToken());
         static::assertNotNull($user1->getPasswordRequestedAt());
-        static::assertInstanceOf(\DateTimeInterface::class, $user1->getPasswordRequestedAt());
+        static::assertInstanceOf(DateTimeInterface::class, $user1->getPasswordRequestedAt());
 
         $this->repository->clearUserConfirmationToken($user1);
 

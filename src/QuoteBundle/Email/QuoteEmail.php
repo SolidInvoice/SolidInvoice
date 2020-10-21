@@ -16,8 +16,9 @@ namespace SolidInvoice\QuoteBundle\Email;
 use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\MailerBundle\Template\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use Swift_Message;
 
-final class QuoteEmail extends \Swift_Message implements HtmlTemplateMessage
+final class QuoteEmail extends Swift_Message implements HtmlTemplateMessage
 {
     /**
      * @var Quote

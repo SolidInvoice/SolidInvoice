@@ -17,9 +17,10 @@ use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\MailerBundle\Template\Template;
 use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
 use SolidInvoice\UserBundle\Entity\User;
+use Swift_Message;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class ResetPasswordEmail extends \Swift_Message implements HtmlTemplateMessage, TextTemplateMessage
+final class ResetPasswordEmail extends Swift_Message implements HtmlTemplateMessage, TextTemplateMessage
 {
     /**
      * @var User

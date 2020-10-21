@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle;
 
+use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\ItemInterface as Item;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Renderer\ListRenderer;
+use SplPriorityQueue;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -45,7 +47,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     private $translator;
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(RequestStack $requestStack, FactoryInterface $factory, TranslatorInterface $translator, Environment $twig)
     {
@@ -69,7 +71,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     /**
      * Renders a menu at a specific location.
      */
-    public function build(\SplPriorityQueue $storage, array $options = []): string
+    public function build(SplPriorityQueue $storage, array $options = []): string
     {
         $menu = $this->factory->createItem('root');
 

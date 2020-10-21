@@ -18,6 +18,7 @@ use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\Workflow\StateMachine;
+use Traversable;
 
 final class QuoteCloner
 {
@@ -61,7 +62,7 @@ final class QuoteCloner
         return $newQuote;
     }
 
-    private function addItems(Quote $quote, Carbon $now): \Traversable
+    private function addItems(Quote $quote, Carbon $now): Traversable
     {
         foreach ($quote->getItems() as $item) {
             $invoiceItem = new Item();

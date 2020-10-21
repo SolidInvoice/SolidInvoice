@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Storage;
 
+use SplPriorityQueue;
+
 interface MenuStorageInterface
 {
     /**
@@ -23,5 +25,5 @@ interface MenuStorageInterface
     /**
      * Returns the builder for the specified menu from the storage.
      */
-    public function get(string $name): \SplPriorityQueue;
+    public function get(string $name): SplPriorityQueue;
 }

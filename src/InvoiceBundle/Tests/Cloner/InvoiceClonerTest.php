@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
+use DateTime;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
@@ -37,7 +38,7 @@ class InvoiceClonerTest extends TestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new \DateTime('NOW'));
+        $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -47,7 +48,7 @@ class InvoiceClonerTest extends TestCase
         $item = new Item();
         $item->setTax($tax);
         $item->setDescription('Item Description');
-        $item->setCreated(new \DateTime('now'));
+        $item->setCreated(new DateTime('now'));
         $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
         $item->setTotal(new Money((12 * 10), $currency));
@@ -91,7 +92,7 @@ class InvoiceClonerTest extends TestCase
 
         static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        static::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
+        static::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
         static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }

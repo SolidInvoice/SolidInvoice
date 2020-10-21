@@ -26,7 +26,7 @@ final class Info implements AjaxResponse
     use JsonTrait;
 
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     private $twig;
 

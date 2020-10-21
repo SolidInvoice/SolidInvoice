@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction\Exception;
 
-class NotImplementedException extends \Exception
+use Exception;
+
+class NotImplementedException extends Exception
 {
     /**
-     * @param \Exception $previous
+     * @param Exception $previous
      */
-    public function __construct(string $message = '', int $code = 0, \Exception $previous = null)
+    public function __construct(string $message = '', int $code = 0, Exception $previous = null)
     {
         parent::__construct($message ?: 'Not Implemented', $code, $previous);
     }

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle;
 
-final class Context implements \ArrayAccess
+use ArrayAccess;
+
+final class Context implements ArrayAccess
 {
     private $properties = [];
 

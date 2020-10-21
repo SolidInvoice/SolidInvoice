@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -143,7 +144,7 @@ class Invoice
     private $notes;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -152,7 +153,7 @@ class Invoice
     private $due;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -161,7 +162,7 @@ class Invoice
     private $paidDate;
 
     /**
-     * @var \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface>
+     * @var ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -171,7 +172,7 @@ class Invoice
     private $items;
 
     /**
-     * @var \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment>
+     * @var Payment[]|\Doctrine\Common\Collections\Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
@@ -405,9 +406,9 @@ class Invoice
     /**
      * Get due.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDue(): ?\DateTime
+    public function getDue(): ?DateTime
     {
         return $this->due;
     }
@@ -417,7 +418,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setDue(\DateTime $due): self
+    public function setDue(DateTime $due): self
     {
         $this->due = $due;
 
@@ -427,9 +428,9 @@ class Invoice
     /**
      * Get paidDate.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getPaidDate(): ?\DateTime
+    public function getPaidDate(): ?DateTime
     {
         return $this->paidDate;
     }
@@ -439,7 +440,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setPaidDate(\DateTime $paidDate): self
+    public function setPaidDate(DateTime $paidDate): self
     {
         $this->paidDate = $paidDate;
 
@@ -451,7 +452,7 @@ class Invoice
      *
      * @return Invoice
      *
-     * @param \SolidInvoice\CoreBundle\Entity\ItemInterface[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\CoreBundle\Entity\ItemInterface> $item
+     * @param ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface> $item
      */
     public function addItem(Item $item): self
     {
@@ -489,7 +490,7 @@ class Invoice
      *
      * @return Invoice
      *
-     * @param \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment> $payment
+     * @param Payment[]|\Doctrine\Common\Collections\Collection<int, Payment> $payment
      */
     public function addPayment(Payment $payment): self
     {

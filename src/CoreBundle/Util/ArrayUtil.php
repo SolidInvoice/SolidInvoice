@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Util;
 
+use ArrayAccess;
+use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Traversable;
 
 class ArrayUtil
 {
@@ -23,12 +26,12 @@ class ArrayUtil
      * @param array|\Traversable $array
      * @param string             $column
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function column($array, $column): array
     {
-        if (!is_array($array) && !$array instanceof \Traversable) {
-            throw new \Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
+        if (!is_array($array) && !$array instanceof Traversable) {
+            throw new Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
         }
 
         if (is_array($array[array_key_first($array)])) {
@@ -40,7 +43,7 @@ class ArrayUtil
         $return = [];
 
         foreach ($array as $item) {
-            if ((is_array($item) || $item instanceof \ArrayAccess) && '[' !== $column[0]) {
+            if ((is_array($item) || $item instanceof ArrayAccess) && '[' !== $column[0]) {
                 $column = '['.$column.']';
             }
 

@@ -17,13 +17,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
+use JsonSerializable;
 use SolidInvoice\DataGridBundle\Filter\FilterInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class Grid implements GridInterface, \JsonSerializable
+class Grid implements GridInterface, JsonSerializable
 {
     /**
      * @var string
@@ -95,7 +97,7 @@ class Grid implements GridInterface, \JsonSerializable
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function fetchData(Request $request, ObjectManager $objectManger): array
     {

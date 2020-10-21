@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Exception;
 
-class InvalidGridException extends \Exception
+use Exception;
+
+class InvalidGridException extends Exception
 {
     public function __construct(string $grid)
     {

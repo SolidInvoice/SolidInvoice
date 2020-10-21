@@ -16,8 +16,9 @@ namespace SolidInvoice\InvoiceBundle\Email;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\MailerBundle\Template\Template;
+use Swift_Message;
 
-final class InvoiceEmail extends \Swift_Message implements HtmlTemplateMessage
+final class InvoiceEmail extends Swift_Message implements HtmlTemplateMessage
 {
     /**
      * @var Invoice

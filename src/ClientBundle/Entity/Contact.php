@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Serializable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -31,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactRepository")
  * @Gedmo\Loggable
  */
-class Contact implements \Serializable
+class Contact implements Serializable
 {
     use TimeStampable;
 
@@ -90,7 +91,7 @@ class Contact implements \Serializable
     private $email;
 
     /**
-     * @var \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\AdditionalContactDetail>
+     * @var AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()

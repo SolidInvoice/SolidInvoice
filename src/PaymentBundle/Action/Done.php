@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use DateTime;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
@@ -59,11 +61,11 @@ final class Done
         $paymentMethod = $this->payum->getGateway($token->getGatewayName());
         $paymentMethod->execute($status = new StatusRequest($token));
 
-        /** @var \SolidInvoice\PaymentBundle\Entity\Payment $payment */
+        /** @var Payment $payment */
         $payment = $status->getFirstModel();
 
         $payment->setStatus((string) $status->getValue());
-        $payment->setCompleted(new \DateTime('now'));
+        $payment->setCompleted(new DateTime('now'));
 
         $this->save($payment);
 

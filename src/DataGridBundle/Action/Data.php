@@ -30,7 +30,7 @@ final class Data implements AjaxResponse
     private $repository;
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use DateTime;
+use Exception;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
@@ -128,11 +130,11 @@ final class Prepare
         }
 
         if (!$this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
-            throw new \Exception('This invoice cannot be paid');
+            throw new Exception('This invoice cannot be paid');
         }
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED')) < 1) {
-            throw new \Exception('No payment methods available');
+            throw new Exception('No payment methods available');
         }
 
         $preferredChoices = $this->paymentMethodRepository->findBy(['gatewayName' => 'credit']);
@@ -219,7 +221,7 @@ final class Prepare
                 return new RedirectResponse($captureToken->getTargetUrl());
             } else {
                 $payment->setStatus(Status::STATUS_CAPTURED);
-                $payment->setCompleted(new \DateTime('now'));
+                $payment->setCompleted(new DateTime('now'));
                 $this->save($payment);
 
                 $event = new PaymentCompleteEvent($payment);

@@ -34,7 +34,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
     protected $userProvider;
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 

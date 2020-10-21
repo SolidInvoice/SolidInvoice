@@ -24,7 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class HiddenMoneyType extends AbstractType
 {
     /**
-     * @var \Money\Currency
+     * @var Currency
      */
     private $currency;
 

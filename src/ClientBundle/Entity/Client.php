@@ -102,7 +102,7 @@ class Client
     private $vatNumber;
 
     /**
-     * @var \SolidInvoice\ClientBundle\Entity\Contact[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Contact>
+     * @var Contact[]|\Doctrine\Common\Collections\Collection<int, Contact>
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"firstName" = "ASC"})
@@ -114,7 +114,7 @@ class Client
     private $contacts;
 
     /**
-     * @var \SolidInvoice\QuoteBundle\Entity\Quote[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\QuoteBundle\Entity\Quote>
+     * @var Quote[]|\Doctrine\Common\Collections\Collection<int, Quote>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -123,7 +123,7 @@ class Client
     private $quotes;
 
     /**
-     * @var \SolidInvoice\InvoiceBundle\Entity\Invoice[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\InvoiceBundle\Entity\Invoice>
+     * @var Invoice[]|\Doctrine\Common\Collections\Collection<int, Invoice>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -132,7 +132,7 @@ class Client
     private $invoices;
 
     /**
-     * @var \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment>
+     * @var Payment[]|\Doctrine\Common\Collections\Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
@@ -140,7 +140,7 @@ class Client
     private $payments;
 
     /**
-     * @var \SolidInvoice\ClientBundle\Entity\Address[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Address>
+     * @var Address[]|\Doctrine\Common\Collections\Collection<int, Address>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
@@ -249,7 +249,7 @@ class Client
      *
      * @return Client
      *
-     * @param \SolidInvoice\ClientBundle\Entity\Contact[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Contact> $contact
+     * @param Contact[]|\Doctrine\Common\Collections\Collection<int, Contact> $contact
      */
     public function addContact(Contact $contact): self
     {
@@ -286,7 +286,7 @@ class Client
      *
      * @return Client
      *
-     * @param \SolidInvoice\QuoteBundle\Entity\Quote[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\QuoteBundle\Entity\Quote> $quote
+     * @param Quote[]|\Doctrine\Common\Collections\Collection<int, Quote> $quote
      */
     public function addQuote(Quote $quote): self
     {
@@ -323,7 +323,7 @@ class Client
      *
      * @return Client
      *
-     * @param \SolidInvoice\InvoiceBundle\Entity\Invoice[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\InvoiceBundle\Entity\Invoice> $invoice
+     * @param Invoice[]|\Doctrine\Common\Collections\Collection<int, Invoice> $invoice
      */
     public function addInvoice(Invoice $invoice): self
     {
@@ -360,7 +360,7 @@ class Client
      *
      * @return Client
      *
-     * @param \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment> $payment
+     * @param Payment[]|\Doctrine\Common\Collections\Collection<int, Payment> $payment
      */
     public function addPayment(Payment $payment): self
     {
@@ -395,7 +395,7 @@ class Client
     /**
      * Add address.
      *
-     * @param \SolidInvoice\ClientBundle\Entity\Address[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\ClientBundle\Entity\Address> $address
+     * @param Address[]|\Doctrine\Common\Collections\Collection<int, Address> $address
      *
      * @return Client
      */

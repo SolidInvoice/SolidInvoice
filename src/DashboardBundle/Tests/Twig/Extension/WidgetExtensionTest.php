@@ -13,29 +13,34 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
+use SplPriorityQueue;
 use Twig\Environment;
+use Twig\Extension\ExtensionInterface;
 use Twig\Loader\ArrayLoader;
+use Twig\TwigFunction;
 
 class WidgetExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var \Twig\Extension\ExtensionInterface
+     * @var ExtensionInterface
      */
     private $extension;
 
     /**
-     * @var \Mockery\Mock
+     * @var Mock
      */
     private $factory;
 
     protected function setUp(): void
     {
-        $this->factory = \Mockery::mock('SolidInvoice\DashboardBundle\WidgetFactory');
+        $this->factory = Mockery::mock('SolidInvoice\DashboardBundle\WidgetFactory');
         $this->extension = new WidgetExtension($this->factory);
     }
 
@@ -46,7 +51,7 @@ class WidgetExtensionTest extends TestCase
 
     public function testGetFunctions()
     {
-        /** @var \Twig\TwigFunction[] $functions */
+        /** @var TwigFunction[] $functions */
         $functions = $this->extension->getFunctions();
 
         static::assertCount(1, $functions);
@@ -56,7 +61,7 @@ class WidgetExtensionTest extends TestCase
 
     public function testRenderDashboardWidget()
     {
-        $widget = \Mockery::mock(
+        $widget = Mockery::mock(
             'SolidInvoice\DashboardBundle\Widgets\WidgetInterface',
             [
                 'getTemplate' => 'test_template.html.twig',
@@ -66,7 +71,7 @@ class WidgetExtensionTest extends TestCase
 
         $environment = new Environment(new ArrayLoader(['test_template.html.twig' => '{{ a }}{{ b }}{{ c }}']));
 
-        $q = new \SplPriorityQueue();
+        $q = new SplPriorityQueue();
         $q->insert($widget, 0);
         $this->factory
             ->shouldReceive('get')

@@ -37,7 +37,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
     private $router;
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 

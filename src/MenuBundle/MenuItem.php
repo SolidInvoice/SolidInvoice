@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle;
 
+use InvalidArgumentException;
 use Knp\Menu\MenuItem as BaseItem;
 
 class MenuItem extends BaseItem implements ItemInterface
@@ -22,7 +23,7 @@ class MenuItem extends BaseItem implements ItemInterface
      *
      * @return \Knp\Menu\ItemInterface|string
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addChild($child, array $options = [])
     {
@@ -41,7 +42,7 @@ class MenuItem extends BaseItem implements ItemInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addDivider(string $type = '')
     {
@@ -57,7 +58,7 @@ class MenuItem extends BaseItem implements ItemInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addHeader(string $header)
     {

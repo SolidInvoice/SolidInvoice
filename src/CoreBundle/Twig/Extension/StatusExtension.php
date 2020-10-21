@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use Exception;
 use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\PaymentBundle\Model\Status as PaymentStatus;
@@ -82,7 +83,7 @@ class StatusExtension extends AbstractExtension
     /**
      * Returns an array of all the helper functions for the client status.
      *
-     * @return \Twig\TwigFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {
@@ -124,7 +125,7 @@ class StatusExtension extends AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function renderInvoiceStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
@@ -133,7 +134,7 @@ class StatusExtension extends AbstractExtension
         }
 
         if (!isset($this->invoiceLabelMap[$status])) {
-            throw new \Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [
@@ -185,7 +186,7 @@ class StatusExtension extends AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function renderQuoteStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
@@ -194,7 +195,7 @@ class StatusExtension extends AbstractExtension
         }
 
         if (!isset($this->quoteLabelMap[$status])) {
-            throw new \Exception(sprintf('The quote status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The quote status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [
@@ -211,7 +212,7 @@ class StatusExtension extends AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function renderPaymentStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
@@ -220,7 +221,7 @@ class StatusExtension extends AbstractExtension
         }
 
         if (!isset($this->paymentLabelMap[$status])) {
-            throw new \Exception(sprintf('The payment status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The payment status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [
@@ -237,7 +238,7 @@ class StatusExtension extends AbstractExtension
      *
      * @return string|array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function renderClientStatusLabel(Environment $environment, string $status = null, $tooltip = null)
     {
@@ -246,7 +247,7 @@ class StatusExtension extends AbstractExtension
         }
 
         if (!isset($this->clientLabelMap[$status])) {
-            throw new \Exception(sprintf('The client status "%s" does not have an associative label', $status));
+            throw new Exception(sprintf('The client status "%s" does not have an associative label', $status));
         }
 
         $statusLabel = [

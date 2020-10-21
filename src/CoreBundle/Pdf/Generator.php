@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Pdf;
 
 use Mpdf\Mpdf;
+use Mpdf\MpdfException;
 use Mpdf\Output\Destination;
 use Psr\Log\LoggerInterface;
 
@@ -36,7 +37,7 @@ class Generator
     }
 
     /**
-     * @throws \Mpdf\MpdfException
+     * @throws MpdfException
      */
     public function generate(string $html): string
     {

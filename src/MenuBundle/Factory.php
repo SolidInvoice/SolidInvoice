@@ -16,18 +16,19 @@ namespace SolidInvoice\MenuBundle;
 use Knp\Menu\Factory\ExtensionInterface;
 use Knp\Menu\Integration\Symfony\RoutingExtension;
 use Knp\Menu\MenuFactory;
+use SplPriorityQueue;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Factory extends MenuFactory
 {
     /**
-     * @var \SplPriorityQueue|ExtensionInterface[]
+     * @var SplPriorityQueue|ExtensionInterface[]
      */
     protected $extensions;
 
     public function __construct(UrlGeneratorInterface $generator)
     {
-        $this->extensions = new \SplPriorityQueue();
+        $this->extensions = new SplPriorityQueue();
 
         parent::__construct();
 
@@ -63,7 +64,7 @@ class Factory extends MenuFactory
     }
 
     /**
-     * @return ExtensionInterface[]|\SplPriorityQueue
+     * @return ExtensionInterface[]|SplPriorityQueue
      */
     public function getExtensions()
     {

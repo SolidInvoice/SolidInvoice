@@ -37,7 +37,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
     private $invoiceStateMachine;
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 

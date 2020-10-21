@@ -22,6 +22,7 @@ use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\MailerBundle\Template\Template;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Swift_Message;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
@@ -34,7 +35,7 @@ class HtmlTemplateDecoratorTest extends TestCase
         $config = M::mock(SystemConfig::class);
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
     }
 
     public function testShouldDecorateWithTextConfig()
@@ -46,7 +47,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('');
@@ -63,7 +64,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('');
@@ -80,7 +81,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('');
@@ -99,7 +100,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, $twig);
 
-        $message = new class() extends \Swift_Message implements HtmlTemplateMessage {
+        $message = new class() extends Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('@SolidInvoice/email.html.twig', ['a' => 'b']);

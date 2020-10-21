@@ -168,17 +168,17 @@ class InstallCommand extends Command
 
         if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-host')) {
-                throw new \Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
+                throw new Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
             }
             if (null === $input->getOption('mailer-port')) {
-                throw new \Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
+                throw new Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
             }
         } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
             if (null === $input->getOption('mailer-user')) {
-                throw new \Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
+                throw new Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
             }
             if (null === $input->getOption('mailer-password')) {
-                throw new \Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
+                throw new Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
             }
         }
 
@@ -272,7 +272,7 @@ class InstallCommand extends Command
         $em = $this->registry->getManagerForClass(User::class);
 
         if (!$em instanceof ObjectManager) {
-            throw new \Exception(sprintf('No object manager found for class "%s".', User::class));
+            throw new Exception(sprintf('No object manager found for class "%s".', User::class));
         }
 
         $em->persist($user);

@@ -34,7 +34,7 @@ class UpgradeListener implements EventSubscriberInterface
     private $installed;
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 

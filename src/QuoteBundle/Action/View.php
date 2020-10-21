@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
+use InvalidArgumentException;
+use Mpdf\MpdfException;
+use RuntimeException;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -41,7 +44,7 @@ final class View
     /**
      * @return Template|PdfResponse
      *
-     * @throws \Mpdf\MpdfException|\RuntimeException|\InvalidArgumentException
+     * @throws MpdfException|RuntimeException|InvalidArgumentException
      */
     public function __invoke(Request $request, Quote $quote)
     {

@@ -27,7 +27,7 @@ use Twig\TwigFunction;
 class PaymentExtension extends AbstractExtension
 {
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 
@@ -48,7 +48,7 @@ class PaymentExtension extends AbstractExtension
     }
 
     /**
-     * @return \Twig\TwigFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {

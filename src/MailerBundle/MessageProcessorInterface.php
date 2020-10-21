@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle;
 
+use Swift_Message;
+
 interface MessageProcessorInterface
 {
-    public function process(\Swift_Message $message, Context $context): MessageSentResponse;
+    public function process(Swift_Message $message, Context $context): MessageSentResponse;
 }

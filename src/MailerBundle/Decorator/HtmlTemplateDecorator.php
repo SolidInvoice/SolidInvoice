@@ -16,6 +16,7 @@ namespace SolidInvoice\MailerBundle\Decorator;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Swift_Message;
 use Twig\Environment;
 
 class HtmlTemplateDecorator implements MessageDecorator, VerificationMessageDecorator
@@ -38,7 +39,7 @@ class HtmlTemplateDecorator implements MessageDecorator, VerificationMessageDeco
 
     public function decorate(MessageEvent $event): void
     {
-        /** @var HtmlTemplateMessage|\Swift_Message $message */
+        /** @var HtmlTemplateMessage|Swift_Message $message */
         $message = $event->getMessage();
 
         $template = $message->getHtmlTemplate();

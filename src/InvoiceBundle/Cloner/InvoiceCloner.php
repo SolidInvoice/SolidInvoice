@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use Traversable;
 
 final class InvoiceCloner
 {
@@ -61,7 +62,7 @@ final class InvoiceCloner
         return $newInvoice;
     }
 
-    private function addItems(Invoice $invoice, Carbon $now): \Traversable
+    private function addItems(Invoice $invoice, Carbon $now): Traversable
     {
         foreach ($invoice->getItems() as $item) {
             $invoiceItem = new Item();

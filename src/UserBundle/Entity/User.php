@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,7 +47,7 @@ class User implements UserInterface
     private $mobile;
 
     /**
-     * @var \SolidInvoice\UserBundle\Entity\ApiToken[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\UserBundle\Entity\ApiToken>
+     * @var ApiToken[]|\Doctrine\Common\Collections\Collection<int, ApiToken>
      *
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -86,7 +87,7 @@ class User implements UserInterface
     private $plainPassword;
 
     /**
-     * @var \DateTime|null
+     * @var DateTime|null
      *
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
@@ -100,7 +101,7 @@ class User implements UserInterface
     private $confirmationToken;
 
     /**
-     * @var \DateTime|null
+     * @var DateTime|null
      *
      * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
      */
@@ -137,7 +138,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param \SolidInvoice\UserBundle\Entity\ApiToken[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\UserBundle\Entity\ApiToken> $apiTokens
+     * @param ApiToken[]|\Doctrine\Common\Collections\Collection<int, ApiToken> $apiTokens
      *
      * @return User
      */
@@ -274,7 +275,7 @@ class User implements UserInterface
     /**
      * Gets the last login time.
      *
-     * @return \DateTime|null
+     * @return DateTime|null
      */
     public function getLastLogin()
     {
@@ -381,7 +382,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastLogin(\DateTime $time = null)
+    public function setLastLogin(DateTime $time = null)
     {
         $this->lastLogin = $time;
 
@@ -401,7 +402,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setPasswordRequestedAt(\DateTime $date = null)
+    public function setPasswordRequestedAt(DateTime $date = null)
     {
         $this->passwordRequestedAt = $date;
 
@@ -411,7 +412,7 @@ class User implements UserInterface
     /**
      * Gets the timestamp that the user requested a password reset.
      *
-     * @return \DateTime|null
+     * @return DateTime|null
      */
     public function getPasswordRequestedAt()
     {
@@ -423,7 +424,7 @@ class User implements UserInterface
      */
     public function isPasswordRequestNonExpired($ttl)
     {
-        return $this->getPasswordRequestedAt() instanceof \DateTime &&
+        return $this->getPasswordRequestedAt() instanceof DateTime &&
             $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 

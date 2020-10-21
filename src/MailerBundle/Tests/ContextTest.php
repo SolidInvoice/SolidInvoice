@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests;
 
+use ArrayAccess;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MailerBundle\Context;
 
@@ -20,7 +21,7 @@ class ContextTest extends TestCase
 {
     public function testContextExtendsArrayAccess()
     {
-        static::assertInstanceOf(\ArrayAccess::class, new Context());
+        static::assertInstanceOf(ArrayAccess::class, new Context());
     }
 
     public function testContextCreateReturnAnInstanceOfContext()

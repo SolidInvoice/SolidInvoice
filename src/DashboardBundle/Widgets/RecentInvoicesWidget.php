@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Widgets;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 
 class RecentInvoicesWidget implements WidgetInterface
 {
     /**
-     * @var \Doctrine\Persistence\ObjectManager
+     * @var ObjectManager
      */
     private $manager;
 

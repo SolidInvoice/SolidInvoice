@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MailerBundle\Context;
 use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Swift_Message;
 
 class InvoiceSubjectDecoratorTest extends TestCase
 {
@@ -45,7 +46,7 @@ class InvoiceSubjectDecoratorTest extends TestCase
     {
         $decorator = new InvoiceSubjectDecorator(M::mock(SystemConfig::class));
 
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
         static::assertFalse($decorator->shouldDecorate(new MessageEvent((new InvoiceEmail(new Invoice()))->setSubject('Invoice!'), Context::create())));
         static::assertTrue($decorator->shouldDecorate(new MessageEvent(new InvoiceEmail(new Invoice()), Context::create())));
     }

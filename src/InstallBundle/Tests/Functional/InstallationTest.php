@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
+use Exception;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
@@ -96,6 +97,6 @@ class InstallationTest extends PantherTestCase
             return $client->clickLink('Next');
         }
 
-        throw new \Exception('Continue button not found');
+        throw new Exception('Continue button not found');
     }
 }

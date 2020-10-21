@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Cloner;
 
+use DateTime;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class QuoteClonerTest extends TestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new \DateTime('NOW'));
+        $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -48,7 +49,7 @@ class QuoteClonerTest extends TestCase
         $item = new Item();
         $item->setTax($tax);
         $item->setDescription('Item Description');
-        $item->setCreated(new \DateTime('now'));
+        $item->setCreated(new DateTime('now'));
         $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
         $item->setTotal(new Money((12 * 10), $currency));
@@ -100,7 +101,7 @@ class QuoteClonerTest extends TestCase
 
         static::assertSame($item->getTax(), $quoteItem[0]->getTax());
         static::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
-        static::assertInstanceOf(\DateTime::class, $quoteItem[0]->getCreated());
+        static::assertInstanceOf(DateTime::class, $quoteItem[0]->getCreated());
         static::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
         static::assertSame($item->getQty(), $quoteItem[0]->getQty());
     }

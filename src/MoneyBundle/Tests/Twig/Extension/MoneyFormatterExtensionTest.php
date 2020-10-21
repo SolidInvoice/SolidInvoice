@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class MoneyFormatterExtensionTest extends TestCase
 {
@@ -34,7 +36,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
         static::assertSame('currency_formatter', $extension->getName());
 
-        /** @var \Twig\TwigFunction[] $functions */
+        /** @var TwigFunction[] $functions */
         $functions = $extension->getFunctions();
 
         static::assertCount(1, $functions);
@@ -58,7 +60,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        /** @var \Twig\TwigFilter[] $filters */
+        /** @var TwigFilter[] $filters */
         $filters = $extension->getFilters();
 
         static::assertCount(1, $filters);

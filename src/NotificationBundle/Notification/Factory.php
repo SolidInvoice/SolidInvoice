@@ -16,6 +16,7 @@ namespace SolidInvoice\NotificationBundle\Notification;
 use Namshi\Notificator\NotificationInterface;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Swift_Message;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -51,7 +52,7 @@ class Factory
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {
-        $swiftMessage = new \Swift_Message();
+        $swiftMessage = new Swift_Message();
 
         $from = [$this->settings->get('email/from_address') => $this->settings->get('email/from_name')];
 

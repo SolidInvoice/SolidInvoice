@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle;
 
+use Exception;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
+use SplPriorityQueue;
 
 class WidgetFactory
 {
     const DEFAULT_LOCATION = 'top';
 
     /**
-     * @var \SplPriorityQueue[]
+     * @var SplPriorityQueue[]
      */
     private $queues = [];
 
@@ -29,7 +31,7 @@ class WidgetFactory
     public function __construct()
     {
         foreach ($this->locations as $location) {
-            $this->queues[$location] = new \SplPriorityQueue();
+            $this->queues[$location] = new SplPriorityQueue();
         }
     }
 
@@ -37,14 +39,14 @@ class WidgetFactory
      * @param string $location
      * @param int    $priority
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function add(WidgetInterface $widget, string $location = null, $priority = null)
     {
         $location = $location ?: self::DEFAULT_LOCATION;
 
         if (!isset($this->queues[$location])) {
-            throw new \Exception(sprintf('Invalid widget location: %s', $location));
+            throw new Exception(sprintf('Invalid widget location: %s', $location));
         }
 
         $this->queues[$location]->insert($widget, $priority);
@@ -53,10 +55,10 @@ class WidgetFactory
     /**
      * @param string $location
      */
-    public function get($location): \SplPriorityQueue
+    public function get($location): SplPriorityQueue
     {
         if (!isset($this->queues[$location])) {
-            return new \SplPriorityQueue();
+            return new SplPriorityQueue();
         }
 
         return $this->queues[$location];

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Exception;
 
-class InvalidTransitionException extends \Exception
+use Exception;
+
+class InvalidTransitionException extends Exception
 {
     public function __construct(string $transition)
     {

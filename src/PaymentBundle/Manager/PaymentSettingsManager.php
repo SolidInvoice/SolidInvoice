@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Manager;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 
 class PaymentSettingsManager
 {
     /**
-     * @var \Doctrine\Persistence\ObjectRepository
+     * @var ObjectRepository
      */
     protected $repository;
 

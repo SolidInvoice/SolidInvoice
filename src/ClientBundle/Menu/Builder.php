@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Menu;
 
+use InvalidArgumentException;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
 
@@ -21,7 +22,7 @@ class Builder extends AuthenticatedMenu
     /**
      * Renders the top menu for clients.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function sidebar(ItemInterface $menu)
     {

@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Repository;
 
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,6 +24,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
+use Traversable;
 
 class PaymentRepository extends ServiceEntityRepository
 {
@@ -33,12 +36,12 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Gets the total income that was received.
      *
-     * @param \SolidInvoice\ClientBundle\Entity\Client $client
-     * @param bool                                     $groupByCurrency
+     * @param Client $client
+     * @param bool   $groupByCurrency
      *
      * @return array|int
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function getTotalIncome(Client $client = null, $groupByCurrency = false)
     {
@@ -182,9 +185,9 @@ class PaymentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param DateTime $timestamp
      */
-    public function getPaymentsList(\DateTime $timestamp = null): array
+    public function getPaymentsList(DateTime $timestamp = null): array
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
@@ -213,7 +216,7 @@ class PaymentRepository extends ServiceEntityRepository
         $payments = [];
 
         foreach ($query->getArrayResult() as $result) {
-            /** @var \DateTime $created */
+            /** @var DateTime $created */
             $created = $result['created'];
 
             $date = $created->format($dateFormat);
@@ -239,7 +242,7 @@ class PaymentRepository extends ServiceEntityRepository
         )
             ->join('p.method', 'm')
             ->where('p.created >= :date')
-            ->setParameter('date', new \DateTime('-1 Year'))
+            ->setParameter('date', new DateTime('-1 Year'))
             ->groupBy('p.created')
             ->orderBy('p.created', 'ASC');
 
@@ -255,7 +258,7 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function updatePaymentStatus($payments, string $status)
     {
-        if (!is_array($payments) && !$payments instanceof \Traversable) {
+        if (!is_array($payments) && !$payments instanceof Traversable) {
             $payments = [$payments];
         }
 

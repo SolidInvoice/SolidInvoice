@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction\Offline;
 
+use Exception;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -47,7 +48,7 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
 
             $payment->setDetails($details);
             $request->setModel($payment);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $payment->setDetails($details);
             $request->setModel($payment);
 

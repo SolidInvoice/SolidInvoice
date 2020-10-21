@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Handler;
 
+use Exception;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -75,7 +76,7 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
      *
      * @param User $user
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function onSuccess(FormRequest $form, $user): ?Response
     {

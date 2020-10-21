@@ -20,7 +20,7 @@ use Twig\Environment;
 class FieldRenderer
 {
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     private $twig;
 

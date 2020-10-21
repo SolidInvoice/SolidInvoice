@@ -22,7 +22,7 @@ class ApiTokenManager
     const TOKEN_LENGTH = 32;
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 

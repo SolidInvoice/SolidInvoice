@@ -22,7 +22,7 @@ use Twig\Environment;
 final class ApiTokenHistory implements AjaxResponse
 {
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     private $twig;
 

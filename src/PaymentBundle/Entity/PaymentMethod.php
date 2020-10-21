@@ -87,7 +87,7 @@ class PaymentMethod implements GatewayConfigInterface
     private $enabled;
 
     /**
-     * @var \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment>
+     * @var Payment[]|\Doctrine\Common\Collections\Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -229,7 +229,7 @@ class PaymentMethod implements GatewayConfigInterface
      *
      * @return PaymentMethod
      *
-     * @param \SolidInvoice\PaymentBundle\Entity\Payment[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\PaymentBundle\Entity\Payment> $payment
+     * @param Payment[]|\Doctrine\Common\Collections\Collection<int, Payment> $payment
      */
     public function addPayment(Payment $payment): self
     {

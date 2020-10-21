@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction;
 
+use Exception;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -42,7 +43,7 @@ class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, Gat
             $request->setModel($details);
             $this->gateway->execute($request);
             $payment->setDetails($details);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $payment->setDetails($details);
 
             throw $e;

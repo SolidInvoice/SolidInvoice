@@ -15,6 +15,7 @@ namespace SolidInvoice\MenuBundle\Tests\Core;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -24,12 +25,12 @@ class AuthenticatedMenuTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var \Mockery\MockInterface
+     * @var MockInterface
      */
     private $container;
 
     /**
-     * @var \Mockery\MockInterface
+     * @var MockInterface
      */
     private $security;
 

@@ -56,7 +56,7 @@ class ApiToken
     private $token;
 
     /**
-     * @var \SolidInvoice\UserBundle\Entity\ApiTokenHistory[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\UserBundle\Entity\ApiTokenHistory>
+     * @var ApiTokenHistory[]|\Doctrine\Common\Collections\Collection<int, ApiTokenHistory>
      *
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -131,7 +131,7 @@ class ApiToken
     /**
      * @return ApiToken
      *
-     * @param \SolidInvoice\UserBundle\Entity\ApiTokenHistory[]|\Doctrine\Common\Collections\Collection<int, \SolidInvoice\UserBundle\Entity\ApiTokenHistory> $history
+     * @param ApiTokenHistory[]|\Doctrine\Common\Collections\Collection<int, ApiTokenHistory> $history
      */
     public function addHistory(ApiTokenHistory $history): self
     {

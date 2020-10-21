@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Test;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Exception;
+use PDOException;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\Panther\PantherTestCase;
 
 /**
@@ -24,7 +27,7 @@ use Symfony\Component\Panther\PantherTestCase;
 abstract class ApiTestCase extends PantherTestCase
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Client
+     * @var Client
      */
     protected static $client;
 
@@ -40,7 +43,7 @@ abstract class ApiTestCase extends PantherTestCase
         $users = $registry->getRepository(User::class)->findAll();
 
         if (0 === count($users)) {
-            throw new \Exception('No users found!');
+            throw new Exception('No users found!');
         }
 
         $tokenManager = new ApiTokenManager($registry);
@@ -48,7 +51,7 @@ abstract class ApiTestCase extends PantherTestCase
 
         try {
             StaticDriver::commit(); // Save user api token
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             // noop
         }
 

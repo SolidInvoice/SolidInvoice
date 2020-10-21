@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Action;
 
+use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
@@ -66,7 +67,7 @@ final class Config
 
     private function getForm(): FormInterface
     {
-        $availableDrivers = \PDO::getAvailableDrivers();
+        $availableDrivers = PDO::getAvailableDrivers();
 
         // We can't support sqlite at the moment, since it requires a physical file
         if (in_array('sqlite', $availableDrivers, true)) {

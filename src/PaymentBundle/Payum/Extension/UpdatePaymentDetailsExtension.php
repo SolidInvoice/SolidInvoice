@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Payum\Extension;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
@@ -24,7 +25,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 class UpdatePaymentDetailsExtension implements ExtensionInterface
 {
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 
@@ -79,7 +80,7 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function onException(\Exception $exception, $request, ActionInterface $action = null)
+    public function onException(Exception $exception, $request, ActionInterface $action = null)
     {
     }
 }

@@ -31,7 +31,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
     private $notification;
 
     /**
-     * @var \Doctrine\Persistence\ManagerRegistry
+     * @var ManagerRegistry
      */
     private $registry;
 
