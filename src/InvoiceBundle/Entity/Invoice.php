@@ -452,8 +452,6 @@ class Invoice
      * Add item.
      *
      * @return Invoice
-     *
-     * @param ItemInterface $item
      */
     public function addItem(ItemInterface $item): self
     {
@@ -487,9 +485,6 @@ class Invoice
         return $this->items;
     }
 
-    /**
-     * @param Payment $payment
-     */
     public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;

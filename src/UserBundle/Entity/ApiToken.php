@@ -130,8 +130,6 @@ class ApiToken
 
     /**
      * @return ApiToken
-     *
-     * @param ApiTokenHistory $history
      */
     public function addHistory(ApiTokenHistory $history): self
     {
