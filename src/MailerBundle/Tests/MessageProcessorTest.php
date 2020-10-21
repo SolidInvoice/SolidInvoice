@@ -130,7 +130,7 @@ class MessageProcessorTest extends TestCase
             ->once()
             ->with(
                 $message,
-                Mockery::on(function (&$failedRecipients) {
+                M::on(function (&$failedRecipients) {
                     $failedRecipients = ['foo@bar.com'];
 
                     return true;
