@@ -65,7 +65,7 @@ class UpgradeListener implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        if ('' === $this->installed) {
+        if (null === $this->installed) {
             return;
         }
 

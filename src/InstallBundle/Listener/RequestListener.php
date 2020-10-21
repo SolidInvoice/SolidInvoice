@@ -96,7 +96,7 @@ class RequestListener implements EventSubscriberInterface
 
         $route = $event->getRequest()->get('_route');
 
-        if ('' !== $this->installed) {
+        if (null !== $this->installed) {
             if (in_array($route, $this->installRoutes, true)) {
                 throw new ApplicationInstalledException();
             }
