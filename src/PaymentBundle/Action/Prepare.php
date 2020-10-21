@@ -219,20 +219,20 @@ final class Prepare
                     );
 
                 return new RedirectResponse($captureToken->getTargetUrl());
-            } else {
-                $payment->setStatus(Status::STATUS_CAPTURED);
-                $payment->setCompleted(new DateTime('now'));
-                $this->save($payment);
-
-                $event = new PaymentCompleteEvent($payment);
-                $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
-
-                if (null !== ($response = $event->getResponse())) {
-                    return $response;
-                }
-
-                return new RedirectResponse($this->router->generate('_payments_index'));
             }
+
+            $payment->setStatus(Status::STATUS_CAPTURED);
+            $payment->setCompleted(new DateTime('now'));
+            $this->save($payment);
+
+            $event = new PaymentCompleteEvent($payment);
+            $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
+
+            if (null !== ($response = $event->getResponse())) {
+                return $response;
+            }
+
+            return new RedirectResponse($this->router->generate('_payments_index'));
         }
 
         return new Template(
