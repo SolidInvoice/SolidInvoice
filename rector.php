@@ -14,6 +14,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         SetList::PHPSTAN,
         SetList::CODE_QUALITY,
 
+        // PHP
+        SetList::PHP_70,
+        SetList::PHP_71,
+        SetList::PHP_72,
+        SetList::PHP_73,
+
         // PHPUnit
         SetList::PHPUNIT_70,
         SetList::PHPUNIT_75,
