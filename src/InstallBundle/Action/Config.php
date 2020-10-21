@@ -28,7 +28,7 @@ final class Config
     /**
      * @var array
      */
-    protected $mailerTransports = [
+    private $mailerTransports = [
         'sendmail' => 'Sendmail',
         'smtp' => 'SMTP',
         'gmail' => 'Gmail',
@@ -143,7 +143,7 @@ final class Config
         return $this->render($form);
     }
 
-    protected function render(?FormInterface $form = null): Template
+    private function render(?FormInterface $form = null): Template
     {
         return new Template('@SolidInvoiceInstall/config.html.twig', ['form' => ($form ?: $this->getForm())->createView()]);
     }
