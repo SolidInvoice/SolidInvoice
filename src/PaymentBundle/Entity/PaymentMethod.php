@@ -87,7 +87,7 @@ class PaymentMethod implements GatewayConfigInterface
     private $enabled;
 
     /**
-     * @var Payment[]|\Doctrine\Common\Collections\Collection<int, Payment>
+     * @var Payment[]|Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -228,8 +228,6 @@ class PaymentMethod implements GatewayConfigInterface
      * Add payment.
      *
      * @return PaymentMethod
-     *
-     * @param Payment[]|\Doctrine\Common\Collections\Collection<int, Payment> $payment
      */
     public function addPayment(Payment $payment): self
     {
@@ -253,7 +251,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Get payments.
      *
-     * @return Collection|Payment[]
+     * @return Payment[]|Collection<int, Payment>
      */
     public function getPayments(): Collection
     {

@@ -32,9 +32,9 @@ class Tax
 {
     use TimeStampable;
 
-    const TYPE_INCLUSIVE = 'Inclusive';
+    public const TYPE_INCLUSIVE = 'Inclusive';
 
-    const TYPE_EXCLUSIVE = 'Exclusive';
+    public const TYPE_EXCLUSIVE = 'Exclusive';
 
     /**
      * @var int
@@ -71,14 +71,14 @@ class Tax
     private $type;
 
     /**
-     * @var ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface>
+     * @var ItemInterface[]|Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
-     * @var ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface>
+     * @var ItemInterface[]|Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */
@@ -168,7 +168,7 @@ class Tax
     }
 
     /**
-     * @return Collection|ItemInterface[]
+     * @return ItemInterface[]|Collection<int, ItemInterface>
      */
     public function getInvoiceItems(): Collection
     {
@@ -176,19 +176,19 @@ class Tax
     }
 
     /**
-     * @param ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface> $invoiceItems
+     * @param ItemInterface[] $invoiceItems
      *
      * @return Tax
      */
     public function setInvoiceItems(array $invoiceItems): self
     {
-        $this->invoiceItems = $invoiceItems;
+        $this->invoiceItems = new ArrayCollection($invoiceItems);
 
         return $this;
     }
 
     /**
-     * @return Collection|ItemInterface[]
+     * @return ItemInterface[]|Collection<int, ItemInterface>
      */
     public function getQuoteItems(): Collection
     {
@@ -196,13 +196,13 @@ class Tax
     }
 
     /**
-     * @param ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface> $quoteItems
+     * @param ItemInterface[] $quoteItems
      *
      * @return Tax
      */
     public function setQuoteItems(array $quoteItems): self
     {
-        $this->quoteItems = $quoteItems;
+        $this->quoteItems = new ArrayCollection($quoteItems);
 
         return $this;
     }

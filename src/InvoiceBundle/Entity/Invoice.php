@@ -19,6 +19,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
@@ -162,7 +163,7 @@ class Invoice
     private $paidDate;
 
     /**
-     * @var ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface>
+     * @var ItemInterface[]|Collection<int, ItemInterface>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -172,7 +173,7 @@ class Invoice
     private $items;
 
     /**
-     * @var Payment[]|\Doctrine\Common\Collections\Collection<int, Payment>
+     * @var Payment[]|Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
@@ -180,7 +181,7 @@ class Invoice
     private $payments;
 
     /**
-     * @var Collection|Contact[]
+     * @var Contact[]|Collection<int, Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
@@ -217,7 +218,11 @@ class Invoice
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->users = new ArrayCollection();
-        $this->setUuid(Uuid::uuid1());
+        try {
+            $this->setUuid(Uuid::uuid1());
+        } catch (Exception $e) {
+        }
+
         $this->recurring = false;
 
         $this->baseTotal = new MoneyEntity();
@@ -315,10 +320,6 @@ class Invoice
     }
 
     /**
-     * Set client.
-     *
-     * @param Client $client
-     *
      * @return Invoice
      */
     public function setClient(?Client $client): self
@@ -452,10 +453,11 @@ class Invoice
      *
      * @return Invoice
      *
-     * @param ItemInterface[]|\Doctrine\Common\Collections\Collection<int, ItemInterface> $item
+     * @param ItemInterface $item
      */
-    public function addItem(Item $item): self
+    public function addItem(ItemInterface $item): self
     {
+        assert($item instanceof Item);
         $this->items[] = $item;
         $item->setInvoice($this);
 
@@ -478,7 +480,7 @@ class Invoice
     /**
      * Get items.
      *
-     * @return Collection|ItemInterface[]
+     * @return ItemInterface[]|Collection<int, ItemInterface>
      */
     public function getItems(): Collection
     {
@@ -486,11 +488,7 @@ class Invoice
     }
 
     /**
-     * Add payment.
-     *
-     * @return Invoice
-     *
-     * @param Payment[]|\Doctrine\Common\Collections\Collection<int, Payment> $payment
+     * @param Payment $payment
      */
     public function addPayment(Payment $payment): self
     {
@@ -515,7 +513,7 @@ class Invoice
     /**
      * Get payments.
      *
-     * @return Collection|Payment[]
+     * @return Payment[]|Collection<int, Payment>
      */
     public function getPayments(): Collection
     {
@@ -531,8 +529,6 @@ class Invoice
     }
 
     /**
-     * @param string $terms
-     *
      * @return Invoice
      */
     public function setTerms(?string $terms): self
@@ -551,8 +547,6 @@ class Invoice
     }
 
     /**
-     * @param string $notes
-     *
      * @return Invoice
      */
     public function setNotes(?string $notes): self
@@ -582,7 +576,7 @@ class Invoice
      *
      * @ORM\PrePersist
      */
-    public function updateItems()
+    public function updateItems(): void
     {
         if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
             foreach ($this->items as $item) {
@@ -615,8 +609,6 @@ class Invoice
     }
 
     /**
-     * @param RecurringInvoice $recurringInfo
-     *
      * @return Invoice
      */
     public function setRecurringInfo(RecurringInvoice $recurringInfo = null): self
@@ -643,7 +635,11 @@ class Invoice
             }
         }
 
-        $this->setUuid(Uuid::uuid1());
+        try {
+            $this->setUuid(Uuid::uuid1());
+        } catch (Exception $e) {
+        }
+
         $this->recurring = false;
         $this->status = null;
     }

@@ -91,7 +91,7 @@ class Contact implements Serializable
     private $email;
 
     /**
-     * @var AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, AdditionalContactDetail>
+     * @var AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
@@ -100,14 +100,14 @@ class Contact implements Serializable
     private $additionalContactDetails;
 
     /**
-     * @var Collection|Invoice[]
+     * @var Invoice[]|Collection<int, Invoice>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
 
     /**
-     * @var Collection|Quote[]
+     * @var Quote[]|Collection<int, Quote>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
@@ -163,10 +163,6 @@ class Contact implements Serializable
     }
 
     /**
-     * Set lastname.
-     *
-     * @param string $lastName
-     *
      * @return Contact
      */
     public function setLastName(?string $lastName): self
@@ -226,7 +222,7 @@ class Contact implements Serializable
     /**
      * Get additional details.
      *
-     * @return Collection|AdditionalContactDetail[]
+     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      */
     public function getAdditionalContactDetails(): Collection
     {

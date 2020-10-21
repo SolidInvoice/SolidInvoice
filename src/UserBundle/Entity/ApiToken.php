@@ -56,7 +56,7 @@ class ApiToken
     private $token;
 
     /**
-     * @var ApiTokenHistory[]|\Doctrine\Common\Collections\Collection<int, ApiTokenHistory>
+     * @var ApiTokenHistory[]|Collection<int, ApiTokenHistory>
      *
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -121,7 +121,7 @@ class ApiToken
     }
 
     /**
-     * @return Collection|ApiTokenHistory[]
+     * @return ApiTokenHistory[]|Collection<int, ApiTokenHistory>
      */
     public function getHistory(): Collection
     {
@@ -131,7 +131,7 @@ class ApiToken
     /**
      * @return ApiToken
      *
-     * @param ApiTokenHistory[]|\Doctrine\Common\Collections\Collection<int, ApiTokenHistory> $history
+     * @param ApiTokenHistory $history
      */
     public function addHistory(ApiTokenHistory $history): self
     {

@@ -154,9 +154,6 @@ class Item implements ItemInterface
         return $this->qty;
     }
 
-    /**
-     * @param Quote $quote
-     */
     public function setQuote(Quote $quote = null): ItemInterface
     {
         $this->quote = $quote;
@@ -192,9 +189,6 @@ class Item implements ItemInterface
         return $this->tax;
     }
 
-    /**
-     * @param Tax $tax
-     */
     public function setTax(?Tax $tax): ItemInterface
     {
         $this->tax = $tax;
@@ -207,7 +201,7 @@ class Item implements ItemInterface
      *
      * @ORM\PrePersist
      */
-    public function updateTotal()
+    public function updateTotal(): void
     {
         $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));
     }

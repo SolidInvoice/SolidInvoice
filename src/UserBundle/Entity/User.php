@@ -47,7 +47,7 @@ class User implements UserInterface
     private $mobile;
 
     /**
-     * @var ApiToken[]|\Doctrine\Common\Collections\Collection<int, ApiToken>
+     * @var ApiToken[]|Collection<int, ApiToken>
      *
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -130,7 +130,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|ApiToken[]
+     * @return ApiToken[]|Collection<int, ApiToken>
      */
     public function getApiTokens(): Collection
     {
@@ -138,7 +138,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param ApiToken[]|\Doctrine\Common\Collections\Collection<int, ApiToken> $apiTokens
+     * @param ApiToken[]|Collection<int, ApiToken> $apiTokens
      *
      * @return User
      */

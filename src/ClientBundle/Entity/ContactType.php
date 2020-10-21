@@ -72,7 +72,7 @@ class ContactType
     private $required = false;
 
     /**
-     * @var AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, AdditionalContactDetail>
+     * @var AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})
@@ -143,8 +143,6 @@ class ContactType
      * Add detail.
      *
      * @return ContactType
-     *
-     * @param AdditionalContactDetail[]|\Doctrine\Common\Collections\Collection<int, AdditionalContactDetail> $detail
      */
     public function addDetail(AdditionalContactDetail $detail): self
     {
@@ -157,7 +155,7 @@ class ContactType
     /**
      * Get details.
      *
-     * @return Collection|AdditionalContactDetail[]
+     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
      */
     public function getDetails(): ?Collection
     {
