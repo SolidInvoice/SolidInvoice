@@ -42,7 +42,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
         $this->tokenStorage = M::mock(TokenStorageInterface::class);
         $this->router = M::mock(RouterInterface::class);
 
-        $executor = (new KernelExecutor)();
+        $executor = (new KernelExecutor())();
 
         $this->tokenStorage->shouldReceive('getToken')
             ->once()
@@ -89,7 +89,8 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
     }
 }
 
-class KernelExecutor extends KernelTestCase {
+class KernelExecutor extends KernelTestCase
+{
     use FixturesTrait;
 
     public function __invoke()
