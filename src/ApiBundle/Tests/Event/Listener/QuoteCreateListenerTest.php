@@ -34,8 +34,8 @@ class QuoteCreateListenerTest extends TestCase
 
     public function testSubscribedEvents()
     {
-        $this->assertSame([KernelEvents::VIEW], array_keys(QuoteCreateListener::getSubscribedEvents()));
-        $this->assertSame(EventPriorities::PRE_WRITE, QuoteCreateListener::getSubscribedEvents()[KernelEvents::VIEW][0][1]);
+        static::assertSame([KernelEvents::VIEW], array_keys(QuoteCreateListener::getSubscribedEvents()));
+        static::assertSame(EventPriorities::PRE_WRITE, QuoteCreateListener::getSubscribedEvents()[KernelEvents::VIEW][0][1]);
     }
 
     public function testStatusGetsUpdated()

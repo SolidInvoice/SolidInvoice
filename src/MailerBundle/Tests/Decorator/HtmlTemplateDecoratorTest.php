@@ -34,7 +34,7 @@ class HtmlTemplateDecoratorTest extends TestCase
         $config = M::mock(SystemConfig::class);
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
     }
 
     public function testShouldDecorateWithTextConfig()
@@ -46,7 +46,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('');
@@ -63,7 +63,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('');
@@ -80,7 +80,7 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator = new HtmlTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements HtmlTemplateMessage {
             public function getHtmlTemplate(): Template
             {
                 return new Template('');
@@ -108,6 +108,6 @@ class HtmlTemplateDecoratorTest extends TestCase
 
         $decorator->decorate(new MessageEvent($message, Context::create(['c' => 'd'])));
 
-        $this->assertSame('HTML Template', $message->getBody());
+        static::assertSame('HTML Template', $message->getBody());
     }
 }

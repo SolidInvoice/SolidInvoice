@@ -44,7 +44,7 @@ class SearchFilter implements FilterInterface
             $fields = array_map(
                 function ($field) use ($alias) {
                     if (false !== strpos($field, '.')) {
-                        list($alias, $field) = explode('.', $field);
+                        [$alias, $field] = explode('.', $field);
                     }
 
                     return sprintf('%s.%s LIKE :q', $alias, $field);

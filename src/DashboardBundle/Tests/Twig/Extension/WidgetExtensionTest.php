@@ -41,7 +41,7 @@ class WidgetExtensionTest extends TestCase
 
     public function testGetName()
     {
-        $this->assertSame('dashboard_widget_extension', $this->extension->getName());
+        static::assertSame('dashboard_widget_extension', $this->extension->getName());
     }
 
     public function testGetFunctions()
@@ -49,9 +49,9 @@ class WidgetExtensionTest extends TestCase
         /** @var \Twig\TwigFunction[] $functions */
         $functions = $this->extension->getFunctions();
 
-        $this->assertCount(1, $functions);
-        $this->assertInstanceOf('Twig_SimpleFunction', $functions[0]);
-        $this->assertSame('render_dashboard_widget', $functions[0]->getName());
+        static::assertCount(1, $functions);
+        static::assertInstanceOf('Twig_SimpleFunction', $functions[0]);
+        static::assertSame('render_dashboard_widget', $functions[0]->getName());
     }
 
     public function testRenderDashboardWidget()
@@ -76,6 +76,6 @@ class WidgetExtensionTest extends TestCase
 
         $content = $this->extension->renderDashboardWidget($environment, 'top');
 
-        $this->assertSame('123', $content);
+        static::assertSame('123', $content);
     }
 }

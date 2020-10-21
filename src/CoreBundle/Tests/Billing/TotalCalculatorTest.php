@@ -61,9 +61,9 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(15000, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(15000, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(15000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(15000, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(15000, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(15000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
     public function testUpdateWithSingleItemAndMultipleQtys()
@@ -79,9 +79,9 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
     public function testUpdateWithPercentageDiscount()
@@ -101,9 +101,9 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(25500, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(25500, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(25500, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(25500, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
     public function testUpdateWithMonetaryDiscount()
@@ -123,9 +123,9 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(22000, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(22000, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(22000, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(22000, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
     public function testUpdateWithTaxIncl()
@@ -147,10 +147,10 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(25000, new Currency('USD')), $invoice->getBaseTotal());
-        $this->assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(25000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
     }
 
     public function testUpdateWithTaxExcl()
@@ -172,10 +172,10 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(36000, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(36000, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
-        $this->assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
+        static::assertEquals(new Money(36000, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(36000, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
     }
 
     public function testUpdateWithTaxInclAndPercentageDiscount()
@@ -200,10 +200,10 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(25500, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(25500, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(25000, new Currency('USD')), $invoice->getBaseTotal());
-        $this->assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
+        static::assertEquals(new Money(25500, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(25500, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(25000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
     }
 
     public function testUpdateWithTaxExclAndMonetaryDiscount()
@@ -228,10 +228,10 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(28000, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(28000, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
-        $this->assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
+        static::assertEquals(new Money(28000, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(28000, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
     }
 
     public function testUpdateTotalsWithPayments()
@@ -259,8 +259,8 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
-        $this->assertEquals(new Money(29000, new Currency('USD')), $invoice->getBalance());
-        $this->assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
+        static::assertEquals(new Money(29000, new Currency('USD')), $invoice->getBalance());
+        static::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
 }

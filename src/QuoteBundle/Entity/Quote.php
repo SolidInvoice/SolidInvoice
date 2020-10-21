@@ -438,7 +438,7 @@ class Quote
      */
     public function updateItems()
     {
-        if (count($this->items) > 0) {
+        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
             foreach ($this->items as $item) {
                 $item->setQuote($this);
             }

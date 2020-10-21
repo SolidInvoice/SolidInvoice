@@ -49,7 +49,7 @@ class EmailFromDecoratorTest extends TestCase
         $message = new \Swift_Message();
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame(['info@example.com' => 'SolidInvoice'], $message->getFrom());
+        static::assertSame(['info@example.com' => 'SolidInvoice'], $message->getFrom());
     }
 
     public function testDecorateWithOutFromAddress()
@@ -82,6 +82,6 @@ class EmailFromDecoratorTest extends TestCase
         $message = new \Swift_Message();
         $decorator->decorate(new MessageEvent($message, Context::create()));
 
-        $this->assertSame(['test@example.com' => null], $message->getFrom());
+        static::assertSame(['test@example.com' => null], $message->getFrom());
     }
 }

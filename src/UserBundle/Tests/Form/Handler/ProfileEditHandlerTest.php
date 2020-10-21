@@ -42,19 +42,7 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
         $this->tokenStorage = M::mock(TokenStorageInterface::class);
         $this->router = M::mock(RouterInterface::class);
 
-        $executor = (new class() extends KernelTestCase {
-            use FixturesTrait;
-
-            public function __invoke()
-            {
-                return $this->loadFixtures([LoadData::class], true);
-            }
-
-            public function __destruct()
-            {
-                $this->tearDown();
-            }
-        })();
+        $executor = (new KernelExecutor)();
 
         $this->tokenStorage->shouldReceive('getToken')
             ->once()
@@ -84,11 +72,11 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        $this->assertSame('9876543210', $data->getMobile());
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertInstanceOf(FlashResponse::class, $response);
-        $this->assertSame('/profile', $response->getTargetUrl());
-        $this->assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
+        static::assertSame('9876543210', $data->getMobile());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(FlashResponse::class, $response);
+        static::assertSame('/profile', $response->getTargetUrl());
+        static::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     public function getFormData(): array
@@ -98,5 +86,19 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
                 'mobile' => '9876543210',
             ],
         ];
+    }
+}
+
+class KernelExecutor extends KernelTestCase {
+    use FixturesTrait;
+
+    public function __invoke()
+    {
+        return $this->loadFixtures([LoadData::class], true);
+    }
+
+    public function __destruct()
+    {
+        $this->tearDown();
     }
 }

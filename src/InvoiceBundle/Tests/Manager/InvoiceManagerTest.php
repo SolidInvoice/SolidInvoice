@@ -112,28 +112,28 @@ class InvoiceManagerTest extends KernelTestCase
 
         $invoice = $this->manager->createFromQuote($quote);
 
-        $this->assertEquals($quote->getTotal(), $invoice->getTotal());
-        $this->assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
-        $this->assertSame($quote->getDiscount(), $invoice->getDiscount());
-        $this->assertSame($quote->getNotes(), $invoice->getNotes());
-        $this->assertSame($quote->getTerms(), $invoice->getTerms());
-        $this->assertEquals($quote->getTax(), $invoice->getTax());
-        $this->assertSame($client, $invoice->getClient());
-        $this->assertNull($invoice->getStatus());
+        static::assertEquals($quote->getTotal(), $invoice->getTotal());
+        static::assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
+        static::assertSame($quote->getDiscount(), $invoice->getDiscount());
+        static::assertSame($quote->getNotes(), $invoice->getNotes());
+        static::assertSame($quote->getTerms(), $invoice->getTerms());
+        static::assertEquals($quote->getTax(), $invoice->getTax());
+        static::assertSame($client, $invoice->getClient());
+        static::assertNull($invoice->getStatus());
 
-        $this->assertNotSame($quote->getUuid(), $invoice->getUuid());
-        $this->assertNull($invoice->getId());
+        static::assertNotSame($quote->getUuid(), $invoice->getUuid());
+        static::assertNull($invoice->getId());
 
-        $this->assertCount(1, $invoice->getItems());
+        static::assertCount(1, $invoice->getItems());
 
         /** @var \SolidInvoice\InvoiceBundle\Entity\item[] $invoiceItem */
         $invoiceItem = $invoice->getItems();
-        $this->assertInstanceOf('SolidInvoice\InvoiceBundle\Entity\item', $invoiceItem[0]);
+        static::assertInstanceOf('SolidInvoice\InvoiceBundle\Entity\item', $invoiceItem[0]);
 
-        $this->assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        $this->assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        $this->assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
-        $this->assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
-        $this->assertSame($item->getQty(), $invoiceItem[0]->getQty());
+        static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
+        static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        static::assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
+        static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
+        static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 }

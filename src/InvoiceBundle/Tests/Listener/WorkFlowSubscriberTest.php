@@ -45,8 +45,8 @@ class WorkFlowSubscriberTest extends TestCase
             ->setBalance(new Money(1200, new Currency('USD')));
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
-        $this->assertNotNull($invoice->getPaidDate());
-        $this->assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
+        static::assertNotNull($invoice->getPaidDate());
+        static::assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 
     public function testInvoiceArchive()
@@ -63,7 +63,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 
-        $this->assertTrue($invoice->isArchived());
-        $this->assertSame($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
+        static::assertTrue($invoice->isArchived());
+        static::assertSame($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 }

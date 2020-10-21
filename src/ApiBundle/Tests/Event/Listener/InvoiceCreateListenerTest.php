@@ -34,8 +34,8 @@ class InvoiceCreateListenerTest extends TestCase
 
     public function testSubscribedEvents()
     {
-        $this->assertSame([KernelEvents::VIEW], array_keys(InvoiceCreateListener::getSubscribedEvents()));
-        $this->assertSame(EventPriorities::PRE_WRITE, InvoiceCreateListener::getSubscribedEvents()[KernelEvents::VIEW][0][1]);
+        static::assertSame([KernelEvents::VIEW], array_keys(InvoiceCreateListener::getSubscribedEvents()));
+        static::assertSame(EventPriorities::PRE_WRITE, InvoiceCreateListener::getSubscribedEvents()[KernelEvents::VIEW][0][1]);
     }
 
     public function testStatusGetsUpdated()

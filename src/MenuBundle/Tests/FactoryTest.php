@@ -30,7 +30,7 @@ class FactoryTest extends TestCase
 
         $factory->addExtension($extension);
 
-        $this->assertCount(3, $factory->getExtensions());
+        static::assertCount(3, $factory->getExtensions());
     }
 
     public function testCreateItem()
@@ -46,10 +46,10 @@ class FactoryTest extends TestCase
 
         $item = $factory->createItem('abc', ['label' => 'def', 'route' => 'test_route']);
 
-        $this->assertInstanceOf('SolidInvoice\MenuBundle\MenuItem', $item);
+        static::assertInstanceOf('SolidInvoice\MenuBundle\MenuItem', $item);
 
-        $this->assertSame('/test/route', $item->getUri());
-        $this->assertSame('def', $item->getLabel());
+        static::assertSame('/test/route', $item->getUri());
+        static::assertSame('def', $item->getLabel());
 
         $generator->shouldHaveReceived('generate')
             ->with('test_route', [], 1);

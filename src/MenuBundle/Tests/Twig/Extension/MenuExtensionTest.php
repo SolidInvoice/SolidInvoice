@@ -34,16 +34,16 @@ class MenuExtensionTest extends TestCase
 
     public function testGetName()
     {
-        $this->assertSame('solidinvoice_menu.twig.extension', $this->extension->getName());
+        static::assertSame('solidinvoice_menu.twig.extension', $this->extension->getName());
     }
 
     public function testGetFunctions()
     {
         $functions = $this->extension->getFunctions();
 
-        $this->assertIsArray($functions);
+        static::assertIsArray($functions);
 
-        $this->assertContainsOnlyInstancesOf('Twig_SimpleFunction', $functions);
+        static::assertContainsOnlyInstancesOf('Twig_SimpleFunction', $functions);
     }
 
     public function testRenderMenu()
@@ -67,7 +67,7 @@ class MenuExtensionTest extends TestCase
             ->with($menu, ['a' => 'b'])
             ->andReturn('123');
 
-        $this->assertSame('123', $this->extension->renderMenu($location, ['a' => 'b']));
+        static::assertSame('123', $this->extension->renderMenu($location, ['a' => 'b']));
 
         $provider->shouldHaveReceived('get')
             ->once()

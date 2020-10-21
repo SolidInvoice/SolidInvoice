@@ -26,7 +26,7 @@ class InstallationTest extends PantherTestCase
 
         $crawler = $client->request('GET', '/');
 
-        $this->assertStringContainsString('/install', $crawler->getUri());
+        static::assertStringContainsString('/install', $crawler->getUri());
     }
 
     public function testApplicationInstallation()
@@ -36,11 +36,11 @@ class InstallationTest extends PantherTestCase
         $crawler = $client->request('GET', '/install');
 
         // No error messages on the site
-        $this->assertCount(0, $crawler->filter('.alert-danger'));
+        static::assertCount(0, $crawler->filter('.alert-danger'));
 
         $this->continue($client, $crawler);
 
-        $this->assertStringContainsString('/install/config', $client->getCurrentURL());
+        static::assertStringContainsString('/install/config', $client->getCurrentURL());
 
         // Configuration page
         $crawler = $client->submitForm(
@@ -54,11 +54,11 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        $this->assertStringContainsString('/install/install', $crawler->getUri());
+        static::assertStringContainsString('/install/install', $crawler->getUri());
 
         $kernel = self::bootKernel();
-        $this->assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
-        $this->assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
+        static::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
+        static::assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
 
         // Wait for installation steps to be completed
         $time = microtime(true);
@@ -68,11 +68,11 @@ class InstallationTest extends PantherTestCase
             $crawler = $client->waitFor('.fa-check.text-success');
         }
 
-        $this->assertStringNotContainsString('disabled', $crawler->filter('#continue_step')->first()->attr('class'));
+        static::assertStringNotContainsString('disabled', $crawler->filter('#continue_step')->first()->attr('class'));
 
         $this->continue($client, $crawler);
 
-        $this->assertStringContainsString('/install/setup', $client->getCurrentURL());
+        static::assertStringContainsString('/install/setup', $client->getCurrentURL());
 
         $crawler = $client->submitForm(
             'Next',
@@ -86,8 +86,8 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        $this->assertStringContainsString('/install/finish', $crawler->getUri());
-        $this->assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
+        static::assertStringContainsString('/install/finish', $crawler->getUri());
+        static::assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
     }
 
     private function continue(Client $client, Crawler $crawler)

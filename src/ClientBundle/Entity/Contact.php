@@ -235,7 +235,7 @@ class Contact implements \Serializable
     public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
     {
         $type = strtolower($type);
-        if (count($this->additionalContactDetails) > 0) {
+        if ((is_countable($this->additionalContactDetails) ? count($this->additionalContactDetails) : 0) > 0) {
             foreach ($this->additionalContactDetails as $detail) {
                 if (strtolower((string) $detail->getType()) === $type) {
                     return $detail;
@@ -256,7 +256,7 @@ class Contact implements \Serializable
      */
     public function unserialize($serialized)
     {
-        list($this->id, $this->firstName, $this->lastName, $this->created, $this->updated) = unserialize($serialized);
+        [$this->id, $this->firstName, $this->lastName, $this->created, $this->updated] = unserialize($serialized);
     }
 
     public function __toString(): string

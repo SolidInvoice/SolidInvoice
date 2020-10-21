@@ -33,7 +33,7 @@ class QuoteSaveListenerTest extends TestCase
     public function testEvents()
     {
         $listener = new QuoteSaveListener(new ServiceLocator([]));
-        $this->assertSame([Events::prePersist, Events::preUpdate], $listener->getSubscribedEvents());
+        static::assertSame([Events::prePersist, Events::preUpdate], $listener->getSubscribedEvents());
     }
 
     public function testPrePersist()

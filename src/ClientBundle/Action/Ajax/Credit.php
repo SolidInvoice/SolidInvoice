@@ -57,7 +57,7 @@ final class Credit implements AjaxResponse
 
     public function put(Request $request, Client $client): JsonResponse
     {
-        $value = new Money((int) ((json_decode($request->getContent() ?? '[]', true)['credit'] ?? 0) * 100), $client->getCurrency() ?? $this->currency);
+        $value = new Money((int) ((json_decode($request->getContent() ?? '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100), $client->getCurrency() ?? $this->currency);
 
         $this->repository->addCredit($client, $value);
 

@@ -42,31 +42,25 @@ class PaymentTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/payments');
 
-        $this->assertSame(
-            [
-                [
-                    'method' => null,
-                    'status' => 'captured',
-                    'message' => null,
-                    'completed' => null,
-                ],
-            ],
-            $data
-        );
-    }
-
-    public function testGet()
-    {
-        $data = $this->requestGet('/api/payments/1000');
-
-        $this->assertSame(
+        static::assertSame([
             [
                 'method' => null,
                 'status' => 'captured',
                 'message' => null,
                 'completed' => null,
             ],
-            $data
-        );
+        ], $data);
+    }
+
+    public function testGet()
+    {
+        $data = $this->requestGet('/api/payments/1000');
+
+        static::assertSame([
+            'method' => null,
+            'status' => 'captured',
+            'message' => null,
+            'completed' => null,
+        ], $data);
     }
 }

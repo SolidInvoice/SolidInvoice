@@ -29,7 +29,7 @@ class AddressType extends AbstractType
                     return null;
                 }
 
-                return json_decode($value, true);
+                return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
             }
 
             public function reverseTransform($value)
@@ -38,7 +38,7 @@ class AddressType extends AbstractType
                     return $value;
                 }
 
-                return json_encode($value);
+                return json_encode($value, JSON_THROW_ON_ERROR);
             }
         });
     }

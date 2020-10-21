@@ -32,16 +32,16 @@ class MoneyFormatterExtensionTest extends TestCase
         $moneyFormatter = new MoneyFormatter('en_US', $currency);
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        $this->assertSame('currency_formatter', $extension->getName());
+        static::assertSame('currency_formatter', $extension->getName());
 
         /** @var \Twig\TwigFunction[] $functions */
         $functions = $extension->getFunctions();
 
-        $this->assertCount(1, $functions);
+        static::assertCount(1, $functions);
 
-        $this->assertInstanceOf('Twig_SimpleFunction', $functions[0]);
-        $this->assertSame('currencyFormatter', $functions[0]->getName());
-        $this->assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
+        static::assertInstanceOf('Twig_SimpleFunction', $functions[0]);
+        static::assertSame('currencyFormatter', $functions[0]->getName());
+        static::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
     }
 
     public function testGetFilters()
@@ -61,10 +61,10 @@ class MoneyFormatterExtensionTest extends TestCase
         /** @var \Twig\TwigFilter[] $filters */
         $filters = $extension->getFilters();
 
-        $this->assertCount(1, $filters);
+        static::assertCount(1, $filters);
 
-        $this->assertInstanceOf('Twig_SimpleFilter', $filters[0]);
-        $this->assertSame('formatCurrency', $filters[0]->getName());
-        $this->assertSame('$12,00', call_user_func_array($filters[0]->getCallable(), [$money]));
+        static::assertInstanceOf('Twig_SimpleFilter', $filters[0]);
+        static::assertSame('formatCurrency', $filters[0]->getName());
+        static::assertSame('$12,00', call_user_func_array($filters[0]->getCallable(), [$money]));
     }
 }

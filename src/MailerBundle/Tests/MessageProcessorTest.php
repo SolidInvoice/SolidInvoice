@@ -88,8 +88,8 @@ class MessageProcessorTest extends TestCase
 
         $result = $processor->process($message, Context::create());
 
-        $this->assertInstanceOf(MessageSentResponse::class, $result);
-        $this->assertTrue($result->isSuccess());
+        static::assertInstanceOf(MessageSentResponse::class, $result);
+        static::assertTrue($result->isSuccess());
     }
 
     public function testProcessWithFail()
@@ -152,7 +152,7 @@ class MessageProcessorTest extends TestCase
 
         $result = $processor->process($message, Context::create());
 
-        $this->assertInstanceOf(MessageSentResponse::class, $result);
-        $this->assertFalse($result->isSuccess());
+        static::assertInstanceOf(MessageSentResponse::class, $result);
+        static::assertFalse($result->isSuccess());
     }
 }

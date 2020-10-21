@@ -34,14 +34,14 @@ class PaymentFactoriesTest extends TestCase
 
         $paymentFactories->setGatewayFactories($data);
 
-        $this->assertSame($data, $paymentFactories->getFactories());
+        static::assertSame($data, $paymentFactories->getFactories());
     }
 
     public function testGetGatewayFactories()
     {
         $paymentFactories = new PaymentFactories();
 
-        $this->assertEmpty($paymentFactories->getFactories());
+        static::assertEmpty($paymentFactories->getFactories());
     }
 
     public function testGetSpecificGatewayFactories()
@@ -55,9 +55,9 @@ class PaymentFactoriesTest extends TestCase
         $paymentFactories = new PaymentFactories();
         $paymentFactories->setGatewayFactories($data);
 
-        $this->assertSame(['cash' => 'offline', 'credit' => 'offline'], $paymentFactories->getFactories('offline'));
-        $this->assertSame(['paypal' => 'paypal_express'], $paymentFactories->getFactories('paypal_express'));
-        $this->assertSame([], $paymentFactories->getFactories('paypal_pro'));
+        static::assertSame(['cash' => 'offline', 'credit' => 'offline'], $paymentFactories->getFactories('offline'));
+        static::assertSame(['paypal' => 'paypal_express'], $paymentFactories->getFactories('paypal_express'));
+        static::assertSame([], $paymentFactories->getFactories('paypal_pro'));
     }
 
     public function testIsOffline()
@@ -71,10 +71,10 @@ class PaymentFactoriesTest extends TestCase
         $paymentFactories = new PaymentFactories();
         $paymentFactories->setGatewayFactories($data);
 
-        $this->assertTrue($paymentFactories->isOffline('cash'));
-        $this->assertTrue($paymentFactories->isOffline('credit'));
-        $this->assertFalse($paymentFactories->isOffline('paypal'));
-        $this->assertFalse($paymentFactories->isOffline('payex'));
+        static::assertTrue($paymentFactories->isOffline('cash'));
+        static::assertTrue($paymentFactories->isOffline('credit'));
+        static::assertFalse($paymentFactories->isOffline('paypal'));
+        static::assertFalse($paymentFactories->isOffline('payex'));
     }
 
     public function testGetFactory()
@@ -88,9 +88,9 @@ class PaymentFactoriesTest extends TestCase
         $paymentFactories = new PaymentFactories();
         $paymentFactories->setGatewayFactories($data);
 
-        $this->assertSame('offline', $paymentFactories->getFactory('cash'));
-        $this->assertSame('offline', $paymentFactories->getFactory('credit'));
-        $this->assertSame('paypal_express', $paymentFactories->getFactory('paypal'));
+        static::assertSame('offline', $paymentFactories->getFactory('cash'));
+        static::assertSame('offline', $paymentFactories->getFactory('credit'));
+        static::assertSame('paypal_express', $paymentFactories->getFactory('paypal'));
     }
 
     public function testGetEmptyFactory()
@@ -114,9 +114,9 @@ class PaymentFactoriesTest extends TestCase
 
         $paymentFactories->setGatewayForms($data);
 
-        $this->assertSame('cash_form', $paymentFactories->getForm('cash'));
-        $this->assertSame('credit_form', $paymentFactories->getForm('credit'));
-        $this->assertSame('paypal_form', $paymentFactories->getForm('paypal'));
-        $this->assertNull($paymentFactories->getForm('payex'));
+        static::assertSame('cash_form', $paymentFactories->getForm('cash'));
+        static::assertSame('credit_form', $paymentFactories->getForm('credit'));
+        static::assertSame('paypal_form', $paymentFactories->getForm('paypal'));
+        static::assertNull($paymentFactories->getForm('payex'));
     }
 }

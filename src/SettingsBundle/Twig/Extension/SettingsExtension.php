@@ -57,7 +57,7 @@ class SettingsExtension extends AbstractExtension
             $setting = $this->config->get($setting);
 
             if ($decode && $setting) {
-                return json_decode($setting, true);
+                return json_decode($setting, true, 512, JSON_THROW_ON_ERROR);
             }
 
             return $setting;

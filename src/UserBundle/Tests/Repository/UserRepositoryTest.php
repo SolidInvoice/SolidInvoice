@@ -52,8 +52,8 @@ class UserRepositoryTest extends KernelTestCase
 
         $this->repository->save($user);
 
-        $this->assertNotNull($user->getId());
-        $this->assertCount(1, $this->repository->findAll());
+        static::assertNotNull($user->getId());
+        static::assertCount(1, $this->repository->findAll());
     }
 
     public function testRefreshUser()
@@ -61,9 +61,9 @@ class UserRepositoryTest extends KernelTestCase
         $executor = $this->loadFixtures([LoadData::class], true);
         $user = $executor->getReferenceRepository()->getReference('user2');
         $newUser = $this->repository->refreshUser($user);
-        $this->assertSame($user->getId(), $newUser->getId());
-        $this->assertSame($user->getUsername(), $newUser->getUsername());
-        $this->assertSame($user->getEmail(), $newUser->getEmail());
+        static::assertSame($user->getId(), $newUser->getId());
+        static::assertSame($user->getUsername(), $newUser->getUsername());
+        static::assertSame($user->getEmail(), $newUser->getEmail());
     }
 
     public function testRefreshUserWithInvalidUser()
@@ -98,8 +98,8 @@ class UserRepositoryTest extends KernelTestCase
     public function testLoadUserByUsername()
     {
         $this->loadFixtures([LoadData::class], true);
-        $this->assertInstanceOf(User::class, $this->repository->loadUserByUsername('test2'));
-        $this->assertInstanceOf(User::class, $this->repository->loadUserByUsername('test2@test.com'));
+        static::assertInstanceOf(User::class, $this->repository->loadUserByUsername('test2'));
+        static::assertInstanceOf(User::class, $this->repository->loadUserByUsername('test2@test.com'));
     }
 
     public function testLoadUserByUsernameWithDisabledUser()
@@ -121,17 +121,17 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testGetUserCount()
     {
-        $this->assertSame(0, $this->repository->getUserCount());
+        static::assertSame(0, $this->repository->getUserCount());
 
         $this->loadFixtures([LoadData::class], true);
 
-        $this->assertSame(2, $this->repository->getUserCount());
+        static::assertSame(2, $this->repository->getUserCount());
     }
 
     public function testSupportsClass()
     {
-        $this->assertFalse($this->repository->supportsClass(self::class));
-        $this->assertTrue($this->repository->supportsClass(User::class));
+        static::assertFalse($this->repository->supportsClass(self::class));
+        static::assertTrue($this->repository->supportsClass(User::class));
     }
 
     public function testDeleteUsers()
@@ -140,8 +140,8 @@ class UserRepositoryTest extends KernelTestCase
 
         $userIds = [$executor->getReferenceRepository()->getReference('user1')->getId(), $executor->getReferenceRepository()->getReference('user2')->getId()];
 
-        $this->assertSame(2, $this->repository->deleteUsers($userIds));
-        $this->assertCount(0, $this->repository->findAll());
+        static::assertSame(2, $this->repository->deleteUsers($userIds));
+        static::assertCount(0, $this->repository->findAll());
     }
 
     public function testClearUserConfirmationToken()
@@ -150,23 +150,23 @@ class UserRepositoryTest extends KernelTestCase
         /** @var User $user1 */
         $user1 = $executor->getReferenceRepository()->getReference('user1');
 
-        $this->assertNotNull($user1->getConfirmationToken());
-        $this->assertNotNull($user1->getPasswordRequestedAt());
-        $this->assertInstanceOf(\DateTimeInterface::class, $user1->getPasswordRequestedAt());
+        static::assertNotNull($user1->getConfirmationToken());
+        static::assertNotNull($user1->getPasswordRequestedAt());
+        static::assertInstanceOf(\DateTimeInterface::class, $user1->getPasswordRequestedAt());
 
         $this->repository->clearUserConfirmationToken($user1);
 
-        $this->assertNull($user1->getConfirmationToken());
-        $this->assertNull($user1->getPasswordRequestedAt());
+        static::assertNull($user1->getConfirmationToken());
+        static::assertNull($user1->getPasswordRequestedAt());
     }
 
     public function testGetGridQuery()
     {
         $queryBuilder = $this->repository->getGridQuery();
-        $this->assertInstanceOf(QueryBuilder::class, $queryBuilder);
+        static::assertInstanceOf(QueryBuilder::class, $queryBuilder);
         $alias = $queryBuilder->getRootAliases()[0];
         $fields = implode(', ', ["$alias.id", "$alias.username", "$alias.email", "$alias.enabled", "$alias.created"]);
-        $this->assertCount(1, $queryBuilder->getDQLPart('select'));
-        $this->assertSame($fields, (string) $queryBuilder->getDQLPart('select')[0]);
+        static::assertCount(1, $queryBuilder->getDQLPart('select'));
+        static::assertSame($fields, (string) $queryBuilder->getDQLPart('select')[0]);
     }
 }

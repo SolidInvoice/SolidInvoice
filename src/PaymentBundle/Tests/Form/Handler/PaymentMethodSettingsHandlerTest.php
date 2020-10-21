@@ -68,13 +68,13 @@ class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
         /* @var PaymentMethod $data */
-        $this->assertSame('My Test Payment', $data->getName());
-        $this->assertTrue($data->isEnabled());
-        $this->assertCount(4, $this->em->getRepository(PaymentMethod::class)->findAll());
+        static::assertSame('My Test Payment', $data->getName());
+        static::assertTrue($data->isEnabled());
+        static::assertCount(4, $this->em->getRepository(PaymentMethod::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
+        static::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 }

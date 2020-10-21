@@ -61,7 +61,7 @@ class PaymentFactories
      */
     public function getForm(string $gateway): ?string
     {
-        return isset($this->forms[$gateway]) ? $this->forms[$gateway] : null;
+        return $this->forms[$gateway] ?? null;
     }
 
     /**

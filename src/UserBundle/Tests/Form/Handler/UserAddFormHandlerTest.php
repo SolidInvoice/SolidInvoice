@@ -79,19 +79,19 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        $this->assertCount(1, $this->em->getRepository(User::class)->findAll());
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertInstanceOf(FlashResponse::class, $response);
-        $this->assertSame('/users', $response->getTargetUrl());
-        $this->assertSame('test', $data->getUserName());
-        $this->assertTrue(password_verify($this->password, $data->getPassword()));
-        $this->assertCount(1, $response->getFlash());
-        $this->assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
+        static::assertCount(1, $this->em->getRepository(User::class)->findAll());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(FlashResponse::class, $response);
+        static::assertSame('/users', $response->getTargetUrl());
+        static::assertSame('test', $data->getUserName());
+        static::assertTrue(password_verify($this->password, $data->getPassword()));
+        static::assertCount(1, $response->getFlash());
+        static::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        $this->assertInstanceOf(Template::class, $formRequest->getResponse());
+        static::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
     public function getFormData(): array

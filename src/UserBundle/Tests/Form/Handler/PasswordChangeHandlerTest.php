@@ -67,11 +67,11 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertInstanceOf(FlashResponse::class, $response);
-        $this->assertSame('profile', $response->getTargetUrl());
-        $this->assertTrue(password_verify($this->password, $data->getPassword()));
-        $this->assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(FlashResponse::class, $response);
+        static::assertSame('profile', $response->getTargetUrl());
+        static::assertTrue(password_verify($this->password, $data->getPassword()));
+        static::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     protected function getHandlerOptions(): array

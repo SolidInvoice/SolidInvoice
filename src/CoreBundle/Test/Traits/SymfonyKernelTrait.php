@@ -49,8 +49,8 @@ trait SymfonyKernelTrait
         $options = $this->getKernelOptions();
 
         return new $class(
-            isset($options['environment']) ? $options['environment'] : 'test',
-            isset($options['debug']) ? $options['debug'] : true
+            $options['environment'] ?? 'test',
+            $options['debug'] ?? true
         );
     }
 

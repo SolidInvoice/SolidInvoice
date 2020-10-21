@@ -91,7 +91,7 @@ abstract class FormTestCase extends TypeTestCase
 
     protected function assertFormData($form, array $formData, $object)
     {
-        $this->assertNotEmpty($formData);
+        static::assertNotEmpty($formData);
 
         if (!$form instanceof FormInterface) {
             $form = $this->factory->create($form);
@@ -100,14 +100,14 @@ abstract class FormTestCase extends TypeTestCase
         // submit the data to the form directly
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($object, $form->getData());
+        static::assertTrue($form->isSynchronized());
+        static::assertEquals($object, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            static::assertArrayHasKey($key, $children);
         }
     }
 

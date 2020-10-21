@@ -28,13 +28,13 @@ class MailerTest extends TestCase
         $mailer = new Mailer($processor);
         $mail = new \Swift_Message();
 
-        $processor->expects($this->at(0))
+        $processor->expects(static::at(0))
             ->method('process')
             ->with($mail)
             ->willReturn($result = new MessageSentResponse());
 
-        $this->assertSame($result, $mailer->send($mail));
-        $this->assertTrue($result->isSuccess());
+        static::assertSame($result, $mailer->send($mail));
+        static::assertTrue($result->isSuccess());
     }
 
     public function testSendWithFailedRecipients()
@@ -44,12 +44,12 @@ class MailerTest extends TestCase
         $mailer = new Mailer($processor);
         $mail = new \Swift_Message();
 
-        $processor->expects($this->at(0))
+        $processor->expects(static::at(0))
             ->method('process')
             ->with($mail)
             ->willReturn($result = new MessageSentResponse(['user1' => 'user1@foo.com']));
 
-        $this->assertSame($result, $mailer->send($mail));
-        $this->assertFalse($result->isSuccess());
+        static::assertSame($result, $mailer->send($mail));
+        static::assertFalse($result->isSuccess());
     }
 }

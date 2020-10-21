@@ -49,8 +49,8 @@ class CreditNormalizerTest extends TestCase
 
         $normalizer = new CreditNormalizer($parentNormalizer);
 
-        $this->assertTrue($normalizer->supportsNormalization(new Credit()));
-        $this->assertFalse($normalizer->supportsNormalization(Credit::class));
+        static::assertTrue($normalizer->supportsNormalization(new Credit()));
+        static::assertFalse($normalizer->supportsNormalization(Credit::class));
     }
 
     public function testSupportsDenormalization()
@@ -79,8 +79,8 @@ class CreditNormalizerTest extends TestCase
 
         $normalizer = new CreditNormalizer($parentNormalizer);
 
-        $this->assertTrue($normalizer->supportsDenormalization(null, Credit::class));
-        $this->assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        static::assertTrue($normalizer->supportsDenormalization(null, Credit::class));
+        static::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
     public function testNormalization()
@@ -113,7 +113,7 @@ class CreditNormalizerTest extends TestCase
         $money = new Money(10000, new Currency('USD'));
         $credit->setValue($money);
 
-        $this->assertEquals($money, $normalizer->normalize($credit));
+        static::assertEquals($money, $normalizer->normalize($credit));
     }
 
     public function testDenormalization()
@@ -142,6 +142,6 @@ class CreditNormalizerTest extends TestCase
 
         $normalizer = new CreditNormalizer($parentNormalizer);
 
-        $this->assertEquals(123, $normalizer->denormalize([], Credit::class));
+        static::assertEquals(123, $normalizer->denormalize([], Credit::class));
     }
 }

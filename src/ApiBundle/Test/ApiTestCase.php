@@ -62,14 +62,14 @@ abstract class ApiTestCase extends PantherTestCase
             $server['HTTP_'.strtoupper($key)] = $value;
         }
 
-        self::$client->request('POST', $uri, [], [], $server, json_encode($data));
+        self::$client->request('POST', $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        $this->assertSame(201, $statusCode);
+        static::assertSame(201, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        $this->assertJson($content);
+        static::assertJson($content);
 
-        return json_decode($content, true);
+        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
     protected function requestPut(string $uri, array $data, array $headers = []): array
@@ -79,14 +79,14 @@ abstract class ApiTestCase extends PantherTestCase
             $server['HTTP_'.strtoupper($key)] = $value;
         }
 
-        self::$client->request('PUT', $uri, [], [], $server, json_encode($data));
+        self::$client->request('PUT', $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        $this->assertSame(200, $statusCode);
+        static::assertSame(200, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        $this->assertJson($content);
+        static::assertJson($content);
 
-        return json_decode($content, true);
+        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
     protected function requestGet(string $uri, array $headers = []): array
@@ -99,11 +99,11 @@ abstract class ApiTestCase extends PantherTestCase
         self::$client->request('GET', $uri, [], [], $server);
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        $this->assertSame(200, $statusCode);
+        static::assertSame(200, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        $this->assertJson($content);
+        static::assertJson($content);
 
-        return json_decode($content, true);
+        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
     protected function requestDelete(string $uri, array $headers = [])
@@ -116,9 +116,9 @@ abstract class ApiTestCase extends PantherTestCase
         self::$client->request('DELETE', $uri, [], [], $server);
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        $this->assertSame(204, $statusCode);
+        static::assertSame(204, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        $this->assertEmpty($content);
+        static::assertEmpty($content);
 
         return $content;
     }

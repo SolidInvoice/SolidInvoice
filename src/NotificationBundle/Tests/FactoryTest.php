@@ -49,9 +49,9 @@ class FactoryTest extends TestCase
 
         $phoneNumber = $faker->phoneNumber;
         $notification = $factory->createSmsNotification($phoneNumber, $message);
-        $this->assertInstanceOf(TwilioNotification::class, $notification);
-        $this->assertSame($messageText, $notification->getMessage());
-        $this->assertSame($phoneNumber, $notification->getRecipientNumber());
+        static::assertInstanceOf(TwilioNotification::class, $notification);
+        static::assertSame($messageText, $notification->getMessage());
+        static::assertSame($phoneNumber, $notification->getRecipientNumber());
     }
 
     public function testCreateHtmlEmailNotification()
@@ -103,15 +103,15 @@ class FactoryTest extends TestCase
 
         $notification = $factory->createEmailNotification($message);
 
-        $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
+        static::assertInstanceOf(SwiftMailerNotification::class, $notification);
         /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
-        $this->assertSame($body, $swiftMessage->getBody());
-        $this->assertSame($subject, $swiftMessage->getSubject());
-        $this->assertSame('text/html', $swiftMessage->getContentType());
-        $this->assertSame([$fromEmail => $fromName], $swiftMessage->getFrom());
-        $this->assertSame([$toEmail => $toName], $swiftMessage->getTo());
+        static::assertInstanceOf(Swift_Message::class, $swiftMessage);
+        static::assertSame($body, $swiftMessage->getBody());
+        static::assertSame($subject, $swiftMessage->getSubject());
+        static::assertSame('text/html', $swiftMessage->getContentType());
+        static::assertSame([$fromEmail => $fromName], $swiftMessage->getFrom());
+        static::assertSame([$toEmail => $toName], $swiftMessage->getTo());
     }
 
     public function testCreateTextEmailNotification()
@@ -163,15 +163,15 @@ class FactoryTest extends TestCase
 
         $notification = $factory->createEmailNotification($message);
 
-        $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
+        static::assertInstanceOf(SwiftMailerNotification::class, $notification);
         /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
-        $this->assertSame($body, $swiftMessage->getBody());
-        $this->assertSame($subject, $swiftMessage->getSubject());
-        $this->assertSame('text/plain', $swiftMessage->getContentType());
-        $this->assertSame([$fromEmail => $fromName], $swiftMessage->getFrom());
-        $this->assertSame([$toEmail => $toName], $swiftMessage->getTo());
+        static::assertInstanceOf(Swift_Message::class, $swiftMessage);
+        static::assertSame($body, $swiftMessage->getBody());
+        static::assertSame($subject, $swiftMessage->getSubject());
+        static::assertSame('text/plain', $swiftMessage->getContentType());
+        static::assertSame([$fromEmail => $fromName], $swiftMessage->getFrom());
+        static::assertSame([$toEmail => $toName], $swiftMessage->getTo());
     }
 
     public function testCreateMultipleFormatEmailNotification()
@@ -229,20 +229,20 @@ class FactoryTest extends TestCase
 
         $notification = $factory->createEmailNotification($message);
 
-        $this->assertInstanceOf(SwiftMailerNotification::class, $notification);
+        static::assertInstanceOf(SwiftMailerNotification::class, $notification);
         /** @var Swift_Message $swiftMessage */
         $swiftMessage = $notification->getMessage();
-        $this->assertInstanceOf(Swift_Message::class, $swiftMessage);
-        $this->assertCount(1, $swiftMessage->getChildren());
+        static::assertInstanceOf(Swift_Message::class, $swiftMessage);
+        static::assertCount(1, $swiftMessage->getChildren());
 
-        $this->assertSame($htmlBody, $swiftMessage->getBody());
+        static::assertSame($htmlBody, $swiftMessage->getBody());
 
-        $this->assertSame($textBody, $swiftMessage->getChildren()[0]->getBody());
-        $this->assertSame('text/plain', $swiftMessage->getChildren()[0]->getContentType());
+        static::assertSame($textBody, $swiftMessage->getChildren()[0]->getBody());
+        static::assertSame('text/plain', $swiftMessage->getChildren()[0]->getContentType());
 
-        $this->assertSame($subject, $swiftMessage->getSubject());
-        $this->assertSame('multipart/alternative', $swiftMessage->getContentType());
-        $this->assertSame([$fromEmail => $fromName], $swiftMessage->getFrom());
-        $this->assertSame([$toEmail => $toName], $swiftMessage->getTo());
+        static::assertSame($subject, $swiftMessage->getSubject());
+        static::assertSame('multipart/alternative', $swiftMessage->getContentType());
+        static::assertSame([$fromEmail => $fromName], $swiftMessage->getFrom());
+        static::assertSame([$toEmail => $toName], $swiftMessage->getTo());
     }
 }

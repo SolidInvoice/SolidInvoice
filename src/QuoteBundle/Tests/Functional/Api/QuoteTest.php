@@ -63,37 +63,34 @@ class QuoteTest extends ApiTestCase
 
         unset($result['uuid']);
 
-        $this->assertSame(
-            [
-                'id' => 1001,
-                'status' => 'draft',
-                'client' => '/api/clients/1000',
-                'total' => '$90.00',
-                'baseTotal' => '$100.00',
-                'tax' => '$0.00',
-                'discount' => [
-                    'type' => 'percentage',
-                    'value' => 10,
-                ],
-                'terms' => null,
-                'notes' => null,
-                'due' => null,
-                'items' => [
-                    [
-                        'id' => 1001,
-                        'description' => 'Foo Item',
-                        'price' => '$100.00',
-                        'qty' => 1,
-                        'tax' => null,
-                        'total' => '$100.00',
-                    ],
-                ],
-                'users' => [
-                    '/api/contacts/1000',
+        static::assertSame([
+            'id' => 1001,
+            'status' => 'draft',
+            'client' => '/api/clients/1000',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
+            ],
+            'terms' => null,
+            'notes' => null,
+            'due' => null,
+            'items' => [
+                [
+                    'id' => 1001,
+                    'description' => 'Foo Item',
+                    'price' => '$100.00',
+                    'qty' => 1,
+                    'tax' => null,
+                    'total' => '$100.00',
                 ],
             ],
-            $result
-        );
+            'users' => [
+                '/api/contacts/1000',
+            ],
+        ], $result);
     }
 
     public function testDelete()
@@ -107,37 +104,34 @@ class QuoteTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'status' => 'draft',
-                'client' => '/api/clients/1000',
-                'total' => '$100.00',
-                'baseTotal' => '$100.00',
-                'tax' => '$0.00',
-                'discount' => [
-                    'type' => null,
-                    'value' => null,
-                ],
-                'terms' => null,
-                'notes' => null,
-                'due' => null,
-                'items' => [
-                    [
-                        'id' => 1000,
-                        'description' => 'Test Item',
-                        'price' => '$100.00',
-                        'qty' => 1,
-                        'tax' => null,
-                        'total' => '$100.00',
-                    ],
-                ],
-                'users' => [
-                    '/api/contacts/1000',
+        static::assertSame([
+            'id' => 1000,
+            'status' => 'draft',
+            'client' => '/api/clients/1000',
+            'total' => '$100.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => null,
+                'value' => null,
+            ],
+            'terms' => null,
+            'notes' => null,
+            'due' => null,
+            'items' => [
+                [
+                    'id' => 1000,
+                    'description' => 'Test Item',
+                    'price' => '$100.00',
+                    'qty' => 1,
+                    'tax' => null,
+                    'total' => '$100.00',
                 ],
             ],
-            $data
-        );
+            'users' => [
+                '/api/contacts/1000',
+            ],
+        ], $data);
     }
 
     public function testEdit()
@@ -161,36 +155,33 @@ class QuoteTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        $this->assertSame(
-            [
-                'id' => 1000,
-                'status' => 'draft',
-                'client' => '/api/clients/1000',
-                'total' => '$90.00',
-                'baseTotal' => '$100.00',
-                'tax' => '$0.00',
-                'discount' => [
-                    'type' => 'percentage',
-                    'value' => 10,
-                ],
-                'terms' => null,
-                'notes' => null,
-                'due' => null,
-                'items' => [
-                    [
-                        'id' => 1001,
-                        'description' => 'Foo Item',
-                        'price' => '$100.00',
-                        'qty' => 1,
-                        'tax' => null,
-                        'total' => '$100.00',
-                    ],
-                ],
-                'users' => [
-                    '/api/contacts/1000',
+        static::assertSame([
+            'id' => 1000,
+            'status' => 'draft',
+            'client' => '/api/clients/1000',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
+            ],
+            'terms' => null,
+            'notes' => null,
+            'due' => null,
+            'items' => [
+                [
+                    'id' => 1001,
+                    'description' => 'Foo Item',
+                    'price' => '$100.00',
+                    'qty' => 1,
+                    'tax' => null,
+                    'total' => '$100.00',
                 ],
             ],
-            $data
-        );
+            'users' => [
+                '/api/contacts/1000',
+            ],
+        ], $data);
     }
 }

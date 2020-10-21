@@ -34,7 +34,7 @@ class TextTemplateDecoratorTest extends TestCase
         $config = M::mock(SystemConfig::class);
         $decorator = new TextTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new \Swift_Message(), Context::create())));
     }
 
     public function testShouldDecorateWithHtmlConfig()
@@ -46,7 +46,7 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
+        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
                 return new Template('');
@@ -63,7 +63,7 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
                 return new Template('');
@@ -80,7 +80,7 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator = new TextTemplateDecorator($config, new Environment(new ArrayLoader()));
 
-        $this->assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
+        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new class() extends \Swift_Message implements TextTemplateMessage {
             public function getTextTemplate(): Template
             {
                 return new Template('');
@@ -108,7 +108,7 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator->decorate(new MessageEvent($message, Context::create(['c' => 'd'])));
 
-        $this->assertSame('Text Template', $message->getBody());
+        static::assertSame('Text Template', $message->getBody());
     }
 
     public function testDecorateWithBoth()
@@ -131,6 +131,6 @@ class TextTemplateDecoratorTest extends TestCase
 
         $decorator->decorate(new MessageEvent($message, Context::create(['c' => 'd'])));
 
-        $this->assertSame('Text Template', $message->getChildren()[0]->getBody());
+        static::assertSame('Text Template', $message->getChildren()[0]->getBody());
     }
 }

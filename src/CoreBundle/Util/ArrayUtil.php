@@ -31,9 +31,7 @@ class ArrayUtil
             throw new \Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
         }
 
-        reset($array);
-
-        if (is_array($array[key($array)])) {
+        if (is_array($array[array_key_first($array)])) {
             return array_column($array, $column);
         }
 
