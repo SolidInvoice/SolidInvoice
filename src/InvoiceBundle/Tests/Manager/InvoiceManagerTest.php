@@ -23,10 +23,11 @@ use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -130,9 +131,8 @@ class InvoiceManagerTest extends KernelTestCase
 
         static::assertCount(1, $invoice->getItems());
 
-        /** @var item[] $invoiceItem */
         $invoiceItem = $invoice->getItems();
-        static::assertInstanceOf(Item::class, $invoiceItem[0]);
+        static::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
 
         static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
