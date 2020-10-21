@@ -44,11 +44,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Quote
 {
-    use TimeStampable,
-        Archivable,
-        QuoteStatusTrait {
+    use Archivable;
+    use QuoteStatusTrait {
         Archivable::isArchived insteadof QuoteStatusTrait;
     }
+    use TimeStampable;
 
     /**
      * @var int

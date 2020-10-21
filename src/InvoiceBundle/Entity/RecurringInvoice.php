@@ -27,8 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RecurringInvoice
 {
-    use TimeStampable;
     use Archivable;
+    use TimeStampable;
 
     /**
      * @var int
