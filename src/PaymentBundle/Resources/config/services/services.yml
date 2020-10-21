@@ -6,16 +6,19 @@ services:
 
     solidinvoice.payment.payum.paypal_express.action.payment_status_action:
         class: SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress\PaymentDetailsStatusAction
+        public: true
         tags:
             - { name: payum.action, factory: paypal_express_checkout, prepend: true }
 
     solidinvoice.payment.payum.offline.action.status_action:
         class: SolidInvoice\PaymentBundle\PaymentAction\Offline\StatusAction
+        public: true
         tags:
             - { name: payum.action, factory: offline }
 
     solidinvoice.payment.payum.extension.update_payment_details_extension:
         class: SolidInvoice\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension
+        public: true
         arguments: ['@doctrine']
         tags:
             - { name: payum.extension, all: true }
