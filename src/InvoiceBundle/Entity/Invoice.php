@@ -126,7 +126,6 @@ class Invoice extends BaseInvoice
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
         }
-
     }
 
     /**
@@ -314,6 +313,5 @@ class Invoice extends BaseInvoice
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
         }
-
     }
 }
