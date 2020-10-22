@@ -143,6 +143,7 @@ class Client
     private $recurringInvoices;
 
     /**
+     * @var Payment[]|Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
@@ -379,7 +380,7 @@ class Client
     }
 
     /**
-     * @return Collection|RecurringInvoice[]
+     * @return RecurringInvoice[]|Collection<int, RecurringInvoice>
      */
     public function getRecurringInvoices(): Collection
     {
