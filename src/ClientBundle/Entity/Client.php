@@ -43,7 +43,6 @@ class Client
 {
     use Archivable;
     use TimeStampable;
-    use Entity\TimeStampable;
 
     /**
      * @var int

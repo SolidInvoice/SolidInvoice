@@ -42,7 +42,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Invoice extends BaseInvoice
 {
     use Archivable;
-
     use InvoiceStatusTrait {
         Archivable::isArchived insteadof InvoiceStatusTrait;
     }
@@ -226,6 +225,18 @@ class Invoice extends BaseInvoice
 
         return $this;
     }
+
+    /**
+     * @return Invoice
+     */
+    public function removeItem(Item $item): self
+    {
+        $this->items->removeElement($item);
+        $item->setInvoice(null);
+
+        return $this;
+    }
+
     /**
      * @return Collection|ItemInterface[]
      */
@@ -233,6 +244,19 @@ class Invoice extends BaseInvoice
     {
         return $this->items;
     }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function updateItems(): void
+    {
+        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
+            foreach ($this->items as $item) {
+                $item->setInvoice($this);
+            }
+        }
+    }
+
     public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
@@ -263,18 +287,6 @@ class Invoice extends BaseInvoice
         return $this->payments;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function updateItems(): void
-    {
-        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
-            foreach ($this->items as $item) {
-                $item->setInvoice($this);
-            }
-        }
-    }
-
     public function __clone()
     {
         parent::__clone();
@@ -297,41 +309,5 @@ class Invoice extends BaseInvoice
         $quote->setInvoice($this);
 
         return $this;
-    }
-
-    /**
-     * Add item.
-     *
-     * @return Invoice
-     */
-    public function addItem(Item $item): self
-    {
-        $this->items[] = $item;
-        $item->setInvoice($this);
-
-        return $this;
-    }
-
-    /**
-     * Removes an item.
-     *
-     * @return Invoice
-     */
-    public function removeItem(Item $item): self
-    {
-        $this->items->removeElement($item);
-        $item->setInvoice(null);
-
-        return $this;
-    }
-
-    /**
-     * Get items.
-     *
-     * @return Collection|ItemInterface[]
-     */
-    public function getItems(): Collection
-    {
-        return $this->items;
     }
 }

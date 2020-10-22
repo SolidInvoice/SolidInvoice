@@ -19,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\CronBundle\CommandInterface;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -65,7 +65,7 @@ class RecurringInvoiceCreate implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function process()
+    public function process(): void
     {
         /** @var RecurringInvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->entityManager->getRepository(RecurringInvoice::class);
@@ -81,7 +81,7 @@ class RecurringInvoiceCreate implements CommandInterface
 
             $cron = CronExpression::factory($invoice->getFrequency());
 
-s            if (true === $cron->isDue($now)) {
+            if (true === $cron->isDue($now)) {
                 $newInvoice = $this->invoiceCloner->clone($invoice);
                 $this->setItemsDescription($newInvoice);
 
@@ -93,7 +93,7 @@ s            if (true === $cron->isDue($now)) {
         }
     }
 
-    private function setItemsDescription(Invoice $invoice): void
+    private function setItemsDescription(BaseInvoice $invoice): void
     {
         $now = Carbon::now();
 
