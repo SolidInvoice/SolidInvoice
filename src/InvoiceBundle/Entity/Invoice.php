@@ -287,17 +287,6 @@ class Invoice extends BaseInvoice
         return $this->payments;
     }
 
-    public function __clone()
-    {
-        parent::__clone();
-
-        try {
-            $this->setUuid(Uuid::uuid1());
-        } catch (Exception $e) {
-        }
-
-    }
-
     public function getQuote(): ?Quote
     {
         return $this->quote;
@@ -309,5 +298,22 @@ class Invoice extends BaseInvoice
         $quote->setInvoice($this);
 
         return $this;
+    }
+
+    public function __clone()
+    {
+        if (null !== $this->items) {
+            $items = $this->items;
+            $this->items = new ArrayCollection();
+            foreach ($items as $item) {
+                $this->items->add(clone $item);
+            }
+        }
+
+        try {
+            $this->setUuid(Uuid::uuid1());
+        } catch (Exception $e) {
+        }
+
     }
 }

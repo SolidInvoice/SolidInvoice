@@ -306,31 +306,4 @@ abstract class BaseInvoice
 
         return $this;
     }
-
-    /**
-     * PrePersist listener to update the invoice total.
-     *
-     * @ORM\PrePersist
-     */
-    public function updateItems()
-    {
-        if (count($this->items)) {
-            foreach ($this->items as $item) {
-                $item->setInvoice($this);
-            }
-        }
-    }
-
-    public function __clone()
-    {
-        if (null !== $this->items) {
-            $items = $this->items;
-            $this->items = new ArrayCollection();
-            foreach ($items as $item) {
-                $this->items->add(clone $item);
-            }
-        }
-
-        $this->status = null;
-    }
 }
