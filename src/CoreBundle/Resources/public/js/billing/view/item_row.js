@@ -21,7 +21,7 @@ export default ItemView.extend({
 
         this.model.collection.remove(this.model);
     },
-    async initialize () {
+    async onRender () {
         await this.setModel();
         await this.calcPrice();
     },
