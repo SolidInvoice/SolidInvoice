@@ -18,23 +18,23 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
 
-final class GmailTransportConfigType extends AbstractType
+final class MailgunApiTransportConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'username',
+            'domain',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'gmail']),
+                'constraints' => new Constraints\NotBlank(['groups' => 'mailgun']),
             ]
         );
 
         $builder->add(
-            'password',
-            PasswordType::class,
+            'key',
+            null,
             [
-                'constraints' => new Constraints\Notblank(['groups' => ['gmail']]),
+                'constraints' => new Constraints\NotBlank(['groups' => 'mailgun']),
             ]
         );
     }

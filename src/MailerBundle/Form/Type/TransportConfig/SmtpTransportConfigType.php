@@ -58,7 +58,7 @@ final class SmtpTransportConfigType extends AbstractType
             'user',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'gmail']),
+                'constraints' => new Constraints\NotBlank(['groups' => 'smtp']),
                 'required' => false,
             ]
         );
@@ -67,7 +67,7 @@ final class SmtpTransportConfigType extends AbstractType
             'password',
             PasswordType::class,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'gmail']),
+                'constraints' => new Constraints\NotBlank(['groups' => 'smtp']),
                 'required' => false,
             ]
         );
