@@ -18,23 +18,23 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
 
-final class SesTransportConfigType extends AbstractType
+final class UsernamePasswordTransportConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'accessKey',
+            'username',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'amazon_ses']),
+                'constraints' => new Constraints\NotBlank(['groups' => 'userpass']),
             ]
         );
 
         $builder->add(
-            'accessSecret',
+            'password',
             PasswordType::class,
             [
-                'constraints' => new Constraints\Notblank(['groups' => ['amazon_ses']]),
+                'constraints' => new Constraints\Notblank(['groups' => ['userpass']]),
             ]
         );
     }

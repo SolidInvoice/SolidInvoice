@@ -14,43 +14,82 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Form\Type;
 
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
-use SolidInvoice\MailerBundle\Form\Type\TransportConfig\GmailTransportConfigType;
-use SolidInvoice\MailerBundle\Form\Type\TransportConfig\SesTransportConfigType;
-use SolidInvoice\MailerBundle\Form\Type\TransportConfig\SmtpTransportConfigType;
+use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MailTransportType extends AbstractType
+final class MailTransportType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * @var iterable|ConfiguratorInterface[]
+     */
+    private $transports;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator, iterable $transports)
     {
+        $this->transports = $transports;
+        $this->translator = $translator;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $choices = \array_map(function (ConfiguratorInterface $configurator) { return $configurator->getName($this->translator); }, \iterator_to_array($this->transports));
+
         $builder->add(
-            'transport',
+            'provider',
             Select2Type::class, [
-            'choices' => [
-                'SMTP' => 'smtp',
-                'Amazon SES (API)' => 'ses+api',
-                'Amazon SES (SMTP)' => 'ses+smtp',
-                'Gmail' => 'gmail+smtp',
-                'MailChimp (API)' => 'mandrill+api',
-                'MailChimp (SMTP)' => 'mandrill+smtps',
-                'Mailgun (API)' => 'mailgun+api',
-                'Mailgun (SMTP)' => 'mailgun+smtp',
-                'Postmark (API)' => 'postmark+api',
-                'Postmark (SMTP)' => 'postmark+smtp',
-                'SendGrid (API)' => 'sendgrid+api',
-                'SendGrid (SMTP)' => 'sendgrid+smtp',
-            ],
+            'choices' => \array_combine($choices, $choices),
             'placeholder' => 'Choose Mail Provider',
             'label' => 'Mail Provider',
         ]);
 
-        $configOptions = ['attr' => ['class' => 'd-none']];
-        $builder->add('smtpConfig', SmtpTransportConfigType::class, $configOptions);
-        $builder->add('sesConfig', SesTransportConfigType::class, $configOptions);
-        $builder->add('gmailConfig', GmailTransportConfigType::class, $configOptions);
-        $builder->add('mandrillConfig', GmailTransportConfigType::class, $configOptions);
-        $builder->add('postmarkConfig', GmailTransportConfigType::class, $configOptions);
-        $builder->add('sendgridConfig', GmailTransportConfigType::class, $configOptions);
+        foreach ($this->transports as $transport) {
+            $builder->add(\str_replace(' ', '-', $transport->getName($this->translator)), $transport->getForm(), ['attr' => ['class' => 'd-none']]);
+        }
+
+        $builder->addModelTransformer(new class() implements DataTransformerInterface {
+            public function transform($value)
+            {
+                if (!is_string($value)) {
+                    return null;
+                }
+
+                $data = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+
+                return [
+                    'provider' => $data['provider'] ?? null,
+                    \str_replace(' ', '-', $data['provider']) => $data['config'] ?? [],
+                ];
+            }
+
+            public function reverseTransform($value): ?string
+            {
+                if (null === $value) {
+                    return null;
+                }
+
+                $provider = $value['provider'];
+
+                return json_encode(['provider' => $value['provider'], 'config' => $value[\str_replace(' ', '-', $provider)]], JSON_THROW_ON_ERROR);
+            }
+        });
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'validation_groups' => static function (FormInterface $form) {
+                return ['Default', \strtolower(\str_replace(' ', '_', $form->get('provider')->getData()))];
+            }
+        ]);
     }
 }

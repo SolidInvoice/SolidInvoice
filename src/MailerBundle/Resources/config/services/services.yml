@@ -1,6 +1,7 @@
 services:
     _defaults:
         autowire: true
+        autoconfigure: true
 
     SolidInvoice\MailerBundle\Mailer: ~
     SolidInvoice\MailerBundle\MailerInterface: '@SolidInvoice\MailerBundle\Mailer'
@@ -15,3 +16,5 @@ services:
         resource: '../../Decorator/'
         tags: ['message.decorator']
 
+    SolidInvoice\MailerBundle\Configurator\:
+        resource: '../../Configurator/'
