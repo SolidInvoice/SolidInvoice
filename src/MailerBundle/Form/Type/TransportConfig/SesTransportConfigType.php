@@ -37,5 +37,15 @@ final class SesTransportConfigType extends AbstractType
                 'constraints' => new Constraints\Notblank(['groups' => ['amazon_ses']]),
             ]
         );
+
+        $builder->add(
+            'region',
+            null,
+            [
+                'attr' => [
+                    'placeholder' => 'eu-west-1',
+                ],
+            ]
+        );
     }
 }
