@@ -15,9 +15,9 @@ final class GmailConfigurator implements ConfiguratorInterface
         return UsernamePasswordTransportConfigType::class;
     }
 
-    public function getName(TranslatorInterface $translator): string
+    public function getName(): string
     {
-        return $translator->trans('Gmail');
+        return 'Gmail';
     }
 
     public function configure(array $config): Dsn

@@ -15,9 +15,9 @@ final class PostmarkConfigurator implements ConfiguratorInterface
         return KeyTransportConfigType::class;
     }
 
-    public function getName(TranslatorInterface $translator): string
+    public function getName(): string
     {
-        return $translator->trans('Postmark');
+        return 'Postmark';
     }
 
     public function configure(array $config): Dsn

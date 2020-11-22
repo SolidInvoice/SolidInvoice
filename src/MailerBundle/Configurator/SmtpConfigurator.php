@@ -18,9 +18,9 @@ final class SmtpConfigurator implements ConfiguratorInterface
         return SmtpTransportConfigType::class;
     }
 
-    public function getName(TranslatorInterface $translator): string
+    public function getName(): string
     {
-        return $translator->trans('SMTP');
+        return 'SMTP';
     }
 
     public function configure(array $config): Dsn

@@ -15,9 +15,9 @@ final class SendgridConfigurator implements ConfiguratorInterface
         return KeyTransportConfigType::class;
     }
 
-    public function getName(TranslatorInterface $translator): string
+    public function getName(): string
     {
-        return $translator->trans('Sendgrid');
+        return 'Sendgrid';
     }
 
     public function configure(array $config): Dsn

@@ -9,7 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 interface ConfiguratorInterface
 {
-    public function getName(TranslatorInterface $translator): string;
+    public function getName(): string;
 
     public function getForm(): string;
 

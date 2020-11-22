@@ -15,13 +15,18 @@ final class SesConfigurator implements ConfiguratorInterface
         return SesTransportConfigType::class;
     }
 
-    public function getName(TranslatorInterface $translator): string
+    public function getName(): string
     {
-        return $translator->trans('Amazon SES');
+        return 'Amazon SES';
     }
 
     public function configure(array $config): Dsn
     {
-        return Dsn::fromString(\sprintf('ses+api://%s:%s@default', $config['accessKey'], $config['accessSecret']));
+        $dsn = \sprintf('ses+api://%s:%s@default', $config['accessKey'], $config['accessSecret']);
+        if (\array_key_exists('region', $config) && null !== $config['region']) {
+            $dsn .= "?region={$config['region']}";
+        }
+
+        return Dsn::fromString($dsn);
     }
 }
