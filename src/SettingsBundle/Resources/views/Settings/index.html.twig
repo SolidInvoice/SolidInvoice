@@ -13,6 +13,9 @@
 
 {% block title %}{{ "Settings"|trans }}{% endblock %}
 
+{% set module = 'settings' %}
+{% set moduleData = form.vars.value %}
+
 {% block content %}
     <section class="row">
         <aside class="col-3">
@@ -47,10 +50,4 @@
             {{ form_end(form) }}
         </section>
     </section>
-
-    <script>
-        require(['core/util/form/mail'], function (MailSettings) {
-            MailSettings('settings_email_sending_options', '{{ form.email.sending_options.transport.vars.value }}');
-        });
-    </script>
 {% endblock %}
