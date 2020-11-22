@@ -24,10 +24,6 @@ class ConfigStepFormTest extends FormTestCase
             'pdo_mysql' => 'MySQL',
         ];
 
-        $transports = [
-            'mail' => 'PHPMail',
-        ];
-
         $formData = [
             'database_config' => [
                 'driver' => 'pdo_mysql',
@@ -37,16 +33,8 @@ class ConfigStepFormTest extends FormTestCase
                 'password' => 'password',
                 'name' => 'testdb',
             ],
-            'email_settings' => [
-                'transport' => 'mail',
-                'host' => null,
-                'port' => null,
-                'encryption' => null,
-                'user' => null,
-                'password' => null,
-            ],
         ];
 
-        $this->assertFormData($this->factory->create(ConfigStepForm::class, null, ['drivers' => $drivers, 'mailer_transports' => $transports]), $formData, $formData);
+        $this->assertFormData($this->factory->create(ConfigStepForm::class, null, ['drivers' => $drivers]), $formData, $formData);
     }
 }
