@@ -85,15 +85,7 @@ final class Config
                 'user' => $config['database_user'] ?? null,
                 'password' => null,
                 'driver' => $config['database_driver'] ?? null,
-            ],
-            'email_settings' => [
-                'transport' => $config['mailer_transport'] ?? null,
-                'host' => $config['mailer_host'] ?? null,
-                'port' => $config['mailer_port'] ?? null,
-                'encryption' => $config['mailer_encryption'] ?? null,
-                'user' => $config['mailer_user'] ?? null,
-                'password' => null,
-            ],
+            ]
         ];
 
         return $this->formFactory->create(ConfigStepForm::class, $data, ['drivers' => $drivers]);
@@ -114,21 +106,6 @@ final class Config
                 $key = sprintf('database_%s', $key);
                 $config[$key] = $param;
             }
-
-            var_dump($data);
-
-            // sets the database details
-            foreach ($data['email_settings']['transport'] as $key => $param) {
-                if ($key === 'transport') {
-                    continue;
-                }
-
-                $key = sprintf('mailer_%s', $key);
-                $config[$key] = $param;
-            }
-
-            var_dump($config);
-            exit;
 
             $this->configWriter->dump($config);
 
