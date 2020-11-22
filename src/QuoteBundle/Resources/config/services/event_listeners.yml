@@ -10,6 +10,7 @@ services:
 
     SolidInvoice\QuoteBundle\Listener\:
         resource: '../../../Listener'
+        lazy: true
 
     SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber:
         arguments:

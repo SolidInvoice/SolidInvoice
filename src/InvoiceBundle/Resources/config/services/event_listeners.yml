@@ -10,3 +10,4 @@ services:
 
     SolidInvoice\InvoiceBundle\Listener\:
         resource: '../../../Listener'
+        lazy: true
