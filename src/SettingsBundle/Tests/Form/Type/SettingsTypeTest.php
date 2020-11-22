@@ -17,7 +17,6 @@ use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 use SolidInvoice\SettingsBundle\Entity\Setting;
-use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -39,7 +38,6 @@ class SettingsTypeTest extends FormTestCase
                 ImageUploadType::class,
                 PasswordType::class,
                 TextType::class,
-                MailEncryptionType::class,
                 MailTransportType::class,
             ] as $i => $type
         ) {
@@ -58,10 +56,6 @@ class SettingsTypeTest extends FormTestCase
                     ];
 
                     $formValue = json_encode($value, JSON_THROW_ON_ERROR);
-                    break;
-
-                case MailEncryptionType::class === $type:
-                    $value = $formValue = 'ssl';
                     break;
 
                 case MailTransportType::class === $type:
