@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Application\Migrations;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 
 final class Version20100 extends AbstractMigration implements ContainerAwareInterface
 {
@@ -56,6 +58,29 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
             ->dropColumn('deleted');
 
         $schema->getTable('invoices')->addIndex(['quote_id']);
+
+
+        try {
+            $this->connection->transactional(function (Connection $connection) {
+                $connection->delete('app_config', ['setting_key' => 'email/sending_options/transport']);
+                $connection->delete('app_config', ['setting_key' => 'email/sending_options/host']);
+                $connection->delete('app_config', ['setting_key' => 'email/sending_options/user']);
+                $connection->delete('app_config', ['setting_key' => 'email/sending_options/password']);
+                $connection->delete('app_config', ['setting_key' => 'email/sending_options/port']);
+                $connection->delete('app_config', ['setting_key' => 'email/sending_options/encryption']);
+                $connection->insert('app_config', ['setting_key' => 'email/sending_options/provider', 'setting_value' => null, 'description' => null, 'field_type' => MailTransportType::class]);
+            });
+        } catch (\Throwable $e) {
+            $this->write(sprintf('Unable to load data: %s. Rolling back migration', $e->getMessage()));
+
+            try {
+                $this->down($schema);
+            } catch (\Throwable $e) {
+                $this->write(sprintf('Unable to roll back migration: %s. ', $e->getMessage()));
+            }
+
+            $this->abortIf(true, $e->getMessage());
+        }
     }
 
     public function down(Schema $schema): void
