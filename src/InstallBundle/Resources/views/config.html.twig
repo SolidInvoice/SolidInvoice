@@ -7,13 +7,6 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set moduleData = {
-    mail: {
-        settings: {
-            value: form.email_settings.transport.transport.vars.value
-        }
-    }
-} %}
 {% extends '@SolidInvoiceInstall/layout.html.twig' %}
 
 {% block content %}
@@ -22,23 +15,13 @@
     {{ form_errors(form) }}
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 offset-3">
             <div class="card card-primary">
                 <div class="card-header with-border">
                     <h3 class="card-title">{{ icon('database') }} {{ 'installation.config.title.database_config'|trans }}</h3>
                 </div>
                 <div class="card-body">
                     {{ form_row(form.database_config) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-header with-border">
-                    <h3 class="card-title">{{ icon('envelope-o') }} {{ 'installation.config.title.email_settings'|trans }}</h3>
-                </div>
-                <div class="card-body">
-                    {{ form_row(form.email_settings.transport) }}
                 </div>
             </div>
         </div>
@@ -54,6 +37,3 @@
     {{ form_end(form) }}
 {% endblock %}
 
-{% block scripts %}
-    {{ encore_entry_script_tags('installation-config') }}
-{% endblock scripts %}
