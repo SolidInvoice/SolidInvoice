@@ -51,8 +51,6 @@ class ConfigStepForm extends AbstractType
                 ),
             ]
         );
-
-        $builder->add('email_settings', EmailSettingsType::class);
     }
 
     /**

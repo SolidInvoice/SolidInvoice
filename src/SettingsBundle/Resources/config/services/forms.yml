@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
 
     _instanceof:
         Symfony\Component\Form\AbstractTypeExtension:
@@ -9,3 +12,7 @@ services:
     SolidInvoice\SettingsBundle\Form\Extension\CheckBoxExtension:
         tags:
             - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' }
+
+    SolidInvoice\SettingsBundle\Form\Type\MailTransportType:
+        arguments:
+            $transports: !tagged_iterator 'solidinvoice_mailer.transport.configurator'
