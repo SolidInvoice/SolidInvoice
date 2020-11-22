@@ -15,9 +15,9 @@ final class MailgunConfigurator implements ConfiguratorInterface
         return MailgunApiTransportConfigType::class;
     }
 
-    public function getName(TranslatorInterface $translator): string
+    public function getName(): string
     {
-        return $translator->trans('Mailgun');
+        return 'Mailgun';
     }
 
     public function configure(array $config): Dsn

@@ -15,9 +15,9 @@ final class MailchimpConfigurator implements ConfiguratorInterface
         return KeyTransportConfigType::class;
     }
 
-    public function getName(TranslatorInterface $translator): string
+    public function getName(): string
     {
-        return $translator->trans('Mailchimp Mandrill');
+        return 'Mailchimp Mandrill';
     }
 
     public function configure(array $config): Dsn
