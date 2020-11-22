@@ -1,11 +1,10 @@
 import $ from 'jquery';
 import { MnObject } from 'backbone.marionette';
-import { indexOf } from 'lodash';
 
 export default MnObject.extend({
     prefix: null,
     initialize (prefix, value) {
-        value = JSON.parse(value);
+        value = JSON.parse(value || '{"provider": ""}');
 
         this.prefix = prefix;
 
@@ -13,8 +12,6 @@ export default MnObject.extend({
 
         $transport.on('change', (event) => {
             const val = $(event.target).val();
-
-            console.log(val);
 
             this._showSettings(val.replace(' ', '-'));
         });
