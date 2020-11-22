@@ -68,6 +68,8 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/password']);
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/port']);
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/encryption']);
+                $connection->delete('app_config', ['setting_key' => 'email/format']);
+
                 $connection->insert('app_config', ['setting_key' => 'email/sending_options/provider', 'setting_value' => null, 'description' => null, 'field_type' => MailTransportType::class]);
             });
         } catch (\Throwable $e) {

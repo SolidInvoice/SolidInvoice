@@ -18,7 +18,6 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType;
-use SolidInvoice\SettingsBundle\Form\Type\MailFormatType;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -41,7 +40,6 @@ class SettingsTypeTest extends FormTestCase
                 PasswordType::class,
                 TextType::class,
                 MailEncryptionType::class,
-                MailFormatType::class,
                 MailTransportType::class,
             ] as $i => $type
         ) {
@@ -64,10 +62,6 @@ class SettingsTypeTest extends FormTestCase
 
                 case MailEncryptionType::class === $type:
                     $value = $formValue = 'ssl';
-                    break;
-
-                case MailFormatType::class === $type:
-                    $value = $formValue = 'html';
                     break;
 
                 case MailTransportType::class === $type:
