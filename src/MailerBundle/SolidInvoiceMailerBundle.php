@@ -13,8 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle;
 
+use SolidInvoice\MailerBundle\DependencyInjection\CompilerPass\MailerTransportConfigCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceMailerBundle extends Bundle
 {
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new MailerTransportConfigCompilerPass());
+    }
 }
