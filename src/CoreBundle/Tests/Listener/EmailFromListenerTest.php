@@ -11,25 +11,26 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\CoreBundle\Tests\Email\Decorator;
+namespace SolidInvoice\CoreBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\CoreBundle\Email\Decorator\EmailFromDecorator;
-use SolidInvoice\MailerBundle\Context;
-use SolidInvoice\MailerBundle\Event\MessageEvent;
+use SolidInvoice\CoreBundle\Listener\EmailFromListener;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
-use Swift_Message;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class EmailFromDecoratorTest extends TestCase
+class EmailFromListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testDecorateWithFromAddressConfigured()
+    public function testWithFromAddressConfigured(): void
     {
         $systemConfig = M::mock(SystemConfig::class);
 
@@ -45,15 +46,15 @@ class EmailFromDecoratorTest extends TestCase
 
         $tokenStorage->shouldNotReceive('getToken');
 
-        $decorator = new EmailFromDecorator($systemConfig, $tokenStorage);
+        $listener = new EmailFromListener($systemConfig, $tokenStorage);
 
-        $message = new Swift_Message();
-        $decorator->decorate(new MessageEvent($message, Context::create()));
+        $message = new TemplatedEmail();
+        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertSame(['info@example.com' => 'SolidInvoice'], $message->getFrom());
+        static::assertEquals([new Address('info@example.com', 'SolidInvoice')], $message->getFrom());
     }
 
-    public function testDecorateWithOutFromAddress()
+    public function testWithoutFromAddress(): void
     {
         $systemConfig = M::mock(SystemConfig::class);
 
@@ -78,11 +79,16 @@ class EmailFromDecoratorTest extends TestCase
             ->withNoArgs()
             ->andReturn($token);
 
-        $decorator = new EmailFromDecorator($systemConfig, $tokenStorage);
+        $listener = new EmailFromListener($systemConfig, $tokenStorage);
 
-        $message = new Swift_Message();
-        $decorator->decorate(new MessageEvent($message, Context::create()));
+        $message = new TemplatedEmail();
+        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertSame(['test@example.com' => null], $message->getFrom());
+        static::assertEquals([new Address('test@example.com')], $message->getFrom());
+    }
+
+    public function testEvents(): void
+    {
+        self::assertSame([MessageEvent::class], \array_keys(EmailFromListener::getSubscribedEvents()));
     }
 }
