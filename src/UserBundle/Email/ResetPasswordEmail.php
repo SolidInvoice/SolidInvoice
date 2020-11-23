@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Email;
 
-use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
-use SolidInvoice\MailerBundle\Template\Template;
-use SolidInvoice\MailerBundle\Template\TextTemplateMessage;
 use SolidInvoice\UserBundle\Entity\User;
-use Swift_Message;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class ResetPasswordEmail extends Swift_Message implements HtmlTemplateMessage, TextTemplateMessage
+final class ResetPasswordEmail extends TemplatedEmail
 {
     /**
-     * @var User
+     * @var UserInterface
      */
     private $user;
 
@@ -32,16 +29,21 @@ final class ResetPasswordEmail extends Swift_Message implements HtmlTemplateMess
         parent::__construct();
 
         $this->user = $user;
-        $this->setTo($user->getEmail());
+        $this->to($user->getEmail());
     }
 
-    public function getHtmlTemplate(): Template
+    public function getHtmlTemplate(): string
     {
-        return new Template('@SolidInvoiceUser/Email/reset_password.html.twig', ['user' => $this->user]);
+        return '@SolidInvoiceUser/Email/reset_password.html.twig';
     }
 
-    public function getTextTemplate(): Template
+    public function getTextTemplate(): string
     {
-        return new Template('@SolidInvoiceUser/Email/reset_password.txt.twig', ['user' => $this->user]);
+        return '@SolidInvoiceUser/Email/reset_password.txt.twig';
+    }
+
+    public function getContext(): array
+    {
+        return \array_merge(['user' => $this->user], parent::getContext());
     }
 }

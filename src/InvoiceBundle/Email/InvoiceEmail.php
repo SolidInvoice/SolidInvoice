@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Email;
 
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Swift_Message;
 
 final class InvoiceEmail extends TemplatedEmail
 {
