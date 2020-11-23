@@ -16,14 +16,13 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
-use SolidInvoice\MailerBundle\Mailer;
-use SolidInvoice\MailerBundle\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class InvoiceMailerListener implements EventSubscriberInterface
 {
     /**
-     * @var Mailer
+     * @var MailerInterface
      */
     private $mailer;
 
@@ -35,7 +34,7 @@ class InvoiceMailerListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InvoiceEvents::INVOICE_POST_ACCEPT => 'onInvoiceAccepted',

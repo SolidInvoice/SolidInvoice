@@ -15,11 +15,11 @@ namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
 use DateTime;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
-use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\UserBundle\Email\ResetPasswordEmail;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request as Request;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 

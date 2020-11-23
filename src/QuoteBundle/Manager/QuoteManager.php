@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Manager;
 
-use SolidInvoice\MailerBundle\Mailer;
-use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\StateMachine;
 
 class QuoteManager
@@ -36,7 +35,7 @@ class QuoteManager
     private $notification;
 
     /**
-     * @var Mailer
+     * @var MailerInterface
      */
     private $mailer;
 
