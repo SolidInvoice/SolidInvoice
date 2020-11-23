@@ -13,17 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
-use SolidInvoice\MailerBundle\Mailer;
-use SolidInvoice\MailerBundle\MailerInterface;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class QuoteMailerListener implements EventSubscriberInterface
 {
     /**
-     * @var Mailer
+     * @var MailerInterface
      */
     private $mailer;
 
@@ -35,7 +34,7 @@ class QuoteMailerListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             QuoteEvents::QUOTE_POST_SEND => 'onQuoteSend',

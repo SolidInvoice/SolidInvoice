@@ -18,10 +18,9 @@ use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\MailerBundle\Mailer;
-use SolidInvoice\MailerBundle\MailerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\StateMachine;
 
@@ -35,7 +34,7 @@ final class Send
     private $stateMachine;
 
     /**
-     * @var Mailer
+     * @var MailerInterface
      */
     private $mailer;
 
