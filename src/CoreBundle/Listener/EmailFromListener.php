@@ -11,15 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\CoreBundle\Email\Decorator;
+namespace SolidInvoice\CoreBundle\Listener;
 
-use SolidInvoice\MailerBundle\Decorator\MessageDecorator;
-use SolidInvoice\MailerBundle\Event\MessageEvent;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-final class EmailFromDecorator implements MessageDecorator
+final class EmailFromListener implements EventSubscriberInterface
 {
     /**
      * @var SystemConfig
@@ -37,8 +40,9 @@ final class EmailFromDecorator implements MessageDecorator
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function decorate(MessageEvent $event): void
+    public function __invoke(MessageEvent $event): void
     {
+        /** @var TemplatedEmail $message */
         $message = $event->getMessage();
 
         $fromAddress = (string) $this->config->get('email/from_address');
@@ -46,15 +50,24 @@ final class EmailFromDecorator implements MessageDecorator
         if ('' !== $fromAddress) {
             $fromName = (string) $this->config->get('email/from_name');
 
-            $message->setFrom($fromAddress, $fromName);
+            $message->from(new Address($fromAddress, $fromName));
         } else {
             // If a from address is not specified in the config, then we use the currently logged-in user's address
             $token = $this->tokenStorage->getToken();
 
-            /** @var User $user */
-            $user = $token->getUser();
+            if ($token instanceof TokenInterface) {
+                /** @var User $user */
+                $user = $token->getUser();
 
-            $message->setFrom($user->getEmail());
+                $message->from($user->getEmail());
+            }
         }
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            MessageEvent::class => '__invoke'
+        ];
     }
 }

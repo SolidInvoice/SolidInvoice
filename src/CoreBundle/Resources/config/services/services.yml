@@ -36,10 +36,6 @@ services:
     Mpociot\VatCalculator\VatCalculator: ~
     SolidInvoice\CoreBundle\Billing\TotalCalculator: ~
 
-    SolidInvoice\CoreBundle\Email\Decorator\:
-        resource: '../../../Email/Decorator/'
-        tags: ['message.decorator']
-
     SolidInvoice\CoreBundle\Pdf\Generator:
         bind:
             $cacheDir: '%kernel.cache_dir%'
