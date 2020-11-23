@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 
-final class QuoteReceiverListener implements EventSubscriberInterface
+class QuoteReceiverListener implements EventSubscriberInterface
 {
     /**
      * @var SystemConfig
