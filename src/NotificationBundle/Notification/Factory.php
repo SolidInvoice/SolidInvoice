@@ -63,26 +63,8 @@ class Factory
             $swiftMessage->addTo($user->getEmail(), $user->getUsername());
         }
 
-        $format = (string) $this->settings->get('email/format');
-
-        switch ($format) {
-            case 'html':
-                $swiftMessage->setBody($message->getHtmlContent($this->twig), 'text/html');
-
-                break;
-
-            case 'text':
-                $swiftMessage->setBody($message->getTextContent($this->twig), 'text/plain');
-
-                break;
-
-            case 'both':
-            default:
-                $swiftMessage->setBody($message->getHtmlContent($this->twig), 'text/html');
-                $swiftMessage->addPart($message->getTextContent($this->twig), 'text/plain');
-
-                break;
-        }
+        $swiftMessage->setBody($message->getHtmlContent($this->twig), 'text/html');
+        $swiftMessage->addPart($message->getTextContent($this->twig), 'text/plain');
 
         return new SwiftMailerNotification($swiftMessage);
     }
