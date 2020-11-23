@@ -17,8 +17,9 @@ use SolidInvoice\MailerBundle\Template\HtmlTemplateMessage;
 use SolidInvoice\MailerBundle\Template\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Swift_Message;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
-final class QuoteEmail extends Swift_Message implements HtmlTemplateMessage
+final class QuoteEmail extends TemplatedEmail
 {
     /**
      * @var Quote
@@ -36,8 +37,13 @@ final class QuoteEmail extends Swift_Message implements HtmlTemplateMessage
         return $this->quote;
     }
 
-    public function getHtmlTemplate(): Template
+    public function getHtmlTemplate(): string
     {
-        return new Template('@SolidInvoiceQuote/Email/quote.html.twig', ['quote' => $this->quote]);
+        return '@SolidInvoiceQuote/Email/quote.html.twig';
+    }
+
+    public function getContext(): array
+    {
+        return \array_merge(['quote' => $this->quote], parent::getContext());
     }
 }

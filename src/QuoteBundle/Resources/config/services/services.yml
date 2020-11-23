@@ -15,11 +15,6 @@ services:
         arguments:
             $stateMachine: '@state_machine.quote'
 
-    SolidInvoice\QuoteBundle\Email\Decorator\:
-        autowire: true
-        resource: '../../../Email/Decorator/'
-        tags: ['message.decorator']
-
     SolidInvoice\QuoteBundle\Repository\QuoteRepository:
         autowire: true
         tags: ['doctrine.repository_service']
