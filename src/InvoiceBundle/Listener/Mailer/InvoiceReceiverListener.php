@@ -52,7 +52,7 @@ class InvoiceReceiverListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            MessageEvent::class => '__invoke'
+            MessageEvent::class => '__invoke',
         ];
     }
 }

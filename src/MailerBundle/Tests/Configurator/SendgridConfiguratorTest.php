@@ -14,14 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\MailerBundle\Tests\Configurator;
 
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\MailerBundle\Configurator\GmailConfigurator;
-use SolidInvoice\MailerBundle\Configurator\MailchimpConfigurator;
-use SolidInvoice\MailerBundle\Configurator\MailgunConfigurator;
-use SolidInvoice\MailerBundle\Configurator\PostmarkConfigurator;
 use SolidInvoice\MailerBundle\Configurator\SendgridConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\KeyTransportConfigType;
-use SolidInvoice\MailerBundle\Form\Type\TransportConfig\MailgunApiTransportConfigType;
-use SolidInvoice\MailerBundle\Form\Type\TransportConfig\UsernamePasswordTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
 class SendgridConfiguratorTest extends TestCase

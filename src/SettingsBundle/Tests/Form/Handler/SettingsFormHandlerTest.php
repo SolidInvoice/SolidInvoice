@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Tests\Form\Handler;
 
 use Mockery as M;
-use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
-use SolidInvoice\MailerBundle\Configurator\SesConfigurator;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Handler\SettingsFormHandler;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;

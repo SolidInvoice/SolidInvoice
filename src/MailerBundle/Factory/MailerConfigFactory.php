@@ -44,7 +44,7 @@ final class MailerConfigFactory
         $provider = $config['provider'] ?? '';
 
         foreach ($this->transports as $transport) {
-            if  ($transport->getName() === $provider) {
+            if ($transport->getName() === $provider) {
                 return $this->inner->fromDsnObject($transport->configure($config['config'] ?? []));
             }
         }

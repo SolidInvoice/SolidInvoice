@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\MailerBundle\Tests\Configurator;
 
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\MailerBundle\Configurator\GmailConfigurator;
 use SolidInvoice\MailerBundle\Configurator\MailchimpConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\KeyTransportConfigType;
-use SolidInvoice\MailerBundle\Form\Type\TransportConfig\UsernamePasswordTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
 class MailchimpConfiguratorTest extends TestCase

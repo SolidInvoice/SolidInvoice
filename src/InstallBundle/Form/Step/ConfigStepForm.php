@@ -17,7 +17,6 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use PDOException;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
-use SolidInvoice\InstallBundle\Form\Type\EmailSettingsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
