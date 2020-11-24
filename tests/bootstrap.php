@@ -14,7 +14,7 @@ declare(strict_types=1);
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 
-require_once __DIR__.'/../app/autoload.php';
+require_once __DIR__.'/../config/bootstrap.php';
 
 function bootstrap(): void
 {
