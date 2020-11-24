@@ -4,7 +4,7 @@ const Encore = require('@symfony/webpack-encore'),
     fs = require('fs');
 
 Encore
-    .setOutputPath('web/static/')
+    .setOutputPath('public/static/')
     .setPublicPath('/static')
 
     .addEntry('core', './assets/js/core.js')
@@ -34,7 +34,7 @@ Encore
         'SolidInvoiceSettings': path.resolve(__dirname, 'src/SettingsBundle/Resources/public'),
         'SolidInvoiceTax': path.resolve(__dirname, 'src/TaxBundle/Resources/public'),
         'SolidInvoiceUser': path.resolve(__dirname, 'src/UserBundle/Resources/public'),
-        'fos_js': path.resolve(__dirname, 'web/bundles/fosjsrouting/js'),
+        'fos_js': path.resolve(__dirname, 'public/bundles/fosjsrouting/js'),
         'router': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/routing'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
     })
@@ -97,7 +97,7 @@ const output = (err, stdout, stderr) => {
     }
 };
 
-execSync('bin/console assets:install web', output);
+execSync('bin/console assets:install public', output);
 execSync('bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json', output);
 execSync('bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json', output);
 
