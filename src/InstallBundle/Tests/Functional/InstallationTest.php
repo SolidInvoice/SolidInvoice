@@ -51,7 +51,6 @@ class InstallationTest extends PantherTestCase
                 'config_step[database_config][host]' => 'localhost',
                 'config_step[database_config][user]' => 'root',
                 'config_step[database_config][name]' => 'solidinvoice_test',
-                'config_step[email_settings][transport]' => 'sendmail',
             ]
         );
 
@@ -59,7 +58,6 @@ class InstallationTest extends PantherTestCase
 
         $kernel = self::bootKernel();
         static::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
-        static::assertSame('sendmail', $kernel->getContainer()->getParameter('env(mailer_transport)'));
 
         // Wait for installation steps to be completed
         $time = microtime(true);
