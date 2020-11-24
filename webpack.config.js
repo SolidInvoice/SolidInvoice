@@ -95,8 +95,8 @@ const output = (err, stdout, stderr) => {
     }
 };
 
-execSync(path.resolve(__dirname, 'bin/console assets:install web'), output);
-execSync(path.resolve(__dirname, 'bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json'), output);
-execSync(path.resolve(__dirname, 'bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json'), output);
+execSync('bin/console assets:install web', output);
+execSync('bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json', output);
+execSync('bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json', output);
 
 module.exports = Encore.getWebpackConfig();
