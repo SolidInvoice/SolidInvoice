@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests\Factory;
 
-use Mockery as M;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\MailerBundle\Configurator\SesConfigurator;
 use SolidInvoice\MailerBundle\Factory\MailerConfigFactory;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Bridge\Amazon\Transport\SesApiAsyncAwsTransport;
 use Symfony\Component\Mailer\Transport;

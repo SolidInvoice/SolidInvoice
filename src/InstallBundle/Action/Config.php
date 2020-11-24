@@ -85,7 +85,7 @@ final class Config
                 'user' => $config['database_user'] ?? null,
                 'password' => null,
                 'driver' => $config['database_driver'] ?? null,
-            ]
+            ],
         ];
 
         return $this->formFactory->create(ConfigStepForm::class, $data, ['drivers' => $drivers]);

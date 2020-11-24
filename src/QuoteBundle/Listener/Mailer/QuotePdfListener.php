@@ -56,13 +56,12 @@ class QuotePdfListener implements EventSubscriberInterface
 
             $message->attach($content, "quote_{$message->getQuote()->getId()}.pdf", 'application/pdf');
         }
-
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            MessageEvent::class => '__invoke'
+            MessageEvent::class => '__invoke',
         ];
     }
 }
