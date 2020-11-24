@@ -75,6 +75,7 @@
         "symfony/expression-language": "^4.4",
         "symfony/filesystem": "^4.4",
         "symfony/finder": "^4.4",
+        "symfony/flex": "^1.10",
         "symfony/form": "^4.4",
         "symfony/framework-bundle": "^4.4",
         "symfony/google-mailer": "^5.1",
@@ -144,31 +145,32 @@
         "branch-alias": {
             "dev-master": "2.1-dev"
         },
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web"
+        "symfony": {
+            "allow-contrib": true
+        }
     },
     "autoload": {
         "psr-4": {
             "SolidInvoice\\": "src/"
         },
-        "classmap": [
+        "files": [
             "app/AppKernel.php",
-            "app/AppCache.php"
+            "app/AppCache.php",
+            "app/AppRequirements.php"
         ]
     },
     "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "requirements-checker": "script"
+        },
         "post-install-cmd": [
             "cp .env.dist .env",
             "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "auto-scripts": [
-            "bin/console cache:clear",
-            "bin/console assets:install web"
         ]
     }
 }
