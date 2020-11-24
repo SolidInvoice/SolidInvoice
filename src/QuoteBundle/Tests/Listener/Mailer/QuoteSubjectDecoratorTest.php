@@ -11,43 +11,38 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\QuoteBundle\Tests\Email\Decorator;
+namespace SolidInvoice\QuoteBundle\Tests\Listener\Mailer;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\MailerBundle\Context;
-use SolidInvoice\MailerBundle\Event\MessageEvent;
-use SolidInvoice\QuoteBundle\Email\Decorator\QuoteSubjectDecorator;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Listener\Mailer\QuoteSubjectListener;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Swift_Message;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\Event\MessageEvent;
 
 class QuoteSubjectDecoratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testDecorate()
+    public function testListener(): void
     {
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')
             ->with('quote/email_subject')
             ->andReturn('New Quote: #{id}');
 
-        $decorator = new QuoteSubjectDecorator($config);
+        $listener = new QuoteSubjectListener($config);
         $message = new QuoteEmail(new Quote());
-        $decorator->decorate(new MessageEvent($message, Context::create()));
+        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
         static::assertSame('New Quote: #', $message->getSubject());
     }
 
-    public function testShouldDecorate()
+    public function testEvents(): void
     {
-        $decorator = new QuoteSubjectDecorator(M::mock(SystemConfig::class));
-
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent((new QuoteEmail(new Quote()))->setSubject('Quote!'), Context::create())));
-        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new QuoteEmail(new Quote()), Context::create())));
+        self::assertSame([MessageEvent::class], \array_keys(QuoteSubjectListener::getSubscribedEvents()));
     }
 }

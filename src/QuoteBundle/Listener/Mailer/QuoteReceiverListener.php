@@ -40,7 +40,7 @@ class QuoteReceiverListener implements EventSubscriberInterface
             $quote = $message->getQuote();
 
             foreach ($quote->getUsers() as $user) {
-                $message->to(new Address($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName()))));
+                $message->addTo(new Address($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName()))));
             }
 
             if ('' !== ($bcc = (string) $this->config->get('quote/bcc_address'))) {
