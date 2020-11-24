@@ -34,7 +34,7 @@ final class SesTransportConfigType extends AbstractType
             'accessSecret',
             PasswordType::class,
             [
-                'constraints' => new Constraints\Notblank(['groups' => ['amazon_ses']]),
+                'constraints' => new Constraints\NotBlank(['groups' => ['amazon_ses']]),
             ]
         );
 

@@ -34,7 +34,7 @@ final class UsernamePasswordTransportConfigType extends AbstractType
             'password',
             PasswordType::class,
             [
-                'constraints' => new Constraints\Notblank(['groups' => ['userpass']]),
+                'constraints' => new Constraints\NotBlank(['groups' => ['userpass']]),
             ]
         );
     }
