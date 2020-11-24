@@ -109,12 +109,6 @@ class InstallCommand extends Command
             ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
-            ->addOption('mailer-transport', null, InputOption::VALUE_REQUIRED, 'The email transport to use (PHPMail, Sendmail, SMTP, Gmail)', 'sendmail')
-            ->addOption('mailer-host', null, InputOption::VALUE_REQUIRED, 'The email host (only applicable for SMTP)', 'localhost')
-            ->addOption('mailer-user', null, InputOption::VALUE_REQUIRED, 'The user for email authentication (only applicable for SMTP and Gmail)')
-            ->addOption('mailer-password', null, InputOption::VALUE_REQUIRED, 'The password for the email user (only applicable for SMTP and Gmail)')
-            ->addOption('mailer-port', null, InputOption::VALUE_REQUIRED, 'The email port to use  (only applicable for SMTP and Gmail)', 25)
-            ->addOption('mailer-encryption', null, InputOption::VALUE_REQUIRED, 'The encryption to use for email, if any')
             ->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')
             ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
@@ -164,22 +158,6 @@ class InstallCommand extends Command
 
         if (!array_key_exists($currency = $input->getOption('currency'), Currencies::getNames())) {
             throw new InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
-        }
-
-        if ('smtp' === strtolower($input->getOption('mailer-transport'))) {
-            if (null === $input->getOption('mailer-host')) {
-                throw new Exception('The --mailer-host option needs to be specified when using SMTP as email transport');
-            }
-            if (null === $input->getOption('mailer-port')) {
-                throw new Exception('The --mailer-port option needs to be specified when using SMTP as email transport');
-            }
-        } elseif ('gmail' === strtolower($input->getOption('mailer-transport'))) {
-            if (null === $input->getOption('mailer-user')) {
-                throw new Exception('The --mailer-user option needs to be specified when using Gmail as email transport');
-            }
-            if (null === $input->getOption('mailer-password')) {
-                throw new Exception('The --mailer-password option needs to be specified when using Gmail as email transport');
-            }
         }
 
         return $this;
@@ -282,7 +260,7 @@ class InstallCommand extends Command
     private function saveConfig(InputInterface $input)
     {
         // Don't update installed here, in case something goes wrong with the rest of the installation process
-        $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'mailer_transport' => $input->getOption('mailer-transport'), 'mailer_host' => $input->getOption('mailer-host'), 'mailer_user' => $input->getOption('mailer-user'), 'mailer_password' => $input->getOption('mailer-password'), 'mailer_port' => $input->getOption('mailer-port'), 'mailer_encryption' => $input->getOption('mailer-encryption'), 'locale' => $input->getOption('locale'), 'currency' => $input->getOption('currency'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
+        $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'locale' => $input->getOption('locale'), 'currency' => $input->getOption('currency'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
         $this->configWriter->dump($config);
 
         return $this;
