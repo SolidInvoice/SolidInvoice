@@ -23,11 +23,10 @@ class SmtpTransportConfigTypeTest extends FormTestCase
         $formData = [
             'host' => 'example.com',
             'port' => '465',
-            'encryption' => 'tls',
             'user' => 'user',
             'password' => 'pass',
         ];
 
-        $this->assertFormData(SmtpTransportConfigType::class, $formData, ['host' => 'example.com', 'port' => '465', 'encryption' => 'tls', 'user' => 'user', 'password' => 'pass']);
+        $this->assertFormData(SmtpTransportConfigType::class, $formData, ['host' => 'example.com', 'port' => '465', 'user' => 'user', 'password' => 'pass']);
     }
 }

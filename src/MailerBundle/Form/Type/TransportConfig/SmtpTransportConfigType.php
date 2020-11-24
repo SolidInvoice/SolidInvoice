@@ -42,19 +42,6 @@ final class SmtpTransportConfigType extends AbstractType
         );
 
         $builder->add(
-            'encryption',
-            Select2Type::class,
-            [
-                'placeholder' => 'None',
-                'choices' => [
-                    'SSL' => 'ssl',
-                    'TLS' => 'tls',
-                ],
-                'required' => false,
-            ]
-        );
-
-        $builder->add(
             'user',
             null,
             [
