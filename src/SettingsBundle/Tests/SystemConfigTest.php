@@ -38,15 +38,9 @@ class SystemConfigTest extends TestCase
 
         static::assertSame([
             'design/system/theme' => 'skin-solidinvoice-default',
-            'email/format' => 'both',
             'email/from_address' => 'info@solidinvoice.co',
             'email/from_name' => 'SolidInvoice',
-            'email/sending_options/encryption' => null,
-            'email/sending_options/host' => null,
-            'email/sending_options/password' => null,
-            'email/sending_options/port' => null,
-            'email/sending_options/transport' => null,
-            'email/sending_options/user' => null,
+            'email/sending_options/provider' => null,
             'invoice/bcc_address' => null,
             'invoice/email_subject' => 'New Invoice - #{id}',
             'notification/client_create' => '{"email":true,"sms":false}',

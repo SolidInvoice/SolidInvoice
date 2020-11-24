@@ -20,29 +20,24 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class MailTransportType extends AbstractType
 {
     /**
-     * @var iterable|ConfiguratorInterface[]
+     * @var iterable|ConfiguratorInterface[]|\Traversable
      */
     private $transports;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator, iterable $transports)
+    public function __construct(iterable $transports)
     {
         $this->transports = $transports;
-        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $choices = \array_map(function (ConfiguratorInterface $configurator) { return $configurator->getName($this->translator); }, \iterator_to_array($this->transports));
+        $transports = \is_array($this->transports) ? $this->transports : \iterator_to_array($this->transports);
+
+        $choices = \array_map(static function (ConfiguratorInterface $configurator) { return $configurator->getName(); }, $transports);
 
         $builder->add(
             'provider',
@@ -52,12 +47,12 @@ final class MailTransportType extends AbstractType
             'label' => 'Mail Provider',
         ]);
 
-        foreach ($this->transports as $transport) {
-            $builder->add(\str_replace(' ', '-', $transport->getName($this->translator)), $transport->getForm(), ['attr' => ['class' => 'd-none']]);
+        foreach ($transports as $transport) {
+            $builder->add(\str_replace(' ', '-', $transport->getName()), $transport->getForm(), ['attr' => ['class' => 'd-none']]);
         }
 
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
-            public function transform($value)
+            public function transform($value): ?array
             {
                 if (!is_string($value)) {
                     return null;
@@ -77,7 +72,11 @@ final class MailTransportType extends AbstractType
                     return null;
                 }
 
-                $provider = $value['provider'];
+                $provider = $value['provider'] ?? null;
+
+                if (null === $provider) {
+                    return null;
+                }
 
                 return json_encode(['provider' => $value['provider'], 'config' => $value[\str_replace(' ', '-', $provider)]], JSON_THROW_ON_ERROR);
             }

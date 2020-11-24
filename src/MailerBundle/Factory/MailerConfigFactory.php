@@ -38,7 +38,7 @@ final class MailerConfigFactory
     /**
      * @throws \JsonException
      */
-    public function fromStrings()
+    public function fromStrings(): Transport\TransportInterface
     {
         $config = \json_decode($this->config->get(self::CONFIG_KEY), true, 512, JSON_THROW_ON_ERROR);
         $provider = $config['provider'] ?? '';
