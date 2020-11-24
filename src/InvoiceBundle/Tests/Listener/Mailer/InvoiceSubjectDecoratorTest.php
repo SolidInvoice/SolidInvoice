@@ -11,43 +11,38 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InvoiceBundle\Tests\Email\Decorator;
+namespace SolidInvoice\InvoiceBundle\Tests\Listener\Mailer;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\InvoiceBundle\Email\Decorator\InvoiceSubjectDecorator;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\MailerBundle\Context;
-use SolidInvoice\MailerBundle\Event\MessageEvent;
+use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoiceSubjectListener;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Swift_Message;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\Event\MessageEvent;
 
 class InvoiceSubjectDecoratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testDecorate()
+    public function testListener(): void
     {
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')
             ->with('invoice/email_subject')
             ->andReturn('New Invoice: #{id}');
 
-        $decorator = new InvoiceSubjectDecorator($config);
+        $listener = new InvoiceSubjectListener($config);
         $message = new InvoiceEmail(new Invoice());
-        $decorator->decorate(new MessageEvent($message, Context::create()));
+        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
         static::assertSame('New Invoice: #', $message->getSubject());
     }
 
-    public function testShouldDecorate()
+    public function testEvents(): void
     {
-        $decorator = new InvoiceSubjectDecorator(M::mock(SystemConfig::class));
-
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent((new InvoiceEmail(new Invoice()))->setSubject('Invoice!'), Context::create())));
-        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new InvoiceEmail(new Invoice()), Context::create())));
+        self::assertSame([MessageEvent::class], \array_keys(InvoiceSubjectListener::getSubscribedEvents()));
     }
 }

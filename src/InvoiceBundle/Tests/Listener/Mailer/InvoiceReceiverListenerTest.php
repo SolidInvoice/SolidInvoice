@@ -11,66 +11,63 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InvoiceBundle\Tests\Email\Decorator;
+namespace SolidInvoice\InvoiceBundle\Tests\Listener\Mailer;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\InvoiceBundle\Email\Decorator\InvoiceReceiverDecorator;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\MailerBundle\Context;
-use SolidInvoice\MailerBundle\Event\MessageEvent;
+use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoiceReceiverListener;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Swift_Message;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Component\Mime\Address;
 
-class InvoiceReceiverDecoratorTest extends TestCase
+class InvoiceReceiverListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testDecorateWithoutBcc()
+    public function testWithoutBcc(): void
     {
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')
             ->with('invoice/bcc_address')
             ->andReturnNull();
 
-        $decorator = new InvoiceReceiverDecorator($config);
+        $listener = new InvoiceReceiverListener($config);
         $invoice = new Invoice();
         $invoice->addUser((new Contact())->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
         $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
         $message = new InvoiceEmail($invoice);
-        $decorator->decorate(new MessageEvent($message, Context::create()));
+        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
-        static::assertNull($message->getBcc());
+        static::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
+        static::assertSame([], $message->getBcc());
     }
 
-    public function testDecorateWithBcc()
+    public function testWithBcc(): void
     {
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')
             ->with('invoice/bcc_address')
             ->andReturn('bcc@example.com');
 
-        $decorator = new InvoiceReceiverDecorator($config);
+        $listener = new InvoiceReceiverListener($config);
         $invoice = new Invoice();
         $invoice->addUser((new Contact())->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
         $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
         $message = new InvoiceEmail($invoice);
-        $decorator->decorate(new MessageEvent($message, Context::create()));
+        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertSame(['test@example.com' => 'Test User', 'another@example.com' => 'Another'], $message->getTo());
-        static::assertSame(['bcc@example.com' => null], $message->getBcc());
+        static::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
+        static::assertEquals([new Address('bcc@example.com')], $message->getBcc());
     }
 
-    public function testShouldDecorate()
+    public function testEvents(): void
     {
-        $decorator = new InvoiceReceiverDecorator(M::mock(SystemConfig::class));
-
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent(new Swift_Message(), Context::create())));
-        static::assertFalse($decorator->shouldDecorate(new MessageEvent((new InvoiceEmail(new Invoice()))->addTo('info@example.com'), Context::create())));
-        static::assertTrue($decorator->shouldDecorate(new MessageEvent(new InvoiceEmail(new Invoice()), Context::create())));
+        self::assertSame([MessageEvent::class], \array_keys(InvoiceReceiverListener::getSubscribedEvents()));
     }
 }
