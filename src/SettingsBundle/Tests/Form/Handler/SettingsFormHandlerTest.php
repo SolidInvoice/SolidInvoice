@@ -18,8 +18,10 @@ use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\MailerBundle\Configurator\SesConfigurator;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Handler\SettingsFormHandler;
+use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,12 +42,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         $router->shouldReceive('generate')
             ->andReturn('/settings');
 
-        $configWriter = M::mock(ConfigWriter::class);
-        $configWriter->shouldReceive('getConfigValues')
-            ->andReturn([]);
-        $configWriter->shouldReceive('dump');
-
-        return new SettingsFormHandler($repository, $router, $configWriter);
+        return new SettingsFormHandler($repository, $router);
     }
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
@@ -75,14 +72,8 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
             'email' => [
                 'from_name' => null,
                 'from_address' => null,
-                'format' => null,
                 'sending_options' => [
-                    'transport' => null,
-                    'host' => null,
-                    'user' => null,
-                    'password' => null,
-                    'port' => null,
-                    'encryption' => null,
+                    'provider' => null,
                 ],
             ],
             'sms' => [
@@ -123,5 +114,14 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
                 ],
             ],
         ];
+    }
+
+    protected function getTypes(): array
+    {
+        $extensions = parent::getTypes();
+
+        $extensions[] = new MailTransportType([]);
+
+        return $extensions;
     }
 }
