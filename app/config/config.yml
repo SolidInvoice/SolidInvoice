@@ -28,7 +28,7 @@ framework:
     http_method_override: true
     serializer: { enable_annotations: true }
     assets:
-        json_manifest_path: '%kernel.project_dir%/web/static/manifest.json'
+        json_manifest_path: '%kernel.project_dir%/public/static/manifest.json'
 
 twig:
     debug: '%kernel.debug%'
@@ -98,7 +98,7 @@ api_platform:
         html:     ['text/html']
 
 webpack_encore:
-    output_path: '%kernel.project_dir%/web/static'
+    output_path: '%kernel.project_dir%/public/static'
 
 sensio_framework_extra:
     router:
