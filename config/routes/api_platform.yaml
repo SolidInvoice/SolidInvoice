@@ -1,0 +1,3 @@
+solidinvoice_api:
+    resource: '@SolidInvoiceApiBundle/Resources/config/routing.yml'
+    prefix: /api

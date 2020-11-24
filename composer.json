@@ -154,9 +154,7 @@
             "SolidInvoice\\": "src/"
         },
         "files": [
-            "app/AppKernel.php",
-            "app/AppCache.php",
-            "app/AppRequirements.php"
+            "src/AppRequirements.php"
         ]
     },
     "scripts": {

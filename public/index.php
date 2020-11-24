@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-use AppKernel;
+use SolidInvoice\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -29,7 +29,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-$kernel = new AppKernel($_SERVER['SOLIDINVOICE_ENV'], (bool) $_SERVER['SOLIDINVOICE_DEBUG']);
+$kernel = new Kernel($_SERVER['SOLIDINVOICE_ENV'], (bool) $_SERVER['SOLIDINVOICE_DEBUG']);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
