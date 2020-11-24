@@ -1,7 +1,3 @@
-solidinvoice_api:
-    resource: '@SolidInvoiceApiBundle/Resources/config/routing.yml'
-    prefix: /api
-
 solidinvoice_dashboard:
     resource: '@SolidInvoiceDashboardBundle/Resources/config/routing.yml'
 
@@ -44,18 +40,3 @@ solidinvoice_user:
 solidinvoice_datagrid:
     resource: '@SolidInvoiceDataGridBundle/Resources/config/routing.yml'
     prefix: /grid
-
-fos_js_routing:
-    resource: '@FOSJsRoutingBundle/Resources/config/routing/routing.xml'
-
-payum_capture:
-    resource: '@PayumBundle/Resources/config/routing/capture.xml'
-
-payum_authorize:
-    resource: '@PayumBundle/Resources/config/routing/authorize.xml'
-
-payum_notify:
-    resource: '@PayumBundle/Resources/config/routing/notify.xml'
-
-bazinga_jstranslation:
-    resource: '@BazingaJsTranslationBundle/Resources/config/routing/routing.yml'

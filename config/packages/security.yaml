@@ -21,7 +21,7 @@ security:
             security: false
         api_doc:
             pattern: ^/api/docs
-            anonymous: null
+            anonymous: lazy
         api_login:
             pattern: ^/api/login
             stateless: true
@@ -40,29 +40,29 @@ security:
             provider: api_token_user_provider
         installer:
             pattern: '^/install(.*)'
-            anonymous: null
+            anonymous: lazy
         external:
             pattern: '^/view/(quote|invoice)/([a-zA-Z0-9-]{36})'
-            anonymous: true
+            anonymous: lazy
             context: frontend
         create:
             pattern: '^/payments/create/([a-zA-Z0-9-]{36})'
-            anonymous: true
+            anonymous: lazy
             context: frontend
         capture:
             pattern: '^/payment/(capture|notify|done)/(.*)'
-            anonymous: true
+            anonymous: lazy
             context: frontend
         done:
             pattern: ^/payments/done$
-            anonymous: true
+            anonymous: lazy
             context: frontend
         login:
             pattern: ^/login$
-            anonymous: null
+            anonymous: lazy
         password_reset:
             pattern: '^/forgot-password(.*)'
-            anonymous: null
+            anonymous: lazy
         main:
             remember_me:
                 secret: '%env(secret)%'

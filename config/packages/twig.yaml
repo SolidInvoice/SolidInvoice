@@ -1,0 +1,6 @@
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    exception_controller: null
+    form_themes:
+        - '@SolidInvoiceCore/Form/fields.html.twig'

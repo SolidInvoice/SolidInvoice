@@ -1,0 +1,13 @@
+api_platform:
+    title: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::APP_NAME
+    version: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION
+    patch_formats:
+        json: ['application/merge-patch+json']
+    formats:
+        jsonld: [ 'application/ld+json' ]
+        jsonhal: [ 'application/hal+json' ]
+        json: [ 'application/json' ]
+        xml: [ 'application/xml', 'text/xml' ]
+        html: [ 'text/html' ]
+    swagger:
+        versions: [3]
