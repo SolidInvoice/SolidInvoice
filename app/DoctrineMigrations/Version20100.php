@@ -59,7 +59,6 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
 
         $schema->getTable('invoices')->addIndex(['quote_id']);
 
-
         try {
             $this->connection->transactional(function (Connection $connection) {
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/transport']);
