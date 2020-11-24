@@ -64,7 +64,7 @@ class CurrencyType extends AbstractType
                 continue;
             }
 
-            yield  $currencyList[$currency->getCode()] => $currency->getCode();
+            yield $currencyList[$currency->getCode()] => $currency->getCode();
         }
     }
 }

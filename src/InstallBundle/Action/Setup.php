@@ -188,7 +188,7 @@ final class Setup
     /**
      * @throws EnvironmentIsBrokenException|InvalidArgumentException|DependencyInjectionException\ServiceCircularReferenceException|DependencyInjectionException\ServiceNotFoundException
      */
-    protected function saveConfig(array $data)
+    private function saveConfig(array $data)
     {
         $time = new DateTime('NOW');
 
@@ -218,7 +218,7 @@ final class Setup
         $this->systemConfig->set(CurrencyFactory::CURRENCY_PATH, $data['currency'] ?? CurrencyFactory::DEFAULT_CURRENCY);
     }
 
-    protected function render(FormInterface $form): Template
+    private function render(FormInterface $form): Template
     {
         return new Template(
             '@SolidInvoiceInstall/setup.html.twig',
