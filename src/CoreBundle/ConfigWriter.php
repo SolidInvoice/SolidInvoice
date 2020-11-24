@@ -31,7 +31,7 @@ class ConfigWriter
     public function __construct(string $projectDir, Filesystem $fileSystem)
     {
         $this->fileSystem = $fileSystem;
-        $this->configFile = $projectDir.'/app/config/env.php';
+        $this->configFile = $projectDir.'/config/env.php';
     }
 
     /**
