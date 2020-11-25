@@ -11,7 +11,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-
 use SolidInvoice\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
