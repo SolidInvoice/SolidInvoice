@@ -12,6 +12,7 @@ build/
 vendor
 bin/*
 !bin/console
+!bin/check
 composer.phar
 !public/js/.gitkeep
 !public/css/.gitkeep
