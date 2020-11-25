@@ -8,4 +8,4 @@ parameters:
     excludes_analyse:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:
-        container_xml_path: var/cache/test/appAppKernelTestDebugContainer.xml
+        container_xml_path: var/cache/test/srcSolidInvoice_KernelTestDebugContainer.xml

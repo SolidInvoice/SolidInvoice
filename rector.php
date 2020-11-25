@@ -59,13 +59,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $parameters->set(Option::PATHS, __DIR__.'/src');
-    $parameters->set(Option::OPTION_AUTOLOAD_FILE, __DIR__.'/app/autoload.php');
+    $parameters->set(Option::OPTION_AUTOLOAD_FILE, __DIR__.'/vendor/autoload.php');
     $parameters->set(Option::AUTOLOAD_PATHS, __DIR__.'/vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php');
 
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
     $parameters->set(Option::IMPORT_SHORT_CLASSES, true);
     $parameters->set(Option::IMPORT_DOC_BLOCKS, true);
-    $parameters->set(Option::SYMFONY_CONTAINER_XML_PATH_PARAMETER, __DIR__.'/var/cache/dev/appAppKernelDevDebugContainer.xml');
+    $parameters->set(Option::SYMFONY_CONTAINER_XML_PATH_PARAMETER, __DIR__.'/var/cache/dev/srcSolidInvoice_KernelTestDebugContainer.xml');
     $parameters->set(Option::PHP_VERSION_FEATURES, '7.3');
     $parameters->set(Option::PROJECT_TYPE, Option::PROJECT_TYPE_OPEN_SOURCE);
 };
