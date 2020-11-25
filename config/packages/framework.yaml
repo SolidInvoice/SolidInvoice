@@ -9,7 +9,7 @@ framework:
     session:
         handler_id: null
         cookie_secure: auto
-        cookie_samesite: lax
+        # cookie_samesite: lax
         name: SOLIDINVOICE_APP
 
     #esi: true
