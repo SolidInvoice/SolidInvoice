@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
-use AppKernel;
+use SolidInvoice\Kernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -57,7 +57,7 @@ trait SymfonyKernelTrait
 
     protected function getKernelClass(): string
     {
-        return AppKernel::class;
+        return Kernel::class;
     }
 
     protected function getKernelOptions(): array

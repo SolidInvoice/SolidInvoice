@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+
+use SolidInvoice\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 
@@ -18,7 +20,7 @@ require_once __DIR__.'/../config/bootstrap.php';
 
 function bootstrap(): void
 {
-    $kernelClass = $_SERVER['KERNEL_CLASS'] ?? AppKernel::class;
+    $kernelClass = $_SERVER['KERNEL_CLASS'] ?? Kernel::class;
 
     $kernel = new $kernelClass($_SERVER['SOLIDINVOICE_ENV'] ?? 'test', (bool) ($_SERVER['SOLIDINVOICE_ENV'] ?? false));
     $kernel->boot();
