@@ -32,12 +32,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+          key: ${{ runner.os }}-php-74-composer-${{ hashFiles('composer.json composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
       - name: Install dependencies
-        run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: composer install --ansi --no-interaction --no-progress --prefer-dist
 
       - name: Warm up cache
         run: bin/console cache:clear -n -vvv
