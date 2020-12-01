@@ -124,7 +124,7 @@ jobs:
 
     steps:
       - name: Disable local MySQL server
-        run: sudo service stop mysql
+        run: sudo service mysql stop
 
       - uses: nanasess/setup-chromedriver@master
 
