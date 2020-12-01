@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   unit:
@@ -10,8 +10,8 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '7.3', '7.4' ]
-        mysql: [5.7]
+        php: [ 7.3, 7.4 ]
+        mysql: [ 5.7 ]
       fail-fast: false
 
     env:
@@ -81,8 +81,8 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '7.3', '7.4' ]
-        mysql: [5.7, 5.8, 8.0]
+        php: [ 7.3, 7.4 ]
+        mysql: [ 5.7, 5.8, 8.0 ]
       fail-fast: false
 
     env:
@@ -91,6 +91,8 @@ jobs:
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
       PANTHER_CHROME_DRIVER_BINARY: /usr/local/bin/chromedriver
       PANTHER_WEB_SERVER_DIR: ./web
+      PANTHER_EXTERNAL_BASE_URI: 'http://127.0.0.1:8000'
+      PANTHER_NO_HEADLESS: 0
 
     services:
       mysql:
@@ -138,9 +140,7 @@ jobs:
       - run: yarn build
 
       - name: Run local web server
-        run: |
-          symfony local:server:start --daemon --no-tls --allow-http
-          sleep 3s
+        run: symfony local:server:start --daemon --no-tls --allow-http
 
       - name: Run Installation test suite
         env:
