@@ -138,7 +138,9 @@ jobs:
       - run: yarn build
 
       - name: Run local web server
-        run: symfony local:server:start --daemon --no-tls --allow-http
+        run: |
+          symfony local:server:start --daemon --no-tls --allow-http
+          sleep 3s
 
       - name: Run Installation test suite
         env:
