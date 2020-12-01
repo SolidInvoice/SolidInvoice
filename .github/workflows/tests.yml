@@ -136,6 +136,9 @@ jobs:
       - name: Run Installation test suite
         run: bin/simple-phpunit --group installation
 
+      - name: Run local web server
+        run: symfony local:server:start --daemon --no-tls --allow-http
+
       - name: Run functional test suite
         run: bin/simple-phpunit --group functional
 
