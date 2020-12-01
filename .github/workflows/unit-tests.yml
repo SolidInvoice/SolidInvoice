@@ -31,6 +31,9 @@ jobs:
           extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
           tools: symfony
 
+      - name: Shutdown MySQL
+        run: sudo service mysql stop
+
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
