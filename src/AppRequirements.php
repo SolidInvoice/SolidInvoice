@@ -28,16 +28,6 @@ class AppRequirements extends SymfonyRequirements
             'Install and enable the <strong>Openssl</strong> extension.'
         );
 
-        $baseDir = realpath(__DIR__.'/..');
-
-        if (is_file($baseDir.'/app/config/parameters.yml')) {
-            $this->addRequirement(
-                is_writable($baseDir.'/app/config/parameters.yml'),
-                'app/config/parameters.yml file must be writable',
-                'Change the permissions of the "<strong>app/config/parameters.yml</strong>" file so that the web server can write into it.'
-            );
-        }
-
         $this->addRecommendation(
             extension_loaded('mbstring'),
             'mbstring extension is required to generate PDF invoices and quotes',
