@@ -18,6 +18,7 @@ jobs:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 1
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
+      database_port: ${{ job.services.mysql.ports['3306'] }}
 
     services:
       mysql:
@@ -25,13 +26,10 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
-          - 3306:3306
+          - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
-
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -83,6 +81,7 @@ jobs:
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
       PANTHER_CHROME_DRIVER_BINARY: /usr/local/bin/chromedriver
       PANTHER_WEB_SERVER_DIR: ./web
+      database_port: ${{ job.services.mysql.ports['3306'] }}
 
     services:
       mysql:
@@ -90,14 +89,11 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
-          - 3306:3306
+          - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: nanasess/setup-chromedriver@master
-
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
 
       - name: Checkout
         uses: actions/checkout@v2
