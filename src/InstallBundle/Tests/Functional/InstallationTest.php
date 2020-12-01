@@ -48,7 +48,7 @@ class InstallationTest extends PantherTestCase
             'Next',
             [
                 'config_step[database_config][driver]' => 'pdo_mysql',
-                'config_step[database_config][host]' => 'localhost',
+                'config_step[database_config][host]' => '127.0.0.1',
                 'config_step[database_config][user]' => 'root',
                 'config_step[database_config][name]' => 'solidinvoice_test',
             ]

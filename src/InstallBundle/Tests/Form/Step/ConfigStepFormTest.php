@@ -27,7 +27,7 @@ class ConfigStepFormTest extends FormTestCase
         $formData = [
             'database_config' => [
                 'driver' => 'pdo_mysql',
-                'host' => 'localhost',
+                'host' => '127.0.0.1',
                 'port' => 1234,
                 'user' => 'root',
                 'password' => 'password',

@@ -104,7 +104,7 @@ class InstallCommand extends Command
     {
         $this->setDescription('Installs the application')
             ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
-            ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
+            ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', '127.0.0.1')
             ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)
             ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
