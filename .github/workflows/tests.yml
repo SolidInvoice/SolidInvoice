@@ -12,12 +12,16 @@ jobs:
       matrix:
         php: [ 7.3, 7.4 ]
         mysql: [ 5.7 ]
+        include:
+          - php: 7.3
+            coverage: true
       fail-fast: false
 
     env:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 1
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
+      COVERAGE: 0
 
     services:
       mysql:
@@ -62,16 +66,28 @@ jobs:
           bin/console doctrine:database:create -n -vvv
           bin/console doctrine:migrations:migrate -n -vvv
 
+      - name: Enable code coverage
+        if: matrix.coverage
+        run: echo "COVERAGE=1" >> $GITHUB_ENV
+
       - name: Run test suite
         env:
           database_port: ${{ job.services.mysql.ports['3306'] }}
-        run: bin/simple-phpunit --exclude-group installation,functional --coverage-clover build/logs/clover.xml
+        run: |
+          mkdir -p build/logs
+          if [ "$COVERAGE" = '1' ]; then
+            bin/simple-phpunit --exclude-group installation,functional --coverage-clover build/logs/clover.xml
+          else
+            bin/simple-phpunit --exclude-group installation,functional
+          fi
 
       - name: Upload coverage results to Coveralls
+        if: matrix.coverage
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          composer global require php-coveralls/php-coveralls
+          composer global require --prefer-dist --no-interaction --no-progress --ansi php-coveralls/php-coveralls
+          export PATH="$PATH:$HOME/.composer/vendor/bin"
           php-coveralls --coverage_clover=build/logs/clover.xml -v
 
   functional:
