@@ -9,8 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
+namespace SolidInvoice;
+
 use Symfony\Requirements\SymfonyRequirements;
 
+/**
+ * @codeCoverageIgnore
+ */
 class AppRequirements extends SymfonyRequirements
 {
     public function __construct()

@@ -152,10 +152,7 @@
     "autoload": {
         "psr-4": {
             "SolidInvoice\\": "src/"
-        },
-        "files": [
-            "src/AppRequirements.php"
-        ]
+        }
     },
     "scripts": {
         "post-install-cmd": [
