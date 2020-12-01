@@ -18,7 +18,6 @@ jobs:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 1
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
-      database_port: ${{ job.services.mysql.ports['3306'] }}
 
     services:
       mysql:
@@ -50,18 +49,21 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php }}-composer-
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
       - name: Install dependencies
         run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Prepare application database
+        env:
+          database_port: ${{ job.services.mysql.ports['3306'] }}
         run: |
           bin/console doctrine:database:create -n -vvv
           bin/console doctrine:migrations:migrate -n -vvv
 
       - name: Run test suite
+        env:
+          database_port: ${{ job.services.mysql.ports['3306'] }}
         run: bin/simple-phpunit --exclude-group installation,functional
 
   functional:
@@ -81,7 +83,6 @@ jobs:
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
       PANTHER_CHROME_DRIVER_BINARY: /usr/local/bin/chromedriver
       PANTHER_WEB_SERVER_DIR: ./web
-      database_port: ${{ job.services.mysql.ports['3306'] }}
 
     services:
       mysql:
@@ -115,8 +116,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php }}-composer-
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
       - name: Install dependencies
         run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
@@ -129,12 +129,16 @@ jobs:
 
       - run: yarn build
 
-      - name: Run Installation test suite
-        run: bin/simple-phpunit --group installation
-
       - name: Run local web server
         run: symfony local:server:start --daemon --no-tls --allow-http
 
+      - name: Run Installation test suite
+        env:
+          database_port: ${{ job.services.mysql.ports['3306'] }}
+        run: bin/simple-phpunit --group installation
+
       - name: Run functional test suite
+        env:
+          database_port: ${{ job.services.mysql.ports['3306'] }}
         run: bin/simple-phpunit --group functional
 
