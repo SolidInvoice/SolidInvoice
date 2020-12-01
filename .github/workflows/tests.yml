@@ -76,11 +76,12 @@ jobs:
         php: [ '7.3', '7.4' ]
         mysql: [5.7]
       fail-fast: false
-
     env:
+
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 1
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
+      PANTHER_CHROME_DRIVER_BINARY: /usr/local/bin/chromedriver
 
     services:
       mysql:
@@ -92,6 +93,8 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - uses: nanasess/setup-chromedriver@master
+
       - name: Shutdown Ubuntu MySQL (SUDO)
         run: sudo service mysql stop
 
