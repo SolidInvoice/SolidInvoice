@@ -40,6 +40,7 @@ jobs:
           extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
           tools: symfony
 
+
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -64,7 +65,14 @@ jobs:
       - name: Run test suite
         env:
           database_port: ${{ job.services.mysql.ports['3306'] }}
-        run: bin/simple-phpunit --exclude-group installation,functional
+        run: bin/simple-phpunit --exclude-group installation,functional --coverage-clover build/logs/clover.xml
+
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -v
 
   functional:
     name: Functional Tests
@@ -141,4 +149,3 @@ jobs:
         env:
           database_port: ${{ job.services.mysql.ports['3306'] }}
         run: bin/simple-phpunit --group functional
-
