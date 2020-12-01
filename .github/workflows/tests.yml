@@ -119,10 +119,13 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
-          - 3306/tcp
+          - 3306/tcp:3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - name: Disable local MySQL server
+        run: sudo service stop mysql
+
       - uses: nanasess/setup-chromedriver@master
 
       - name: Checkout
@@ -162,11 +165,7 @@ jobs:
         run: symfony local:server:start --daemon --no-tls --allow-http
 
       - name: Run Installation test suite
-        env:
-          database_port: ${{ job.services.mysql.ports['3306'] }}
         run: bin/simple-phpunit --group installation
 
       - name: Run functional test suite
-        env:
-          database_port: ${{ job.services.mysql.ports['3306'] }}
         run: bin/simple-phpunit --group functional
