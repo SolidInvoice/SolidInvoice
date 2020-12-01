@@ -13,6 +13,12 @@
             "src/Entity/.gitignore"
         ]
     },
+    "async-aws/core": {
+        "version": "1.7.0"
+    },
+    "async-aws/ses": {
+        "version": "1.3.0"
+    },
     "authorizenet/authorizenet": {
         "version": "1.9.9"
     },
@@ -434,6 +440,15 @@
     "swiftmailer/swiftmailer": {
         "version": "v6.2.3"
     },
+    "symfony/amazon-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "9648db3ecae5c8a6b1a5f74715d3907124348815"
+        }
+    },
     "symfony/asset": {
         "version": "v5.1.3"
     },
@@ -549,6 +564,15 @@
             "src/Kernel.php"
         ]
     },
+    "symfony/google-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
+    },
     "symfony/http-client": {
         "version": "v5.1.3"
     },
@@ -566,6 +590,36 @@
     },
     "symfony/intl": {
         "version": "v4.4.11"
+    },
+    "symfony/mailchimp-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "1be490e068472fc87e226cf54bc95fb6f2e49117"
+        }
+    },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
+    "symfony/mailgun-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "addcb559b32d9dbb4843826b063565e1b15a2a57"
+        }
     },
     "symfony/maker-bundle": {
         "version": "1.0",
@@ -618,6 +672,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "symfony/polyfill": {
+        "version": "v1.21.0"
+    },
     "symfony/polyfill-ctype": {
         "version": "v1.18.1"
     },
@@ -650,6 +707,15 @@
     },
     "symfony/polyfill-util": {
         "version": "v1.18.1"
+    },
+    "symfony/postmark-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "84842f6791eaef80618dda244d4e3bbcbbcdf543"
+        }
     },
     "symfony/process": {
         "version": "v5.1.3"
@@ -700,6 +766,15 @@
         "files": [
             "config/packages/security.yaml"
         ]
+    },
+    "symfony/sendgrid-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "b46e4f8f1adb2864f0aa9c0ff57aea3324a07199"
+        }
     },
     "symfony/serializer": {
         "version": "v4.4.11"
