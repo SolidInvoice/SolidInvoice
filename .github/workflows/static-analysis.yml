@@ -42,5 +42,8 @@ jobs:
       - name: Warm up cache
         run: bin/console cache:clear -n -vvv
 
+      - name: Install PHPUnit
+        run: ./bin/simple-phpunit --version
+
       - name: Run PHPStan
         run: bin/phpstan analyse
