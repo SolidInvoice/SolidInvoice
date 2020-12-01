@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Action;
 
+use SolidInvoice\AppRequirements;
 use SolidInvoice\CoreBundle\Templating\Template;
 
 final class SystemRequirements
@@ -32,7 +33,7 @@ final class SystemRequirements
         return new Template(
             '@SolidInvoiceInstall/system_check.html.twig',
             [
-                'requirements' => new \AppRequirements(),
+                'requirements' => new AppRequirements(),
             ]
         );
     }
