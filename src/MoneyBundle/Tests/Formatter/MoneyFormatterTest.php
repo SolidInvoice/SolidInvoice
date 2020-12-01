@@ -89,7 +89,7 @@ class MoneyFormatterTest extends TestCase
                 'fr_FR', 'EUR', '12,00 €',
             ],
             [
-                'af_ZA', 'ZAR', 'R12,00',
+                'af_ZA', 'ZAR', 'R 12,00',
             ],
         ];
     }
@@ -122,7 +122,7 @@ class MoneyFormatterTest extends TestCase
                 'en_GB', ',',
             ],
             [
-                'fr_FR', ' ',
+                'fr_FR', ' ',
             ],
             [
                 'af_ZA', ' ',
