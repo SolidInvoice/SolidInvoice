@@ -82,6 +82,7 @@ jobs:
       SOLIDINVOICE_DEBUG: 1
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
       PANTHER_CHROME_DRIVER_BINARY: /usr/local/bin/chromedriver
+      PANTHER_WEB_SERVER_DIR: ./web
 
     services:
       mysql:
