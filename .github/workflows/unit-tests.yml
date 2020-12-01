@@ -1,0 +1,50 @@
+name: Unit Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    name: PHPUnit Unit Tests ( PHP ${{ matrix.php-versions }})
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-versions: [ '7.3', '7.4' ]
+      fail-fast: false
+
+    env:
+      SOLIDINVOICE_ENV: test
+      SOLIDINVOICE_DEBUG: 1
+      SKIP_FUNCTIONAL_BOOTSTRAP: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
+          extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
+          tools: symfony
+
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: composer install --ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+
+      - name: Run test suite
+        run: bin/simple-phpunit --exclude-group installation,functional
+
