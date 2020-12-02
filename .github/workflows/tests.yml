@@ -4,7 +4,7 @@ on: [ push, pull_request ]
 
 jobs:
   unit:
-    name: Unit Tests ( PHP ${{ matrix.php }})
+    name: Unit ( PHP ${{ matrix.php }}, MySQL ${{ matrix.mysql }} )
 
     runs-on: ubuntu-latest
 
@@ -91,7 +91,7 @@ jobs:
           php-coveralls --coverage_clover=build/logs/clover.xml -v
 
   functional:
-    name: Functional Tests
+    name: Functional ( PHP ${{ matrix.php }}, MySQL ${{ matrix.mysql }} )
 
     runs-on: ubuntu-latest
 
