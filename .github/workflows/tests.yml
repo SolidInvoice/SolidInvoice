@@ -10,13 +10,16 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '7.4', '8.0' ]
-        mysql: [ '5.6', '5.7', '8.0' ]
+        php: [ '7.3', '7.4', '8.0' ]
+        mysql: [ '5.6', '5.7' ]
         coverage: [ false ]
         include:
           - php: '7.3'
+            mysql: '5.6'
             coverage: true
-            mysql: [ '5.6', '5.7', '8.0' ]
+          - mysql: '8.0'
+            mysql-entrypoint: >-
+              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
       fail-fast: false
 
     env:
@@ -27,14 +30,18 @@ jobs:
 
     services:
       mysql:
-        image: bitnami/mysql:${{ matrix.mysql }}
+        image: mysql:${{ matrix.mysql }}
         env:
-          ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 3306/tcp
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
+          ${{ matrix.mysql-entrypoint }}
 
     steps:
       - name: Checkout
@@ -113,7 +120,11 @@ jobs:
     strategy:
       matrix:
         php: [ '7.3', '7.4', '8.0' ]
-        mysql: [ '5.6', '5.7', '8.0' ]
+        mysql: [ '5.6', '5.7' ]
+        include:
+          - mysql: '8.0'
+            mysql-entrypoint: >-
+              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
       fail-fast: false
 
     env:
@@ -129,14 +140,18 @@ jobs:
 
     services:
       mysql:
-        image: bitnami/mysql:${{ matrix.mysql }}
+        image: mysql:${{ matrix.mysql }}
         env:
-          ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 3306/tcp
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
+          ${{ matrix.mysql-entrypoint }}
 
     steps:
       - name: Disable local MySQL server
