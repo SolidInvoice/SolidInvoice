@@ -16,6 +16,7 @@ jobs:
         include:
           - php: '7.3'
             coverage: true
+            mysql: '5.7'
       fail-fast: false
 
     env:
