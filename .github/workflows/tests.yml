@@ -11,23 +11,13 @@ jobs:
     strategy:
       matrix:
         php: [ '7.3', '7.4', '8.0' ]
-        mysql: [ '5.6', '5.7' ]
+        mysql: [ '5.6', '5.7', '8.0' ]
         coverage: [ false ]
         include:
           - php: '7.3'
             mysql: '5.6'
             coverage: true
           - php: '7.3'
-            mysql: '8.0'
-            mysql-entrypoint: >-
-              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
-            coverage: false
-          - php: '7.4'
-            mysql: '8.0'
-            mysql-entrypoint: >-
-              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
-            coverage: false
-          - php: '8.0'
             mysql: '8.0'
             mysql-entrypoint: >-
               --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
@@ -46,13 +36,12 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
-          - 3306/tcp
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
           ${{ matrix.mysql-entrypoint }}
 
     steps:
@@ -90,8 +79,6 @@ jobs:
         run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Prepare application database
-        env:
-          database_port: ${{ job.services.mysql.ports['3306'] }}
         run: |
           bin/console doctrine:database:create -n -vvv
           bin/console doctrine:migrations:migrate -n -vvv
@@ -105,8 +92,6 @@ jobs:
         run: echo "SYMFONY_DEPRECATIONS_HELPER=999999" >> $GITHUB_ENV
 
       - name: Run test suite
-        env:
-          database_port: ${{ job.services.mysql.ports['3306'] }}
         run: |
           mkdir -p build/logs
           if [ "$COVERAGE" = '1' ]; then
@@ -132,20 +117,12 @@ jobs:
     strategy:
       matrix:
         php: [ '7.3', '7.4', '8.0' ]
-        mysql: [ '5.6', '5.7' ]
+        mysql: [ '5.6', '5.7', '8.0' ]
         include:
           - php: '7.3'
             mysql: '8.0'
             mysql-entrypoint: >-
               --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
-          - php: '7.4'
-            mysql: '8.0'
-            mysql-entrypoint: >-
-              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
-          - php: '8.0'
-            mysql: '8.0'
-            mysql-entrypoint: >-
-               --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
       fail-fast: false
 
     env:
@@ -165,13 +142,12 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
-          - 3306/tcp
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
           ${{ matrix.mysql-entrypoint }}
 
     steps:
