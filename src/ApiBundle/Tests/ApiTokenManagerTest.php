@@ -35,7 +35,7 @@ class ApiTokenManagerTest extends TestCase
 
         static::assertIsString($token);
         static::assertSame(64, strlen($token));
-        static::assertRegExp('/[a-zA-Z0-9]{64}/', $token);
+        static::assertMatchesRegularExpression('/[a-zA-Z0-9]{64}/', $token);
     }
 
     public function testCreate()

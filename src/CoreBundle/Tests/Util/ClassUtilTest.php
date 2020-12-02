@@ -20,7 +20,11 @@ class ClassUtilTest extends TestCase
 {
     public function testFindClassInFile()
     {
-        static::assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
+        if (PHP_VERSION_ID >= 8000) {
+            static::assertSame('1\\ClassUtilTest', ClassUtil::findClassInFile(__FILE__));
+        } else {
+            static::assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
+        }
     }
 
     public function testFindClassInFileWithInvalidFile()

@@ -36,7 +36,7 @@ class QuoteSubjectListener implements EventSubscriberInterface
         $message = $event->getMessage();
 
         if ($message instanceof QuoteEmail && null === $message->getSubject()) {
-            $message->subject(\str_replace('{id}', $message->getQuote()->getId(), $this->config->get('quote/email_subject')));
+            $message->subject(\str_replace('{id}', (string) $message->getQuote()->getId(), $this->config->get('quote/email_subject')));
         }
     }
 
