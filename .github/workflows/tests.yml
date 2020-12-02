@@ -11,13 +11,18 @@ jobs:
     strategy:
       matrix:
         php: [ '7.3', '7.4', '8.0' ]
-        mysql: [ '5.6', '5.7', '8.0' ]
+        mysql: [ '5.6', '5.7' ]
         coverage: [ false ]
         include:
           - php: '7.3'
             mysql: '5.6'
             coverage: true
           - php: '7.3'
+            mysql: '8.0'
+            mysql-entrypoint: >-
+              --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+            coverage: false
+          - php: '8.0'
             mysql: '8.0'
             mysql-entrypoint: >-
               --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
@@ -117,9 +122,13 @@ jobs:
     strategy:
       matrix:
         php: [ '7.3', '7.4', '8.0' ]
-        mysql: [ '5.6', '5.7', '8.0' ]
+        mysql: [ '5.6', '5.7' ]
         include:
           - php: '7.3'
+            mysql: '8.0'
+            mysql-entrypoint: >-
+              --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+          - php: '8.0'
             mysql: '8.0'
             mysql-entrypoint: >-
               --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
