@@ -54,8 +54,6 @@ class InstallationTest extends PantherTestCase
             ]
         );
 
-        echo $crawler->html();
-
         static::assertStringContainsString('/install/install', $crawler->getUri());
 
         $kernel = self::bootKernel();
