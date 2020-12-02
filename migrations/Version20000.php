@@ -568,7 +568,7 @@ final class Version20000 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return false;
+        return \PHP_VERSION_ID < 80000;
     }
 
     private function createTable($name, array $columns = [], $setPrimaryKey = true): Table
