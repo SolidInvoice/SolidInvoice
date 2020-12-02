@@ -12,6 +12,7 @@ jobs:
       matrix:
         php: [ '7.3', '7.4', '8.0' ]
         mysql: [ '5.7' ]
+        coverage: [ false ]
         include:
           - php: '7.3'
             coverage: true
@@ -39,8 +40,7 @@ jobs:
       - uses: haya14busa/action-cond@v1
         id: coverage_driver
         with:
-          if: ${{ matrix.coverage }}
-          cond: true
+          cond: ${{ matrix.coverage }}
           if_true: pcov
           if_false: none
 
