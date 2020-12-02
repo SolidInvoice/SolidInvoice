@@ -38,12 +38,14 @@ jobs:
     services:
       mysql:
         image: mysql:${{ matrix.mysql }}
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
           - 3306:3306
         options: >-
           --health-cmd "mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
           ${{ matrix.mysql-entrypoint }}
 
     steps:
@@ -145,12 +147,14 @@ jobs:
     services:
       mysql:
         image: mysql:${{ matrix.mysql }}
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
           - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
           ${{ matrix.mysql-entrypoint }}
 
     steps:
