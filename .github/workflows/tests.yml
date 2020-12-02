@@ -10,10 +10,10 @@ jobs:
 
     strategy:
       matrix:
-        php: [ 7.3, 7.4, 8.0 ]
-        mysql: [ 5.7 ]
+        php: [ '7.3', '7.4', '8.0' ]
+        mysql: [ '5.7' ]
         include:
-          - php: 7.3
+          - php: '7.3'
             coverage: true
       fail-fast: false
 
@@ -97,8 +97,8 @@ jobs:
 
     strategy:
       matrix:
-        php: [ 7.3, 7.4, 8.0 ]
-        mysql: [ 5.6, 5.7, 8.0 ]
+        php: [ '7.3', '7.4', '8.0' ]
+        mysql: [ '5.6', '5.7', '8.0' ]
       fail-fast: false
 
     env:
@@ -133,7 +133,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: '7.4'
           ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
           extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
           tools: symfony
