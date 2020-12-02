@@ -35,7 +35,7 @@ class InvoiceSubjectListener implements EventSubscriberInterface
         $message = $event->getMessage();
 
         if ($message instanceof InvoiceEmail && null === $message->getSubject()) {
-            $message->subject(\str_replace('{id}', $message->getInvoice()->getId(), $this->config->get('invoice/email_subject')));
+            $message->subject(\str_replace('{id}', (string) $message->getInvoice()->getId(), $this->config->get('invoice/email_subject')));
         }
     }
 
