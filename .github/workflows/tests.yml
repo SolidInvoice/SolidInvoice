@@ -44,9 +44,6 @@ jobs:
           - 3306:3306
         options: >-
           --health-cmd "mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
           ${{ matrix.mysql-entrypoint }}
 
     steps:
@@ -154,9 +151,6 @@ jobs:
           - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
           ${{ matrix.mysql-entrypoint }}
 
     steps:
