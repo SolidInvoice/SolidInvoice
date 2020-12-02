@@ -17,7 +17,16 @@ jobs:
           - php: '7.3'
             mysql: '5.6'
             coverage: true
-          - mysql: '8.0'
+          - php: '7.3'
+            mysql: '8.0'
+            mysql-entrypoint: >-
+              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+          - php: '7.4'
+            mysql: '8.0'
+            mysql-entrypoint: >-
+              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+          - php: '8.0'
+            mysql: '8.0'
             mysql-entrypoint: >-
               --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
       fail-fast: false
@@ -122,9 +131,18 @@ jobs:
         php: [ '7.3', '7.4', '8.0' ]
         mysql: [ '5.6', '5.7' ]
         include:
-          - mysql: '8.0'
+          - php: '7.3'
+            mysql: '8.0'
             mysql-entrypoint: >-
               --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+          - php: '7.4'
+            mysql: '8.0'
+            mysql-entrypoint: >-
+              --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+          - php: '8.0'
+            mysql: '8.0'
+            mysql-entrypoint: >-
+               --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
       fail-fast: false
 
     env:
