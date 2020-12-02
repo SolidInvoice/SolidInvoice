@@ -566,6 +566,11 @@ final class Version20000 extends AbstractMigration
         }
     }
 
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     private function createTable($name, array $columns = [], $setPrimaryKey = true): Table
     {
         $table = $this->schema->createTable($name);

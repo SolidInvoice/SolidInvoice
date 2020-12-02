@@ -58,7 +58,10 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
             ->dropColumn('deleted');
 
         $schema->getTable('invoices')->addIndex(['quote_id']);
+    }
 
+    public function postUp(Schema $schema): void
+    {
         try {
             $this->connection->transactional(function (Connection $connection) {
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/transport']);
@@ -82,6 +85,11 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
 
             $this->abortIf(true, $e->getMessage());
         }
+    }
+
+    public function isTransactional(): bool
+    {
+        return false;
     }
 
     public function down(Schema $schema): void
