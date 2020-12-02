@@ -39,9 +39,10 @@ jobs:
       - uses: haya14busa/action-cond@v1
         id: coverage_driver
         with:
-          cond: ${{ matrix.coverage }}
-          if_true: "pcov"
-          if_false: "none"
+          if: ${{ matrix.coverage }}
+          cond: true
+          if_true: pcov
+          if_false: none
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
