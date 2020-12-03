@@ -44,7 +44,7 @@
 {% endblock body_bottom %}
 
 {% block body %}
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4" id="swup-nav">
         <a class="brand-link" href="{{ url('_dashboard') }}">
             {{ app_logo() }}
 
@@ -75,7 +75,7 @@
         </section>
     </aside>
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="swup-main">
         <section class="content-header">
             {{ block('heading') is defined ? block('heading') }}
         </section>

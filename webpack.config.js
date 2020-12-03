@@ -22,6 +22,8 @@ Encore
     .enableSassLoader()
     .autoProvidejQuery()
 
+    .enableStimulusBridge('./assets/controllers.json')
+
     .addAliases({
         '~': path.resolve(__dirname, 'assets/js'),
         'SolidInvoiceClient': path.resolve(__dirname, 'src/ClientBundle/Resources/public'),

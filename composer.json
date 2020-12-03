@@ -102,6 +102,7 @@
         "symfony/swiftmailer-bundle": "^3.4",
         "symfony/translation": "^4.4",
         "symfony/twig-bundle": "^4.4",
+        "symfony/ux-swup": "^1.0",
         "symfony/validator": "^4.4",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/workflow": "^4.4",

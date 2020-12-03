@@ -130,7 +130,9 @@ export default function(module) {
         app.on('start', function() {
             this.module = new module(Config.module.data, this);
 
-            Backbone.history.start();
+            if (!Backbone.History.started) {
+                Backbone.history.start();
+            }
         });
 
         if (!isUndefined(module.prototype.appEvents)) {
