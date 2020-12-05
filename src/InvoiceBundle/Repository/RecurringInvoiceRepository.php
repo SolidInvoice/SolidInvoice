@@ -52,4 +52,21 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function deleteInvoices(array $ids): void
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        $em = $this->getEntityManager();
+
+        /** @var RecurringInvoice[] $invoices */
+        $invoices = $this->findBy(['id' => $ids]);
+
+        array_walk($invoices, [$em, 'remove']);
+
+        $em->flush();
+
+        $filters->enable('archivable');
+    }
 }
