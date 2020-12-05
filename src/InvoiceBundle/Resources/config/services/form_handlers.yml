@@ -11,4 +11,5 @@ services:
         resource: '../../../Form/Handler'
         lazy: true
         arguments:
-            $stateMachine: '@state_machine.invoice'
+            $invoiceStateMachine: '@state_machine.invoice'
+            $recurringInvoiceStateMachine: '@state_machine.recurring_invoice'
