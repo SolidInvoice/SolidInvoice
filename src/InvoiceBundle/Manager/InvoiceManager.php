@@ -19,6 +19,7 @@ use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
@@ -67,32 +68,39 @@ class InvoiceManager implements ContainerAwareInterface
         $this->notification = $notification;
     }
 
-    /**
-     * Create an invoice from a quote.
-     */
     public function createFromQuote(Quote $quote): Invoice
     {
+        return $this->createFromObject($quote);
+    }
+
+    public function createFromRecurring(RecurringInvoice $recurringInvoice): Invoice
+    {
+        return $this->createFromObject($recurringInvoice);
+    }
+
+    private function createFromObject($object): Invoice
+    {
+        /** @var RecurringInvoice|Quote $object */
         $invoice = new Invoice();
 
         $now = Carbon::now();
 
         $invoice->setCreated($now);
-        $invoice->setClient($quote->getClient());
-        $invoice->setBaseTotal($quote->getBaseTotal());
-        $invoice->setDiscount($quote->getDiscount());
-        $invoice->setNotes($quote->getNotes());
-        $invoice->setTotal($quote->getTotal());
-        $invoice->setTerms($quote->getTerms());
-        $invoice->setUsers($quote->getUsers()->toArray());
+        $invoice->setClient($object->getClient());
+        $invoice->setBaseTotal($object->getBaseTotal());
+        $invoice->setDiscount($object->getDiscount());
+        $invoice->setNotes($object->getNotes());
+        $invoice->setTotal($object->getTotal());
+        $invoice->setTerms($object->getTerms());
+        $invoice->setUsers($object->getUsers()->toArray());
         $invoice->setBalance($invoice->getTotal());
-        $invoice->setQuote($quote);
 
-        if (null !== $quote->getTax()) {
-            $invoice->setTax($quote->getTax());
+        if (null !== $object->getTax()) {
+            $invoice->setTax($object->getTax());
         }
 
         /** @var \SolidInvoice\QuoteBundle\Entity\Item $item */
-        foreach ($quote->getItems() as $item) {
+        foreach ($object->getItems() as $item) {
             $invoiceItem = new Item();
             $invoiceItem->setCreated($now);
             $invoiceItem->setTotal($item->getTotal());

@@ -38,6 +38,7 @@ final class InvoiceCloner
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
         // Rather set it manually
         $class = \get_class($invoice);
+        /** @var RecurringInvoice|Invoice $newInvoice */
         $newInvoice = new $class();
 
         $now = Carbon::now();
@@ -63,7 +64,7 @@ final class InvoiceCloner
             $newInvoice->setTax($tax);
         }
 
-        array_map(static function (Item $item) use ($newInvoice): Invoice {
+        array_map(static function (Item $item) use ($newInvoice): BaseInvoice {
             return $newInvoice->addItem($item);
         }, iterator_to_array($this->addItems($invoice, $now)));
 
