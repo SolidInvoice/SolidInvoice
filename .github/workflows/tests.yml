@@ -64,7 +64,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
-          extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
+          extensions: intl, gd, opcache, mysql, pdo_mysql, soap, :xdebug
           tools: symfony
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
