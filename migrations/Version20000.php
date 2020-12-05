@@ -521,7 +521,7 @@ final class Version20000 extends AbstractMigration
                     ['setting_key' => 'sms/twilio/number', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
                     ['setting_key' => 'sms/twilio/sid', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
                     ['setting_key' => 'sms/twilio/token', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'design/system/theme', 'setting_value' => 'skin-solidinoice-default', 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\ThemeType'],
+                    ['setting_key' => 'design/system/theme', 'setting_value' => 'skin-solidinvoice-default', 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\ThemeType'],
                     ['setting_key' => 'system/company/vat_number', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\TaxBundle\Form\Type\TaxNumberType'],
                     ['setting_key' => 'system/company/contact_details/email', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
                     ['setting_key' => 'system/company/contact_details/phone_number', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
