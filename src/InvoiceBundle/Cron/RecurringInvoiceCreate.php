@@ -62,6 +62,7 @@ class RecurringInvoiceCreate implements CommandInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws InvalidTransitionException
      */
     public function process(): void

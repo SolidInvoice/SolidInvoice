@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests;
 
-use SolidInvoice\Kernel;
 use Doctrine\ORM\EntityManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\Kernel;
 use Symfony\Component\DependencyInjection\Container;
 
 abstract class KernelAwareTest extends TestCase
