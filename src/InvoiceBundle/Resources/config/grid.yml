@@ -77,6 +77,63 @@ datagrid:
                 confirm: 'Are you sure you want to delete the selected rows?'
                 action: invoice_grid_delete
                 className: danger
+    archive_invoice_grid:
+        title: Archived Invoices
+        icon: archive
+        source:
+            repository: 'SolidInvoiceInvoiceBundle:Invoice'
+            method: getArchivedGridQuery
+        properties:
+            route: '_invoices_view'
+        columns:
+            id:
+                name: id
+                label: ID
+                editable: false
+                cell: integer
+            status:
+                name: status
+                label: Status
+                editable: false
+                cell: invoice_status
+            client:
+                name: client
+                label: Client
+                editable: false
+                cell: client
+            total:
+                name: total
+                label: Total
+                editable: false
+                cell: string
+            tax:
+                name: tax
+                label: Tax
+                editable: false
+                cell: string
+            discount:
+                name: discount
+                label: Discount
+                editable: false
+                cell: string
+                formatter: discount
+            created:
+                name: created
+                label: Created
+                editable: false
+                cell: date
+        search:
+            fields:
+                - status
+                - total
+                - c.name
+        actions:
+            delete:
+                label: Delete
+                icon: ban
+                confirm: 'Are you sure you want to delete the selected rows?'
+                action: invoice_grid_delete
+                className: danger
     recurring_invoice_grid:
         title: Recurring Invoices
         icon: refresh
@@ -91,6 +148,11 @@ datagrid:
                 label: ID
                 editable: false
                 cell: integer
+            status:
+                name: status
+                label: Status
+                editable: false
+                cell: invoice_status
             client:
                 name: client
                 label: Client
@@ -159,63 +221,6 @@ datagrid:
                 confirm: 'Are you sure you want to archive the selected rows?'
                 action: invoice_grid_archive
                 className: warning
-            delete:
-                label: Delete
-                icon: ban
-                confirm: 'Are you sure you want to delete the selected rows?'
-                action: invoice_grid_delete
-                className: danger
-    archive_invoice_grid:
-        title: Archived Invoices
-        icon: archive
-        source:
-            repository: 'SolidInvoiceInvoiceBundle:Invoice'
-            method: getArchivedGridQuery
-        properties:
-            route: '_invoices_view'
-        columns:
-            id:
-                name: id
-                label: ID
-                editable: false
-                cell: integer
-            status:
-                name: status
-                label: Status
-                editable: false
-                cell: invoice_status
-            client:
-                name: client
-                label: Client
-                editable: false
-                cell: client
-            total:
-                name: total
-                label: Total
-                editable: false
-                cell: string
-            tax:
-                name: tax
-                label: Tax
-                editable: false
-                cell: string
-            discount:
-                name: discount
-                label: Discount
-                editable: false
-                cell: string
-                formatter: discount
-            created:
-                name: created
-                label: Created
-                editable: false
-                cell: date
-        search:
-            fields:
-                - status
-                - total
-                - c.name
-        actions:
             delete:
                 label: Delete
                 icon: ban
