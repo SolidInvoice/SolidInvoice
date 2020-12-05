@@ -74,6 +74,15 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
             $dispatcher,
             'invoice'
         );
+        $recurringStateMachine = new StateMachine(
+            new Definition(
+                ['draft', 'pending'],
+                [new Transition('accept', 'draft', 'pending')]
+            ),
+            new MethodMarkingStore(true, 'status'),
+            $dispatcher,
+            'invoice'
+        );
 
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
@@ -81,7 +90,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
             ->withAnyArgs()
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceEditHandler($stateMachine, $router);
+        $handler = new InvoiceEditHandler($stateMachine, $recurringStateMachine, $router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
