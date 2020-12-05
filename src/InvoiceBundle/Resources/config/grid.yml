@@ -219,11 +219,11 @@ datagrid:
                 label: Archive
                 icon: archive
                 confirm: 'Are you sure you want to archive the selected rows?'
-                action: invoice_grid_archive
+                action: invoice_grid_recurring_archive
                 className: warning
             delete:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
-                action: invoice_grid_delete
+                action: invoice_grid_recurring_delete
                 className: danger

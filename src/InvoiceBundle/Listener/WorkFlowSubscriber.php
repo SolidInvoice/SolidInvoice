@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Listener;
 use Carbon\Carbon;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -48,12 +49,13 @@ class WorkFlowSubscriber implements EventSubscriberInterface
     {
         return [
             'workflow.invoice.entered' => 'onWorkflowTransitionApplied',
+            'workflow.recurring_invoice.enter' => 'onWorkflowTransitionApplied',
         ];
     }
 
     public function onWorkflowTransitionApplied(Event $event)
     {
-        /** @var Invoice $invoice */
+        /** @var Invoice|RecurringInvoice $invoice */
         $invoice = $event->getSubject();
 
         if (($transition = $event->getTransition()) instanceof Transition) {

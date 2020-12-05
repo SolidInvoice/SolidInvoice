@@ -12,6 +12,11 @@ services:
         arguments:
             $stateMachine: '@state_machine.invoice'
 
+    SolidInvoice\InvoiceBundle\Action\Grid\RecurringArchive:
+        tags: ['controller.service_arguments']
+        arguments:
+            $stateMachine: '@state_machine.recurring_invoice'
+
     SolidInvoice\InvoiceBundle\Action\Transition:
         tags: ['controller.service_arguments']
         arguments:
