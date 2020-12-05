@@ -136,7 +136,7 @@ datagrid:
                 className: danger
     recurring_invoice_grid:
         title: Recurring Invoices
-        icon: refresh
+        icon: sync-alt
         source:
             repository: 'SolidInvoiceInvoiceBundle:RecurringInvoice'
             method: getRecurringGridQuery
@@ -221,6 +221,80 @@ datagrid:
                 confirm: 'Are you sure you want to archive the selected rows?'
                 action: invoice_grid_recurring_archive
                 className: warning
+            delete:
+                label: Delete
+                icon: ban
+                confirm: 'Are you sure you want to delete the selected rows?'
+                action: invoice_grid_recurring_delete
+                className: danger
+    archive_recurring_invoice_grid:
+        title: Archived Recurring Invoices
+        icon: archive
+        source:
+            repository: 'SolidInvoiceInvoiceBundle:RecurringInvoice'
+            method: getArchivedGridQuery
+        properties:
+            route: '_invoices_view_recurring'
+        columns:
+            id:
+                name: id
+                label: ID
+                editable: false
+                cell: integer
+            status:
+                name: status
+                label: Status
+                editable: false
+                cell: invoice_status
+            client:
+                name: client
+                label: Client
+                editable: false
+                cell: client
+            total:
+                name: total
+                label: Total
+                editable: false
+                cell: money
+                formatter: money
+            tax:
+                name: tax
+                label: Tax
+                editable: false
+                cell: money
+                formatter: money
+            discount:
+                name: discount
+                label: Discount
+                editable: false
+                cell: string
+                formatter: discount
+            dateStart:
+                name: dateStart
+                label: 'Start Date'
+                editable: false
+                cell: recurringInvoiceStart
+            dateEnd:
+                name: dateEnd
+                label: 'End Date'
+                editable: false
+                cell: recurringInvoiceEnd
+            frequency:
+                name: frequency
+                label: Frequency
+                editable: false
+                cell: recurringInvoiceFrequency
+            created:
+                name: created
+                label: Created
+                editable: false
+                cell: date
+        search:
+            fields:
+                - status
+                - total
+                - c.name
+        actions:
             delete:
                 label: Delete
                 icon: ban
