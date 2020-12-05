@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
@@ -40,16 +41,22 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     /**
      * @var StateMachine
      */
-    private $stateMachine;
+    private $invoiceStateMachine;
+
+    /**
+     * @var StateMachine
+     */
+    private $recurringInvoiceStateMachine;
 
     /**
      * @var RouterInterface
      */
     private $router;
 
-    public function __construct(StateMachine $stateMachine, RouterInterface $router)
+    public function __construct(StateMachine $invoiceStateMachine, StateMachine $recurringInvoiceStateMachine, RouterInterface $router)
     {
-        $this->stateMachine = $stateMachine;
+        $this->invoiceStateMachine = $invoiceStateMachine;
+        $this->recurringInvoiceStateMachine = $recurringInvoiceStateMachine;
         $this->router = $router;
     }
 
@@ -66,22 +73,22 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
     /**
      * {@inheritdoc}
      */
-    public function onSuccess(FormRequest $form, $invoice): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
-        /* @var Invoice $invoice */
+        /* @var BaseInvoice $data */
         $action = $form->getRequest()->request->get('save');
         $isRecurring = $form->getOptions()->get('recurring');
 
-        if (!$invoice->getId()) {
-            $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
+        if (!$data->getId()) {
+            ($isRecurring ? $this->recurringInvoiceStateMachine : $this->invoiceStateMachine)->apply($data, Graph::TRANSITION_NEW);
         }
 
         if (Graph::STATUS_PENDING === $action) {
-            $this->stateMachine->apply($invoice, $isRecurring ? Graph::TRANSITION_ACTIVATE : Graph::TRANSITION_ACCEPT);
+            ($isRecurring ? $this->recurringInvoiceStateMachine : $this->invoiceStateMachine)->apply($data, $isRecurring ? Graph::TRANSITION_ACTIVATE : Graph::TRANSITION_ACCEPT);
         }
 
-        $this->save($invoice);
-        $route = $this->router->generate($isRecurring ? '_invoices_view_recurring' : '_invoices_view', ['id' => $invoice->getId()]);
+        $this->save($data);
+        $route = $this->router->generate($isRecurring ? '_invoices_view_recurring' : '_invoices_view', ['id' => $data->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): iterable
