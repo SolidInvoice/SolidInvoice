@@ -39,4 +39,17 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function getArchivedGridQuery(): QueryBuilder
+    {
+        $this->getEntityManager()->getFilters()->disable('archivable');
+
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select(['i', 'c'])
+            ->join('i.client', 'c')
+            ->where('i.archived is not null');
+
+        return $qb;
+    }
 }
