@@ -18,17 +18,15 @@ use Cron\CronExpression;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\CronBundle\CommandInterface;
-use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Component\Workflow\StateMachine;
 
-/**
- * Class RecurringInvoiceCreate.
- */
 class RecurringInvoiceCreate implements CommandInterface
 {
     /**
@@ -42,15 +40,15 @@ class RecurringInvoiceCreate implements CommandInterface
     private $stateMachine;
 
     /**
-     * @var InvoiceCloner
+     * @var InvoiceManager
      */
-    private $invoiceCloner;
+    private $invoiceManager;
 
-    public function __construct(ManagerRegistry $registry, InvoiceCloner $invoiceCloner, StateMachine $stateMachine)
+    public function __construct(ManagerRegistry $registry, InvoiceManager $invoiceManager, StateMachine $stateMachine)
     {
         $this->entityManager = $registry->getManager();
         $this->stateMachine = $stateMachine;
-        $this->invoiceCloner = $invoiceCloner;
+        $this->invoiceManager = $invoiceManager;
     }
 
     /**
@@ -64,6 +62,7 @@ class RecurringInvoiceCreate implements CommandInterface
 
     /**
      * {@inheritdoc}
+     * @throws InvalidTransitionException
      */
     public function process(): void
     {
@@ -81,9 +80,10 @@ class RecurringInvoiceCreate implements CommandInterface
 
             $cron = CronExpression::factory($invoice->getFrequency());
 
-            if (true === $cron->isDue($now)) {
-                $newInvoice = $this->invoiceCloner->clone($invoice);
+            if ($cron->isDue($now)) {
+                $newInvoice = $this->invoiceManager->createFromRecurring($invoice);
                 $this->setItemsDescription($newInvoice);
+                $this->invoiceManager->create($newInvoice);
 
                 $this->entityManager->persist($invoice);
                 $this->entityManager->flush();
