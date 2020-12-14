@@ -63,7 +63,7 @@ class InvoiceTest extends ApiTestCase
 
         unset($result['uuid']);
 
-        static::assertSame([
+        static::assertEquals([
             'id' => 1001,
             'status' => 'draft',
             'client' => '/api/clients/1000',
@@ -92,7 +92,6 @@ class InvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1000',
             ],
-            'recurring' => false,
         ], $result);
     }
 
@@ -107,7 +106,7 @@ class InvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        static::assertSame([
+        static::assertEquals([
             'id' => 1000,
             'status' => 'draft',
             'client' => '/api/clients/1000',
@@ -136,7 +135,6 @@ class InvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1000',
             ],
-            'recurring' => false,
         ], $data);
     }
 
@@ -161,7 +159,7 @@ class InvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        static::assertSame([
+        static::assertEquals([
             'id' => 1000,
             'status' => 'draft',
             'client' => '/api/clients/1000',
@@ -190,7 +188,6 @@ class InvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1000',
             ],
-            'recurring' => false,
         ], $data);
     }
 }
