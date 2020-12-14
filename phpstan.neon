@@ -5,6 +5,7 @@ parameters:
     bootstrapFiles:
         - vendor/autoload.php
         - vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php
+        - vendor/doctrine/dbal/lib/Doctrine/DBAL/Types/ConversionException.php
     excludes_analyse:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:
