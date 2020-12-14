@@ -22,6 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -102,9 +103,16 @@ class Contact implements Serializable
     /**
      * @var Invoice[]|Collection<int, Invoice>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\BaseInvoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
+
+    /**
+     * @var RecurringInvoice[]|Collection<int, Invoice>
+     *
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     */
+    private $recurringInvoices;
 
     /**
      * @var Quote[]|Collection<int, Quote>
@@ -117,6 +125,7 @@ class Contact implements Serializable
     {
         $this->additionalContactDetails = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->recurringInvoices = new ArrayCollection();
         $this->quotes = new ArrayCollection();
     }
 
@@ -285,6 +294,14 @@ class Contact implements Serializable
     public function getInvoices(): Collection
     {
         return $this->invoices;
+    }
+
+    /**
+     * @return Collection|RecurringInvoice[]
+     */
+    public function getRecurringInvoices(): Collection
+    {
+        return $this->recurringInvoices;
     }
 
     /**

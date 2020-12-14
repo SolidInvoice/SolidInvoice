@@ -13,17 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
@@ -37,16 +31,6 @@ abstract class BaseInvoice
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
      */
     protected $status;
-
-    /**
-     * @var Client
-     *
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices")
-     * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     * @ApiProperty(iri="https://schema.org/Organization")
-     */
-    protected $client;
 
     /**
      * @var MoneyEntity
@@ -96,54 +80,12 @@ abstract class BaseInvoice
      */
     protected $notes;
 
-    /**
-     * @var Collection|Contact[]
-     *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
-     * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
-    protected $users;
-
     public function __construct()
     {
         $this->discount = new Discount();
-        $this->users = new ArrayCollection();
         $this->baseTotal = new MoneyEntity();
         $this->tax = new MoneyEntity();
         $this->total = new MoneyEntity();
-    }
-
-    /**
-     * Return users array.
-     *
-     * @return Collection|Contact[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    /**
-     * @param Contact[] $users
-     *
-     * @return Invoice
-     */
-    public function setUsers(array $users): self
-    {
-        $this->users = new ArrayCollection($users);
-
-        return $this;
-    }
-
-    /**
-     * @return Invoice
-     */
-    public function addUser(Contact $user): self
-    {
-        $this->users[] = $user;
-
-        return $this;
     }
 
     /**
@@ -164,30 +106,6 @@ abstract class BaseInvoice
     public function setStatus(string $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get Client.
-     *
-     * @return Client
-     */
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    /**
-     * Set client.
-     *
-     * @param Client $client
-     *
-     * @return Invoice
-     */
-    public function setClient(?Client $client): self
-    {
-        $this->client = $client;
 
         return $this;
     }

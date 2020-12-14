@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -46,6 +49,16 @@ class RecurringInvoice extends BaseInvoice
      * @Serialize\Groups({"recurring_invoice_api", "client_api"})
      */
     private $id;
+
+    /**
+     * @var Client
+     *
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="recurringInvoices")
+     * @Assert\NotBlank
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     * @ApiProperty(iri="https://schema.org/Organization")
+     */
+    protected $client;
 
     /**
      * @var string
@@ -83,9 +96,19 @@ class RecurringInvoice extends BaseInvoice
      */
     protected $items;
 
+    /**
+     * @var Collection|Contact[]
+     *
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="recurringInvoices")
+     * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     */
+    protected $users;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->users = new ArrayCollection();
         parent::__construct();
     }
 
@@ -95,6 +118,30 @@ class RecurringInvoice extends BaseInvoice
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * Get Client.
+     *
+     * @return Client
+     */
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set client.
+     *
+     * @param Client|null $client
+     *
+     * @return RecurringInvoice
+     */
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
     }
 
     /**
@@ -189,5 +236,37 @@ class RecurringInvoice extends BaseInvoice
     public function getItems(): Collection
     {
         return $this->items;
+    }
+
+    /**
+     * Return users array.
+     *
+     * @return Collection|Contact[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param Contact[] $users
+     *
+     * @return RecurringInvoice
+     */
+    public function setUsers(array $users): self
+    {
+        $this->users = new ArrayCollection($users);
+
+        return $this;
+    }
+
+    /**
+     * @return RecurringInvoice
+     */
+    public function addUser(Contact $user): self
+    {
+        $this->users[] = $user;
+
+        return $this;
     }
 }
