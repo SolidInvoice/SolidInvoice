@@ -133,8 +133,6 @@ class RecurringInvoice extends BaseInvoice
     /**
      * Set client.
      *
-     * @param Client|null $client
-     *
      * @return RecurringInvoice
      */
     public function setClient(?Client $client): self
