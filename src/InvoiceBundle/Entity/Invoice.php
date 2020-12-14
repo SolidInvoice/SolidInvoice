@@ -190,8 +190,6 @@ class Invoice extends BaseInvoice
     /**
      * Set client.
      *
-     * @param Client|null $client
-     *
      * @return Invoice
      */
     public function setClient(?Client $client): self
