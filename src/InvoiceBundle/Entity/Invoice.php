@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,6 +24,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -64,6 +67,16 @@ class Invoice extends BaseInvoice
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $uuid;
+
+    /**
+     * @var Client
+     *
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices")
+     * @Assert\NotBlank
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     * @ApiProperty(iri="https://schema.org/Organization")
+     */
+    protected $client;
 
     /**
      * @var MoneyEntity
@@ -116,12 +129,23 @@ class Invoice extends BaseInvoice
      */
     protected $items;
 
+    /**
+     * @var Collection|Contact[]
+     *
+     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
+     * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     */
+    protected $users;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->payments = new ArrayCollection();
         $this->items = new ArrayCollection();
+        $this->users = new ArrayCollection();
+
         try {
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
@@ -149,6 +173,30 @@ class Invoice extends BaseInvoice
     public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * Get Client.
+     *
+     * @return Client
+     */
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set client.
+     *
+     * @param Client|null $client
+     *
+     * @return Invoice
+     */
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }
@@ -295,6 +343,38 @@ class Invoice extends BaseInvoice
     {
         $this->quote = $quote;
         $quote->setInvoice($this);
+
+        return $this;
+    }
+
+    /**
+     * Return users array.
+     *
+     * @return Collection|Contact[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param Contact[] $users
+     *
+     * @return Invoice
+     */
+    public function setUsers(array $users): self
+    {
+        $this->users = new ArrayCollection($users);
+
+        return $this;
+    }
+
+    /**
+     * @return Invoice
+     */
+    public function addUser(Contact $user): self
+    {
+        $this->users[] = $user;
 
         return $this;
     }
