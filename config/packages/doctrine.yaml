@@ -7,7 +7,7 @@ doctrine:
         user: '%env(database_user)%'
         password: '%env(database_password)%'
         charset: UTF8
-        server_version: 5.5
+        server_version: 5.7
         types:
             uuid: Ramsey\Uuid\Doctrine\UuidType
             money: SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType
