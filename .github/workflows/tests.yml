@@ -161,7 +161,7 @@ jobs:
       - name: Disable local MySQL server
         run: sudo service mysql stop
 
-      - uses: nanasess/setup-chromedriver@master
+      - uses: nanasess/setup-chromedriver@1bf03f69846dfda39180ff7b250765e6e96256b7
 
       - name: Checkout
         uses: actions/checkout@v2
