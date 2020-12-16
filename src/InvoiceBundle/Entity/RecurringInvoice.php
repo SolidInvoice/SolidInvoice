@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,9 +68,9 @@ class RecurringInvoice extends BaseInvoice
     private $frequency;
 
     /**
-     * @var DateTime
+     * @var \DateTimeInterface
      *
-     * @ORM\Column(name="date_start", type="date")
+     * @ORM\Column(name="date_start", type="date_immutable")
      * @Assert\NotBlank(groups={"Recurring"})
      * @Assert\Date(groups={"Recurring"})
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
@@ -79,9 +78,9 @@ class RecurringInvoice extends BaseInvoice
     private $dateStart;
 
     /**
-     * @var DateTime
+     * @var \DateTimeInterface
      *
-     * @ORM\Column(name="date_end", type="date", nullable=true)
+     * @ORM\Column(name="date_end", type="date_immutable", nullable=true)
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
     private $dateEnd;
@@ -161,19 +160,19 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * @return DateTime
+     * @return \DateTimeInterface
      */
-    public function getDateStart(): ?DateTime
+    public function getDateStart(): ?\DateTimeInterface
     {
         return $this->dateStart;
     }
 
     /**
-     * @param DateTime $dateStart
+     * @param \DateTimeInterface $dateStart
      *
      * @return RecurringInvoice
      */
-    public function setDateStart(DateTime $dateStart = null): self
+    public function setDateStart(\DateTimeInterface $dateStart = null): self
     {
         $this->dateStart = $dateStart;
 
@@ -181,9 +180,9 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * @return DateTime
+     * @return \DateTimeInterface
      */
-    public function getDateEnd(): ?DateTime
+    public function getDateEnd(): ?\DateTimeInterface
     {
         return $this->dateEnd;
     }
@@ -193,7 +192,7 @@ class RecurringInvoice extends BaseInvoice
      *
      * @return RecurringInvoice
      */
-    public function setDateEnd(DateTime $dateEnd = null): self
+    public function setDateEnd(\DateTimeInterface $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
 

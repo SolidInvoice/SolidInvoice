@@ -17,6 +17,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -104,6 +106,8 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
         $recurringInvoices->addColumn('discount_valueMoney_currency', 'string', ['length' => 3, 'notnull' => false]);
         $recurringInvoices->addColumn('client_id', 'integer', ['notnull' => false]);
         $recurringInvoices->dropColumn('invoice_id');
+        $recurringInvoices->getColumn('date_start')->setType(Type::getType(Types::DATE_IMMUTABLE));
+        $recurringInvoices->getColumn('date_end')->setType(Type::getType(Types::DATE_IMMUTABLE));
         $recurringInvoices->addForeignKeyConstraint('clients', ['client_id'], ['id']);
         $recurringInvoices->addIndex(['client_id']);
 
