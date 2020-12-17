@@ -39,7 +39,7 @@ class Item implements ItemInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serialize\Groups({"invoice_api", "client_api"})
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
      */
     private $id;
 
@@ -48,7 +48,7 @@ class Item implements ItemInterface
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      */
     private $description;
 
@@ -57,7 +57,7 @@ class Item implements ItemInterface
      *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      */
     private $price;
 
@@ -66,7 +66,7 @@ class Item implements ItemInterface
      *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      */
     private $qty;
 
@@ -88,7 +88,7 @@ class Item implements ItemInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
-     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      */
     private $tax;
 
@@ -96,7 +96,7 @@ class Item implements ItemInterface
      * @var MoneyEntity
      *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"invoice_api", "client_api"})
+     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
      */
     private $total;
 
