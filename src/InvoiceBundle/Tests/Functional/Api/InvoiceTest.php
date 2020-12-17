@@ -64,7 +64,7 @@ class InvoiceTest extends ApiTestCase
         unset($result['uuid']);
 
         static::assertEquals([
-            'id' => 1001,
+            'id' => 1002,
             'status' => 'draft',
             'client' => '/api/clients/1000',
             'total' => '$90.00',
@@ -177,7 +177,7 @@ class InvoiceTest extends ApiTestCase
             'paidDate' => null,
             'items' => [
                 [
-                    'id' => 1001,
+                    'id' => 1002,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,

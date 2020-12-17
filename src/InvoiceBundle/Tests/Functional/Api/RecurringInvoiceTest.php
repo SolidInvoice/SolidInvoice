@@ -37,7 +37,7 @@ class RecurringInvoiceTest extends ApiTestCase
         $this->loadFixtures([
             'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
             'SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData',
-        ]);
+        ], true);
     }
 
     public function testCreate()
