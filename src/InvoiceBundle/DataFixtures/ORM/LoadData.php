@@ -42,7 +42,7 @@ class LoadData extends Fixture
         $recurringInvoice->addUser($this->getReference('contact'));
         $recurringInvoice->setStatus(Graph::STATUS_DRAFT);
         $recurringInvoice->setFrequency('* * * * *');
-        $recurringInvoice->setDateStart(new \DateTimeImmutable('2012-01-01 15:30:00'));
+        $recurringInvoice->setDateStart(new \DateTimeImmutable('2012-01-01 15:30:00', new \DateTimeZone('Europe/Paris')));
 
         $item = new Item();
         $item->setQty(1);

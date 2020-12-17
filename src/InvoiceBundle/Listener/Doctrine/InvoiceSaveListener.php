@@ -55,7 +55,7 @@ class InvoiceSaveListener implements EventSubscriber
     {
         $entity = $event->getEntity();
 
-        if ($entity instanceof Invoice) {
+        if ($entity instanceof BaseInvoice) {
             $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
             $this->checkDiscount($entity);
         }

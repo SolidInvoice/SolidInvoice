@@ -67,18 +67,15 @@ class RecurringInvoiceTest extends ApiTestCase
 
         $result = $this->requestPost('/api/recurring_invoices', $data);
 
-        unset($result['uuid']);
-
         static::assertEquals([
-            'id' => 1002,
+            'id' => 1001,
             'status' => 'draft',
             'client' => '/api/clients/1000',
             'frequency' => '* * * * *',
-            'dateStart' => $date,
+            'dateStart' => date('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
             'total' => '$90.00',
             'baseTotal' => '$100.00',
-            'balance' => '$90.00',
             'tax' => '$0.00',
             'discount' => [
                 'type' => 'percentage',
@@ -86,8 +83,6 @@ class RecurringInvoiceTest extends ApiTestCase
             ],
             'terms' => null,
             'notes' => null,
-            'due' => null,
-            'paidDate' => null,
             'items' => [
                 [
                     'id' => 1002,
@@ -120,20 +115,20 @@ class RecurringInvoiceTest extends ApiTestCase
             'status' => 'draft',
             'client' => '/api/clients/1000',
             'frequency' => '* * * * *',
-            'dateStart' => '2012-01-01T00:00:00+01:00',
+            'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
-            'total' => '$0.00',
-            'baseTotal' => '$0.00',
+            'total' => '$100.00',
+            'baseTotal' => '$100.00',
             'tax' => '$0.00',
             'discount' => [
-                'type' => 'percentage',
+                'type' => null,
                 'value' => null,
             ],
             'terms' => null,
             'notes' => null,
             'items' => [
                 [
-                    'id' => 1000,
+                    'id' => 1001,
                     'description' => 'Test Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -174,11 +169,10 @@ class RecurringInvoiceTest extends ApiTestCase
             'status' => 'draft',
             'client' => '/api/clients/1000',
             'frequency' => '5 * * * *',
-            'dateStart' => '2012-01-01 15:30:00',
+            'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
             'total' => '$90.00',
             'baseTotal' => '$100.00',
-            'balance' => '$90.00',
             'tax' => '$0.00',
             'discount' => [
                 'type' => 'percentage',
@@ -186,11 +180,9 @@ class RecurringInvoiceTest extends ApiTestCase
             ],
             'terms' => null,
             'notes' => null,
-            'due' => null,
-            'paidDate' => null,
             'items' => [
                 [
-                    'id' => 1001,
+                    'id' => 1002,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,

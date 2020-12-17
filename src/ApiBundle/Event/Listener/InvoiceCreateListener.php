@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Event\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -49,7 +50,7 @@ class InvoiceCreateListener implements EventSubscriberInterface
         $invoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$invoice instanceof Invoice || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $invoice->getStatus()) {
+        if (!$invoice instanceof BaseInvoice || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $invoice->getStatus()) {
             return;
         }
 
