@@ -15,7 +15,6 @@ namespace SolidInvoice\ApiBundle\Event\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
