@@ -77,7 +77,7 @@ class DatabaseConfigType extends AbstractType
             [
                 'label' => 'Database Name',
                 'constraints' => new NotBlank(),
-                'required' => false,
+                'required' => true,
             ]
         );
     }

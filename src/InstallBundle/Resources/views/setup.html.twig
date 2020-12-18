@@ -10,53 +10,64 @@
 {% extends '@SolidInvoiceInstall/layout.html.twig' %}
 
 {% block content %}
-    {{ form_start(form) }}
-
-    {{ form_errors(form) }}
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 offset-3">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
             <div class="card card-primary">
                 <div class="card-header with-border">
-                    <h3 class="card-title">
-                        {{ icon('cog') }} {{ 'installation.setup.title.system_settings'|trans }}
+                    <h3 class="card-title" id="install-title">
+                        {{ 'installation.process.title.busy'|trans }}
                     </h3>
                 </div>
                 <div class="card-body">
-                    {{ form_row(form.locale) }}
-                    {{ form_row(form.currency) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="mb-3">
+                                {{ icon('cog') }} {{ 'installation.setup.title.system_settings'|trans }}
+                            </h4>
+                            {{ form_row(form.locale) }}
+                            {{ form_row(form.currency) }}
+                        </div>
+                        <div class="col-md-6">
+                            {% if userCount > 0 %}
+                                <div class="callout callout-warning">
+                                    <h4>{{ 'installation.setup.notice'|trans }}</h4>
+                                    <p>
+                                        {{ 'installation.setup.user_exists'|trans }}
+                                    </p>
+                                </div>
+                            {% else %}
+                                <h4 class="mb-3">
+                                    {{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
+                                </h4>
+                                {{ form_row(form) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col align-self-start">
+                            <a href="{{ path('_install_config') }}" class="btn btn-warning btn-block">
+                                {{ icon('arrow-left') }} {{ "installation.action.previous"|trans }}
+                            </a>
+                        </div>
+                        <div class="col-8">
+                        </div>
+                        <div class="col" id="next_button">
+                            <button type="submit" class="btn btn-success btn-block" id="continue_step">
+                                {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            {% if userCount > 0 %}
-                <div class="callout callout-warning">
-                    <h4>{{ 'installation.setup.notice'|trans }}</h4>
-                    <p>
-                        {{ 'installation.setup.user_exists'|trans }}
-                    </p>
-                </div>
-            {% else %}
-                <div class="card card-primary">
-                    <div class="card-header with-border">
-                        <h3 class="card-title">
-                            {{ icon('user') }} {{ 'installation.setup.title.admin_user'|trans }}
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        {{ form_row(form) }}
-                    </div>
-                </div>
-            {% endif %}
+
+            {{ form_end(form) }}
         </div>
     </div>
 
-    <div class="control-group float-right" id="next_button">
-        <button type="submit" class="btn btn-success" id="continue_step">
-            {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
-        </button>
-    </div>
-    <br class="clear" />
-
-    {{ form_end(form) }}
 {% endblock %}

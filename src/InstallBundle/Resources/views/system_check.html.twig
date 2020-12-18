@@ -9,6 +9,10 @@
 
 {% extends '@SolidInvoiceInstall/layout.html.twig' %}
 
+{% block subtitle %}
+    Requirements Check
+{% endblock subtitle %}
+
 {% from _self import requirementCheck %}
 
 {% macro requirementCheck(requirement) %}
@@ -51,48 +55,51 @@
     {% endif %}
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 offset-3">
             <div class="card card-primary">
                 <div class="card-header with-border">
-                    <h3 class="card-title">
-                        {{ 'installation.requirements.mandatory'|trans }}
-                    </h3>
+                    <h3 class="card-title">{{ icon('check') }} {{ 'installation.config.title.requirements_check'|trans }}</h3>
                 </div>
                 <div class="card-body">
-                    <ul class="list-group">
-                        {% for requirement in requirements.requirements %}
-                            {{ requirementCheck(requirement) }}
-                        {% endfor %}
-                    </ul>
+                    <div class="row">
+                        <div class="col-md-6 d-flex">
+                            <ul class="list-group">
+                                <li class="list-group-item disabled" aria-disabled="true">
+                                    {{ 'installation.requirements.mandatory'|trans }}
+                                </li>
+                                {% for requirement in requirements.requirements %}
+                                    {{ requirementCheck(requirement) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6 d-flex">
+                            <ul class="list-group">
+                                <li class="list-group-item disabled" aria-disabled="true">
+                                    {{ 'installation.requirements.optional'|trans }}
+                                </li>
+                                {% for requirement in requirements.recommendations %}
+                                    {{ requirementCheck(requirement) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-header with-border">
-                    <h3 class="card-title">
-                        {{ 'installation.requirements.optional'|trans }}
-                    </h3>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col align-self-start">
+                            <a href="{{ path('_install_check_requirements') }}" class="btn btn-warning btn-block">
+                                {{ icon('refresh') }} {{ "installation.action.refresh"|trans }}
+                            </a>
+                        </div>
+                        <div class="col-8">
+                        </div>
+                        <div class="col">
+                            <a id="continue_step" href="{{ path('_install_config') }}" class="btn btn-success float-right btn-block{% if requirements.failedRequirements|length > 0 %} disabled{% endif %}">
+                                {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        {% for requirement in requirements.recommendations %}
-                            {{ requirementCheck(requirement) }}
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="float-right">
-                <a href="{{ path('_install_install') }}" class="btn btn-warning">
-                    {{ icon('refresh') }} {{ "installation.action.refresh"|trans }}
-                </a>
-                <a id="continue_step" href="{{ path('_install_config') }}" class="btn btn-success{% if requirements.failedRequirements|length > 0 %} disabled{% endif %}">
-                    {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
-                </a>
             </div>
         </div>
     </div>

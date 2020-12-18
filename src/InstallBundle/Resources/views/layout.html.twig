@@ -9,6 +9,15 @@
 
 {% extends '@SolidInvoiceCore/Layout/default_no_nav.html.twig' %}
 
+{% block heading %}
+    {% set title = block('title') is defined ? block('title') %}
+
+    {% if title is not empty %}
+        <h1>{{ block('title') }}</h1>
+        <hr />
+    {% endif %}
+{% endblock %}
+
 {% block title %}
     {{ "installation.title"|trans({"%app_name%" : constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME')}) }}
 {% endblock title %}
