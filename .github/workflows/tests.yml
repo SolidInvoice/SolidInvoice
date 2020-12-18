@@ -161,7 +161,11 @@ jobs:
       - name: Disable local MySQL server
         run: sudo service mysql stop
 
-      - uses: nanasess/setup-chromedriver@1e17a06902b9926f1baa08758ba90769022fc205
+      - uses: nanasess/setup-chromedriver@master
+
+      - uses: actions/set-timezone-action@v1.1
+        with:
+          timezoneLinux: "Europe/Paris"
 
       - name: Checkout
         uses: actions/checkout@v2
