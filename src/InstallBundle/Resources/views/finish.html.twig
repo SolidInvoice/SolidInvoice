@@ -10,34 +10,42 @@
 {% extends '@SolidInvoiceInstall/layout.html.twig' %}
 
 {% block content %}
-    <div class="card card-primary">
-        <div class="card-header with-border">
-            <h3 class="card-title">
-                {{ "installation.finish.success"|trans }}
-            </h3>
-        </div>
-        <div class="card-body">
-            <h4>
-                {{ "installation.finish.success_message"|trans }}
-            </h4>
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">
+                        {{ "installation.finish.success"|trans }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <h4>
+                        {{ "installation.finish.success_message"|trans }}
+                    </h4>
 
-            <div>
-                <p>
-                    As a final step, you must add a scheduled task to run every 5 minutes.
-                </p>
-                <p>
-                    Add the following cron job:
-                    <br />
-                <pre style="color: #c7254e;">
-                    * * * * * php {{ binDir }}/console cron:run -e prod -n
-                </pre>
-                </p>
+                    <div>
+                        <div class="alert alert-info">
+                            As a final step, you must add a scheduled task to run every 5 minutes.
+                        </div>
+                        <p>
+                            Add the following cron job:
+                            <br />
+                        <pre style="color: #c7254e;">
+* * * * * php {{ binDir }}/console cron:run -e prod -n
+                        </pre>
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col offset-10" id="next_button">
+                            <a id="login" href="{{ path('_login') }}" class="btn-block btn btn-success">
+                                {{ icon('user') }} {{ "installation.finish.login"|trans }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <a id="login" href="{{ path('_login') }}" class="btn-lg btn btn-success">
-                {{ icon('user') }} {{ "installation.finish.login"|trans }}
-            </a>
         </div>
     </div>
 {% endblock %}

@@ -11,6 +11,7 @@ installation:
             company: 'Company Information'
             user: 'Admin User Information'
     action:
+        previous: Previous
         next: Next
         refresh: Refresh
         restart: Restart
@@ -36,6 +37,7 @@ installation:
             migrations: 'Creating database schema'
     config:
         title:
+            requirements_check: 'System Requirements Check'
             database_config: 'Database Config'
             email_settings: 'Email Settings'
     setup:
