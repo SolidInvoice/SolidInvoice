@@ -58,6 +58,8 @@ final class InvoiceCloner
 
         if ($invoice instanceof RecurringInvoice) {
             $newInvoice->setDateStart($invoice->getDateStart());
+            $newInvoice->setDateEnd($invoice->getDateEnd());
+            $newInvoice->setFrequency($invoice->getFrequency());
         }
 
         if (null !== $tax = $invoice->getTax()) {
