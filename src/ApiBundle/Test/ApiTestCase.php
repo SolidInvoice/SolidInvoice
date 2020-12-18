@@ -33,6 +33,8 @@ abstract class ApiTestCase extends PantherTestCase
 
     public static function setUpBeforeClass(): void
     {
+        StaticDriver::setKeepStaticConnections(false);
+
         parent::setUpBeforeClass();
 
         self::$client = static::createClient();
@@ -56,6 +58,8 @@ abstract class ApiTestCase extends PantherTestCase
         }
 
         self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
+
+        StaticDriver::setKeepStaticConnections(true);
     }
 
     protected function requestPost(string $uri, array $data, array $headers = []): array
