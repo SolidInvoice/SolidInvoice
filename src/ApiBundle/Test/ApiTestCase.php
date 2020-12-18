@@ -31,11 +31,13 @@ abstract class ApiTestCase extends PantherTestCase
      */
     protected static $client;
 
-    public static function setUpBeforeClass(): void
+    public function setUp(): void
     {
-        StaticDriver::setKeepStaticConnections(false);
+        parent::setUp();
 
-        parent::setUpBeforeClass();
+        if (self::$client) {
+            return;
+        }
 
         self::$client = static::createClient();
 
@@ -53,13 +55,12 @@ abstract class ApiTestCase extends PantherTestCase
 
         try {
             StaticDriver::commit(); // Save user api token
+            StaticDriver::beginTransaction();
         } catch (PDOException $e) {
             // noop
         }
 
         self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
-
-        StaticDriver::setKeepStaticConnections(true);
     }
 
     protected function requestPost(string $uri, array $data, array $headers = []): array
