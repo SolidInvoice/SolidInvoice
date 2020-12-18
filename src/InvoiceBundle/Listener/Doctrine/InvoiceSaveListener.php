@@ -18,7 +18,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class InvoiceSaveListener implements EventSubscriber
