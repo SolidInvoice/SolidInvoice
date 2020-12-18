@@ -31,11 +31,11 @@
 
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
-        <listener class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener"/>
     </listeners>
 
     <extensions>
         <extension class="Symfony\Component\Panther\ServerExtension"/>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
 
     <filter>
