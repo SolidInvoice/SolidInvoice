@@ -163,7 +163,8 @@ jobs:
 
       - uses: nanasess/setup-chromedriver@master
 
-      - uses: actions/set-timezone-action@v1.1
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.0
         with:
           timezoneLinux: "Europe/Paris"
 
