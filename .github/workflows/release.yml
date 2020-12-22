@@ -1,0 +1,98 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  SOLIDINVOICE_ENV: prod
+  SOLIDINVOICE_DEBUG: 0
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - uses: FranzDiebold/github-env-vars-action@v2
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+         path: solidinvoice
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
+          ini-values: memory_limit=-1
+          php-version: 7.4
+
+      - name: Install PHP dependencies
+        run: composer install --ansi --no-interaction --no-progress --no-suggest --prefer-dist --no-dev -o -a
+        working-directory: solidinvoice
+
+      - name: Set ENV Variables
+        run: |
+          echo SOLIDINVOICE_ENV=$SOLIDINVOICE_ENV > .env
+          echo SOLIDINVOICE_DEBUG=$SOLIDINVOICE_DEBUG >> .env
+        working-directory: solidinvoice
+
+      - name: Install JS dependencies
+        run: yarn install
+        working-directory: solidinvoice
+
+      - name: Build Assets
+        run: yarn build
+        working-directory: solidinvoice
+
+      - name: Cleanup files
+        run: rm -Rf node_modules vendor-bin .github .git
+        working-directory: solidinvoice
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ env.CI_REF_NAME }}
+          draft: true
+          body: TODO
+
+      - name: Create ZIP distribution
+        run: zip -r SolidInvoice-${{ env.CI_REF_NAME }}.zip ./
+
+      - name: List files
+        run: ls -la
+
+      - name: Upload ZIP distribution
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.zip
+            asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.zip
+            asset_content_type: application/zip
+
+      - name: Delete ZIP File
+        run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.zip
+
+      - name: Create TAR distribution
+        run: tar -zcvf SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz ./solidinvoice
+
+      - name: Upload TAR distribution
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
+            asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
+            asset_content_type: application/gzip
+
+      - name: Delete TAR File
+        run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
