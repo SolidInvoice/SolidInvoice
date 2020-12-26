@@ -13,11 +13,7 @@
     {% set title = block('title') is defined ? block('title') %}
 
     {% if title is not empty %}
-        <fieldset class="page-heading">
-            <legend>
-                <h3>{{ block('title') }}</h3>
-            </legend>
-        </fieldset>
+        <h3 class="page-header">{{ block('title') }}</h3>
     {% endif %}
 {% endblock %}
 
@@ -76,9 +72,11 @@
     </aside>
 
     <div class="content-wrapper">
-        <section class="content-header">
-            {{ block('heading') is defined ? block('heading') }}
-        </section>
+        {% if block('heading') is defined and block('heading')|trim is not empty %}
+            <section class="content-header">
+                {{  block('heading') }}
+            </section>
+        {% endif %}
 
         <section class="content">
 
