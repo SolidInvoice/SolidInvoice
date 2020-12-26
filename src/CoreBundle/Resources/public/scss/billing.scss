@@ -13,4 +13,29 @@
   .column-trash {
     width: 2%;
   }
+
+  .add-item-col {
+    border: 2px dotted #cccccc;
+    text-align: center;
+    padding: 6px 0;
+
+    .add-item {
+      display: block;
+      width: 100%;
+    }
+
+    &:hover {
+      background: #eeeeee;
+    }
+  }
+
+  .invoice-container {
+    border-right: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+
+    > .col {
+      padding: 0;
+    }
+  }
 }

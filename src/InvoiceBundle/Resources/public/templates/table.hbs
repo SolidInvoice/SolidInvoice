@@ -1,5 +1,5 @@
-<div class="row">
-    <div class="col-md-12">
+<div class="row invoice-container">
+    <div class="col">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><strong>{{trans 'invoice.summary' }}</strong></h3>
@@ -38,6 +38,10 @@
     </div>
 </div>
 
-<a href="#" class="add-item col-lg-2">
-    <i class="fas fa-plus-circle"></i> {{trans "invoice.item.add" }}
-</a>
+<div class="row">
+    <div class="col add-item-col">
+        <a href="#" class="add-item">
+            <i class="fas fa-plus-circle"></i> {{trans "invoice.item.add" }}
+        </a>
+    </div>
+</div>
