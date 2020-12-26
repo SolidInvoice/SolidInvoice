@@ -18,15 +18,13 @@
                 {% endfor %}
             </span> <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu">
-	    {% for type in contactTypes %}
-                <li>
-                    <a href="#" data-value="{{ type.id }}" data-type="{{ type.name }}">
-                        {{ type.name|title }}
-                    </a>
-                </li>
+        <div class="dropdown-menu" role="menu">
+	        {% for type in contactTypes %}
+                <a href="#" data-value="{{ type.id }}" data-type="{{ type.name }}" class="dropdown-item">
+                    {{ type.name|title }}
+                </a>
             {% endfor %}
-        </ul>
+        </div>
         {{ form_widget(form.type) }}
     </div>
     {{ form_widget(form.value) }}
