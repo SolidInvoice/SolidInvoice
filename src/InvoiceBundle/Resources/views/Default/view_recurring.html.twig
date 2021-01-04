@@ -22,24 +22,12 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <div class="float-right no-print">
+    <div class="float-right no-print mt-3">
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group mr-2" role="group">
                 <a href="{{ path('_invoices_clone_recurring', {'id' : invoice.id}) }}" class="btn btn-secondary">
                     {{ icon('clone') }} {{ "invoice.view.toolbar.clone"|trans }}
                 </a>
-
-                {#{% if invoice.status not in ['cancelled'] %}
-                    <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">
-                        {{ icon('envelope-o') }} {{ "invoice.view.toolbar.send"|trans }}
-                    </a>
-                {% endif %}#}
-
-                {#{% if workflow_can(invoice, 'reopen') %}
-                    <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-secondary">
-                        {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
-                    </a>
-                {% endif %}#}
 
                 {% if workflow_can(invoice, 'cancel') %}
                     <a href="{{ path('_action_recurring_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}"

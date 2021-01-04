@@ -10,10 +10,10 @@
 {% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
 
 {% block heading %}
-    {% set title = block('title') is defined ? block('title') %}
-
-    {% if title is not empty %}
-        <h3 class="page-header">{{ block('title') }}</h3>
+    {% if block('title') is defined and block('title') is not empty %}
+        <h3 class="page-header">
+            {{ block('title') }}
+        </h3>
     {% endif %}
 {% endblock %}
 
@@ -79,7 +79,6 @@
         {% endif %}
 
         <section class="content">
-
             {% include "@SolidInvoiceCore/flash.html.twig" %}
 
             {{ block('content') is defined ? block('content') }}
