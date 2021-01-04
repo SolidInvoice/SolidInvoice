@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\CronType;
@@ -81,13 +82,14 @@ class RecurringInvoiceType extends AbstractType
 
         $builder->add('frequency', CronType::class);
 
-        $now = Carbon::now();
+        $now = CarbonImmutable::now();
 
         $builder->add(
             'date_start',
             DateType::class,
             [
                 'widget' => 'single_text',
+                'input' => 'datetime_immutable',
                 'data' => $now,
                 'label' => 'invoice.recurring.date_start',
                 'attr' => [

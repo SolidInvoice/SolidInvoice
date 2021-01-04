@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Cron;
 
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Cron\CronExpression;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
@@ -86,17 +87,16 @@ class RecurringInvoiceCreate implements CommandInterface
                 $this->setItemsDescription($newInvoice);
                 $this->invoiceManager->create($newInvoice);
 
-                $this->entityManager->persist($invoice);
-                $this->entityManager->flush();
-
                 $this->stateMachine->apply($newInvoice, Graph::TRANSITION_ACCEPT);
             }
         }
+
+        $this->entityManager->flush();
     }
 
     private function setItemsDescription(BaseInvoice $invoice): void
     {
-        $now = Carbon::now();
+        $now = CarbonImmutable::now();
 
         /** @var Item $item */
         foreach ($invoice->getItems() as $item) {

@@ -51,7 +51,13 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block page_title %}{{ (recurring ? "invoice.action.create_recurring" : "invoice.action.create")|trans }}{% endblock %}
+{% block title %}
+    {% if invoice is defined %}
+        {{ 'invoice.title'|trans({'%id%' : invoice.id}) }}
+    {% else %}
+        {{ (recurring ? "invoice.action.create_recurring" : "invoice.action.create")|trans }}
+    {% endif %}
+{% endblock %}
 
 {% block sidebar %}
     {{ menu('invoices_create') }}
@@ -72,13 +78,6 @@
 
     {{ form_errors(form) }}
 
-    <h3 class="page-header">
-        {% if invoice is defined %}
-            {{ 'invoice.title'|trans({'%id%' : invoice.id}) }}
-        {% else %}
-            {{ block('page_title') }}
-        {% endif %}
-    </h3>
     <div class="row">
         <div class="col-{{ recurring ? '9' : '12' }}">
             <div class="card" id="invoice-create">
