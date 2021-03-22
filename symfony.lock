@@ -1,4 +1,7 @@
 {
+    "alcohol/iso4217": {
+        "version": "3.1.5"
+    },
     "api-platform/core": {
         "version": "2.5",
         "recipe": {
@@ -155,6 +158,9 @@
     "fp/klarna-invoice": {
         "version": "0.1.2"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.3"
+    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
         "recipe": {
@@ -202,6 +208,15 @@
     },
     "knplabs/knp-menu-bundle": {
         "version": "v2.3.0"
+    },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.2.0"
     },
     "league/uri": {
         "version": "5.3.0"
@@ -271,6 +286,9 @@
     },
     "pagerfanta/pagerfanta": {
         "version": "v2.4.1"
+    },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.4.0"
     },
     "paragonie/random_compat": {
         "version": "v9.99.99"
@@ -349,6 +367,9 @@
     },
     "phpstan/extension-installer": {
         "version": "1.0.5"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "0.4.14"
     },
     "phpstan/phpstan": {
         "version": "0.12.47"
