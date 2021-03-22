@@ -48,7 +48,7 @@
 
 
 {%- block content -%}
-    {% filter inky %}
+    {% apply inky %}
         {{ 'quote.info'|trans({'%company%': setting('system/company/company_name'), '%created%': quote.created|date}, 'email') }}
 
         <table class="spacer">
@@ -119,5 +119,5 @@
                 </columns>
             {% endif %}
         </row>
-    {% endfilter %}
+    {% endapply %}
 {%- endblock -%}

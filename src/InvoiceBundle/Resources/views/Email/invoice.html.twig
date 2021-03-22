@@ -67,7 +67,7 @@
 
 
 {%- block content -%}
-    {% filter inky %}
+    {% apply inky %}
         {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
 
         <table class="spacer">
@@ -185,5 +185,5 @@
                 </tr>
             </table>
         {% endif %}
-    {% endfilter %}
+    {% endapply %}
 {%- endblock -%}
