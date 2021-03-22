@@ -6,136 +6,134 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% spaceless %}
-    {% filter inline_css(source("@SolidInvoiceCore/Email/foundation.css.twig")) %}
-        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml">
-        <head>
-            <meta charset="UTF-8"/>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-            <meta name="viewport" content="width=device-width"/>
-            <title>{{- block('title') is defined ? block('title') -}}</title>
-            <style type="text/css">html{min-height: 100%;background: #f3f3f3;}</style>
-            {{- block('head_extra') is defined ? block('head_extra') -}}
-        </head>
+{% apply inline_css(source("@SolidInvoiceCore/Email/foundation.css.twig")) %}
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width"/>
+        <title>{{- block('title') is defined ? block('title') -}}</title>
+        <style type="text/css">html{min-height: 100%;background: #f3f3f3;}</style>
+        {{- block('head_extra') is defined ? block('head_extra') -}}
+    </head>
 
-        <body>
-        {{- block('header') is defined ? block('header') -}}
-        <table class="body">
-            <tr>
-                <td class="float-center" align="center" valign="top">
-                    <center data-parsed="">
-                        <table class="spacer float-center">
-                            <tbody>
-                            <tr>
-                                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table align="center" class="container header float-center">
-                            <tbody>
-                            <tr>
-                                <td class="pad">
-                                    {% filter inky %}
-                                        <row>
-                                            <columns large="6" style="padding:16px">{{- app_logo() -}}</columns>
-                                            <columns large="6" style="padding:16px;">
-                                                <p class="text-right" style="font-size: 24px; font-weight: bold">
-                                                    {{- setting('system/company/company_name') -}}
-                                                </p>
-                                            </columns>
-                                        </row>
-                                    {% endfilter %}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table align="center" class="container body-drip float-center">
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <table class="spacer">
-                                        <tbody>
-                                        <tr>
-                                            <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <table class="row">
-                                        <tbody>
-                                        <tr>
-                                            <th class="small-12 large-12 columns first last">
-                                                <table>
-                                                    <tr>
-                                                        <th>
-                                                            <h4 class="text-center">
-                                                                {{- block('title') is defined ? block('title') -}}
-                                                            </h4>
-                                                        </th>
-                                                        <th class="expander"></th>
-                                                    </tr>
-                                                </table>
-                                            </th>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <hr>
-                                    <table class="row">
-                                        <tbody>
-                                        <tr>
-                                            <th class="small-12 large-12 columns first last">
-                                                <table>
-                                                    <tr>
-                                                        <th>
-                                                            <p>
-                                                                {{- block('content') is defined ? block('content') -}}
-                                                            </p>
+    <body>
+    {{- block('header') is defined ? block('header') -}}
+    <table class="body">
+        <tr>
+            <td class="float-center" align="center" valign="top">
+                <center data-parsed="">
+                    <table class="spacer float-center">
+                        <tbody>
+                        <tr>
+                            <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table align="center" class="container header float-center">
+                        <tbody>
+                        <tr>
+                            <td class="pad">
+                                {% apply inky %}
+                                    <row>
+                                        <columns large="6" style="padding:16px">{{- app_logo() -}}</columns>
+                                        <columns large="6" style="padding:16px;">
+                                            <p class="text-right" style="font-size: 24px; font-weight: bold">
+                                                {{- setting('system/company/company_name') -}}
+                                            </p>
+                                        </columns>
+                                    </row>
+                                {% endapply %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table align="center" class="container body-drip float-center">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <table class="spacer">
+                                    <tbody>
+                                    <tr>
+                                        <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="row">
+                                    <tbody>
+                                    <tr>
+                                        <th class="small-12 large-12 columns first last">
+                                            <table>
+                                                <tr>
+                                                    <th>
+                                                        <h4 class="text-center">
+                                                            {{- block('title') is defined ? block('title') -}}
+                                                        </h4>
+                                                    </th>
+                                                    <th class="expander"></th>
+                                                </tr>
+                                            </table>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <table class="row">
+                                    <tbody>
+                                    <tr>
+                                        <th class="small-12 large-12 columns first last">
+                                            <table>
+                                                <tr>
+                                                    <th>
+                                                        <p>
+                                                            {{- block('content') is defined ? block('content') -}}
+                                                        </p>
 
-                                                        </th>
-                                                        <th class="expander"></th>
-                                                    </tr>
-                                                </table>
-                                            </th>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <table class="row collapsed footer">
-                                        <tbody>
-                                        <tr>
-                                            <th class="small-12 large-12 columns first last">
-                                                <table>
-                                                    <tr>
-                                                        <th>
-                                                            {% set footer = block('footer') is defined ? block('footer') %}
-                                                            {% if footer %}
-                                                                <center data-parsed="">
-                                                                    {{- footer|raw -}}
-                                                                </center>
-                                                            {% endif %}
-                                                        </th>
-                                                        <th class="expander"></th>
-                                                    </tr>
-                                                </table>
-                                            </th>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <table class="spacer">
-                                        <tbody>
-                                        <tr>
-                                            <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </center>
-                </td>
-            </tr>
-        </table>
-        </body>
-        </html>
-    {% endfilter %}
-{% endspaceless %}
+                                                    </th>
+                                                    <th class="expander"></th>
+                                                </tr>
+                                            </table>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="row collapsed footer">
+                                    <tbody>
+                                    <tr>
+                                        <th class="small-12 large-12 columns first last">
+                                            <table>
+                                                <tr>
+                                                    <th>
+                                                        {% set footer = block('footer') is defined ? block('footer') %}
+                                                        {% if footer %}
+                                                            <center data-parsed="">
+                                                                {{- footer|raw -}}
+                                                            </center>
+                                                        {% endif %}
+                                                    </th>
+                                                    <th class="expander"></th>
+                                                </tr>
+                                            </table>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="spacer">
+                                    <tbody>
+                                    <tr>
+                                        <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </center>
+            </td>
+        </tr>
+    </table>
+    </body>
+    </html>
+{% endapply %

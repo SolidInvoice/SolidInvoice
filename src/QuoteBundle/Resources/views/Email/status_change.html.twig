@@ -14,7 +14,7 @@
 {%- endblock -%}
 
 {%- block content -%}
-    {% filter inky %}
+    {% apply inky %}
         <row>
             <columns><strong>{{ 'quote.status_change.id'|trans({}, 'email') }}</strong></columns>
             <columns><a href="{{ url('_quotes_view', {'id' : quote.id}) }}">{{ quote.id }}</a></columns>
@@ -39,5 +39,5 @@
                 </tr>
             </table>
         </center>
-    {% endfilter %}
+    {% endapply %}
 {%- endblock -%}

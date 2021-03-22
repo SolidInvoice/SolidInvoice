@@ -14,7 +14,7 @@
 {%- endblock -%}
 
 {%- block content -%}
-    {% filter inky %}
+    {% apply inky %}
         {% if payment.invoice is not empty %}
             <row>
                 <columns><strong>{{ 'payment.details.invoice'|trans({}, 'email') }}</strong></columns>
@@ -51,5 +51,5 @@
             <columns>{{ payment_label(payment.status) }}</columns>
         </row>
 
-    {% endfilter %}
+    {% endapply %}
 {%- endblock -%}
