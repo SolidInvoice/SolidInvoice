@@ -117,7 +117,7 @@ jqCronDefaultSettings.texts.en = {
         return this.each(function() {
             var cron, saved;
             var $this = $(this);
-            var settings = jqCronMergeSettings(saved_settings); // clone settings
+            let settings = jqCronMergeSettings(saved_settings); // clone settings
             var translations = settings.texts[settings.lang];
 
             if ('object' !== typeof(translations) || $.isEmptyObject(translations)) {
@@ -389,7 +389,7 @@ jqCronDefaultSettings.texts.en = {
 
         // init (called in constructor)
         this.init = function(){
-            var n,i,list;
+            var i,list,labelsList;
             if(_initialized) return;
 
             settings = jqCronMergeSettings(settings);

@@ -8,7 +8,6 @@
  */
 
 import Backgrid from 'backgrid';
-import Backbone from 'backbone';
 import { forEach, isUndefined } from 'lodash';
 import Template from '../../templates/invoice_link.hbs';
 import Cron from 'SolidInvoiceCore/js/util/form/cron';

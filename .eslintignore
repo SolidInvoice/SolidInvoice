@@ -1,2 +1,3 @@
 /web/bundles/**
 router.min.js
+src/CoreBundle/Resources/public/js/lib/jquery/jqcron.js
