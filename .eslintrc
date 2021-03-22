@@ -12,7 +12,8 @@
     "plugins": [
         "backbone",
         "no-jquery",
-        "lodash"
+        "lodash",
+        "jest"
     ],
     "extends": [
         "eslint:recommended",
@@ -21,6 +22,7 @@
         "plugin:no-jquery/deprecated-3.5"
     ],
     "rules": {
+        "lodash/prefer-lodash-method": "off",
         "no-else-return": "error",
         "no-extra-bind": "error",
         "no-lone-blocks": "error",

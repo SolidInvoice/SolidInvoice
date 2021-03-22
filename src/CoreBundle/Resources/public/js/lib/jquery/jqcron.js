@@ -89,7 +89,7 @@ jqCronDefaultSettings.texts.en = {
             if($.isPlainObject(src[i])) {
                 dst[i] = extend(dst[i] && $.isPlainObject(dst[i]) ? dst[i] : {}, src[i]);
             }
-            else if($.isArray(src[i])) {
+            else if(Array.isArray(src[i])) {
                 dst[i] = src[i].slice(0);
             }
             else if(src[i] !== undefined) {
@@ -120,7 +120,7 @@ jqCronDefaultSettings.texts.en = {
             var settings = jqCronMergeSettings(saved_settings); // clone settings
             var translations = settings.texts[settings.lang];
 
-            if (typeof(translations) !== 'object' || $.isEmptyObject(translations)) {
+            if ('object' !== typeof(translations) || $.isEmptyObject(translations)) {
                 console && console.error(
                     'Missing translations for language "' + settings.lang + '". ' +
                     'Please include jqCron.' + settings.lang + '.js or manually provide ' +
@@ -135,7 +135,7 @@ jqCronDefaultSettings.texts.en = {
                 }
                 else if($this.is(':autoclose')) {
                     // delete already generated dom if exists
-                    if($this.next('.jqCron').length == 1) {
+                    if(1 == $this.next('.jqCron').length) {
                         $this.next('.jqCron').remove();
                     }
                     // generate new
@@ -241,7 +241,7 @@ jqCronDefaultSettings.texts.en = {
 
         // return if the selector is disabled
         this.isDisabled = function() {
-            return settings.disabled == true;
+            return true == settings.disabled;
         };
 
         // enable the selector
@@ -254,20 +254,20 @@ jqCronDefaultSettings.texts.en = {
         this.getCron = function(){
             var period = _selectorPeriod.getValue();
             var items = ['*', '*', '*', '*', '*'];
-            if(period == 'hour') {
+            if('hour' == period) {
                 items[0] = _selectorMins.getCronValue();
             }
-            if(period == 'day' || period == 'week' || period == 'month' || period == 'year') {
+            if('day' == period || 'week' == period || 'month' == period || 'year' == period) {
                 items[0] = _selectorTimeM.getCronValue();
                 items[1] = _selectorTimeH.getCronValue();
             }
-            if(period == 'month' || period == 'year') {
+            if('month' == period || 'year' == period) {
                 items[2] = _selectorDom.getCronValue();
             }
-            if(period == 'year') {
+            if('year' == period) {
                 items[3] = _selectorMonth.getCronValue();
             }
-            if(period == 'week') {
+            if('week' == period) {
                 items[4] = _selectorDow.getCronValue();
             }
             return items.join(' ');
@@ -280,36 +280,36 @@ jqCronDefaultSettings.texts.en = {
                 str = str.replace(/\s+/g, ' ').replace(/^ +/, '').replace(/ +$/, ''); // sanitize
                 var mask = str.replace(/\*\//g, '').replace(/[^\* ]/g, '-').replace(/-+/g, '-').replace(/ +/g, '');
                 var items = str.split(' ');
-                if (items.length != 5) _self.error(_self.getText('error2'));
-                if(mask == '*****') {						// 1 possibility
+                if (5 != items.length) _self.error(_self.getText('error2'));
+                if('*****' == mask) {						// 1 possibility
                     _selectorPeriod.setValue('minute');
                 }
-                else if(mask == '-****') {					// 1 possibility
+                else if('-****' == mask) {					// 1 possibility
                     _selectorPeriod.setValue('hour');
                     _selectorMins.setCronValue(items[0]);
                     _selectorTimeM.setCronValue(items[0]);
                 }
-                else if(mask.substring(2, mask.length) == '***') {			// 4 possibilities
+                else if('***' == mask.substring(2, mask.length)) {			// 4 possibilities
                     _selectorPeriod.setValue('day');
                     _selectorMins.setCronValue(items[0]);
                     _selectorTimeM.setCronValue(items[0]);
                     _selectorTimeH.setCronValue(items[1]);
                 }
-                else if(mask.substring(2, mask.length) == '-**') {			// 4 possibilities
+                else if('-**' == mask.substring(2, mask.length)) {			// 4 possibilities
                     _selectorPeriod.setValue('month');
                     _selectorMins.setCronValue(items[0]);
                     _selectorTimeM.setCronValue(items[0]);
                     _selectorTimeH.setCronValue(items[1]);
                     _selectorDom.setCronValue(items[2]);
                 }
-                else if(mask.substring(2, mask.length) == '**-') {			// 4 possibilities
+                else if('**-' == mask.substring(2, mask.length)) {			// 4 possibilities
                     _selectorPeriod.setValue('week');
                     _selectorMins.setCronValue(items[0]);
                     _selectorTimeM.setCronValue(items[0]);
                     _selectorTimeH.setCronValue(items[1]);
                     _selectorDow.setCronValue(items[4]);
                 }
-                else if (mask.substring(3, mask.length) == '-*') {			// 8 possibilities
+                else if ('-*' == mask.substring(3, mask.length)) {			// 8 possibilities
                     _selectorPeriod.setValue('year');
                     _selectorMins.setCronValue(items[0]);
                     _selectorTimeM.setCronValue(items[0]);
@@ -339,7 +339,7 @@ jqCronDefaultSettings.texts.en = {
         // get the translated text
         this.getText = function(key) {
             var text = settings.texts[settings.lang][key] || null;
-            if(typeof(text) == "string" && text.match('<b')){
+            if('string' == typeof(text) && text.match('<b')){
                 text = text.replace(/(<b *\/>)/gi, '</span><b /><span class="jqCron-text">');
                 text = '<span class="jqCron-text">' + text + '</span>';
             }
@@ -450,21 +450,21 @@ jqCronDefaultSettings.texts.en = {
                 _$blockMINS.hide();
                 _$blockDOW.hide();
                 _$blockTIME.hide();
-                if(value == 'hour') {
+                if('hour' == value) {
                     _$blockMINS.show();
                 }
-                else if(value == 'day') {
+                else if('day' == value) {
                     _$blockTIME.show();
                 }
-                else if(value == 'week') {
+                else if('week' == value) {
                     _$blockDOW.show();
                     _$blockTIME.show();
                 }
-                else if(value == 'month') {
+                else if('month' == value) {
                     _$blockDOM.show();
                     _$blockTIME.show();
                 }
-                else if(value == 'year') {
+                else if('year' == value) {
                     _$blockDOM.show();
                     _$blockMONTH.show();
                     _$blockTIME.show();
@@ -512,7 +512,7 @@ jqCronDefaultSettings.texts.en = {
             }
 
             // close all selectors when we click in body
-            $('body').click(function(){
+            $('body').on('click', function(){
                 var i, n = _selectors.length;
                 for(i = 0; i < n; i++){
                     _selectors[i].close();
@@ -592,7 +592,7 @@ jqCronDefaultSettings.texts.en = {
             if (multiple) {
                 var lastMultiple = 0;
                 for (var i = 0; i < total; i++) {
-                    if (i % multiple !== 0) continue;
+                    if (0 !== i % multiple) continue;
                     lastMultiple = i;
                 }
                 return (lastMultiple / multiple) + 1
@@ -620,7 +620,7 @@ jqCronDefaultSettings.texts.en = {
 
         // get a correct string for cron
         this.getCronValue = function(){
-            if(_value.length == 0) return '*';
+            if(0 == _value.length) return '*';
             var cron = [_value[0]], i, s = _value[0], c = _value[0], n = _value.length;
             for(var i=1; i<n; i++) {
                 if(_value[i] == c+1) {
@@ -633,8 +633,8 @@ jqCronDefaultSettings.texts.en = {
                 }
             }
 
-            if (cron.length > 1) {
-                var multiple = cron[0] === 0 ? cron[1] : cron[0];
+            if (1 < cron.length) {
+                var multiple = 0 === cron[0] ? cron[1] : cron[0];
                 var total = this.getTotalItem(multiple);
 
                 if (total === cron.length) {
@@ -643,7 +643,7 @@ jqCronDefaultSettings.texts.en = {
 
                     for(var i=1; i<cron.length; i++) {
                         counter += multiple;
-                        if (cron[i] % multiple !== 0 || multiple*i !== counter) {
+                        if (0 !== cron[i] % multiple || multiple*i !== counter) {
                             valid = false;
                             break;
                         }
@@ -662,12 +662,12 @@ jqCronDefaultSettings.texts.en = {
         // set the cron value
         this.setCronValue = function(str) {
             var values = [], m ,i, n;
-            if(str !== '*') {
-                while(str != '') {
+            if('*' !== str) {
+                while('' != str) {
                     // test "*/n" expression
                     m = str.match(/^\*\/([0-9]+),?/);
-                    if(m && m.length == 2) {
-                        for(i=0; i<=59; i+=(m[1]|0)) {
+                    if(m && 2 == m.length) {
+                        for(i=0; 59>=i; i+=(m[1]|0)) {
                             values.push(i);
                         }
                         str = str.replace(m[0], '');
@@ -675,7 +675,7 @@ jqCronDefaultSettings.texts.en = {
                     }
                     // test "a-b/n" expression
                     m = str.match(/^([0-9]+)-([0-9]+)\/([0-9]+),?/);
-                    if(m && m.length == 4) {
+                    if(m && 4 == m.length) {
                         for(i=(m[1]|0); i<=(m[2]|0); i+=(m[3]|0)) {
                             values.push(i);
                         }
@@ -684,7 +684,7 @@ jqCronDefaultSettings.texts.en = {
                     }
                     // test "a-b" expression
                     m = str.match(/^([0-9]+)-([0-9]+),?/);
-                    if(m && m.length == 3) {
+                    if(m && 3 == m.length) {
                         for(i=(m[1]|0); i<=(m[2]|0); i++) {
                             values.push(i);
                         }
@@ -693,7 +693,7 @@ jqCronDefaultSettings.texts.en = {
                     }
                     // test "c" expression
                     m = str.match(/^([0-9]+),?/);
-                    if(m && m.length == 2) {
+                    if(m && 2 == m.length) {
                         values.push(m[1]|0);
                         str = str.replace(m[0], '');
                         continue;
@@ -746,14 +746,14 @@ jqCronDefaultSettings.texts.en = {
         // set the selected value(s) of the list
         this.setValue = function(keys){
             var i, newKeys = [], saved = _value.join(' ');
-            if(!$.isArray(keys)) keys = [keys];
+            if(!Array.isArray(keys)) keys = [keys];
             _$list.find('li').removeClass('selected');
             keys = array_unique(keys);
             keys.sort(function(a, b){
                 var ta = typeof(a);
                 var tb = typeof(b);
-                if(ta==tb && ta=="number") return a-b;
-                else return String(a) == String(b) ? 0 : (String(a) < String(b) ? -1 : 1);
+                if(ta==tb && 'number'==ta) return a-b;
+                return String(a) == String(b) ? 0 : (String(a) < String(b) ? -1 : 1);
             });
 
             if(_multiple) {
@@ -785,7 +785,7 @@ jqCronDefaultSettings.texts.en = {
                 return (key in _values) ? _values[key].text() : key;
             };
 
-            if(_value.length == 0) {
+            if(0 == _value.length) {
                 return _cron.getText('empty_' + _type) || _cron.getText('empty');
             }
             var cron = [getValueText(_value[0])], i, s = _value[0], c = _value[0], n = _value.length;
@@ -800,8 +800,8 @@ jqCronDefaultSettings.texts.en = {
                 }
             }
 
-            if (cron.length > 1) {
-                var multiple = cron[0] === "0" ? +cron[1] : +cron[0];
+            if (1 < cron.length) {
+                var multiple = '0' === cron[0] ? +cron[1] : +cron[0];
                 var total = this.getTotalItem(multiple);
                 console && console.log(_type, total, cron.length, _self.multipleOf);
 
@@ -811,7 +811,7 @@ jqCronDefaultSettings.texts.en = {
 
                     for(i=1; i<cron.length; i++) {
                         counter += multiple;
-                        if (+cron[i] % multiple !== 0 || multiple*i !== counter) {
+                        if (0 !== +cron[i] % multiple || multiple*i !== counter) {
                             valid = false;
                             break;
                         }
@@ -836,7 +836,7 @@ jqCronDefaultSettings.texts.en = {
         // add a (key, value) pair
         this.add = function(key, value) {
             if(!(value+'').match(/^[0-9]+$/)) _hasNumericTexts = false;
-            if(_numeric_zero_pad && _hasNumericTexts && value < 10) {
+            if(_numeric_zero_pad && _hasNumericTexts && 10 > value) {
                 value = '0'+value;
             }
             var $item = $('<li>' + value + '</li>');
@@ -846,10 +846,10 @@ jqCronDefaultSettings.texts.en = {
             var DELAY = 200, clicks = 0, timer = null;
             var total = this.getTotalItem();
             var startAt = this.itemStartAt();
-            $item.click(function(e) {
+            $item.on('click', function(e) {
                 clicks++;
                 var $this = $(this);
-                if(clicks === 1) {
+                if(1 === clicks) {
                     // SINGLE CLICK
                     timer = setTimeout(function() {
                         if(_multiple && $this.hasClass('selected')) {
@@ -868,7 +868,7 @@ jqCronDefaultSettings.texts.en = {
                     for (var i = startAt; i < total; i++) {
 
                         _self.removeValue(i);
-                        if (i % multiple === 0 && _self.multipleOf !== multiple) {
+                        if (0 === i % multiple && _self.multipleOf !== multiple) {
                             itemValues.push(i);
                         }
                     }
@@ -885,7 +885,7 @@ jqCronDefaultSettings.texts.en = {
                     clearTimeout(timer);	//prevent single-click action
                     clicks = 0;			 //after action performed, reset counter
                 }
-            }).dblclick(function(e) {
+            }).on('dblclick', function(e) {
                 e.preventDefault();
             });
         };
@@ -902,10 +902,10 @@ jqCronDefaultSettings.texts.en = {
             .bind('selector:open', function(){
                 if(_hasNumericTexts) {
                     var nbcols = 1, n = _$list.find('li').length;
-                    if(n > 5 && n <= 16) nbcols = 2;
-                    else if(n > 16 && n <= 23) nbcols = 3;
-                    else if(n > 23 && n <= 40) nbcols = 4;
-                    else if(n > 40) nbcols = 5;
+                    if(5 < n && 16 >= n) nbcols = 2;
+                    else if(16 < n && 23 >= n) nbcols = 3;
+                    else if(23 < n && 40 >= n) nbcols = 4;
+                    else if(40 < n) nbcols = 5;
                     _$list.addClass('cols'+nbcols);
                 }
                 _$list.show();
