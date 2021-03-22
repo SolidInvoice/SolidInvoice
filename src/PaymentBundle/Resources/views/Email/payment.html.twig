@@ -14,7 +14,7 @@
 {%- endblock -%}
 
 {%- block content -%}
-    {% apply inky %}
+    {% apply inky_to_html %}
         {% if payment.invoice is not empty %}
             <row>
                 <columns><strong>{{ 'payment.details.invoice'|trans({}, 'email') }}</strong></columns>

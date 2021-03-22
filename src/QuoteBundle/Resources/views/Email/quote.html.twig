@@ -48,7 +48,7 @@
 
 
 {%- block content -%}
-    {% apply inky %}
+    {% apply inky_to_html %}
         {{ 'quote.info'|trans({'%company%': setting('system/company/company_name'), '%created%': quote.created|date}, 'email') }}
 
         <table class="spacer">

@@ -14,7 +14,7 @@
 {%- endblock -%}
 
 {%- block content -%}
-    {% apply inky %}
+    {% apply inky_to_html %}
         <row>
             <columns><strong>{{ 'invoice.status_change.id'|trans({}, 'email') }}</strong></columns>
             <columns><a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">{{ invoice.id }}</a></columns>

@@ -67,7 +67,7 @@
 
 
 {%- block content -%}
-    {% apply inky %}
+    {% apply inky_to_html %}
         {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
 
         <table class="spacer">
