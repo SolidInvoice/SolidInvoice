@@ -18,7 +18,8 @@
     "scripts": {
         "dev": "encore dev",
         "dev-server": "encore dev-server --https --disable-host-check",
-        "build": "encore production"
+        "build": "encore production",
+        "lint": "eslint src"
     },
     "devDependencies": {
         "@babel/cli": "^7.4.3",
@@ -28,9 +29,10 @@
         "@symfony/webpack-encore": "^0.28.0",
         "babel-eslint": "^10.0.1",
         "babel-loader": "^8.0.6",
-        "eslint": "^6.6.0",
+        "eslint": "^7.22.0",
         "eslint-loader": "^2.1.2",
         "eslint-plugin-backbone": "^2.1.1",
+        "eslint-plugin-jest": "^24.3.2",
         "eslint-plugin-lodash": "^6.0.0",
         "eslint-plugin-no-jquery": "^2.4.1",
         "handlebars-loader": "^1.7.1",
