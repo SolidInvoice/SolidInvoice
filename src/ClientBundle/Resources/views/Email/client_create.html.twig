@@ -15,7 +15,7 @@
 
 {%- block content -%}
 
-    {% apply inky %}
+    {% apply inky_to_html %}
         <row>
             <columns large="6"><strong>{{ 'client.create.details.name'|trans({}, 'email') }}</strong></columns>
             <columns large="6" class="text-right">{{ client.name }}</columns>

@@ -14,7 +14,7 @@
 {%- endblock -%}
 
 {%- block content -%}
-    {% apply inky %}
+    {% apply inky_to_html %}
         <row>
             <columns><strong>{{ 'quote.status_change.id'|trans({}, 'email') }}</strong></columns>
             <columns><a href="{{ url('_quotes_view', {'id' : quote.id}) }}">{{ quote.id }}</a></columns>
