@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
