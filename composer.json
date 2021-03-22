@@ -108,7 +108,6 @@
         "symfony/yaml": "^4.4",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "twig/cssinliner-extra": "^3.3",
-        "twig/extensions": "^1.5",
         "twig/extra-bundle": "^3.3",
         "twig/inky-extra": "^3.3",
         "twig/markdown-extra": "^3.3",

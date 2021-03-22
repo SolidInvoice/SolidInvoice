@@ -17,5 +17,3 @@ services:
 
     SolidInvoice\CoreBundle\Twig\Extension\StatusExtension: ~
     SolidInvoice\CoreBundle\Twig\Extension\SerializerExtension: ~
-    Twig_Extensions_Extension_Text:
-        class: Twig_Extensions_Extension_Text
