@@ -7,13 +7,17 @@
     "root": true,
     "env": {
         "browser": true,
-        "node": true
+        "node": true,
+        "mocha": true,
+        "jest": true,
+        "jasmine": true
     },
     "plugins": [
         "backbone",
         "no-jquery",
         "lodash",
-        "jest"
+        "jest",
+        "jasmine"
     ],
     "extends": [
         "eslint:recommended",
@@ -36,6 +40,7 @@
         "no-use-before-define": "error",
         "quotes": ["error", "single"],
         "lodash/import-scope": [2, "member"],
-        "no-jquery/variable-pattern": "error",
+        "backbone/no-collection-models": "off",
+        "no-jquery/variable-pattern": "error"
     }
 }

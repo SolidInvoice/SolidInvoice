@@ -4381,6 +4381,11 @@ eslint-plugin-backbone@^2.1.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-backbone/-/eslint-plugin-backbone-2.1.1.tgz#2188a3fb2cefdfd57ec5eb898eb3928bae428f73"
   integrity sha1-IYij+yzv39V+xeuJjrOSi65Cj3M=
 
+eslint-plugin-jasmine@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jasmine/-/eslint-plugin-jasmine-4.1.2.tgz#50cc20d603b02b37727f8d174d4b83b9b8ef25a5"
+  integrity sha512-Jr52EBi6Ql5WVDvRCKBID9kRD6/CaObvCWmgHpqobczX2Mzt8/QMu9vpgx6q/O5jyQ9CIGrKaEbPuEfHRf8guw==
+
 eslint-plugin-lodash@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-lodash/-/eslint-plugin-lodash-6.0.0.tgz#70fa487ab632e62627ecf01ad3e85c228e3ab9d3"

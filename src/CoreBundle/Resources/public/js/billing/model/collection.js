@@ -1,22 +1,22 @@
 import Backbone from 'backbone';
-import { forEach, isEmpty, isUndefined, toLower } from 'lodash';
+import { isEmpty, isUndefined, toLower, forEach } from 'lodash';
 import RowModel from 'SolidInvoiceCore/js/billing/model/row_model';
 
 export default Backbone.Collection.extend({
-    footerModel: null,
-    discountModel: null,
-    model: RowModel,
     async initialize (models, options) {
         this.footerModel = options.footerModel;
         this.discountModel = options.discountModel;
         this.listenTo(this, 'change reset add remove', await this.updateTotals);
     },
+    footerModel: null,
+    discountModel: null,
+    model: RowModel,
     async updateTotals () {
         let total = 0,
             tax = 0,
             subTotal = 0;
 
-        forEach(this.models, (model) => {
+        forEach(this.models,(model) => {
             let rowTotal = model.get('total'),
                 rowTax = model.get('tax');
 
