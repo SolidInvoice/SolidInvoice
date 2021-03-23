@@ -25,7 +25,7 @@
         "@babel/core": "^7.4.3",
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
         "@babel/preset-env": "^7.4.3",
-        "@symfony/webpack-encore": "^0.28.0",
+        "@symfony/webpack-encore": "^1.1.2",
         "babel-eslint": "^10.0.1",
         "babel-loader": "^8.0.6",
         "eslint": "^6.6.0",
