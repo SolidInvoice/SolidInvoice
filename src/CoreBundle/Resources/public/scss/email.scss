@@ -9,8 +9,9 @@
 @import "~bootstrap/scss/badge";
 
 @import "~admin-lte/build/scss/variables";
+@import "~admin-lte/build/scss/variables-alt";
 @import "~admin-lte/build/scss/mixins";
-@import "~admin-lte/build/scss/AdminLTE-core";
+@import "~admin-lte/build/scss/parts/core";
 @import "~admin-lte/build/scss/buttons";
 @import "~admin-lte/build/scss/pages/invoice";
 @import "~admin-lte/build/scss/miscellaneous";
