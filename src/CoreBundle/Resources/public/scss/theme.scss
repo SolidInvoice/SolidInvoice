@@ -3,6 +3,7 @@
 @import "colors";
 
 @import "~admin-lte/build/scss/variables";
+@import "~admin-lte/build/scss/variables-alt";
 @import "~admin-lte/build/scss/mixins";
 
 // MISC
@@ -49,6 +50,8 @@ $btn-info: $info;
 
 $theme-header-height: 70px;
 $theme-header-padding: 15px;
+
+$screen-header-collapse: map-get($grid-breakpoints, md) !default;
 
 // COMPONENTS
 //--------------------------------------------------------
