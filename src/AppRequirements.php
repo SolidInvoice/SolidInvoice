@@ -22,7 +22,7 @@ class AppRequirements extends SymfonyRequirements
 {
     public function __construct()
     {
-        parent::__construct(dirname(__DIR__), '4.0.0');
+        parent::__construct(dirname(__DIR__), '5.0.0');
 
         $this->addRequirement(
             extension_loaded('openssl'),
