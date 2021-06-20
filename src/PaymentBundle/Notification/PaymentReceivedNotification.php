@@ -19,9 +19,9 @@ use Twig\Environment;
 
 class PaymentReceivedNotification extends NotificationMessage
 {
-    const HTML_TEMPLATE = '@SolidInvoicePayment/Email/payment.html.twig';
+    public const HTML_TEMPLATE = '@SolidInvoicePayment/Email/payment.html.twig';
 
-    const TEXT_TEMPLATE = '@SolidInvoicePayment/Email/payment.txt.twig';
+    public const TEXT_TEMPLATE = '@SolidInvoicePayment/Email/payment.txt.twig';
 
     /**
      * {@inheritdoc}

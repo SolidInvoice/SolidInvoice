@@ -19,9 +19,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceCoreBundle extends Bundle
 {
-    const VERSION = '2.1.0-dev';
+    public const VERSION = '2.1.0-dev';
 
-    const APP_NAME = 'SolidInvoice';
+    public const APP_NAME = 'SolidInvoice';
 
     /**
      * {@inheritdoc}

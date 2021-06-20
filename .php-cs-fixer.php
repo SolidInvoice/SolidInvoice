@@ -1,4 +1,4 @@
-7<?php
+<?php
 
 $finder = PhpCsFixer\Finder::create()
     ->in('src');
@@ -19,6 +19,7 @@ return $config
         [
             '@PSR1' => true,
             '@PSR2' => true,
+            '@PSR12' => true,
             '@Symfony' => true,
             'array_syntax' => array('syntax' => 'short'),
             'phpdoc_no_package' => true,

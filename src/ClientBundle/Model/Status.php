@@ -15,9 +15,9 @@ namespace SolidInvoice\ClientBundle\Model;
 
 class Status
 {
-    const STATUS_ACTIVE = 'active';
+    public const STATUS_ACTIVE = 'active';
 
-    const STATUS_INACTIVE = 'inactive';
+    public const STATUS_INACTIVE = 'inactive';
 
-    const STATUS_ARCHIVED = 'archived';
+    public const STATUS_ARCHIVED = 'archived';
 }
