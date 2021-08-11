@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class SolidInvoicePaymentExtension extends Extension
 {
-    const NS = 'SolidInvoice\PaymentBundle\Form\Methods';
+    public const NS = 'SolidInvoice\PaymentBundle\Form\Methods';
 
     /**
      * {@inheritdoc}

@@ -12,12 +12,14 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOF;
 
+$config = new PhpCsFixer\Config();
 
-return PhpCsFixer\Config::create()
+return $config
     ->setRules(
         [
             '@PSR1' => true,
             '@PSR2' => true,
+            '@PSR12' => true,
             '@Symfony' => true,
             'array_syntax' => array('syntax' => 'short'),
             'phpdoc_no_package' => true,

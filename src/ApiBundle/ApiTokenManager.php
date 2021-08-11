@@ -19,7 +19,7 @@ use SolidInvoice\UserBundle\Entity\User;
 
 class ApiTokenManager
 {
-    const TOKEN_LENGTH = 32;
+    public const TOKEN_LENGTH = 32;
 
     /**
      * @var ManagerRegistry

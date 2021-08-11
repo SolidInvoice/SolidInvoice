@@ -23,6 +23,7 @@ config/env.php
 node_modules
 .rules
 .php_cs.cache
+.php-cs-fixer.cache
 .phpunit.result.cache
 .env
 yarn-error.log

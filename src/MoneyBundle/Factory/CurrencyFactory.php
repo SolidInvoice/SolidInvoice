@@ -18,9 +18,9 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 
 class CurrencyFactory
 {
-    const CURRENCY_PATH = 'system/company/currency';
+    public const CURRENCY_PATH = 'system/company/currency';
 
-    const DEFAULT_CURRENCY = 'USD';
+    public const DEFAULT_CURRENCY = 'USD';
 
     /**
      * @var SystemConfig

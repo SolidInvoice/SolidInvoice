@@ -28,7 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class RequestListener implements EventSubscriberInterface
 {
-    const INSTALLER_ROUTE = '_install_check_requirements';
+    public const INSTALLER_ROUTE = '_install_check_requirements';
 
     /**
      * Core routes.

@@ -21,7 +21,7 @@ use Money\Money;
 
 class MoneyType extends Type
 {
-    const NAME = 'money';
+    public const NAME = 'money';
 
     /**
      * @var Currency

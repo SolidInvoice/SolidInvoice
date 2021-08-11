@@ -24,7 +24,7 @@ class GridConfigurationTest extends TestCase
     use ConfigurationTestCaseTrait;
     use MockeryPHPUnitIntegration;
 
-    const FIXTURES_PATH = __DIR__.'/../fixtures/config/';
+    public const FIXTURES_PATH = __DIR__.'/../fixtures/config/';
 
     protected function getConfiguration()
     {

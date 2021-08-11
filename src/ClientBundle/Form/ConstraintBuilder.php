@@ -15,7 +15,7 @@ namespace SolidInvoice\ClientBundle\Form;
 
 class ConstraintBuilder
 {
-    const CONSTRAINT_NAMESPACE = 'Symfony\\Component\\Validator\\Constraints\\';
+    public const CONSTRAINT_NAMESPACE = 'Symfony\\Component\\Validator\\Constraints\\';
 
     /**
      * @static
