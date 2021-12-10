@@ -119,6 +119,7 @@
     "require-dev": {
         "ext-zip": "*",
         "dama/doctrine-test-bundle": "^6.3",
+        "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fzaninotto/faker": "^1.9",
         "liip/test-fixtures-bundle": "^1.6",
@@ -132,7 +133,7 @@
         "phpstan/phpstan-symfony": "^0.12",
         "symfony/debug-bundle": "^5.0",
         "symfony/maker-bundle": "^1.17",
-        "symfony/panther": "^0.7.1",
+        "symfony/panther": "^1.1 || ^2.0",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/web-profiler-bundle": "^4.4"
     },
