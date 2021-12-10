@@ -26,6 +26,8 @@ class InstallationTest extends PantherTestCase
 {
     use DatabaseTestCase;
 
+    private $disableSchemaUpdate = true;
+
     public function testItRedirectsToInstallationPage()
     {
         $client = self::createPantherClient();

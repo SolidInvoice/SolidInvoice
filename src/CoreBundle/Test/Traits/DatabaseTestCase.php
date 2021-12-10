@@ -35,6 +35,11 @@ trait DatabaseTestCase
         DriverManager::getConnection($params)->getSchemaManager()->createDatabase($dbName);
 
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
+
+        if (isset($this->disableSchemaUpdate) && $this->disableSchemaUpdate) {
+            return;
+        }
+
         $schemaTool = new SchemaTool($em);
         $schemaTool->createSchema($em->getMetadataFactory()->getAllMetadata());
     }
