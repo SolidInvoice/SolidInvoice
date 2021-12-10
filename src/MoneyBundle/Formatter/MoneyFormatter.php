@@ -40,13 +40,13 @@ final class MoneyFormatter implements MoneyFormatterInterface
     /**
      * @param Currency|string $currency
      *
-     * @throws MethodArgumentNotImplementedException | MethodArgumentValueNotImplementedException
+     * @throws MethodArgumentNotImplementedException|MethodArgumentValueNotImplementedException
      */
     public function __construct(string $locale, Currency $currency)
     {
         try {
             $this->numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-        } catch (MethodArgumentValueNotImplementedException | MethodArgumentNotImplementedException $e) {
+        } catch (MethodArgumentValueNotImplementedException|MethodArgumentNotImplementedException $e) {
             $this->numberFormatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
         }
 

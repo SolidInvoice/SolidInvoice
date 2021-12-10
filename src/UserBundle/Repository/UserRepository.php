@@ -59,7 +59,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         try {
             // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
             return $q->getSingleResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException|NonUniqueResultException $e) {
             throw new UsernameNotFoundException(sprintf('User "%s" does not exist.', $username), 0, $e);
         }
     }
