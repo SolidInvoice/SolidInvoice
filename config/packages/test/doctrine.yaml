@@ -1,0 +1,38 @@
+doctrine:
+    dbal:
+        driver: '%env(database_driver)%'
+        host: '%env(database_host)%'
+        port: '%env(int:database_port)%'
+        dbname: '%env(database_name)%_test'
+        user: '%env(database_user)%'
+        password: '%env(database_password)%'
+        charset: UTF8
+        server_version: 5.6
+        types:
+            uuid: Ramsey\Uuid\Doctrine\UuidType
+            money: SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        #auto_mapping: true
+        entity_managers:
+            default:
+                hydrators:
+                    money: SolidInvoice\MoneyBundle\Doctrine\Hydrator\MoneyHydrator
+                filters:
+                    archivable:
+                        class: SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter
+                        enabled: true
+                auto_mapping: true
+                mappings:
+                    gedmo_loggable:
+                        type: annotation
+                        prefix: Gedmo\Loggable\Entity
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/src/Loggable/Entity'
+                        alias: GedmoLoggable
+                        is_bundle: false
+                    payum:
+                        is_bundle: false
+                        type: xml
+                        dir: '%kernel.root_dir%/../vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping'
+                        prefix: Payum\Core\Model

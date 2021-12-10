@@ -137,7 +137,6 @@ jobs:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 1
       SKIP_FUNCTIONAL_BOOTSTRAP: 1
-      PANTHER_CHROME_DRIVER_BINARY: /usr/local/bin/chromedriver
       PANTHER_EXTERNAL_BASE_URI: 'http://127.0.0.1:8000'
       PANTHER_NO_HEADLESS: 0
       PANTHER_APP_ENV: test
@@ -160,8 +159,6 @@ jobs:
     steps:
       - name: Disable local MySQL server
         run: sudo service mysql stop
-
-      - uses: nanasess/setup-chromedriver@master
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -188,6 +185,9 @@ jobs:
 
       - name: Install dependencies
         run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Detect browser drivers
+        run: bin/bdi detect drivers
 
       - uses: actions/setup-node@v2-beta
         with:

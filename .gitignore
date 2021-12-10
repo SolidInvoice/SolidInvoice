@@ -28,6 +28,7 @@ node_modules
 .env
 yarn-error.log
 /vendor-bin/**/vendor
+/drivers
 
 ###> symfony/framework-bundle ###
 /.env.local

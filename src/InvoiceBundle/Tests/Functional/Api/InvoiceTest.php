@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
 
 /**
  * @group functional
@@ -23,6 +24,7 @@ use SolidInvoice\ApiBundle\Test\ApiTestCase;
 class InvoiceTest extends ApiTestCase
 {
     use FixturesTrait;
+    use DatabaseTestCase;
 
     public function setUp(): void
     {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
 use Exception;
+use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
@@ -23,6 +24,8 @@ use Symfony\Component\Panther\PantherTestCase;
  */
 class InstallationTest extends PantherTestCase
 {
+    use DatabaseTestCase;
+
     public function testItRedirectsToInstallationPage()
     {
         $client = self::createPantherClient();

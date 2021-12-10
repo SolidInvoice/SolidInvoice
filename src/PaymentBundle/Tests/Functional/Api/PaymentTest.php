@@ -16,12 +16,14 @@ namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
 
 /**
  * @group functional
  */
 class PaymentTest extends ApiTestCase
 {
+    use DatabaseTestCase;
     use FixturesTrait;
 
     public function setUp(): void
