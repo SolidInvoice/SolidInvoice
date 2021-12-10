@@ -61,7 +61,7 @@ class SettingsExtension extends AbstractExtension
             }
 
             return $setting;
-        } catch (InvalidSettingException | TableNotFoundException | ConnectionException | DriverException $e) {
+        } catch (InvalidSettingException|TableNotFoundException|ConnectionException|DriverException $e) {
             return $default;
         }
     }

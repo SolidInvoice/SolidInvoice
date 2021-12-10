@@ -42,7 +42,7 @@ class QuotePdfListener implements EventSubscriberInterface
     }
 
     /**
-     * @throws MpdfException | LoaderError | RuntimeError | SyntaxError
+     * @throws MpdfException|LoaderError|RuntimeError|SyntaxError
      */
     public function __invoke(MessageEvent $event): void
     {

@@ -42,7 +42,7 @@ class ConfigStepForm extends AbstractType
                         if (null !== $data['driver'] && null !== $data['user']) {
                             try {
                                 DriverManager::getConnection($data)->connect();
-                            } catch (PDOException | DBALException $e) {
+                            } catch (PDOException|DBALException $e) {
                                 $executionContext->addViolation($e->getMessage());
                             }
                         }
