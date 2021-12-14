@@ -34,7 +34,11 @@ trait DatabaseTestCase
 
         unset($params['dbname']);
 
-        DriverManager::getConnection($params)->getSchemaManager()->dropAndCreateDatabase($dbName);
+        try {
+            DriverManager::getConnection($params)->getSchemaManager()->createDatabase($dbName);
+        } catch (\Throwable $e) {
+            // Database already exists
+        }
 
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
 
@@ -43,20 +47,7 @@ trait DatabaseTestCase
         }
 
         $schemaTool = new SchemaTool($em);
+        $schemaTool->dropDatabase();
         $schemaTool->createSchema($em->getMetadataFactory()->getAllMetadata());
-    }
-
-    /**
-     * @after
-     */
-    public function dropDatabaseSchema(): void
-    {
-        $kernel = self::bootKernel();
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        $connection = $em->getConnection();
-        $params = $connection->getParams();
-        DriverManager::getConnection($params)->getSchemaManager()->dropDatabase($params['dbname']);
-
-        $this->tearDown();
     }
 }
