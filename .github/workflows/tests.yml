@@ -32,7 +32,6 @@ jobs:
     env:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 1
-      SKIP_FUNCTIONAL_BOOTSTRAP: 1
       COVERAGE: 0
 
     services:
@@ -136,7 +135,6 @@ jobs:
     env:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 1
-      SKIP_FUNCTIONAL_BOOTSTRAP: 1
       PANTHER_EXTERNAL_BASE_URI: 'http://127.0.0.1:8000'
       PANTHER_NO_HEADLESS: 0
       PANTHER_APP_ENV: test
