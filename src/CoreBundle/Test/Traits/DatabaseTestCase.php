@@ -34,7 +34,7 @@ trait DatabaseTestCase
 
         unset($params['dbname']);
 
-        DriverManager::getConnection($params)->getSchemaManager()->createDatabase($dbName);
+        DriverManager::getConnection($params)->getSchemaManager()->dropAndCreateDatabase($dbName);
 
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
 
