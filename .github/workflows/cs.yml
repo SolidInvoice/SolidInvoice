@@ -51,4 +51,3 @@ jobs:
           VALIDATE_PHP: true
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_CSS: true
-          VALIDATE_JAVASCRIPT_STANDARD: false
