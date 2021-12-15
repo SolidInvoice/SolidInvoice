@@ -8,8 +8,6 @@ services:
 
     SolidInvoice\InstallBundle\Action\SystemRequirements:
         tags: ['controller.service_arguments']
-        arguments:
-            $installed: '%env(installed)%'
 
     SolidInvoice\InstallBundle\Action\Finish:
         tags: ['controller.service_arguments']
