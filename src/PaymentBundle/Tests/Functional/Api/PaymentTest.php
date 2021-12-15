@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
@@ -29,12 +28,6 @@ class PaymentTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        StaticDriver::rollBack();
-        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
-        $connection->executeQuery('ALTER TABLE clients AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE contacts AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE payments AUTO_INCREMENT = 1000');
-        StaticDriver::beginTransaction();
 
         $this->loadFixtures([
             'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
@@ -58,7 +51,7 @@ class PaymentTest extends ApiTestCase
 
     public function testGet()
     {
-        $data = $this->requestGet('/api/payments/1000');
+        $data = $this->requestGet('/api/payments/1');
 
         static::assertSame([
             'method' => null,

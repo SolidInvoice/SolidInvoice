@@ -20,6 +20,8 @@ use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\Panther\PantherTestCase;
+use function password_hash;
+use const PASSWORD_DEFAULT;
 
 /**
  * @codeCoverageIgnore
@@ -35,30 +37,27 @@ abstract class ApiTestCase extends PantherTestCase
     {
         parent::setUp();
 
-        if (self::$client) {
-            return;
-        }
-
         self::$client = static::createClient();
 
         $registry = self::$kernel->getContainer()->get('doctrine');
 
+        $userRepository = $registry->getRepository(User::class);
+
         /** @var User[] $users */
-        $users = $registry->getRepository(User::class)->findAll();
+        $users = $userRepository->findAll();
 
         if (0 === count($users)) {
-            throw new Exception('No users found!');
+            $user = new User();
+            $user->setUsername('test')
+                ->setEmail('test@example.com')
+                ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
+            $registry->getManager()->persist($user);
+            $registry->getManager()->flush();
+            $users = [$user];
         }
 
         $tokenManager = new ApiTokenManager($registry);
         $token = $tokenManager->getOrCreate($users[0], 'Functional Test');
-
-        try {
-            StaticDriver::commit(); // Save user api token
-            StaticDriver::beginTransaction();
-        } catch (PDOException $e) {
-            // noop
-        }
 
         self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
     }

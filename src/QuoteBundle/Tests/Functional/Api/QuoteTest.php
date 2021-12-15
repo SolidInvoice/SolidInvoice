@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
@@ -29,13 +28,6 @@ class QuoteTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        StaticDriver::rollBack();
-        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
-        $connection->executeQuery('ALTER TABLE clients AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE contacts AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE quotes AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE quote_lines AUTO_INCREMENT = 1000');
-        StaticDriver::beginTransaction();
 
         $this->loadFixtures([
             'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
@@ -47,9 +39,9 @@ class QuoteTest extends ApiTestCase
     {
         $data = [
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10,
@@ -68,9 +60,9 @@ class QuoteTest extends ApiTestCase
         unset($result['uuid']);
 
         static::assertSame([
-            'id' => 1001,
+            'id' => 2,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'total' => '$90.00',
             'baseTotal' => '$100.00',
             'tax' => '$0.00',
@@ -83,7 +75,7 @@ class QuoteTest extends ApiTestCase
             'due' => null,
             'items' => [
                 [
-                    'id' => 1001,
+                    'id' => 2,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -92,26 +84,26 @@ class QuoteTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $result);
     }
 
     public function testDelete()
     {
-        $this->requestDelete('/api/quotes/1000');
+        $this->requestDelete('/api/quotes/1');
     }
 
     public function testGet()
     {
-        $data = $this->requestGet('/api/quotes/1000');
+        $data = $this->requestGet('/api/quotes/1');
 
         unset($data['uuid']);
 
         static::assertSame([
-            'id' => 1000,
+            'id' => 1,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'total' => '$100.00',
             'baseTotal' => '$100.00',
             'tax' => '$0.00',
@@ -124,7 +116,7 @@ class QuoteTest extends ApiTestCase
             'due' => null,
             'items' => [
                 [
-                    'id' => 1000,
+                    'id' => 1,
                     'description' => 'Test Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -133,7 +125,7 @@ class QuoteTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $data);
     }
@@ -141,7 +133,7 @@ class QuoteTest extends ApiTestCase
     public function testEdit()
     {
         $data = $this->requestPut(
-            '/api/quotes/1000',
+            '/api/quotes/1',
             [
                 'discount' => [
                     'type' => 'percentage',
@@ -160,9 +152,9 @@ class QuoteTest extends ApiTestCase
         unset($data['uuid']);
 
         static::assertSame([
-            'id' => 1000,
+            'id' => 1,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'total' => '$90.00',
             'baseTotal' => '$100.00',
             'tax' => '$0.00',
@@ -175,7 +167,7 @@ class QuoteTest extends ApiTestCase
             'due' => null,
             'items' => [
                 [
-                    'id' => 1001,
+                    'id' => 2,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -184,7 +176,7 @@ class QuoteTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $data);
     }

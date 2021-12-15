@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
@@ -29,11 +28,6 @@ class ContactTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        StaticDriver::rollBack();
-        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
-        $connection->executeQuery('ALTER TABLE clients AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE contacts AUTO_INCREMENT = 1000');
-        StaticDriver::beginTransaction();
 
         $this->loadFixtures([
             'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
@@ -43,7 +37,7 @@ class ContactTest extends ApiTestCase
     public function testCreate()
     {
         $data = [
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'firstName' => 'foo bar',
             'email' => 'foo@bar.com',
         ];
@@ -51,10 +45,10 @@ class ContactTest extends ApiTestCase
         $result = $this->requestPost('/api/contacts', $data);
 
         static::assertSame([
-            'id' => 1001,
+            'id' => 2,
             'firstName' => 'foo bar',
             'lastName' => null,
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'email' => 'foo@bar.com',
             'additionalContactDetails' => [],
         ], $result);
@@ -62,18 +56,18 @@ class ContactTest extends ApiTestCase
 
     public function testDelete()
     {
-        $this->requestDelete('/api/contacts/1000');
+        $this->requestDelete('/api/contacts/1');
     }
 
     public function testGet()
     {
-        $data = $this->requestGet('/api/contacts/1000');
+        $data = $this->requestGet('/api/contacts/1');
 
         static::assertSame([
-            'id' => 1000,
+            'id' => 1,
             'firstName' => 'Test',
             'lastName' => null,
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'email' => 'test@example.com',
             'additionalContactDetails' => [],
         ], $data);
@@ -81,13 +75,13 @@ class ContactTest extends ApiTestCase
 
     public function testEdit()
     {
-        $data = $this->requestPut('/api/contacts/1000', ['firstName' => 'New Test']);
+        $data = $this->requestPut('/api/contacts/1', ['firstName' => 'New Test']);
 
         static::assertSame([
-            'id' => 1000,
+            'id' => 1,
             'firstName' => 'New Test',
             'lastName' => null,
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'email' => 'test@example.com',
             'additionalContactDetails' => [],
         ], $data);

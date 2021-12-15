@@ -35,7 +35,7 @@ final class Version20001 extends AbstractMigration implements ContainerAwareInte
 
     public function isTransactional(): bool
     {
-        return \PHP_VERSION_ID < 80000;
+        return false;
     }
 
     public function down(Schema $schema): void

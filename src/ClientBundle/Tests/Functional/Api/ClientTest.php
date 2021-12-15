@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
@@ -29,11 +28,6 @@ class ClientTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        StaticDriver::rollBack();
-        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
-        $connection->executeQuery('ALTER TABLE clients AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE contacts AUTO_INCREMENT = 1000');
-        StaticDriver::beginTransaction();
 
         $this->loadFixtures([
             'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
@@ -77,15 +71,15 @@ class ClientTest extends ApiTestCase
 
     public function testDelete()
     {
-        $this->requestDelete('/api/clients/1000');
+        $this->requestDelete('/api/clients/1');
     }
 
     public function testGet()
     {
-        $data = $this->requestGet('/api/clients/1000');
+        $data = $this->requestGet('/api/clients/1');
 
         static::assertSame([
-            'id' => 1000,
+            'id' => 1,
             'name' => 'Test',
             'website' => null,
             'status' => 'active',
@@ -93,7 +87,7 @@ class ClientTest extends ApiTestCase
             'vatNumber' => null,
             'contacts' => [
                 [
-                    'id' => 1000,
+                    'id' => 1,
                     'firstName' => 'Test',
                     'lastName' => null,
                     'email' => 'test@example.com',
@@ -107,10 +101,10 @@ class ClientTest extends ApiTestCase
 
     public function testEdit()
     {
-        $data = $this->requestPut('/api/clients/1000', ['name' => 'New Test']);
+        $data = $this->requestPut('/api/clients/1', ['name' => 'New Test']);
 
         static::assertSame([
-            'id' => 1000,
+            'id' => 1,
             'name' => 'New Test',
             'website' => null,
             'status' => 'active',
@@ -118,7 +112,7 @@ class ClientTest extends ApiTestCase
             'vatNumber' => null,
             'contacts' => [
                 [
-                    'id' => 1000,
+                    'id' => 1,
                     'firstName' => 'Test',
                     'lastName' => null,
                     'email' => 'test@example.com',

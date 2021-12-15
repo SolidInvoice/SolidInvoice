@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
@@ -30,29 +29,21 @@ class RecurringInvoiceTest extends ApiTestCase
     {
         parent::setUp();
 
-        StaticDriver::rollBack();
-        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
-        $connection->executeQuery('ALTER TABLE clients AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE contacts AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE recurring_invoices AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE invoice_lines AUTO_INCREMENT = 1000');
-        StaticDriver::beginTransaction();
-
         $this->loadFixtures([
             'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
             'SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData',
         ], true);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $date = date(\DateTimeInterface::ATOM);
 
         $data = [
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'frequency' => '* * * * *',
             'dateStart' => $date,
             'dateEnd' => null,
@@ -72,9 +63,9 @@ class RecurringInvoiceTest extends ApiTestCase
         $result = $this->requestPost('/api/recurring_invoices', $data);
 
         static::assertEquals([
-            'id' => 1001,
+            'id' => 2,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'frequency' => '* * * * *',
             'dateStart' => date('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
@@ -89,7 +80,7 @@ class RecurringInvoiceTest extends ApiTestCase
             'notes' => null,
             'items' => [
                 [
-                    'id' => 1002,
+                    'id' => 3,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -98,26 +89,26 @@ class RecurringInvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $result);
     }
 
     public function testDelete()
     {
-        $this->requestDelete('/api/recurring_invoices/1000');
+        $this->requestDelete('/api/recurring_invoices/1');
     }
 
     public function testGet()
     {
-        $data = $this->requestGet('/api/recurring_invoices/1000');
+        $data = $this->requestGet('/api/recurring_invoices/1');
 
         unset($data['uuid']);
 
         static::assertEquals([
-            'id' => 1000,
+            'id' => 1,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'frequency' => '* * * * *',
             'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
@@ -132,7 +123,7 @@ class RecurringInvoiceTest extends ApiTestCase
             'notes' => null,
             'items' => [
                 [
-                    'id' => 1001,
+                    'id' => 2,
                     'description' => 'Test Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -141,7 +132,7 @@ class RecurringInvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $data);
     }
@@ -149,7 +140,7 @@ class RecurringInvoiceTest extends ApiTestCase
     public function testEdit()
     {
         $data = $this->requestPut(
-            '/api/recurring_invoices/1000',
+            '/api/recurring_invoices/1',
             [
                 'frequency' => '5 * * * *',
                 'discount' => [
@@ -169,9 +160,9 @@ class RecurringInvoiceTest extends ApiTestCase
         unset($data['uuid']);
 
         static::assertEquals([
-            'id' => 1000,
+            'id' => 1,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'frequency' => '5 * * * *',
             'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
@@ -186,7 +177,7 @@ class RecurringInvoiceTest extends ApiTestCase
             'notes' => null,
             'items' => [
                 [
-                    'id' => 1002,
+                    'id' => 3,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -195,7 +186,7 @@ class RecurringInvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $data);
     }
