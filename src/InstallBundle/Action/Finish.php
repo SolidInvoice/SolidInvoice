@@ -30,7 +30,7 @@ final class Finish
         $this->projectDir = $projectDir;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Template
     {
         $session = $request->getSession();
 
