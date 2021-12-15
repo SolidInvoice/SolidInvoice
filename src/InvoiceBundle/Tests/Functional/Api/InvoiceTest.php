@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
@@ -29,13 +28,6 @@ class InvoiceTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        StaticDriver::rollBack();
-        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
-        $connection->executeQuery('ALTER TABLE clients AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE contacts AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE invoices AUTO_INCREMENT = 1000');
-        $connection->executeQuery('ALTER TABLE invoice_lines AUTO_INCREMENT = 1000');
-        StaticDriver::beginTransaction();
 
         $this->loadFixtures([
             'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
@@ -47,9 +39,9 @@ class InvoiceTest extends ApiTestCase
     {
         $data = [
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10,
@@ -68,9 +60,9 @@ class InvoiceTest extends ApiTestCase
         unset($result['uuid']);
 
         static::assertEquals([
-            'id' => 1001,
+            'id' => 2,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'total' => '$90.00',
             'baseTotal' => '$100.00',
             'balance' => '$90.00',
@@ -85,7 +77,7 @@ class InvoiceTest extends ApiTestCase
             'paidDate' => null,
             'items' => [
                 [
-                    'id' => 1002,
+                    'id' => 3,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -94,26 +86,26 @@ class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $result);
     }
 
     public function testDelete()
     {
-        $this->requestDelete('/api/invoices/1000');
+        $this->requestDelete('/api/invoices/1');
     }
 
     public function testGet()
     {
-        $data = $this->requestGet('/api/invoices/1000');
+        $data = $this->requestGet('/api/invoices/1');
 
         unset($data['uuid']);
 
         static::assertEquals([
-            'id' => 1000,
+            'id' => 1,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'total' => '$100.00',
             'baseTotal' => '$100.00',
             'balance' => '$100.00',
@@ -128,7 +120,7 @@ class InvoiceTest extends ApiTestCase
             'paidDate' => null,
             'items' => [
                 [
-                    'id' => 1000,
+                    'id' => 1,
                     'description' => 'Test Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -137,7 +129,7 @@ class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $data);
     }
@@ -145,7 +137,7 @@ class InvoiceTest extends ApiTestCase
     public function testEdit()
     {
         $data = $this->requestPut(
-            '/api/invoices/1000',
+            '/api/invoices/1',
             [
                 'discount' => [
                     'type' => 'percentage',
@@ -164,9 +156,9 @@ class InvoiceTest extends ApiTestCase
         unset($data['uuid']);
 
         static::assertEquals([
-            'id' => 1000,
+            'id' => 1,
             'status' => 'draft',
-            'client' => '/api/clients/1000',
+            'client' => '/api/clients/1',
             'total' => '$90.00',
             'baseTotal' => '$100.00',
             'balance' => '$90.00',
@@ -181,7 +173,7 @@ class InvoiceTest extends ApiTestCase
             'paidDate' => null,
             'items' => [
                 [
-                    'id' => 1002,
+                    'id' => 3,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -190,7 +182,7 @@ class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1000',
+                '/api/contacts/1',
             ],
         ], $data);
     }

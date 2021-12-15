@@ -17,6 +17,9 @@ use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use PDOException;
+use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use Throwable;
 
 trait DatabaseTestCase
 {
@@ -37,7 +40,7 @@ trait DatabaseTestCase
 
         try {
             DriverManager::getConnection($params)->getSchemaManager()->createDatabase($dbName);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Database already exists
         }
 
@@ -51,11 +54,12 @@ trait DatabaseTestCase
                 return;
             }
 
-            $schemaTool->createSchema($em->getMetadataFactory()->getAllMetadata());
+            $kernel->getContainer()->get(Migration::class)->migrate();
+
         } finally {
             try {
                 StaticDriver::commit();
-            } catch (\PDOException $e) {
+            } catch (PDOException $e) {
             }
 
             StaticDriver::beginTransaction();

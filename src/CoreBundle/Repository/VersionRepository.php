@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Version;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 
 class VersionRepository extends ServiceEntityRepository
 {
@@ -49,6 +52,10 @@ class VersionRepository extends ServiceEntityRepository
         $qb->select('v.version')
             ->setMaxResults(1);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        try {
+            return $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return SolidInvoiceCoreBundle::VERSION;
+        }
     }
 }
