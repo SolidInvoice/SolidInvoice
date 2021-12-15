@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
@@ -70,7 +71,7 @@ class RequestListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 10],
@@ -88,16 +89,18 @@ class RequestListener implements EventSubscriberInterface
         }
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
-        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType()) {
+        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
 
-        $route = $event->getRequest()->get('_route');
+        $request = $event->getRequest();
+        $session = $request->getSession();
+        $route = $request->get('_route');
 
         if (null !== $this->installed) {
-            if (in_array($route, $this->installRoutes, true)) {
+            if (in_array($route, $this->installRoutes, true) && !$session->has('installation_step')) {
                 throw new ApplicationInstalledException();
             }
         } elseif (!in_array($route, $this->allowRoutes, true)) {

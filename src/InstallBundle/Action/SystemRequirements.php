@@ -18,17 +18,7 @@ use SolidInvoice\CoreBundle\Templating\Template;
 
 final class SystemRequirements
 {
-    /**
-     * @var string|null
-     */
-    private $installed;
-
-    public function __construct(?string $installed)
-    {
-        $this->installed = $installed;
-    }
-
-    public function __invoke()
+    public function __invoke(): Template
     {
         return new Template(
             '@SolidInvoiceInstall/system_check.html.twig',
