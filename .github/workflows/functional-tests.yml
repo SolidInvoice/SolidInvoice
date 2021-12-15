@@ -25,7 +25,7 @@ jobs:
 
     env:
       SOLIDINVOICE_ENV: test
-      SOLIDINVOICE_DEBUG0 1
+      SOLIDINVOICE_DEBUG: 1
       PANTHER_NO_HEADLESS: 0
       PANTHER_APP_ENV: test
       PANTHER_NO_SANDBOX: 1
