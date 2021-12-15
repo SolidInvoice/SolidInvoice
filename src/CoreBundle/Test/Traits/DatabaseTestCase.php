@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -42,12 +43,21 @@ trait DatabaseTestCase
 
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
 
-        if (isset($this->disableSchemaUpdate) && $this->disableSchemaUpdate) {
-            return;
-        }
+        try {
+            $schemaTool = new SchemaTool($em);
+            $schemaTool->dropDatabase();
 
-        $schemaTool = new SchemaTool($em);
-        $schemaTool->dropDatabase();
-        $schemaTool->createSchema($em->getMetadataFactory()->getAllMetadata());
+            if (isset($this->disableSchemaUpdate) && $this->disableSchemaUpdate) {
+                return;
+            }
+
+            $schemaTool->createSchema($em->getMetadataFactory()->getAllMetadata());
+        } finally {
+            try {
+                StaticDriver::commit();
+            } catch (\PDOException $e) {}
+
+            StaticDriver::beginTransaction();
+        }
     }
 }
