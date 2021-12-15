@@ -55,7 +55,8 @@ trait DatabaseTestCase
         } finally {
             try {
                 StaticDriver::commit();
-            } catch (\PDOException $e) {}
+            } catch (\PDOException $e) {
+            }
 
             StaticDriver::beginTransaction();
         }
