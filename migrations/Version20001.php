@@ -23,6 +23,11 @@ final class Version20001 extends AbstractMigration implements ContainerAwareInte
 {
     use ContainerAwareTrait;
 
+    public function isTransactional(): bool
+    {
+        return \PHP_VERSION_ID < 80000;
+    }
+
     public function up(Schema $schema): void
     {
         /** @var SystemConfig $config */

@@ -26,6 +26,11 @@ final class Version20000 extends AbstractMigration
      */
     private $schema;
 
+    public function isTransactional(): bool
+    {
+        return \PHP_VERSION_ID < 80000;
+    }
+
     public function up(Schema $schema): void
     {
         $this->schema = $schema;
