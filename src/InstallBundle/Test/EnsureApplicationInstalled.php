@@ -1,24 +1,25 @@
 <?php
 
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace SolidInvoice\InstallBundle\Test;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Tools\SchemaTool;
-use PDOException;
 use SolidInvoice\CoreBundle\ConfigWriter;
-use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
 use Throwable;
-use function file_exists;
 use function getenv;
-use function realpath;
-use function rename;
 
 trait EnsureApplicationInstalled
 {
