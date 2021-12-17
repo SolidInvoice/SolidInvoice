@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Component\Panther\PantherTestCase;
 
 /**
@@ -20,6 +21,8 @@ use Symfony\Component\Panther\PantherTestCase;
  */
 class LoginTest extends PantherTestCase
 {
+    use EnsureApplicationInstalled;
+
     public function testRedirectToLoginPage()
     {
         $client = self::createClient();
