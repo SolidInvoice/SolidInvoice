@@ -58,6 +58,7 @@ security:
 
 users:
   add: 'Add User'
+  edit: 'Edit User'
   title: 'Users'
   create:
     generate_password: 'Generate Random Password'

@@ -11,7 +11,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-6 offset-3">
+        <div class="col-8 offset-2">
             <div class="card card-primary">
                 <div class="card-header with-border">
                     <h3 class="card-title">
@@ -36,14 +36,10 @@
                         </p>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col offset-10" id="next_button">
-                            <a id="login" href="{{ path('_login') }}" class="btn-block btn btn-success">
-                                {{ icon('user') }} {{ "installation.finish.login"|trans }}
-                            </a>
-                        </div>
-                    </div>
+                <div class="card-footer" id="next_button">
+                    <a id="login" href="{{ path('_login') }}" class="btn-block btn btn-success">
+                        {{ icon('user') }} {{ "installation.finish.login"|trans }}
+                    </a>
                 </div>
             </div>
         </div>

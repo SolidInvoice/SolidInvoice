@@ -51,7 +51,13 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block page_title %}{{ "quote.create"|trans }}{% endblock %}
+{% block title %}
+    {% if quote is defined %}
+        {{ 'quote.title'|trans({'%id%' : quote.id}) }}
+    {% else %}
+        {{ 'quote.create'|trans }}
+    {% endif %}
+{% endblock %}
 
 {% block sidebar %}
     {{ menu('quotes_create') }}
@@ -73,15 +79,6 @@
     {{ form_errors(form) }}
 
     <div class="card" id="quote-create">
-        <div class="card-header">
-            <h3 class="card-title">
-                {% if quote is defined %}
-                    {{ 'quote.title'|trans({'%id%' : quote.id}) }}
-                {% else %}
-                    {{ 'quote.create'|trans }}
-                {% endif %}
-            </h3>
-        </div>
         <div class="card-body">
             <section class="invoice">
                 <div class="col-12">

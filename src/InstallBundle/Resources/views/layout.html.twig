@@ -9,27 +9,7 @@
 
 {% extends '@SolidInvoiceCore/Layout/default_no_nav.html.twig' %}
 
-{% block heading %}
-    {% set title = block('title') is defined ? block('title') %}
-
-    {% if title is not empty %}
-        <h1>{{ block('title') }}</h1>
-    {% endif %}
-{% endblock %}
-
 {% block title %}
     {{ app_logo() }}
     {{ "installation.title"|trans({"%app_name%" : constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME')}) }}
 {% endblock title %}
-
-{% block body %}
-    <section class="content-header bg-white shadow mb-5 p-4">
-        {{ block('heading') is defined ? block('heading') }}
-
-        {% include "@SolidInvoiceCore/flash.html.twig" %}
-    </section>
-
-    <section class="content mx-3">
-        {{ block('content') is defined ? block('content') }}
-    </section>
-{% endblock body %}

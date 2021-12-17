@@ -9,14 +9,6 @@
 
 {% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
 
-{% block heading %}
-    {% if block('title') is defined and block('title') is not empty %}
-        <h3 class="page-header">
-            {{ block('title') }}
-        </h3>
-    {% endif %}
-{% endblock %}
-
 {% block scripts %}
     {% set script = block("script") ?? null %}
 
@@ -28,7 +20,7 @@
 {% endblock %}
 
 {% block header %}
-    {% include "@SolidInvoiceCore/Menu/top.html.twig" with {"title" : app_name, "header_content" : header_content|default('')} %}
+    {% include "@SolidInvoiceCore/Menu/top.html.twig" with {"title" : block('title') ?? '', "header_content" : header_content|default('')} %}
 {% endblock header %}
 
 {% block footer %}
@@ -78,7 +70,7 @@
             </section>
         {% endif %}
 
-        <section class="content">
+        <section class="content pt-4">
             {% include "@SolidInvoiceCore/flash.html.twig" %}
 
             {{ block('content') is defined ? block('content') }}

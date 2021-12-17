@@ -13,24 +13,18 @@
     {% set title = block('title') is defined ? block('title') %}
 
     {% if title is not empty %}
-        <fieldset class="page-heading">
-            <legend>
-                <h3>{{ block('title') }}</h3>
-            </legend>
-        </fieldset>
+        <h1>{{ block('title') }}</h1>
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <section class="container mt-5">
-        <section class="content-header bg-white shadow mb-5 p-3">
-            {{ block('heading') is defined ? block('heading') }}
+    <section class="content-header bg-white shadow mb-5 p-3">
+        {{ block('heading') is defined ? block('heading') }}
 
-            {% include "@SolidInvoiceCore/flash.html.twig" %}
-        </section>
+        {% include "@SolidInvoiceCore/flash.html.twig" %}
+    </section>
 
-        <section class="content">
-            {{ block('content') is defined ? block('content') }}
-        </section>
+    <section class="content">
+        {{ block('content') is defined ? block('content') }}
     </section>
 {% endblock body %}

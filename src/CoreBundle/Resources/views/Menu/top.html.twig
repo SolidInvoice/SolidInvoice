@@ -13,6 +13,12 @@
     </li>
 </ul>
 
+{% if title|default(null) is not empty %}
+    <h4 style="width: 100%" class="p-1 mt-2">
+        {{ title|raw }}
+    </h4>
+{% endif %}
+
 <div class="container">
     <div class="collapse navbar-collapse" id="top_menu">
         {{ menu('top', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
