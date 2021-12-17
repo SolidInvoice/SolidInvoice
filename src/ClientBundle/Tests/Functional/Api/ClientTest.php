@@ -49,7 +49,7 @@ class ClientTest extends ApiTestCase
         $result = $this->requestPost('/api/clients', $data);
 
         static::assertSame([
-            'id' => 1,
+            'id' => 2,
             'name' => 'Dummy User',
             'website' => null,
             'status' => 'active',
@@ -57,7 +57,7 @@ class ClientTest extends ApiTestCase
             'vatNumber' => null,
             'contacts' => [
                 [
-                    'id' => 1,
+                    'id' => 2,
                     'firstName' => 'foo bar',
                     'lastName' => null,
                     'email' => 'foo@example.com',
