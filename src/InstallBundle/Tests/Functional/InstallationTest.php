@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
 use Exception;
-use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
@@ -32,10 +31,6 @@ use function var_dump;
  */
 class InstallationTest extends PantherTestCase
 {
-    // use DatabaseTestCase;
-
-    private $disableSchemaUpdate = true;
-
     public static function setUpBeforeClass(): void
     {
         $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
