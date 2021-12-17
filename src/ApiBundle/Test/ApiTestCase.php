@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Test;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
-use Exception;
-use PDOException;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Panther\PantherTestCase;
 use function password_hash;
 use const PASSWORD_DEFAULT;
@@ -29,7 +26,7 @@ use const PASSWORD_DEFAULT;
 abstract class ApiTestCase extends PantherTestCase
 {
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected static $client;
 
