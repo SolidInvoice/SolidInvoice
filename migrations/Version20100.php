@@ -141,11 +141,6 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
         }
     }
 
-    public function isTransactional(): bool
-    {
-        return false;
-    }
-
     public function down(Schema $schema): void
     {
         $schema->getTable('addresses')->addColumn('deleted', 'datetime', ['notnull' => false]);
