@@ -55,7 +55,6 @@ trait DatabaseTestCase
             }
 
             $kernel->getContainer()->get(Migration::class)->migrate();
-
         } finally {
             try {
                 StaticDriver::commit();
