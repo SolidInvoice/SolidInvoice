@@ -18,14 +18,10 @@
 {% endblock %}
 
 {% block heading %}
-<fieldset class="page-heading">
-    <legend>
-        <div class="float-right header-button">
-            <a class="btn btn-info" href="{{ path("_tax_rates_add") }}">
-            {{ icon('money') }} {{ "tax.rates.add"|trans }}
-            </a>
-        </div>
-        <h3>{{ block('title') is defined ? block('title') }}</h3>
-    </legend>
-</fieldset>
+    <div class="float-right header-button">
+        <a class="btn btn-info" href="{{ path("_tax_rates_add") }}">
+        {{ icon('money') }} {{ "tax.rates.add"|trans }}
+        </a>
+    </div>
+    <br class="clear" />
 {% endblock %}
