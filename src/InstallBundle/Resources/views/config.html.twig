@@ -23,7 +23,8 @@
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
-                        Enter your database details below. If the database does not exist yes, we will attempt to create it first.
+                        {{ icon('info-circle') }}
+                        Enter your database details below. If the database does not exist yet, we will attempt to create it first.
                     </div>
                     {{ form_row(form.database_config) }}
                 </div>
@@ -34,7 +35,7 @@
                                 {{ icon('arrow-left') }} {{ "installation.action.previous"|trans }}
                             </a>
                         </div>
-                        <div class="col-8">
+                        <div class="col-7">
                         </div>
                         <div class="col" id="next_button">
                             <button type="submit" class="btn btn-success btn-block" id="continue_step">
