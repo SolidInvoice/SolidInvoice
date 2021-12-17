@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Action;
 
+use Doctrine\DBAL\DriverManager;
+use Exception;
 use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -22,6 +24,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use function strpos;
 
 final class Config
 {
@@ -106,6 +109,17 @@ final class Config
                 $key = sprintf('database_%s', $key);
                 $config[$key] = $param;
             }
+
+            $tmpConnection = DriverManager::getConnection([
+                'host' => $config['database_host'] ?? null,
+                'port' => $config['database_port'] ?? null,
+                'name' => $config['database_name'] ?? null,
+                'user' => $config['database_user'] ?? null,
+                'password' => null,
+                'driver' => $config['database_driver'] ?? null,
+            ]);
+
+            $config['database_version'] = $tmpConnection->getWrappedConnection()->getServerVersion();
 
             $this->configWriter->dump($config);
 
