@@ -18,7 +18,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Version;
-use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 
 class VersionRepository extends ServiceEntityRepository
 {
@@ -54,8 +53,8 @@ class VersionRepository extends ServiceEntityRepository
 
         try {
             return $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
-            return SolidInvoiceCoreBundle::VERSION;
+        } catch (NoResultException|NonUniqueResultException $e) {
+            return '0.0.0';
         }
     }
 }
