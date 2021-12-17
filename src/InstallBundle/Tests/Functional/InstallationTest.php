@@ -13,18 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
-use Exception;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Panther\Client;
-use Symfony\Component\Panther\PantherTestCase;
-use function copy;
 use function count;
+use Exception;
 use function file_exists;
 use function getenv;
 use function realpath;
 use function rename;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Panther\Client;
+use Symfony\Component\Panther\PantherTestCase;
 use function unlink;
-use function var_dump;
 
 /**
  * @group installation
@@ -33,7 +31,7 @@ class InstallationTest extends PantherTestCase
 {
     public static function setUpBeforeClass(): void
     {
-        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
+        $configFile = realpath(static::$defaultOptions['webServerDir'].'/../').'/config/env.php';
         if (file_exists($configFile)) {
             rename($configFile, $configFile.'.tmp');
         }
@@ -41,7 +39,7 @@ class InstallationTest extends PantherTestCase
 
     public static function tearDownAfterClass(): void
     {
-        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
+        $configFile = realpath(static::$defaultOptions['webServerDir'].'/../').'/config/env.php';
         if (file_exists($configFile.'.tmp')) {
             rename($configFile.'.tmp', $configFile);
         }
@@ -119,7 +117,7 @@ class InstallationTest extends PantherTestCase
             static::assertStringContainsString('/install/finish', $client->getCurrentURL());
             static::assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
         } finally {
-            $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
+            $configFile = realpath(static::$defaultOptions['webServerDir'].'/../').'/config/env.php';
             if (file_exists($configFile)) {
                 unlink($configFile);
             }

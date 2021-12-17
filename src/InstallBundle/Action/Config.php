@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Action;
 
 use Doctrine\DBAL\DriverManager;
-use Exception;
 use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -24,7 +23,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use function strpos;
 
 final class Config
 {
