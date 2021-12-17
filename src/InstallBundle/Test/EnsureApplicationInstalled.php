@@ -49,8 +49,8 @@ trait EnsureApplicationInstalled
 
         $schemaTool = new SchemaTool($em);
         $schemaTool->dropDatabase();
-        $kernel->getContainer()->get(Migration::class)->migrate();
-        $kernel->getContainer()->get(ConfigWriter::class)->dump([
+        self::$container->get(Migration::class)->migrate();
+        self::$container->get(ConfigWriter::class)->dump([
             'database_host' => getenv('database_host') ?: '127.0.0.1',
             'database_user' => 'root',
             'database_password' => null,

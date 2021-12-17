@@ -8,7 +8,6 @@ services:
 
     SolidInvoice\InstallBundle\Installer\Database\Migration:
         arguments: ['@filesystem']
-        public: true
         calls:
             - [setContainer, ['@service_container']]
 
