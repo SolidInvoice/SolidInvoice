@@ -4,6 +4,7 @@ services:
         autoconfigure: true
 
     SolidInvoice\CoreBundle\ConfigWriter:
+        public: true
         arguments:
             $projectDir: '%kernel.project_dir%'
 

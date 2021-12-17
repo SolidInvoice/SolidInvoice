@@ -15,7 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
  * @group functional
@@ -23,7 +23,7 @@ use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
 class RecurringInvoiceTest extends ApiTestCase
 {
     use FixturesTrait;
-    use DatabaseTestCase;
+    use EnsureApplicationInstalled;
 
     public function setUp(): void
     {

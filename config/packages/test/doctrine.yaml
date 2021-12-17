@@ -3,7 +3,7 @@ doctrine:
         driver: '%env(database_driver)%'
         host: '%env(database_host)%'
         port: '%env(int:database_port)%'
-        dbname: '%env(database_name)%_test'
+        dbname: '%env(database_name)%'
         user: '%env(database_user)%'
         password: '%env(database_password)%'
         charset: UTF8
