@@ -15,15 +15,15 @@ namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\CoreBundle\Test\Traits\DatabaseTestCase;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
  * @group functional
  */
 class ContactTest extends ApiTestCase
 {
-    use DatabaseTestCase;
     use FixturesTrait;
+    use EnsureApplicationInstalled;
 
     public function setUp(): void
     {
