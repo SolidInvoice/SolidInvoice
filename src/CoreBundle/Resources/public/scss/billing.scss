@@ -1,12 +1,15 @@
 .invoice {
   border: none !important;
 
-  .column-qty, .column-total {
+  .column-qty,
+  .column-total {
     width: 10%;
   }
+
   .column-tax {
     width: 15%;
   }
+
   .column-price {
     width: 25%;
   }
@@ -15,7 +18,7 @@
   }
 
   .add-item-col {
-    border: 2px dotted #cccccc;
+    border: 2px dotted #ccc;
     text-align: center;
     padding: 6px 0;
 
@@ -25,14 +28,14 @@
     }
 
     &:hover {
-      background: #eeeeee;
+      background: #eee;
     }
   }
 
   .invoice-container {
-    border-right: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
-    border-top: 1px solid #cccccc;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
 
     > .col {
       padding: 0;
