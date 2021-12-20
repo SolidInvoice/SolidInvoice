@@ -11,36 +11,41 @@
 .jqCron-selector {
     position: relative;
 }
+
 .jqCron-cross,
 .jqCron-selector-title {
     cursor: pointer;
     border-radius: 3px;
-    border: 1px solid #ddd;
+    border: 1px solid #DDDDDD;
     margin: 0 0.2em;
     padding: 0 0.5em;
 }
+
 .jqCron-container.disable .jqCron-cross:hover,
 .jqCron-container.disable .jqCron-selector-title:hover,
 .jqCron-cross,
 .jqCron-selector-title {
-    background: #eee;
-    border-color: #ddd;
+    background: #EEEEEE;
+    border-color: #DDDDDD;
 }
+
 .jqCron-cross:hover,
 .jqCron-selector-title:hover {
-    background-color: #ddd;
-    border-color: #aaa;
+    background-color: #DDDDDD;
+    border-color: #AAAAAA;
 }
+
 .jqCron-cross {
     border-radius: 1em;
     font-size: 80%;
     padding: 0 0.3em;
 }
+
 .jqCron-selector-list {
-    background: #eee;
-    border: 1px solid #aaa;
-    -webkit-box-shadow: 2px 2px 3px #ccc;
-    box-shadow: 2px 2px 3px #ccc;
+    background: #EEEEEE;
+    border: 1px solid #AAAAAA;
+    -webkit-box-shadow: 2px 2px 3px #CCCCCC;
+    box-shadow: 2px 2px 3px #CCCCCC;
     left: 0.2em;
     list-style: none;
     margin: 0;
@@ -49,6 +54,7 @@
     top: 1.5em;
     z-index: 1;
 }
+
 .jqCron-selector-list li {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -60,46 +66,59 @@
     padding: 0.1em 0.4em;
     width: 100%;
 }
+
 .jqCron-selector-list li.selected {
-    background: #0088cc;
+    background: #0088CC;
     color: white;
 }
+
 .jqCron-selector-list li:hover {
-    background: #5fb9e7;
+    background: #5FB9E7;
     color: white;
 }
+
 .jqCron-selector-list.cols2 {
     width: 4em;
 }
+
 .jqCron-selector-list.cols2 li {
     width: 50%;
 }
+
 .jqCron-selector-list.cols3 {
     width: 6em;
 }
+
 .jqCron-selector-list.cols3 li {
     width: 33%;
 }
+
 .jqCron-selector-list.cols4 {
     width: 8em;
 }
+
 .jqCron-selector-list.cols4 li {
     width: 25%;
 }
+
 .jqCron-selector-list.cols5 {
     width: 10em;
 }
+
 .jqCron-selector-list.cols5 li {
     width: 20%;
 }
+
 .jqCron-error .jqCron-selector-title {
-    background: #fee;
-    border: 1px solid #fdd;
+    background: #FFEEEE;
+    border: 1px solid #FFDDDD;
     color: red;
 }
+
 .jqCron-container.disable * {
-    color: #888;
+    color: #888888;
 }
+
 .jqCron-container.disable .jqCron-selector-title {
-    background: #eee !important;
+    background: #EEEEEE !important;
 }

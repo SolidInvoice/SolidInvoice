@@ -19,7 +19,8 @@
         "dev": "encore dev",
         "dev-server": "encore dev-server --https --disable-host-check",
         "build": "encore production",
-        "lint": "eslint src"
+        "lint:js": "eslint src",
+        "lint:css": "stylelint 'src/**/*.{scss,css}'"
     },
     "devDependencies": {
         "@babel/cli": "^7.4.3",
@@ -39,7 +40,11 @@
         "handlebars-loader": "^1.7.1",
         "jasmine": "^3.4.0",
         "node-sass": "^4.13.1",
-        "sass-loader": "^11.0.0"
+        "postcss-scss": "^4.0.2",
+        "sass-loader": "^11.0.0",
+        "stylelint": "^14.1.0",
+        "stylelint-config-recommended": "^6.0.0",
+        "stylelint-scss": "^4.0.1"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",

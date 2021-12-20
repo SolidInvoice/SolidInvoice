@@ -1,28 +1,33 @@
-@import "~bootstrap/scss/variables";
+@import '~bootstrap/scss/variables';
 
 /* Form Styles
  ***************/
+
 form {
     margin: 0;
 
-    /*.btn-group > .btn:first-child {
+    /* .btn-group > .btn:first-child {
         min-width: 130px;
-    }*/
+    } */
 
     .btn .caret {
+
         &.dropdown-toggle {
             min-width: 100px;
         }
     }
 
     .btn-remove {
+
         &.trash {
-          margin: 5px;
+            margin: 5px;
         }
     }
 
     .input-prepend {
+
         .checkbox {
+
             &.inline {
                 padding: 0 25px;
             }
@@ -33,8 +38,8 @@ form {
         display: inline;
     }
 
-    label.required:before {
-        content: "* ";
+    label.required::before {
+        content: '* ';
         color: $form-feedback-invalid-color;
     }
 }

@@ -1,6 +1,8 @@
 /* Grid Search
  **************/
+
 .grid-search .control-group {
+
     label {
         width: 120px;
     }
@@ -16,21 +18,24 @@
 
 /* Grid Sorting
  ***************/
+
 .sort_down, .sort_up {
     float: right;
 }
 
-.sort_down:after {
-    content: "↓";
+.sort_down::after {
+    content: '↓';
 }
 
-.sort_up:after {
-    content: "↑";
+.sort_up::after {
+    content: '↑';
 }
 
 /* Mass Actions
  ***************/
+
 .grid {
+
     .mass-actions {
         margin-bottom: 20px;
 
@@ -43,6 +48,7 @@
         margin-top: 15px;
 
         .filters {
+
             input[disabled] {
                 background-color: transparent;
                 border: none;
@@ -52,15 +58,15 @@
                 height: auto;
 
                 &::-webkit-input-placeholder {
-                    color: #333;
+                    color: #333333;
                 }
 
                 &::-moz-placeholder {
-                    color: #333;
+                    color: #333333;
                 }
 
                 &:-ms-input-placeholder {
-                    color: #333;
+                    color: #333333;
                 }
             }
         }
@@ -68,6 +74,7 @@
 }
 
 .grid-row-titles {
+
     .dropdown-toggle {
         padding: 4px 6px;
 

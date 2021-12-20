@@ -1,45 +1,45 @@
 .invoice {
-  border: none !important;
+    border: none !important;
 
-  .column-qty,
-  .column-total {
-    width: 10%;
-  }
-
-  .column-tax {
-    width: 15%;
-  }
-
-  .column-price {
-    width: 25%;
-  }
-
-  .column-trash {
-    width: 2%;
-  }
-
-  .add-item-col {
-    border: 2px dotted #ccc;
-    text-align: center;
-    padding: 6px 0;
-
-    .add-item {
-      display: block;
-      width: 100%;
+    .column-qty,
+    .column-total {
+        width: 10%;
     }
 
-    &:hover {
-      background: #eee;
+    .column-tax {
+        width: 15%;
     }
-  }
 
-  .invoice-container {
-    border-right: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    border-top: 1px solid #ccc;
-
-    > .col {
-      padding: 0;
+    .column-price {
+        width: 25%;
     }
-  }
+
+    .column-trash {
+        width: 2%;
+    }
+
+    .add-item-col {
+        border: 2px dotted #CCCCCC;
+        text-align: center;
+        padding: 6px 0;
+
+        .add-item {
+            display: block;
+            width: 100%;
+        }
+
+        &:hover {
+            background: #EEEEEE;
+        }
+    }
+
+    .invoice-container {
+        border-right: 1px solid #CCCCCC;
+        border-left: 1px solid #CCCCCC;
+        border-top: 1px solid #CCCCCC;
+
+        > .col {
+            padding: 0;
+        }
+    }
 }

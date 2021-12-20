@@ -4,19 +4,12 @@
 @import '~admin-lte/build/scss/variables';
 @import '~admin-lte/build/scss/variables-alt';
 @import '~admin-lte/build/scss/mixins';
-@import '~admin-lte/build/scss/variables';
-@import '~admin-lte/build/scss/mixins';
 
-// Primary
-$light-blue: #1E88E7;
-// Danger
-$red: #BF2600;
-// Success
-$green: #00875A;
-// Info
-$aqua: #00C0EF;
-// Warning
-$yellow: #F39C12;
+$light-blue: #1E88E7; /* Primary */
+$red: #BF2600; /* Danger */
+$green: #00875A; /* Success */
+$aqua: #00C0EF; /* Info */
+$yellow: #F39C12; /* Warning */
 $blue: #0073B7;
 $navy: #001F3F;
 $teal: #39CCCC;
@@ -54,7 +47,6 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
 @import '~admin-lte/build/scss/forms';
 @import '~admin-lte/build/scss/progress-bars';
 @import '~admin-lte/build/scss/small-box';
-@import '~admin-lte/build/scss/small-box';
 @import '~admin-lte/build/scss/info-box';
 @import '~admin-lte/build/scss/timeline';
 @import '~admin-lte/build/scss/buttons';
@@ -71,18 +63,18 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
 @import '~admin-lte/build/scss/social-widgets';
 
 /* PAGES
-//--------------------------------------------------------*/
+//-------------------------------------------------------- */
 @import '~admin-lte/build/scss/pages/login_and_register';
 @import '~admin-lte/build/scss/pages/invoice';
 @import '~admin-lte/build/scss/pages/profile';
 
 /* Plugins
-//--------------------------------------------------------*/
+//-------------------------------------------------------- */
 @import '~admin-lte/build/scss/plugins/mixins';
 @import '~admin-lte/build/scss/plugins/select2';
 
 /* Miscellaneous
-//--------------------------------------------------------*/
+//-------------------------------------------------------- */
 @import '~admin-lte/build/scss/miscellaneous';
 @import '~admin-lte/build/scss/print';
 
@@ -96,6 +88,7 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
 }
 
 .left-sidebar {
+
     .divider {
         background-color: $grey-200;
         height: 1px;
@@ -103,7 +96,9 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
 }
 
 .dashboard-widget {
+
     .list-group-item {
+
         .badge {
             float: none;
         }
@@ -114,6 +109,7 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
  * Skin: Default
  * -------------
  */
+
 .skin-solidinvoice-default {
 
     background: #E9ECEF;
@@ -145,9 +141,12 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
                 font-size: 1.1em;
             }
 
-            @media (max-width: $screen-header-collapse) {
+            @media ( max-width : $screen-header-collapse ) {
+
                 .dropdown-menu {
+
                     li {
+
                         &.divider {
                             background-color: rgba(255, 255, 255, 0.1);
                         }
@@ -191,7 +190,6 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
         border-top-color: $gray-lte;
     }
 
-    // Sidebar
     .sidebar {
 
         .nav-sidebar {
@@ -206,13 +204,13 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
             .nav-header {
                 text-transform: uppercase;
 
-                &:not(:first-of-type) {
+                &:not( :first-of-type ) {
                     padding: 0;
                 }
             }
 
             > .nav-item > .nav-link.active {
-                background-color: rgba(255, 255, 255, .9);
+                background-color: rgba(255, 255, 255, 0.9);
                 color: #343A40;
             }
         }
@@ -220,9 +218,6 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
 
     .box.box-primary {
         border-top-color: $light-blue;
-    }
-
-    .nav > li > a {
     }
 
     .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
