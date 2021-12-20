@@ -46,7 +46,6 @@ jobs:
       - name: Super-Linter
         uses: github/super-linter/slim@v4
         env:
-          ACTIONS_RUNNER_DEBUG: true
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: 2.1.x
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,6 +58,5 @@ jobs:
           VALIDATE_BASH: true
           VALIDATE_PHP_BUILTIN: true
           LINTER_RULES_PATH: .
-          # VALIDATE_PHP_PHPSTAN: true
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_CSS: true
