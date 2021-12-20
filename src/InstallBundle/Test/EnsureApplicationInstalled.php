@@ -42,8 +42,9 @@ trait EnsureApplicationInstalled
 
         unset($params['dbname']);
 
+        $tmpConnection = DriverManager::getConnection($params);
         try {
-            DriverManager::getConnection($params)->getSchemaManager()->createDatabase($dbName);
+            $tmpConnection->getSchemaManager()->createDatabase($dbName);
         } catch (Throwable $e) {
             // Database already exists
         }
@@ -58,6 +59,7 @@ trait EnsureApplicationInstalled
             'database_user' => 'root',
             'database_password' => null,
             'installed' => date(DateTimeInterface::ATOM),
+            'database_version' => $tmpConnection->getWrappedConnection()->getServerVersion(),
         ]);
 
         StaticDriver::setKeepStaticConnections(true);
