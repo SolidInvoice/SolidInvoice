@@ -1,58 +1,63 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/bootstrap-reboot";
-@import "~bootstrap/scss/type";
-@import "~bootstrap/scss/grid";
-@import "~bootstrap/scss/tables";
-@import "~admin-lte/build/scss/variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/tables';
+@import '~admin-lte/build/scss/variables';
 
 $body-bg: #FFFFFF;
-@import "~admin-lte/build/scss/mixins";
+@import '~admin-lte/build/scss/mixins';
 
-@import "theme";
+@import 'theme';
 
 h4 {
-  margin: 0;
+    margin: 0;
 }
 
 table.invoice-details, table.quote-details {
-  border: 1px solid #999999;
-  border-spacing: 0;
+    border: 1px solid #999999;
+    border-spacing: 0;
 
-  thead {
-    tr {
-      border: 1px solid #999999;
-      background-color: #efefef;
-      margin: 0;
+    thead {
 
-      th {
-        margin: 0;
-        padding: 8px;
-        border-right: 1px solid #999999;
-      }
+        tr {
+            border: 1px solid #999999;
+            background-color: #EFEFEF;
+            margin: 0;
+
+            th {
+                margin: 0;
+                padding: 8px;
+                border-right: 1px solid #999999;
+            }
+        }
     }
-  }
 
-  tbody {
-    tr {
-      td {
-        border-bottom: 1px solid #999999;
-        padding: 8px;
-        border-right: 1px solid #999999;
-      }
-    }
-  }
+    tbody {
 
-  tfoot {
-    tr {
-      td {
-        padding: 8px;
-      }
+        tr {
+
+            td {
+                border-bottom: 1px solid #999999;
+                padding: 8px;
+                border-right: 1px solid #999999;
+            }
+        }
     }
-  }
+
+    tfoot {
+
+        tr {
+
+            td {
+                padding: 8px;
+            }
+        }
+    }
 }
 
 table.invoice-summary, table.quote-summary {
-  float: right;
+    float: right;
 }

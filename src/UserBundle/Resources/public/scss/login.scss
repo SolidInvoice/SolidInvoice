@@ -1,27 +1,28 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins/breakpoints";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/breakpoints';
 
 body.login {
-  .wrapper {
-    background: transparent url(../img/login.png);
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-  }
-  .content-wrapper {
-    background-color: transparent;
-  }
-
-  .login-page {
-    background: none;
-
-    @include media-breakpoint-up('lg') {
-      .login-box {
-        width: 33%;
-      }
+    .wrapper {background: transparent url('../img/login.png');
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
-  }
+
+    .content-wrapper {
+        background-color: transparent;
+    }
+
+    .login-page {
+        background: none;
+
+        @include media-breakpoint-up('lg') {
+
+            .login-box {
+                width: 33%;
+            }
+        }
+    }
 }

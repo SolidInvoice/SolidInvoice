@@ -13,19 +13,6 @@
 }
 
 /* add a scroll bar to stop page from jerking around */
-.modal-open.page-overflow .page-container,
-.modal-open.page-overflow .page-container .navbar-fixed-top,
-.modal-open.page-overflow .page-container .navbar-fixed-bottom,
-.modal-open.page-overflow .modal-scrollable {
-    overflow-y: scroll;
-}
-
-@media (max-width: 979px) {
-    .modal-open.page-overflow .page-container .navbar-fixed-top,
-    .modal-open.page-overflow .page-container .navbar-fixed-bottom  {
-        overflow-y: visible;
-    }
-}
 
 .modal-scrollable {
     position: fixed;
@@ -35,6 +22,22 @@
     right: 0;
     overflow: auto;
 }
+
+.modal-open.page-overflow .page-container,
+.modal-open.page-overflow .page-container .navbar-fixed-top,
+.modal-open.page-overflow .page-container .navbar-fixed-bottom,
+.modal-open.page-overflow .modal-scrollable {
+    overflow-y: scroll;
+}
+
+@media ( max-width : 979px ) {
+
+    .modal-open.page-overflow .page-container .navbar-fixed-top,
+    .modal-open.page-overflow .page-container .navbar-fixed-bottom {
+        overflow-y: visible;
+    }
+}
+
 
 .modal {
     outline: none;
@@ -72,21 +75,21 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #fff;
+    background: #FFFFFF;
     border-radius: 6px;
     z-index: 10;
 }
 
-.modal-backdrop.modal-absolute{
+.modal-backdrop.modal-absolute {
     position: absolute;
     z-index: 940;
 }
 
 .modal-backdrop,
-.modal-backdrop.fade.in{
+.modal-backdrop.fade.in {
     opacity: 0.7;
     filter: alpha(opacity=70);
-    background: #fff;
+    background: #FFFFFF;
 }
 
 .modal.container {
@@ -115,17 +118,19 @@
 
 /* Responsive */
 
-@media (min-width: 1200px) {
+@media ( min-width : 1200px ) {
+
     .modal.container {
         width: 1170px;
         margin-left: -585px;
     }
 }
 
-@media (max-width: 979px) {
+@media ( max-width : 979px ) {
+
     .modal,
     .modal.container,
-    .modal.modal-overflow 	{
+    .modal.modal-overflow {
         top: 1%;
         right: 1%;
         left: 1%;
@@ -168,7 +173,7 @@
 /*
 Animate.css - http://daneden.me/animate
 Licensed under the ☺ license (http://licence.visualidiot.com/)
-Copyright (c) 2012 Dan Eden*/
+Copyright (c) 2012 Dan Eden */
 
 .animated {
     -webkit-animation-duration: 1s;
@@ -182,27 +187,63 @@ Copyright (c) 2012 Dan Eden*/
 }
 
 @-webkit-keyframes shake {
-    0%, 100% {-webkit-transform: translateX(0);}
-    10%, 30%, 50%, 70%, 90% {-webkit-transform: translateX(-10px);}
-    20%, 40%, 60%, 80% {-webkit-transform: translateX(10px);}
+
+    0%, 100% {
+        -webkit-transform: translateX(0);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        -webkit-transform: translateX(-10px);
+    }
+
+    20%, 40%, 60%, 80% {
+        -webkit-transform: translateX(10px);
+    }
 }
 
 @-moz-keyframes shake {
-    0%, 100% {-moz-transform: translateX(0);}
-    10%, 30%, 50%, 70%, 90% {-moz-transform: translateX(-10px);}
-    20%, 40%, 60%, 80% {-moz-transform: translateX(10px);}
+
+    0%, 100% {
+        -moz-transform: translateX(0);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        -moz-transform: translateX(-10px);
+    }
+
+    20%, 40%, 60%, 80% {
+        -moz-transform: translateX(10px);
+    }
 }
 
 @-o-keyframes shake {
-    0%, 100% {-o-transform: translateX(0);}
-    10%, 30%, 50%, 70%, 90% {-o-transform: translateX(-10px);}
-    20%, 40%, 60%, 80% {-o-transform: translateX(10px);}
+
+    0%, 100% {
+        -o-transform: translateX(0);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        -o-transform: translateX(-10px);
+    }
+
+    20%, 40%, 60%, 80% {
+        -o-transform: translateX(10px);
+    }
 }
 
 @keyframes shake {
-    0%, 100% {transform: translateX(0);}
-    10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
-    20%, 40%, 60%, 80% {transform: translateX(10px);}
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-10px);
+    }
+
+    20%, 40%, 60%, 80% {
+        transform: translateX(10px);
+    }
 }
 
 .shake {
