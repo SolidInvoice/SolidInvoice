@@ -58,6 +58,7 @@ jobs:
           VALIDATE_GITLEAKS: true
           VALIDATE_BASH: true
           VALIDATE_PHP_BUILTIN: true
+          LINTER_RULES_PATH: .
           # VALIDATE_PHP_PHPSTAN: true
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_CSS: true
