@@ -37,6 +37,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12
+
+      - run: yarn install
+
       - name: Super-Linter
         uses: github/super-linter/slim@v4
         env:
@@ -49,8 +55,9 @@ jobs:
           VALIDATE_JSON: true
           VALIDATE_XML: true
           VALIDATE_MD: true
+          VALIDATE_GITLEAKS: true
           VALIDATE_BASH: true
           VALIDATE_PHP_BUILTIN: true
-          VALIDATE_PHP_PHPSTAN: true
+          # VALIDATE_PHP_PHPSTAN: true
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_CSS: true
