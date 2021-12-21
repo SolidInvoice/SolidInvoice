@@ -42,6 +42,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\StateMachine;
+use function array_key_exists;
+use function filter_var;
+use const FILTER_VALIDATE_BOOL;
 
 // @TODO: Refactor this class to make it cleaner
 
@@ -154,9 +157,10 @@ final class Prepare
 
         $form->handleRequest($request);
 
-        $paymentFactories = $this->paymentFactories->getFactories('offline');
+        $offlinePaymentFactories = $this->paymentFactories->getFactories('offline');
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $paymentFactories = $this->paymentFactories->getFactories($form->getData()['payment_method']->getFactoryName());
             $data = $form->getData();
             /** @var Money $amount */
             $amount = $data['amount'];
@@ -166,33 +170,35 @@ final class Prepare
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (array_key_exists($paymentName, $paymentFactories)) {
-                if ('credit' === $paymentName) {
-                    $clientCredit = $invoice->getClient()->getCredit()->getValue();
+            if (!array_key_exists($paymentName, $paymentFactories)) {
+                throw new Exception('Invalid payment method');
+            }
 
-                    $invalid = '';
-                    if ($amount->greaterThan($clientCredit)) {
-                        $invalid = 'payment.create.exception.not_enough_credit';
-                    } elseif ($amount->greaterThan($invoice->getBalance())) {
-                        $invalid = 'payment.create.exception.amount_exceeds_balance';
-                    }
+            if ('credit' === $paymentName) {
+                $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
-                    if (!empty($invalid)) {
-                        $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
-
-                        return new Template(
-                            '@SolidInvoicePayment/Payment/create.html.twig',
-                            [
-                                'form' => $form->createView(),
-                                'invoice' => $invoice,
-                                'internal' => array_keys($paymentFactories),
-                            ]
-                        );
-                    }
+                $invalid = '';
+                if ($amount->greaterThan($clientCredit)) {
+                    $invalid = 'payment.create.exception.not_enough_credit';
+                } elseif ($amount->greaterThan($invoice->getBalance())) {
+                    $invalid = 'payment.create.exception.amount_exceeds_balance';
                 }
 
-                $data['capture_online'] = true;
+                if (!empty($invalid)) {
+                    $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
+
+                    return new Template(
+                        '@SolidInvoicePayment/Payment/create.html.twig',
+                        [
+                            'form' => $form->createView(),
+                            'invoice' => $invoice,
+                            'internal' => array_keys($offlinePaymentFactories),
+                        ]
+                    );
+                }
             }
+
+            $data['capture_online'] = $data['capture_online'] ?? !array_key_exists($paymentName, $offlinePaymentFactories);
 
             $payment = new Payment();
             $payment->setInvoice($invoice);
@@ -209,7 +215,7 @@ final class Prepare
             $invoice->addPayment($payment);
             $this->save($payment);
 
-            if (array_key_exists('capture_online', $data) && true === $data['capture_online']) {
+            if (array_key_exists('capture_online', $data) && true === filter_var($data['capture_online'], FILTER_VALIDATE_BOOL)) {
                 $captureToken = $this->payum
                     ->getTokenFactory()
                     ->createCaptureToken(
@@ -240,7 +246,7 @@ final class Prepare
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-                'internal' => \array_keys($paymentFactories),
+                'internal' => \array_keys($offlinePaymentFactories),
             ]
         );
     }
