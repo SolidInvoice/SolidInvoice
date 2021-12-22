@@ -215,7 +215,7 @@ final class Prepare
             $invoice->addPayment($payment);
             $this->save($payment);
 
-            if (array_key_exists('capture_online', $data) && true === filter_var($data['capture_online'], FILTER_VALIDATE_BOOL)) {
+            if (true === filter_var($data['capture_online'], FILTER_VALIDATE_BOOL)) {
                 $captureToken = $this->payum
                     ->getTokenFactory()
                     ->createCaptureToken(
