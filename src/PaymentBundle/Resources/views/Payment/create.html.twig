@@ -9,6 +9,9 @@
 
 {% extends '@SolidInvoiceCore/Layout/' ~ (app.user is not empty ? 'default' : 'default_no_nav') ~ '.html.twig' %}
 
+{% set module = "payment-capture" %}
+{% set moduleData = internal %}
+
 {% block title %}{{ "payment.create.tite"|trans|replace({"%id%" : invoice.id}) }}{% endblock %}
 
 {% block content %}
@@ -51,25 +54,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block script %}
-    require(['jquery'], function ($) {
-        $(function () {
-            var internal = ['{{ internal|join("', '")|raw }}'];
-
-            var captureOnline = $('#payment_capture_online').parents('div.form-group');
-            captureOnline.hide();
-
-            $('#payment_payment_method').on('change', function () {
-                var val = $('option:selected', this).data('gateway');
-
-                if (-1 !== internal.indexOf(val)) {
-                    captureOnline.hide();
-                } else {
-                    captureOnline.show();
-                }
-            });
-        });
-    });
 {% endblock %}
