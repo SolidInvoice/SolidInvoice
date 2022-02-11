@@ -9607,16 +9607,16 @@
         },
         {
             "name": "symfony/polyfill",
-            "version": "v1.21.0",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill.git",
-                "reference": "d6b374f2156be8478bc6df06b4ee1b5240d8fb07"
+                "reference": "6db783b3a48077f7102b6d7be6314d871eb7898c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill/zipball/d6b374f2156be8478bc6df06b4ee1b5240d8fb07",
-                "reference": "d6b374f2156be8478bc6df06b4ee1b5240d8fb07",
+                "url": "https://api.github.com/repos/symfony/polyfill/zipball/6db783b3a48077f7102b6d7be6314d871eb7898c",
+                "reference": "6db783b3a48077f7102b6d7be6314d871eb7898c",
                 "shasum": ""
             },
             "require": {
@@ -9636,31 +9636,27 @@
                 "symfony/polyfill-php73": "self.version",
                 "symfony/polyfill-php74": "self.version",
                 "symfony/polyfill-php80": "self.version",
+                "symfony/polyfill-php81": "self.version",
                 "symfony/polyfill-util": "self.version",
                 "symfony/polyfill-uuid": "self.version",
                 "symfony/polyfill-xml": "self.version"
             },
             "require-dev": {
-                "symfony/intl": "^4.4|^5.0",
-                "symfony/phpunit-bridge": "^5"
+                "symfony/intl": "^4.4|^5.0|^6.0",
+                "symfony/phpunit-bridge": "^5.3|^6.0",
+                "symfony/var-dumper": "^4.4|^5.1|^6.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.21-dev"
+                    "dev-main": "1.23-dev"
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\": "src/"
-                },
                 "files": [
                     "src/bootstrap.php",
                     "src/Apcu/bootstrap.php",
                     "src/Ctype/bootstrap.php",
-                    "src/Php72/bootstrap.php",
-                    "src/Php73/bootstrap.php",
-                    "src/Php74/bootstrap.php",
                     "src/Uuid/bootstrap.php",
                     "src/Iconv/bootstrap.php",
                     "src/Intl/Grapheme/bootstrap.php",
@@ -9670,6 +9666,9 @@
                     "src/Intl/Normalizer/bootstrap.php",
                     "src/Mbstring/bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\": "src/"
+                },
                 "classmap": [
                     "src/Intl/Icu/Resources/stubs",
                     "src/Intl/MessageFormatter/Resources/stubs",
@@ -9702,7 +9701,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/polyfill/issues",
-                "source": "https://github.com/symfony/polyfill/tree/v1.21.0"
+                "source": "https://github.com/symfony/polyfill/tree/v1.24.0"
             },
             "funding": [
                 {
@@ -9718,7 +9717,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-13T15:42:09+00:00"
+            "time": "2022-01-04T09:26:42+00:00"
         },
         {
             "name": "symfony/postmark-mailer",
@@ -12127,26 +12126,27 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.14.1",
+            "version": "v2.14.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "5eb9ac5dfdd20c3f59495c22841adc5da980d312"
+                "reference": "66baa66f29ee30e487e05f1679903e36eb01d727"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5eb9ac5dfdd20c3f59495c22841adc5da980d312",
-                "reference": "5eb9ac5dfdd20c3f59495c22841adc5da980d312",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/66baa66f29ee30e487e05f1679903e36eb01d727",
+                "reference": "66baa66f29ee30e487e05f1679903e36eb01d727",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=7.1.3",
                 "symfony/polyfill-ctype": "^1.8",
-                "symfony/polyfill-mbstring": "^1.3"
+                "symfony/polyfill-mbstring": "^1.3",
+                "symfony/polyfill-php72": "^1.8"
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/phpunit-bridge": "^4.4.9|^5.0.9"
+                "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0"
             },
             "type": "library",
             "extra": {
@@ -12190,7 +12190,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v2.14.1"
+                "source": "https://github.com/twigphp/Twig/tree/v2.14.11"
             },
             "funding": [
                 {
@@ -12202,7 +12202,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-27T19:25:29+00:00"
+            "time": "2022-02-04T06:57:25+00:00"
         },
         {
             "name": "twilio/sdk",
@@ -14343,5 +14343,5 @@
     "platform-overrides": {
         "php": "7.3.5"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
