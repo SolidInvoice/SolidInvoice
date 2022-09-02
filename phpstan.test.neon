@@ -1,0 +1,6 @@
+includes:
+    - phpstan.neon
+
+parameters:
+    symfony:
+        container_xml_path: var/cache/test/srcSolidInvoice_KernelTestDebugContainer.xml

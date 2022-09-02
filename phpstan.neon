@@ -6,7 +6,7 @@ parameters:
         - vendor/autoload.php
         - vendor/bin/.phpunit/phpunit-8.5-0/vendor/autoload.php
         - vendor/doctrine/dbal/lib/Doctrine/DBAL/Types/ConversionException.php
-    excludes_analyse:
+    excludePaths:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:
-        container_xml_path: var/cache/test/srcSolidInvoice_KernelTestDebugContainer.xml
+        container_xml_path: var/cache/dev/srcSolidInvoice_KernelDevDebugContainer.xml
