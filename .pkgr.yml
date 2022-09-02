@@ -1,4 +1,2 @@
 buildpack: https://github.com/heroku/heroku-buildpack-php
-services:
-  - mysql
 
