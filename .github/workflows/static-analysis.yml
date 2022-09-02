@@ -45,4 +45,4 @@ jobs:
         run: ./bin/simple-phpunit --version
 
       - name: Run PHPStan
-        run: bin/phpstan analyse
+        run: bin/phpstan analyse -c phpstan.test.neon
