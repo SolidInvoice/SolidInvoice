@@ -133,6 +133,7 @@
         "phpstan/phpstan-mockery": "^1.1.0",
         "phpstan/phpstan-phpunit": "^1.1.1",
         "phpstan/phpstan-symfony": "^1.2.13",
+        "rector/rector": "^0.14.0",
         "symfony/debug-bundle": "^5.0",
         "symfony/maker-bundle": "^1.17",
         "symfony/panther": "^1.1 || ^2.0",
