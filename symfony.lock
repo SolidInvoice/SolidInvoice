@@ -185,15 +185,6 @@
     "goetas-webservices/xsd2php-runtime": {
         "version": "v0.2.12"
     },
-    "guzzlehttp/guzzle": {
-        "version": "6.5.5"
-    },
-    "guzzlehttp/promises": {
-        "version": "v1.3.1"
-    },
-    "guzzlehttp/psr7": {
-        "version": "1.6.1"
-    },
     "hamcrest/hamcrest-php": {
         "version": "v2.0.1"
     },
@@ -344,20 +335,11 @@
     "php-coveralls/php-coveralls": {
         "version": "v2.2.0"
     },
-    "php-http/guzzle6-adapter": {
-        "version": "v2.0.1"
-    },
-    "php-http/httplug": {
-        "version": "2.2.0"
-    },
     "php-http/message": {
         "version": "1.8.0"
     },
     "php-http/message-factory": {
         "version": "v1.0.2"
-    },
-    "php-http/promise": {
-        "version": "1.1.0"
     },
     "php-webdriver/webdriver": {
         "version": "1.8.2"
@@ -398,9 +380,6 @@
     "psr/container": {
         "version": "1.0.0"
     },
-    "psr/http-client": {
-        "version": "1.0.1"
-    },
     "psr/http-message": {
         "version": "1.0.1"
     },
@@ -412,9 +391,6 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
-    },
-    "ralouphie/getallheaders": {
-        "version": "3.0.3"
     },
     "ramsey/uuid": {
         "version": "3.9.3"
