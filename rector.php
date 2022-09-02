@@ -11,16 +11,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Rector\Core\Configuration\Option;
+use Rector\Config\RectorConfig;
+use Rector\Core\ValueObject\PhpVersion;
+use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\SetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Symfony\Set\SymfonySetList;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $parameters = $containerConfigurator->parameters();
-
-    $parameters->set(Option::SETS, [
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->sets([
         // General
-        SetList::PHPSTAN,
         SetList::CODE_QUALITY,
 
         // PHP
@@ -30,42 +30,45 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         SetList::PHP_73,
 
         // PHPUnit
-        SetList::PHPUNIT_70,
-        SetList::PHPUNIT_75,
-        SetList::PHPUNIT_80,
-        SetList::PHPUNIT_90,
-        SetList::PHPUNIT_91,
-        SetList::PHPUNIT_CODE_QUALITY,
-        SetList::PHPUNIT_EXCEPTION,
-        SetList::PHPUNIT_MOCK,
-        SetList::PHPUNIT_YIELD_DATA_PROVIDER,
+        PHPUnitSetList::PHPUNIT_70,
+        PHPUnitSetList::PHPUNIT_80,
+        PHPUnitSetList::PHPUNIT_90,
+        PHPUnitSetList::PHPUNIT_91,
+        PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+        PHPUnitSetList::PHPUNIT_EXCEPTION,
+        PHPUnitSetList::PHPUNIT_YIELD_DATA_PROVIDER,
 
         // Doctrine
-        SetList::DOCTRINE_25,
-        SetList::DOCTRINE_COMMON_20,
-        SetList::DOCTRINE_DBAL_30,
-        SetList::DOCTRINE_SERVICES,
-        SetList::DOCTRINE_CODE_QUALITY,
+        DoctrineSetList::DOCTRINE_25,
+        DoctrineSetList::DOCTRINE_COMMON_20,
+        DoctrineSetList::DOCTRINE_DBAL_30,
+        DoctrineSetList::DOCTRINE_ORM_29,
+        // DoctrineSetList::DOCTRINE_REPOSITORY_AS_SERVICE,
+        DoctrineSetList::DOCTRINE_CODE_QUALITY,
 
         // Symfony
-        SetList::SYMFONY_40,
-        SetList::SYMFONY_41,
-        SetList::SYMFONY_42,
-        SetList::SYMFONY_43,
-        SetList::SYMFONY_44,
-        SetList::SYMFONY_50,
-        SetList::SYMFONY_CODE_QUALITY,
-        SetList::SYMFONY_CONSTRUCTOR_INJECTION,
+        SymfonySetList::SYMFONY_40,
+        SymfonySetList::SYMFONY_41,
+        SymfonySetList::SYMFONY_42,
+        SymfonySetList::SYMFONY_43,
+        SymfonySetList::SYMFONY_44,
+        SymfonySetList::SYMFONY_50,
+        SymfonySetList::SYMFONY_51,
+        SymfonySetList::SYMFONY_52,
+        SymfonySetList::SYMFONY_53,
+        SymfonySetList::SYMFONY_54,
+        SymfonySetList::SYMFONY_50_TYPES,
+        SymfonySetList::SYMFONY_52_VALIDATOR_ATTRIBUTES,
+        SymfonySetList::SYMFONY_CODE_QUALITY,
+        SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+        SymfonySetList::SYMFONY_STRICT,
     ]);
 
-    $parameters->set(Option::PATHS, __DIR__.'/src');
-    $parameters->set(Option::OPTION_AUTOLOAD_FILE, __DIR__.'/vendor/autoload.php');
-    $parameters->set(Option::AUTOLOAD_PATHS, __DIR__.'/vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php');
+    $rectorConfig->paths([__DIR__.'/src']);
+    $rectorConfig->autoloadPaths([__DIR__.'/vendor/bin/.phpunit/phpunit/vendor/autoload.php']);
 
-    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
-    $parameters->set(Option::IMPORT_SHORT_CLASSES, true);
-    $parameters->set(Option::IMPORT_DOC_BLOCKS, true);
-    $parameters->set(Option::SYMFONY_CONTAINER_XML_PATH_PARAMETER, __DIR__.'/var/cache/dev/srcSolidInvoice_KernelTestDebugContainer.xml');
-    $parameters->set(Option::PHP_VERSION_FEATURES, '7.3');
-    $parameters->set(Option::PROJECT_TYPE, Option::PROJECT_TYPE_OPEN_SOURCE);
+    $rectorConfig->importNames();
+    $rectorConfig->importShortClasses();
+    $rectorConfig->symfonyContainerXml(__DIR__.'/var/cache/dev/srcSolidInvoice_KernelDevDebugContainer.xml');
+    $rectorConfig->phpVersion(PhpVersion::PHP_73);
 };
