@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7348e4d2dba8039f34790e25e90a9b9a",
+    "content-hash": "fc1d9f7d87903bc22438608406bb5111",
     "packages": [
         {
             "name": "api-platform/core",
@@ -13040,6 +13040,51 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
             },
             "time": "2020-07-09T08:09:16+00:00"
+        },
+        {
+            "name": "heroku/heroku-buildpack-php",
+            "version": "v223",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heroku/heroku-buildpack-php.git",
+                "reference": "3cd7de1583bf19b522a912bc7720c537ad4df1bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/3cd7de1583bf19b522a912bc7720c537ad4df1bd",
+                "reference": "3cd7de1583bf19b522a912bc7720c537ad4df1bd",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/heroku-php-apache2",
+                "bin/heroku-php-nginx"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Zuelke",
+                    "email": "dz@heroku.com"
+                }
+            ],
+            "description": "Toolkit for starting a PHP application locally, with or without foreman, using the same config for PHP and Apache2/Nginx as on Heroku",
+            "homepage": "https://github.com/heroku/heroku-buildpack-php",
+            "keywords": [
+                "apache",
+                "apache2",
+                "foreman",
+                "heroku",
+                "nginx",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/heroku/heroku-buildpack-php/issues",
+                "source": "https://github.com/heroku/heroku-buildpack-php/tree/v223"
+            },
+            "time": "2022-08-04T22:06:04+00:00"
         },
         {
             "name": "liip/test-fixtures-bundle",
