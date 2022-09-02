@@ -39,7 +39,7 @@ class PaypalExpressCheckout extends AbstractType
             'password',
             PasswordType::class,
             [
-                //'help' => 'payment.settings.password.hint',
+                // 'help' => 'payment.settings.password.hint',
                 'constraints' => new NotBlank(), // @TODO: This constraint should only be added when saving for the first time
             ]
         );
