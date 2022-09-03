@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of SolidInvoice project.
- *
- * (c) Pierre du Plessis <open-source@solidworx.co>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
+use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
+use Rector\Symfony\Rector\Class_\EventListenerToEventSubscriberRector;
 use Rector\Symfony\Set\SymfonySetList;
 
 return static function (RectorConfig $rectorConfig): void {
+
+    $rectorConfig->paths([__DIR__.'/src']);
+    $rectorConfig->autoloadPaths([__DIR__.'/vendor/bin/.phpunit/phpunit/vendor/autoload.php']);
+
+    $rectorConfig->importNames();
+    $rectorConfig->importShortClasses();
+    $rectorConfig->symfonyContainerXml(__DIR__.'/var/cache/dev/srcSolidInvoice_KernelDevDebugContainer.xml');
+    $rectorConfig->phpVersion(PhpVersion::PHP_73);
+
     $rectorConfig->sets([
         // General
         SetList::CODE_QUALITY,
 
         // PHP
-        SetList::PHP_70,
-        SetList::PHP_71,
-        SetList::PHP_72,
-        SetList::PHP_73,
+        LevelSetList::UP_TO_PHP_73,
 
         // PHPUnit
         PHPUnitSetList::PHPUNIT_70,
@@ -64,11 +64,4 @@ return static function (RectorConfig $rectorConfig): void {
         SymfonySetList::SYMFONY_STRICT,
     ]);
 
-    $rectorConfig->paths([__DIR__.'/src']);
-    $rectorConfig->autoloadPaths([__DIR__.'/vendor/bin/.phpunit/phpunit/vendor/autoload.php']);
-
-    $rectorConfig->importNames();
-    $rectorConfig->importShortClasses();
-    $rectorConfig->symfonyContainerXml(__DIR__.'/var/cache/dev/srcSolidInvoice_KernelDevDebugContainer.xml');
-    $rectorConfig->phpVersion(PhpVersion::PHP_73);
 };
