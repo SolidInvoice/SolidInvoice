@@ -133,11 +133,11 @@
         "phpstan/phpstan-mockery": "^1.1.0",
         "phpstan/phpstan-phpunit": "^1.1.1",
         "phpstan/phpstan-symfony": "^1.2.13",
-        "rector/rector": "^0.14.0",
+        "rector/rector": "^0.14.1",
         "symfony/debug-bundle": "^5.0",
         "symfony/maker-bundle": "^1.17",
         "symfony/panther": "^1.1 || ^2.0",
-        "symfony/phpunit-bridge": "^5.0",
+        "symfony/phpunit-bridge": "^5.4",
         "symfony/web-profiler-bundle": "^4.4"
     },
     "autoload": {
