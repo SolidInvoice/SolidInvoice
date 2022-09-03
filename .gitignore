@@ -13,6 +13,7 @@ vendor
 bin/*
 !bin/console
 !bin/check
+!bin/phpunit
 composer.phar
 !public/js/.gitkeep
 !public/css/.gitkeep
