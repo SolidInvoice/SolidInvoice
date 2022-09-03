@@ -16,10 +16,11 @@
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
+        convertDeprecationsToExceptions="false"
         processIsolation="false"
         stopOnFailure="false"
-        bootstrap="config/bootstrap.php">
-
+        bootstrap="tests/bootstrap.php"
+>
     <testsuites>
         <testsuite name="SolidInvoice Test Suite">
             <directory>src/*Bundle/Tests</directory>
@@ -27,19 +28,22 @@
     </testsuites>
 
     <php>
+        <ini name="display_errors" value="1" />
+        <ini name="error_reporting" value="-1" />
         <server name="KERNEL_CLASS" value="SolidInvoice\Kernel"/>
         <server name="KERNEL_DIR" value="app"/>
         <server name="SOLIDINVOICE_ENV" value="test"/>
         <server name="SOLIDINVOICE_DEBUG" value="0"/>
+        <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="8.5"/>
-        <server name="APP_ENV" value="test"/>
-        <server name="APP_DEBUG" value="0"/>
+        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_DEPRECATIONS_HELPER" value="345"/>
         <server name="PANTHER_NO_HEADLESS" value="0" />
     </php>
 
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
 
     <extensions>
