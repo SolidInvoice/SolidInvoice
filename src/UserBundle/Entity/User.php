@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use DateTimeInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,51 +32,51 @@ class User implements UserInterface
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="mobile", type="string", nullable=true)
      */
     private $mobile;
 
     /**
-     * @var ApiToken[]|Collection<int, ApiToken>
+     * @var Collection<ApiToken>
      *
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $apiTokens;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="username", type="string", length=180)
      */
     private $username;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="email", type="string", length=180)
      */
     private $email;
 
     /**
-     * @var bool
+     * @var bool|null
      *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    private $enabled = false;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="password", type="string")
      */
@@ -87,7 +88,7 @@ class User implements UserInterface
     private $plainPassword;
 
     /**
-     * @var DateTime|null
+     * @var DateTimeInterface|null
      *
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
@@ -101,7 +102,7 @@ class User implements UserInterface
     private $confirmationToken;
 
     /**
-     * @var DateTime|null
+     * @var DateTimeInterface|null
      *
      * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
      */
@@ -112,13 +113,11 @@ class User implements UserInterface
      *
      * @ORM\Column(name="roles", type="array")
      */
-    private $roles;
+    private $roles = [];
 
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
-        $this->enabled = false;
-        $this->roles = [];
     }
 
     /**

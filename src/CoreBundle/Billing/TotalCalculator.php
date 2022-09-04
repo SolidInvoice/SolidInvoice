@@ -22,6 +22,9 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Billing\TotalCalculatorTest
+ */
 class TotalCalculator
 {
     /**

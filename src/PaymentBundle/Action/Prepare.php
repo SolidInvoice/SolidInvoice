@@ -204,7 +204,7 @@ final class Prepare
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
-            /** @var \Money\Money $money */
+            /** @var Money $money */
             $money = $data['amount'];
             $payment->setTotalAmount($money->getAmount());
             $payment->setCurrencyCode($money->getCurrency()->getCode());
@@ -215,7 +215,7 @@ final class Prepare
             $invoice->addPayment($payment);
             $this->save($payment);
 
-            if (true === filter_var($data['capture_online'], FILTER_VALIDATE_BOOL)) {
+            if (filter_var($data['capture_online'], FILTER_VALIDATE_BOOL)) {
                 $captureToken = $this->payum
                     ->getTokenFactory()
                     ->createCaptureToken(

@@ -20,6 +20,9 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Listener\Doctrine\QuoteSaveListenerTest
+ */
 class QuoteSaveListener implements EventSubscriber
 {
     /**

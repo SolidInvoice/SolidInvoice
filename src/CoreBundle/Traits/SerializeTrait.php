@@ -45,7 +45,7 @@ trait SerializeTrait
         }
 
         if (null === $response) {
-            $response = new JsonResponse('', 200, [], true);
+            $response = new JsonResponse('', Response::HTTP_OK, [], true);
         }
 
         $json = $this->serializer->serialize($object, 'json', ['groups' => $groups]);

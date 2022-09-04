@@ -17,6 +17,9 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\Source\ORMSourceTest
+ */
 class ORMSource implements SourceInterface
 {
     /**

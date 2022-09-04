@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use DateTimeInterface;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -30,14 +32,14 @@ class RecurringInvoiceTest extends ApiTestCase
         parent::setUp();
 
         $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
-            'SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData',
+            LoadData::class,
+            \SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData::class,
         ], true);
     }
 
     public function testCreate(): void
     {
-        $date = date(\DateTimeInterface::ATOM);
+        $date = date(DateTimeInterface::ATOM);
 
         $data = [
             'users' => [
@@ -62,7 +64,7 @@ class RecurringInvoiceTest extends ApiTestCase
 
         $result = $this->requestPost('/api/recurring_invoices', $data);
 
-        static::assertEquals([
+        static::assertSame([
             'id' => 2,
             'status' => 'draft',
             'client' => '/api/clients/1',
@@ -105,7 +107,7 @@ class RecurringInvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        static::assertEquals([
+        static::assertSame([
             'id' => 1,
             'status' => 'draft',
             'client' => '/api/clients/1',
@@ -159,7 +161,7 @@ class RecurringInvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        static::assertEquals([
+        static::assertSame([
             'id' => 1,
             'status' => 'draft',
             'client' => '/api/clients/1',

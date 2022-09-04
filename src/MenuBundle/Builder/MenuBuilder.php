@@ -17,6 +17,9 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\Builder\MenuBuilderTest
+ */
 final class MenuBuilder implements ContainerAwareInterface
 {
     use ContainerAwareTrait;

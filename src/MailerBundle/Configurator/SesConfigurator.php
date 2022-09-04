@@ -16,6 +16,9 @@ namespace SolidInvoice\MailerBundle\Configurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\SesTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Configurator\SesConfiguratorTest
+ */
 final class SesConfigurator implements ConfiguratorInterface
 {
     public function getForm(): string

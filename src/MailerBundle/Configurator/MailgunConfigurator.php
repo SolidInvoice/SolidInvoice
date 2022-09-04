@@ -16,6 +16,9 @@ namespace SolidInvoice\MailerBundle\Configurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\MailgunApiTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Configurator\MailgunConfiguratorTest
+ */
 final class MailgunConfigurator implements ConfiguratorInterface
 {
     public function getForm(): string

@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Form\Type\TaxTypeTest
+ */
 class TaxType extends AbstractType
 {
     /**

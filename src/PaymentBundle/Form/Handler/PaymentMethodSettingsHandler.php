@@ -30,6 +30,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Form\Handler\PaymentMethodSettingsHandlerTest
+ */
 class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;

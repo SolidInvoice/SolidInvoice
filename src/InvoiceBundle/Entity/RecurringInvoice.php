@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use DateTimeInterface;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -40,17 +41,17 @@ class RecurringInvoice extends BaseInvoice
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"recurring_invoice_api", "client_api"})
      */
     private $id;
 
     /**
-     * @var Client
+     * @var Client|null
      *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="recurringInvoices")
      * @Assert\NotBlank
@@ -60,7 +61,7 @@ class RecurringInvoice extends BaseInvoice
     protected $client;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="frequency", type="string", nullable=true)
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
@@ -68,7 +69,7 @@ class RecurringInvoice extends BaseInvoice
     private $frequency;
 
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="date_start", type="date_immutable")
      * @Assert\NotBlank(groups={"Recurring"})
@@ -78,7 +79,7 @@ class RecurringInvoice extends BaseInvoice
     private $dateStart;
 
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="date_end", type="date_immutable", nullable=true)
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
@@ -86,7 +87,7 @@ class RecurringInvoice extends BaseInvoice
     private $dateEnd;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var Collection<Item>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="recurringInvoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
@@ -96,7 +97,7 @@ class RecurringInvoice extends BaseInvoice
     protected $items;
 
     /**
-     * @var Collection|Contact[]
+     * @var Collection<Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="recurringInvoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
@@ -160,19 +161,19 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getDateStart(): ?\DateTimeInterface
+    public function getDateStart(): ?DateTimeInterface
     {
         return $this->dateStart;
     }
 
     /**
-     * @param \DateTimeInterface $dateStart
+     * @param DateTimeInterface $dateStart
      *
      * @return RecurringInvoice
      */
-    public function setDateStart(\DateTimeInterface $dateStart = null): self
+    public function setDateStart(DateTimeInterface $dateStart = null): self
     {
         $this->dateStart = $dateStart;
 
@@ -180,19 +181,19 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getDateEnd(): ?\DateTimeInterface
+    public function getDateEnd(): ?DateTimeInterface
     {
         return $this->dateEnd;
     }
 
     /**
-     * @param DateTime $dateEnd
+     * @param DateTimeInterface $dateEnd
      *
      * @return RecurringInvoice
      */
-    public function setDateEnd(\DateTimeInterface $dateEnd = null): self
+    public function setDateEnd(DateTimeInterface $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
 

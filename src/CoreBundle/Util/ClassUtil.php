@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Util;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Util\ClassUtilTest
+ */
 class ClassUtil
 {
     /**

@@ -20,6 +20,9 @@ use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\Workflow\StateMachine;
 use Traversable;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Cloner\QuoteClonerTest
+ */
 final class QuoteCloner
 {
     /**

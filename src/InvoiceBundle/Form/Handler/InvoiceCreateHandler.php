@@ -16,6 +16,9 @@ namespace SolidInvoice\InvoiceBundle\Form\Handler;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Form\Handler\InvoiceCreateHandlerTest
+ */
 class InvoiceCreateHandler extends AbstractInvoiceHandler
 {
     /**

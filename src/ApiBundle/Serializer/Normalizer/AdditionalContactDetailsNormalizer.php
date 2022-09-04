@@ -20,6 +20,9 @@ use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\AdditionalContactDetailsNormalizerTest
+ */
 class AdditionalContactDetailsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**

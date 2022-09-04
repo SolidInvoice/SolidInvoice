@@ -34,9 +34,9 @@ class ApiToken
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      *
-     * @var int
+     * @var int|null
      */
     private $id;
 
@@ -44,19 +44,19 @@ class ApiToken
      * @ORM\Column(type="string", length=125)
      * @Assert\NotBlank()
      *
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=125)
      *
-     * @var string
+     * @var string|null
      */
     private $token;
 
     /**
-     * @var ApiTokenHistory[]|Collection<int, ApiTokenHistory>
+     * @var Collection<ApiTokenHistory>
      *
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -64,10 +64,10 @@ class ApiToken
     private $history;
 
     /**
-     * @var User
+     * @var User|null
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="apiTokens")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id")
      */
     private $user;
 

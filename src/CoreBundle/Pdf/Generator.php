@@ -18,6 +18,9 @@ use Mpdf\MpdfException;
 use Mpdf\Output\Destination;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Pdf\GeneratorTest
+ */
 class Generator
 {
     /**

@@ -20,6 +20,9 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
+/**
+ * @see \SolidInvoice\MoneyBundle\Tests\CalculatorTest
+ */
 final class Calculator
 {
     public function calculateDiscount($entity): Money

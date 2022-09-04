@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use DateTimeInterface;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
@@ -51,11 +52,11 @@ class Invoice extends BaseInvoice
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $id;
@@ -69,7 +70,7 @@ class Invoice extends BaseInvoice
     private $uuid;
 
     /**
-     * @var Client
+     * @var Client|null
      *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices")
      * @Assert\NotBlank
@@ -87,7 +88,7 @@ class Invoice extends BaseInvoice
     private $balance;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface|null
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -96,7 +97,7 @@ class Invoice extends BaseInvoice
     private $due;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -105,7 +106,7 @@ class Invoice extends BaseInvoice
     private $paidDate;
 
     /**
-     * @var Payment[]|Collection<int, Payment>
+     * @var Collection<Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
@@ -120,7 +121,7 @@ class Invoice extends BaseInvoice
     private $quote;
 
     /**
-     * @var Collection|ItemInterface[]
+     * @var Collection<Item>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
@@ -130,7 +131,7 @@ class Invoice extends BaseInvoice
     protected $items;
 
     /**
-     * @var Collection|Contact[]
+     * @var Collection<Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")

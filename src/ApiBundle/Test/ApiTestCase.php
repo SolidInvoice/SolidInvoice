@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Test;
 
+use Symfony\Component\HttpFoundation\Request;
 use const PASSWORD_DEFAULT;
 use function password_hash;
 use SolidInvoice\ApiBundle\ApiTokenManager;
@@ -43,7 +44,7 @@ abstract class ApiTestCase extends PantherTestCase
         /** @var User[] $users */
         $users = $userRepository->findAll();
 
-        if (0 === count($users)) {
+        if ([] === $users) {
             $user = new User();
             $user->setUsername('test')
                 ->setEmail('test@example.com')
@@ -66,7 +67,7 @@ abstract class ApiTestCase extends PantherTestCase
             $server['HTTP_'.strtoupper($key)] = $value;
         }
 
-        self::$client->request('POST', $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
+        self::$client->request(Request::METHOD_POST, $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
 
         $statusCode = self::$client->getResponse()->getStatusCode();
         static::assertSame(201, $statusCode);
@@ -83,7 +84,7 @@ abstract class ApiTestCase extends PantherTestCase
             $server['HTTP_'.strtoupper($key)] = $value;
         }
 
-        self::$client->request('PUT', $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
+        self::$client->request(Request::METHOD_PUT, $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
 
         $statusCode = self::$client->getResponse()->getStatusCode();
         static::assertSame(200, $statusCode);
@@ -100,7 +101,7 @@ abstract class ApiTestCase extends PantherTestCase
             $server['HTTP_'.strtoupper($key)] = $value;
         }
 
-        self::$client->request('GET', $uri, [], [], $server);
+        self::$client->request(Request::METHOD_GET, $uri, [], [], $server);
 
         $statusCode = self::$client->getResponse()->getStatusCode();
         static::assertSame(200, $statusCode);
@@ -117,7 +118,7 @@ abstract class ApiTestCase extends PantherTestCase
             $server['HTTP_'.strtoupper($key)] = $value;
         }
 
-        self::$client->request('DELETE', $uri, [], [], $server);
+        self::$client->request(Request::METHOD_DELETE, $uri, [], [], $server);
 
         $statusCode = self::$client->getResponse()->getStatusCode();
         static::assertSame(204, $statusCode);

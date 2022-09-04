@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Builder;
 
+use SolidInvoice\MenuBundle\Builder\BuilderInterface;
+use SolidInvoice\MenuBundle\ItemInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -24,8 +26,8 @@ class MenuBuilderTest extends TestCase
 
     public function testInvoke()
     {
-        $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface');
-        $item = M::mock('SolidInvoice\MenuBundle\ItemInterface');
+        $builder = M::mock(BuilderInterface::class);
+        $item = M::mock(ItemInterface::class);
 
         $builder->shouldNotReceive('setContainer');
 
@@ -47,8 +49,8 @@ class MenuBuilderTest extends TestCase
 
     public function testInvokeFail()
     {
-        $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface', ['validate' => false]);
-        $item = M::mock('SolidInvoice\MenuBundle\ItemInterface');
+        $builder = M::mock(BuilderInterface::class, ['validate' => false]);
+        $item = M::mock(ItemInterface::class);
 
         $builder->shouldNotReceive('setContainer');
 
@@ -70,7 +72,7 @@ class MenuBuilderTest extends TestCase
     public function testContainer()
     {
         $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface, Symfony\Component\DependencyInjection\ContainerAwareInterface', ['validate' => false]);
-        $item = M::mock('SolidInvoice\MenuBundle\ItemInterface');
+        $item = M::mock(ItemInterface::class);
 
         $builder->shouldReceive('setContainer')
             ->once()

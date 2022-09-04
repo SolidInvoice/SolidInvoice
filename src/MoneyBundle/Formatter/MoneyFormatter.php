@@ -20,6 +20,9 @@ use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
 
+/**
+ * @see \SolidInvoice\MoneyBundle\Tests\Formatter\MoneyFormatterTest
+ */
 final class MoneyFormatter implements MoneyFormatterInterface
 {
     /**

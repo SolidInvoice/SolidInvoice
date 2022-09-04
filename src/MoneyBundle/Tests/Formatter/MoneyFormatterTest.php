@@ -53,7 +53,7 @@ class MoneyFormatterTest extends TestCase
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertEquals($separator, $formatter->getThousandSeparator());
+        static::assertSame($separator, $formatter->getThousandSeparator());
     }
 
     /**
@@ -63,7 +63,7 @@ class MoneyFormatterTest extends TestCase
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertEquals($separator, $formatter->getDecimalSeparator());
+        static::assertSame($separator, $formatter->getDecimalSeparator());
     }
 
     /**

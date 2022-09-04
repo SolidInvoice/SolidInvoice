@@ -26,19 +26,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ContactType
 {
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
+     * @ORM\Column(name="name", type="string", length=45, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
      * @Serialize\Groups({"client_api", "contact_api"})
@@ -46,7 +46,7 @@ class ContactType
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="type", type="string", length=45)
      * @Assert\NotBlank()
@@ -64,15 +64,16 @@ class ContactType
     private $options;
 
     /**
-     * @var bool
+     * @var bool|null
      *
+     * @ORM\Column(name="required", type="boolean")
      * @ORM\Column(name="required", type="boolean", nullable=false)
      * @Serialize\Groups({"none"})
      */
     private $required = false;
 
     /**
-     * @var AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
+     * @var Collection<AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})

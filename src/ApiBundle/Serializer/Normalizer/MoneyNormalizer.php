@@ -22,6 +22,9 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\MoneyNormalizerTest
+ */
 class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**

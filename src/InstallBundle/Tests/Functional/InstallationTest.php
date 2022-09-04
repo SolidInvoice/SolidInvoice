@@ -103,7 +103,7 @@ class InstallationTest extends PantherTestCase
                 'system_information[currency]' => 'USD',
             ];
 
-            if (0 === count($crawler->filter('.callout.callout-warning'))) {
+            if (0 === (is_countable($crawler->filter('.callout.callout-warning')) ? count($crawler->filter('.callout.callout-warning')) : 0)) {
                 $formData += [
                     'system_information[username]' => 'admin',
                     'system_information[email_address]' => 'foo@bar.com',

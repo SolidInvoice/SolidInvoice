@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle;
 
+/**
+ * @see \SolidInvoice\CronBundle\Tests\RunnerTest
+ */
 class Runner
 {
     /**

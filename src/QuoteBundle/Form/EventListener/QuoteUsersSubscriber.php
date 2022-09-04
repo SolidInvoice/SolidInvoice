@@ -41,7 +41,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Quote) {
-            $clientId = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
+            $clientId = is_null($data->getClient()) ? null : $data->getClient()->getId();
         } else {
             $clientId = $data['client'] ?? null;
         }

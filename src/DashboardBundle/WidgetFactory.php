@@ -17,6 +17,9 @@ use Exception;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use SplPriorityQueue;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\WidgetFactoryTest
+ */
 class WidgetFactory
 {
     public const DEFAULT_LOCATION = 'top';

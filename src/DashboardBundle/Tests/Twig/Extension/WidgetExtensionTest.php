@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
+use SolidInvoice\DashboardBundle\WidgetFactory;
+use Twig_SimpleFunction;
+use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\Mock;
@@ -40,7 +43,7 @@ class WidgetExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->factory = Mockery::mock('SolidInvoice\DashboardBundle\WidgetFactory');
+        $this->factory = Mockery::mock(WidgetFactory::class);
         $this->extension = new WidgetExtension($this->factory);
     }
 
@@ -55,14 +58,14 @@ class WidgetExtensionTest extends TestCase
         $functions = $this->extension->getFunctions();
 
         static::assertCount(1, $functions);
-        static::assertInstanceOf('Twig_SimpleFunction', $functions[0]);
+        static::assertInstanceOf(Twig_SimpleFunction::class, $functions[0]);
         static::assertSame('render_dashboard_widget', $functions[0]->getName());
     }
 
     public function testRenderDashboardWidget()
     {
         $widget = Mockery::mock(
-            'SolidInvoice\DashboardBundle\Widgets\WidgetInterface',
+            WidgetInterface::class,
             [
                 'getTemplate' => 'test_template.html.twig',
                 'getData' => ['a' => '1', 'b' => '2', 'c' => '3'],

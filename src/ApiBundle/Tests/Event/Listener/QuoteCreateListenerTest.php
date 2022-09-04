@@ -48,7 +48,7 @@ class QuoteCreateListenerTest extends TestCase
             ->with($entity, Graph::TRANSITION_NEW);
 
         $listener = new QuoteCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
@@ -59,7 +59,7 @@ class QuoteCreateListenerTest extends TestCase
             ->never();
 
         $listener = new QuoteCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::SUB_REQUEST, new Quote()));
     }
 
@@ -70,7 +70,7 @@ class QuoteCreateListenerTest extends TestCase
             ->never();
 
         $listener = new QuoteCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
         $entity = new Quote();
         $entity->setStatus(Graph::STATUS_DRAFT);
 
@@ -84,7 +84,7 @@ class QuoteCreateListenerTest extends TestCase
             ->never();
 
         $listener = new QuoteCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
 
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Invoice()));
     }
@@ -96,7 +96,7 @@ class QuoteCreateListenerTest extends TestCase
             ->never();
 
         $listener = new QuoteCreateListener($stateMachine);
-        $request = Request::create('/', 'GET');
+        $request = Request::create('/', Request::METHOD_GET);
 
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Quote()));
     }

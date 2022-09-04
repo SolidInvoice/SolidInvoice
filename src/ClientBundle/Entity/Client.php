@@ -45,19 +45,19 @@ class Client
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"client_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
+     * @ORM\Column(name="name", type="string", length=125, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api"})
@@ -66,7 +66,7 @@ class Client
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
@@ -77,7 +77,7 @@ class Client
     private $website;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"client_api"})
@@ -86,7 +86,7 @@ class Client
     private $status;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -95,7 +95,7 @@ class Client
     private $currency;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="vat_number", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -103,7 +103,7 @@ class Client
     private $vatNumber;
 
     /**
-     * @var Contact[]|Collection<int, Contact>
+     * @var Collection<Contact>
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"firstName" = "ASC"})
@@ -115,7 +115,7 @@ class Client
     private $contacts;
 
     /**
-     * @var Quote[]|Collection<int, Quote>
+     * @var Collection<Quote>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -124,7 +124,7 @@ class Client
     private $quotes;
 
     /**
-     * @var Invoice[]|Collection<int, Invoice>
+     * @var Collection<Invoice>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -133,7 +133,7 @@ class Client
     private $invoices;
 
     /**
-     * @var RecurringInvoice[]|Collection<int, RecurringInvoice>
+     * @var Collection<RecurringInvoice>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -142,7 +142,7 @@ class Client
     private $recurringInvoices;
 
     /**
-     * @var Payment[]|Collection<int, Payment>
+     * @var Collection<Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
@@ -150,7 +150,7 @@ class Client
     private $payments;
 
     /**
-     * @var Address[]|Collection<int, Address>
+     * @var Collection<Address>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
@@ -158,7 +158,7 @@ class Client
     private $addresses;
 
     /**
-     * @var Credit
+     * @var Credit|null
      *
      * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests;
 
+use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
+use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +27,7 @@ class ProviderTest extends TestCase
 
     public function testGet()
     {
-        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
+        $storage = M::mock(MenuStorageInterface::class);
 
         $provider = new Provider($storage);
 
@@ -43,7 +45,7 @@ class ProviderTest extends TestCase
 
     public function testHas()
     {
-        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
+        $storage = M::mock(MenuStorageInterface::class);
 
         $provider = new Provider($storage);
 
@@ -59,12 +61,12 @@ class ProviderTest extends TestCase
 
     public function testAddBuilder()
     {
-        $queue = M::mock('SplPriorityQueue');
-        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
+        $queue = M::mock(\SplPriorityQueue::class);
+        $storage = M::mock(MenuStorageInterface::class);
 
         $provider = new Provider($storage);
 
-        $class = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface');
+        $class = M::mock(BuilderInterface::class);
         $method = 'abc';
 
         $storage->shouldReceive('get')

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\Source;
 
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -24,9 +27,9 @@ class ORMSourceTest extends TestCase
 
     public function testFetch()
     {
-        $qb = M::mock('Doctrine\ORM\QueryBuilder');
-        $repository = M::mock('Doctrine\ORM\EntityManager');
-        $registry = M::mock('Doctrine\Common\Persistence\ManagerRegistry');
+        $qb = M::mock(QueryBuilder::class);
+        $repository = M::mock(EntityManager::class);
+        $registry = M::mock(ManagerRegistry::class);
 
         $registry->shouldReceive('getRepository')
         ->with('a')
@@ -47,8 +50,8 @@ class ORMSourceTest extends TestCase
         $this->expectException('Exception');
         $this->expectExceptionMessage('Grid source should return a query builder');
 
-        $repository = M::mock('Doctrine\ORM\EntityManager');
-        $registry = M::mock('Doctrine\Common\Persistence\ManagerRegistry');
+        $repository = M::mock(EntityManager::class);
+        $registry = M::mock(ManagerRegistry::class);
 
         $registry->shouldReceive('getRepository')
         ->with('a')

@@ -19,6 +19,9 @@ use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoiceMailerListenerTest
+ */
 class InvoiceMailerListener implements EventSubscriberInterface
 {
     /**

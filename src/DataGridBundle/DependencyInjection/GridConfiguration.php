@@ -16,6 +16,9 @@ namespace SolidInvoice\DataGridBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\DependencyInjection\GridConfigurationTest
+ */
 class GridConfiguration implements ConfigurationInterface
 {
     /**

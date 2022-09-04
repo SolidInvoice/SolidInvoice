@@ -23,6 +23,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Form\Type\QuoteTypeTest
+ */
 class QuoteType extends AbstractType
 {
     /**

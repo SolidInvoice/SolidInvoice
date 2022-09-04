@@ -20,13 +20,13 @@ use Money\Money as MoneyObject;
 trait Money
 {
     /**
-     * @var int
+     * @var int|null
      * @ORM\Column(name="amount_value", type="integer")
      */
     private $priceAmount;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(name="amount_currency", type="string", length=64)
      */
     private $priceCurrency;

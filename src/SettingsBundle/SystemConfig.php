@@ -16,6 +16,9 @@ namespace SolidInvoice\SettingsBundle;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\SystemConfigTest
+ */
 class SystemConfig
 {
     /**

@@ -54,8 +54,7 @@ class TwilioHandler implements HandlerInterface
 
         if (!empty($number)) {
             /* @var TwilioNotification $notification */
-            $this->twilio
-                ->messages
+            $this->twilio->getMessages()
                 ->create(
                     $notification->getRecipientNumber(),
                     [

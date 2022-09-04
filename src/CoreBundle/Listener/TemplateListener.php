@@ -19,6 +19,9 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Listener\TemplateListenerTest
+ */
 class TemplateListener implements EventSubscriberInterface
 {
     /**

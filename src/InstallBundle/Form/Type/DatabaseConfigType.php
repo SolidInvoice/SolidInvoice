@@ -22,6 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Form\Type\DatabaseConfigTypeTest
+ */
 class DatabaseConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

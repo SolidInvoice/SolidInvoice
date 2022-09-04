@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Doctrine\Types;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -28,7 +29,7 @@ class MoneyTypeTest extends TestCase
     protected function setUp(): void
     {
         if (!Type::hasType('money')) {
-            Type::addType('money', 'SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType');
+            Type::addType('money', MoneyType::class);
         }
 
         MoneyType::setCurrency(new Currency('USD'));
@@ -44,7 +45,7 @@ class MoneyTypeTest extends TestCase
 
     public function testGetSQLDeclaration()
     {
-        $platform = M::mock('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = M::mock(AbstractPlatform::class);
         $platform->shouldReceive('getIntegerTypeDeclarationSQL', [])
             ->once();
 
@@ -56,34 +57,34 @@ class MoneyTypeTest extends TestCase
 
     public function testConvertToPHPValue()
     {
-        $platform = M::mock('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = M::mock(AbstractPlatform::class);
 
         /** @var MoneyType $type */
         $type = Type::getType('money');
 
         $value = $type->convertToPHPValue(1200, $platform);
 
-        static::assertInstanceOf('Money\Money', $value);
+        static::assertInstanceOf(Money::class, $value);
         static::assertSame('1200', $value->getAmount());
         static::assertSame('USD', $value->getCurrency()->getCode());
     }
 
     public function testConvertToPHPValueWithEmptyValue()
     {
-        $platform = M::mock('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = M::mock(AbstractPlatform::class);
 
         /** @var MoneyType $type */
         $type = Type::getType('money');
 
         $value = $type->convertToPHPValue(null, $platform);
 
-        static::assertInstanceOf('Money\Money', $value);
+        static::assertInstanceOf(Money::class, $value);
         static::assertSame('0', $value->getAmount());
     }
 
     public function testConvertToPHPValueWithMoneyValue()
     {
-        $platform = M::mock('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = M::mock(AbstractPlatform::class);
 
         /** @var MoneyType $type */
         $type = Type::getType('money');
@@ -96,7 +97,7 @@ class MoneyTypeTest extends TestCase
 
     public function testConvertToDatabaseValueWithEmptyValue()
     {
-        $platform = M::mock('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = M::mock(AbstractPlatform::class);
 
         /** @var MoneyType $type */
         $type = Type::getType('money');
@@ -108,7 +109,7 @@ class MoneyTypeTest extends TestCase
 
     public function testConvertToDatabaseValueWithMoney()
     {
-        $platform = M::mock('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = M::mock(AbstractPlatform::class);
 
         /** @var MoneyType $type */
         $type = Type::getType('money');
@@ -121,7 +122,7 @@ class MoneyTypeTest extends TestCase
 
     public function testConvertToDatabaseValueInvalidValue()
     {
-        $platform = M::mock('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = M::mock(AbstractPlatform::class);
 
         /** @var MoneyType $type */
         $type = Type::getType('money');

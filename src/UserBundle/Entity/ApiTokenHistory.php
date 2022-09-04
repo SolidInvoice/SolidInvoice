@@ -27,30 +27,30 @@ class ApiTokenHistory
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      *
-     * @var int
+     * @var int|null
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
      *
-     * @var string
+     * @var string|null
      */
     private $ip;
 
     /**
      * @ORM\Column(type="string", length=125)
      *
-     * @var string
+     * @var string|null
      */
     private $resource;
 
     /**
      * @ORM\Column(type="string", length=25)
      *
-     * @var string
+     * @var string|null
      */
     private $method;
 
@@ -64,15 +64,15 @@ class ApiTokenHistory
     /**
      * @ORM\Column(type="string")
      *
-     * @var string
+     * @var string|null
      */
     private $userAgent;
 
     /**
-     * @var ApiToken
+     * @var ApiToken|null
      *
      * @ORM\ManyToOne(targetEntity="ApiToken", inversedBy="history")
-     * @ORM\JoinColumn(name="token_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="token_id")
      */
     private $token;
 

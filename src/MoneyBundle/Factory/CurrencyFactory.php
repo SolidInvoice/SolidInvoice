@@ -16,6 +16,9 @@ namespace SolidInvoice\MoneyBundle\Factory;
 use Money\Currency;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
+/**
+ * @see \SolidInvoice\MoneyBundle\Tests\Factory\CurrencyFactoryTest
+ */
 class CurrencyFactory
 {
     public const CURRENCY_PATH = 'system/company/currency';

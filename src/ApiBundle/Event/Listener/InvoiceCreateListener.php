@@ -22,6 +22,9 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Workflow\StateMachine;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\InvoiceCreateListenerTest
+ */
 class InvoiceCreateListener implements EventSubscriberInterface
 {
     /**

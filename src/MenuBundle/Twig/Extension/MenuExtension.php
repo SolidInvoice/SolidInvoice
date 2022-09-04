@@ -19,6 +19,9 @@ use SplPriorityQueue;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\Twig\Extension\MenuExtensionTest
+ */
 class MenuExtension extends AbstractExtension
 {
     /**

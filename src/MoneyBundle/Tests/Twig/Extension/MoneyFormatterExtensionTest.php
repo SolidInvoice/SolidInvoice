@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Twig\Extension;
 
+use Twig_SimpleFunction;
+use Twig_SimpleFilter;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
@@ -41,7 +43,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
         static::assertCount(1, $functions);
 
-        static::assertInstanceOf('Twig_SimpleFunction', $functions[0]);
+        static::assertInstanceOf(Twig_SimpleFunction::class, $functions[0]);
         static::assertSame('currencyFormatter', $functions[0]->getName());
         static::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
     }
@@ -65,7 +67,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
         static::assertCount(1, $filters);
 
-        static::assertInstanceOf('Twig_SimpleFilter', $filters[0]);
+        static::assertInstanceOf(Twig_SimpleFilter::class, $filters[0]);
         static::assertSame('formatCurrency', $filters[0]->getName());
         static::assertSame('$12,00', call_user_func_array($filters[0]->getCallable(), [$money]));
     }

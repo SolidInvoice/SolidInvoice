@@ -16,6 +16,9 @@ namespace SolidInvoice\MailerBundle\Configurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\UsernamePasswordTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Configurator\GmailConfiguratorTest
+ */
 final class GmailConfigurator implements ConfiguratorInterface
 {
     public function getForm(): string

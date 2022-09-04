@@ -19,6 +19,9 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Form\Handler\InvoiceEditHandlerTest
+ */
 class InvoiceEditHandler extends AbstractInvoiceHandler
 {
     /**

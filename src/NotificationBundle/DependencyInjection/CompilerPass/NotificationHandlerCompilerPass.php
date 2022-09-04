@@ -18,6 +18,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\DependencyInjection\CompilerPass\NotificationHandlerCompilerPassTest
+ */
 class NotificationHandlerCompilerPass implements CompilerPassInterface
 {
     /**

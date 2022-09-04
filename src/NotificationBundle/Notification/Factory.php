@@ -47,7 +47,6 @@ class Factory
     /**
      * @return SwiftMailerNotification
      *
-     * @throws \SolidInvoice\SettingsBundle\Exception\InvalidSettingException
      * @throws InvalidSettingException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface

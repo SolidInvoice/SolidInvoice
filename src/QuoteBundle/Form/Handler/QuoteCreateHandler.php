@@ -16,6 +16,9 @@ namespace SolidInvoice\QuoteBundle\Form\Handler;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Form\Handler\QuoteCreateHandlerTest
+ */
 class QuoteCreateHandler extends AbstractQuoteHandler
 {
     /**

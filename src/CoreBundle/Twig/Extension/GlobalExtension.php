@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
 use DateTime;
 use SolidInvoice\CoreBundle\Pdf\Generator;
@@ -99,7 +100,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (null === $request) {
+        if (!$request instanceof Request) {
             return [];
         }
 

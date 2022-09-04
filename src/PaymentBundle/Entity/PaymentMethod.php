@@ -34,16 +34,16 @@ class PaymentMethod implements GatewayConfigInterface
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=125)
      * @Assert\NotBlank
@@ -52,14 +52,14 @@ class PaymentMethod implements GatewayConfigInterface
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="gateway_name", type="string", length=125, unique=true)
      */
     private $gatewayName;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="factory", type="string", length=125)
      */
@@ -75,19 +75,19 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @ORM\Column(name="internal", type="boolean", nullable=true)
      *
-     * @var bool
+     * @var bool|null
      */
-    private $internal;
+    private $internal = false;
 
     /**
      * @ORM\Column(name="enabled", type="boolean",  nullable=true)
      *
-     * @var bool
+     * @var bool|null
      */
     private $enabled;
 
     /**
-     * @var Payment[]|Collection<int, Payment>
+     * @var Collection<Payment>
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -96,7 +96,6 @@ class PaymentMethod implements GatewayConfigInterface
     public function __construct()
     {
         $this->payments = new ArrayCollection();
-        $this->internal = false;
         $this->disable();
     }
 
