@@ -114,7 +114,7 @@ class MoneyNormalizerTest extends TestCase
 
         $money = new Money(10000, $currency);
 
-        static::assertEquals('$100.00', $normalizer->normalize($money));
+        static::assertSame('$100.00', $normalizer->normalize($money));
     }
 
     public function testDenormalization()

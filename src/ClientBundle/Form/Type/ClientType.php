@@ -23,6 +23,9 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ClientTypeTest
+ */
 class ClientType extends AbstractType
 {
     /**

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use DateTimeInterface;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
@@ -52,11 +53,11 @@ class Quote
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $id;
@@ -70,7 +71,7 @@ class Quote
     private $uuid;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"quote_api", "client_api"})
@@ -78,7 +79,7 @@ class Quote
     private $status;
 
     /**
-     * @var Client
+     * @var Client|null
      *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
@@ -120,7 +121,7 @@ class Quote
     private $discount;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
@@ -128,7 +129,7 @@ class Quote
     private $terms;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
@@ -136,7 +137,7 @@ class Quote
     private $notes;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface|null
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -145,7 +146,7 @@ class Quote
     private $due;
 
     /**
-     * @var ItemInterface[]|Collection<int, ItemInterface>
+     * @var Collection<Item>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -155,7 +156,7 @@ class Quote
     private $items;
 
     /**
-     * @var Contact[]|Collection<int, Contact>
+     * @var Collection<Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")

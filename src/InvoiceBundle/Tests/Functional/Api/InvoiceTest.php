@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -30,8 +31,8 @@ class InvoiceTest extends ApiTestCase
         parent::setUp();
 
         $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
-            'SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData',
+            LoadData::class,
+            \SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData::class,
         ], true);
     }
 
@@ -59,7 +60,7 @@ class InvoiceTest extends ApiTestCase
 
         unset($result['uuid']);
 
-        static::assertEquals([
+        static::assertSame([
             'id' => 2,
             'status' => 'draft',
             'client' => '/api/clients/1',
@@ -102,7 +103,7 @@ class InvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        static::assertEquals([
+        static::assertSame([
             'id' => 1,
             'status' => 'draft',
             'client' => '/api/clients/1',
@@ -155,7 +156,7 @@ class InvoiceTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        static::assertEquals([
+        static::assertSame([
             'id' => 1,
             'status' => 'draft',
             'client' => '/api/clients/1',

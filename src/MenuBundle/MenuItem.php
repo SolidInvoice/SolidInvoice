@@ -16,6 +16,9 @@ namespace SolidInvoice\MenuBundle;
 use InvalidArgumentException;
 use Knp\Menu\MenuItem as BaseItem;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\MenuItemTest
+ */
 class MenuItem extends BaseItem implements ItemInterface
 {
     /**

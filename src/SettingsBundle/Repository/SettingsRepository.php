@@ -39,7 +39,7 @@ class SettingsRepository extends ServiceEntityRepository
                         ->set('s.value', ':val')
                         ->where('s.key = :key')
                         ->setParameter('key', $key)
-                        ->setParameter('val', !empty($value) ? $value : null)
+                        ->setParameter('val', empty($value) ? null : $value)
                         ->getQuery()
                         ->execute();
                 }

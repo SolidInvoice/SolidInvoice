@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Form\Type;
 
+use Traversable;
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use Symfony\Component\Form\AbstractType;
@@ -24,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class MailTransportType extends AbstractType
 {
     /**
-     * @var iterable|ConfiguratorInterface[]|\Traversable
+     * @var iterable|ConfiguratorInterface[]|Traversable
      */
     private $transports;
 

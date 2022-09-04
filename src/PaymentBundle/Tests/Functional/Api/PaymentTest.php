@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -30,8 +31,8 @@ class PaymentTest extends ApiTestCase
         parent::setUp();
 
         $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
-            'SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData',
+            LoadData::class,
+            \SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData::class,
         ], true);
     }
 

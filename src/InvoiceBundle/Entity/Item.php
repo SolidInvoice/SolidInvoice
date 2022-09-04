@@ -34,17 +34,17 @@ class Item implements ItemInterface
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
@@ -62,7 +62,7 @@ class Item implements ItemInterface
     private $price;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank
@@ -71,24 +71,23 @@ class Item implements ItemInterface
     private $qty;
 
     /**
-     * @var Invoice
+     * @var Invoice|null
      *
      * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="items")
-     * @ORM\JoinColumn(nullable=true)
      */
     private $invoice;
 
     /**
-     * @var Invoice
+     * @var RecurringInvoice|null
      *
      * @ORM\ManyToOne(targetEntity="RecurringInvoice", inversedBy="items")
-     * @ORM\JoinColumn(nullable=true)
      */
     private $recurringInvoice;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     * @var Tax|null
      */
     private $tax;
 

@@ -16,6 +16,9 @@ namespace SolidInvoice\MailerBundle\Configurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\KeyTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Configurator\MailchimpConfiguratorTest
+ */
 final class MailchimpConfigurator implements ConfiguratorInterface
 {
     public function getForm(): string

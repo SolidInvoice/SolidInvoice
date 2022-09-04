@@ -23,6 +23,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Form\Step\ConfigStepFormTest
+ */
 class ConfigStepForm extends AbstractType
 {
     /**

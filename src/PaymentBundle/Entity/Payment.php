@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use DateTimeInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,7 +43,7 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -59,7 +60,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", inversedBy="payments")
      *
-     * @var Invoice
+     * @var Invoice|null
      */
     private $invoice;
 
@@ -67,20 +68,20 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="payments")
      * @ORM\JoinColumn(name="client", fieldName="client")
      *
-     * @var Client
+     * @var Client|null
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
      *
-     * @var PaymentMethod
+     * @var PaymentMethod|null
      * @Serialize\Groups({"payment_api", "client_api"})
      */
     private $method;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"payment_api", "client_api"})
@@ -90,11 +91,12 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
      * @Serialize\Groups({"payment_api", "client_api"})
+     * @var string|null
      */
     private $message;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime

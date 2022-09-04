@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle\Tests;
 
+use SolidInvoice\CronBundle\CommandInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +27,7 @@ class RunnerTest extends TestCase
     {
         $cron = new Runner();
 
-        $command = M::mock('SolidInvoice\CronBundle\CommandInterface');
+        $command = M::mock(CommandInterface::class);
 
         $command->shouldReceive('isDue')
             ->once()
@@ -44,7 +45,7 @@ class RunnerTest extends TestCase
     {
         $cron = new Runner();
 
-        $command = M::mock('SolidInvoice\CronBundle\CommandInterface');
+        $command = M::mock(CommandInterface::class);
 
         $command->shouldReceive('isDue')
             ->once()

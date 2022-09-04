@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -143,7 +144,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $qb
             ->innerJoin('i.client', 'c')
-            ->orderBy('i.created', 'DESC')
+            ->orderBy('i.created', Criteria::DESC)
             ->setMaxResults($limit);
 
         $query = $qb->getQuery();
@@ -232,7 +233,9 @@ class InvoiceRepository extends ServiceEntityRepository
         /** @var Invoice[] $invoices */
         $invoices = $this->findBy(['id' => $ids]);
 
-        array_walk($invoices, [$em, 'remove']);
+        array_walk($invoices, function (object $entity) use ($em) : void {
+            $em->remove($entity);
+        });
 
         $em->flush();
 

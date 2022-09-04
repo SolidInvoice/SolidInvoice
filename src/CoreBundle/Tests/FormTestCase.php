@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
@@ -56,7 +57,7 @@ abstract class FormTestCase extends TypeTestCase
             ->addTypes($this->getTypes())
             ->getFormFactory();
 
-        $this->dispatcher = M::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = M::mock(EventDispatcherInterface::class);
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
     }
 

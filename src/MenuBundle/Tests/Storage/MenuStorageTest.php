@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Storage;
 
+use SplPriorityQueue;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Storage\MenuStorage;
@@ -36,9 +37,9 @@ class MenuStorageTest extends TestCase
         static::assertFalse($storage->has($name2));
         static::assertFalse($storage->has($name3));
 
-        static::assertInstanceOf('SplPriorityQueue', $storage->get($name1));
-        static::assertInstanceOf('SplPriorityQueue', $storage->get($name2));
-        static::assertInstanceOf('SplPriorityQueue', $storage->get($name3));
+        static::assertInstanceOf(SplPriorityQueue::class, $storage->get($name1));
+        static::assertInstanceOf(SplPriorityQueue::class, $storage->get($name2));
+        static::assertInstanceOf(SplPriorityQueue::class, $storage->get($name3));
 
         static::assertSame($storage->get($name1), $storage->get($name1));
         static::assertSame($storage->get($name2), $storage->get($name2));

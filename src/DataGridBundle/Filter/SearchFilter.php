@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Filter;
 
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -52,7 +53,9 @@ class SearchFilter implements FilterInterface
                 $this->searchFields
             );
 
-            $queryBuilder->andWhere(call_user_func_array([$expr, 'orX'], $fields));
+            $queryBuilder->andWhere(call_user_func_array(function ($x = null) use ($expr) : Orx {
+                return $expr->orX($x);
+            }, $fields));
             $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
         }
     }

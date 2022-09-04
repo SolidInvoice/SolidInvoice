@@ -22,6 +22,9 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\Twig\Extension\SettingsExtensionTest
+ */
 class SettingsExtension extends AbstractExtension
 {
     /**

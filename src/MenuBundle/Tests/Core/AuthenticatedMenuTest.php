@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Core;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Mockery\MockInterface;
@@ -36,8 +38,8 @@ class AuthenticatedMenuTest extends TestCase
 
     public function setUp(): void
     {
-        $this->container = M::mock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->security = M::mock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+        $this->container = M::mock(ContainerInterface::class);
+        $this->security = M::mock(AuthorizationCheckerInterface::class);
     }
 
     public function testValidate()

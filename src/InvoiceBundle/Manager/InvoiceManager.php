@@ -32,6 +32,9 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\StateMachine;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Manager\InvoiceManagerTest
+ */
 class InvoiceManager implements ContainerAwareInterface
 {
     use ContainerAwareTrait;

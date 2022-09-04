@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Settings.
+ * @see \SolidInvoice\SettingsBundle\Tests\Form\Type\SettingsTypeTest
  */
 class SettingsType extends AbstractType
 {

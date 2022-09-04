@@ -25,6 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ContactDetailTypeTest
+ */
 class ContactDetailType extends AbstractType
 {
     /**
@@ -91,11 +94,8 @@ class ContactDetailType extends AbstractType
                 return ['Default', 'not_blank'];
             }
 
-            switch (strtolower($form->get('type')->getData()->getName())) {
-                case 'email':
-                    return ['Default', 'email'];
-
-                    break;
+            if (strtolower($form->get('type')->getData()->getName()) === 'email') {
+                return ['Default', 'email'];
             }
             // @codeCoverageIgnoreEnd
         });

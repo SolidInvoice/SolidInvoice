@@ -13,10 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Factory;
 
+use JsonException;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use RuntimeException;
 use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Transport;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Factory\MailerConfigFactoryTest
+ */
 final class MailerConfigFactory
 {
     private const CONFIG_KEY = 'email/sending_options/provider';
@@ -38,9 +44,9 @@ final class MailerConfigFactory
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
-    public function fromStrings(): Transport\TransportInterface
+    public function fromStrings(): TransportInterface
     {
         $config = \json_decode($this->config->get(self::CONFIG_KEY), true, 512, JSON_THROW_ON_ERROR);
         $provider = $config['provider'] ?? '';
@@ -51,6 +57,6 @@ final class MailerConfigFactory
             }
         }
 
-        throw new \RuntimeException('Invalid mailer config');
+        throw new RuntimeException('Invalid mailer config');
     }
 }

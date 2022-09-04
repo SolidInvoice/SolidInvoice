@@ -22,6 +22,9 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Listener\EmailFromListenerTest
+ */
 final class EmailFromListener implements EventSubscriberInterface
 {
     /**

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\DependencyInjection\Compiler;
 
+use SolidInvoice\CoreBundle\Logger\Dbal\TraceLogger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -28,7 +29,7 @@ class DbalLoggerPass implements CompilerPassInterface
             return;
         }
 
-        $logger = new Definition('SolidInvoice\CoreBundle\Logger\Dbal\TraceLogger');
+        $logger = new Definition(TraceLogger::class);
 
         $definition = $container->getDefinition('doctrine.dbal.logger.chain');
         $definition->addMethodCall('addLogger', [$logger]);

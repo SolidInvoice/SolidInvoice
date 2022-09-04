@@ -119,6 +119,6 @@ class TraceLogger implements SQLLogger
 
         $length = false !== $pos = strpos($class, '\\');
 
-        return 'Doctrine' === substr($class, 0, $length ? $pos : strlen($class)) || __CLASS__ === $class;
+        return 'Doctrine' === substr($class, 0, $length ? $pos : strlen($class)) || self::class === $class;
     }
 }

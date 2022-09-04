@@ -16,6 +16,9 @@ namespace SolidInvoice\PaymentBundle\Factory;
 use Exception;
 use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Factory\PaymentFactoriesTest
+ */
 class PaymentFactories
 {
     /**

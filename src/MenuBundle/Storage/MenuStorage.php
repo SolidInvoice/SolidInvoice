@@ -15,6 +15,9 @@ namespace SolidInvoice\MenuBundle\Storage;
 
 use SplPriorityQueue;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\Storage\MenuStorageTest
+ */
 class MenuStorage implements MenuStorageInterface
 {
     /**

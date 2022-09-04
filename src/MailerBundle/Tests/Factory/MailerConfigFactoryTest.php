@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests\Factory;
 
+use RuntimeException;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +42,7 @@ class MailerConfigFactoryTest extends TestCase
 
     public function testFromStringsWithNoConfigurators(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Invalid mailer config');
 
         $systemConfig = M::mock(SystemConfig::class);

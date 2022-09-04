@@ -26,6 +26,9 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Form\Step\SystemInformationFormTest
+ */
 class SystemInformationForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

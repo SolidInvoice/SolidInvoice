@@ -42,7 +42,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
-            $clientId = !is_null($data->getClient()) ? $data->getClient()->getId() : null;
+            $clientId = is_null($data->getClient()) ? null : $data->getClient()->getId();
         } else {
             $clientId = $data['client'] ?? null;
         }

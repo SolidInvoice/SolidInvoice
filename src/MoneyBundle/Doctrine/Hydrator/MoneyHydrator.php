@@ -49,7 +49,7 @@ class MoneyHydrator extends AbstractHydrator
      */
     protected function hydrateRowData(array $row, array &$result)
     {
-        if (0 === count($row)) {
+        if ([] === $row) {
             return false;
         }
 

@@ -25,14 +25,14 @@ class Money
     /**
      * @ORM\Column(name="amount", type="integer", nullable=true)
      *
-     * @var int
+     * @var int|null
      */
     private $value = 0;
 
     /**
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     private $currency;
 

@@ -20,6 +20,9 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Doctrine\InvoiceSaveListenerTest
+ */
 class InvoiceSaveListener implements EventSubscriber
 {
     /**

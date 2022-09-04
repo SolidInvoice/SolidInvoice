@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Form\Type\CreditTypeTest
+ */
 class CreditType extends AbstractType
 {
     /**

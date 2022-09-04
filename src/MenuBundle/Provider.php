@@ -19,6 +19,9 @@ use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
 use SplPriorityQueue;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\ProviderTest
+ */
 class Provider implements MenuProviderInterface
 {
     /**

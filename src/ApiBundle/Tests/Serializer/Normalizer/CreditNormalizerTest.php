@@ -142,6 +142,6 @@ class CreditNormalizerTest extends TestCase
 
         $normalizer = new CreditNormalizer($parentNormalizer);
 
-        static::assertEquals(123, $normalizer->denormalize([], Credit::class));
+        static::assertSame(123, $normalizer->denormalize([], Credit::class));
     }
 }

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Knp\Menu\Factory\ExtensionInterface;
+use SolidInvoice\MenuBundle\MenuItem;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -24,9 +27,9 @@ class FactoryTest extends TestCase
 
     public function testAddExtension()
     {
-        $factory = new Factory(M::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface'));
+        $factory = new Factory(M::mock(UrlGeneratorInterface::class));
 
-        $extension = M::mock('Knp\Menu\Factory\ExtensionInterface');
+        $extension = M::mock(ExtensionInterface::class);
 
         $factory->addExtension($extension);
 
@@ -35,7 +38,7 @@ class FactoryTest extends TestCase
 
     public function testCreateItem()
     {
-        $generator = M::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        $generator = M::mock(UrlGeneratorInterface::class);
 
         $generator->shouldReceive('generate')
             ->once()
@@ -46,7 +49,7 @@ class FactoryTest extends TestCase
 
         $item = $factory->createItem('abc', ['label' => 'def', 'route' => 'test_route']);
 
-        static::assertInstanceOf('SolidInvoice\MenuBundle\MenuItem', $item);
+        static::assertInstanceOf(MenuItem::class, $item);
 
         static::assertSame('/test/route', $item->getUri());
         static::assertSame('def', $item->getLabel());

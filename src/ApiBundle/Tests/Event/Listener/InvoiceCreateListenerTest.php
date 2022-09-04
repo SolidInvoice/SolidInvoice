@@ -48,7 +48,7 @@ class InvoiceCreateListenerTest extends TestCase
             ->with($entity, Graph::TRANSITION_NEW);
 
         $listener = new InvoiceCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
         $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
@@ -59,7 +59,7 @@ class InvoiceCreateListenerTest extends TestCase
             ->never();
 
         $listener = new InvoiceCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
         $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::SUB_REQUEST, new Invoice()));
     }
 
@@ -70,7 +70,7 @@ class InvoiceCreateListenerTest extends TestCase
             ->never();
 
         $listener = new InvoiceCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
         $entity = new Invoice();
         $entity->setStatus(Graph::STATUS_DRAFT);
 
@@ -84,7 +84,7 @@ class InvoiceCreateListenerTest extends TestCase
             ->never();
 
         $listener = new InvoiceCreateListener($stateMachine);
-        $request = Request::create('/', 'POST');
+        $request = Request::create('/', Request::METHOD_POST);
 
         $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Quote()));
     }
@@ -96,7 +96,7 @@ class InvoiceCreateListenerTest extends TestCase
             ->never();
 
         $listener = new InvoiceCreateListener($stateMachine);
-        $request = Request::create('/', 'GET');
+        $request = Request::create('/', Request::METHOD_GET);
 
         $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Invoice()));
     }

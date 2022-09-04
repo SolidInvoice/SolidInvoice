@@ -16,6 +16,9 @@ namespace SolidInvoice\MailerBundle\Configurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\SmtpTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Configurator\SmtpConfiguratorTest
+ */
 final class SmtpConfigurator implements ConfiguratorInterface
 {
     private const DEFAULT_PORT = 25;

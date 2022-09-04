@@ -56,7 +56,7 @@ class InvoicePdfListenerTest extends TestCase
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        self::assertEquals(
+        self::assertSame(
             [new DataPart('PDF: Invoice #1', 'invoice_.pdf', 'application/pdf')],
             $message->getAttachments()
         );

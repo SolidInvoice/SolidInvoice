@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
+use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -137,7 +137,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        static::assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
+        static::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
         static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
@@ -198,7 +198,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        static::assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
+        static::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
         static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }

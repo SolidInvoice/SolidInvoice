@@ -19,6 +19,9 @@ use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Twig\Extension\WidgetExtensionTest
+ */
 class WidgetExtension extends AbstractExtension
 {
     /**

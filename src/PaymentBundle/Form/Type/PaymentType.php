@@ -25,6 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Form\Type\PaymentTypeTest
+ */
 class PaymentType extends AbstractType
 {
     /**

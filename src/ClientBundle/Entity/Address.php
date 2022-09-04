@@ -29,17 +29,17 @@ class Address
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"client_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="street1", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -47,7 +47,7 @@ class Address
     private $street1;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="street2", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -55,7 +55,7 @@ class Address
     private $street2;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="city", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -63,7 +63,7 @@ class Address
     private $city;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="state", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -71,7 +71,7 @@ class Address
     private $state;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="zip", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -79,7 +79,7 @@ class Address
     private $zip;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="country", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -94,7 +94,7 @@ class Address
     private $countryName;
 
     /**
-     * @var Client
+     * @var Client|null
      *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="addresses")
      */

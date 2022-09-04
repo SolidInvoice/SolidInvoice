@@ -24,6 +24,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Listener\WorkFlowSubscriberTest
+ */
 class WorkFlowSubscriber implements EventSubscriberInterface
 {
     /**

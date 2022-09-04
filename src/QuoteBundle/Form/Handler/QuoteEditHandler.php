@@ -19,6 +19,9 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Form\Handler\QuoteEditHandlerTest
+ */
 class QuoteEditHandler extends AbstractQuoteHandler
 {
     /**

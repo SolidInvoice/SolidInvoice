@@ -19,6 +19,9 @@ use Knp\Menu\MenuFactory;
 use SplPriorityQueue;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\FactoryTest
+ */
 class Factory extends MenuFactory
 {
     /**

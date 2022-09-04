@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
+use SolidInvoice\InvoiceBundle\Entity\Item;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,16 +38,16 @@ class Tax
     public const TYPE_EXCLUSIVE = 'Exclusive';
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=32)
      * @Assert\NotBlank()
@@ -54,7 +55,7 @@ class Tax
     private $name;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Assert\Type("float")
@@ -63,7 +64,7 @@ class Tax
     private $rate;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="tax_type", type="string", length=32)
      * @Assert\NotBlank()
@@ -71,14 +72,14 @@ class Tax
     private $type;
 
     /**
-     * @var ItemInterface[]|Collection<int, ItemInterface>
+     * @var Collection<Item>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
-     * @var ItemInterface[]|Collection<int, ItemInterface>
+     * @var Collection<\SolidInvoice\QuoteBundle\Entity\Item>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */

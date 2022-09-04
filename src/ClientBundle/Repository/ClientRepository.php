@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -73,7 +74,7 @@ class ClientRepository extends ServiceEntityRepository
                 'c.status',
             ]
         )
-            ->orderBy('c.created', 'DESC')
+            ->orderBy('c.created', Criteria::DESC)
             ->setMaxResults($limit);
 
         $query = $qb->getQuery();
@@ -166,7 +167,9 @@ class ClientRepository extends ServiceEntityRepository
         /** @var Client[] $clients */
         $clients = $this->findBy(['id' => $ids]);
 
-        array_walk($clients, [$em, 'remove']);
+        array_walk($clients, function (object $entity) use ($em) : void {
+            $em->remove($entity);
+        });
 
         $em->flush();
 

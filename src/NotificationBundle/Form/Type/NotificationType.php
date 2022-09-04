@@ -18,6 +18,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\Form\Type\NotificationTypeTest
+ */
 class NotificationType extends AbstractType
 {
     /**

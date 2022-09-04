@@ -18,6 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\Core\AuthenticatedMenuTest
+ */
 class AuthenticatedMenu implements ContainerAwareInterface, BuilderInterface
 {
     use ContainerAwareTrait;

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Twig\Extension;
 
+use Twig_SimpleFunction;
+use Knp\Menu\Provider\MenuProviderInterface;
+use SolidInvoice\MenuBundle\RendererInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -45,15 +48,15 @@ class MenuExtensionTest extends TestCase
 
         static::assertIsArray($functions);
 
-        static::assertContainsOnlyInstancesOf('Twig_SimpleFunction', $functions);
+        static::assertContainsOnlyInstancesOf(Twig_SimpleFunction::class, $functions);
     }
 
     public function testRenderMenu()
     {
-        $provider = M::mock('Knp\Menu\Provider\MenuProviderInterface');
+        $provider = M::mock(MenuProviderInterface::class);
         $this->extension->setProvider($provider);
 
-        $renderer = M::mock('SolidInvoice\MenuBundle\RendererInterface');
+        $renderer = M::mock(RendererInterface::class);
         $this->extension->setRenderer($renderer);
 
         $location = 'abc';

@@ -19,6 +19,9 @@ use Doctrine\DBAL\Types\Type;
 use Money\Currency;
 use Money\Money;
 
+/**
+ * @see \SolidInvoice\MoneyBundle\Tests\Doctrine\Types\MoneyTypeTest
+ */
 class MoneyType extends Type
 {
     public const NAME = 'money';

@@ -29,6 +29,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\Form\Handler\SettingsFormHandlerTest
+ */
 class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
 {
     /**
