@@ -94,7 +94,7 @@ class ContactDetailType extends AbstractType
                 return ['Default', 'not_blank'];
             }
 
-            if (strtolower($form->get('type')->getData()->getName()) === 'email') {
+            if ('email' === strtolower($form->get('type')->getData()->getName())) {
                 return ['Default', 'email'];
             }
             // @codeCoverageIgnoreEnd

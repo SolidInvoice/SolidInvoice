@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
 use DateTime;
 use SolidInvoice\CoreBundle\Pdf\Generator;
@@ -24,6 +23,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -174,7 +174,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
 
         [$type, $logo] = explode('|', $logo);
 
-        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="brand-image" width="'.$width.'"/>')->render(['type' => $type, 'logo' => $logo]);
+        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="brand-image" width="' . $width . '"/>')->render(['type' => $type, 'logo' => $logo]);
     }
 
     /**
@@ -186,7 +186,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         $class = sprintf('fa fa-%s', $iconName);
 
         if (!empty($options)) {
-            $class .= ' '.$options;
+            $class .= ' ' . $options;
         }
 
         return sprintf('<i class="%s"></i>', $class);

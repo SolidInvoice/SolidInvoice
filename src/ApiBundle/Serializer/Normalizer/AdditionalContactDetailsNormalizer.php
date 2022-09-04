@@ -38,7 +38,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
     public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer)
     {
         if (!$normalizer instanceof DenormalizerInterface) {
-            throw new InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
+            throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }
 
         $this->normalizer = $normalizer;

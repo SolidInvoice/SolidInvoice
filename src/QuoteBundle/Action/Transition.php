@@ -70,7 +70,7 @@ final class Transition
 
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'quote.transition.action.'.$this->action;
+                yield self::FLASH_SUCCESS => 'quote.transition.action.' . $this->action;
             }
         };
     }

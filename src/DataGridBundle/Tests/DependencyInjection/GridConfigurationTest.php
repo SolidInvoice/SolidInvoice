@@ -24,7 +24,7 @@ class GridConfigurationTest extends TestCase
     use ConfigurationTestCaseTrait;
     use MockeryPHPUnitIntegration;
 
-    public const FIXTURES_PATH = __DIR__.'/../fixtures/config/';
+    public const FIXTURES_PATH = __DIR__ . '/../fixtures/config/';
 
     protected function getConfiguration()
     {
@@ -50,7 +50,7 @@ class GridConfigurationTest extends TestCase
     public function testProcessedValueContainsRequiredValue()
     {
         $this->assertProcessedConfigurationEquals(
-            Yaml::parse(file_get_contents(realpath(self::FIXTURES_PATH.'valid.yml')))[0],
+            Yaml::parse(file_get_contents(realpath(self::FIXTURES_PATH . 'valid.yml')))[0],
             [
                 'active_client_grid' => [
                     'title' => 'Active',
@@ -152,14 +152,14 @@ class GridConfigurationTest extends TestCase
 
     public function invalidConfigProvider()
     {
-        foreach (Yaml::parse(file_get_contents(realpath(self::FIXTURES_PATH.'invalid.yml'))) as $config) {
+        foreach (Yaml::parse(file_get_contents(realpath(self::FIXTURES_PATH . 'invalid.yml'))) as $config) {
             yield [$config['message'] ?? '', $config['datagrid']];
         }
     }
 
     public function validConfigProvider()
     {
-        foreach (Yaml::parse(file_get_contents(realpath(self::FIXTURES_PATH.'valid.yml'))) as $config) {
+        foreach (Yaml::parse(file_get_contents(realpath(self::FIXTURES_PATH . 'valid.yml'))) as $config) {
             yield [$config];
         }
     }

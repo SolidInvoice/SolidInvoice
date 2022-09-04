@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests;
 
-use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
-use SplPriorityQueue;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\WidgetFactory;
+use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
+use SplPriorityQueue;
 
 class WidgetFactoryTest extends TestCase
 {
@@ -40,13 +40,13 @@ class WidgetFactoryTest extends TestCase
         $factory->add($widget4, null, 400);
         $factory->add($widget5, 'left_column');
 
-        static::assertInstanceOf(SplPriorityQueue::class, $factory->get('top'));
-        static::assertInstanceOf(SplPriorityQueue::class, $factory->get('left_column'));
-        static::assertInstanceOf(SplPriorityQueue::class, $factory->get('right_column'));
+        self::assertInstanceOf(SplPriorityQueue::class, $factory->get('top'));
+        self::assertInstanceOf(SplPriorityQueue::class, $factory->get('left_column'));
+        self::assertInstanceOf(SplPriorityQueue::class, $factory->get('right_column'));
 
-        static::assertCount(2, $factory->get('top'));
-        static::assertCount(2, $factory->get('left_column'));
-        static::assertCount(1, $factory->get('right_column'));
+        self::assertCount(2, $factory->get('top'));
+        self::assertCount(2, $factory->get('left_column'));
+        self::assertCount(1, $factory->get('right_column'));
     }
 
     public function testInvalidLocation()
@@ -78,26 +78,26 @@ class WidgetFactoryTest extends TestCase
         $factory->add($widget5, 'left_column');
 
         $queue1 = $factory->get('top');
-        static::assertInstanceOf(SplPriorityQueue::class, $queue1);
-        static::assertCount(2, $queue1);
-        static::assertSame($widget4, $queue1->current());
+        self::assertInstanceOf(SplPriorityQueue::class, $queue1);
+        self::assertCount(2, $queue1);
+        self::assertSame($widget4, $queue1->current());
         $queue1->next();
-        static::assertSame($widget1, $queue1->current());
+        self::assertSame($widget1, $queue1->current());
 
         $queue2 = $factory->get('left_column');
-        static::assertInstanceOf(SplPriorityQueue::class, $queue2);
-        static::assertCount(2, $queue2);
-        static::assertSame($widget2, $queue2->current());
+        self::assertInstanceOf(SplPriorityQueue::class, $queue2);
+        self::assertCount(2, $queue2);
+        self::assertSame($widget2, $queue2->current());
         $queue2->next();
-        static::assertSame($widget5, $queue2->current());
+        self::assertSame($widget5, $queue2->current());
 
         $queue3 = $factory->get('right_column');
-        static::assertInstanceOf(SplPriorityQueue::class, $queue3);
-        static::assertCount(1, $queue3);
-        static::assertSame($widget3, $queue3->current());
+        self::assertInstanceOf(SplPriorityQueue::class, $queue3);
+        self::assertCount(1, $queue3);
+        self::assertSame($widget3, $queue3->current());
 
         $queue4 = $factory->get('bottom');
-        static::assertInstanceOf(SplPriorityQueue::class, $queue4);
-        static::assertCount(0, $queue4);
+        self::assertInstanceOf(SplPriorityQueue::class, $queue4);
+        self::assertCount(0, $queue4);
     }
 }

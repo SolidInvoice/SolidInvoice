@@ -29,6 +29,7 @@ class Setting
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue()
+     *
      * @var int|null
      */
     private $id;

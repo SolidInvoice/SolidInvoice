@@ -37,7 +37,7 @@ class ViewTransformer implements DataTransformerInterface
         } elseif ($currency instanceof Currency) {
             $this->currency = $currency;
         } else {
-            throw new InvalidArgumentException(sprintf(__METHOD__.' expects a Currency object or string, %s given', is_object($currency) ? get_class($currency) : gettype($currency)));
+            throw new InvalidArgumentException(sprintf(__METHOD__ . ' expects a Currency object or string, %s given', is_object($currency) ? get_class($currency) : gettype($currency)));
         }
     }
 

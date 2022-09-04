@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
@@ -49,7 +49,7 @@ class ClientTest extends ApiTestCase
 
         $result = $this->requestPost('/api/clients', $data);
 
-        static::assertSame([
+        self::assertSame([
             'id' => 2,
             'name' => 'Dummy User',
             'website' => null,
@@ -79,7 +79,7 @@ class ClientTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/clients/1');
 
-        static::assertSame([
+        self::assertSame([
             'id' => 1,
             'name' => 'Test',
             'website' => null,
@@ -104,7 +104,7 @@ class ClientTest extends ApiTestCase
     {
         $data = $this->requestPut('/api/clients/1', ['name' => 'New Test']);
 
-        static::assertSame([
+        self::assertSame([
             'id' => 1,
             'name' => 'New Test',
             'website' => null,

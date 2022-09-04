@@ -38,7 +38,7 @@ final class Finish
             throw new ApplicationInstalledException();
         }
 
-        $binDir = $this->projectDir.'/bin';
+        $binDir = $this->projectDir . '/bin';
 
         return new Template('@SolidInvoiceInstall/finish.html.twig', ['binDir' => $binDir]);
     }

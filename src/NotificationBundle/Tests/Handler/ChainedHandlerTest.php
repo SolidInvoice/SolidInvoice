@@ -31,8 +31,8 @@ class ChainedHandlerTest extends TestCase
         $manager = M::mock(ManagerInterface::class);
         $handler = new ChainedHandler($manager);
 
-        static::assertTrue($handler->shouldHandle(new ChainedNotification()));
-        static::assertFalse($handler->shouldHandle(new Notification('Test')));
+        self::assertTrue($handler->shouldHandle(new ChainedNotification()));
+        self::assertFalse($handler->shouldHandle(new Notification('Test')));
     }
 
     public function testHandle()

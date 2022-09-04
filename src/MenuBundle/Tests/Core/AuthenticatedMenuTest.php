@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Core;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class AuthenticatedMenuTest extends TestCase
@@ -57,7 +57,7 @@ class AuthenticatedMenuTest extends TestCase
             ->withArgs(['IS_AUTHENTICATED_REMEMBERED'])
             ->andReturn(true);
 
-        static::assertTrue($menu->validate());
+        self::assertTrue($menu->validate());
 
         $this->security->shouldHaveReceived('isGranted')->once()->withArgs(['IS_AUTHENTICATED_REMEMBERED']);
     }
@@ -77,7 +77,7 @@ class AuthenticatedMenuTest extends TestCase
             ->withArgs(['IS_AUTHENTICATED_REMEMBERED'])
             ->andReturn(false);
 
-        static::assertFalse($menu->validate());
+        self::assertFalse($menu->validate());
 
         $this->security->shouldHaveReceived('isGranted')->once()->withArgs(['IS_AUTHENTICATED_REMEMBERED']);
     }
@@ -92,7 +92,7 @@ class AuthenticatedMenuTest extends TestCase
             ->withArgs(['security.authorization_checker'])
             ->andThrow(new AuthenticationCredentialsNotFoundException());
 
-        static::assertFalse($menu->validate());
+        self::assertFalse($menu->validate());
 
         $this->security->shouldNotHaveReceived('isGranted');
     }

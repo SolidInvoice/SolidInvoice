@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -151,7 +151,7 @@ class QuoteRepository extends ServiceEntityRepository
         /** @var Quote[] $quotes */
         $quotes = $this->findBy(['id' => $ids]);
 
-        array_walk($quotes, function (object $entity) use ($em) : void {
+        array_walk($quotes, function (object $entity) use ($em): void {
             $em->remove($entity);
         });
 

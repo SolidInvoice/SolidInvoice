@@ -123,7 +123,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     protected function renderDivider(Item $item, array $options = []): string
     {
         return $this->format(
-            '<li'.$this->renderHtmlAttributes(['class' => 'divider'.$item->getExtra('divider')]).'>',
+            '<li' . $this->renderHtmlAttributes(['class' => 'divider' . $item->getExtra('divider')]) . '>',
             'li',
             $item->getLevel(),
             $options
@@ -141,7 +141,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         }
 
         if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
-            return $icon.$this->translator->trans($item->getLabel());
+            return $icon . $this->translator->trans($item->getLabel());
         }
 
         return sprintf('%s <p>%s</p>', $icon, $this->escape($this->translator->trans($item->getLabel())));
@@ -159,7 +159,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     {
         $attributes = $item->getLinkAttributes();
 
-        $attributes['class'] .= $item->isCurrent() ? ' '.$options['currentClass'] : '';
+        $attributes['class'] .= $item->isCurrent() ? ' ' . $options['currentClass'] : '';
 
         return \sprintf('<a href="%s"%s>%s</a>', $this->escape($item->getUri()), $this->renderHtmlAttributes($attributes), $this->renderLabel($item, $options));
     }

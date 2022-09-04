@@ -42,7 +42,7 @@ class SettingsTypeTest extends FormTestCase
             ] as $i => $type
         ) {
             $setting = new Setting();
-            $setting->setKey('setting_'.$i);
+            $setting->setKey('setting_' . $i);
             $setting->setType($type);
 
             $value = $this->faker->name;
@@ -64,10 +64,10 @@ class SettingsTypeTest extends FormTestCase
                     break;
             }
 
-            $formData['setting_'.$i] = $value;
-            $object['setting_'.$i] = $formValue;
+            $formData['setting_' . $i] = $value;
+            $object['setting_' . $i] = $formValue;
 
-            $settings['setting_'.$i] = $setting;
+            $settings['setting_' . $i] = $setting;
         }
 
         $options = [

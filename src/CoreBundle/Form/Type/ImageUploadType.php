@@ -51,7 +51,7 @@ class ImageUploadType extends AbstractType
                     throw new TransformationFailedException();
                 }
 
-                return $value->guessExtension().'|'.base64_encode(file_get_contents($value->getPathname()));
+                return $value->guessExtension() . '|' . base64_encode(file_get_contents($value->getPathname()));
             }
         });
     }

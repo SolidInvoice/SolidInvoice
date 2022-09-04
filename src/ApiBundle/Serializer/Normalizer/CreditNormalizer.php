@@ -31,7 +31,7 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
     public function __construct(NormalizerInterface $normalizer)
     {
         if (!$normalizer instanceof DenormalizerInterface) {
-            throw new InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
+            throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }
 
         $this->normalizer = $normalizer;

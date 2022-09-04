@@ -74,28 +74,28 @@ class InvoiceClonerTest extends TestCase
 
         $newInvoice = $invoiceCloner->clone($invoice);
 
-        static::assertEquals($invoice->getTotal(), $newInvoice->getTotal());
-        static::assertEquals($invoice->getBaseTotal(), $newInvoice->getBaseTotal());
-        static::assertSame($invoice->getDiscount(), $newInvoice->getDiscount());
-        static::assertSame($invoice->getNotes(), $newInvoice->getNotes());
-        static::assertSame($invoice->getTerms(), $newInvoice->getTerms());
-        static::assertEquals($invoice->getTax(), $newInvoice->getTax());
-        static::assertSame($client, $newInvoice->getClient());
-        static::assertNull($newInvoice->getStatus());
+        self::assertEquals($invoice->getTotal(), $newInvoice->getTotal());
+        self::assertEquals($invoice->getBaseTotal(), $newInvoice->getBaseTotal());
+        self::assertSame($invoice->getDiscount(), $newInvoice->getDiscount());
+        self::assertSame($invoice->getNotes(), $newInvoice->getNotes());
+        self::assertSame($invoice->getTerms(), $newInvoice->getTerms());
+        self::assertEquals($invoice->getTax(), $newInvoice->getTax());
+        self::assertSame($client, $newInvoice->getClient());
+        self::assertNull($newInvoice->getStatus());
 
-        static::assertNotSame($invoice->getUuid(), $newInvoice->getUuid());
-        static::assertNull($newInvoice->getId());
+        self::assertNotSame($invoice->getUuid(), $newInvoice->getUuid());
+        self::assertNull($newInvoice->getId());
 
-        static::assertCount(1, $newInvoice->getItems());
+        self::assertCount(1, $newInvoice->getItems());
 
         $invoiceItem = $newInvoice->getItems();
-        static::assertInstanceOf(Item::class, $invoiceItem[0]);
+        self::assertInstanceOf(Item::class, $invoiceItem[0]);
 
-        static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        static::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
-        static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
-        static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
+        self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
+        self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        self::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
+        self::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
+        self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 
     public function testCloneWithRecurring()
@@ -144,29 +144,29 @@ class InvoiceClonerTest extends TestCase
         /** @var RecurringInvoice $newInvoice */
         $newInvoice = $invoiceCloner->clone($invoice);
 
-        static::assertEquals($invoice->getTotal(), $newInvoice->getTotal());
-        static::assertEquals($invoice->getBaseTotal(), $newInvoice->getBaseTotal());
-        static::assertSame($invoice->getDiscount(), $newInvoice->getDiscount());
-        static::assertSame($invoice->getNotes(), $newInvoice->getNotes());
-        static::assertSame($invoice->getTerms(), $newInvoice->getTerms());
-        static::assertEquals($invoice->getTax(), $newInvoice->getTax());
-        static::assertSame($client, $newInvoice->getClient());
-        static::assertNull($newInvoice->getStatus());
+        self::assertEquals($invoice->getTotal(), $newInvoice->getTotal());
+        self::assertEquals($invoice->getBaseTotal(), $newInvoice->getBaseTotal());
+        self::assertSame($invoice->getDiscount(), $newInvoice->getDiscount());
+        self::assertSame($invoice->getNotes(), $newInvoice->getNotes());
+        self::assertSame($invoice->getTerms(), $newInvoice->getTerms());
+        self::assertEquals($invoice->getTax(), $newInvoice->getTax());
+        self::assertSame($client, $newInvoice->getClient());
+        self::assertNull($newInvoice->getStatus());
 
-        static::assertNull($newInvoice->getId());
+        self::assertNull($newInvoice->getId());
 
-        static::assertCount(1, $newInvoice->getItems());
+        self::assertCount(1, $newInvoice->getItems());
 
         $invoiceItem = $newInvoice->getItems();
-        static::assertInstanceOf(Item::class, $invoiceItem[0]);
+        self::assertInstanceOf(Item::class, $invoiceItem[0]);
 
-        static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        static::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
-        static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
-        static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
-        static::assertSame($newInvoice->getFrequency(), $invoice->getFrequency());
-        static::assertSame($newInvoice->getDateStart(), $invoice->getDateStart());
-        static::assertSame($newInvoice->getDateEnd(), $invoice->getDateEnd());
+        self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
+        self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        self::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
+        self::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
+        self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
+        self::assertSame($newInvoice->getFrequency(), $invoice->getFrequency());
+        self::assertSame($newInvoice->getDateStart(), $invoice->getDateStart());
+        self::assertSame($newInvoice->getDateEnd(), $invoice->getDateEnd());
     }
 }

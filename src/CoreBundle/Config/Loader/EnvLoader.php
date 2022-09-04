@@ -29,7 +29,7 @@ final class EnvLoader implements EnvVarLoaderInterface
 
     public function loadEnvVars(): array
     {
-        $envFile = $this->projectDir.'/config/env.php';
+        $envFile = $this->projectDir . '/config/env.php';
 
         if (!\file_exists($envFile)) {
             return [];

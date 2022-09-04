@@ -19,7 +19,7 @@ class InvalidTransitionException extends Exception
 {
     public function __construct(string $transition)
     {
-        $message = 'invoice.transition.exception.'.$transition;
+        $message = 'invoice.transition.exception.' . $transition;
 
         parent::__construct($message);
     }

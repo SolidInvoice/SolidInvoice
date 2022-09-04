@@ -19,7 +19,7 @@ class MainMenu
 {
     public static function user(User $user): array
     {
-        $username = $user->getUsername().' <b class="caret"></b>';
+        $username = $user->getUsername() . ' <b class="caret"></b>';
 
         return [
             'user',

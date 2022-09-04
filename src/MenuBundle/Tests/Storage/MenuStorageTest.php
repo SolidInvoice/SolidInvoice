@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Storage;
 
-use SplPriorityQueue;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Storage\MenuStorage;
+use SplPriorityQueue;
 
 class MenuStorageTest extends TestCase
 {
@@ -33,25 +33,25 @@ class MenuStorageTest extends TestCase
     {
         $storage = new MenuStorage();
 
-        static::assertFalse($storage->has($name1));
-        static::assertFalse($storage->has($name2));
-        static::assertFalse($storage->has($name3));
+        self::assertFalse($storage->has($name1));
+        self::assertFalse($storage->has($name2));
+        self::assertFalse($storage->has($name3));
 
-        static::assertInstanceOf(SplPriorityQueue::class, $storage->get($name1));
-        static::assertInstanceOf(SplPriorityQueue::class, $storage->get($name2));
-        static::assertInstanceOf(SplPriorityQueue::class, $storage->get($name3));
+        self::assertInstanceOf(SplPriorityQueue::class, $storage->get($name1));
+        self::assertInstanceOf(SplPriorityQueue::class, $storage->get($name2));
+        self::assertInstanceOf(SplPriorityQueue::class, $storage->get($name3));
 
-        static::assertSame($storage->get($name1), $storage->get($name1));
-        static::assertSame($storage->get($name2), $storage->get($name2));
-        static::assertSame($storage->get($name3), $storage->get($name3));
+        self::assertSame($storage->get($name1), $storage->get($name1));
+        self::assertSame($storage->get($name2), $storage->get($name2));
+        self::assertSame($storage->get($name3), $storage->get($name3));
 
-        static::assertNotSame($storage->get($name1), $storage->get($name2));
-        static::assertNotSame($storage->get($name1), $storage->get($name3));
-        static::assertNotSame($storage->get($name2), $storage->get($name3));
+        self::assertNotSame($storage->get($name1), $storage->get($name2));
+        self::assertNotSame($storage->get($name1), $storage->get($name3));
+        self::assertNotSame($storage->get($name2), $storage->get($name3));
 
-        static::assertTrue($storage->has($name1));
-        static::assertTrue($storage->has($name2));
-        static::assertTrue($storage->has($name3));
+        self::assertTrue($storage->has($name1));
+        self::assertTrue($storage->has($name2));
+        self::assertTrue($storage->has($name3));
     }
 
     public function storageItems()

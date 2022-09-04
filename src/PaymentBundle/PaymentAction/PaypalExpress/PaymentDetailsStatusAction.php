@@ -47,8 +47,8 @@ class PaymentDetailsStatusAction implements ActionInterface, GatewayAwareInterfa
         $message = [];
 
         foreach (range(0, 9) as $index) {
-            if ($details['L_ERRORCODE'.$index]) {
-                $message[] = $details['L_LONGMESSAGE'.$index];
+            if ($details['L_ERRORCODE' . $index]) {
+                $message[] = $details['L_LONGMESSAGE' . $index];
             }
         }
 

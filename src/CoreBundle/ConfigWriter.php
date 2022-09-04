@@ -31,7 +31,7 @@ class ConfigWriter
     public function __construct(string $projectDir, Filesystem $fileSystem)
     {
         $this->fileSystem = $fileSystem;
-        $this->configFile = $projectDir.'/config/env.php';
+        $this->configFile = $projectDir . '/config/env.php';
     }
 
     /**
@@ -41,7 +41,7 @@ class ConfigWriter
     {
         $values = array_merge($this->getConfigValues(), $config);
 
-        $code = "<?php\n\nreturn ".var_export($values, true).";\n";
+        $code = "<?php\n\nreturn " . var_export($values, true) . ";\n";
 
         $this->fileSystem->dumpFile($this->configFile, $code);
     }

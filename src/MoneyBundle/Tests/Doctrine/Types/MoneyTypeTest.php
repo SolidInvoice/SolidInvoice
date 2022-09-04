@@ -40,7 +40,7 @@ class MoneyTypeTest extends TestCase
         /** @var MoneyType $type */
         $type = Type::getType('money');
 
-        static::assertSame('money', $type->getName());
+        self::assertSame('money', $type->getName());
     }
 
     public function testGetSQLDeclaration()
@@ -64,9 +64,9 @@ class MoneyTypeTest extends TestCase
 
         $value = $type->convertToPHPValue(1200, $platform);
 
-        static::assertInstanceOf(Money::class, $value);
-        static::assertSame('1200', $value->getAmount());
-        static::assertSame('USD', $value->getCurrency()->getCode());
+        self::assertInstanceOf(Money::class, $value);
+        self::assertSame('1200', $value->getAmount());
+        self::assertSame('USD', $value->getCurrency()->getCode());
     }
 
     public function testConvertToPHPValueWithEmptyValue()
@@ -78,8 +78,8 @@ class MoneyTypeTest extends TestCase
 
         $value = $type->convertToPHPValue(null, $platform);
 
-        static::assertInstanceOf(Money::class, $value);
-        static::assertSame('0', $value->getAmount());
+        self::assertInstanceOf(Money::class, $value);
+        self::assertSame('0', $value->getAmount());
     }
 
     public function testConvertToPHPValueWithMoneyValue()
@@ -92,7 +92,7 @@ class MoneyTypeTest extends TestCase
         $money = new Money(1200, new Currency('USD'));
         $value = $type->convertToPHPValue($money, $platform);
 
-        static::assertSame($money, $value);
+        self::assertSame($money, $value);
     }
 
     public function testConvertToDatabaseValueWithEmptyValue()
@@ -104,7 +104,7 @@ class MoneyTypeTest extends TestCase
 
         $value = $type->convertToDatabaseValue(null, $platform);
 
-        static::assertSame(0, $value);
+        self::assertSame(0, $value);
     }
 
     public function testConvertToDatabaseValueWithMoney()
@@ -117,7 +117,7 @@ class MoneyTypeTest extends TestCase
         $money = new Money(1200, new Currency('USD'));
         $value = $type->convertToDatabaseValue($money, $platform);
 
-        static::assertSame('1200', $value);
+        self::assertSame('1200', $value);
     }
 
     public function testConvertToDatabaseValueInvalidValue()

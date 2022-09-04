@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests\Factory;
 
-use RuntimeException;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SolidInvoice\MailerBundle\Configurator\SesConfigurator;
 use SolidInvoice\MailerBundle\Factory\MailerConfigFactory;
 use SolidInvoice\SettingsBundle\SystemConfig;

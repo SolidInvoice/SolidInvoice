@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Form\Type\TransportConfig;
 
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\MailgunApiTransportConfigTypeTest

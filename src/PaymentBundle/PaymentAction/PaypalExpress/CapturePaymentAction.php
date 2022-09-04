@@ -66,7 +66,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
 
         $details = [];
 
-        $details['PAYMENTREQUEST_0_INVNUM'] = $invoice->getId().'-'.$payment->getId();
+        $details['PAYMENTREQUEST_0_INVNUM'] = $invoice->getId() . '-' . $payment->getId();
         $details['PAYMENTREQUEST_0_CURRENCYCODE'] = $payment->getCurrencyCode();
         $details['PAYMENTREQUEST_0_AMT'] = number_format($this->formatter->toFloat($invoice->getTotal()), 2);
         $details['PAYMENTREQUEST_0_ITEMAMT'] = number_format($this->formatter->toFloat($invoice->getTotal()), 2);
@@ -75,24 +75,24 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
         foreach ($invoice->getItems() as $item) {
             /* @var \SolidInvoice\InvoiceBundle\Entity\Item $item */
 
-            $details['L_PAYMENTREQUEST_0_NAME'.$counter] = $item->getDescription();
-            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($this->formatter->toFloat($item->getPrice()), 2);
-            $details['L_PAYMENTREQUEST_0_QTY'.$counter] = $item->getQty();
+            $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
+            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format($this->formatter->toFloat($item->getPrice()), 2);
+            $details['L_PAYMENTREQUEST_0_QTY' . $counter] = $item->getQty();
 
             ++$counter;
         }
 
         if ($invoice->getDiscount()->getValue()) {
             $discount = $invoice->getBaseTotal()->multiply($invoice->getDiscount());
-            $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Discount';
-            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = '-'.number_format($this->formatter->toFloat($discount), 2);
-            $details['L_PAYMENTREQUEST_0_QTY'.$counter] = 1;
+            $details['L_PAYMENTREQUEST_0_NAME' . $counter] = 'Discount';
+            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = '-' . number_format($this->formatter->toFloat($discount), 2);
+            $details['L_PAYMENTREQUEST_0_QTY' . $counter] = 1;
         }
 
         if (null !== $tax = $invoice->getTax()) {
-            $details['L_PAYMENTREQUEST_0_NAME'.$counter] = 'Tax Total';
-            $details['L_PAYMENTREQUEST_0_AMT'.$counter] = number_format($this->formatter->toFloat($tax), 2);
-            $details['L_PAYMENTREQUEST_0_QTY'.$counter] = 1;
+            $details['L_PAYMENTREQUEST_0_NAME' . $counter] = 'Tax Total';
+            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format($this->formatter->toFloat($tax), 2);
+            $details['L_PAYMENTREQUEST_0_QTY' . $counter] = 1;
         }
 
         $payment->setDetails($details);
@@ -117,7 +117,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
      */
     public function supports($request)
     {
-        @trigger_error('This '.self::class.' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
+        @trigger_error('This ' . self::class . ' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
 
         if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
             return false;

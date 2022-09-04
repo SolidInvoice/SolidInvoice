@@ -30,7 +30,7 @@ class CurrencyFactoryTest extends TestCase
         $config = M::mock(SystemConfig::class);
         $factory = new CurrencyFactory(null, $config);
 
-        static::assertEquals(new Currency('USD'), $factory->getCurrency());
+        self::assertEquals(new Currency('USD'), $factory->getCurrency());
 
         $config->shouldNotHaveReceived('get');
     }
@@ -45,6 +45,6 @@ class CurrencyFactoryTest extends TestCase
 
         $factory = new CurrencyFactory((string) Carbon::now(), $config);
 
-        static::assertEquals(new Currency('EUR'), $factory->getCurrency());
+        self::assertEquals(new Currency('EUR'), $factory->getCurrency());
     }
 }

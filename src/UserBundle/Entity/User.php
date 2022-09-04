@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use DateTimeInterface;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

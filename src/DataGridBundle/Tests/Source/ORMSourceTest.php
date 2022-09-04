@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\Source;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -42,7 +42,7 @@ class ORMSourceTest extends TestCase
 
         $data = $source->fetch();
 
-        static::assertSame($qb, $data);
+        self::assertSame($qb, $data);
     }
 
     public function testFetchException()

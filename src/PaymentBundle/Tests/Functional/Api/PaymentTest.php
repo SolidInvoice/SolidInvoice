@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
@@ -40,7 +40,7 @@ class PaymentTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/payments');
 
-        static::assertSame([
+        self::assertSame([
             [
                 'method' => null,
                 'status' => 'captured',
@@ -54,7 +54,7 @@ class PaymentTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/payments/1');
 
-        static::assertSame([
+        self::assertSame([
             'method' => null,
             'status' => 'captured',
             'message' => null,

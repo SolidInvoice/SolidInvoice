@@ -53,10 +53,10 @@ class SearchFilter implements FilterInterface
                 $this->searchFields
             );
 
-            $queryBuilder->andWhere(call_user_func_array(function ($x = null) use ($expr) : Orx {
+            $queryBuilder->andWhere(call_user_func_array(function ($x = null) use ($expr): Orx {
                 return $expr->orX($x);
             }, $fields));
-            $queryBuilder->setParameter('q', '%'.$request->query->get('q').'%');
+            $queryBuilder->setParameter('q', '%' . $request->query->get('q') . '%');
         }
     }
 }

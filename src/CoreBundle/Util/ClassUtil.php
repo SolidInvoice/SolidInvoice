@@ -34,7 +34,7 @@ class ClassUtil
             }
 
             if ($class && T_STRING === $token[0]) {
-                return $namespace.'\\'.$token[1];
+                return $namespace . '\\' . $token[1];
             }
 
             if (true === $namespace && T_STRING === $token[0]) {

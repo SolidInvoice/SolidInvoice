@@ -78,14 +78,14 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     {
         /* @var Client $client */
 
-        static::assertSame($this->clientName, $client->getName());
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertCount(1, $response->getFlash());
+        self::assertSame($this->clientName, $client->getName());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertCount(1, $response->getFlash());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 }

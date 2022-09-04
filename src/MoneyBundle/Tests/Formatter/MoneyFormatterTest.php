@@ -33,7 +33,7 @@ class MoneyFormatterTest extends TestCase
 
         $money = new Money(1200, $currency);
 
-        static::assertSame($format, $formatter->format($money));
+        self::assertSame($format, $formatter->format($money));
     }
 
     /**
@@ -43,7 +43,7 @@ class MoneyFormatterTest extends TestCase
     {
         $formatter = new MoneyFormatter($locale, new Currency($currency));
 
-        static::assertSame($symbol, $formatter->getCurrencySymbol());
+        self::assertSame($symbol, $formatter->getCurrencySymbol());
     }
 
     /**
@@ -53,7 +53,7 @@ class MoneyFormatterTest extends TestCase
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertSame($separator, $formatter->getThousandSeparator());
+        self::assertSame($separator, $formatter->getThousandSeparator());
     }
 
     /**
@@ -63,7 +63,7 @@ class MoneyFormatterTest extends TestCase
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertSame($separator, $formatter->getDecimalSeparator());
+        self::assertSame($separator, $formatter->getDecimalSeparator());
     }
 
     /**
@@ -73,7 +73,7 @@ class MoneyFormatterTest extends TestCase
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertStringContainsString($pattern, $formatter->getPattern());
+        self::assertStringContainsString($pattern, $formatter->getPattern());
     }
 
     public function localeProvider(): array
