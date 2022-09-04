@@ -60,15 +60,15 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
     {
         /* @var Client $client */
 
-        static::assertSame(Status::STATUS_ACTIVE, $client->getStatus());
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertCount(1, $response->getFlash());
-        static::assertCount(1, $this->em->getRepository(Client::class)->findAll());
+        self::assertSame(Status::STATUS_ACTIVE, $client->getStatus());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertCount(1, $response->getFlash());
+        self::assertCount(1, $this->em->getRepository(Client::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 }

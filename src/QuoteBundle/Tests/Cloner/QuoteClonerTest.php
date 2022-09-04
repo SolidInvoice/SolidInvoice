@@ -82,27 +82,27 @@ class QuoteClonerTest extends TestCase
 
         $newQuote = $quoteCloner->clone($quote);
 
-        static::assertEquals($quote->getTotal(), $newQuote->getTotal());
-        static::assertEquals($quote->getBaseTotal(), $newQuote->getBaseTotal());
-        static::assertSame($quote->getDiscount(), $newQuote->getDiscount());
-        static::assertSame($quote->getNotes(), $newQuote->getNotes());
-        static::assertSame($quote->getTerms(), $newQuote->getTerms());
-        static::assertEquals($quote->getTax(), $newQuote->getTax());
-        static::assertSame($client, $newQuote->getClient());
-        static::assertSame(Graph::STATUS_DRAFT, $newQuote->getStatus());
+        self::assertEquals($quote->getTotal(), $newQuote->getTotal());
+        self::assertEquals($quote->getBaseTotal(), $newQuote->getBaseTotal());
+        self::assertSame($quote->getDiscount(), $newQuote->getDiscount());
+        self::assertSame($quote->getNotes(), $newQuote->getNotes());
+        self::assertSame($quote->getTerms(), $newQuote->getTerms());
+        self::assertEquals($quote->getTax(), $newQuote->getTax());
+        self::assertSame($client, $newQuote->getClient());
+        self::assertSame(Graph::STATUS_DRAFT, $newQuote->getStatus());
 
-        static::assertNotSame($quote->getUuid(), $newQuote->getUuid());
-        static::assertNull($newQuote->getId());
+        self::assertNotSame($quote->getUuid(), $newQuote->getUuid());
+        self::assertNull($newQuote->getId());
 
-        static::assertCount(1, $newQuote->getItems());
+        self::assertCount(1, $newQuote->getItems());
 
         $quoteItem = $newQuote->getItems();
-        static::assertInstanceOf(Item::class, $quoteItem[0]);
+        self::assertInstanceOf(Item::class, $quoteItem[0]);
 
-        static::assertSame($item->getTax(), $quoteItem[0]->getTax());
-        static::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
-        static::assertInstanceOf(DateTime::class, $quoteItem[0]->getCreated());
-        static::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
-        static::assertSame($item->getQty(), $quoteItem[0]->getQty());
+        self::assertSame($item->getTax(), $quoteItem[0]->getTax());
+        self::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
+        self::assertInstanceOf(DateTime::class, $quoteItem[0]->getCreated());
+        self::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
+        self::assertSame($item->getQty(), $quoteItem[0]->getQty());
     }
 }

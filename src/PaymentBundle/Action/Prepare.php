@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use const FILTER_VALIDATE_BOOL;
 use DateTime;
 use Exception;
 use Money\Currency;
@@ -44,7 +45,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\StateMachine;
 use function array_key_exists;
 use function filter_var;
-use const FILTER_VALIDATE_BOOL;
 
 // @TODO: Refactor this class to make it cleaner
 

@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\DependencyInjection\CompilerPass;
 
-use SolidInvoice\DataGridBundle\Grid;
-use SolidInvoice\DataGridBundle\Source\ORMSource;
-use SolidInvoice\DataGridBundle\Filter\ChainFilter;
-use SolidInvoice\DataGridBundle\Filter\SortFilter;
-use SolidInvoice\DataGridBundle\Filter\PaginateFilter;
-use SolidInvoice\DataGridBundle\Filter\SearchFilter;
 use InvalidArgumentException;
 use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
+use SolidInvoice\DataGridBundle\Filter\ChainFilter;
+use SolidInvoice\DataGridBundle\Filter\PaginateFilter;
+use SolidInvoice\DataGridBundle\Filter\SearchFilter;
+use SolidInvoice\DataGridBundle\Filter\SortFilter;
+use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
+use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Resource\FileResource;

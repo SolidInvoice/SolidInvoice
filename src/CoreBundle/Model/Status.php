@@ -48,7 +48,7 @@ abstract class Status
     {
         $status = str_replace(['-', '_'], ' ', strtolower($status));
 
-        return '<label class="badge badge-'.$this->getStatusLabel($status).'">'.ucwords($status).'</label>';
+        return '<label class="badge badge-' . $this->getStatusLabel($status) . '">' . ucwords($status) . '</label>';
     }
 
     /**

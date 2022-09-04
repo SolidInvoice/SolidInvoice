@@ -38,7 +38,7 @@ class InvoiceSubjectDecoratorTest extends TestCase
         $message = new InvoiceEmail(new Invoice());
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertSame('New Invoice: #', $message->getSubject());
+        self::assertSame('New Invoice: #', $message->getSubject());
     }
 
     public function testEvents(): void

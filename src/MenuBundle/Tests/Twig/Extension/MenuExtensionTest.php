@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Twig\Extension;
 
-use Twig_SimpleFunction;
 use Knp\Menu\Provider\MenuProviderInterface;
-use SolidInvoice\MenuBundle\RendererInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\RendererInterface;
 use SolidInvoice\MenuBundle\Twig\Extension\MenuExtension;
 use SplPriorityQueue;
 use Twig\Extension\ExtensionInterface;
+use Twig_SimpleFunction;
 
 class MenuExtensionTest extends TestCase
 {
@@ -39,16 +39,16 @@ class MenuExtensionTest extends TestCase
 
     public function testGetName()
     {
-        static::assertSame('solidinvoice_menu.twig.extension', $this->extension->getName());
+        self::assertSame('solidinvoice_menu.twig.extension', $this->extension->getName());
     }
 
     public function testGetFunctions()
     {
         $functions = $this->extension->getFunctions();
 
-        static::assertIsArray($functions);
+        self::assertIsArray($functions);
 
-        static::assertContainsOnlyInstancesOf(Twig_SimpleFunction::class, $functions);
+        self::assertContainsOnlyInstancesOf(Twig_SimpleFunction::class, $functions);
     }
 
     public function testRenderMenu()
@@ -72,7 +72,7 @@ class MenuExtensionTest extends TestCase
             ->with($menu, ['a' => 'b'])
             ->andReturn('123');
 
-        static::assertSame('123', $this->extension->renderMenu($location, ['a' => 'b']));
+        self::assertSame('123', $this->extension->renderMenu($location, ['a' => 'b']));
 
         $provider->shouldHaveReceived('get')
             ->once()

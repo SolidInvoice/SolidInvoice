@@ -38,9 +38,9 @@ class MenuItemTest extends TestCase
 
         $child = $item->addDivider('*');
 
-        static::assertInstanceOf(ItemInterface::class, $child);
-        static::assertTrue($child->isDivider());
-        static::assertSame('-*', $child->getExtra('divider'));
+        self::assertInstanceOf(ItemInterface::class, $child);
+        self::assertTrue($child->isDivider());
+        self::assertSame('-*', $child->getExtra('divider'));
     }
 
     public function testAddChild()
@@ -54,7 +54,7 @@ class MenuItemTest extends TestCase
 
         $child = $item->addChild('abc');
 
-        static::assertInstanceOf(ItemInterface::class, $child);
+        self::assertInstanceOf(ItemInterface::class, $child);
     }
 
     public function testAddChildArray()
@@ -68,7 +68,7 @@ class MenuItemTest extends TestCase
 
         $child = $item->addChild(['abc', []]);
 
-        static::assertInstanceOf(ItemInterface::class, $child);
+        self::assertInstanceOf(ItemInterface::class, $child);
     }
 
     public function testIsDivider()
@@ -80,7 +80,7 @@ class MenuItemTest extends TestCase
 
         $coreExtension->buildItem($item, $coreExtension->buildOptions($options));
 
-        static::assertTrue($item->isDivider());
+        self::assertTrue($item->isDivider());
     }
 
     public function testIsDividerFalse()
@@ -90,6 +90,6 @@ class MenuItemTest extends TestCase
 
         $coreExtension->buildItem($item, $coreExtension->buildOptions([]));
 
-        static::assertFalse($item->isDivider());
+        self::assertFalse($item->isDivider());
     }
 }

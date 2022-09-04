@@ -35,9 +35,9 @@ class MenuItem extends BaseItem implements ItemInterface
         }
 
         $options['attributes'] = $options['attributes'] ?? [];
-        $options['attributes']['class'] = ($options['attributes']['class'] ?? '').' nav-item';
+        $options['attributes']['class'] = ($options['attributes']['class'] ?? '') . ' nav-item';
         $options['linkAttributes'] = $options['linkAttributes'] ?? [];
-        $options['linkAttributes']['class'] = ($options['linkAttributes']['class'] ?? '').' nav-link';
+        $options['linkAttributes']['class'] = ($options['linkAttributes']['class'] ?? '') . ' nav-link';
 
         return parent::addChild($child, $options);
     }
@@ -52,7 +52,7 @@ class MenuItem extends BaseItem implements ItemInterface
         $name = uniqid();
 
         if (!empty($type)) {
-            $type = '-'.$type;
+            $type = '-' . $type;
         }
 
         return $this->addChild($name, ['extras' => ['divider' => $type]]);

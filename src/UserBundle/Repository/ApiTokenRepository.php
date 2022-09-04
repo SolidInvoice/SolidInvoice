@@ -71,7 +71,7 @@ class ApiTokenRepository extends ServiceEntityRepository
                 't.history',
                 'h',
                 Join::WITH,
-                $qb->expr()->eq('h.created', '('.$hqb->getDQL().')')
+                $qb->expr()->eq('h.created', '(' . $hqb->getDQL() . ')')
             )
             ->where('t.user = :user')
             ->setParameter('user', $user);

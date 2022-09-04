@@ -74,11 +74,11 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertSame('9876543210', $data->getMobile());
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertSame('/profile', $response->getTargetUrl());
-        static::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
+        self::assertSame('9876543210', $data->getMobile());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('/profile', $response->getTargetUrl());
+        self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     public function getFormData(): array

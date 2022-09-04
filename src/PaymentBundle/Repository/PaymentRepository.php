@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;

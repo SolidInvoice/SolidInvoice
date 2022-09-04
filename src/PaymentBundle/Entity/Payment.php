@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
-use DateTimeInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\Payment as BasePayment;
@@ -91,6 +91,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
      * @Serialize\Groups({"payment_api", "client_api"})
+     *
      * @var string|null
      */
     private $message;

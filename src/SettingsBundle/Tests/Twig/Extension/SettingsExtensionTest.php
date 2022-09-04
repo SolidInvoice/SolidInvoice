@@ -33,7 +33,7 @@ class SettingsExtensionTest extends TestCase
 
         $extension = new SettingsExtension($config);
 
-        static::assertTrue($extension->getSetting('dummy/setting'));
+        self::assertTrue($extension->getSetting('dummy/setting'));
     }
 
     public function testGetSettingsDefaultValue()
@@ -45,6 +45,6 @@ class SettingsExtensionTest extends TestCase
 
         $extension = new SettingsExtension($config);
 
-        static::assertFalse($extension->getSetting('dummy/setting', false));
+        self::assertFalse($extension->getSetting('dummy/setting', false));
     }
 }

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle\Tests;
 
-use SolidInvoice\CronBundle\CommandInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CronBundle\CommandInterface;
 use SolidInvoice\CronBundle\Runner;
 
 class RunnerTest extends TestCase

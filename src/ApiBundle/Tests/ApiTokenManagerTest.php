@@ -33,9 +33,9 @@ class ApiTokenManagerTest extends TestCase
 
         $token = $tm->generateToken();
 
-        static::assertIsString($token);
-        static::assertSame(64, strlen($token));
-        static::assertMatchesRegularExpression('/[a-zA-Z0-9]{64}/', $token);
+        self::assertIsString($token);
+        self::assertSame(64, strlen($token));
+        self::assertMatchesRegularExpression('/[a-zA-Z0-9]{64}/', $token);
     }
 
     public function testCreate()
@@ -61,9 +61,9 @@ class ApiTokenManagerTest extends TestCase
 
         $token = $tm->create($user, 'test token');
 
-        static::assertInstanceOf(ApiToken::class, $token);
-        static::assertSame($user, $token->getUser());
-        static::assertSame('test token', $token->getName());
+        self::assertInstanceOf(ApiToken::class, $token);
+        self::assertSame($user, $token->getUser());
+        self::assertSame('test token', $token->getName());
     }
 
     public function testGet()
@@ -84,8 +84,8 @@ class ApiTokenManagerTest extends TestCase
 
         $token = $tm->getOrCreate($user, 'token1');
 
-        static::assertInstanceOf(ApiToken::class, $token);
-        static::assertSame($token1, $token);
+        self::assertInstanceOf(ApiToken::class, $token);
+        self::assertSame($token1, $token);
     }
 
     public function testGetOrCreate()
@@ -119,10 +119,10 @@ class ApiTokenManagerTest extends TestCase
 
         $token = $tm->getOrCreate($user, 'token3');
 
-        static::assertInstanceOf(ApiToken::class, $token);
-        static::assertNotSame($token1, $token);
-        static::assertNotSame($token2, $token);
-        static::assertSame($user, $token->getUser());
-        static::assertSame('token3', $token->getName());
+        self::assertInstanceOf(ApiToken::class, $token);
+        self::assertNotSame($token1, $token);
+        self::assertNotSame($token2, $token);
+        self::assertSame($user, $token->getUser());
+        self::assertSame('token3', $token->getName());
     }
 }

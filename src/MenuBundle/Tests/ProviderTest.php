@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests;
 
-use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
-use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use SolidInvoice\MenuBundle\Provider;
+use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
 use SplPriorityQueue;
 
 class ProviderTest extends TestCase
@@ -37,7 +37,7 @@ class ProviderTest extends TestCase
             ->with('abc')
             ->andReturn($q);
 
-        static::assertSame($q, $provider->get('abc', []));
+        self::assertSame($q, $provider->get('abc', []));
 
         $storage->shouldHaveReceived('get')
             ->with('abc');
@@ -53,7 +53,7 @@ class ProviderTest extends TestCase
             ->with('abc')
             ->andReturn(true);
 
-        static::assertTrue($provider->has('abc', []));
+        self::assertTrue($provider->has('abc', []));
 
         $storage->shouldHaveReceived('has')
             ->with('abc');

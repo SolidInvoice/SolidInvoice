@@ -48,7 +48,7 @@ class CalculatorTest extends TestCase
         $entity->setDiscount($discount);
         $entity->setBaseTotal(new \Money\Money(20000, new Currency('USD')));
 
-        static::assertEquals(new \Money\Money(2000, new Currency('USD')), $calculator->calculateDiscount($entity));
+        self::assertEquals(new \Money\Money(2000, new Currency('USD')), $calculator->calculateDiscount($entity));
     }
 
     public function testCalculateDiscountPercentage()
@@ -61,14 +61,14 @@ class CalculatorTest extends TestCase
         $entity->setDiscount($discount);
         $entity->setBaseTotal(new \Money\Money(200, new Currency('USD')));
 
-        static::assertEquals(new \Money\Money(3500, new Currency('USD')), $calculator->calculateDiscount($entity));
+        self::assertEquals(new \Money\Money(3500, new Currency('USD')), $calculator->calculateDiscount($entity));
     }
 
     public function testCalculatePercentage()
     {
         $calculator = new Calculator();
-        static::assertSame(0.0, $calculator->calculatePercentage(100));
-        static::assertSame(24.0, $calculator->calculatePercentage(200, 12));
-        static::assertSame(40.0, $calculator->calculatePercentage(new \Money\Money(200, new Currency('USD')), 20));
+        self::assertSame(0.0, $calculator->calculatePercentage(100));
+        self::assertSame(24.0, $calculator->calculatePercentage(200, 12));
+        self::assertSame(40.0, $calculator->calculatePercentage(new \Money\Money(200, new Currency('USD')), 20));
     }
 }

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\MailerBundle\Factory;
 
 use JsonException;
-use Symfony\Component\Mailer\Transport\TransportInterface;
 use RuntimeException;
 use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Factory\MailerConfigFactoryTest

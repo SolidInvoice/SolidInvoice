@@ -33,7 +33,7 @@ class ChainedNotificationTest extends TestCase
         $notification->addNotification($message2);
         $notification->addNotification($message3);
 
-        static::assertSame([$message1, $message2, $message3], $notification->getNotifications());
+        self::assertSame([$message1, $message2, $message3], $notification->getNotifications());
     }
 
     public function testAddNotificationThroughConstructor()
@@ -43,6 +43,6 @@ class ChainedNotificationTest extends TestCase
         $message3 = M::mock(NotificationInterface::class);
         $notification = new ChainedNotification([$message1, $message2, $message3]);
 
-        static::assertSame([$message1, $message2, $message3], $notification->getNotifications());
+        self::assertSame([$message1, $message2, $message3], $notification->getNotifications());
     }
 }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 
 class RecurringInvoiceRepository extends ServiceEntityRepository
@@ -63,7 +63,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         /** @var RecurringInvoice[] $invoices */
         $invoices = $this->findBy(['id' => $ids]);
 
-        array_walk($invoices, function (object $entity) use ($em) : void {
+        array_walk($invoices, function (object $entity) use ($em): void {
             $em->remove($entity);
         });
 

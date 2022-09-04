@@ -268,7 +268,7 @@ class Contact implements Serializable
 
     public function __toString(): string
     {
-        return $this->firstName.' '.$this->lastName;
+        return $this->firstName . ' ' . $this->lastName;
     }
 
     /**

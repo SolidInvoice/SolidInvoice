@@ -44,7 +44,7 @@ class ArrayUtil
 
         foreach ($array as $item) {
             if ((is_array($item) || $item instanceof ArrayAccess) && '[' !== $column[0]) {
-                $column = '['.$column.']';
+                $column = '[' . $column . ']';
             }
 
             $return[] = $accessor->getValue($item, $column);

@@ -60,8 +60,8 @@ class YamlFormatCommand extends Command
             ->ignoreDotFiles(true)
             ->ignoreUnreadableDirs(true)
             ->ignoreVCS(true)
-            ->in($this->projectDir.'/app')
-            ->in($this->projectDir.'/src/**/*')
+            ->in($this->projectDir . '/app')
+            ->in($this->projectDir . '/src/**/*')
             ->name('*.yml');
 
         return $finder->getIterator();

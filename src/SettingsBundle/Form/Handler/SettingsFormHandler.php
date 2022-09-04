@@ -83,9 +83,9 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $result = array_merge($result, $this->flatten($value, $prefix.$key.'/'));
+                $result = array_merge($result, $this->flatten($value, $prefix . $key . '/'));
             } else {
-                $result[$prefix.$key] = $value;
+                $result[$prefix . $key] = $value;
             }
         }
 
@@ -115,7 +115,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
 
         /** @var Setting $setting */
         foreach ($this->settingsRepository->findAll() as $setting) {
-            $path = '['.str_replace('/', '][', $setting->getKey()).']';
+            $path = '[' . str_replace('/', '][', $setting->getKey()) . ']';
 
             $propertyAccessor->setValue($settings, $path, $keepObject ? $setting : $setting->getValue());
         }

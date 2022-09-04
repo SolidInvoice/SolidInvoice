@@ -113,10 +113,10 @@ class ViewBilling
         }
 
         return new Template(
-            '@SolidInvoiceCore/View/'.$options['entity'].'.html.twig',
+            '@SolidInvoiceCore/View/' . $options['entity'] . '.html.twig',
             [
                 $options['entity'] => $entity,
-                'title' => $options['entity'].' #'.$entity->getId(),
+                'title' => $options['entity'] . ' #' . $entity->getId(),
                 'template' => $options['template'],
             ]
         );

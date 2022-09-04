@@ -34,7 +34,7 @@ class GeneratorTest extends TestCase
 
         $generator = new Generator(sys_get_temp_dir(), $logger);
         $output = $generator->generate('<body>Hello World</body>');
-        static::assertStringStartsWith('%PDF-', $output);
+        self::assertStringStartsWith('%PDF-', $output);
     }
 
     public function testCanPrintPdf()
@@ -42,9 +42,9 @@ class GeneratorTest extends TestCase
         $generator = new Generator(sys_get_temp_dir(), new NullLogger());
 
         if (\extension_loaded('mbstring') && \extension_loaded('gd')) {
-            static::assertTrue($generator->canPrintPdf());
+            self::assertTrue($generator->canPrintPdf());
         } else {
-            static::assertFalse($generator->canPrintPdf());
+            self::assertFalse($generator->canPrintPdf());
         }
     }
 }

@@ -38,7 +38,7 @@ class QuoteSubjectDecoratorTest extends TestCase
         $message = new QuoteEmail(new Quote());
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertSame('New Quote: #', $message->getSubject());
+        self::assertSame('New Quote: #', $message->getSubject());
     }
 
     public function testEvents(): void

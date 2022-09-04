@@ -45,7 +45,7 @@ class Generator
     public function generate(string $html): string
     {
         $mpdf = new Mpdf([
-            'tempDir' => $this->cacheDir.'/pdf',
+            'tempDir' => $this->cacheDir . '/pdf',
             'margin_left' => 20,
             'margin_right' => 15,
             'margin_top' => 48,

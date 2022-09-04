@@ -76,7 +76,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 
-        static::assertTrue($quote->isArchived());
-        static::assertSame($quote, $this->em->getRepository(Quote::class)->find($quote->getId()));
+        self::assertTrue($quote->isArchived());
+        self::assertSame($quote, $this->em->getRepository(Quote::class)->find($quote->getId()));
     }
 }

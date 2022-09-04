@@ -52,14 +52,14 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertInstanceOf(Contact::class, $data);
-        static::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertInstanceOf(Contact::class, $data);
+        self::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
-        static::assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
     }
 }

@@ -45,7 +45,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertSame([
+        self::assertSame([
             'system' => [
                 'company' => [
                     'company_name' => null,
@@ -94,13 +94,13 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
             ],
         ], $data);
 
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertCount(1, $response->getFlash());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertCount(1, $response->getFlash());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
     public function getFormData(): array

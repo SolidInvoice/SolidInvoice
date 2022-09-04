@@ -100,17 +100,17 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
     {
         /* @var Invoice $invoice */
 
-        static::assertSame(Graph::STATUS_PENDING, $invoice->getStatus());
-        static::assertSame(20.0, $invoice->getDiscount()->getValue());
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertCount(1, $response->getFlash());
-        static::assertCount(1, $this->em->getRepository(Invoice::class)->findAll());
+        self::assertSame(Graph::STATUS_PENDING, $invoice->getStatus());
+        self::assertSame(20.0, $invoice->getDiscount()->getValue());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertCount(1, $response->getFlash());
+        self::assertCount(1, $this->em->getRepository(Invoice::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
     protected function getHandlerOptions(): array

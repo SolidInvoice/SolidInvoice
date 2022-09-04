@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Twig\Extension;
 
-use Twig_SimpleFunction;
-use Twig_SimpleFilter;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
@@ -25,6 +23,8 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Twig_SimpleFilter;
+use Twig_SimpleFunction;
 
 class MoneyFormatterExtensionTest extends TestCase
 {
@@ -36,16 +36,16 @@ class MoneyFormatterExtensionTest extends TestCase
         $moneyFormatter = new MoneyFormatter('en_US', $currency);
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        static::assertSame('currency_formatter', $extension->getName());
+        self::assertSame('currency_formatter', $extension->getName());
 
         /** @var TwigFunction[] $functions */
         $functions = $extension->getFunctions();
 
-        static::assertCount(1, $functions);
+        self::assertCount(1, $functions);
 
-        static::assertInstanceOf(Twig_SimpleFunction::class, $functions[0]);
-        static::assertSame('currencyFormatter', $functions[0]->getName());
-        static::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
+        self::assertInstanceOf(Twig_SimpleFunction::class, $functions[0]);
+        self::assertSame('currencyFormatter', $functions[0]->getName());
+        self::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
     }
 
     public function testGetFilters()
@@ -65,10 +65,10 @@ class MoneyFormatterExtensionTest extends TestCase
         /** @var TwigFilter[] $filters */
         $filters = $extension->getFilters();
 
-        static::assertCount(1, $filters);
+        self::assertCount(1, $filters);
 
-        static::assertInstanceOf(Twig_SimpleFilter::class, $filters[0]);
-        static::assertSame('formatCurrency', $filters[0]->getName());
-        static::assertSame('$12,00', call_user_func_array($filters[0]->getCallable(), [$money]));
+        self::assertInstanceOf(Twig_SimpleFilter::class, $filters[0]);
+        self::assertSame('formatCurrency', $filters[0]->getName());
+        self::assertSame('$12,00', call_user_func_array($filters[0]->getCallable(), [$money]));
     }
 }

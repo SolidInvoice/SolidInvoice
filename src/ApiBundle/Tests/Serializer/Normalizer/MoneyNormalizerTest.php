@@ -50,8 +50,8 @@ class MoneyNormalizerTest extends TestCase
         $currency = new Currency('USD');
         $normalizer = new MoneyNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
 
-        static::assertTrue($normalizer->supportsNormalization(new Money(100, $currency)));
-        static::assertFalse($normalizer->supportsNormalization(Money::class));
+        self::assertTrue($normalizer->supportsNormalization(new Money(100, $currency)));
+        self::assertFalse($normalizer->supportsNormalization(Money::class));
     }
 
     public function testSupportsDenormalization()
@@ -81,8 +81,8 @@ class MoneyNormalizerTest extends TestCase
         $currency = new Currency('USD');
         $normalizer = new MoneyNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
 
-        static::assertTrue($normalizer->supportsDenormalization(null, Money::class));
-        static::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        self::assertTrue($normalizer->supportsDenormalization(null, Money::class));
+        self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
     public function testNormalization()
@@ -114,7 +114,7 @@ class MoneyNormalizerTest extends TestCase
 
         $money = new Money(10000, $currency);
 
-        static::assertSame('$100.00', $normalizer->normalize($money));
+        self::assertSame('$100.00', $normalizer->normalize($money));
     }
 
     public function testDenormalization()
@@ -146,6 +146,6 @@ class MoneyNormalizerTest extends TestCase
 
         $money = new Money(10000, $currency);
 
-        static::assertEquals($money, $normalizer->denormalize(100, Money::class));
+        self::assertEquals($money, $normalizer->denormalize(100, Money::class));
     }
 }

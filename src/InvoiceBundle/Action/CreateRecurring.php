@@ -42,7 +42,7 @@ final class CreateRecurring
     public function __invoke(Request $request, Client $client = null)
     {
         $totalClientsCount = $this->clientRepository->getTotalClients();
-        if ($totalClientsCount === 0) {
+        if (0 === $totalClientsCount) {
             return new Template('@SolidInvoiceInvoice/Default/empty_clients.html.twig');
         }
         if (1 === $totalClientsCount && null === $client) {

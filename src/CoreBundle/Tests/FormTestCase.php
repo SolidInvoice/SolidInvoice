@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
@@ -29,6 +28,7 @@ use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
@@ -92,7 +92,7 @@ abstract class FormTestCase extends TypeTestCase
 
     protected function assertFormData($form, array $formData, $object)
     {
-        static::assertNotEmpty($formData);
+        self::assertNotEmpty($formData);
 
         if (!$form instanceof FormInterface) {
             $form = $this->factory->create($form);
@@ -101,14 +101,14 @@ abstract class FormTestCase extends TypeTestCase
         // submit the data to the form directly
         $form->submit($formData);
 
-        static::assertTrue($form->isSynchronized());
-        static::assertEquals($object, $form->getData());
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($object, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            static::assertArrayHasKey($key, $children);
+            self::assertArrayHasKey($key, $children);
         }
     }
 

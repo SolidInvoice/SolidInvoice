@@ -80,6 +80,7 @@ class Item implements ItemInterface
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="quoteItems")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
+     *
      * @var Tax|null
      */
     private $tax;

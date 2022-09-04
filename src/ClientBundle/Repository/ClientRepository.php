@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
@@ -167,7 +167,7 @@ class ClientRepository extends ServiceEntityRepository
         /** @var Client[] $clients */
         $clients = $this->findBy(['id' => $ids]);
 
-        array_walk($clients, function (object $entity) use ($em) : void {
+        array_walk($clients, function (object $entity) use ($em): void {
             $em->remove($entity);
         });
 

@@ -21,7 +21,14 @@ return $config
             '@PSR2' => true,
             '@PSR12' => true,
             '@Symfony' => true,
-            'array_syntax' => array('syntax' => 'short'),
+            // '@Symfony:risky' => true,
+            // '@PSR12:risky' => true,
+            // '@PhpCsFixer:risky' => true,
+            // '@PhpCsFixer' => true,
+            'concat_space' => ['spacing' => 'one'],
+            'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
+            'ordered_imports' => ['imports_order' => ['const', 'class', 'function']],
+            'array_syntax' => ['syntax' => 'short'],
             'phpdoc_no_package' => true,
             'phpdoc_summary' => false,
             'declare_strict_types' => true,
@@ -35,5 +42,4 @@ return $config
         ]
     )
     ->setFinder($finder)
-    ->setRiskyAllowed(true)
-;
+    ->setRiskyAllowed(true);

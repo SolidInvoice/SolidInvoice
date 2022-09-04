@@ -69,7 +69,7 @@ class NotifyPaymentAction implements ActionInterface, GatewayAwareInterface
      */
     public function supports($request)
     {
-        @trigger_error('This '.self::class.' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
+        @trigger_error('This ' . self::class . ' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
 
         return
             $request instanceof Notify &&

@@ -68,7 +68,7 @@ final class Transition
 
             public function getFlash(): iterable
             {
-                yield self::FLASH_SUCCESS => 'invoice.transition.action.'.$this->action;
+                yield self::FLASH_SUCCESS => 'invoice.transition.action.' . $this->action;
             }
         };
     }

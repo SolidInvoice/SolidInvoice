@@ -21,14 +21,14 @@ class ClassUtilTest extends TestCase
     public function testFindClassInFile()
     {
         if (PHP_VERSION_ID >= 80000) {
-            static::assertSame('1\\ClassUtilTest', ClassUtil::findClassInFile(__FILE__));
+            self::assertSame('1\\ClassUtilTest', ClassUtil::findClassInFile(__FILE__));
         } else {
-            static::assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
+            self::assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
         }
     }
 
     public function testFindClassInFileWithInvalidFile()
     {
-        static::assertNull(ClassUtil::findClassInFile(dirname(__DIR__).'/Fixtures/file.php'));
+        self::assertNull(ClassUtil::findClassInFile(dirname(__DIR__) . '/Fixtures/file.php'));
     }
 }

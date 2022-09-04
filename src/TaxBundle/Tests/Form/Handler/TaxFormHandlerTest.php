@@ -57,18 +57,18 @@ class TaxFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertCount(1, $this->em->getRepository(Tax::class)->findAll());
+        self::assertCount(1, $this->em->getRepository(Tax::class)->findAll());
         $tax = $this->em->getRepository(Tax::class)->findAll()[0];
-        static::assertSame('VAT', $tax->getName());
-        static::assertSame(14.0, $tax->getRate());
-        static::assertSame('Inclusive', $tax->getType());
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertCount(1, $response->getFlash());
+        self::assertSame('VAT', $tax->getName());
+        self::assertSame(14.0, $tax->getRate());
+        self::assertSame('Inclusive', $tax->getType());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertCount(1, $response->getFlash());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 }

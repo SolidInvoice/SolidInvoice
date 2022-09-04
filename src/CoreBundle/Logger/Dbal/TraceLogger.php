@@ -104,7 +104,7 @@ class TraceLogger implements SQLLogger
             }
 
             if (isset($line['line'])) {
-                $backtrace[$index] .= ' (L'.$line['line'].')';
+                $backtrace[$index] .= ' (L' . $line['line'] . ')';
             }
         }
 

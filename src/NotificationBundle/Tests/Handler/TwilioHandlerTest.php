@@ -33,8 +33,8 @@ class TwilioHandlerTest extends TestCase
         $config = M::mock(SystemConfig::class);
         $handler = new TwilioHandler($client, $config);
 
-        static::assertTrue($handler->shouldHandle(new TwilioNotification('1234567890', 'test')));
-        static::assertFalse($handler->shouldHandle(new Notification('Test')));
+        self::assertTrue($handler->shouldHandle(new TwilioNotification('1234567890', 'test')));
+        self::assertFalse($handler->shouldHandle(new Notification('Test')));
     }
 
     public function testHandle()

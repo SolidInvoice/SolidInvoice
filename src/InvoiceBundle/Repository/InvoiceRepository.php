@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
@@ -233,7 +233,7 @@ class InvoiceRepository extends ServiceEntityRepository
         /** @var Invoice[] $invoices */
         $invoices = $this->findBy(['id' => $ids]);
 
-        array_walk($invoices, function (object $entity) use ($em) : void {
+        array_walk($invoices, function (object $entity) use ($em): void {
             $em->remove($entity);
         });
 
