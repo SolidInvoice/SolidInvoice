@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Collection;
 
-/**
- * Class ConfigCollection.
- */
 class ConfigCollection
 {
     /**
@@ -36,7 +33,7 @@ class ConfigCollection
     /**
      * Start a new section.
      */
-    public function startSection(string $sectionName)
+    public function startSection(string $sectionName): void
     {
         $this->current = $sectionName;
 
@@ -46,7 +43,7 @@ class ConfigCollection
     /**
      * Adds config to the current section.
      */
-    public function add(array $settings)
+    public function add(array $settings): void
     {
         $this->elements[$this->current] = $settings;
     }
@@ -70,7 +67,7 @@ class ConfigCollection
     /**
      * Ends the current section.
      */
-    public function endSection()
+    public function endSection(): void
     {
         $this->current = null;
     }

@@ -44,11 +44,11 @@ final class Archive implements AjaxResponse
 
     public function __invoke(Request $request)
     {
-        /* @var Invoice[] $invoices */
+        /** @var Invoice[] $invoices */
         $invoices = $this->repository->findBy(['id' => $request->request->get('data')]);
 
         foreach ($invoices as $invoice) {
-            if (!$this->stateMachine->can($invoice, Graph::TRANSITION_ARCHIVE)) {
+            if (! $this->stateMachine->can($invoice, Graph::TRANSITION_ARCHIVE)) {
                 throw new InvalidTransitionException('archive');
             }
 

@@ -76,7 +76,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $client): void
     {
-        /* @var Client $client */
+        /** @var Client $client */
 
         self::assertSame($this->clientName, $client->getName());
         self::assertInstanceOf(RedirectResponse::class, $response);

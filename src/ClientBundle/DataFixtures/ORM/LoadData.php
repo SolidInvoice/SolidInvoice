@@ -23,10 +23,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
  */
 class LoadData extends Fixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $client = new Client();
         $client->setName('Test');

@@ -20,12 +20,9 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class DbalLoggerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('doctrine.dbal.logger.chain') || !$container->getParameter('kernel.debug')) {
+        if (! $container->hasDefinition('doctrine.dbal.logger.chain') || ! $container->getParameter('kernel.debug')) {
             return;
         }
 

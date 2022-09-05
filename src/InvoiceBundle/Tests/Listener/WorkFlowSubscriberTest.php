@@ -32,7 +32,7 @@ class WorkFlowSubscriberTest extends TestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
-    public function testInvoicePaid()
+    public function testInvoicePaid(): void
     {
         $notification = M::mock(NotificationManager::class);
         $notification->shouldReceive('sendNotification')
@@ -49,7 +49,7 @@ class WorkFlowSubscriberTest extends TestCase
         self::assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 
-    public function testInvoiceArchive()
+    public function testInvoiceArchive(): void
     {
         $notification = M::mock(NotificationManager::class);
         $notification->shouldReceive('sendNotification')

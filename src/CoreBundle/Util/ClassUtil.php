@@ -29,7 +29,7 @@ class ClassUtil
         $count = count($tokens);
 
         foreach ($tokens as $i => $token) {
-            if (!is_array($token)) {
+            if (! is_array($token)) {
                 continue;
             }
 

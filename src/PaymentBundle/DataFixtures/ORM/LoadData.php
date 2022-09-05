@@ -23,10 +23,7 @@ use SolidInvoice\PaymentBundle\Model\Status;
  */
 class LoadData extends Fixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $payment = new Payment();
         $payment->setClient($this->getReference('client'));

@@ -31,9 +31,6 @@ class SessionRequestListener implements EventSubscriberInterface
      */
     protected $secret;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -49,7 +46,7 @@ class SessionRequestListener implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (! $event->isMasterRequest()) {
             return;
         }
 
@@ -59,7 +56,7 @@ class SessionRequestListener implements EventSubscriberInterface
             $flashBag = $this->session->getFlashBag();
             foreach ($response->getFlash() as $type => $message) {
                 // Default to info for undefined types
-                $flashBag->add(is_int($type) ? FlashResponse::FLASH_INFO : $type, $message);
+                $flashBag->add($type, $message);
             }
         }
     }

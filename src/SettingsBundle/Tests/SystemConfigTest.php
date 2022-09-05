@@ -25,14 +25,14 @@ class SystemConfigTest extends TestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
-    public function testGet()
+    public function testGet(): void
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
         self::assertSame('skin-solidinvoice-default', $config->get('design/system/theme'));
     }
 
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
@@ -62,7 +62,7 @@ class SystemConfigTest extends TestCase
         ], $config->getAll());
     }
 
-    public function testInvalidGet()
+    public function testInvalidGet(): void
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 

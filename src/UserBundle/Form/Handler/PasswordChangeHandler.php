@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
@@ -62,17 +63,11 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(ChangePasswordType::class, $options->get('user', $this->tokenStorage->getToken()->getUser()), ['confirm_password' => $options->get('confirm_password', true)]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -84,23 +79,21 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @var User
+     * @param User $data
      */
-    public function onSuccess(FormRequest $form, $user): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
         $route = $form->getOptions()->get('redirect_route', '_profile');
 
-        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
-        $user->eraseCredentials();
+        $data->setPassword($this->userPasswordEncoder->encodePassword($data, $data->getPlainPassword()));
+        $data->eraseCredentials();
 
-        $this->userRepository->save($user);
+        $this->userRepository->save($data);
 
         $route = $this->router->generate($route);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'profile.password_change.success';
             }

@@ -38,9 +38,6 @@ class BillingExtension extends AbstractExtension
         $this->calculator = $calculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
@@ -53,9 +50,6 @@ class BillingExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'twig.billing.extension';

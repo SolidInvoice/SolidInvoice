@@ -37,7 +37,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 
     public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer)
     {
-        if (!$normalizer instanceof DenormalizerInterface) {
+        if (! $normalizer instanceof DenormalizerInterface) {
             throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }
 
@@ -51,7 +51,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
             'name' => $data['type'],
         ];
 
-        /* @var AdditionalContactDetail $detail */
+        /** @var AdditionalContactDetail $detail */
         $detail = $this->normalizer->denormalize($data, $class, $format, $context);
         $repository = $this->registry->getRepository(ContactType::class);
         $detail->setType($repository->findOneBy(['name' => $detail->getType()->getName()]));
@@ -66,7 +66,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 
     public function normalize($object, $format = null, array $context = [])
     {
-        /* @var AdditionalContactDetail $object */
+        /** @var AdditionalContactDetail $object */
         return ['type' => $object->getType()->getName(), 'value' => $object->getValue()];
     }
 

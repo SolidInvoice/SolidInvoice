@@ -32,7 +32,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         $qb->select(['i', 'c'])
             ->join('i.client', 'c');
 
-        if (!empty($parameters['client'])) {
+        if (! empty($parameters['client'])) {
             $qb->andWhere('i.client = :client')
                 ->setParameter('client', $parameters['client']);
         }

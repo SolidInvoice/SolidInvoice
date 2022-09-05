@@ -24,9 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class InvoiceEditHandler extends AbstractInvoiceHandler
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -39,16 +36,13 @@ class InvoiceEditHandler extends AbstractInvoiceHandler
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $invoice): ?Response
     {
-        /* @var RedirectResponse $response */
+        /** @var RedirectResponse $response */
         $response = parent::onSuccess($form, $invoice);
 
         return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'invoice.edit.success';
             }

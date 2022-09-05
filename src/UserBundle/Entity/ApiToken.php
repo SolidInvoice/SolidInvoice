@@ -56,7 +56,7 @@ class ApiToken
     private $token;
 
     /**
-     * @var Collection<ApiTokenHistory>
+     * @var Collection<int, ApiTokenHistory>
      *
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -92,9 +92,6 @@ class ApiToken
         return $this->name;
     }
 
-    /**
-     * @return ApiToken
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -110,9 +107,6 @@ class ApiToken
         return $this->token;
     }
 
-    /**
-     * @return ApiToken
-     */
     public function setToken(string $token): self
     {
         $this->token = $token;
@@ -121,16 +115,13 @@ class ApiToken
     }
 
     /**
-     * @return ApiTokenHistory[]|Collection<int, ApiTokenHistory>
+     * @return Collection<int, ApiTokenHistory>
      */
     public function getHistory(): Collection
     {
         return $this->history;
     }
 
-    /**
-     * @return ApiToken
-     */
     public function addHistory(ApiTokenHistory $history): self
     {
         $this->history[] = $history;
@@ -139,9 +130,6 @@ class ApiToken
         return $this;
     }
 
-    /**
-     * @return ApiToken
-     */
     public function removeHistory(ApiTokenHistory $history): self
     {
         $this->history->removeElement($history);
@@ -157,9 +145,6 @@ class ApiToken
         return $this->user;
     }
 
-    /**
-     * @return ApiToken
-     */
     public function setUser(User $user): self
     {
         $this->user = $user;

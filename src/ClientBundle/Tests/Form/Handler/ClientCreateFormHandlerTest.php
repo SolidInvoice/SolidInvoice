@@ -58,7 +58,7 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $client): void
     {
-        /* @var Client $client */
+        /** @var Client $client */
 
         self::assertSame(Status::STATUS_ACTIVE, $client->getStatus());
         self::assertInstanceOf(RedirectResponse::class, $response);

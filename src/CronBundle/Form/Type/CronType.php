@@ -18,17 +18,11 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class CronType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return HiddenType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'cron';

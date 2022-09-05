@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CreditNormalizerTest extends TestCase
 {
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -53,7 +53,7 @@ class CreditNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsNormalization(Credit::class));
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -83,7 +83,7 @@ class CreditNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
-    public function testNormalization()
+    public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -116,7 +116,7 @@ class CreditNormalizerTest extends TestCase
         self::assertEquals($money, $normalizer->normalize($credit));
     }
 
-    public function testDenormalization()
+    public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])

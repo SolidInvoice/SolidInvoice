@@ -33,7 +33,7 @@ class WorkFlowSubscriberTest extends TestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
-    public function testOnQuoteAccepted()
+    public function testOnQuoteAccepted(): void
     {
         $quote = new Quote();
         $invoice = new Invoice();
@@ -61,7 +61,7 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
     }
 
-    public function testOnWorkflowTransitionApplied()
+    public function testOnWorkflowTransitionApplied(): void
     {
         $quote = (new Quote())->setStatus('pending');
 

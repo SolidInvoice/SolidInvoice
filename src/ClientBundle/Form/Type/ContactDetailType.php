@@ -40,18 +40,12 @@ class ContactDetailType extends AbstractType
         $this->contactTypeRepository = $contactTypeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['contactTypes'] = $this->contactTypeRepository->findAll();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             $builder
@@ -80,17 +74,14 @@ class ContactDetailType extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('validation_groups', function (FormInterface $form) {
             // @codeCoverageIgnoreStart
             $type = $form->get('type')->getData()->getName();
             $value = $form->get('value')->getData();
 
-            if (!empty($type) && empty($value)) {
+            if (! empty($type) && empty($value)) {
                 return ['Default', 'not_blank'];
             }
 
@@ -101,9 +92,6 @@ class ContactDetailType extends AbstractType
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'contact_detail';

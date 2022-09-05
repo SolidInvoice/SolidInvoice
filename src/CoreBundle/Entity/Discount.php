@@ -126,7 +126,7 @@ class Discount
         return null;
     }
 
-    public function setValue($value)
+    public function setValue($value): void
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:

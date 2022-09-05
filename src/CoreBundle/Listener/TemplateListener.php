@@ -34,9 +34,6 @@ class TemplateListener implements EventSubscriberInterface
         $this->twig = $twig;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -48,7 +45,7 @@ class TemplateListener implements EventSubscriberInterface
     {
         $result = $event->getControllerResult();
 
-        if (!$result instanceof Template) {
+        if (! $result instanceof Template) {
             return;
         }
 

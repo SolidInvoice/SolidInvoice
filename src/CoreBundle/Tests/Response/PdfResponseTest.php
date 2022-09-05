@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class PdfResponseTest extends TestCase
 {
-    public function testResponseInline()
+    public function testResponseInline(): void
     {
         $response = new PdfResponse('PDF Content', 'filename.pdf');
 
@@ -27,7 +27,7 @@ class PdfResponseTest extends TestCase
         self::assertSame('inline; filename=filename.pdf', $response->headers->get('Content-Disposition'));
     }
 
-    public function testResponseDownload()
+    public function testResponseDownload(): void
     {
         $response = new PdfResponse('PDF Content', 'filename.pdf', ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 

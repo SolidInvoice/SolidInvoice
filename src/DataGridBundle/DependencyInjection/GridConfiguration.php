@@ -21,9 +21,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class GridConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('datagrid');

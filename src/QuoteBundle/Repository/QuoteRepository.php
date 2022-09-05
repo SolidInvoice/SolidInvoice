@@ -75,7 +75,7 @@ class QuoteRepository extends ServiceEntityRepository
         $qb->select(['q', 'c'])
             ->join('q.client', 'c');
 
-        if (!empty($parameters['client'])) {
+        if (! empty($parameters['client'])) {
             $qb->where('q.client = :client')
                 ->setParameter('client', $parameters['client']);
         }
@@ -96,7 +96,7 @@ class QuoteRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function updateCurrency(Client $client)
+    public function updateCurrency(Client $client): void
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');

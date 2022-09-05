@@ -24,7 +24,7 @@ final class MailerTransportConfigCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('mailer.transport_factory')) {
+        if (! $container->hasDefinition('mailer.transport_factory')) {
             return;
         }
 

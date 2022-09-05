@@ -21,7 +21,7 @@ use Symfony\Component\Form\PreloadedExtension;
 
 class ContactDetailTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $faker = Factory::create();
 

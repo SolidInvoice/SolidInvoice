@@ -53,7 +53,7 @@ final class Edit
             $route = $this->router->generate('_invoices_index');
 
             return new class($route) extends RedirectResponse implements FlashResponse {
-                public function getFlash(): iterable
+                public function getFlash(): \Generator
                 {
                     yield FlashResponse::FLASH_WARNING => 'invoice.edit.paid';
                 }

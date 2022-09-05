@@ -44,17 +44,11 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options): FormInterface
     {
         return $factory->create(ClientType::class, $options->get('client', new Client()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $contact): ?Response
     {
         $this->save($contact);
@@ -62,16 +56,13 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
         $route = $this->router->generate('_clients_view', ['id' => $contact->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'client.create.success';
             }
         };
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined('client')

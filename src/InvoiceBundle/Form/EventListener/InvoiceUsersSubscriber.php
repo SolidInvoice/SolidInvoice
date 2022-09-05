@@ -33,7 +33,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $data = $event->getData();
 
@@ -47,7 +47,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
             $clientId = $data['client'] ?? null;
         }
 
-        if (!empty($clientId)) {
+        if (! empty($clientId)) {
             $form = $event->getForm();
 
             $form->add(

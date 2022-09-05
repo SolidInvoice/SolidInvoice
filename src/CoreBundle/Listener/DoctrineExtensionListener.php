@@ -25,9 +25,6 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
 {
     use ContainerAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -38,11 +35,11 @@ class DoctrineExtensionListener implements ContainerAwareInterface, EventSubscri
     /**
      * Set the username on all loggable entities.
      */
-    public function onKernelRequest()
+    public function onKernelRequest(): void
     {
-        /* @var TokenStorageInterface $securityStorage */
+        /** @var TokenStorageInterface $securityStorage */
         $securityStorage = $this->container->get('security.token_storage', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-        /* @var AuthorizationCheckerInterface $securityChecker */
+        /** @var AuthorizationCheckerInterface $securityChecker */
         $securityChecker = $this->container->get('security.authorization_checker', ContainerInterface::NULL_ON_INVALID_REFERENCE);
 
         if (

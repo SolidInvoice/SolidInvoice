@@ -33,7 +33,7 @@ class FactoryTest extends TestCase
     use FakerTestTrait;
     use MockeryPHPUnitIntegration;
 
-    public function testCreateSmsNotification()
+    public function testCreateSmsNotification(): void
     {
         $faker = $this->getFaker();
         $twig = new Environment(new ArrayLoader());
@@ -54,7 +54,7 @@ class FactoryTest extends TestCase
         self::assertSame($phoneNumber, $notification->getRecipientNumber());
     }
 
-    public function testCreateMultipleFormatEmailNotification()
+    public function testCreateMultipleFormatEmailNotification(): void
     {
         $faker = $this->getFaker();
         $twig = new Environment(new ArrayLoader());

@@ -38,7 +38,7 @@ trait Money
      */
     public function getAmount(): ?MoneyObject
     {
-        if (!$this->priceCurrency) {
+        if (! $this->priceCurrency) {
             return null;
         }
 

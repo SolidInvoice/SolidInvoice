@@ -24,7 +24,7 @@ class WidgetFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $factory = new WidgetFactory();
 
@@ -49,7 +49,7 @@ class WidgetFactoryTest extends TestCase
         self::assertCount(1, $factory->get('right_column'));
     }
 
-    public function testInvalidLocation()
+    public function testInvalidLocation(): void
     {
         $factory = new WidgetFactory();
 
@@ -61,7 +61,7 @@ class WidgetFactoryTest extends TestCase
         $factory->add($widget, 'bottom');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $factory = new WidgetFactory();
 

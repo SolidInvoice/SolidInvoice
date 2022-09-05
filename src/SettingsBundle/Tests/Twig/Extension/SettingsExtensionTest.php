@@ -24,7 +24,7 @@ class SettingsExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGetSettings()
+    public function testGetSettings(): void
     {
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')
@@ -36,7 +36,7 @@ class SettingsExtensionTest extends TestCase
         self::assertTrue($extension->getSetting('dummy/setting'));
     }
 
-    public function testGetSettingsDefaultValue()
+    public function testGetSettingsDefaultValue(): void
     {
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')

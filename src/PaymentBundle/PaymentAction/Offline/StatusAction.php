@@ -27,10 +27,7 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -56,13 +53,9 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
-        return
-            $request instanceof StatusRequest &&
+        return $request instanceof StatusRequest &&
             $request->getModel() instanceof Payment;
     }
 }

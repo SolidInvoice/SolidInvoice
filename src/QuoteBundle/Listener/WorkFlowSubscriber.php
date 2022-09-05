@@ -57,9 +57,6 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $this->notification = $notification;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -68,7 +65,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onQuoteAccepted(Event $event)
+    public function onQuoteAccepted(Event $event): void
     {
         $quote = $event->getSubject();
         assert($quote instanceof Quote);
@@ -77,7 +74,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $this->invoiceStateMachine->apply($invoice, InvoiceGraph::TRANSITION_NEW);
     }
 
-    public function onWorkflowTransitionApplied(Event $event)
+    public function onWorkflowTransitionApplied(Event $event): void
     {
         /** @var Quote $quote */
         $quote = $event->getSubject();

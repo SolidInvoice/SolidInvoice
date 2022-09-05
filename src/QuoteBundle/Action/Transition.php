@@ -43,7 +43,7 @@ final class Transition
 
     public function __invoke(Request $request, string $action, Quote $quote)
     {
-        if (!$this->stateMachine->can($quote, $action)) {
+        if (! $this->stateMachine->can($quote, $action)) {
             throw new InvalidTransitionException($action);
         }
 
@@ -68,7 +68,7 @@ final class Transition
                 parent::__construct($route);
             }
 
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'quote.transition.action.' . $this->action;
             }

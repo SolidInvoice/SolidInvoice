@@ -52,17 +52,11 @@ class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandle
         $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(ProfileType::class, $this->tokenStorage->getToken()->getUser());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -73,17 +67,14 @@ class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandle
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onSuccess(FormRequest $form, $user): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $this->userRepository->save($user);
+        $this->userRepository->save($data);
 
         $route = $this->router->generate('_profile');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'profile.edit.success';
             }

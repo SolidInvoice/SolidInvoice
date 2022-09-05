@@ -151,7 +151,7 @@ final class Setup
         return $this->render($form);
     }
 
-    private function createAdminUser(array $data)
+    private function createAdminUser(array $data): void
     {
         $user = new User();
 
@@ -173,7 +173,7 @@ final class Setup
     /**
      * Saves the current app version in the database.
      */
-    private function saveCurrentVersion()
+    private function saveCurrentVersion(): void
     {
         $version = SolidInvoiceCoreBundle::VERSION;
 
@@ -188,7 +188,7 @@ final class Setup
     /**
      * @throws EnvironmentIsBrokenException|InvalidArgumentException|DependencyInjectionException\ServiceCircularReferenceException|DependencyInjectionException\ServiceNotFoundException
      */
-    private function saveConfig(array $data)
+    private function saveConfig(array $data): void
     {
         $time = new DateTime('NOW');
 

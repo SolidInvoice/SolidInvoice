@@ -89,8 +89,6 @@ class AdditionalContactDetail
      * Set value.
      *
      * @param string $value
-     *
-     * @return AdditionalContactDetail
      */
     public function setValue(?string $value): self
     {
@@ -113,8 +111,6 @@ class AdditionalContactDetail
      * Set type.
      *
      * @param ContactType $type
-     *
-     * @return AdditionalContactDetail
      */
     public function setType(?ContactType $type): self
     {
@@ -138,11 +134,6 @@ class AdditionalContactDetail
         return $this->contact;
     }
 
-    /**
-     * Set contact.
-     *
-     * @return AdditionalContactDetail
-     */
     public function setContact(Contact $contact): self
     {
         $this->contact = $contact;

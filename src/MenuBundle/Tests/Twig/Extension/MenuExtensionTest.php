@@ -37,12 +37,12 @@ class MenuExtensionTest extends TestCase
         $this->extension = new MenuExtension();
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         self::assertSame('solidinvoice_menu.twig.extension', $this->extension->getName());
     }
 
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         $functions = $this->extension->getFunctions();
 
@@ -51,7 +51,7 @@ class MenuExtensionTest extends TestCase
         self::assertContainsOnlyInstancesOf(Twig_SimpleFunction::class, $functions);
     }
 
-    public function testRenderMenu()
+    public function testRenderMenu(): void
     {
         $provider = M::mock(MenuProviderInterface::class);
         $this->extension->setProvider($provider);

@@ -97,10 +97,7 @@ class InstallCommand extends Command
         return null === $this->installed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Installs the application')
             ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
@@ -117,8 +114,6 @@ class InstallCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -152,18 +147,18 @@ class InstallCommand extends Command
                 throw new Exception(sprintf('The --%s option needs to be specified', $option));
             }
         }
-        if (!array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
+        if (! array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
-        if (!array_key_exists($currency = $input->getOption('currency'), Currencies::getNames())) {
+        if (! array_key_exists($currency = $input->getOption('currency'), Currencies::getNames())) {
             throw new InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 
         return $this;
     }
 
-    private function install(InputInterface $input, OutputInterface $output)
+    private function install(InputInterface $input, OutputInterface $output): void
     {
         if ($this->initDb($input, $output)) {
             $this->createAdminUser($input, $output);
@@ -230,7 +225,7 @@ class InstallCommand extends Command
         return true;
     }
 
-    private function createAdminUser(InputInterface $input, OutputInterface $output)
+    private function createAdminUser(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln('<info>Creating Admin User</info>');
         /** @var UserRepository $userRepository */
@@ -249,7 +244,7 @@ class InstallCommand extends Command
 
         $em = $this->registry->getManagerForClass(User::class);
 
-        if (!$em instanceof ObjectManager) {
+        if (! $em instanceof ObjectManager) {
             throw new Exception(sprintf('No object manager found for class "%s".', User::class));
         }
 
@@ -266,10 +261,7 @@ class InstallCommand extends Command
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if ($this->installed) {
             throw new ApplicationInstalledException();

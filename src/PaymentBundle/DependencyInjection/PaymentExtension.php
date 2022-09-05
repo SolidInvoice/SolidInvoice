@@ -20,10 +20,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class PaymentExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
 
@@ -47,9 +44,6 @@ class PaymentExtension extends Extension
         $container->setDefinition($definition->getClass(), $definition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAlias()
     {
         return 'payment';

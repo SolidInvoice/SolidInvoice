@@ -23,17 +23,14 @@ class ChainFilter implements FilterInterface
      */
     private $filters = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function filter(Request $request, QueryBuilder $queryBuilder)
+    public function filter(Request $request, QueryBuilder $queryBuilder): void
     {
         foreach ($this->filters as $filter) {
             $filter->filter($request, $queryBuilder);
         }
     }
 
-    public function addFilter(FilterInterface $filter)
+    public function addFilter(FilterInterface $filter): void
     {
         $this->filters[] = $filter;
     }

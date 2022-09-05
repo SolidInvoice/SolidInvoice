@@ -70,9 +70,6 @@ class Credit
         return $this->client;
     }
 
-    /**
-     * @return Credit
-     */
     public function setClient(Client $client): self
     {
         $this->client = $client;

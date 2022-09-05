@@ -18,8 +18,6 @@ use Knp\Menu\ItemInterface as BaseInterface;
 interface ItemInterface extends BaseInterface
 {
     /**
-     * {@inheritdoc}
-     *
      * @param ItemInterface|string|array $child
      *
      * @return ItemInterface

@@ -30,7 +30,7 @@ class MoneyFormatterExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         $currency = new Currency('USD');
         $moneyFormatter = new MoneyFormatter('en_US', $currency);
@@ -48,7 +48,7 @@ class MoneyFormatterExtensionTest extends TestCase
         self::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
     }
 
-    public function testGetFilters()
+    public function testGetFilters(): void
     {
         $currency = new Currency('USD');
         $money = new Money(1200, $currency);

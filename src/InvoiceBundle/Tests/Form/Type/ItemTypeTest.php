@@ -22,7 +22,7 @@ use Symfony\Component\Form\PreloadedExtension;
 
 class ItemTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $description = $this->faker->text;
         $price = $this->faker->randomNumber(3);

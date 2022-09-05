@@ -33,20 +33,14 @@ class MoneyExtension extends AbstractTypeExtension
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->addViewTransformer(new ViewTransformer($options['currency']), true)
             ->addModelTransformer(new ModelTransformer($options['currency']), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault(
             'currency',
@@ -54,9 +48,6 @@ class MoneyExtension extends AbstractTypeExtension
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         yield MoneyType::class;

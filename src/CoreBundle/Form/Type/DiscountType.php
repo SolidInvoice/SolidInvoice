@@ -50,13 +50,13 @@ class DiscountType extends AbstractType
         $this->currency = $currency;
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['types'] = self::DISCOUNT_TYPES;
         $view->vars['currency'] = $options['currency'];
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('type', HiddenType::class, ['empty_data' => 'percentage', 'placeholder' => 'percentage', 'attr' => ['class' => 'discount-type']]);
         $builder->add(
@@ -72,7 +72,7 @@ class DiscountType extends AbstractType
         $builder->get('value')->addViewTransformer(new DiscountTransformer());
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', Discount::class);
         $resolver->setDefault('currency', $this->currency->getCode());

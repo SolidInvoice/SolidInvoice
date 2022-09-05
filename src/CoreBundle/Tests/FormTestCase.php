@@ -90,11 +90,11 @@ abstract class FormTestCase extends TypeTestCase
         ];
     }
 
-    protected function assertFormData($form, array $formData, $object)
+    protected function assertFormData($form, array $formData, $object): void
     {
         self::assertNotEmpty($formData);
 
-        if (!$form instanceof FormInterface) {
+        if (! $form instanceof FormInterface) {
             $form = $this->factory->create($form);
         }
 
@@ -114,7 +114,7 @@ abstract class FormTestCase extends TypeTestCase
 
     private function getInternalExtension()
     {
-        if (!DoctrineType::hasType('uuid')) {
+        if (! DoctrineType::hasType('uuid')) {
             DoctrineType::addType('uuid', UuidType::class);
         }
 

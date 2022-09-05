@@ -32,7 +32,7 @@ use Symfony\Component\Workflow\Transition;
 
 class QuoteClonerTest extends TestCase
 {
-    public function testClone()
+    public function testClone(): void
     {
         $currency = new Currency('USD');
 

@@ -100,7 +100,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (!$request instanceof Request) {
+        if (! $request instanceof Request) {
             return [];
         }
 
@@ -115,9 +115,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         return $params;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return [
@@ -133,9 +130,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
@@ -185,7 +179,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         $options = implode(' ', $options);
         $class = sprintf('fa fa-%s', $iconName);
 
-        if (!empty($options)) {
+        if (! empty($options)) {
             $class .= ' ' . $options;
         }
 

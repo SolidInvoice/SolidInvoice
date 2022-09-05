@@ -29,9 +29,6 @@ class ApiTokenManager
      */
     private $registry;
 
-    /**
-     * ApiTokenManager constructor.
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;

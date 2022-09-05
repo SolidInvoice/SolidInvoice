@@ -20,7 +20,7 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 
 class CreditTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $amount = $this->faker->numberBetween(0, 10000);
 

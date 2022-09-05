@@ -67,7 +67,7 @@ class GridExtension extends AbstractExtension
     {
         $grid = $this->repository->find($gridName);
 
-        if (!empty($parameters)) {
+        if (! empty($parameters)) {
             $grid->setParameters($parameters);
         }
 
@@ -94,7 +94,7 @@ class GridExtension extends AbstractExtension
         $grids = array_splice($args, 1);
 
         if (is_array($grids[0])) {
-            if (!empty($grids[1]) && is_array($grids[1])) {
+            if (! empty($grids[1]) && is_array($grids[1])) {
                 $parameters = $grids[1];
             }
 
@@ -120,9 +120,6 @@ class GridExtension extends AbstractExtension
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'grid_extension';

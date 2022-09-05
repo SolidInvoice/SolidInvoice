@@ -22,7 +22,7 @@ class PaymentFactoriesTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testSetGatewayFactories()
+    public function testSetGatewayFactories(): void
     {
         $data = [
             'cash' => 'offline',
@@ -37,14 +37,14 @@ class PaymentFactoriesTest extends TestCase
         self::assertSame($data, $paymentFactories->getFactories());
     }
 
-    public function testGetGatewayFactories()
+    public function testGetGatewayFactories(): void
     {
         $paymentFactories = new PaymentFactories();
 
         self::assertEmpty($paymentFactories->getFactories());
     }
 
-    public function testGetSpecificGatewayFactories()
+    public function testGetSpecificGatewayFactories(): void
     {
         $data = [
             'cash' => 'offline',
@@ -60,7 +60,7 @@ class PaymentFactoriesTest extends TestCase
         self::assertSame([], $paymentFactories->getFactories('paypal_pro'));
     }
 
-    public function testIsOffline()
+    public function testIsOffline(): void
     {
         $data = [
             'cash' => 'offline',
@@ -77,7 +77,7 @@ class PaymentFactoriesTest extends TestCase
         self::assertFalse($paymentFactories->isOffline('payex'));
     }
 
-    public function testGetFactory()
+    public function testGetFactory(): void
     {
         $data = [
             'cash' => 'offline',
@@ -93,7 +93,7 @@ class PaymentFactoriesTest extends TestCase
         self::assertSame('paypal_express', $paymentFactories->getFactory('paypal'));
     }
 
-    public function testGetEmptyFactory()
+    public function testGetEmptyFactory(): void
     {
         $paymentFactories = new PaymentFactories();
 
@@ -102,7 +102,7 @@ class PaymentFactoriesTest extends TestCase
         $paymentFactories->getFactory('unknown');
     }
 
-    public function testSetGatewayForms()
+    public function testSetGatewayForms(): void
     {
         $paymentFactories = new PaymentFactories();
 

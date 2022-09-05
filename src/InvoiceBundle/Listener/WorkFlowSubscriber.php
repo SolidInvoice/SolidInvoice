@@ -45,9 +45,6 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $this->notification = $notification;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -56,7 +53,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onWorkflowTransitionApplied(Event $event)
+    public function onWorkflowTransitionApplied(Event $event): void
     {
         /** @var Invoice|RecurringInvoice $invoice */
         $invoice = $event->getSubject();

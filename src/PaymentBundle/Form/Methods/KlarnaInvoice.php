@@ -21,10 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class KlarnaInvoice extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'secret',
@@ -51,9 +48,6 @@ class KlarnaInvoice extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'klarna_invoice';

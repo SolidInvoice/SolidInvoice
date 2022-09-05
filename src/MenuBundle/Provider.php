@@ -60,7 +60,7 @@ class Provider implements MenuProviderInterface
      * @param string $name   The name of the menu the builder should be attached to
      * @param string $method The method to call to build the menu
      */
-    public function addBuilder(BuilderInterface $class, string $name, string $method, int $priority)
+    public function addBuilder(BuilderInterface $class, string $name, string $method, int $priority): void
     {
         $builder = new MenuBuilder($class, $method);
 

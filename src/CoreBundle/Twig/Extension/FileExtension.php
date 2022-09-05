@@ -28,9 +28,6 @@ class FileExtension extends AbstractExtension
         $this->projectDir = $projectDir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
@@ -40,9 +37,6 @@ class FileExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'solidinvoice_core.twig.file';

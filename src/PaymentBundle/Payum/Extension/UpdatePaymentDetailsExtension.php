@@ -34,24 +34,15 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onPreExecute(Context $context)
+    public function onPreExecute(Context $context): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onExecute(Context $context)
+    public function onExecute(Context $context): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onPostExecute(Context $context)
+    public function onPostExecute(Context $context): void
     {
         $action = $context->getAction();
 
@@ -70,17 +61,11 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onReply(ReplyInterface $reply, $request, ActionInterface $action)
+    public function onReply(ReplyInterface $reply, $request, ActionInterface $action): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onException(Exception $exception, $request, ActionInterface $action = null)
+    public function onException(Exception $exception, $request, ActionInterface $action = null): void
     {
     }
 }

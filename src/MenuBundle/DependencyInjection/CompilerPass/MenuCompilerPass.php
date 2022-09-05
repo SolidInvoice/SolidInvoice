@@ -19,12 +19,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class MenuCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('solidinvoice_menu.provider')) {
+        if (! $container->hasDefinition('solidinvoice_menu.provider')) {
             return;
         }
 

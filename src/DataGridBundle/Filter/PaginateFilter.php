@@ -18,10 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaginateFilter implements FilterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function filter(Request $request, QueryBuilder $queryBuilder)
+    public function filter(Request $request, QueryBuilder $queryBuilder): void
     {
         if ($request->query->has('per_page') && $request->query->has('page')) {
             $queryBuilder->setMaxResults($request->query->get('per_page'));

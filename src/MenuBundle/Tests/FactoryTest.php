@@ -25,7 +25,7 @@ class FactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testAddExtension()
+    public function testAddExtension(): void
     {
         $factory = new Factory(M::mock(UrlGeneratorInterface::class));
 
@@ -36,7 +36,7 @@ class FactoryTest extends TestCase
         self::assertCount(3, $factory->getExtensions());
     }
 
-    public function testCreateItem()
+    public function testCreateItem(): void
     {
         $generator = M::mock(UrlGeneratorInterface::class);
 

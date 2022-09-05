@@ -67,22 +67,16 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);
-        if (!$this->supportsClass($class)) {
+        if (! $this->supportsClass($class)) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
         }
 
         return $this->loadUserByUsername($user->getUsername());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsClass($class)
     {
         return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
@@ -98,7 +92,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $qb;
     }
 
-    public function save(UserInterface $user)
+    public function save(UserInterface $user): void
     {
         $em = $this->getEntityManager();
 
@@ -117,7 +111,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             ->execute();
     }
 
-    public function clearUserConfirmationToken(User $user)
+    public function clearUserConfirmationToken(User $user): void
     {
         $user->setConfirmationToken(null)
             ->setPasswordRequestedAt(null);

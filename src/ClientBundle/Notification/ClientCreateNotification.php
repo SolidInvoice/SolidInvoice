@@ -23,25 +23,16 @@ class ClientCreateNotification extends NotificationMessage
 
     public const TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHtmlContent(Environment $twig): string
     {
         return $twig->render(self::HTML_TEMPLATE, $this->getParameters());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTextContent(Environment $twig): string
     {
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubject(TranslatorInterface $translator): string
     {
         return $translator->trans('client.create.subject', [], 'email');

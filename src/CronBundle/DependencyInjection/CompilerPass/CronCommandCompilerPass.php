@@ -20,12 +20,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class CronCommandCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition(Runner::class)) {
+        if (! $container->hasDefinition(Runner::class)) {
             return;
         }
 

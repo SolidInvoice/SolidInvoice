@@ -28,9 +28,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class ConfigStepForm extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $drivers = $options['drivers'];
@@ -41,7 +38,7 @@ class ConfigStepForm extends AbstractType
             [
                 'drivers' => $drivers,
                 'constraints' => new Callback(
-                    static function ($data, ExecutionContextInterface $executionContext) {
+                    static function ($data, ExecutionContextInterface $executionContext): void {
                         if (null !== $data['driver'] && null !== $data['user']) {
                             try {
                                 DriverManager::getConnection($data)->connect();
@@ -55,17 +52,11 @@ class ConfigStepForm extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['drivers']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'config_step';

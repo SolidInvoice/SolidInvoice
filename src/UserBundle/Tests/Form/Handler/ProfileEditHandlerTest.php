@@ -52,9 +52,6 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
             ->andReturn(new AnonymousToken($this->faker->sha1, $executor->getReferenceRepository()->getReference('user2')));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHandler()
     {
         return new ProfileEditFormHandler($this->userRepository, $this->tokenStorage, $this->router);

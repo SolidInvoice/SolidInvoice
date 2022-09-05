@@ -23,7 +23,7 @@ class ChainedNotificationTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testAddNotifications()
+    public function testAddNotifications(): void
     {
         $notification = new ChainedNotification();
         $message1 = M::mock(NotificationInterface::class);
@@ -36,7 +36,7 @@ class ChainedNotificationTest extends TestCase
         self::assertSame([$message1, $message2, $message3], $notification->getNotifications());
     }
 
-    public function testAddNotificationThroughConstructor()
+    public function testAddNotificationThroughConstructor(): void
     {
         $message1 = M::mock(NotificationInterface::class);
         $message2 = M::mock(NotificationInterface::class);

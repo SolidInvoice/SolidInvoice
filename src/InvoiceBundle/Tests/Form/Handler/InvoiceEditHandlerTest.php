@@ -98,7 +98,7 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $invoice): void
     {
-        /* @var Invoice $invoice */
+        /** @var Invoice $invoice */
 
         self::assertSame(Graph::STATUS_PENDING, $invoice->getStatus());
         self::assertSame(20.0, $invoice->getDiscount()->getValue());

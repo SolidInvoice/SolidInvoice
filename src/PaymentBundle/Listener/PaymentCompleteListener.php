@@ -51,9 +51,6 @@ class PaymentCompleteListener implements EventSubscriberInterface
      */
     private $stateMachine;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -73,7 +70,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
         $this->stateMachine = $stateMachine;
     }
 
-    public function onPaymentComplete(PaymentCompleteEvent $event)
+    public function onPaymentComplete(PaymentCompleteEvent $event): void
     {
         $payment = $event->getPayment();
         $status = (string) $payment->getStatus();
@@ -106,6 +103,9 @@ class PaymentCompleteListener implements EventSubscriberInterface
 
             $event->setResponse(
                 new class($router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]), $status) extends RedirectResponse implements FlashResponse {
+                    /**
+                     * @var string
+                     */
                     private $status;
 
                     public function __construct(string $route, string $status)
@@ -115,7 +115,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
                         $this->status = $status;
                     }
 
-                    public function getFlash(): iterable
+                    public function getFlash(): \Generator
                     {
                         yield from PaymentCompleteListener::addFlashMessage($this->status);
                     }
@@ -124,7 +124,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
         }
     }
 
-    public static function addFlashMessage(string $status): iterable
+    public static function addFlashMessage(string $status): \Generator
     {
         switch ($status) {
             case Status::STATUS_CAPTURED:

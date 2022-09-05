@@ -27,9 +27,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvoiceCancelListener implements EventSubscriberInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -53,7 +50,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
         $this->currency = $currency;
     }
 
-    public function onInvoiceCancelled(InvoiceEvent $event)
+    public function onInvoiceCancelled(InvoiceEvent $event): void
     {
         $invoice = $event->getInvoice();
 

@@ -26,7 +26,7 @@ class InvoiceTest extends ApiTestCase
     use FixturesTrait;
     use EnsureApplicationInstalled;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class InvoiceTest extends ApiTestCase
         ], true);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $data = [
             'users' => [
@@ -92,12 +92,12 @@ class InvoiceTest extends ApiTestCase
         ], $result);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->requestDelete('/api/invoices/1');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/invoices/1');
 
@@ -135,7 +135,7 @@ class InvoiceTest extends ApiTestCase
         ], $data);
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $data = $this->requestPut(
             '/api/invoices/1',

@@ -21,9 +21,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class AjaxResponseListener implements EventSubscriberInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -39,7 +36,7 @@ class AjaxResponseListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $controller = $event->getController();
 
-        if ($controller instanceof AjaxResponse && !$request->isXmlHttpRequest()) {
+        if ($controller instanceof AjaxResponse && ! $request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
     }

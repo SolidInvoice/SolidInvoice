@@ -130,11 +130,6 @@ class RecurringInvoice extends BaseInvoice
         return $this->client;
     }
 
-    /**
-     * Set client.
-     *
-     * @return RecurringInvoice
-     */
     public function setClient(?Client $client): self
     {
         $this->client = $client;
@@ -150,9 +145,6 @@ class RecurringInvoice extends BaseInvoice
         return $this->frequency;
     }
 
-    /**
-     * @return RecurringInvoice
-     */
     public function setFrequency(string $frequency): self
     {
         $this->frequency = $frequency;
@@ -170,8 +162,6 @@ class RecurringInvoice extends BaseInvoice
 
     /**
      * @param DateTimeInterface $dateStart
-     *
-     * @return RecurringInvoice
      */
     public function setDateStart(DateTimeInterface $dateStart = null): self
     {
@@ -190,8 +180,6 @@ class RecurringInvoice extends BaseInvoice
 
     /**
      * @param DateTimeInterface $dateEnd
-     *
-     * @return RecurringInvoice
      */
     public function setDateEnd(DateTimeInterface $dateEnd = null): self
     {
@@ -202,8 +190,6 @@ class RecurringInvoice extends BaseInvoice
 
     /**
      * Add item.
-     *
-     * @return RecurringInvoice
      */
     public function addItem(Item $item): self
     {
@@ -215,8 +201,6 @@ class RecurringInvoice extends BaseInvoice
 
     /**
      * Removes an item.
-     *
-     * @return RecurringInvoice
      */
     public function removeItem(Item $item): self
     {
@@ -248,8 +232,6 @@ class RecurringInvoice extends BaseInvoice
 
     /**
      * @param Contact[] $users
-     *
-     * @return RecurringInvoice
      */
     public function setUsers(array $users): self
     {
@@ -258,9 +240,6 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * @return RecurringInvoice
-     */
     public function addUser(Contact $user): self
     {
         $this->users[] = $user;

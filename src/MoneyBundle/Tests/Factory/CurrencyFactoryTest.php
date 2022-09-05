@@ -25,7 +25,7 @@ class CurrencyFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testDefaultCurrency()
+    public function testDefaultCurrency(): void
     {
         $config = M::mock(SystemConfig::class);
         $factory = new CurrencyFactory(null, $config);
@@ -35,7 +35,7 @@ class CurrencyFactoryTest extends TestCase
         $config->shouldNotHaveReceived('get');
     }
 
-    public function testCurrency()
+    public function testCurrency(): void
     {
         $config = M::mock(SystemConfig::class);
 

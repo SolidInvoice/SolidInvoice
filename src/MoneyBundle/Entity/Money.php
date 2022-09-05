@@ -25,9 +25,9 @@ class Money
     /**
      * @ORM\Column(name="amount", type="integer", nullable=true)
      *
-     * @var int|null
+     * @var string|null
      */
-    private $value = 0;
+    private $value = '';
 
     /**
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
@@ -41,7 +41,7 @@ class Money
      */
     private static $baseCurrency;
 
-    public static function setBaseCurrency(string $currency)
+    public static function setBaseCurrency(string $currency): void
     {
         self::$baseCurrency = $currency;
     }

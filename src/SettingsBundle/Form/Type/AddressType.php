@@ -20,12 +20,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class AddressType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
             public function transform($value)
             {
-                if (!is_string($value)) {
+                if (! is_string($value)) {
                     return null;
                 }
 

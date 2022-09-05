@@ -24,7 +24,7 @@ class GeneratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $logger = M::mock(LoggerInterface::class);
 
@@ -37,7 +37,7 @@ class GeneratorTest extends TestCase
         self::assertStringStartsWith('%PDF-', $output);
     }
 
-    public function testCanPrintPdf()
+    public function testCanPrintPdf(): void
     {
         $generator = new Generator(sys_get_temp_dir(), new NullLogger());
 

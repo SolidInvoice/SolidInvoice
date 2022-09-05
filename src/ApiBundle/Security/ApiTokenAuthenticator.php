@@ -55,7 +55,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
     {
         $token = $this->getToken($request);
 
-        if (!$token) {
+        if (! $token) {
             throw new AuthenticationCredentialsNotFoundException('No API token found');
             // when we allow other methods of authentication against the api, skip api key authentication by returning null
         }
@@ -87,7 +87,7 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $apiToken = $token->getCredentials();
         $username = $userProvider->getUsernameForToken($apiToken);
 
-        if (!$username) {
+        if (! $username) {
             throw new BadCredentialsException(sprintf('API Token "%s" is invalid.', $apiToken));
         }
 
@@ -111,9 +111,6 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         $apiToken = $this->getToken($request);

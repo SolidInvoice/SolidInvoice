@@ -18,10 +18,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceMoneyBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
+    public function boot(): void
     {
         $currency = $this->container->get('currency');
         Money::setBaseCurrency($currency->getCode());

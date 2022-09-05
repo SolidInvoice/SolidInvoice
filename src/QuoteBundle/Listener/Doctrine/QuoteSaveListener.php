@@ -66,7 +66,7 @@ class QuoteSaveListener implements EventSubscriber
     private function checkDiscount(Quote $entity): void
     {
         $discount = $entity->getDiscount();
-        if (!$discount->getValue()) {
+        if (! $discount->getValue()) {
             $discount->setType(null);
         }
     }

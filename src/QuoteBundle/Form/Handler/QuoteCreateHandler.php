@@ -21,9 +21,6 @@ use SolidWorx\FormHandler\FormRequest;
  */
 class QuoteCreateHandler extends AbstractQuoteHandler
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(

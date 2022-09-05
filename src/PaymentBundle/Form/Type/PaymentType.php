@@ -30,10 +30,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class PaymentType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'payment_method',
@@ -79,7 +76,7 @@ class PaymentType extends AbstractType
                 'currency' => $options['currency'],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Callback(function (Money $money, ExecutionContextInterface $context) {
+                    new Assert\Callback(function (Money $money, ExecutionContextInterface $context): void {
                         if ($money->isZero() || $money->isNegative()) {
                             $context->buildViolation('This value should be greater than {{ compared_value }}.')
                                 ->setParameter('{{ value }}', $money->getAmount())
@@ -96,18 +93,12 @@ class PaymentType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['user', 'preferred_choices']);
         $resolver->setDefault('currency', null);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'payment';

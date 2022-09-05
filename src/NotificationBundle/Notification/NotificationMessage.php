@@ -30,9 +30,6 @@ abstract class NotificationMessage implements NotificationMessageInterface
         $this->parameters = $parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUsers(array $users)
     {
         $this->users = $users;
@@ -40,25 +37,16 @@ abstract class NotificationMessage implements NotificationMessageInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsers(): array
     {
         return $this->users;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;

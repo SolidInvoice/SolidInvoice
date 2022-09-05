@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
-use Exception;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Panther\Client;
-use Symfony\Component\Panther\PantherTestCase;
 use function count;
+use Exception;
 use function file_exists;
 use function getenv;
 use function realpath;
 use function rename;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Panther\Client;
+use Symfony\Component\Panther\PantherTestCase;
 use function unlink;
 
 /**
@@ -45,7 +45,7 @@ class InstallationTest extends PantherTestCase
         }
     }
 
-    public function testItRedirectsToInstallationPage()
+    public function testItRedirectsToInstallationPage(): void
     {
         $client = self::createPantherClient();
 
@@ -54,7 +54,7 @@ class InstallationTest extends PantherTestCase
         self::assertStringContainsString('/install', $crawler->getUri());
     }
 
-    public function testApplicationInstallation()
+    public function testApplicationInstallation(): void
     {
         $client = self::createPantherClient();
 

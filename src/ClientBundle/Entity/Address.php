@@ -120,8 +120,6 @@ class Address
 
     /**
      * @param string $street1
-     *
-     * @return Address
      */
     public function setStreet1(?string $street1): self
     {
@@ -140,8 +138,6 @@ class Address
 
     /**
      * @param string $street2
-     *
-     * @return Address
      */
     public function setStreet2(?string $street2): self
     {
@@ -160,8 +156,6 @@ class Address
 
     /**
      * @param string $city
-     *
-     * @return Address
      */
     public function setCity(?string $city): self
     {
@@ -180,8 +174,6 @@ class Address
 
     /**
      * @param string $state
-     *
-     * @return Address
      */
     public function setState(?string $state): self
     {
@@ -200,8 +192,6 @@ class Address
 
     /**
      * @param string $zip
-     *
-     * @return Address
      */
     public function setZip(?string $zip): self
     {
@@ -228,8 +218,6 @@ class Address
 
     /**
      * @param string $country
-     *
-     * @return Address
      */
     public function setCountry(?string $country): self
     {
@@ -246,9 +234,6 @@ class Address
         return $this->client;
     }
 
-    /**
-     * @return Address
-     */
     public function setClient(Client $client): self
     {
         $this->client = $client;
@@ -278,9 +263,6 @@ class Address
         return trim(implode("\n", $info), ', \t\n\r\0\x0B');
     }
 
-    /**
-     * @return Address
-     */
     public static function fromArray(array $data): self
     {
         $address = new self();

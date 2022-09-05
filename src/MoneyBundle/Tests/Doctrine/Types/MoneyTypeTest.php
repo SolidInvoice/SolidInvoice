@@ -28,14 +28,14 @@ class MoneyTypeTest extends TestCase
 
     protected function setUp(): void
     {
-        if (!Type::hasType('money')) {
+        if (! Type::hasType('money')) {
             Type::addType('money', MoneyType::class);
         }
 
         MoneyType::setCurrency(new Currency('USD'));
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         /** @var MoneyType $type */
         $type = Type::getType('money');
@@ -43,7 +43,7 @@ class MoneyTypeTest extends TestCase
         self::assertSame('money', $type->getName());
     }
 
-    public function testGetSQLDeclaration()
+    public function testGetSQLDeclaration(): void
     {
         $platform = M::mock(AbstractPlatform::class);
         $platform->shouldReceive('getIntegerTypeDeclarationSQL', [])
@@ -55,7 +55,7 @@ class MoneyTypeTest extends TestCase
         $type->getSQLDeclaration([], $platform);
     }
 
-    public function testConvertToPHPValue()
+    public function testConvertToPHPValue(): void
     {
         $platform = M::mock(AbstractPlatform::class);
 
@@ -69,7 +69,7 @@ class MoneyTypeTest extends TestCase
         self::assertSame('USD', $value->getCurrency()->getCode());
     }
 
-    public function testConvertToPHPValueWithEmptyValue()
+    public function testConvertToPHPValueWithEmptyValue(): void
     {
         $platform = M::mock(AbstractPlatform::class);
 
@@ -82,7 +82,7 @@ class MoneyTypeTest extends TestCase
         self::assertSame('0', $value->getAmount());
     }
 
-    public function testConvertToPHPValueWithMoneyValue()
+    public function testConvertToPHPValueWithMoneyValue(): void
     {
         $platform = M::mock(AbstractPlatform::class);
 
@@ -95,7 +95,7 @@ class MoneyTypeTest extends TestCase
         self::assertSame($money, $value);
     }
 
-    public function testConvertToDatabaseValueWithEmptyValue()
+    public function testConvertToDatabaseValueWithEmptyValue(): void
     {
         $platform = M::mock(AbstractPlatform::class);
 
@@ -107,7 +107,7 @@ class MoneyTypeTest extends TestCase
         self::assertSame(0, $value);
     }
 
-    public function testConvertToDatabaseValueWithMoney()
+    public function testConvertToDatabaseValueWithMoney(): void
     {
         $platform = M::mock(AbstractPlatform::class);
 
@@ -120,7 +120,7 @@ class MoneyTypeTest extends TestCase
         self::assertSame('1200', $value);
     }
 
-    public function testConvertToDatabaseValueInvalidValue()
+    public function testConvertToDatabaseValueInvalidValue(): void
     {
         $platform = M::mock(AbstractPlatform::class);
 

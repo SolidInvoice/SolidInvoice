@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class SettingsTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $formData = [];
         $object = [];

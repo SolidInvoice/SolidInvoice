@@ -51,7 +51,7 @@ class Migration implements ContainerAwareInterface
     {
         $dir = $this->container->getParameter('doctrine_migrations.dir_name');
 
-        if (!$this->filesystem->exists($dir)) {
+        if (! $this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }
 

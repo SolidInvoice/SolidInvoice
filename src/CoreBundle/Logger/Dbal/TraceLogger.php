@@ -44,10 +44,7 @@ class TraceLogger implements SQLLogger
      */
     public $currentQuery = 0;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, array $params = null, array $types = null): void
     {
         if ($this->enabled) {
             $backtrace = $this->getBactrace();
@@ -57,10 +54,7 @@ class TraceLogger implements SQLLogger
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function stopQuery()
+    public function stopQuery(): void
     {
         if ($this->enabled) {
             $this->queries[$this->currentQuery]['executionMS'] = microtime(true) - $this->start;
@@ -72,7 +66,7 @@ class TraceLogger implements SQLLogger
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS);
 
         foreach ($backtrace as $key => $debug) {
-            if (!$this->isInternalClass($debug['class'] ?? null)) {
+            if (! $this->isInternalClass($debug['class'] ?? null)) {
                 $trace = array_slice($backtrace, $key - 1, 10);
 
                 return $this->formatTrace($trace);
@@ -113,7 +107,7 @@ class TraceLogger implements SQLLogger
 
     private function isInternalClass(?string $class): bool
     {
-        if (!$class) {
+        if (! $class) {
             return false;
         }
 

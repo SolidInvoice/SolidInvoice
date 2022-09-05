@@ -30,9 +30,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class PasswordChangeHandlerTest extends FormHandlerTestCase
 {
     private $userRepository;
+
     private $userPasswordEncoder;
+
     private $tokenStorage;
+
     private $router;
+
     private $password;
 
     protected function setUp(): void
@@ -51,9 +55,6 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
             ->andReturn(new AnonymousToken($this->faker->sha1, 'anon.'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHandler()
     {
         return new PasswordChangeHandler($this->userRepository, $this->userPasswordEncoder, $this->tokenStorage, $this->router);

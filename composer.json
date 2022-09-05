@@ -138,7 +138,8 @@
         "symfony/maker-bundle": "^1.17",
         "symfony/panther": "^1.1 || ^2.0",
         "symfony/phpunit-bridge": "^5.4",
-        "symfony/web-profiler-bundle": "^4.4"
+        "symfony/web-profiler-bundle": "^4.4",
+        "symplify/easy-coding-standard": "^11.1"
     },
     "autoload": {
         "psr-4": {

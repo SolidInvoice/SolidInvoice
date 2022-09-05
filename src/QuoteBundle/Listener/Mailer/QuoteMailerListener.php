@@ -34,9 +34,6 @@ class QuoteMailerListener implements EventSubscriberInterface
         $this->mailer = $mailer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -44,7 +41,7 @@ class QuoteMailerListener implements EventSubscriberInterface
         ];
     }
 
-    public function onQuoteSend(QuoteEvent $event)
+    public function onQuoteSend(QuoteEvent $event): void
     {
         $this->mailer->send(new QuoteEmail($event->getQuote()));
     }

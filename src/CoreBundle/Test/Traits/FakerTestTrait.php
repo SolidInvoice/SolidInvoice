@@ -21,7 +21,7 @@ trait FakerTestTrait
     {
         static $faker;
 
-        if (!$faker) {
+        if (! $faker) {
             $faker = Factory::create($locale);
         }
 

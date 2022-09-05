@@ -30,20 +30,16 @@ class ChainedHandler implements HandlerInterface
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function shouldHandle(NotificationInterface $notification)
+    public function shouldHandle(NotificationInterface $notification): bool
     {
         return $notification instanceof ChainedNotificationInterface;
     }
 
     /**
-     * {@inheritdoc}
+     * @param ChainedNotificationInterface $notification
      */
-    public function handle(NotificationInterface $notification)
+    public function handle(NotificationInterface $notification): void
     {
-        /* @var ChainedNotificationInterface $notification */
         foreach ($notification->getNotifications() as $notify) {
             $this->manager->trigger($notify);
         }

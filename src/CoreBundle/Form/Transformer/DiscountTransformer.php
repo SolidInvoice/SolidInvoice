@@ -20,7 +20,7 @@ class DiscountTransformer implements DataTransformerInterface
 {
     public function transform($value): ?int
     {
-        if (!$value instanceof Money) {
+        if (! $value instanceof Money) {
             return null !== $value ? (int) $value : $value;
         }
 

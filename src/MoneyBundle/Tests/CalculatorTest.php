@@ -30,7 +30,7 @@ class CalculatorTest extends TestCase
         Money::setBaseCurrency('USD');
     }
 
-    public function testCalculateDiscountWithInvalidEntity()
+    public function testCalculateDiscountWithInvalidEntity(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"SolidInvoice\MoneyBundle\Calculator::calculateDiscount" expects instance of Quote or Invoice, "string" given.');
@@ -38,7 +38,7 @@ class CalculatorTest extends TestCase
         $calculator->calculateDiscount('');
     }
 
-    public function testCalculateDiscount()
+    public function testCalculateDiscount(): void
     {
         $calculator = new Calculator();
         $entity = new Invoice();
@@ -51,7 +51,7 @@ class CalculatorTest extends TestCase
         self::assertEquals(new \Money\Money(2000, new Currency('USD')), $calculator->calculateDiscount($entity));
     }
 
-    public function testCalculateDiscountPercentage()
+    public function testCalculateDiscountPercentage(): void
     {
         $calculator = new Calculator();
         $entity = new Invoice();
@@ -64,7 +64,7 @@ class CalculatorTest extends TestCase
         self::assertEquals(new \Money\Money(3500, new Currency('USD')), $calculator->calculateDiscount($entity));
     }
 
-    public function testCalculatePercentage()
+    public function testCalculatePercentage(): void
     {
         $calculator = new Calculator();
         self::assertSame(0.0, $calculator->calculatePercentage(100));

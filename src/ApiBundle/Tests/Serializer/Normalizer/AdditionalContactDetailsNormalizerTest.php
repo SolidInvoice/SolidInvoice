@@ -27,7 +27,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
     use MockeryPHPUnitIntegration;
     use DoctrineTestTrait;
 
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -57,7 +57,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsNormalization(AdditionalContactDetail::class));
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -87,7 +87,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
-    public function testNormalization()
+    public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -122,7 +122,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         self::assertSame(['type' => 'email', 'value' => 'one@two.com'], $normalizer->normalize($additionalContactDetail));
     }
 
-    public function testDenormalization()
+    public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])

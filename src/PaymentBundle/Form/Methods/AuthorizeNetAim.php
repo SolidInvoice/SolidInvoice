@@ -21,10 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AuthorizeNetAim extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'login_id',
@@ -51,9 +48,6 @@ class AuthorizeNetAim extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'authorize_net_aim';

@@ -59,8 +59,6 @@ class Template
 
     /**
      * @param string $template #Template
-     *
-     * @return Template
      */
     public function setTemplate(string $template): self
     {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -27,7 +28,7 @@ class ApiTokenManagerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGenerateToken()
+    public function testGenerateToken(): void
     {
         $tm = new ApiTokenManager(M::mock(ManagerRegistry::class));
 
@@ -38,7 +39,7 @@ class ApiTokenManagerTest extends TestCase
         self::assertMatchesRegularExpression('/[a-zA-Z0-9]{64}/', $token);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $registry = M::mock(ManagerRegistry::class);
 
@@ -66,7 +67,7 @@ class ApiTokenManagerTest extends TestCase
         self::assertSame('test token', $token->getName());
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $registry = M::mock(ManagerRegistry::class);
 
@@ -78,7 +79,9 @@ class ApiTokenManagerTest extends TestCase
         $token2 = new ApiToken();
         $token2->setName('token2');
 
-        $user->setApiTokens(new ArrayCollection([$token1, $token2]));
+        /** @var Collection<int, ApiToken> $apiTokens */
+        $apiTokens = new ArrayCollection([$token1, $token2]);
+        $user->setApiTokens($apiTokens);
 
         $tm = new ApiTokenManager($registry);
 
@@ -88,7 +91,7 @@ class ApiTokenManagerTest extends TestCase
         self::assertSame($token1, $token);
     }
 
-    public function testGetOrCreate()
+    public function testGetOrCreate(): void
     {
         $registry = M::mock(ManagerRegistry::class);
 
@@ -100,7 +103,9 @@ class ApiTokenManagerTest extends TestCase
         $token2 = new ApiToken();
         $token2->setName('token2');
 
-        $user->setApiTokens(new ArrayCollection([$token1, $token2]));
+        /** @var Collection<int, ApiToken> $apiTokens */
+        $apiTokens = new ArrayCollection([$token1, $token2]);
+        $user->setApiTokens($apiTokens);
 
         $manager = M::mock(ObjectManager::class);
 

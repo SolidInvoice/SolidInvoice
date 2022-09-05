@@ -29,7 +29,7 @@ class Builder extends AuthenticatedMenu
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
      */
-    public function userMenu(ItemInterface $menu)
+    public function userMenu(ItemInterface $menu): void
     {
         $menu->addDivider();
         $menu->addChild(MainMenu::logout());
@@ -40,7 +40,7 @@ class Builder extends AuthenticatedMenu
      *
      * @throws InvalidArgumentException
      */
-    public function systemMenu(ItemInterface $menu)
+    public function systemMenu(ItemInterface $menu): void
     {
         $menu->addDivider();
         $menu->addHeader('System');

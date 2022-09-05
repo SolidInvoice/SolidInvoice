@@ -44,7 +44,7 @@ class SystemConfig
         throw new InvalidSettingException($key);
     }
 
-    public function set(string $path, $value)
+    public function set(string $path, $value): void
     {
         $this->repository->save([$path => $value]);
         self::$settings = null;
@@ -57,9 +57,9 @@ class SystemConfig
         return self::$settings;
     }
 
-    private function load()
+    private function load(): void
     {
-        if (!self::$settings) {
+        if (! self::$settings) {
             $settings = $this->repository
                 ->createQueryBuilder('c')
                 ->select('c.key', 'c.value')

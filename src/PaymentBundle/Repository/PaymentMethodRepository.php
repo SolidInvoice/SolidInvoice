@@ -52,7 +52,7 @@ class PaymentMethodRepository extends ServiceEntityRepository
         $queryBuilder->select('COUNT(pm.id)')
             ->where('pm.enabled = 1');
 
-        if (!$includeInternal) {
+        if (! $includeInternal) {
             $expr = $queryBuilder->expr();
 
             $queryBuilder->andWhere(

@@ -19,12 +19,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class DashboardWidgetCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('dashboard.widget.factory')) {
+        if (! $container->hasDefinition('dashboard.widget.factory')) {
             return;
         }
 
@@ -33,11 +30,11 @@ class DashboardWidgetCompilerPass implements CompilerPassInterface
 
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                if (!isset($attributes['location'])) {
+                if (! isset($attributes['location'])) {
                     $attributes['location'] = null;
                 }
 
-                if (!isset($attributes['priority'])) {
+                if (! isset($attributes['priority'])) {
                     $attributes['priority'] = null;
                 }
 

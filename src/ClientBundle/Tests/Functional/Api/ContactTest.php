@@ -26,7 +26,7 @@ class ContactTest extends ApiTestCase
     use FixturesTrait;
     use EnsureApplicationInstalled;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,7 +35,7 @@ class ContactTest extends ApiTestCase
         ], true);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $data = [
             'client' => '/api/clients/1',
@@ -55,12 +55,12 @@ class ContactTest extends ApiTestCase
         ], $result);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->requestDelete('/api/contacts/1');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/contacts/1');
 
@@ -74,7 +74,7 @@ class ContactTest extends ApiTestCase
         ], $data);
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $data = $this->requestPut('/api/contacts/1', ['firstName' => 'New Test']);
 

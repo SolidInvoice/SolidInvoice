@@ -31,12 +31,12 @@ class PaymentFactories
      */
     private $forms;
 
-    public function setGatewayFactories(array $factories)
+    public function setGatewayFactories(array $factories): void
     {
         $this->factories = $factories;
     }
 
-    public function setGatewayForms(array $gateForms)
+    public function setGatewayForms(array $gateForms): void
     {
         $this->forms = $gateForms;
     }

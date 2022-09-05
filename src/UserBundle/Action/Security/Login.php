@@ -36,7 +36,7 @@ final class Login
             $session->remove($authErrorKey);
         }
 
-        if (!$error instanceof AuthenticationException) {
+        if (! $error instanceof AuthenticationException) {
             $error = null; // The value does not come from the security component.
         }
 

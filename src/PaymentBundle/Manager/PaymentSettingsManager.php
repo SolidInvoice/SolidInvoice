@@ -36,7 +36,7 @@ class PaymentSettingsManager
 
     public function get(string $paymentMethod): array
     {
-        if (!isset($this->settings[$paymentMethod])) {
+        if (! isset($this->settings[$paymentMethod])) {
             $this->settings[$paymentMethod] = $this->repository->getSettingsForMethodArray($paymentMethod);
         }
 

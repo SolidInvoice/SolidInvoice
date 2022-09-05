@@ -18,16 +18,16 @@ use SolidInvoice\CoreBundle\Util\ClassUtil;
 
 class ClassUtilTest extends TestCase
 {
-    public function testFindClassInFile()
+    public function testFindClassInFile(): void
     {
         if (PHP_VERSION_ID >= 80000) {
             self::assertSame('1\\ClassUtilTest', ClassUtil::findClassInFile(__FILE__));
         } else {
-            self::assertSame(ClassUtilTest::class, ClassUtil::findClassInFile(__FILE__));
+            self::assertSame(self::class, ClassUtil::findClassInFile(__FILE__));
         }
     }
 
-    public function testFindClassInFileWithInvalidFile()
+    public function testFindClassInFileWithInvalidFile(): void
     {
         self::assertNull(ClassUtil::findClassInFile(dirname(__DIR__) . '/Fixtures/file.php'));
     }
