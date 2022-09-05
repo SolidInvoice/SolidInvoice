@@ -11,8 +11,29 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: PHP-CS-Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: intl, gd, opcache, mysql, pdo_mysql
+
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-php-74-composer-${{ hashFiles('composer.json composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: composer install --ansi --no-interaction --no-progress --prefer-dist
+
+      - name: Run EasyCodingStandard
+        run: bin/ecs check
 
   composer-normalize:
     name: Composer Normalize
