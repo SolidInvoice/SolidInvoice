@@ -20,10 +20,7 @@ class SortFilter implements FilterInterface
 {
     public const DEFAULT_ORDER = 'ASC';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function filter(Request $request, QueryBuilder $queryBuilder)
+    public function filter(Request $request, QueryBuilder $queryBuilder): void
     {
         $order = $request->query->get('order') ?: self::DEFAULT_ORDER;
 

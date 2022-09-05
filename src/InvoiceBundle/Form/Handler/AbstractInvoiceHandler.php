@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
-use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
@@ -60,9 +59,6 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         $formType = $options->get('recurring') ? RecurringInvoiceType::class : InvoiceType::class;
@@ -70,16 +66,13 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         return $factory->create($formType, $options->get('invoice'), $options->get('form_options'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $data): ?Response
     {
-        /* @var BaseInvoice $data */
+        /** @var Invoice $data */
         $action = $form->getRequest()->request->get('save');
         $isRecurring = $form->getOptions()->get('recurring');
 
-        if (!$data->getId()) {
+        if (! $data->getId()) {
             ($isRecurring ? $this->recurringInvoiceStateMachine : $this->invoiceStateMachine)->apply($data, Graph::TRANSITION_NEW);
         }
 
@@ -91,16 +84,13 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         $route = $this->router->generate($isRecurring ? '_invoices_view_recurring' : '_invoices_view', ['id' => $data->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'invoice.create.success';
             }
         };
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver

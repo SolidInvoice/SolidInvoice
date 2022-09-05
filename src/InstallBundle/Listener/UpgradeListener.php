@@ -43,9 +43,6 @@ class UpgradeListener implements EventSubscriberInterface
      */
     private $migration;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -63,7 +60,7 @@ class UpgradeListener implements EventSubscriberInterface
         $this->migration = $migration;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (null === $this->installed) {
             return;

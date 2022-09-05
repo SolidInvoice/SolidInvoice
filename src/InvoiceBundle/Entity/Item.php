@@ -116,9 +116,6 @@ class Item implements ItemInterface
         return $this->id;
     }
 
-    /**
-     * Set description.
-     */
     public function setDescription(string $description): ItemInterface
     {
         $this->description = $description;
@@ -188,9 +185,6 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * Get invoice.
-     */
     public function getInvoice(): BaseInvoice
     {
         return $this->invoice ?? $this->recurringInvoice;
@@ -234,7 +228,7 @@ class Item implements ItemInterface
      *
      * @ORM\PrePersist
      */
-    public function updateTotal()
+    public function updateTotal(): void
     {
         $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));
     }

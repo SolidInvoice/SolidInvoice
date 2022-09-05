@@ -82,7 +82,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         }
 
         foreach ($storage as $builder) {
-            /* @var \SolidInvoice\MenuBundle\Builder\MenuBuilder $builder */
+            /** @var \SolidInvoice\MenuBundle\Builder\MenuBuilder $builder */
             $builder->setContainer($this->container);
             $builder->invoke($menu, $options);
         }
@@ -109,7 +109,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
         $html = '';
         foreach ($item->getChildren() as $child) {
-            /* @var \SolidInvoice\MenuBundle\MenuItem $child */
+            /** @var \SolidInvoice\MenuBundle\MenuItem $child */
             if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {

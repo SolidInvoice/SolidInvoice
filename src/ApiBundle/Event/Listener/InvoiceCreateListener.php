@@ -37,9 +37,6 @@ class InvoiceCreateListener implements EventSubscriberInterface
         $this->stateMachine = $stateMachine;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -47,12 +44,12 @@ class InvoiceCreateListener implements EventSubscriberInterface
         ];
     }
 
-    public function setInvoiceStatus(ViewEvent $event)
+    public function setInvoiceStatus(ViewEvent $event): void
     {
         $invoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$invoice instanceof BaseInvoice || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $invoice->getStatus()) {
+        if (! $invoice instanceof BaseInvoice || Request::METHOD_POST !== $method || ! $event->isMasterRequest() || $invoice->getStatus()) {
             return;
         }
 

@@ -19,7 +19,7 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 
 class AddressTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $faker = Factory::create();
 

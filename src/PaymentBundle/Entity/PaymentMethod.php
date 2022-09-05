@@ -87,7 +87,7 @@ class PaymentMethod implements GatewayConfigInterface
     private $enabled;
 
     /**
-     * @var Collection<Payment>
+     * @var Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
@@ -109,11 +109,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this->id;
     }
 
-    /**
-     * Set name.
-     *
-     * @return PaymentMethod
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -141,8 +136,6 @@ class PaymentMethod implements GatewayConfigInterface
 
     /**
      * @param string $gatewayName
-     *
-     * @return PaymentMethod
      */
     public function setGatewayName($gatewayName): self
     {
@@ -151,11 +144,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
-    /**
-     * Set settings.
-     *
-     * @return PaymentMethod
-     */
     public function setConfig(array $config): self
     {
         $this->config = $config;
@@ -178,9 +166,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this->internal;
     }
 
-    /**
-     * @return PaymentMethod
-     */
     public function setInternal(bool $internal): self
     {
         $this->internal = $internal;
@@ -193,9 +178,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this->enabled;
     }
 
-    /**
-     * @return PaymentMethod
-     */
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
@@ -203,9 +185,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
-    /**
-     * @return PaymentMethod
-     */
     public function enable(): self
     {
         $this->enabled = true;
@@ -213,9 +192,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
-    /**
-     * @return PaymentMethod
-     */
     public function disable(): self
     {
         $this->enabled = false;
@@ -225,8 +201,6 @@ class PaymentMethod implements GatewayConfigInterface
 
     /**
      * Add payment.
-     *
-     * @return PaymentMethod
      */
     public function addPayment(Payment $payment): self
     {
@@ -237,8 +211,6 @@ class PaymentMethod implements GatewayConfigInterface
 
     /**
      * Removes a payment.
-     *
-     * @return PaymentMethod
      */
     public function removePayment(Payment $payment): self
     {
@@ -250,24 +222,18 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * Get payments.
      *
-     * @return Payment[]|Collection<int, Payment>
+     * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
     {
         return $this->payments;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFactoryName(): ?string
     {
         return $this->factoryName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFactoryName($factory): self
     {
         $this->factoryName = $factory;

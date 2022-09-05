@@ -31,7 +31,7 @@ final class EnvLoader implements EnvVarLoaderInterface
     {
         $envFile = $this->projectDir . '/config/env.php';
 
-        if (!\file_exists($envFile)) {
+        if (! \file_exists($envFile)) {
             return [];
         }
 

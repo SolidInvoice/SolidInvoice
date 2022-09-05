@@ -36,7 +36,7 @@ class NotificationManagerTest extends TestCase
     use FakerTestTrait;
     use MockeryPHPUnitIntegration;
 
-    public function testSendEmailNotification()
+    public function testSendEmailNotification(): void
     {
         $factory = M::mock(Factory::class);
         $settings = M::mock(SystemConfig::class);
@@ -87,7 +87,7 @@ class NotificationManagerTest extends TestCase
         $notificationManager->sendNotification('create_invoice', $message);
     }
 
-    public function testSendSmsNotification()
+    public function testSendSmsNotification(): void
     {
         $factory = M::mock(Factory::class);
         $settings = M::mock(SystemConfig::class);
@@ -152,7 +152,7 @@ class NotificationManagerTest extends TestCase
         $notificationManager->sendNotification('create_invoice', $message);
     }
 
-    public function testSendSmsNotificationToSpecificUsers()
+    public function testSendSmsNotificationToSpecificUsers(): void
     {
         $factory = M::mock(Factory::class);
         $settings = M::mock(SystemConfig::class);
@@ -210,7 +210,7 @@ class NotificationManagerTest extends TestCase
         $notificationManager->sendNotification('create_invoice', $message);
     }
 
-    public function testSendNotification()
+    public function testSendNotification(): void
     {
         $factory = M::mock(Factory::class);
         $settings = M::mock(SystemConfig::class);

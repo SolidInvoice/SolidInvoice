@@ -41,11 +41,9 @@ class NotifyPaymentAction implements ActionInterface, GatewayAwareInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param $request Notify
+     * @param Notify $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -64,15 +62,11 @@ class NotifyPaymentAction implements ActionInterface, GatewayAwareInterface
         $this->objectManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         @trigger_error('This ' . self::class . ' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
 
-        return
-            $request instanceof Notify &&
+        return $request instanceof Notify &&
             $request->getToken() &&
             $request->getModel() instanceof Payment;
     }

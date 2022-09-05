@@ -25,7 +25,7 @@ class MenuItemTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testAddDivider()
+    public function testAddDivider(): void
     {
         $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
@@ -43,7 +43,7 @@ class MenuItemTest extends TestCase
         self::assertSame('-*', $child->getExtra('divider'));
     }
 
-    public function testAddChild()
+    public function testAddChild(): void
     {
         $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
@@ -57,7 +57,7 @@ class MenuItemTest extends TestCase
         self::assertInstanceOf(ItemInterface::class, $child);
     }
 
-    public function testAddChildArray()
+    public function testAddChildArray(): void
     {
         $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
@@ -71,7 +71,7 @@ class MenuItemTest extends TestCase
         self::assertInstanceOf(ItemInterface::class, $child);
     }
 
-    public function testIsDivider()
+    public function testIsDivider(): void
     {
         $coreExtension = new CoreExtension();
         $item = new MenuItem('test', M::mock(FactoryInterface::class));
@@ -83,7 +83,7 @@ class MenuItemTest extends TestCase
         self::assertTrue($item->isDivider());
     }
 
-    public function testIsDividerFalse()
+    public function testIsDividerFalse(): void
     {
         $coreExtension = new CoreExtension();
         $item = new MenuItem('test', M::mock(FactoryInterface::class));

@@ -33,36 +33,24 @@ class HiddenMoneyType extends AbstractType
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->addViewTransformer(new ViewTransformer($options['currency']), true)
             ->addModelTransformer(new ModelTransformer($options['currency']), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('currency');
         $resolver->setAllowedTypes('currency', ['string', Currency::class]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return HiddenType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'hidden_money';

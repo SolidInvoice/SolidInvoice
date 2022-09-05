@@ -26,7 +26,7 @@ class ChainedHandlerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testShouldHandle()
+    public function testShouldHandle(): void
     {
         $manager = M::mock(ManagerInterface::class);
         $handler = new ChainedHandler($manager);
@@ -35,7 +35,7 @@ class ChainedHandlerTest extends TestCase
         self::assertFalse($handler->shouldHandle(new Notification('Test')));
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $manager = M::mock(ManagerInterface::class);
         $handler = new ChainedHandler($manager);

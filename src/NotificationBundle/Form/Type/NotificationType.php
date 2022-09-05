@@ -23,10 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class NotificationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('email', CheckboxType::class);
         $builder->add('sms', CheckboxType::class);
@@ -34,7 +31,7 @@ class NotificationType extends AbstractType
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
             public function transform($value)
             {
-                if (!is_string($value)) {
+                if (! is_string($value)) {
                     return null;
                 }
 
@@ -52,9 +49,6 @@ class NotificationType extends AbstractType
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'notification';

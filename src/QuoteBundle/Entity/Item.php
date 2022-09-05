@@ -109,9 +109,6 @@ class Item implements ItemInterface
         return $this->id;
     }
 
-    /**
-     * Set description.
-     */
     public function setDescription(string $description): ItemInterface
     {
         $this->description = $description;

@@ -51,23 +51,17 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(QuoteType::class, $options->get('quote'), $options->get('form_options'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $quote): ?Response
     {
-        /* @var Quote $quote */
+        /** @var Quote $quote */
         $action = $form->getRequest()->request->get('save');
 
-        if (!$quote->getId()) {
+        if (! $quote->getId()) {
             $this->stateMachine->apply($quote, Graph::TRANSITION_NEW);
         }
 
@@ -80,16 +74,13 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'quote.action.create.success';
             }
         };
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('quote')

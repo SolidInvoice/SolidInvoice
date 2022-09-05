@@ -23,7 +23,7 @@ use Symfony\Component\Form\PreloadedExtension;
 
 class ContactTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;

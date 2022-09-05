@@ -21,9 +21,6 @@ use SolidWorx\FormHandler\FormRequest;
  */
 class ClientEditFormHandler extends AbstractClientFormHandler
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(

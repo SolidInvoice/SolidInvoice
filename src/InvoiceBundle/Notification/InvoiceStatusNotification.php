@@ -23,17 +23,11 @@ class InvoiceStatusNotification extends NotificationMessage
 
     public const TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/status_change.text.twig';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHtmlContent(Environment $twig): string
     {
         return $twig->render(self::HTML_TEMPLATE, $this->getParameters());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTextContent(Environment $twig): string
     {
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());

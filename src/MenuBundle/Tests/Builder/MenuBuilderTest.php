@@ -24,7 +24,7 @@ class MenuBuilderTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $builder = M::mock(BuilderInterface::class);
         $item = M::mock(ItemInterface::class);
@@ -47,7 +47,7 @@ class MenuBuilderTest extends TestCase
         $builder->shouldHaveReceived('something', [$item, []]);
     }
 
-    public function testInvokeFail()
+    public function testInvokeFail(): void
     {
         $builder = M::mock(BuilderInterface::class, ['validate' => false]);
         $item = M::mock(ItemInterface::class);
@@ -69,7 +69,7 @@ class MenuBuilderTest extends TestCase
         $builder->shouldNotHaveReceived('something', [$item, []]);
     }
 
-    public function testContainer()
+    public function testContainer(): void
     {
         $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface, Symfony\Component\DependencyInjection\ContainerAwareInterface', ['validate' => false]);
         $item = M::mock(ItemInterface::class);

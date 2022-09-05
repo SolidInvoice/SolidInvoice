@@ -18,7 +18,7 @@ use SolidInvoice\PaymentBundle\Form\Type\PaymentMethodSettingsType;
 
 class PaymentMethodSettingsTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $paragraphs = $this->faker->paragraphs;
 

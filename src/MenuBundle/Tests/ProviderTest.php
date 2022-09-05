@@ -25,7 +25,7 @@ class ProviderTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGet()
+    public function testGet(): void
     {
         $storage = M::mock(MenuStorageInterface::class);
 
@@ -43,7 +43,7 @@ class ProviderTest extends TestCase
             ->with('abc');
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $storage = M::mock(MenuStorageInterface::class);
 
@@ -59,7 +59,7 @@ class ProviderTest extends TestCase
             ->with('abc');
     }
 
-    public function testAddBuilder()
+    public function testAddBuilder(): void
     {
         $queue = M::mock(\SplPriorityQueue::class);
         $storage = M::mock(MenuStorageInterface::class);

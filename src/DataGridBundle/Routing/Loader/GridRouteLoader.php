@@ -17,9 +17,6 @@ use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 
 class GridRouteLoader extends AbstractDirectoryLoader
 {
-    /**
-     * {@inheritdoc}
-     */
     public function supports($resource, $type = null): bool
     {
         return is_string($resource) && 'grid' === $type && '@' === $resource[0];

@@ -47,12 +47,12 @@ class WidgetExtensionTest extends TestCase
         $this->extension = new WidgetExtension($this->factory);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         self::assertSame('dashboard_widget_extension', $this->extension->getName());
     }
 
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         /** @var TwigFunction[] $functions */
         $functions = $this->extension->getFunctions();
@@ -62,7 +62,7 @@ class WidgetExtensionTest extends TestCase
         self::assertSame('render_dashboard_widget', $functions[0]->getName());
     }
 
-    public function testRenderDashboardWidget()
+    public function testRenderDashboardWidget(): void
     {
         $widget = Mockery::mock(
             WidgetInterface::class,

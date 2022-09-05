@@ -26,10 +26,7 @@ use SolidInvoice\QuoteBundle\Model\Graph;
  */
 class LoadData extends Fixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $quote = new Quote();
         $quote->setClient($this->getReference('client'));

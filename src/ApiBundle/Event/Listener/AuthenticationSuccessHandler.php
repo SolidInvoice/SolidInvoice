@@ -27,17 +27,11 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
      */
     private $tokenManager;
 
-    /**
-     * AuthenticationSuccessHandler constructor.
-     */
     public function __construct(ApiTokenManager $tokenManager)
     {
         $this->tokenManager = $tokenManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         /** @var User $user */

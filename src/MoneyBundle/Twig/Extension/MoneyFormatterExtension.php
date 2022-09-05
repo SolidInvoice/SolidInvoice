@@ -42,9 +42,6 @@ class MoneyFormatterExtension extends AbstractExtension
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
@@ -58,7 +55,7 @@ class MoneyFormatterExtension extends AbstractExtension
     {
         return [
             new TwigFilter('formatCurrency', function ($money, $currency = null): string {
-                if (!$money instanceof Money && is_numeric($money)) {
+                if (! $money instanceof Money && is_numeric($money)) {
                     @trigger_error('Passing a number to "formatCurrency" is deprecated since version 2.0.1 and will be unsupported in version 2.1. Pass a Money instance instead.', E_USER_DEPRECATED);
                     $money = new Money((int) $money, $currency ? new Currency($currency) : $this->currency);
                 }
@@ -68,9 +65,6 @@ class MoneyFormatterExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'currency_formatter';

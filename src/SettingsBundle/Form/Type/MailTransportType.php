@@ -38,24 +38,31 @@ final class MailTransportType extends AbstractType
     {
         $transports = \is_array($this->transports) ? $this->transports : \iterator_to_array($this->transports);
 
-        $choices = \array_map(static function (ConfiguratorInterface $configurator) { return $configurator->getName(); }, $transports);
+        $choices = \array_map(static function (ConfiguratorInterface $configurator) {
+            return $configurator->getName();
+        }, $transports);
 
         $builder->add(
             'provider',
-            Select2Type::class, [
+            Select2Type::class,
+            [
             'choices' => \array_combine($choices, $choices),
             'placeholder' => 'Choose Mail Provider',
             'label' => 'Mail Provider',
-        ]);
+        ]
+        );
 
         foreach ($transports as $transport) {
             $builder->add(\str_replace(' ', '-', $transport->getName()), $transport->getForm(), ['attr' => ['class' => 'd-none']]);
         }
 
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
+            /**
+             * @return array<string, mixed>
+             */
             public function transform($value): ?array
             {
-                if (!is_string($value)) {
+                if (! is_string($value)) {
                     return null;
                 }
 

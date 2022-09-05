@@ -26,9 +26,6 @@ class PaymentReceivedListener implements EventSubscriberInterface
      */
     private $notification;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -41,7 +38,7 @@ class PaymentReceivedListener implements EventSubscriberInterface
         $this->notification = $notification;
     }
 
-    public function onPaymentCapture(PaymentCompleteEvent $event)
+    public function onPaymentCapture(PaymentCompleteEvent $event): void
     {
         $notification = new PaymentReceivedNotification(['payment' => $event->getPayment()]);
 

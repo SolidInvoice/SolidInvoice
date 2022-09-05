@@ -23,12 +23,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class NotificationHandlerCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition(Manager::class)) {
+        if (! $container->hasDefinition(Manager::class)) {
             return;
         }
 

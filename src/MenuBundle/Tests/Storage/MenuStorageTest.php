@@ -29,7 +29,7 @@ class MenuStorageTest extends TestCase
      * @param $name2
      * @param $name3
      */
-    public function testStorage($name1, $name2, $name3)
+    public function testStorage($name1, $name2, $name3): void
     {
         $storage = new MenuStorage();
 

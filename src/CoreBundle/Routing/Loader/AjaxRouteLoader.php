@@ -15,9 +15,6 @@ namespace SolidInvoice\CoreBundle\Routing\Loader;
 
 class AjaxRouteLoader extends AbstractDirectoryLoader
 {
-    /**
-     * {@inheritdoc}
-     */
     public function supports($resource, $type = null): bool
     {
         return is_string($resource) && 'ajax' === $type && '@' === $resource[0];

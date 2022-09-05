@@ -20,10 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CheckBoxExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
             public function transform($value)
@@ -38,9 +35,6 @@ class CheckBoxExtension extends AbstractTypeExtension
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         yield CheckboxType::class;

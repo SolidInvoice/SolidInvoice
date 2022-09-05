@@ -93,7 +93,7 @@ class Contact implements Serializable
     private $email;
 
     /**
-     * @var Collection<AdditionalContactDetail>
+     * @var Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
@@ -102,21 +102,21 @@ class Contact implements Serializable
     private $additionalContactDetails;
 
     /**
-     * @var Collection<Invoice>
+     * @var Collection<int, Invoice>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
 
     /**
-     * @var Collection<RecurringInvoice>
+     * @var Collection<int, RecurringInvoice>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $recurringInvoices;
 
     /**
-     * @var Collection<Quote>
+     * @var Collection<int, Quote>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
@@ -150,11 +150,6 @@ class Contact implements Serializable
         return $this->firstName;
     }
 
-    /**
-     * Set firstName.
-     *
-     * @return Contact
-     */
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
@@ -172,9 +167,6 @@ class Contact implements Serializable
         return $this->lastName;
     }
 
-    /**
-     * @return Contact
-     */
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
@@ -192,11 +184,6 @@ class Contact implements Serializable
         return $this->client;
     }
 
-    /**
-     * Set client.
-     *
-     * @return Contact
-     */
     public function setClient(Client $client): self
     {
         $this->client = $client;
@@ -206,8 +193,6 @@ class Contact implements Serializable
 
     /**
      * Add additional detail.
-     *
-     * @return Contact
      */
     public function addAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
@@ -219,8 +204,6 @@ class Contact implements Serializable
 
     /**
      * Removes additional detail from the current contact.
-     *
-     * @return Contact
      */
     public function removeAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
@@ -232,7 +215,7 @@ class Contact implements Serializable
     /**
      * Get additional details.
      *
-     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
+     * @return Collection<int, AdditionalContactDetail>
      */
     public function getAdditionalContactDetails(): Collection
     {
@@ -261,7 +244,7 @@ class Contact implements Serializable
     /**
      * @param string $serialized
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         [$this->id, $this->firstName, $this->lastName, $this->created, $this->updated] = unserialize($serialized);
     }
@@ -279,9 +262,6 @@ class Contact implements Serializable
         return $this->email;
     }
 
-    /**
-     * @return Contact
-     */
     public function setEmail(string $email): self
     {
         $this->email = $email;

@@ -45,10 +45,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $resourceLocator = new FileLocator($this->kernel);
         $definition = $container->getDefinition(GridRepository::class);
@@ -82,7 +79,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         return $process->processConfiguration($config, $grid);
     }
 
-    private function setGridDefinition(Definition $gridService, array $config)
+    private function setGridDefinition(Definition $gridService, array $config): void
     {
         foreach ($config as $gridName => $gridConfig) {
             $gridDefinition = new Definition(Grid::class);
@@ -119,7 +116,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('addFilter', [$paginateFilter]);
         }
 
-        if (!empty($gridData['search']['fields'])) {
+        if (! empty($gridData['search']['fields'])) {
             $searchFilter = new Definition(
                 SearchFilter::class,
                 [$gridData['search']['fields']]

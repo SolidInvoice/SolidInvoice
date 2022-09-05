@@ -34,9 +34,6 @@ class InvoiceMailerListener implements EventSubscriberInterface
         $this->mailer = $mailer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -44,7 +41,7 @@ class InvoiceMailerListener implements EventSubscriberInterface
         ];
     }
 
-    public function onInvoiceAccepted(InvoiceEvent $event)
+    public function onInvoiceAccepted(InvoiceEvent $event): void
     {
         $this->mailer->send(new InvoiceEmail($event->getInvoice()));
     }

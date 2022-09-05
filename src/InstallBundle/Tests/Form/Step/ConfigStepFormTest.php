@@ -18,7 +18,7 @@ use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
 
 class ConfigStepFormTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $drivers = [
             'pdo_mysql' => 'MySQL',

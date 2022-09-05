@@ -36,13 +36,13 @@ class AuthenticatedMenuTest extends TestCase
      */
     private $security;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = M::mock(ContainerInterface::class);
         $this->security = M::mock(AuthorizationCheckerInterface::class);
     }
 
-    public function testValidate()
+    public function testValidate(): void
     {
         $menu = new AuthenticatedMenu();
         $menu->setContainer($this->container);
@@ -62,7 +62,7 @@ class AuthenticatedMenuTest extends TestCase
         $this->security->shouldHaveReceived('isGranted')->once()->withArgs(['IS_AUTHENTICATED_REMEMBERED']);
     }
 
-    public function testValidateFail()
+    public function testValidateFail(): void
     {
         $menu = new AuthenticatedMenu();
         $menu->setContainer($this->container);
@@ -82,7 +82,7 @@ class AuthenticatedMenuTest extends TestCase
         $this->security->shouldHaveReceived('isGranted')->once()->withArgs(['IS_AUTHENTICATED_REMEMBERED']);
     }
 
-    public function testValidateFailException()
+    public function testValidateFailException(): void
     {
         $menu = new AuthenticatedMenu();
         $menu->setContainer($this->container);

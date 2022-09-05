@@ -43,8 +43,6 @@ class Version
      * Set version.
      *
      * @param string $version
-     *
-     * @return Version
      */
     public function setVersion(?string $version): self
     {

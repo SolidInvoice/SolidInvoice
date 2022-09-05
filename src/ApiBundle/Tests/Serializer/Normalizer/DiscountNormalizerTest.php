@@ -31,7 +31,7 @@ class DiscountNormalizerTest extends TestCase
         Money::setBaseCurrency('USD');
     }
 
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -62,7 +62,7 @@ class DiscountNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsNormalization(Discount::class));
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -93,7 +93,7 @@ class DiscountNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
-    public function testNormalization()
+    public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -127,7 +127,7 @@ class DiscountNormalizerTest extends TestCase
         self::assertSame(['type' => 'money', 'value' => new \Money\Money(10000, $currency)], $normalizer->normalize($discount));
     }
 
-    public function testDenormalization()
+    public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])

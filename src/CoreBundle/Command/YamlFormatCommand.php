@@ -36,9 +36,6 @@ class YamlFormatCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var SplFileInfo $file */

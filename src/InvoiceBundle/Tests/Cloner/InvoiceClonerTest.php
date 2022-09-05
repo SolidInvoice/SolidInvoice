@@ -32,7 +32,7 @@ class InvoiceClonerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testClone()
+    public function testClone(): void
     {
         $currency = new Currency('USD');
 
@@ -98,7 +98,7 @@ class InvoiceClonerTest extends TestCase
         self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 
-    public function testCloneWithRecurring()
+    public function testCloneWithRecurring(): void
     {
         $currency = new Currency('USD');
         $date = new \DateTime('now');

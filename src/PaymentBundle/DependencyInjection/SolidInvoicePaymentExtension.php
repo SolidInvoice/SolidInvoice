@@ -27,10 +27,7 @@ class SolidInvoicePaymentExtension extends Extension
 {
     public const NS = 'SolidInvoice\PaymentBundle\Form\Methods';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->import('services/*.yml');

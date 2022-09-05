@@ -50,17 +50,11 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(SettingsType::class, $this->getSettings(false), ['settings' => $this->getSettings()]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $data): ?Response
     {
         $config = [];
@@ -70,7 +64,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'settings.saved.success';
             }
@@ -92,9 +86,6 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         $form = $formRequest->getForm();

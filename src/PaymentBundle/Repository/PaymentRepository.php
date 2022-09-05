@@ -127,7 +127,7 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function getTotalPaidForInvoice(Invoice $invoice): int
     {
-        if (!$invoice->getId()) {
+        if (! $invoice->getId()) {
             return 0;
         }
 
@@ -221,7 +221,7 @@ class PaymentRepository extends ServiceEntityRepository
             $created = $result['created'];
 
             $date = $created->format($dateFormat);
-            if (!isset($payments[$date])) {
+            if (! isset($payments[$date])) {
                 $payments[$date] = 0;
             }
 
@@ -259,7 +259,7 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function updatePaymentStatus($payments, string $status)
     {
-        if (!is_array($payments) && !$payments instanceof Traversable) {
+        if (! is_array($payments) && ! $payments instanceof Traversable) {
             $payments = [$payments];
         }
 
@@ -300,7 +300,7 @@ class PaymentRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function updateCurrency(Client $client)
+    public function updateCurrency(Client $client): void
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');

@@ -25,20 +25,14 @@ class MenuStorage implements MenuStorageInterface
      */
     protected $list = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(string $name): bool
     {
         return isset($this->list[$name]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(string $name): SplPriorityQueue
     {
-        if (!$this->has($name)) {
+        if (! $this->has($name)) {
             $this->list[$name] = new SplPriorityQueue();
         }
 

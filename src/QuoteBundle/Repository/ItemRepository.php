@@ -21,9 +21,6 @@ use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
-/**
- * Class ItemRepository.
- */
 class ItemRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -36,7 +33,7 @@ class ItemRepository extends ServiceEntityRepository
      *
      * @throws ORMException|OptimisticLockException
      */
-    public function removeTax(Tax $tax)
+    public function removeTax(Tax $tax): void
     {
         if (Tax::TYPE_EXCLUSIVE === $tax->getType()) {
             $qb = $this->createQueryBuilder('i');

@@ -43,7 +43,7 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function __construct(NormalizerInterface $normalizer, MoneyFormatterInterface $formatter, Currency $currency)
     {
-        if (!$normalizer instanceof DenormalizerInterface) {
+        if (! $normalizer instanceof DenormalizerInterface) {
             throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }
 
@@ -68,7 +68,7 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function normalize($object, $format = null, array $context = [])
     {
-        /* @var Discount $object */
+        /** @var Discount $object */
         return [
             'type' => $object->getType(),
             'value' => $object->getValue(),

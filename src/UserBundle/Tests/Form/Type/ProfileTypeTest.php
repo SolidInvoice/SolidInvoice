@@ -19,7 +19,7 @@ use SolidInvoice\UserBundle\Form\Type\ProfileType;
 
 class ProfileTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $mobile = $this->faker->phoneNumber;
 

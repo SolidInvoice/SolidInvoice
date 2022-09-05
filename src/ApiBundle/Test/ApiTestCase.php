@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Test;
 
 use const PASSWORD_DEFAULT;
+use function password_hash;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Panther\PantherTestCase;
-use function password_hash;
 
 /**
  * @codeCoverageIgnore
@@ -31,7 +31,7 @@ abstract class ApiTestCase extends PantherTestCase
      */
     protected static $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

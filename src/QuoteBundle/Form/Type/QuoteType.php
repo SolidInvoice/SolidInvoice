@@ -38,10 +38,7 @@ class QuoteType extends AbstractType
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'client',
@@ -80,10 +77,7 @@ class QuoteType extends AbstractType
         $builder->addEventSubscriber(new QuoteUsersSubscriber());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -94,9 +88,6 @@ class QuoteType extends AbstractType
             ->setAllowedTypes('currency', [Currency::class]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'quote';

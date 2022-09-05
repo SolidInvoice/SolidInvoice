@@ -34,7 +34,7 @@ class GridConfigurationTest extends TestCase
     /**
      * @dataProvider invalidConfigProvider
      */
-    public function testInvalidGridConfig($message, $config)
+    public function testInvalidGridConfig($message, $config): void
     {
         $this->assertConfigurationIsInvalid(['datagrid' => $config], $message ?: null);
     }
@@ -42,12 +42,12 @@ class GridConfigurationTest extends TestCase
     /**
      * @dataProvider validConfigProvider
      */
-    public function testValidGridConfig($config)
+    public function testValidGridConfig($config): void
     {
         $this->assertConfigurationIsValid($config);
     }
 
-    public function testProcessedValueContainsRequiredValue()
+    public function testProcessedValueContainsRequiredValue(): void
     {
         $this->assertProcessedConfigurationEquals(
             Yaml::parse(file_get_contents(realpath(self::FIXTURES_PATH . 'valid.yml')))[0],

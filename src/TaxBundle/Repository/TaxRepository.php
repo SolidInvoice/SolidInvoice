@@ -81,7 +81,7 @@ class TaxRepository extends ServiceEntityRepository
         $invoiceRepository = $em->getRepository(InvoiceItem::class);
         $quoteRepository = $em->getRepository(QuoteItem::class);
 
-        /* @var Tax[] $taxes */
+        /** @var Tax[] $taxes */
         $taxes = $this->findBy(['id' => $data]);
 
         foreach ($taxes as $tax) {

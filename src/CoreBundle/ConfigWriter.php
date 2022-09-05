@@ -37,7 +37,7 @@ class ConfigWriter
     /**
      * Dumps an array into the parameters.yml file.
      */
-    public function dump(array $config)
+    public function dump(array $config): void
     {
         $values = array_merge($this->getConfigValues(), $config);
 
@@ -53,7 +53,7 @@ class ConfigWriter
      */
     public function getConfigValues(): array
     {
-        if (!\file_exists($this->configFile)) {
+        if (! \file_exists($this->configFile)) {
             return [];
         }
 

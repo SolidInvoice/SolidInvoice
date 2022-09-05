@@ -52,7 +52,7 @@ class InvoiceManagerTest extends KernelTestCase
      */
     private $entityManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entityManager = M::mock(EntityManagerInterface::class);
         $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $this->entityManager]);
@@ -81,7 +81,7 @@ class InvoiceManagerTest extends KernelTestCase
             ->zeroOrMoreTimes();
     }
 
-    public function testCreateFromQuote()
+    public function testCreateFromQuote(): void
     {
         $currency = new Currency('USD');
 
@@ -142,7 +142,7 @@ class InvoiceManagerTest extends KernelTestCase
         self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 
-    public function testCreateFromRecurring()
+    public function testCreateFromRecurring(): void
     {
         $currency = new Currency('USD');
 

@@ -67,9 +67,6 @@ class RequestListener implements EventSubscriberInterface
      */
     private $router;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -99,10 +96,10 @@ class RequestListener implements EventSubscriberInterface
         $route = $request->get('_route');
 
         if (null !== $this->installed) {
-            if (in_array($route, $this->installRoutes, true) && !$session->has('installation_step')) {
+            if (in_array($route, $this->installRoutes, true) && ! $session->has('installation_step')) {
                 throw new ApplicationInstalledException();
             }
-        } elseif (!in_array($route, $this->allowRoutes, true)) {
+        } elseif (! in_array($route, $this->allowRoutes, true)) {
             $response = new RedirectResponse($this->router->generate(self::INSTALLER_ROUTE));
 
             $event->setResponse($response);

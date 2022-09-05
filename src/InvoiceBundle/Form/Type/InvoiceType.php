@@ -38,9 +38,6 @@ class InvoiceType extends AbstractType
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -80,17 +77,11 @@ class InvoiceType extends AbstractType
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'invoice';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

@@ -24,9 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class QuoteEditHandler extends AbstractQuoteHandler
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -38,16 +35,13 @@ class QuoteEditHandler extends AbstractQuoteHandler
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $quote): ?Response
     {
-        /* @var RedirectResponse $response */
+        /** @var RedirectResponse $response */
         $response = parent::onSuccess($form, $quote);
 
         return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'quote.action.edit.success';
             }

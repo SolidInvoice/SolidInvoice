@@ -23,12 +23,12 @@ class Runner
      */
     protected $commands = [];
 
-    public function addCommand(CommandInterface $command)
+    public function addCommand(CommandInterface $command): void
     {
         $this->commands[] = $command;
     }
 
-    public function run()
+    public function run(): void
     {
         foreach ($this->commands as $command) {
             if ($command->isDue()) {

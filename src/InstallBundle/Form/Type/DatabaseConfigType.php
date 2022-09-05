@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class DatabaseConfigType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $drivers = $options['drivers'];
 
@@ -85,10 +85,7 @@ class DatabaseConfigType extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['drivers']);
     }

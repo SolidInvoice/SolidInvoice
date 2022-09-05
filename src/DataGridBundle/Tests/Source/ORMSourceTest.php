@@ -25,18 +25,18 @@ class ORMSourceTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testFetch()
+    public function testFetch(): void
     {
         $qb = M::mock(QueryBuilder::class);
         $repository = M::mock(EntityManager::class);
         $registry = M::mock(ManagerRegistry::class);
 
         $registry->shouldReceive('getRepository')
-        ->with('a')
-        ->andReturn($repository);
+            ->with('a')
+            ->andReturn($repository);
 
         $repository->shouldReceive('b')
-        ->andReturn($qb);
+            ->andReturn($qb);
 
         $source = new ORMSource($registry, 'a', 'b');
 
@@ -45,7 +45,7 @@ class ORMSourceTest extends TestCase
         self::assertSame($qb, $data);
     }
 
-    public function testFetchException()
+    public function testFetchException(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('Grid source should return a query builder');
@@ -54,11 +54,11 @@ class ORMSourceTest extends TestCase
         $registry = M::mock(ManagerRegistry::class);
 
         $registry->shouldReceive('getRepository')
-        ->with('a')
-        ->andReturn($repository);
+            ->with('a')
+            ->andReturn($repository);
 
         $repository->shouldReceive('b')
-        ->andReturn([]);
+            ->andReturn([]);
 
         $source = new ORMSource($registry, 'a', 'b');
 

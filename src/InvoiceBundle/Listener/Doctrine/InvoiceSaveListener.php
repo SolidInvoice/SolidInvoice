@@ -66,7 +66,7 @@ class InvoiceSaveListener implements EventSubscriber
     private function checkDiscount(BaseInvoice $entity): void
     {
         $discount = $entity->getDiscount();
-        if (!$discount->getValue()) {
+        if (! $discount->getValue()) {
             $discount->setType(null);
         }
     }

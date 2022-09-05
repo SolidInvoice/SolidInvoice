@@ -30,7 +30,7 @@ class SolidInvoiceNotificationExtensionTest extends AbstractExtensionTestCase
         return [new SolidInvoiceNotificationExtension()];
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->load();
 

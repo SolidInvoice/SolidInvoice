@@ -159,7 +159,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $qb->select(['i', 'c'])
             ->join('i.client', 'c');
 
-        if (!empty($parameters['client'])) {
+        if (! empty($parameters['client'])) {
             $qb->andWhere('i.client = :client')
                 ->setParameter('client', $parameters['client']);
         }
@@ -180,7 +180,7 @@ class InvoiceRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function updateCurrency(Client $client)
+    public function updateCurrency(Client $client): void
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');

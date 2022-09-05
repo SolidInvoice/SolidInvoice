@@ -27,7 +27,7 @@ class RecurringInvoiceTest extends ApiTestCase
     use FixturesTrait;
     use EnsureApplicationInstalled;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -96,12 +96,12 @@ class RecurringInvoiceTest extends ApiTestCase
         ], $result);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->requestDelete('/api/recurring_invoices/1');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/recurring_invoices/1');
 
@@ -139,7 +139,7 @@ class RecurringInvoiceTest extends ApiTestCase
         ], $data);
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $data = $this->requestPut(
             '/api/recurring_invoices/1',

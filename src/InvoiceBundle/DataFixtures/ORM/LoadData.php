@@ -29,10 +29,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
  */
 class LoadData extends Fixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $invoice = new Invoice();
         $invoice->setClient($this->getReference('client'));

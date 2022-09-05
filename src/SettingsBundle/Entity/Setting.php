@@ -72,19 +72,11 @@ class Setting
         return $this->id;
     }
 
-    /**
-     * Get key.
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * Set key.
-     *
-     * @return Setting
-     */
     public function setKey(string $key): self
     {
         $this->key = $key;
@@ -106,8 +98,6 @@ class Setting
      * Set value.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     public function setValue($value): self
     {
@@ -130,8 +120,6 @@ class Setting
      * Set description.
      *
      * @param string $description
-     *
-     * @return Setting
      */
     public function setDescription(?string $description): self
     {
@@ -150,11 +138,6 @@ class Setting
         return $this->type;
     }
 
-    /**
-     * Set type.
-     *
-     * @return Setting
-     */
     public function setType(string $type): self
     {
         $this->type = $type;

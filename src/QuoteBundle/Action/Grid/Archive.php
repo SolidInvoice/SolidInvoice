@@ -50,7 +50,7 @@ final class Archive implements AjaxResponse
         $quotes = $this->repository->findBy(['id' => $data]);
 
         foreach ($quotes as $quote) {
-            if (!$this->stateMachine->can($quote, Graph::TRANSITION_ARCHIVE)) {
+            if (! $this->stateMachine->can($quote, Graph::TRANSITION_ARCHIVE)) {
                 throw new InvalidTransitionException(Graph::TRANSITION_ARCHIVE);
             }
 

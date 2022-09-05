@@ -100,7 +100,7 @@ class QuoteCreateHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $quote): void
     {
-        /* @var Quote $quote */
+        /** @var Quote $quote */
 
         self::assertSame(Graph::STATUS_DRAFT, $quote->getStatus());
         self::assertInstanceOf(RedirectResponse::class, $response);

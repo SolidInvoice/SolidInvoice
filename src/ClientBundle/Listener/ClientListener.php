@@ -46,24 +46,24 @@ class ClientListener implements EventSubscriber
         ];
     }
 
-    public function prePersist(LifecycleEventArgs $event)
+    public function prePersist(LifecycleEventArgs $event): void
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof Client) {
+        if (! $entity instanceof Client) {
             return;
         }
 
-        if (!$entity->getId() && !$entity->getStatus()) {
+        if (! $entity->getId() && ! $entity->getStatus()) {
             $entity->setStatus(Status::STATUS_ACTIVE);
         }
     }
 
-    public function postPersist(LifecycleEventArgs $event)
+    public function postPersist(LifecycleEventArgs $event): void
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof Client) {
+        if (! $entity instanceof Client) {
             return;
         }
 
@@ -73,11 +73,11 @@ class ClientListener implements EventSubscriber
         $this->notification->sendNotification('client_create', $notification);
     }
 
-    public function postUpdate(LifecycleEventArgs $event)
+    public function postUpdate(LifecycleEventArgs $event): void
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof Client) {
+        if (! $entity instanceof Client) {
             return;
         }
 

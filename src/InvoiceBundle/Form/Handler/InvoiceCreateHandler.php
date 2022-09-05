@@ -21,9 +21,6 @@ use SolidWorx\FormHandler\FormRequest;
  */
 class InvoiceCreateHandler extends AbstractInvoiceHandler
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(

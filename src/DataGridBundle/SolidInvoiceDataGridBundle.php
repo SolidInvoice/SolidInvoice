@@ -30,10 +30,7 @@ class SolidInvoiceDataGridBundle extends Bundle
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new GridDefinitionCompilerPass($this->kernel));
     }

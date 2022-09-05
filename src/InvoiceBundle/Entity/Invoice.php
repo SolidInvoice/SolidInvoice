@@ -106,7 +106,7 @@ class Invoice extends BaseInvoice
     private $paidDate;
 
     /**
-     * @var Collection<Payment>
+     * @var Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
@@ -121,7 +121,7 @@ class Invoice extends BaseInvoice
     private $quote;
 
     /**
-     * @var Collection<Item>
+     * @var Collection<int, Item>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
@@ -131,7 +131,7 @@ class Invoice extends BaseInvoice
     protected $items;
 
     /**
-     * @var Collection<Contact>
+     * @var Collection<int, Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
@@ -168,9 +168,6 @@ class Invoice extends BaseInvoice
         return $this->uuid;
     }
 
-    /**
-     * @return Invoice
-     */
     public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
@@ -188,11 +185,6 @@ class Invoice extends BaseInvoice
         return $this->client;
     }
 
-    /**
-     * Set client.
-     *
-     * @return Invoice
-     */
     public function setClient(?Client $client): self
     {
         $this->client = $client;
@@ -205,9 +197,6 @@ class Invoice extends BaseInvoice
         return $this->balance->getMoney();
     }
 
-    /**
-     * @return Invoice
-     */
     public function setBalance(Money $balance): self
     {
         $this->balance = new MoneyEntity($balance);
@@ -218,19 +207,14 @@ class Invoice extends BaseInvoice
     /**
      * Get due.
      *
-     * @return DateTime
+     * @return DateTimeInterface
      */
-    public function getDue(): ?DateTime
+    public function getDue(): ?DateTimeInterface
     {
         return $this->due;
     }
 
-    /**
-     * Set due.
-     *
-     * @return Invoice
-     */
-    public function setDue(DateTime $due): self
+    public function setDue(DateTimeInterface $due): self
     {
         $this->due = $due;
 
@@ -240,18 +224,13 @@ class Invoice extends BaseInvoice
     /**
      * Get paidDate.
      *
-     * @return DateTime
+     * @return DateTimeInterface
      */
-    public function getPaidDate(): ?DateTime
+    public function getPaidDate(): ?DateTimeInterface
     {
         return $this->paidDate;
     }
 
-    /**
-     * Set paidDate.
-     *
-     * @return Invoice
-     */
     public function setPaidDate(DateTime $paidDate): self
     {
         $this->paidDate = $paidDate;
@@ -259,9 +238,6 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * @return Invoice
-     */
     public function addItem(ItemInterface $item): self
     {
         assert($item instanceof Item);
@@ -272,9 +248,6 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * @return Invoice
-     */
     public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
@@ -313,8 +286,6 @@ class Invoice extends BaseInvoice
 
     /**
      * Removes a payment.
-     *
-     * @return Invoice
      */
     public function removePayment(Payment $payment): self
     {
@@ -326,7 +297,7 @@ class Invoice extends BaseInvoice
     /**
      * Get payments.
      *
-     * @return Payment[]|Collection<int, Payment>
+     * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
     {
@@ -358,8 +329,6 @@ class Invoice extends BaseInvoice
 
     /**
      * @param Contact[] $users
-     *
-     * @return Invoice
      */
     public function setUsers(array $users): self
     {
@@ -368,9 +337,6 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * @return Invoice
-     */
     public function addUser(Contact $user): self
     {
         $this->users[] = $user;

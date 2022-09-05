@@ -43,15 +43,13 @@ class MenuItem extends BaseItem implements ItemInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws InvalidArgumentException
      */
     public function addDivider(string $type = '')
     {
         $name = uniqid();
 
-        if (!empty($type)) {
+        if (! empty($type)) {
             $type = '-' . $type;
         }
 
@@ -59,8 +57,6 @@ class MenuItem extends BaseItem implements ItemInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws InvalidArgumentException
      */
     public function addHeader(string $header)
@@ -68,9 +64,6 @@ class MenuItem extends BaseItem implements ItemInterface
         return $this->addChild($header, ['attributes' => ['class' => 'nav-header']]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDivider(): bool
     {
         return null !== $this->getExtra('divider');

@@ -37,7 +37,7 @@ class MenuExtension extends AbstractExtension
     /**
      * Sets the renderer for the menu.
      */
-    public function setRenderer(RendererInterface $renderer)
+    public function setRenderer(RendererInterface $renderer): void
     {
         $this->renderer = $renderer;
     }
@@ -45,7 +45,7 @@ class MenuExtension extends AbstractExtension
     /**
      * Sets the provider for the menu.
      */
-    public function setProvider(MenuProviderInterface $provider)
+    public function setProvider(MenuProviderInterface $provider): void
     {
         $this->provider = $provider;
     }
@@ -75,9 +75,6 @@ class MenuExtension extends AbstractExtension
         return $this->renderer->build($menu, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'solidinvoice_menu.twig.extension';

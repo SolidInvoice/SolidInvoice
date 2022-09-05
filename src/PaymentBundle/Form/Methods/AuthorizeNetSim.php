@@ -22,10 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AuthorizeNetSim extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'login_id',
@@ -60,9 +57,6 @@ class AuthorizeNetSim extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'authorizenet_sim';

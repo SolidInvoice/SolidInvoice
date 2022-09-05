@@ -110,9 +110,6 @@ abstract class BaseInvoice
         return $this;
     }
 
-    /**
-     * Get total.
-     */
     public function getTotal(): Money
     {
         return $this->total->getMoney();
@@ -150,9 +147,6 @@ abstract class BaseInvoice
         return $this;
     }
 
-    /**
-     * Get discount.
-     */
     public function getDiscount(): Discount
     {
         return $this->discount;

@@ -23,7 +23,7 @@ class RunnerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testRun()
+    public function testRun(): void
     {
         $cron = new Runner();
 
@@ -41,7 +41,7 @@ class RunnerTest extends TestCase
         $cron->run();
     }
 
-    public function testRunNoCommands()
+    public function testRunNoCommands(): void
     {
         $cron = new Runner();
 

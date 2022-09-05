@@ -53,17 +53,11 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(UserType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -75,22 +69,20 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param User $user
+     * @param User $data
      *
      * @throws Exception
      */
-    public function onSuccess(FormRequest $form, $user): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
-        $user->eraseCredentials();
-        $this->save($user);
+        $data->setPassword($this->userPasswordEncoder->encodePassword($data, $data->getPlainPassword()));
+        $data->eraseCredentials();
+        $this->save($data);
 
         $route = $this->router->generate('_users_list');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'users.create.success';
             }

@@ -37,26 +37,21 @@ class TwilioHandler implements HandlerInterface
         $this->config = $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function shouldHandle(NotificationInterface $notification)
     {
         return $notification instanceof TwilioNotification;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(NotificationInterface $notification)
+    public function handle(NotificationInterface $notification): void
     {
         $number = $this->config->get('sms/twilio/number');
 
-        if (!empty($number)) {
-            /* @var TwilioNotification $notification */
-            $this->twilio->getMessages()
+        if (! empty($number)) {
+            /** @var TwilioNotification $notification */
+            $this->twilio
+                ->messages
                 ->create(
-                    $notification->getRecipientNumber(),
+                    (string) $notification->getRecipientNumber(),
                     [
                         'from' => $number,
                         'body' => $notification->getMessage(),

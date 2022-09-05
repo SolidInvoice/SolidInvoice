@@ -36,9 +36,6 @@ class InvoicePaidListener implements EventSubscriberInterface
      */
     private $currency;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -52,7 +49,7 @@ class InvoicePaidListener implements EventSubscriberInterface
         $this->currency = $currency;
     }
 
-    public function onInvoicePaid(Event $event)
+    public function onInvoicePaid(Event $event): void
     {
         /** @var Invoice $invoice */
         $invoice = $event->getSubject();

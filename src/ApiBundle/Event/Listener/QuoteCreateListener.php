@@ -37,9 +37,6 @@ class QuoteCreateListener implements EventSubscriberInterface
         $this->stateMachine = $stateMachine;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -47,12 +44,12 @@ class QuoteCreateListener implements EventSubscriberInterface
         ];
     }
 
-    public function setQuoteStatus(ViewEvent $event)
+    public function setQuoteStatus(ViewEvent $event): void
     {
         $quote = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$quote instanceof Quote || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $quote->getStatus()) {
+        if (! $quote instanceof Quote || Request::METHOD_POST !== $method || ! $event->isMasterRequest() || $quote->getStatus()) {
             return;
         }
 

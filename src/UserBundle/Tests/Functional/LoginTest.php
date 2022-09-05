@@ -23,7 +23,7 @@ class LoginTest extends PantherTestCase
 {
     use EnsureApplicationInstalled;
 
-    public function testRedirectToLoginPage()
+    public function testRedirectToLoginPage(): void
     {
         $client = self::createClient();
         $client->followRedirects();

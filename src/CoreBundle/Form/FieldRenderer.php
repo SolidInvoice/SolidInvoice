@@ -36,7 +36,7 @@ class FieldRenderer
     {
         $items = [];
 
-        if (!$path) {
+        if (! $path) {
             $path = 'children';
         }
 

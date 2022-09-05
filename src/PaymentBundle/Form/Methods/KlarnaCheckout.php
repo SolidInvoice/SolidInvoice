@@ -20,10 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class KlarnaCheckout extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'merchant_id',
@@ -42,9 +39,6 @@ class KlarnaCheckout extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'klarna_checkout';

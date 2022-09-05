@@ -23,7 +23,7 @@ use Symfony\Component\Form\PreloadedExtension;
 
 class ClientTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $company = $this->faker->company;
         $url = $this->faker->url;

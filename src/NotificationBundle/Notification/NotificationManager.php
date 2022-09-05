@@ -58,7 +58,7 @@ class NotificationManager
     /**
      * @throws InvalidSettingException
      */
-    public function sendNotification(string $event, NotificationMessageInterface $message)
+    public function sendNotification(string $event, NotificationMessageInterface $message): void
     {
         /** @var EntityRepository $repository */
         $repository = $this->entityManager->getRepository(User::class);

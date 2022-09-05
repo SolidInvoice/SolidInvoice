@@ -15,9 +15,6 @@ namespace SolidInvoice\SettingsBundle\Exception;
 
 use RuntimeException;
 
-/**
- * Class InvalidSettingException.
- */
 class InvalidSettingException extends RuntimeException
 {
     /**

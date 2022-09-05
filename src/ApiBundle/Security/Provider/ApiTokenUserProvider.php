@@ -44,24 +44,18 @@ class ApiTokenUserProvider implements UserProviderInterface
         return $this->tokenRepository->getUsernameForToken($token);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByUsername($username)
     {
         $user = $this->userRepository->findOneBy(['username' => $username]);
 
-        if (!$user) {
+        if (! $user) {
             throw new UsernameNotFoundException();
         }
 
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         // this is used for storing authentication in the session
         // but the token is sent in each request,
@@ -70,9 +64,6 @@ class ApiTokenUserProvider implements UserProviderInterface
         throw new UnsupportedUserException();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsClass($class)
     {
         return User::class === $class;

@@ -26,10 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PaymentMethodSettingsType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $settings = $options['settings'];
 
@@ -64,17 +61,11 @@ class PaymentMethodSettingsType extends AbstractType
         return $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['settings']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'method_settings';

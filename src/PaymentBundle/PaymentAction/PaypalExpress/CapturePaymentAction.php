@@ -48,10 +48,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
         $this->formatter = $formatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -73,7 +70,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
 
         $counter = 0;
         foreach ($invoice->getItems() as $item) {
-            /* @var \SolidInvoice\InvoiceBundle\Entity\Item $item */
+            /** @var \SolidInvoice\InvoiceBundle\Entity\Item $item */
 
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
             $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format($this->formatter->toFloat($item->getPrice()), 2);
@@ -112,20 +109,17 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         @trigger_error('This ' . self::class . ' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
 
-        if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
+        if (! ($request instanceof Capture && $request->getModel() instanceof Payment)) {
             return false;
         }
 
         /** @var Payment $payment */
         $payment = $request->getModel();
 
-        return !$payment->getDetails();
+        return ! $payment->getDetails();
     }
 }

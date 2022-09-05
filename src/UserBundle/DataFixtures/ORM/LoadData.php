@@ -23,10 +23,7 @@ use SolidInvoice\UserBundle\Entity\User;
  */
 class LoadData extends Fixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $user1 = (new User())
             ->setUsername('test1')

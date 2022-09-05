@@ -73,7 +73,7 @@ class ContactType
     private $required = false;
 
     /**
-     * @var Collection<AdditionalContactDetail>
+     * @var Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})
@@ -98,11 +98,6 @@ class ContactType
         return $this->id;
     }
 
-    /**
-     * Set name.
-     *
-     * @return ContactType
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -122,8 +117,6 @@ class ContactType
 
     /**
      * Set the contact type required.
-     *
-     * @return ContactType
      */
     public function setRequired(bool $required): self
     {
@@ -142,8 +135,6 @@ class ContactType
 
     /**
      * Add detail.
-     *
-     * @return ContactType
      */
     public function addDetail(AdditionalContactDetail $detail): self
     {
@@ -156,7 +147,7 @@ class ContactType
     /**
      * Get details.
      *
-     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
+     * @return Collection<int, AdditionalContactDetail>|null
      */
     public function getDetails(): ?Collection
     {
@@ -171,9 +162,6 @@ class ContactType
         return $this->type;
     }
 
-    /**
-     * @return ContactType
-     */
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -189,9 +177,6 @@ class ContactType
         return $this->options;
     }
 
-    /**
-     * @return ContactType
-     */
     public function setOptions(array $options): self
     {
         $this->options = $options;

@@ -26,7 +26,7 @@ class QuoteTest extends ApiTestCase
     use EnsureApplicationInstalled;
     use FixturesTrait;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class QuoteTest extends ApiTestCase
         ], true);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $data = [
             'users' => [
@@ -90,12 +90,12 @@ class QuoteTest extends ApiTestCase
         ], $result);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->requestDelete('/api/quotes/1');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/quotes/1');
 
@@ -131,7 +131,7 @@ class QuoteTest extends ApiTestCase
         ], $data);
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $data = $this->requestPut(
             '/api/quotes/1',

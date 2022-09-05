@@ -41,9 +41,6 @@ class ViewTransformer implements DataTransformerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         if ($value instanceof Money) {
@@ -53,9 +50,6 @@ class ViewTransformer implements DataTransformerInterface
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         if (null === $value) {

@@ -34,9 +34,6 @@ class WidgetExtension extends AbstractExtension
         $this->widgetFactory = $widgetFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
@@ -63,9 +60,6 @@ class WidgetExtension extends AbstractExtension
         return $content;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'dashboard_widget_extension';

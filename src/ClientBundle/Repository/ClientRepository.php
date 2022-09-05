@@ -176,7 +176,7 @@ class ClientRepository extends ServiceEntityRepository
         $em->getFilters()->enable('archivable');
     }
 
-    public function delete(Client $client)
+    public function delete(Client $client): void
     {
         $this->deleteClients([$client->getId()]);
     }

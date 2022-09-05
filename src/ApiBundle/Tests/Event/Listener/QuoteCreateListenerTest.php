@@ -32,13 +32,13 @@ class QuoteCreateListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testSubscribedEvents()
+    public function testSubscribedEvents(): void
     {
         self::assertSame([KernelEvents::VIEW], array_keys(QuoteCreateListener::getSubscribedEvents()));
         self::assertSame(EventPriorities::PRE_WRITE, QuoteCreateListener::getSubscribedEvents()[KernelEvents::VIEW][0][1]);
     }
 
-    public function testStatusGetsUpdated()
+    public function testStatusGetsUpdated(): void
     {
         $entity = new Quote();
 
@@ -52,7 +52,7 @@ class QuoteCreateListenerTest extends TestCase
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
-    public function testSkipIfNotMasterRequest()
+    public function testSkipIfNotMasterRequest(): void
     {
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('apply')
@@ -63,7 +63,7 @@ class QuoteCreateListenerTest extends TestCase
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::SUB_REQUEST, new Quote()));
     }
 
-    public function testSkipIfQuoteAlreadyHasAStatus()
+    public function testSkipIfQuoteAlreadyHasAStatus(): void
     {
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('apply')
@@ -77,7 +77,7 @@ class QuoteCreateListenerTest extends TestCase
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, $entity));
     }
 
-    public function testSkipIfNoQuoteIsPassed()
+    public function testSkipIfNoQuoteIsPassed(): void
     {
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('apply')
@@ -89,7 +89,7 @@ class QuoteCreateListenerTest extends TestCase
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, Kernel::MASTER_REQUEST, new Invoice()));
     }
 
-    public function testSkipIfNotPostRequest()
+    public function testSkipIfNotPostRequest(): void
     {
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('apply')

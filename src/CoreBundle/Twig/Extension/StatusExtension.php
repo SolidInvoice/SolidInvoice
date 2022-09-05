@@ -133,7 +133,7 @@ class StatusExtension extends AbstractExtension
             return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
         }
 
-        if (!isset($this->invoiceLabelMap[$status])) {
+        if (! isset($this->invoiceLabelMap[$status])) {
             throw new Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
         }
 
@@ -194,7 +194,7 @@ class StatusExtension extends AbstractExtension
             return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
         }
 
-        if (!isset($this->quoteLabelMap[$status])) {
+        if (! isset($this->quoteLabelMap[$status])) {
             throw new Exception(sprintf('The quote status "%s" does not have an associative label', $status));
         }
 
@@ -220,7 +220,7 @@ class StatusExtension extends AbstractExtension
             return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
         }
 
-        if (!isset($this->paymentLabelMap[$status])) {
+        if (! isset($this->paymentLabelMap[$status])) {
             throw new Exception(sprintf('The payment status "%s" does not have an associative label', $status));
         }
 
@@ -246,7 +246,7 @@ class StatusExtension extends AbstractExtension
             return $this->getAllStatusLabels($environment, $this->clientLabelMap);
         }
 
-        if (!isset($this->clientLabelMap[$status])) {
+        if (! isset($this->clientLabelMap[$status])) {
             throw new Exception(sprintf('The client status "%s" does not have an associative label', $status));
         }
 

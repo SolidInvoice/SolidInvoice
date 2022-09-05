@@ -43,14 +43,14 @@ final class Send
                     $this->message = $message;
                 }
 
-                public function getFlash(): iterable
+                public function getFlash(): \Generator
                 {
                     yield self::FLASH_DANGER => $this->message;
                 }
             };
         }
 
-        if (!$user->isPasswordRequestNonExpired(60 * 60 * 3)) {
+        if (! $user->isPasswordRequestNonExpired(60 * 60 * 3)) {
             if (null === $user->getConfirmationToken()) {
                 $user->setConfirmationToken(rtrim(base64_encode(bin2hex(random_bytes(32))), '='));
             }

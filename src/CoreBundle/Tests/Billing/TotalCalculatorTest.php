@@ -40,7 +40,7 @@ class TotalCalculatorTest extends TestCase
         \SolidInvoice\MoneyBundle\Entity\Money::setBaseCurrency('USD');
     }
 
-    public function testOnlyAcceptsQuotesOrInvoices()
+    public function testOnlyAcceptsQuotesOrInvoices(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -49,7 +49,7 @@ class TotalCalculatorTest extends TestCase
         $updater->calculateTotals(new stdClass());
     }
 
-    public function testUpdateWithSingleItem()
+    public function testUpdateWithSingleItem(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -67,7 +67,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(15000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
-    public function testUpdateWithSingleItemAndMultipleQtys()
+    public function testUpdateWithSingleItemAndMultipleQtys(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -85,7 +85,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
-    public function testUpdateWithPercentageDiscount()
+    public function testUpdateWithPercentageDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -107,7 +107,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
-    public function testUpdateWithMonetaryDiscount()
+    public function testUpdateWithMonetaryDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -129,7 +129,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
     }
 
-    public function testUpdateWithTaxIncl()
+    public function testUpdateWithTaxIncl(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -154,7 +154,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
     }
 
-    public function testUpdateWithTaxExcl()
+    public function testUpdateWithTaxExcl(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -179,7 +179,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
     }
 
-    public function testUpdateWithTaxInclAndPercentageDiscount()
+    public function testUpdateWithTaxInclAndPercentageDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -207,7 +207,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
     }
 
-    public function testUpdateWithTaxExclAndMonetaryDiscount()
+    public function testUpdateWithTaxExclAndMonetaryDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
@@ -235,7 +235,7 @@ class TotalCalculatorTest extends TestCase
         self::assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
     }
 
-    public function testUpdateTotalsWithPayments()
+    public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
         $invoice->setTotal(new Money(30000, new Currency('USD')));

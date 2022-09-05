@@ -23,10 +23,7 @@ class SolidInvoiceCoreBundle extends Bundle
 
     public const APP_NAME = 'SolidInvoice';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

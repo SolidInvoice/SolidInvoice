@@ -108,7 +108,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $quote): void
     {
-        /* @var Quote $quote */
+        /** @var Quote $quote */
 
         self::assertSame(Graph::STATUS_PENDING, $quote->getStatus());
         self::assertSame(20.0, $quote->getDiscount()->getValue());

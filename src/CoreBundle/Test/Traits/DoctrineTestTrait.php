@@ -37,7 +37,7 @@ trait DoctrineTestTrait
     /**
      * @before
      */
-    public function setupDoctrine()
+    public function setupDoctrine(): void
     {
         $this->setUpSymfonyKernel();
 

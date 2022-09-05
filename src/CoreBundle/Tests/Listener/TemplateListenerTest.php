@@ -30,7 +30,7 @@ class TemplateListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testOnKernelView()
+    public function testOnKernelView(): void
     {
         $twig = new Environment(new ArrayLoader(['Foo' => 'foo bar baz']));
 
@@ -44,7 +44,7 @@ class TemplateListenerTest extends TestCase
         self::assertSame('foo bar baz', $event->getResponse()->getContent());
     }
 
-    public function testOnKernelViewWithoutResponse()
+    public function testOnKernelViewWithoutResponse(): void
     {
         $twig = new Environment(new ArrayLoader());
 
@@ -57,7 +57,7 @@ class TemplateListenerTest extends TestCase
         self::assertNull($event->getResponse());
     }
 
-    public function testOnKernelViewWithCustomResponse()
+    public function testOnKernelViewWithCustomResponse(): void
     {
         $twig = new Environment(new ArrayLoader(['Foo' => 'foo bar baz']));
         $response = new Response();

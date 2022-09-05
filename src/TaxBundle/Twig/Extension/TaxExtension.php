@@ -29,9 +29,6 @@ class TaxExtension extends AbstractExtension
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
@@ -55,9 +52,6 @@ class TaxExtension extends AbstractExtension
         return $this->repository->taxRatesConfigured();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'tax_extension';

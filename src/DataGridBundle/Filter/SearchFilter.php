@@ -24,18 +24,12 @@ class SearchFilter implements FilterInterface
      */
     private $searchFields;
 
-    /**
-     * SearchFilter constructor.
-     */
     public function __construct(array $searchFields)
     {
         $this->searchFields = $searchFields;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function filter(Request $request, QueryBuilder $queryBuilder)
+    public function filter(Request $request, QueryBuilder $queryBuilder): void
     {
         if ($request->query->has('q')) {
             $alias = $queryBuilder->getRootAliases()[0];

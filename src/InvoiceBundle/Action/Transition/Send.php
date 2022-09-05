@@ -63,7 +63,7 @@ final class Send
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield FlashResponse::FLASH_SUCCESS => 'invoice.transition.action.sent';
             }

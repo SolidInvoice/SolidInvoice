@@ -41,9 +41,6 @@ class ModelTransformer implements DataTransformerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         if (null === $value) {
@@ -57,9 +54,6 @@ class ModelTransformer implements DataTransformerInterface
         return new Money((int) ($value * 100), $this->currency);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         if ($value instanceof Money) {

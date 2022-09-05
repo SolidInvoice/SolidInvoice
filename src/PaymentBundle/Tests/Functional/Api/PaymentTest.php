@@ -26,7 +26,7 @@ class PaymentTest extends ApiTestCase
     use EnsureApplicationInstalled;
     use FixturesTrait;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class PaymentTest extends ApiTestCase
         ], true);
     }
 
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $data = $this->requestGet('/api/payments');
 
@@ -50,7 +50,7 @@ class PaymentTest extends ApiTestCase
         ], $data);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/payments/1');
 

@@ -61,7 +61,7 @@ class Factory extends MenuFactory
      *
      * @param int $priority
      */
-    public function addExtension(ExtensionInterface $extension, $priority = 0)
+    public function addExtension(ExtensionInterface $extension, $priority = 0): void
     {
         $this->extensions->insert($extension, $priority);
     }

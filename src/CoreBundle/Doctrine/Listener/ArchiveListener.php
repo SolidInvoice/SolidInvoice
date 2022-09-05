@@ -18,9 +18,6 @@ use Gedmo\Mapping\MappedEventSubscriber;
 
 class ArchiveListener extends MappedEventSubscriber
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents()
     {
         return [
@@ -31,15 +28,12 @@ class ArchiveListener extends MappedEventSubscriber
     /**
      * Maps additional metadata.
      */
-    public function loadClassMetadata(EventArgs $eventArgs)
+    public function loadClassMetadata(EventArgs $eventArgs): void
     {
         $ea = $this->getEventAdapter($eventArgs);
         $this->loadMetadataForObjectClass($ea->getObjectManager(), $this->loadClassMetadata($eventArgs));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getNamespace()
     {
         return __NAMESPACE__;

@@ -22,14 +22,14 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class NotificationHandlerCompilerPassTest extends AbstractCompilerPassTestCase
 {
-    public function testProcessWithNoSender()
+    public function testProcessWithNoSender(): void
     {
         $this->compile();
 
         $this->assertContainerBuilderNotHasService(Manager::class);
     }
 
-    public function testProcessWithHandlers()
+    public function testProcessWithHandlers(): void
     {
         $collectingService = new Definition();
         $this->setDefinition(Manager::class, $collectingService);
