@@ -6,7 +6,9 @@ Below versions are the only supported versions for security fixes.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.0.x   | :white_check_mark: |
+| 2.2.x   | :white_check_mark: |
+| 2.1.x   | :white_check_mark: |
+| 2.0.x   | :x:                |
 | 1.x     | :x:                |
 
 ## Reporting a Vulnerability
