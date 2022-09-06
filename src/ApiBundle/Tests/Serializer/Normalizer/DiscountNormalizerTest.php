@@ -124,7 +124,7 @@ class DiscountNormalizerTest extends TestCase
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(100);
 
-        self::assertSame(['type' => 'money', 'value' => new \Money\Money(10000, $currency)], $normalizer->normalize($discount));
+        self::assertEquals(['type' => 'money', 'value' => new \Money\Money(10000, $currency)], $normalizer->normalize($discount));
     }
 
     public function testDenormalization(): void

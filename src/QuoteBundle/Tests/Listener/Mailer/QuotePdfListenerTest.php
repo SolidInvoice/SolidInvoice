@@ -56,7 +56,7 @@ class QuotePdfListenerTest extends TestCase
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        self::assertSame(
+        self::assertEquals(
             [new DataPart('PDF: Quote #1', 'quote_.pdf', 'application/pdf')],
             $message->getAttachments()
         );
