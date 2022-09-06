@@ -1,20 +1,20 @@
 {
     "name": "solidinvoice/solidinvoice",
-    "type": "application",
     "description": "General Billing Application",
+    "license": "MIT",
+    "type": "application",
     "keywords": [
         "billing",
         "general billing",
         "open-source billing"
     ],
-    "homepage": "http://solidinvoice.co",
-    "license": "MIT",
     "authors": [
         {
             "name": "Pierre du Plessis",
             "email": "info@solidinvoice.co"
         }
     ],
+    "homepage": "http://solidinvoice.co",
     "require": {
         "php": ">=7.3",
         "ext-curl": "*",
@@ -122,6 +122,7 @@
         "dama/doctrine-test-bundle": "^6.3",
         "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "ergebnis/composer-normalize": "^2.20",
         "fzaninotto/faker": "^1.9",
         "liip/test-fixtures-bundle": "^1.6",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
@@ -138,16 +139,22 @@
         "symfony/phpunit-bridge": "^5.0",
         "symfony/web-profiler-bundle": "^4.4"
     },
+    "autoload": {
+        "psr-4": {
+            "SolidInvoice\\": "src/"
+        }
+    },
     "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true,
+            "symfony/flex": true
+        },
         "bin-dir": "bin",
         "platform": {
             "php": "7.3.5"
         },
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true,
-            "symfony/flex": true
-        }
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
@@ -155,11 +162,6 @@
         },
         "symfony": {
             "allow-contrib": true
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "SolidInvoice\\": "src/"
         }
     },
     "scripts": {
