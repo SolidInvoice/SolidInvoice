@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
-use function count;
 use Exception;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Panther\Client;
+use Symfony\Component\Panther\PantherTestCase;
+use function count;
 use function file_exists;
 use function getenv;
 use function realpath;
 use function rename;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Panther\Client;
-use Symfony\Component\Panther\PantherTestCase;
 use function unlink;
 
 /**

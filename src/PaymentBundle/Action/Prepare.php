@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
-use function array_key_exists;
+use const FILTER_VALIDATE_BOOL;
 use DateTime;
 use Exception;
-use const FILTER_VALIDATE_BOOL;
-use function filter_var;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
@@ -45,6 +43,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\StateMachine;
+use function array_key_exists;
+use function filter_var;
 
 // @TODO: Refactor this class to make it cleaner
 
