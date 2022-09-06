@@ -50,7 +50,6 @@ return static function (RectorConfig $rectorConfig): void {
         DoctrineSetList::DOCTRINE_DBAL_30,
         DoctrineSetList::DOCTRINE_ORM_29,
         DoctrineSetList::DOCTRINE_BEHAVIORS_20,
-        // DoctrineSetList::DOCTRINE_REPOSITORY_AS_SERVICE,
         DoctrineSetList::DOCTRINE_CODE_QUALITY,
 
         // Symfony
@@ -60,10 +59,6 @@ return static function (RectorConfig $rectorConfig): void {
         SymfonySetList::SYMFONY_43,
         SymfonySetList::SYMFONY_44,
         SymfonySetList::SYMFONY_50,
-        // SymfonySetList::SYMFONY_51,
-        // SymfonySetList::SYMFONY_52,
-        // SymfonySetList::SYMFONY_53,
-        // SymfonySetList::SYMFONY_54,
         SymfonySetList::SYMFONY_50_TYPES,
         SymfonySetList::SYMFONY_52_VALIDATOR_ATTRIBUTES,
         SymfonySetList::SYMFONY_CODE_QUALITY,
