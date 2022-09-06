@@ -43,8 +43,8 @@ class InvoiceReceiverListenerTest extends TestCase
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        self::assertSame([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
-        self::assertSame([], $message->getBcc());
+        self::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
+        self::assertEquals([], $message->getBcc());
     }
 
     public function testWithBcc(): void
@@ -61,8 +61,8 @@ class InvoiceReceiverListenerTest extends TestCase
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        self::assertSame([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
-        self::assertSame([new Address('bcc@example.com')], $message->getBcc());
+        self::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
+        self::assertEquals([new Address('bcc@example.com')], $message->getBcc());
     }
 
     public function testEvents(): void

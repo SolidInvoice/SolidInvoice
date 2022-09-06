@@ -27,7 +27,7 @@ class Money
      *
      * @var string|null
      */
-    private $value = '';
+    private $value = '0';
 
     /**
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
