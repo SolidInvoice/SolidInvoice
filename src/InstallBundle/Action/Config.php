@@ -113,7 +113,7 @@ final class Config
                 'port' => $config['database_port'] ?? null,
                 'name' => $config['database_name'] ?? null,
                 'user' => $config['database_user'] ?? null,
-                'password' => null,
+                'password' => $config['database_password'] ?? null,
                 'driver' => $config['database_driver'] ?? null,
             ]);
 
