@@ -46,3 +46,18 @@ jobs:
 
       - name: Run PHPStan
         run: bin/phpstan analyse -c phpstan.test.neon
+
+  qodana:
+    name: Qodana
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2022.2.1
+
+      - uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
