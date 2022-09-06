@@ -33,6 +33,7 @@ return $config
             'phpdoc_summary' => false,
             'declare_strict_types' => true,
             'strict_param' => true,
+            'not_operator_with_successor_space' => true,
             'header_comment' => [
                 'comment_type' => 'comment',
                 'header' => \trim($header),
