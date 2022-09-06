@@ -3,8 +3,8 @@ name: CS
 on: [ pull_request ]
 
 jobs:
-  php-cs-fixer:
-    name: PHP-CS-Fixer
+  ecs:
+    name: Coding Standards (PHP)
 
     runs-on: ubuntu-latest
 
