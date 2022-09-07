@@ -32,8 +32,8 @@ trait EnsureApplicationInstalled
     {
         StaticDriver::setKeepStaticConnections(false);
 
-        $kernel = self::bootKernel();
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
+        self::bootKernel();
+        $em = static::getContainer()->get('doctrine')->getManager();
 
         /** @var Connection $connection */
         $connection = $em->getConnection();
@@ -52,8 +52,8 @@ trait EnsureApplicationInstalled
 
         $schemaTool = new SchemaTool($em);
         $schemaTool->dropDatabase();
-        self::$container->get(Migration::class)->migrate();
-        self::$container->get(ConfigWriter::class)->dump([
+        static::getContainer()->get(Migration::class)->migrate();
+        static::getContainer()->get(ConfigWriter::class)->dump([
             'database_host' => getenv('database_host') ?: '127.0.0.1',
             'database_user' => 'root',
             'database_password' => null,
