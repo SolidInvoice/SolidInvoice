@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Tests\Repository;
 
 use DateTimeInterface;
 use Doctrine\ORM\QueryBuilder;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\UserBundle\DataFixtures\ORM\LoadData;
@@ -29,6 +30,7 @@ class UserRepositoryTest extends KernelTestCase
 {
     use FakerTestTrait;
     use FixturesTrait;
+    use RefreshDatabaseTrait;
 
     private $faker;
 

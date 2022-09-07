@@ -30,6 +30,7 @@
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
+        <server name="APP_SECRET" value="SomeSecret!@"/>
         <server name="KERNEL_CLASS" value="SolidInvoice\Kernel"/>
         <server name="KERNEL_DIR" value="app"/>
         <server name="SOLIDINVOICE_ENV" value="test"/>
