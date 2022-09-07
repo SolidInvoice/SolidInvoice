@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\NotificationBundle\Notification;
 
 use Namshi\Notificator\NotificationInterface;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Swift_Message;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -46,8 +45,6 @@ class Factory
 
     /**
      * @return SwiftMailerNotification
-     *
-     * @throws InvalidSettingException
      */
     public function createEmailNotification(NotificationMessageInterface $message): NotificationInterface
     {

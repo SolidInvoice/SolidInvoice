@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Twig\Extension;
 
-use Doctrine\DBAL\Exception\ConnectionException;
-use Doctrine\DBAL\Exception\DriverException;
-use Doctrine\DBAL\Exception\TableNotFoundException;
+use const JSON_THROW_ON_ERROR;
 use SolidInvoice\ClientBundle\Entity\Address;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function json_decode;
 
 /**
  * @see \SolidInvoice\SettingsBundle\Tests\Twig\Extension\SettingsExtensionTest
@@ -54,18 +52,18 @@ class SettingsExtension extends AbstractExtension
         return (string) Address::fromArray($address);
     }
 
-    public function getSetting(string $setting, $default = null, $decode = false)
+    public function getSetting(string $key, $default = null, $decode = false)
     {
-        try {
-            $setting = $this->config->get($setting);
+        $setting = $this->config->get($key);
 
-            if ($decode && $setting) {
-                return json_decode($setting, true, 512, JSON_THROW_ON_ERROR);
-            }
-
-            return $setting;
-        } catch (InvalidSettingException|TableNotFoundException|ConnectionException|DriverException $e) {
+        if (null === $setting) {
             return $default;
         }
+
+        if ($decode && $setting) {
+            return json_decode($setting, true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        return $setting;
     }
 }

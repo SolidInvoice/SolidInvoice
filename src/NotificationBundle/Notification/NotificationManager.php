@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Namshi\Notificator\ManagerInterface;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -55,9 +54,6 @@ class NotificationManager
         $this->entityManager = $doctrine->getManager();
     }
 
-    /**
-     * @throws InvalidSettingException
-     */
     public function sendNotification(string $event, NotificationMessageInterface $message): void
     {
         /** @var EntityRepository $repository */
