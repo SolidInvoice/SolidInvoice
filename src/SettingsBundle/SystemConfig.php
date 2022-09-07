@@ -41,7 +41,7 @@ class SystemConfig
             return self::$settings[$key];
         }
 
-        throw new InvalidSettingException($key);
+        return null;
     }
 
     public function set(string $path, $value): void
