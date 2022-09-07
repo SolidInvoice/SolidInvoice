@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    SolidInvoice\InstallBundle\Installer\Database\g:
+        public: true
