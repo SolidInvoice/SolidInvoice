@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle;
 
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 
 /**
