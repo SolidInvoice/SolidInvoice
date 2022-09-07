@@ -18,7 +18,6 @@ use DateTime;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
@@ -32,6 +31,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use function implode;
 
 class GlobalExtension extends AbstractExtension implements GlobalsInterface
 {
@@ -74,7 +74,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     /**
      * Get global twig variables.
      *
-     * @throws InvalidSettingException|InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
+     * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
      */
     public function getGlobals(): array
     {
@@ -155,13 +155,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         $logo = self::DEFAULT_LOGO;
 
         if ($this->installed) {
-            try {
-                $logo = $this->systemConfig->get('system/company/logo');
+            $logo = $this->systemConfig->get('system/company/logo');
 
-                if (null === $logo) {
-                    $logo = self::DEFAULT_LOGO;
-                }
-            } catch (InvalidSettingException $e) {
+            if (null === $logo) {
                 $logo = self::DEFAULT_LOGO;
             }
         }
@@ -176,11 +172,10 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
      */
     public function displayIcon(string $iconName, array $options = []): string
     {
-        $options = implode(' ', $options);
         $class = sprintf('fa fa-%s', $iconName);
 
-        if (! empty($options)) {
-            $class .= ' ' . $options;
+        if ([] !== $options) {
+            $class .= ' ' . implode(' ', $options);
         }
 
         return sprintf('<i class="%s"></i>', $class);
@@ -191,8 +186,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
      */
     public function dateDiff(DateTime $date): string
     {
-        $carbon = Carbon::instance($date);
-
-        return $carbon->diffForHumans();
+        return Carbon::instance($date)->diffForHumans();
     }
 }
