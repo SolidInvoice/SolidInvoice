@@ -28,9 +28,9 @@ class ConfigWriter
      */
     private $configFile;
 
-    public function __construct(string $projectDir, Filesystem $fileSystem)
+    public function __construct(string $projectDir)
     {
-        $this->fileSystem = $fileSystem;
+        $this->fileSystem = new Filesystem();
         $this->configFile = $projectDir . '/config/env.php';
     }
 
