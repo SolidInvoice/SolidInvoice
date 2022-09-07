@@ -1,2 +1,0 @@
-parameters:
-    env(database_name): solidinvoice_test
