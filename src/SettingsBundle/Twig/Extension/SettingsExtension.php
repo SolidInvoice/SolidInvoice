@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Twig\Extension;
 
 use const JSON_THROW_ON_ERROR;
+use Doctrine\DBAL\Exception;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
@@ -54,7 +55,11 @@ class SettingsExtension extends AbstractExtension
 
     public function getSetting(string $key, $default = null, $decode = false)
     {
-        $setting = $this->config->get($key);
+        try {
+            $setting = $this->config->get($key);
+        } catch (Exception $e) {
+            return $default;
+        }
 
         if (null === $setting) {
             return $default;
