@@ -26,6 +26,9 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @group functional
+ */
 class UserRepositoryTest extends KernelTestCase
 {
     use FakerTestTrait;
