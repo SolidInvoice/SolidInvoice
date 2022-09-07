@@ -17,7 +17,6 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\SettingsBundle\Entity\Setting;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
 class SystemConfigTest extends TestCase
@@ -66,9 +65,6 @@ class SystemConfigTest extends TestCase
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
-        $this->expectException(InvalidSettingException::class);
-        $this->expectExceptionMessage('Invalid settings key: some/invalid/key');
-
-        $config->get('some/invalid/key');
+        self::assertNull($config->get('some/invalid/key'));
     }
 }
