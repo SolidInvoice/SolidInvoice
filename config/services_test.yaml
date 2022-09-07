@@ -3,5 +3,5 @@ services:
         autowire: true
         autoconfigure: true
 
-    SolidInvoice\InstallBundle\Installer\Database\g:
+    SolidInvoice\InstallBundle\Installer\Database\Migration:
         public: true
