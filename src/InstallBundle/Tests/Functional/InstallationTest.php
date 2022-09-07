@@ -75,14 +75,14 @@ class InstallationTest extends PantherTestCase
                     'config_step[database_config][driver]' => 'pdo_mysql',
                     'config_step[database_config][host]' => getenv('database_host') ?: '127.0.0.1',
                     'config_step[database_config][user]' => 'root',
-                    'config_step[database_config][name]' => 'solidinvoice',
+                    'config_step[database_config][name]' => 'solidinvoice_test',
                 ]
             );
 
             self::assertStringContainsString('/install/install', $crawler->getUri());
 
             $kernel = self::bootKernel();
-            self::assertSame('solidinvoice', $kernel->getContainer()->getParameter('env(database_name)'));
+            self::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
 
             // Wait for installation steps to be completed
             $time = microtime(true);
