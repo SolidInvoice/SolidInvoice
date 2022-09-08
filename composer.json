@@ -14,7 +14,7 @@
             "email": "info@solidinvoice.co"
         }
     ],
-    "homepage": "http://solidinvoice.co",
+    "homepage": "https://solidinvoice.co",
     "require": {
         "php": ">=7.3",
         "ext-curl": "*",
@@ -134,6 +134,7 @@
         "phpstan/phpstan-phpunit": "^1.1.1",
         "phpstan/phpstan-symfony": "^1.2.13",
         "rector/rector": "^0.14.1",
+        "roave/security-advisories": "dev-latest",
         "symfony/debug-bundle": "^5.0",
         "symfony/maker-bundle": "^1.17",
         "symfony/panther": "^1.1 || ^2.0",
