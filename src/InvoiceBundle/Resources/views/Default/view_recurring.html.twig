@@ -17,10 +17,6 @@
     {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
 {% endblock page_title %}
 
-{% block sidebar %}
-    {{ menu('invoices_view', {'client': invoice.client}) }}
-{% endblock sidebar %}
-
 {% block content %}
     <div class="float-right no-print mt-3">
         <div class="btn-toolbar" role="toolbar">

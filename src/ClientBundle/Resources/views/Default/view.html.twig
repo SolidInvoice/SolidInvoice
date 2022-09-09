@@ -18,10 +18,6 @@
     {{ client.name }}
 {% endblock page_title %}
 
-{% block sidebar %}
-    {{ menu('clients_view', {'client': client}) }}
-{% endblock sidebar %}
-
 {% block content %}
     {% set totalAddresses = client.addresses|length %}
 

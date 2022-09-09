@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle;
 
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use SolidInvoice\MenuBundle\Builder\MenuBuilder;
@@ -29,9 +31,18 @@ class Provider implements MenuProviderInterface
      */
     protected $storage;
 
-    public function __construct(MenuStorageInterface $storage)
+    /**
+     * @var array
+     */
+    protected $list = [];
+    /**
+     * @var FactoryInterface
+     */
+    private $factory;
+
+    public function __construct(FactoryInterface $factory/*, iterable $menus*/)
     {
-        $this->storage = $storage;
+        $this->factory = $factory;
     }
 
     /**
@@ -39,9 +50,15 @@ class Provider implements MenuProviderInterface
      *
      * @param string $name
      */
-    public function get($name, array $options = []): SplPriorityQueue
+    public function get(string $name, array $options = []): ItemInterface
     {
-        return $this->storage->get($name);
+        $root = $this->factory->createItem('root');
+
+        foreach ($this->list[$name] as $builder) {
+            $builder->invoke($root, $options);
+        }
+
+        return $root;
     }
 
     /**
@@ -51,7 +68,7 @@ class Provider implements MenuProviderInterface
      */
     public function has($name, array $options = []): bool
     {
-        return $this->storage->has($name);
+        return $this->hasBuilder($name);
     }
 
     /**
@@ -64,6 +81,15 @@ class Provider implements MenuProviderInterface
     {
         $builder = new MenuBuilder($class, $method);
 
-        $this->storage->get($name)->insert($builder, $priority);
+        if (! $this->hasBuilder($name)) {
+            $this->list[$name] = new SplPriorityQueue();
+        }
+
+        $this->list[$name]->insert($builder, $priority);
+    }
+
+    private function hasBuilder(string $name): bool
+    {
+        return isset($this->list[$name]);
     }
 }

@@ -59,10 +59,6 @@
     {% endif %}
 {% endblock %}
 
-{% block sidebar %}
-    {{ menu('invoices_create') }}
-{% endblock sidebar %}
-
 {% block form_row %}
     {% if prototype is not defined %}
         <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
