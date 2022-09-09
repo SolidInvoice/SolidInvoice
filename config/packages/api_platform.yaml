@@ -1,6 +1,7 @@
 api_platform:
     title: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::APP_NAME
     version: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION
+    show_webby: false
     formats:
         jsonld: [ 'application/ld+json' ]
         jsonhal: [ 'application/hal+json' ]
@@ -9,3 +10,7 @@ api_platform:
         html: [ 'text/html' ]
     swagger:
         versions: [3]
+        api_keys:
+            api_Key:
+                name: 'X-API-TOKEN'
+                type: 'header'
