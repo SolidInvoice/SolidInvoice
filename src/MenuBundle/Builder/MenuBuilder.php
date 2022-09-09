@@ -47,10 +47,6 @@ final class MenuBuilder implements ContainerAwareInterface
      */
     public function invoke(ItemInterface $menu, array $options = [])
     {
-        if ($this->class instanceof ContainerAwareInterface) {
-            $this->class->setContainer($this->container);
-        }
-
         if ($this->class->validate()) {
             $this->class->{$this->method}($menu, $options);
         }

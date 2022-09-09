@@ -34,7 +34,8 @@ class MenuCompilerPass implements CompilerPassInterface
                 $definition->addMethodCall(
                     'addBuilder',
                     [
-                        new Reference($id),
+                        $container->getDefinition($id)
+                            ->addMethodCall('setContainer', [new Reference('service_container')]),
                         $attributes['menu'],
                         $attributes['method'],
                         array_key_exists('priority', $attributes) ? $attributes['priority'] : 0, ]

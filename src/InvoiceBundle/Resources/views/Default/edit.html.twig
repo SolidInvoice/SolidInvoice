@@ -12,10 +12,6 @@
 {% block page_title %}{{ "invoice.action.edit"|trans }}{% endblock %}
 {% block title %}{{ "invoice.action.edit"|trans }}{% endblock %}
 
-{% block sidebar %}
-    {{ menu('invoices_edit', {'invoice' : invoice}) }}
-{% endblock sidebar %}
-
 {% block form_buttons %}
         <div class="float-left">
             <a href="{{ path(recurring ? '_invoices_view_recurring' : '', {'id' : invoice.id}) }}" class="btn btn-warning">

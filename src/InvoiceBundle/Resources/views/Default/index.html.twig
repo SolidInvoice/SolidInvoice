@@ -12,10 +12,6 @@
 
 {% block title %}{{ (recurring ? "invoice.list.recurring_title" : "invoice.list.title")|trans }}{% endblock %}
 
-{% block sidebar %}
-    {{ menu('invoices_index') }}
-{% endblock sidebar %}
-
 {% block content %}
     <div class="row">
         <div class="{{ recurring ? 'col-12' : 'col-md-9' }}">

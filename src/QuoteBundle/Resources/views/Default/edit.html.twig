@@ -12,10 +12,6 @@
 {% block title %}{{ "quote.edit"|trans }}{% endblock %}
 {% block page_title %}{{ "quote.edit"|trans }}{% endblock %}
 
-{% block sidebar %}
-    {{ menu('quotes_edit', {'quote' : quote}) }}
-{% endblock sidebar %}
-
 {% block form_buttons %}
     <div class="float-left">
         <a href="{{ path('_quotes_view', {'id' : quote.id}) }}" class="btn btn-warning">

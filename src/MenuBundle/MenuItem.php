@@ -21,14 +21,16 @@ use Knp\Menu\MenuItem as BaseItem;
  */
 class MenuItem extends BaseItem implements ItemInterface
 {
+    private const DIVIDER_KEY = 'divider';
+
     /**
-     * @param \Knp\Menu\ItemInterface|string|array $child
+     * @param ItemInterface|string|array<int|string, mixed> $child
      *
-     * @return \Knp\Menu\ItemInterface|string
+     * @return ItemInterface
      *
      * @throws InvalidArgumentException
      */
-    public function addChild($child, array $options = [])
+    public function addChild($child, array $options = []): \Knp\Menu\ItemInterface
     {
         if (\is_array($child) && [] === $options) {
             [$child, $options] = $child;
@@ -42,30 +44,24 @@ class MenuItem extends BaseItem implements ItemInterface
         return parent::addChild($child, $options);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function addDivider(string $type = '')
+    public function addDivider(string $type = ''): ItemInterface
     {
-        $name = uniqid();
+        $name = uniqid('', true);
 
-        if (! empty($type)) {
+        if ('' !== $type) {
             $type = '-' . $type;
         }
 
-        return $this->addChild($name, ['extras' => ['divider' => $type]]);
+        return $this->addChild($name, ['extras' => [self::DIVIDER_KEY => $type]]);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function addHeader(string $header)
+    public function addHeader(string $header): ItemInterface
     {
         return $this->addChild($header, ['attributes' => ['class' => 'nav-header']]);
     }
 
     public function isDivider(): bool
     {
-        return null !== $this->getExtra('divider');
+        return null !== $this->getExtra(self::DIVIDER_KEY);
     }
 }

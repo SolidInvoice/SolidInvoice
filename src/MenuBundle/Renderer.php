@@ -16,7 +16,6 @@ namespace SolidInvoice\MenuBundle;
 use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\ItemInterface as Item;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Renderer\ListRenderer;
@@ -56,7 +55,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         $this->translator = $translator;
 
         $matcher = new class([new RouteVoter($requestStack)]) extends Matcher {
-            public function isCurrent(ItemInterface $item)
+            public function isCurrent(ItemInterface $item): bool
             {
                 $current = parent::isCurrent($item);
                 $item->setCurrent($current);
@@ -66,6 +65,17 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         };
 
         parent::__construct($matcher, ['allow_safe_labels' => true, 'currentClass' => 'active']);
+    }
+
+    public function render(ItemInterface $item, array $options = []): string
+    {
+        if (isset($options['attr'])) {
+            $item->setChildrenAttributes($options['attr']);
+        } else {
+            $item->setChildrenAttributes(['class' => 'nav nav-pills nav-sidebar flex-column']);
+        }
+
+        return parent::render($item, $options);
     }
 
     /**
@@ -100,7 +110,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      *
      * @param array $options The options to render the item
      */
-    protected function renderChildren(Item $item, array $options): string
+    protected function renderChildren(ItemInterface $item, array $options): string
     {
         // render children with a depth - 1
         if (null !== $options['depth']) {
@@ -109,7 +119,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
         $html = '';
         foreach ($item->getChildren() as $child) {
-            /** @var \SolidInvoice\MenuBundle\MenuItem $child */
+            /** @var MenuItem $child */
             if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {
@@ -120,7 +130,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         return $html;
     }
 
-    protected function renderDivider(Item $item, array $options = []): string
+    protected function renderDivider(ItemInterface $item, array $options = []): string
     {
         return $this->format(
             '<li' . $this->renderHtmlAttributes(['class' => 'divider' . $item->getExtra('divider')]) . '>',
@@ -133,7 +143,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
     /**
      * Renders the menu label.
      */
-    protected function renderLabel(Item $item, array $options): string
+    protected function renderLabel(ItemInterface $item, array $options): string
     {
         $icon = '';
         if ($item->getExtra('icon')) {
@@ -155,7 +165,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         return $this->twig->render('@SolidInvoiceMenu/icon.html.twig', ['icon' => $icon]);
     }
 
-    protected function renderLinkElement(ItemInterface $item, array $options)
+    protected function renderLinkElement(ItemInterface $item, array $options): string
     {
         $attributes = $item->getLinkAttributes();
 
