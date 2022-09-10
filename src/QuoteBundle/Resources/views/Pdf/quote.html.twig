@@ -33,7 +33,9 @@
 </head>
 <body>
 
+{% if setting('quote/watermark') %}
 <watermarktext content="{{ quote.status|upper }}" alpha="0.1"/>
+{% endif %}
 
 <htmlpageheader name="header">
     <h2 class="page-header">
