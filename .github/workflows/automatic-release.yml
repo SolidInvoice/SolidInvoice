@@ -36,7 +36,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: "Build Release Artifact"
-        run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
+        run: "./scripts/build_dist.sh $(git rev-parse --abbrev-ref HEAD) ${{ github.event.milestone.title }}"
 
       - name: "Upload Release Artifact"
         uses: softprops/action-gh-release@v1
