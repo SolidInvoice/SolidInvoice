@@ -41,6 +41,7 @@ jobs:
       - name: "Upload Release Artifact"
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.event.milestone.title }}
           files: |
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.zip
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
