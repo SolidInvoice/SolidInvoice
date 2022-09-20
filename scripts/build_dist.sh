@@ -8,7 +8,7 @@ export SOLIDINVOICE_ENV=prod
 export SOLIDINVOICE_DEBUG=0
 
 NODE_ENVIRONMENT=production
-REPO=https://github.com/SolidInvoice/SolidInvoice.git
+REPO=https://github.com/SolidInvoice/SolidInvoice-Test.git
 BRANCH=${1:-}
 VERSION=${2:-}
 
