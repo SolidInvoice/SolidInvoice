@@ -52,8 +52,9 @@ function generateRelease() {
 
     cd "${BUILD_DIR}"
 
-    git clone --branch "${BRANCH}" "${REPO}" "./SolidInvoice"
+    git clone "${REPO}" "./SolidInvoice"
     cd "./SolidInvoice"
+    git checkout "${BRANCH}"
 
     composer config --no-plugins allow-plugins.symfony/flex true
     composer install -o -n --no-dev -vvv
