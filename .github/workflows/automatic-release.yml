@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: "actions/checkout@v3"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -21,7 +21,16 @@ jobs:
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
-      - uses: actions/setup-node@v3
+      - name: "Build Release Artifact"
+        run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
+
+      - name: "Upload Release Artifact"
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/dist/SolidInvoice-${{ github.event.milestone.title }}.zip
+            build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
+
         with:
           node-version: 14
 
@@ -76,16 +85,6 @@ jobs:
           command-name: laminas:automatic-releases:create-merge-up-pull-request
         env:
           "GITHUB_TOKEN": ${{ secrets.GITHUB_TOKEN }}
-          "SIGNING_SECRET_KEY": ${{ secrets.SIGNING_SECRET_KEY }}
-          "GIT_AUTHOR_NAME": ${{ secrets.GIT_AUTHOR_NAME }}
-          "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
-
-      - name: Create and/or Switch to new Release Branch
-        uses: laminas/automatic-releases@v1
-        with:
-          command-name: laminas:automatic-releases:switch-default-branch-to-next-minor
-        env:
-          "GITHUB_TOKEN": ${{ secrets.ORGANIZATION_ADMIN_TOKEN }}
           "SIGNING_SECRET_KEY": ${{ secrets.SIGNING_SECRET_KEY }}
           "GIT_AUTHOR_NAME": ${{ secrets.GIT_AUTHOR_NAME }}
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
