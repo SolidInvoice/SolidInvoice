@@ -14,6 +14,17 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v3"
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
+          coverage: none
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
       - name: "Release"
         uses: "laminas/automatic-releases@v1"
         with:
