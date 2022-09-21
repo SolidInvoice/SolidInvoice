@@ -71,6 +71,6 @@
         "regenerator-runtime": "^0.13.3",
         "select2": "^4.0.6-rc.1",
         "select2-bootstrap-theme": "^0.1.0-beta.10",
-        "underscore": "^1.9.1"
+        "underscore": "^1.13.4"
     }
 }
