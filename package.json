@@ -40,7 +40,7 @@
         "handlebars-loader": "^1.7.1",
         "jasmine": "^3.4.0",
         "node-sass": "^7.0.0",
-        "postcss-scss": "^4.0.2",
+        "postcss-scss": "^4.0.5",
         "sass-loader": "^11.0.0",
         "stylelint": "^14.1.0",
         "stylelint-config-recommended": "^6.0.0",
