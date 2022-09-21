@@ -51,6 +51,9 @@ jobs:
       - name: Install dependencies
         run: composer install --no-scripts
 
+      - name: Ensure lock file is up to date
+        run: composer update --lock
+
       - name: Run composer normalize
         run: composer normalize --no-update-lock --diff --dry-run
 
