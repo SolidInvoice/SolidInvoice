@@ -65,7 +65,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/setup-node@v3.4.1
         with:
           node-version: 12
 
