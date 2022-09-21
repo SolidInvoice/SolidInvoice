@@ -1,0 +1,86 @@
+FROM php:7.4-fpm-buster
+
+ARG SOLIDINVOICE_VERSION
+
+ENV TIMEZONE Europe/Paris
+ENV TERM xterm
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HTACCESS_PROTECT 0
+ENV COMPOSER_NO_INTERACTION 1
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /opt/srv
+
+RUN apt-get update && \
+    apt-get install -y \
+        ${PHPIZE_DEPS} \
+        apt-utils  \
+        debconf-utils \
+        apt-transport-https \
+        build-essential \
+        libicu-dev \
+        locales \
+        zip \
+        unzip \
+        unixodbc \
+        unixodbc-dev \
+        unixodbc-bin \
+        libodbc1 \
+        odbcinst1debian2 \
+        tdsodbc \
+        freetds-bin \
+        freetds-common \
+        freetds-dev \
+        libct4 \
+        libsybdb5 \
+        libxml2 \
+        libxslt1-dev \
+        libzip-dev \
+        curl \
+        libcurl4 \
+        libedit2 \
+        libicu63 \
+        git \
+        acl \
+        openssh-client \
+        bash \
+        libmcrypt-dev \
+        libxml2-dev \
+        freetds-dev \
+        gcc \
+        zlib1g \
+        zlib1g-dev \
+        libpng-dev \
+        libjpeg-dev \
+        autoconf \
+        wget \
+        nginx  && \
+    pecl install apcu && \
+    ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib && \
+    docker-php-ext-install -j$(nproc) pdo_mysql pdo-pgsl pdo-dblib pdo-oci opcache bcmath intl gd xsl soap zip && \
+    docker-php-ext-enable apcu && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    apt-get remove ${PHPIZE_DEPS} -y
+
+RUN echo "date.timezone=${TIMEZONE}" >> /usr/local/etc/php/php.ini && \
+    echo "max_execution_time = 60;" >> /usr/local/etc/php/php.ini && \
+    echo "memory_limit = 512M;" >> /usr/local/etc/php/php.ini && \
+    echo "short_open_tag = Off;" >> /usr/local/etc/php/php.ini && \
+    wget "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/SolidInvoice-${SOLIDINVOICE_VERSION}.zip" && \
+    unzip "SolidInvoice-${SOLIDINVOICE_VERSION}.zip" && \
+    rm "SolidInvoice-${SOLIDINVOICE_VERSION}.zip"
+
+COPY conf/nginx.conf /etc/nginx/sites-enabled/default
+COPY scripts/run.sh /usr/bin/run
+
+EXPOSE 80
+EXPOSE 443
+
+ENTRYPOINT []
+
+CMD ["/usr/bin/run"]
