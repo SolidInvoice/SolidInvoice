@@ -3,7 +3,8 @@
 set -Eeuo pipefail
 set -o history -o histexpand
 
-source "$NVM_DIR/nvm.sh"
+# shellcheck source=/dev/null
+source "${NVM_DIR}/nvm.sh"
 
 composer install
 
