@@ -47,10 +47,7 @@ function generateRelease() {
     composer config --no-plugins allow-plugins.symfony/flex true
     composer install -o -n --no-dev -vvv
     yarn --pure-lockfile
-    php bin/console assets:install
     yarn build
-    php bin/console fos:js-routing:dump --callback=define
-    php bin/console bazinga:js-translation:dump --merge-domains public
     rm -Rf node_modules .env .git
     chmod -R 0777 var
 
