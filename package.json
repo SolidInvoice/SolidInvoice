@@ -38,7 +38,7 @@
         "eslint-plugin-lodash": "^6.0.0",
         "eslint-plugin-no-jquery": "^2.4.1",
         "handlebars-loader": "^1.7.2",
-        "jasmine": "^3.4.0",
+        "jasmine": "^4.4.0",
         "node-sass": "^7.0.0",
         "postcss-scss": "^4.0.5",
         "sass-loader": "^11.0.0",
