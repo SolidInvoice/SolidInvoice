@@ -42,7 +42,7 @@
         "node-sass": "^7.0.0",
         "postcss-scss": "^4.0.5",
         "sass-loader": "^11.0.0",
-        "stylelint": "^14.1.0",
+        "stylelint": "^14.12.1",
         "stylelint-config-recommended": "^6.0.0",
         "stylelint-scss": "^4.0.1"
     },
