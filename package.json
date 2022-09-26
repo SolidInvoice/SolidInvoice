@@ -50,7 +50,7 @@
         "@fortawesome/fontawesome-free": "^5.13.0",
         "accounting": "^0.4.1",
         "admin-lte": "^3.0.4",
-        "backbone": "^1.4.0",
+        "backbone": "^1.4.1",
         "backbone.marionette": "^4.1.2",
         "backbone.paginator": "^2.0.8",
         "backbone.radio": "^2.0.0",
