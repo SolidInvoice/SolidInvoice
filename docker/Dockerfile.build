@@ -43,6 +43,7 @@ RUN apt-get update && \
         libcurl4 \
         libedit2 \
         libicu63 \
+        libpq-dev \
         git \
         acl \
         openssh-client \
@@ -60,7 +61,7 @@ RUN apt-get update && \
         nginx  && \
     pecl install apcu && \
     ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib && \
-    docker-php-ext-install -j$(nproc) pdo_mysql pdo-pgsl pdo-dblib pdo-oci opcache bcmath intl gd xsl soap zip && \
+    docker-php-ext-install -j$(nproc) pdo_mysql pdo_pgsql pdo_dblib opcache bcmath intl gd xsl soap zip && \
     docker-php-ext-enable apcu && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen && \
     apt-get clean && \
@@ -75,8 +76,10 @@ RUN echo "date.timezone=${TIMEZONE}" >> /usr/local/etc/php/php.ini && \
     unzip "SolidInvoice-${SOLIDINVOICE_VERSION}.zip" && \
     rm "SolidInvoice-${SOLIDINVOICE_VERSION}.zip"
 
-COPY conf/nginx.conf /etc/nginx/sites-enabled/default
-COPY scripts/run.sh /usr/bin/run
+ADD docker/conf/nginx.conf /etc/nginx/sites-enabled/default
+ADD docker/scripts/run.sh /usr/bin/run
+
+VOLUME /opt/srv/config
 
 EXPOSE 80
 EXPOSE 443
