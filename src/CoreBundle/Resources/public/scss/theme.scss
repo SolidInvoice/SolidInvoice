@@ -126,8 +126,6 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
             min-height: $theme-header-height;
             padding: 0 15px 0 0;
 
-            @include navbar-variant($light-blue, #FFFFFF);
-
             .sidebar-toggle {
                 color: #FFFFFF;
 
