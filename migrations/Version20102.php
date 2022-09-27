@@ -13,17 +13,11 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 
 final class Version20102 extends AbstractMigration implements ContainerAwareInterface
 {
@@ -33,11 +27,6 @@ final class Version20102 extends AbstractMigration implements ContainerAwareInte
     {
         return \PHP_VERSION_ID < 80000;
     }
-
-    /**
-     * @var Schema
-     */
-    private $schema;
 
     public function up(Schema $schema): void
     {
