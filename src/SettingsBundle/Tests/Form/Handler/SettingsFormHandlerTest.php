@@ -81,11 +81,6 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
                     'token' => null,
                 ],
             ],
-            'design' => [
-                'system' => [
-                    'theme' => null,
-                ],
-            ],
             'notification' => [
                 'client_create' => '{"email":false,"sms":false}',
                 'invoice_status_update' => '{"email":false,"sms":false}',
