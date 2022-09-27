@@ -49,4 +49,10 @@ class SettingsRepository extends ServiceEntityRepository
             $this->clear();
         }
     }
+
+    public function remove(string $key): void
+    {
+        $this->_em->remove($this->findOneBy(['key' => $key]));
+        $this->_em->flush();
+    }
 }
