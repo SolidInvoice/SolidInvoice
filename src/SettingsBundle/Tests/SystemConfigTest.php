@@ -28,7 +28,7 @@ class SystemConfigTest extends TestCase
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
-        self::assertSame('skin-solidinvoice-default', $config->get('design/system/theme'));
+        static::assertSame('SolidInvoice', $config->get('email/from_name'));
     }
 
     public function testGetAll(): void
@@ -36,7 +36,6 @@ class SystemConfigTest extends TestCase
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
         self::assertSame([
-            'design/system/theme' => 'skin-solidinvoice-default',
             'email/from_address' => 'info@solidinvoice.co',
             'email/from_name' => 'SolidInvoice',
             'email/sending_options/provider' => null,
