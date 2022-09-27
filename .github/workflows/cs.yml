@@ -70,7 +70,7 @@ jobs:
 
       - uses: actions/setup-node@v3.4.1
         with:
-          node-version: 12
+          node-version: 14
 
       - run: yarn install
 
