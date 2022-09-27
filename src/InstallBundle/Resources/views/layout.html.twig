@@ -13,3 +13,7 @@
     {{ app_logo() }}
     {{ "installation.title"|trans({"%app_name%" : constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME')}) }}
 {% endblock title %}
+
+{% block page_title %}
+    {{ "installation.title"|trans({"%app_name%" : constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME')}) }}
+{% endblock page_title %}
