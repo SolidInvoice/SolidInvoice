@@ -36,7 +36,7 @@
     {% include '@SolidInvoiceCore/_partials/scripts.html.twig' %}
 
 </head>
-<body class="{{ setting('design/system/theme')|default('skin-solidinvoice-default') }} sidebar-mini hold-transition {{ body_class|default('') }}">
+<body class="skin-solidinvoice-default sidebar-mini hold-transition {{ body_class|default('') }}">
     <div class="wrapper">
         {{ block('body_top') is defined ? block('body_top') }}
         <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
