@@ -1,6 +1,7 @@
 {
-    "extends": "stylelint-config-recommended",
+    "extends": "stylelint-config-standard-scss",
     "plugins": ["stylelint-scss"],
+    "customSyntax": "postcss-scss",
     "ignoreFiles": [".stylelintignore", ".gitignore"],
     "rules": {
         "indentation": 4,
