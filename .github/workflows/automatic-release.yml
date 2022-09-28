@@ -21,6 +21,10 @@ jobs:
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
       - name: "Build Release Artifact"
         run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
 
@@ -30,9 +34,6 @@ jobs:
           files: |
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.zip
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
-
-        with:
-          node-version: 14
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
