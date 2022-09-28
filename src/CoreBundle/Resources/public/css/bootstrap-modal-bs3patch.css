@@ -15,7 +15,7 @@ body.modal-open,
 
 .modal {
     left: 50% !important;
-    bottom: auto   !important;
+    bottom: auto !important;
     right: auto !important;
     top: 50% !important;
     z-index: 1050;
@@ -26,8 +26,7 @@ body.modal-open,
     border: 1px solid #999999;
     height: auto !important;
     border-radius: 6px;
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
     background-clip: padding-box;
 }
 

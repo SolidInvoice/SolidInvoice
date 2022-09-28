@@ -1,3 +1,5 @@
+@use 'sass:map';
+@use 'sass:color';
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/variables';
 @import 'colors';
@@ -21,23 +23,19 @@ $purple: #5243AA;
 $maroon: #D81B60;
 $black: #111111;
 $gray-lte: #D2D6DE;
-
 $warning: $deep-orange;
 $primary: $light-blue;
 $danger: $red;
 $success: $green;
 $info: $light-blue;
-
 $btn-warning: $warning;
 $btn-primary: $primary;
 $btn-danger: $danger;
 $btn-success: $success;
 $btn-info: $info;
-
 $theme-header-height: 70px;
 $theme-header-padding: 15px;
-
-$screen-header-collapse: map-get($grid-breakpoints, md) !default;
+$screen-header-collapse: map.get($grid-breakpoints, md) !default;
 
 @import '~admin-lte/build/scss/main-header';
 @import '~admin-lte/build/scss/main-sidebar';
@@ -53,7 +51,7 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
 @import '~admin-lte/build/scss/callout';
 @import '~admin-lte/build/scss/alerts';
 @import '~admin-lte/build/scss/navs';
-@import '~admin-lte/build/scss/mixins/_navbar';
+@import '~admin-lte/build/scss/mixins/navbar';
 @import '~admin-lte/build/scss/products';
 @import '~admin-lte/build/scss/table';
 @import '~admin-lte/build/scss/direct-chat';
@@ -111,7 +109,6 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
  */
 
 .skin-solidinvoice-default {
-
     background: #E9ECEF;
 
     .wrapper {
@@ -119,8 +116,7 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
     }
 
     .main-header {
-
-        box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 5px 0 10px rgb(0 0 0 / 50%);
 
         .navbar {
             min-height: $theme-header-height;
@@ -130,7 +126,7 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
                 color: #FFFFFF;
 
                 &:hover {
-                    background-color: darken($light-blue, 5%);
+                    background-color: color.adjust($light-blue, $lightness: -5%);
                 }
             }
 
@@ -146,14 +142,14 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
                     li {
 
                         &.divider {
-                            background-color: rgba(255, 255, 255, 0.1);
+                            background-color: rgb(255 255 255 / 10%);
                         }
 
                         a {
                             color: #FFFFFF;
 
                             &:hover {
-                                background: darken($light-blue, 5%);
+                                background: color.adjust($light-blue, $lightness: -5%);
                             }
                         }
                     }
@@ -194,7 +190,7 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
 
             .divider {
                 height: 1px;
-                background: rgba(120, 130, 140, 0.13);
+                background: rgb(120 130 140 / 13%);
                 display: block;
                 margin: 20px 0;
             }
@@ -208,7 +204,7 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
             }
 
             > .nav-item > .nav-link.active {
-                background-color: rgba(255, 255, 255, 0.9);
+                background-color: rgb(255 255 255 / 90%);
                 color: #343A40;
             }
         }
@@ -218,7 +214,11 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
         border-top-color: $light-blue;
     }
 
-    .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
+    .bg-green,
+    .callout.callout-success,
+    .alert-success,
+    .label-success,
+    .modal-success .modal-body {
         background-color: #00875A !important;
     }
 
@@ -226,4 +226,3 @@ $screen-header-collapse: map-get($grid-breakpoints, md) !default;
         margin-top: 20px;
     }
 }
-
