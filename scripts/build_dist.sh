@@ -54,6 +54,8 @@ function generateRelease() {
     echo "SOLIDINVOICE_ENV=$SOLIDINVOICE_ENV" >> .env
     echo "SOLIDINVOICE_DEBUG=$SOLIDINVOICE_DEBUG" >> .env
 
+    chmod a+w config
+
     zip -r SolidInvoice-"$VERSION".zip ./
     mv SolidInvoice-"$VERSION".zip "${DIST_DIR}"
 

@@ -19,16 +19,20 @@
 /* Grid Sorting
  ***************/
 
-.sort_down, .sort_up {
+.sort_down { // stylelint-disable-line selector-class-pattern
     float: right;
+
+    &::after {
+        content: '↓';
+    }
 }
 
-.sort_down::after {
-    content: '↓';
-}
+.sort_up { // stylelint-disable-line selector-class-pattern
+    float: right;
 
-.sort_up::after {
-    content: '↑';
+    &::after {
+        content: '↑';
+    }
 }
 
 /* Mass Actions
@@ -39,7 +43,7 @@
     .mass-actions {
         margin-bottom: 20px;
 
-        .grid_massactions .btn {
+        .grid_massactions .btn { // stylelint-disable-line
             margin-left: 8px;
         }
     }
@@ -57,15 +61,7 @@
                 padding: 0;
                 height: auto;
 
-                &::-webkit-input-placeholder {
-                    color: #333333;
-                }
-
-                &::-moz-placeholder {
-                    color: #333333;
-                }
-
-                &:-ms-input-placeholder {
+                &::placeholder {
                     color: #333333;
                 }
             }

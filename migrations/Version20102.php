@@ -15,12 +15,11 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-final class Version20001 extends AbstractMigration implements ContainerAwareInterface
+final class Version20102 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -34,11 +33,7 @@ final class Version20001 extends AbstractMigration implements ContainerAwareInte
         /** @var SystemConfig $config */
         $config = $this->container->get('settings');
 
-        try {
-            if ('skin-solidinoice-default' === $config->get('design/system/theme')) {
-                $config->set('design/system/theme', 'skin-solidinvoice-default');
-            }
-        } catch (InvalidSettingException $e) {}
+        $config->remove('design/system/theme');
     }
 
     public function down(Schema $schema): void

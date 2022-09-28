@@ -8,15 +8,16 @@
 @import '~admin-lte/build/scss/variables';
 
 $body-bg: #FFFFFF;
-@import '~admin-lte/build/scss/mixins';
 
+@import '~admin-lte/build/scss/mixins';
 @import 'theme';
 
 h4 {
     margin: 0;
 }
 
-table.invoice-details, table.quote-details {
+table.invoice-details,
+table.quote-details {
     border: 1px solid #999999;
     border-spacing: 0;
 
@@ -58,6 +59,7 @@ table.invoice-details, table.quote-details {
     }
 }
 
-table.invoice-summary, table.quote-summary {
+table.invoice-summary,
+table.quote-summary {
     float: right;
 }

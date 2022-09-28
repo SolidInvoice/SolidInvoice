@@ -67,4 +67,10 @@ class SystemConfig
             self::$settings = array_combine(array_column($settings, 'key'), array_column($settings, 'value'));
         }
     }
+
+    public function remove(string $key): void
+    {
+        $this->repository->remove($key);
+        self::$settings = null;
+    }
 }

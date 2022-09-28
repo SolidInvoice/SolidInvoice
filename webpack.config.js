@@ -49,22 +49,24 @@ Encore
         ];
     })
 
-    .enableEslintLoader({
-        rules: {
-            "lodash/import-scope": [2, "member"],
-            "no-else-return": "error",
-            "no-extra-bind": "error",
-            "no-lone-blocks": "error",
-            "no-loop-func": "error",
-            "no-useless-call": "error",
-            "no-useless-concat": "error",
-            "no-useless-return": "error",
-            "radix": "error",
-            "yoda": ["error", "always"],
-            "no-shadow": "error",
-            "no-use-before-define": "error",
-            "quotes": ["error", "single"]
-        }
+    .enableEslintPlugin((config) => {
+        config.overrideConfig = {
+            rules: {
+                'lodash/import-scope': [2, 'member'],
+                'no-else-return': 'error',
+                'no-extra-bind': 'error',
+                'no-lone-blocks': 'error',
+                'no-loop-func': 'error',
+                'no-useless-call': 'error',
+                'no-useless-concat': 'error',
+                'no-useless-return': 'error',
+                'radix': 'error',
+                'yoda': ['error', 'always'],
+                'no-shadow': 'error',
+                'no-use-before-define': 'error',
+                'quotes': ['error', 'single']
+            }
+        };
     })
 ;
 
@@ -73,13 +75,13 @@ const pagesDir = path.resolve(__dirname, 'assets/js/pages');
 try {
     const files = fs.readdirSync(pagesDir);
 
-    files.forEach(function(file, index) {
+    files.forEach(function(file) {
         if ('.js' === path.extname(file)) {
             Encore.addEntry(file.substr(0, file.length - 3), path.join(pagesDir, file));
         }
     });
 } catch (err) {
-    console.error("Could not list the directory.", err);
+    console.error('Could not list the directory.', err);
     process.exit(1);
 }
 
