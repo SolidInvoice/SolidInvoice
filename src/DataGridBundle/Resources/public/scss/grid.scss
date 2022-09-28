@@ -1,12 +1,13 @@
 .backgrid {
 
-    th, td {
+    th,
+    td {
         overflow: visible;
     }
 
     tr.redirectable {
 
-        td:not( .action-cell ):not( .select-row-cell ) {
+        td:not( .action-cell, .select-row-cell ) {
             cursor: pointer;
         }
     }
