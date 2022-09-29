@@ -17,18 +17,15 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApiTokenUserProvider implements UserProviderInterface
 {
-    /**
-     * @var ApiTokenRepository
-     */
-    private $tokenRepository;
+    private ApiTokenRepository $tokenRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(ApiTokenRepository $tokenRepository, UserRepositoryInterface $userRepository)
     {
@@ -36,20 +33,17 @@ class ApiTokenUserProvider implements UserProviderInterface
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @return string
-     */
     public function getUsernameForToken(string $token): ?string
     {
         return $this->tokenRepository->getUsernameForToken($token);
     }
 
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): UserInterface
     {
         $user = $this->userRepository->findOneBy(['username' => $username]);
 
         if (! $user) {
-            throw new UsernameNotFoundException();
+            throw new UserNotFoundException();
         }
 
         return $user;
@@ -64,7 +58,7 @@ class ApiTokenUserProvider implements UserProviderInterface
         throw new UnsupportedUserException();
     }
 
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return User::class === $class;
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Tests\Doctrine\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -127,7 +128,7 @@ class MoneyTypeTest extends TestCase
         /** @var MoneyType $type */
         $type = Type::getType('money');
 
-        $this->expectException('Doctrine\Dbal\Types\ConversionException');
+        $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value "0.2" to Doctrine Type money');
 
         $type->convertToDatabaseValue(0.2, $platform);

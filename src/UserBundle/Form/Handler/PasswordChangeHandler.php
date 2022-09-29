@@ -26,41 +26,29 @@ use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Form\Handler\PasswordChangeHandlerTest
  */
 class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(UserRepositoryInterface $userRepository, UserPasswordEncoderInterface $userPasswordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router)
+    public function __construct(UserRepositoryInterface $userRepository, UserPasswordHasherInterface $userPasswordHasher, TokenStorageInterface $tokenStorage, RouterInterface $router)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
@@ -85,7 +73,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
     {
         $route = $form->getOptions()->get('redirect_route', '_profile');
 
-        $data->setPassword($this->userPasswordEncoder->encodePassword($data, $data->getPlainPassword()));
+        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
         $data->eraseCredentials();
 
         $this->userRepository->save($data);

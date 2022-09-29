@@ -17,103 +17,69 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
-use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
+use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationSuccessHandlerInterface
+class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
-    /**
-     * @var ApiTokenUserProvider
-     */
-    protected $userProvider;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    protected ApiTokenUserProvider $userProvider;
+    private ManagerRegistry $registry;
+    private TranslatorInterface $translator;
 
     public function __construct(
         ApiTokenUserProvider $userProvider,
-        ManagerRegistry $registry
+        ManagerRegistry $registry,
+        TranslatorInterface $translator
     ) {
         $this->userProvider = $userProvider;
         $this->registry = $registry;
+        $this->translator = $translator;
     }
 
-    /**
-     * @param string $providerKey
-     *
-     * @throws AuthenticationCredentialsNotFoundException
-     */
-    public function createToken(Request $request, $providerKey): PreAuthenticatedToken
+    public function supports(Request $request): bool
     {
-        $token = $this->getToken($request);
-
-        if (! $token) {
-            throw new AuthenticationCredentialsNotFoundException('No API token found');
-            // when we allow other methods of authentication against the api, skip api key authentication by returning null
-        }
-
-        return new PreAuthenticatedToken(
-            'anon.',
-            $token,
-            $providerKey
-        );
+        return $request->headers->has('X-API-TOKEN') || $request->query->has('token');
     }
 
-    /**
-     * @return string
-     */
-    private function getToken(Request $request): ?string
+    public function getCredentials(Request $request): string
     {
         return $request->headers->get('X-API-TOKEN', $request->query->get('token'));
     }
 
     /**
-     * @param string $providerKey
-     *
-     * @throws BadCredentialsException
+     * @param string $credentials
      */
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey): PreAuthenticatedToken
+    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
         assert($userProvider instanceof ApiTokenUserProvider);
 
-        $apiToken = $token->getCredentials();
-        $username = $userProvider->getUsernameForToken($apiToken);
+        $username = $userProvider->getUsernameForToken($credentials);
 
         if (! $username) {
-            throw new BadCredentialsException(sprintf('API Token "%s" is invalid.', $apiToken));
+            return null;
         }
 
-        $user = $userProvider->loadUserByUsername($username);
-
-        $roles = array_merge(
-            $user->getRoles(),
-            [
-                'ROLE_API_AUTHENTICATED',
-            ]
-        );
-
-        return new PreAuthenticatedToken($user, $apiToken, $providerKey, $roles);
+        return $userProvider->loadUserByUsername($username);
     }
 
-    /**
-     * @param string $providerKey
-     */
-    public function supportsToken(TokenInterface $token, $providerKey): bool
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
-        return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
+        // In case of an API token, no credential check is needed.
+        // Return `true` to cause authentication success
+        return true;
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): ?Response
     {
-        $apiToken = $this->getToken($request);
+        $apiToken = $this->getCredentials($request);
 
         $history = new ApiTokenHistory();
 
@@ -129,5 +95,29 @@ class ApiTokenAuthenticator implements SimplePreAuthenticatorInterface, Authenti
         $repository->addHistory($history, $apiToken);
 
         return null;
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    {
+        $data = [
+            'message' => $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
+        ];
+
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function start(Request $request, AuthenticationException $authException = null): Response
+    {
+        $data = [
+            // @TODO: translate this message
+            'message' => 'Authentication Required'
+        ];
+
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function supportsRememberMe(): bool
+    {
+        return false;
     }
 }

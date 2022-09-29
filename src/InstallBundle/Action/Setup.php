@@ -34,48 +34,27 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 final class Setup
 {
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
+    private PasswordHasherFactoryInterface $passwordHasherFactory;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
+    private ManagerRegistry $doctrine;
 
-    /**
-     * @var ConfigWriter
-     */
-    private $configWriter;
+    private ConfigWriter $configWriter;
 
-    /**
-     * @var VatCalculator
-     */
-    private $vatCalculator;
+    private VatCalculator $vatCalculator;
 
-    /**
-     * @var SystemConfig
-     */
-    private $systemConfig;
+    private SystemConfig $systemConfig;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(
-        EncoderFactoryInterface $encoderFactory,
+        PasswordHasherFactoryInterface $passwordHasherFactory,
         FormFactoryInterface $formFactory,
         ManagerRegistry $doctrine,
         ConfigWriter $configWriter,
@@ -83,7 +62,7 @@ final class Setup
         SystemConfig $systemConfig,
         RouterInterface $router
     ) {
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasherFactory = $passwordHasherFactory;
         $this->formFactory = $formFactory;
         $this->doctrine = $doctrine;
         $this->configWriter = $configWriter;
@@ -113,10 +92,7 @@ final class Setup
         return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);
     }
 
-    /**
-     * @return int
-     */
-    private function getUserCount()
+    private function getUserCount(): int
     {
         static $userCount;
 
@@ -155,9 +131,9 @@ final class Setup
     {
         $user = new User();
 
-        $encoder = $this->encoderFactory->getEncoder($user);
+        $encoder = $this->passwordHasherFactory->getPasswordHasher($user);
 
-        $password = $encoder->encodePassword($data['password'], null);
+        $password = $encoder->hash($data['password'], null);
 
         $user->setUsername($data['username'])
             ->setEmail($data['email_address'])

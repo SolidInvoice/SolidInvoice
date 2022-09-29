@@ -74,6 +74,9 @@ class TaxRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    /**
+     * @param list<int> $data
+     */
     public function deleteTaxRates(array $data): void
     {
         $em = $this->getEntityManager();

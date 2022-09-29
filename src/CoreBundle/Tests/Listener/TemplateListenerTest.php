@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
@@ -36,7 +35,7 @@ class TemplateListenerTest extends TestCase
 
         $listener = new TemplateListener($twig);
 
-        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz']));
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), HttpKernelInterface::MAIN_REQUEST, new Template('Foo', ['bar' => 'baz']));
 
         $listener->onKernelView($event);
 
@@ -50,7 +49,7 @@ class TemplateListenerTest extends TestCase
 
         $listener = new TemplateListener($twig);
 
-        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, []);
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), HttpKernelInterface::MAIN_REQUEST, []);
 
         $listener->onKernelView($event);
 
@@ -65,7 +64,7 @@ class TemplateListenerTest extends TestCase
 
         $listener = new TemplateListener($twig);
 
-        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz'], $response));
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), HttpKernelInterface::MAIN_REQUEST, new Template('Foo', ['bar' => 'baz'], $response));
 
         $listener->onKernelView($event);
 

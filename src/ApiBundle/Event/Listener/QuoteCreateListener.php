@@ -27,17 +27,17 @@ use Symfony\Component\Workflow\StateMachine;
  */
 class QuoteCreateListener implements EventSubscriberInterface
 {
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
     public function __construct(StateMachine $stateMachine)
     {
         $this->stateMachine = $stateMachine;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string, list<array<string, int>>>
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::VIEW => [['setQuoteStatus', EventPriorities::PRE_WRITE]],
@@ -49,7 +49,7 @@ class QuoteCreateListener implements EventSubscriberInterface
         $quote = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (! $quote instanceof Quote || Request::METHOD_POST !== $method || ! $event->isMasterRequest() || $quote->getStatus()) {
+        if (! $quote instanceof Quote || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $quote->getStatus()) {
             return;
         }
 
