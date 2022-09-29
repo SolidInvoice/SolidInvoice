@@ -22,17 +22,12 @@ use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-/**
- * This class is a twig extension that gives some shortcut methods to client statuses.
- *
- * @author Pierre du Plessis
- */
 class StatusExtension extends AbstractExtension
 {
     /**
-     * @var array
+     * @var array<string, string>
      */
-    private $invoiceLabelMap = [
+    private array $invoiceLabelMap = [
         InvoiceGraph::STATUS_PENDING => 'yellow',
         InvoiceGraph::STATUS_DRAFT => 'secondary',
         InvoiceGraph::STATUS_PAID => 'green',
@@ -43,9 +38,9 @@ class StatusExtension extends AbstractExtension
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
-    private $quoteLabelMap = [
+    private array $quoteLabelMap = [
         QuoteGraph::STATUS_PENDING => 'yellow',
         QuoteGraph::STATUS_DRAFT => 'secondary',
         QuoteGraph::STATUS_ACCEPTED => 'green',
@@ -55,9 +50,9 @@ class StatusExtension extends AbstractExtension
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
-    private $paymentLabelMap = [
+    private array $paymentLabelMap = [
         PaymentStatus::STATUS_UNKNOWN => 'primary',
         PaymentStatus::STATUS_FAILED => 'red',
         PaymentStatus::STATUS_SUSPENDED => 'black',
@@ -72,19 +67,14 @@ class StatusExtension extends AbstractExtension
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
-    private $clientLabelMap = [
+    private array $clientLabelMap = [
         ClientStatus::STATUS_ACTIVE => 'green',
         ClientStatus::STATUS_INACTIVE => 'aqua',
         ClientStatus::STATUS_ARCHIVED => 'purple',
     ];
 
-    /**
-     * Returns an array of all the helper functions for the client status.
-     *
-     * @return TwigFunction[]
-     */
     public function getFunctions(): array
     {
         return [
@@ -120,14 +110,11 @@ class StatusExtension extends AbstractExtension
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
-     *
-     * @return string|array
+     * @return string|array<string, string>
      *
      * @throws Exception
      */
-    public function renderInvoiceStatusLabel(Environment $environment, string $status = null, $tooltip = null)
+    public function renderInvoiceStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
@@ -145,6 +132,11 @@ class StatusExtension extends AbstractExtension
         return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
     }
 
+    /**
+     * @param array<string, string> $labelMap
+     *
+     * @return array<string, string>
+     */
     private function getAllStatusLabels(Environment $environment, array $labelMap): array
     {
         $response = [];
@@ -160,7 +152,6 @@ class StatusExtension extends AbstractExtension
      * Return the status converted into a label string.
      *
      * @param mixed  $object
-     * @param string $tooltip
      */
     private function renderStatusLabel(Environment $environment, $object, string $tooltip = null): string
     {
@@ -181,14 +172,11 @@ class StatusExtension extends AbstractExtension
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
-     *
-     * @return string|array
+     * @return string|array<string, string>
      *
      * @throws Exception
      */
-    public function renderQuoteStatusLabel(Environment $environment, string $status = null, $tooltip = null)
+    public function renderQuoteStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
@@ -207,14 +195,11 @@ class StatusExtension extends AbstractExtension
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
-     *
-     * @return string|array
+     * @return string|array<string, string>
      *
      * @throws Exception
      */
-    public function renderPaymentStatusLabel(Environment $environment, string $status = null, $tooltip = null)
+    public function renderPaymentStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
@@ -233,14 +218,11 @@ class StatusExtension extends AbstractExtension
     }
 
     /**
-     * @param string $status
-     * @param string $tooltip
-     *
-     * @return string|array
+     * @return string|array<string, string>
      *
      * @throws Exception
      */
-    public function renderClientStatusLabel(Environment $environment, string $status = null, $tooltip = null)
+    public function renderClientStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->clientLabelMap);
@@ -256,13 +238,5 @@ class StatusExtension extends AbstractExtension
         ];
 
         return trim($this->renderStatusLabel($environment, $statusLabel, $tooltip));
-    }
-
-    /**
-     * Get the name of the twig extension.
-     */
-    public function getName(): string
-    {
-        return 'solidinvoice_core.status';
     }
 }

@@ -23,8 +23,6 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
 
 class MoneyFormatterExtensionTest extends TestCase
 {
@@ -36,14 +34,11 @@ class MoneyFormatterExtensionTest extends TestCase
         $moneyFormatter = new MoneyFormatter('en_US', $currency);
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        self::assertSame('currency_formatter', $extension->getName());
-
-        /** @var TwigFunction[] $functions */
         $functions = $extension->getFunctions();
 
         self::assertCount(1, $functions);
 
-        self::assertInstanceOf(Twig_SimpleFunction::class, $functions[0]);
+        self::assertInstanceOf(TwigFunction::class, $functions[0]);
         self::assertSame('currencyFormatter', $functions[0]->getName());
         self::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
     }
@@ -62,13 +57,12 @@ class MoneyFormatterExtensionTest extends TestCase
 
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        /** @var TwigFilter[] $filters */
         $filters = $extension->getFilters();
 
         self::assertCount(1, $filters);
 
-        self::assertInstanceOf(Twig_SimpleFilter::class, $filters[0]);
+        self::assertInstanceOf(TwigFilter::class, $filters[0]);
         self::assertSame('formatCurrency', $filters[0]->getName());
-        self::assertSame('$12,00', call_user_func_array($filters[0]->getCallable(), [$money]));
+        self::assertSame('$12,00', call_user_func($filters[0]->getCallable(), $money));
     }
 }

@@ -13,27 +13,25 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Twig\Extension;
 
+use JsonException;
 use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class GridExtension extends AbstractExtension
 {
-    /**
-     * @var GridRepository
-     */
-    private $repository;
+    private GridRepository $repository;
 
     public function __construct(GridRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * @return TwigFunction[]
-     */
     public function getFunctions(): array
     {
         return [
@@ -61,7 +59,9 @@ class GridExtension extends AbstractExtension
     }
 
     /**
-     * @throws InvalidGridException
+     * @param array<string, string> $parameters
+
+     * @throws InvalidGridException|JsonException|LoaderError|RuntimeError|SyntaxError
      */
     public function renderGrid(Environment $env, string $gridName, array $parameters = []): string
     {
@@ -83,7 +83,7 @@ class GridExtension extends AbstractExtension
     }
 
     /**
-     * @throws InvalidGridException
+     * @throws InvalidGridException|JsonException|LoaderError|RuntimeError|SyntaxError
      */
     public function renderMultipleGrid(Environment $env): string
     {
@@ -118,10 +118,5 @@ class GridExtension extends AbstractExtension
                 'grids' => $renderGrids,
             ]
         );
-    }
-
-    public function getName()
-    {
-        return 'grid_extension';
     }
 }

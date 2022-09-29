@@ -22,17 +22,14 @@ use Twig\TwigFilter;
  */
 class SerializerExtension extends AbstractExtension
 {
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
+    private SerializerInterface $serializer;
 
     public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('serialize', function ($data, string $format, array $groups = []) {

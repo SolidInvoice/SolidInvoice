@@ -26,20 +26,11 @@ use Twig\TwigFunction;
 
 class PaymentExtension extends AbstractExtension
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
-    /**
-     * @var PaymentMethodRepository
-     */
-    private $repository;
+    private ?PaymentMethodRepository $repository = null;
 
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private Currency $currency;
 
     public function __construct(ManagerRegistry $registry, Currency $currency)
     {
@@ -47,9 +38,6 @@ class PaymentExtension extends AbstractExtension
         $this->currency = $currency;
     }
 
-    /**
-     * @return TwigFunction[]
-     */
     public function getFunctions(): array
     {
         return [
@@ -73,20 +61,17 @@ class PaymentExtension extends AbstractExtension
     {
         $income = $this->registry->getRepository(Payment::class)->getTotalIncome($client);
 
-        return new Money($income, $client->getCurrency() ?: $this->currency);
+        return new Money($income, ($client ? $client->getCurrency() : null) ?? $this->currency);
     }
 
     public function getTotalOutstanding(Client $client = null): Money
     {
         $outstanding = $this->registry->getRepository(Invoice::class)->getTotalOutstanding($client);
 
-        return new Money($outstanding, $client->getCurrency() ?: $this->currency);
+        return new Money($outstanding, ($client ? $client->getCurrency() : null) ?? $this->currency);
     }
 
-    /**
-     * @param string $method
-     */
-    public function paymentEnabled($method): bool
+    public function paymentEnabled(string $method): bool
     {
         $paymentMethod = $this->getRepository()->findOneBy(['gatewayName' => $method]);
 
@@ -109,10 +94,5 @@ class PaymentExtension extends AbstractExtension
     public function paymentConfigured(bool $includeInternal = true): int
     {
         return $this->getRepository()->getTotalMethodsConfigured($includeInternal);
-    }
-
-    public function getName(): string
-    {
-        return 'payment_extension';
     }
 }
