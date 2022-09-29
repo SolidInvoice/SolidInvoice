@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9dad72011eae61e2f18dc7f2649fc65",
+    "content-hash": "efb03767828956c35f79c397d20b3685",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -13517,33 +13517,46 @@
         },
         {
             "name": "liip/test-fixtures-bundle",
-            "version": "1.10.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipTestFixturesBundle.git",
-                "reference": "6931a3e78814e7cd2c5e2c2fc2239933e9680fbb"
+                "reference": "9a27d1cd8995d64bcead77c6aaf2491ac308e002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/6931a3e78814e7cd2c5e2c2fc2239933e9680fbb",
-                "reference": "6931a3e78814e7cd2c5e2c2fc2239933e9680fbb",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/9a27d1cd8995d64bcead77c6aaf2491ac308e002",
+                "reference": "9a27d1cd8995d64bcead77c6aaf2491ac308e002",
                 "shasum": ""
             },
             "require": {
+                "doctrine/annotations": "^1.2.7",
                 "doctrine/common": "^2.13 || ^3.0",
-                "php": "^7.1",
-                "symfony/framework-bundle": "^3.4 || ^4.1 || ^5.0"
+                "doctrine/persistence": "^1.3.3 || ^2.0 || ^3.0",
+                "php": "^7.2 || ^8.0",
+                "symfony/event-dispatcher": "^4.4 || ^5.4 || ^6.0",
+                "symfony/event-dispatcher-contracts": "^1 || ^2 || ^3",
+                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.0",
+                "symfony/yaml": "^4.4 || ^5.4 || ^6.0"
+            },
+            "conflict": {
+                "doctrine/dbal": "<2.11"
             },
             "require-dev": {
                 "doctrine/data-fixtures": "^1.3",
-                "doctrine/doctrine-bundle": "^1.8 || ^2.0",
+                "doctrine/doctrine-bundle": "^2.1",
                 "doctrine/doctrine-fixtures-bundle": "^3.0.2",
-                "doctrine/orm": "^2.6",
-                "monolog/monolog": "^1.11 || ^2.0",
-                "phpunit/phpunit": "^7.5 || ^8.0",
-                "symfony/monolog-bridge": ">=3",
+                "doctrine/orm": "^2.7",
+                "doctrine/persistence": "^1.3 || ^2.0",
+                "doctrine/phpcr-bundle": "^2.0.2",
+                "doctrine/phpcr-odm": "^1.3",
+                "jackalope/jackalope-doctrine-dbal": "^1.5",
+                "monolog/monolog": "^1.25.1 || ^2.0",
+                "phpunit/phpunit": "^8.0 || ^9.0",
+                "symfony/doctrine-bridge": "^4.4 || ^5.4 || ^6.0",
+                "symfony/monolog-bridge": "^4.4 || ^5.4 || ^6.0",
                 "symfony/monolog-bundle": "^3.2",
-                "symfony/phpunit-bridge": "^3.4 || ^4.1 || ^5.0",
+                "symfony/phpunit-bridge": "^4.4 || ^5.4 || ^6.0",
                 "theofidry/alice-data-fixtures": "^1.0.1"
             },
             "suggest": {
@@ -13556,7 +13569,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -13586,9 +13599,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipTestFixturesBundle/issues",
-                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/1.10.0"
+                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/2.4.0"
             },
-            "time": "2020-10-12T11:49:46+00:00"
+            "time": "2022-05-08T21:39:17+00:00"
         },
         {
             "name": "localheinz/diff",
@@ -13711,30 +13724,30 @@
         },
         {
             "name": "matthiasnoback/symfony-dependency-injection-test",
-            "version": "4.2.1",
+            "version": "4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SymfonyTest/SymfonyDependencyInjectionTest.git",
-                "reference": "0eb7bfc9acd31ea1e2cdd88b51d62544c9b080d5"
+                "reference": "d6b94169d9a60f4747efbcc45bfd51f071ba03d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SymfonyTest/SymfonyDependencyInjectionTest/zipball/0eb7bfc9acd31ea1e2cdd88b51d62544c9b080d5",
-                "reference": "0eb7bfc9acd31ea1e2cdd88b51d62544c9b080d5",
+                "url": "https://api.github.com/repos/SymfonyTest/SymfonyDependencyInjectionTest/zipball/d6b94169d9a60f4747efbcc45bfd51f071ba03d7",
+                "reference": "d6b94169d9a60f4747efbcc45bfd51f071ba03d7",
                 "shasum": ""
             },
             "require": {
                 "matthiasnoback/symfony-config-test": "^4.0.1",
                 "php": "^7.2 || ^8.0",
-                "symfony/config": "^3.4 || ^4.4 || ^5.0",
-                "symfony/dependency-injection": "^3.4 || ^4.4 || ^5.0",
-                "symfony/yaml": "^3.4 || ^4.4 || ^5.0"
+                "symfony/config": "^4.4 || ^5.3 || ^6.0",
+                "symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
+                "symfony/yaml": "^4.4 || ^5.3 || ^6.0"
             },
             "conflict": {
                 "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^8.0 || ^9.0"
             },
             "type": "library",
             "extra": {
@@ -13767,22 +13780,22 @@
             ],
             "support": {
                 "issues": "https://github.com/SymfonyTest/SymfonyDependencyInjectionTest/issues",
-                "source": "https://github.com/SymfonyTest/SymfonyDependencyInjectionTest/tree/4.2.1"
+                "source": "https://github.com/SymfonyTest/SymfonyDependencyInjectionTest/tree/4.3.0"
             },
-            "time": "2020-11-15T15:30:25+00:00"
+            "time": "2021-09-15T12:17:40+00:00"
         },
         {
             "name": "mockery/mockery",
-            "version": "1.4.2",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "20cab678faed06fac225193be281ea0fddb43b93"
+                "reference": "e92dcc83d5a51851baf5f5591d32cb2b16e3684e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/20cab678faed06fac225193be281ea0fddb43b93",
-                "reference": "20cab678faed06fac225193be281ea0fddb43b93",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/e92dcc83d5a51851baf5f5591d32cb2b16e3684e",
+                "reference": "e92dcc83d5a51851baf5f5591d32cb2b16e3684e",
                 "shasum": ""
             },
             "require": {
@@ -13839,9 +13852,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mockery/mockery/issues",
-                "source": "https://github.com/mockery/mockery/tree/master"
+                "source": "https://github.com/mockery/mockery/tree/1.5.1"
             },
-            "time": "2020-08-11T18:10:13+00:00"
+            "time": "2022-09-07T15:32:08+00:00"
         },
         {
             "name": "nelmio/alice",
