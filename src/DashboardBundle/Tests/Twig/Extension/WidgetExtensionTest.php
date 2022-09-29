@@ -15,29 +15,23 @@ namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
 use SolidInvoice\DashboardBundle\WidgetFactory;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use SplPriorityQueue;
 use Twig\Environment;
-use Twig\Extension\ExtensionInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\TwigFunction;
-use Twig_SimpleFunction;
 
 class WidgetExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var ExtensionInterface
-     */
-    private $extension;
+    private WidgetExtension $extension;
 
     /**
-     * @var Mock
+     * @var Mockery\MockInterface
      */
     private $factory;
 
@@ -47,18 +41,12 @@ class WidgetExtensionTest extends TestCase
         $this->extension = new WidgetExtension($this->factory);
     }
 
-    public function testGetName(): void
-    {
-        self::assertSame('dashboard_widget_extension', $this->extension->getName());
-    }
-
     public function testGetFunctions(): void
     {
-        /** @var TwigFunction[] $functions */
         $functions = $this->extension->getFunctions();
 
         self::assertCount(1, $functions);
-        self::assertInstanceOf(Twig_SimpleFunction::class, $functions[0]);
+        self::assertInstanceOf(TwigFunction::class, $functions[0]);
         self::assertSame('render_dashboard_widget', $functions[0]->getName());
     }
 

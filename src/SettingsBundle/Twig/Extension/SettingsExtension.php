@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Twig\Extension;
 
+use JsonException;
 use const JSON_THROW_ON_ERROR;
 use Doctrine\DBAL\Exception;
 use SolidInvoice\ClientBundle\Entity\Address;
@@ -26,17 +27,14 @@ use function json_decode;
  */
 class SettingsExtension extends AbstractExtension
 {
-    /**
-     * @var SystemConfig
-     */
-    private $config;
+    private SystemConfig $config;
 
     public function __construct(SystemConfig $config)
     {
         $this->config = $config;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('setting', function (string $setting, $default = null, $decode = false) {
@@ -48,12 +46,22 @@ class SettingsExtension extends AbstractExtension
         ];
     }
 
-    public function renderAddress(array $address)
+    /**
+     * @param array<string, string|null> $address
+     */
+    public function renderAddress(array $address): string
     {
         return (string) Address::fromArray($address);
     }
 
-    public function getSetting(string $key, $default = null, $decode = false)
+    /**
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     *
+     * @throws JsonException
+     */
+    public function getSetting(string $key, $default = null, bool $decode = false)
     {
         try {
             $setting = $this->config->get($key);

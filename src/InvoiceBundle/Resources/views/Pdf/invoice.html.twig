@@ -225,7 +225,7 @@
             {% endif %}
             {% set paid = 0 %}
             {% if invoice.payments|length > 0 and not invoice.balance.zero %}
-                {% for payment in invoice.payments if payment.status == 'captured' %}
+                {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
                     <tr>
                         <td class="text-right">
                             <strong>

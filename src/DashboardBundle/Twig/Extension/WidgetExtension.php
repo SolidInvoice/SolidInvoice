@@ -24,17 +24,14 @@ use Twig\TwigFunction;
  */
 class WidgetExtension extends AbstractExtension
 {
-    /**
-     * @var WidgetFactory
-     */
-    private $widgetFactory;
+    private WidgetFactory $widgetFactory;
 
     public function __construct(WidgetFactory $widgetFactory)
     {
         $this->widgetFactory = $widgetFactory;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('render_dashboard_widget', function (Environment $environment, string $location): string {
@@ -58,10 +55,5 @@ class WidgetExtension extends AbstractExtension
         }
 
         return $content;
-    }
-
-    public function getName()
-    {
-        return 'dashboard_widget_extension';
     }
 }

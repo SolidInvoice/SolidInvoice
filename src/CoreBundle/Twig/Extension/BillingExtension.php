@@ -22,15 +22,9 @@ use Twig\TwigFunction;
 
 class BillingExtension extends AbstractExtension
 {
-    /**
-     * @var FieldRenderer
-     */
-    private $fieldRenderer;
+    private FieldRenderer $fieldRenderer;
 
-    /**
-     * @var Calculator
-     */
-    private $calculator;
+    private Calculator $calculator;
 
     public function __construct(FieldRenderer $fieldRenderer, Calculator $calculator)
     {
@@ -38,7 +32,7 @@ class BillingExtension extends AbstractExtension
         $this->calculator = $calculator;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('billing_fields', function (FormView $form) {
@@ -48,10 +42,5 @@ class BillingExtension extends AbstractExtension
                 return $this->calculator->calculateDiscount($entity);
             }),
         ];
-    }
-
-    public function getName()
-    {
-        return 'twig.billing.extension';
     }
 }
