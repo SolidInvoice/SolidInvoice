@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1974cfa07f28b395be8cd5c191b25f8d",
+    "content-hash": "4e539fac1f4763da9af634977e2d96c0",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -12322,36 +12322,38 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "2.6.6",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "9c80406dd4cc195f1f835a52e038fb80a96563b2"
+                "reference": "811fff5e9cf16471d350d8d3d0d09127bfe31b1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/9c80406dd4cc195f1f835a52e038fb80a96563b2",
-                "reference": "9c80406dd4cc195f1f835a52e038fb80a96563b2",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/811fff5e9cf16471d350d8d3d0d09127bfe31b1e",
+                "reference": "811fff5e9cf16471d350d8d3d0d09127bfe31b1e",
                 "shasum": ""
             },
             "require": {
-                "symfony/console": "~2.7|~3.1|~4.0",
-                "symfony/finder": "~2.7|~3.1|~4.0",
-                "symfony/framework-bundle": "~2.7|~3.1|~4.0",
-                "symfony/intl": "~2.7|~3.1|~4.0",
-                "symfony/translation": "~2.7|~3.1|~4.0",
-                "symfony/twig-bundle": "~2.7|~3.1|~4.0"
+                "php": ">=7.2.5",
+                "symfony/console": "~4.4|~5.0|~6.0",
+                "symfony/finder": "~4.4|~5.0|~6.0",
+                "symfony/framework-bundle": "~4.4|~5.0|~6.0",
+                "symfony/intl": "~4.4|~5.0|~6.0",
+                "symfony/translation": "~4.4|~5.0|~6.0",
+                "symfony/twig-bundle": "~4.4|~5.0|~6.0"
             },
             "replace": {
                 "willdurand/expose-translation-bundle": "2.5.*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8|~5.7",
-                "symfony/asset": "~2.7|~3.1|~4.0",
-                "symfony/browser-kit": "~2.7|~3.1|~4.0",
-                "symfony/phpunit-bridge": "~2.7|~3.1|~4.0",
-                "symfony/twig-bundle": "~2.7|~3.1|~4.0",
-                "symfony/yaml": "~2.7|~3.1|~4.0"
+                "phpunit/phpunit": "^4.8|~5.7|~6.5|~8",
+                "symfony/asset": "~4.4|~5.0|~6.0",
+                "symfony/browser-kit": "~4.4|~5.0|~6.0",
+                "symfony/filesystem": "~4.4|~5.0|~6.0",
+                "symfony/phpunit-bridge": "^5.0|^6.0",
+                "symfony/twig-bundle": "~4.4|~5.0|~6.0",
+                "symfony/yaml": "~4.4|~5.0|~6.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -12382,9 +12384,9 @@
             ],
             "support": {
                 "issues": "https://github.com/willdurand/BazingaJsTranslationBundle/issues",
-                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/master"
+                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/5.0.0"
             },
-            "time": "2018-02-11T14:19:14+00:00"
+            "time": "2021-12-02T07:27:01+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
