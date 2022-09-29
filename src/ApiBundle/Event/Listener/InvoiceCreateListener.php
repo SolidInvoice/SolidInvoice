@@ -27,17 +27,17 @@ use Symfony\Component\Workflow\StateMachine;
  */
 class InvoiceCreateListener implements EventSubscriberInterface
 {
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
     public function __construct(StateMachine $stateMachine)
     {
         $this->stateMachine = $stateMachine;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string, list<array<string, int>>>
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::VIEW => [['setInvoiceStatus', EventPriorities::PRE_WRITE]],
@@ -49,7 +49,7 @@ class InvoiceCreateListener implements EventSubscriberInterface
         $invoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (! $invoice instanceof BaseInvoice || Request::METHOD_POST !== $method || ! $event->isMasterRequest() || $invoice->getStatus()) {
+        if (! $invoice instanceof BaseInvoice || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $invoice->getStatus()) {
             return;
         }
 

@@ -35,8 +35,8 @@ security:
         api:
             pattern: ^/api
             stateless: true
-            simple_preauth:
-                authenticator: 'SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator'
+            guard:
+                authenticators: ['SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator']
             provider: api_token_user_provider
         installer:
             pattern: '^/install(.*)'

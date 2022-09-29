@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -33,11 +32,14 @@ class RequestListener implements EventSubscriberInterface
     /**
      * Core routes.
      *
-     * @var array
+     * @var list<string>
      */
-    private $allowRoutes = [];
+    private array $allowRoutes = [];
 
-    private $installRoutes = [
+    /**
+     * @var list<string>
+     */
+    private array $installRoutes = [
         self::INSTALLER_ROUTE,
         '_install_config',
         '_install_install',
@@ -46,9 +48,9 @@ class RequestListener implements EventSubscriberInterface
     ];
 
     /**
-     * @var array
+     * @var list<string>
      */
-    private $debugRoutes = [
+    private array $debugRoutes = [
         '_wdt',
         '_profiler',
         '_profiler_search',
@@ -57,15 +59,9 @@ class RequestListener implements EventSubscriberInterface
         '_profiler_router',
     ];
 
-    /**
-     * @var string
-     */
-    private $installed;
+    private ?string $installed;
 
-    /**
-     * @var Router
-     */
-    private $router;
+    private RouterInterface $router;
 
     public static function getSubscribedEvents(): array
     {
@@ -85,9 +81,12 @@ class RequestListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @throws ApplicationInstalledException
+     */
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+        if (HttpKernelInterface::MAIN_REQUEST !== $event->getRequestType()) {
             return;
         }
 

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ApiTokenRepository extends ServiceEntityRepository
@@ -29,13 +29,6 @@ class ApiTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiToken::class);
     }
 
-    /**
-     * Searches for a user by username or email.
-     *
-     * @return string
-     *
-     * @throws UsernameNotFoundException
-     */
     public function getUsernameForToken(string $token): ?string
     {
         $q = $this
@@ -49,7 +42,7 @@ class ApiTokenRepository extends ServiceEntityRepository
         try {
             // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
             return $q->getSingleScalarResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException | NonUniqueResultException $e) {
             return null;
         }
     }

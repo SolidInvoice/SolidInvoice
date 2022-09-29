@@ -15,9 +15,7 @@ namespace SolidInvoice\InstallBundle\Command;
 
 use DateTime;
 use Defuse\Crypto\Key;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\Migrations\Exception\MigrationException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -38,47 +36,29 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Locales;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class InstallCommand extends Command
 {
     protected static $defaultName = 'app:install';
 
-    /**
-     * @var ConfigWriter
-     */
-    private $configWriter;
+    private ConfigWriter $configWriter;
 
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private string $projectDir;
 
-    /**
-     * @var string|null
-     */
-    private $installed;
+    private ?string $installed;
 
-    /**
-     * @var Migration
-     */
-    private $migration;
+    private Migration $migration;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
     public function __construct(
         ConfigWriter $configWriter,
         Migration $migration,
         ManagerRegistry $registry,
-        UserPasswordEncoderInterface $userPasswordEncoder,
+        UserPasswordHasherInterface $userPasswordHasher,
         string $projectDir,
         ?string $installed
     ) {
@@ -87,7 +67,7 @@ class InstallCommand extends Command
         $this->installed = $installed;
         $this->migration = $migration;
         $this->registry = $registry;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
 
         parent::__construct();
     }
@@ -175,34 +155,28 @@ class InstallCommand extends Command
     }
 
     /**
-     * @throws Exception|MigrationException
+     * @throws Exception
      */
     private function initDb(InputInterface $input, OutputInterface $output): bool
     {
         $this->createDb($input, $output);
-        $callback = function ($message) use ($output): void {
-            if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
-                $output->writeln($message);
-            }
-        };
         $output->writeln('<info>Running database migrations</info>');
-        $this->migration->migrate($callback);
+        $this->migration->migrate();
 
         return true;
     }
 
     /**
-     * @throws DBALException
      * @throws Exception
      */
-    private function createDb(InputInterface $input, OutputInterface $output): bool
+    private function createDb(InputInterface $input, OutputInterface $output): void
     {
         $dbName = $input->getOption('database-name');
         $params = ['driver' => $input->getOption('database-driver'), 'host' => $input->getOption('database-host'), 'port' => $input->getOption('database-port'), 'user' => $input->getOption('database-user'), 'password' => $input->getOption('database-password'), 'charset' => 'UTF8', 'driverOptions' => []];
         $tmpConnection = DriverManager::getConnection($params);
 
         try {
-            $tmpConnection->getSchemaManager()->createDatabase($dbName);
+            $tmpConnection->createSchemaManager()->createDatabase($dbName);
             $output->writeln(sprintf('<info>Created database %s</info>', $dbName));
         } catch (Exception $e) {
             if (false !== strpos($e->getMessage(), 'database exists')) {
@@ -222,7 +196,6 @@ class InstallCommand extends Command
         $connection->__construct($params, $connection->getDriver(), $connection->getConfiguration(), $connection->getEventManager());
         $connection->connect();
 
-        return true;
     }
 
     private function createAdminUser(InputInterface $input, OutputInterface $output): void
@@ -239,7 +212,7 @@ class InstallCommand extends Command
         $user = new User();
         $user->setUsername($input->getOption('admin-username'))
             ->setEmail($input->getOption('admin-email'))
-            ->setPassword($this->userPasswordEncoder->encodePassword($user, $input->getOption('admin-password')))
+            ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
             ->setEnabled(true);
 
         $em = $this->registry->getManagerForClass(User::class);
@@ -252,7 +225,7 @@ class InstallCommand extends Command
         $em->flush();
     }
 
-    private function saveConfig(InputInterface $input)
+    private function saveConfig(InputInterface $input): self
     {
         // Don't update installed here, in case something goes wrong with the rest of the installation process
         $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'locale' => $input->getOption('locale'), 'currency' => $input->getOption('currency'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];

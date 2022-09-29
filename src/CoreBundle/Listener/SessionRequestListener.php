@@ -21,17 +21,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionRequestListener implements EventSubscriberInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    protected SessionInterface $session;
+
+    protected string $secret;
 
     /**
-     * @var string
+     * @return array<string, string>
      */
-    protected $secret;
-
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => 'onKernelResponse',
@@ -46,7 +43,7 @@ class SessionRequestListener implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        if (! $event->isMasterRequest()) {
+        if (! $event->isMainRequest()) {
             return;
         }
 

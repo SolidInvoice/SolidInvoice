@@ -16,14 +16,17 @@ namespace SolidInvoice\UserBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Repository\UserRepositoryTest
+ *
+ * @extends ServiceEntityRepository<User>
  */
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
@@ -41,14 +44,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * Searches for a user by username or email.
-     *
-     * @param string $username
-     *
-     * @throws UsernameNotFoundException
-     */
-    public function loadUserByUsername($username): UserInterface
+    public function loadUserByUsername(string $username): UserInterface
     {
         $q = $this
             ->createQueryBuilder('u')
@@ -63,11 +59,11 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
             return $q->getSingleResult();
         } catch (NoResultException|NonUniqueResultException $e) {
-            throw new UsernameNotFoundException(sprintf('User "%s" does not exist.', $username), 0, $e);
+            throw new UserNotFoundException(sprintf('User "%s" does not exist.', $username), 0, $e);
         }
     }
 
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         $class = get_class($user);
         if (! $this->supportsClass($class)) {
@@ -77,12 +73,12 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $this->loadUserByUsername($user->getUsername());
     }
 
-    public function supportsClass($class)
+    public function supportsClass(string $class): bool
     {
         return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
     }
 
-    public function getGridQuery()
+    public function getGridQuery(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -100,6 +96,11 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $em->flush();
     }
 
+    /**
+     * @param list<int> $users
+     *
+     * @return float|int|mixed|string
+     */
     public function deleteUsers(array $users)
     {
         $qb = $this->createQueryBuilder('u');

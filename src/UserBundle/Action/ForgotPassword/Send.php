@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 final class Send
 {
@@ -31,7 +31,7 @@ final class Send
 
         try {
             $user = $userRepository->loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             $route = $router->generate('_user_forgot_password');
 
             return new class($route, $e->getMessage()) extends RedirectResponse implements FlashResponse {

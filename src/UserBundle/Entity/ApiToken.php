@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -64,7 +65,7 @@ class ApiToken
     private $history;
 
     /**
-     * @var User|null
+     * @var UserInterface|null
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="apiTokens")
      * @ORM\JoinColumn(name="user_id")
@@ -137,15 +138,12 @@ class ApiToken
         return $this;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser(): ?User
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 
