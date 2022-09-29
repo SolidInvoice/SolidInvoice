@@ -3093,30 +3093,31 @@
         },
         {
             "name": "knplabs/knp-menu",
-            "version": "2.6.0",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenu.git",
-                "reference": "b6aade272c345b6fbd07fce5929a761cba0909b8"
+                "reference": "8bd3dc2afa22c65617c563c5e25e62d6e23e98c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/b6aade272c345b6fbd07fce5929a761cba0909b8",
-                "reference": "b6aade272c345b6fbd07fce5929a761cba0909b8",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/8bd3dc2afa22c65617c563c5e25e62d6e23e98c7",
+                "reference": "8bd3dc2afa22c65617c563c5e25e62d6e23e98c7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": "^7.3 || ^8.0"
             },
             "conflict": {
-                "twig/twig": "<1.40|>=2,<2.9"
+                "twig/twig": "<1.40 || >=2,<2.9"
             },
             "require-dev": {
+                "phpunit/phpunit": "^9.5",
                 "psr/container": "^1.0",
-                "symfony/http-foundation": "~2.4|~3.0|^4.0",
-                "symfony/phpunit-bridge": "~3.3|^4.0",
-                "symfony/routing": "~2.3|~3.0|^4.0",
-                "twig/twig": "^1.40|^2.9"
+                "symfony/http-foundation": "^4.4 || ^5.0 || ^6.0",
+                "symfony/phpunit-bridge": "^5.3",
+                "symfony/routing": "^4.4 || ^5.0 || ^6.0",
+                "twig/twig": "^1.40 || ^2.9 || ^3.0"
             },
             "suggest": {
                 "twig/twig": "for the TwigRenderer and the integration with your templates"
@@ -3124,7 +3125,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -3146,7 +3147,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Symfony Community",
+                    "name": "The Community",
                     "homepage": "https://github.com/KnpLabs/KnpMenu/contributors"
                 }
             ],
@@ -3158,38 +3159,39 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpMenu/issues",
-                "source": "https://github.com/KnpLabs/KnpMenu/tree/v2"
+                "source": "https://github.com/KnpLabs/KnpMenu/tree/v3.3.0"
             },
-            "time": "2019-09-02T10:16:14+00:00"
+            "time": "2021-10-23T15:01:04+00:00"
         },
         {
             "name": "knplabs/knp-menu-bundle",
-            "version": "v2.3.0",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "78b0cebf8e1490f12ba6555511282954de83f627"
+                "reference": "a0b4224f872d74ae939589eb1ccf0e11291370a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/78b0cebf8e1490f12ba6555511282954de83f627",
-                "reference": "78b0cebf8e1490f12ba6555511282954de83f627",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/a0b4224f872d74ae939589eb1ccf0e11291370a9",
+                "reference": "a0b4224f872d74ae939589eb1ccf0e11291370a9",
                 "shasum": ""
             },
             "require": {
-                "knplabs/knp-menu": "~2.3",
-                "php": "^7.1",
-                "symfony/framework-bundle": "^3.4 | ^4.0"
+                "knplabs/knp-menu": "^3.1",
+                "php": "^7.2 || ^8.0",
+                "symfony/framework-bundle": "^3.4 | ^4.4 | ^5.0 | ^6.0"
             },
             "require-dev": {
-                "symfony/expression-language": "^3.4 | ^4.0",
-                "symfony/phpunit-bridge": "^3.4 | ^4.0",
-                "symfony/templating": "^3.4 | ^4.0"
+                "phpunit/phpunit": "^8.5 | ^9.5",
+                "symfony/expression-language": "^3.4 | ^4.4 | ^5.0 | ^6.0",
+                "symfony/phpunit-bridge": "^5.2 | ^6.0",
+                "symfony/templating": "^3.4 | ^4.4 | ^5.0 | ^6.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -3221,9 +3223,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpMenuBundle/issues",
-                "source": "https://github.com/KnpLabs/KnpMenuBundle/tree/master"
+                "source": "https://github.com/KnpLabs/KnpMenuBundle/tree/v3.2.0"
             },
-            "time": "2019-09-19T08:51:48+00:00"
+            "time": "2021-10-24T07:53:34+00:00"
         },
         {
             "name": "league/uri",
