@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice;
 
+use Doctrine\DBAL\Types\Type;
+use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -25,6 +27,14 @@ class Kernel extends BaseKernel
     use MicroKernelTrait;
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+    public function boot()
+    {
+        parent::boot();
+
+        // Only here for BC to ensure migrations work. Remove in next minor release.
+        Type::addType('json_array', JsonArrayType::class);
+    }
 
     public function registerBundles(): iterable
     {
