@@ -29,8 +29,6 @@ class MenuBuilderTest extends TestCase
         $builder = M::mock(BuilderInterface::class);
         $item = M::mock(ItemInterface::class);
 
-        $builder->shouldNotReceive('setContainer');
-
         $builder->shouldReceive('validate')
             ->once()
             ->withNoArgs()
@@ -52,8 +50,6 @@ class MenuBuilderTest extends TestCase
         $builder = M::mock(BuilderInterface::class, ['validate' => false]);
         $item = M::mock(ItemInterface::class);
 
-        $builder->shouldNotReceive('setContainer');
-
         $builder->shouldReceive('validate')
             ->once()
             ->withNoArgs()
@@ -73,10 +69,6 @@ class MenuBuilderTest extends TestCase
     {
         $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface, Symfony\Component\DependencyInjection\ContainerAwareInterface', ['validate' => false]);
         $item = M::mock(ItemInterface::class);
-
-        $builder->shouldReceive('setContainer')
-            ->once()
-            ->withArgs([null]);
 
         $builder->shouldReceive('validate')
             ->once()

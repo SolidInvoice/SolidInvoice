@@ -18,7 +18,6 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use SolidInvoice\MenuBundle\Builder\MenuBuilder;
-use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
 use SplPriorityQueue;
 
 /**
@@ -27,29 +26,17 @@ use SplPriorityQueue;
 class Provider implements MenuProviderInterface
 {
     /**
-     * @var MenuStorageInterface
+     * @var array<string, BuilderInterface>
      */
-    protected $storage;
+    protected array $list = [];
 
-    /**
-     * @var array
-     */
-    protected $list = [];
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    private FactoryInterface $factory;
 
-    public function __construct(FactoryInterface $factory/*, iterable $menus*/)
+    public function __construct(FactoryInterface $factory)
     {
         $this->factory = $factory;
     }
 
-    /**
-     * Gets the storage for the specific menu.
-     *
-     * @param string $name
-     */
     public function get(string $name, array $options = []): ItemInterface
     {
         $root = $this->factory->createItem('root');
@@ -61,12 +48,7 @@ class Provider implements MenuProviderInterface
         return $root;
     }
 
-    /**
-     * Checks if the storage has builders for the specified menu.
-     *
-     * @param string $name
-     */
-    public function has($name, array $options = []): bool
+    public function has(string $name, array $options = []): bool
     {
         return $this->hasBuilder($name);
     }

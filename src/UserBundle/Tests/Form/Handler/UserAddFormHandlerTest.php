@@ -23,14 +23,15 @@ use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserAddFormHandlerTest extends FormHandlerTestCase
 {
     private $router;
 
-    private $userPasswordEncoder;
+    private $userPasswordHasher;
 
     private $password;
 
@@ -43,7 +44,11 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
         $this->user = new User();
         $this->password = $this->faker->password;
         $this->router = M::mock(RouterInterface::class);
-        $this->userPasswordEncoder = M::mock(UserPasswordEncoderInterface::class);
+        $this->userPasswordHasher = new UserPasswordHasher(new PasswordHasherFactory([
+            User::class => [
+                'algorithm' => 'auto',
+            ],
+        ]));
     }
 
     /**
@@ -51,7 +56,7 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
      */
     public function getHandler()
     {
-        $handler = new UserAddFormHandler($this->userPasswordEncoder, $this->router);
+        $handler = new UserAddFormHandler($this->userPasswordHasher, $this->router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
@@ -66,11 +71,6 @@ class UserAddFormHandlerTest extends FormHandlerTestCase
 
     protected function beforeSuccess(FormRequest $form, $data): void
     {
-        $this->userPasswordEncoder->shouldReceive('encodePassword')
-            ->once()
-            ->with($data, $this->password)
-            ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));
-
         $this->router->shouldReceive('generate')
             ->once()
             ->with('_users_list')

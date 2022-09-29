@@ -5,7 +5,7 @@
       source:
         repository: ~
 
-- message: 'The child node "repository" at path "datagrid.two.source" must be configured.'
+- message: 'The child config "repository" under "datagrid.two.source" must be configured.'
   datagrid:
     two:
       source:
@@ -34,7 +34,7 @@
           route: 'route'
 
 # No route defined on a line action
-- message: 'The child node "route" at path "datagrid.five.line_actions'
+- message: 'The child config "route" under "datagrid.five.line_actions.view" must be configured.'
   datagrid:
     five:
       source:
@@ -50,7 +50,7 @@
           label: 'five'
 
 # Source not configured
-- message: 'The child node "source" at path "datagrid.six" must be configured.'
+- message: 'The child config "source" under "datagrid.six" must be configured.'
   datagrid:
     six:
       columns:
@@ -88,7 +88,7 @@
               fields: []
 
 # Actions needs to be an array
-- message: 'Invalid type for path "datagrid.nine.actions". Expected array, but got string'
+- message: 'Invalid type for path "datagrid.nine.actions". Expected "array", but got "string"'
   datagrid:
       nine:
           source:
@@ -102,7 +102,7 @@
           actions: 'nine'
 
 # Actions label needs to be defined
-- message: 'The child node "label" at path "datagrid.ten.actions.ten" must be configured.'
+- message: 'The child config "label" under "datagrid.ten.actions.ten" must be configured.'
   datagrid:
       ten:
           source:
@@ -117,7 +117,7 @@
               ten: ~
 
 # Actions action needs to be defined
-- message: 'The child node "action" at path "datagrid.eleven.actions.eleven" must be configured.'
+- message: 'The child config "action" under "datagrid.eleven.actions.eleven" must be configured.'
   datagrid:
       eleven:
           source:

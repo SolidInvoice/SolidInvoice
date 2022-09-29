@@ -57,8 +57,6 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
 
     public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $config = [];
-
         $this->settingsRepository->save($this->flatten($data));
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));

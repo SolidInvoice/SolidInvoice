@@ -26,23 +26,25 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
     use SymfonyKernelTrait;
 
-    private $firstName;
+    private string $firstName;
 
-    private $email;
+    private string $email;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        static::bootKernel();
+
         $this->firstName = $this->faker->firstName;
         $this->email = $this->faker->email;
     }
 
-    public function getHandler()
+    public function getHandler(): ContactEditFormHandler
     {
         $handler = new ContactEditFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer(static::$container->get('serializer'));
+        $handler->setSerializer(static::getContainer()->get('serializer'));
 
         return $handler;
     }
@@ -74,7 +76,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertInstanceOf(Contact::class, $data);
-        self::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
+        self::assertCount(2, $this->em->getRepository(Contact::class)->findAll());
         self::assertSame($this->firstName, $data->getFirstName());
         self::assertSame($this->email, $data->getEmail());
     }

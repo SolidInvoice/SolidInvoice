@@ -20,7 +20,6 @@ use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Handler\SettingsFormHandler;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
-use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,10 +29,12 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
 {
     use DoctrineTestTrait;
 
-    /**
-     * @return string|FormHandlerInterface
-     */
-    public function getHandler()
+    protected function setUp(): void
+    {
+        static::bootKernel();
+    }
+
+    public function getHandler(): SettingsFormHandler
     {
         $repository = $this->registry->getRepository(Setting::class);
         $router = M::mock(RouterInterface::class);
@@ -41,6 +42,11 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
             ->andReturn('/settings');
 
         return new SettingsFormHandler($repository, $router);
+    }
+
+    protected function beforeSuccess(FormRequest $form, $data): void
+    {
+        $form->getRequest()->attributes->set('_route', 'settings');
     }
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void

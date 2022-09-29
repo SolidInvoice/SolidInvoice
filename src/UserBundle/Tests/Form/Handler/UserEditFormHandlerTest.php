@@ -22,14 +22,15 @@ use SolidInvoice\UserBundle\Form\Handler\UserEditFormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserEditFormHandlerTest extends FormHandlerTestCase
 {
     private $router;
 
-    private $userPasswordEncoder;
+    private $userPasswordHasher;
 
     private $password;
 
@@ -42,12 +43,16 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         $this->user = new User();
         $this->password = $this->faker->password;
         $this->router = M::mock(RouterInterface::class);
-        $this->userPasswordEncoder = M::mock(UserPasswordEncoderInterface::class);
+        $this->userPasswordHasher = new UserPasswordHasher(new PasswordHasherFactory([
+            User::class => [
+                'algorithm' => 'auto',
+            ],
+        ]));
     }
 
     public function getHandler()
     {
-        $handler = new UserEditFormHandler($this->userPasswordEncoder, $this->router);
+        $handler = new UserEditFormHandler($this->userPasswordHasher, $this->router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
@@ -55,11 +60,6 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
 
     protected function beforeSuccess(FormRequest $form, $data): void
     {
-        $this->userPasswordEncoder->shouldReceive('encodePassword')
-            ->once()
-            ->with($data, $this->password)
-            ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));
-
         $this->router->shouldReceive('generate')
             ->once()
             ->with('_users_list')

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use DateTimeInterface;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -24,14 +24,17 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
  */
 class RecurringInvoiceTest extends ApiTestCase
 {
-    use FixturesTrait;
     use EnsureApplicationInstalled;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        self::bootKernel();
+
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+
+        $databaseTool->loadFixtures([
             LoadData::class,
             \SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData::class,
         ], true);

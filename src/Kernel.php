@@ -32,8 +32,10 @@ class Kernel extends BaseKernel
     {
         parent::boot();
 
-        // Only here for BC to ensure migrations work. Remove in next minor release.
-        Type::addType('json_array', JsonArrayType::class);
+        if (! Type::hasType('json_array')) {
+            // Only here for BC to ensure migrations work. Remove in next minor release.
+            Type::addType('json_array', JsonArrayType::class);
+        }
     }
 
     public function registerBundles(): iterable

@@ -6,6 +6,8 @@ services:
             $projectDir: '%kernel.project_dir%'
             $installed: '%env(installed)%'
 
+    Doctrine\Migrations\DependencyFactory: '@doctrine.migrations.dependency_factory'
+
     SolidInvoice\InstallBundle\Installer\Database\Migration:
         arguments:
             - '@doctrine.migrations.dependency_factory'
