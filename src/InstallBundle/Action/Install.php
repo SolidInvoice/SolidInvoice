@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Action;
 
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\Migrations\Exception\MigrationException;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -37,12 +38,11 @@ final class Install
 
                     unset($params['dbname']);
 
-                    $tmpConnection = DriverManager::getConnection($params);
-
                     try {
-                        $tmpConnection->getSchemaManager()->createDatabase($dbName);
+                        $tmpConnection = DriverManager::getConnection($params);
+                        $tmpConnection->createSchemaManager()->createDatabase($dbName);
                         $result['success'] = true;
-                    } catch (Exception $e) {
+                    } catch (Exception | DBALException $e) {
                         if (false !== strpos($e->getMessage(), 'database exists')) {
                             $result['success'] = true;
                         } else {

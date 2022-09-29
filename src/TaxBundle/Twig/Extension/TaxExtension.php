@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
