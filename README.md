@@ -8,7 +8,7 @@ SolidInvoice is an open-source application that allows you to manage clients and
 
 ## Requirements
 
-SolidInvoice requires minimum PHP 7.3.0.
+SolidInvoice requires minimum PHP 7.4.15.
 
 *Note:* The latest version of PHP is always recommended
 
