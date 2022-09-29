@@ -115,7 +115,7 @@
         "twig/markdown-extra": "^3.4",
         "twig/twig": "^3.4",
         "twilio/sdk": "^5.41",
-        "willdurand/js-translation-bundle": "^",
+        "willdurand/js-translation-bundle": "^5.0",
         "willdurand/negotiation": "^3.0"
     },
     "require-dev": {
