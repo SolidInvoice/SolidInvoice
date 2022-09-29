@@ -37,17 +37,17 @@ class ChainedHandlerTest extends TestCase
 
     public function testHandle(): void
     {
-        $manager = M::mock(ManagerInterface::class);
+        $manager = M::spy(ManagerInterface::class);
         $handler = new ChainedHandler($manager);
         $message1 = new Notification('test');
         $message2 = new SwiftMailerNotification('test2');
 
-        $manager->shouldReceive('trigger')
+        $handler->handle(new ChainedNotification([$message1, $message2]));
+
+        $manager->shouldHaveReceived('trigger')
             ->with($message1);
 
-        $manager->shouldReceive('trigger')
+        $manager->shouldHaveReceived('trigger')
             ->with($message2);
-
-        $handler->handle(new ChainedNotification([$message1, $message2]));
     }
 }

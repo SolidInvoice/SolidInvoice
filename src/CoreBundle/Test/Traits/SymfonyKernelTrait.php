@@ -15,8 +15,10 @@ namespace SolidInvoice\CoreBundle\Test\Traits;
 
 use SolidInvoice\Kernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Service\ResetInterface;
+use function assert;
 
 /**
  * @codeCoverageIgnore
@@ -29,23 +31,14 @@ trait SymfonyKernelTrait
     protected static $kernel;
 
     /**
-     * @var ContainerInterface|null
-     */
-    protected static $container;
-
-    /**
      * @var bool
      */
     protected static $booted = false;
 
-    /**
-     * @var ContainerInterface|null
-     */
-    private static $kernelContainer;
-
-    private function doTearDown(): void
+    protected function tearDown(): void
     {
         static::ensureKernelShutdown();
+        static::$class = null;
         static::$kernel = null;
         static::$booted = false;
     }
@@ -59,38 +52,62 @@ trait SymfonyKernelTrait
     {
         static::ensureKernelShutdown();
 
-        static::$kernel = static::createKernel($options);
-        static::$kernel->boot();
+        $kernel = static::createKernel($options);
+        $kernel->boot();
+        static::$kernel = $kernel;
         static::$booted = true;
 
-        self::$kernelContainer = static::$kernel->getContainer();
-        // @phpstan-ignore-next-line
-        static::$container = self::$kernelContainer->has('test.service_container') ? self::$kernelContainer->get('test.service_container') : self::$kernelContainer;
+        $container = static::$kernel->getContainer();
+        static::$container = $container->has('test.service_container') ? $container->get('test.service_container') : $container;
 
         return static::$kernel;
     }
 
     /**
+     * Provides a dedicated test container with access to both public and private
+     * services. The container will not include private services that have been
+     * inlined or removed. Private services will be removed when they are not
+     * used by other services.
+     *
+     * Using this method is the best way to get a container from your test code.
+     */
+    protected static function getContainer(): ContainerInterface
+    {
+        if (!static::$booted) {
+            static::bootKernel();
+        }
+
+        try {
+            $container = self::$kernel->getContainer()->get('test.service_container');
+            assert($container instanceof ContainerInterface);
+
+            return $container;
+        } catch (ServiceNotFoundException $e) {
+            throw new \LogicException('Could not find service "test.service_container". Try updating the "framework.test" config to "true".', 0, $e);
+        }
+    }
+
+    /**
      * @param array{environment?: string, debug?: bool} $options
      */
-    protected static function createKernel(array $options = []): KernelInterface
+    protected static function createKernel(array $options = []): Kernel
     {
         if (isset($options['environment'])) {
             $env = $options['environment'];
-        } elseif (isset($_ENV['SOLIDINVOICE_ENV'])) {
-            $env = $_ENV['SOLIDINVOICE_ENV'];
-        } elseif (isset($_SERVER['SOLIDINVOICE_ENV'])) {
-            $env = $_SERVER['SOLIDINVOICE_ENV'];
+        } elseif (isset($_ENV['APP_ENV'])) {
+            $env = $_ENV['APP_ENV'];
+        } elseif (isset($_SERVER['APP_ENV'])) {
+            $env = $_SERVER['APP_ENV'];
         } else {
             $env = 'test';
         }
 
         if (isset($options['debug'])) {
             $debug = $options['debug'];
-        } elseif (isset($_ENV['SOLIDINVOICE_DEBUG'])) {
-            $debug = $_ENV['SOLIDINVOICE_DEBUG'];
-        } elseif (isset($_SERVER['SOLIDINVOICE_DEBUG'])) {
-            $debug = $_SERVER['SOLIDINVOICE_DEBUG'];
+        } elseif (isset($_ENV['APP_DEBUG'])) {
+            $debug = $_ENV['APP_DEBUG'];
+        } elseif (isset($_SERVER['APP_DEBUG'])) {
+            $debug = $_SERVER['APP_DEBUG'];
         } else {
             $debug = true;
         }
@@ -104,14 +121,16 @@ trait SymfonyKernelTrait
     protected static function ensureKernelShutdown(): void
     {
         if (null !== static::$kernel) {
+            static::$kernel->boot();
+            $container = static::$kernel->getContainer();
             static::$kernel->shutdown();
             static::$booted = false;
+
+            if ($container instanceof ResetInterface) {
+                $container->reset();
+            }
         }
 
-        if (self::$kernelContainer instanceof ResetInterface) {
-            self::$kernelContainer->reset();
-        }
-
-        static::$container = self::$kernelContainer = null;
+        static::$container = null;
     }
 }

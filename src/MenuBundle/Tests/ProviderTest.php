@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests;
 
+use Knp\Menu\FactoryInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Builder\BuilderInterface;
+use SolidInvoice\MenuBundle\MenuItem;
 use SolidInvoice\MenuBundle\Provider;
-use SolidInvoice\MenuBundle\Storage\MenuStorageInterface;
-use SplPriorityQueue;
 
 class ProviderTest extends TestCase
 {
@@ -27,59 +27,38 @@ class ProviderTest extends TestCase
 
     public function testGet(): void
     {
-        $storage = M::mock(MenuStorageInterface::class);
+        $factory = M::mock(FactoryInterface::class);
 
-        $provider = new Provider($storage);
+        $provider = new Provider($factory);
+        $builder = M::mock(BuilderInterface::class);
+        $provider->addBuilder($builder, 'abc', 'foo', 1);
 
-        $q = new SplPriorityQueue();
-        $q->insert('def', 0);
-        $storage->shouldReceive('get')
-            ->with('abc')
+        $q = new MenuItem('root', $factory);
+        $factory->shouldReceive('createItem')
+            ->once()
+            ->with('root')
             ->andReturn($q);
 
-        self::assertSame($q, $provider->get('abc', []));
+        $builder->shouldReceive('validate')
+            ->once()
+            ->andReturn(true);
 
-        $storage->shouldHaveReceived('get')
-            ->with('abc');
+        $builder->shouldReceive('foo')
+            ->once()
+            ->withArgs([$q, []]);
+
+        self::assertSame($q, $provider->get('abc', []));
     }
 
     public function testHas(): void
     {
-        $storage = M::mock(MenuStorageInterface::class);
+        $factory = M::mock(FactoryInterface::class);
 
-        $provider = new Provider($storage);
-
-        $storage->shouldReceive('has')
-            ->with('abc')
-            ->andReturn(true);
+        $provider = new Provider($factory);
+        $builder = M::mock(BuilderInterface::class);
+        $provider->addBuilder($builder, 'abc', 'foo', 1);
 
         self::assertTrue($provider->has('abc', []));
-
-        $storage->shouldHaveReceived('has')
-            ->with('abc');
-    }
-
-    public function testAddBuilder(): void
-    {
-        $queue = M::mock(\SplPriorityQueue::class);
-        $storage = M::mock(MenuStorageInterface::class);
-
-        $provider = new Provider($storage);
-
-        $class = M::mock(BuilderInterface::class);
-        $method = 'abc';
-
-        $storage->shouldReceive('get')
-            ->with('abc')
-            ->andReturn($queue);
-
-        $queue->shouldReceive('insert');
-
-        $provider->addBuilder($class, 'abc', $method, 120);
-
-        $storage->shouldHaveReceived('get')
-            ->with('abc');
-
-        $queue->shouldHaveReceived('insert');
+        self::assertFalse($provider->has('def', []));
     }
 }

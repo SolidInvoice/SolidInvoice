@@ -22,16 +22,17 @@ use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PasswordChangeHandlerTest extends FormHandlerTestCase
 {
     private $userRepository;
 
-    private $userPasswordEncoder;
+    private $userPasswordHasher;
 
     private $tokenStorage;
 
@@ -44,7 +45,11 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
         parent::setUp();
 
         $this->userRepository = M::mock(UserRepository::class);
-        $this->userPasswordEncoder = M::mock(UserPasswordEncoderInterface::class);
+        $this->userPasswordHasher = new UserPasswordHasher(new PasswordHasherFactory([
+            User::class => [
+                'algorithm' => 'auto',
+            ],
+        ]));
         $this->tokenStorage = M::mock(TokenStorageInterface::class);
         $this->router = M::mock(RouterInterface::class);
         $this->password = $this->faker->password;
@@ -57,12 +62,12 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
 
     public function getHandler()
     {
-        return new PasswordChangeHandler($this->userRepository, $this->userPasswordEncoder, $this->tokenStorage, $this->router);
+        return new PasswordChangeHandler($this->userRepository, $this->userPasswordHasher, $this->tokenStorage, $this->router);
     }
 
     protected function beforeSuccess(FormRequest $form, $data): void
     {
-        $this->userPasswordEncoder->shouldReceive('encodePassword')
+        $this->userPasswordHasher->shouldReceive('encodePassword')
             ->once()
             ->with($data, $this->password)
             ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));

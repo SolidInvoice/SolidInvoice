@@ -13,23 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Email;
 
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class InvoiceEmail extends TemplatedEmail
 {
-    /**
-     * @var Invoice
-     */
-    private $invoice;
+    private BaseInvoice $invoice;
 
-    public function __construct(Invoice $invoice)
+    public function __construct(BaseInvoice $invoice)
     {
         $this->invoice = $invoice;
         parent::__construct();
     }
 
-    public function getInvoice(): Invoice
+    public function getInvoice(): BaseInvoice
     {
         return $this->invoice;
     }

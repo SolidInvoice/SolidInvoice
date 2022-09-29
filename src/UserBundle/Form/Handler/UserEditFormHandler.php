@@ -28,8 +28,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Form\Handler\UserEditFormHandlerTest
@@ -38,20 +38,14 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
 {
     use SaveableTrait;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, RouterInterface $router)
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, RouterInterface $router)
     {
         $this->router = $router;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
@@ -59,7 +53,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
         return $factory->create(UserType::class, $options->get('user'));
     }
 
-    public function getResponse(FormRequest $formRequest)
+    public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(
             '@SolidInvoiceUser/Users/form.html.twig',
@@ -71,7 +65,7 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
 
     public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $data->setPassword($this->userPasswordEncoder->encodePassword($data, $data->getPlainPassword()));
+        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
         $data->eraseCredentials();
         $this->save($data);
 

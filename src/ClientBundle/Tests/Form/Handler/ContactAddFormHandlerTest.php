@@ -26,11 +26,18 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 {
     use SymfonyKernelTrait;
 
-    public function getHandler()
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        static::bootKernel();
+    }
+
+    public function getHandler(): ContactAddFormHandler
     {
         $handler = new ContactAddFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer(static::$container->get('serializer'));
+        $handler->setSerializer(static::getContainer()->get('serializer'));
 
         return $handler;
     }

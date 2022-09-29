@@ -40,9 +40,9 @@ trait DoctrineTestTrait
      */
     public function setupDoctrine(): void
     {
-        $kernel = static::bootKernel();
+        static::bootKernel();
 
-        $this->registry = $kernel->getContainer()->get('doctrine');
+        $this->registry = static::getContainer()->get('doctrine');
         $this->em = $this->registry->getManager();
     }
 }
