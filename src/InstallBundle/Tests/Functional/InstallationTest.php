@@ -19,7 +19,6 @@ use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
 use function count;
 use function file_exists;
-use function putenv;
 use function realpath;
 use function rename;
 use function unlink;
@@ -45,7 +44,7 @@ class InstallationTest extends PantherTestCase
         }
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

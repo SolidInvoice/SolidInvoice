@@ -68,7 +68,6 @@ class SystemConfig
                     ->orderBy('c.key')
                     ->getQuery()
                     ->getArrayResult();
-
             } catch (Exception $e) {
                 return;
             }
