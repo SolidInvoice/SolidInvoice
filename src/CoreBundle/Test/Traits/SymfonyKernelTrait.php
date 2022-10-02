@@ -40,7 +40,7 @@ trait SymfonyKernelTrait
 
     private static $kernelContainer;
 
-    private function doTearDown()
+    private function doTearDown(): void
     {
         static::ensureKernelShutdown();
         static::$kernel = null;
@@ -55,11 +55,11 @@ trait SymfonyKernelTrait
      */
     protected static function getKernelClass()
     {
-        if (!isset($_SERVER['KERNEL_CLASS']) && !isset($_ENV['KERNEL_CLASS'])) {
+        if (! isset($_SERVER['KERNEL_CLASS']) && ! isset($_ENV['KERNEL_CLASS'])) {
             throw new \LogicException(sprintf('You must set the KERNEL_CLASS environment variable to the fully-qualified class name of your Kernel in phpunit.xml / phpunit.xml.dist or override the "%1$s::createKernel()" or "%1$s::getKernelClass()" method.', static::class));
         }
 
-        if (!class_exists($class = $_ENV['KERNEL_CLASS'] ?? $_SERVER['KERNEL_CLASS'])) {
+        if (! class_exists($class = $_ENV['KERNEL_CLASS'] ?? $_SERVER['KERNEL_CLASS'])) {
             throw new \RuntimeException(sprintf('Class "%s" doesn\'t exist or cannot be autoloaded. Check that the KERNEL_CLASS value in phpunit.xml matches the fully-qualified class name of your Kernel or override the "%s::createKernel()" method.', $class, static::class));
         }
 
@@ -127,7 +127,7 @@ trait SymfonyKernelTrait
     /**
      * Shuts the kernel down if it was used in the test - called by the tearDown method by default.
      */
-    protected static function ensureKernelShutdown()
+    protected static function ensureKernelShutdown(): void
     {
         if (null !== static::$kernel) {
             static::$kernel->shutdown();
