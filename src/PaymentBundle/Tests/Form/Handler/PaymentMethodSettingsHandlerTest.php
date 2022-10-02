@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Tests\Form\Handler;
 use Mockery as M;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Handler\PaymentMethodSettingsHandler;
@@ -26,6 +27,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class PaymentMethodSettingsHandlerTest extends FormHandlerTestCase
 {
+    use EnsureApplicationInstalled;
+
     /**
      * @return string|FormHandlerInterface
      */

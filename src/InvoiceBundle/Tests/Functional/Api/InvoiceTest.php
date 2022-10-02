@@ -62,18 +62,8 @@ class InvoiceTest extends ApiTestCase
 
         self::assertSame([
             'id' => 2,
-            'status' => 'draft',
             'client' => '/api/clients/1',
-            'total' => '$90.00',
-            'baseTotal' => '$100.00',
             'balance' => '$90.00',
-            'tax' => '$0.00',
-            'discount' => [
-                'type' => 'percentage',
-                'value' => 10,
-            ],
-            'terms' => null,
-            'notes' => null,
             'due' => null,
             'paidDate' => null,
             'items' => [
@@ -89,6 +79,16 @@ class InvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1',
             ],
+            'status' => 'draft',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
+            ],
+            'terms' => null,
+            'notes' => null,
         ], $result);
     }
 
@@ -105,18 +105,8 @@ class InvoiceTest extends ApiTestCase
 
         self::assertSame([
             'id' => 1,
-            'status' => 'draft',
             'client' => '/api/clients/1',
-            'total' => '$100.00',
-            'baseTotal' => '$100.00',
             'balance' => '$100.00',
-            'tax' => '$0.00',
-            'discount' => [
-                'type' => null,
-                'value' => null,
-            ],
-            'terms' => null,
-            'notes' => null,
             'due' => null,
             'paidDate' => null,
             'items' => [
@@ -132,6 +122,16 @@ class InvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1',
             ],
+            'status' => 'draft',
+            'total' => '$100.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => null,
+                'value' => null,
+            ],
+            'terms' => null,
+            'notes' => null,
         ], $data);
     }
 
@@ -158,18 +158,8 @@ class InvoiceTest extends ApiTestCase
 
         self::assertSame([
             'id' => 1,
-            'status' => 'draft',
             'client' => '/api/clients/1',
-            'total' => '$90.00',
-            'baseTotal' => '$100.00',
             'balance' => '$90.00',
-            'tax' => '$0.00',
-            'discount' => [
-                'type' => 'percentage',
-                'value' => 10,
-            ],
-            'terms' => null,
-            'notes' => null,
             'due' => null,
             'paidDate' => null,
             'items' => [
@@ -185,6 +175,16 @@ class InvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1',
             ],
+            'status' => 'draft',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
+            ],
+            'terms' => null,
+            'notes' => null,
         ], $data);
     }
 }

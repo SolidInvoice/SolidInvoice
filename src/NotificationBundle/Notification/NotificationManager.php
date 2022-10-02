@@ -64,7 +64,13 @@ class NotificationManager
         $notification = new ChainedNotification();
 
         // @TODO: Settings should automatically be decoded
-        $settings = json_decode($this->settings->get(sprintf('notification/%s', $event)), true, 512, JSON_THROW_ON_ERROR);
+        $json = $this->settings->get(sprintf('notification/%s', $event));
+
+        if (null === $json) {
+            return;
+        }
+
+        $settings = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         if ((bool) $settings['email']) {
             $notification->addNotification($this->factory->createEmailNotification($message));

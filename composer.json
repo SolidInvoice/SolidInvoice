@@ -119,7 +119,6 @@
     },
     "require-dev": {
         "ext-zip": "*",
-        "dama/doctrine-test-bundle": "^6.3",
         "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "ergebnis/composer-normalize": "^2.20",

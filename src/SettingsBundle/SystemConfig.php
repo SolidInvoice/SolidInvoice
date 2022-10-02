@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle;
 
+use Doctrine\DBAL\Exception;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
+use function is_array;
 
 /**
  * @see \SolidInvoice\SettingsBundle\Tests\SystemConfigTest
@@ -36,7 +38,7 @@ class SystemConfig
     {
         $this->load();
 
-        if (array_key_exists($key, self::$settings)) {
+        if (is_array(self::$settings) && array_key_exists($key, self::$settings)) {
             return self::$settings[$key];
         }
 
@@ -59,12 +61,17 @@ class SystemConfig
     private function load(): void
     {
         if (! self::$settings) {
-            $settings = $this->repository
-                ->createQueryBuilder('c')
-                ->select('c.key', 'c.value')
-                ->orderBy('c.key')
-                ->getQuery()
-                ->getArrayResult();
+            try {
+                $settings = $this->repository
+                    ->createQueryBuilder('c')
+                    ->select('c.key', 'c.value')
+                    ->orderBy('c.key')
+                    ->getQuery()
+                    ->getArrayResult();
+
+            } catch (Exception $e) {
+                return;
+            }
 
             self::$settings = array_combine(array_column($settings, 'key'), array_column($settings, 'value'));
         }

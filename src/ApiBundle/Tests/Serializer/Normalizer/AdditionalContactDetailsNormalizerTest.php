@@ -19,6 +19,7 @@ use SolidInvoice\ApiBundle\Serializer\Normalizer\AdditionalContactDetailsNormali
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -26,6 +27,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
     use DoctrineTestTrait;
+    use EnsureApplicationInstalled;
 
     public function testSupportsNormalization(): void
     {

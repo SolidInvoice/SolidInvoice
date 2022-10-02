@@ -30,7 +30,7 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
     {
         $handler = new ContactAddFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer($this->container->get('serializer'));
+        $handler->setSerializer(static::$container->get('serializer'));
 
         return $handler;
     }

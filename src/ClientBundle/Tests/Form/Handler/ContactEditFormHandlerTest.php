@@ -42,7 +42,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         $handler = new ContactEditFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer($this->container->get('serializer'));
+        $handler->setSerializer(static::$container->get('serializer'));
 
         return $handler;
     }

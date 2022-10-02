@@ -39,9 +39,9 @@ trait DoctrineTestTrait
      */
     public function setupDoctrine(): void
     {
-        $this->setUpSymfonyKernel();
+        $kernel = static::bootKernel();
 
-        $this->registry = $this->container->get('doctrine');
+        $this->registry = $kernel->getContainer()->get('doctrine');
         $this->em = $this->registry->getManager();
     }
 }

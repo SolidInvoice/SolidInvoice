@@ -18,7 +18,7 @@ use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Exception\MigrationException;
 use Doctrine\Migrations\OutputWriter;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,18 +28,22 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * Performs database migrations
  */
-class Migration implements ContainerAwareInterface
+class Migration
 {
-    use ContainerAwareTrait;
-
     /**
      * @var Filesystem
      */
     private $filesystem;
 
-    public function __construct(Filesystem $filesystem)
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function __construct(Filesystem $filesystem, ContainerInterface $container)
     {
         $this->filesystem = $filesystem;
+        $this->container = $container;
     }
 
     /**
