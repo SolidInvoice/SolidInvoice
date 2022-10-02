@@ -4,48 +4,31 @@ on: [ pull_request ]
 
 jobs:
   unit:
-    name: Unit ( PHP ${{ matrix.php }}, MySQL ${{ matrix.mysql }} )
+    name: Unit ( PHP ${{ matrix.php }} )
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         php: [ '7.3', '7.4', '8.0' ]
-        mysql: [ '5.6', '5.7' ]
         coverage: [ false ]
         include:
           - php: '7.3'
-            mysql: '5.6'
             coverage: true
           - php: '7.3'
-            mysql: '8.0'
-            mysql-entrypoint: >-
-              --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
             coverage: false
           - php: '8.0'
-            mysql: '8.0'
-            mysql-entrypoint: >-
-              --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
             coverage: false
       fail-fast: false
 
     env:
       SOLIDINVOICE_ENV: test
-      SOLIDINVOICE_DEBUG: 1
+      SOLIDINVOICE_DEBUG: 0
+      PANTHER_NO_HEADLESS: 0
+      PANTHER_APP_ENV: test
+      PANTHER_NO_SANDBOX: 1
+      PANTHER_CHROME_ARGUMENTS: --disable-dev-shm-usage
       COVERAGE: 0
-
-    services:
-      mysql:
-        image: mysql:${{ matrix.mysql }}
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
-          ${{ matrix.mysql-entrypoint }}
 
     steps:
       - name: Checkout
@@ -63,8 +46,12 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
-          extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
+          extensions: intl, gd, opcache, pdo_sqlite, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
+
+      - uses: actions/setup-node@v3.4.1
+        with:
+          node-version: 14
 
       - name: Get composer cache directory
         id: composercache
@@ -80,10 +67,12 @@ jobs:
       - name: Install dependencies
         run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Prepare application database
-        run: |
-          bin/console doctrine:database:create -n -vvv
-          bin/console doctrine:migrations:migrate -n -vvv
+      - name: Detect browser drivers
+        run: bin/bdi detect drivers
+
+      - run: yarn install
+
+      - run: yarn build
 
       - name: Enable code coverage
         if: matrix.coverage
@@ -97,9 +86,9 @@ jobs:
         run: |
           mkdir -p build/logs
           if [ "$COVERAGE" = '1' ]; then
-            bin/simple-phpunit --exclude-group installation,functional --coverage-clover build/logs/clover.xml
+            bin/phpunit --coverage-clover build/logs/clover.xml
           else
-            bin/simple-phpunit --exclude-group installation,functional
+            bin/phpunit
           fi
 
       - name: Upload coverage results to Coveralls
