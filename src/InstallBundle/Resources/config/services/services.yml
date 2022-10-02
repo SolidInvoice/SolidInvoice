@@ -7,8 +7,6 @@ services:
             $installed: '%env(installed)%'
 
     SolidInvoice\InstallBundle\Installer\Database\Migration:
-        arguments: ['@filesystem']
-        calls:
-            - [setContainer, ['@service_container']]
+        arguments: ['@filesystem', '@service_container']
 
     SolidInvoice\InstallBundle\Command\InstallCommand: ~

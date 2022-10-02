@@ -66,20 +66,10 @@ class RecurringInvoiceTest extends ApiTestCase
 
         self::assertSame([
             'id' => 2,
-            'status' => 'draft',
             'client' => '/api/clients/1',
             'frequency' => '* * * * *',
             'dateStart' => date('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
-            'total' => '$90.00',
-            'baseTotal' => '$100.00',
-            'tax' => '$0.00',
-            'discount' => [
-                'type' => 'percentage',
-                'value' => 10,
-            ],
-            'terms' => null,
-            'notes' => null,
             'items' => [
                 [
                     'id' => 3,
@@ -93,6 +83,16 @@ class RecurringInvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1',
             ],
+            'status' => 'draft',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
+            ],
+            'terms' => null,
+            'notes' => null,
         ], $result);
     }
 
@@ -109,20 +109,10 @@ class RecurringInvoiceTest extends ApiTestCase
 
         self::assertSame([
             'id' => 1,
-            'status' => 'draft',
             'client' => '/api/clients/1',
             'frequency' => '* * * * *',
             'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
-            'total' => '$100.00',
-            'baseTotal' => '$100.00',
-            'tax' => '$0.00',
-            'discount' => [
-                'type' => null,
-                'value' => null,
-            ],
-            'terms' => null,
-            'notes' => null,
             'items' => [
                 [
                     'id' => 2,
@@ -136,6 +126,16 @@ class RecurringInvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1',
             ],
+            'status' => 'draft',
+            'total' => '$100.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => null,
+                'value' => null,
+            ],
+            'terms' => null,
+            'notes' => null,
         ], $data);
     }
 
@@ -163,20 +163,10 @@ class RecurringInvoiceTest extends ApiTestCase
 
         self::assertSame([
             'id' => 1,
-            'status' => 'draft',
             'client' => '/api/clients/1',
             'frequency' => '5 * * * *',
             'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
-            'total' => '$90.00',
-            'baseTotal' => '$100.00',
-            'tax' => '$0.00',
-            'discount' => [
-                'type' => 'percentage',
-                'value' => 10,
-            ],
-            'terms' => null,
-            'notes' => null,
             'items' => [
                 [
                     'id' => 3,
@@ -190,6 +180,16 @@ class RecurringInvoiceTest extends ApiTestCase
             'users' => [
                 '/api/contacts/1',
             ],
+            'status' => 'draft',
+            'total' => '$90.00',
+            'baseTotal' => '$100.00',
+            'tax' => '$0.00',
+            'discount' => [
+                'type' => 'percentage',
+                'value' => 10,
+            ],
+            'terms' => null,
+            'notes' => null,
         ], $data);
     }
 }

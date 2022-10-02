@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -33,6 +34,7 @@ class TotalCalculatorTest extends TestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
+    use EnsureApplicationInstalled;
 
     protected function setUp(): void
     {

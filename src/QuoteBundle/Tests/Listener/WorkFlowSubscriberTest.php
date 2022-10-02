@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -32,6 +33,7 @@ class WorkFlowSubscriberTest extends TestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
+    use EnsureApplicationInstalled;
 
     public function testOnQuoteAccepted(): void
     {
