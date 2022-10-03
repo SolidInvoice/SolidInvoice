@@ -51,7 +51,7 @@ class FactoryTest extends TestCase
         $notification = $factory->createSmsNotification($phoneNumber, $message);
         self::assertInstanceOf(TwilioNotification::class, $notification);
         self::assertSame($messageText, $notification->getMessage());
-        self::assertSame($phoneNumber, $notification->getRecipientNumber());
+        self::assertSame($phoneNumber, (string) $notification->getRecipientNumber());
     }
 
     public function testCreateMultipleFormatEmailNotification(): void

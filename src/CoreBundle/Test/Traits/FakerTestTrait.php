@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
 use Faker\Factory;
+use Faker\Generator;
 
 trait FakerTestTrait
 {
-    public function getFaker($locale = Factory::DEFAULT_LOCALE)
+    public function getFaker(string $locale = Factory::DEFAULT_LOCALE): Generator
     {
         static $faker;
 
