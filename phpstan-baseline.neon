@@ -106,11 +106,6 @@ parameters:
 			path: src/ApiBundle/Test/ApiTestCase.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
-
-		-
 			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
 			count: 1
 			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
@@ -486,22 +481,12 @@ parameters:
 			path: src/ClientBundle/Tests/Form/Handler/ContactAddFormHandlerTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactAddFormHandlerTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Tests/Form/Handler/ContactAddFormHandlerTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactEditFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactEditFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactEditFormHandlerTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php
 
@@ -529,26 +514,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Type\\\\ContactTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/ClientBundle/Tests/Form/Type/ContactTypeTest.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getConnection\\(\\)\\.$#"
-			count: 2
-			path: src/ClientBundle/Tests/Functional/Api/ClientTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$em of class Doctrine\\\\ORM\\\\Tools\\\\SchemaTool constructor expects Doctrine\\\\ORM\\\\EntityManagerInterface, Doctrine\\\\Persistence\\\\ObjectManager given\\.$#"
-			count: 1
-			path: src/ClientBundle/Tests/Functional/Api/ClientTest.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getConnection\\(\\)\\.$#"
-			count: 2
-			path: src/ClientBundle/Tests/Functional/Api/ContactTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$em of class Doctrine\\\\ORM\\\\Tools\\\\SchemaTool constructor expects Doctrine\\\\ORM\\\\EntityManagerInterface, Doctrine\\\\Persistence\\\\ObjectManager given\\.$#"
-			count: 1
-			path: src/ClientBundle/Tests/Functional/Api/ContactTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Action\\\\ViewBilling\\:\\:createResponse\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
@@ -746,11 +711,6 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
-
-		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
@@ -791,11 +751,6 @@ parameters:
 			path: src/CoreBundle/Tests/FormTestCase.php
 
 		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
 			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getTypedExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/FormTestCase.php
@@ -807,11 +762,6 @@ parameters:
 
 		-
 			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:testSubmit\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Missing call to parent\\:\\:setUp\\(\\) method\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/FormTestCase.php
 
@@ -1172,11 +1122,6 @@ parameters:
 
 		-
 			message: "#^Method SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:getExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/FormBundle/Test/FormHandlerTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/FormBundle/Test/FormHandlerTestCase.php
 
@@ -1734,31 +1679,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\RecurringInvoiceTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Tests/Form/Type/RecurringInvoiceTypeTest.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getConnection\\(\\)\\.$#"
-			count: 2
-			path: src/InvoiceBundle/Tests/Functional/Api/InvoiceTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$em of class Doctrine\\\\ORM\\\\Tools\\\\SchemaTool constructor expects Doctrine\\\\ORM\\\\EntityManagerInterface, Doctrine\\\\Persistence\\\\ObjectManager given\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Functional/Api/InvoiceTest.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getConnection\\(\\)\\.$#"
-			count: 2
-			path: src/InvoiceBundle/Tests/Functional/Api/RecurringInvoiceTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$em of class Doctrine\\\\ORM\\\\Tools\\\\SchemaTool constructor expects Doctrine\\\\ORM\\\\EntityManagerInterface, Doctrine\\\\Persistence\\\\ObjectManager given\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Functional/Api/RecurringInvoiceTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
 
 		-
 			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
@@ -2641,16 +2561,6 @@ parameters:
 			path: src/PaymentBundle/Tests/Form/Handler/PaymentMethodSettingsHandlerTest.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getConnection\\(\\)\\.$#"
-			count: 2
-			path: src/PaymentBundle/Tests/Functional/Api/PaymentTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$em of class Doctrine\\\\ORM\\\\Tools\\\\SchemaTool constructor expects Doctrine\\\\ORM\\\\EntityManagerInterface, Doctrine\\\\Persistence\\\\ObjectManager given\\.$#"
-			count: 1
-			path: src/PaymentBundle/Tests/Functional/Api/PaymentTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/CloneQuote.php
@@ -2816,21 +2726,6 @@ parameters:
 			path: src/QuoteBundle/Tests/Form/Type/QuoteTypeTest.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getConnection\\(\\)\\.$#"
-			count: 2
-			path: src/QuoteBundle/Tests/Functional/Api/QuoteTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$em of class Doctrine\\\\ORM\\\\Tools\\\\SchemaTool constructor expects Doctrine\\\\ORM\\\\EntityManagerInterface, Doctrine\\\\Persistence\\\\ObjectManager given\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Functional/Api/QuoteTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
 			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
 			count: 1
 			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
@@ -2951,11 +2846,6 @@ parameters:
 			path: src/SettingsBundle/Tests/Form/Handler/SettingsFormHandlerTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Tests\\\\Form\\\\Handler\\\\SettingsFormHandlerTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/SettingsBundle/Tests/Form/Handler/SettingsFormHandlerTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Tests\\\\Form\\\\Handler\\\\SettingsFormHandlerTest\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Tests/Form/Handler/SettingsFormHandlerTest.php
@@ -2974,11 +2864,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Tests\\\\Form\\\\Type\\\\SettingsTypeTest\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Tests/Form/Type/SettingsTypeTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:getKernelOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/SettingsBundle/Tests/SystemConfigTest.php
 
 		-
 			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
@@ -3654,16 +3539,6 @@ parameters:
 			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\UserEditFormHandlerTest\\:\\:\\$userPasswordEncoder has no type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Tests/Form/Handler/UserEditFormHandlerTest.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getConnection\\(\\)\\.$#"
-			count: 2
-			path: src/UserBundle/Tests/Functional/LoginTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$em of class Doctrine\\\\ORM\\\\Tools\\\\SchemaTool constructor expects Doctrine\\\\ORM\\\\EntityManagerInterface, Doctrine\\\\Persistence\\\\ObjectManager given\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Functional/LoginTest.php
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#"

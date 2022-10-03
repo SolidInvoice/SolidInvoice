@@ -31,11 +31,10 @@ trait EnsureApplicationInstalled
         $kernel = self::bootKernel();
 
         $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $metaData = $entityManager->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropDatabase();
 
-        $kernel->getContainer()->get(Migration::class)->migrate();
+        static::$container->get(Migration::class)->migrate();
 
         /** @var VersionRepository $version */
         $version = $entityManager->getRepository(Version::class);
