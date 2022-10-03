@@ -16,13 +16,14 @@ namespace SolidInvoice\CoreBundle\Test\Traits;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\MockInterface;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
  * @codeCoverageIgnore
  */
 trait DoctrineTestTrait
 {
-    use SymfonyKernelTrait;
+    use EnsureApplicationInstalled;
 
     /**
      * @var ManagerRegistry|MockInterface

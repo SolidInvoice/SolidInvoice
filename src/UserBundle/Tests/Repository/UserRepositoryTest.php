@@ -15,9 +15,10 @@ namespace SolidInvoice\UserBundle\Tests\Repository;
 
 use DateTimeInterface;
 use Doctrine\ORM\QueryBuilder;
-use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use Faker\Generator;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -31,10 +32,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepositoryTest extends KernelTestCase
 {
+    use EnsureApplicationInstalled;
     use FakerTestTrait;
     use FixturesTrait;
-    use RefreshDatabaseTrait;
 
+    /**
+     * @var Generator
+     */
     private $faker;
 
     /**

@@ -23,7 +23,6 @@ use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType as InvoiceItemType;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
@@ -41,7 +40,6 @@ abstract class FormHandlerTestCase extends BaseTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
-    use EnsureApplicationInstalled;
 
     /**
      * @var Generator
