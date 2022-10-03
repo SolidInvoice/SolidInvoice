@@ -100,3 +100,14 @@ jobs:
           export PATH="$PATH:$HOME/.composer/vendor/bin"
           php-coveralls --coverage_clover=build/logs/clover.xml -v
 
+      - name: Upload failed test screenshots
+        if: ${{ failure() }}
+        uses: edunad/actions-image@v1.0.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: './var/error-screenshots/*.png'
+          title: 'Failed E2E tests 🙀'
+
+      - name: Print logs file
+        if: ${{ failure() }}
+        run: cat var/log/test.log
