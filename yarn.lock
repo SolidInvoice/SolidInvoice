@@ -1961,10 +1961,10 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==
 
-bazinga-translator@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/bazinga-translator/-/bazinga-translator-3.0.1.tgz#452519919ca8141bf4972830f4c6bb18f36526be"
-  integrity sha512-5cVea11ZGKyZgV6NP2kAjT602pBW9wu7ssMjlIIKOYGXkpnQrocJGakAJAF6hLOrc8NGr/VPdYP3k+gp6bPISA==
+bazinga-translator@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/bazinga-translator/-/bazinga-translator-5.0.0.tgz#394c7e49b5281dce040c54a858331c2610a52108"
+  integrity sha512-kvmqgsNqo/PMuyynQdVmkSaZB59F+ZHYqXw4KNcyl0XqUjHxQeWS7J0GGydXH6vtQTOAIHd6DqfByAlIJ/2iqA==
 
 big.js@^3.1.3:
   version "3.2.0"
