@@ -4924,17 +4924,17 @@
         },
         {
             "name": "payum/payex",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Payex",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Payex.git",
-                "reference": "a910c5942121f2e4388a17c28de6a60d421b7422"
+                "reference": "5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Payex/zipball/a910c5942121f2e4388a17c28de6a60d421b7422",
-                "reference": "a910c5942121f2e4388a17c28de6a60d421b7422",
+                "url": "https://api.github.com/repos/Payum/Payex/zipball/5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d",
+                "reference": "5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d",
                 "shasum": ""
             },
             "require": {
@@ -4951,7 +4951,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4984,9 +4984,9 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Payex/tree/master"
+                "source": "https://github.com/Payum/Payex/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/paypal-express-checkout-nvp",
