@@ -13,31 +13,39 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
+use SolidInvoice\Kernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Service\ResetInterface;
-use function class_exists;
-use function sprintf;
 
 /**
  * @codeCoverageIgnore
  */
 trait SymfonyKernelTrait
 {
-    protected static $class;
+    /**
+     * @var string
+     */
+    protected static $class = Kernel::class;
 
     /**
-     * @var KernelInterface
+     * @var KernelInterface|null
      */
     protected static $kernel;
 
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|null
      */
     protected static $container;
 
+    /**
+     * @var bool
+     */
     protected static $booted = false;
 
+    /**
+     * @var ContainerInterface|null
+     */
     private static $kernelContainer;
 
     private function doTearDown(): void
@@ -48,30 +56,11 @@ trait SymfonyKernelTrait
     }
 
     /**
-     * @return string The Kernel class name
-     *
-     * @throws \RuntimeException
-     * @throws \LogicException
-     */
-    protected static function getKernelClass()
-    {
-        if (! isset($_SERVER['KERNEL_CLASS']) && ! isset($_ENV['KERNEL_CLASS'])) {
-            throw new \LogicException(sprintf('You must set the KERNEL_CLASS environment variable to the fully-qualified class name of your Kernel in phpunit.xml / phpunit.xml.dist or override the "%1$s::createKernel()" or "%1$s::getKernelClass()" method.', static::class));
-        }
-
-        if (! class_exists($class = $_ENV['KERNEL_CLASS'] ?? $_SERVER['KERNEL_CLASS'])) {
-            throw new \RuntimeException(sprintf('Class "%s" doesn\'t exist or cannot be autoloaded. Check that the KERNEL_CLASS value in phpunit.xml matches the fully-qualified class name of your Kernel or override the "%s::createKernel()" method.', $class, static::class));
-        }
-
-        return $class;
-    }
-
-    /**
      * Boots the Kernel for this test.
      *
-     * @return KernelInterface A KernelInterface instance
+     * @param array{environment?: string, debug?: bool} $options
      */
-    protected static function bootKernel(array $options = [])
+    protected static function bootKernel(array $options = []): KernelInterface
     {
         static::ensureKernelShutdown();
 
@@ -79,49 +68,39 @@ trait SymfonyKernelTrait
         static::$kernel->boot();
         static::$booted = true;
 
-        self::$kernelContainer = $container = static::$kernel->getContainer();
-        static::$container = $container->has('test.service_container') ? $container->get('test.service_container') : $container;
+        self::$kernelContainer = static::$kernel->getContainer();
+        // @phpstan-ignore-next-line
+        static::$container = self::$kernelContainer->has('test.service_container') ? self::$kernelContainer->get('test.service_container') : self::$kernelContainer;
 
         return static::$kernel;
     }
 
     /**
-     * Creates a Kernel.
-     *
-     * Available options:
-     *
-     *  * environment
-     *  * debug
-     *
-     * @return KernelInterface A KernelInterface instance
+     * @param array{environment?: string, debug?: bool} $options
      */
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
-        if (null === static::$class) {
-            static::$class = static::getKernelClass();
-        }
-
         if (isset($options['environment'])) {
             $env = $options['environment'];
-        } elseif (isset($_ENV['APP_ENV'])) {
-            $env = $_ENV['APP_ENV'];
-        } elseif (isset($_SERVER['APP_ENV'])) {
-            $env = $_SERVER['APP_ENV'];
+        } elseif (isset($_ENV['SOLIDINVOICE_ENV'])) {
+            $env = $_ENV['SOLIDINVOICE_ENV'];
+        } elseif (isset($_SERVER['SOLIDINVOICE_ENV'])) {
+            $env = $_SERVER['SOLIDINVOICE_ENV'];
         } else {
             $env = 'test';
         }
 
         if (isset($options['debug'])) {
             $debug = $options['debug'];
-        } elseif (isset($_ENV['APP_DEBUG'])) {
-            $debug = $_ENV['APP_DEBUG'];
-        } elseif (isset($_SERVER['APP_DEBUG'])) {
-            $debug = $_SERVER['APP_DEBUG'];
+        } elseif (isset($_ENV['SOLIDINVOICE_DEBUG'])) {
+            $debug = $_ENV['SOLIDINVOICE_DEBUG'];
+        } elseif (isset($_SERVER['SOLIDINVOICE_DEBUG'])) {
+            $debug = $_SERVER['SOLIDINVOICE_DEBUG'];
         } else {
             $debug = true;
         }
 
-        return new static::$class($env, $debug);
+        return new static::$class($env, (bool) $debug);
     }
 
     /**
