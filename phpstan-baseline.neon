@@ -3559,8 +3559,3 @@ parameters:
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Repository\\\\UserRepositoryTest\\:\\:getFaker\\(\\) has parameter \\$locale with no type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Repository\\\\UserRepositoryTest\\:\\:\\$faker has no type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php

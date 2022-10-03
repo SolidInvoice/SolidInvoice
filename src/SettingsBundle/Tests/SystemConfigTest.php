@@ -16,6 +16,7 @@ namespace SolidInvoice\SettingsBundle\Tests;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\SystemConfig;
 

@@ -24,11 +24,6 @@ use Symfony\Contracts\Service\ResetInterface;
 trait SymfonyKernelTrait
 {
     /**
-     * @var string
-     */
-    protected static $class = Kernel::class;
-
-    /**
      * @var KernelInterface|null
      */
     protected static $kernel;
@@ -100,7 +95,7 @@ trait SymfonyKernelTrait
             $debug = true;
         }
 
-        return new static::$class($env, (bool) $debug);
+        return new Kernel($env, (bool) $debug);
     }
 
     /**

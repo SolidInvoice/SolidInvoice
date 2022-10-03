@@ -18,11 +18,14 @@ use Doctrine\ORM\Tools\SchemaTool;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use function date;
 
 trait EnsureApplicationInstalled
 {
+    use SymfonyKernelTrait;
+
     /**
      * @before
      */
@@ -42,5 +45,19 @@ trait EnsureApplicationInstalled
 
         $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
         $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);
+    }
+
+    /**
+     * @after
+     */
+    public function clearDatabase(): void
+    {
+        $kernel = self::bootKernel();
+
+        $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $schemaTool = new SchemaTool($entityManager);
+        $schemaTool->dropDatabase();
+
+        unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
     }
 }
