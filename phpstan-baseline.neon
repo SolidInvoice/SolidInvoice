@@ -2141,26 +2141,6 @@ parameters:
 			path: src/NotificationBundle/Notification/NotificationMessageInterface.php
 
 		-
-			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Tests\\\\FactoryTest\\:\\:getFaker\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/NotificationBundle/Tests/FactoryTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Tests\\\\FactoryTest\\:\\:getFaker\\(\\) has parameter \\$locale with no type specified\\.$#"
-			count: 1
-			path: src/NotificationBundle/Tests/FactoryTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Tests\\\\NotificationManagerTest\\:\\:getFaker\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/NotificationBundle/Tests/NotificationManagerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Tests\\\\NotificationManagerTest\\:\\:getFaker\\(\\) has parameter \\$locale with no type specified\\.$#"
-			count: 1
-			path: src/NotificationBundle/Tests/NotificationManagerTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\MethodList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Ajax/MethodList.php
@@ -3547,15 +3527,5 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getId\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Repository\\\\UserRepositoryTest\\:\\:getFaker\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Repository\\\\UserRepositoryTest\\:\\:getFaker\\(\\) has parameter \\$locale with no type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
