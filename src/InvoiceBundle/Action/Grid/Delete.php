@@ -23,9 +23,6 @@ final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var InvoiceRepository
-     */
     private InvoiceRepository $repository;
 
     public function __construct(InvoiceRepository $repository)

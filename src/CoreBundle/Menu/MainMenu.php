@@ -39,14 +39,16 @@ class MainMenu
     public static function profile(ItemInterface $item): ItemInterface
     {
         return $item->addChild(
-            'menu.top.profile', ['route' => '_profile', 'extras' => ['icon' => 'user']],
+            'menu.top.profile',
+            ['route' => '_profile', 'extras' => ['icon' => 'user']],
         );
     }
 
     public static function api(ItemInterface $item): ItemInterface
     {
         return $item->addChild(
-            'menu.top.api', ['route' => '_api_keys_index', 'extras' => ['icon' => 'user-secret']],
+            'menu.top.api',
+            ['route' => '_api_keys_index', 'extras' => ['icon' => 'user-secret']],
         );
     }
 

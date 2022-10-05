@@ -45,6 +45,6 @@ final class Migration
                 ->setDryRun(false)
                 ->setTimeAllQueries(true)
                 ->setAllOrNothing(true)
-            );
+        );
     }
 }

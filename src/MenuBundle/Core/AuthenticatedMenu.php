@@ -29,7 +29,7 @@ class AuthenticatedMenu implements ContainerAwareInterface, BuilderInterface
 
     public function validate(): bool
     {
-        if (!$this->container instanceof ContainerInterface) {
+        if (! $this->container instanceof ContainerInterface) {
             return false;
         }
 

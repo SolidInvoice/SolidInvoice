@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice;
 
 use Symfony\Requirements\SymfonyRequirements;
-use function phpversion;
 use function sprintf;
 use function str_starts_with;
 use function version_compare;
@@ -50,15 +49,18 @@ class AppRequirements extends SymfonyRequirements
     public function addRequirement($fulfilled, $testMessage, $helpHtml, $helpText = null): void
     {
         if (str_starts_with($testMessage, 'PHP version must be at least ')) {
-            $installedPhpVersion = phpversion();
+            $installedPhpVersion = PHP_VERSION;
             $phpVersion = '7.4.15';
 
             parent::addRequirement(
                 version_compare($installedPhpVersion, $phpVersion, '>='),
                 sprintf('PHP version must be at least %s (%s installed)', $phpVersion, $installedPhpVersion),
-                sprintf('You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
+                sprintf(
+                    'You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
             Before using SolidInvoice, upgrade your PHP installation, preferably to the latest version.',
-                    $installedPhpVersion, $phpVersion),
+                    $installedPhpVersion,
+                    $phpVersion
+                ),
                 sprintf('Install PHP %s or newer (installed version is %s)', $phpVersion, $installedPhpVersion)
             );
             return;
@@ -66,7 +68,6 @@ class AppRequirements extends SymfonyRequirements
 
         parent::addRequirement($fulfilled, $testMessage, $helpHtml, $helpText);
     }
-
 
     public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null): void
     {

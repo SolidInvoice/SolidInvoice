@@ -15,7 +15,6 @@ namespace SolidInvoice\MoneyBundle\Twig\Extension;
 
 use Money\Currency;
 use Money\Money;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

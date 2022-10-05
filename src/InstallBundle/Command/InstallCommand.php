@@ -195,7 +195,6 @@ class InstallCommand extends Command
         }
         $connection->__construct($params, $connection->getDriver(), $connection->getConfiguration(), $connection->getEventManager());
         $connection->connect();
-
     }
 
     private function createAdminUser(InputInterface $input, OutputInterface $output): void

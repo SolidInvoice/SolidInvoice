@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Twig\Extension;
 
-use JsonException;
 use const JSON_THROW_ON_ERROR;
 use Doctrine\DBAL\Exception;
+use JsonException;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
