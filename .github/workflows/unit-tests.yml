@@ -105,6 +105,7 @@ jobs:
         if: ${{ failure() }}
         env:
             CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}
+            JOB_NAME: Unit ( PHP ${{ matrix.php }} )
         with:
           script: |
             const script = require('./scripts/e2e-failure.js')
