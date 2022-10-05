@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async ({ github, context }) => {
-    const cwd = path.resolve(__dirname);
+    const rootDir = path.resolve('../');
     let commentBody = '';
 
     // Return "https" URLs by setting secure: true
@@ -14,13 +14,13 @@ module.exports = async ({ github, context }) => {
     const uploadImages = async () => {
         let promiseArray = [];
 
-        let images = fs.readdirSync(`${cwd}/var/error-screenshots/`);
+        let images = fs.readdirSync(`${rootDir}/var/error-screenshots/`);
 
         images.forEach((element) => {
             console.log('uploading image to cloudinary..');
 
             let uplaodedImagePromise = cloudinary.uploader.upload(
-                `${cwd}/var/error-screenshots/${element}`,
+                `${rootDir}/var/error-screenshots/${element}`,
                 {
                     tags: 'ci,github-actions,e2e,screenshot',
                     folder: `solidinvoice/ci/errors/${context.issue.number}/${context.sha}`,
